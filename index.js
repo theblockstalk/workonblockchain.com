@@ -1,1 +1,1 @@
-I am editing first line of this file
+this will create a conflict in the first line
