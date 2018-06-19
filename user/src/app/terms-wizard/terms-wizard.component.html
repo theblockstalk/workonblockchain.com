@@ -1,0 +1,74 @@
+<!--candidate step completing-->
+
+<section class = "wizard_page">
+	
+	<div class="container">
+		<div class="row">
+			<div class = "text-center steps-name hidden-xs">
+				<ul class = "step-progress">
+					<li class = "step step-active"><i class="{{terms_active_class}}"></i><a href = "company_wizard">Summary of T&Cs</a></li>
+					<li class = "step"><i class="{{about_active_class}}"></i><a href = "{{about_company}}">About the company</a></li>
+				</ul>
+			</div>
+			<div class="col-md-12 wizard-form">
+			
+				<form class = "login_form"  (submit)="terms_wizard(termsForm)"  #termsForm = ngForm>
+					
+					<fieldset class="scheduler-border">
+					    <legend class="scheduler-border">Summary of T&Cs</legend>
+						<p style= 'color:red;'>{{log}}</p>
+					    <div class="checkbox">
+							<label class = "check-label"> Company will pay 15% of annual base salary for all hires through the platform.
+								<input type = "checkbox" value = "" required name="company_pay" [(ngModel)]="company_pay">
+								<span class="checkmark">
+									
+								</span>
+							</label>
+						</div>
+
+						<div class="checkbox">
+							<label class = "check-label"> Company must declare finalized employment with candidates on the platform.
+								<input type = "checkbox" value = "" required name="company_declare" [(ngModel)]="company_declare">
+								<span class="checkmark">
+									
+								</span>
+							</label>
+						</div>
+
+						<div class="checkbox">
+							<label class = "check-label"> Company found to not declare employment through the platform will pay a penalty fee of 25% of annual base candidate salary .
+								<input type = "checkbox" value = "" required name="company_found" [(ngModel)]="company_found">
+								<span class="checkmark">
+									
+								</span>
+							</label>
+						</div>
+
+						<div class="checkbox">
+							<label class = "check-label"> This is only a summary, please refer to Terms and Conditions for full details.
+								<input type = "checkbox" value = "" required name="only_summary" [(ngModel)]="only_summary">
+								<span class="checkmark">
+									
+								</span>
+							</label>
+						</div>
+
+					</fieldset>
+
+					<div class = "form-group text-right">
+						<button type="submit" class = "btn btn-self btn-pdg" >Next Step</button>
+					</div>
+
+				</form>
+				
+			</div>
+		</div>
+	</div>
+
+</section>
+
+
+<!--candidate step completing End-->
+
+<div class = "gap">
+</div>

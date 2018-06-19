@@ -1,0 +1,236 @@
+<!--<table class="table">
+    <thead>
+		<tr>
+			<th> <a routerLink="/about"> About</a></th>
+			<th><a routerLink="/job" >Job</a></th>
+			<th><a routerLink="/resume" class="{{class}}">Resume</a></th>
+			<th><a routerLink="/experience" class = "{{exp_class}}">Experience</a></th>
+			<th><a routerLink="/final" class = "{{final_class}}">Final</a></th>
+			<th><a routerLink="/referral" class = "{{referral_class}}">Referral</a></th>
+		</tr>
+    </thead>
+</table>
+<h5>Earn £500 by inviting others to our system</h5>
+<p>
+	If someone you refer us gets hired for a full 
+	time position, we will give you an Amazon gift 
+	card worth £500. 
+</p>
+<h5> Your invite link </h5> 
+<p> {{ref_link}} </p>
+<body data-scribe="section:share" class=" regular ltr ready">
+	<div id="widget">
+		<div class="btn-o" data-scribe="component:button" style="width: 61px;">
+			<a target="_blank" href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fwww.talent.io%2Finvite&amp;ref_src=twsrc%5Etfw&amp;text=I%E2%80%99m%20inviting%20you%20to%20talent.io!%20Sign%20up%20now%20and%20let%20companies%20apply%20to%20you.%20Receive%205%20%20job%20offers%20in%20one%20week.%20Salaries%20from%20%E2%82%AC35k%20-%20%E2%82%AC100k&amp;tw_p=tweetbutton&amp;url={{ref_link}};via=talentio" class="btn" id="b">
+				<i></i><span class="label" id="l">Tweet</span>
+			</a>
+		</div>
+	</div>
+</body>-->
+
+
+<!-- <section class = "referral-page"> -->
+
+		<!-- <div class="container referral-container"> -->
+			<!-- <ng-container *ngIf="display_list === 1;else second"> -->
+				<!-- <div class="row col-md-6 referral-inner"> -->
+					<!-- <div class="form-group"> -->
+						<!-- <label for="comment">All Candidates</label> -->
+						<!-- <ul> -->
+							<!-- <li *ngFor="let person of users">  -->
+								<!-- <button (click)="openDialog(person.email,person._id)"> -->
+									<!-- {{ person.email }} -->
+								<!-- </button> -->
+							<!-- </li> -->
+						<!-- </ul> -->
+					<!-- </div> -->
+				<!-- </div> -->
+				<!-- <ng-container *ngIf="show_msg_area === 1;else offer"> -->
+					<!-- <div class="row col-md-6 referral-inner"> -->
+						<!-- <form (submit)="send_message(msgForm)" #msgForm = ngForm> -->
+							<!-- <div class="form-group"> -->
+							  <!-- <label for="comment">Messages</label> -->
+							  <!-- <div *ngFor="let msg of new_msgss"> -->
+								<!-- {{msg.sender_name}}: -->
+								<!-- {{msg.message}} -->
+							  <!-- </div> -->
+							  <!-- <div> -->
+								<!-- {{msgs}} -->
+							  <!-- </div> -->
+							<!-- </div> -->
+							<!-- <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/> -->
+							<!-- <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/> -->
+							<!-- <div class="form-group"> -->
+							  <!-- <textarea class="form-control" placeholder="your message here" rows="3" name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"></textarea> -->
+							<!-- </div> -->
+							<!-- <p>{{log}}</p> -->
+							<!-- <div class="form-group"> -->
+								<!-- <button type="submit" class = "btn btn-lg btn-self" [disabled]="!msgForm.valid ">Send</button> -->
+							<!-- </div> -->
+						<!-- </form> -->
+					<!-- </div> -->
+				<!-- </ng-container> -->
+				<!-- <ng-template #offer> -->
+					<!-- <div class="row col-md-6 referral-inner"> -->
+						<!-- <div> -->
+							<!-- <form (submit)="send_message(msgForm)" #msgForm = ngForm> -->
+								<!-- <div class="form-group"> -->
+									<!-- <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/> -->
+									<!-- <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/> -->
+									<!-- <input type="hidden" name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/> -->
+									<!-- Send offer to {{credentials.email}}. -->
+								<!-- </div> -->
+								<!-- <div class="form-group"> -->
+									<!-- <button type="submit" class = "btn btn-lg btn-self">Send</button> -->
+								<!-- </div> -->
+							<!-- </form> -->
+						<!-- </div> -->
+					<!-- </div> -->
+				<!-- </ng-template> -->
+			<!-- </ng-container> -->
+			<!-- <ng-template #second> -->
+				<!-- <div class="row col-md-6 referral-inner"> -->
+					<!-- <div class="form-group"> -->
+						<!-- <label for="comment">All Companies</label> -->
+						<!-- <ul> -->
+							<!-- <li *ngFor="let person of users">  -->
+								<!-- <button (click)="openDialog(person.email,person._id)"> -->
+									<!-- {{ person.email }} -->
+								<!-- </button> -->
+							<!-- </li> -->
+						<!-- </ul> -->
+					<!-- </div> -->
+				<!-- </div> -->
+				<!-- <div class="row col-md-6 referral-inner"> -->
+					<!-- <form (submit)="send_message_candidate(msgForm1)" #msgForm1 = ngForm> -->
+						<!-- <div class="form-group"> -->
+						  <!-- <label for="comment">Messages</label> -->
+						  <!-- <div *ngFor="let msg of new_msgss"> -->
+						    <!-- {{msg.sender_name}}: -->
+							<!-- {{msg.message}} -->
+						  <!-- </div> -->
+						  <!-- <div> -->
+							<!-- {{new_msgs}} -->
+						  <!-- </div> -->
+						<!-- </div> -->
+						<!-- <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/> -->
+						<!-- <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/> -->
+						<!-- <div class="form-group"> -->
+						  <!-- <textarea class="form-control" placeholder="your message here" rows="3" name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"></textarea> -->
+						<!-- </div> -->
+						<!-- <p>{{log}}</p> -->
+						<!-- <div class="form-group"> -->
+							<!-- <button type="submit" class = "btn btn-lg btn-self" [disabled]="!msgForm1.valid ">Send</button> -->
+						<!-- </div> -->
+					<!-- </form> -->
+				<!-- </div> -->
+			<!-- </ng-template> -->
+		<!-- </div> -->
+		
+		<!-- <div class = "gap"> -->
+		<!-- </div> -->
+
+	<!-- </section> -->
+	
+	<!--Profile-inner-->
+<section class = "wizard_page">
+
+	<div class="container">
+		<div class="row chat-row">
+			<div id = "frame">
+				<div class = "col-sm-4 col-xs-3" id="sidepanel">
+					<div id="profile" class = "padding_top-btm">
+						<div class="wrap">
+							<img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" alt="">
+							<p>{{currentUser.email}}</p>
+						</div>
+					</div>
+					<div id="contacts">
+						<ul>
+							<li *ngFor="let person of users" class="contact closee" (click)="openDialog(person.email,person._id)">
+								<div class="wrap">
+									<img src="http://emilcarlsson.se/assets/louislitt.png" alt="">
+									<div class="meta">
+										<p class="name">{{ person.email }}</p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+					<div class="content col-sm-8 col-xs-9">
+						<div class="contact-profile">
+							<ul class = "cand_info-ul">
+								<li>Candidate Name : Najeeb Shaukat</li>
+								<li>Availablity : From June 2019</li>
+								<li>Job Title : Web designer and Fornt End Developer</li>
+							</ul>
+							<span class = "btn_rgt">
+								<button class = "btn btn_descp">View Job Discription</button>
+							</span>
+						</div>
+						
+						<div class="messages">
+							<ul>
+								<div *ngFor="let msg of new_msgss">
+									<ng-container *ngIf="msg.sender_name == currentUser.email;else second">
+										<li class="sent">
+											<p class = "job-description">
+												{{msg.sender_name}}
+												{{msg.message}}
+											</p>
+										</li>
+									</ng-container>
+									<ng-template #second>
+										<li class="replies">
+											<p>
+												{{msg.sender_name}}
+												{{msg.message}}
+											</p>
+										</li>
+									</ng-template>
+								</div>
+							</ul>
+						</div>
+						
+						<div class="message-input">
+							<div class = "offers">
+								<span class = "offers_btn">
+											<button class = "btn btn_descp">Offer to Interview</button>
+											<button class = "btn btn_descp">Offer to Employ</button>
+								</span>
+							</div>
+							 <form (submit)="send_message(msgForm)" #msgForm = ngForm>
+								<div class="wrap">
+									<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
+									<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
+									<input type="text" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
+									<span>
+										<button class = "btn btn-send" type="submit" id = "btnClick">
+											<i class="fa fa-paper-plane" aria-hidden="true"></i>
+											Send
+										</button>
+										<br>
+										<button class = "btn btn-attached" id = "btnClick">
+											<i class="fa fa-paperclip" aria-hidden="true"></i>
+											Attach file
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+
+					</div>
+
+
+				</div><!--end col here-->
+				
+			</div>
+		</div>
+
+</section>
+
+<!--Profile-inner end-->
+
+<div class = "gap">
+</div>

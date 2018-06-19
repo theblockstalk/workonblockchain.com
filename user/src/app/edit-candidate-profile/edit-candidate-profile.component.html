@@ -1,0 +1,606 @@
+<!--Edit profile page start here-->
+
+<section class="wizard_page">
+	<div class="container">
+		<div class="row">
+			
+			<div class = "col-md-3 hidden-sm hidden-xs">
+				<div class = "wizard-form mr-top-form side_bar fixed_pos" id = "side_bar">
+					<ul>
+						<li> <a href = "/edit_profile#about_you">Personal Information</a> </li>
+						<li> <a href = "/edit_profile#resume_candidate">Spoken Languages</a> </li>
+						<li> <a href = "/edit_profile#job_candidate">Job Preferences</a> </li>
+						<li> <a href = "/edit_profile#experience_candidate">Work History</a> </li>
+						<li> <a href = "/edit_profile#experience_candidate">Education</a> </li>
+						<!-- <li> <a href = "/edit_profile#">Web Preferences</a> </li>-->
+					</ul>
+				</div>
+			</div>
+			 <form  (submit)="candidate_profile(profileForm)" #profileForm = ngForm>
+			<div class="col-md-9">
+					
+				<!--about us form-->
+				<div class = "wizard-form mr-top-form" id = "about_you">
+					<div class = "login_form">
+						
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">About You</legend>
+							
+							<div class="form-group col-md-6">
+                				<label><p class = "label-p">First Name</p></label>
+                				<input type="text" class="form-control" name="first_name" [(ngModel)]="info.first_name" id="" placeholder="First Name"  name="first_name" [(ngModel)]="info.first_name">
+            				</div>
+            				<div class="form-group col-md-6">
+                				<label><p class = "label-p">Last Name</p></label>
+               					 <input type="text" class="form-control" name="last_name" [(ngModel)]="info.last_name" id="" placeholder="Last Name"  name="last_name" [(ngModel)]="info.last_name">
+            				</div>
+
+							<div class="form-group col-md-6">
+								<label><p class = "label-p">Github Account</p></label>
+								<input type="text" class="form-control" id="" name="github_account" [(ngModel)]="info.github_account" placeholder="Github account (optional)">
+							</div>
+
+							<div class="form-group col-md-6">
+								<label><p class = "label-p">Exchange Account</p></label>
+								<input type="text" class="form-control" id="" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account" >
+							</div>
+
+							<div class="form-group col-md-6">
+								<label><p class = "label-p">Contact Number</p></label>
+								<input type="number" class="form-control" id="" placeholder="Phone number" name="contact_number" [(ngModel)]="info.contact_number">
+							</div>
+
+							<div class="form-group col-md-6">
+								<label><p class = "label-p">Nationality</p></label>
+								<input type="text" class="form-control" id="" placeholder="Nationality" name="nationality"  [(ngModel)]="info.nationality">
+							</div>
+
+							<div class="form-group col-md-6" >
+								<input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="info.image">
+								<label id="fileLabel" >
+								<span *ngIf="info.image_src" >{{info.image_src}}</span>
+								<span *ngIf="!info.image_src" >Upload Image</span>
+								</label>
+							</div>
+							
+							  <!-- <div class="form-group col-md-6" *ngIf = 'info.image_src'>
+              					<label><p class = "label-p">Image</p></label>
+              					<img src = {{info.image_src}} >
+   
+            				</div>-->
+
+						</fieldset>
+					</div>
+					
+				</div>
+				<!--about us form End-->
+
+				<!--job information form start here-->
+				<div class="wizard-form mr-top-form" id = "job_candidate">
+
+					<div class = "login_form">
+						
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Tell us more about your dream job</legend>
+							<div class="container collection col-md-12">
+								<div>
+									<p class = "question-label">Where they will work</p>
+									
+									<div class="answer">
+										
+										<div class = "row">  
+
+											<div class="col-md-4 collection-checkbox max-width" *ngFor="let option of options">
+											<span class = "checkbox-header"> <!--<strong>{{country.value}}</strong>--></span>
+											<div class="checkbox" >
+												<!--<div *ngIf=" country.id === option.country_code ">-->
+												<label class = "check-label lable"> {{option.name}}
+                          
+												<input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
+												<span class="checkmark">
+                            
+												</span>
+												</label>
+												<input type="text" class="form-control" [(ngModel)]='selectedcountry' name="country" style="display: none;">
+												<!--</div>-->
+											</div>
+
+                      
+
+											</div>
+
+                    
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<hr>
+							
+							<div class="form-group col-md-12">
+							<div class="container collection col-left col-md-12">
+								<div>
+									<p class = "question-label">Roles</p>
+									
+									<div class="answer">
+										<div class = "row">
+
+											<div class="col-md-4 collection-checkbox max-width" *ngFor="let position_option of dropdown_options">
+												
+												<div class="checkbox">
+													<label class = "check-label lable"> {{position_option.name}}
+													<input type="checkbox" name="options" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
+													<span class="checkmark">
+                            
+													</span>
+													</label>
+													<input type="text" class="form-control" [(ngModel)]='jobselected' name="roles" style="display: none;">
+                        
+												</div>
+
+											</div>
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<hr/>
+
+							
+
+							<div class="form-group col-md-6">
+								<label><p class = "label-p">Yearly Expected base salary</p></label>
+								<input type="text" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="salary">
+							</div>
+							
+							<div class="form-group col-md-6 setting-top">
+								<label><p class = "label-p"></p></label>
+								<select [(ngModel)]="base_currency" class="form-control" id="currency" required name="base_currency" >
+								<option class='option' *ngFor='let base_currency of currency'  [value]="base_currency" selected>{{base_currency}}</option>
+              
+								</select>
+							</div>
+							
+							
+							
+							<div class="form-group col-md-12">
+							<div class="container collection col-left col-md-12">
+								<div>
+									<p class = "question-label">Which area are you interested in?</p>
+									
+									<div class="answer">
+										<div class = "row">
+
+											<div class="col-md-6 collection-checkbox max-width" *ngFor='let position_option of area_interested'>
+												
+												<div class="checkbox">
+													<label class = "check-label lable"> {{position_option.name}}
+													<input type="checkbox" name="options" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
+													<span class="checkmark">
+                            
+													</span>
+													</label>
+													<input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_area" style="display: none;">
+                        
+                         
+												</div>
+
+											</div>
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+							<hr>
+
+							
+
+							<div class="form-group col-md-4">
+								<label><p class = "label-p">Employment availability</p></label>
+								<select [(ngModel)]="availability_day" class="form-control" id="month" required name="availability_day" >
+								<option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
+								</select>
+							</div>
+
+							
+
+						</fieldset>
+						</div>
+					
+					
+				</div>
+
+				<!--job information form end here-->
+
+				<!--resume job form start here-->
+
+				<div class="wizard-form mr-top-form" id = "resume_candidate">
+					<div class = "login_form">
+				
+						
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Blockchain </legend>
+							<div class="form-group col-md-12 col-left">
+								<label><p class = "label-p">Why do you want to work on blockchain?</p></label>
+										<input type="text" class="form-control" id="" placeholder="i want to work on blockchain because ......."  #whywork name="why_work" [(ngModel)]="why_work">
+							</div>
+
+							<div class="col-md-12 collection">
+							
+									<div class="answer">
+										<label><p>Blockchain exposure</p></label>
+										<div class = "row">
+											<div class="">
+                      <span class = "checkbox-header"> <strong>Platforms commercially worked with </strong></span><br/>
+                       <div class="answer">
+										<div class = "row">
+
+											<div class="col-md-6 collection-checkbox max-width" *ngFor="let option of commercially">
+												
+												<div class="checkbox">
+													<label class = "check-label lable"> {{option.name}}  
+													 <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"              required (change)="oncommerciallyOptions(option)"   />
+													<span class="checkmark">
+                            						<div></div>
+													</span>
+													</label>
+                        <input type="text" class="form-control" [(ngModel)]='commercially_worked' name="commercially_worked" style="display: none;">
+                        
+                         
+												</div>
+
+											</div>
+
+										</div>
+									</div>
+
+                      <div *ngIf="commercially_worked?.length > 0">
+                      
+                        <label><p>Year of Experience of each platform</p></label>
+                        <div class = "row" *ngFor="let option of commercially_worked; let i = index ">
+            
+                        <p class="rd_label label-p">{{option.value}}</p>
+                        <div class = "form-group col-md-12 controls__group">
+                        <div *ngFor="let exp of exp_year">
+                        <label class="">
+                          {{exp.name}} 
+                          <input type="radio" name="radiogroup- {{ option.value}}"  value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" /></label>
+                          <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
+                      </div>
+
+										</div>
+									</div>
+							</div>
+							<hr>
+
+						
+ 					<span class = "checkbox-header"> <strong> Platforms designed/developed smart contracts on </strong></span>
+                    <br/> <div class="answer">
+										<div class = "row">
+
+											<div class="col-md-6 collection-checkbox max-width" *ngFor="let option of designed">
+												
+												<div class="checkbox">
+													<label class = "check-label lable"> {{option.value}}  
+													 <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked" 
+													(change)="onPlatformOptions(option)" required  />
+													<span class="checkmark">
+                            <div></div>
+													</span>
+													</label>
+                        <input type="text" class="form-control" [(ngModel)]='platforms_designed' name="platforms_designed" style="display: none;">
+                        
+                         
+												</div>
+
+											</div>
+
+										</div>
+									</div>
+
+                    
+              <hr>
+          <div *ngIf="platforms_designed?.length > 0">
+           <label><p>Year of Experience of each platform</p></label>
+          <div class = "row" *ngFor="let exp_value of platforms_designed;let i_index = index">
+           
+            <p class="rd_label label-p">{{exp_value.value}}</p>
+            <div class = "form-group col-md-12 controls__group">
+            <div *ngFor="let exp of exp_year ">
+              <label class="">{{exp.name}}
+                 <input type="radio" name="group - {{ exp_value.value }} "  [checked]=" designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value" 
+            value="{{exp.value}}" (change)="onPlatformYearOptions($event , exp_value.value)" 
+             /> </label>
+
+            <input type="text" class="form-control" name="platforms" [(ngModel)]='platforms' style="display: none;">
+            </div>
+               
+            </div>
+          </div>
+          </div>   
+                      
+
+                      <span class = "checkbox-header"> <strong>Platforms experimented with </strong></span>
+                      <div class="answer">
+										<div class = "row">
+
+											<div class="col-md-6 collection-checkbox max-width" *ngFor="let option of experimented">
+												
+												<div class="checkbox">
+													<label class = "check-label lable"> {{option.value}}  
+													<input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked" 
+                          (change)="onExpOptions(option)" required  />
+													<span class="checkmark">
+                            <div></div>
+													</span>
+													</label>
+                        <input type="text" class="form-control" [(ngModel)]='experimented_platform' name="experimented_platform" style="display: none;">
+                        
+                         
+												</div>
+
+											</div>
+
+										</div>
+									</div>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <hr>
+          <div *ngIf="experimented_platform?.length > 0">
+          <label><p>Year of Experience of each platform</p></label>
+          <div class = "row" *ngFor="let exp_value of experimented_platform;let i_index = index">
+           
+            <p class="rd_label label-p">{{exp_value.value}}</p>
+            <div class = "form-group col-md-12 controls__group">
+            <div *ngFor="let exp of exp_year ">
+              <label class="">{{exp.name}}
+                 <input type="radio" name="group - {{ exp_value.value }} "  [checked]=" exp_expYear[i_index] === exp.value && exp_db_valye[i_index] === exp_value.value" 
+            value="{{exp.value}}" (change)="onExpYearOptions($event , exp_value.value)" 
+             /> </label>
+
+            <input type="text" class="form-control" name="experience_year" [(ngModel)]='expYear' style="display: none;">
+            </div>
+               
+            </div>
+          </div>
+          </div>
+
+						</fieldset>
+
+					</div>
+					
+				</div>
+
+				<!--resume job form end here-->
+
+				<!--experience form start here-->
+				
+				<div class="wizard-form mr-top-form" id = "experience_candidate">
+
+					<div class = "login_form">
+						
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Experience</legend>
+					
+
+							<div class="form-group col-md-6 col-left">
+								<label><p  class = "label-p">Current Base salary</p></label>
+								<input type="text" class="form-control" id="" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">							
+							</div>
+							
+							<div class="form-group col-md-6 col-left setting-top_2">
+							<label><p  class = "label-p"></p></label>
+							<select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
+								<option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>          
+							</select>
+							</div>
+					<div class="form-group col-md-12">
+							<div class="collection">
+										<div class = "answer">
+											<div class=" collection-checkbox">
+												<span class = "checkbox-header"> <strong>Languages</strong></span>
+												<div class="row">
+													<div class="col-md-4 collection-checkbox" *ngFor="let option of language_opt">
+                      
+														<div class="checkbox" >
+															<label class = "check-label lable"> {{option.name}}  
+															<input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
+															(change)="onLangExpOptions(option)" required  />
+            
+															<span class="checkmark">
+                          
+															</span>
+															</label>
+															<input type="text" class="form-control" [(ngModel)]='language' name="language" style="display: none;">
+														</div>
+
+													</div>
+												</div>
+											</div>
+
+										</div>
+							</div>
+						</div>
+
+
+						<div *ngIf="language?.length > 0">
+         <div class="form-group col-md-12">
+          <p class = "exp_p">Year of Experience of each Language</p>
+          <div class = "row" *ngFor="let lang_value of language; let i = index ">
+            
+            <p class="rd_label label-p">{{lang_value.value}}</p>
+            <div class = "form-group col-md-12 controls__group">
+              <div *ngFor="let exp of exp_year">
+              <label class="">
+                {{exp.name}} 
+                   <input type="radio" name="radiogroup- {{ lang_value.value}}" [checked]="lang_expYear_db[i] === exp.value && lang_db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onLangExpYearOptions($event , lang_value.value)" /></label>
+                  <input type="text" class="form-control" name="language_experience_year" [(ngModel)]='LangexpYear' style="display: none;">
+                 </div>
+               
+              
+            </div>
+          </div>
+          </div>
+          </div>
+			<div class="form-group col-md-12">
+						<div class = "row work-history">
+							<h3>Work History</h3>
+							<p>Your profile will be hidden from all companies you have listed in your work history.</p>
+
+							<div class = "work-form" [formGroup]="ExperienceForm">
+								<div formArrayName="ExpItems">
+									<div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
+								<div class="form-group col-md-4">
+									<label><p>Company</p></label>
+									<input type="text" id="" placeholder="" formControlName="companyname" class="form-control" #company_field name="company">
+								</div>
+								
+								<div class="form-group col-md-4">
+									<label><p>Position</p></label>
+									 <input type="text" formControlName="positionname" class="form-control" #position_field name="position" required  >
+								</div>
+
+								<div class="form-group col-md-4">
+									<label><p>Location</p></label>
+									<input type="text" formControlName="locationname" class="form-control" #location_field name="location" required  >
+								</div>
+
+								<div class="form-group col-md-4">
+                <label class="lable"><p>Start Date</p></label>
+                 
+                 <select formControlName="startdate" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
+                <option  *ngFor='let start_month of calen_month'  [value]="start_month" selected>{{start_month}}</option>
+              <br/>
+            </select>
+                 
+                 <select formControlName="startyear" class="form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
+              <option  *ngFor='let start_year of year'  [value]="start_year" selected>{{start_year}}</option>
+              <br/>
+            </select>
+              </div>
+
+								<div class="form-group col-md-4" id="input_field">
+                <label class="lable"><p>End Date</p></label>
+                 <select formControlName="enddate" class="form-control xs_input"  required name="roles"  required=""  >
+            <option  *ngFor='let end_month of calen_month'  [value]="end_month" selected>{{end_month}}</option>
+        <br/>
+    </select>
+    <select formControlName="endyear" class="form-control xs_input" required name="roles" required=""  >
+            <option  *ngFor='let end_year of year'  [value]="end_year" selected>{{end_year}}</option>
+        <br/>
+      
+    </select>
+                  
+                  
+              </div>
+
+
+								<div class="form-group col-md-4">
+									<div class="checkbox mr-top">
+										<label class = "check-label">  I currently work there
+										<input type="checkbox" id="1step" formControlName="currentwork" name="options" value="current" (change)="onCurrentlyWork($event)" required  />
+											<span class="checkmark">
+												
+											</span>
+										</label>
+									</div>
+								</div>
+
+								<div class="form-group col-md-12">
+									<label><p>Description</p></label>
+									 <textarea rows="5" id="comment" placeholder="Job description" formControlName="descname" class="form-control" #desc_field name="Description" required></textarea>
+								</div>
+
+								<div class = "form-group col-md-12 text-right">
+									<a (click)="deleteExpRow(i)" class = "btn btn-prev gap-rgt">Remove</a>
+								</div>
+							</div></div>
+							</div>
+
+								<a (click)="addNewExpRow()" class = "btn btn-self mr_rgt mr-btm"><i class="fa fa-plus"></i> Add Position</a>
+
+						</div>
+						</div>
+						
+				<div class="form-group col-md-12">
+						<div class = "row work-history">
+							<h3>Education</h3>
+
+							<div class = "work-form" [formGroup]="EducationForm">
+								<div formArrayName="itemRows">
+								<div *ngFor="let itemrow of DynamicEduFormControls.controls ; let i=index" [formGroupName]="i">
+
+								<div class="form-group col-md-3">
+									<label><p>University</p></label>
+									<input formControlName="uniname" class="form-control" type="text" #uni_field name="uni" required >
+								</div>
+								
+								<div class="form-group col-md-3">
+									<label><p>Degree</p></label>
+									<input formControlName="degreename" class="form-control" type="text" #degree_field name="uni" required  >
+								</div>
+
+								<div class="form-group col-md-3">
+									<label><p>Field of study</p></label>
+									 <input formControlName="fieldname" class="form-control" type="text" #study_field name="study" required  >
+								</div>
+
+								<div class="form-group col-md-3">
+									 <label for="sel1"><p>Graduation</p></label>
+									   <select formControlName="eduyear" class='form-control'  required name="roles"  required=""  >
+										<option class='option' *ngFor='let graduation_year of year'  [value]="graduation_year" selected>{{graduation_year}}</option>
+										<br/>
+									</select>
+								</div>
+
+								<div class = "form-group text-right">
+									<a  (click)="deleteRow(i)" class = "btn btn-prev gap-rgt">Remove</a>
+								</div>
+								
+								</div>
+							</div>
+
+							</div>
+
+							<a  (click)="addNewRow()" class = "btn btn-self mr_rgt mr-btm"> <i class="fa fa-plus" ></i> Add Education</a>
+
+							
+
+						</div>
+						</div>
+						 <div class="form-group col-md-12">
+								<label><p class = "label-p">Quick Introduction here..</p></label>
+								 <textarea class="form-control" rows="5" id="comment" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+							</div>
+						</fieldset>
+					
+				</div>
+
+				<!--experience form end here-->
+				
+				
+				</div>
+				<div class = "button_area text-right">
+					<button type="submit" class = "btn btn-self btn-pdg" >Save Profile</button>
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
+	
+</section>
+
+
+<!--/End edit profile page here-->
+
+
+<div class = "gap">
+</div>

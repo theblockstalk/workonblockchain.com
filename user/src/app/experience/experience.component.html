@@ -1,0 +1,252 @@
+<!--candidate step completing-->
+
+<section class = "wizard_page">
+  
+  <div class="container">
+    <div class="row">
+      <div class = "text-center steps-name">
+        <ul class = "step-progress">
+          <li class = "step "><i class="{{active_class}}"></i><a routerLink="/about"> About</a></li>
+          <li class = "step"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
+          <li class = "step "><i class="{{active_class}}"></i><a routerLink="/resume" >Blockchain</a></li>
+          <li class = "step step-active"><i class="{{exp_active_class}}"></i><a routerLink="/experience" >Experience</a></li>
+          
+        </ul>
+      </div>
+      <div class="wizard-form">
+
+        <form class = "login_form" (submit)="experience_submit(expForm)" #expForm = ngForm>
+          
+          <fieldset class="scheduler-border">
+              <legend class="scheduler-border">Experience</legend>
+          
+
+              <div class="form-group col-md-6 col-left">
+                <label><p  class = "label-p">Current Base salary</p></label>
+                   
+                
+                 <input type="text" class="form-control" id="" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">
+               
+                  
+            </div>
+
+             <div class="form-group col-md-6 col-left setting-top_2">
+                <label><p  class = "label-p"></p></label>
+                       <select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
+                  <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
+              
+                </select>
+                  </div>
+			<div class="form-group col-md-12">
+            <div class="collection">
+                  <div class = "answer">
+                  <span class = "checkbox-header"> <strong>Languages</strong></span>
+                  <div class="row">
+                    <div class="col-md-4 collection-checkbox" *ngFor="let option of language_opt">
+                      
+                      <div class="checkbox" >
+                        <label class = "check-label lable"> {{option.name}}  
+                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
+                          (change)="onExpOptions(option)" required  />
+            
+                          <span class="checkmark">
+                          
+                          </span>
+                        </label>
+                        <input type="text" class="form-control" [(ngModel)]='language' name="language" style="display: none;">
+                      </div>
+
+                    </div>
+                    </div>
+
+                  </div>
+              </div>
+             </div>
+          
+
+          <div *ngIf="language?.length > 0">
+         <div class="form-group col-md-12">
+          <p class = "exp_p">Year of Experience of each Language</p>
+          <div class = "row" *ngFor="let lang_value of language; let i = index ">
+            
+            <p class="rd_label label-p">{{lang_value.value}}</p>
+            <div class = "form-group col-md-12 controls__group">
+              <div *ngFor="let exp of exp_year">
+              <label class="">
+                {{exp.name}} 
+                   <input type="radio" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)" /></label>
+                  <input type="text" class="form-control" name="language_experience_year" [(ngModel)]='expYear' style="display: none;">
+                 </div>
+               
+              
+            </div>
+          </div>
+          </div>
+          </div>
+			
+			<div class="form-group col-md-12">
+          <div class = "row work-history">
+            <h3>Work History</h3>
+            <p>Your profile will be hidden from all companies you have listed in your work history.</p>
+
+            <div class = "work-form" [formGroup]="ExperienceForm">
+               <div formArrayName="ExpItems">
+                <!-- Check the correct way to iterate your form array -->
+                <!-- <div *ngFor="let itemrow of ExperienceForm.controls.ExpItems.controls; let i=index"  [formGroupName]="i">-->
+				<div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
+                
+              <div class="form-group col-md-4">
+                <label class="lable"><p>Company</p></label>
+                  <input type="text" id="" placeholder="" formControlName="companyname" class="form-control" #company_field name="company" required>
+              </div>
+              
+              <div class="form-group col-md-4">
+                <label class="lable"><p>Position</p></label>
+                <input type="text" formControlName="positionname" class="form-control" #position_field name="position" required  >
+              </div>
+
+              <div class="form-group col-md-4">
+                <label class="lable"><p>Location</p></label>
+                    <input type="text" formControlName="locationname" class="form-control" #location_field name="location" required  >
+
+              </div>
+
+              <div class="form-group col-md-4">
+                <label class="lable"><p>Start Date</p></label>
+                 
+                 <select formControlName="startdate" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required>
+                <option  *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
+              <br/>
+            </select>
+                 
+                 <select formControlName="startyear" class="form-control xs_input"  required name="roles"  required(change)="work_start_year($event)" >
+              <option  *ngFor='let start_year of year'  [value]="start_year" selected>{{start_year}}</option>
+              <br/>
+            </select>
+              </div>
+
+              <div class="form-group col-md-4" id="input_field">
+                <label class="lable"><p>End Date</p></label>
+                 <select formControlName="enddate" class="form-control xs_input"  required name="roles"    >
+            <option  *ngFor='let end_month of month'  [value]="end_month" selected>{{end_month}}</option>
+        <br/>
+    </select>
+    <select formControlName="endyear" class="form-control xs_input" required name="roles"  >
+            <option  *ngFor='let end_year of year'  [value]="end_year" selected>{{end_year}}</option>
+        <br/>
+      
+    </select>
+                  
+                  
+              </div>
+
+              <div class="form-group col-md-4">
+                <div class="checkbox mr-top">
+                  <label class = "check-label">  I currently work there
+                   
+                     <input type="checkbox" id="1step" formControlName="currentwork" 
+                   name="options" 
+                   value="current" 
+                   (change)="onCurrentlyWork($event)"   />
+                    I currently work there
+                    <span class="checkmark">
+                      
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group col-md-12">
+                <label class="lable"><p>Description</p></label>
+                  <textarea rows="5" id="comment" placeholder="Job description" formControlName="descname" class="form-control" #desc_field name="Description" required></textarea>
+              </div>
+
+              <div class = "form-group col-md-12 text-right">
+                <a (click)="deleteExpRow(i)" class = "btn btn-prev gap-rgt">Remove</a>
+              </div>
+
+            </div>
+				<div class = "form-group col-md-12 ">
+            <!--<button class = "btn btn-self mr_rgt mr-btm" id = "addDom" (click)="addNewExpRow()"><i class="fa fa-plus"></i> Add Position </button> -->
+				<a (click)="addNewExpRow()" class = "btn btn-self mr_rgt mr-btm"><i class="fa fa-plus"></i> Add Position</a>
+         	</div>
+          </div>
+          </div>
+          </div>
+          </div>
+		
+		<div class="form-group col-md-12">
+          <div class = "row work-history">
+            <h3>Education</h3>
+
+            <div class = "work-form" [formGroup]="EducationForm">
+                <div formArrayName="itemRows">
+                  <!-- Check the correct way to iterate your form array -->
+                  <!-- <div *ngFor="let itemrow of EducationForm.controls.itemRows.controls; let i=index"  [formGroupName]="i">-->
+				<div *ngFor="let itemrow of DynamicEduFormControls.controls ; let i=index" [formGroupName]="i">
+
+              <div class="form-group col-md-3">
+                <label class="lable"><p>University</p></label>
+                  <input formControlName="uniname" class="form-control" type="text" #uni_field name="uni" required >
+              </div>
+              
+              <div class="form-group col-md-3">
+                <label class="lable"><p>Degree</p></label>
+                  <input formControlName="degreename" class="form-control" type="text" #degree_field name="uni" required  >
+              </div>
+
+              <div class="form-group col-md-3">
+                <label class="lable"><p>Field of study</p></label>
+                   <input formControlName="fieldname" class="form-control" type="text" #study_field name="study" required  >
+              </div>
+
+              <div class="form-group col-md-3">
+                   <label for="sel1" class="lable"><p>Graduation</p></label>
+                  <select formControlName="eduyear" class='form-control'  required name="roles"  required >
+                  <option class='option' *ngFor='let graduation_year of year'  [value]="graduation_year" selected>{{graduation_year}}</option>
+                  <br/>
+                </select>
+
+              </div>
+
+              <div class = "form-group text-right">
+                <a  (click)="deleteRow(i)" class = "btn btn-prev gap-rgt">Remove</a>
+              </div>
+
+            </div>
+
+           <!--  <button class = "btn btn-self mr_rgt mr-btm" id = "addDom2" (click)="addNewRow()"><i class="fa fa-plus" ></i> Add Education </button> -->
+			<a  (click)="addNewRow()" class = "btn btn-self mr_rgt mr-btm"> <i class="fa fa-plus" ></i> Add Education</a>
+             
+
+          </div>
+          </div>
+          </div>
+          </div>
+          <div class="form-group col-md-12">
+                <label><p class = "label-p">Quick Introduction here..</p></label>
+                <textarea class="form-control" rows="5" id="comment" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+            </div>
+          
+          </fieldset>
+
+          <div class = "form-group text-right">
+              <a routerLink="/resume" class = "btn btn-prev">Prev Step</a>
+              <button type="submit" class = "btn btn-self btn-pdg" [disabled]=" intro.value=='' " >Done</button>
+          </div>
+
+        </form>
+        
+      </div>
+      </div>
+      </div>
+      
+    
+
+</section>
+
+
+<!--candidate step completing End-->
+
+<div class = "gap">
+</div>

@@ -1,0 +1,154 @@
+<section class = "login_signup">
+
+  <div class="container">
+    <div class="row form_container">
+      <div class="col-md-12 form_container_inner">
+          <ul class="nav nav-tabs my_tab">
+            <li class="active col-xs-6 tab-col">
+              <a data-toggle="tab" href="#home">Candidates SignUp</a>
+            </li>
+
+            <li class="col-xs-6 tab-col">
+              <a data-toggle="tab" href="#menu1">Company SignUp</a>
+            </li>
+          </ul>
+
+          <div class="tab-content form-contant">
+              <div id="home" class="tab-pane fade in active">
+                <h3>Candidate Sign Up</h3>
+                <h4>{{log}}</h4>
+                 <form (submit)="signup_candidate(loginForm)"  #loginForm = ngForm>
+                
+                <div class="form-group">
+                  <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+                  <input type="email" class="form-control" placeholder="Email" name="name" required  [(ngModel)]="credentials.email" email>
+                <p>{{email_log}}</p>
+                </div>
+
+                <div class="form-group">
+                  <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+                  <div class = "show_pass"><i toggle="#password-field" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
+                  <input type="password" class="form-control" placeholder="password" id="password-field" name="password"  [(ngModel)]="credentials.password">
+                <p>{{pass_log}}</p>
+                </div>
+
+                <div class="form-group">
+                  <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+                  <div class = "show_pass"><i toggle="#conf_pwd" class="fa fa-eye pas_i toggle-password" aria-hidden="true"></i></div>
+                  <input type="password" class="form-control" placeholder="Confirm password" id="conf_pwd" name="confirm_password"  [(ngModel)]="credentials.confirm_password">
+                <p>{{password_log}}</p>
+                </div>
+
+                <div class="checkbox">
+                  <label><input type="checkbox" required  name="terms" [(ngModel)]="terms"> Accept <a href = ""> Term and Conditions </a></label>
+                </div>
+
+                <div class="form-group">
+                  <input type="submit" class="form-control btn btn-signup" value = "Sign Up" [disabled]="!loginForm.valid ">
+                </div>
+
+                <div class="form-group">
+                  <span class="saperate-line"></span>
+                  <p class = "text-center">Or signup with your social Account</p>
+                </div>
+
+                <div class="form-group">
+                  <a  class = "form-control btn btn-linkdIn" type = "submit" (click)="subscribeToLogin()">
+                    <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+                      Sign Up with LinkdIn
+                  </a>
+                </div>
+
+                <div class="form-group">
+                  <a  class = "form-control btn btn-danger" type = "submit" (click)="signInWithGoogle()">
+                    <i class="fa fa-google-plus-square" aria-hidden="true"></i>
+                      Sign Up with Google
+                  </a>
+                </div>
+               </form>
+              </div>
+
+              <div id="menu1" class="tab-pane fade">
+                <h3>Employer Sign Up</h3>
+               <form (submit)="company_signup(signupForm)"  #signupForm = ngForm>
+                   <div >{{message}}</div>
+
+                <div class="form-group">
+                  <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+                  <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="credentials.email" email required  >
+                </div>
+
+                <div class="form-group">
+                    <span><i class="fa fa-user-o" aria-hidden="true"></i></span>
+                  <input type="Text" class="form-control" placeholder="First Name" id="user" required name="first_name" [(ngModel)]="credentials.first_name" >
+                </div>
+
+                <div class="form-group">
+                    <span><i class="fa fa-user-o" aria-hidden="true"></i></span>
+                  <input type="Text" class="form-control" placeholder="Last Name" required name="last_name" [(ngModel)]="credentials.last_name" >
+                </div>
+
+                <div class="form-group">
+                  <span><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" placeholder="Job Title" required name="job_title" [(ngModel)]="credentials.job_title">
+                </div>
+
+                 <div class="form-group">
+                  <span><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" placeholder="Company Name" id="com_name" required name="company_name" [(ngModel)]="credentials.company_name">
+                </div>
+
+                <div class="form-group">
+                  <span><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" placeholder="Company Website" required name="company_website" [(ngModel)]="credentials.company_website">
+                </div>
+
+                 <div class="form-group">
+                  <span><i class="fa fa-phone" aria-hidden="true"></i></span>
+                  <input type="Number" class="form-control" placeholder="Phone Number" id="phone_no" required name="phone_number" [(ngModel)]="credentials.phone_number">
+                </div>
+
+                 <div class="form-group spec-group">
+                  <input type="text" class="form-control left-input" placeholder="Country" id="country" required name="country" [(ngModel)]="credentials.country">
+
+                  <span><i class="fa fa-address-card-o" aria-hidden="true"></i></span>
+                  <input type="Number" class="form-control right-input" placeholder="Postal Code" id="post_no" required name="postal_code" [(ngModel)]="credentials.postal_code">
+
+                </div>
+
+                <div class="form-group">
+                  <span><i class="fa fa-phone" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" placeholder="City" required name="city" [(ngModel)]="credentials.city">
+                </div>
+
+                <div class="form-group">
+                  <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+                  <div class = "show_pass"><i toggle="#password-field1" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
+                  <input type="password" class="form-control" placeholder="password" id="password-field1" required name="password" [(ngModel)]="credentials.password">
+                   <p>{{pass_log}}</p>
+                </div>
+
+                <div class="form-group">
+                  <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+                  <div class = "show_pass"><i toggle="#conff_pwd" class="fa fa-eye pas_i toggle-password" aria-hidden="true"></i></div>
+                  <input type="password" class="form-control" placeholder="Confirm password" id="conff_pwd" required name="confirm_password" [(ngModel)]="credentials.confirm_password">
+                   <p>{{password_log}}</p>
+                </div>
+
+                <div class="checkbox">
+                  <label><input type="checkbox" required name="company_terms" [(ngModel)]="company_terms"> Accept <a href = ""> Term and Conditions </a> </label>
+                </div>
+
+                <div class="form-group col-md-12 padding-lft-0 padding-rgt-0">
+                  <input type="submit" class="form-control btn btn-signup" value = "Sign Up" [disabled]="!signupForm.valid ">
+                </div>
+
+               </form>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class = "gap">
+  </div>
+</section>

@@ -1,0 +1,66 @@
+<!--login page start here -->
+<section class = "login_signup">
+  <div class="container">
+    <div class="row form_container border-top">
+      <div class="col-md-12 form_container_inner">
+        <div class="form-login">
+                <h3 class = "login_hd">Login to WOB</h3>
+                <div class="ref_msg">{{ref_msg}}</div>
+                 <div >{{message}}</div>
+                <h5>{{log}}</h5>
+                 <form class = "login_form" (submit)="login(loginForm)"  #loginForm = ngForm>
+               
+                <div class="form-group">
+                  <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+                  <input type="email" class="form-control" placeholder="Email" email  name="name" required [(ngModel)]="credentials.email">
+                </div>
+
+                <div class="form-group">
+                  <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+                  <div class = "show_pass"><i toggle="#password-field" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
+                  <input type="password" class="form-control" placeholder="password" id="password-field" name="password"  [(ngModel)]="credentials.password">
+                </div>
+
+                <div class="checkbox">
+                  <label><input type="checkbox">Remember Me </label>
+                </div>
+
+                <div class="form-group">
+                  <input type="submit" class="form-control btn btn-signup" value = "Log In" [disabled]="!loginForm.valid ">
+                </div>
+
+                <div class="form-group">
+                  <span class="saperate-line"></span>
+                  <p class = "text-center">Or LogIn with your social Account</p>
+                </div>
+
+                <div class="form-group">
+                  <a  class = "form-control btn btn-linkdIn" (click)="subscribeToLogin()" type = "submit">
+                    <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+                      Login with LinkdIn
+                  </a>
+                 
+                </div>
+
+                <div class="form-group">
+                  <a  class = "form-control btn btn-danger" type = "submit" (click)="signInWithGoogle()">
+                    <i class="fa fa-google-plus-square" aria-hidden="true"></i>
+                      Login with Google
+                  </a>
+                 
+                </div>
+
+                <div class="login_form_links">
+                  <a href = "forgot_password" target = "">Forgot your Password</a> <br/>
+                  <a href = "signup" target = "">Sign Up</a>
+                </div>
+
+               </form>
+              </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class = "gap">
+</div>

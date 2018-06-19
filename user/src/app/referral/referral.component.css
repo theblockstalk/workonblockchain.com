@@ -1,0 +1,9 @@
+[type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+    position: relative;
+    opacity: 3;
+    pointer-events: none;
+}
+label {
+    font-size: 1.2rem;
+    color: #9e9e9e;
+}

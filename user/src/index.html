@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!--<meta charset="utf-8">
+  <title>User</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+ 
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">-->
+
+  <title>WOB</title>
+  <base href="/">
+  <meta charset="utf-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type='text/css' href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" type='text/css' href="/assets/css/wob_main.css">
+  <link rel="stylesheet" type='text/css' href="/assets/css/middle.css">
+
+  <!--using fonts link-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Quicksand" rel="stylesheet">
+
+  <!--Icon font link-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+  <app-root></app-root>
+
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+
+  
+
+<!-- jqeury and js links-->
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<script>    
+        $(document).ready(function(){
+        	
+        	 $('label input[type=radio]').click(function() {
+        		    alert("function executed");
+        		    console.log("function executed");
+
+        		    $('input[name="' + this.name + '"]').each(function(){
+        		        $(this.parentNode).toggleClass('activee', this.checked);
+        		    });
+        		});
+  
+        //Check to see if the window is top if not then display button
+        $(window).scroll(function(){
+          if ($(this).scrollTop() > 100) {
+            $('#scroll-to-top').fadeIn();
+          } else {
+            $('#scroll-to-top').fadeOut();
+          }
+        });
+        
+        //Click event to scroll to top
+        $('#scroll-to-top').click(function(){
+          $('html, body').animate({scrollTop : 0},800);
+          return false;
+        });
+
+        
+        
+      });
+
+
+    //show hide password
+    $(".toggle-password").click(function() {
+
+      $(this).toggleClass("fa-eye fa-eye-slash");
+      var input = $($(this).attr("toggle"));
+      if (input.attr("type") == "password") {
+        input.attr("type", "text");
+      } else {
+        input.attr("type", "password");
+      }
+    });
+        
+</script>
+
+<!-- Load Facebook SDK for JavaScript -->
+ <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.0';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script>
+
+  window.pressed = function(){
+    var a = document.getElementById('aa');
+    if(a.value == "")
+    {
+        fileLabel.innerHTML = "Choose file";
+    }
+    else
+    {
+        var theSplit = a.value.split('\\');
+        fileLabel.innerHTML = theSplit[theSplit.length-1];
+    }
+};
+
+</script>
+
+<script type="text/javascript">
+
+ 
+
+
+
+</script>
+
+
+<script type="text/javascript">
+ $(function () {
+    $('#1step').change(function () {
+        if ($('#1step').is(':checked')) {
+            $("#input_field").hide();
+        } else {
+            $("#input_field").show();
+        }
+    }).change();
+});
+</script>
+
+
+</body>
+</html>

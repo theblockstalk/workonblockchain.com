@@ -1,0 +1,79 @@
+<!--candidate step completing-->
+
+<section class = "wizard_page">
+	
+	<div class="container">
+		<div class="row">
+			<div class = "text-center steps-name hidden-xs">
+				<ul class = "step-progress">
+					<li class = "step"><i class="{{terms_active_class}}"></i><a href = "/company_wizard">Summary of T&Cs</a></li>
+					<li class = "step step-active"><i class="{{about_active_class}}"></i><a href = "/about_comp">About the company</a></li>
+				</ul>
+			</div>
+			<div class="col-md-12 wizard-form">
+			
+				<form class = "login_form"  (submit)="about_company(aboutForm)"  #aboutForm = ngForm>
+					
+					<fieldset class="scheduler-border">
+					    <legend class="scheduler-border">About Company</legend>
+						<p>{{log}}</p>
+					    <div class="form-group col-md-6">
+					    	<label><p class = "label-p">When was the company founded?</p></label>
+						    <input type="text" class="form-control" id="" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
+							<p>{{founded_log}}</p>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label><p class = "label-p">Number of employees?</p></label>
+						    <input type="number" class="form-control" id="" placeholder="Number of employees?" name="no_of_employees" [(ngModel)]="no_of_employees">
+							<p>{{employee_log}}</p>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label><p class = "label-p">How is the company funded?</p></label>
+						    <input type="text" class="form-control" id="" placeholder="How's compnay funded?" name="company_funded" [(ngModel)]="company_funded">
+							<p>{{funded_log}}</p>
+						</div>
+
+						<div class="form-group col-md-6 mr-top-33" *ngIf = '!image_src'>
+						    <input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="image" >
+						    <label id="fileLabel">Upload Company Logo (optional)</label>
+							
+						</div>
+						
+						 <div class="form-group col-md-6" *ngIf = 'image_src'>
+              					<label><p class = "label-p">Image</p></label>
+              					<img src = {{image_src}} >
+   
+            			</div>
+						
+						
+            
+            
+
+						<div class="form-group col-md-12 mr-top-04">
+								<label><p>Company Description</p></label>
+							    <textarea class="form-control" rows="5" id="comment" placeholder="" name="company_description" [(ngModel)]="company_description"></textarea>
+								<p>{{des_log}}</p>
+						</div>
+
+					</fieldset>
+
+					<div class = "form-group text-right">
+							<a href = "company_wizard" class = "btn btn-prev">Prev Step</a>
+						<button type="submit" class = "btn btn-self btn-pdg" >Done</button>
+					</div>
+
+				</form>
+				
+			</div>
+		</div>
+	</div>
+
+</section>
+
+
+<!--candidate step completing End-->
+
+<div class = "gap">
+</div>

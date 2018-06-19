@@ -1,0 +1,11 @@
+export class User 
+{
+    _id: string;
+    email: string;
+    password: string;
+    type: string;
+    _creator:string;
+    social_type:string; 
+    email_hash:string;
+    ref_link:string;
+}
