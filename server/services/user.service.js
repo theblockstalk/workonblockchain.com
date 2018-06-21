@@ -42,16 +42,23 @@ service.get_company_byId = get_company_byId;
 service.company_summary = company_summary;
 service.about_company = about_company;
 service.save_employer_image =save_employer_image;
+service.update_company_profile = update_company_profile;
+
+////////filters function///////////////////////
+service.search_skill = search_skill;
+service.search_location = search_location;
+service.search_position = search_position;
+service.search_blockchain = search_blockchain;
+service.search_salary =search_salary;
 
 /////////referal and chat functions////////////
-service.search = search;
 service.refreal_email = refreal_email;
 service.get_refr_code = get_refr_code;
 service.get_candidate=get_candidate;
 service.insert_message = insert_message;
 service.get_messages = get_messages;
 service.get_user_messages = get_user_messages;
- 
+
 module.exports = service;
 
 var emails = ['gmail.com' , 'hotmail.com.com' , 'yahoo.com'];
@@ -80,18 +87,23 @@ function authenticate(email, password,type)
                 {
                    
                     if (err) deferred.reject(err.name + ': ' + err.message);
+                    
+                    if(data)
+                    	{
+                    	 deferred.resolve({ 
+                             _id:data._id,
+                             _creator: data._creator,
+                             email: user.email,
+                             email_hash: user.email_hash,
+                             ref_link: user.ref_link,
+ 							type:user.type,
+                             token: jwt.sign({ sub: user._id }, config.secret)
+                             });
+                    	}
 
                     else
                     {
-                        deferred.resolve({ 
-                            _id:data._id,
-                            _creator: data._creator,
-                            email: user.email,
-                            email_hash: user.email_hash,
-                            ref_link: user.ref_link,
-							type:user.type,
-                            token: jwt.sign({ sub: user._id }, config.secret)
-                            });
+                    	deferred.reject("Email Not found");
                     }   
 
 
@@ -104,6 +116,8 @@ function authenticate(email, password,type)
                 {
                     //console.log(data);
                     if (err) deferred.reject(err.name + ': ' + err.message);
+                    
+                   
 
                     else
                     {
@@ -209,8 +223,7 @@ function forgot_passwordEmail_send(hash)
             to : hash.email,
             subject : "Welcome to TEST",
             text : 'Visit this http://workonblockchain.mwancloud.com/reset_password/'+hash.password_key,
-            html : '<a href="http://workonblockchain.mwancloud.com/reset_password/'+hash.password_key+'"><H2>Reset Password</H2></a>'
-
+            html : '<p>Hi '+hash.name+'</p> <br/> <p> You have requested to change your account password for workonblockchain.com. </p><br/><p>Please click on the link below in the next 30 minutes and then enter your new password.</p><br/><a href="http://workonblockchain.mwancloud.com/reset_password/'+hash.password_key+'"><H2>Reset Password</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
         };
 
         // send mail with defined transport object
@@ -229,7 +242,9 @@ function forgot_passwordEmail_send(hash)
 //////////////////Reset Password///////////////////////
 function reset_password(hash,data)
 {
-    	var deferred = Q.defer();   
+    	var deferred = Q.defer(); 
+    	if(new Date(data.expiry) > new Date())
+    	{
         users.findOne({ password_key :hash  }, function (err, result)
         {       
             if (err) 
@@ -258,6 +273,11 @@ function reset_password(hash,data)
                 }
             });
         }
+    	}
+    	else
+    		{
+    			deferred.reject('Link expired');
+    		}
         
     return deferred.promise;
 }
@@ -1027,27 +1047,78 @@ function save_employer_image(filename,_id)
     return deferred.promise;       
 }
 
+function update_company_profile(_id , companyParam)
+{
+	var deferred = Q.defer();
+    var _id = _id;
+
+    EmployerProfile.findOne({ _creator: _id }, function (err, data) 
+    {
+        if (err) 
+            deferred.reject(err.name + ': ' + err.message);
+
+        else 
+            updateEmployer(_id);
+        
+    });
+ 
+    function updateEmployer(_id) 
+    {
+
+        var set = 
+        {   
+        	first_name : companyParam.first_name,
+            last_name: companyParam.last_name,
+            job_title:companyParam.job_title,
+            company_name: companyParam.company_name,
+            company_website:companyParam.company_website,
+            company_phone:companyParam.phone_number,
+            company_country:companyParam.country,
+            company_city:companyParam.city,
+            company_postcode:companyParam.postal_code,
+            company_founded:companyParam.company_founded,
+        	no_of_employees:companyParam.no_of_employees,
+        	company_funded: companyParam.company_funded,
+        	company_logo: companyParam.company_logo,
+        	company_description:companyParam.company_description,       	
+           
+        };
+
+        EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
+        {
+            if (err) 
+                deferred.reject(err.name + ': ' + err.message);
+            else
+                deferred.resolve(set);
+        });
+    }
+ 
+    return deferred.promise;
+
+}
+
 /**************employer functions implementation ends *************************/
 
-
-function search(data) 
+/**************filters functions**********************************************/
+function search_skill(data) 
 {
     var deferred = Q.defer();
+    console.log(data);
 
-   CandidateProfile.find({ $or: [ { country: {$regex: data}  }, { nationality:{$regex: data} } ] }, function (err, data) 
+    CandidateProfile.find({ "experience_roles.platform_name": {$in: ['C#' , 'Perl']}  }, function (err, data) 
     {
        
-        if (err) deferred.reject(err.name + ': ' + err.message);
+        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
         
         if (data) 
         {
-
+        	//console.log(data);
             deferred.resolve(data)
          
         } 
         else 
         {
-  
+        	
             deferred.reject();
         }
     });
@@ -1055,7 +1126,112 @@ function search(data)
     return deferred.promise;
 }
 
+function search_location(data)
+{
+	 var deferred = Q.defer();
+	    console.log(data);
 
+	    CandidateProfile.find({ "country": {$in: ['Bordeaux' , 'Zug']}  }, function (err, data) 
+	    {
+	       
+	        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	        
+	        if (data) 
+	        {
+	        	//console.log(data);
+	            deferred.resolve(data)
+	         
+	        } 
+	        else 
+	        {
+	        	
+	            deferred.reject();
+	        }
+	    });
+	 
+	    return deferred.promise;
+
+}
+
+function search_position(data)
+{
+	 var deferred = Q.defer();
+	    console.log(data);
+
+	    CandidateProfile.find({ "roles": {$in: ['Blockchain Developer' , 'abc']}  }, function (err, data) 
+	    {
+	       
+	        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	        
+	        if (data) 
+	        {
+	        	//console.log(data);
+	            deferred.resolve(data)
+	         
+	        } 
+	        else 
+	        {
+	        	
+	            deferred.reject();
+	        }
+	    });
+	 
+	    return deferred.promise;
+
+}
+
+function search_blockchain(data)
+{
+	var deferred = Q.defer();
+    console.log(data);
+
+    CandidateProfile.find({ "roles": {$in: ['Blockchain Developer' , 'abc']}  }, function (err, data) 
+    {
+       
+        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+        
+        if (data) 
+        {
+        	//console.log(data);
+            deferred.resolve(data)
+         
+        } 
+        else 
+        {
+        	
+            deferred.reject();
+        }
+    });
+ 
+    return deferred.promise;
+}
+
+function search_salary(data)
+{
+	var deferred = Q.defer();
+    console.log(data);
+
+    CandidateProfile.find({ "expected_salary":  data }, function (err, data) 
+    {
+       
+        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+        
+        if (data) 
+        {
+        	//console.log(data);
+            deferred.resolve(data)
+         
+        } 
+        else 
+        {
+        	
+            deferred.reject();
+        }
+    });
+ 
+    return deferred.promise;
+}
+/*****************filters function end*********************************/
  
 
 function refreal_email(data){
@@ -1081,9 +1257,9 @@ function refreal_email(data){
         {
             from: 'workonblockchain@mwancloud.com', // sender address
             to : 'sadiaabbas326@gmail.com',
-            subject : "Welcome to TEST",
-            text : 'Visit this http://localhost:4200/reset_password/'+hash,
-            html : '<a href="http://localhost:4200/reset_password/'+hash+'"><H2>Reset Password</H2></a>'
+            subject : data.subject,
+            text : data.body,
+            html : data.body
 
         };
 
@@ -1141,7 +1317,6 @@ function get_candidate(user_type)
     return deferred.promise;
 }
 
-
 function insert_message(data){
 	var deferred = Q.defer();
 	let newChat = new chat({
@@ -1150,6 +1325,11 @@ function insert_message(data){
 		sender_name: data.sender_name,
 		receiver_name: data.receiver_name,
 		message: data.message,
+		job_title: data.job_title,
+		salary: data.salary,
+		date_of_joining: data.date_of_joining,
+		msg_tag: data.msg_tag,
+		is_company_reply: data.is_company_reply,
 		is_read: 0
 	});
 

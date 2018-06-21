@@ -13,20 +13,22 @@
     <div class="collapse navbar-collapse" id="myNavbar" >
       <ul class="nav navbar-nav navbar-right" >
         <li *ngIf="!currentUser"><a href="signup"> Sign Up</a></li>
-        <li *ngIf="!currentUser"><a href="login">Login</a></li>
-        <li *ngIf="currentUser"><a href="candidate_profile">Profile</a></li>
-        <li *ngIf="currentUser"><a href="edit_profile">Edit Profile</a></li>
+        <li *ngIf="!currentUser"><a href="login">Login</a></li>       
+        <li *ngIf="!currentUser"><a href="referral">Referral - &euro; 500 Reward</a></li>
+       
         <li *ngIf="currentUser"><a href="chat">Chat</a></li>
-        <li *ngIf="currentUser"><a href="" (click)="logout()">Logout</a></li>
-        <li ><a href="referral">Referral - &euro; 500 Reward</a></li>
-        <!--<li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">EN <span class="caret"></span></a>
+        
+        <li *ngIf="(currentUser && user_type === 'candidate')"><a href="referral">Referral - &euro; 500 Reward</a></li>
+        <li class="dropdown" *ngIf="currentUser">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">EN</a></li>
-            <li><a href="#">UR</a></li>
-            <li><a href="#">TK</a></li>
+            <li *ngIf="(currentUser && user_type === 'candidate')"><a href="candidate_profile">Profile</a></li>
+        <li *ngIf="(currentUser && user_type === 'candidate')"><a href="edit_profile">Edit Profile</a></li>
+         <li *ngIf="(currentUser && user_type === 'company')"><a href="company_profile">Profile</a></li>
+        <li *ngIf="(currentUser && user_type === 'company')"><a href="edit_company_profile">Edit Profile</a></li>
+        <li *ngIf="currentUser"><a href="" (click)="logout()">Logout</a></li>
           </ul>
-        </li>-->
+        </li>
       </ul>
       
        

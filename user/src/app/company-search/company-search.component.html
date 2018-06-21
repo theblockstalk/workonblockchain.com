@@ -1,0 +1,53 @@
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<p>
+  company-search works!
+</p>
+<br/>
+<div class="form-group col-md-6 col-left setting-top_2">
+                <label><p  class = "label-p"></p></label>
+                       <select [(ngModel)]="language" class="form-control" id="currency" required name="language" (change)="onLanguageSearch($event)" >
+                  <option class='option' *ngFor='let language of language_opt'  [value]="language.value" selected >{{language.name}}</option>
+              
+                </select>
+                  </div>
+                  
+                  <span class = "checkbox-header"> <strong>Platforms commercially worked with </strong></span>
+                      
+                     <div class="row">
+                    <div class="col-md-4 collection-checkbox" *ngFor="let option of commercially">
+                      
+                      <div class="checkbox" >
+                        <label class = "check-label lable"> {{option.name}}  
+                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"              required (change)="oncommerciallyOptions(option)"   />
+            
+                          <span class="checkmark">
+                          <div></div>
+                          </span>
+                        </label>
+                        <input type="text" class="form-control" [(ngModel)]='commercially_worked' name="commercially_worked" style="display: none;">
+                      </div>
+
+                    </div>
+                    </div>
+
+                      <div *ngIf="commercially_worked?.length > 0">
+                      <div class = "row">
+                         <label><p class = "exp_p">Year of Experience of each Platform</p></label>
+                        </div>
+                        <div class = "" *ngFor="let option of commercially_worked ">
+            
+                        <p class="rd_label label-p">{{option.value}}</p>
+                        <div class = "form-group col-md-12 controls__group">
+                        <div *ngFor="let exp of exp_year">
+                        <label class="radio-inline radio-button btnn d-flex justify-content-center align-items-center" >
+                          {{exp.name}} 
+                          <input type="radio" name="radiogroup- {{ option.value}}"  value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)"  />
+                          </label>
+                          <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
+                      </div>
+               
+              
+                    </div>
+                </div>
+          </div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>

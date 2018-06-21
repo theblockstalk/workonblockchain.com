@@ -407,7 +407,9 @@ export class ExperienceComponent implements OnInit
                 data => {
                 if(data)
                 {   console.log("data");
-                    this.router.navigate(['/candidate_profile']);
+                     window.location.href = '/candidate_profile';
+
+                    //this.router.navigate(['/candidate_profile']);
                 }
 
                 if(data.error )

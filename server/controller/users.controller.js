@@ -42,9 +42,16 @@ router.get('/current_company/:id', getCurrentCompany);
 router.put('/company_wizard/:_id',company_summary);
 router.put('/about_company/:_id' , about_company);
 router.post('/employer_image/:_id', employer_image);
+router.put('/update_company_profile/:_id' , update_company_profile);
+//router.put('/skills_search' , skills_search);
+
+//////////filters functions/////////////
+router.post('/search_skill' , search_skill);
+router.post('/search_location', search_location);
+router.post('/search_position', search_position);
+router.post('/search_salary', search_salary);
 
 //////referral and chat routes////
-router.post('/search' , search_data);
 router.post('/send_refreal',refreal_email_send);
 router.post('/get_refrence_code',get_refrence_code);
 router.post('/get_candidate', get_candidate);
@@ -493,14 +500,37 @@ function employer_image(req, res)
     })    
 }
 
+////////// update company profile data ///////////////////////////
+
+function update_company_profile(req,res)
+{
+	 userService.update_company_profile(req.params._id,req.body).then(function (err, data) 
+	 {
+		 if (data) 
+		 {
+			  res.json(data);
+		 } 
+		 else 
+		 {  
+			  res.send(err);
+		 }
+	 })
+	 .catch(function (err) 
+	 {
+		res.json({error: err});
+	 });
+}
+
 
  
 /**********employer functions end *************/
 
-function search_data(req,res)
+/**********filters function*******************/
+
+function search_skill(req,res)
 {
     //console.log(req.body.search);
-    userService.search(req.body.search).then(function (err, data) 
+    userService.search_skill(req.body.search).then(function (err, data) 
     {
         if (data) 
         {
@@ -516,6 +546,68 @@ function search_data(req,res)
         res.json({error: err});
     });
 }
+
+function search_location(req,res)
+{
+    //console.log(req.body.search);
+    userService.search_location(req.body.search).then(function (err, data) 
+    {
+        if (data) 
+        {
+            res.json(data);
+        } 
+        else 
+        {  
+           res.send(err);
+        }
+    })
+    .catch(function (err) 
+    {
+        res.json({error: err});
+    });
+}
+
+function search_position(req,res)
+{
+    //console.log(req.body.search);
+    userService.search_position(req.body.search).then(function (err, data) 
+    {
+        if (data) 
+        {
+            res.json(data);
+        } 
+        else 
+        {  
+           res.send(err);
+        }
+    })
+    .catch(function (err) 
+    {
+        res.json({error: err});
+    });
+}
+
+function search_salary(req,res)
+{
+    //console.log(req.body.search);
+    userService.search_salary(req.body.search).then(function (err, data) 
+    {
+        if (data) 
+        {
+            res.json(data);
+        } 
+        else 
+        {  
+           res.send(err);
+        }
+    })
+    .catch(function (err) 
+    {
+        res.json({error: err});
+    });
+}
+
+/**********filters function end*******************/
 
 //to send email for referral
 function refreal_email_send(req, res) {

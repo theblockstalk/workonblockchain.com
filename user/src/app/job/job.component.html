@@ -36,7 +36,7 @@
                           
                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
                           <span class="checkmark">
-                            
+                            <div></div>
                           </span>
                         </label>
                         <input type="text" class="form-control" [(ngModel)]='selectedcountry' name="country" style="display: none;">
@@ -69,7 +69,7 @@
                         <label class = "check-label lable"> {{position_option.name}}
                           <input type="checkbox" name="options" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
                           <span class="checkmark">
-                            
+                            <div></div>
                           </span>
                         </label>
                          <input type="text" class="form-control" [(ngModel)]='jobselected' name="roles" style="display: none;">
@@ -117,7 +117,7 @@
                         <label class = "check-label lable"> {{position_option.name}}
                           <input type="checkbox" name="options" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
                           <span class="checkmark">
-                            
+                            <div></div>
                           </span>
                         </label>
                          <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_area" style="display: none;">

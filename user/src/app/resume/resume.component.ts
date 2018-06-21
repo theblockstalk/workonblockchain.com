@@ -87,7 +87,7 @@ export class ResumeComponent implements OnInit {
                             if(option.value == key[i])
                             {
                                 option.checked=true;
-                                   
+                              
                                 //this.commercial_expYear.push(option);
                                 this.expYear_db.push(key[i]);
                                 //console.log(this.expYear_db); 

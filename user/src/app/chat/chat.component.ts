@@ -23,6 +23,16 @@ export class ChatComponent implements OnInit {
 	show_msg_area = 1;
 	display_list = 0;
 	count=0;
+	candidate = '';
+	job_title = '';
+	salary = '';
+	date_of_joining = '';
+	first_message = 0;
+	msg_tag = '';
+	job_desc = '';
+	is_company_reply = 0;
+	company_reply = 0;
+	cand_offer = 0;
   constructor(
 	private authenticationService: UserService
   ) { }
@@ -88,12 +98,22 @@ export class ChatComponent implements OnInit {
   
   send_message(msgForm : NgForm){
 	  if(this.credentials.msg_body && this.credentials.id){
-		  //console.log(this.credentials.msg_body);
+		  //console.log(this.credentials);
 		  this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
 		  //console.log(this.msgs);
 		  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 		  //sender_id,receiver_id,sender_name,receiver_name,msg
-		  this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body)
+		  this.msg_tag = 'normal';
+		  this.is_company_reply = 1;
+		  if(this.first_message == 1){
+			  this.job_title = 'Team Lead';
+			  this.salary = '60000';
+			  this.date_of_joining = '10-07-2018';
+			  this.msg_tag = 'job_offer';
+			  this.is_company_reply = 0;
+			  console.log(this.job_title);
+		  }
+		  this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.msg_tag,this.is_company_reply)
 			.subscribe(
 				data => {
 					console.log(data);
@@ -107,14 +127,56 @@ export class ChatComponent implements OnInit {
 			);
 	  }
   }
-  send_message_candidate(msgForm1 : NgForm){
+  
+  reject_offer(msgForm : NgForm){
+	  console.log('reject');
+	  console.log(this.credentials);
+	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	  this.credentials.msg_body = 'rejected';
+	  this.is_company_reply = 0;
+	  this.msg_tag = 'normal';
+	  this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.msg_tag,this.is_company_reply)
+		.subscribe(
+			data => {
+				console.log(data);
+				this.credentials.msg_body = '';
+			},
+			error => {
+				console.log('error');
+				console.log(error);
+				//this.log = error;
+			}
+		);
+  }
+  
+  accept_offer(msgForm : NgForm){
+	  console.log('accept');
+	  console.log(this.credentials);
+	  /*this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	  this.is_company_reply = 1;
+	  this.msg_tag = 'normal';
+	  this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.msg_tag,this.is_company_reply)
+		.subscribe(
+			data => {
+				console.log(data);
+				this.credentials.msg_body = '';
+			},
+			error => {
+				console.log('error');
+				console.log(error);
+				//this.log = error;
+			}
+		);*/
+  }
+  
+  /*send_message_candidate(msgForm1 : NgForm){
 	if(this.credentials.msg_body){
 	  console.log(this.credentials);
 	  this.new_msgs = this.new_msgs+ "\n"+ this.credentials.msg_body;
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  //console.log(this.currentUser);
 	  //sender_id,receiver_id,sender_name,receiver_name,msg
-	  this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body)
+	  this.authenticationService.insertMessage_cand(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body)
 		.subscribe(
 			data => {
 				console.log(data);
@@ -127,7 +189,7 @@ export class ChatComponent implements OnInit {
 			}
 		);
 	}		
-  }
+  }*/
   
   openDialog(email: string, id:string){
 	  //this.msgs = 'hi baby';
@@ -144,11 +206,39 @@ export class ChatComponent implements OnInit {
 					console.log('data');
 					console.log(data['datas']);
 					this.new_msgss = data['datas'];
-					if(data['datas'].length >= 1){
-						this.show_msg_area = 1;
-						this.credentials.msg_body = '';
+					this.job_desc = data['datas'][0];
+					if(data['datas'][1]){
+						if(data['datas'][1].is_company_reply==1){
+							this.company_reply = 1;
+						}
+						else{
+							this.company_reply = 0;
+						}
 					}
 					else{
+						this.company_reply = 0;
+						if(this.currentUser.type=='candidate'){
+							this.cand_offer = 1;
+							this.credentials.msg_body = 'yes sure baby';
+						}
+						else{
+							this.cand_offer = 0;
+						}
+					}
+					if(data['datas'].length >= 1){
+						this.first_message = 0;
+						this.show_msg_area = 1;
+						if(this.currentUser.type=='candidate' && this.cand_offer == 1){
+							this.credentials.msg_body = 'yes sure baby';
+						}
+						else{
+							this.credentials.msg_body = '';
+						}
+					}
+					else{
+						this.company_reply = 1;
+						this.cand_offer = 1;
+						this.first_message = 1;
 						this.show_msg_area = 0;
 						this.credentials.msg_body = "Hi ! join us";
 					}
@@ -159,8 +249,9 @@ export class ChatComponent implements OnInit {
 					//this.log = error;
 				}
 			);
-		  this.credentials.email = email;
-		  this.credentials.id = id;
+			this.candidate = email;
+			this.credentials.email = email;
+			this.credentials.id = id;
 	    //});
 	}
 

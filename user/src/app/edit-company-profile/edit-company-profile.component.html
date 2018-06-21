@@ -1,0 +1,162 @@
+<!--Edit profile page start here-->
+
+<section class="wizard_page">
+	<div class="container">
+		<div class="row">
+			
+			<div class = "col-md-3 hidden-sm hidden-xs">
+				<div class = "wizard-form mr-top-form side_bar fixed_pos" id = "side_bar">
+					<ul>
+						<li> <a href = "/edit_company_profile#information">Personal Information</a> </li>
+						<li> <a href = "/edit_company_profile#about_you">About Company</a> </li>
+						
+						<!-- <li> <a href = "/edit_profile#">Web Preferences</a> </li>-->
+					</ul>
+				</div>
+			</div>
+			 <form  (submit)="company_profile(profileForm)" #profileForm = ngForm>
+			<div class="col-md-9">
+			
+			<!--personal information form-->
+				<div class = "wizard-form mr-top-form" id = "information">
+					<div class = "login_form">
+						
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Personal Information</legend>
+							
+							 <div class="form-group col-md-6">
+                   <label><p class = "label-p">First Name</p></label>
+                  <input type="Text" class="form-control" placeholder="First Name" id="user" required name="first_name" [(ngModel)]="first_name" >
+                </div>
+
+                <div class="form-group col-md-6">
+                   <label><p class = "label-p">Last Name</p></label>
+                  <input type="Text" class="form-control" placeholder="Last Name" required name="last_name" [(ngModel)]="last_name" >
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label><p class = "label-p">Job Title</p></label>
+                  <input type="text" class="form-control" placeholder="Job Title" required name="job_title" [(ngModel)]="job_title">
+                </div>
+
+                 <div class="form-group col-md-6">
+                  <label><p class = "label-p">Company Name</p></label>
+                  <input type="text" class="form-control" placeholder="Company Name" id="com_name" required name="company_name" [(ngModel)]="company_name">
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label><p class = "label-p">Company Website</p></label>
+                  <input type="text" class="form-control" placeholder="Company Website" required name="company_website" [(ngModel)]="company_website">
+                </div>
+
+                 <div class="form-group col-md-6">
+                  <label><p class = "label-p">Phone Number</p></label>
+                  <input type="Number" class="form-control" placeholder="Phone Number" id="phone_no" required name="phone_number" [(ngModel)]="company_phone">
+                </div>
+
+                 <div class="form-group col-md-6">
+                 <label><p class = "label-p">Country Name</p></label>
+                  <input type="text" class="form-control " placeholder="Country" id="country" required name="country" [(ngModel)]="company_country">
+
+                 
+                </div>
+                <div class="form-group col-md-6">
+                 <label><p class = "label-p">Postal Code</p></label>
+                  <input type="Number" class="form-control" placeholder="Postal Code" id="post_no" required name="postal_code" [(ngModel)]="company_postcode">
+                
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label><p class = "label-p">City Name</p></label>
+                  <input type="text" class="form-control" placeholder="City" required name="city" [(ngModel)]="company_city">
+                </div>
+							
+							  <!-- <div class="form-group col-md-6" *ngIf = 'info.image_src'>
+              					<label><p class = "label-p">Image</p></label>
+              					<img src = {{info.image_src}} >
+   
+            				</div>-->
+
+						</fieldset>
+					</div>
+					
+				</div>
+				<!--personal information form End-->
+					
+				<!--about us form-->
+				<div class = "wizard-form mr-top-form" id = "about_you">
+					<div class = "login_form">
+						
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">About You</legend>
+							
+							 <div class="form-group col-md-6">
+					    	<label><p class = "label-p">When was the company founded?</p></label>
+						    <input type="text" class="form-control" id="" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
+							<p>{{founded_log}}</p>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label><p class = "label-p">Number of employees?</p></label>
+						    <input type="number" class="form-control" id="" placeholder="Number of employees?" name="no_of_employees" [(ngModel)]="no_of_employees">
+							<p>{{employee_log}}</p>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label><p class = "label-p">How is the company funded?</p></label>
+						    <input type="text" class="form-control" id="" placeholder="How's compnay funded?" name="company_funded" [(ngModel)]="company_funded">
+							<p>{{funded_log}}</p>
+						</div>
+
+					
+							
+							<div class="form-group col-md-6 mr-top-33" >
+						    <input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="image" >
+						    <label id="fileLabel">
+						    <span *ngIf="image_src" >{{image_src}}</span>
+							<span *ngIf="!image_src" >Upload Image</span>
+							</label>
+							
+						</div>
+
+						<div class="form-group col-md-12 mr-top-04">
+								<label><p>Company Description</p></label>
+							    <textarea class="form-control" rows="5" id="comment" placeholder="" name="company_description" [(ngModel)]="company_description"></textarea>
+								<p>{{des_log}}</p>
+						</div>
+							
+							  <!-- <div class="form-group col-md-6" *ngIf = 'info.image_src'>
+              					<label><p class = "label-p">Image</p></label>
+              					<img src = {{info.image_src}} >
+   
+            				</div>-->
+
+						</fieldset>
+					</div>
+					
+				</div>
+				<!--about us form End-->
+
+				
+
+				
+
+				
+				
+				
+				<div class = "button_area text-right">
+					<button type="submit" class = "btn btn-self btn-pdg" >Save Profile</button>
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
+	
+</section>
+
+
+<!--/End edit profile page here-->
+
+
+<div class = "gap">
+</div>

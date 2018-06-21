@@ -34,6 +34,8 @@ import { CandidateProfileComponent } from './candidate-profile/candidate-profile
 import { EditCandidateProfileComponent } from './edit-candidate-profile/edit-candidate-profile.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
+import { CompanySearchComponent } from './company-search/company-search.component';
 
 let config = new AuthServiceConfig([
   {
@@ -69,6 +71,8 @@ const appRoutes: Routes = [
     {path : 'company_profile' , component:CompanyProfileComponent},
     {path : 'not_found' , component:NotFoundComponent},
     {path : 'edit_profile' , component: EditCandidateProfileComponent},
+    {path : 'edit_company_profile' , component: EditCompanyProfileComponent},
+    {path : 'search' , component: CompanySearchComponent},
     { path: '**', redirectTo: '' }
 ];
 
@@ -98,7 +102,9 @@ const appRoutes: Routes = [
     CandidateProfileComponent,
     EditCandidateProfileComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    EditCompanyProfileComponent,
+    CompanySearchComponent
   ],
   imports: [
     BrowserModule,

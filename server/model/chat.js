@@ -25,6 +25,26 @@ const ChatSchema = mongoose.Schema({
 		type:String,
 		required:true
 	},
+	job_title: 
+	{
+		type:String
+	},
+	salary: 
+	{
+		type:String
+	},
+	date_of_joining: 
+	{
+		type:String
+	},
+	msg_tag: 
+	{
+		type:String
+	},
+	is_company_reply: 
+	{
+		type:Number
+	},
 	is_read: 
 	{
 		type:Number,

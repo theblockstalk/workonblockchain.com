@@ -39,9 +39,16 @@
                 <p>{{password_log}}</p>
                 </div>
 
-                <div class="checkbox">
+                <!-- <div class="checkbox">
                   <label><input type="checkbox" required  name="terms" [(ngModel)]="terms"> Accept <a href = ""> Term and Conditions </a></label>
-                </div>
+                </div>-->
+                <div class="checkbox">
+        <label class="check-label">Term and Conditions 
+         <input type="checkbox" value="" name="terms" [(ngModel)]="terms">
+         <span class="checkmark">
+          <div></div>
+         </span>
+        </label> </div>
 
                 <div class="form-group">
                   <input type="submit" class="form-control btn btn-signup" value = "Sign Up" [disabled]="!loginForm.valid ">
@@ -55,7 +62,7 @@
                 <div class="form-group">
                   <a  class = "form-control btn btn-linkdIn" type = "submit" (click)="subscribeToLogin()">
                     <i class="fa fa-linkedin-square" aria-hidden="true"></i>
-                      Sign Up with LinkdIn
+                      Sign Up with LinkedIn
                   </a>
                 </div>
 
@@ -135,9 +142,17 @@
                    <p>{{password_log}}</p>
                 </div>
 
-                <div class="checkbox">
+                <!-- <div class="checkbox">
                   <label><input type="checkbox" required name="company_terms" [(ngModel)]="company_terms"> Accept <a href = ""> Term and Conditions </a> </label>
-                </div>
+                </div> -->
+                
+                <div class="checkbox">
+        <label class="check-label">Term and Conditions 
+         <input type="checkbox" value="" name="company_terms" [(ngModel)]="company_terms">
+         <span class="checkmark">
+          <div></div>
+         </span>
+        </label> </div>
 
                 <div class="form-group col-md-12 padding-lft-0 padding-rgt-0">
                   <input type="submit" class="form-control btn btn-signup" value = "Sign Up" [disabled]="!signupForm.valid ">

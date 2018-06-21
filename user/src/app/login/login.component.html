@@ -6,8 +6,8 @@
         <div class="form-login">
                 <h3 class = "login_hd">Login to WOB</h3>
                 <div class="ref_msg">{{ref_msg}}</div>
-                 <div >{{message}}</div>
-                <h5>{{log}}</h5>
+                 <div class="alert alert-danger error-alert" *ngIf="message">{{message}}</div>
+                <h5 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h5>
                  <form class = "login_form" (submit)="login(loginForm)"  #loginForm = ngForm>
                
                 <div class="form-group">
@@ -21,9 +21,13 @@
                   <input type="password" class="form-control" placeholder="password" id="password-field" name="password"  [(ngModel)]="credentials.password">
                 </div>
 
-                <div class="checkbox">
-                  <label><input type="checkbox">Remember Me </label>
-                </div>
+               <div class="checkbox">
+        <label class="check-label"> Remember Me 
+         <input type="checkbox" value="">
+         <span class="checkmark">
+          <div></div>
+         </span>
+        </label> </div>
 
                 <div class="form-group">
                   <input type="submit" class="form-control btn btn-signup" value = "Log In" [disabled]="!loginForm.valid ">
@@ -37,7 +41,7 @@
                 <div class="form-group">
                   <a  class = "form-control btn btn-linkdIn" (click)="subscribeToLogin()" type = "submit">
                     <i class="fa fa-linkedin-square" aria-hidden="true"></i>
-                      Login with LinkdIn
+                      Login with LinkedIn
                   </a>
                  
                 </div>

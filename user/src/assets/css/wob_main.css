@@ -2534,6 +2534,11 @@ input[type=checkbox] {
 
 }
 
+.error-alert{
+	width: 80%;
+    margin: auto;
+    text-align: center;
+}
 
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/

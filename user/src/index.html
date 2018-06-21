@@ -38,21 +38,14 @@
 <!-- jqeury and js links-->
 
 <script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/wob.js"></script>
 <script src="/assets/js/bootstrap.min.js"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<script>    
+<script type="text/javascript">    
         $(document).ready(function(){
         	
-        	 $('label input[type=radio]').click(function() {
-        		    alert("function executed");
-        		    console.log("function executed");
-
-        		    $('input[name="' + this.name + '"]').each(function(){
-        		        $(this.parentNode).toggleClass('activee', this.checked);
-        		    });
-        		});
-  
+        	 
         //Check to see if the window is top if not then display button
         $(window).scroll(function(){
           if ($(this).scrollTop() > 100) {
@@ -71,6 +64,9 @@
         
         
       });
+        
+       
+
 
 
     //show hide password
@@ -97,7 +93,7 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<script>
+<script type="text/javascript">
 
   window.pressed = function(){
     var a = document.getElementById('aa');
@@ -114,14 +110,6 @@
 
 </script>
 
-<script type="text/javascript">
-
- 
-
-
-
-</script>
-
 
 <script type="text/javascript">
  $(function () {
@@ -133,6 +121,12 @@
         }
     }).change();
 });
+</script>
+
+<script type="text/javascript">
+
+
+
 </script>
 
 

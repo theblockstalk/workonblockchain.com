@@ -168,7 +168,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                     }
                   },
                   error => {
-                    this.log = 'Something getting wrong';
+                    this.log = error;
                     
                   });
                   //this.router.navigate(['/login']);
@@ -176,7 +176,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 },
                 error => {
                 console.log(error);
-                  this.log = 'Something getting wrong';
+                  this.log = error;
                    
                 });
            

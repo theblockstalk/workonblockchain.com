@@ -1038,12 +1038,16 @@ export class EditCandidateProfileComponent implements OnInit {
                         (success) => 
                         {
                              console.log(success);
-                              this.router.navigate(['/candidate_profile']); 
+                             window.location.href = '/candidate_profile';
+
+                              //this.router.navigate(['/candidate_profile']); 
                         },
                         (error) => console.log(error))
                      }
                      else
-                        this.router.navigate(['/candidate_profile']);
+                          window.location.href = '/candidate_profile';
+
+                        //this.router.navigate(['/candidate_profile']);
                 }
 
                 if(data.error)

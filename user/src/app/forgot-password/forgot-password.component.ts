@@ -44,14 +44,15 @@ export class ForgotPasswordComponent implements OnInit {
 
                 	else
                 	{
-                		this.log= data['error'];
+                        this.dataservice.changeMessage(data['error']);
+                		//this.log= data['error'];
                     	
         				
                 	}
                
                 },
                 error => {
-                  this.log = 'Something getting wrong';
+                 this.dataservice.changeMessage(error);
                    
                 });
     }

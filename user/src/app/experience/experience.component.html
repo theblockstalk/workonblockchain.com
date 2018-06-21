@@ -50,7 +50,7 @@
                           (change)="onExpOptions(option)" required  />
             
                           <span class="checkmark">
-                          
+                          <div></div>
                           </span>
                         </label>
                         <input type="text" class="form-control" [(ngModel)]='language' name="language" style="display: none;">
@@ -97,7 +97,7 @@
                 
               <div class="form-group col-md-4">
                 <label class="lable"><p>Company</p></label>
-                  <input type="text" id="" placeholder="" formControlName="companyname" class="form-control" #company_field name="company" required>
+                  <input type="text" id="" placeholder="" formControlName="companyname" class="form-control" #company_field name="company">
               </div>
               
               <div class="form-group col-md-4">
@@ -114,12 +114,12 @@
               <div class="form-group col-md-4">
                 <label class="lable"><p>Start Date</p></label>
                  
-                 <select formControlName="startdate" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required>
+                 <select formControlName="startdate" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
                 <option  *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
               <br/>
             </select>
                  
-                 <select formControlName="startyear" class="form-control xs_input"  required name="roles"  required(change)="work_start_year($event)" >
+                 <select formControlName="startyear" class="form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
               <option  *ngFor='let start_year of year'  [value]="start_year" selected>{{start_year}}</option>
               <br/>
             </select>
@@ -127,11 +127,11 @@
 
               <div class="form-group col-md-4" id="input_field">
                 <label class="lable"><p>End Date</p></label>
-                 <select formControlName="enddate" class="form-control xs_input"  required name="roles"    >
+                 <select formControlName="enddate" class="form-control xs_input"  required name="roles"  required=""  >
             <option  *ngFor='let end_month of month'  [value]="end_month" selected>{{end_month}}</option>
         <br/>
     </select>
-    <select formControlName="endyear" class="form-control xs_input" required name="roles"  >
+    <select formControlName="endyear" class="form-control xs_input" required name="roles" required=""  >
             <option  *ngFor='let end_year of year'  [value]="end_year" selected>{{end_year}}</option>
         <br/>
       
@@ -147,10 +147,10 @@
                      <input type="checkbox" id="1step" formControlName="currentwork" 
                    name="options" 
                    value="current" 
-                   (change)="onCurrentlyWork($event)"   />
+                   (change)="onCurrentlyWork($event)" required  />
                     I currently work there
                     <span class="checkmark">
-                      
+                      <div></div>
                     </span>
                   </label>
                 </div>
@@ -202,7 +202,7 @@
 
               <div class="form-group col-md-3">
                    <label for="sel1" class="lable"><p>Graduation</p></label>
-                  <select formControlName="eduyear" class='form-control'  required name="roles"  required >
+                  <select formControlName="eduyear" class='form-control'  required name="roles"  required=""  >
                   <option class='option' *ngFor='let graduation_year of year'  [value]="graduation_year" selected>{{graduation_year}}</option>
                   <br/>
                 </select>
