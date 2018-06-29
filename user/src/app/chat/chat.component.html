@@ -203,41 +203,49 @@
 										</li>
 									</ng-template>
 								</div>
-								<li class = "offers"></li>
+								<li class = "offers_b"></li>
 							</ul>
 						</div>
 						<ng-container *ngIf="cand_offer == 1;else no_offer">
-							<div class="message-input">	
-								<div class = "offers">
-									<form (submit)="accept_offer(msgForm)" #msgForm = ngForm style="display:inline;">
-										<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
-										<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
-										<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
-										<span class = "offers_btn">
-											<button type="submit" class = "btn btn_descp">Accept Offer</button>
-										</span>
-									</form>
-									<form (submit)="reject_offer(msgForm)" #msgForm = ngForm style="display:inline;">
-										<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
-										<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
-										<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
-										<span class = "offers_btn">
-											<button type="submit" class = "btn btn_descp">Reject Offer</button>
-										</span>
-									</form>
+							<ng-container *ngIf="show_accpet_reject == 0;else no_show">
+								<div class="message-input">	
+									<div class = "offers">
+										<form (submit)="accept_offer(msgForm)" #msgForm = ngForm style="display:inline;">
+											<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
+											<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
+											<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
+											<span class = "offers_btn">
+												<button type="submit" class = "btn btn_descp">Accept Offer</button>
+											</span>
+										</form>
+										<form (submit)="reject_offer(msgForm)" #msgForm = ngForm style="display:inline;">
+											<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
+											<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
+											<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
+											<span class = "offers_btn">
+												<button type="submit" class = "btn btn_descp">Reject Offer</button>
+											</span>
+										</form>
+									</div>
 								</div>
-							</div>
+							</ng-container>
+							<ng-template #no_show>
+							</ng-template>
 						</ng-container>
 						<ng-template #no_offer>
 						</ng-template>
 						<ng-container *ngIf="company_reply == 1;else no_reply">
 							<div class="message-input">
-								<div class = "offers">
-									<span class = "offers_btn">
-										<button class = "btn btn_descp">Offer to Interview</button>
-										<button class = "btn btn_descp">Offer to Employ</button>
-									</span>
-								</div>
+								<ng-container *ngIf="currentUser.type == 'company';else no_offers">
+									<div class = "offers">
+										<span class = "offers_btn">
+											<button type = "button" data-toggle="modal" data-target="#myModal" class = "btn btn_descp">Offer to Interview</button>
+											<button type = "button" data-toggle="modal" data-target="#Modal" class = "btn btn_descp">Offer to Employ</button>
+										</span>
+									</div>
+								</ng-container>
+								<ng-template #no_offers>
+								</ng-template>
 								 <form (submit)="send_message(msgForm)" #msgForm = ngForm>
 									<div class="wrap">
 										<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
@@ -250,10 +258,8 @@
 												Send
 											</button>
 											<br>
-											<button class = "btn btn-attached" id = "btnClick">
-												<i class="fa fa-paperclip" aria-hidden="true"></i>
-												Attach file
-											</button>
+											<input class = "btn btn-attached" (change)='upload_image($event)' id="avatar" #fileInput style="width: 14%;height: 30%;" ng-model='file' type="file"/>
+											
 										</span>
 									</div>
 								</form>
@@ -267,9 +273,108 @@
 				</div><!--end col here-->
 				
 			</div>
+			
 		</div>
 
 </section>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content costom_model">
+      <div class="modal-header model-head">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title text-center">Offer to Interview</h4>
+      </div>
+      <div class="modal-body">
+        <form (submit)="send_interview_message(msgForm)" #msgForm = ngForm>
+          <div class="form-group col-md-6 padd_imp">
+		    <p>Date</p>
+		    <input type="date" name="date" [(ngModel)]="credentials.date" class="form-control">
+		  </div>
+
+		  <div class="form-group col-md-6 padd_imp">
+		    <p>Time</p>
+		    <input type="time" name="time" [(ngModel)]="credentials.time" class="form-control" id="">
+		  </div>
+		  <div class="form-group col-md-12 padd_imp">
+		    <p>Location</p>
+		    <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" id="">
+		  </div>
+		  <div class="form-group">
+		    <p>Description (optional)</p>
+		    <input type="text" name="description" [(ngModel)]="credentials.description" class="form-control" id="">
+		  </div>
+		  {{interview_log}}
+		  <div class="modal-footer">
+			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
+			<button type="reset" class="btn btn-danger model-btn">Reset</button>
+		  </div>
+		</form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal b-->
+<div id="Modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content costom_model">
+      <div class="modal-header model-head">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title text-center">Offer to Employ</h4>
+      </div>
+      <div class="modal-body">
+	    <form (submit)="send_job_message(msgForm)" #msgForm = ngForm>
+          <div class="form-group col-md-12 padd_imp">
+		    <p>Job Title</p>
+		    <input type="text" class="form-control" name="job_title" [(ngModel)]="credentials.job_title" id="">
+		  </div>
+		  <div class="form-group col-md-8 padd_imp">
+		  	<p>Yearly Base Salary </p>
+		    <input type="text" class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" id="">
+		  </div>
+
+		  <div class="form-group col-md-4 padd_imp">
+		  	<p>Currency </p>
+		    <select class="form-control" name="currency" [(ngModel)]="credentials.currency" id="sel1">
+			    <option>£ GBP</option>
+			    <option>€ EUR</option>
+			    <option>$ USD</option>
+			 </select>
+		  </div>
+
+		  <div class="form-group col-md-6 padd_imp">
+		  	<p>Employment Type</p>
+		   <select class="form-control" name="employment_type" [(ngModel)]="credentials.employment_type" id="sel1">
+			    <option>Part Time</option>
+			    <option>Full Time</option>
+			    <option>Contract</option>
+			</select>
+		  </div>
+		  <div class="form-group col-md-6 padd_imp">
+		    <p>Start Date</p>
+		    <input type="date" name="start_date" [(ngModel)]="credentials.start_date" class="form-control">
+		  </div>
+		  <div class="form-group">
+		    <p>Description (optional)</p>
+		    <input type="text" class="form-control" name="job_description" [(ngModel)]="credentials.job_description" id="">
+		  </div>
+		  {{job_offer_log}}
+		  <div class="modal-footer text-right">
+			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
+			<button type="reset" class="btn btn-danger model-btn">Reset</button>
+		  </div>
+		</form>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!--Profile-inner end-->
 

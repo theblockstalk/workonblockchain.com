@@ -45,6 +45,10 @@ const ChatSchema = mongoose.Schema({
 	{
 		type:Number
 	},
+	job_type: 
+	{
+		type:String
+	},
 	is_read: 
 	{
 		type:Number,

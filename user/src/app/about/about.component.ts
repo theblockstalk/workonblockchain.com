@@ -14,9 +14,9 @@ const URL = 'http://workonblockchain.mwancloud.com:4000/';
 })
 export class AboutComponent implements OnInit 
 {
-	currentUser: User;
-	log='';
- 	info: any = {};
+  currentUser: User;
+  log='';
+  info: any = {};
   link=''; class=''; resume_class;exp_class;final_class;googleUser;linkedinUser;active_class;
   job_active_class;
   exp_active_class;resume_active_class;
@@ -137,7 +137,7 @@ export class AboutComponent implements OnInit
  
   about()
   {
- 
+
       this.authenticationService.about(this.currentUser._creator,this.info)
         .subscribe(
           data => 

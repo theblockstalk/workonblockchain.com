@@ -36,6 +36,11 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
 import { CompanySearchComponent } from './company-search/company-search.component';
+import { Select2Module } from 'ng2-select2';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-candidate-search.component'; 
 
 let config = new AuthServiceConfig([
   {
@@ -59,10 +64,10 @@ const appRoutes: Routes = [
     { path: 'resume', component: ResumeComponent},
     { path: 'experience', component: ExperienceComponent},
     { path: 'candidate_profile', component: CandidateProfileComponent},
-    { path: 'verify_email/:email_hash', component: VerifyEmailComponent},
+    { path: 'verify_email', component: VerifyEmailComponent},
     { path: 'forgot_password', component: ForgotPasswordComponent},
-    { path: 'reset_password/:hash', component: ResetPasswordComponent},
-     { path: 'referral', component: ReferralComponent},
+    { path: 'reset_password', component: ResetPasswordComponent},
+    { path: 'referral', component: ReferralComponent},
     { path: 'refer/:code', component: LoginComponent},
     { path: 'chat', component: ChatComponent},
     // otherwise redirect to home
@@ -72,7 +77,11 @@ const appRoutes: Routes = [
     {path : 'not_found' , component:NotFoundComponent},
     {path : 'edit_profile' , component: EditCandidateProfileComponent},
     {path : 'edit_company_profile' , component: EditCompanyProfileComponent},
-    {path : 'search' , component: CompanySearchComponent},
+    {path : 'candidate-search' , component: CompanySearchComponent},
+    {path : 'candidate-detail' , component: CandidateDetailComponent},
+    {path : 'admin-dashboard' , component: AdminDashboardComponent},
+    {path : 'admin-candidate-search' , component: AdminCandidateSearchComponent},
+
     { path: '**', redirectTo: '' }
 ];
 
@@ -104,7 +113,10 @@ const appRoutes: Routes = [
     HeaderComponent,
     FooterComponent,
     EditCompanyProfileComponent,
-    CompanySearchComponent
+    CompanySearchComponent,
+    CandidateDetailComponent,
+    AdminDashboardComponent,
+    AdminCandidateSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +124,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     LinkedInSdkModule,
     SocialLoginModule,
-     HttpClientModule,
+    HttpClientModule,
+    Select2Module,
+    NgxPaginationModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: 

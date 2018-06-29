@@ -59,13 +59,17 @@ const UserSchema = mongoose.Schema({
 		type:String,
 
 	},
-
-
 	password_key:
 	{
 		type:String,
+	},
+	is_admin:
+	{
+		type:Number,
+		required:true,
+		default:0
 	}
-
+	
 
 });
 const User = module.exports = mongoose.model('User',UserSchema);

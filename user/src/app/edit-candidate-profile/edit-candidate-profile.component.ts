@@ -373,7 +373,11 @@ export class EditCandidateProfileComponent implements OnInit {
             });
       }
   }
-    
+    gender = 
+  [
+    "Male", 
+    "Female"
+  ]
   /*currency=
     [
       "£ GBP" ,"€ EUR" , "$ USD"
@@ -1063,5 +1067,12 @@ export class EditCandidateProfileComponent implements OnInit {
                    
                 });
     }
+    
+     onGenderSelected(event)
+  {
+    this.info.gender= event.target.value;
+    console.log(this.info.gender);
+   
+  }
 
 }

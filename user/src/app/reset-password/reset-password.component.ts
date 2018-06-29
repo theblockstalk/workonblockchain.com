@@ -4,6 +4,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
+import { DataService } from "../data.service";
 
 @Component({
   selector: 'app-reset-password',
@@ -14,9 +15,15 @@ export class ResetPasswordComponent implements OnInit {
 	hash;log;password;;
 	constructor(private route: ActivatedRoute, private http: HttpClient,
         private router: Router,
-        private authenticationService: UserService) {
-        	this.hash = route.snapshot.params['hash'];
-        	console.log(this.hash);
+        private authenticationService: UserService,private dataservice: DataService) {
+        	/*this.hash = route.snapshot.params['hash'];
+        	console.log(this.hash);*/
+        
+             this.route.queryParams.subscribe(params => 
+             {
+                 this.hash = params['hash'];
+                 console.log(this.hash); // Print the parameter to the console. 
+            });
 
          }
 
@@ -29,15 +36,21 @@ export class ResetPasswordComponent implements OnInit {
     	 this.authenticationService.reset_password(this.hash,f.value)
             .subscribe(
                 data => {
-                if(data)
-                {
-                    this.router.navigate(['/login']);
-                }
+               
+                
 
                 if(data.error)
                 {
                 	this.log = data.error;
+                    console.log("error");
                 }
+                else
+                    {
+                    this.dataservice.changeMessage("Password updated successfully");
+
+                    this.router.navigate(['/login']);
+                }
+                    
 
                
                 },

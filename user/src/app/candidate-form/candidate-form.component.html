@@ -16,7 +16,7 @@
           <div class="tab-content form-contant">
               <div id="home" class="tab-pane fade in active">
                 <h3>Candidate Sign Up</h3>
-                <h4>{{log}}</h4>
+                <h4 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h4>
                  <form (submit)="signup_candidate(loginForm)"  #loginForm = ngForm>
                 
                 <div class="form-group">
@@ -78,7 +78,7 @@
               <div id="menu1" class="tab-pane fade">
                 <h3>Employer Sign Up</h3>
                <form (submit)="company_signup(signupForm)"  #signupForm = ngForm>
-                   <div >{{message}}</div>
+                   <div class="alert alert-danger error-alert" *ngIf = "message" >{{message}}</div>
 
                 <div class="form-group">
                   <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>

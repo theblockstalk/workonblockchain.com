@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
+import { DataService } from "../data.service";
 
 @Component({
   selector: 'app-experience',
@@ -26,7 +27,7 @@ export class ExperienceComponent implements OnInit
     inputArray=[];
 
   	constructor(private _fb: FormBuilder,private datePipe: DatePipe,private route: ActivatedRoute, private http: HttpClient,
-        private router: Router,
+        private router: Router,private dataservice: DataService,
         private authenticationService: UserService) { }
       
  
@@ -42,9 +43,11 @@ export class ExperienceComponent implements OnInit
           .map(i => this._fb.group({ companyname: i.companyname , positionname : i.positionname, locationname:i.locationname, descname:i.descname,startdate:i.startdate , startyear: i.startyear , enddate:i.enddate , endyear:i.endyear , currentwork: i.currentwork , currentenddate:i.currentenddate , currentendyear:i.currentendyear} ));
       }
 
+    message;
   	ngOnInit() 
     {
-    
+            this.expYear[0]='';
+        this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.shown=true;
       this.currentdate = this.datePipe.transform(this.today, 'MMM');
@@ -220,6 +223,8 @@ export class ExperienceComponent implements OnInit
 
   	onExpOptions(obj)
   	{
+            
+        
     	let updateItem = this.language.find(this.findIndexToUpdate, obj.value);
       let index = this.language.indexOf(updateItem);
       if(index > -1)
@@ -241,7 +246,7 @@ export class ExperienceComponent implements OnInit
         this.language.push(obj);
       }
 
-      console.log(this.language);
+      //console.log(this.language);
     
   	}
 
@@ -251,7 +256,7 @@ export class ExperienceComponent implements OnInit
         return obj.value === this;
     }
 
-  	onRolesOptions(obj)
+  	/*onRolesOptions(obj)
   	{
     	
       let updateItem = this.roles.find(this.findIndexToUpdate, obj.value);
@@ -269,7 +274,7 @@ export class ExperienceComponent implements OnInit
       //console.log(this.roles);
     
   	}
-
+*/
   
 
 
@@ -383,7 +388,7 @@ export class ExperienceComponent implements OnInit
     return <FormArray>this.EducationForm.get('itemRows');
   }
 
-    onCurrentlyWork(e)
+   /* onCurrentlyWork(e)
     {
         //console.log(e);
         /*if(e.target.checked==true)
@@ -396,12 +401,34 @@ export class ExperienceComponent implements OnInit
         else
         {
           this.shown= true;
-        }*/
-    }
+        }
+    }*/
+    log;
     experience_submit(searchForm: NgForm)
     {
      
-      console.log(searchForm.value);
+     // console.log(searchForm.value);
+       // console.log(this.EducationForm.value);
+        
+        if(!this.ExperienceForm.value.ExpItems[0].companyname || !this.ExperienceForm.value.ExpItems[0].positionname ||
+        !this.ExperienceForm.value.ExpItems[0].locationname  || !this.ExperienceForm.value.ExpItems[0].descname ||
+        !this.ExperienceForm.value.ExpItems[0].startdate || !this.ExperienceForm.value.ExpItems[0].startyear   )
+        {
+             console.log("iffff");
+            this.log = "Please enter atleast one full work history record";    
+        }
+
+        else if(!this.EducationForm.value.itemRows[0].uniname || !this.EducationForm.value.itemRows[0].degreename
+        || !this.EducationForm.value.itemRows[0].fieldname || !this.EducationForm.value.itemRows[0].eduyear)
+        {
+            console.log("if");
+            this.log = "Please enter atleast one full education record";
+            
+        }
+        else
+             {
+             console.log("else");
+             this.log='';
        this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.EducationForm.value.itemRows , this.ExperienceForm.value.ExpItems , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
             .subscribe(
                 data => {
@@ -422,28 +449,30 @@ export class ExperienceComponent implements OnInit
                   //this.log = 'Something getting wrong';
                    
                 });
+             }
 
     }
+
+    selectedValue;langValue;
     onExpYearOptions(e, value)
-   {
-      
-      /*this.value=value;
-      this.referringData = { platform_name:this.value, exp_year: e.target.value}; 
-      this.expYear.push(this.referringData); */
-      //console.log(this.expYear); 
+    {
+       this.selectedValue = e.target.value;
+       this.langValue = value;
+     
         
         let updateItem = this.findObjectByKey(this.expYear, 'platform_name', value);
        //console.log(updateItem);
-      let index = this.expYear.indexOf(updateItem);
+        let index = this.expYear.indexOf(updateItem);
 
       if(index > -1)
       {
           
         this.expYear.splice(index, 1);
         this.value=value;
-        this.referringData = { platform_name:this.value, exp_year: e.target.value};  
+        this.referringData = { platform_name :this.value, exp_year: e.target.value};  
         this.expYear.push(this.referringData); 
         //console.log(this.LangexpYear); 
+          
         
       }
       else

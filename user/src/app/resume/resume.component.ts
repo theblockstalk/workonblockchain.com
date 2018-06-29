@@ -4,8 +4,8 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
-
-
+//declare var synapseThrow: any;
+//import { synapseThrow } from '../wob';
 
 @Component({
   selector: 'app-resume',
@@ -33,6 +33,7 @@ export class ResumeComponent implements OnInit {
 
   ngOnInit()
   {
+            
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.expYear=[];
       
@@ -42,6 +43,7 @@ export class ResumeComponent implements OnInit {
        }
        if(this.currentUser && this.currentUser.type=='candidate')
        {
+          // new synapseThrow();
           this.exp_class="btn disabled";
            this.active_class="fa fa-check-circle text-success";
            this.authenticationService.getById(this.currentUser._id)
@@ -352,7 +354,8 @@ export class ResumeComponent implements OnInit {
                 data => {
                 if(data && this.currentUser)
                 {
-                    this.router.navigate(['/experience']);
+                    //this.router.navigate(['/experience']);
+                    window.location.href = '/experience';
                 }
 
                 if(data.error )
@@ -428,7 +431,8 @@ export class ResumeComponent implements OnInit {
       this.referringData = { experimented_platform:this.value, exp_year: e.target.value}; 
       this.expYear.push(this.referringData);*/ 
      
-       
+       this.selectedValue = e.target.value;
+       this.langValue = value;
          let updateItem = this.findObjectByKey(this.expYear, 'experimented_platform', value);
        //console.log(updateItem);
       let index = this.expYear.indexOf(updateItem);
@@ -455,13 +459,15 @@ export class ResumeComponent implements OnInit {
        
    }
 
+   selectedValue;langValue;
    onComExpYearOptions(e, value)
    {
       
       /*this.value=value;
      this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
       this.commercial_expYear.push(this.referringData); */
-     
+     this.selectedValue = e.target.value;
+       this.langValue = value;
         let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
        //console.log(updateItem);
       let index = this.commercial_expYear.indexOf(updateItem);
@@ -491,7 +497,8 @@ export class ResumeComponent implements OnInit {
 
    onPlatformYearOptions(e, value)
    {
-      
+      this.selectedValue = e.target.value;
+       this.langValue = value;
       /*this.value=value;
       this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.platforms.push(this.platformreferringData); 

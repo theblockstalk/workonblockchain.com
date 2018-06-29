@@ -8,4 +8,5 @@ export class User
     social_type:string; 
     email_hash:string;
     ref_link:string;
+    is_admin: number;
 }

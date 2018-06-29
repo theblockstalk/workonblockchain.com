@@ -21,6 +21,7 @@ export class ReferralComponent implements OnInit {
 	ref_link = '';
 	email_subject = ' thinks that you should Work on Blockchain!';
 	mail_body = '';
+	show_refreal;
 	
 	constructor(
 		private authenticationService: UserService
@@ -28,10 +29,15 @@ export class ReferralComponent implements OnInit {
 
 	ngOnInit(){
 		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-		console.log(this.currentUser);
-		this.ref_link = this.email_ref_link+this.currentUser.ref_link;
-		this.email_subject = this.currentUser.email+this.email_subject;
-		this.mail_body = 'Hi, \nYou have been invited by '+this.currentUser.email+' to join Work on Blockchain. \nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \nGive us a try! \nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
+		this.show_refreal = 1;
+		if(this.currentUser){
+			this.show_refreal = 10;
+			console.log('cu');
+			this.ref_link = this.email_ref_link+this.currentUser.ref_link;
+			this.email_subject = this.currentUser.email+this.email_subject;
+			this.mail_body = 'Hi, \nYou have been invited by '+this.currentUser.email+' to join Work on Blockchain. \nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \nGive us a try! \nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
+		}
+		console.log(this.show_refreal);
 	}
 	
 	send_email() {

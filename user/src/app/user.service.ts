@@ -282,8 +282,25 @@ export class UserService {
         return this.http.post<any>('http://localhost:4000/users/emailVerify/'+ email_hash).map(data => {
             return data;
         });*/
+        //console.log("dhsdg");
+        console.log("data");
+        return this.http.put(URL+'users/emailVerify/'+ email_hash , '').map(data => {  
+        
+           // console.log("data");       
+                if (data) 
+                {
+                    
+                    return data;
+                }
+                else
+                {
+                    //console.log(data);
+                    return data;
 
-        return this.http.put(URL+'users/emailVerify/'+ email_hash , '');
+                }
+ 
+                
+            });
     }
 
     reset_password(hash: string, data: User) 
@@ -299,6 +316,7 @@ export class UserService {
                 }
                 else
                 {
+                    console.log(data);
                     return data.msg;
 
                 }
@@ -332,9 +350,9 @@ export class UserService {
         return this.http.get<any>(URL+'users/current_company/' + _id);
     }
 	
-	insertMessage(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,msg_tag:string,is_company_reply:number) 
+	insertMessage(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number) 
     {
-        return this.http.post<any>(URL+'users/insert_message', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,msg_tag:msg_tag,is_company_reply:is_company_reply}) .map(data => {
+        return this.http.post<any>(URL+'users/insert_message', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply}) .map(data => {
             return data
         });
     }
@@ -383,7 +401,116 @@ export class UserService {
                 }
                 
             });
-    }   
+    } 
     
+    //////////////filters function call////////////////////////////////
+    getVerrifiedCandidate()
+    {
+       return this.http.get<any>(URL+'users/verified_candidate' );
+
+    }
+    
+   /* searchByskill(skill:string)
+    {
+        console.log(skill);
+         return this.http.post<any>(URL+'users/search_skill', { search: skill})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+    }
+    
+    searchBylocation(location:string)
+    {
+         return this.http.post<any>(URL+'users/search_location', { search: location})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+    }
+    
+    searchByAvailability( availability :string)
+    {
+        
+        return this.http.post<any>(URL+'users/search_availibility', { search: availability})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+    }
+    
+   
+    
+    searchByposition(position :any)
+    {
+         return this.http.post<any>(URL+'users/search_position', { search: position})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+    }
+    
+    searchByBlockchain(blockchain:any)
+    {
+        return this.http.post<any>(URL+'users/search_blockchain', { search: blockchain})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+    }*/
+    
+    searchByWord(word:string)
+    {
+         return this.http.post<any>(URL+'users/search_word', { search: word})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+    }
+    
+    filterSearch(skill : string , location: string , position:any , blockchain:any , avail:string, salary :string ,currency :string)
+    {
+         return this.http.post<any>(URL+'users/filter', { skill : skill , location :location , position :position , blockchain : blockchain , availability : avail,salary:salary , currency :currency})
+            .map(data => {
+           
+                if (data) 
+                {
+                    //console.log(data);
+                    return data;
+                }
+                
+            });
+         
+    }
     
 }

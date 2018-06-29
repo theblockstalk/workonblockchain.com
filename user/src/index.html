@@ -12,12 +12,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">-->
 
   <title>WOB</title>
-  <base href="/">
+  <base href="./">
   <meta charset="utf-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type='text/css' href="/assets/css/bootstrap.min.css">
-  <link rel="stylesheet" type='text/css' href="/assets/css/wob_main.css">
-  <link rel="stylesheet" type='text/css' href="/assets/css/middle.css">
+  <link rel="stylesheet" type='text/css' href="./assets/css/bootstrap.min.css">
+  <link rel="stylesheet" type='text/css' href="./assets/css/wob_main.css">
+  <link rel="stylesheet" type='text/css' href="./assets/css/middle.css">
+  <link rel="stylesheet" type='text/css' href="./assets/css/select2.css">
+
 
   <!--using fonts link-->
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -37,95 +39,109 @@
 
 <!-- jqeury and js links-->
 
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/js/wob.js"></script>
-<script src="/assets/js/bootstrap.min.js"></script>
+<script src="./assets/js/jquery.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="./assets/js/wob.js"></script>
+<script src="./assets/js/custom.js"></script>
+<script src="./assets/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<script type="text/javascript">    
-        $(document).ready(function(){
-        	
-        	 
-        //Check to see if the window is top if not then display button
-        $(window).scroll(function(){
-          if ($(this).scrollTop() > 100) {
-            $('#scroll-to-top').fadeIn();
-          } else {
-            $('#scroll-to-top').fadeOut();
-          }
-        });
-        
-        //Click event to scroll to top
-        $('#scroll-to-top').click(function(){
-          $('html, body').animate({scrollTop : 0},800);
-          return false;
-        });
-
-        
-        
-      });
-        
-       
-
-
-
-    //show hide password
-    $(".toggle-password").click(function() {
-
-      $(this).toggleClass("fa-eye fa-eye-slash");
-      var input = $($(this).attr("toggle"));
-      if (input.attr("type") == "password") {
-        input.attr("type", "text");
-      } else {
-        input.attr("type", "password");
-      }
-    });
-        
-</script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <!-- Load Facebook SDK for JavaScript -->
  <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.0';
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
+<script>
+		(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.0';
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+</script>
 <script type="text/javascript">
+(function() {
+    'use strict';
+    
+    var deps = [];
+    
+    angular.module('sandbox', deps)
+        .controller('SandboxController', SandboxController) 
+    ;
+    
+    function SandboxController($element) {
+        /* jshint validthis : true */
+        var vm = this;
+        vm.activate   = toggle;
+        vm.deactivate = toggle;
+        vm.isActive   = isActive;
+        
+        function toggle() {
+            var active   = vm.isActive();
+            var oldClass = active ? 'active' : 'inactive';
+            var newClass = active ? 'inactive' : 'active';
+            $element.removeClass(oldClass).addClass(newClass);
+        }
+        
+        function isActive() {
+            return $element.hasClass('active');
+        }
+    }
+    
+})();
 
-  window.pressed = function(){
-    var a = document.getElementById('aa');
-    if(a.value == "")
-    {
-        fileLabel.innerHTML = "Choose file";
-    }
-    else
-    {
-        var theSplit = a.value.split('\\');
-        fileLabel.innerHTML = theSplit[theSplit.length-1];
-    }
+window.addEventListener('load', function() {
+	console.log("load");
+	
+
+	 /*$('label input[type=radio]').click(function() {
+		 
+		  $('input[name="' + this.name + '"]').each(function(){
+		       $(this.parentNode).toggleClass('activee', this.checked);
+		  });
+		});*/
+		
+		/*$('input:radio').click(function() {
+			console.log("radio button");
+	        $('label:has(input:radio:checked)').addClass('activee');
+	        $('label:has(input:radio:not(:checked))').removeClass('activee');
+	    });*/
+		 //$('input:radio:checked').parent().addClass("activee");
+	 
+	 $(function () {
+		    $('#1step').change(function () {
+		        if ($('#1step').is(':checked')) {
+		            $("#input_field").hide();
+		        } else {
+		            $("#input_field").show();
+		        }
+		    }).change();
+		});
+});
+
+</script>
+<script >
+$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+
+function newMessage() {
+	message = $(".message-input input").val();
+	if($.trim(message) == '') {
+		return false;
+	}
+	$(".messages").animate({ scrollTop: $(document).height() }, "fast");
 };
 
-</script>
-
-
-<script type="text/javascript">
- $(function () {
-    $('#1step').change(function () {
-        if ($('#1step').is(':checked')) {
-            $("#input_field").hide();
-        } else {
-            $("#input_field").show();
-        }
-    }).change();
+$('.submit').click(function() {
+  newMessage();
 });
-</script>
 
-<script type="text/javascript">
-
-
+$(window).on('keydown', function(e) {
+  if (e.which == 13) {
+    newMessage();
+    return false;
+  }
+});
+//# sourceURL=pen.js
 
 </script>
 

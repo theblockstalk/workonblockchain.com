@@ -45,11 +45,15 @@ service.save_employer_image =save_employer_image;
 service.update_company_profile = update_company_profile;
 
 ////////filters function///////////////////////
-service.search_skill = search_skill;
+/*service.search_skill = search_skill;
 service.search_location = search_location;
 service.search_position = search_position;
 service.search_blockchain = search_blockchain;
 service.search_salary =search_salary;
+service.search_availibility =search_availibility;*/
+service.search_word = search_word;
+service.filter = filter;
+service.verified_candidate = verified_candidate;
 
 /////////referal and chat functions////////////
 service.refreal_email = refreal_email;
@@ -58,6 +62,9 @@ service.get_candidate=get_candidate;
 service.insert_message = insert_message;
 service.get_messages = get_messages;
 service.get_user_messages = get_user_messages;
+
+////////admin functions/////////////////////////
+service.admin_role=admin_role;
 
 module.exports = service;
 
@@ -75,7 +82,7 @@ function authenticate(email, password,type)
     {
        
         if (err) deferred.reject(err.name + ': ' + err.message);
-        console.log(user);
+       // console.log(user);
         
         if (user && bcrypt.compareSync(password, user.password)) 
         {   
@@ -89,17 +96,18 @@ function authenticate(email, password,type)
                     if (err) deferred.reject(err.name + ': ' + err.message);
                     
                     if(data)
-                    	{
+                    {
                     	 deferred.resolve({ 
                              _id:data._id,
                              _creator: data._creator,
                              email: user.email,
                              email_hash: user.email_hash,
                              ref_link: user.ref_link,
- 							type:user.type,
+                             is_admin:user.is_admin,
+ 							 type:user.type,
                              token: jwt.sign({ sub: user._id }, config.secret)
                              });
-                    	}
+                    }
 
                     else
                     {
@@ -170,15 +178,18 @@ function forgot_password(email)
         function updateData(data) 
         {
             var hashStr = crypto.createHash('md5').update(email).digest('hex');
+           // console.log(hashStr);
+           // console.log(data._id);
             var email_data = {};
             email_data.password_key = hashStr;
             email_data.email = data.email;
             email_data.name = data.first_name;
             email_data.expiry = new Date(new Date().getTime() +  1800 *1000);
-
+            var token = jwt_hash.encode(email_data,config.secret,'HS256');
+            email_data.token = token;
             var set = 
             {
-                password_key: hashStr,
+                password_key: token,
 
             };
             users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc) 
@@ -187,7 +198,7 @@ function forgot_password(email)
                     deferred.reject(err.name + ': ' + err.message);
                 else
                 {
-                    forgot_passwordEmail_send(email_data)
+                    forgot_passwordEmail_send(email_data.token)
                     deferred.resolve({msg:'Email Send'});
                 }
             });
@@ -198,9 +209,11 @@ function forgot_password(email)
 
 }
 
-function forgot_passwordEmail_send(hash)
+function forgot_passwordEmail_send(data)
 {
-
+	
+	 var hash = jwt_hash.decode(data,config.secret,'HS256');  
+	 console.log(hash.email);
     nodemailer.createTestAccount((err, account) => 
     {
         // create reusable transporter object using the default SMTP transport
@@ -220,10 +233,10 @@ function forgot_passwordEmail_send(hash)
         let mailOptions = 
         {
             from: 'workonblockchain@mwancloud.com', 
-            to : hash.email,
+            to : hash.email, // 'sadiaabbas326@gmail.com',//
             subject : "Welcome to TEST",
-            text : 'Visit this http://workonblockchain.mwancloud.com/reset_password/'+hash.password_key,
-            html : '<p>Hi '+hash.name+'</p> <br/> <p> You have requested to change your account password for workonblockchain.com. </p><br/><p>Please click on the link below in the next 30 minutes and then enter your new password.</p><br/><a href="http://workonblockchain.mwancloud.com/reset_password/'+hash.password_key+'"><H2>Reset Password</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
+            text : 'Visit this http://workonblockchain.mwancloud.com/reset_password?hash='+hash.password_key,
+            html : '<p>Hi '+hash.email+'</p> <br/> <p> You have requested to change your account password for workonblockchain.com. </p><br/><p>Please click on the link below in the next 30 minutes and then enter your new password.</p><br/><a href="http://workonblockchain.mwancloud.com/reset_password?hash='+data+'"><H2>Reset Password</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
         };
 
         // send mail with defined transport object
@@ -241,38 +254,49 @@ function forgot_passwordEmail_send(hash)
 
 //////////////////Reset Password///////////////////////
 function reset_password(hash,data)
-{
+{ 
     	var deferred = Q.defer(); 
-    	if(new Date(data.expiry) > new Date())
+    	//console.log(hash);
+    	//console.log(data);
+    	var token = jwt_hash.decode(hash,config.secret,'HS256');  
+    	//console.log("data");
+    	//console.log(data);
+    	if(new Date(token.expiry) > new Date())
     	{
-        users.findOne({ password_key :hash  }, function (err, result)
-        {       
-            if (err) 
-                deferred.reject(err.name + ': ' + err.message);
-            else
-                updateData(result._id);
+    		//console.log(token);
+    		users.findOne({ password_key :hash  }, function (err, result)
+    	    { 
+        	
+    			//console.log(result);
+    			if (err) 
+    				deferred.reject(err.name + ': ' + err.message);
+    			else
+    				updateData(result._id);
                
-        });
+    	    });
  
-        function updateData(_id) 
-        {
-            var user = _.omit(data, 'password'); 
-            // add hashed password to user object
-            user.password = bcrypt.hashSync(data.password, 10);
-            var set = 
-            {
-                password:  user.password,
-            };
-            users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
-            {
-                if (err) 
-                    deferred.reject(err.name + ': ' + err.message);
-                else
-                {
-                    deferred.resolve({msg:'Password reset successfully'});
-                }
-            });
-        }
+    		function updateData(_id) 
+    		{
+    			//console.log(_id);
+    			var user = _.omit(data, 'password'); 
+    			//console.log(user);
+    			// add hashed password to user object
+    			user.password = bcrypt.hashSync(data.password, 10);
+    			//console.log(user.password);
+    			var set = 
+    			{
+    					password:  user.password,
+    			};
+    			users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
+    		    {
+    				if (err) 
+    					deferred.reject(err.name + ': ' + err.message);
+    				else
+                	{
+    					deferred.resolve({msg:'Password reset successfully'});
+                	}
+    		    });
+    		}
     	}
     	else
     		{
@@ -315,10 +339,10 @@ function emailVerify(token)
     }
 
     else
-    {
-        deferred.reject( "Link is expired");
-    
-    }
+	{
+    	deferred.resolve({msg:'Link Expired'});
+		//deferred.reject('Link expired');
+	}
     return deferred.promise;
 
 }
@@ -347,10 +371,10 @@ function verify_send_email(info)
         let mailOptions = 
         {
             from: 'workonblockchain@mwancloud.com', // sender address
-            to : info.email,
+            to : info.email,//'sadiaabbas326@gmail.com',//, //
             subject : "Welcome to TEST",
-            text : 'Visit this http://workonblockchain.mwancloud.com/verify_email/'+info.token,
-            html : '<p>Hi '+info.name+'</p> <br/> <p> Please click on the link below to verify your email for workonblockchain.com. </p><br/><a href="http://workonblockchain.mwancloud.com/verify_email/'+info.token+'"><H2>Verify Email</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
+            text : 'Visit this http://workonblockchain.mwancloud.com/verify_email?email_hash='+info.token,
+            html : '<p>Hi '+info.email+'</p> <br/> <p> Please click on the link below to verify your email for workonblockchain.com. </p><br/><a href="http://workonblockchain.mwancloud.com/verify_email?email_hash='+info.token+'"><H2>Verify Email</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
            
         };
 
@@ -391,10 +415,22 @@ function getAll()
 function getById(_id) 
 {
     var deferred = Q.defer();
+
     CandidateProfile.findById(_id).populate('_creator').exec(function(err, result) 
     {
+        //console.log(result);
         if (err) 
             return handleError(err);
+        if(!result)
+        {
+            CandidateProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
+            {
+                if (err) 
+                    return handleError(err);
+                else
+                    deferred.resolve(result);
+            });
+        }
         else
             deferred.resolve(result);
 
@@ -402,6 +438,52 @@ function getById(_id)
     });
 
     return deferred.promise;
+    /*CandidateProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
+    {
+        if (err) 
+            return handleError(err);
+        else
+        	console.log(result);
+            deferred.resolve(result);
+
+
+    });*/
+    /*users.find({_id: _id }, function (err, data) 			
+    		{
+    				
+    		        if (err) 
+    		            return handleError(err);
+    		        if(data)
+    		        {
+    		       
+    		        	//console.log(array);
+    		        	CandidateProfile.find({
+    		        		$and:[{ "_creator": {$in: array}},{ "country": location  }]
+    		        	}).populate('_creator').exec(function(err, result)
+    		            {
+    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+    		                		        
+    		               if (result == '') 
+    		               {
+    		            	   deferred.reject("Not Found Any Data");
+    		                		         
+    		                } 
+    		                else 
+    		                {
+    		                	deferred.resolve(result)
+    		                }
+    		             });
+    		        	 
+    		        	}
+    		        	
+    		        	else
+    		        	{
+    		        		deferred.reject("Not Found Any Data");
+    		        	}
+
+    		    }); */
+
+    //return deferred.promise;
 }
 
 //////////////////register candidate//////////////////
@@ -1100,110 +1182,198 @@ function update_company_profile(_id , companyParam)
 /**************employer functions implementation ends *************************/
 
 /**************filters functions**********************************************/
-function search_skill(data) 
+/*function search_skill(skill) 
 {
     var deferred = Q.defer();
-    console.log(data);
 
-    CandidateProfile.find({ "experience_roles.platform_name": {$in: ['C#' , 'Perl']}  }, function (err, data) 
-    {
-       
-        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-        
-        if (data) 
-        {
-        	//console.log(data);
-            deferred.resolve(data)
-         
-        } 
-        else 
-        {
-        	
-            deferred.reject();
-        }
-    });
+    users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+    		{
+    				
+    		        if (err) 
+    		            return handleError(err);
+    		        if(data)
+    		        {
+    		        	var array = [];
+    		        	data.forEach(function(item) 
+    		        	{
+    		        	    array.push(item._id);
+    		        	});
+    		        	   
+
+    		        	//console.log(array);
+    		        	CandidateProfile.find({
+    		        		$and:[{ "_creator": {$in: array}},{ "experience_roles.platform_name":  skill  }]
+    		        	}).populate('_creator').exec(function(err, result)
+    		            {
+    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+    		                		        
+    		               if (result == '') 
+    		               {
+    		            	   deferred.reject("Not Found Any Data");
+    		                		         
+    		                } 
+    		                else 
+    		                {
+    		                	deferred.resolve(result)
+    		                }
+    		             });
+    		        	 
+    		        	}
+    		        	
+    		        	else
+    		        	{
+    		        		deferred.reject("Not Found Any Data");
+    		        	}
+
+    		    }); 
  
     return deferred.promise;
 }
 
-function search_location(data)
-{
-	 var deferred = Q.defer();
-	    console.log(data);
-
-	    CandidateProfile.find({ "country": {$in: ['Bordeaux' , 'Zug']}  }, function (err, data) 
-	    {
-	       
-	        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-	        
-	        if (data) 
-	        {
-	        	//console.log(data);
-	            deferred.resolve(data)
-	         
-	        } 
-	        else 
-	        {
-	        	
-	            deferred.reject();
-	        }
-	    });
-	 
-	    return deferred.promise;
-
-}
-
-function search_position(data)
-{
-	 var deferred = Q.defer();
-	    console.log(data);
-
-	    CandidateProfile.find({ "roles": {$in: ['Blockchain Developer' , 'abc']}  }, function (err, data) 
-	    {
-	       
-	        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-	        
-	        if (data) 
-	        {
-	        	//console.log(data);
-	            deferred.resolve(data)
-	         
-	        } 
-	        else 
-	        {
-	        	
-	            deferred.reject();
-	        }
-	    });
-	 
-	    return deferred.promise;
-
-}
-
-function search_blockchain(data)
+function search_location(location)
 {
 	var deferred = Q.defer();
-    console.log(data);
+    users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+    		{
+    				
+    		        if (err) 
+    		            return handleError(err);
+    		        if(data)
+    		        {
+    		        	var array = [];
+    		        	data.forEach(function(item) 
+    		        	{
+    		        	    array.push(item._id);
+    		        	});
+    		        	 
+    		        	//console.log(array);
+    		        	CandidateProfile.find({
+    		        		$and:[{ "_creator": {$in: array}},{ "country": location  }]
+    		        	}).populate('_creator').exec(function(err, result)
+    		            {
+    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+    		                		        
+    		               if (result == '') 
+    		               {
+    		            	   deferred.reject("Not Found Any Data");
+    		                		         
+    		                } 
+    		                else 
+    		                {
+    		                	deferred.resolve(result)
+    		                }
+    		             });
+    		        	 
+    		        	}
+    		        	
+    		        	else
+    		        	{
+    		        		deferred.reject("Not Found Any Data");
+    		        	}
 
-    CandidateProfile.find({ "roles": {$in: ['Blockchain Developer' , 'abc']}  }, function (err, data) 
-    {
-       
-        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-        
-        if (data) 
-        {
-        	//console.log(data);
-            deferred.resolve(data)
-         
-        } 
-        else 
-        {
-        	
-            deferred.reject();
-        }
-    });
+    		    }); 
  
     return deferred.promise;
+
+}
+
+function search_position(position)
+{
+	var deferred = Q.defer();
+    
+
+
+    users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+    		{
+    				
+    		        if (err) 
+    		            return handleError(err);
+    		        if(data)
+    		        {
+    		        	var array = [];
+    		        	data.forEach(function(item) 
+    		        	{
+    		        	    array.push(item._id);
+    		        	});
+    		        	 
+    		        	//console.log(array);
+    		        	CandidateProfile.find({
+    		        		$and:[{ "_creator": {$in: array}},{ "roles": {$in: position}}]
+    		        	}).populate('_creator').exec(function(err, result)
+    		            {
+    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+    		                		        
+    		               if (result == '') 
+    		               {
+    		            	   deferred.reject("Not Found Any Data");
+    		                		         
+    		                } 
+    		                else 
+    		                {
+    		                	deferred.resolve(result)
+    		                }
+    		             });
+    		        	 
+    		        	}
+    		        	
+    		        	else
+    		        	{
+    		        		deferred.reject("Not Found Any Data");
+    		        	}
+
+    		    }); 
+ 
+    return deferred.promise;
+
+}
+
+function search_blockchain(blockchain)
+{
+	var deferred = Q.defer();
+	
+    users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+    		{
+    				
+    		        if (err) 
+    		            return handleError(err);
+    		        if(data)
+    		        {
+    		        	var array = [];
+    		        	data.forEach(function(item) 
+    		        	{
+    		        	    array.push(item._id);
+    		        	});
+    		        	 
+    		        	//console.log(array);
+    		        	CandidateProfile.find({
+    		        		$and : [{ $or : [ { "platforms.platform_name": {$in :blockchain }}, { "commercial_platform.platform_name" : {$in : blockchain} } ,{"experimented_platform.experimented_platform" : {$in : blockchain}} ] },
+							{ "_creator": {$in: array}}]
+    		        	}).populate('_creator').exec(function(err, result)
+    		            {
+    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+    		                		        
+    		               if (result == '') 
+    		               {
+    		            	   deferred.reject("Not Found Any Data");
+    		                		         
+    		                } 
+    		                else 
+    		                {
+    		                	deferred.resolve(result)
+    		                }
+    		             });
+    		        	 
+    		        	}
+    		        	
+    		        	else
+    		        	{
+    		        		deferred.reject("Not Found Any Data");
+    		        	}
+
+    		    }); 
+ 
+    return deferred.promise;
+    
 }
 
 function search_salary(data)
@@ -1211,23 +1381,222 @@ function search_salary(data)
 	var deferred = Q.defer();
     console.log(data);
 
-    CandidateProfile.find({ "expected_salary":  data }, function (err, data) 
+    CandidateProfile.find({$and: [{ expected_salary: { $lte: 4500 }} , {expected_salary_currency : '$ UD'}]} , function (err, data) 
     {
        
         if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
         
-        if (data) 
+        if (data == '') 
         {
-        	//console.log(data);
-            deferred.resolve(data)
-         
+        	 deferred.reject("Not Found Any Data");
+           
         } 
-        else 
+        else
         {
-        	
-            deferred.reject();
+        	 deferred.resolve(data)
+           
         }
     });
+ 
+    return deferred.promise;
+}*/
+
+function filter(params)
+{
+	//console.log(params.salary);
+	var deferred = Q.defer();
+   if(!params.position)
+   {
+	  params.position = [];
+   }
+   if(!params.blockchain)
+   {
+	   params.blockchain=[];
+   }
+   
+   var deferred = Q.defer();
+	 
+   users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+   		{
+   				
+   		        if (err) 
+   		            return handleError(err);
+   		        if(data)
+   		        {
+   		        	var array = [];
+   		        	data.forEach(function(item) 
+   		        	{
+   		        	    array.push(item._id);
+   		        	});
+   		        	
+   		        	//console.log(array);
+   		     	CandidateProfile.find({
+		        		$and : [{ $or : [ { "roles": {$in: params.position}}, { "experience_roles.platform_name":  params.skill} ,{ "country": params.location  } , { "platforms.platform_name": {$in :params.blockchain }}, { "commercial_platform.platform_name" : {$in : params.blockchain} } ,{"experimented_platform.experimented_platform" : {$in : params.blockchain}} , { availability_day: params.availability} , { expected_salary: params.salary} , { expected_salary_currency: params.currency}  ] },
+						{ "_creator": {$in: array}}]
+		        	}).populate('_creator').exec(function(err, result)
+   		            {
+   		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+   		                		        
+   		               if (result == '') 
+   		               {
+   		            	   deferred.reject("Not Found Any Data");
+   		                		         
+   		                } 
+   		                else 
+   		                {
+   		                	deferred.resolve(result)
+   		                }
+   		             });
+   		        	 
+   		        	}
+   		        	
+   		        	else
+   		        	{
+   		        		deferred.reject("Not Found Any Data");
+   		        	}
+
+   		    }); 
+
+  
+    return deferred.promise;
+}
+
+/*function search_availibility(avail)
+{
+	var deferred = Q.defer();
+ 
+    users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+    		{
+    				
+    		        if (err) 
+    		            return handleError(err);
+    		        if(data)
+    		        {
+    		        	var array = [];
+    		        	data.forEach(function(item) 
+    		        	{
+    		        	    array.push(item._id);
+    		        	});
+    		        	
+    		        	//console.log(array);
+    		        	CandidateProfile.find({
+    		        		$and:[{ "_creator": {$in: array}},{ availability_day: avail}]
+    		        	}).populate('_creator').exec(function(err, result)
+    		            {
+    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+    		                		        
+    		               if (result == '') 
+    		               {
+    		            	   deferred.reject("Not Found Any Data");
+    		                		         
+    		                } 
+    		                else 
+    		                {
+    		                	deferred.resolve(result)
+    		                }
+    		             });
+    		        	 
+    		        	}
+    		        	
+    		        	else
+    		        	{
+    		        		deferred.reject("Not Found Any Data");
+    		        	}
+
+    		    }); 
+ 
+    return deferred.promise;
+}*/
+
+function search_word(word)
+{
+	var deferred = Q.defer();
+	 
+    users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+    		{
+    				
+    		        if (err) 
+    		            return handleError(err);
+    		        if(data)
+    		        {
+    		        	var array = [];
+    		        	data.forEach(function(item) 
+    		        	{
+    		        	    array.push(item._id);
+    		        	});
+    		        	
+    		        	//console.log(array);
+    		        	CandidateProfile.find({
+    		        		$and : [{ $or : [ { why_work: {'$regex' :word }}, { description : {'$regex' : word} } ] },
+							{ "_creator": {$in: array}}]
+    		        	}).populate('_creator').exec(function(err, result)
+    		            {
+    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+    		                		        
+    		               if (result == '') 
+    		               {
+    		            	   deferred.reject("Not Found Any Data");
+    		                		         
+    		                } 
+    		                else 
+    		                {
+    		                	deferred.resolve(result)
+    		                }
+    		             });
+    		        	 
+    		        	}
+    		        	
+    		        	else
+    		        	{
+    		        		deferred.reject("Not Found Any Data");
+    		        	}
+
+    		    }); 
+ 
+    return deferred.promise;
+
+}
+
+function verified_candidate()
+{
+	var deferred = Q.defer();
+	users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+	{
+			
+	        if (err) 
+	            return handleError(err);
+	        if(data)
+	        {
+	        	var array = [];
+	        	data.forEach(function(item) 
+	        	{
+	        	    array.push(item._id);
+	        	});
+
+	        	//console.log(array);
+	        	CandidateProfile.find({ "_creator": {$in: array}}).populate('_creator').exec(function(err, result)
+	            {
+	               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	                		        
+	               if (result) 
+	               {
+	                	 deferred.resolve(result);
+	                		         
+	                } 
+	                else 
+	                {
+	                	deferred.reject("Not Found");
+	                }
+	             });
+	        	 
+	        	}
+	        	
+	        	else
+	        	{
+	        		deferred.reject("Not Found");
+	        	}
+
+	    });   
  
     return deferred.promise;
 }
@@ -1330,6 +1699,7 @@ function insert_message(data){
 		date_of_joining: data.date_of_joining,
 		msg_tag: data.msg_tag,
 		is_company_reply: data.is_company_reply,
+		job_type: data.job_type,
 		is_read: 0
 	});
 
@@ -1348,6 +1718,7 @@ function insert_message(data){
 }
 
 function get_messages(receiver_id,sender_id){
+	console.log(receiver_id)
 	var deferred = Q.defer();
 	/*$or : [
         { $and : [ { receiver_id : {$regex: receiver_id} }, { sender_id : {$regex: sender_id} } ] },
@@ -1393,3 +1764,46 @@ function get_user_messages(id){
 	});
 	return deferred.promise;
 }
+
+
+/******************admin functions****************************/
+
+function admin_role(data)
+{
+	var deferred = Q.defer();
+	console.log(data);
+	 users.findOne({ email: data.email }, function (err, result) 
+	 {
+	      if (err) 
+			  deferred.reject(err.name + ': ' + err.message);
+	      
+	      if(result)
+	    	  updateAdminRole(result._id);
+	    	  
+		  else   
+			  deferred.reject('Email Not Found');
+
+			        
+	});
+			 
+	function updateAdminRole(_id) 
+	{
+		console.log(_id);
+		var set = 
+		{
+			 is_admin: 1,
+			 
+		};
+		users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
+		{
+			if (err) 
+			   deferred.reject(err.name + ': ' + err.message);
+			else
+			   deferred.resolve(set);
+		});
+	}
+	return deferred.promise;
+	
+}
+
+/**************end admin functions****************************/

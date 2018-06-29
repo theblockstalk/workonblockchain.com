@@ -8,19 +8,21 @@
         <ul class = "step-progress">
           <li class = "step "><i class="{{active_class}}"></i><a routerLink="/about"> About</a></li>
           <li class = "step"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
-          <li class = "step "><i class="{{active_class}}"></i><a routerLink="/resume" >Blockchain</a></li>
-          <li class = "step step-active"><i class="{{exp_active_class}}"></i><a routerLink="/experience" >Experience</a></li>
+          <li class = "step "><i class="{{active_class}}"></i><a href="/resume" >Blockchain</a></li>
+          <li class = "step step-active"><i class="{{exp_active_class}}"></i><a href="/experience" >Experience</a></li>
           
         </ul>
       </div>
       <div class="wizard-form">
 
         <form class = "login_form" (submit)="experience_submit(expForm)" #expForm = ngForm>
+        <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
+          <div class="alert alert-danger error-alert" *ngIf="message">{{message}}</div>
           
           <fieldset class="scheduler-border">
               <legend class="scheduler-border">Experience</legend>
           
-
+				
               <div class="form-group col-md-6 col-left">
                 <label><p  class = "label-p">Current Base salary</p></label>
                    
@@ -33,6 +35,8 @@
              <div class="form-group col-md-6 col-left setting-top_2">
                 <label><p  class = "label-p"></p></label>
                        <select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
+                   <!--  <option value="-1" disabled selected hidden >Choose currency</option>-->
+                
                   <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
               
                 </select>
@@ -66,16 +70,16 @@
 
           <div *ngIf="language?.length > 0">
          <div class="form-group col-md-12">
-          <p class = "exp_p">Year of Experience of each Language</p>
+           <p class = "exp_p">Year of Experience of each Language</p>
           <div class = "row" *ngFor="let lang_value of language; let i = index ">
             
             <p class="rd_label label-p">{{lang_value.value}}</p>
             <div class = "form-group col-md-12 controls__group">
-              <div *ngFor="let exp of exp_year">
-              <label class="">
+              <div *ngFor="let exp of exp_year; let i_ind =index">
+              <label class="" > <!-- [ngClass]="{'activee': (expYear_db[i] === exp.value && db_valye[i] === lang_value.value) }" -->
                 {{exp.name}} 
                    <input type="radio" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)" /></label>
-                  <input type="text" class="form-control" name="language_experience_year" [(ngModel)]='expYear' style="display: none;">
+                  <input type="text" class="form-control"  name="language_experience_year" [(ngModel)]='expYear' style="display: none;">
                  </div>
                
               
@@ -231,7 +235,7 @@
           </fieldset>
 
           <div class = "form-group text-right">
-              <a routerLink="/resume" class = "btn btn-prev">Prev Step</a>
+              <a href="/resume" class = "btn btn-prev">Prev Step</a>
               <button type="submit" class = "btn btn-self btn-pdg" [disabled]=" intro.value=='' " >Done</button>
           </div>
 

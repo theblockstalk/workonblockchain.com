@@ -91,7 +91,8 @@ export class CandidateFormComponent implements OnInit,OnDestroy {
                     {
                         localStorage.setItem('currentUser', JSON.stringify(data));
                         //localStorage.removeItem('userInfo');
-                        this.router.navigate(['/about']);
+                        //this.router.navigate(['/about']);
+                        window.location.href = '/about';
                     }
                 },
                 error => 
@@ -140,7 +141,8 @@ export class CandidateFormComponent implements OnInit,OnDestroy {
                     {
                         localStorage.setItem('currentUser', JSON.stringify(data));
                         //localStorage.removeItem('userInfo');
-                        this.router.navigate(['/about']);
+                        //this.router.navigate(['/about']);
+                        window.location.href = '/about';
                     }
                 },
                 error => {
@@ -187,7 +189,8 @@ export class CandidateFormComponent implements OnInit,OnDestroy {
                             {
                                 localStorage.setItem('currentUser', JSON.stringify(data));
                                 //localStorage.removeItem('userInfo');
-                                this.router.navigate(['/about']);
+                                //this.router.navigate(['/about']);
+                                window.location.href = '/about';
                             }
                             },
                             error => {
@@ -241,7 +244,8 @@ export class CandidateFormComponent implements OnInit,OnDestroy {
                         localStorage.setItem('currentUser', JSON.stringify(data));
                         //console.log(localStorage.getItem('currentUser'));
                         //localStorage.removeItem('userInfo');
-                        this.router.navigate(['/company_profile']);
+                        //this.router.navigate(['/company_profile']);
+                        window.location.href = '/company_profile';
                     }
                 },
                 error => 

@@ -45,7 +45,7 @@ export class ForgotPasswordComponent implements OnInit {
                 	else
                 	{
                         this.dataservice.changeMessage(data['error']);
-                		//this.log= data['error'];
+                		this.log= data['error'];
                     	
         				
                 	}

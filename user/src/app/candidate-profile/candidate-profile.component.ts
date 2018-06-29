@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
+import { DataService } from "../data.service";
 
 @Component({
   selector: 'app-candidate-profile',
@@ -18,10 +19,10 @@ export class CandidateProfileComponent implements OnInit {
         interest_area;why_work;availability_day;
         countries;commercial;history;education;
         experimented;languages;current_currency;current_salary;image_src;
-        imgPath;nationality;contact_number;
+        imgPath;nationality;contact_number;id;
 
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
-        private authenticationService: UserService) { }
+        private authenticationService: UserService,private dataservice: DataService) { }
 
   ngOnInit() 
   {
@@ -37,28 +38,41 @@ export class CandidateProfileComponent implements OnInit {
           this.authenticationService.getById(this.currentUser._id)
             .subscribe(
             data => {
-               
-                
-                if(!data.contact_number && !data.nationality && !data.first_name && !data.last_name)
-                {
+              
+               if(!data.contact_number && !data.nationality && !data.first_name && !data.last_name)
+               {
                         this.router.navigate(['/about']);
-                }
+               }
                else if(data.country.length < 1  && data.roles.length < 1 && data.interest_area.length < 1 || !data.expected_salary)
                {
                  
                     this.router.navigate(['/job']); 
                 }
-                else if(data.commercial_platform.length < 1 && data.experimented_platform.length < 1  || !data.why_work )
+                else if(data.commercial_platform.length < 1 && data.experimented_platform.length < 1  || !data.why_work || !data.commercial_platform.length || !data.experimented_platform.length )
                 {
                     this.router.navigate(['/resume']);
                 }
                 //console.log(data.experience_roles.length);
-                else if(data.experience_roles.length < 1  &&  !data.current_salary )
+                else if(data.experience_roles.length < 1  &&  !data.current_salary || !data.experience_roles.length )
                 {
                         this.router.navigate(['/experience']);
                 }
+                else if(data.history.length < 1 || !data.history.length )
+                {
+                    this.dataservice.changeMessage("Please enter atleast one work history record");
+                    this.router.navigate(['/experience']);              
+                }
+                    
+                else if(data.education.length < 1 || !data.education.length )
+                {
+                    this.dataservice.changeMessage("Please enter atleast one education record");
+                    this.router.navigate(['/experience']);
+                    
+                }
+                    
                 else 
                 {
+                    this.id = data._creator._id;
                     this.first_name=data.first_name;
                     this.last_name =data.last_name;
                     this.nationality = data.nationality;

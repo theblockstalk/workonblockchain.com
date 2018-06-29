@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
    login(loginForm: NgForm) 
     {
-     this.message='';
+        this.message='';
         this.type='candidate';
        
         if(this.credentials.email && this.credentials.password)
@@ -74,7 +74,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                 {
                     
                    //this.router.navigateByUrl('/company_profile');   
-                    window.location.href = '/company_profile';
+                    //window.location.href = '/company_profile';
+                    
+                    window.location.href = '/candidate-search';
                     
                 }
                 if(user.type == 'candidate')
@@ -85,6 +87,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               
                     
                 }
+                
                 if(user.error)
                 {
                     this.dataservice.changeMessage(user.error);
@@ -143,7 +146,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                 if(user)
                 {
                   
-                 this.router.navigate(['/candidate_profile']);
+                 //this.router.navigate(['/candidate_profile']);
+                    window.location.href = '/candidate_profile';
+
               
                     
                 }
@@ -164,7 +169,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                     {
                         localStorage.setItem('currentUser', JSON.stringify(data));
                         //localStorage.removeItem('userInfo');
-                        this.router.navigate(['/about']);
+                        //this.router.navigate(['/about']);
+                        window.location.href = '/about';
+
                     }
                   },
                   error => {
@@ -216,7 +223,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                           if(user)
                           {
                   
-                            this.router.navigate(['/candidate_profile']);
+                            //this.router.navigate(['/candidate_profile']);
+                            window.location.href = '/candidate_profile';
 
                           }
                           else
@@ -235,7 +243,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                             {
                                 localStorage.setItem('currentUser', JSON.stringify(data));
                                 //localStorage.removeItem('userInfo');
-                                this.router.navigate(['/about']);
+                                //this.router.navigate(['/about']);
+                                window.location.href = '/about';
                             }
                             },
                             error => {
@@ -253,7 +262,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                     }
                     else
                     {
-                    this.router.navigate(['/login']);
+                        this.router.navigate(['/login']);
                     }
                 },
                 error: (err) => {

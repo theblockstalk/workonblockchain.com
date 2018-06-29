@@ -15,15 +15,20 @@ export class VerifyEmailComponent implements OnInit {
   constructor( private route: ActivatedRoute,
         private router: Router,
         private authenticationService: UserService,private dataservice: DataService) {
-          this.hash = route.snapshot.params['email_hash'];
-          console.log(this.hash);
+          /*this.hash = route.snapshot.params['email_hash'];
+          console.log(this.hash);*/
+             this.route.queryParams.subscribe(params => 
+             {
+                 this.hash = params['email_hash'];
+                 console.log(this.hash); // Print the parameter to the console. 
+            });
          }
 
   ngOnInit() 
   {
 
   		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(this.currentUser);
+      //console.log(this.currentUser);
        
      
 
@@ -36,24 +41,23 @@ export class VerifyEmailComponent implements OnInit {
                     {
                         if(!this.currentUser)
                         {
-                            /*this.navigationExtras = 
-                            {
-                              queryParams: {
-                                "msg": "Email Verified Please Login to continure"
-                              }
-                            };*/
-                            this.dataservice.changeMessage("Email Verified please login to continue");
+                            this.dataservice.changeMessage(data['msg']);
                             this.router.navigate(['/login']);
                         }
 
                         else
                         {
-                      
-                            this.router.navigate(["/home"]);
-                       
+                            //this.dataservice.changeMessage(data['msg']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/home"]);                   
                         }
-                               
                     }
+                    
+                   /* else
+                    { 
+                       
+                             
+                     }*/
                     
                     
                     
@@ -61,6 +65,7 @@ export class VerifyEmailComponent implements OnInit {
                 },
                 error => 
                 {
+                    console.log("error");
                   this.dataservice.changeMessage(error);
                 	 this.router.navigate(['/login']);
                 });

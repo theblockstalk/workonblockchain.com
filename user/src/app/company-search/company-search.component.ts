@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import {UserService} from '../user.service';
+import {NgForm} from '@angular/forms';
+import { Select2OptionData } from 'ng2-select2';
+import {User} from '../Model/user';
+import { Router, ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-company-search',
@@ -6,8 +12,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./company-search.component.css']
 })
 export class CompanySearchComponent implements OnInit {
-  language;commercially_worked=[];commercial_expYear=[];referringData;value;selectedValue;
-  constructor() { }
+   currentUser: User;
+  log;info;roleChange;options2;length;page;searchWord;
+    credentials: any = {};job_title;
+     public rolesData: Array<Select2OptionData>;
+    public blockchainData : Array<Select2OptionData>;
+  public options: Select2Options;
+  public value;
+  public current: string;
+  constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
     
   language_opt=
     [
@@ -28,8 +41,8 @@ export class CompanySearchComponent implements OnInit {
 
     ]
     
-    
-    commercially=
+     
+  commercially=
   [ 
     {name:'Bitcoin', value:'Bitcoin', checked:false},
     {name:'Ethereum', value:'Ethereum', checked:false},
@@ -56,105 +69,366 @@ export class CompanySearchComponent implements OnInit {
     
   ]
     
-     exp_year=
+  
+  cities = 
   [
-    {name:'0-1', value:'0-1', checked:false},
-    {name:'1-2', value:'1-2', checked:false},
-    {name:'2-4', value:'2-4', checked:false},
-    {name:'4-6', value:'4-6', checked:false},
-    {name:'6+', value:'6+', checked:false}
+    {country_code:'000' , name:'Remote', value:'remote', checked:false},
+    {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
+    {country_code:'001' ,name:'London', value:'London', checked:false}, 
+    {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
+    {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
+    {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
+    {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
+    {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
+    {country_code: '002' ,name:'New York', value:'New York', checked:false},
+    {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
+    {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
+    {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
+    {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
+    {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
+    {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
+    {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
+    {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
+    {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
+    {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
+    
   ]
 
+    
+  currency=
+  [
+      "£ GBP" ,"€ EUR" , "$ USD"
+  ]
+    
+  month= 
+  [
+       "Now","1 month","2 months","3 months","Longer than 3 months"
+  ]
+  
+  job_type = ["Part Time", "Full Time"];
 
-  ngOnInit() {
+
+  ngOnInit() 
+  {
+      this.length='';
+      this.log='';
+      this.selectedObj=-1;
+      this.countryChange=-1;   
+      this.currencyChange= -1;
+      this.availabilityChange=-1;
+      this.rolesData = 
+       [
+            {id:'Backend Developer', text:'Backend Developer'},
+            {id:'Frontend Developer', text:'Frontend Developer'},
+            {id:'UI Developer', text:'UI Developer'},
+            {id:'UX Designer', text:'UX Designer'},
+            {id:'Fullstack Developer', text:'Fullstack Developer'},
+            {id:'Blockchain Developer', text:'Blockchain Developer'},
+            {id:'Smart Contract Developer', text:'Smart Contract Developer'},
+            {id:'Architect', text:'Architect'},
+            {id:'DevOps', text:'DevOps'},
+            {id:'Software Tester', text:'Software Tester'},
+            {id:'CTO', text:'CTO'},
+            {id:'Technical Lead', text:'Technical Lead'},
+            {id:'Product Manager', text:'Product Manager'},
+            {id:'Intern Developer', text:'Intern Developer'},
+            {id:'Researcher ', text:'Researcher '},
+      ];
+      
+    this.blockchainData =
+    [
+            {id:'Bitcoin', text:'Bitcoin'},
+            {id:'Ethereum', text:'Ethereum'},
+            {id:'Ripple', text:'Ripple'},
+            {id:'Stellar', text:'Stellar'},
+            {id:'Hyperledger Fabric', text:'Hyperledger Fabric'},
+            {id:'Hyperledger Sawtooth', text:'Hyperledger Sawtooth'},
+            {id:'Quorum', text:'Quorum'},
+            {id:'Corda', text:'Corda'},
+            {id:'EOS', text:'EOS'},
+            {id:'NEO', text:'NEO'},
+            {id:'Waves', text:'Waves'},
+            {id:'Steem', text:'Steem'},
+            {id:'Lisk', text:'Lisk'},
+            {id:'Quantum', text:'Quantum'},
+            {id:'Tezos', text:'Tezos'},
+            {id:'Cardano', text:'Cardano'},
+            {id:'Litecoin', text:'Litecoin'},
+            {id:'Monero', text:'Monero'},
+            {id:'ZCash', text:'ZCash'},
+            {id:'IOTA', text:'IOTA'},
+            {id:'NEM', text:'NEM'},
+            {id:'NXT', text:'NXT'},
+            {id:'Dash', text:'Dash'},
+            {id:'Doge', text:'Doge'},
+    ]
+
+    this.options = {
+      multiple: true,
+      placeholder: 'Position' 
+    }
+      
+      this.options2 = {
+      multiple: true,
+      placeholder: 'Blockchain experience' 
+    } 
+    
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if(!this.currentUser)
+      {
+          this.router.navigate(['/login']);
+      }
+      if(this.currentUser && this.currentUser.type == 'company')
+      {
+            this.getVerrifiedCandidate();
+        }
+      else
+       {
+           this.router.navigate(['/not_found']);
+       }
   }
 
-    onLanguageSearch(e)
-    {
-        console.log(e.target.value);    
-    }
-    
-    oncommerciallyOptions(obj)
-   {
-    
-   let updateItem = this.commercially_worked.find(this.findIndexToUpdate, obj.value);
-      let index = this.commercially_worked.indexOf(updateItem);
-      if(index > -1)
-      {
-        this.commercially_worked.splice(index, 1);
-          let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'platform_name',  obj.value);
-       //console.log(updateItem);
-      let index2 = this.commercial_expYear.indexOf(updateItem2);
+  rolesItems;
+  positionchanged(data) 
+  {
+      console.log("position");
+      this.rolesItems = data.value;    
+      this.searchdata('roles' , this.rolesItems);  
+  }
 
-      if(index2 > -1)
-      {
-          
-        this.commercial_expYear.splice(index2, 1);
-          }
-      }
-      else
-      {
-        obj.checked =true;
-        this.commercially_worked.push(obj);
-      }
-
-      
+  blockchainItems;
+  blockchainchanged(data)
+  {
+    console.log("blockchain"); 
+      this.blockchainItems = data.value; 
+       this.searchdata('blockchain' , this.blockchainItems);
+  
    }
     
-    findIndexToUpdate(obj) 
-    { 
-        return obj.value === this;
-    }
-    
-     findObjectByKey(array, key, value) 
+    selectedObj;countryChange;positionChange;availabilityChange;blockchainChange;salary;currencyChange;
+    search_result=[];
+    searchdata(key , value)
     {
-      // console.log(array.length);
-        for (var i = 0; i < array.length; i++) 
-        {
-        // console.log(array[i][key]);
-            if (array[i][key] === value) 
-            {
-                // console.log( array[i]);
-                return array[i];
-            }
+        this.length =0; 
        
-          }
-        return null;
+        if(!this.select_value && !this.selecteddd &&!this.rolesItems && !this.salary && !this.blockchainItems && this.selectedObj === -1 &&  this.countryChange === -1 
+        &&  this.currencyChange === -1 &&  this.availabilityChange ===-1 )
+        {     
+        
+            console.log("iffffffff"); 
+             this.getVerrifiedCandidate();
+        }
+       
+        
+        else
+        { 
+
+            console.log("else");
+            this.authenticationService.filterSearch(this.selectedObj , this.countryChange , this.rolesItems ,this.blockchainItems, this.availabilityChange, this.salary , this.currencyChange )
+            .subscribe(
+                data => 
+                {
+                    console.log(data);
+                    
+                    if(data.error)
+                    {
+                       // console.log(this.info);
+                        this.length='';
+                        this.log = data.error;
+                        this.info='';
+                        this.page='';
+                        
+
+                    }
+                    else
+                    {
+                         //console.log(this.log);
+                        
+                        this.info = data; 
+                        for(let res of data)
+                        {
+                            if(res.first_name && res.roles && res.why_work && res.experience_roles)
+                            {
+                                //this.search_result.push(res);
+                                  this.length++;
+                            }
+                            
+                            //console.log(this.search_result.length);
+                        }
+                        //this.length = data.length;
+                        if(this.length> 0 )
+                        {
+                            //this.length = this.search_result.length;
+                             this.log='';
+                        }
+                        else
+                        {
+                            this.log= 'Not Found Any Data';
+                        }
+                       // this.page = data.length; 
+                        this.page =this.length;   
+                        console.log(this.length);                   
+                    }
+                            
+                },
+                error => 
+                {
+                  
+                });
+            
+        }
+        
+        
+    }
+    select_value;selecteddd;
+    reset()
+    {
+        console.log("reset");
+        this.selectedObj=-1;
+        this.countryChange=-1;
+        this.rolesItems='';
+        this.salary='';
+        this.currencyChange= -1;
+        this.availabilityChange=-1;
+        this.blockchainItems='';
+        this.select_value ='';
+        this.selecteddd = '';
+        //this.positionchanged(this.select_value);
+        this.getVerrifiedCandidate();
+       
     }
     
-     onComExpYearOptions(e, value)
-   {
-      this.selectedValue = e.target.value;
-      /*this.value=value;
-     this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
-      this.commercial_expYear.push(this.referringData); */
-     
-        let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
-       //console.log(updateItem);
-      let index = this.commercial_expYear.indexOf(updateItem);
+    //verify_candidate=[];
+    getVerrifiedCandidate()
+    {     
+        this.length=0;
+          this.authenticationService.getVerrifiedCandidate()
+            .subscribe(
+                data => 
+                {
+                  //console.log(data);
+                   
+                    if(data.error)
+                    {
+                        
+                        this.log = data.error;
+                        this.page='';
+                        
+                    }   
+                    else
+                    {
+                        this.info = data;
+                        console.log(this.info);
+                        for(let res of data)
+                        {
+                            if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
+                             && res.commercial_platform && res.interest_area  && res.country )
+                            {
+                                this.length++;
+                            }
+                            //console.log(this.verify_candidate.length);
+                        }
+                        
+                         if(this.length> 0 )
+                         {
+                             this.page =this.length;
+                             this.log='';
+                             console.log(this.page);
+                             console.log(this.length);
+                         }
+                         else
+                         {
+                            this.log= 'Not Found Any Data';
+                        
+                            
+                         }
+                         this.length = '';
+                        //this.log='';
+                        
 
-      if(index > -1)
-      {
-          
-        this.commercial_expYear.splice(index, 1);
-        this.value=value;
-        this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
-      this.commercial_expYear.push(this.referringData);
-        //console.log(this.LangexpYear); 
-        
-      }
-      else
-      {   
-      //console.log("not exists");
-        this.value=value;
-       this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
-      this.commercial_expYear.push(this.referringData);
-        //console.log(this.LangexpYear); 
-        
-      }
-       
-   }
+                       
+                    }
+                 
+                },
+                error => 
+                {
+                  
+                });
+    }
+    
+    onSearchWord(f: NgForm)
+    {
+        //console.log(f.value.word);
+         this.authenticationService.searchByWord(f.value.word)
+            .subscribe(
+                data => 
+                {
+                    //console.log(data);
+                    
+                     if(data.error)
+                    {
+                      
+                        this.length='';
+                        this.log = data.error;
+                        this.info='';
+                        this.page='';
+                    }
+                    else
+                    {
+                        // console.log(this.log);
+                        this.info = data;
+                        
+                        this.length = data.length;
+                        this.page = data.length;                      
+                        this.log='';
+                    }
+                            
+                },
+                error => 
+                {
+                  
+                });
+    }
+	user_id;user_name;
+	onSubmit(val) {
+		console.log(val)
+		this.user_id =val;
+		this.user_name = val;
+	}
 
+	date_of_joining;
+	msg_tag;
+	is_company_reply = 0;
+	msg_body;
+	job_offer_log;
+    send_job_offer(msgForm : NgForm){
+		console.log("Used ID: " + this.user_id.id);
+        console.log("Name: " + this.user_id.name);
+		console.log(this.credentials);
+        if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
+            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            this.date_of_joining = '10-07-2018';
+            this.msg_tag = 'job_offer';
+            this.is_company_reply = 0;
+            this.msg_body = this.credentials.job_desc;
+            this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.currentUser.email,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
+                .subscribe(
+                    data => {
+                        console.log(data);
+                        this.job_offer_log = 'Message sent';
+                    },
+                    error => {
+                        console.log('error');
+                        console.log(error);
+                        //this.log = error;
+                    }
+                );
+        }
+        else{
+            this.job_offer_log = 'Please enter all info';
+        }
+    }
 
 
 }

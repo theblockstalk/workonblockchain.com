@@ -46,10 +46,15 @@ router.put('/update_company_profile/:_id' , update_company_profile);
 //router.put('/skills_search' , skills_search);
 
 //////////filters functions/////////////
-router.post('/search_skill' , search_skill);
+/*router.post('/search_skill' , search_skill);
 router.post('/search_location', search_location);
 router.post('/search_position', search_position);
+router.post('/search_blockchain' , search_blockchain);
 router.post('/search_salary', search_salary);
+router.post('/search_availibility', search_availibility);*/
+router.post('/search_word', search_word);
+router.post('/filter', filter);
+router.get('/verified_candidate', verified_candidate);
 
 //////referral and chat routes////
 router.post('/send_refreal',refreal_email_send);
@@ -58,6 +63,9 @@ router.post('/get_candidate', get_candidate);
 router.post('/insert_message', insert_message);
 router.post('/get_messages', get_messages);
 router.post('/get_user_messages', get_user_messages);
+
+///////admin functions//////////////////////////////////
+router.put('/admin_role', admin_role);
 
 module.exports = router;
 
@@ -92,6 +100,8 @@ function emailVerify(req,res)
     //console.log(req.params.token);
      userService.emailVerify(req.params.email_hash).then(function (err, data) 
     {
+    	 //console.log(data);
+    	 console.log(err);
         if (data) 
         {
             res.json(data);
@@ -108,7 +118,7 @@ function emailVerify(req,res)
 ///////////forgot_password////////////////////////////
 function forgot_password(req,res)
 {
-    console.log(req.params.email);
+    //console.log(req.params.email);
      userService.forgot_password(req.params.email).then(function (err, data) 
     {
         if (data) 
@@ -130,7 +140,7 @@ function forgot_password(req,res)
 ///////////reset_password////////////////////////////
 function reset_password(req,res)
 {
-    console.log(req.params.hash);
+   // console.log(req.params.hash);
      userService.reset_password(req.params.hash,req.body).then(function (err, data) 
     {
         if (data) 
@@ -530,6 +540,8 @@ function update_company_profile(req,res)
 function search_skill(req,res)
 {
     //console.log(req.body.search);
+	 // console.log(req.body.search);
+
     userService.search_skill(req.body.search).then(function (err, data) 
     {
         if (data) 
@@ -549,7 +561,7 @@ function search_skill(req,res)
 
 function search_location(req,res)
 {
-    //console.log(req.body.search);
+  
     userService.search_location(req.body.search).then(function (err, data) 
     {
         if (data) 
@@ -587,6 +599,25 @@ function search_position(req,res)
     });
 }
 
+function search_blockchain(req,res)
+{
+	 userService.search_blockchain(req.body.search).then(function (err, data) 
+			    {
+			        if (data) 
+			        {
+			            res.json(data);
+			        } 
+			        else 
+			        {  
+			           res.send(err);
+			        }
+			    })
+			    .catch(function (err) 
+			    {
+			        res.json({error: err});
+			    });
+}
+
 function search_salary(req,res)
 {
     //console.log(req.body.search);
@@ -606,6 +637,85 @@ function search_salary(req,res)
         res.json({error: err});
     });
 }
+
+function search_availibility(req,res)
+{
+	userService.search_availibility(req.body.search).then(function (err, data) 
+	{
+		if (data) 
+		{
+			res.json(data);
+		} 
+		else 
+		{  
+			res.send(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function search_word(req,res)
+{
+	userService.search_word(req.body.search).then(function (err, data) 
+	{
+		if (data) 
+		{
+			res.json(data);
+		} 
+		else 
+		{  
+			res.send(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function filter(req,res)
+{  
+	userService.filter(req.body).then(function (err, data) 
+			{
+				if (data) 
+				{
+					res.json(data);
+				} 
+				else 
+				{  
+					res.send(err);
+				}
+			})
+			.catch(function (err) 
+			{
+				res.json({error: err});
+			});
+}
+
+function verified_candidate(req,res)
+{
+	userService.verified_candidate().then(function (err, data) 
+	{
+		if (data) 
+		{
+			res.json(data);
+		} 
+		else 
+		{  
+			res.send(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+
+}
+
+
 
 /**********filters function end*******************/
 
@@ -717,3 +827,29 @@ function get_user_messages(req, res)
         res.status(400).send(err);
     });
 }
+
+
+/**************admin functions************************************/
+
+function admin_role(req,res)
+{
+	 userService.admin_role(req.body).then(function (data) 
+	 {
+		 if (data) 
+		 {
+			  res.send(data);
+	     } 
+		 else 
+	     {
+			  res.sendStatus(404);
+		 }
+	})
+	.catch(function (err) 
+	{
+		res.status(400).send(err);
+	});
+}
+
+
+
+/*********end admin functions************************************/

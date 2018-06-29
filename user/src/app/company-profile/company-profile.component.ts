@@ -44,7 +44,7 @@ export class CompanyProfileComponent implements OnInit {
       {
           this.router.navigate(['/login']);
       }
-      else
+      if(this.currentUser && this.currentUser.type == 'company')
       {
            this.authenticationService.getCurrentCompany(this.currentUser._id)
             .subscribe(
@@ -84,6 +84,10 @@ export class CompanyProfileComponent implements OnInit {
                   
                 });
       }
+      else
+       {
+           this.router.navigate(['/not_found']);
+       }
   }
       
   search(searchForm: NgForm)
