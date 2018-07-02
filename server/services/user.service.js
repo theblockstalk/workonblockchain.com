@@ -64,11 +64,13 @@ service.get_messages = get_messages;
 service.get_user_messages = get_user_messages;
 
 ////////admin functions/////////////////////////
-service.admin_role=admin_role;
+service.admin_role = admin_role;
+service.approve_users = approve_users;
+service.search_by_name = search_by_name;
 
 module.exports = service;
 
-var emails = ['gmail.com' , 'hotmail.com.com' , 'yahoo.com'];
+var emails = ['gmail.com' , 'hotmail.com' , 'yahoo.com'];
 
 /***************authentication functions implementation******************/
 
@@ -1805,5 +1807,54 @@ function admin_role(data)
 	return deferred.promise;
 	
 }
+
+
+////////////////make user active and inactive/////////////
+
+function approve_users(_id , data)
+{
+	var deferred = Q.defer();
+	//console.log(data.is_approve);
+	 users.findOne({ _id: _id}, function (err, result) 
+	 {
+	      if (err) 
+			  deferred.reject(err.name + ': ' + err.message);
+	      
+	      if(result)
+	    	  admin_approval(result._id);
+	    	  
+		  else   
+			  deferred.reject('Email Not Found');
+
+			        
+	});
+			 
+	function admin_approval(_id) 
+	{
+		//console.log(_id);
+		var set = 
+		{
+				is_approved: data.is_approve,
+			 
+		};
+		users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
+		{
+			if (err) 
+			   deferred.reject(err.name + ': ' + err.message);
+			else
+			   deferred.resolve(set);
+		});
+	}
+	
+	return deferred.promise;
+}
+
+
+function search_by_name(data)
+{
+	console.log(data);
+}
+
+//////////////////admin can search candidate by name/////////////////
 
 /**************end admin functions****************************/

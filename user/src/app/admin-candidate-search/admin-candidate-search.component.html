@@ -146,12 +146,23 @@
 					    </div>
 
 						<div class = "ofr_btn">
-						<input type="text" name="id" [ngModel]="data._creator.is_verify">
-							<a (click)="approveClick()" class = "btn btn_descp" *ngIf = "data._creator.is_verify ===1" >Approve</a>
-							<a  class = "btn btn_descp" *ngIf = "data._creator.is_verify === 0" disabled>Approve</a>
-							
+												
+						<form #approve_form="ngForm" >
+								
+								<input type="hidden" name="name"  [ngModel]="data.first_name">
+								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
+								<input type="hidden" name="id" [ngModel]="data._creator._id">
+								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
+								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
+								
+								<div class="submit-button">						
+									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Active</button>
+									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Inactive</button>
+									<button type="submit" class = "btn btn_descp" *ngIf = "data._creator.is_verify ===0" disabled>Active</button>
+									
+								</div>
+							</form>
 						</div>
-
 				      </div>
 
 				      <div class="panel-body">

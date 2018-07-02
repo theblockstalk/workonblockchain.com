@@ -14,7 +14,7 @@ export class UserService {
 
     getAll() 
     {
-        return this.http.get<User[]>(URL+'users');
+        return this.http.get<any>(URL+'users');
     }
  
     getById(_id: string) 
@@ -337,8 +337,8 @@ export class UserService {
                 }
             });
     }
-	
-	getCandidate(type: string) 
+    
+    getCandidate(type: string) 
     {
         return this.http.post<any>(URL+'users/get_candidate', {type:type}) .map(data => {
             return data
@@ -349,22 +349,22 @@ export class UserService {
     {
         return this.http.get<any>(URL+'users/current_company/' + _id);
     }
-	
-	insertMessage(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number) 
+    
+    insertMessage(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number) 
     {
         return this.http.post<any>(URL+'users/insert_message', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply}) .map(data => {
             return data
         });
     }
-	
-	get_user_messages(receiver_id: string,sender_id: string) 
+    
+    get_user_messages(receiver_id: string,sender_id: string) 
     {
         return this.http.post<any>(URL+'users/get_messages', {receiver_id:receiver_id,sender_id:sender_id}) .map(data => {
             return data
         });
     }
-	
-	get_user_messages_only(id: string) 
+    
+    get_user_messages_only(id: string) 
     {
         return this.http.post<any>(URL+'users/get_user_messages', {id:id}) .map(data => {
             return data
@@ -513,4 +513,20 @@ export class UserService {
          
     }
     
+    //////////////call admin functions//////////////////
+    aprrove_user(user_id:string , detail :number )
+    {
+        //console.log(user_id);
+       // console.log(detail);
+        return this.http.put<any>(URL+'users/approve/' + user_id, {is_approve : detail})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+    } 
 }
