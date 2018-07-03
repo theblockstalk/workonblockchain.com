@@ -4,6 +4,8 @@ import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
+//const URL = 'http://workonblockchain.mwancloud.com:4000/';
+const URL = 'http://localhost:4000/';
 
 @Component({
   selector: 'app-chat',
@@ -40,8 +42,19 @@ export class ChatComponent implements OnInit {
 	show_accpet_reject = 0;
   constructor(
 	private authenticationService: UserService,
-	private fb: FormBuilder
-  ) { }
+	private fb: FormBuilder,
+	private el: ElementRef,
+	private http: HttpClient
+  ) {
+	 this.createForm();
+	  }
+	  
+	createForm() {
+		this.form = this.fb.group({
+			name: ['', Validators.required],
+			avatar: null
+		});
+	}
 
   ngOnInit() {
 	  this.count=0;
@@ -370,23 +383,56 @@ export class ChatComponent implements OnInit {
 	    //});
 	}
 	
-	upload_image(event){
-		/*console.log('upload');
+	fileToUpload: File = null;
+	upload_file(files: FileList){//(event){
+		this.fileToUpload = files.item(0);
+		//let formData = new FormData();
+		//formData.append('file', this.fileToUpload,this.fileToUpload.name);
+		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+		console.log(this.fileToUpload);
+		this.http.post(URL+'users/image/'+this.currentUser._creator, this.fileToUpload).map((res) => res).subscribe(                
+		(success) => 
+		{
+		  console.log(success);
+		},
+		(error) => console.log(error))
+		/*this.http.post(URL+'users/upload_chat_file/',{filename:this.fileToUpload.name}).map((res) => res).subscribe(                
+		(success) => 
+		{
+		  console.log(success);
+		},
+		(error) => console.log(error))
+		this.authenticationService.upload_file(this.fileToUpload.name)
+		.subscribe(
+			data => {
+				console.log(data);
+			},
+			error => {
+				console.log('error');
+				console.log(error);
+				//this.log = error;
+			}
+		);*/
+		/*let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+        let fileCount: number = inputEl.files.length;
+		console.log(inputEl.files);
+		console.log('upload');
 		this.credentials.gender= event.target.value;
 		console.log(this.credentials.gender);*/
-		let reader = new FileReader();
-    if(event.target.files && event.target.files.length > 0) {
-      let file = event.target.files[0];
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.form.get('avatar').setValue({
-          filename: file.name,
-          filetype: file.type,
-          value: reader.result.split(',')[1]
-        })
-      };
-	  console.log(file);
-    }
+		/*let reader = new FileReader();
+		if(event.target.files && event.target.files.length > 0) {
+			let file = event.target.files[0];
+			this.form.get('avatar').setValue(file);
+			reader.readAsDataURL(file);
+			reader.onload = () => {
+				this.form.get('avatar').setValue({
+					filename: file.name,
+					filetype: file.type,
+					value: reader.result.split(',')[1]
+				})
+			};
+			console.log(file);
+		}*/
 	}
 
 }

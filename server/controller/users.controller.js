@@ -63,6 +63,7 @@ router.post('/get_candidate', get_candidate);
 router.post('/insert_message', insert_message);
 router.post('/get_messages', get_messages);
 router.post('/get_user_messages', get_user_messages);
+router.post('/upload_chat_file', upload_chat_file);
 
 ///////admin functions//////////////////////////////////
 router.put('/admin_role', admin_role);
@@ -328,6 +329,7 @@ function image(req, res)
         }
         else
         {
+			res.json('done');
             var path = req.file.filename;
             userService.save_image(path , req.params._id).then(function (err, about) 
             {
@@ -343,7 +345,7 @@ function image(req, res)
             .catch(function (err) 
             {
                 res.json({error: err});
-            });  
+            });
         }
 
     })    
@@ -826,6 +828,22 @@ function get_user_messages(req, res)
     {
         res.status(400).send(err);
     });
+}
+
+///// file upload for chat ///////////////////
+
+function upload_chat_file(req, res) 
+{
+	console.log(req.body);
+    upload(req, res, function (err){ 
+		if(err){
+			console.log(err);
+		}
+		else{
+			console.log('done');
+			res.json('done');
+		}
+    })
 }
 
 

@@ -258,7 +258,7 @@
 												Send
 											</button>
 											<br>
-											<input class = "btn btn-attached" (change)='upload_image($event)' id="avatar" #fileInput style="width: 14%;height: 30%;" ng-model='file' type="file"/>
+											<input id="aa" class = "btn btn-attached" (change)='upload_file($event.target.files)' id="file" #fileInput style="width: 14%;height: 30%;" ng-model='file' type="file"/>
 											
 										</span>
 									</div>
