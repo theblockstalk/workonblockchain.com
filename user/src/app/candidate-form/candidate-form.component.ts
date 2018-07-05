@@ -22,6 +22,7 @@ export class CandidateFormComponent implements OnInit {
     terms;company_terms;
     code;ref_msg;
     refer_by;
+
     credentials: any = {};
     constructor(
         private route: ActivatedRoute,
@@ -29,9 +30,9 @@ export class CandidateFormComponent implements OnInit {
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService
        ) {
         this.code = route.snapshot.params['code'];
+  
         if(this.code){
             console.log('in if');
-            //console.log(this.code);
             this.authenticationService.getByRefrenceCode(this.code)
                 .subscribe(
                     data => {
@@ -47,6 +48,9 @@ export class CandidateFormComponent implements OnInit {
                     }
                 );
         } 
+	}
+ ngOnDestroy() {
+   console.log("ngOndesctroy");
     }
  
     ngOnInit() 

@@ -64,7 +64,14 @@ service.get_candidate=get_candidate;
 service.insert_message = insert_message;
 service.get_messages = get_messages;
 service.get_user_messages = get_user_messages;
+<<<<<<< HEAD
 service.get_chat= get_chat;
+=======
+service.save_chat_file = save_chat_file;
+service.insert_message_job = insert_message_job;
+service.update_job_message = update_job_message;
+
+>>>>>>> bff31d105283cba91cd1d931ff7f7ef69aa64b25
 ////////admin functions/////////////////////////
 service.admin_role = admin_role;
 service.approve_users = approve_users;
@@ -1711,6 +1718,31 @@ function get_candidate(user_type)
 }
 
 function insert_message(data){
+	var current_date = new Date();
+	var day = current_date.getDay();
+	day = day+1;
+	if(day < 10){
+		day = '0'+day;
+	}
+	var month = current_date.getMonth();
+	month = month+1;
+	if(month < 10){
+		month = '0'+month;
+	}
+	var year = current_date.getFullYear();
+	var hours = current_date.getHours();
+	if(hours < 10){
+		hours = '0'+hours;
+	}
+	var minutes = current_date.getMinutes();
+	if(minutes < 10){
+		minutes = '0'+minutes;
+	}
+	var seconds = current_date.getSeconds();
+	if(seconds < 10){
+		seconds = '0'+seconds;
+	}
+	var my_date = day+'/'+month+'/'+year+' '+hours+':'+minutes+':'+seconds;
 	var deferred = Q.defer();
 	let newChat = new chat({
 		sender_id: data.sender_id,
@@ -1724,7 +1756,8 @@ function insert_message(data){
 		msg_tag: data.msg_tag,
 		is_company_reply: data.is_company_reply,
 		job_type: data.job_type,
-		is_read: 0
+		is_read: 0,
+		date_created: my_date
 	});
 
 	newChat.save((err,data)=>
@@ -1789,6 +1822,7 @@ function get_user_messages(id){
 	return deferred.promise;
 }
 
+<<<<<<< HEAD
 function get_chat()
 {
 	 var deferred = Q.defer();  
@@ -1802,6 +1836,141 @@ function get_chat()
 	    });
 
 	    return deferred.promise;
+=======
+function save_chat_file(data){
+	var current_date = new Date();
+	var day = current_date.getDay();
+	day = day+1;
+	if(day < 10){
+		day = '0'+day;
+	}
+	var month = current_date.getMonth();
+	month = month+1;
+	if(month < 10){
+		month = '0'+month;
+	}
+	var year = current_date.getFullYear();
+	var hours = current_date.getHours();
+	if(hours < 10){
+		hours = '0'+hours;
+	}
+	var minutes = current_date.getMinutes();
+	if(minutes < 10){
+		minutes = '0'+minutes;
+	}
+	var seconds = current_date.getSeconds();
+	if(seconds < 10){
+		seconds = '0'+seconds;
+	}
+	var my_date = day+'/'+month+'/'+year+' '+hours+':'+minutes+':'+seconds;
+	var deferred = Q.defer();
+	let newChat = new chat({
+		sender_id: data.sender_id,
+		receiver_id: data.receiver_id,
+		sender_name: data.sender_name,
+		receiver_name: data.receiver_name,
+		message: data.message,
+		job_title: data.job_title,
+		salary: data.salary,
+		date_of_joining: data.date_of_joining,
+		msg_tag: data.msg_tag,
+		is_company_reply: data.is_company_reply,
+		job_type: data.job_type,
+		file_name: data.file_name,
+		is_read: 0,
+		date_created: my_date
+	});
+
+	newChat.save((err,data)=>
+	{
+		if(err){
+			console.log(err);
+			deferred.reject(err.name + ': ' + err.message);
+		}
+		else{
+			console.log('done');
+			deferred.resolve({Success:'Msg sent'});
+		}
+	});
+	return deferred.promise;
+}
+
+function insert_message_job(data){
+	var current_date = new Date();
+	var day = current_date.getDay();
+	day = day+1;
+	if(day < 10){
+		day = '0'+day;
+	}
+	var month = current_date.getMonth();
+	month = month+1;
+	if(month < 10){
+		month = '0'+month;
+	}
+	var year = current_date.getFullYear();
+	var hours = current_date.getHours();
+	if(hours < 10){
+		hours = '0'+hours;
+	}
+	var minutes = current_date.getMinutes();
+	if(minutes < 10){
+		minutes = '0'+minutes;
+	}
+	var seconds = current_date.getSeconds();
+	if(seconds < 10){
+		seconds = '0'+seconds;
+	}
+	var my_date = day+'/'+month+'/'+year+' '+hours+':'+minutes+':'+seconds;
+	var deferred = Q.defer();
+	let newChat = new chat({
+		sender_id: data.sender_id,
+		receiver_id: data.receiver_id,
+		sender_name: data.sender_name,
+		receiver_name: data.receiver_name,
+		message: data.message,
+		job_title: data.job_title,
+		salary: data.salary,
+		date_of_joining: data.date_of_joining,
+		msg_tag: data.msg_tag,
+		is_company_reply: data.is_company_reply,
+		job_type: data.job_type,
+		file_name: data.file_name,
+		is_job_offered: data.job_offered,
+		is_read: 0,
+		date_created: my_date
+	});
+
+	newChat.save((err,data)=>
+	{
+		if(err){
+			console.log(err);
+			deferred.reject(err.name + ': ' + err.message);
+		}
+		else{
+			console.log('done');
+			deferred.resolve({Success:'Msg sent'});
+		}
+	});
+	return deferred.promise;
+}
+
+function update_job_message(data){
+	var deferred = Q.defer();
+	console.log(data.id);
+		var set = 
+		{
+			 is_job_offered: data.status,
+			 
+		};
+		chat.update({ _id: data.id},{ $set: set }, function (err, doc) 
+		{
+			if (err) 
+			   deferred.reject(err.name + ': ' + err.message);
+			else
+			   deferred.resolve(set);
+		});
+	return deferred.promise;
+>>>>>>> bff31d105283cba91cd1d931ff7f7ef69aa64b25
 }
 
 /******************admin functions****************************/
