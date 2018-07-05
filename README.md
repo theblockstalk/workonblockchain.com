@@ -16,7 +16,7 @@ npm start
 
 Back end API is running on localhost:4200
 
-### Run MongoDB from Windows
+#### Run MongoDB from Windows
 1. Create the following folder C:\data\db
 2. Run command "C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe" --dbpath C:\data
 
