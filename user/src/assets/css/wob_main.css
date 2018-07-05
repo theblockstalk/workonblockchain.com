@@ -1938,15 +1938,17 @@ input[type=checkbox] {
 	position: relative;
     float: right;
     margin-right: 30px;
-    top: 6px;
+    top: -15px;
     font-size: 10px;
+	margin-bottom: 15px;
 }
 
 .chat_company{
 	position: relative;
     float: left;
     margin-left: -10px;
-    top: 6px;
+    top: -15px;
+	margin-bottom: 5px;
     font-size: 10px;
 }
 

@@ -16,7 +16,8 @@
           <div class="tab-content form-contant">
               <div id="home" class="tab-pane fade in active">
                 <h3>Candidate Sign Up</h3>
-                <h4 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h4>
+                <div class="ref_msg">{{ref_msg}}</div>
+				<h4 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h4>
                  <form (submit)="signup_candidate(loginForm)"  #loginForm = ngForm>
                 
                 <div class="form-group">

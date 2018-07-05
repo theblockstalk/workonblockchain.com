@@ -4,8 +4,8 @@ declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
-const URL = 'http://workonblockchain.mwancloud.com:4000/';
-//const URL = 'http://localhost:4000/';
+//const URL = 'http://workonblockchain.mwancloud.com:4000/';
+const URL = 'http://localhost:4000/';
 
 @Component({
   selector: 'app-about',

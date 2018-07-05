@@ -49,11 +49,24 @@ const ChatSchema = mongoose.Schema({
 	{
 		type:String
 	},
+	file_name: 
+	{
+		type:String
+	},
+	is_job_offered: 
+	{
+		type:Number,
+		default:0
+	},
 	is_read: 
 	{
 		type:Number,
 		required:true,
 		default:0
+	},
+	date_created:
+	{
+		type:String
 	}
 });
 const Chat = module.exports = mongoose.model('Chat',ChatSchema);

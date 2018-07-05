@@ -40,6 +40,8 @@ export class ChatComponent implements OnInit {
 	job_offer_log = '';
 	job_type='';
 	show_accpet_reject = 0;
+	is_job_offer = 0;
+	cand_job_offer = 0;
   constructor(
 	private authenticationService: UserService,
 	private fb: FormBuilder,
@@ -266,9 +268,10 @@ export class ChatComponent implements OnInit {
 		  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 		  this.is_company_reply = 1;
 		  this.msg_tag = 'job_offered';
+		  this.is_job_offer = 1;
 		  this.credentials.msg_body = 'We are offering you a job. Details are given below:\n Job Title: '+this.credentials.job_title+' \n Joining Date: ' + this.credentials.start_date + '\n Yearly Base Salary: '+this.credentials.base_salary+' '+this.credentials.currency+'\n Employment Type: '+this.credentials.employment_type;
 		  console.log(this.credentials.msg_body);
-		  this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+		  this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
 			.subscribe(
 				data => {
 					console.log(data);
@@ -291,6 +294,74 @@ export class ChatComponent implements OnInit {
 	  else{
 		  this.job_offer_log = 'Please enter all info';
 	  }
+  }
+  
+  accept_job_offer(msgForm1 : NgForm){
+	  console.log('accepted');
+	  console.log(this.credentials);
+	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	  this.is_company_reply = 1;
+	  this.cand_job_offer = 0;
+	  this.is_job_offer = 2;//2 for accepted
+	  this.msg_tag = 'job_offer_accepted';
+	  this.credentials.msg_body = 'Job offer accepted';
+	  this.authenticationService.update_job_message(this.credentials.job_offer_id,this.is_job_offer)
+		.subscribe(
+			data => {
+				console.log(data);
+				this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
+					.subscribe(
+						data => {
+							console.log(data);
+							this.credentials.msg_body = '';
+						},
+						error => {
+							console.log('error');
+							console.log(error);
+							//this.log = error;
+						}
+					);
+			},
+			error => {
+				console.log('error');
+				console.log(error);
+				//this.log = error;
+			}
+		);
+  }
+  
+  reject_job_offer(msgForm1 : NgForm){
+	  console.log('rejected');
+	  console.log(this.credentials);
+	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	  this.is_company_reply = 1;
+	  this.cand_job_offer = 0;
+	  this.is_job_offer = 3;//3 for rejected
+	  this.msg_tag = 'job_offer_rejected';
+	  this.credentials.msg_body = 'Job offer rejected';
+	  this.authenticationService.update_job_message(this.credentials.job_offer_id,this.is_job_offer)
+		.subscribe(
+			data => {
+				console.log(data);
+				this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
+					.subscribe(
+						data => {
+							console.log(data);
+							this.credentials.msg_body = '';
+						},
+						error => {
+							console.log('error');
+							console.log(error);
+							//this.log = error;
+						}
+					);
+			},
+			error => {
+				console.log('error');
+				console.log(error);
+				//this.log = error;
+			}
+		);
   }
   
   /*send_message_candidate(msgForm1 : NgForm){
@@ -331,6 +402,18 @@ export class ChatComponent implements OnInit {
 					console.log(data['datas']);
 					this.new_msgss = data['datas'];
 					this.job_desc = data['datas'][0];
+					if(this.currentUser.type=='candidate'){
+						this.cand_job_offer = 0;
+						for(var key in data['datas']){
+							if(data['datas'][key].msg_tag == 'job_offered' && data['datas'][key].is_job_offered == 1){
+								this.cand_job_offer = 1;
+								console.log(this.cand_job_offer);
+								this.credentials.job_offer_id = data['datas'][key]._id;
+								console.log(data['datas'][key]._id);
+								console.log('job offered by company');
+							}
+						}
+					}
 					if(data['datas'][1]){
 						if(data['datas'][1].is_company_reply==1){
 							this.company_reply = 1;
@@ -382,57 +465,42 @@ export class ChatComponent implements OnInit {
 			this.credentials.description = '';*/
 	    //});
 	}
-	
-	fileToUpload: File = null;
-	upload_file(files: FileList){//(event){
-		this.fileToUpload = files.item(0);
-		//let formData = new FormData();
-		//formData.append('file', this.fileToUpload,this.fileToUpload.name);
-		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-		console.log(this.fileToUpload);
-		this.http.post(URL+'users/image/'+this.currentUser._creator, this.fileToUpload).map((res) => res).subscribe(                
-		(success) => 
-		{
-		  console.log(success);
-		},
-		(error) => console.log(error))
-		/*this.http.post(URL+'users/upload_chat_file/',{filename:this.fileToUpload.name}).map((res) => res).subscribe(                
-		(success) => 
-		{
-		  console.log(success);
-		},
-		(error) => console.log(error))
-		this.authenticationService.upload_file(this.fileToUpload.name)
-		.subscribe(
-			data => {
-				console.log(data);
+    
+	file_name;
+	upload_file(){
+		console.log("upload file");
+		console.log('rece id: '+this.credentials.id);
+		console.log('rece name: '+this.credentials.email);
+		console.log('current: '+this.currentUser._creator);
+		let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+		let fileCount: number = inputEl.files.length;
+		let formData = new FormData();
+		if (fileCount > 0 ) 
+		{ 
+			formData.append('photo', inputEl.files.item(0));
+			console.log(formData);
+			this.http.post(URL+'users/upload_chat_file/'+this.currentUser._creator,formData).map((res) => res).subscribe(                
+			(success) => 
+			{
+			  console.log(success);
+			  this.file_name = success;
+			  this.msg_tag = 'normal';
+			  this.credentials.msg_body = 'file sent';
+			  this.authenticationService.send_file(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.file_name)
+				.subscribe(
+					data => {
+						console.log(data);
+						this.credentials.msg_body = '';
+					},
+					error => {
+						console.log('error');
+						console.log(error);
+						//this.log = error;
+					}
+				);
 			},
-			error => {
-				console.log('error');
-				console.log(error);
-				//this.log = error;
-			}
-		);*/
-		/*let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-        let fileCount: number = inputEl.files.length;
-		console.log(inputEl.files);
-		console.log('upload');
-		this.credentials.gender= event.target.value;
-		console.log(this.credentials.gender);*/
-		/*let reader = new FileReader();
-		if(event.target.files && event.target.files.length > 0) {
-			let file = event.target.files[0];
-			this.form.get('avatar').setValue(file);
-			reader.readAsDataURL(file);
-			reader.onload = () => {
-				this.form.get('avatar').setValue({
-					filename: file.name,
-					filetype: file.type,
-					value: reader.result.split(',')[1]
-				})
-			};
-			console.log(file);
-		}*/
-	}
+			(error) => console.log(error))
+		}
 
+	}
 }

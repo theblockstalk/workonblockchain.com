@@ -20,13 +20,32 @@ export class CandidateFormComponent implements OnInit,OnDestroy {
      data;result;
      user;googleUser;email;linkedinUser;message;
     terms;company_terms;
+	code;ref_msg;
     
     credentials: any = {};
     constructor(
         private route: ActivatedRoute,
         private router: Router,private dataservice: DataService,
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService
-       ) { }
+       ) {
+		this.code = route.snapshot.params['code'];
+        //console.log(this.code);
+        if(this.code){
+            console.log('in if');
+            this.authenticationService.getByRefrenceCode(this.code)
+                .subscribe(
+                    data => {
+                        console.log(data);
+                        this.ref_msg = data.email+' thinks you should join workonblockchain.com';
+                    },
+                    error => {
+                        console.log('error');
+                        console.log(error);
+                        this.log = error;
+                    }
+                );
+        }
+	}
  ngOnDestroy() {
    console.log("ngOndesctroy");
 

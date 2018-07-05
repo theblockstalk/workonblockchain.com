@@ -191,16 +191,24 @@
 											<p class = "job-description">
 												{{msg.sender_name}}
 												{{msg.message}}
+												<a href="http://localhost/workonblockchain.com/server/uploads/{{msg.file_name}}">{{msg.file_name}}</a>
 											</p>
 										</li>
+										<div class="chat_company">
+											{{msg.date_created}}
+										</div>
 									</ng-container>
 									<ng-template #second>
 										<li class="replies">
 											<p>
 												{{msg.sender_name}}
 												{{msg.message}}
+												<a href="http://localhost/workonblockchain.com/server/uploads/{{msg.file_name}}">{{msg.file_name}}</a>
 											</p>
 										</li>
+										<div class="chat_user">
+											{{msg.date_created}}
+										</div>
 									</ng-template>
 								</div>
 								<li class = "offers_b"></li>
@@ -246,6 +254,30 @@
 								</ng-container>
 								<ng-template #no_offers>
 								</ng-template>
+								<ng-container *ngIf="cand_job_offer == 1;else no_job_offer">
+									<div class = "offers">
+										<form (submit)="accept_job_offer(msgForm)" #msgForm = ngForm style="display:inline;">
+											<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
+											<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
+											<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
+											<input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
+											<span class = "offers_btn">
+												<button type="submit" class = "btn btn_descp">Accept Offer</button>
+											</span>
+										</form>
+										<form (submit)="reject_job_offer(msgForm)" #msgForm = ngForm style="display:inline;">
+											<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
+											<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
+											<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
+											<input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
+											<span class = "offers_btn">
+												<button type="submit" class = "btn btn_descp">Reject Offer</button>
+											</span>
+										</form>
+									</div>
+								</ng-container>
+								<ng-template #no_job_offer>
+								</ng-template>
 								 <form (submit)="send_message(msgForm)" #msgForm = ngForm>
 									<div class="wrap">
 										<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
@@ -258,7 +290,7 @@
 												Send
 											</button>
 											<br>
-											<input id="aa" class = "btn btn-attached" (change)='upload_file($event.target.files)' id="file" #fileInput style="width: 14%;height: 30%;" ng-model='file' type="file"/>
+											<input id="aa" #Image type="file" (change) ="upload_file()"  name="image" style="width: 14%;height: 30%;" ng-model='file'   class="btn btn-attached" />
 											
 										</span>
 									</div>

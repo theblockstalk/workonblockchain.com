@@ -63,7 +63,10 @@ router.post('/get_candidate', get_candidate);
 router.post('/insert_message', insert_message);
 router.post('/get_messages', get_messages);
 router.post('/get_user_messages', get_user_messages);
-router.post('/upload_chat_file', upload_chat_file);
+router.post('/upload_chat_file/:_id', upload_chat_file);
+router.post('/insert_chat_file', insert_chat_file);
+router.post('/insert_message_job', insert_message_job);
+router.post('/update_job_message', update_job_message);
 
 ///////admin functions//////////////////////////////////
 router.put('/admin_role', admin_role);
@@ -182,7 +185,7 @@ function register(req, res)
 
 function getAll(req, res) 
 {
-    userService.getAll().then(function (users) 
+	userService.getAll().then(function (users) 
     {   
         res.send(users);
     })
@@ -834,18 +837,76 @@ function get_user_messages(req, res)
 
 function upload_chat_file(req, res) 
 {
-	console.log(req.body);
-    upload(req, res, function (err){ 
-		if(err){
-			console.log(err);
-		}
-		else{
+	upload(req, res, function (err) 
+    {    
+        if (err) 
+        {
+            return
+        }
+        else
+        {
+			console.log(req.file);
 			console.log('done');
-			res.json('done');
-		}
-    })
+			res.json(req.file.filename);
+        }
+
+    }) 
 }
 
+//inserting chat file in db
+function insert_chat_file(req,res){
+	userService.save_chat_file(req.body).then(function (err, about) 
+	{
+		if (about) 
+		{
+			res.json(about);
+		} 
+		else 
+		{
+			res.json(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function insert_message_job(req,res){
+	userService.insert_message_job(req.body).then(function (err, about) 
+	{
+		if (about) 
+		{
+			res.json(about);
+		} 
+		else 
+		{
+			res.json(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function update_job_message(req,res){
+	userService.update_job_message(req.body).then(function (err, about) 
+	{
+		if (about) 
+		{
+			res.json(about);
+		} 
+		else 
+		{
+			res.json(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
 
 /**************admin functions************************************/
 

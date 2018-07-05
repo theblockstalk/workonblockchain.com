@@ -23,7 +23,7 @@ export class UserService {
     }
     
     getByRefrenceCode(code: string){
-        return this.http.post<any>(URL+'users/get_refrence_code', code) .map(ref_code => {
+        return this.http.post<any>(URL+'users/get_refrence_code', {code:code}) .map(ref_code => {
             return ref_code
         });
     }
@@ -512,5 +512,25 @@ export class UserService {
             });
          
     }
-    
+	
+	send_file(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,file_name:string) 
+    {
+        return this.http.post<any>(URL+'users/insert_chat_file', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,file_name:file_name}) .map(data => {
+            return data
+        });
+    }
+	
+	insert_job_message(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,job_offered:number) 
+    {
+        return this.http.post<any>(URL+'users/insert_message_job', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,job_offered:job_offered}) .map(data => {
+            return data
+        });
+    }
+	
+	update_job_message(id:string,status:number) 
+    {
+        return this.http.post<any>(URL+'users/update_job_message', {id:id,status:status}) .map(data => {
+            return data
+        });
+    }
 }

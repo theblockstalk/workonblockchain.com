@@ -32,13 +32,13 @@ export class LoginComponent implements OnInit, OnDestroy {
         private router: Router,
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService) {
         this.code = route.snapshot.params['code'];
-       // console.log(this.code);
-        if(this.code){
+        // console.log(this.code);
+        /*if(this.code){
             console.log('in if');
             this.authenticationService.getByRefrenceCode(this.code)
                 .subscribe(
                     data => {
-                        console.log('data');
+                        console.log(data);
                         this.ref_msg = data.email+' thinks you should join workonblockchain.com';
                     },
                     error => {
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         this.log = error;
                     }
                 );
-        }
+        }*/
       }
 
   ngOnInit() 
