@@ -1,6 +1,7 @@
 var config = require('config.json');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
+var date = require('date-and-time');
 var bcrypt = require('bcryptjs');
 var Q = require('q');
 var mongo = require('mongoskin');
@@ -34,6 +35,7 @@ service.resume_data = resume_data;
 service.experience_data = experience_data;
 service.save_image = save_image;
 service.update_candidate_profile = update_candidate_profile;
+service.refered_id = refered_id;
 
 /////////////employer functions////////////////
 service.create_employer =create_employer;
@@ -62,11 +64,15 @@ service.get_candidate=get_candidate;
 service.insert_message = insert_message;
 service.get_messages = get_messages;
 service.get_user_messages = get_user_messages;
-
+service.get_chat= get_chat;
 ////////admin functions/////////////////////////
 service.admin_role = admin_role;
 service.approve_users = approve_users;
 service.search_by_name = search_by_name;
+service.admin_candidate_filter = admin_candidate_filter;
+service.admin_search_by_name=admin_search_by_name;
+service.admin_company_filter=admin_company_filter;
+service.getCompanyById = getCompanyById;
 
 module.exports = service;
 
@@ -440,52 +446,7 @@ function getById(_id)
     });
 
     return deferred.promise;
-    /*CandidateProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
-    {
-        if (err) 
-            return handleError(err);
-        else
-        	console.log(result);
-            deferred.resolve(result);
 
-
-    });*/
-    /*users.find({_id: _id }, function (err, data) 			
-    		{
-    				
-    		        if (err) 
-    		            return handleError(err);
-    		        if(data)
-    		        {
-    		       
-    		        	//console.log(array);
-    		        	CandidateProfile.find({
-    		        		$and:[{ "_creator": {$in: array}},{ "country": location  }]
-    		        	}).populate('_creator').exec(function(err, result)
-    		            {
-    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-    		                		        
-    		               if (result == '') 
-    		               {
-    		            	   deferred.reject("Not Found Any Data");
-    		                		         
-    		                } 
-    		                else 
-    		                {
-    		                	deferred.resolve(result)
-    		                }
-    		             });
-    		        	 
-    		        	}
-    		        	
-    		        	else
-    		        	{
-    		        		deferred.reject("Not Found Any Data");
-    		        	}
-
-    		    }); */
-
-    //return deferred.promise;
 }
 
 //////////////////register candidate//////////////////
@@ -493,6 +454,8 @@ function create(userParam)
 {
     var deferred = Q.defer();
     var count=0;
+	
+	var createdDate;  	
     users.findOne({ email: userParam.email }, function (err, user) 
     {
          if (err) 
@@ -515,6 +478,8 @@ function create(userParam)
           {
               is_verify =1;
           }
+          let now = new Date();
+          createdDate= date.format(now, 'DD/MM/YYYY');
           var hashStr = crypto.createHash('md5').update(userParam.email).digest('hex');
           var user_info = {};
           user_info.hash = hashStr;
@@ -539,7 +504,8 @@ function create(userParam)
 			  ref_link: email,
 			  social_type: userParam.social_type,
 			  email_hash: token,
-			  is_verify:is_verify
+			  is_verify:is_verify,
+			  created_date: createdDate,
 		  });
 
           newUser.save((err,user)=>
@@ -590,7 +556,7 @@ function create(userParam)
 ////////////delete any specific candidate from db//////////////////////////////////
 function _delete(_id) {
    var deferred = Q.defer();
-   CandidateProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
+   /*CandidateProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
    {
         if (err) 
             deferred.reject(err.name + ': ' + err.message);
@@ -602,7 +568,23 @@ function _delete(_id) {
                 else 
                     deferred.resolve();
             });
-    }); 
+    }); */
+   
+   EmployerProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
+		   {
+       if (err) 
+           deferred.reject(err.name + ': ' + err.message);
+
+           users.remove({ _id: mongo.helper.toObjectID(_id) }, function (err) 
+           {
+               if (err) 
+                   deferred.reject(err.name + ': ' + err.message);
+               else 
+                   deferred.resolve();
+           });
+   }); 
+   
+   
   
     return deferred.promise;
 }
@@ -861,6 +843,43 @@ function update_candidate_profile(_id,userParam)
 	  return deferred.promise;
 }
 
+
+//////////enter refered id into db////////////////
+function refered_id(idd , data)
+{
+	 var deferred = Q.defer();
+	
+	//console.log(idd);
+	
+	//console.log(data.info);
+	CandidateProfile.findOne({ _creator: data.info }, function (err, data) 
+		    {
+		console.log(data);
+		        if (err) 
+		            deferred.reject(err.name + ': ' + err.message);
+		        else
+		            updateRefer(data._creator);
+		     });
+		 
+		    function updateRefer(_id) 
+		    {
+		        var set = 
+		        {
+		        		refered_id: idd
+		        };
+		 
+		        users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
+		        {
+		        	console.log(doc);
+		            if (err) 
+		                deferred.reject(err.name + ': ' + err.message);
+		            else
+		                deferred.resolve(set);
+		        });
+		    }
+	 return deferred.promise;
+}
+
 /**************candidate functions implementation end**********************/
 
 /**************employer functions implementation *************************/
@@ -871,7 +890,7 @@ function create_employer(userParam)
 {
     var deferred = Q.defer();
     var count=0;
-   
+    var createdDate;
 
      var str = userParam.email;
     var email_split = str.split('@');
@@ -908,7 +927,8 @@ function create_employer(userParam)
 
     function createEmployer() 
     {
-
+    	let now = new Date();
+    	createdDate= date.format(now, 'DD/MM/YYYY');  	
         var hashStr = crypto.createHash('md5').update(userParam.email).digest('hex');
         var company_info = {};
         company_info.hash = hashStr;
@@ -927,6 +947,7 @@ function create_employer(userParam)
             password: user.password,
             type: userParam.type,
             email_hash: token,
+            created_date: createdDate,
                
         });
 
@@ -1418,7 +1439,7 @@ function filter(params)
    
    var deferred = Q.defer();
 	 
-   users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+   users.find({type : 'candidate' , is_verify :1, is_approved :1   }, function (err, data) 			
    		{
    				
    		        if (err) 
@@ -1514,7 +1535,7 @@ function search_word(word)
 {
 	var deferred = Q.defer();
 	 
-    users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+    users.find({type : 'candidate' , is_verify :1 , is_approved :1 }, function (err, data) 			
     		{
     				
     		        if (err) 
@@ -1562,7 +1583,7 @@ function search_word(word)
 function verified_candidate()
 {
 	var deferred = Q.defer();
-	users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
+	users.find({type : 'candidate' , is_verify :1, is_approved :1 }, function (err, data) 			
 	{
 			
 	        if (err) 
@@ -1650,12 +1671,13 @@ function refreal_email(data){
 function get_refr_code(data){
 	var deferred = Q.defer();
 
-    users.findOne({ ref_code: data.code }, function (err, user) 
+    users.findOne({ ref_link: data.code }, function (err, user) 
     {
         if (err){ 
             deferred.reject(err.name + ': ' + err.message);
 		}
         else{
+        	//console.log(user);
             deferred.resolve(user);
         }
     });
@@ -1767,6 +1789,20 @@ function get_user_messages(id){
 	return deferred.promise;
 }
 
+function get_chat()
+{
+	 var deferred = Q.defer();  
+	    chat.find().exec(function(err, result) 
+	    {
+	        if (err) 
+	            return handleError(err);
+	        else
+	            deferred.resolve(result);
+
+	    });
+
+	    return deferred.promise;
+}
 
 /******************admin functions****************************/
 
@@ -1849,12 +1885,460 @@ function approve_users(_id , data)
 	return deferred.promise;
 }
 
+//////////////////admin can search candidate by name/////////////////
 
-function search_by_name(data)
+function search_by_name(word)
 {
-	console.log(data);
+	var deferred = Q.defer();
+	
+	CandidateProfile.find(
+		{ $or : [  { first_name : {'$regex' : word , $options: 'i'} }, { last_name : {'$regex' : word , $options: 'i'} }]}
+	).populate('_creator').exec(function(err, result)
+    {
+       if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+        		        
+       if (result == '') 
+       {
+    	   deferred.reject("Not Found Any Data");
+        		         
+        } 
+        else 
+        {
+        	deferred.resolve(result)
+        }
+     });
+ 
+    return deferred.promise;
 }
 
-//////////////////admin can search candidate by name/////////////////
+//////////////////admin can search candidate by filter/////////////////
+
+function admin_candidate_filter(data)
+{
+	var query_result = [];
+	var company_rply = [];
+	var deferred = Q.defer();
+	//console.log(data);
+	var arr = data.msg_tags;
+	if(arr)
+	{
+		var picked = arr.find(o => o === 'is_company_reply');
+	}
+	if(picked)
+	{
+		company_rply= [1,0];
+	}
+	//console.log(company_rply);
+	//console.log(data.msg_tags);
+	if(data.is_approve!== -1 && data.msg_tags )
+	{
+		console.log("both true");
+		users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, dataa) 			
+		{
+			//console.log(dataa);
+			if(err)
+				 return handleError(err);
+			if(dataa)
+			{        	
+			   var array2 = [];
+    		   dataa.forEach(function(item) 
+    		   {
+    		       array2.push(item._id );
+    		   });
+			   //console.log(array2);
+			   CandidateProfile.find({"_creator" : {$in : array2}} ).populate('_creator').exec(function(err, result)
+	    	   {
+	    	    	//console.log(result);
+	    	    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	    	    		                		        
+	    	    	if (result) 
+	    	    	{
+	    	    		result.forEach(function(item) 
+	    	    		{
+	    	    			 query_result.push(item );
+	    	    		});
+	    	    		
+	    	    		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
+						{
+			        		if(err)
+			        			return handleError(err);
+			        		if(data)
+			        		{
+			        			//console.log(data);
+			        			var array = [];
+			        		    data.forEach(function(item) 
+			        		    {
+			        		    	array.push(item.receiver_id );
+			        		    });
+	
+			        		    CandidateProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result2)
+			        		    {
+			        		    	//console.log(result);
+			        		    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+			        		    		                		        
+			        		    	if (result2 == '' && dataa == '') 
+			        		    	{
+			        		    		  deferred.reject("Not Found Any Data");
+			        		    		                		         
+			        		    	} 
+			        		    		               
+			        		    	else 
+			        		    	{
+			        		    		 result2.forEach(function(item) 
+			        		    		 {
+			        		    			 query_result.push(item );
+			        		    		 });
+			        		    		console.log(query_result.length);
+			        		    		// var non_duplidated_data = array_unique($query_result, SORT_REGULAR);
+
+			        		    		// var non_duplidated_data = _.uniq(query_result, '_id');
+			        		    		 
+			        		    		 deferred.resolve(query_result);
+			        		    	 }
+			        		      });
+			        		    		        	
+			        					        	//deferred.resolve(data);
+			        		     }
+			        					    	
+						      });
+	    	    		                		         
+	    	    	       } 
+	    	    	       else 
+	    	    	       {
+	    	    		        deferred.resolve(result)
+	    	    		    }
+	    	    	});
+				        	
+				  }
+			        	
+			        	//console.log(data);    	
+			 });
+			      
+		}
+	
+	
+	else if(data.is_approve!== -1)
+	{
+		console.log("is_approve");
+		users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, data) 			
+		{
+			if(err)
+				return handleError(err);
+			if(data=='')
+			{
+				deferred.reject("Not Found Any Data");
+				//console.log(data);    	
+			}
+			else
+			{
+				var array = [];
+	    		data.forEach(function(item) 
+	    		{
+	    		     array.push(item._id );
+	    		});
+	    		//console.log(array);
+	    		CandidateProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
+	    	    {
+	    	    	//console.log(result);
+	    	    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	    	    		                		        
+	    	    	if (result == '') 
+	    	    	{
+	    	    		 deferred.reject("Not Found Any Data");
+	    	    		                		         
+	    	    	} 
+	    	    	else 
+	    	    	{
+	    	    		 deferred.resolve(result)
+	    	    	}
+	    	    });
+				        	
+			}
+				    	
+		});
+	}
+	
+	else if(data.msg_tags)
+	{
+		console.log("msg_tags");
+		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
+		{
+			if(err)
+				return handleError(err);
+			if(data)
+			{
+				        	//console.log(data);
+				var array = [];
+	    		data.forEach(function(item) 
+	    		{
+	    		     array.push(item.receiver_id );
+	    		});
+	    		//console.log(array);
+	    		        	
+	    		CandidateProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
+	    		{
+	    		     //console.log(result);
+	    		     if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	    		                		        
+	    		     if (result == '') 
+	    		     {
+	    		        deferred.reject("Not Found Any Data");
+	    		                		         
+	    		     } 
+	    		     else 
+	    		     {
+	    		         deferred.resolve(result)
+	    		     }
+	    		 });	    		        	
+				        	//deferred.resolve(data);
+				}				    	
+		 });
+	}
+    	 return deferred.promise;
+}
+
+//////////////////admin can search company by name/////////////////
+
+
+function admin_search_by_name(word)
+{
+	var deferred = Q.defer();
+	
+	EmployerProfile.find(
+		{ $or : [  { first_name : {'$regex' : word , $options: 'i' } }, { last_name : {'$regex' : word , $options: 'i'} }]}
+	).populate('_creator').exec(function(err, result)
+    {
+       if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+        		        
+       if (result == '') 
+       {
+    	   deferred.reject("Not Found Any Data");
+        		         
+        } 
+        else 
+        {
+        	deferred.resolve(result)
+        }
+     });
+ 
+    return deferred.promise;
+}
+
+//////////////////admin can search candidate by filter/////////////////
+
+
+function admin_company_filter(data)
+{
+	var deferred = Q.defer();
+	
+	var query_result = [];
+	var company_rply = [];
+	var deferred = Q.defer();
+	//console.log(data);
+	var arr = data.msg_tags;
+	if(arr)
+	{
+		var picked = arr.find(o => o === 'is_company_reply');
+	}
+	if(picked)
+	{
+		company_rply= [1,0];
+	}
+	
+	if(data.is_approve!== -1 && data.msg_tags )
+	{
+		console.log("both true");
+		users.find({type : 'company' , is_approved :data.is_approve }, function (err, dataa) 			
+		{
+
+			if(err)
+				 return handleError(err);
+			if(dataa)
+			{        	
+			   var array2 = [];
+    		   dataa.forEach(function(item) 
+    		   {
+    		       array2.push(item._id );
+    		   });
+			   
+    		   EmployerProfile.find({"_creator" : {$in : array2}} ).populate('_creator').exec(function(err, result)
+	    	   {
+	    	    	
+	    	    	if (err) console.log(err);
+	    	    		                		        
+	    	    	if (result) 
+	    	    	{
+	    	    		result.forEach(function(item) 
+	    	    		{
+	    	    			 query_result.push(item );
+	    	    		});
+	    	    		
+	    	    		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
+						{
+			        		if(err)
+			        			return handleError(err);
+			        		if(data)
+			        		{
+			        			//console.log(data);
+			        			var array = [];
+			        		    data.forEach(function(item) 
+			        		    {
+			        		    	array.push(item.sender_id );
+			        		    });
+	
+			        		    EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result2)
+			        		    {
+			        		    	//console.log(result);
+			        		    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+			        		    		                		        
+			        		    	if (result2 == '' && dataa == '') 
+			        		    	{
+			        		    		  deferred.reject("Not Found Any Data");
+			        		    		                		         
+			        		    	} 
+			        		    		               
+			        		    	else 
+			        		    	{
+			        		    		 result2.forEach(function(item) 
+			        		    		 {
+			        		    			 query_result.push(item );
+			        		    		 });
+			        		    		
+			        		    		 
+			        		    		 deferred.resolve(query_result);
+			        		    	 }
+			        		      });
+			        		    		        	
+			        					        	
+			        		     }
+			        					    	
+						      });
+	    	    		                		         
+	    	    	       } 
+	    	    	       else 
+	    	    	       {
+	    	    		        deferred.resolve(result)
+	    	    		    }
+	    	    	});
+				        	
+				  }
+			        	
+			        	//console.log(data);    	
+			 });
+			      
+		}
+	
+	else if(data.is_approve!== -1)
+	{
+		console.log("is_approve");
+		users.find({type : 'company' , is_approved :data.is_approve }, function (err, data) 			
+		{
+			if(err)
+				return handleError(err);
+			if(data=='')
+			{
+				deferred.reject("Not Found Any Data");
+				//console.log(data);    	
+			}
+			else
+			{
+				var array = [];
+	    		data.forEach(function(item) 
+	    		{
+	    		     array.push(item._id );
+	    		});
+	    		//console.log(array);
+	    		EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
+	    	    {
+	    	    	//console.log(result);
+	    	    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	    	    		                		        
+	    	    	if (result == '') 
+	    	    	{
+	    	    		 deferred.reject("Not Found Any Data");
+	    	    		                		         
+	    	    	} 
+	    	    	else 
+	    	    	{
+	    	    		 deferred.resolve(result)
+	    	    	}
+	    	    });
+				        	
+			}
+				    	
+		});
+	}
+	
+	else if(data.msg_tags)
+	{
+		console.log("msg_tags");
+		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
+		{
+			if(err)
+				return handleError(err);
+			if(data)
+			{
+				        	//console.log(data);
+				var array = [];
+	    		data.forEach(function(item) 
+	    		{
+	    		     array.push(item.sender_id );
+	    		});
+	    		//console.log(array);
+	    		        	
+	    		EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
+	    		{
+	    		     //console.log(result);
+	    		     if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	    		                		        
+	    		     if (result == '') 
+	    		     {
+	    		        deferred.reject("Not Found Any Data");
+	    		                		         
+	    		     } 
+	    		     else 
+	    		     {
+	    		         deferred.resolve(result)
+	    		     }
+	    		 });	    		        	
+				        	//deferred.resolve(data);
+				}				    	
+		 });
+	}
+	
+	return deferred.promise;
+}
+
+/////////////////get company detail/////////////////
+
+
+function getCompanyById(_id) 
+{
+    var deferred = Q.defer();
+
+    EmployerProfile.findById(_id).populate('_creator').exec(function(err, result) 
+    {
+        //console.log(result);
+        if (err) 
+            return handleError(err);
+        if(!result)
+        {
+        	EmployerProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
+            {
+                if (err) 
+                    return handleError(err);
+                else
+                    deferred.resolve(result);
+            });
+        }
+        else
+            deferred.resolve(result);
+
+
+    });
+
+    return deferred.promise;
+
+}
 
 /**************end admin functions****************************/

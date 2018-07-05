@@ -44,6 +44,10 @@ const UserSchema = mongoose.Schema({
 	{
 		type:String,
 	},
+	refered_id:
+	{
+		type:String,
+	},
 	social_type:
 	{
 		type:String
@@ -68,8 +72,11 @@ const UserSchema = mongoose.Schema({
 		type:Number,
 		required:true,
 		default:0
-	}
-	
+	},	
+	created_date:
+	{
+		type:String,
+	}	
 
 });
 const User = module.exports = mongoose.model('User',UserSchema);

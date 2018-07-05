@@ -40,7 +40,11 @@ import { Select2Module } from 'ng2-select2';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-candidate-search.component'; 
+import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-candidate-search.component';
+import { AdminCandidateDetailComponent } from './admin-candidate-detail/admin-candidate-detail.component';
+import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-chat.component';
+import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
+import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component'; 
 
 let config = new AuthServiceConfig([
   {
@@ -68,7 +72,7 @@ const appRoutes: Routes = [
     { path: 'forgot_password', component: ForgotPasswordComponent},
     { path: 'reset_password', component: ResetPasswordComponent},
     { path: 'referral', component: ReferralComponent},
-    { path: 'refer/:code', component: LoginComponent},
+    { path: 'refer/:code', component: CandidateFormComponent},
     { path: 'chat', component: ChatComponent},
     // otherwise redirect to home
     { path: 'company_wizard', component: TermsWizardComponent},
@@ -79,9 +83,13 @@ const appRoutes: Routes = [
     {path : 'edit_company_profile' , component: EditCompanyProfileComponent},
     {path : 'candidate-search' , component: CompanySearchComponent},
     {path : 'candidate-detail' , component: CandidateDetailComponent},
+    //////admin urls////////////////////////////////////////////////////////////////////////
     {path : 'admin-dashboard' , component: AdminDashboardComponent},
     {path : 'admin-candidate-search' , component: AdminCandidateSearchComponent},
-
+    {path : 'admin-candidate-detail' , component: AdminCandidateDetailComponent},
+    {path : 'admin-candidate-chat' , component: AdminDisplayChatComponent},
+    {path : 'admin-company-search' , component: AdminCompanySearchComponent},
+    {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
     { path: '**', redirectTo: '' }
 ];
 
@@ -116,7 +124,11 @@ const appRoutes: Routes = [
     CompanySearchComponent,
     CandidateDetailComponent,
     AdminDashboardComponent,
-    AdminCandidateSearchComponent
+    AdminCandidateSearchComponent,
+    AdminCandidateDetailComponent,
+    AdminDisplayChatComponent,
+    AdminCompanySearchComponent,
+    AdminCompanyDetailComponent
   ],
   imports: [
     BrowserModule,

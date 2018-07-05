@@ -13,24 +13,42 @@ import { DataService } from "../data.service";
   templateUrl: './candidate-form.component.html',
   styleUrls: ['./candidate-form.component.css']
 })
-export class CandidateFormComponent implements OnInit,OnDestroy {
+export class CandidateFormComponent implements OnInit {
     loading = false;
     returnUrl: string;
     
      data;result;
      user;googleUser;email;linkedinUser;message;
     terms;company_terms;
-    
+    code;ref_msg;
+    refer_by;
     credentials: any = {};
     constructor(
         private route: ActivatedRoute,
         private router: Router,private dataservice: DataService,
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService
-       ) { }
- ngOnDestroy() {
-   console.log("ngOndesctroy");
-
+       ) {
+        this.code = route.snapshot.params['code'];
+        if(this.code){
+            console.log('in if');
+            //console.log(this.code);
+            this.authenticationService.getByRefrenceCode(this.code)
+                .subscribe(
+                    data => {
+                        console.log(data);
+                        console.log('data');
+                        this.ref_msg = data.email+' thinks you should join workonblockchain.com';
+                        this.refer_by = data._id;
+                    },
+                    error => {
+                        console.log('error');
+                        console.log(error);
+                        this.log = error;
+                    }
+                );
+        } 
     }
+ 
     ngOnInit() 
     {
         this.dataservice.currentMessage.subscribe(message => this.message = message);
@@ -48,7 +66,7 @@ export class CandidateFormComponent implements OnInit,OnDestroy {
 
           this.credentials.type="candidate";
           this.credentials.social_type='';
-
+        console.log(this.refer_by);
         if(!this.credentials.email)
         {
             this.email_log="can't be blank";
@@ -81,7 +99,8 @@ export class CandidateFormComponent implements OnInit,OnDestroy {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                   
+                    //console.log(data);
                     if(data.error)
                     {
                         this.log = data.error;
@@ -89,10 +108,26 @@ export class CandidateFormComponent implements OnInit,OnDestroy {
 
                     else
                     {
-                        localStorage.setItem('currentUser', JSON.stringify(data));
+                       localStorage.setItem('currentUser', JSON.stringify(data));
+                       //console.log("elseeee");
+                        this.authenticationService.refered_id(this.refer_by , data._creator)
+                        .subscribe(
+                        data => 
+                        {
+                           // console.log(data);
+                            if(data.error)
+                            {
+                                this.log = 'Something getting wrong';
+                            }
+                            else
+                            {
+                                 window.location.href = '/about';
+                            }
+                            
+                        });
                         //localStorage.removeItem('userInfo');
                         //this.router.navigate(['/about']);
-                        window.location.href = '/about';
+                       // window.location.href = '/about';
                     }
                 },
                 error => 

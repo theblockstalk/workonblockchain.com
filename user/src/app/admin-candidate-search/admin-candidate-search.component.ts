@@ -14,7 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AdminCandidateSearchComponent implements OnInit {
    
    currentUser: User;
-  log;info;roleChange;options2;length;page;searchWord;
+  log;info=[];roleChange;options2;length;page;searchWord;
     credentials: any = {};job_title;
      public rolesData: Array<Select2OptionData>;
     public blockchainData : Array<Select2OptionData>;
@@ -22,80 +22,45 @@ export class AdminCandidateSearchComponent implements OnInit {
   public value;
   public current: string;
   
-    active;inactive;
+    active;inactive;approve;
+    search_result = [];
+    admin_check = [{name:1 , value:"Active"}, {name:0 , value:"Inactive"}];
+    information;
    constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
  
   ngOnInit() 
   {
       this.length='';
       this.log='';
-      this.active="Active";
-      this.inactive = "Inactive";
+     
+      this.approve=-1;
       this.rolesData = 
        [
-            {id:'Backend Developer', text:'Backend Developer'},
-            {id:'Frontend Developer', text:'Frontend Developer'},
-            {id:'UI Developer', text:'UI Developer'},
-            {id:'UX Designer', text:'UX Designer'},
-            {id:'Fullstack Developer', text:'Fullstack Developer'},
-            {id:'Blockchain Developer', text:'Blockchain Developer'},
-            {id:'Smart Contract Developer', text:'Smart Contract Developer'},
-            {id:'Architect', text:'Architect'},
-            {id:'DevOps', text:'DevOps'},
-            {id:'Software Tester', text:'Software Tester'},
-            {id:'CTO', text:'CTO'},
-            {id:'Technical Lead', text:'Technical Lead'},
-            {id:'Product Manager', text:'Product Manager'},
-            {id:'Intern Developer', text:'Intern Developer'},
-            {id:'Researcher ', text:'Researcher '},
+            {id:'job_offer', text:'Job description sent'},
+            {id:'is_company_reply', text:'Job description accepted / reject'},
+            {id:'interview_offer', text:'Interview request sent'},
+            {id:'job_offered', text:'Employment offer sent'},
+            {id:'Employment offer accepted / reject', text:'Employment offer accepted / reject'},
+           
       ];
       
-    this.blockchainData =
-    [
-            {id:'Bitcoin', text:'Bitcoin'},
-            {id:'Ethereum', text:'Ethereum'},
-            {id:'Ripple', text:'Ripple'},
-            {id:'Stellar', text:'Stellar'},
-            {id:'Hyperledger Fabric', text:'Hyperledger Fabric'},
-            {id:'Hyperledger Sawtooth', text:'Hyperledger Sawtooth'},
-            {id:'Quorum', text:'Quorum'},
-            {id:'Corda', text:'Corda'},
-            {id:'EOS', text:'EOS'},
-            {id:'NEO', text:'NEO'},
-            {id:'Waves', text:'Waves'},
-            {id:'Steem', text:'Steem'},
-            {id:'Lisk', text:'Lisk'},
-            {id:'Quantum', text:'Quantum'},
-            {id:'Tezos', text:'Tezos'},
-            {id:'Cardano', text:'Cardano'},
-            {id:'Litecoin', text:'Litecoin'},
-            {id:'Monero', text:'Monero'},
-            {id:'ZCash', text:'ZCash'},
-            {id:'IOTA', text:'IOTA'},
-            {id:'NEM', text:'NEM'},
-            {id:'NXT', text:'NXT'},
-            {id:'Dash', text:'Dash'},
-            {id:'Doge', text:'Doge'},
-    ]
+   
 
     this.options = {
       multiple: true,
-      placeholder: 'Position' 
+      placeholder: 'Message Tags' 
     }
       
-      this.options2 = {
-      multiple: true,
-      placeholder: 'Blockchain experience' 
-    } 
-    
+
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if(!this.currentUser)
       {
           this.router.navigate(['/login']);
       }
-      if(this.currentUser )
+     
+      if(this.currentUser && this.currentUser.is_admin == 1 )
       {
-            this.getVerrifiedCandidate();
+            this.getAllCandidate();
         }
       else
        {
@@ -103,62 +68,64 @@ export class AdminCandidateSearchComponent implements OnInit {
           
        }
       
-      this.getAllCandidate();
+      //this.getAllCandidate();
 
   }
     
-  getAllCandidate()
-  {
-      this.authenticationService.getAll()
-            .subscribe(
-                data => 
-                {
-                    console.log(data);
-                    
-                    });
-  }
-    
-   getVerrifiedCandidate()
-    {     
+   getAllCandidate()
+    {          
         this.length=0;
+       this.info=[];
           this.authenticationService.getAll()
             .subscribe(
                 data => 
                 {
                   //console.log(data);
-                   if(data)
-                        this.info = data;
-                        console.log(this.info);
-                        for(let res of data)
-                        {
-                            if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
-                            && res.commercial_platform && res.interest_area  && res.country )
-                            {
-                                this.length++;
-                            }
-                            //console.log(this.verify_candidate.length);
-                        }
-                        
-                         if(this.length> 0 )
-                         {
-                             this.page =this.length;
-                             this.log='';
-                             console.log(this.page);
-                             console.log(this.length);
-                         }
-                         else
-                         {
-                            this.log= 'Not Found Any Data';
-                        
-                            
-                         }
-                         this.length = '';
-                        //this.log='';
+                    if(data.error)
+                    {
+                       // console.log(this.info);
+                        this.length='';
+                        this.log = data.error;
+                        this.info=[];
+                        this.page='';
                         
 
+                    }
+                    else
+                    {
+                        this.information = this.filter_array(data);
+
+                         //console.log(this.log);
+                        
+                       // this.info = this.information; 
+                        
+                        for(let res of this.information)
+                        {
+                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
+                             && res.commercial_platform && res.interest_area  && res.country )
+                            {
+                               
+                                  this.length++;
+                                this.info.push(res);
+                            }
+
+                        }
                        
-                    
+                        if(this.length> 0 )
+                        {
+                            
+                             this.log='';
+                            this.page =this.length; 
+                        }
+                        else
+                        {
+                            this.log= 'Not Found Any Data';
+                        }
+                        
+                          this.length='';
+                                        
+                    }
                  
                 },
                 error => 
@@ -214,6 +181,188 @@ export class AdminCandidateSearchComponent implements OnInit {
                    }
                     
                 });
+    }
+    
+    
+    onSearchName(f: NgForm)
+    {
+        //console.log(f.value.word);
+        this.length=0;
+        this.info=[];
+         this.authenticationService.searchByName(f.value.word)
+            .subscribe(
+                data => 
+                {
+                    //console.log(data);
+                    
+                     if(data.error)
+                    {
+                      
+                         this.length='';
+                        this.log = data.error;
+                        this.info=[];
+                        this.page='';
+                    }
+                    else
+                    {
+
+                        this.information = this.filter_array(data);
+                        for(let res of this.information)
+                        {
+                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
+                             && res.commercial_platform && res.interest_area  && res.country )
+                            {
+                               
+                                  this.length++;
+                                this.info.push(res);
+                            }
+
+                        }
+                       
+                        if(this.length> 0 )
+                        {
+                            
+                             this.log='';
+                        }
+                        else
+                        {
+                            this.log= 'Not Found Any Data';
+                        }
+                        
+                        this.page =this.length; 
+                    }
+                            
+                },
+                error => 
+                {
+                  
+                });
+    }
+    
+    msgtags;
+    messagetag_changed(data)
+    {
+          this.msgtags = data.value;
+           // console.log(data.value);
+          this.search(this.msgtags);
+        console.log(this.msgtags);
+     }
+    
+    search_approved(event)
+    {
+         this.approve =event;
+        console.log(this.approve);
+        this.search(this.approve);
+        
+    }
+    
+    filter_array(arr) 
+    {
+        var hashTable = {};
+
+        return arr.filter(function (el) {
+            var key = JSON.stringify(el);
+            var match = Boolean(hashTable[key]);
+
+            return (match ? false : hashTable[key] = true);
+        });
+    }
+    
+    search(event)
+    {               
+
+        this.length =0;
+        this.info=[];
+        if(!this.approve && !this.msgtags  )
+        {             
+            console.log("iffffffff"); 
+             this.getAllCandidate();
+        }
+               
+        else
+        { 
+
+            console.log("else");
+            this.authenticationService.admin_candidate_filter(this.approve , this.msgtags)
+            .subscribe(
+                data => 
+                {
+ 
+                    if(data.error)
+                    {
+                       // console.log(this.info);
+                        this.length='';
+                        this.log = data.error;
+                        this.info=[];
+                        this.page='';
+                        
+
+                    }
+                    else
+                    {
+                        this.information = this.filter_array(data);
+
+                         //console.log(this.log);
+                        
+                       // this.info = this.information; 
+                        
+                        for(let res of this.information)
+                        {
+                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
+                             && res.commercial_platform && res.interest_area  && res.country )
+                            {
+                               
+                                  this.length++;
+                                this.info.push(res);
+                            }
+
+                        }
+                       
+                        if(this.length> 0 )
+                        {
+                            
+                             this.log='';
+                        }
+                        else
+                        {
+                            this.log= 'Not Found Any Data';
+                        }
+                        
+                        this.page =this.length;   
+                                        
+                    }
+                            
+                },
+                error => 
+                {
+                  
+                });
+            
+        }
+           
+                 
+    }
+    
+    select_value;
+    reset()
+    {
+        this.msgtags = '';
+        this.select_value='';
+        this.approve=-1;
+        this.info=[];
+        console.log("reset");
+        this.getAllCandidate();
+       /* this.msgtags='';
+        
+       
+        
+        console.log(this.select_value);
+         
+        //this.positionchanged(this.select_value);
+        */
+       
     }
 
 }

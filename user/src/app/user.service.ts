@@ -23,7 +23,7 @@ export class UserService {
     }
     
     getByRefrenceCode(code: string){
-        return this.http.post<any>(URL+'users/get_refrence_code', code) .map(ref_code => {
+       return this.http.post<any>(URL+'users/get_refrence_code', {code:code}) .map(ref_code => {
             return ref_code
         });
     }
@@ -513,6 +513,19 @@ export class UserService {
          
     }
     
+    refered_id(_id: number , data : number)
+    {
+          return this.http.put<any>(URL+'users/refered_id/' + _id, {info : data})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+    }
     //////////////call admin functions//////////////////
     aprrove_user(user_id:string , detail :number )
     {
@@ -529,4 +542,71 @@ export class UserService {
                 
             });
     } 
+    
+    searchByName(word:string)
+    {
+        return this.http.post<any>(URL+'users/search_by_name', { search: word})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+        
+     }
+    
+    admin_candidate_filter(is_approve : number , msg_tags : any)
+    {
+        return this.http.post<any>(URL+'users/admin_candidate_filter', { is_approve: is_approve , msg_tags : msg_tags})
+            .map(data => {
+           
+                if (data) 
+                {
+                    //console.log(data);
+                    return data;
+                }
+                
+            });
+    }
+    allCompanies()
+    {
+        return this.http.get<any>(URL+'users/company');
+        
+    }
+    
+    admin_search_by_name(word:string)
+    {
+        return this.http.post<any>(URL+'users/admin_search_by_name', { search: word})
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });        
+    }
+    
+    admin_company_filter(is_approve : number , msg_tags : any)
+    {
+        return this.http.post<any>(URL+'users/admin_company_filter', { is_approve: is_approve , msg_tags : msg_tags})
+            .map(data => {
+           
+                if (data) 
+                {
+                    //console.log(data);
+                    return data;
+                }
+                
+            });
+    }
+    
+    getCompanyById(_id: string) 
+    {
+        return this.http.get<any>(URL+'users/get_company_by_id/' + _id);
+    }
 }

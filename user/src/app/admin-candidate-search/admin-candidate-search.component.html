@@ -5,9 +5,9 @@
 	<div class="container">
 		<div class="row">
 			<div class = "col-md-12 text-center">
-				<form class="form-inline search-form" #f="ngForm" (ngSubmit)="onSearchWord(f)">
+				<form class="form-inline search-form" #f="ngForm" (ngSubmit)="onSearchName(f)">
 					<div class="form-group">
-					    <input type="text" class="form-control input_main" placeholder="&#xF002; Search in Words" [(ngModel)]='searchWord' name="word" required id="search">
+					    <input type="text" class="form-control input_main" placeholder="&#xF002; Search by Name" [(ngModel)]='searchWord' name="word" required id="search">
 					 </div>
 					 <div class="form-group">
 					    <button type="submit" class="btn btn-filter btn-md btn_main-srh" value = "search" [disabled]="!f.valid " >
@@ -22,86 +22,35 @@
 		<div class="row">
 
 			<div class="col-md-3">
+			<form #reset_form="ngForm">
 				<div class = "wizard-form mr-top-form filter_bar" id = "side_bar">
 					<ul>
 						<li> 
 							<div class = "form-group">
 
-                				<select class="form-control " [(ngModel)]="selectedObj" (ngModelChange)="searchdata('skill' , $event)">
-									
-									<option value="-1" disabled selected hidden>Skills</option>
-                  					<option class='option' *ngFor='let option of language_opt'  [value]="option.value" >{{option.name}}</option>
-
-
-								</select>
+                				<select2  [data]="rolesData" [options]="options"  [width]="500" [value]="select_value" (valueChanged)="messagetag_changed($event)">
+								
+								
+								</select2>
+								<input type="text" [(ngModel)]="msgtags" name="msg_tags" style="display: none;">
+					
 							</div>
 	
 						</li>
 
 						<li>
 							<div class = "form-group">
-								<select class="form-control " [(ngModel)]="countryChange" (ngModelChange)="searchdata('location' , $event)">
-									
-									<option value="-1" disabled selected hidden>Desired Location</option>
-                  					<option class='option' *ngFor='let option of cities'  [value]="option.value" >{{option.name}}</option>
-
-
-								</select>
-							</div>
-						</li>
-
-						<li> 
-							<div class = "form-group">
-								<!-- <select class="form-control progControlSelect2" multiple="true" (valueChanged)="changed($event)"  >
-									
-									
-                  					<option class='option' *ngFor='let option of roles'  [value]="option.value" >{{option.name}}</option>
-
-
-								</select>-->
-								
-								
-								<select2  [data]="rolesData" [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="positionchanged($event)">
-								
-								
-								</select2>
-								<input type="text" class="form-control" [(ngModel)]='rolesItems' name="roles" style="display: none;">
-								
-							</div>
-						 </li>
-						<li> 
-							<div class = "form-group">
-									<!-- <select class="form-control progControlSelect3" multiple="true" [(ngModel)]="blockChange" (ngModelChange)="OnblockChange($event)">
-									
-									
-                  					<option class='option' *ngFor='let option of blockchain'  [value]="option.value" >{{option.name}}</option>
-
-
-								</select>-->
-								<select2  [data]="blockchainData" [options]="options2" [width]="500" [value]="selecteddd" (valueChanged)="blockchainchanged($event)"></select2>
-								<input type="text" class="form-control" [(ngModel)]='blockchainItems' name="blockchain" style="display: none;">
-							</div>
-						 </li>
-						<li> 
-							<div class="form-group">
-							    <input type="text" class="form-control currncy_input filter-input" [(ngModel)]="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Expected Salary">
-							    <select  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" (ngModelChange)="searchdata('currency' , $event)">
-								     	<!-- <option [ngValue]="undefined" hidden selected>$ USD</option>-->
-								     	 <option value="-1" disabled selected hidden >$ USD</option>
-								     	 <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
-              
-								</select>
-							  </div>
-						 </li>
-						 <li>
-							<div class = "form-group">
-								<select class="form-control "  [(ngModel)]="availabilityChange" (ngModelChange)="searchdata('avail' , $event)" >
+							  
+	  							
+	  							<select class="form-control " name="approve" [(ngModel)]="approve" (ngModelChange)="search_approved( $event)" >
 									 
-									  <option value="-1" disabled selected hidden >Availability</option>
-									  <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
+									  <option value="-1" disabled selected hidden >Active/Inactive</option>
+									  <option class='option' *ngFor='let options of admin_check'  [value]="options.name" selected>{{options.value}}</option>
 							    </select>
 							</div>
 						</li>
+
+						
 					</ul>
 				</div>
 				<div class = "text-right btn-div">
@@ -110,6 +59,7 @@
 					<a  (click)="reset()" class = "btn reset-bttn"> Reset</a>
 					
 				</div>
+				</form>
 			</div>
 			<!--end-col-md-3-->
 			<div class="col-md-9">
@@ -126,7 +76,7 @@
 				<!--candidate 1st-->
 				<div *ngIf="info !== ''" >
 				
-				<div class="panel-group mr-top-form" *ngFor= "let data of info | paginate: { itemsPerPage:3, currentPage: p }">
+				<div class="panel-group mr-top-form" *ngFor= "let data of info | paginate: { itemsPerPage:10, currentPage: p }">
  								      
 				   <div class="panel panel-default" *ngIf = "(data.first_name && data.roles && data.why_work && data.experience_roles && data.availability_day && data.nationality && data.last_name 
 				    && data.contact_number && data.education && data.history &&  data.platforms && data.commercial_platform &&
@@ -141,7 +91,7 @@
 				      	</div>
 
 				      	<div class = "user-detail">
-					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }"><h2>{{data.first_name}}</h2></a><br/>
+					      	<a [routerLink]="['/admin-candidate-detail']" [queryParams]="{user: data._creator._id }"><h2>{{data.first_name}}</h2></a><br/>
 					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>	
 					    </div>
 
@@ -190,7 +140,7 @@
 				<!--end candidate-->
 
 				
-				<pagination-controls (pageChange)="p = $event" *ngIf="page > 3"></pagination-controls>
+				<pagination-controls (pageChange)="p = $event" *ngIf="page > 10"></pagination-controls>
 					<!-- <ul class="pagination">
 					  <li class="active"><a href="#">1</a></li>
 					  <li><a href="#">2</a></li>

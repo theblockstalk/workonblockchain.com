@@ -15,25 +15,33 @@ export class HeaderComponent implements OnInit {
   currentUser: User;
   user_type;is_admin;
   route;
+  admin_route;
 
   constructor(private authenticationService: UserService,private router: Router,location: Location) 
   {
       router.events.subscribe((val) => {
       if(location.path() != ''){
         this.route = location.path();
-          console.log(this.route);
+          //console.log(this.route);
+          let loc= this.route;
+             // console.log(this.loc);
+         let x = loc.split("-");
+          this.admin_route = x[0];
+
       } else {
         //this.route = 'Home'
       }
     });
+   //console.log(this.admin_route);
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')); 
-      console.log(this.currentUser);
+     // console.log(this.currentUser);
       if(this.currentUser)
       {
            this.user_type = this.currentUser.type;
            this.is_admin = this.currentUser.is_admin;
-           console.log(this.user_type);
-           console.log(this.is_admin);
+           ///console.log(this.user_type);
+           //console.log(this.is_admin);
       }
       else
       {

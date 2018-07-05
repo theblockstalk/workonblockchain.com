@@ -126,7 +126,7 @@
 				<!--candidate 1st-->
 				<div *ngIf="info !== ''" >
 				
-				<div class="panel-group mr-top-form" *ngFor= "let data of info | paginate: { itemsPerPage:3, currentPage: p }">
+				<div class="panel-group mr-top-form" *ngFor= "let data of info | paginate: { itemsPerPage:10, currentPage: p }">
  								      
 				   <div class="panel panel-default" *ngIf = "(data.first_name && data.roles && data.why_work && data.experience_roles && data.availability_day && data.nationality && data.last_name 
 				    && data.contact_number && data.education && data.history &&  data.platforms && data.commercial_platform &&
@@ -184,7 +184,7 @@
 				<!--end candidate-->
 
 				
-				<pagination-controls (pageChange)="p = $event" *ngIf="page > 3"></pagination-controls>
+				<pagination-controls (pageChange)="p = $event" *ngIf="page > 10"></pagination-controls>
 					<!-- <ul class="pagination">
 					  <li class="active"><a href="#">1</a></li>
 					  <li><a href="#">2</a></li>

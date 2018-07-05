@@ -44,8 +44,8 @@ export class CandidateDetailComponent implements OnInit {
           this.authenticationService.get_user_messages(this.user_id,this.currentUser._creator)
             .subscribe(
                 data => {
-                    console.log('data');
-                    console.log(data['datas']);
+                   // console.log('data');
+                   // console.log(data['datas']);
                     //this.new_msgss = data['datas'];
                     //this.job_desc = data['datas'][0];
                     if(data['datas'][1]){

@@ -1,0 +1,210 @@
+//git clone https://tayyab194747@bitbucket.org/biotslimted/workonblockchain.com.git
+
+ugmo@ugmo-Inspiron-7548:~/Downloads$ git clone https://jackandtheblockstalk@bitbucket.org/biotslimted/workonblockchain.com.git
+Cloning into 'workonblockchain.com'...
+Password for 'https://jackandtheblockstalk@bitbucket.org': 
+remote: Counting objects: 3, done.
+remote: Total 3 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+Checking connectivity... done.
+ugmo@ugmo-Inspiron-7548:~/Downloads$ cd workonblockchain.com/
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	index.js
+
+nothing added to commit but untracked files present (use "git add" to track)
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git add *
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   index.js
+
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git commit -m "added index.js"
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'ugmo@ugmo-Inspiron-7548.(none)')
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git config --global user.email "jack@workonblockchain.com"
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git config --global user.name "Jack Tanner"
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git commit -m "added index.js"[master 843821e] added index.js
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 index.js
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git push
+warning: push.default is unset; its implicit value has changed in
+Git 2.0 from 'matching' to 'simple'. To squelch this message
+and maintain the traditional behaviour, use:
+
+  git config --global push.default matching
+
+To squelch this message and adopt the new behaviour now, use:
+
+  git config --global push.default simple
+
+When push.default is set to 'matching', git will push local branches
+to the remote branches that already exist with the same name.
+
+Since Git 2.0, Git defaults to the more conservative 'simple'
+behaviour, which only pushes the current branch to the corresponding
+remote branch that 'git pull' uses to update the current branch.
+
+See 'git help config' and search for 'push.default' for further information.
+(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
+'current' instead of 'simple' if you sometimes use older versions of Git)
+
+Password for 'https://jackandtheblockstalk@bitbucket.org': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 283 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://jackandtheblockstalk@bitbucket.org/biotslimted/workonblockchain.com.git
+   1d33534..843821e  master -> master
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git config --global push.default simple
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   index.js
+
+no changes added to commit (use "git add" and/or "git commit -a")
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git add index.js 
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git commit -m "changed line in index.js"
+[master 63815fa] changed line in index.js
+ 1 file changed, 1 insertion(+)
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git push
+Password for 'https://jackandtheblockstalk@bitbucket.org': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 329 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://jackandtheblockstalk@bitbucket.org/biotslimted/workonblockchain.com.git
+   843821e..63815fa  master -> master
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git branch another-branch
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git branch WOBC-T6-candidate-edit-profile
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git branch
+  WOBC-T6-candidate-edit-profile
+  another-branch
+* master
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git checkout WOBC-T6-candidate-edit-profile 
+Switched to branch 'WOBC-T6-candidate-edit-profile'
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git branch
+* WOBC-T6-candidate-edit-profile
+  another-branch
+  master
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git status
+On branch WOBC-T6-candidate-edit-profile
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   index.js
+
+no changes added to commit (use "git add" and/or "git commit -a")
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git add *
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git commit -m "changed index.js in WOBC-T6 branch"
+[WOBC-T6-candidate-edit-profile e830435] changed index.js in WOBC-T6 branch
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git push
+fatal: The current branch WOBC-T6-candidate-edit-profile has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin WOBC-T6-candidate-edit-profile
+
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git push --set-upstream origin WOBC-T6-candidate-edit-profile
+Password for 'https://jackandtheblockstalk@bitbucket.org': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 333 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+remote: 
+remote: Create pull request for WOBC-T6-candidate-edit-profile:
+remote:   https://bitbucket.org/biotslimted/workonblockchain.com/pull-requests/new?source=WOBC-T6-candidate-edit-profile&t=1
+remote: 
+To https://jackandtheblockstalk@bitbucket.org/biotslimted/workonblockchain.com.git
+ * [new branch]      WOBC-T6-candidate-edit-profile -> WOBC-T6-candidate-edit-profile
+Branch WOBC-T6-candidate-edit-profile set up to track remote branch WOBC-T6-candidate-edit-profile from origin.
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git checkout master
+Switched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   index.js
+
+no changes added to commit (use "git add" and/or "git commit -a")
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git add *
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git commit -m "created conflicting addition to index.js"
+[master c470c69] created conflicting addition to index.js
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git push
+Password for 'https://jackandtheblockstalk@bitbucket.org': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 345 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://jackandtheblockstalk@bitbucket.org/biotslimted/workonblockchain.com.git
+   63815fa..c470c69  master -> master
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git merge WOBC-T6-candidate-edit-profile 
+Auto-merging index.js
+CONFLICT (content): Merge conflict in index.js
+Automatic merge failed; fix conflicts and then commit the result.
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+	both modified:   index.js
+
+no changes added to commit (use "git add" and/or "git commit -a")
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git add *
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git commit -m "fixed merge conflicts"
+[master ab0309c] fixed merge conflicts
+ugmo@ugmo-Inspiron-7548:~/Downloads/workonblockchain.com$ git push
+
+/*for new branch*/
+git branch staging
+
+git checkout staging
+
+git add <<<name of files>>>
+
+git add *
+
+git commit -m "staging branch"
+
+git push
+
+git pull origin staging

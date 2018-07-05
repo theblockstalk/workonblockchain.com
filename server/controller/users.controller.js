@@ -33,6 +33,7 @@ router.put('/welcome/job/:_id', job);
 router.put('/welcome/resume/:_id', resume);
 router.put('/welcome/exp/:_id', experience);
 router.post('/image/:_id', image);
+router.put('/refered_id/:id' , refered_id);
 router.put('/update_profile/:_id' , update_candidate_profile);
 
 ////////company routes///////////
@@ -63,11 +64,16 @@ router.post('/get_candidate', get_candidate);
 router.post('/insert_message', insert_message);
 router.post('/get_messages', get_messages);
 router.post('/get_user_messages', get_user_messages);
+router.get('/all_chat' , get_chat);
 
 ///////admin functions//////////////////////////////////
 router.put('/admin_role', admin_role);
 router.put('/approve/:_id'  , approve_users);
-router.put('/search_by_name' , search_by_name)
+router.post('/search_by_name' , search_by_name);
+router.post('/admin_candidate_filter' , admin_candidate_filter);
+router.post('/admin_search_by_name' , admin_search_by_name);
+router.post('/admin_company_filter' , admin_company_filter);
+router.get('/get_company_by_id/:id', getCompanyById);
 
 module.exports = router;
 
@@ -370,6 +376,26 @@ function update_candidate_profile(req, res)
 	{
 		res.json({error: err});
 	});
+}
+
+/////////////////////////////////////////enter refered_id into db///////////
+function refered_id(req,res)
+{
+	userService.refered_id(req.params.id, req.body).then(function (err, data) 
+			{
+				if (data) 
+				{
+				     res.json(data);
+				} 
+				else 
+				{  
+				     res.send(err);
+				}
+			})
+			.catch(function (err) 
+			{
+				res.json({error: err});
+			});
 }
 
 /*********candidate functions end **********/
@@ -735,6 +761,7 @@ function refreal_email_send(req, res) {
 
 //use to get referral code of a user
 function get_refrence_code(req, res) {
+	//console.log(req.body);
     userService.get_refr_code(req.body).then(function (data){
         console.log('done');
 		res.json(data);
@@ -830,6 +857,26 @@ function get_user_messages(req, res)
     });
 }
 
+function get_chat(req,res)
+{
+	 userService.get_chat().then(function (data) 
+			    {
+			        if (data) 
+			        {
+			            res.send(data);
+			        } 
+			        else 
+			        {
+			            res.sendStatus(404);
+			        }
+			    })
+			    .catch(function (err) 
+			    {
+			        res.status(400).send(err);
+			    });
+
+}
+
 
 /**************admin functions************************************/
 
@@ -874,15 +921,15 @@ function approve_users(req, res)
 
 function search_by_name(req,res)
 {
-	userService.search_by_name(req.body).then(function (err, data) 
+	userService.search_by_name(req.body.search).then(function (err, data) 
 			{
 				if (data) 
 				{
-				     res.json(data);
+					res.json(data);
 				} 
 				else 
 				{  
-				     res.send(err);
+					res.send(err);
 				}
 			})
 			.catch(function (err) 
@@ -891,5 +938,82 @@ function search_by_name(req,res)
 			});
 }
 
+
+function admin_candidate_filter(req,res)
+{
+	userService.admin_candidate_filter(req.body).then(function (err, data) 
+			{
+				if (data) 
+				{
+					res.json(data);
+				} 
+				else 
+				{  
+					res.send(err);
+				}
+			})
+			.catch(function (err) 
+			{
+				res.json({error: err});
+			});
+}
+
+function admin_search_by_name(req,res)
+{
+	userService.admin_search_by_name(req.body.search).then(function (err, data) 
+			{
+				if (data) 
+				{
+					res.json(data);
+				} 
+				else 
+				{  
+					res.send(err);
+				}
+			})
+			.catch(function (err) 
+			{
+				res.json({error: err});
+			});
+}
+
+function admin_company_filter(req,res)
+{
+	//console.log(req.body);
+	userService.admin_company_filter(req.body).then(function (err, data) 
+			{
+				if (data) 
+				{
+					res.json(data);
+				} 
+				else 
+				{  
+					res.send(err);
+				}
+			})
+			.catch(function (err) 
+			{
+				res.json({error: err});
+			});
+}
+
+function getCompanyById(req,res)
+{
+	 userService.getCompanyById(req.params.id).then(function (user) 
+			    {
+			        if (user) 
+			        {
+			            res.send(user);
+			        } 
+			        else 
+			        {
+			            res.sendStatus(404);
+			        }
+			    })
+			    .catch(function (err) 
+			    {
+			        res.status(400).send(err);
+			    });
+}
 
 /*********end admin functions************************************/

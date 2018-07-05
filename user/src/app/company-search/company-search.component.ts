@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class CompanySearchComponent implements OnInit {
    currentUser: User;
-  log;info;roleChange;options2;length;page;searchWord;
+  log;info=[];roleChange;options2;length;page;searchWord;
     credentials: any = {};job_title;
      public rolesData: Array<Select2OptionData>;
     public blockchainData : Array<Select2OptionData>;
@@ -116,6 +116,7 @@ export class CompanySearchComponent implements OnInit {
       this.countryChange=-1;   
       this.currencyChange= -1;
       this.availabilityChange=-1;
+      this.info = [];;
       this.rolesData = 
        [
             {id:'Backend Developer', text:'Backend Developer'},
@@ -210,16 +211,14 @@ export class CompanySearchComponent implements OnInit {
     searchdata(key , value)
     {
         this.length =0; 
-       
+        this.info=[];
         if(!this.select_value && !this.selecteddd &&!this.rolesItems && !this.salary && !this.blockchainItems && this.selectedObj === -1 &&  this.countryChange === -1 
         &&  this.currencyChange === -1 &&  this.availabilityChange ===-1 )
-        {     
-        
+        {             
             console.log("iffffffff"); 
              this.getVerrifiedCandidate();
         }
-       
-        
+               
         else
         { 
 
@@ -235,7 +234,7 @@ export class CompanySearchComponent implements OnInit {
                        // console.log(this.info);
                         this.length='';
                         this.log = data.error;
-                        this.info='';
+                        this.info=[];
                         this.page='';
                         
 
@@ -244,13 +243,16 @@ export class CompanySearchComponent implements OnInit {
                     {
                          //console.log(this.log);
                         
-                        this.info = data; 
+                        //this.info = data; 
                         for(let res of data)
                         {
-                            if(res.first_name && res.roles && res.why_work && res.experience_roles)
+                          if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
+                             && res.commercial_platform && res.interest_area  && res.country )
                             {
                                 //this.search_result.push(res);
                                   this.length++;
+                                this.info.push(res);
                             }
                             
                             //console.log(this.search_result.length);
@@ -293,6 +295,7 @@ export class CompanySearchComponent implements OnInit {
         this.blockchainItems='';
         this.select_value ='';
         this.selecteddd = '';
+        this.info = [];
         //this.positionchanged(this.select_value);
         this.getVerrifiedCandidate();
        
@@ -302,10 +305,12 @@ export class CompanySearchComponent implements OnInit {
     getVerrifiedCandidate()
     {     
         this.length=0;
+        this.info = [];
           this.authenticationService.getVerrifiedCandidate()
             .subscribe(
                 data => 
                 {
+                    console.log(this.info);
                   //console.log(data);
                    
                     if(data.error)
@@ -313,12 +318,14 @@ export class CompanySearchComponent implements OnInit {
                         
                         this.log = data.error;
                         this.page='';
+                        this.info=[];
                         
                     }   
                     else
                     {
-                        this.info = data;
-                        console.log(this.info);
+                        this.info=[];
+                        //this.info = data;
+                        //console.log(this.info);
                         for(let res of data)
                         {
                             if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
@@ -326,6 +333,7 @@ export class CompanySearchComponent implements OnInit {
                              && res.commercial_platform && res.interest_area  && res.country )
                             {
                                 this.length++;
+                                this.info.push(res);
                             }
                             //console.log(this.verify_candidate.length);
                         }
@@ -339,9 +347,7 @@ export class CompanySearchComponent implements OnInit {
                          }
                          else
                          {
-                            this.log= 'Not Found Any Data';
-                        
-                            
+                            this.log= 'Not Found Any Data';                           
                          }
                          this.length = '';
                         //this.log='';
@@ -360,6 +366,8 @@ export class CompanySearchComponent implements OnInit {
     onSearchWord(f: NgForm)
     {
         //console.log(f.value.word);
+        this.length=0;
+        this.info=[];
          this.authenticationService.searchByWord(f.value.word)
             .subscribe(
                 data => 
@@ -371,17 +379,38 @@ export class CompanySearchComponent implements OnInit {
                       
                         this.length='';
                         this.log = data.error;
-                        this.info='';
+                        this.info=[];
                         this.page='';
                     }
                     else
                     {
                         // console.log(this.log);
-                        this.info = data;
-                        
-                        this.length = data.length;
-                        this.page = data.length;                      
-                        this.log='';
+                         for(let res of data)
+                        {
+                          if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
+                             && res.commercial_platform && res.interest_area  && res.country )
+                            {
+                                //this.search_result.push(res);
+                                  this.length++;
+                                this.info.push(res);
+                            }
+                            
+                            //console.log(this.search_result.length);
+                        }
+                        //this.length = data.length;
+                        if(this.length> 0 )
+                        {
+                            //this.length = this.search_result.length;
+                             this.log='';
+                        }
+                        else
+                        {
+                            this.log= 'Not Found Any Data';
+                        }
+                       // this.page = data.length; 
+                        this.page =this.length;   
+                        console.log(this.length);                   
                     }
                             
                 },
