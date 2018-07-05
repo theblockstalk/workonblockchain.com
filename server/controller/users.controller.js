@@ -70,6 +70,8 @@ router.post('/update_job_message', update_job_message);
 
 ///////admin functions//////////////////////////////////
 router.put('/admin_role', admin_role);
+router.put('/approve/:_id'  , approve_users);
+router.put('/search_by_name' , search_by_name)
 
 module.exports = router;
 
@@ -929,6 +931,44 @@ function admin_role(req,res)
 	});
 }
 
+////approve user by admin///////////////////////////////////////////
+function approve_users(req, res) 
+{
+	userService.approve_users(req.params._id, req.body).then(function (err, data) 
+	{
+		if (data) 
+		{
+		     res.json(data);
+		} 
+		else 
+		{  
+		     res.send(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function search_by_name(req,res)
+{
+	userService.search_by_name(req.body).then(function (err, data) 
+			{
+				if (data) 
+				{
+				     res.json(data);
+				} 
+				else 
+				{  
+				     res.send(err);
+				}
+			})
+			.catch(function (err) 
+			{
+				res.json({error: err});
+			});
+}
 
 
 /*********end admin functions************************************/
