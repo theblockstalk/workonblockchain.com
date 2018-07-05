@@ -64,14 +64,10 @@ service.get_candidate=get_candidate;
 service.insert_message = insert_message;
 service.get_messages = get_messages;
 service.get_user_messages = get_user_messages;
-<<<<<<< HEAD
 service.get_chat= get_chat;
-=======
 service.save_chat_file = save_chat_file;
 service.insert_message_job = insert_message_job;
 service.update_job_message = update_job_message;
-
->>>>>>> bff31d105283cba91cd1d931ff7f7ef69aa64b25
 ////////admin functions/////////////////////////
 service.admin_role = admin_role;
 service.approve_users = approve_users;
@@ -1822,7 +1818,6 @@ function get_user_messages(id){
 	return deferred.promise;
 }
 
-<<<<<<< HEAD
 function get_chat()
 {
 	 var deferred = Q.defer();  
@@ -1836,7 +1831,8 @@ function get_chat()
 	    });
 
 	    return deferred.promise;
-=======
+}
+
 function save_chat_file(data){
 	var current_date = new Date();
 	var day = current_date.getDay();
@@ -1970,7 +1966,6 @@ function update_job_message(data){
 			   deferred.resolve(set);
 		});
 	return deferred.promise;
->>>>>>> bff31d105283cba91cd1d931ff7f7ef69aa64b25
 }
 
 /******************admin functions****************************/
