@@ -1,23 +1,31 @@
 
-## Run the workonblockchain.com app locally:
-### Run the back end
+# Run the workonblockchain.com app locally
+## Run the back end
 
-1. Run mongodb**
-2. Change to /workonblockchain.com/user directory
-3. npm install
-4. nodemon
+First start MongoDB
+```
+mongod
+```
 
-To run mongodb - Windows:
+Then run the back end
+```
+cd server
+npm install
+npm start
+```
+
+Back end API is running on localhost:4200
+
+### Run MongoDB from Windows
 1. Create the following folder C:\data\db
 2. Run command "C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe" --dbpath C:\data
 
-To run mongodb - Linux:
-1. sudo mongod
+## Run the front end
 
+```
+cd client
+npm install
+npm start
+```
 
-### Run the front end
-
-1. Change to /workonblockchain.com/user directory
-2. npm install
-3. npm start
-4. wait till the app builds, then go to localhost:4200
+Front end is running on localhost:4200
