@@ -68,6 +68,7 @@ service.get_chat= get_chat;
 service.save_chat_file = save_chat_file;
 service.insert_message_job = insert_message_job;
 service.update_job_message = update_job_message;
+
 ////////admin functions/////////////////////////
 service.admin_role = admin_role;
 service.approve_users = approve_users;
@@ -2484,13 +2485,13 @@ function getCompanyById(_id)
     {
         //console.log(result);
         if (err) 
-            return handleError(err);
+        	deferred.reject("Not Found Any Data");
         if(!result)
         {
         	EmployerProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
             {
                 if (err) 
-                    return handleError(err);
+                	deferred.reject("Not Found Any Data");
                 else
                     deferred.resolve(result);
             });

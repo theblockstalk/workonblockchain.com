@@ -1,8 +1,12 @@
 <section class = "wizard_page">
 
-	<div class="container">
+	<div *ngIf="error">
+		<h6 class="alert alert-danger error-alert" >{{error}}</h6>
+	</div>
+
+	<div class="container" *ngIf = "!error">
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-md-9" *ngFor = "let data of info">
 				 <section class = "profile personal_info">
 
 				 	<div class="col-md-6">
@@ -13,11 +17,11 @@
 				 			<img  [src]="(imgPath + image_src)" class = "img-responsive" alt = "profile-img"/>
 				 		</span>-->
 				 		<span class = "name">
-				 			<h3>{{first_name}} {{last_name}}</h3>
+				 			<h3>{{data.first_name}} {{data.last_name}}</h3>
 				 		</span>
 
 				 		<span class = "short_intro">
-				 			<p>{{company_description}}</p>
+				 			<p>{{data.company_description}}</p>
 				 		</span>
 
 				 		<!--  <div class="btn-share fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
@@ -32,28 +36,28 @@
 				 			<li>
 				 				<a href = "">
 					 				<span class = "list-icon"><img src="https://media.licdn.com/dms/image/C4E0BAQFJ5sxpbUYmgQ/company-logo_400_400/0?e=2127686400&amp;v=beta&amp;t=WVU0CP6JQPVONnnCYPrBydyvjpPpLMLwh8SIVS76ZCg"> </span> 
-					 				<span class = "li_txt">{{company_name}}</span>
+					 				<span class = "li_txt">{{data.company_name}}</span>
 				 				</a>
 				 			</li>
 
 				 			<li>
 				 				<a href = "">
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-					 				<span class = "li_txt">{{company_website}}</span>
+					 				<span class = "li_txt">{{data.company_website}}</span>
 				 				</a>
 				 			</li>
 
 				 			<li>
 				 				<a href = "">
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-				 					<span class = "li_txt">Country : {{company_country}}</span>
+				 					<span class = "li_txt">Country : {{data.company_country}}</span>
 				 				</a>
 				 			</li>
 
 				 			<li>
 				 				<a href = "">
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-				 					<span class = "li_txt"> Contact Number : {{company_phone}}</span>
+				 					<span class = "li_txt"> Contact Number : {{data.company_phone}}</span>
 				 				</a>
 				 			</li>
 				 		</ul>
@@ -80,13 +84,13 @@
 				 	<div class="col-md-6 info-area">
 				 		<p>
 							<strong>Job Title: </strong>
-							<span>{{job_title}}</span>
+							<span>{{data.job_title}}</span>
 						</p>
 				 	</div>
 				 	<div class="col-md-6 info-area">
       					<p>
 							<strong>Company Website: </strong>
-							<span>{{company_website}}</span>
+							<span>{{data.company_website}}</span>
 						</p>
 
       				</div>
@@ -94,28 +98,17 @@
       				<div class="col-md-6 info-area">
 				 		<p>
 							<strong>Company City</strong>
-							<span>{{company_city}}</span>
+							<span>{{data.company_city}}</span>
 						</p>
 				 	</div>
 				 	
 				 	<div class="col-md-6 info-area">
 				 		<p>
 							<strong>Company Postcode</strong>
-							<span>{{company_postcode}}</span>
+							<span>{{data.company_postcode}}</span>
 						</p>
 				 	</div>
-				 	
-				 
-				 	
-				 	
-				 	
-
-				 	<span class = "edit_profile_link">
-				 		<a href="edit_company_profile#information">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-				 	
+				 				 	
 				 </section>
 				 
 				 <section class = "profile job_info">
@@ -132,13 +125,13 @@
 				 	<div class="col-md-6 info-area">
 				 		<p>
 							<strong>When was the company founded: </strong>
-							<span>{{company_founded}}</span>
+							<span>{{data.company_founded}}</span>
 						</p>
 				 	</div>
 				 	<div class="col-md-6 info-area">
       					<p>
 							<strong>Number of employees: </strong>
-							<span>{{no_of_employees}}</span>
+							<span>{{data.no_of_employees}}</span>
 						</p>
 
       				</div>
@@ -146,18 +139,9 @@
       				<div class="col-md-6 info-area">
 				 		<p>
 							<strong>How is the company funded</strong>
-							<span>{{company_funded}}</span>
+							<span>{{data.company_funded}}</span>
 						</p>
 				 	</div>
-				 	
-				 	
-				 	
-
-				 	<span class = "edit_profile_link">
-				 		<a href="edit_company_profile#about_you">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
 				 	
 				 </section>
 				 
