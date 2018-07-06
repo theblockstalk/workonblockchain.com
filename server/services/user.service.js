@@ -76,7 +76,6 @@ service.search_by_name = search_by_name;
 service.admin_candidate_filter = admin_candidate_filter;
 service.admin_search_by_name=admin_search_by_name;
 service.admin_company_filter=admin_company_filter;
-service.getCompanyById = getCompanyById;
 
 module.exports = service;
 
@@ -117,6 +116,7 @@ function authenticate(email, password,type)
                              ref_link: user.ref_link,
                              is_admin:user.is_admin,
  							 type:user.type,
+ 							 is_approved : user.is_approved,
                              token: jwt.sign({ sub: user._id }, config.secret)
                              });
                     }
@@ -148,6 +148,7 @@ function authenticate(email, password,type)
                             email_hash: user.email_hash,
                             ref_link: user.ref_link,
 							type: user.type,
+							is_approved : user.is_approved,
                             token: jwt.sign({ sub: user._id }, config.secret)
                             });
                     }   
@@ -383,7 +384,7 @@ function verify_send_email(info)
         let mailOptions = 
         {
             from: 'workonblockchain@mwancloud.com', // sender address
-            to : info.email,//'sadiaabbas326@gmail.com',//, //
+            to : info.email, //'sadiaabbas326@gmail.com',
             subject : "Welcome to TEST",
             text : 'Visit this http://workonblockchain.mwancloud.com/verify_email?email_hash='+info.token,
             html : '<p>Hi '+info.email+'</p> <br/> <p> Please click on the link below to verify your email for workonblockchain.com. </p><br/><a href="http://workonblockchain.mwancloud.com/verify_email?email_hash='+info.token+'"><H2>Verify Email</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
@@ -546,6 +547,7 @@ function create(userParam)
                            email: newUser.email,
 						   ref_link: newUser.ref_link,
 						   type: newUser.type,
+						   is_approved : user.is_approved,
                            token: jwt.sign({ sub: user._id }, config.secret)
                        });
                      }
@@ -994,6 +996,7 @@ function create_employer(userParam)
                              type:newUser.type,
                             email_hash:newUser.email_hash,
                             email: newUser.email,
+                            is_approved : user.is_approved,
                             token: jwt.sign({ sub: user._id }, config.secret)
                         });
                       }
@@ -1028,17 +1031,32 @@ function getCompany()
 
 function get_company_byId(_id) 
 {
+	console.log(_id);
     var deferred = Q.defer();
     EmployerProfile.findById(_id).populate('_creator').exec(function(err, result) 
-    {
+    {  	
         if (err) 
-            return handleError(err);
+        {
+        	//console.log("Not found");
+        	 deferred.resolve({error:"Not found"});
+        }//return handleError(err);
+        if(!result)
+        {
+        	EmployerProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
+            {
+                if (err) 
+                    return handleError(err);
+                else
+                    deferred.resolve(result);
+            });
+        }
         else
             deferred.resolve(result);
 
 
     });
 
+   
     return deferred.promise;
 }
 
@@ -2474,36 +2492,5 @@ function admin_company_filter(data)
 	return deferred.promise;
 }
 
-/////////////////get company detail/////////////////
-
-
-function getCompanyById(_id) 
-{
-    var deferred = Q.defer();
-
-    EmployerProfile.findById(_id).populate('_creator').exec(function(err, result) 
-    {
-        //console.log(result);
-        if (err) 
-        	deferred.reject("Not Found Any Data");
-        if(!result)
-        {
-        	EmployerProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
-            {
-                if (err) 
-                	deferred.reject("Not Found Any Data");
-                else
-                    deferred.resolve(result);
-            });
-        }
-        else
-            deferred.resolve(result);
-
-
-    });
-
-    return deferred.promise;
-
-}
 
 /**************end admin functions****************************/

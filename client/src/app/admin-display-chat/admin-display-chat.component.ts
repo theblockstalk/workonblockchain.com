@@ -14,7 +14,7 @@ import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class AdminDisplayChatComponent implements OnInit {
 
     user_id;
-    user_type;
+    user_type ;
     log = '';
     currentUser: User;
     form: FormGroup;
@@ -43,33 +43,29 @@ export class AdminDisplayChatComponent implements OnInit {
     show_accpet_reject = 0;
     email;
     length;
+    company_type;
  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
  
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
+        this.user_type = params['type'];
         console.log(this.user_id); 
+            console.log(this.user_type);
     });
+        
    }
   ngOnInit() {
-            
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
+     //localStorage.removeItem('company_type');
       if(this.user_id && this.currentUser.is_admin == 1)
       {
      
-      this.authenticationService.getById(this.user_id)
-            .subscribe(
-            data => {
-                console.log(data);
-                //console.log(data[0]._creator);
-                this.user_type = data[0]._creator.type;
-                console.log(this.user_type);
-                this.email  = data[0]._creator.email;
-                console.log(this.email);
-                });
-      
-      
+         this.get_user_type();
+      //this.user_type = 'company';
+      //console.log(this.user_type);
+         
+         
        this.count=0;
        if(this.user_type=="company"){
           //console.log('company');
@@ -190,6 +186,7 @@ export class AdminDisplayChatComponent implements OnInit {
   }
     
     openDialog(email: string, id:string){
+      
       //this.msgs = 'hi baby';
       this.msgs = '';
       this.new_msgss = '';
@@ -255,6 +252,69 @@ export class AdminDisplayChatComponent implements OnInit {
             this.credentials.location = '';
             this.credentials.description = '';*/
         //});
+    }
+    
+    
+    get_user_type()
+    {
+    this.authenticationService.getById(this.user_id)
+            .subscribe(
+            data => {
+                console.log(data);
+                //console.log(data[0]._creator);
+                if(data.error)
+                {
+                    this.log= "Something Went Wrong"; 
+                    localStorage.removeItem('company_type');
+                }
+                if(data!= '')
+                {
+                    console.log("if");
+                   
+                    
+                         this.user_type = data[0]._creator.type;
+                        localStorage.removeItem('company_type');
+                         console.log(this.user_type);
+                        this.email  = data[0]._creator.email;
+                        console.log(this.email);
+                        
+                    
+                    
+                }
+                else
+                    {
+                    //console.log("else");
+                    this.authenticationService.getCurrentCompany(this.user_id)
+                        .subscribe(
+                        data => 
+                        {
+                            console.log(data);
+                            if(data.error)
+                            {
+                                this.log= "Something Went Wrong";
+                                localStorage.removeItem('company_type');  
+                            }
+                            else
+                            {
+                                console.log("elseeeee");
+                                 this.user_type = data[0]._creator.type;
+                                 //console.log(this.user_type);
+                                localStorage.setItem("company_type", this.user_type);
+                                //localStorage.removeItem('type');
+                                 this.email  = data[0]._creator.email;
+                                 console.log(this.email);
+                            }
+                      
+                        },
+                        error => 
+                        {
+                  
+                         }); 
+                    
+                    }
+                
+                });
+    
     }
 
 }

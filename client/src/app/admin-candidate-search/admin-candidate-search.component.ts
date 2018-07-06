@@ -274,7 +274,7 @@ export class AdminCandidateSearchComponent implements OnInit {
 
         this.length =0;
         this.info=[];
-        if(!this.approve && !this.msgtags  )
+        if(this.approve == -1 && !this.msgtags  )
         {             
             console.log("iffffffff"); 
              this.getAllCandidate();
