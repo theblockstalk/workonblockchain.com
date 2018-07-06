@@ -29,8 +29,10 @@ export class CandidateFormComponent implements OnInit {
         private router: Router,private dataservice: DataService,
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService
        ) {
-        this.code = route.snapshot.params['code'];
-  
+		this.route.queryParams.subscribe(params => {
+			this.code = params['code'];   
+		});
+		
         if(this.code){
             console.log('in if');
             this.authenticationService.getByRefrenceCode(this.code)

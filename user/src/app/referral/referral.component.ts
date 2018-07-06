@@ -15,7 +15,7 @@ export class ReferralComponent implements OnInit {
 	currentUser: User;
 	
 	credentials: any = {};
-	email_ref_link = 'http://workonblockchain.mwancloud.com/refer/';
+	email_ref_link = 'http://workonblockchain.mwancloud.com/refer?code=';
 	log = '';
 	title = 'My Ref Page';
 	ref_link = '';

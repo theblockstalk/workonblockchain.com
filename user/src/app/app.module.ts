@@ -72,7 +72,7 @@ const appRoutes: Routes = [
     { path: 'forgot_password', component: ForgotPasswordComponent},
     { path: 'reset_password', component: ResetPasswordComponent},
     { path: 'referral', component: ReferralComponent},
-    { path: 'refer/:code', component: CandidateFormComponent},
+    { path: 'refer', component: CandidateFormComponent},
     { path: 'chat', component: ChatComponent},
     // otherwise redirect to home
     { path: 'company_wizard', component: TermsWizardComponent},

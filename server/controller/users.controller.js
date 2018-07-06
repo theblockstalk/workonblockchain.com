@@ -956,10 +956,6 @@ function update_job_message(req,res){
 		res.json({error: err});
 	});
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 1cd74a92d6e6c89bdb2feb149b4445fdc6adaf82
 
 /**************admin functions************************************/
 

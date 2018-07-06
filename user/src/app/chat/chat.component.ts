@@ -4,6 +4,7 @@ import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
+import { NgxAutoScrollModule } from 'ngx-auto-scroll';
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
 const URL = 'http://localhost:4000/';
 
@@ -42,6 +43,7 @@ export class ChatComponent implements OnInit {
 	show_accpet_reject = 0;
 	is_job_offer = 0;
 	cand_job_offer = 0;
+	approved_user = 0;
   constructor(
 	private authenticationService: UserService,
 	private fb: FormBuilder,
@@ -60,8 +62,13 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
 	  this.count=0;
+	  this.approved_user = 1;//use this when code ready this.currentUser.is_approved
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-	    if(this.currentUser.type=="company"){
+	  /*if(this.currentUser.is_approved == 0){
+		  console.log('not allowed');
+	  }*/
+	  console.log(this.currentUser);
+		if(this.currentUser.type=="company"){
 		  console.log(this.currentUser);
 		  console.log('company');
 		  this.display_list = 1;
@@ -393,9 +400,10 @@ export class ChatComponent implements OnInit {
 	  console.log(id);
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log("show_msg_area: " + this.show_msg_area);
-	    //Observable.interval(10000).subscribe(x => {
-		 //receiver,sender
-		 this.authenticationService.get_user_messages(id,this.currentUser._creator)
+	    //Observable.interval(3000).subscribe(x => {
+		//receiver,sender
+		 
+		this.authenticationService.get_user_messages(id,this.currentUser._creator)
 			.subscribe(
 				data => {
 					console.log('data');
@@ -439,7 +447,7 @@ export class ChatComponent implements OnInit {
 							this.credentials.msg_body = 'Yes ! i will join you';
 						}
 						else{
-							this.credentials.msg_body = '';
+							//this.credentials.msg_body = '';
 						}
 					}
 					else{
@@ -456,14 +464,15 @@ export class ChatComponent implements OnInit {
 					//this.log = error;
 				}
 			);
-			this.candidate = email;
-			this.credentials.email = email;
-			this.credentials.id = id;
-			/*this.credentials.date = '';
-			this.credentials.time = '';
-			this.credentials.location = '';
-			this.credentials.description = '';*/
-	    //});
+		//});
+		this.candidate = email;
+		this.credentials.email = email;
+		this.credentials.id = id;
+		/*this.credentials.date = '';
+		this.credentials.time = '';
+		this.credentials.location = '';
+		this.credentials.description = '';*/
+	    
 	}
     
 	file_name;
