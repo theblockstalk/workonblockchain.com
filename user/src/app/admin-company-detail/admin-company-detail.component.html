@@ -17,12 +17,31 @@
 				 			<img  [src]="(imgPath + image_src)" class = "img-responsive" alt = "profile-img"/>
 				 		</span>-->
 				 		<span class = "name">
-				 			<h3>{{data.first_name}} {{data.last_name}}</h3>
+				 			<h3>{{data.first_name}} {{data.last_name}} <span *ngIf ="verify === 1">(Verified)</span> <span *ngIf="is_approved !== ''">({{is_approved}})</span></h3>
 				 		</span>
 
 				 		<span class = "short_intro">
 				 			<p>{{data.company_description}}</p>
 				 		</span>
+				 		<span class = "short_intro">
+				 			<p>{{data._creator.created_date}}</p>
+				 		</span>
+				 		<a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Companies</a><br/>
+				 		<form #approve_form="ngForm" >
+								
+								<input type="hidden" name="name"  [ngModel]="data.first_name">
+								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
+								<input type="hidden" name="id" [ngModel]="data._creator._id">
+								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
+								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
+								
+								<div class="submit-button">						
+									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Active</button>
+									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Inactive</button>
+									<button type="submit" class = "btn btn_descp" *ngIf = "data._creator.is_verify ===0" disabled>Active</button>
+									
+								</div>
+							</form>
 
 				 		<!--  <div class="btn-share fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
 						<div class = "twitter-share-button">
@@ -43,7 +62,7 @@
 				 			<li>
 				 				<a href = "">
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-					 				<span class = "li_txt">{{data.company_website}}</span>
+					 				<span class = "li_txt"><a [href]="('http://' + data.company_website)" target="_blank">{{data.company_website}}</a></span>
 				 				</a>
 				 			</li>
 

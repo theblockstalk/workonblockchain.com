@@ -87,7 +87,7 @@ const appRoutes: Routes = [
     {path : 'admin-dashboard' , component: AdminDashboardComponent},
     {path : 'admin-candidate-search' , component: AdminCandidateSearchComponent},
     {path : 'admin-candidate-detail' , component: AdminCandidateDetailComponent},
-    {path : 'admin-candidate-chat' , component: AdminDisplayChatComponent},
+    {path : 'admin-display-chat' , component: AdminDisplayChatComponent},
     {path : 'admin-company-search' , component: AdminCompanySearchComponent},
     {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
     { path: '**', redirectTo: '' }

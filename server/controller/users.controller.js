@@ -77,7 +77,6 @@ router.post('/search_by_name' , search_by_name);
 router.post('/admin_candidate_filter' , admin_candidate_filter);
 router.post('/admin_search_by_name' , admin_search_by_name);
 router.post('/admin_company_filter' , admin_company_filter);
-router.get('/get_company_by_id/:id', getCompanyById);
 
 module.exports = router;
 
@@ -1079,23 +1078,5 @@ function admin_company_filter(req,res)
 			});
 }
 
-function getCompanyById(req,res)
-{
-	 userService.getCompanyById(req.params.id).then(function (user) 
-			    {
-			        if (user) 
-			        {
-			            res.send(user);
-			        } 
-			        else 
-			        {
-			            res.sendStatus(404);
-			        }
-			    })
-			    .catch(function (err) 
-			    {
-			        res.status(400).send(err);
-			    });
-}
 
 /*********end admin functions************************************/
