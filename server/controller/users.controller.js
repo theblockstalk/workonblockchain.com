@@ -861,7 +861,6 @@ function get_user_messages(req, res)
     });
 }
 
-
 function get_chat(req,res)
 {
 	 userService.get_chat().then(function (data) 
@@ -881,7 +880,6 @@ function get_chat(req,res)
 			    });
 
 }
-
 
 ///// file upload for chat ///////////////////
 
@@ -957,7 +955,10 @@ function update_job_message(req,res){
 		res.json({error: err});
 	});
 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 1cd74a92d6e6c89bdb2feb149b4445fdc6adaf82
 
 /**************admin functions************************************/
 
