@@ -64,10 +64,19 @@ export class ChatComponent implements OnInit {
 	  this.count=0;
 	  this.approved_user = 1;//use this when code ready this.currentUser.is_approved
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	  /*this.authenticationService.getById(this.currentUser._creator)
+		.subscribe(
+			data => {
+				this.approved_user = data[0]._creator.is_approved;
+				console.log(data[0]._creator.is_approved);
+			},
+			error => {
+				console.log('error');
+			}
+		);*/
 	  /*if(this.currentUser.is_approved == 0){
 		  console.log('not allowed');
 	  }*/
-	  console.log(this.currentUser);
 		if(this.currentUser.type=="company"){
 		  console.log(this.currentUser);
 		  console.log('company');
