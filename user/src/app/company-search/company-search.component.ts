@@ -20,6 +20,8 @@ export class CompanySearchComponent implements OnInit {
   public options: Select2Options;
   public value;
   public current: string;
+  msg;
+    is_approved;
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
     
   language_opt=
@@ -116,7 +118,8 @@ export class CompanySearchComponent implements OnInit {
       this.countryChange=-1;   
       this.currencyChange= -1;
       this.availabilityChange=-1;
-      this.info = [];;
+      this.info = [];
+      this.msg='';
       this.rolesData = 
        [
             {id:'Backend Developer', text:'Backend Developer'},
@@ -175,18 +178,38 @@ export class CompanySearchComponent implements OnInit {
     } 
     
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      console.log(this.currentUser);
+     
       if(!this.currentUser)
       {
           this.router.navigate(['/login']);
       }
-      if(this.currentUser && this.currentUser.type == 'company')
+      else if(this.currentUser && this.currentUser.type == 'company')
       {
+            this.authenticationService.getCurrentCompany(this.currentUser._creator)
+            .subscribe(
+            data => {
+               console.log(data);
+                this.is_approved = data[0]._creator.is_approved;
+                console.log(this.is_approved);
+               if(this.is_approved === 0)
+                {
+                    this.msg = "You can access this feature when your profile has been approved";   
+                }
+                else
+                {
+                    this.msg='';
+          
+                }
+
+            });        
+           
             this.getVerrifiedCandidate();
-        }
+      }
       else
-       {
+      {
            this.router.navigate(['/not_found']);
-       }
+      }
   }
 
   rolesItems;
@@ -310,7 +333,7 @@ export class CompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(this.info);
+                    console.log(data);
                   //console.log(data);
                    
                     if(data.error)

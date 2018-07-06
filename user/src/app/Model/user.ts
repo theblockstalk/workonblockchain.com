@@ -9,4 +9,5 @@ export class User
     email_hash:string;
     ref_link:string;
     is_admin: number;
+    is_approved:number;
 }

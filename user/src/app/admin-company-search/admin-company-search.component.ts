@@ -268,7 +268,19 @@ export class AdminCompanySearchComponent implements OnInit {
         this.length=0;
         this.page =0;
         this.info=[];
-        this.authenticationService.admin_company_filter(this.approve , this.msgtags)
+        console.log(this.approve);
+        console.log(this.msgtags);
+        
+        if(this.approve === -1 && !this.msgtags )
+        {
+            console.log("iffff both are empty");
+            this.getAllCompanies();
+            
+        }
+        else
+        {
+           
+            this.authenticationService.admin_company_filter(this.approve , this.msgtags)
             .subscribe(
                 data => 
                 {
@@ -325,6 +337,7 @@ export class AdminCompanySearchComponent implements OnInit {
                 {
                   
                 });
+            }
          
     }
     
