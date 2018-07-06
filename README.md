@@ -14,7 +14,7 @@ npm install
 npm start
 ```
 
-Back end API is running on localhost:4200
+Back end API is running on localhost:4000
 
 #### Run MongoDB from Windows
 1. Create the following folder C:\data\db
