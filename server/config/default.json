@@ -1,0 +1,10 @@
+{
+  "nodemailer": {
+    "auth": {
+      "user": "workonblockchain@mwancloud.com",
+      "pass": "e71$AGVy"
+    },
+    "host": "mail.mwancloud.com",
+    "port": 25
+  }
+}

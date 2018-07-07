@@ -1,19 +1,17 @@
 const nodemailer = require('nodemailer');
+const settings = require('../settings');
 
 module.exports.sendEmail = function sendEmail(mailOptions) {
     nodemailer.createTestAccount((err, account) => {
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
-            host: 'mail.mwancloud.com',
-            port: 25,
+            host: settings.NODEMAILER.HOST,
+            port: settings.NODEMAILER.PORT,
             secure: false,
             tls:{
                 rejectUnauthorized: false
             }, // true for 465, false for other ports
-            auth: {
-                user: 'workonblockchain@mwancloud.com',
-                pass: 'e71$AGVy'
-            }
+            auth: settings.NODEMAILER.AUTH
         });
 
         // send mail with defined transport object
