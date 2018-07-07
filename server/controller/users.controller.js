@@ -321,7 +321,9 @@ function image(req, res)
 {
     uploadMulter.uploadPhoto(req, res, function (err)
     {    
-        if (err) 
+        console.log('signup upload image');
+        console.log('req.file', req.file);
+        if (err)
         {
             return
         }
@@ -331,7 +333,8 @@ function image(req, res)
             var path = req.file.filename;
             userService.save_image(path , req.params._id).then(function (err, about) 
             {
-                if (about) 
+                console.log('userService.save_image')
+                if (about)
                 {
                     res.json(about);
                 } 

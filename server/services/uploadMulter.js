@@ -4,7 +4,7 @@ const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
 const settings = require('../services/settings');
 
-let uploadMulter;
+let uploadPhoto;
 
 if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging') {
     let s3 = new aws.S3({
@@ -14,7 +14,7 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
         region : settings.AWS.REGION
     });
 
-    uploadMulter = multer({
+    uploadPhoto = multer({
         storage: multerS3({
             s3: s3,
             bucket: settings.AWS.S3_BUCKET,
@@ -25,21 +25,18 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
                 cb(null, Date.now().toString() + file.originalname)
             }
         })
-})
+    }).single('photo');
 } else {
-    uploadMulter = multer({
+    uploadPhoto = multer({
         storage: multer.diskStorage({
             destination: function (req, file, cb) {
-                cb(null, 'public')
+                cb(null, 'uploads')
             },
             filename: function (req, file, cb) {
                 cb(null, Date.now().toString() + file.originalname)
             }
         })
-    })
+    }).single('photo');
 }
 
-let uploadPhoto = uploadMulter.single('photo');
-
-module.exports.uploadMulter = uploadMulter;
 module.exports.uploadPhoto = uploadPhoto;
