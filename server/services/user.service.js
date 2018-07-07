@@ -16,6 +16,10 @@ const EmployerProfile = require('../model/employer_profile');
 var md5 = require('md5');
 const chat = require('../model/chat');
 
+const forgotPasswordEmail = require('./email/emails/forgotPassword');
+const verifyEmailEmail = require('./email/emails/verifyEmail');
+const referUserEmail = require('./email/emails/referUser');
+
 var service = {};
 
 //////////authentication function///////
@@ -227,42 +231,8 @@ function forgot_passwordEmail_send(data)
 	
 	 var hash = jwt_hash.decode(data,config.secret,'HS256');  
 	 console.log(hash.email);
-    nodemailer.createTestAccount((err, account) => 
-    {
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-        host: 'mail.mwancloud.com',
-        port: 25,
-        secure: false,
-        tls:{
-        rejectUnauthorized: false
-        }, // true for 465, false for other ports
-        auth: {
-            user: 'workonblockchain@mwancloud.com', 
-            pass: 'e71$AGVy' 
-        }
-        });
 
-        let mailOptions = 
-        {
-            from: 'workonblockchain@mwancloud.com', 
-            to : hash.email, // 'sadiaabbas326@gmail.com',//
-            subject : "Welcome to TEST",
-            text : 'Visit this http://workonblockchain.mwancloud.com/reset_password?hash='+hash.password_key,
-            html : '<p>Hi '+hash.email+'</p> <br/> <p> You have requested to change your account password for workonblockchain.com. </p><br/><p>Please click on the link below in the next 30 minutes and then enter your new password.</p><br/><a href="http://workonblockchain.mwancloud.com/reset_password?hash='+data+'"><H2>Reset Password</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
-        };
-
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, (error, info) => 
-        {
-            if (error) 
-            {
-                return console.log(error);
-            }
-            //console.log('Message sent: %s', info.messageId);
-            //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-        });
-    });
+	 forgotPasswordEmail.sendEmail(hash);
 }
 
 //////////////////Reset Password///////////////////////
@@ -361,47 +331,8 @@ function emailVerify(token)
 }
 
 //////////////send verify email when user signup///////////////////////////
-function verify_send_email(info)
-{    
-    nodemailer.createTestAccount((err, account) => 
-    {
-
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-        host: 'mail.mwancloud.com',
-        port: 25,
-        secure: false,
-        tls:{
-        rejectUnauthorized: false
-        }, // true for 465, false for other ports
-        auth: {
-            user: 'workonblockchain@mwancloud.com', 
-            pass: 'e71$AGVy' 
-        }
-        });
-
-        // setup email data with unicode symbols
-        let mailOptions = 
-        {
-            from: 'workonblockchain@mwancloud.com', // sender address
-            to : info.email, //'sadiaabbas326@gmail.com',
-            subject : "Welcome to TEST",
-            text : 'Visit this http://workonblockchain.mwancloud.com/verify_email?email_hash='+info.token,
-            html : '<p>Hi '+info.email+'</p> <br/> <p> Please click on the link below to verify your email for workonblockchain.com. </p><br/><a href="http://workonblockchain.mwancloud.com/verify_email?email_hash='+info.token+'"><H2>Verify Email</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
-           
-        };
-
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, (error, info) => 
-        {
-            if (error) 
-            {
-                return console.log(error);
-            }
-            //console.log('Message sent: %s', info.messageId);
-            //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-        });
-    });
+function verify_send_email(info) {
+    verifyEmailEmail.sendEmail(info);
 }
 
 /**************authenticaion functions implementation ends*************/
@@ -1650,44 +1581,8 @@ function verified_candidate()
 
 function refreal_email(data){
 	var deferred = Q.defer();
-    nodemailer.createTestAccount((err, account) => {
 
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-        host: 'mail.mwancloud.com',
-        port: 25,
-        secure: false,
-        tls:{
-        rejectUnauthorized: false
-        }, // true for 465, false for other ports
-        auth: {
-            user: 'workonblockchain@mwancloud.com', 
-            pass: 'e71$AGVy' 
-        }
-        });
-
-        // setup email data with unicode symbols
-        let mailOptions = 
-        {
-            from: 'workonblockchain@mwancloud.com', // sender address
-            to : 'sadiaabbas326@gmail.com',
-            subject : data.subject,
-            text : data.body,
-            html : data.body
-
-        };
-
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, (error, info) => 
-        {
-            if (error) 
-            {
-                return console.log(error);
-            }
-            //console.log('Message sent: %s', info.messageId);
-            //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-        });
-    });
+    referUserEmail.sendEmail(data);
 }
 
 function get_refr_code(data){
