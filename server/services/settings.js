@@ -14,13 +14,15 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging') {
-
+    settings.DATABASE_CONNECTION_STRING = 'mongodb://' + config.get('mongo.username') + ':' + config.get('mongo.password') + '@' + config.get('mongo.host') + ':' + config.get('mongo.port') + '/' + config.get('mongo.databaseName');
 } else {
     settings.NODEMAILER = {
-        AUTH: config.nodemailer.auth,
-        HOST: config.nodemailer.host,
-        PORT: config.nodemailer.port
+        AUTH: config.get('nodemailer.auth'),
+        HOST: config.get('nodemailer.host'),
+        PORT: config.get('nodemailer.port')
     }
+
+    settings.MONGO_CONNECTION_STRING = 'mongodb://' + config.get('mongo.host') + ':' + config.get('mongo.port') + '/' + config.get('mongo.databaseName');
 }
 
 module.exports = settings;

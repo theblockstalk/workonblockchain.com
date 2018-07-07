@@ -5,7 +5,8 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var expressJwt = require('express-jwt');
 var config = require('config.json');
- var mongoose = require('mongoose');
+var mongoose = require('mongoose');
+const settings = require('./services/settings');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,12 +28,12 @@ app.use(bodyParser.json());
 // routes
 app.use('/users', require('./controller/users.controller'));
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/blockchain');
+mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
 //on connection
 mongoose.connection.on('connected',()=>
 {
-    console.log('Connected to mongodb database at 27017');
+    console.log('Connected to mongodb database');
 });
 
 mongoose.connection.on('error',(err)=>

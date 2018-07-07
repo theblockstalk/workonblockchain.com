@@ -6,5 +6,10 @@
     },
     "host": "mail.mwancloud.com",
     "port": 25
+  },
+  "mongo": {
+    "host": "localhost",
+    "port": 27017,
+    "databaseName": "wob"
   }
 }
