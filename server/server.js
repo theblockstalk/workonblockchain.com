@@ -30,7 +30,7 @@ app.use('/users', require('./controller/users.controller'));
 
 mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
-//on connection
+// //on connection
 mongoose.connection.on('connected',()=>
 {
     console.log('Connected to mongodb database');
@@ -41,10 +41,12 @@ mongoose.connection.on('error',(err)=>
     if(err)
     {
         console.log('Error in database connection'+ err);
+        process.exit(1);
     }
 });
+
 // start server
-var port = process.env.NODE_ENV === 'production' ? 80 : 4000;
+var port = settings.ENVIRONMENT === 'production' ? 80 : 4000;
 var server = app.listen(port, function () 
 {
     console.log('Server listening on port ' + port);

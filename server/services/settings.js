@@ -14,15 +14,20 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging') {
-    settings.DATABASE_CONNECTION_STRING = 'mongodb://' + config.get('mongo.username') + ':' + config.get('mongo.password') + '@' + config.get('mongo.host') + ':' + config.get('mongo.port') + '/' + config.get('mongo.databaseName');
+    settings.MONGO_CONNECTION_STRING = "mongodb://" + config.get('mongo.username') + ":"
+        + config.get('mongo.password') + "@" + config.get('mongo.host') + ":"
+        + config.get('mongo.port') + "/" + config.get('mongo.databaseName')
+        + "?" + config.get('mongo.options');
 } else {
-    settings.NODEMAILER = {
-        AUTH: config.get('nodemailer.auth'),
-        HOST: config.get('nodemailer.host'),
-        PORT: config.get('nodemailer.port')
-    }
-
-    settings.MONGO_CONNECTION_STRING = 'mongodb://' + config.get('mongo.host') + ':' + config.get('mongo.port') + '/' + config.get('mongo.databaseName');
+    settings.MONGO_CONNECTION_STRING = "mongodb://" + config.get('mongo.host') + ":"
+        + config.get('mongo.port') + "/" + config.get('mongo.databaseName');
 }
 
+settings.NODEMAILER = {
+    AUTH: config.get('nodemailer.auth'),
+    HOST: config.get('nodemailer.host'),
+    PORT: config.get('nodemailer.port')
+}
+
+console.log('settings', settings)
 module.exports = settings;
