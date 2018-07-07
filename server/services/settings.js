@@ -27,7 +27,9 @@ settings.NODEMAILER = {
     AUTH: config.get('nodemailer.auth'),
     HOST: config.get('nodemailer.host'),
     PORT: config.get('nodemailer.port')
-}
+};
 
-console.log('settings', settings)
+settings.EXPRESS_JWT_SECRET = config.get('expressJwt.secret');
+
+console.log('settings', settings);
 module.exports = settings;

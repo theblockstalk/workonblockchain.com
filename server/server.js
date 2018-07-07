@@ -4,7 +4,6 @@ var app = express();
 var cors = require('cors');
 var bodyParser = require('body-parser');
 var expressJwt = require('express-jwt');
-var config = require('config.json');
 var mongoose = require('mongoose');
 const settings = require('./services/settings');
 
@@ -14,7 +13,7 @@ app.use(bodyParser.json());
  
 // use JWT auth to secure the api, the token can be passed in the authorization header or querystring
 /*app.use(expressJwt({
-    secret: config.secret,
+    secret: settings.EXPRESS_JWT_SECRET,
     getToken: function (req) {
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             return req.headers.authorization.split(' ')[1];
