@@ -24,7 +24,7 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
             key: function (req, file, cb) {
                 cb(null, Date.now().toString() + file.originalname)
             }
-        });
+        })
 })
 } else {
     uploadMulter = multer({
@@ -36,7 +36,7 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
                 cb(null, Date.now().toString() + file.originalname)
             }
         })
-    });
+    })
 }
 
 let uploadPhoto = uploadMulter.single('photo');
