@@ -18,6 +18,11 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
         + config.get('mongo.password') + "@" + config.get('mongo.host') + ":"
         + config.get('mongo.port') + "/" + config.get('mongo.databaseName')
         + "?" + config.get('mongo.options');
+
+    settings.AWS = {
+        REGION: config.get("aws.region"),
+        S3_BUCKET: config.get("aws.s3Bucket")
+    }
 } else {
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.get('mongo.host') + ":"
         + config.get('mongo.port') + "/" + config.get('mongo.databaseName');
