@@ -1,7 +1,7 @@
 var config = require('config.json');
 var express = require('express');
 var router = express.Router();
-var userService = require('../servicesservices/user.service');
+var userService = require('../services/user.service');
 const uploadMulter = require('../services/uploadMulter');
 
 /******** routes ****************/
