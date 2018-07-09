@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
 import { NgxAutoScrollModule } from 'ngx-auto-scroll';
-//const URL = 'http://workonblockchain.mwancloud.com:4000/';
-const URL = 'http://localhost:4000/';
+const URL = 'http://workonblockchain.mwancloud.com:4000/';
+//const URL = 'http://localhost:4000/';
 
 @Component({
   selector: 'app-chat',

@@ -194,7 +194,8 @@ export class CompanySearchComponent implements OnInit {
                 console.log(this.is_approved);
                if(this.is_approved === 0)
                 {
-                    this.msg = "You can access this feature when your profile has been approved";   
+                    this.msg = "You can access this feature when your profile has been approved"; 
+                    this.log='';  
                 }
                 else
                 {

@@ -128,7 +128,7 @@
 				</div>
 
 				<!--candidate 1st-->
-				<div *ngIf="info !== '' && msg == '' " >
+				<div *ngIf="info && msg === '' " >
 				
 				<div class="panel-group mr-top-form" *ngFor= "let data of info | paginate: { itemsPerPage:10, currentPage: p }">
  								      
