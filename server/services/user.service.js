@@ -2106,6 +2106,17 @@ function admin_candidate_filter(data)
 	if(arr)
 	{
 		var picked = arr.find(o => o === 'is_company_reply');
+		var employ_offer = arr.find(o => o === 'Employment offer accepted / reject');
+		if(employ_offer)
+		{
+			var offered = ['job_offer_rejected', 'job_offer_accepted'];
+			//data.msg_tags = ['job_offer_rejected', 'job_offer_accepted'];
+			offered.forEach(function(item) 
+		    {
+				data.msg_tags.push(item );
+		    });
+		}
+		
 	}
 	if(picked)
 	{
@@ -2116,6 +2127,7 @@ function admin_candidate_filter(data)
 	if(data.is_approve!== -1 && data.msg_tags )
 	{
 		console.log("both true");
+		console.log(data.msg_tags);
 		users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, dataa) 			
 		{
 			//console.log(dataa);
@@ -2244,6 +2256,7 @@ function admin_candidate_filter(data)
 	else if(data.msg_tags)
 	{
 		console.log("msg_tags");
+		console.log(data.msg_tags);
 		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
 		{
 			if(err)
@@ -2322,15 +2335,28 @@ function admin_company_filter(data)
 	if(arr)
 	{
 		var picked = arr.find(o => o === 'is_company_reply');
+		var employ_offer = arr.find(o => o === 'Employment offer accepted / reject');
+		if(employ_offer)
+		{
+			var offered = ['job_offer_rejected', 'job_offer_accepted'];
+			//data.msg_tags = ['job_offer_rejected', 'job_offer_accepted'];
+			offered.forEach(function(item) 
+		    {
+				data.msg_tags.push(item );
+		    });
+		}		
+
 	}
 	if(picked)
 	{
 		company_rply= [1,0];
 	}
 	
+	
 	if(data.is_approve!== -1 && data.msg_tags )
 	{
 		console.log("both true");
+		console.log(data.msg_tags);
 		users.find({type : 'company' , is_approved :data.is_approve }, function (err, dataa) 			
 		{
 
@@ -2455,6 +2481,7 @@ function admin_company_filter(data)
 	else if(data.msg_tags)
 	{
 		console.log("msg_tags");
+		console.log(data.msg_tags);
 		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
 		{
 			if(err)

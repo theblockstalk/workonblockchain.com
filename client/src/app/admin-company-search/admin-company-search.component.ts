@@ -26,6 +26,7 @@ export class AdminCompanySearchComponent implements OnInit {
     information;
     is_approve;
     select_value;
+	searchWord;
     
    constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
