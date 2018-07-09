@@ -2,7 +2,7 @@ var config = require('config.json');
 var express = require('express');
 var router = express.Router();
 var userService = require('../services/user.service');
-const uploadMulter = require('../services/uploadMulter');
+const multer = require('../services/multer');
 
 /******** routes ****************/
 ///////authenticated routes//////
@@ -319,9 +319,8 @@ function experience(req,res)
 
 function image(req, res) 
 {
-    uploadMulter.uploadPhoto(req, res, function (err)
-    {    
-        console.log('signup upload image');
+    multer(req, res, function (err)
+    {
         console.log('req.file', req.file);
         if (err)
         {
@@ -349,7 +348,7 @@ function image(req, res)
             });
         }
 
-    })    
+    })
 }
 
 ///// for update the candidate profile data ///////////////////
@@ -504,7 +503,7 @@ function about_company(req,res)
 
 function employer_image(req, res) 
 {
-    uploadMulter.uploadPhoto(req, res, function (err)
+    multer(req, res, function (err)
     {    //console.log(req.file.filename);
         if (err) 
         {
@@ -876,7 +875,7 @@ function get_chat(req,res)
 
 function upload_chat_file(req, res) 
 {
-    uploadMulter.uploadPhoto(req, res, function (err)
+    multer(req, res, function (err)
     {    
         if (err) 
         {
