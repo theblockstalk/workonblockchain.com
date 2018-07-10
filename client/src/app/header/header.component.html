@@ -49,8 +49,13 @@
   </div>
 </nav>
 
-<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0">
+<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "msg">
+    {{msg}}    
+ </div>
+
+<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Please!</strong> Your Account is not varify yet now. Kindly check your email and verify your account.
-    Please Verify your account.
+    <strong>Please!</strong> Your Account is not varify yet now. Kindly click on verify account for verify.
+    <a (click)="verify_client()" class = "">Verify Account</a>
+    
  </div>

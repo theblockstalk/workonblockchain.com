@@ -65,7 +65,16 @@ export class UserService {
         });
 
     }
- 
+    
+    verify_client(email: string) 
+    {
+        //return this.http.put('http://localhost:4000/users/forgot_password/' + email , '');
+        return this.http.put(URL+'users/verify_client/' + email , '') .map(data => {
+            return data;
+        });
+
+    }
+    
     delete(_id: string) 
     {
         return this.http.delete(URL+'users/' + _id);

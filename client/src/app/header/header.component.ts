@@ -3,6 +3,8 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { DatePipe } from '@angular/common';
+import { DataService } from "../data.service";
 
 
 @Component({
@@ -17,8 +19,11 @@ export class HeaderComponent implements OnInit {
   route;
   admin_route;
   is_verify;
+  date;
+  msg;
+  increment;
 
-  constructor(private authenticationService: UserService,private router: Router,location: Location) 
+  constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe) 
   {
       router.events.subscribe((val) => {
       if(location.path() != ''){
@@ -33,19 +38,28 @@ export class HeaderComponent implements OnInit {
         //this.route = 'Home'
       }
     });
+     
+              
+     //this.date = this.datePipe.transform(this.today + 30*60000, 'h:MM:ss');
+          //this.date = new Date(new Date().getTime() +  1800 *1000);
+          
    //console.log(this.admin_route);
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')); 
      // console.log(this.currentUser);
-      if(this.currentUser)
+     
+      if(this.currentUser )
       {
            this.user_type = this.currentUser.type;
+          
+          if(this.user_type === 'candidate')
+          {
           
            this.authenticationService.getById(this.currentUser._id)
             .subscribe(
                 data => 
                 {
-                    console.log(data._creator.is_verify);
+                    console.log(data);
                     if(data)
                     {
                         this.is_verify = data._creator.is_verify;
@@ -53,6 +67,23 @@ export class HeaderComponent implements OnInit {
                     }
                     
                 });
+         }
+         else if(this.user_type === 'company')
+         {
+              console.log("else if");
+              this.authenticationService.getCurrentCompany(this.currentUser._creator)
+            .subscribe(
+                data => 
+                {
+                    console.log(data);
+                    if(data)
+                    {
+                        this.is_verify = data[0]._creator.is_verify;
+                         this.is_admin = data[0]._creator.is_admin;
+                    }
+                    
+                });
+         }
            
       }
       else
@@ -64,9 +95,46 @@ export class HeaderComponent implements OnInit {
       
   }
 
+ 
   ngOnInit() 
   {
-      
+      if(this.currentUser)
+      {
+            this.dataservice.currentMessage.subscribe(message => this.msg = message);
+       }
+  }
+  
+  log;
+  verify_client()
+  {
+      if(this.currentUser.email)
+      {
+           this.authenticationService.verify_client(this.currentUser.email)
+            .subscribe(
+                data => {      
+                    console.log(data);
+                    if(data['msg'])
+                    {
+                        this.dataservice.changeMessage('Please check your email to verify your account');
+                        //this.router.navigate(["/login"]);
+                        
+                    }
+
+                    else
+                    {
+                        this.dataservice.changeMessage(data['error']);
+                        this.log= data['error'];
+                        
+                        
+                    }
+               
+                },
+                error => {
+                 this.dataservice.changeMessage(error);
+                   
+                });
+          
+      }
   }
     
     logout()

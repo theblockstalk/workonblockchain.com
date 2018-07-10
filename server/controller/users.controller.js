@@ -10,6 +10,7 @@ router.post('/authenticate', authenticate);
 router.put('/emailVerify/:email_hash' , emailVerify);
 router.put('/forgot_password/:email' , forgot_password);
 router.put('/reset_password/:hash' , reset_password);
+router.put('/verify_client/:email' , verify_client);
 
 ////////candidate routes//////////
 router.post('/register', register);
@@ -112,6 +113,28 @@ function emailVerify(req,res)
         }
     })
    
+
+}
+
+///////////forgot_password////////////////////////////
+function verify_client(req,res)
+{
+    //console.log(req.params.email);
+     userService.verify_client(req.params.email).then(function (err, data) 
+    {
+        if (data) 
+        {
+            res.json(data);
+        } 
+        else 
+        {  
+           res.send(err);
+        }
+    })
+    .catch(function (err) 
+    {
+        res.json({error: err});
+    });
 
 }
 

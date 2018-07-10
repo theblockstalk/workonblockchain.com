@@ -27,6 +27,8 @@ export class AdminCompanySearchComponent implements OnInit {
     is_approve;
     select_value;
 	searchWord;
+    admin_log;
+    is_admin;
     
    constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
@@ -53,12 +55,14 @@ export class AdminCompanySearchComponent implements OnInit {
         }
         
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+       
         if(!this.currentUser)
         {
             this.router.navigate(['/login']);
         }
      
-        if(this.currentUser && this.currentUser.is_admin == 1 )
+        if(this.currentUser && this.admin_log.is_admin == 1 )
         {
             this.getAllCompanies();
         }

@@ -27,7 +27,7 @@ service.authenticate = authenticate;
 service.forgot_password=forgot_password;
 service.reset_password=reset_password;
 service.emailVerify=emailVerify;
-
+service.verify_client = verify_client;
 ///////////candidate functions////////////////
 service.getAll = getAll;
 service.getById = getById;
@@ -336,6 +336,62 @@ function verify_send_email(info) {
     verifyEmailEmail.sendEmail(info);
 }
 
+
+//////////////////forgot_password/////////////////////////////
+function verify_client(email)
+{
+    var deferred = Q.defer();
+    users.findOne({ email :email  }, function (err, result)
+        {          
+            if (err) 
+                deferred.reject(err.name + ': ' + err.message);
+
+            if(result)
+            {   
+                updateData(result);
+            }
+            else
+            {
+                 deferred.resolve({error:'Email Not Found'});
+            }
+
+        });
+ 
+        function updateData(data) 
+        {
+            var hashStr = crypto.createHash('md5').update(email).digest('hex');
+           // console.log(hashStr);
+           // console.log(data._id);
+           
+            var user_info = {};
+            user_info.hash = hashStr;
+            user_info.email = email;
+            //user_info.name = userParam.first_name;
+            user_info.expiry = new Date(new Date().getTime() +  1800 *1000);  
+            var token = jwt_hash.encode(user_info,config.secret,'HS256');
+            user_info.token = token;
+            var set = 
+            {
+                email_hash: token,
+
+            };
+            users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc) 
+            {
+                if (err) 
+                    deferred.reject(err.name + ': ' + err.message);
+                else
+                {
+                	verify_send_email(user_info);
+                    deferred.resolve({msg:'Email Send'});
+                }
+            });
+        }
+
+ 
+    return deferred.promise;
+
+}
+
 /**************authenticaion functions implementation ends*************/
 
 /**************candidate functions implementation**********************/
@@ -425,6 +481,7 @@ function create(userParam)
           user_info.expiry = new Date(new Date().getTime() +  1800 *1000);  
           var token = jwt_hash.encode(user_info,config.secret,'HS256');
           user_info.token = token;
+          console.log(user_info);
           // set user object to userParam without the cleartext password
           var user = _.omit(userParam, 'password'); 
           // add hashed password to user object
