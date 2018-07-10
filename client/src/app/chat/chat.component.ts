@@ -414,9 +414,9 @@ export class ChatComponent implements OnInit {
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log("show_msg_area: " + this.show_msg_area);
 	    Observable.interval(3000).subscribe(x => {
-		//receiver,sender
+			//receiver,sender
 		 
-		this.authenticationService.get_user_messages(id,this.currentUser._creator)
+			this.authenticationService.get_user_messages(id,this.currentUser._creator)
 			.subscribe(
 				data => {
 					console.log('data');
