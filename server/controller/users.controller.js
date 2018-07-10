@@ -1,20 +1,8 @@
 var config = require('config.json');
 var express = require('express');
 var router = express.Router();
-var userService = require('services/user.service');
-var multer = require('multer');
-const fileUpload = require('express-fileupload');
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname)
-  }
-});
-
-var upload = multer({ storage: storage }).single('photo');
+var userService = require('../services/user.service');
+const multer = require('../services/multer');
 
 /******** routes ****************/
 ///////authenticated routes//////
@@ -332,9 +320,10 @@ function experience(req,res)
 
 function image(req, res) 
 {
-    upload(req, res, function (err) 
-    {    
-        if (err) 
+    multer(req, res, function (err)
+    {
+        console.log('req.file', req.file);
+        if (err)
         {
             return
         }
@@ -344,7 +333,8 @@ function image(req, res)
             var path = req.file.filename;
             userService.save_image(path , req.params._id).then(function (err, about) 
             {
-                if (about) 
+                console.log('userService.save_image')
+                if (about)
                 {
                     res.json(about);
                 } 
@@ -359,7 +349,7 @@ function image(req, res)
             });
         }
 
-    })    
+    })
 }
 
 ///// for update the candidate profile data ///////////////////
@@ -514,7 +504,7 @@ function about_company(req,res)
 
 function employer_image(req, res) 
 {
-    upload(req, res, function (err) 
+    multer(req, res, function (err)
     {    //console.log(req.file.filename);
         if (err) 
         {
@@ -882,11 +872,11 @@ function get_chat(req,res)
 
 }
 
-///// file upload for chat ///////////////////
+///// file uploadPhoto for chat ///////////////////
 
 function upload_chat_file(req, res) 
 {
-	upload(req, res, function (err) 
+    multer(req, res, function (err)
     {    
         if (err) 
         {
