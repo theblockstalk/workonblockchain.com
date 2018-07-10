@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
   user_type;is_admin;
   route;
   admin_route;
+  is_verify;
 
   constructor(private authenticationService: UserService,private router: Router,location: Location) 
   {
@@ -39,22 +40,32 @@ export class HeaderComponent implements OnInit {
       if(this.currentUser)
       {
            this.user_type = this.currentUser.type;
-           this.is_admin = this.currentUser.is_admin;
-           ///console.log(this.user_type);
-           //console.log(this.is_admin);
+          
+           this.authenticationService.getById(this.currentUser._id)
+            .subscribe(
+                data => 
+                {
+                    console.log(data._creator.is_verify);
+                    if(data)
+                    {
+                        this.is_verify = data._creator.is_verify;
+                         this.is_admin = data._creator.is_admin;
+                    }
+                    
+                });
+           
       }
       else
       {
           this.currentUser=null;
            this.user_type='';
           
-      }
-      
-   
+      }   
       
   }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
       
   }
     

@@ -26,7 +26,7 @@
           <ul class="dropdown-menu">
             <li *ngIf="(currentUser && user_type === 'candidate')"><a href="candidate_profile">Profile</a></li>
         <li *ngIf="(currentUser && user_type === 'candidate')"><a href="edit_profile">Edit Profile</a></li>
-         <li *ngIf="(currentUser && user_type === 'company')"><a href="company_profile">Profile</a></li>
+        <li *ngIf="(currentUser && user_type === 'company')"><a href="company_profile">Profile</a></li>
         <li *ngIf="(currentUser && user_type === 'company')"><a href="edit_company_profile">Edit Profile</a></li>
         <li *ngIf="(currentUser && user_type === 'company')"><a href="candidate-search">Search Candidate</a></li>
         <li *ngIf="currentUser"><a href="" (click)="logout()">Logout</a></li>
@@ -48,3 +48,9 @@
     </div>
   </div>
 </nav>
+
+<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Please!</strong> Your Account is not varify yet now. Kindly check your email and verify your account.
+    Please Verify your account.
+ </div>

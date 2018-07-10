@@ -2794,6 +2794,11 @@ input[type=checkbox] {
         left: 13px !important;
     }
 
+	.pro_alert {
+    width: 70%;
+    margin: auto;
+	}
+	
     .my_tab>li a {
         padding: 10px 0px;
         font-size: 12px;
