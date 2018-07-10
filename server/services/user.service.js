@@ -76,6 +76,7 @@ service.search_by_name = search_by_name;
 service.admin_candidate_filter = admin_candidate_filter;
 service.admin_search_by_name=admin_search_by_name;
 service.admin_company_filter=admin_company_filter;
+service.update_chat_msg_status=update_chat_msg_status;
 
 module.exports = service;
 
@@ -1978,6 +1979,36 @@ function update_job_message(data){
 			 
 		};
 		chat.update({ _id: data.id},{ $set: set }, function (err, doc) 
+		{
+			if (err) 
+			   deferred.reject(err.name + ': ' + err.message);
+			else
+			   deferred.resolve(set);
+		});
+	return deferred.promise;
+}
+
+function update_chat_msg_status(data){
+	var deferred = Q.defer();
+	console.log(data);
+		var set = 
+		{
+			is_read: 1,
+			 
+		};
+		chat.update({
+      $and : [
+               { 
+                 $or : [
+					{ $and : [ { receiver_id : {$regex: data.receiver_id} }, { sender_id : {$regex: data.sender_id} } ] },
+					{ $and : [ { receiver_id : {$regex: data.sender_id} }, { sender_id : {$regex: data.receiver_id} } ] }
+				]
+               },
+               { 
+                 is_read:data.status
+               }
+             ]
+    } ,{ $set: set },{multi: true}, function (err, doc) 
 		{
 			if (err) 
 			   deferred.reject(err.name + ': ' + err.message);

@@ -135,11 +135,15 @@
 	<!--Profile-inner-->
 <section class = "wizard_page">
 	<div class="container">
-		<ng-container *ngIf="approved_user == 0;else chat_enable">
-			You are not authorized to access this page.
-		</ng-container>
-		<ng-template #chat_enable>
 			<div class="row chat-row">
+				<ng-container *ngIf="approved_user == 0;else chat_enable">
+					<div class = "col-md-9" id="my-chat-design">
+						<h2 class="alert alert-danger error-alert">
+							You are not authorized to access this page.
+						</h2>
+					</div>
+				</ng-container>
+				<ng-template #chat_enable>
 				<div id = "frame">
 					<div class = "col-sm-4 col-xs-3" id="sidepanel">
 						<div id="profile" class = "padding_top-btm">
@@ -305,11 +309,11 @@
 							</ng-template>
 						</div>
 
-
+						
 					</div><!--end col here-->
-					
+				</ng-template>	
 				</div>
-		</ng-template>	
+			
 		</div>
 
 </section>

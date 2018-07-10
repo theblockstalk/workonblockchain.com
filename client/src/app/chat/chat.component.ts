@@ -67,6 +67,7 @@ export class ChatComponent implements OnInit {
 	  /*this.authenticationService.getById(this.currentUser._creator)
 		.subscribe(
 			data => {
+				console.log(data);
 				this.approved_user = data[0]._creator.is_approved;
 				console.log(data[0]._creator.is_approved);
 			},
@@ -74,41 +75,78 @@ export class ChatComponent implements OnInit {
 				console.log('error');
 			}
 		);*/
-	  /*if(this.currentUser.is_approved == 0){
-		  console.log('not allowed');
-	  }*/
-		if(this.currentUser.type=="company"){
-		  console.log(this.currentUser);
-		  console.log('company');
-		  this.display_list = 1;
-		  /*this.authenticationService.getCandidate(this.type)
-			.subscribe(
-				data => {
-					console.log('data');
-					this.users = data['users'];
-				},
-				error => {
-					console.log('error');
-					console.log(error);
-					this.log = error;
-				}
-			);*/
-		  //below code for only contacted candidates
-		  console.log(this.currentUser);
-		  console.log('company');
-		  this.display_list = 1;
-		  this.authenticationService.get_user_messages_only(this.currentUser._creator)
-			.subscribe(
-				msg_data => {
-					if(msg_data['datas'].length>0){
-						console.log(msg_data['datas']);
-						this.authenticationService.getCandidate(this.type)
+		if(this.approved_user == 0){
+			console.log('not allowed');
+		}
+		else{
+			console.log('allowed');
+			if(this.currentUser.type=="company"){
+			  console.log(this.currentUser);
+			  console.log('company');
+			  this.display_list = 1;
+			  /*this.authenticationService.getCandidate(this.type)
+				.subscribe(
+					data => {
+						console.log('data');
+						this.users = data['users'];
+					},
+					error => {
+						console.log('error');
+						console.log(error);
+						this.log = error;
+					}
+				);*/
+			  //below code for only contacted candidates
+			  console.log(this.currentUser);
+			  console.log('company');
+			  this.display_list = 1;
+			  this.authenticationService.get_user_messages_only(this.currentUser._creator)
+				.subscribe(
+					msg_data => {
+						if(msg_data['datas'].length>0){
+							console.log(msg_data['datas']);
+							this.authenticationService.getCandidate(this.type)
+								.subscribe(
+									data => {
+										console.log(data);
+										for (var key in msg_data['datas']) {
+											for (var key_user in data['users']) {
+												if(msg_data['datas'][key].sender_id == data['users'][key_user]._id || msg_data['datas'][key].receiver_id == data['users'][key_user]._id){
+													if(this.users.indexOf(data['users'][key_user]) === -1){
+														console.log('if');
+														this.users.push(data['users'][key_user]);
+													}
+												}	
+											}
+										}
+										console.log(this.users);
+									},
+									error => {
+										console.log('error');
+										console.log(error);
+										this.log = error;
+									}
+								);
+						}
+					},
+					error => {
+						console.log('error');
+						console.log(error);
+					}
+				);
+			}
+			else{
+				this.authenticationService.get_user_messages_only(this.currentUser._creator)
+				.subscribe(
+					msg_data => {
+						if(msg_data['datas'].length>0){
+							console.log('msg_data');
+							this.authenticationService.getCandidate('company')
 							.subscribe(
 								data => {
-									console.log(data);
 									for (var key in msg_data['datas']) {
 										for (var key_user in data['users']) {
-											if(msg_data['datas'][key].sender_id == data['users'][key_user]._id || msg_data['datas'][key].receiver_id == data['users'][key_user]._id){
+											if(msg_data['datas'][key].sender_id == data['users'][key_user]._id){
 												if(this.users.indexOf(data['users'][key_user]) === -1){
 													console.log('if');
 													this.users.push(data['users'][key_user]);
@@ -116,7 +154,6 @@ export class ChatComponent implements OnInit {
 											}	
 										}
 									}
-									console.log(this.users);
 								},
 								error => {
 									console.log('error');
@@ -124,51 +161,18 @@ export class ChatComponent implements OnInit {
 									this.log = error;
 								}
 							);
+						}
+					},
+					error => {
+						console.log('error');
+						console.log(error);
 					}
-				},
-				error => {
-					console.log('error');
-					console.log(error);
-				}
-			);
-	    }
-		else{
-			this.authenticationService.get_user_messages_only(this.currentUser._creator)
-			.subscribe(
-				msg_data => {
-					if(msg_data['datas'].length>0){
-						console.log('msg_data');
-						this.authenticationService.getCandidate('company')
-						.subscribe(
-							data => {
-								for (var key in msg_data['datas']) {
-									for (var key_user in data['users']) {
-										if(msg_data['datas'][key].sender_id == data['users'][key_user]._id){
-											if(this.users.indexOf(data['users'][key_user]) === -1){
-												console.log('if');
-												this.users.push(data['users'][key_user]);
-											}
-										}	
-									}
-								}
-							},
-							error => {
-								console.log('error');
-								console.log(error);
-								this.log = error;
-							}
-						);
-					}
-				},
-				error => {
-					console.log('error');
-					console.log(error);
-				}
-			);
-			
-			this.display_list = 0;
-			console.log('candidate');
-		}
+				);
+				
+				this.display_list = 0;
+				console.log('candidate');
+			}
+		}	
   }
   
   send_message(msgForm : NgForm){
@@ -409,16 +413,27 @@ export class ChatComponent implements OnInit {
 	  console.log(id);
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log("show_msg_area: " + this.show_msg_area);
-	    //Observable.interval(3000).subscribe(x => {
-		//receiver,sender
+	    Observable.interval(3000).subscribe(x => {
+			//receiver,sender
 		 
-		this.authenticationService.get_user_messages(id,this.currentUser._creator)
+			this.authenticationService.get_user_messages(id,this.currentUser._creator)
 			.subscribe(
 				data => {
 					console.log('data');
 					console.log(data['datas']);
 					this.new_msgss = data['datas'];
 					this.job_desc = data['datas'][0];
+					this.authenticationService.update_chat_msg_status(id,this.currentUser._creator,0)
+					.subscribe(
+						data => {
+							console.log('done');
+							console.log(data);
+						},
+						error => {
+							console.log('error');
+							console.log(error);
+						}
+					);
 					if(this.currentUser.type=='candidate'){
 						this.cand_job_offer = 0;
 						for(var key in data['datas']){
@@ -473,7 +488,7 @@ export class ChatComponent implements OnInit {
 					//this.log = error;
 				}
 			);
-		//});
+		});
 		this.candidate = email;
 		this.credentials.email = email;
 		this.credentials.id = id;
