@@ -631,4 +631,10 @@ export class UserService {
         return this.http.get<any>(URL+'users/get_company_by_id/' + _id);
 
     }
+	
+	update_chat_msg_status(receiver_id: string,sender_id: string,status:number){
+		return this.http.post<any>(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,sender_id:sender_id,status:status}) .map(data => {
+            return data
+        });
+    }
 }

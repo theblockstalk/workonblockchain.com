@@ -77,6 +77,7 @@ router.post('/search_by_name' , search_by_name);
 router.post('/admin_candidate_filter' , admin_candidate_filter);
 router.post('/admin_search_by_name' , admin_search_by_name);
 router.post('/admin_company_filter' , admin_company_filter);
+router.post('/update_chat_msg_status' , update_chat_msg_status);
 
 module.exports = router;
 
@@ -940,6 +941,24 @@ function insert_message_job(req,res){
 
 function update_job_message(req,res){
 	userService.update_job_message(req.body).then(function (err, about) 
+	{
+		if (about) 
+		{
+			res.json(about);
+		} 
+		else 
+		{
+			res.json(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function update_chat_msg_status(req,res){
+	userService.update_chat_msg_status(req.body).then(function (err, about) 
 	{
 		if (about) 
 		{
