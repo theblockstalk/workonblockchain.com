@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
 import { NgxAutoScrollModule } from 'ngx-auto-scroll';
-const URL = 'http://workonblockchain.mwancloud.com:4000/';
-//const URL = 'http://localhost:4000/';
+//const URL = 'http://workonblockchain.mwancloud.com:4000/';
+const URL = 'http://localhost:4000/';
 
 @Component({
   selector: 'app-chat',
@@ -413,7 +413,7 @@ export class ChatComponent implements OnInit {
 	  console.log(id);
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log("show_msg_area: " + this.show_msg_area);
-	    Observable.interval(3000).subscribe(x => {
+	    //setInterval(() => {
 			//receiver,sender
 		 
 			this.authenticationService.get_user_messages(id,this.currentUser._creator)
@@ -488,7 +488,7 @@ export class ChatComponent implements OnInit {
 					//this.log = error;
 				}
 			);
-		});
+		//}, 3000);
 		this.candidate = email;
 		this.credentials.email = email;
 		this.credentials.id = id;
@@ -504,14 +504,14 @@ export class ChatComponent implements OnInit {
 		console.log("upload file");
 		console.log('rece id: '+this.credentials.id);
 		console.log('rece name: '+this.credentials.email);
-		console.log('current: '+this.currentUser._creator);
+		console.log(this.currentUser);
 		let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
 		let fileCount: number = inputEl.files.length;
 		let formData = new FormData();
 		if (fileCount > 0 ) 
 		{ 
 			formData.append('photo', inputEl.files.item(0));
-			console.log(formData);
+			console.log(fileCount);
 			this.http.post(URL+'users/upload_chat_file/'+this.currentUser._creator,formData).map((res) => res).subscribe(                
 			(success) => 
 			{

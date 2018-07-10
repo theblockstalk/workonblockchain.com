@@ -67,6 +67,7 @@ router.post('/admin_candidate_filter' , admin_candidate_filter);
 router.post('/admin_search_by_name' , admin_search_by_name);
 router.post('/admin_company_filter' , admin_company_filter);
 router.post('/update_chat_msg_status' , update_chat_msg_status);
+router.get('/get_unread_msgs' , get_unread_msgs);
 
 module.exports = router;
 
@@ -899,16 +900,17 @@ function get_chat(req,res)
 
 function upload_chat_file(req, res) 
 {
+	console.log('upload_chat_file');
     multer(req, res, function (err)
     {    
         if (err) 
         {
-            return
+            console.log(err);
         }
         else
         {
 			console.log(req.file);
-			console.log('done');
+			console.log('done new');
 			res.json(req.file.filename);
         }
 
@@ -972,6 +974,24 @@ function update_job_message(req,res){
 
 function update_chat_msg_status(req,res){
 	userService.update_chat_msg_status(req.body).then(function (err, about) 
+	{
+		if (about) 
+		{
+			res.json(about);
+		} 
+		else 
+		{
+			res.json(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function get_unread_msgs(req,res){
+	userService.get_unread_msgs().then(function (err, about) 
 	{
 		if (about) 
 		{

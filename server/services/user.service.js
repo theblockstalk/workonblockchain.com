@@ -19,6 +19,7 @@ const chat = require('../model/chat');
 const forgotPasswordEmail = require('./email/emails/forgotPassword');
 const verifyEmailEmail = require('./email/emails/verifyEmail');
 const referUserEmail = require('./email/emails/referUser');
+const chatReminderEmail = require('./email/emails/chatReminder');
 
 var service = {};
 
@@ -81,6 +82,7 @@ service.admin_candidate_filter = admin_candidate_filter;
 service.admin_search_by_name=admin_search_by_name;
 service.admin_company_filter=admin_company_filter;
 service.update_chat_msg_status=update_chat_msg_status;
+service.get_unread_msgs=get_unread_msgs;
 
 module.exports = service;
 
@@ -1967,6 +1969,27 @@ function update_chat_msg_status(data){
 			else
 			   deferred.resolve(set);
 		});
+	return deferred.promise;
+}
+
+function get_unread_msgs(){
+	var deferred = Q.defer();
+	console.log('get all unread msgs');
+	chat.distinct("receiver_id", {is_read: {$gte:0}}, function (err, result){
+		if (err){
+			deferred.reject(err.name + ': ' + err.message);
+		}
+		else{
+			for(var i=0;i<result.length;i++){
+				users.findOne({ _id: result[i]},{"email":1}, function (err, newResult){
+					if(newResult){
+						chatReminderEmail.sendEmail(newResult.email);
+					}
+				});
+			}
+			deferred.resolve(result);
+		}
+	});
 	return deferred.promise;
 }
 
