@@ -25,6 +25,7 @@ app.use(bodyParser.json());
 }).unless({ path: ['/users/authenticate', '/users/register'] }));*/
  
 // routes
+app.use('/', require('./controller/healthCheck.controller'));
 app.use('/users', require('./controller/users.controller'));
 
 mongoose.connect(settings.MONGO_CONNECTION_STRING);
