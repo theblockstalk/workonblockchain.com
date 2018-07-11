@@ -46,8 +46,8 @@ mongoose.connection.on('error',(err)=>
 });
 
 // start server
-var port = settings.ENVIRONMENT === 'production' ? 80 : 4000;
-var server = app.listen(port, function () 
+var port = settings.SERVER.PORT;
+var server = app.listen(port, function ()
 {
     console.log('Server listening on port ' + port);
 });

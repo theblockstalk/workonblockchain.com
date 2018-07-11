@@ -36,5 +36,16 @@ settings.NODEMAILER = {
 
 settings.EXPRESS_JWT_SECRET = config.get('expressJwt.secret');
 
+let port;
+if (port = process.env.PORT) {
+    port = process.env.PORT;
+} else {
+    port = config.get('server.port');
+}
+
+settings.SERVER = {
+    PORT: port
+};
+
 console.log('settings', settings);
 module.exports = settings;
