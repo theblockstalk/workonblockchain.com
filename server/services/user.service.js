@@ -8,6 +8,7 @@ var mongo = require('mongoskin');
 const users = require('../model/users');
 const CandidateProfile = require('../model/candidate_profile');
 var image = require('../model/image');
+const Pages = require('../model/pages_content');
 // const fileUpload = require('express-fileupload');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
@@ -34,6 +35,7 @@ service.getAll = getAll;
 service.getById = getById;
 service.create = create;
 service.delete = _delete;
+service.terms_and_condition =terms_and_condition;
 service.about_data = about_data;
 service.job_data = job_data;
 service.resume_data = resume_data;
@@ -81,6 +83,11 @@ service.search_by_name = search_by_name;
 service.admin_candidate_filter = admin_candidate_filter;
 service.admin_search_by_name=admin_search_by_name;
 service.admin_company_filter=admin_company_filter;
+
+////admin CMS function/////////////////////////////
+service.add_privacy_content = add_privacy_content;
+service.get_content =get_content;
+
 service.update_chat_msg_status=update_chat_msg_status;
 service.get_unread_msgs=get_unread_msgs;
 
@@ -553,7 +560,7 @@ function create(userParam)
 ////////////delete any specific candidate from db//////////////////////////////////
 function _delete(_id) {
    var deferred = Q.defer();
-   /*CandidateProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
+   CandidateProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
    {
         if (err) 
             deferred.reject(err.name + ': ' + err.message);
@@ -565,9 +572,9 @@ function _delete(_id) {
                 else 
                     deferred.resolve();
             });
-    }); */
+    }); 
    
-   EmployerProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
+   /*EmployerProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
 		   {
        if (err) 
            deferred.reject(err.name + ': ' + err.message);
@@ -581,11 +588,48 @@ function _delete(_id) {
            });
    }); 
    
-   
+   */
   
     return deferred.promise;
 }
 
+////////////insert candidate wizard "terms" panel data////////////////////
+function terms_and_condition(_id , userParam)
+{
+	var deferred = Q.defer();
+    var _id = _id;
+
+    CandidateProfile.findOne({ _creator: _id }, function (err, data) 
+    {
+        if (err) 
+            deferred.reject(err.name + ': ' + err.message);
+
+        else 
+            updateUser(_id);
+        
+    });
+ 
+    function updateUser(_id) 
+    {
+
+        var set = 
+        {   
+            terms:userParam.terms,
+            marketing_emails: userParam.marketing,
+          
+        };
+
+        CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
+        {
+            if (err) 
+                deferred.reject(err.name + ': ' + err.message);
+            else
+                deferred.resolve(set);
+        });
+    }
+ 
+    return deferred.promise;
+}
 ////////////insert candidate wizard "about" panel data////////////////////
 function about_data(_id, userParam) 
 {
@@ -1017,6 +1061,7 @@ function getCompany()
 
     return deferred.promise;
 }
+
 
 ///////////////get any specific company detail/////////////////////////////////////////
 
@@ -2525,5 +2570,61 @@ function admin_company_filter(data)
 	return deferred.promise;
 }
 
+function add_privacy_content(info)
+{
+	var deferred = Q.defer();
+	
+	console.log(info);
+	var createdDate;
+	let now = new Date();
+	createdDate= date.format(now, 'DD/MM/YYYY');
+	
+	 let add_content = new Pages
+     ({
+    	 page_title : info.page_title,
+         page_content : info.html_text,
+         updated_date:createdDate,
+
+     });
+     
+	 add_content.save((err,data)=>
+     {
+         if(err)
+         {
+             deferred.reject(err.name + ': ' + err.message);
+         }
+         else
+         {
+            
+             deferred.resolve
+             ({
+                  information :data
+             });
+           }
+    }); 
+		 
+	
+	return deferred.promise;
+	
+}
+
+
+function get_content(title)
+{
+	var deferred = Q.defer();
+console.log(title);
+	Pages.find({page_title : title}).exec(function(err, result) 
+    {
+		console.log(result);
+        if (err){ 
+            deferred.reject(err.name + ': ' + err.message);
+		}
+        else{
+        	//console.log(user);
+            deferred.resolve(result);
+        }
+    });
+	return deferred.promise;
+}
 
 /**************end admin functions****************************/

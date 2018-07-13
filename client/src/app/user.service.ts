@@ -5,7 +5,11 @@ import {CandidateProfile} from './Model/CandidateProfile';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
-const URL = 'http://localhost:4000/';
+import {environment} from '../environments/environment';
+
+
+const URL = environment.backend_url;
+console.log(URL);
 
 @Injectable()
 export class UserService {
@@ -99,6 +103,30 @@ export class UserService {
  
                 
             });
+    }
+    
+    terms(user_id: string, data: any) 
+    {
+        
+        return this.http.put<any>(URL+'users/welcome/terms/' + user_id, data)
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    //localStorage.setItem('currentUser', JSON.stringify(user));
+                    return data;
+                }
+                else
+                {
+                    return data.msg;
+
+                }
+ 
+                
+            });
+
     }
 
     about(user_id: string, detail: CandidateProfile) 
@@ -645,5 +673,27 @@ export class UserService {
 		return this.http.post<any>(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,sender_id:sender_id,status:status}) .map(data => {
             return data
         });
+    }
+    
+    pages_content(info:any )
+    {
+        //console.log(user_id);
+       // console.log(detail);
+        return this.http.put<any>(URL+'users/add_privacy_content/', info)
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                
+            });
+    } 
+    
+    get_page_content(title :string)
+    {
+        return this.http.get<any>(URL+'users/get_pages_content/'+ title);
+        
     }
 }

@@ -1,7 +1,15 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 const CandidateProfileSchema = mongoose.Schema({
-    first_name:
+    terms:
+    {
+    	type:Boolean  	
+    },
+    marketing_emails:
+    {
+    	type:Boolean
+    },
+	first_name:
     {
         type:String
     },

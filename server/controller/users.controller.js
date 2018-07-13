@@ -17,6 +17,7 @@ router.post('/register', register);
 router.get('/', getAll);
 router.get('/current/:id', getCurrent);
 router.delete('/:_id', _delete);
+router.put('/welcome/terms/:_id', terms_and_condition);
 router.put('/welcome/about/:_id', about);
 router.put('/welcome/job/:_id', job);
 router.put('/welcome/resume/:_id', resume);
@@ -68,6 +69,10 @@ router.post('/admin_search_by_name' , admin_search_by_name);
 router.post('/admin_company_filter' , admin_company_filter);
 router.post('/update_chat_msg_status' , update_chat_msg_status);
 router.get('/get_unread_msgs' , get_unread_msgs);
+
+/////////admin CMS fucntions////////////////////////////////
+router.put('/add_privacy_content'  , add_privacy_content);
+router.get('/get_pages_content/:title', get_content);
 
 module.exports = router;
 
@@ -249,6 +254,26 @@ function _delete(req, res)
     {
         res.status(400).send(err);
     });
+}
+
+///// for save candidate "terms & condition(sign-up)" data in db//////////////////
+function terms_and_condition(req,res)
+{
+	 userService.terms_and_condition(req.params._id,req.body).then(function (err, data) 
+			    {
+			        if (data) 
+			        {
+			            res.json(data);
+			        } 
+			        else 
+			        {  
+			           res.send(err);
+			        }
+			    })
+			    .catch(function (err) 
+			    {
+			        res.json({error: err});
+			    });
 }
 
 ///// for save candidate "about(sign-up)" data in db//////////////////
@@ -1127,5 +1152,43 @@ function admin_company_filter(req,res)
 			});
 }
 
+
+function add_privacy_content(req,res)
+{
+	userService.add_privacy_content(req.body).then(function (err, data) 
+			{
+				if (data) 
+				{
+					res.json(data);
+				} 
+				else 
+				{  
+					res.send(err);
+				}
+			})
+			.catch(function (err) 
+			{
+				res.json({error: err});
+			});
+}
+
+function get_content(req,res)
+{
+	userService.get_content(req.params.title).then(function (err, data) 
+			{
+				if (data) 
+				{
+					res.json(data);
+				} 
+				else 
+				{  
+					res.send(err);
+				}
+			})
+			.catch(function (err) 
+			{
+				res.json({error: err});
+			});
+}
 
 /*********end admin functions************************************/

@@ -8,6 +8,7 @@ import { FormsModule,ReactiveFormsModule,FormGroup, FormArray }    from '@angula
 import { UserService } from './user.service';
 import { AboutComponent } from './about/about.component';
 //import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
+import { environment } from '../environments/environment';
 import { JobComponent } from './job/job.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -44,7 +45,15 @@ import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-ca
 import { AdminCandidateDetailComponent } from './admin-candidate-detail/admin-candidate-detail.component';
 import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-chat.component';
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
-import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component'; 
+import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
+import { CandidateTermsComponent } from './candidate-terms/candidate-terms.component'; 
+import { NgxEditorModule } from 'ngx-editor';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { PrivacyEditorComponent } from './privacy-editor/privacy-editor.component';
+import { SafeHtmlPipe } from "./pipe.safehtml";
+import { CKEditorModule } from 'ng2-ckeditor';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 let config = new AuthServiceConfig([
   {
@@ -65,6 +74,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'home', component: HomeComponent},
     { path: '', component: HomeComponent},
+     { path: 'terms-and-condition', component: CandidateTermsComponent},
     { path: 'resume', component: ResumeComponent},
     { path: 'experience', component: ExperienceComponent},
     { path: 'candidate_profile', component: CandidateProfileComponent},
@@ -90,6 +100,7 @@ const appRoutes: Routes = [
     {path : 'admin-display-chat' , component: AdminDisplayChatComponent},
     {path : 'admin-company-search' , component: AdminCompanySearchComponent},
     {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
+	 {path : 'privacy-policy-editor' , component: PrivacyEditorComponent},
     { path: '**', redirectTo: '' }
 ];
 
@@ -128,7 +139,12 @@ const appRoutes: Routes = [
     AdminCandidateDetailComponent,
     AdminDisplayChatComponent,
     AdminCompanySearchComponent,
-    AdminCompanyDetailComponent
+    AdminCompanyDetailComponent,
+    CandidateTermsComponent,
+    PrivacyEditorComponent,
+    SafeHtmlPipe,
+    PrivacyPolicyComponent,
+	
   ],
   imports: [
     BrowserModule,
@@ -139,6 +155,10 @@ const appRoutes: Routes = [
     HttpClientModule,
     Select2Module,
     NgxPaginationModule,
+    NgxEditorModule,
+    TooltipModule.forRoot(),
+    AngularFontAwesomeModule,
+    CKEditorModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: 

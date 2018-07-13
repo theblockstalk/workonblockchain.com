@@ -21,8 +21,8 @@ export class AdminDashboardComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')); 
       if(this.currentUser )
       {
-           this.user_type = this.currentUser.type;
-           if(this.user_type === 'candidate')
+          this.user_type = this.currentUser.type;
+          if(this.user_type === 'candidate')
           {
           
            this.authenticationService.getById(this.currentUser._id)
