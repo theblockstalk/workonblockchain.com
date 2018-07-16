@@ -73,6 +73,7 @@ router.get('/get_unread_msgs' , get_unread_msgs);
 /////////admin CMS fucntions////////////////////////////////
 router.put('/add_privacy_content'  , add_privacy_content);
 router.get('/get_pages_content/:title', get_content);
+router.get('/get_all_content', get_all_content);
 
 module.exports = router;
 
@@ -1189,6 +1190,26 @@ function get_content(req,res)
 			{
 				res.json({error: err});
 			});
+}
+
+function get_all_content(req,res)
+{
+	userService.get_all_content().then(function (err, data) 
+			{
+				if (data) 
+				{
+					res.json(data);
+				} 
+				else 
+				{  
+					res.send(err);
+				}
+			})
+			.catch(function (err) 
+			{
+				res.json({error: err});
+			});
+
 }
 
 /*********end admin functions************************************/

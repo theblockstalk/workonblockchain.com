@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 const PagesSchema = mongoose.Schema({
+	page_name: 
+	{
+		type:String,
+		required:true,
+		
+	},
+
 	page_title: 
 	{
 		type:String,

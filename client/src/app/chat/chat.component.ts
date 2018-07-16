@@ -6,7 +6,10 @@ import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
 import { NgxAutoScrollModule } from 'ngx-auto-scroll';
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
-const URL = 'http://localhost:4000/';
+//const URL = 'http://localhost:4000/';
+import {environment} from '../../environments/environment';
+const URL = environment.backend_url;
+console.log(URL);
 
 @Component({
   selector: 'app-chat',

@@ -62,9 +62,12 @@ export class AdminCompanySearchComponent implements OnInit {
             this.router.navigate(['/login']);
         }
      
-        if(this.currentUser && this.admin_log.is_admin == 1 )
+        if(this.currentUser && this.admin_log )
         {
-            this.getAllCompanies();
+            if(this.admin_log.is_admin == 1)
+                this.getAllCompanies();
+            else
+               this.router.navigate(['/not_found']); 
         }
         else
         {

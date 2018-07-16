@@ -46,8 +46,10 @@ export class AdminCandidateDetailComponent implements OnInit {
       this.credentials.user_id = this.user_id;
 
       
-      if(this.user_id && this.admin_log.is_admin == 1 )
+      if(this.user_id && this.admin_log)
       {
+          if(this.admin_log.is_admin == 1)
+          {
           this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
@@ -77,7 +79,13 @@ export class AdminCandidateDetailComponent implements OnInit {
             
                 }
 
-            });          
+            });
+          }
+           else
+            {
+                this.router.navigate(['/not_found']);
+          
+            }           
       }
       else
       {
