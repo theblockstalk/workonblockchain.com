@@ -1,0 +1,5 @@
+node_modules
+public
+uploads
+config/production.json
+config/staging.json

@@ -26,6 +26,7 @@ export class AdminCandidateSearchComponent implements OnInit {
     search_result = [];
     admin_check = [{name:1 , value:"Active"}, {name:0 , value:"Inactive"}];
     information;
+    admin_log;
    constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
  
   ngOnInit() 
@@ -53,14 +54,18 @@ export class AdminCandidateSearchComponent implements OnInit {
       
 
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
       if(!this.currentUser)
       {
           this.router.navigate(['/login']);
       }
      
-      if(this.currentUser && this.currentUser.is_admin == 1 )
+      if(this.currentUser && this.admin_log )
       {
+          if(this.admin_log.is_admin == 1)
             this.getAllCandidate();
+          else
+              this.router.navigate(['/not_found']);
         }
       else
        {

@@ -8,6 +8,7 @@ var mongo = require('mongoskin');
 const users = require('../model/users');
 const CandidateProfile = require('../model/candidate_profile');
 var image = require('../model/image');
+const Pages = require('../model/pages_content');
 // const fileUpload = require('express-fileupload');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
@@ -28,12 +29,13 @@ service.authenticate = authenticate;
 service.forgot_password=forgot_password;
 service.reset_password=reset_password;
 service.emailVerify=emailVerify;
-
+service.verify_client = verify_client;
 ///////////candidate functions////////////////
 service.getAll = getAll;
 service.getById = getById;
 service.create = create;
 service.delete = _delete;
+service.terms_and_condition =terms_and_condition;
 service.about_data = about_data;
 service.job_data = job_data;
 service.resume_data = resume_data;
@@ -81,6 +83,12 @@ service.search_by_name = search_by_name;
 service.admin_candidate_filter = admin_candidate_filter;
 service.admin_search_by_name=admin_search_by_name;
 service.admin_company_filter=admin_company_filter;
+
+////admin CMS function/////////////////////////////
+service.add_privacy_content = add_privacy_content;
+service.get_content =get_content;
+service.get_all_content=get_all_content;
+
 service.update_chat_msg_status=update_chat_msg_status;
 service.get_unread_msgs=get_unread_msgs;
 
@@ -338,6 +346,62 @@ function verify_send_email(info) {
     verifyEmailEmail.sendEmail(info);
 }
 
+
+//////////////////forgot_password/////////////////////////////
+function verify_client(email)
+{
+    var deferred = Q.defer();
+    users.findOne({ email :email  }, function (err, result)
+        {          
+            if (err) 
+                deferred.reject(err.name + ': ' + err.message);
+
+            if(result)
+            {   
+                updateData(result);
+            }
+            else
+            {
+                 deferred.resolve({error:'Email Not Found'});
+            }
+
+        });
+ 
+        function updateData(data) 
+        {
+            var hashStr = crypto.createHash('md5').update(email).digest('hex');
+           // console.log(hashStr);
+           // console.log(data._id);
+           
+            var user_info = {};
+            user_info.hash = hashStr;
+            user_info.email = email;
+            //user_info.name = userParam.first_name;
+            user_info.expiry = new Date(new Date().getTime() +  1800 *1000);  
+            var token = jwt_hash.encode(user_info,config.secret,'HS256');
+            user_info.token = token;
+            var set = 
+            {
+                email_hash: token,
+
+            };
+            users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc) 
+            {
+                if (err) 
+                    deferred.reject(err.name + ': ' + err.message);
+                else
+                {
+                	verify_send_email(user_info);
+                    deferred.resolve({msg:'Email Send'});
+                }
+            });
+        }
+
+ 
+    return deferred.promise;
+
+}
+
 /**************authenticaion functions implementation ends*************/
 
 /**************candidate functions implementation**********************/
@@ -417,6 +481,7 @@ function create(userParam)
           {
               is_verify =1;
           }
+          
           let now = new Date();
           createdDate= date.format(now, 'DD/MM/YYYY');
           var hashStr = crypto.createHash('md5').update(userParam.email).digest('hex');
@@ -427,6 +492,7 @@ function create(userParam)
           user_info.expiry = new Date(new Date().getTime() +  1800 *1000);  
           var token = jwt_hash.encode(user_info,config.secret,'HS256');
           user_info.token = token;
+          console.log(user_info);
           // set user object to userParam without the cleartext password
           var user = _.omit(userParam, 'password'); 
           // add hashed password to user object
@@ -496,7 +562,7 @@ function create(userParam)
 ////////////delete any specific candidate from db//////////////////////////////////
 function _delete(_id) {
    var deferred = Q.defer();
-   /*CandidateProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
+   CandidateProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
    {
         if (err) 
             deferred.reject(err.name + ': ' + err.message);
@@ -508,9 +574,19 @@ function _delete(_id) {
                 else 
                     deferred.resolve();
             });
-    }); */
+    }); 
    
-   EmployerProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
+   Pages.remove({ _id : mongo.helper.toObjectID('5b489267e2f74420b8b7f612') },function (err) 
+		   {
+		        if (err) 
+		            deferred.reject(err.name + ': ' + err.message);
+		 
+		        else
+		        	deferred.resolve();
+		        	
+		    }); 
+   
+   /*EmployerProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
 		   {
        if (err) 
            deferred.reject(err.name + ': ' + err.message);
@@ -524,11 +600,48 @@ function _delete(_id) {
            });
    }); 
    
-   
+   */
   
     return deferred.promise;
 }
 
+////////////insert candidate wizard "terms" panel data////////////////////
+function terms_and_condition(_id , userParam)
+{
+	var deferred = Q.defer();
+    var _id = _id;
+
+    CandidateProfile.findOne({ _creator: _id }, function (err, data) 
+    {
+        if (err) 
+            deferred.reject(err.name + ': ' + err.message);
+
+        else 
+            updateUser(_id);
+        
+    });
+ 
+    function updateUser(_id) 
+    {
+
+        var set = 
+        {   
+            terms:userParam.terms,
+            marketing_emails: userParam.marketing,
+          
+        };
+
+        CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
+        {
+            if (err) 
+                deferred.reject(err.name + ': ' + err.message);
+            else
+                deferred.resolve(set);
+        });
+    }
+ 
+    return deferred.promise;
+}
 ////////////insert candidate wizard "about" panel data////////////////////
 function about_data(_id, userParam) 
 {
@@ -960,6 +1073,7 @@ function getCompany()
 
     return deferred.promise;
 }
+
 
 ///////////////get any specific company detail/////////////////////////////////////////
 
@@ -2468,5 +2582,120 @@ function admin_company_filter(data)
 	return deferred.promise;
 }
 
+function add_privacy_content(info)
+{
+	var deferred = Q.defer();
+	 var createdDate;  
+     let now = new Date();
+     createdDate= date.format(now, 'DD/MM/YYYY');
+     console.log(info.page_title);
+    Pages.findOne({ page_name: info.page_name}, function (err, data) 
+    {
+    	console.log(data);
+        if (err) 
+            deferred.reject(err.name + ': ' + err.message);
+
+       if(data==null)
+       {
+    	   console.log("if");
+    	   insertContent();
+    	   
+    	}
+            
+        else
+        {
+        	console.log("else");
+        	updateContent(data._id);
+        }
+        
+    });
+ 
+    function updateContent(_id) 
+    {
+    	console.log("update");
+        var set = 
+        {     		
+                 page_content : info.html_text,
+                 page_title : info.page_title,
+                 updated_date:createdDate,
+        };
+
+        Pages.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
+        {
+            if (err) 
+                deferred.reject(err.name + ': ' + err.message);
+            else
+                deferred.resolve(set);
+        });
+    }
+    
+    function insertContent()
+    {
+    	console.log("insert");
+    	let add_content = new Pages
+        ({
+       	 	page_title : info.page_title,
+            page_content : info.html_text,
+            page_name : info.page_name,
+            updated_date:createdDate,
+
+        });
+        
+   	 	add_content.save((err,data)=>
+        {
+            if(err)
+            {
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            else
+            {
+               
+                deferred.resolve
+                ({
+                     information :data
+                });
+              }
+       }); 
+    	
+    }
+	
+	return deferred.promise;
+	
+}
+
+
+function get_content(name)
+{
+	var deferred = Q.defer();
+	Pages.find({page_name : name}).exec(function(err, result) 
+    {
+		
+        if (err){ 
+            deferred.reject(err.name + ': ' + err.message);
+		}
+        else{
+        	//console.log(user);
+            deferred.resolve(result);
+        }
+    });
+	return deferred.promise;
+}
+
+function get_all_content()
+{
+	var deferred = Q.defer();
+	Pages.find().exec(function(err, result) 
+		    {
+				
+		        if (err){ 
+		            deferred.reject(err.name + ': ' + err.message);
+				}
+		        else{
+		        	//console.log(user);
+		            deferred.resolve(result);
+		        }
+		    });
+			return deferred.promise;
+}
 
 /**************end admin functions****************************/

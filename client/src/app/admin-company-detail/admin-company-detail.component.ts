@@ -20,7 +20,8 @@ export class AdminCompanyDetailComponent implements OnInit {
     verify;
     is_approved;
     error;
-    is_approve;   
+    is_approve;
+    admin_log;   
     
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
@@ -35,12 +36,13 @@ export class AdminCompanyDetailComponent implements OnInit {
       console.log(this.user_id);
      
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
       //console.log('ftn')
       //console.log(this.user_id)
       this.credentials.user_id = this.user_id;
 
       
-      if(this.user_id && this.currentUser.is_admin == 1 )
+      if(this.user_id && this.admin_log.is_admin == 1 )
       {
           this.authenticationService.getCurrentCompany(this.user_id)
             .subscribe(

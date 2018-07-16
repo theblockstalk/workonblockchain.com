@@ -23,6 +23,7 @@ export class ExperienceComponent implements OnInit
     value;referringData;expYear=[];expYearRole=[];start_month;start_year;salary;db_lang;
     companyname;positionname;locationname;descname;startdate;startyear;enddate;endyear;currentwork;currentenddate;currentendyear; uniname;degreename;fieldname;edudate;eduyear; eduData; jobData;datatata=[];exp_data=[];Intro;db_valye=[];
     exp_active_class;active_class;current_currency;
+    term_active_class;term_link;
 
     inputArray=[];
 
@@ -46,8 +47,8 @@ export class ExperienceComponent implements OnInit
     message;
   	ngOnInit() 
     {
-            this.expYear[0]='';
-        this.dataservice.currentMessage.subscribe(message => this.message = message);
+         
+       this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.shown=true;
       this.currentdate = this.datePipe.transform(this.today, 'MMM');
@@ -70,11 +71,16 @@ export class ExperienceComponent implements OnInit
             .subscribe(
             data => {
                 console.log(data);
-                if(data.history && data.education&& data.experience_roles&&data.current_salary && data.current_currency)
+                if(data.terms)
+                  {
+                        this.term_active_class='fa fa-check-circle text-success';
+                     this.term_link = '/terms-and-condition';
+                  }
+                if(data.history && data.education|| data.experience_roles&&data.current_salary && data.current_currency)
                 {
                     
                     this.exp_active_class = 'fa fa-check-circle text-success';
-                    this.expYear = data.experience_roles;
+                    
                     this.jobData = data.history; 
                     this.ExperienceForm = this._fb.group({
                               ExpItems: this._fb.array(
@@ -89,7 +95,9 @@ export class ExperienceComponent implements OnInit
                           )
                         });
                         //this.exp_data.push(data.experience_roles) ;
- 
+                      if(data.experience_roles)
+                      {
+                          this.expYear = data.experience_roles;
                       for (let key of data.experience_roles) 
                       {
                         for(var i in key)
@@ -131,7 +139,7 @@ export class ExperienceComponent implements OnInit
                           
                         }
                       }
-
+                    }
                       
 
                     this.salary = data.current_salary;
@@ -145,12 +153,12 @@ export class ExperienceComponent implements OnInit
                      // this.job_active_class = 'fa fa-check-circle text-success';
                        
                   }
-               
-              if(data.commercial_platform && data.experimented_platform && data.why_work )
+               console.log(data.platforms);
+              if(!data.commercial_platform || data.commercial_platform == "" || !data.experimented_platform || data.experimented_platform =="" || !data.why_work || !data.platforms ||data.platforms == "")
               {
                 
                
-               // this.router.navigate(['/resume']);
+                this.router.navigate(['/resume']);
               }
      
              
@@ -222,22 +230,22 @@ export class ExperienceComponent implements OnInit
     month= ["January","Februray","March","April","May","June","July","August","September","October","November","December"]
 
   	onExpOptions(obj)
-  	{
-            
+  	{         
         
     	let updateItem = this.language.find(this.findIndexToUpdate, obj.value);
       let index = this.language.indexOf(updateItem);
       if(index > -1)
       {
         this.language.splice(index, 1);
-          let updateItem2 = this.findObjectByKey(this.expYear, 'platform_name', obj.value);
-       //console.log(updateItem);
-      let index2 = this.expYear.indexOf(updateItem2);
+        let updateItem2 = this.findObjectByKey(this.expYear, 'platform_name', obj.value);
+        console.log(updateItem2);
+        let index2 = this.expYear.indexOf(updateItem2);
 
       if(index2 > -1)
       {
           
         this.expYear.splice(index2, 1);
+          
           }
       }
       else
@@ -246,7 +254,8 @@ export class ExperienceComponent implements OnInit
         this.language.push(obj);
       }
 
-      //console.log(this.language);
+      console.log(this.language);
+            console.log(this.expYear);
     
   	}
 
@@ -484,6 +493,7 @@ export class ExperienceComponent implements OnInit
         //console.log(this.LangexpYear); 
         
       }
+        console.log(this.expYear);
    }
     
     findObjectByKey(array, key, value) 

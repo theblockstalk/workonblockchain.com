@@ -6,6 +6,7 @@
     <div class="row">
       <div class = "text-center steps-name">
         <ul class = "step-progress">
+          <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Summary of T&Cs</a></li>        
           <li class = "step "><i class="{{active_class}}"></i><a routerLink="/about"> About</a></li>
           <li class = "step"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
           <li class = "step step-active"><i class="{{resume_active_class}}"></i><a href="/resume" >Blockchain</a></li>
@@ -38,7 +39,7 @@
                       
                       <div class="checkbox" >
                         <label class = "check-label lable"> {{option.name}}  
-                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"              required (change)="oncommerciallyOptions(option)"   />
+                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  required (change)="oncommerciallyOptions(option)"   />
             
                           <span class="checkmark">
                           <div></div>

@@ -37,6 +37,8 @@ export class JobComponent implements OnInit {
   job_active_class;
   exp_active_class;resume_active_class;resume_class;base_currency;
     about_active_class;
+    term_active_class;
+    term_link;
   ngOnInit() 
   {
   //console.log(this.options.name);
@@ -60,10 +62,15 @@ export class JobComponent implements OnInit {
                     this.exp_class = "btn";
                   }
                     
-                    if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+                  if(data.contact_number  && data.nationality && data.first_name && data.last_name)
                   {
                         this.about_active_class = 'fa fa-check-circle text-success';
-                        }
+                  }
+                  if(data.terms)
+                  {
+                        this.term_active_class='fa fa-check-circle text-success';
+                      this.term_link = '/terms-and-condition';
+                  }
 
                 if(data.country && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
                 {
@@ -130,12 +137,13 @@ export class JobComponent implements OnInit {
                     if(data.country && data.roles && data.interest_area || data.expected_salary || data.availability_day )
                   {
                       this.job_active_class = 'fa fa-check-circle text-success';
+                        this.resume_class="/resume";
                        
                   }
                
               if(data.commercial_platform && data.experimented_platform && data.why_work)
               {
-                this.resume_class="/resume";
+                
                 this.resume_active_class='fa fa-check-circle text-success';
                // this.router.navigate(['/resume']);
               }

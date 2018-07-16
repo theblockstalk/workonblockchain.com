@@ -26,6 +26,7 @@ export class ResumeComponent implements OnInit {
   job_active_class;
   exp_active_class;resume_active_class;resume_class;
   platformreferringData;designed_expYear_db=[];
+  term_active_class;term_link;
 
    constructor(private route: ActivatedRoute, private http: HttpClient,
         private router: Router,
@@ -35,8 +36,7 @@ export class ResumeComponent implements OnInit {
   {
             
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.expYear=[];
-      
+   
        if(!this.currentUser)
        {
           this.router.navigate(['/login']);
@@ -44,21 +44,25 @@ export class ResumeComponent implements OnInit {
        if(this.currentUser && this.currentUser.type=='candidate')
        {
           // new synapseThrow();
-          this.exp_class="btn disabled";
+          this.exp_class="";
            this.active_class="fa fa-check-circle text-success";
            this.authenticationService.getById(this.currentUser._id)
             .subscribe(
                 data => {
 
-                
+                if(data.terms)
+                  {
+                      this.term_active_class='fa fa-check-circle text-success';
+                     this.term_link = '/terms-and-condition';
+                  }
                //console.log(data);
-                if(data.commercial_platform && data.experimented_platform && data.why_work && data.platforms)
+                if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
                 {
                   this.why_work=data.why_work;
-                
-                    this.commercial_expYear =data.commercial_platform;
-                    this.expYear = data.experimented_platform;
-                    this.platforms = data.platforms;
+
+                    if(data.commercial_platform)
+                    {
+                        this.commercial_expYear =data.commercial_platform;
                      for (let key of data.commercial_platform) 
                       {
                         for(var i in key)
@@ -100,7 +104,11 @@ export class ResumeComponent implements OnInit {
                           
                         }
                       }
+                     }
 
+                      if(data.platforms)
+                      {
+                          this.platforms = data.platforms;
                        for (let key of data.platforms) 
                       {
                         for(var i in key)
@@ -142,9 +150,12 @@ export class ResumeComponent implements OnInit {
                           
                         }
                       }
+                     }
 
-
-
+                     
+                      if(data.experimented_platform)
+                      {
+                         this.expYear = data.experimented_platform;                        
                       for (let key of data.experimented_platform) 
                       {
                         for(var i in key)
@@ -186,7 +197,7 @@ export class ResumeComponent implements OnInit {
                           
                         }
                       }
-
+                    }
 
 
                 }
@@ -197,7 +208,7 @@ export class ResumeComponent implements OnInit {
                        
                   }
                
-              if(data.commercial_platform && data.experimented_platform && data.why_work )
+              if(data.commercial_platform && data.experimented_platform && data.why_work && data.platforms )
               {
                 this.exp_class = "/experience";
                 
@@ -335,6 +346,7 @@ export class ResumeComponent implements OnInit {
         obj.checked =true;
         this.experimented_platform.push(obj);
       }
+      console.log(this.experimented_platform);
   }
 
   
@@ -393,7 +405,7 @@ export class ResumeComponent implements OnInit {
         obj.checked =true;
         this.commercially_worked.push(obj);
       }
-
+    console.log(this.commercial_expYear);
       
    }
 
@@ -432,7 +444,9 @@ export class ResumeComponent implements OnInit {
       this.expYear.push(this.referringData);*/ 
      
        this.selectedValue = e.target.value;
+       console.log(value);
        this.langValue = value;
+       console.log(this.expYear);
          let updateItem = this.findObjectByKey(this.expYear, 'experimented_platform', value);
        //console.log(updateItem);
       let index = this.expYear.indexOf(updateItem);

@@ -4,8 +4,11 @@ declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
-const URL = 'http://workonblockchain.mwancloud.com:4000/';
-//const URL = 'http://localhost:4000/';
+//const URL = 'http://workonblockchain.mwancloud.com:4000/';
+//sconst URL = 'http://localhost:4000/';
+import {environment} from '../../environments/environment';
+const URL = environment.backend_url;
+console.log(URL);
 
 @Component({
   selector: 'app-about',
@@ -25,6 +28,8 @@ export class AboutComponent implements OnInit
     "Male", 
     "Female"
   ]  
+  term_active_class;
+    term_link;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef) 
   { 
@@ -65,6 +70,11 @@ export class AboutComponent implements OnInit
                 {
                   console.log(data);
                   console.log(data._creator.social_type);
+                  if(data.terms)
+                  {
+                        this.term_active_class='fa fa-check-circle text-success';
+                      this.term_link = '/terms-and-condition';
+                  }
                   
                   if(data.contact_number  && data.nationality && data.first_name && data.last_name)
                   {
@@ -80,11 +90,11 @@ export class AboutComponent implements OnInit
                     if(data.image != null && data.social_type == "")
                     {
                       //console.log(data.image);
-                     this.info.image_src = '/var/www/html/workonblockchain/server/uploads/' + data.image ;
+                     //this.info.image_src = '/var/www/html/workonblockchain/server/uploads/' + data.image ;
                     }
                     else if(data.image != null)
                     {
-                        this.info.image_src = data.image ;
+                        //this.info.image_src = data.image ;
                      }
                     
                     this.link= "/job";
@@ -97,19 +107,19 @@ export class AboutComponent implements OnInit
                        
                   }
                
-              if(data.commercial_platform && data.experimented_platform && data.why_work )
-              {
-                this.resume_class="/resume";
-                this.resume_active_class='fa fa-check-circle text-success';
-               // this.router.navigate(['/resume']);
-              }
+                 if(data.commercial_platform && data.experimented_platform && data.why_work && data.platforms)
+                {
+                    this.resume_class="/resume";
+                    this.resume_active_class='fa fa-check-circle text-success';
+                // this.router.navigate(['/resume']);
+                }
      
-              if(data.history && data.education && data.experience_roles && data.current_salary )
-              {
-                  this.exp_class = "/experience";
-                  this.exp_active_class = 'fa fa-check-circle text-success';
-                  //this.router.navigate(['/experience']);
-              }
+                if(data.history && data.education && data.experience_roles && data.current_salary )
+                {
+                    this.exp_class = "/experience";
+                    this.exp_active_class = 'fa fa-check-circle text-success';
+                    //this.router.navigate(['/experience']);
+                }
 
               
                   

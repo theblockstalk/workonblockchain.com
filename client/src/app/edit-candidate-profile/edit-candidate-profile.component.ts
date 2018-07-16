@@ -7,8 +7,11 @@ import {User} from '../Model/user';
 import {NgForm} from '@angular/forms';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import { DataService } from "../data.service";
-const URL = 'http://workonblockchain.mwancloud.com:4000/';
+//const URL = 'http://workonblockchain.mwancloud.com:4000/';
 //const URL = 'http://localhost:4000/';
+import {environment} from '../../environments/environment';
+const URL = environment.backend_url;
+//console.log(URL);
 
 @Component({
   selector: 'app-edit-candidate-profile',
@@ -159,13 +162,13 @@ export class EditCandidateProfileComponent implements OnInit {
                     this.base_currency = data.expected_salary_currency;
                 }
                 
-                if(data.commercial_platform && data.experimented_platform && data.why_work && data.platforms)
+                if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
                 {
                   this.why_work=data.why_work;
-                
-                    this.commercial_expYear =data.commercial_platform;
-                    this.expYear = data.experimented_platform;
-                    this.platforms = data.platforms;
+              
+                    if(data.commercial_platform)
+                    {
+                        this.commercial_expYear =data.commercial_platform;
                      for (let key of data.commercial_platform) 
                       {
                         for(var i in key)
@@ -207,8 +210,14 @@ export class EditCandidateProfileComponent implements OnInit {
                           
                         }
                       }
-
-                       for (let key of data.platforms) 
+                        
+                     }
+                    
+                    
+                      if(data.platforms)
+                      {
+                          this.platforms = data.platforms;
+                      for (let key of data.platforms) 
                       {
                         for(var i in key)
                         {
@@ -249,9 +258,12 @@ export class EditCandidateProfileComponent implements OnInit {
                           
                         }
                       }
+                     }
 
 
-
+                      if(data.experimented_platform)
+                      {
+                          this.expYear = data.experimented_platform;
                       for (let key of data.experimented_platform) 
                       {
                         for(var i in key)
@@ -293,14 +305,15 @@ export class EditCandidateProfileComponent implements OnInit {
                           
                         }
                       }
+                     }
                 }
                 
                 /////////////////experience////////////////////////
-                if(data.history && data.education&& data.experience_roles&&data.current_salary && data.current_currency)
+                if(data.history && data.education|| data.experience_roles&&data.current_salary && data.current_currency)
                 {
                     
                    
-                    this.LangexpYear = data.experience_roles;
+                    
                     this.jobData = data.history; 
                     
                     this.ExperienceForm = this._fb.group({
@@ -316,7 +329,9 @@ export class EditCandidateProfileComponent implements OnInit {
                           )
                         });
                         //this.exp_data.push(data.experience_roles) ;
- 
+                       if(data.experience_roles)
+                       {
+                           this.LangexpYear = data.experience_roles;
                       for (let key of data.experience_roles) 
                       {
                         for(var i in key)
@@ -358,8 +373,7 @@ export class EditCandidateProfileComponent implements OnInit {
                           
                         }
                       }
-
-                      
+                    }                    
 
                     this.salary = data.current_salary;
                     this.Intro =data.description;
