@@ -9,6 +9,10 @@ const CandidateProfileSchema = mongoose.Schema({
     {
     	type:Boolean
     },
+    disable_account:
+    {
+    	type:Boolean
+    },
 	first_name:
     {
         type:String

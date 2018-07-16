@@ -12,51 +12,39 @@
 			</div>
 			<div class="col-md-12 wizard-form">
 			
-				<form class = "login_form"  (submit)="terms_wizard(termsForm)"  #termsForm = ngForm>
+				 <form class = "login_form"  (submit)="terms_wizard(termsForm)"  #termsForm = ngForm>
 					
-					<fieldset class="scheduler-border">
-					    <legend class="scheduler-border">Summary of T&Cs</legend>
-						<p style= 'color:red;'>{{log}}</p>
-					    <div class="checkbox">
-							<label class = "check-label"> Company will pay 15% of annual base salary for all hires through the platform.
-								<input type = "checkbox" value = "" required name="company_pay" [(ngModel)]="company_pay">
-								<span class="checkmark">
-									
-								</span>
-							</label>
-						</div>
+				<ul class = "comp_ul">
+					<li> Company will pay 15% of annual base salary for all hires through the platform.</li>
+					<li> Company must declare finalized employment with candidates on the platform.</li>
+					<li> Company found to not declare employment through the platform will pay a penalty fee of 25% of annual base candidate salary .</li>
+					<li> This is only a summary, please refer to Terms and Conditions for full details.</li>
 
-						<div class="checkbox">
-							<label class = "check-label"> Company must declare finalized employment with candidates on the platform.
-								<input type = "checkbox" value = "" required name="company_declare" [(ngModel)]="company_declare">
-								<span class="checkmark">
-									
-								</span>
-							</label>
-						</div>
+					
 
-						<div class="checkbox">
-							<label class = "check-label"> Company found to not declare employment through the platform will pay a penalty fee of 25% of annual base candidate salary .
-								<input type = "checkbox" value = "" required name="company_found" [(ngModel)]="company_found">
-								<span class="checkmark">
-									
-								</span>
-							</label>
-						</div>
+				</ul>
 
-						<div class="checkbox">
-							<label class = "check-label"> This is only a summary, please refer to Terms and Conditions for full details.
-								<input type = "checkbox" value = "" required name="only_summary" [(ngModel)]="only_summary">
-								<span class="checkmark">
-									
-								</span>
-							</label>
-						</div>
+				<div class = "form-group col-md-6">
+					<div class="checkbox">
+						<label class = "check-label"> Accept <a >Term and Conditions </a>
+							<input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+							<span class="checkmark">
+								<div></div>
+							</span>
+						</label>
+						<label class = "check-label"> Accept <a >Marketing Emails </a>
+							<input type = "checkbox" value = ""  name="marketing" [(ngModel)]="marketing_emails">
+							<span class="checkmark">
+								<div></div>
+							</span>
+						</label>
+				  </div>
+				</div>
+				
 
-					</fieldset>
+					<div class = "form-group col-md-6 text-right">
+							<button type="submit" class = "btn btn-self btn-pdg" [disabled]="termscondition==false" >Next Step</button>
 
-					<div class = "form-group text-right">
-						<button type="submit" class = "btn btn-self btn-pdg" >Next Step</button>
 					</div>
 
 				</form>
@@ -69,6 +57,3 @@
 
 
 <!--candidate step completing End-->
-
-<div class = "gap">
-</div>
