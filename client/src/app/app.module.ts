@@ -60,8 +60,6 @@ import { FaqComponent } from './faq/faq.component';
 import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
 import { TermsAndConditionComponent } from './terms-and-condition/terms-and-condition.component';
 
->>>>>>> 897dd6cba997a082fff6d45c74dd9cebd31d1b2f
-
 let config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
@@ -108,8 +106,7 @@ const appRoutes: Routes = [
     {path : 'admin-company-search' , component: AdminCompanySearchComponent},
     {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
     {path : 'admin-build-page' , component: BuildingCustomPageComponent},
-	{ path: '**', redirectTo: '' }
-   {path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
+	{path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
     {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
     {path : 'admin-terms-and-condition-editor' , component: AdminTermsConditionEditorComponent},
     {path : 'privacy-policy' , component: PrivacyPolicyComponent},
@@ -154,7 +151,7 @@ const appRoutes: Routes = [
     AdminDisplayChatComponent,
     AdminCompanySearchComponent,
     AdminCompanyDetailComponent,
-    BuildingCustomPageComponent
+    BuildingCustomPageComponent,
     CandidateTermsComponent,
     PrivacyEditorComponent,
     SafeHtmlPipe,
