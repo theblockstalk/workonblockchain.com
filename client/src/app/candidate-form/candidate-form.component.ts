@@ -127,7 +127,7 @@ export class CandidateFormComponent implements OnInit {
                             }
                             else
                             {
-                                 window.location.href = '/about';
+                                 window.location.href = '/terms-and-condition';
                             }
                             
                         });
@@ -183,7 +183,7 @@ export class CandidateFormComponent implements OnInit {
                         localStorage.setItem('currentUser', JSON.stringify(data));
                         //localStorage.removeItem('userInfo');
                         //this.router.navigate(['/about']);
-                        window.location.href = '/about';
+                        window.location.href = '/terms-and-condition';
                     }
                 },
                 error => {
@@ -231,7 +231,7 @@ export class CandidateFormComponent implements OnInit {
                                 localStorage.setItem('currentUser', JSON.stringify(data));
                                 //localStorage.removeItem('userInfo');
                                 //this.router.navigate(['/about']);
-                                window.location.href = '/about';
+                                window.location.href = '/terms-and-condition';
                             }
                             },
                             error => {

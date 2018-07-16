@@ -24,6 +24,9 @@ export class CandidateProfileComponent implements OnInit {
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService) { }
 
+  platforms;
+  cand_id;htmlContent;
+    
   ngOnInit() 
   {
       
@@ -35,6 +38,7 @@ export class CandidateProfileComponent implements OnInit {
        }
        if(this.currentUser && this.currentUser.type == 'candidate')
        {
+           this.cand_id= this.currentUser._creator;
           this.authenticationService.getById(this.currentUser._id)
             .subscribe(
             data => {
@@ -48,12 +52,12 @@ export class CandidateProfileComponent implements OnInit {
                  
                     this.router.navigate(['/job']); 
                 }
-                else if(data.commercial_platform.length < 1 && data.experimented_platform.length < 1  || !data.why_work || !data.commercial_platform.length || !data.experimented_platform.length )
+                else if(!data.commercial_platform || !data.experimented_platform  || !data.why_work || !data.platforms)
                 {
                     this.router.navigate(['/resume']);
                 }
                 //console.log(data.experience_roles.length);
-                else if(data.experience_roles.length < 1  &&  !data.current_salary || !data.experience_roles.length )
+                else if(!data.experience_roles &&  !data.current_salary  )
                 {
                         this.router.navigate(['/experience']);
                 }
@@ -99,6 +103,7 @@ export class CandidateProfileComponent implements OnInit {
                     this.languages= data.experience_roles;
                     this.current_currency = data.current_currency;
                     this.current_salary = data.current_salary;
+                   this.platforms=data.platforms;
                     if(data.image != null )
                     {
                       //console.log(data.image);
@@ -117,5 +122,5 @@ export class CandidateProfileComponent implements OnInit {
        }
 
   }
-
+  
 }

@@ -47,7 +47,7 @@ export class VerifyEmailComponent implements OnInit {
 
                         else
                         {
-                            //this.dataservice.changeMessage(data['msg']);
+                            this.dataservice.changeMessage(data['msg']);
                             //this.router.navigate(['/login']);
                             this.router.navigate(["/home"]);                   
                         }

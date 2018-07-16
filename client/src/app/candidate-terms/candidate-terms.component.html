@@ -1,0 +1,63 @@
+<!--candidate step completing-->
+
+<section class = "wizard_page">
+	
+	<div class="container">
+		<div class="row">
+			<div class = "text-center steps-name hidden-xs">
+				<ul class = "step-progress">
+					<li class = "step step-active"><i class="{{active_class}}"></i><a routerLink="/terms-and-condition"> Summary of T&Cs</a></li>
+					<li class = "step"><i class="{{about_active_class}}"></i><a routerLink="{{about_link}}"> About</a></li>
+          <li class = "step"><i class="{{job_active_class}}"></i><a routerLink="{{link}}">Jobs</a></li>
+          <li class = "step"><i class="{{resume_active_class}}"></i><a href="{{resume_class}}" >Blockchain</a></li>
+          <li class = "step"><i class="{{exp_active_class}}"></i><a href="{{exp_class}}" >Experience</a></li>
+          
+				</ul>
+			</div>
+			<div class="col-md-12 wizard-form">
+			
+				 <form class = "login_form"  (submit)="terms_and_condition(termForm)" #termForm = ngForm>
+					
+				<ul class = "comp_ul">
+					<li> Company will pay 15% of annual base salary for all hires through the platform.</li>
+					<li> Company must declare finalized employment with candidates on the platform.</li>
+					<li> Company found to not declare employment through the platform will pay a penalty fee of 25% of annual base candidate salary .</li>
+					<li> This is only a summary, please refer to Terms and Conditions for full details.</li>
+
+					
+
+				</ul>
+
+				<div class = "form-group col-md-6">
+					<div class="checkbox">
+						<label class = "check-label"> Accept <a >Term and Conditions </a>
+							<input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+							<span class="checkmark">
+								<div></div>
+							</span>
+						</label>
+						<label class = "check-label"> Accept <a >Marketing Emails </a>
+							<input type = "checkbox" value = ""  name="marketing" [(ngModel)]="marketing_emails">
+							<span class="checkmark">
+								<div></div>
+							</span>
+						</label>
+				  </div>
+				</div>
+				
+
+					<div class = "form-group col-md-6 text-right">
+							<button type="submit" class = "btn btn-self btn-pdg" [disabled]="termscondition==false" >Next Step</button>
+
+					</div>
+
+				</form>
+				
+			</div>
+		</div>
+	</div>
+
+</section>
+
+
+<!--candidate step completing End-->

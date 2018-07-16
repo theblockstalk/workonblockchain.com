@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
-import {NgForm} from '@angular/forms';
+import {NgForm,FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-company-profile',
@@ -36,9 +36,10 @@ export class CompanyProfileComponent implements OnInit {
       {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
 
     ]
-    
+   
   ngOnInit() 
   {
+     // console.log(this.htmlContent);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if(!this.currentUser)
       {

@@ -21,6 +21,7 @@ export class AdminCandidateDetailComponent implements OnInit {
         experimented;languages;current_currency;current_salary;image_src;
         imgPath;nationality;contact_number;
     credentials: any = {};
+    admin_log;
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
  
@@ -31,21 +32,24 @@ export class AdminCandidateDetailComponent implements OnInit {
             
   
   }
-   currentUser: User;
- info;createdDate;
-  approve;verify;is_verify;information;
+    currentUser: User;
+    info;createdDate;
+    approve;verify;is_verify;information;
   ngOnInit() 
   {
       console.log(this.user_id);
 
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
       //console.log('ftn')
       //console.log(this.user_id)
       this.credentials.user_id = this.user_id;
 
       
-      if(this.user_id && this.currentUser.is_admin == 1 )
+      if(this.user_id && this.admin_log)
       {
+          if(this.admin_log.is_admin == 1)
+          {
           this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
@@ -75,7 +79,13 @@ export class AdminCandidateDetailComponent implements OnInit {
             
                 }
 
-            });          
+            });
+          }
+           else
+            {
+                this.router.navigate(['/not_found']);
+          
+            }           
       }
       else
       {

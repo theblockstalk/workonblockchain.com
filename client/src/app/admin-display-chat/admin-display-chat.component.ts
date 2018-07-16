@@ -44,6 +44,7 @@ export class AdminDisplayChatComponent implements OnInit {
     email;
     length;
     company_type;
+    admin_log;
  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
  
@@ -57,10 +58,12 @@ export class AdminDisplayChatComponent implements OnInit {
    }
   ngOnInit() {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
      //localStorage.removeItem('company_type');
-      if(this.user_id && this.currentUser.is_admin == 1)
+      if(this.user_id && this.admin_log)
       {
-     
+        if(this.admin_log.is_admin == 1)
+        {
          this.get_user_type();
       //this.user_type = 'company';
       //console.log(this.user_type);
@@ -174,6 +177,9 @@ export class AdminDisplayChatComponent implements OnInit {
             this.display_list = 0;
             //console.log('candidate');
         }
+       }
+       else
+          this.router.navigate(['/not_found']);  
           
      }
       

@@ -8,6 +8,7 @@ import { FormsModule,ReactiveFormsModule,FormGroup, FormArray }    from '@angula
 import { UserService } from './user.service';
 import { AboutComponent } from './about/about.component';
 //import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
+import { environment } from '../environments/environment';
 import { JobComponent } from './job/job.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -44,7 +45,21 @@ import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-ca
 import { AdminCandidateDetailComponent } from './admin-candidate-detail/admin-candidate-detail.component';
 import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-chat.component';
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
-import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component'; 
+import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
+import { BuildingCustomPageComponent } from './building-custom-page/building-custom-page.component';
+import { CandidateTermsComponent } from './candidate-terms/candidate-terms.component'; 
+import { NgxEditorModule } from 'ngx-editor';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { PrivacyEditorComponent } from './privacy-editor/privacy-editor.component';
+import { SafeHtmlPipe } from "./pipe.safehtml";
+import { CKEditorModule } from 'ng2-ckeditor';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { AdminFaqEditorComponent } from './admin-faq-editor/admin-faq-editor.component';
+import { FaqComponent } from './faq/faq.component';
+import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
+import { TermsAndConditionComponent } from './terms-and-condition/terms-and-condition.component';
+import { AccountSettingComponent } from './account-setting/account-setting.component';
 
 let config = new AuthServiceConfig([
   {
@@ -65,6 +80,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'home', component: HomeComponent},
     { path: '', component: HomeComponent},
+     { path: 'terms-and-condition', component: CandidateTermsComponent},
     { path: 'resume', component: ResumeComponent},
     { path: 'experience', component: ExperienceComponent},
     { path: 'candidate_profile', component: CandidateProfileComponent},
@@ -90,6 +106,15 @@ const appRoutes: Routes = [
     {path : 'admin-display-chat' , component: AdminDisplayChatComponent},
     {path : 'admin-company-search' , component: AdminCompanySearchComponent},
     {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
+    {path : 'admin-build-page' , component: BuildingCustomPageComponent},
+	{ path: '**', redirectTo: '' },
+    {path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
+    {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
+    {path : 'admin-terms-and-condition-editor' , component: AdminTermsConditionEditorComponent},
+    {path : 'privacy-policy' , component: PrivacyPolicyComponent},
+    {path : 'term-and-conditions' , component: TermsAndConditionComponent},
+    {path : 'faq' , component: FaqComponent},
+    {path : 'account-setting' , component: AccountSettingComponent},
     { path: '**', redirectTo: '' }
 ];
 
@@ -128,7 +153,20 @@ const appRoutes: Routes = [
     AdminCandidateDetailComponent,
     AdminDisplayChatComponent,
     AdminCompanySearchComponent,
-    AdminCompanyDetailComponent
+    AdminCompanyDetailComponent,
+    BuildingCustomPageComponent,
+    CandidateTermsComponent,
+    PrivacyEditorComponent,
+    SafeHtmlPipe,
+    PrivacyPolicyComponent,
+    AdminFaqEditorComponent,
+    FaqComponent,
+    AdminTermsConditionEditorComponent,
+    TermsAndConditionComponent,
+
+    AccountSettingComponent,
+	
+
   ],
   imports: [
     BrowserModule,
@@ -139,6 +177,10 @@ const appRoutes: Routes = [
     HttpClientModule,
     Select2Module,
     NgxPaginationModule,
+    NgxEditorModule,
+    TooltipModule.forRoot(),
+    AngularFontAwesomeModule,
+    CKEditorModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: 

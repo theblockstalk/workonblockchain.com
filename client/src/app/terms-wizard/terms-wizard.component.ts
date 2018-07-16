@@ -16,6 +16,8 @@ export class TermsWizardComponent implements OnInit {
         currentUser: User;log;
         company_pay;company_declare;company_found;only_summary;about_company;
     terms_active_class;about_active_class;
+    termscondition=false;
+    marketing_emails;
 
    constructor(private route: ActivatedRoute,
         private router: Router,
@@ -37,12 +39,10 @@ export class TermsWizardComponent implements OnInit {
                 data => 
                 {
                   console.log(data);
-                 if(data.company_declare || data.company_pay  || data.company_found || data.only_summary)
+                 if(data.terms)
                   {
-                      this.company_pay = data.company_pay;
-                      this.company_declare = data.company_declare;
-                      this.company_found =data.company_found;
-                      this.only_summary =data.only_summary;
+                      this.termscondition = data.terms;
+                      this.marketing_emails = data.marketing_emails;
                       this.about_company = '/about_comp';
                   }
                     
@@ -71,8 +71,7 @@ export class TermsWizardComponent implements OnInit {
     terms_wizard(termsForm: NgForm) 
     {
          console.log(termsForm.value);
-        if(termsForm.value.company_pay == true && termsForm.value.company_declare == true  && termsForm.value.company_found== true && termsForm.value.only_summary == true)
-        {
+       
         this.authenticationService.company_terms(this.currentUser._creator,termsForm.value)
             .subscribe(
                 data => {
@@ -91,12 +90,7 @@ export class TermsWizardComponent implements OnInit {
                   this.log = 'Something getting wrong';
                    
                 });
-          }
-        else
-            {
-            this.log = 'Please agree with all terms and conditions to move forward';
           
-            }
     }
 
 }

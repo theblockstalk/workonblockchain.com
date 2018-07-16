@@ -5,9 +5,11 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from "../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-const URL = 'http://workonblockchain.mwancloud.com:4000/';
+//const URL = 'http://workonblockchain.mwancloud.com:4000/';
 //const URL = 'http://localhost:4000/';
-
+import {environment} from '../../environments/environment';
+const URL = environment.backend_url;
+//console.log(URL);
 @Component({
   selector: 'app-about-company',
   templateUrl: './about-company.component.html',
