@@ -19,8 +19,9 @@
   <link rel="stylesheet" type='text/css' href="./assets/css/wob_main.css">
   <link rel="stylesheet" type='text/css' href="./assets/css/middle.css">
   <link rel="stylesheet" type='text/css' href="./assets/css/select2.css">
-
-
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="http://textangular.com/dist/textAngular.css" type="text/css">
+ 
   <!--using fonts link-->
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Quicksand" rel="stylesheet">
@@ -48,8 +49,12 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="./assets/js/custom.js"></script>
+<script src="./assets/js/intlTelInput.js"></script>
+<script type="text/javascript" src="./assets/js/plugins/forms/wysihtml5/wysihtml5.min.js"></script>
+<script type="text/javascript" src="./assets/js/plugins/forms/wysihtml5/toolbar.js"></script>
 <script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
-  <script> CKEDITOR.config.forcePasteAsPlainText = true; </script>
+<script> CKEDITOR.config.forcePasteAsPlainText = true; </script>
 <!-- Load Facebook SDK for JavaScript -->
  <div id="fb-root"></div>
 <script>
@@ -144,6 +149,11 @@ $(window).on('keydown', function(e) {
   }
 });
 //# sourceURL=pen.js
+
+//===== WYSIWYG editor =====//
+$('.editor').wysihtml5({
+	stylesheets: "css/wysihtml5/wysiwyg-color.css"
+});
 
 </script>
 
