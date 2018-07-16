@@ -44,7 +44,8 @@ import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-ca
 import { AdminCandidateDetailComponent } from './admin-candidate-detail/admin-candidate-detail.component';
 import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-chat.component';
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
-import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component'; 
+import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
+import { BuildingCustomPageComponent } from './building-custom-page/building-custom-page.component';
 
 let config = new AuthServiceConfig([
   {
@@ -90,7 +91,8 @@ const appRoutes: Routes = [
     {path : 'admin-display-chat' , component: AdminDisplayChatComponent},
     {path : 'admin-company-search' , component: AdminCompanySearchComponent},
     {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
-    { path: '**', redirectTo: '' }
+    {path : 'admin-build-page' , component: BuildingCustomPageComponent},
+	{ path: '**', redirectTo: '' }
 ];
 
 @NgModule({
@@ -128,7 +130,8 @@ const appRoutes: Routes = [
     AdminCandidateDetailComponent,
     AdminDisplayChatComponent,
     AdminCompanySearchComponent,
-    AdminCompanyDetailComponent
+    AdminCompanyDetailComponent,
+    BuildingCustomPageComponent
   ],
   imports: [
     BrowserModule,
