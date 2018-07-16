@@ -87,6 +87,7 @@ service.admin_company_filter=admin_company_filter;
 ////admin CMS function/////////////////////////////
 service.add_privacy_content = add_privacy_content;
 service.get_content =get_content;
+service.get_all_content=get_all_content;
 
 service.update_chat_msg_status=update_chat_msg_status;
 service.get_unread_msgs=get_unread_msgs;
@@ -480,6 +481,7 @@ function create(userParam)
           {
               is_verify =1;
           }
+          
           let now = new Date();
           createdDate= date.format(now, 'DD/MM/YYYY');
           var hashStr = crypto.createHash('md5').update(userParam.email).digest('hex');
@@ -573,6 +575,16 @@ function _delete(_id) {
                     deferred.resolve();
             });
     }); 
+   
+   Pages.remove({ _id : mongo.helper.toObjectID('5b489267e2f74420b8b7f612') },function (err) 
+		   {
+		        if (err) 
+		            deferred.reject(err.name + ': ' + err.message);
+		 
+		        else
+		        	deferred.resolve();
+		        	
+		    }); 
    
    /*EmployerProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
 		   {
@@ -2573,49 +2585,91 @@ function admin_company_filter(data)
 function add_privacy_content(info)
 {
 	var deferred = Q.defer();
-	
-	console.log(info);
-	var createdDate;
-	let now = new Date();
-	createdDate= date.format(now, 'DD/MM/YYYY');
-	
-	 let add_content = new Pages
-     ({
-    	 page_title : info.page_title,
-         page_content : info.html_text,
-         updated_date:createdDate,
+	 var createdDate;  
+     let now = new Date();
+     createdDate= date.format(now, 'DD/MM/YYYY');
+     console.log(info.page_title);
+    Pages.findOne({ page_name: info.page_name}, function (err, data) 
+    {
+    	console.log(data);
+        if (err) 
+            deferred.reject(err.name + ': ' + err.message);
 
-     });
-     
-	 add_content.save((err,data)=>
-     {
-         if(err)
-         {
-             deferred.reject(err.name + ': ' + err.message);
-         }
-         else
-         {
+       if(data==null)
+       {
+    	   console.log("if");
+    	   insertContent();
+    	   
+    	}
             
-             deferred.resolve
-             ({
-                  information :data
-             });
-           }
-    }); 
-		 
+        else
+        {
+        	console.log("else");
+        	updateContent(data._id);
+        }
+        
+    });
+ 
+    function updateContent(_id) 
+    {
+    	console.log("update");
+        var set = 
+        {     		
+                 page_content : info.html_text,
+                 page_title : info.page_title,
+                 updated_date:createdDate,
+        };
+
+        Pages.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
+        {
+            if (err) 
+                deferred.reject(err.name + ': ' + err.message);
+            else
+                deferred.resolve(set);
+        });
+    }
+    
+    function insertContent()
+    {
+    	console.log("insert");
+    	let add_content = new Pages
+        ({
+       	 	page_title : info.page_title,
+            page_content : info.html_text,
+            page_name : info.page_name,
+            updated_date:createdDate,
+
+        });
+        
+   	 	add_content.save((err,data)=>
+        {
+            if(err)
+            {
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            else
+            {
+               
+                deferred.resolve
+                ({
+                     information :data
+                });
+              }
+       }); 
+    	
+    }
 	
 	return deferred.promise;
 	
 }
 
 
-function get_content(title)
+function get_content(name)
 {
 	var deferred = Q.defer();
-console.log(title);
-	Pages.find({page_title : title}).exec(function(err, result) 
+	Pages.find({page_name : name}).exec(function(err, result) 
     {
-		console.log(result);
+		
         if (err){ 
             deferred.reject(err.name + ': ' + err.message);
 		}
@@ -2625,6 +2679,23 @@ console.log(title);
         }
     });
 	return deferred.promise;
+}
+
+function get_all_content()
+{
+	var deferred = Q.defer();
+	Pages.find().exec(function(err, result) 
+		    {
+				
+		        if (err){ 
+		            deferred.reject(err.name + ': ' + err.message);
+				}
+		        else{
+		        	//console.log(user);
+		            deferred.resolve(result);
+		        }
+		    });
+			return deferred.promise;
 }
 
 /**************end admin functions****************************/

@@ -100,7 +100,8 @@ export class HeaderComponent implements OnInit {
   {
       if(this.currentUser)
       {
-            this.dataservice.currentMessage.subscribe(message => this.msg = message);
+          this.dataservice.currentMessage.subscribe(message => this.msg = message);
+          this.close = JSON.parse(localStorage.getItem('close_notify')); 
        }
   }
   
@@ -136,11 +137,20 @@ export class HeaderComponent implements OnInit {
           
       }
   }
+    close;
+    close_notify()
+    {
+        this.close = "close"; 
+        localStorage.setItem('close_notify', JSON.stringify(this.close)); 
+         
+    }
     
     logout()
     {
         localStorage.removeItem('currentUser');
         localStorage.removeItem('googleUser');
-     }
+         localStorage.removeItem('close_notify');
+    }
+    
 
 }

@@ -19,12 +19,13 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit() {
         
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')); 
+      console.log(this.currentUser);
       if(this.currentUser )
       {
           this.user_type = this.currentUser.type;
-          if(this.user_type === 'candidate')
+          if(this.user_type === 'candidate' && this.currentUser.is_admin==1)
           {
-          
+          console.log("if");
            this.authenticationService.getById(this.currentUser._id)
             .subscribe(
                 data => 
@@ -39,7 +40,7 @@ export class AdminDashboardComponent implements OnInit {
                     
                 });
          }
-         else if(this.user_type === 'company')
+         else if(this.user_type === 'company'  && this.currentUser.is_admin==1)
          {
               console.log("else if");
               this.authenticationService.getCurrentCompany(this.currentUser._creator)
@@ -56,11 +57,17 @@ export class AdminDashboardComponent implements OnInit {
                     
                 });
          }
+          else
+          {
+              localStorage.removeItem('admin_log');
+                this.router.navigate(['/not_found']);
+          }
            //this.is_admin = this.currentUser.is_admin;
           
       }
       else
        {
+          localStorage.removeItem('admin_log');
            this.router.navigate(['/not_found']);
        }
   }

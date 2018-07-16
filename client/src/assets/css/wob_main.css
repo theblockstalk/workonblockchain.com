@@ -2573,6 +2573,7 @@ input[type=checkbox] {
     line-height: 1em;
 }
 
+
 .footer .social-icons {
     line-height: 120px;
     vertical-align: middle;
@@ -2602,6 +2603,20 @@ input[type=checkbox] {
     position: relative;
     overflow: hidden;
 }
+.t-c_container {
+    background-color: #fff;
+    border: 1px solid #dadbdd;
+    border-top: none;
+    box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
+    -webkit-box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
+}
+
+.A_heading {
+    border-bottom: 1px solid #e2e6e8;
+    padding: 10px 30px 10px 30px;
+}
+
+
 
 .comp_ul {
     border: 1px solid #f1f1f1;
@@ -3056,7 +3071,10 @@ input[type=checkbox] {
 
 }
 
-
+ input[type='radio']:checked:after {
+  color: #f00;
+  font-style: normal;
+} 
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
