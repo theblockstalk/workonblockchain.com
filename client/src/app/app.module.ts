@@ -58,6 +58,7 @@ import { AdminFaqEditorComponent } from './admin-faq-editor/admin-faq-editor.com
 import { FaqComponent } from './faq/faq.component';
 import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
 import { TermsAndConditionComponent } from './terms-and-condition/terms-and-condition.component';
+import { AccountSettingComponent } from './account-setting/account-setting.component';
 
 
 let config = new AuthServiceConfig([
@@ -111,6 +112,7 @@ const appRoutes: Routes = [
     {path : 'privacy-policy' , component: PrivacyPolicyComponent},
     {path : 'term-and-conditions' , component: TermsAndConditionComponent},
     {path : 'faq' , component: FaqComponent},
+    {path : 'account-setting' , component: AccountSettingComponent},
     { path: '**', redirectTo: '' }
 ];
 
@@ -158,6 +160,7 @@ const appRoutes: Routes = [
     FaqComponent,
     AdminTermsConditionEditorComponent,
     TermsAndConditionComponent,
+    AccountSettingComponent,
 	
   ],
   imports: [

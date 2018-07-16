@@ -1,7 +1,14 @@
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 const CompanyProfileSchema = mongoose.Schema({
-    
+	terms:
+    {
+    	type:Boolean  	
+    },
+    marketing_emails:
+    {
+    	type:Boolean
+    },
     first_name:
     {
         type:String

@@ -623,13 +623,26 @@ function terms_and_condition(_id , userParam)
  
     function updateUser(_id) 
     {
-
-        var set = 
-        {   
-            terms:userParam.terms,
-            marketing_emails: userParam.marketing,
+    	if(userParam.terms)
+    	{
+    		var set = 
+    		{   
+    				terms:userParam.terms,
+    				marketing_emails: userParam.marketing,
+           
           
-        };
+    		};
+    	}
+    	else
+    	{
+    		var set = 
+    		{   
+    				disable_account:userParam.disable_account,
+    				marketing_emails: userParam.marketing,
+           
+          
+    		};
+    	}
 
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
@@ -1131,10 +1144,8 @@ function company_summary(_id, companyParam)
 
         var set = 
         {   
-        	company_pay:companyParam.company_pay,
-        	company_declare:companyParam.company_declare,
-        	company_found: companyParam.company_found,
-        	only_summary: companyParam.only_summary,
+        		terms:companyParam.terms,
+                marketing_emails: companyParam.marketing,
            
         };
 
@@ -2058,6 +2069,7 @@ function admin_role(data)
 	console.log(data);
 	 users.findOne({ email: data.email }, function (err, result) 
 	 {
+		 console.log(result);
 	      if (err) 
 			  deferred.reject(err.name + ': ' + err.message);
 	      
