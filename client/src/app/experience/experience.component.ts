@@ -47,7 +47,8 @@ export class ExperienceComponent implements OnInit
     message;
   	ngOnInit() 
     {
-         
+         this.jobData = [];
+            this.eduData=[];
        this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.shown=true;
@@ -71,22 +72,27 @@ export class ExperienceComponent implements OnInit
             .subscribe(
             data => {
                 console.log(data);
-                if(data.terms)
+               
+                 if(data.terms==true)
                   {
                         this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
-                if(data.history && data.education|| data.experience_roles&&data.current_salary && data.current_currency)
+                if(data.history || data.education|| data.experience_roles ||data.current_salary || data.current_currency)
                 {
                     
                     this.exp_active_class = 'fa fa-check-circle text-success';
-                    
+                    if(data.history.length>0)
+                    {
                     this.jobData = data.history; 
                     this.ExperienceForm = this._fb.group({
                               ExpItems: this._fb.array(
                                     this.history_data()
                           ) 
                           });
+                       }
+                    if(data.education.length>0)
+                    {
                  
                     this.eduData = data.education; 
                     this.EducationForm = this._fb.group({
@@ -94,8 +100,11 @@ export class ExperienceComponent implements OnInit
                                     this.education_data()
                           )
                         });
+                        
+                        }
                         //this.exp_data.push(data.experience_roles) ;
-                      if(data.experience_roles)
+                    //console.log(data.experience_roles.length);
+                      if(data.experience_roles.length>0)
                       {
                           this.expYear = data.experience_roles;
                       for (let key of data.experience_roles) 
@@ -153,11 +162,9 @@ export class ExperienceComponent implements OnInit
                      // this.job_active_class = 'fa fa-check-circle text-success';
                        
                   }
-               console.log(data.platforms);
+              
               if(!data.commercial_platform || data.commercial_platform == "" || !data.experimented_platform || data.experimented_platform =="" || !data.why_work || !data.platforms ||data.platforms == "")
-              {
-                
-               
+              {              
                 this.router.navigate(['/resume']);
               }
      
@@ -166,8 +173,7 @@ export class ExperienceComponent implements OnInit
                 else
                 {
                    //this.router.navigate(['/resume']);
-                }
-               
+                }               
 
             });
        }
@@ -238,7 +244,7 @@ export class ExperienceComponent implements OnInit
       {
         this.language.splice(index, 1);
         let updateItem2 = this.findObjectByKey(this.expYear, 'platform_name', obj.value);
-        console.log(updateItem2);
+        //console.log(updateItem2);
         let index2 = this.expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -254,8 +260,8 @@ export class ExperienceComponent implements OnInit
         this.language.push(obj);
       }
 
-      console.log(this.language);
-            console.log(this.expYear);
+     // console.log(this.language);
+            //console.log(this.expYear);
     
   	}
 

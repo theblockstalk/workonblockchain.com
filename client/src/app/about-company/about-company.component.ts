@@ -52,7 +52,7 @@ export class AboutCompanyComponent implements OnInit {
                        
                       //this.router.navigate(['/login']);
                   }
-                 if(data.company_declare && data.company_pay  && data.company_found && data.only_summary)
+                 if(data.terms === true)
                   {
                     this.terms_active_class = 'fa fa-check-circle text-success';
                       //this.router.navigate(['/login']);

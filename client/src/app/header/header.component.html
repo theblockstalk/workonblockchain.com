@@ -29,16 +29,17 @@
         <li *ngIf="(currentUser && user_type === 'company')"><a href="company_profile">Profile</a></li>
         <li *ngIf="(currentUser && user_type === 'company')"><a href="edit_company_profile">Edit Profile</a></li>
         <li *ngIf="(currentUser && user_type === 'company')"><a href="candidate-search">Search Candidate</a></li>
+         <li><a href="account-settings"><i class="icon-cog icon-right"></i>Setting</a></li>
         <li *ngIf="currentUser"><a href="" (click)="logout()">Logout</a></li>
           </ul>
         </li>
         
         
-        <li class="dropdown" *ngIf="(currentUser && admin_route === '/admin')">
+        <li class="dropdown" *ngIf="(currentUser && admin_route === '/admin' )">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">User Name<span class="caret"></span></a>
           <ul class="dropdown-menu nav-dropdown">
             <li><a href="#"><i class="icon-user icon-right"></i>Account</a></li>
-            <li><a href="#"><i class="icon-cog icon-right"></i>Setting</a></li>
+            <li><a href="admin-account-settings"><i class="icon-cog icon-right"></i>Setting</a></li>
             <li><a href="" (click)="logout()"><i class="icon-exit icon-right"></i>Log Out</a></li>
           </ul>
         </li>

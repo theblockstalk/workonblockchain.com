@@ -103,12 +103,13 @@ export class AboutComponent implements OnInit
                   if(data.country && data.roles && data.interest_area && data.expected_salary && data.availability_day )
                   {
                       this.job_active_class = 'fa fa-check-circle text-success';
-
+                      this.resume_class="/resume";
                   }
 
                  if(data.commercial_platform && data.experimented_platform && data.why_work && data.platforms)
                 {
                     this.resume_class="/resume";
+                     this.exp_class = "/experience";
                     this.resume_active_class='fa fa-check-circle text-success';
                 // this.router.navigate(['/resume']);
                 }
