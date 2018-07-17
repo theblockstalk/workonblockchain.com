@@ -52,7 +52,7 @@ export class CompanyProfileComponent implements OnInit {
                 data => 
                 {
                   console.log(data); 
-                  if(!data.company_declare && !data.company_pay  && !data.company_found && !data.only_summary)
+                  if(!data.terms)
                   {
                       this.router.navigate(['/company_wizard']);
                   }

@@ -20,12 +20,14 @@ export class CandidateProfileComponent implements OnInit {
         countries;commercial;history;education;
         experimented;languages;current_currency;current_salary;image_src;
         imgPath;nationality;contact_number;id;
+    share_link;
 
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService) { }
 
   platforms;
   cand_id;htmlContent;
+    info;
     
   ngOnInit() 
   {
@@ -39,11 +41,19 @@ export class CandidateProfileComponent implements OnInit {
        if(this.currentUser && this.currentUser.type == 'candidate')
        {
            this.cand_id= this.currentUser._creator;
+           
+          
           this.authenticationService.getById(this.currentUser._id)
             .subscribe(
             data => {
+                
+                if(!data.terms || data.terms == false)
+                {
+                     this.router.navigate(['/terms-and-condition']);
+                    
+                }
               
-               if(!data.contact_number && !data.nationality && !data.first_name && !data.last_name)
+               else if(!data.contact_number && !data.nationality && !data.first_name && !data.last_name)
                {
                         this.router.navigate(['/about']);
                }
@@ -76,7 +86,10 @@ export class CandidateProfileComponent implements OnInit {
                     
                 else 
                 {
-                    this.id = data._creator._id;
+                   
+                    this.id = data._creator._id; 
+                     this.share_link ='http://localhost:4200/admin-candidate-detail?user=' + data._creator._id; 
+                     console.log(this.share_link);                 
                     this.first_name=data.first_name;
                     this.last_name =data.last_name;
                     this.nationality = data.nationality;
@@ -103,7 +116,7 @@ export class CandidateProfileComponent implements OnInit {
                     this.languages= data.experience_roles;
                     this.current_currency = data.current_currency;
                     this.current_salary = data.current_salary;
-                   this.platforms=data.platforms;
+                    this.platforms=data.platforms;
                     if(data.image != null )
                     {
                       //console.log(data.image);

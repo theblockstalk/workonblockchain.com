@@ -44,11 +44,13 @@ export class TermsWizardComponent implements OnInit {
                       this.termscondition = data.terms;
                       this.marketing_emails = data.marketing_emails;
                       this.about_company = '/about_comp';
+                     
                   }
                     
-                    if(data.company_declare && data.company_pay  && data.company_found && data.only_summary)
+                  if(data.terms == true)
                   {
                         this.terms_active_class = 'fa fa-check-circle text-success';
+                       this.about_company = '/about_comp';
                         }
                     
                      if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)

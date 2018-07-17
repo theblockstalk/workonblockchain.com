@@ -66,7 +66,7 @@ export class JobComponent implements OnInit {
                   {
                         this.about_active_class = 'fa fa-check-circle text-success';
                   }
-                  if(data.terms)
+                  if(data.terms==true)
                   {
                         this.term_active_class='fa fa-check-circle text-success';
                       this.term_link = '/terms-and-condition';
@@ -133,6 +133,7 @@ export class JobComponent implements OnInit {
                     this.salary = data.expected_salary;
                     this.availability_day = data.availability_day;
                     this.base_currency = data.expected_salary_currency;
+                    this.resume_class="/resume";
 
                     if(data.country && data.roles && data.interest_area || data.expected_salary || data.availability_day )
                   {
@@ -146,6 +147,7 @@ export class JobComponent implements OnInit {
                 
                 this.resume_active_class='fa fa-check-circle text-success';
                // this.router.navigate(['/resume']);
+                   this.exp_class = "/experience";
               }
                     
                     

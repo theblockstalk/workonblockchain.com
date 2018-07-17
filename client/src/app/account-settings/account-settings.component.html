@@ -15,7 +15,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 wizard-form sett_padd">
-
+<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "message ">
+    {{message}}    
+ </div>
 				<h1 class = "text-center sett-mr-btm">Account Settings</h1>
 				   <div class="group">
 				   		<!--<h1>Required for platform use</h1>-->
@@ -25,7 +27,7 @@
 							<span>Marketing emails</span>
 							<div class="btn-container">
 								<label class="switch">
-								  <input type="checkbox" checked>
+								  <input type="checkbox" checked [(ngModel)]="info.marketing" (change)="account_setting()" >
 								  <span class="slider round"></span>
 								</label>
 							</div>
@@ -38,7 +40,7 @@
 							<span>Disable my account and stop receiving all communications (email, phone and post)</span>
 							<div class="btn-container">
 								<label class="switch">
-								  <input type="checkbox" id="myCheck" onclick="myFunction()">
+								  <input type="checkbox" id="myCheck"  [(ngModel)]="info.disable_account" (change)="account_setting()">
 								  <span class="slider round"></span>
 								</label>
 							</div>
@@ -117,3 +119,5 @@
 </div>
 
 <!--Profile-inner end-->
+
+<!--Account setting page code End here-->

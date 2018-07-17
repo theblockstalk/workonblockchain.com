@@ -13,8 +13,8 @@
 			<div class="col-md-12">
 				 <form class = "login_form"  (submit)="editor(editorForm)" #editorForm = ngForm >
 				  <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "message ">
-    {{message}}    
- </div>
+    					{{message}}    
+ 				</div>
 					    	<label><p class = "label-p">Page Title</p></label>
 						    <input type="text" class="form-control" id="" placeholder="Enter page title" name="page_title" [(ngModel)]="page_title" >
 							

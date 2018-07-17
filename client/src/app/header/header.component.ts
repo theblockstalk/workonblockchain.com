@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
   date;
   msg;
   increment;
+    setting;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe) 
   {
@@ -64,6 +65,14 @@ export class HeaderComponent implements OnInit {
                     {
                         this.is_verify = data._creator.is_verify;
                          this.is_admin = data._creator.is_admin;
+                        if(this.is_admin === 1)
+                        {
+                          //this.admin_route = '/admin';   
+                        }
+                        else
+                        { 
+                            this.admin_route = '';
+                        }
                     }
                     
                 });
@@ -80,6 +89,14 @@ export class HeaderComponent implements OnInit {
                     {
                         this.is_verify = data[0]._creator.is_verify;
                          this.is_admin = data[0]._creator.is_admin;
+                        if(this.is_admin === 1)
+                        {
+                          //this.admin_route = '/admin';   
+                        }
+                        else
+                        { 
+                            this.admin_route = '';
+                        }
                     }
                     
                 });
