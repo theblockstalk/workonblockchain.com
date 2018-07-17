@@ -370,6 +370,7 @@ function experience(req,res)
 
 function image(req, res) 
 {
+    console.log('req.file', req.file);
     // res.json('done');
     let path;
     if (req.file.filename) {
