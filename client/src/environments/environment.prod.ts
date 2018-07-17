@@ -1,7 +1,5 @@
 export const environment = {
   production: true,
-  backend_url:'http://workonblockchain.mwancloud.com:4000/',
-  api: 'http://localhost:4200/api/',
-  port: 8080,
+  backend_url: 'https://production-api.workonblockchain.com/'
 };
 console.log(environment);
