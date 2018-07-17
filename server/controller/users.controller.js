@@ -373,14 +373,20 @@ function image(req, res)
     multer(req, res, function (err)
     {
         console.log('req.file', req.file);
+        console.log('req.files', req.files);
         if (err)
         {
             return
         }
         else
         {
-			res.json('done');
-            var path = req.file.filename;
+			// res.json('done');
+			let path;
+			// if (req.file.filename) {
+                path = req.file.filename;
+            // } else {
+            //     path = req.file.location; // fr S3 bucket?
+            // }
             userService.save_image(path , req.params._id).then(function (err, about) 
             {
                 console.log('userService.save_image')
