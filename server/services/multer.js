@@ -7,12 +7,20 @@ const settings = require('../services/settings');
 let appMulter;
 
 if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging') {
-    let s3 = new aws.S3({
-        params: {
-            Bucket: settings.AWS.S3_BUCKET
-        },
-        region : settings.AWS.REGION
+    aws.config.update({
+        secretAccessKey: settings.AWS.SECRET_ACCESS_KEY,
+        accessKeyId: settings.AWS.ACCESS_KEY,
+        region: settings.AWS.REGION
     });
+
+    // let s3 = new aws.S3({
+    //     params: {
+    //         Bucket: settings.AWS.S3_BUCKET
+    //     },
+    //     region : settings.AWS.REGION
+    // });
+
+    let s3 = new aws.S3();
 
     appMulter = multer({
         storage: multerS3({
