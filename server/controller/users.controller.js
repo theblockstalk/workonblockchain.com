@@ -22,7 +22,7 @@ router.put('/welcome/about/:_id', about);
 router.put('/welcome/job/:_id', job);
 router.put('/welcome/resume/:_id', resume);
 router.put('/welcome/exp/:_id', experience);
-router.post('/image/:_id', image);
+router.post('/image/:_id', multer.single('photo'), image);
 router.put('/refered_id/:id' , refered_id);
 router.put('/update_profile/:_id' , update_candidate_profile);
 
@@ -32,7 +32,7 @@ router.get('/company', getCompany);
 router.get('/current_company/:id', getCurrentCompany);
 router.put('/company_wizard/:_id',company_summary);
 router.put('/about_company/:_id' , about_company);
-router.post('/employer_image/:_id', employer_image);
+router.post('/employer_image/:_id', multer.single('photo'), employer_image);
 router.put('/update_company_profile/:_id' , update_company_profile);
 //router.put('/skills_search' , skills_search);
 
@@ -55,7 +55,7 @@ router.post('/insert_message', insert_message);
 router.post('/get_messages', get_messages);
 router.post('/get_user_messages', get_user_messages);
 router.get('/all_chat' , get_chat);
-router.post('/upload_chat_file/:_id', upload_chat_file);
+router.post('/upload_chat_file/:_id', multer.single('photo'), upload_chat_file);
 router.post('/insert_chat_file', insert_chat_file);
 router.post('/insert_message_job', insert_message_job);
 router.post('/update_job_message', update_job_message);
@@ -370,16 +370,15 @@ function experience(req,res)
 
 function image(req, res) 
 {
-    multer(req, res, function (err)
-    {
+    // multer.single('photo')(req, res, function (err)
+    // {
         console.log('req.file', req.file);
-        console.log('req.files', req.files);
-        if (err)
-        {
-            return
-        }
-        else
-        {
+        // if (err)
+        // {
+        //     return
+        // }
+        // else
+        // {
 			// res.json('done');
 			let path;
 			// if (req.file.filename) {
@@ -403,9 +402,9 @@ function image(req, res)
             {
                 res.json({error: err});
             });
-        }
+        // }
 
-    })
+    // })
 }
 
 ///// for update the candidate profile data ///////////////////
@@ -560,14 +559,14 @@ function about_company(req,res)
 
 function employer_image(req, res) 
 {
-    multer(req, res, function (err)
-    {    //console.log(req.file.filename);
-        if (err) 
-        {
-            return
-        }
-        else
-        {
+    // multer(req, res, function (err)
+    // {    //console.log(req.file.filename);
+    //     if (err)
+    //     {
+    //         return
+    //     }
+    //     else
+    //     {
             var path = req.file.originalname;
             userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
             {
@@ -584,9 +583,9 @@ function employer_image(req, res)
             {
                 res.json({error: err});
             });  
-        }
-
-    })    
+    //     }
+    //
+    // })
 }
 
 ////////// update company profile data ///////////////////////////
@@ -932,21 +931,21 @@ function get_chat(req,res)
 
 function upload_chat_file(req, res) 
 {
-	console.log('upload_chat_file');
-    multer(req, res, function (err)
-    {    
-        if (err) 
-        {
-            console.log(err);
-        }
-        else
-        {
+    // console.log('upload_chat_file');
+    // multer(req, res, function (err)
+    // {
+    //     if (err)
+    //     {
+    //         console.log(err);
+    //     }
+    //     else
+    //     {
 			console.log(req.file);
 			console.log('done new');
 			res.json(req.file.filename);
-        }
-
-    }) 
+    //     }
+    //
+    // })
 }
 
 //inserting chat file in db

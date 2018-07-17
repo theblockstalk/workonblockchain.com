@@ -25,7 +25,7 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
                 cb(null, Date.now().toString() + file.originalname);
             }
         })
-    }).single('photo');
+    });
 } else {
     console.log('Configuring local multer to /uploads folder');
 
@@ -38,7 +38,7 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
                 cb(null, Date.now().toString() + file.originalname)
             }
         })
-    }).single('photo');
+    });
 }
 
 module.exports = appMulter;
