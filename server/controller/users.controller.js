@@ -370,41 +370,29 @@ function experience(req,res)
 
 function image(req, res) 
 {
-    // multer.single('photo')(req, res, function (err)
-    // {
-        console.log('req.file', req.file);
-        // if (err)
-        // {
-        //     return
-        // }
-        // else
-        // {
-			// res.json('done');
-			let path;
-			// if (req.file.filename) {
-                path = req.file.filename;
-            // } else {
-            //     path = req.file.location; // fr S3 bucket?
-            // }
-            userService.save_image(path , req.params._id).then(function (err, about) 
-            {
-                console.log('userService.save_image')
-                if (about)
-                {
-                    res.json(about);
-                } 
-                else 
-                {
-                    res.json(err);
-                }
-            })
-            .catch(function (err) 
-            {
-                res.json({error: err});
-            });
-        // }
-
-    // })
+    // res.json('done');
+    let path;
+    if (req.file.filename) {
+        path = req.file.filename;
+    } else {
+        path = req.file.location; // for S3 bucket?
+    }
+    userService.save_image(path , req.params._id).then(function (err, about)
+    {
+        console.log('userService.save_image')
+        if (about)
+        {
+            res.json(about);
+        }
+        else
+        {
+            res.json(err);
+        }
+    })
+    .catch(function (err)
+    {
+        res.json({error: err});
+    });
 }
 
 ///// for update the candidate profile data ///////////////////
@@ -559,33 +547,22 @@ function about_company(req,res)
 
 function employer_image(req, res) 
 {
-    // multer(req, res, function (err)
-    // {    //console.log(req.file.filename);
-    //     if (err)
-    //     {
-    //         return
-    //     }
-    //     else
-    //     {
-            var path = req.file.originalname;
-            userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
-            {
-                if (about) 
-                {
-                    res.json(about);
-                } 
-                else 
-                {
-                    res.json(err);
-                }
-            })
-            .catch(function (err) 
-            {
-                res.json({error: err});
-            });  
-    //     }
-    //
-    // })
+    var path = req.file.originalname;
+    userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about)
+    {
+        if (about)
+        {
+            res.json(about);
+        }
+        else
+        {
+            res.json(err);
+        }
+    })
+    .catch(function (err)
+    {
+        res.json({error: err});
+    });
 }
 
 ////////// update company profile data ///////////////////////////
@@ -931,21 +908,9 @@ function get_chat(req,res)
 
 function upload_chat_file(req, res) 
 {
-    // console.log('upload_chat_file');
-    // multer(req, res, function (err)
-    // {
-    //     if (err)
-    //     {
-    //         console.log(err);
-    //     }
-    //     else
-    //     {
-			console.log(req.file);
-			console.log('done new');
-			res.json(req.file.filename);
-    //     }
-    //
-    // })
+    console.log(req.file);
+    console.log('done new');
+    res.json(req.file.filename);
 }
 
 //inserting chat file in db
