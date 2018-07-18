@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
 import { NgxAutoScrollModule } from 'ngx-auto-scroll';
+import { Router, ActivatedRoute } from '@angular/router';
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
 //const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
@@ -47,11 +48,13 @@ export class ChatComponent implements OnInit {
 	is_job_offer = 0;
 	cand_job_offer = 0;
 	approved_user = 0;
+	file_url;
   constructor(
 	private authenticationService: UserService,
 	private fb: FormBuilder,
 	private el: ElementRef,
-	private http: HttpClient
+	private http: HttpClient,
+	private router: Router
   ) {
 	 this.createForm();
 	  }
@@ -67,6 +70,9 @@ export class ChatComponent implements OnInit {
 	  this.count=0;
 	  this.approved_user = 1;//use this when code ready this.currentUser.is_approved
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	  console.log(this.currentUser);
+	  this.file_url = 'http://localhost/workonblockchain.com/server/uploads/';
+      if(this.currentUser){
 	  /*this.authenticationService.getById(this.currentUser._creator)
 		.subscribe(
 			data => {
@@ -180,7 +186,11 @@ export class ChatComponent implements OnInit {
 				this.display_list = 0;
 				console.log('candidate');
 			}
-		}	
+		}
+      }
+	  else{
+		  this.router.navigate(['/not_found']);
+	  }
   }
   
   send_message(msgForm : NgForm){

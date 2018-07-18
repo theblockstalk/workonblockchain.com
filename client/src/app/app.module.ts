@@ -59,7 +59,6 @@ import { AdminFaqEditorComponent } from './admin-faq-editor/admin-faq-editor.com
 import { FaqComponent } from './faq/faq.component';
 import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
 import { TermsAndConditionComponent } from './terms-and-condition/terms-and-condition.component';
-import { AccountSettingComponent } from './account-setting/account-setting.component';
 import { CookieService } from 'ngx-cookie-service';
 import { ScrollToModule } from 'ng2-scroll-to-el';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
