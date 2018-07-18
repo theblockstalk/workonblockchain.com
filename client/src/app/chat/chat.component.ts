@@ -71,6 +71,8 @@ export class ChatComponent implements OnInit {
 	  this.approved_user = 1;//use this when code ready this.currentUser.is_approved
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log(this.currentUser);
+	  //for live
+	  //this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
 	  this.file_url = 'http://localhost/workonblockchain.com/server/uploads/';
       if(this.currentUser){
 	  /*this.authenticationService.getById(this.currentUser._creator)
