@@ -69,6 +69,7 @@ router.post('/admin_search_by_name' , admin_search_by_name);
 router.post('/admin_company_filter' , admin_company_filter);
 router.post('/update_chat_msg_status' , update_chat_msg_status);
 router.get('/get_unread_msgs' , get_unread_msgs);
+router.post('/get_job_desc_msgs' , get_job_desc_msgs);
 
 /////////admin CMS fucntions////////////////////////////////
 router.put('/add_privacy_content'  , add_privacy_content);
@@ -1018,6 +1019,24 @@ function update_chat_msg_status(req,res){
 
 function get_unread_msgs(req,res){
 	userService.get_unread_msgs().then(function (err, about) 
+	{
+		if (about) 
+		{
+			res.json(about);
+		} 
+		else 
+		{
+			res.json(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function get_job_desc_msgs(req,res){
+	userService.get_job_desc_msgs(req.body).then(function (err, about) 
 	{
 		if (about) 
 		{

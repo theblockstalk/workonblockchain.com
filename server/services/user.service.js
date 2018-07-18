@@ -75,6 +75,7 @@ service.get_chat= get_chat;
 service.save_chat_file = save_chat_file;
 service.insert_message_job = insert_message_job;
 service.update_job_message = update_job_message;
+service.get_job_desc_msgs = get_job_desc_msgs;
 
 ////////admin functions/////////////////////////
 service.admin_role = admin_role;
@@ -2056,6 +2057,33 @@ function get_unread_msgs(){
 				});
 			}
 			deferred.resolve(result);
+		}
+	});
+	return deferred.promise;
+}
+
+function get_job_desc_msgs(data){
+	var deferred = Q.defer();
+	chat.find({
+		$and : [
+		   { 
+			 $and:[{receiver_id:{$regex: data.receiver_id}},{sender_id: {$regex: data.sender_id}}]
+		   },
+		   { 
+			 msg_tag:data.msg_tag
+		   }
+		 ]
+	}, function (err, data) 
+    {
+		if (err){
+			console.log(err);
+			deferred.reject(err.name + ': ' + err.message);
+        }
+        else{
+			console.log(data);
+			deferred.resolve({ 
+				datas:data
+			});
 		}
 	});
 	return deferred.promise;

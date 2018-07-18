@@ -71,7 +71,12 @@ export class ChatComponent implements OnInit {
 		.subscribe(
 			data => {
 				console.log(data);
-				this.approved_user = data[0]._creator.is_approved;
+				if(data[0]._creator.is_approved == 0 || data[0]._creator.disable_account == true){
+					this.approved_user = 0;
+				}
+				else{
+					this.approved_user = 1;
+				}
 				console.log(data[0]._creator.is_approved);
 			},
 			error => {

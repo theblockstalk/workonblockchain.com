@@ -60,6 +60,8 @@ import { FaqComponent } from './faq/faq.component';
 import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
 import { TermsAndConditionComponent } from './terms-and-condition/terms-and-condition.component';
 import { AccountSettingComponent } from './account-setting/account-setting.component';
+import { CookieService } from 'ngx-cookie-service';
+import { ScrollToModule } from 'ng2-scroll-to-el';
 
 let config = new AuthServiceConfig([
   {
@@ -107,8 +109,7 @@ const appRoutes: Routes = [
     {path : 'admin-company-search' , component: AdminCompanySearchComponent},
     {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
     {path : 'admin-build-page' , component: BuildingCustomPageComponent},
-	{ path: '**', redirectTo: '' },
-    {path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
+	{path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
     {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
     {path : 'admin-terms-and-condition-editor' , component: AdminTermsConditionEditorComponent},
     {path : 'privacy-policy' , component: PrivacyPolicyComponent},
@@ -181,11 +182,12 @@ const appRoutes: Routes = [
     TooltipModule.forRoot(),
     AngularFontAwesomeModule,
     CKEditorModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+	ScrollToModule.forRoot()
   ],
   providers: 
   [
-    UserService,DatePipe,DataService,
+    UserService,DatePipe,DataService,CookieService,
   {
       provide: AuthServiceConfig,
       useFactory: provideConfig

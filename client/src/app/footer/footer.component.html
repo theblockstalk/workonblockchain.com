@@ -1,4 +1,32 @@
-    <section class = "footer">
+<!--Cookies and privacy policy tab-->
+<ng-container *ngIf="display_cookie == 0;else cookie_disabled">
+<section class = "cookies_tab alert">
+<div class = "container-fluid">
+	<div class="row">
+		<div class="col-md-10">
+			<p class = "pra-cookie">
+				We use cookies to support your 
+				experience on our site. By 
+				continuing to use our site you 
+				agree to use of cookies. Full 
+				detail of how we use cookies.
+			</p>
+		</div>
+		<div class = "col-md-2">
+			<a href="#" (click) ="accept_cookie()" class = "cookie_a" data-dismiss="alert" aria-label="close">
+				<div id="cookie-btn">
+					<p>Yes, Got it</p>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>
+</section>
+</ng-container>
+<ng-template #cookie_disabled>
+</ng-template>    
+	
+	<section class = "footer">
   
   <div class="container">
     <div class="row">

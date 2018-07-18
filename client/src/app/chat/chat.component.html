@@ -138,7 +138,7 @@
 			<div class="row chat-row">
 				<ng-container *ngIf="approved_user == 0;else chat_enable">
 					<div class = "col-md-9" id="my-chat-design">
-						<h2 class="alert alert-danger error-alert">
+						<h2 class="alert alert-danger error-alert" style="margin-left: 10%;margin-bottom: 12%;">
 							You are not authorized to access this page.
 						</h2>
 					</div>
@@ -186,7 +186,7 @@
 									</ng-template>
 								</ul>
 								<span class = "btn_rgt">
-									<button class = "btn btn_descp">View Job Discription</button>
+									<button [scrollTo]="'#place1'" [scrollDuration]="1000" [scrollOffset]="-100" class = "btn btn_descp">View Job Discription</button>
 								</span>
 							</div>
 							
@@ -194,19 +194,35 @@
 								<ul>
 									<div *ngFor="let msg of new_msgss">
 										<ng-container *ngIf="msg.sender_name == currentUser.email;else second">
-											<li class="sent">
-												<p class = "job-description">
-													{{msg.sender_name}}
-													{{msg.message}}
-													<a href="http://localhost/workonblockchain.com/server/uploads/{{msg.file_name}}">{{msg.file_name}}</a>
-												</p>
-											</li>
-											<div class="chat_company">
-												{{msg.date_created}}
-											</div>
+											<ng-container *ngIf="count == 0;else with_out">
+												<span style="display:none;">{{count+1}}</span>
+												<li class="sent" id="place1">
+													<p class = "job-description">
+														{{msg.sender_name}}
+														{{msg.message}}
+														<a href="http://localhost/workonblockchain.com/server/uploads/{{msg.file_name}}">{{msg.file_name}}</a>
+													</p>
+												</li>
+												<div class="chat_company">
+													{{msg.date_created}}
+												</div>
+											</ng-container>
+											<ng-template #with_out>
+												<li class="sent">
+													<p class = "job-description">
+														{{msg.sender_name}}
+														{{msg.message}}
+														<a href="http://localhost/workonblockchain.com/server/uploads/{{msg.file_name}}">{{msg.file_name}}</a>
+													</p>
+												</li>
+												<div class="chat_company">
+													{{msg.date_created}}
+												</div>
+											</ng-template>
+											
 										</ng-container>
 										<ng-template #second>
-											<li class="replies">
+											<li class="replies"  id="place1">
 												<p>
 													{{msg.sender_name}}
 													{{msg.message}}
@@ -346,7 +362,7 @@
 		    <p>Description (optional)</p>
 		    <input type="text" name="description" [(ngModel)]="credentials.description" class="form-control" id="">
 		  </div>
-		  {{interview_log}}
+		  <p style="color: green;font-size: 18px;">{{interview_log}}</p>
 		  <div class="modal-footer">
 			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
 			<button type="reset" class="btn btn-danger model-btn">Reset</button>
@@ -404,7 +420,7 @@
 		    <p>Description (optional)</p>
 		    <input type="text" class="form-control" name="job_description" [(ngModel)]="credentials.job_description" id="">
 		  </div>
-		  {{job_offer_log}}
+		  <p style="color: green;font-size: 18px;">{{job_offer_log}}</p>
 		  <div class="modal-footer text-right">
 			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
 			<button type="reset" class="btn btn-danger model-btn">Reset</button>

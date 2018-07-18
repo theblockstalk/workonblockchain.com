@@ -458,25 +458,41 @@ export class CompanySearchComponent implements OnInit {
     send_job_offer(msgForm : NgForm){
 		console.log("Used ID: " + this.user_id.id);
         console.log("Name: " + this.user_id.name);
-		console.log(this.credentials);
-        if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
-            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            this.date_of_joining = '10-07-2018';
-            this.msg_tag = 'job_offer';
-            this.is_company_reply = 0;
-            this.msg_body = this.credentials.job_desc;
-            this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.currentUser.email,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
-                .subscribe(
-                    data => {
-                        console.log(data);
-                        this.job_offer_log = 'Message sent';
-                    },
-                    error => {
-                        console.log('error');
-                        console.log(error);
-                        //this.log = error;
-                    }
-                );
+		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+		if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
+            this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
+			.subscribe(
+				data => {
+					console.log(data['datas']);
+					if(data['datas'].length>0){
+						this.job_offer_log = 'Message already sent';
+					}
+					else{
+						this.date_of_joining = '10-07-2018';
+						this.msg_tag = 'job_offer';
+						this.is_company_reply = 0;
+						this.msg_body = this.credentials.job_desc;
+						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.currentUser.email,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
+							.subscribe(
+								data => {
+									console.log(data);
+									this.job_offer_log = 'Message successfully sent';
+								},
+								error => {
+									console.log('error');
+									console.log(error);
+									//this.log = error;
+								}
+							);
+					}
+				},
+				error => {
+					console.log('error');
+					console.log(error);
+					//this.log = error;
+				}
+			);
         }
         else{
             this.job_offer_log = 'Please enter all info';
