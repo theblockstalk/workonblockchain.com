@@ -114,6 +114,7 @@ const appRoutes: Routes = [
     {path : 'admin-build-page' , component: BuildingCustomPageComponent},
 	{path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
     {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
+    {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
     {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
     {path : 'admin-terms-and-condition-editor' , component: AdminTermsConditionEditorComponent},
     {path : 'privacy-policy' , component: PrivacyPolicyComponent},

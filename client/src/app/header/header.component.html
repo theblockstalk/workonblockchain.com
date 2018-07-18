@@ -33,8 +33,7 @@
         <li *ngIf="currentUser"><a href="" (click)="logout()">Logout</a></li>
           </ul>
         </li>
-        
-        
+       
         <li class="dropdown" *ngIf="(currentUser && admin_route === '/admin')">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{user_name}}<span class="caret"></span></a>
           <ul class="dropdown-menu nav-dropdown">
