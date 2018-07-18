@@ -5,9 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
-    "production": "ng serve --env=prod",
-    "staging": "ng serve --env=staging",
+    "build-prod": "ng build --env=prod",
+    "build-staging": "ng build --env=staging",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -36,6 +35,7 @@
     "font-awesome": "^4.7.0",
     "froala-editor": "^2.8.4",
     "multer": "^1.3.0",
+    "ng": "0.0.0-rc6",
     "ng-file-upload": "^12.2.13",
     "ng2-ckeditor": "^1.2.1",
     "ng2-datepicker": "^2.3.1",

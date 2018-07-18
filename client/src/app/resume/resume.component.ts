@@ -50,7 +50,7 @@ export class ResumeComponent implements OnInit {
             .subscribe(
                 data => {
 
-                if(data.terms)
+                if(data.terms==true)
                   {
                       this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';

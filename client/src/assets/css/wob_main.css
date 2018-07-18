@@ -3395,6 +3395,20 @@ input:checked + .slider:before {
 
 
 
+#text1, #text2 {
+    display: none;
+    position: fixed;
+    z-index: 111;
+    top: 15%;
+    left: 50%;
+    width: 60%;
+    transform: translate(-50%, -50%);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 

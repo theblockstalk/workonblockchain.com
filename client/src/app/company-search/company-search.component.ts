@@ -192,20 +192,27 @@ export class CompanySearchComponent implements OnInit {
                console.log(data);
                 this.is_approved = data[0]._creator.is_approved;
                 console.log(this.is_approved);
-               if(this.is_approved === 0)
+               if(this.is_approved === 0 )
                 {
                     this.msg = "You can access this feature when your profile has been approved"; 
                     this.log='';  
                 }
-                else
+                else if(data[0].disable_account == true)
+                {
+                     this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile"; 
+                    this.log=''; 
+                }
+                else 
                 {
                     this.msg='';
+                    this.log='';
+                    this.getVerrifiedCandidate();
           
                 }
 
             });        
            
-            this.getVerrifiedCandidate();
+            
       }
       else
       {
@@ -230,8 +237,20 @@ export class CompanySearchComponent implements OnInit {
   
    }
     
+     filter_array(arr) 
+    {
+        var hashTable = {};
+
+        return arr.filter(function (el) {
+            var key = JSON.stringify(el);
+            var match = Boolean(hashTable[key]);
+
+            return (match ? false : hashTable[key] = true);
+        });
+    }
+    
     selectedObj;countryChange;positionChange;availabilityChange;blockchainChange;salary;currencyChange;
-    search_result=[];
+    search_result=[];information;
     searchdata(key , value)
     {
         this.length =0; 
@@ -251,7 +270,7 @@ export class CompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                   
                     
                     if(data.error)
                     {
@@ -265,14 +284,16 @@ export class CompanySearchComponent implements OnInit {
                     }
                     else
                     {
+                         this.information = this. filter_array(data);
+                    console.log(this.information);
                          //console.log(this.log);
                         
                         //this.info = data; 
-                        for(let res of data)
+                        for(let res of this.information)
                         {
                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
                             && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
-                             && res.commercial_platform && res.interest_area  && res.country )
+                             && res.commercial_platform && res.interest_area  && res.country && res.disable_account == false )
                             {
                                 //this.search_result.push(res);
                                   this.length++;

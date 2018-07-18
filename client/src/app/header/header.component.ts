@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
   msg;
   increment;
   user_name = 'Admin';
+  setting;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe) 
   {
@@ -64,10 +65,17 @@ export class HeaderComponent implements OnInit {
                     if(data)
                     {
                         this.is_verify = data._creator.is_verify;
-                         this.is_admin = data._creator.is_admin;
-						this.user_name = data.first_name+' '+data.last_name;
+                        this.is_admin = data._creator.is_admin;
+                        this.user_name = data.first_name+' '+data.last_name;
+						if(this.is_admin === 1)
+                        {
+                          //this.admin_route = '/admin';   
+                        }
+                        else
+                        { 
+                            this.admin_route = '';
+                        }
                     }
-                    
                 });
          }
          else if(this.user_type === 'company')
@@ -82,13 +90,19 @@ export class HeaderComponent implements OnInit {
                     {
                         this.is_verify = data[0]._creator.is_verify;
                          this.is_admin = data[0]._creator.is_admin;
-						this.user_name = data.first_name+' '+data.last_name;
+						 this.user_name = data.first_name+' '+data.last_name;
 					}
-                    
+                        if(this.is_admin === 1)
+                        {
+                          //this.admin_route = '/admin';   
+                        }
+                        else
+                        { 
+                            this.admin_route = '';
+                        }
                 });
-         }
-           
-      }
+		 }
+        }
       else
       {
           this.currentUser=null;

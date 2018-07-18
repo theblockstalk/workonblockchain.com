@@ -7,11 +7,13 @@ const CandidateProfileSchema = mongoose.Schema({
     },
     marketing_emails:
     {
-    	type:Boolean
+    	type:Boolean,
+    	default:true
     },
     disable_account:
     {
-    	type:Boolean
+    	type:Boolean,
+    	default:false
     },
 	first_name:
     {

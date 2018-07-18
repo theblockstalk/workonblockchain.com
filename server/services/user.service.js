@@ -21,6 +21,8 @@ const forgotPasswordEmail = require('./email/emails/forgotPassword');
 const verifyEmailEmail = require('./email/emails/verifyEmail');
 const referUserEmail = require('./email/emails/referUser');
 const chatReminderEmail = require('./email/emails/chatReminder');
+//const {USD} = require('./currency_standard_values');
+//console.log(USD.currency_name);
 
 var service = {};
 
@@ -164,6 +166,7 @@ function authenticate(email, password,type)
                             email_hash: user.email_hash,
                             ref_link: user.ref_link,
 							type: user.type,
+							is_admin:user.is_admin,
 							is_approved : user.is_approved,
                             token: jwt.sign({ sub: user._id }, config.secret)
                             });
@@ -244,7 +247,7 @@ function forgot_passwordEmail_send(data)
 	 var hash = jwt_hash.decode(data,config.secret,'HS256');  
 	 console.log(hash.email);
 
-	 forgotPasswordEmail.sendEmail(hash);
+	 forgotPasswordEmail.sendEmail(hash,data);
 }
 
 //////////////////Reset Password///////////////////////
@@ -636,6 +639,7 @@ function terms_and_condition(_id , userParam)
     	}
     	else
     	{
+    		
     		var set = 
     		{   
     				disable_account:userParam.disable_account,
@@ -1142,13 +1146,24 @@ function company_summary(_id, companyParam)
  
     function updateEmployer(_id) 
     {
-
-        var set = 
-        {   
+    	if(companyParam.terms)
+    	{
+    		var set = 
+    		{   
         		terms:companyParam.terms,
                 marketing_emails: companyParam.marketing,
            
-        };
+    		};
+    	}
+    	else
+    	{
+    		var set = 
+    		{   
+    			disable_account:companyParam.disable_account,
+                marketing_emails: companyParam.marketing,
+           
+    		};
+    	}
 
         EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
@@ -1506,9 +1521,40 @@ function search_salary(data)
     return deferred.promise;
 }*/
 
+const USD = {GBP: "1.33", Euro: "1.17"};
+const GBP = {USD : "0.75" , Euro:"0.88"};
+const Euro = {USD : "0.85" , GBP : "1.13"};
+
 function filter(params)
 {
-	//console.log(params.salary);
+	var result_array = [];
+	var query_result=[];
+	//var array = USD;
+	//console.log(array);
+	if(params.currency== '$ USD' && params.salary)
+	{
+		var result = expected_salary_converter(params.salary, USD.GBP , USD.Euro );
+		//console.log(result);
+		result_array= {USD : params.salary , GBP : result[0] , Euro :result[1]};
+		console.log(result_array);
+
+	}
+	
+	if(params.currency== '£ GBP' && params.salary)
+	{
+		var result = expected_salary_converter(params.salary, GBP.USD , GBP.Euro );
+		result_array= {USD : result[0] , GBP : params.salary , Euro :result[1]};
+		console.log(result_array);
+		//console.log(result);
+	}
+	if(params.currency== '€ EUR' && params.salary)
+	{
+		var result = expected_salary_converter(params.salary, Euro.USD , Euro.GBP );
+		//console.log(result);
+		result_array= {USD : result[0] , GBP : result[1]  , Euro : params.salary};
+		console.log(result_array);
+	}
+	
 	var deferred = Q.defer();
    if(!params.position)
    {
@@ -1521,7 +1567,7 @@ function filter(params)
    
    var deferred = Q.defer();
 	 
-   users.find({type : 'candidate' , is_verify :1, is_approved :1   }, function (err, data) 			
+   users.find({type : 'candidate' , is_verify :1, is_approved :1,   }, function (err, data) 			
    		{
    				
    		        if (err) 
@@ -1536,24 +1582,72 @@ function filter(params)
    		        	
    		        	//console.log(array);
    		     	CandidateProfile.find({
-		        		$and : [{ $or : [ { "roles": {$in: params.position}}, { "experience_roles.platform_name":  params.skill} ,{ "country": params.location  } , { "platforms.platform_name": {$in :params.blockchain }}, { "commercial_platform.platform_name" : {$in : params.blockchain} } ,{"experimented_platform.experimented_platform" : {$in : params.blockchain}} , { availability_day: params.availability} , { expected_salary: params.salary} , { expected_salary_currency: params.currency}  ] },
+		        		$and : [{ $or : [ { "roles": {$in: params.position}}, { "experience_roles.platform_name":  params.skill} ,{ "country": params.location  } , { "platforms.platform_name": {$in :params.blockchain }}, { "commercial_platform.platform_name" : {$in : params.blockchain} } ,{"experimented_platform.experimented_platform" : {$in : params.blockchain}} , { availability_day: params.availability}  ] },
 						{ "_creator": {$in: array}}]
 		        	}).populate('_creator').exec(function(err, result)
    		            {
+		        		result.forEach(function(item) 
+		    		        	{
+		        			query_result.push(item);
+		    		        	});
+		        		
    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
    		                		        
-   		               if (result == '') 
+   		               if (result == '' && result_array == '') 
    		               {
    		            	   deferred.reject("Not Found Any Data");
    		                		         
-   		                } 
-   		                else 
-   		                {
-   		                	deferred.resolve(result)
+   		               } 
+   		               if(result!= ''  && result_array == '')
+   		               {
+   		            	
+   		            	deferred.resolve(query_result);
+   		            	
+   		               }
+   		               if(result_array!="")
+   		               { 	   
+   		            	CandidateProfile.find({
+   		         		$or : [
+   		         			{ $and : [ { expected_salary_currency : "$ USD" }, { expected_salary : {$lte: result_array.USD} } ] },
+   		         			{ $and : [ { expected_salary_currency : "£ GBP" }, { expected_salary : {$lte: result_array.GBP} } ] },
+   		         			{ $and : [ { expected_salary_currency : "€ EUR" }, { expected_salary : {$lte: result_array.Euro} } , { "_creator": {$in: array}} ] }
+   		         			
+   		         			
+   		         		]	
+   		         		} ).populate('_creator').exec(function(err, salary_result)
+   		         				{
+   		            				if(err) console.log(err);
+   		            					//deferred.reject(err.name + ': ' + err.message);
+		                			if(salary_result == '' && result == '')
+		                			{
+		                				//console.log("ifffffffffffff");
+		                				deferred.reject("Not Found Any Data");
+		                				
+		                			}
+		                			
+		                			else
+		                			{
+		                				//console.log("elseeeeeeee");
+		                				salary_result.forEach(function(item) 
+		        		    		        	{
+		        		        					query_result.push(item);
+		        		    		        	});
+		                				//console.log(salary_result);
+		                				deferred.resolve(query_result);
+		                			}
+		                			
+		                			
+		                		});
+   		                	
+   		                	
    		                }
-   		             });
+   		               
+   		               
+   		                	
+   		            
    		        	 
-   		        	}
+   		        	});
+   		        }
    		        	
    		        	else
    		        	{
@@ -1566,52 +1660,19 @@ function filter(params)
     return deferred.promise;
 }
 
-/*function search_availibility(avail)
+function expected_salary_converter(salary_value, currency1, currency2)
 {
-	var deferred = Q.defer();
- 
-    users.find({type : 'candidate' , is_verify :1 }, function (err, data) 			
-    		{
-    				
-    		        if (err) 
-    		            return handleError(err);
-    		        if(data)
-    		        {
-    		        	var array = [];
-    		        	data.forEach(function(item) 
-    		        	{
-    		        	    array.push(item._id);
-    		        	});
-    		        	
-    		        	//console.log(array);
-    		        	CandidateProfile.find({
-    		        		$and:[{ "_creator": {$in: array}},{ availability_day: avail}]
-    		        	}).populate('_creator').exec(function(err, result)
-    		            {
-    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-    		                		        
-    		               if (result == '') 
-    		               {
-    		            	   deferred.reject("Not Found Any Data");
-    		                		         
-    		                } 
-    		                else 
-    		                {
-    		                	deferred.resolve(result)
-    		                }
-    		             });
-    		        	 
-    		        	}
-    		        	
-    		        	else
-    		        	{
-    		        		deferred.reject("Not Found Any Data");
-    		        	}
+	var value1 = (currency1 * salary_value).toFixed();
+	var value2 = (currency2 * salary_value).toFixed();	
+	var array = [];
+	
+	array.push(value1);
+	array.push(value2);
 
-    		    }); 
- 
-    return deferred.promise;
-}*/
+	return array;
+
+}
+
 
 function search_word(word)
 {
