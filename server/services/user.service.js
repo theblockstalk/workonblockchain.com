@@ -1771,8 +1771,9 @@ function verified_candidate()
 
 function refreal_email(data){
 	var deferred = Q.defer();
-
-    referUserEmail.sendEmail(data);
+	referUserEmail.sendEmail(data)
+	deferred.resolve('Email has been sent successfully.');
+	return deferred.promise;
 }
 
 function get_refr_code(data){

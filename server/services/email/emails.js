@@ -7,6 +7,6 @@ module.exports.sendEmail = function sendEmail(mailOptions) {
         nodemailer.sendEmail(mailOptions);
         //
     } else {
-        nodemailer.sendEmail(mailOptions);
+		nodemailer.sendEmail(mailOptions);
     }
 }
