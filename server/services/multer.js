@@ -1,5 +1,4 @@
-var multer = require('multer');
-// const fileUpload = require('express-fileupload');
+const multer = require('multer');
 const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
 const settings = require('../services/settings');
@@ -7,26 +6,29 @@ const settings = require('../services/settings');
 let appMulter;
 
 if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging') {
-    let s3 = new aws.S3({
-        params: {
-            Bucket: settings.AWS.S3_BUCKET
-        },
-        region : settings.AWS.REGION
+    console.log('Configuring multer with S3 bucket');
+
+    aws.config.update({
+        secretAccessKey: settings.AWS.SECRET_ACCESS_KEY,
+        accessKeyId: settings.AWS.ACCESS_KEY,
+        region: settings.AWS.REGION
     });
+
+    let s3 = new aws.S3();
 
     appMulter = multer({
         storage: multerS3({
             s3: s3,
             bucket: settings.AWS.S3_BUCKET,
-            metadata: function (req, file, cb) {
-                cb(null, {fieldName: file.fieldname});
-            },
             key: function (req, file, cb) {
-                cb(null, Date.now().toString() + file.originalname)
+                console.log('file', file);
+                cb(null, Date.now().toString() + file.originalname);
             }
         })
-    }).single('photo');
+    });
 } else {
+    console.log('Configuring local multer to /uploads folder');
+
     appMulter = multer({
         storage: multer.diskStorage({
             destination: function (req, file, cb) {
@@ -36,7 +38,7 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
                 cb(null, Date.now().toString() + file.originalname)
             }
         })
-    }).single('photo');
+    });
 }
 
 module.exports = appMulter;

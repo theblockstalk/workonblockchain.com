@@ -55,7 +55,7 @@ router.post('/insert_message', insert_message);
 router.post('/get_messages', get_messages);
 router.post('/get_user_messages', get_user_messages);
 router.get('/all_chat' , get_chat);
-router.post('/upload_chat_file/:_id', upload_chat_file);
+router.post('/upload_chat_file/:_id', multer.single('photo'), upload_chat_file);
 router.post('/insert_chat_file', insert_chat_file);
 router.post('/insert_message_job', insert_message_job);
 router.post('/update_job_message', update_job_message);
@@ -927,21 +927,9 @@ function get_chat(req,res)
 
 function upload_chat_file(req, res) 
 {
-	console.log('upload_chat_file');
-    multer(req, res, function (err)
-    {    
-        if (err) 
-        {
-            console.log(err);
-        }
-        else
-        {
-			console.log(req.file);
-			console.log('done new');
-			res.json(req.file.filename);
-        }
-
-    }) 
+    console.log(req.file);
+    console.log('done new');
+    res.json(req.file.filename);
 }
 
 //inserting chat file in db
