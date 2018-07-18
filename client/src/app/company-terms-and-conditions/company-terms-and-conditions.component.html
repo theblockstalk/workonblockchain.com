@@ -3,15 +3,14 @@
   <div class="container t-c_container">
 	<div class="row">
 			<div class = "A_heading">
-				<h1>{{page_title}}</h1>
+				<h1>{{company_page_title}}</h1>
 			</div>
 			
 		<div class="col-md-12 terms-col">
-			<div [innerHTML]="editor_content | safeHtml " *ngIf="editor_content"></div>
+			<div [innerHTML]="company_editor_content | safeHtml " *ngIf="company_editor_content"></div>
 			
 		</div>
 	</div>
   </div>	
-
+  <br/><br/>
 </section>
-

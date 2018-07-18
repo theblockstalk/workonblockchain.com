@@ -59,12 +59,14 @@ import { AdminFaqEditorComponent } from './admin-faq-editor/admin-faq-editor.com
 import { FaqComponent } from './faq/faq.component';
 import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
 import { TermsAndConditionComponent } from './terms-and-condition/terms-and-condition.component';
-import { AccountSettingComponent } from './account-setting/account-setting.component';
+//import { AccountSettingComponent } from './account-setting/account-setting.component';
 import { CookieService } from 'ngx-cookie-service';
 import { ScrollToModule } from 'ng2-scroll-to-el';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AdminAccountSettingsComponent } from './admin-account-settings/admin-account-settings.component';
+import { CompanyTermsAndConditionsComponent } from './company-terms-and-conditions/company-terms-and-conditions.component';
+import { PublicProfileLinkComponent } from './public-profile-link/public-profile-link.component';
 
 let config = new AuthServiceConfig([
   {
@@ -85,7 +87,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'home', component: HomeComponent},
     { path: '', component: HomeComponent},
-     { path: 'terms-and-condition', component: CandidateTermsComponent},
+    { path: 'terms-and-condition', component: CandidateTermsComponent},
     { path: 'resume', component: ResumeComponent},
     { path: 'experience', component: ExperienceComponent},
     { path: 'candidate_profile', component: CandidateProfileComponent},
@@ -121,6 +123,8 @@ const appRoutes: Routes = [
     {path : 'term-and-conditions' , component: TermsAndConditionComponent},
     {path : 'account-settings' , component: AccountSettingsComponent},
     {path : 'faq' , component: FaqComponent},
+    {path : 'terms-for-company' , component: CompanyTermsAndConditionsComponent},
+     {path : 'my-profile' , component: PublicProfileLinkComponent},
     //import { SettingsComponent } from './settings/settings.component';
 
     { path: '**', redirectTo: '' }
@@ -174,6 +178,8 @@ const appRoutes: Routes = [
     AccountSettingsComponent,
     SettingsComponent,
     AdminAccountSettingsComponent,
+    CompanyTermsAndConditionsComponent,
+    PublicProfileLinkComponent,
     	
 
   ],

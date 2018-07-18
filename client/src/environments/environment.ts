@@ -5,7 +5,8 @@
 
 export const environment = {
   production: false,
-  backend_url: 'http://localhost:4000/'
+  backend_url: 'http://localhost:4000/',
+  img_url : 'http://workonblockchainuploads.mwancloud.com/'
 };
 
 console.log(environment);

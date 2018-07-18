@@ -7,6 +7,9 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../data.service";
+import {environment} from '../../environments/environment';
+const imgsrc = environment.img_url;
+console.log(imgsrc);
 
 @Component({
   selector: 'app-candidate-profile',
@@ -86,7 +89,7 @@ export class CandidateProfileComponent implements OnInit {
                     
                 else 
                 {
-                   
+                  
                     this.id = data._creator._id; 
                      this.share_link ='http://localhost:4200/admin-candidate-detail?user=' + data._creator._id; 
                      console.log(this.share_link);                 
@@ -120,9 +123,11 @@ export class CandidateProfileComponent implements OnInit {
                     if(data.image != null )
                     {
                       //console.log(data.image);
-                     this.image_src =  data.image ;
-                        this.imgPath = '/var/www/html/workonblockchain/server/uploads/';
+                        this.image_src =  data.image ;
+                        this.imgPath = imgsrc + data.image;
+                        console.log(this.imgPath);
                     }
+                    
                    
                 }
                 
@@ -135,5 +140,7 @@ export class CandidateProfileComponent implements OnInit {
        }
 
   }
+    
+
   
 }
