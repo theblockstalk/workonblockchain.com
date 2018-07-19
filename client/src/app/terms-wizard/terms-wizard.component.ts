@@ -18,6 +18,7 @@ export class TermsWizardComponent implements OnInit {
     terms_active_class;about_active_class;
     termscondition=false;
     marketing_emails;
+    agree;
 
    constructor(private route: ActivatedRoute,
         private router: Router,

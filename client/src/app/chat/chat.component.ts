@@ -72,8 +72,8 @@ export class ChatComponent implements OnInit {
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log(this.currentUser);
 	  //for live
-	  //this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
-	  this.file_url = 'http://localhost/workonblockchain.com/server/uploads/';
+	  this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
+	  //this.file_url = 'http://localhost/workonblockchain.com/server/uploads/';
       if(this.currentUser){
 	  /*this.authenticationService.getById(this.currentUser._creator)
 		.subscribe(
@@ -433,7 +433,7 @@ export class ChatComponent implements OnInit {
 	  console.log(id);
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log("show_msg_area: " + this.show_msg_area);
-	    //setInterval(() => {
+	    setInterval(() => {
 			//receiver,sender
 		 
 			this.authenticationService.get_user_messages(id,this.currentUser._creator)
@@ -508,7 +508,7 @@ export class ChatComponent implements OnInit {
 					//this.log = error;
 				}
 			);
-		//}, 3000);
+		}, 2000);
 		this.candidate = email;
 		this.credentials.email = email;
 		this.credentials.id = id;

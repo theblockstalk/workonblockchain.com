@@ -22,7 +22,7 @@ router.put('/welcome/about/:_id', about);
 router.put('/welcome/job/:_id', job);
 router.put('/welcome/resume/:_id', resume);
 router.put('/welcome/exp/:_id', experience);
-router.post('/image/:_id', image);
+router.post('/image/:_id', multer.single('photo'), image);
 router.put('/refered_id/:id' , refered_id);
 router.put('/update_profile/:_id' , update_candidate_profile);
 
@@ -32,7 +32,7 @@ router.get('/company', getCompany);
 router.get('/current_company/:id', getCurrentCompany);
 router.put('/company_wizard/:_id',company_summary);
 router.put('/about_company/:_id' , about_company);
-router.post('/employer_image/:_id', employer_image);
+router.post('/employer_image/:_id', multer.single('photo'), employer_image);
 router.put('/update_company_profile/:_id' , update_company_profile);
 //router.put('/skills_search' , skills_search);
 
@@ -371,7 +371,7 @@ function experience(req,res)
 
 function image(req, res) 
 {
-    multer(req, res, function (err)
+    /*multer(req, res, function (err)
     {
         console.log('req.file', req.file);
         if (err)
@@ -400,7 +400,12 @@ function image(req, res)
             });
         }
 
-    })
+    })*/
+	
+	
+    console.log(req.file);
+    console.log('done new');
+    res.json(req.file.filename);
 }
 
 ///// for update the candidate profile data ///////////////////
@@ -555,7 +560,7 @@ function about_company(req,res)
 
 function employer_image(req, res) 
 {
-    multer(req, res, function (err)
+    /*multer(req, res, function (err)
     {    //console.log(req.file.filename);
         if (err) 
         {
@@ -581,7 +586,11 @@ function employer_image(req, res)
             });  
         }
 
-    })    
+    })   */ 
+
+	console.log(req.file);
+    console.log('done new');
+    res.json(req.file.filename);
 }
 
 ////////// update company profile data ///////////////////////////
