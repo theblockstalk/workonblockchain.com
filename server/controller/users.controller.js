@@ -32,7 +32,7 @@ router.get('/company', getCompany);
 router.get('/current_company/:id', getCurrentCompany);
 router.put('/company_wizard/:_id',company_summary);
 router.put('/about_company/:_id' , about_company);
-router.post('/employer_image/:_id', employer_image);
+router.post('/employer_image/:_id', multer.single('photo'), employer_image);
 router.put('/update_company_profile/:_id' , update_company_profile);
 //router.put('/skills_search' , skills_search);
 
@@ -528,7 +528,7 @@ function about_company(req,res)
 
 function employer_image(req, res) 
 {
-    multer(req, res, function (err)
+    /*multer(req, res, function (err)
     {    //console.log(req.file.filename);
         if (err) 
         {
@@ -554,7 +554,11 @@ function employer_image(req, res)
             });  
         }
 
-    })    
+    })   */ 
+
+	console.log(req.file);
+    console.log('done new');
+    res.json(req.file.filename);
 }
 
 ////////// update company profile data ///////////////////////////

@@ -84,7 +84,7 @@ export class CandidateFormComponent implements OnInit {
 
         if(this.credentials.password != this.credentials.confirm_password )
         {
-            this.password_log = "doesn't match Password";
+            this.password_log = "Password doesn't matched";
         }
         else
         {
@@ -264,7 +264,7 @@ export class CandidateFormComponent implements OnInit {
             {
                 this.credentials.password = '';
                 this.credentials.confirm_password = '';
-                this.password_log = "doesn't match Password";
+                this.password_log = "Password doesn't matched";
             }
             else
             {
