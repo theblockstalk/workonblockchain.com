@@ -15,7 +15,7 @@ export class CandidateDetailComponent implements OnInit {
         interest_area;why_work;availability_day;
         countries;commercial;history;education;
         experimented;languages;current_currency;current_salary;image_src;
-        imgPath;nationality;contact_number;
+        imgPath;nationality;contact_number;platforms;
   constructor(private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
  
@@ -126,22 +126,39 @@ export class CandidateDetailComponent implements OnInit {
 		console.log(this.credentials);
         if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            this.date_of_joining = '10-07-2018';
-            this.msg_tag = 'job_offer';
-            this.is_company_reply = 0;
-            this.msg_body = this.credentials.job_desc;
-            this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.currentUser.email,this.credentials.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
-                .subscribe(
-                    data => {
-                        console.log(data);
-                        this.job_offer_msg = 'Message sent';
-                    },
-                    error => {
-                        console.log('error');
-                        console.log(error);
-                        //this.log = error;
-                    }
-                );
+            this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
+			.subscribe(
+				data => {
+					console.log(data['datas']);
+					if(data['datas'].length>0){
+						this.job_offer_msg = 'Message already sent';
+					}
+					else{
+						this.date_of_joining = '10-07-2018';
+						this.msg_tag = 'job_offer';
+						this.is_company_reply = 0;
+						this.msg_body = this.credentials.job_desc+' Job Title: '+this.credentials.job_title+', Job Type: '+this.credentials.job_type+', Salary: '+this.credentials.salary+' '+this.credentials.currency;
+						this.credentials.salary = this.credentials.salary+' '+this.credentials.currency;
+						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.currentUser.email,this.credentials.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
+							.subscribe(
+								data => {
+									console.log(data);
+									this.job_offer_msg = 'Message has been successfully sent';
+								},
+								error => {
+									console.log('error');
+									console.log(error);
+									//this.log = error;
+								}
+							);
+					}
+				},
+				error => {
+					console.log('error');
+					console.log(error);
+					//this.log = error;
+				}
+			);
         }
         else{
             this.job_offer_msg = 'Please enter all info';

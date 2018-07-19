@@ -4,7 +4,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-const URL = 'http://localhost:4000/';
+//const URL = 'http://localhost:4000/';
 
 
 @Component({

@@ -7,6 +7,9 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../data.service";
+import {environment} from '../../environments/environment';
+const imgsrc = environment.img_url;
+console.log(imgsrc);
 
 @Component({
   selector: 'app-candidate-profile',
@@ -66,8 +69,12 @@ export class CandidateProfileComponent implements OnInit {
                 {
                     this.router.navigate(['/resume']);
                 }
+                else if(data.commercial_platform.length < 1 || data.experimented_platform.length < 1  || data.platforms.length < 1)
+                {
+                    this.router.navigate(['/resume']);
+                }
                 //console.log(data.experience_roles.length);
-                else if(!data.experience_roles &&  !data.current_salary  )
+                else if(!data.experience_roles &&  !data.current_salary  || data.experience_roles.length <1 )
                 {
                         this.router.navigate(['/experience']);
                 }
@@ -86,7 +93,7 @@ export class CandidateProfileComponent implements OnInit {
                     
                 else 
                 {
-                   
+                  
                     this.id = data._creator._id; 
                      this.share_link ='http://localhost:4200/admin-candidate-detail?user=' + data._creator._id; 
                      console.log(this.share_link);                 
@@ -119,10 +126,21 @@ export class CandidateProfileComponent implements OnInit {
                     this.platforms=data.platforms;
                     if(data.image != null )
                     {
+                        let x = data.image.split("://");
+                        console.log(x[0]);
+                        if(x[0] == 'http' || x[0] == 'https')
+                        {
+                            this.imgPath = data.image;
+                        }
+                        else
+                        {
                       //console.log(data.image);
-                     this.image_src =  data.image ;
-                        this.imgPath = '/var/www/html/workonblockchain/server/uploads/';
+                        this.image_src =  data.image ;
+                        this.imgPath = imgsrc + data.image;
+                        console.log(this.imgPath);
+                        }
                     }
+
                    
                 }
                 
@@ -135,5 +153,7 @@ export class CandidateProfileComponent implements OnInit {
        }
 
   }
+    
+
   
 }

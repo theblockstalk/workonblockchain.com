@@ -96,7 +96,9 @@ export class UserService {
                     return user;
                 }
                 else
-                {   //console.log(user.error);
+                {   
+                console.log(user);
+                    //console.log(user.error);
                     return user;
 
                 }
@@ -696,4 +698,10 @@ export class UserService {
         return this.http.get<any>(URL+'users/get_pages_content/'+ title);
         
     }
+	
+	get_job_desc_msgs(sender_id:string,receiver_id:string,msg_tag:string){
+		return this.http.post<any>(URL+'users/get_job_desc_msgs', {sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag}) .map(data => {
+            return data
+        });
+	}
 }

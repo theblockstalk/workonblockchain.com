@@ -8,9 +8,12 @@
 				 <section class = "profile personal_info">
 
 				 	<div class="col-md-6" >
-				 		<span class = "p_img">
+				 		<span class = "p_img" *ngIf="!imgPath">
 				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
-				 		</span>{{id}}
+				 		</span>
+				 		<span class = "p_img" *ngIf="imgPath">
+				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
+				 		</span>
 				 		<span class = "name">
 				 			<h3>{{first_name}} {{last_name}}</h3>
 				 		</span>
@@ -19,12 +22,10 @@
 				 		</span>
 
 				 		 <div class="fb-share-button" data-href="https://www.workonblockchain.com/ref/" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.workonblockchain.com%2Fref%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
-						<div class = "twitter-share-button" >
+						<div class = "twitter-share-button">
+							<a class = "twitter-share-button" href="https://twitter.com/intent/tweet?text=I%E2%80%99m%20inviting%20you%20to%20workonblockchain.com!%20Sign%20up%20now%20and%20let%20companies%20apply%20to%20you.%20Receive%205%20%20job%20offers%20in%20one%20week.%20Salaries%20from%20%E2%82%AC35k%20-%20%E2%82%AC100k&amp;url=http://workonblockchain.mwancloud.com/admin-candidate-detail?user={{currentUser._id}}">Tweet</a>
+						</div>
 						
-							<!-- <a [href]="('https://twitter.com/intent/tweet?text=hello%20world&url=https%3A%2F%2Flocalhost:4200%2Fadmin-candidate-detail%3Fuser%3D' + id)" class="twitter-share-button">Tweet</a>-->
-							<a href="javascript:;" class="twitter-share-button" data-lang="en" data-text="Hi all.." data-url="http://localhost:4200/admin-candidate-detail?user=84365378387">Tweet</a>
-							
-					</div>
 
 				 	</div>
 

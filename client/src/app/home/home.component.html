@@ -1,28 +1,12 @@
-
-<!--<form (submit)="Search(searchForm)" #searchForm = ngForm>
-
-  <div class="form-group">
-    <label for="search">Search: </label>
-    <input type="text" class="form-control" #search_field name="search" required  [(ngModel)]="search">
-
-  </div>
-
-  <button type="submit" class="btn btn-default" [disabled]="!searchForm.valid" >GO</button>
-  
-</form>
-
-<p>{{log | json}}</p><br/><br/>-->
-
-
-
+<!--Main contain area -->
 <div id="stripes" aria-hidden="true">
 </div>
 <section class = "main-bnr">
-		<div class="container">
+		<div class="container-fluid">
 		<div class = "row">
 			<div class="col-md-12">
-				<div class="mockup-top hidden-xs">
-					<img class="animute" src="/assets/images/background/mockup.png" alt="" />
+				<div class="mockup-top hidden-xs hidden-sm">
+					<!--<img class="animute" src="images/background/mockup.png" alt="" />-->
 				</div>
 
 				<div class = "row row_main">
@@ -33,8 +17,8 @@
 							CTO's and interns who are passionate about blockchain tech.</p>
 
 							<div class = "button_area">
-								<a href = "" class = "btn employee_btn">Join Us Talent & Get Job Offer</a>
-								<a href = "" class = "btn employer_btn">Join Us Employer & Start Hiring</a>
+								<a routerLink = "/signup" class = "btn employee_btn">Join Us Talent & Get Job Offer</a>
+								<a routerLink = "/signup" class = "btn employer_btn">Join Us Employer & Start Hiring</a>
 							</div>
 					</div>
 
@@ -56,37 +40,43 @@
 			<div class="col-md-12 text-center">
 				<ul class = "logo-row">
 					<li title = "amazon">
-						<img src = "/assets/images/company_logo/amazon.svg" alt = "Amazon_logo">
+						<a href = "http://extropy.io/" target = "_blank">
+							<img src="/assets/images/company_logo/Extropy.io-Logo.png" alt = "Amazon_logo">
+						</a>
 					</li>
 
 					<li title = "asos">
-						<img src = "/assets/images/company_logo/asos.svg" alt = "asos_logo">
+						<a href = "https://indorse.io/" target = "_blank">
+							<img src="/assets/images/company_logo/Indorse Logo.png" alt = "asos_logo">
+						</a>
 					</li>
 
 					<li title = "crowdcube">
-						<img src = "/assets/images/company_logo/crowdcube.svg" alt = "Crowdcube_logo">
+						<a href = "http://nethermind.io/" target = "_blank">
+							<img src="/assets/images/company_logo/Nethermind-Logo.png" alt = "Crowdcube_logo">
+						</a>
 					</li>
 
-					<li title = "deliveroo">
-						<img src = "/assets/images/company_logo/deliveroo.svg" alt = "Deliveroo_logo">
+					<!--<li title = "deliveroo">
+						<img src="/assets/images/company_logo/deliveroo.svg" alt = "Deliveroo_logo">
 					</li>
 
 					<li title = "john_lewis">
-						<img src = "/assets/images/company_logo/john_lewis.svg" alt = "John_lewis_logo">
+						<img src="/assets/images/company_logo/john_lewis.svg" alt = "John_lewis_logo">
 					</li>
 
 					<li title = "monzo">
-						<img src = "/assets/images/company_logo/monzo.svg" alt = "monzo_logo">
+						<img src="/assets/images/company_logo/monzo.svg" alt = "monzo_logo">
 					</li>
 
 					<li title = "nutmeg">
-						<img src = "/assets/images/company_logo/nutmeg.svg" alt = "nutmeg_logo">
-					</li>
+						<img src="/assets/images/company_logo/nutmeg.svg" alt = "nutmeg_logo">
+					</li>-->
 
 				</ul>
 			</div>
 			<!--<div class = "border-btm text-center">
-				<img src = "images/border.png" alt = "">
+				<img src="/assets/images/border.png" alt = "">
 			</div>-->
 		</div>
 	</div>
@@ -99,9 +89,9 @@
 <section class = "work">
 		<h2 class = "text-center">How does it work?</h2>
 	<div class="container">
-		<div class="row text-left">
-			<div class="col-md-3">
-				<img class = "icon" src = "/assets/images/work/reliability.svg" alt = "">
+		<div class="row text-setting">
+			<div class="col-md-3 col-sm-6 sm-6">
+				<img class = "icon" src="/assets/images/work/reliability.svg" alt = "">
 				<h3>Create Your Profile</h3>
 				<p>
 					Firstly, create your profile. 
@@ -110,23 +100,23 @@
 				</p>
 				
 			</div>
-			<div class="col-md-3">
-				<img class = "icon" src = "/assets/images/work/global.svg" alt = "">
+			<div class="col-md-3 col-sm-6 sm-6">
+				<img class = "icon" src="/assets/images/work/global.svg" alt = "">
 				<h3>Wait for your job offers</h3>
 				<p>
 					Receive interview requests from companies with salary and full spec.
 					 Companies will apply to you.
 				</p>
 			</div>
-			<div class="col-md-3">
-				<img class = "icon" src = "/assets/images/work/partnerships.svg" alt = "">
+			<div class="col-md-3 col-sm-6 sm-6">
+				<img class = "icon" src="/assets/images/work/partnerships.svg" alt = "">
 				<h3>Carry pick your job offers</h3>
 				<p>
 					Choose which companies that interest you and interview with them directly.
 				</p>
 			</div>
-			<div class="col-md-3">
-				<img class = "icon" src = "/assets/images/work/reliability.svg" alt = "">
+			<div class="col-md-3 col-sm-6 sm-6">
+				<img class = "icon" src="/assets/images/work/reliability.svg" alt = "">
 				<h3>Accept your dream job</h3>
 				<p>
 					Congratulations and enjoy your new job! Time to work on blockchain.  
@@ -137,50 +127,6 @@
 
 </section>
 
-<!--How's work End -->
-
-<!--<div class = "middle_page">
-
-	<div class = "sec-comp">
-		<div class="container">
-			<h2>It's simple and it work</h2>
-			<div class="row text-left">
-				<div class="col-md-6">
-					<h3>HOW TO JOIN?</h3>
-					<p>
-						Simplicity is key. Simply sign up in under one minute. Once your profile is approved, companies will send you job offers.
-					</p>
-					
-				</div>
-				<div class="col-md-6 figuree">
-					<h3>I'm very busy and don't have a lot of time?</h3>
-					<p>
-						You're in control, workonblockchain.com is built around you. You decide when to make your profile visible to companies. You decide whether to accept or reject job offers.  
-					</p>
-				</div>
-
-				<div class="col-md-6 figuree-b">
-					<h3>Are you a recruitment agency?</h3>
-					<p>
-						No. On workonblockchian.com, companies reach out directly to you. You're in complete control. Our team are always available to help and advise you when needed.
-					</p>
-					
-				</div>
-				<div class="col-md-6">
-					<h3>STAY ANONYMOUS</h3>
-					<p>
-						Your current employer will never see your profile and you can remain anonymous from other companies if you wish to do so.
-					</p>
-				</div>
-
-			</div>
-		</div>
-	</div>
-
-</div>-->
-
-<!--SEction company slider start here -->
-
 <section class = "coursal-compnay">
 	<h2 class = "text-center">What our clients have to say about us?</h2>
 	<div class = "container">
@@ -189,30 +135,30 @@
 				<div id="myCarousel" class="carousel slide" data-ride="carousel">
 				  <div class = "slider-img">
 					<span>
-						<img src = "/assets/images/company_logo/testominal-dec_img.png" class = "img-responsive" alt = ""/>
+						<img src="/assets/images/company_logo/testominal-dec_img.png" class = "img-responsive" alt = ""/>
 					</span>
 				  </div>
 
 				  <!-- Wrapper for slides -->
 				  <div class="carousel-inner slider-text" role="listbox">
 					<div class="item common-BodyText active">
-						<p class="common-BodyText"><strong>Company: Name</strong> optimized their mobile and web donation flows with Stripe so they can focus on what really matters: bringing clean water to every person on the planet. Using Stripe, they also built a new monthly giving program, which makes it even easier for subscribers to donate throughout the&nbsp;year.</p>
+						<p class="common-BodyText">This is the best place for you to look for blockchain talent, delivered by people who understand the industry</p>
 						<p class="common-Bodylink">
-								<a href="#" class="common-Link common-Link--arrow">Learn more about our users</a>
+								<a href="http://nethermind.io/" target = "_blank" class="common-Link common-Link--arrow">Tomasz K. Stańczak, Founder & CTO at Nethermind.io</a>
 						</p>
 					</div>
 					
 					<div class="item common-BodyText ">
-					  <p class="common-BodyText"><strong>Company: Name-2</strong> optimized their mobile and web donation flows with Stripe so they can focus on what really matters: bringing clean water to every person on the planet. Using Stripe, they also built a new monthly giving program, which makes it even easier for subscribers to donate throughout the&nbsp;year.</p>
+					  <p class="common-BodyText">Was really helpful when we wanted to expand our team and gave us top blockchain talent from London and the European region. These people have become some of our most valuable developers and team members.</p>
 						<p class="common-Bodylink">
-								<a href="#" class="common-Link common-Link--arrow">Learn more about our users</a>
+								<a href="https://indorse.io/"  target = "_blank" class="common-Link common-Link--arrow">Gaurang Torvekar, Co-Founder and CEO, Indorse.io </a>
 						</p>
 					</div>
 					
 					<div class="item common-BodyText">
-					  <p class="common-BodyText"><strong>Company: Name-3</strong> optimized their mobile and web donation flows with Stripe so they can focus on what really matters: bringing clean water to every person on the planet. Using Stripe, they also built a new monthly giving program, which makes it even easier for subscribers to donate throughout the&nbsp;year.</p>
+					  <p class="common-BodyText">I have some great developers in my team thanks to these guys, and their extensive developer network keeps me in contact with the real experts in the blockchain space</p>
 						<p class="common-Bodylink">
-								<a href="#" class="common-Link common-Link--arrow">Learn more about our users</a>
+								<a href="http://extropy.io/" target = "_blank" class="common-Link common-Link--arrow">Laurence Kirk, Founder and CEO, Extropy.io </a>
 						</p>
 					</div>
 					
@@ -315,36 +261,47 @@
 					    <li data-target="#myCarousel1" data-slide-to="0" class="active"></li>
 					    <li data-target="#myCarousel1" data-slide-to="1"></li>
 					    <li data-target="#myCarousel1" data-slide-to="2"></li>
+					    <li data-target="#myCarousel1" data-slide-to="3"></li>
 					  </ol>
 
 					  <!-- Wrapper for slides -->
 					  <div class="carousel-inner slider-inner" role="listbox">
 						    <div class="item slider-item active">
 						    <div class = "cand-img">
-						    	<img src = "/assets/images/candidate-slider/r2.jpg" alt = "candidate-1">
+						    	<img src="/assets/images/candidate-slider/Rachel-Black.jpg" alt = "candidate-1">
 						    </div>
-						    <h4 class = "text-center">Asad Mehmood</h4>
-						    <span>Senior Web Developer</span>
-						    <p>"This company is the best. I am so happy with the result!"</p>
+						    <h4 class = "text-center">Rachel Black</h4>
+						    <span>Frontend Developer, Yoti</span>
+						    <p class = "slider_p">"Well connected in the blockchain development space, highly recommended"</p>
 						    </div>
 
 						    <div class="item slider-item">
 						    	<div class = "cand-img">
-						    		<img src = "/assets/images/candidate-slider/r2.jpg" alt = "candidate-2">
+						    		<img src="/assets/images/candidate-slider/Haresh-Gedia.jpg" alt = "candidate-2">
 						    	</div>
-						    	<h4 class = "text-center">Tayyab Hussain</h4>
-						    	<span>Senior Web Developer</span>
-						      <p>"One word... WOW!!"</p>
+						    	<h4 class = "text-center">Haresh Gedia</h4>
+						    	<span>Senior Developer, Indorse.io</span>
+						      <p class = "slider_p">"Work on Blockchain are connected with some of the most exciting projects in the blockchain space and I highly recommend them"</p>
 						    </div>
 
 						    <div class="item slider-item">
 						    	<div class = "cand-img">
-							    	<img src = "/assets/images/candidate-slider/r1.jpg" alt = "candidate-3">
+							    	<img src="/assets/images/candidate-slider/Stephan-Yue.jpeg" alt = "candidate-3">
 							    </div>
-						    	<h4 class = "text-center">Sadia Abbas</h4>
-						    	<span>Senior Web Developer</span>
-						      <p>"Could I... BE any more happy with this company?"</p>
+						    	<h4 class = "text-center">Stephan Yue</h4>
+						    	<span>Full-stack Developer, Extropy.io </span>
+						      <p class = "slider_p">"I have been able to achieve my career goal of becoming a blockchain engineer working on the cutting-edge of this new emerging industry thanks to the amazing network of Work on Blockchain"</p>
 						    </div>
+
+						    <div class="item slider-item">
+						    	<div class = "cand-img">
+							    	<img src="/assets/images/candidate-slider/Theodor-Port.jpeg" alt = "candidate-3">
+							    </div>
+						    	<h4 class = "text-center">Theodor Port</h4>
+						    	<span> Blockchain Developer, ixledger.com </span>
+						      <p class = "slider_p">"Strongly connected in the blockchain industry and are very active in supporting developers by doing developer workshops, highly recommended"</p>
+						    </div>
+
 					  </div>
 
 				</div>
@@ -352,11 +309,14 @@
 			</div>
 		</div>
 	</div>
+	<div class = "bottom-img">
+		<img src="/assets/images/background/blue_bg.png" alt = "cover-bg" >
+	</div>
 
 </section>
 
 <!--<div class = "img-bg">
-		<img src = "images/background/blue_bg.png" class = "img-responsive" alt = "bottom-bg"/>
+		<img src="/assets/images/background/blue_bg.png" class = "img-responsive" alt = "bottom-bg"/>
 </div>-->
 
 <!--Candidates slider comments End-->

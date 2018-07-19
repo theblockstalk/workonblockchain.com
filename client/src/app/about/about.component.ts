@@ -46,6 +46,7 @@ export class AboutComponent implements OnInit
 
        if(this.googleUser)
        {
+           console.log("jhcskjsdhkk");
           this.info.image_src = this.googleUser.photoUrl;
           this.info.first_name= this.googleUser.firstName;
           this.info.last_name = this.googleUser.lastName;
@@ -82,7 +83,7 @@ export class AboutComponent implements OnInit
                     this.info.github_account = data.github_account;
                     this.info.exchange_account = data.stackexchange_account;
                     this.info.nationality = data.nationality;
-                    this.info.gender = data.gender;
+                    //this.info.gender = data.gender;
                     this.info.first_name =data.first_name;
                     this.info.last_name =data.last_name;
 

@@ -69,6 +69,7 @@ router.post('/admin_search_by_name' , admin_search_by_name);
 router.post('/admin_company_filter' , admin_company_filter);
 router.post('/update_chat_msg_status' , update_chat_msg_status);
 router.get('/get_unread_msgs' , get_unread_msgs);
+router.post('/get_job_desc_msgs' , get_job_desc_msgs);
 
 /////////admin CMS fucntions////////////////////////////////
 router.put('/add_privacy_content'  , add_privacy_content);
@@ -371,7 +372,6 @@ function experience(req,res)
 function image(req, res) 
 {
     console.log('req.file', req.file);
-    // res.json('done');
     let path;
     if (req.file.filename) {
         path = req.file.filename;
@@ -549,6 +549,8 @@ function about_company(req,res)
 function employer_image(req, res) 
 {
     var path = req.file.originalname;
+    console.log(req.file);
+    console.log('done new');
     userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about)
     {
         if (about)
@@ -560,10 +562,10 @@ function employer_image(req, res)
             res.json(err);
         }
     })
-    .catch(function (err)
-    {
-        res.json({error: err});
-    });
+        .catch(function (err)
+        {
+            res.json({error: err});
+        });
 }
 
 ////////// update company profile data ///////////////////////////
@@ -989,6 +991,24 @@ function update_chat_msg_status(req,res){
 
 function get_unread_msgs(req,res){
 	userService.get_unread_msgs().then(function (err, about) 
+	{
+		if (about) 
+		{
+			res.json(about);
+		} 
+		else 
+		{
+			res.json(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function get_job_desc_msgs(req,res){
+	userService.get_job_desc_msgs(req.body).then(function (err, about) 
 	{
 		if (about) 
 		{

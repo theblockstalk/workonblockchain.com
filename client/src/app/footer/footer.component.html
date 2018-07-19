@@ -1,4 +1,32 @@
-    <section class = "footer">
+<!--Cookies and privacy policy tab-->
+<ng-container *ngIf="display_cookie == 0;else cookie_disabled">
+<section class = "cookies_tab alert">
+<div class = "container-fluid">
+	<div class="row">
+		<div class="col-md-10">
+			<p class = "pra-cookie">
+				We use cookies to support your 
+				experience on our site. By 
+				continuing to use our site you 
+				agree to use of cookies. Full 
+				detail of how we use cookies.
+			</p>
+		</div>
+		<div class = "col-md-2">
+			<a href="#" (click) ="accept_cookie()" class = "cookie_a" data-dismiss="alert" aria-label="close">
+				<div id="cookie-btn">
+					<p>Yes, Got it</p>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>
+</section>
+</ng-container>
+<ng-template #cookie_disabled>
+</ng-template>    
+	
+	<section class = "footer">
   
   <div class="container">
     <div class="row">
@@ -28,11 +56,12 @@
 
       <div class = "col-md-12">
         <ul class = "footer-list">
-          <li><a href = "#">Contact Us</a></li>
-          <li><a routerLink = "/term-and-conditions">Terms & Conditions for Candidates and Clients</a></li>
+          <li><a routerLink = "/contact-us">Contact Us</a></li>
+          <li><a routerLink = "/term-and-conditions">Terms & Conditions for Candidates</a></li>
+          <li><a routerLink = "/terms-for-company">Terms & Conditions for Company</a></li>
           <li><a routerLink= "/faq">FAQ</a></li>
           <li><a routerLink= "/privacy-policy">Privacy Policy</a></li>
-            <li><a href = "#">Legal Notice</a></li>
+            <li><a routerLink = "/legal-notice">Legal Notice</a></li>
         </ul>
       </div>
     </div>

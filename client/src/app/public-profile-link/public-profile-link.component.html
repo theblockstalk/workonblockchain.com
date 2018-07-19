@@ -1,0 +1,339 @@
+<!--Profile-inner-->
+
+<section class = "wizard_page">	
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9" *ngFor = "let data of info">
+				 <section class = "profile personal_info">
+
+				 	<div class="col-md-6" >
+				 		<span class = "p_img">
+				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
+				 		</span>
+				 		<span class = "name">
+				 			<h3>{{data.first_name}} {{data.last_name}}  </h3>
+
+				 		</span>
+				 		<span class = "short_intro">
+				 			<p>{{data.description}}</p>
+				 		</span>
+						
+							
+				 		<span class = "short_intro">
+				 			<p>{{data._creator.created_date}}</p>
+				 		</span>
+				 		
+				 		
+						
+
+				 	</div>
+
+				 	<div class="col-md-6 side-info">
+
+				 		<ul>
+						<li *ngIf="data._creator.refered_id">
+				 				<a href = "">
+					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+					 				<span class = "li_txt" >Refered By: <a [routerLink]="['/admin-candidate-detail']" target="_blank" [queryParams]="{user: data._creator.refered_id }">{{first_name}} {{last_name}}</a>
+					 				</span>
+				 				</a>
+				 			</li>
+				 			<li>
+				 				<a href = "">
+					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+					 				<span class = "li_txt">{{data.history[0].companyname}}</span>
+				 				</a>
+				 			</li>
+
+				 			<li>
+				 				<a href = "">
+					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+					 				<span class = "li_txt">{{data.education[0].degreename}}</span>
+				 				</a>
+				 			</li>
+
+				 			<li>
+				 				<a href = "">
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+				 					<span class = "li_txt">Nationality : {{data.nationality}}</span>
+				 				</a>
+				 			</li>
+
+				 			<li >
+				 				<a href = "">
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+				 					<span class = "li_txt"> Contact Number : {{data.contact_number}}</span>
+				 				</a>
+				 			</li>
+				 		</ul>
+				 		
+				 	</div>
+				 	<span class = "edit_profile_link">
+				 		<a href="edit_profile.php">
+				 			<i class="fa fa-pencil" aria-hidden="true"></i>
+				 		</a>
+				 	</span>
+				 </section>
+
+				 <section class = "profile job_info">
+					<h3>Job </h3>
+				 	<div class="info-area pro_br-btm">
+						<div class = "col-md-3">
+							<strong>Desired Location : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li *ngFor='let country of data.country'>{{country}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+					
+					
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-3" >
+							<strong>Desired Position : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li *ngFor='let interest_area of data.interest_area;'>{{interest_area}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-3" >
+							<strong>Your Availablity : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li>{{data.availability_day}}</li>
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<span class = "edit_profile_link">
+				 		<a href="edit_profile#job_candidate">
+				 			<i class="fa fa-pencil" aria-hidden="true"></i>
+				 		</a>
+				 	</span>
+				 	
+				 </section>
+
+				 <section class = "profile job_info">
+					<h3>BlockChain Experience</h3>
+
+					<div class = "discp info-area pro_br-btm">
+						<h4 class = "disc_hd">Why do you want to work on BlockChain?</h4>
+						<p>
+							{{data.why_work}}
+						</p>
+					</div>
+					
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Platform commercially worked with:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li *ngFor='let commercial_platform of data.commercial_platform;'>{{commercial_platform.platform_name}}  : {{commercial_platform.exp_year}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+				 	
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Platforms designed/developed smart contracts:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li *ngFor='let data of data.platforms;'>{{data.platform_name}}  : {{data.exp_year}}</li>
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Platform experimented with:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li *ngFor='let data of data.experimented_platform;'>{{data.experimented_platform}}  : {{data.exp_year}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+				 	
+
+				 	<span class = "edit_profile_link">
+				 		<a href="edit_profile#resume_candidate">
+				 			<i class="fa fa-pencil" aria-hidden="true"></i>
+				 		</a>
+				 	</span>
+				 	
+				 </section>
+
+				 <section class = "profile job_info">
+					<h3>Experience</h3>				
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Current Base salary:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li>{{data.current_currency}} {{data.current_salary}}</li>
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Languages:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li *ngFor='let lang of data.experience_roles;'>{{lang.platform_name}} : {{lang.exp_year}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	
+				 	
+				 </section>
+
+				  <section class = "profile job_info">
+					<h3>Work History</h3>
+					<div class = "company_area" *ngFor='let work of data.history'>
+					 	<div class="info-area pro_br-btm">
+							<div class = "col-md-4">
+								<strong>Company Name : </strong>
+							</div>
+							<div class = "col-md-8">
+								<ul class = "pro_list">
+									<li>{{work.companyname}}</li>
+									
+								</ul>
+							</div>
+
+					 	</div>
+
+					 	<div class="info-area pro_br-btm">
+					 		<div class = "col-md-4" >
+								<strong>Position : </strong>
+							</div>
+							<div class = "col-md-8">
+								<ul class = "pro_list">
+									<li>{{work.positionname}}</li>
+									
+								</ul>
+							</div>
+					 	</div>
+
+					 	<div class="info-area pro_br-btm">
+
+							<div class = "col-md-4" >
+								<strong>When you start job here?: </strong>
+							</div>
+							<div class = "col-md-8">
+								<ul class = "pro_list" *ngIf='work.currentwork== true' >
+							<li>{{work.startdate}} {{work.startyear}}, Currently Working here.</li>
+						</ul>
+						<ul class = "pro_list" *ngIf='work.currentwork== false' >
+							<li>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</li>
+						</ul>
+							</div>
+
+					 	</div>
+
+					 	<div class="info-area pro_br-btm">
+
+							<div class = "col-md-4" >
+								<strong>Current Location : </strong>
+							</div>
+							<div class = "col-md-8">
+								<ul class = "pro_list">
+									<li>{{work.locationname}}</li>
+								</ul>
+							</div>
+
+					 	</div>
+
+					 	<div class = "discp info-area">
+							<h4 class = "disc_hd">Description</h4>
+							<p>
+								{{work.descname}}
+							</p>
+						</div>
+
+					</div>
+
+				 
+				 	
+				 </section>
+
+				 <section class = "profile job_info">
+					<h3>Education</h3>
+					
+				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of data.education'>
+				 		<div class = "edu_feild">
+							<p>
+								<strong>{{edu.uniname}} </strong>
+							</p>
+							<p>
+								<span>{{edu.degreename}} - {{edu.fieldname}}</span>
+							</p>
+						</div>
+						<div class = "edu_date">
+							<p>
+								<span><i class="fa fa-calendar" aria-hidden="true"></i></span>
+								 {{edu.eduyear}}
+							</p>
+						</div>
+
+				 	</div>
+
+				 		
+				 	
+				 </section>
+
+			</div> <!--End col-md-9--->
+
+			<!--<div class = "col-md-3">
+				<section class = "profile job_info side_rewiew">
+					<h3>We are very sorry</h3>
+					<p>
+						Unfortunately due to work authorization issues we are unable to help you at the moment. If your circumstances changed, please update your profile and resubmit it for review.
+					</p>
+				<div class = "text-center">
+					<button class = "btn btn-success btn-block btn-review">Resubmited of Review</button>
+				</div>
+				</section>
+			</div>-->
+		</div>
+	</div>
+
+</section>
+
+
+<!--Profile-inner end-->

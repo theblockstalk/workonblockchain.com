@@ -33,18 +33,7 @@ export class TermsAndConditionComponent implements OnInit {
                        
                    }
                  });
-      this.authenticationService.get_page_content('Terms and Condition for company')
-            .subscribe(
-                data => {
-                   if(data)
-                   {
-                       console.log(data);
-                      this.company_page_title= data[0].page_title;
-                       this.company_editor_content = data[0].page_content;
-                       console.log(this.editor_content);
-                       
-                   }
-                 });
+      
       
   }
 

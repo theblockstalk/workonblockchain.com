@@ -84,7 +84,7 @@ export class CandidateFormComponent implements OnInit {
 
         if(this.credentials.password != this.credentials.confirm_password )
         {
-            this.password_log = "doesn't match Password";
+            this.password_log = "Password doesn't matched";
         }
         else
         {
@@ -158,6 +158,7 @@ export class CandidateFormComponent implements OnInit {
             this.data = JSON.stringify(this.user);      
             this.result = JSON.parse(this.data);
             localStorage.setItem('googleUser', JSON.stringify(this.result));
+            console.log(this.result);
       
         });
         //console.log(this.result);
@@ -264,7 +265,7 @@ export class CandidateFormComponent implements OnInit {
             {
                 this.credentials.password = '';
                 this.credentials.confirm_password = '';
-                this.password_log = "doesn't match Password";
+                this.password_log = "Password doesn't matched";
             }
             else
             {

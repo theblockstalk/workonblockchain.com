@@ -87,7 +87,7 @@ export class AccountSettingsComponent implements OnInit {
                 }
                else
                {
-                  this.dataservice.changeMessage("Settings Updated Sucessfully");
+                  //this.dataservice.changeMessage("Settings Updated Sucessfully");
                 }
               
           });
@@ -106,7 +106,7 @@ export class AccountSettingsComponent implements OnInit {
                 
                else
                {
-                  this.dataservice.changeMessage("Settings Updated Sucessfully");
+                  //this.dataservice.changeMessage("Settings Updated Sucessfully");
                 }
                     
                 },

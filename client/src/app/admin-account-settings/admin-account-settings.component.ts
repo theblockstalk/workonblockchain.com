@@ -70,10 +70,23 @@ export class AdminAccountSettingsComponent implements OnInit {
        }
   }
     
+  disable_msg; 
+  enable_msg;
     
   account_setting()
   {
     console.log(this.info);
+      
+      if(this.info.disable_account==true)
+      {
+          this.disable_msg = "disable";
+          this.enable_msg='';
+      }
+      if(this.info.disable_account==false)
+      {
+          this.enable_msg ="enable";
+          this.disable_msg ='';
+      }
       this.message='';
       if(this.currentUser && this.currentUser.type=='candidate')
       {
@@ -88,7 +101,7 @@ export class AdminAccountSettingsComponent implements OnInit {
                 }
               else
                {
-                  this.dataservice.changeMessage("Settings Updated Sucessfully");
+                  //this.dataservice.changeMessage("Settings Updated Sucessfully");
                 }
               
           });
@@ -106,7 +119,7 @@ export class AdminAccountSettingsComponent implements OnInit {
                 }
                 else
                 {
-                    this.dataservice.changeMessage("Settings Updated Sucessfully");
+                    //this.dataservice.changeMessage("Settings Updated Sucessfully");
                 }
                 },
                 error => {

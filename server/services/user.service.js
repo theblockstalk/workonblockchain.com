@@ -9,7 +9,6 @@ const users = require('../model/users');
 const CandidateProfile = require('../model/candidate_profile');
 var image = require('../model/image');
 const Pages = require('../model/pages_content');
-// const fileUpload = require('express-fileupload');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var jwt_hash = require('jwt-simple');
@@ -21,8 +20,11 @@ const forgotPasswordEmail = require('./email/emails/forgotPassword');
 const verifyEmailEmail = require('./email/emails/verifyEmail');
 const referUserEmail = require('./email/emails/referUser');
 const chatReminderEmail = require('./email/emails/chatReminder');
-//const {USD} = require('./currency_standard_values');
-//console.log(USD.currency_name);
+
+const USD = {GBP: "1.33", Euro: "1.17"};
+const GBP = {USD : "0.75" , Euro:"0.88"};
+const Euro = {USD : "0.85" , GBP : "1.13"};
+var emails = ['gmail.com' , 'hotmail.com' , 'yahoo.com'];
 
 var service = {};
 
@@ -77,6 +79,7 @@ service.get_chat= get_chat;
 service.save_chat_file = save_chat_file;
 service.insert_message_job = insert_message_job;
 service.update_job_message = update_job_message;
+service.get_job_desc_msgs = get_job_desc_msgs;
 
 ////////admin functions/////////////////////////
 service.admin_role = admin_role;
@@ -96,7 +99,7 @@ service.get_unread_msgs=get_unread_msgs;
 
 module.exports = service;
 
-var emails = ['gmail.com' , 'hotmail.com' , 'yahoo.com'];
+
 
 /***************authentication functions implementation******************/
 
@@ -416,7 +419,7 @@ function getAll()
     CandidateProfile.find().populate('_creator').exec(function(err, result) 
     {
         if (err) 
-            return handleError(err);
+             deferred.reject(err.name + ': ' + err.message);
         else
             deferred.resolve(result);
 
@@ -434,13 +437,13 @@ function getById(_id)
     {
         //console.log(result);
         if (err) 
-            return handleError(err);
+             deferred.reject(err.name + ': ' + err.message);
         if(!result)
         {
             CandidateProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
             {
                 if (err) 
-                    return handleError(err);
+                     deferred.reject(err.name + ': ' + err.message);
                 else
                     deferred.resolve(result);
             });
@@ -686,8 +689,7 @@ function about_data(_id, userParam)
             stackexchange_account: userParam.exchange_account,
             contact_number: userParam.contact_number,
             nationality: userParam.nationality,
-            image:userParam.image_src,
-            gender : userParam.gender
+            image:userParam.image_src
         };
 
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
@@ -879,7 +881,7 @@ function update_candidate_profile(_id,userParam)
 	         stackexchange_account: userParam.detail.exchange_account,
 	         contact_number: userParam.detail.contact_number,
 	         nationality: userParam.detail.nationality,
-	         gender : userParam.detail.gender,
+	         
 	         country: userParam.detail.country,
 	         roles: userParam.detail.roles,
 	         interest_area: userParam.detail.interest_area,
@@ -1082,7 +1084,7 @@ function getCompany()
     EmployerProfile.find().populate('_creator').exec(function(err, result) 
     {
         if (err) 
-            return handleError(err);
+             deferred.reject(err.name + ': ' + err.message);
         else
             deferred.resolve(result);
         //console.log(result);
@@ -1104,13 +1106,13 @@ function get_company_byId(_id)
         {
         	//console.log("Not found");
         	 deferred.resolve({error:"Not found"});
-        }//return handleError(err);
+        }// deferred.reject(err.name + ': ' + err.message);
         if(!result)
         {
         	EmployerProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
             {
                 if (err) 
-                    return handleError(err);
+                     deferred.reject(err.name + ': ' + err.message);
                 else
                     deferred.resolve(result);
             });
@@ -1309,7 +1311,7 @@ function update_company_profile(_id , companyParam)
     		{
     				
     		        if (err) 
-    		            return handleError(err);
+    		             deferred.reject(err.name + ': ' + err.message);
     		        if(data)
     		        {
     		        	var array = [];
@@ -1356,7 +1358,7 @@ function search_location(location)
     		{
     				
     		        if (err) 
-    		            return handleError(err);
+    		             deferred.reject(err.name + ': ' + err.message);
     		        if(data)
     		        {
     		        	var array = [];
@@ -1406,7 +1408,7 @@ function search_position(position)
     		{
     				
     		        if (err) 
-    		            return handleError(err);
+    		             deferred.reject(err.name + ': ' + err.message);
     		        if(data)
     		        {
     		        	var array = [];
@@ -1454,7 +1456,7 @@ function search_blockchain(blockchain)
     		{
     				
     		        if (err) 
-    		            return handleError(err);
+    		             deferred.reject(err.name + ': ' + err.message);
     		        if(data)
     		        {
     		        	var array = [];
@@ -1520,9 +1522,7 @@ function search_salary(data)
     return deferred.promise;
 }*/
 
-const USD = {GBP: "1.33", Euro: "1.17"};
-const GBP = {USD : "0.75" , Euro:"0.88"};
-const Euro = {USD : "0.85" , GBP : "1.13"};
+
 
 function filter(params)
 {
@@ -1570,7 +1570,7 @@ function filter(params)
    		{
    				
    		        if (err) 
-   		            return handleError(err);
+   		             deferred.reject(err.name + ': ' + err.message);
    		        if(data)
    		        {
    		        	var array = [];
@@ -1681,7 +1681,7 @@ function search_word(word)
     		{
     				
     		        if (err) 
-    		            return handleError(err);
+    		             deferred.reject(err.name + ': ' + err.message);
     		        if(data)
     		        {
     		        	var array = [];
@@ -1729,7 +1729,7 @@ function verified_candidate()
 	{
 			
 	        if (err) 
-	            return handleError(err);
+	             deferred.reject(err.name + ': ' + err.message);
 	        if(data)
 	        {
 	        	var array = [];
@@ -1770,8 +1770,9 @@ function verified_candidate()
 
 function refreal_email(data){
 	var deferred = Q.defer();
-
-    referUserEmail.sendEmail(data);
+	referUserEmail.sendEmail(data)
+	deferred.resolve('Email has been sent successfully.');
+	return deferred.promise;
 }
 
 function get_refr_code(data){
@@ -1927,7 +1928,7 @@ function get_chat()
 	    chat.find().exec(function(err, result) 
 	    {
 	        if (err) 
-	            return handleError(err);
+	             deferred.reject(err.name + ': ' + err.message);
 	        else
 	            deferred.resolve(result);
 
@@ -2122,6 +2123,33 @@ function get_unread_msgs(){
 	return deferred.promise;
 }
 
+function get_job_desc_msgs(data){
+	var deferred = Q.defer();
+	chat.find({
+		$and : [
+		   { 
+			 $and:[{receiver_id:{$regex: data.receiver_id}},{sender_id: {$regex: data.sender_id}}]
+		   },
+		   { 
+			 msg_tag:data.msg_tag
+		   }
+		 ]
+	}, function (err, data) 
+    {
+		if (err){
+			console.log(err);
+			deferred.reject(err.name + ': ' + err.message);
+        }
+        else{
+			console.log(data);
+			deferred.resolve({ 
+				datas:data
+			});
+		}
+	});
+	return deferred.promise;
+}
+
 /******************admin functions****************************/
 
 function admin_role(data)
@@ -2208,10 +2236,11 @@ function approve_users(_id , data)
 
 function search_by_name(word)
 {
+	//, $options: 'i'
 	var deferred = Q.defer();
 	
 	CandidateProfile.find(
-		{ $or : [  { first_name : {'$regex' : word , $options: 'i'} }, { last_name : {'$regex' : word , $options: 'i'} }]}
+		{ $or : [  { first_name : {'$regex' : word } }, { last_name : {'$regex' : word } }]}
 	).populate('_creator').exec(function(err, result)
     {
        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
@@ -2268,7 +2297,7 @@ function admin_candidate_filter(data)
 		{
 			//console.log(dataa);
 			if(err)
-				 return handleError(err);
+				  deferred.reject(err.name + ': ' + err.message);
 			if(dataa)
 			{        	
 			   var array2 = [];
@@ -2292,7 +2321,7 @@ function admin_candidate_filter(data)
 	    	    		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
 						{
 			        		if(err)
-			        			return handleError(err);
+			        			 deferred.reject(err.name + ': ' + err.message);
 			        		if(data)
 			        		{
 			        			//console.log(data);
@@ -2354,7 +2383,7 @@ function admin_candidate_filter(data)
 		users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, data) 			
 		{
 			if(err)
-				return handleError(err);
+				 deferred.reject(err.name + ': ' + err.message);
 			if(data=='')
 			{
 				deferred.reject("Not Found Any Data");
@@ -2396,7 +2425,7 @@ function admin_candidate_filter(data)
 		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
 		{
 			if(err)
-				return handleError(err);
+				 deferred.reject(err.name + ': ' + err.message);
 			if(data)
 			{
 				        	//console.log(data);
@@ -2437,7 +2466,7 @@ function admin_search_by_name(word)
 	var deferred = Q.defer();
 	
 	EmployerProfile.find(
-		{ $or : [  { first_name : {'$regex' : word , $options: 'i' } }, { last_name : {'$regex' : word , $options: 'i'} }]}
+		{ $or : [  { first_name : {'$regex' : word  } }, { last_name : {'$regex' : word } }]}
 	).populate('_creator').exec(function(err, result)
     {
        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
@@ -2497,7 +2526,7 @@ function admin_company_filter(data)
 		{
 
 			if(err)
-				 return handleError(err);
+				  deferred.reject(err.name + ': ' + err.message);
 			if(dataa)
 			{        	
 			   var array2 = [];
@@ -2521,7 +2550,7 @@ function admin_company_filter(data)
 	    	    		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
 						{
 			        		if(err)
-			        			return handleError(err);
+			        			 deferred.reject(err.name + ': ' + err.message);
 			        		if(data)
 			        		{
 			        			//console.log(data);
@@ -2579,7 +2608,7 @@ function admin_company_filter(data)
 		users.find({type : 'company' , is_approved :data.is_approve }, function (err, data) 			
 		{
 			if(err)
-				return handleError(err);
+				 deferred.reject(err.name + ': ' + err.message);
 			if(data=='')
 			{
 				deferred.reject("Not Found Any Data");
@@ -2621,7 +2650,7 @@ function admin_company_filter(data)
 		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
 		{
 			if(err)
-				return handleError(err);
+				 deferred.reject(err.name + ': ' + err.message);
 			if(data)
 			{
 				        	//console.log(data);

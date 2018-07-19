@@ -163,7 +163,7 @@
 
               <div class="form-group col-md-12">
                 <label class="lable"><p>Description</p></label>
-                  <textarea rows="5" id="comment" placeholder="Job description" formControlName="descname" class="form-control" #desc_field name="Description" required></textarea>
+                  <textarea rows="5" id="comment" maxlength="300" placeholder="Job description" formControlName="descname" class="form-control" #desc_field name="Description" required></textarea>
               </div>
 
               <div class = "form-group col-md-12 text-right">
@@ -230,7 +230,7 @@
           </div>
           <div class="form-group col-md-12">
                 <label><p class = "label-p">Quick Introduction here..</p></label>
-                <textarea class="form-control" rows="5" id="comment" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+                <textarea class="form-control" rows="5" id="comment" maxlength="300" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
             </div>
           
           </fieldset>

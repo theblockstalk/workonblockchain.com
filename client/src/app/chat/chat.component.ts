@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
 import { NgxAutoScrollModule } from 'ngx-auto-scroll';
+import { Router, ActivatedRoute } from '@angular/router';
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
 //const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
@@ -47,11 +48,13 @@ export class ChatComponent implements OnInit {
 	is_job_offer = 0;
 	cand_job_offer = 0;
 	approved_user = 0;
+	file_url;
   constructor(
 	private authenticationService: UserService,
 	private fb: FormBuilder,
 	private el: ElementRef,
-	private http: HttpClient
+	private http: HttpClient,
+	private router: Router
   ) {
 	 this.createForm();
 	  }
@@ -65,19 +68,29 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
 	  this.count=0;
-	  this.approved_user = 1;//use this when code ready this.currentUser.is_approved
+	  //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-	  /*this.authenticationService.getById(this.currentUser._creator)
+	  console.log(this.currentUser);
+	  //for live
+	  this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
+	  //this.file_url = 'http://localhost/workonblockchain.com/server/uploads/';
+      if(this.currentUser){
+	  this.authenticationService.getById(this.currentUser._creator)
 		.subscribe(
 			data => {
 				console.log(data);
-				this.approved_user = data[0]._creator.is_approved;
+				if(data[0]._creator.is_approved == 0 || data[0]._creator.disable_account == true){
+					this.approved_user = 0;
+				}
+				else{
+					this.approved_user = 1;
+				}
 				console.log(data[0]._creator.is_approved);
 			},
 			error => {
 				console.log('error');
 			}
-		);*/
+		);
 		if(this.approved_user == 0){
 			console.log('not allowed');
 		}
@@ -175,7 +188,11 @@ export class ChatComponent implements OnInit {
 				this.display_list = 0;
 				console.log('candidate');
 			}
-		}	
+		}
+      }
+	  else{
+		  this.router.navigate(['/not_found']);
+	  }
   }
   
   send_message(msgForm : NgForm){
@@ -200,6 +217,30 @@ export class ChatComponent implements OnInit {
 				data => {
 					console.log(data);
 					this.credentials.msg_body = '';
+					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+					.subscribe(
+						data => {
+							console.log('data');
+							console.log(data['datas']);
+							this.new_msgss = data['datas'];
+							this.job_desc = data['datas'][0];
+							this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
+							.subscribe(
+								data => {
+									console.log('done');
+									console.log(data);
+								},
+								error => {
+									console.log('error');
+									console.log(error);
+								}
+							);
+						},
+						error => {
+							console.log('error');
+							console.log(error);
+						}
+					);
 				},
 				error => {
 					console.log('error');
@@ -418,7 +459,7 @@ export class ChatComponent implements OnInit {
 	  console.log("show_msg_area: " + this.show_msg_area);
 	    //setInterval(() => {
 			//receiver,sender
-		 
+			console.log("ID: " + id);
 			this.authenticationService.get_user_messages(id,this.currentUser._creator)
 			.subscribe(
 				data => {
@@ -491,7 +532,7 @@ export class ChatComponent implements OnInit {
 					//this.log = error;
 				}
 			);
-		//}, 3000);
+		//}, 2000);
 		this.candidate = email;
 		this.credentials.email = email;
 		this.credentials.id = id;

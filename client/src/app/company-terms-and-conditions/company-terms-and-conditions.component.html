@@ -1,0 +1,16 @@
+<br/><br/>
+<section class = "terms">
+  <div class="container t-c_container">
+	<div class="row">
+			<div class = "A_heading">
+				<h1>{{company_page_title}}</h1>
+			</div>
+			
+		<div class="col-md-12 terms-col">
+			<div [innerHTML]="company_editor_content | safeHtml " *ngIf="company_editor_content"></div>
+			
+		</div>
+	</div>
+  </div>	
+  <br/><br/>
+</section>

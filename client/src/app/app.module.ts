@@ -59,15 +59,22 @@ import { AdminFaqEditorComponent } from './admin-faq-editor/admin-faq-editor.com
 import { FaqComponent } from './faq/faq.component';
 import { AdminTermsConditionEditorComponent } from './admin-terms-condition-editor/admin-terms-condition-editor.component';
 import { TermsAndConditionComponent } from './terms-and-condition/terms-and-condition.component';
+import { CookieService } from 'ngx-cookie-service';
+import { ScrollToModule } from 'ng2-scroll-to-el';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AdminAccountSettingsComponent } from './admin-account-settings/admin-account-settings.component';
+import { CompanyTermsAndConditionsComponent } from './company-terms-and-conditions/company-terms-and-conditions.component';
+import { PublicProfileLinkComponent } from './public-profile-link/public-profile-link.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 let config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
-    //provider: new GoogleLoginProvider("507151802069-rbqn1iqupcbr7t7ge50nup74fu0td5g0.apps.googleusercontent.com")
-        provider: new GoogleLoginProvider("507151802069-sedtrf34188eet5oo4adrm60vlsruo5r.apps.googleusercontent.com")
+    provider: new GoogleLoginProvider("507151802069-rbqn1iqupcbr7t7ge50nup74fu0td5g0.apps.googleusercontent.com")
+    //    provider: new GoogleLoginProvider("507151802069-sedtrf34188eet5oo4adrm60vlsruo5r.apps.googleusercontent.com")
   }
 ]);
 
@@ -82,7 +89,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'home', component: HomeComponent},
     { path: '', component: HomeComponent},
-     { path: 'terms-and-condition', component: CandidateTermsComponent},
+    { path: 'terms-and-condition', component: CandidateTermsComponent},
     { path: 'resume', component: ResumeComponent},
     { path: 'experience', component: ExperienceComponent},
     { path: 'candidate_profile', component: CandidateProfileComponent},
@@ -109,15 +116,19 @@ const appRoutes: Routes = [
     {path : 'admin-company-search' , component: AdminCompanySearchComponent},
     {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
     {path : 'admin-build-page' , component: BuildingCustomPageComponent},
+	{path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
     {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
-	//s{ path: '**', redirectTo: '' },
-    {path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
+    {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
     {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
     {path : 'admin-terms-and-condition-editor' , component: AdminTermsConditionEditorComponent},
     {path : 'privacy-policy' , component: PrivacyPolicyComponent},
     {path : 'term-and-conditions' , component: TermsAndConditionComponent},
     {path : 'account-settings' , component: AccountSettingsComponent},
     {path : 'faq' , component: FaqComponent},
+    {path : 'terms-for-company' , component: CompanyTermsAndConditionsComponent},
+    {path : 'my-profile' , component: PublicProfileLinkComponent},
+    {path : 'contact-us' , component: ContactUsComponent},
+    {path : 'legal-notice' , component: LegalNoticeComponent},
     //import { SettingsComponent } from './settings/settings.component';
 
     { path: '**', redirectTo: '' }
@@ -171,6 +182,11 @@ const appRoutes: Routes = [
     AccountSettingsComponent,
     SettingsComponent,
     AdminAccountSettingsComponent,
+    CompanyTermsAndConditionsComponent,
+    PublicProfileLinkComponent,
+    ContactUsComponent,
+    LegalNoticeComponent,
+    ChangePasswordComponent,
     	
 
   ],
@@ -187,11 +203,12 @@ const appRoutes: Routes = [
     TooltipModule.forRoot(),
     AngularFontAwesomeModule,
     CKEditorModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+	ScrollToModule.forRoot()
   ],
   providers: 
   [
-    UserService,DatePipe,DataService,
+    UserService,DatePipe,DataService,CookieService,
   {
       provide: AuthServiceConfig,
       useFactory: provideConfig

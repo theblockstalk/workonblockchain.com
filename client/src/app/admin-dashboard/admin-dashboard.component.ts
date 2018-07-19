@@ -23,7 +23,7 @@ export class AdminDashboardComponent implements OnInit {
       if(this.currentUser )
       {
           this.user_type = this.currentUser.type;
-          if(this.user_type === 'candidate' && this.currentUser.is_admin==1)
+          if(this.user_type === 'candidate')
           {
           console.log("if");
            this.authenticationService.getById(this.currentUser._id)
@@ -35,12 +35,20 @@ export class AdminDashboardComponent implements OnInit {
                     {
                         //this.is_verify = data._creator.is_verify;
                          this.is_admin = data._creator.is_admin;
-                        localStorage.setItem('admin_log', JSON.stringify(data._creator));
+                        if(this.is_admin == 1)
+                        {
+                            localStorage.setItem('admin_log', JSON.stringify(data._creator));
+                        }
+                        else
+                        {
+                            localStorage.removeItem('admin_log');
+                            this.router.navigate(['/not_found']);
+                        }
                     }
                     
                 });
          }
-         else if(this.user_type === 'company'  && this.currentUser.is_admin==1)
+         else if(this.user_type === 'company'  )
          {
               console.log("else if");
               this.authenticationService.getCurrentCompany(this.currentUser._creator)
@@ -52,7 +60,16 @@ export class AdminDashboardComponent implements OnInit {
                     {
                         //this.is_verify = data[0]._creator.is_verify;
                          this.is_admin = data[0]._creator.is_admin;
-                        localStorage.setItem('admin_log', JSON.stringify(data[0]._creator));
+                        if(this.is_admin == 1)
+                        {
+                            localStorage.setItem('admin_log', JSON.stringify(data[0]._creator));
+                        }
+                        else
+                        {
+                            localStorage.removeItem('admin_log');
+                            this.router.navigate(['/not_found']);
+                        }
+                        //localStorage.setItem('admin_log', JSON.stringify(data[0]._creator));
                     }
                     
                 });

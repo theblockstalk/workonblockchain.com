@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() 
   {
-  	/*this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	/*this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
    	if(!this.currentUser)
     {
           this.router.navigate(['/login']);
@@ -93,5 +93,4 @@ export class HomeComponent implements OnInit {
                    
                 });
    }
-
 }

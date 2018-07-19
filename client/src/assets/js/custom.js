@@ -23,10 +23,10 @@ window.pressed = function(){
 });
 */
 
-/*$('input:radio').click(function() {
+$('input:radio').click(function() {
         $('label:has(input:radio:checked)').addClass('activee');
         $('label:has(input:radio:not(:checked))').removeClass('activee');
-    });*/
+    });
 
 $('#new-radio:radio').click(function() {
         $('label:has(#new-radio:radio:checked)').addClass('activeee');
@@ -61,7 +61,7 @@ $("#example-one").on("click", function() {
 //hide step when click checkbox....
 
 
-/*$(function () {
+$(function () {
     $('#1step').change(function () {
         if ($('#1step').is(':checked')) {
             $("#input_field").hide();
@@ -69,7 +69,7 @@ $("#example-one").on("click", function() {
             $("#input_field").show();
         }
     }).change();
-});*/
+});
 
 
 //show hide password
@@ -158,3 +158,70 @@ $(document).ready(function(){
     });
 })
 
+        
+  //pannel icon function
+
+// alert on checkBox checked...
+  
+function myFunction() {
+  // Get the checkbox
+  var checkBox = document.getElementById("myCheck");
+  // Get the output text
+  var text = document.getElementById("text1");
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    text1.style.display = "block";
+  } else {
+    text1.style.display = "none";
+  }
+  
+  if (checkBox.checked == false){
+    text2.style.display = "block";
+  } else {
+    text2.style.display = "none";
+  }
+}
+
+
+$(function() {
+  $('.link').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+      if (target.length) {
+        $('#message_body').animate({
+          scrollTop: $('#container').scrollTop() + target.offset().top
+        }, 500);
+        return false;
+      }
+    }
+  });
+});
+
+
+//alert on checkBox checked...
+
+function myFunction() {
+  // Get the checkbox
+  var checkBox = document.getElementById("myCheck");
+  // Get the output text
+  var text = document.getElementById("text1");
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    text1.style.display = "block";
+  } else {
+    text1.style.display = "none";
+  }
+  
+  if (checkBox.checked == false){
+    text2.style.display = "block";
+  } else {
+    text2.style.display = "none";
+  }
+}
+
+
+
+  

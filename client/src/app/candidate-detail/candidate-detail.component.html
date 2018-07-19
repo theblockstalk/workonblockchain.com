@@ -1,33 +1,32 @@
 <!--Profile-inner-->
-<section class = "wizard_page">
+
+<section class = "wizard_page">	
 
 	<div class="container">
 		<div class="row">
 			<div class="col-md-9">
 				 <section class = "profile personal_info">
 
-				 	<div class="col-md-6">
-				 		<span class = "p_img" >
+				 	<div class="col-md-6" >
+				 		<span class = "p_img" *ngIf="!imgPath">
 				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
-				 		<!-- <span class = "p_img" *ngIf= "image_src">
-				 			<img  [src]="(imgPath + image_src)" class = "img-responsive" alt = "profile-img"/>
-				 		</span>-->
-				 		<span class = "name" *ngIf='company_reply === 1'>
+				 		<span class = "p_img" *ngIf="imgPath">
+				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
+				 		</span>
+				 		
+						<span class = "name" *ngIf='company_reply === 1'>
 				 			<h3>{{first_name}} {{last_name}}</h3>
 				 		</span>
 				 		
 				 		<span class = "name" *ngIf='company_reply !== 1'>
 				 			<h3>{{first_name}} </h3>
 				 		</span>
-
 				 		<span class = "short_intro">
 				 			<p>{{description}}</p>
 				 		</span>
 
-				 		<!-- <div class="btn-share fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
-						<div class = "twitter-share-button">
-						<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a></div>-->
+				 		
 
 				 	</div>
 
@@ -55,7 +54,7 @@
 				 				</a>
 				 			</li>
 
-				 			<li *ngIf='company_reply === 1'>
+				 			<li>
 				 				<a href = "">
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 				 					<span class = "li_txt"> Contact Number : {{contact_number}}</span>
@@ -68,42 +67,133 @@
 				 </section>
 
 				 <section class = "profile job_info">
-					<h3>Job</h3>
-				 	<div class="col-md-6 info-area">
-      					<div class = "col-xs-4 padding-lft-0 padding-rgt-0" >
-       					<strong>Desired Location : </strong>
-      					</div>
-      					<div class = "col-xs-8 padding-lft-0 padding-rgt-0">
-       					<span *ngFor='let country of countries;let isLast=last'>{{country}}{{isLast ? '' : ', '}}</span>
-      
-      					</div>
+					<h3>Job </h3>
+				 	<div class="info-area pro_br-btm">
+						<div class = "col-md-3">
+							<strong>Desired Location : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li *ngFor='let country of countries'>{{country}}</li>
+								
+							</ul>
+						</div>
 
-      			</div>
+				 	</div>
 
-				 	<!--<div class="col-md-6 info-area">
-				 		<p>
+				 	<!--<div class="info-area pro_br-btm">
+				 		<div class = "col-md-3" >
 							<strong>Position Type : </strong>
-							<span>Full Time, Part Time .</span>
-						</p>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li>Full Time</li>
+								<li>Part Time</li>
+							</ul>
+						</div>
 				 	</div>-->
 
-				 	
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Your Availablity : </strong>
-							<span>{{availability_day}}</span>
-						</p>
-				 	</div>
-				 	<div class="col-md-6 info-area">
-      					<div class = "col-xs-4 padding-lft-0 padding-rgt-0" >
-       					<strong>Desired Position : </strong>
-      					</div>
-      					<div class = "col-xs-8 padding-lft-0 padding-rgt-0">
-       						<span *ngFor='let interest_area of interest_area;let isLast=last'>{{interest_area}}{{isLast ? '' : ', '}}</span>
-      
-      					</div>
+				 	<div class="info-area pro_br-btm">
 
-      				</div>
+						<div class = "col-md-3" >
+							<strong>Desired Position : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li *ngFor='let interest_area of interest_area;'>{{interest_area}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-3" >
+							<strong>Your Availablity : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li>{{availability_day}}</li>
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<span class = "edit_profile_link">
+				 		<a href="edit_profile#job_candidate">
+				 			<i class="fa fa-pencil" aria-hidden="true"></i>
+				 		</a>
+				 	</span>
+				 	
+				 </section>
+
+				 <section class = "profile job_info">
+					<h3>BlockChain Experience</h3>
+
+					<div class = "discp info-area pro_br-btm">
+						<h4 class = "disc_hd">Why do you want to work on BlockChain?</h4>
+						<p>
+							{{why_work}}
+						</p>
+					</div>
+					
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Platform commercially worked with:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li *ngFor='let data of commercial;'>{{data.platform_name}}  : {{data.exp_year}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+				 	
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Platforms designed/developed smart contracts:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li *ngFor='let data of platforms;'>{{data.platform_name}}  : {{data.exp_year}}</li>
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Platform experimented with:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li *ngFor='let data of experimented;'>{{data.experimented_platform}}  : {{data.exp_year}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<!--<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Year of Experience each platform:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li>BitCoin : 4-5 Year</li>
+								<li>Ethereum : 3-4 Year</li>
+							</ul>
+						</div>
+
+				 	</div>-->
+
 				 	
 
 				 
@@ -111,174 +201,143 @@
 				 </section>
 
 				 <section class = "profile job_info">
-					<h3>BlockChain Experience</h3>
-					<div class = "col-md-12 discp">
-						<h4 class = "disc_hd">Why do you want to work on BlockChain?</h4>
-						<p>
-							{{why_work}}
-						</p>
+					<h3>Experience</h3>				
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Current Base salary:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li>{{current_currency}} {{current_salary}}</li>
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Languages:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li *ngFor='let lang of languages;'>{{lang.platform_name}} : {{lang.exp_year}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	<!--<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Year of Experience each Language:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li>BitCoin : 4-5 Year</li>
+								<li>Ethereum : 3-4 Year</li>
+							</ul>
+						</div>
+
+				 	</div>-->
+
+				 		
+
+				 	<!--<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+							<strong>Year of Experience each Role:</strong>
+						</div>
+						<div class = "col-md-8">
+							<ul class = "pro_list">
+								<li>BitCoin : 4-5 Year</li>
+								<li>Ethereum : 3-4 Year</li>
+							</ul>
+						</div>
+
+				 	</div>-->
+
+				 	
+				 	
+				 </section>
+
+				  <section class = "profile job_info">
+					<h3>Work History</h3>
+					<div class = "company_area" *ngFor='let work of history'>
+					 	<div class="info-area pro_br-btm">
+							<div class = "col-md-4">
+								<strong>Company Name : </strong>
+							</div>
+							<div class = "col-md-8">
+								<ul class = "pro_list">
+									<li>{{work.companyname}}</li>
+									
+								</ul>
+							</div>
+
+					 	</div>
+
+					 	<div class="info-area pro_br-btm">
+					 		<div class = "col-md-4" >
+								<strong>Position : </strong>
+							</div>
+							<div class = "col-md-8">
+								<ul class = "pro_list">
+									<li>{{work.positionname}}</li>
+									
+								</ul>
+							</div>
+					 	</div>
+
+					 	<div class="info-area pro_br-btm">
+
+							<div class = "col-md-4" >
+								<strong>When you start job here?: </strong>
+							</div>
+							<div class = "col-md-8">
+								<ul class = "pro_list" *ngIf='work.currentwork== true' >
+							<li>{{work.startdate}} {{work.startyear}}, Currently Working here.</li>
+						</ul>
+						<ul class = "pro_list" *ngIf='work.currentwork== false' >
+							<li>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</li>
+						</ul>
+							</div>
+
+					 	</div>
+
+					 	<div class="info-area pro_br-btm">
+
+							<div class = "col-md-4" >
+								<strong>Current Location : </strong>
+							</div>
+							<div class = "col-md-8">
+								<ul class = "pro_list">
+									<li>{{work.locationname}}</li>
+								</ul>
+							</div>
+
+					 	</div>
+
+					 	<div class = "discp info-area">
+							<h4 class = "disc_hd">Description</h4>
+							<p>
+								{{work.descname}}
+							</p>
+						</div>
+
 					</div>
-				 	
-      <div class="col-md-6 info-area">
 
-						<div class = "col-xs-4 padding-lft-0 padding-rgt-0" >
-							<strong>Platform commercially worked with :</strong>
-						</div>
-						<div class = "col-xs-8 padding-lft-0 padding-rgt-0">
-							<span  *ngFor='let commercial_platform of commercial;let isLast=last'>{{commercial_platform.platform_name}}{{isLast ? '' : ', '}}</span>
-							
-						</div>
-
-				 	</div>
-
-				 	<div class="col-md-6 info-area">
-      <div class = "col-xs-4 padding-lft-0 padding-rgt-0" >
-       <strong>Platform experimented with : </strong>
-      </div>
-      <div class = "col-xs-8 padding-lft-0 padding-rgt-0">
-       <span *ngFor='let experimented of experimented;let isLast=last'>{{experimented.experimented_platform}}{{isLast ? '' : ', '}}</span>
-      
-      </div>
-
-      </div>
-
-				 	
-				 	
-				 	<div class="col-md-6 info-area">
-
-						<div class = "col-xs-4 padding-lft-0 padding-rgt-0" >
-							<strong>Year of Experience each commercial platform :</strong>
-						</div>
-						<div class = "col-xs-8 padding-lft-0 padding-rgt-0">
-							<span *ngFor='let data of commercial;let isLast=last'>{{data.platform_name}}  : {{data.exp_year}} Year {{isLast ? '' : ', '}} </span>
-							
-						</div>
-
-				 	</div>
-				 	
-				 	<div class="col-md-6 info-area">
-
-						<div class = "col-xs-4 padding-lft-0 padding-rgt-0" >
-							<strong>Year of Experience each experimented platform :</strong>
-						</div>
-						<div class = "col-xs-8 padding-lft-0 padding-rgt-0">
-							<span *ngFor='let data of experimented;let isLast=last'>{{data.experimented_platform}}  : {{data.exp_year}} Year {{isLast ? '' : ', '}} </span>
-							
-						</div>
-
-				 	</div>
-
-				 	
-
-				 	
+				 
 				 	
 				 </section>
 
 				 <section class = "profile job_info">
-					<h3>Experience</h3>
-
-				 	<div class="col-md-6 info-area">
-						<p>
-							<strong>Current Base salary : </strong>
-							<span>{{current_currency}} {{current_salary}} </span>
-						</p>
-
-				 	</div>
-
-				 	<div class="col-md-6 info-area">
-      <div class = "col-xs-4 padding-lft-0 padding-rgt-0" >
-       <strong>Languages : </strong>
-      </div>
-      <div class = "col-xs-8 padding-lft-0 padding-rgt-0">
-       <span *ngFor='let lang of languages;let isLast=last'>{{lang.platform_name}}{{isLast ? '' : ', '}}</span>
-      
-      </div>
-
-      </div>
-				 	
-				 	<div class="col-md-6 info-area">
-      <div class = "col-xs-4 padding-lft-0 padding-rgt-0" >
-       <strong>Year of Experience each Language : </strong>
-      </div>
-      <div class = "col-xs-8 padding-lft-0 padding-rgt-0">
-       <span *ngFor='let lang of languages;let isLast=last'>{{lang.platform_name}} : {{lang.exp_year}} Year{{isLast ? '' : ', '}}</span>
-      
-      </div>
-
-      </div>
-
-				 	<!-- <div class="col-md-6 info-area">
-				 		<p>
-							<strong>Role : </strong>
-							<span>BitCoin, Ethereum, php, My SQL, JAVA.</span>
-						</p>
-				 	</div>
-
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Year of Experence of each Role : </strong>
-							<span>BitCoin : 4-5 Year, Ethereum : 3-4 Year</span>
-						</p>
-				 	</div>-->
-
-				
-				 </section>
-
-				 <section class = "profile job_info" *ngIf='company_reply === 1'>
-					<h3>Work History</h3>
-					<div *ngFor='let work of history'>
-				 	<div class="col-md-6 info-area">
-						<p>
-							<strong>Company Name : </strong>
-							<span>{{work.companyname}}</span>
-						</p>
-
-				 	</div>
-
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Position : </strong>
-							<span>{{work.positionname}}</span>
-						</p>
-				 	</div>
-
-				 	
-				 	<div class="col-md-6 info-area">
-
-						<div class = "col-xs-4 padding-lft-0 padding-rgt-0" >
-							<strong>When you start job here? : </strong>
-						</div>
-						<div class = "col-xs-8 padding-lft-0 padding-rgt-0" *ngIf='work.currentwork== true' >
-							<span>{{work.startdate}} {{work.startyear}}, Currently Working here.</span>
-						</div>
-						<div class = "col-xs-8 padding-lft-0 padding-rgt-0" *ngIf='work.currentwork== false' >
-							<span>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</span>
-						</div>
-
-				 	</div>
-
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Current Location : </strong>
-							<span>{{work.locationname}}</span>
-						</p>
-				 	</div>
-
-				 	<div class = "col-md-12 discp">
-						<h4 class = "disc_hd">Discprition</h4>
-						<p>
-							{{work.descname}}
-						</p>
-					</div>
-
-					
-				 	</div>
-				 </section>
-
-				 <section class = "profile job_info" *ngIf='company_reply === 1'>
 					<h3>Education</h3>
 					
-				 	<div class="col-md-12 info-area" *ngFor='let edu of education'>
+				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>
 				 		<div class = "edu_feild">
 							<p>
 								<strong>{{edu.uniname}} </strong>
@@ -296,13 +355,12 @@
 
 				 	</div>
 
-				 	
-
-				 	
+				 		
 				 	
 				 </section>
 
 			</div> <!--End col-md-9--->
+
 
 		<div class = "col-md-3">
 				<section class = "profile job_info side_rewiew offer-profile">
@@ -316,6 +374,13 @@
 
 					  <div class="form-group">
 					    <input type="text" name="salary" [(ngModel)]="credentials.salary" class="form-control" id="" placeholder="Your salary eg $2000">
+					  </div>
+					  <div class="form-group">
+							<select class="form-control" name="currency" [(ngModel)]="credentials.currency" id="sel1">
+								<option value="GBP">£ GBP</option>
+								<option value="EUR">€ EUR</option>
+								<option value="USD">$ USD</option>
+							</select>
 					  </div>
 					  <div class="form-group">
 					    <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" id="" placeholder="Location eg London">
@@ -333,26 +398,18 @@
 					  <div class="form-group">
 					    <textarea class="form-control" rows="5" name="job_desc" [(ngModel)]="credentials.job_desc" id="comment" placeholder="something detail here"></textarea>
 					  </div>
-					  <div class="checkbox">
-						<label class = "check-label check-label-b"> Accept <a href = "">Workonblockchain.com  Term and Conditions </a>
-							<input type = "checkbox" value = "">
-							<span class="checkmark">
-								<div></div>
-							</span>
-						</label>
-					  </div>
-					  {{job_offer_msg}}
+					  <p style="color: green;font-size: 18px;">{{job_offer_msg}}</p>
 					  <div class = "form-group text-center">
 					  		<button type="submit" class="btn btn-primary model-btn submit">Submit Job Offer</button>
 					  </div>
 					</form>
 				</section>
 			</div>
+
 		</div>
 	</div>
 
 </section>
-<!--Profile-inner end-->
 
-<div class = "gap">
-</div>
+
+<!--Profile-inner end-->
