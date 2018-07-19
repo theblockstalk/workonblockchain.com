@@ -15,7 +15,7 @@ export class CandidateDetailComponent implements OnInit {
         interest_area;why_work;availability_day;
         countries;commercial;history;education;
         experimented;languages;current_currency;current_salary;image_src;
-        imgPath;nationality;contact_number;
+        imgPath;nationality;contact_number;platforms;
   constructor(private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
  
