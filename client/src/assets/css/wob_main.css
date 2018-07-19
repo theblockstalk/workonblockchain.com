@@ -1916,10 +1916,10 @@ input[type=checkbox] {
 .btn-send{
     position: absolute;
     right: 20px;
-    top: 16px;
+    top: 22px;
     padding:  3px 6px;
     width: 95px;
-    background-color:  #5eb9fa;
+    background-color:  #4c687b;
     border-color:  #5eb9fa;
     color: #fff;
     font-weight: bold;
@@ -1929,11 +1929,11 @@ input[type=checkbox] {
 .btn-attached{
     position: absolute;
     right: 20px;
-    top: 45px;
+    top: 55px;
     padding:  3px 6px;
     width: 95px;
-    background-color:  #5eb9fa;
-    border-color:  #5eb9fa;
+    background-color: #4c687b;
+    border-color: #5eb9fa;
     color: #fff;
     font-weight: bold;
     border-radius: 0px;
@@ -1952,7 +1952,7 @@ input[type=checkbox] {
 	position: relative;
     float: right;
     margin-right: 30px;
-    top: 6px;
+    top: -12px;
     font-size: 10px;
 }
 
@@ -1960,7 +1960,7 @@ input[type=checkbox] {
 	position: relative;
     float: left;
     margin-left: -10px;
-    top: 6px;
+    top: -12px;
     font-size: 10px;
 }
 

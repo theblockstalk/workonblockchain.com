@@ -318,6 +318,13 @@
 					    <input type="text" name="salary" [(ngModel)]="credentials.salary" class="form-control" id="" placeholder="Your salary eg $2000">
 					  </div>
 					  <div class="form-group">
+							<select class="form-control" name="currency" [(ngModel)]="credentials.currency" id="sel1">
+								<option value="GBP">£ GBP</option>
+								<option value="EUR">€ EUR</option>
+								<option value="USD">$ USD</option>
+							</select>
+					  </div>
+					  <div class="form-group">
 					    <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" id="" placeholder="Location eg London">
 					  </div>
 					  <div class="form-group">

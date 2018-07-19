@@ -222,7 +222,7 @@
 											
 										</ng-container>
 										<ng-template #second>
-											<li class="replies"  id="place1">
+											<li class="replies">
 												<p>
 													{{msg.sender_name}}
 													{{msg.message}}
@@ -306,7 +306,7 @@
 											<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
 											<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 											<input type="hidden" name="first_message" id="first_message" [(ngModel)]="first_message"/>
-											<input type="text" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
+											<textarea rows="4" cols="80" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"></textarea>
 											<span>
 												<button class = "btn btn-send" type="submit" id = "btnClick">
 													<i class="fa fa-paper-plane" aria-hidden="true"></i>
