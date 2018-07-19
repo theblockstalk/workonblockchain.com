@@ -361,7 +361,51 @@
 
 			</div> <!--End col-md-9--->
 
-			
+
+		<div class = "col-md-3">
+				<section class = "profile job_info side_rewiew offer-profile">
+					<h3>Send Job Offer</h3>
+					<form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
+			          <div class="form-group">
+					    <input type="text" name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Job Title">
+						<input type="hidden" name="user_id" [(ngModel)]="credentials.user_id" class="form-control">
+						<input type="hidden" name="name" [(ngModel)]="credentials.name" class="form-control">
+					  </div>
+
+					  <div class="form-group">
+					    <input type="text" name="salary" [(ngModel)]="credentials.salary" class="form-control" id="" placeholder="Your salary eg $2000">
+					  </div>
+					  <div class="form-group">
+							<select class="form-control" name="currency" [(ngModel)]="credentials.currency" id="sel1">
+								<option value="GBP">£ GBP</option>
+								<option value="EUR">€ EUR</option>
+								<option value="USD">$ USD</option>
+							</select>
+					  </div>
+					  <div class="form-group">
+					    <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" id="" placeholder="Location eg London">
+					  </div>
+					  <div class="form-group">
+					    <p class = "input_p">Full/Part Time</p>
+					    <div class="radio radio_custom" *ngFor="let options of job_type">
+							<label>
+								<input type="radio" id = "new-radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options"> 
+								{{options}}
+							</label>
+						</div>
+					  </div>
+						
+					  <div class="form-group">
+					    <textarea class="form-control" rows="5" name="job_desc" [(ngModel)]="credentials.job_desc" id="comment" placeholder="something detail here"></textarea>
+					  </div>
+					  <p style="color: green;font-size: 18px;">{{job_offer_msg}}</p>
+					  <div class = "form-group text-center">
+					  		<button type="submit" class="btn btn-primary model-btn submit">Submit Job Offer</button>
+					  </div>
+					</form>
+				</section>
+			</div>
+
 		</div>
 	</div>
 

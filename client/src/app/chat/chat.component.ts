@@ -68,14 +68,14 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
 	  this.count=0;
-	  this.approved_user = 1;//use this when code ready this.currentUser.is_approved
+	  //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log(this.currentUser);
 	  //for live
 	  this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
 	  //this.file_url = 'http://localhost/workonblockchain.com/server/uploads/';
       if(this.currentUser){
-	  /*this.authenticationService.getById(this.currentUser._creator)
+	  this.authenticationService.getById(this.currentUser._creator)
 		.subscribe(
 			data => {
 				console.log(data);
@@ -90,7 +90,7 @@ export class ChatComponent implements OnInit {
 			error => {
 				console.log('error');
 			}
-		);*/
+		);
 		if(this.approved_user == 0){
 			console.log('not allowed');
 		}
@@ -217,6 +217,30 @@ export class ChatComponent implements OnInit {
 				data => {
 					console.log(data);
 					this.credentials.msg_body = '';
+					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+					.subscribe(
+						data => {
+							console.log('data');
+							console.log(data['datas']);
+							this.new_msgss = data['datas'];
+							this.job_desc = data['datas'][0];
+							this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
+							.subscribe(
+								data => {
+									console.log('done');
+									console.log(data);
+								},
+								error => {
+									console.log('error');
+									console.log(error);
+								}
+							);
+						},
+						error => {
+							console.log('error');
+							console.log(error);
+						}
+					);
 				},
 				error => {
 					console.log('error');
@@ -433,9 +457,9 @@ export class ChatComponent implements OnInit {
 	  console.log(id);
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log("show_msg_area: " + this.show_msg_area);
-	    setInterval(() => {
+	    //setInterval(() => {
 			//receiver,sender
-		 
+			console.log("ID: " + id);
 			this.authenticationService.get_user_messages(id,this.currentUser._creator)
 			.subscribe(
 				data => {
@@ -508,7 +532,7 @@ export class ChatComponent implements OnInit {
 					//this.log = error;
 				}
 			);
-		}, 2000);
+		//}, 2000);
 		this.candidate = email;
 		this.credentials.email = email;
 		this.credentials.id = id;

@@ -137,7 +137,8 @@ export class CandidateDetailComponent implements OnInit {
 						this.date_of_joining = '10-07-2018';
 						this.msg_tag = 'job_offer';
 						this.is_company_reply = 0;
-						this.msg_body = this.credentials.job_desc;
+						this.msg_body = this.credentials.job_desc+' Job Title: '+this.credentials.job_title+', Job Type: '+this.credentials.job_type+', Salary: '+this.credentials.salary+' '+this.credentials.currency;
+						this.credentials.salary = this.credentials.salary+' '+this.credentials.currency;
 						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.currentUser.email,this.credentials.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
 							.subscribe(
 								data => {

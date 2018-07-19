@@ -493,7 +493,7 @@ export class CompanySearchComponent implements OnInit {
 						this.date_of_joining = '10-07-2018';
 						this.msg_tag = 'job_offer';
 						this.is_company_reply = 0;
-						this.msg_body = this.credentials.job_desc;
+						this.msg_body = this.credentials.job_desc+' Job Title: '+this.credentials.job_title+', Job Type: '+this.credentials.job_type+', Salary: '+this.credentials.salary;
 						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.currentUser.email,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
 							.subscribe(
 								data => {
