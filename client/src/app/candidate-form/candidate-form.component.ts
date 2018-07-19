@@ -158,6 +158,7 @@ export class CandidateFormComponent implements OnInit {
             this.data = JSON.stringify(this.user);      
             this.result = JSON.parse(this.data);
             localStorage.setItem('googleUser', JSON.stringify(this.result));
+            console.log(this.result);
       
         });
         //console.log(this.result);

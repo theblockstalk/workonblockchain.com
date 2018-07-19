@@ -3,7 +3,9 @@
 		<div class="row">
 		
 			<div class="col-md-12">
-			
+			 <div class="alert alert-info pro_alert alert-dismissible" *ngIf = "message ">
+    {{message}}    
+ </div>
 				 <form class = "login_form"  (submit)="editor(editorForm)" #editorForm = ngForm >
 				 <h3>Terms And Candidate For Candidate</h3>
 					    	<label><p class = "label-p">Page Title</p></label>
@@ -31,9 +33,7 @@
 			<div class="col-md-12">
 			
 				 <form class = "login_form"  (submit)="company_editor(companyeditor)" #companyeditor = ngForm >
-				 <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "message ">
-    {{message}}    
- </div>
+				
 				 
 				 <h3>Terms And Candidate For Company</h3>
 					    	<label><p class = "label-p">Page Title</p></label>

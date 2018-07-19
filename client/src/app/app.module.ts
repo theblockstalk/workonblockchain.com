@@ -66,12 +66,15 @@ import { SettingsComponent } from './settings/settings.component';
 import { AdminAccountSettingsComponent } from './admin-account-settings/admin-account-settings.component';
 import { CompanyTermsAndConditionsComponent } from './company-terms-and-conditions/company-terms-and-conditions.component';
 import { PublicProfileLinkComponent } from './public-profile-link/public-profile-link.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 let config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
-    //provider: new GoogleLoginProvider("507151802069-rbqn1iqupcbr7t7ge50nup74fu0td5g0.apps.googleusercontent.com")
-        provider: new GoogleLoginProvider("507151802069-sedtrf34188eet5oo4adrm60vlsruo5r.apps.googleusercontent.com")
+    provider: new GoogleLoginProvider("507151802069-rbqn1iqupcbr7t7ge50nup74fu0td5g0.apps.googleusercontent.com")
+    //    provider: new GoogleLoginProvider("507151802069-sedtrf34188eet5oo4adrm60vlsruo5r.apps.googleusercontent.com")
   }
 ]);
 
@@ -123,7 +126,9 @@ const appRoutes: Routes = [
     {path : 'account-settings' , component: AccountSettingsComponent},
     {path : 'faq' , component: FaqComponent},
     {path : 'terms-for-company' , component: CompanyTermsAndConditionsComponent},
-     {path : 'my-profile' , component: PublicProfileLinkComponent},
+    {path : 'my-profile' , component: PublicProfileLinkComponent},
+    {path : 'contact-us' , component: ContactUsComponent},
+    {path : 'legal-notice' , component: LegalNoticeComponent},
     //import { SettingsComponent } from './settings/settings.component';
 
     { path: '**', redirectTo: '' }
@@ -179,6 +184,9 @@ const appRoutes: Routes = [
     AdminAccountSettingsComponent,
     CompanyTermsAndConditionsComponent,
     PublicProfileLinkComponent,
+    ContactUsComponent,
+    LegalNoticeComponent,
+    ChangePasswordComponent,
     	
 
   ],

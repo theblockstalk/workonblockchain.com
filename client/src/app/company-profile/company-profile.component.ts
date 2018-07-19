@@ -3,6 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {NgForm,FormsModule} from '@angular/forms';
+import {environment} from '../../environments/environment';
+const imgsrc = environment.img_url;
+console.log(imgsrc);
 
 @Component({
   selector: 'app-company-profile',
@@ -14,6 +17,7 @@ export class CompanyProfileComponent implements OnInit {
   currentUser: User; 
   first_name;last_name;company_name;job_title;company_website;company_phone;company_country;
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
+    imgPath;
   constructor( private route: ActivatedRoute,
         private router: Router,
         private authenticationService: UserService) { }
@@ -76,6 +80,16 @@ export class CompanyProfileComponent implements OnInit {
                       this.company_founded =data.company_founded;
                       this.company_funded=data.company_funded;
                       this.no_of_employees=data.no_of_employees;
+                      if(data.company_logo != null )
+                    {
+                        
+                      //console.log(data.image);
+                       
+                        this.imgPath = imgsrc + data.image;
+                        console.log(this.imgPath);
+                        
+                    }
+
                   
                   }
                   

@@ -200,5 +200,28 @@ $(function() {
 });
 
 
+//alert on checkBox checked...
+
+function myFunction() {
+  // Get the checkbox
+  var checkBox = document.getElementById("myCheck");
+  // Get the output text
+  var text = document.getElementById("text1");
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    text1.style.display = "block";
+  } else {
+    text1.style.display = "none";
+  }
+  
+  if (checkBox.checked == false){
+    text2.style.display = "block";
+  } else {
+    text2.style.display = "none";
+  }
+}
+
+
 
   

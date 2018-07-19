@@ -85,7 +85,7 @@ export class EditCandidateProfileComponent implements OnInit {
                     this.info.github_account = data.github_account;
                     this.info.exchange_account = data.stackexchange_account;
                     this.info.nationality = data.nationality;
-                    this.info.gender = data.gender;
+                    //this.info.gender = data.gender;
                     this.info.first_name =data.first_name;
                     this.info.last_name =data.last_name;
 

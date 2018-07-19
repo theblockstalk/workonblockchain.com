@@ -128,34 +128,30 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.data = JSON.stringify(this.user);      
             this.result = JSON.parse(this.data);
             localStorage.setItem('googleUser', JSON.stringify(this.result));
+            //this.router.navigate(['/candidate_profile']);
       
         });
-        //console.log(this.result);
+        console.log(this.result);
         if(this.result!='')
         {
              console.log(this.result);
              this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
+            console.log(this.googleUser);
              this.credentials.email= this.googleUser.email;
              this.credentials.password= '';
              this.credentials.type="candidate";
-             //this.credentials.social_type=this.googleUser.provider;
+            
+             this.credentials.social_type='GOOGLE';
 
              this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
             .subscribe(
                 user => {
                 console.log(user);
                
-                if(user)
+                if(user.error)
                 {
-                  
-                 //this.router.navigate(['/candidate_profile']);
-                    window.location.href = '/candidate_profile';
-
-              
-                    
-                }
-                else
-                {
+                  console.log("ifffffffffffff");
+                 
                   this.log = 'Credentials not match';
                   this.authenticationService.create(this.credentials)
                   .subscribe(
@@ -172,7 +168,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         localStorage.setItem('currentUser', JSON.stringify(data));
                         //localStorage.removeItem('userInfo');
                         //this.router.navigate(['/about']);
-                        window.location.href = '/about';
+                        window.location.href = '/terms-and-condition';
 
                     }
                   },
@@ -180,6 +176,16 @@ export class LoginComponent implements OnInit, OnDestroy {
                     this.log = error;
                     
                   });
+              
+                    
+                }
+                else
+                {
+                   //this.router.navigate(['/candidate_profile']);
+                    //
+                     console.log("elseeeeeeeeeeeeee");
+                    //this.router.navigate(['/candidate_profile']);
+                    window.location.href = '/candidate_profile';
                   //this.router.navigate(['/login']);
                 }
                 },
@@ -215,7 +221,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         this.credentials.email= this.linkedinUser.emailAddress;
                         this.credentials.password= '';
                         this.credentials.type="candidate";
-                        this.credentials.social_type='LINKKEDIN';
+                        this.credentials.social_type='LINKEDIN';
 
                         this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
                         .subscribe(
@@ -246,7 +252,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                                 localStorage.setItem('currentUser', JSON.stringify(data));
                                 //localStorage.removeItem('userInfo');
                                 //this.router.navigate(['/about']);
-                                window.location.href = '/about';
+                                window.location.href = '/terms-and-condition';
                             }
                             },
                             error => {

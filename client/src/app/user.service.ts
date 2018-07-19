@@ -96,7 +96,9 @@ export class UserService {
                     return user;
                 }
                 else
-                {   //console.log(user.error);
+                {   
+                console.log(user);
+                    //console.log(user.error);
                     return user;
 
                 }
