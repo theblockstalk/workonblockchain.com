@@ -22,7 +22,7 @@ router.put('/welcome/about/:_id', about);
 router.put('/welcome/job/:_id', job);
 router.put('/welcome/resume/:_id', resume);
 router.put('/welcome/exp/:_id', experience);
-router.post('/image/:_id', image);
+router.post('/image/:_id', multer.single('photo'), image);
 router.put('/refered_id/:id' , refered_id);
 router.put('/update_profile/:_id' , update_candidate_profile);
 
@@ -371,36 +371,9 @@ function experience(req,res)
 
 function image(req, res) 
 {
-    multer(req, res, function (err)
-    {
-        console.log('req.file', req.file);
-        if (err)
-        {
-            return
-        }
-        else
-        {
-			res.json('done');
-            var path = req.file.filename;
-            userService.save_image(path , req.params._id).then(function (err, about) 
-            {
-                console.log('userService.save_image')
-                if (about)
-                {
-                    res.json(about);
-                } 
-                else 
-                {
-                    res.json(err);
-                }
-            })
-            .catch(function (err) 
-            {
-                res.json({error: err});
-            });
-        }
-
-    })
+    console.log(req.file);
+    console.log('done new');
+    res.json(req.file.filename);
 }
 
 ///// for update the candidate profile data ///////////////////

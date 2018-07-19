@@ -508,10 +508,10 @@ export class ChatComponent implements OnInit {
 					//this.log = error;
 				}
 			);
-		//}, 3000);
-		this.candidate = email;
-		this.credentials.email = email;
-		this.credentials.id = id;
+			this.candidate = email;
+			this.credentials.email = email;
+			this.credentials.id = id;
+		//}, 2000);
 		/*this.credentials.date = '';
 		this.credentials.time = '';
 		this.credentials.location = '';

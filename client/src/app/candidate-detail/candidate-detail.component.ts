@@ -142,7 +142,7 @@ export class CandidateDetailComponent implements OnInit {
 							.subscribe(
 								data => {
 									console.log(data);
-									this.job_offer_msg = 'Message sent';
+									this.job_offer_msg = 'Message has been successfully sent';
 								},
 								error => {
 									console.log('error');
