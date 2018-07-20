@@ -5,8 +5,8 @@ module.exports.sendEmail = function sendEmail(data) {
     const sendTo = data.email;
     const subject = "Welcome to TEST";
 
-    const mailOptions = {
-        from: 'workonblockchain@mwancloud.com', // sender address
+    const nodemonOptions = {
+        from: 'workonblockchain@mwancloud.com',
         to : sendTo,
         subject : subject,
         text : 'Visit this ' + verifyUrl,
@@ -25,11 +25,11 @@ module.exports.sendEmail = function sendEmail(data) {
                     "name": "VERIFY_EMAIL_URL",
                     "content": verifyUrl
                 }
-            ]
+            ],
+            subject: subject,
+            to: sendTo
         },
-        subject: subject,
-        to: sendTo
     }
 
-    emails.sendEmail(mailOptions, mandrillOptions);
+    emails.sendEmail(nodemonOptions, mandrillOptions);
 }
