@@ -28,16 +28,22 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
         ACCESS_KEY: config.aws.accessKey,
         SECRET_ACCESS_KEY: config.aws.secretAccessKey
     }
+
+    settings.MANDRILL = {
+        FROM_ADDRESS: config.mandrill.fromAddress,
+        FROM_NAME: config.mandrill.fromName,
+        API_KEY: config.mandrill.apiKey
+    };
 } else {
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.host + ":"
         + config.mongo.port + "/" + config.mongo.databaseName;
-}
 
-settings.NODEMAILER = {
-    AUTH: config.nodemailer.auth,
-    HOST: config.nodemailer.host,
-    PORT: config.nodemailer.port
-};
+    settings.NODEMAILER = {
+        AUTH: config.nodemailer.auth,
+        HOST: config.nodemailer.host,
+        PORT: config.nodemailer.port
+    };
+}
 
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;
 
