@@ -1,12 +1,13 @@
 const emails = require('../emails');
+const settings = require('../../settings');
 
 module.exports.sendEmail = function sendEmail(data,hash) {
     const sendTo = data.email;
     const subject = "Forgot your password?";
 
     // Which of the following is correct???
-    // const resetPassswordUrl = 'http://workonblockchain.mwancloud.com/reset_password?hash='+hash;
-    const resetPassswordUrl = 'http://workonblockchain.mwancloud.com/reset_password?hash='+data.password_key;
+    // const resetPassswordUrl = settings.CLIENT.URL + '/reset_password?hash='+hash;
+    const resetPassswordUrl = settings.CLIENT.URL + '/reset_password?hash='+data.password_key;
 
     const nodemonOptions = {
         from: 'workonblockchain@mwancloud.com',

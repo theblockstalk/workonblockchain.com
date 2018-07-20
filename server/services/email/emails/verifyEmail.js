@@ -1,7 +1,8 @@
 const emails = require('../emails');
+const settings = require('../../settings');
 
 module.exports.sendEmail = function sendEmail(data) {
-    const verifyEmailUrl = 'http://workonblockchain.mwancloud.com/verify_email?email_hash='+data.token;
+    const verifyEmailUrl = settings.CLIENT.URL + '/verify_email?email_hash='+data.token;
     const sendTo = data.email;
     const subject = "Verify your email";
 

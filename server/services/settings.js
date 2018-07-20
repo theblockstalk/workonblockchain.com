@@ -58,5 +58,9 @@ settings.SERVER = {
     PORT: port
 };
 
+settings.CLIENT = {
+    URL: config.client.url
+};
+
 console.log('settings', settings);
 module.exports = settings;
