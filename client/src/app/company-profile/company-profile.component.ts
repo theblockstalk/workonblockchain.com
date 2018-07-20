@@ -81,14 +81,12 @@ export class CompanyProfileComponent implements OnInit {
                       this.company_funded=data.company_funded;
                       this.no_of_employees=data.no_of_employees;
                       if(data.company_logo != null )
-                    {
-                        
-                      //console.log(data.image);
-                       
-                        this.imgPath = imgsrc + data.image;
+                      {                        
+                      //console.log(data.image);                     
+                        this.imgPath = imgsrc + data.company_logo;
                         console.log(this.imgPath);
                         
-                    }
+                      }
 
                   
                   }

@@ -73,8 +73,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 let config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
-    provider: new GoogleLoginProvider("507151802069-rbqn1iqupcbr7t7ge50nup74fu0td5g0.apps.googleusercontent.com")
-    //    provider: new GoogleLoginProvider("507151802069-sedtrf34188eet5oo4adrm60vlsruo5r.apps.googleusercontent.com")
+   // provider: new GoogleLoginProvider("507151802069-rbqn1iqupcbr7t7ge50nup74fu0td5g0.apps.googleusercontent.com") local
+       provider: new GoogleLoginProvider("507151802069-sedtrf34188eet5oo4adrm60vlsruo5r.apps.googleusercontent.com")
   }
 ]);
 

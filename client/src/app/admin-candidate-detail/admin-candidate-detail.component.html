@@ -19,7 +19,9 @@
 				 			<p>{{data.description}}</p>
 				 		</span>
 						
-						<a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Companies</a><br/>
+						<span class = "short_intro">
+						<p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Companies</a></p>
+				 		</span>
 				 		
 				 		<span class = "short_intro">
 				 			<p>{{data._creator.created_date}}</p>

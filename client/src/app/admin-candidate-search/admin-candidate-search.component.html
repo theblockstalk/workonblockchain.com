@@ -80,7 +80,7 @@
  								      
 				   <div class="panel panel-default" *ngIf = "(data.first_name  && data.roles && data.why_work && data.experience_roles && data.availability_day && data.nationality && data.last_name 
 				    && data.contact_number && data.education && data.history &&  data.platforms && data.commercial_platform &&
-				     data.interest_area  && data.country)">
+				     data.interest_area  && data.country && data.disable_account == false)">
 <!-- 				    <div class="panel panel-default">
  -->				      <div class="panel-heading">
 				      	<div class = "user-pic">
@@ -117,7 +117,7 @@
 
 				      <div class="panel-body">
 						
-				      	<span class = "why_join"><i>{{data.why_work}}</i> </span>
+				      	<span class = "why_join col-md-12"><i>{{data.why_work}}</i> </span>
 
 				      		<div class="col-sm-8">
 				      			<h4>Bio</h4>

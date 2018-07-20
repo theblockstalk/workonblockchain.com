@@ -371,6 +371,8 @@ function experience(req,res)
 
 function image(req, res) 
 {
+
+    
     console.log('req.file', req.file);
     let path;
     if (req.file.filename) {
@@ -394,6 +396,7 @@ function image(req, res)
     {
         res.json({error: err});
     });
+
 }
 
 ///// for update the candidate profile data ///////////////////
@@ -548,21 +551,12 @@ function about_company(req,res)
 
 function employer_image(req, res) 
 {
-    var path = req.file.originalname;
-    console.log(req.file);
-    console.log('done new');
-    userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about)
-    {
-        if (about)
-        {
-            res.json(about);
-        }
-        else
-        {
+   
 			console.log(req.file);
 			console.log('done new');
 			res.json(req.file.filename);
 			userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
+
             {
                 if (about) 
                 {
@@ -577,13 +571,9 @@ function employer_image(req, res)
             {
                 res.json({error: err});
             }); 
-            res.json(err);
-        }
-	})
-	.catch(function (err) 
-	{
-		res.json({error: err});
-	}); 
+
+          
+
 }
 
 ////////// update company profile data ///////////////////////////
