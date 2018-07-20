@@ -105,7 +105,7 @@ module.exports = service;
 
 /////////login//////////////////////////
 function authenticate(email, password,type) 
-{
+{	console.log(email);
 	var deferred = Q.defer();
 	   
 
@@ -1815,7 +1815,7 @@ function get_candidate(user_type)
     });
  
     return deferred.promise;*/
-	
+	console.log(user_type);
 	var deferred = Q.defer();
 	users.find({type : user_type}, function (err, data) 			
 	{
