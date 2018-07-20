@@ -432,7 +432,7 @@ function getAll()
 function getById(_id) 
 {
     var deferred = Q.defer();
-
+	console.log(_id);
     CandidateProfile.findById(_id).populate('_creator').exec(function(err, result) 
     {
         //console.log(result);
@@ -1795,7 +1795,7 @@ function get_refr_code(data){
 
 function get_candidate(user_type) 
 {
-	var deferred = Q.defer();
+	/*var deferred = Q.defer();
 
     users.find({ type: user_type }, function (err, user) 
     {
@@ -1813,6 +1813,66 @@ function get_candidate(user_type)
             //deferred.resolve();
         }
     });
+ 
+    return deferred.promise;*/
+	
+	var deferred = Q.defer();
+	users.find({type : user_type}, function (err, data) 			
+	{
+			
+	        if (err) 
+	             deferred.reject(err.name + ': ' + err.message);
+	        if(data)
+	        {
+	        	var array = [];
+	        	data.forEach(function(item) 
+	        	{
+	        	    array.push(item._id);
+	        	});
+
+	        	if(user_type == 'candidate'){
+					CandidateProfile.find({ "_creator": {$in: array}}).populate('_creator').exec(function(err, result)
+					{
+					   if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+										
+					   if (result) 
+					   {	
+							deferred.resolve({ 
+								users:result
+							});         
+						} 
+						else 
+						{
+							deferred.reject("Not Found");
+						}
+					 });
+				}
+				else{
+					EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
+					{
+					   if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
+										
+					   if (result) 
+					   {	
+							deferred.resolve({ 
+								users:result
+							});         
+						} 
+						else 
+						{
+							deferred.reject("Not Found");
+						}
+					 });
+				}
+	        	 
+	        	}
+	        	
+	        	else
+	        	{
+	        		deferred.reject("Not Found");
+	        	}
+
+	    });   
  
     return deferred.promise;
 }

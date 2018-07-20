@@ -226,6 +226,7 @@ function getAll(req, res)
 
 function getCurrent(req, res) 
 {
+	console.log('ID: '+req.params.id);
     userService.getById(req.params.id).then(function (user) 
     {
         if (user) 
@@ -371,32 +372,9 @@ function experience(req,res)
 
 function image(req, res) 
 {
-
-    
-    console.log('req.file', req.file);
-    let path;
-    if (req.file.filename) {
-        path = req.file.filename;
-    } else {
-        path = req.file.location; // for S3 bucket?
-    }
-    userService.save_image(path , req.params._id).then(function (err, about)
-    {
-        console.log('userService.save_image')
-        if (about)
-        {
-            res.json(about);
-        }
-        else
-        {
-            res.json(err);
-        }
-    })
-    .catch(function (err)
-    {
-        res.json({error: err});
-    });
-
+    console.log(req.file);
+    console.log('done new');
+    res.json(req.file.filename);
 }
 
 ///// for update the candidate profile data ///////////////////
@@ -551,12 +529,16 @@ function about_company(req,res)
 
 function employer_image(req, res) 
 {
-   
-			console.log(req.file);
-			console.log('done new');
-			res.json(req.file.filename);
-			userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
-
+    /*multer(req, res, function (err)
+    {    //console.log(req.file.filename);
+        if (err) 
+        {
+            return
+        }
+        else
+        {
+            var path = req.file.originalname;
+            userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
             {
                 if (about) 
                 {
@@ -570,10 +552,14 @@ function employer_image(req, res)
             .catch(function (err) 
             {
                 res.json({error: err});
-            }); 
+            });  
+        }
 
-          
+    })   */ 
 
+	console.log(req.file);
+    console.log('done new');
+    res.json(req.file.filename);
 }
 
 ////////// update company profile data ///////////////////////////

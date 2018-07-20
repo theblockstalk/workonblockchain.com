@@ -148,17 +148,22 @@
 					<div class = "col-sm-4 col-xs-3" id="sidepanel">
 						<div id="profile" class = "padding_top-btm">
 							<div class="wrap">
-								<img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" alt="">
-								<p>{{currentUser.email}}</p>
+								<img id="profile-img" src="{{file_url}}{{profile_pic}}" alt="">
+								<p>{{display_name}}</p>
 							</div>
 						</div>
 						<div id="contacts">
 							<ul>
-								<li *ngFor="let person of users" class="contact closee" (click)="openDialog(person.email,person._id)">
+								<li *ngFor="let person of users" class="contact closee" (click)="openDialog(person._creator.email,person._creator._id)">
 									<div class="wrap">
-										<img src="http://emilcarlsson.se/assets/louislitt.png" alt="">
+										<ng-container *ngIf="currentUser.type == 'company';else cand_image">
+											<img src="{{file_url}}{{person.image}}" alt="">
+										</ng-container>
+										<ng-template #cand_image>
+											<img src="{{file_url}}{{person.company_logo}}" alt="logo">
+										</ng-template>
 										<div class="meta">
-											<p class="name">{{ person.email }}</p>
+											<p class="name">{{ person.first_name }} {{ person.last_name }}</p>
 										</div>
 									</div>
 								</li>
@@ -198,7 +203,7 @@
 												<span style="display:none;">{{count+1}}</span>
 												<li class="sent" id="place1">
 													<p class = "job-description">
-														{{msg.sender_name}}
+														{{msg.sender_name}}:
 														{{msg.message}}
 														<a href="{{file_url}}{{msg.file_name}}">{{msg.file_name}}</a>
 													</p>
@@ -210,7 +215,7 @@
 											<ng-template #with_out>
 												<li class="sent">
 													<p class = "job-description">
-														{{msg.sender_name}}
+														{{msg.sender_name}}:
 														{{msg.message}}
 														<a href="{{file_url}}{{msg.file_name}}">{{msg.file_name}}</a>
 													</p>
@@ -224,7 +229,7 @@
 										<ng-template #second>
 											<li class="replies">
 												<p>
-													{{msg.sender_name}}
+													{{msg.sender_name}}:
 													{{msg.message}}
 													<a href="{{file_url}}{{msg.file_name}}">{{msg.file_name}}</a>
 												</p>

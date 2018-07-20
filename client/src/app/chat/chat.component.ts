@@ -9,8 +9,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
 //const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
-const URL = environment.backend_url;
-console.log(URL);
+const URL = environment.img_url;
+const back_url = environment.backend_url;
 
 @Component({
   selector: 'app-chat',
@@ -47,8 +47,10 @@ export class ChatComponent implements OnInit {
 	show_accpet_reject = 0;
 	is_job_offer = 0;
 	cand_job_offer = 0;
-	approved_user = 0;
+	approved_user;
 	file_url;
+	profile_pic;
+	display_name
   constructor(
 	private authenticationService: UserService,
 	private fb: FormBuilder,
@@ -68,29 +70,54 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
 	  this.count=0;
-	  this.approved_user = 1;//use this when code ready this.currentUser.is_approved
+	  //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log(this.currentUser);
 	  //for live
-	  this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
-	  //this.file_url = 'http://localhost/workonblockchain.com/server/uploads/';
+	  //this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
+	  this.file_url = URL;//'http://localhost/workonblockchain.com/server/uploads/';
       if(this.currentUser){
-	  /*this.authenticationService.getById(this.currentUser._creator)
-		.subscribe(
-			data => {
-				console.log(data);
-				if(data[0]._creator.is_approved == 0 ||data[0].disable_account == true){
-					this.approved_user = 0;
+		if(this.currentUser.type == 'candidate'){
+			this.authenticationService.getById(this.currentUser._creator)
+			.subscribe(
+				data => {
+					data[0]._creator.is_approved = 1;
+					data[0].disable_account == false;
+					this.profile_pic = data[0].image;
+					this.display_name = data[0].first_name+' '+data[0].last_name;
+					if(data[0]._creator.is_approved == 0 || data[0].disable_account == true){
+						this.approved_user = 0;
+					}
+					else{
+						this.approved_user = 1;
+					}
+				},
+				error => {
+					console.log('error');
 				}
-				else{
-					this.approved_user = 1;
+			);
+		}
+		else{
+			this.authenticationService.getCurrentCompany(this.currentUser._creator)
+			.subscribe(
+				data => {
+					data[0]._creator.is_approved = 1;
+					data[0].disable_account == false;
+					this.profile_pic = data[0].company_logo;
+					this.display_name = data[0].first_name+' '+data[0].last_name;
+					if(data[0]._creator.is_approved == 0 || data[0].disable_account == true){
+						this.approved_user = 0;
+					}
+					else{
+						this.approved_user = 1;
+					}
+				},
+				error => {
+					console.log('error');
 				}
-				console.log(data[0]._creator.is_approved);
-			},
-			error => {
-				console.log('error');
-			}
-		);*/
+			);
+		}
+	  
 		if(this.approved_user == 0){
 			console.log('not allowed');
 		}
@@ -124,10 +151,9 @@ export class ChatComponent implements OnInit {
 							this.authenticationService.getCandidate(this.type)
 								.subscribe(
 									data => {
-										console.log(data);
 										for (var key in msg_data['datas']) {
 											for (var key_user in data['users']) {
-												if(msg_data['datas'][key].sender_id == data['users'][key_user]._id || msg_data['datas'][key].receiver_id == data['users'][key_user]._id){
+												if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id){
 													if(this.users.indexOf(data['users'][key_user]) === -1){
 														console.log('if');
 														this.users.push(data['users'][key_user]);
@@ -162,7 +188,7 @@ export class ChatComponent implements OnInit {
 								data => {
 									for (var key in msg_data['datas']) {
 										for (var key_user in data['users']) {
-											if(msg_data['datas'][key].sender_id == data['users'][key_user]._id){
+											if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id){
 												if(this.users.indexOf(data['users'][key_user]) === -1){
 													console.log('if');
 													this.users.push(data['users'][key_user]);
@@ -556,7 +582,7 @@ export class ChatComponent implements OnInit {
 		{ 
 			formData.append('photo', inputEl.files.item(0));
 			console.log(fileCount);
-			this.http.post(URL+'users/upload_chat_file/'+this.currentUser._creator,formData).map((res) => res).subscribe(                
+			this.http.post(back_url+'users/upload_chat_file/'+this.currentUser._creator,formData).map((res) => res).subscribe(                
 			(success) => 
 			{
 			  console.log(success);
