@@ -4,6 +4,10 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import {environment} from '../../environments/environment';
+
+const imgsrc = environment.img_url;
+console.log(imgsrc);
 
 @Component({
   selector: 'app-admin-company-detail',
@@ -21,7 +25,8 @@ export class AdminCompanyDetailComponent implements OnInit {
     is_approved;
     error;
     is_approve;
-    admin_log;   
+    admin_log;  
+    imgPath; 
     
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
@@ -58,6 +63,13 @@ export class AdminCompanyDetailComponent implements OnInit {
                         this.info= data;
                         this.approve = data[0]._creator.is_approved;
                         this.verify =data[0]._creator.is_verify;
+                         if(data[0].company_logo != null )
+                        {                        
+                            //console.log(data.image);                     
+                              this.imgPath = imgsrc + data[0].company_logo;
+                            console.log(this.imgPath);
+                        
+                        }
                         console.log(this.verify);
                         if(this.approve === 1)
                         {

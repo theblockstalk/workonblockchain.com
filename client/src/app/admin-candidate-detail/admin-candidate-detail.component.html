@@ -8,8 +8,11 @@
 				 <section class = "profile personal_info">
 
 				 	<div class="col-md-6" >
-				 		<span class = "p_img">
+				 		<span class = "p_img" *ngIf="!imgPath">
 				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
+				 		</span>
+				 		<span class = "p_img" *ngIf="imgPath">
+				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
 				 		<span class = "name">
 				 			<h3>{{data.first_name}} {{data.last_name}} <span *ngIf ="verify === 1">(Verified)</span> <span *ngIf="is_approved !== ''">({{is_approved}})</span> </h3>
