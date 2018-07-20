@@ -68,18 +68,18 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
 	  this.count=0;
-	  //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
+	  this.approved_user = 1;//use this when code ready this.currentUser.is_approved
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	  console.log(this.currentUser);
 	  //for live
 	  this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
 	  //this.file_url = 'http://localhost/workonblockchain.com/server/uploads/';
       if(this.currentUser){
-	  this.authenticationService.getById(this.currentUser._creator)
+	  /*this.authenticationService.getById(this.currentUser._creator)
 		.subscribe(
 			data => {
 				console.log(data);
-				if(data[0]._creator.is_approved == 0 || data[0]._creator.disable_account == true){
+				if(data[0]._creator.is_approved == 0 ||data[0].disable_account == true){
 					this.approved_user = 0;
 				}
 				else{
@@ -90,7 +90,7 @@ export class ChatComponent implements OnInit {
 			error => {
 				console.log('error');
 			}
-		);
+		);*/
 		if(this.approved_user == 0){
 			console.log('not allowed');
 		}

@@ -1,8 +1,4 @@
-/*Tayyab's Style*/
-.my-chat-design{
-	margin-left: 15%;
-	margin-top: 4%;
-}
+
 
 /*=======MAIN STYLES========*/
 
@@ -130,7 +126,6 @@ body{
     height: 100%;
     padding-bottom: 40px;
     padding-left: 80px;
-	top: -52px;
 }
 
 #stripes {
@@ -156,7 +151,6 @@ body{
    position: absolute;
    right: 0px;
    height: 100%;
-   top: -52px;
 }
 
 .mockup-top img {
@@ -1888,19 +1882,21 @@ input[type=checkbox] {
 #frame .content .message-input .wrap {
     position: relative;
     padding: 10px 10px;
-    background: #5eb9fa;
+    background: #fff;
     overflow: hidden;
+    border: 5px solid #5eb9fa;
 }
 
-#frame .content .message-input .wrap input {
+#frame .content .message-input .wrap textarea {
     font-family: "proxima-nova", "Source Sans Pro", sans-serif;
     float: left;
     border: none;
-    width: 100%;
+    width: 83%;
     padding: 10px;
     font-size: 15px;
     color: #32465a;
     height: 70px;
+    background: #f6f9fc;
 }
 
 .btn-action{
@@ -1915,11 +1911,11 @@ input[type=checkbox] {
 
 .btn-send{
     position: absolute;
-    right: 20px;
-    top: 22px;
+    right: 15px;
+    top: 12px;
     padding:  3px 6px;
     width: 95px;
-    background-color:  #4c687b;
+    background-color:  #5eb9fa;
     border-color:  #5eb9fa;
     color: #fff;
     font-weight: bold;
@@ -1928,12 +1924,12 @@ input[type=checkbox] {
 
 .btn-attached{
     position: absolute;
-    right: 20px;
-    top: 55px;
+    right: 15px;
+    top: 50px;
     padding:  3px 6px;
     width: 95px;
-    background-color: #4c687b;
-    border-color: #5eb9fa;
+    background-color:  #5eb9fa;
+    border-color:  #5eb9fa;
     color: #fff;
     font-weight: bold;
     border-radius: 0px;
@@ -1952,7 +1948,7 @@ input[type=checkbox] {
 	position: relative;
     float: right;
     margin-right: 30px;
-    top: -12px;
+    top: 6px;
     font-size: 10px;
 }
 
@@ -1960,7 +1956,7 @@ input[type=checkbox] {
 	position: relative;
     float: left;
     margin-left: -10px;
-    top: -12px;
+    top: 6px;
     font-size: 10px;
 }
 
@@ -2290,11 +2286,15 @@ input[type=checkbox] {
 
 .user-detail{
     float: left;
+	max-width: 550px;
+    height: auto;
+    overflow: hidden;
 }
 
 .label-war {
     background-color: #ffbf06 ;
     border-radius: 0px;
+    margin-right:5px;
 }
 
 .why_join{
@@ -2831,6 +2831,7 @@ input:checked + .slider:before {
 
 #cookie-btn {
     background: #253245;
+    color: #000;
     height: 29px;
     padding: 4px;
     border: 1px solid #ccc;
@@ -3394,34 +3395,6 @@ input:checked + .slider:before {
 }
 
 
-
-#text1, #text2 {
-    display: none;
-    position: fixed;
-    z-index: 111;
-    top: 15%;
-    left: 50%;
-    width: 60%;
-    transform: translate(-50%, -50%);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s;
-}
-
-#text1, #text2 {
-    display: none;
-    position: fixed;
-    z-index: 111;
-    top: 15%;
-    left: 50%;
-    width: 60%;
-    transform: translate(-50%, -50%);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s;
-}
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 

@@ -374,6 +374,23 @@ function image(req, res)
     console.log(req.file);
     console.log('done new');
     res.json(req.file.filename);
+    var path = req.file.filename;
+    userService.save_image(path , req.params._id).then(function (err, about) 
+            {
+                console.log('userService.save_image')
+                if (about)
+                {
+                    res.json(about);
+                } 
+                else 
+                {
+                    res.json(err);
+                }
+            })
+            .catch(function (err) 
+            {
+                res.json({error: err});
+            });
 }
 
 ///// for update the candidate profile data ///////////////////
@@ -537,7 +554,15 @@ function employer_image(req, res)
         else
         {
             var path = req.file.originalname;
-            userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
+            
+        }
+
+    })   */ 
+
+	console.log(req.file);
+    console.log('done new');
+    res.json(req.file.filename);
+    userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
             {
                 if (about) 
                 {
@@ -551,14 +576,7 @@ function employer_image(req, res)
             .catch(function (err) 
             {
                 res.json({error: err});
-            });  
-        }
-
-    })   */ 
-
-	console.log(req.file);
-    console.log('done new');
-    res.json(req.file.filename);
+            }); 
 }
 
 ////////// update company profile data ///////////////////////////

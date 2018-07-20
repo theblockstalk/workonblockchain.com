@@ -150,7 +150,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                
                 if(user.error)
                 {
-                  console.log("ifffffffffffff");
+                    this.log = user.error;
+                  /*console.log("ifffffffffffff");
                  
                   this.log = 'Credentials not match';
                   this.authenticationService.create(this.credentials)
@@ -175,7 +176,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                   error => {
                     this.log = error;
                     
-                  });
+                  });*/
               
                     
                 }

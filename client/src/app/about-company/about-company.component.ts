@@ -10,6 +10,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {environment} from '../../environments/environment';
 const URL = environment.backend_url;
 //console.log(URL);
+
+const imgsrc = environment.img_url;
+console.log(imgsrc);
+
 @Component({
   selector: 'app-about-company',
   templateUrl: './about-company.component.html',
@@ -47,7 +51,7 @@ export class AboutCompanyComponent implements OnInit {
                      this.company_funded=data.company_funded;
                      this.company_description =data.company_description;
                        if(data.company_logo != null){
-                       this.image_src  = '/var/www/html/workonblockchain/server/uploads/' + data.company_logo;
+                       this.image_src  = imgsrc + data.company_logo;
                            }
                        
                       //this.router.navigate(['/login']);

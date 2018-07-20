@@ -18,6 +18,7 @@
   <link rel="stylesheet" type='text/css' href="./assets/css/bootstrap.min.css">
   <link rel="stylesheet" type='text/css' href="./assets/css/wob_main.css">
   <link rel="stylesheet" type='text/css' href="./assets/css/middle.css">
+  <link rel="stylesheet" type='text/css' href="./assets/css/intlTelInput.css">
   <link rel="stylesheet" type='text/css' href="./assets/css/select2.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="http://textangular.com/dist/textAngular.css" type="text/css">
@@ -42,8 +43,9 @@
 
 <script src="./assets/js/jquery.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="./assets/js/wob.js"></script>
+
 <script src="./assets/js/custom.js"></script>
+<script src="./assets/js/intlTelInput.js"></script>
 <script src="./assets/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
@@ -51,6 +53,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="./assets/js/custom.js"></script>
 <script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
+
 <script> CKEDITOR.config.forcePasteAsPlainText = true; </script>
 <!-- Load Facebook SDK for JavaScript -->
  <div id="fb-root"></div>
@@ -145,6 +148,21 @@ $(window).on('keydown', function(e) {
     return false;
   }
 });
+
+
+//Mobile number code or phone number code jquery ....
+$("#mobile-number").intlTelInput({
+	
+        //autoFormat: false,
+        //autoHideDialCode: false,
+        //defaultCountry: "jp",
+        //nationalMode: true,
+        //numberType: "MOBILE",
+        //onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+        //preferredCountries: ['cn', 'jp'],
+        //responsiveDropdown: true,
+        utilsScript: "lib/libphonenumber/build/utils.js"
+      });
 //# sourceURL=pen.js
 
 //===== WYSIWYG editor =====//
