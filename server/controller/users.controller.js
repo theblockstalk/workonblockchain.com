@@ -371,26 +371,29 @@ function experience(req,res)
 
 function image(req, res) 
 {
-    console.log(req.file);
-    console.log('done new');
-    res.json(req.file.filename);
-    var path = req.file.filename;
-    userService.save_image(path , req.params._id).then(function (err, about) 
-            {
-                console.log('userService.save_image')
-                if (about)
-                {
-                    res.json(about);
-                } 
-                else 
-                {
-                    res.json(err);
-                }
-            })
-            .catch(function (err) 
-            {
-                res.json({error: err});
-            });
+    console.log('req.file', req.file);
+    let path;
+    if (req.file.filename) {
+        path = req.file.filename;
+    } else {
+        path = req.file.location; // for S3 bucket?
+    }
+    userService.save_image(path , req.params._id).then(function (err, about)
+    {
+        console.log('userService.save_image')
+        if (about)
+        {
+            res.json(about);
+        }
+        else
+        {
+            res.json(err);
+        }
+    })
+    .catch(function (err)
+    {
+        res.json({error: err});
+    });
 }
 
 ///// for update the candidate profile data ///////////////////
@@ -545,24 +548,21 @@ function about_company(req,res)
 
 function employer_image(req, res) 
 {
-    /*multer(req, res, function (err)
-    {    //console.log(req.file.filename);
-        if (err) 
+    var path = req.file.originalname;
+    console.log(req.file);
+    console.log('done new');
+    userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about)
+    {
+        if (about)
         {
-            return
+            res.json(about);
         }
         else
         {
-            var path = req.file.originalname;
-            
-        }
-
-    })   */ 
-
-	console.log(req.file);
-    console.log('done new');
-    res.json(req.file.filename);
-    userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
+			console.log(req.file);
+			console.log('done new');
+			res.json(req.file.filename);
+			userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
             {
                 if (about) 
                 {
@@ -577,6 +577,13 @@ function employer_image(req, res)
             {
                 res.json({error: err});
             }); 
+            res.json(err);
+        }
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	}); 
 }
 
 ////////// update company profile data ///////////////////////////

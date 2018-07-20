@@ -25,6 +25,7 @@ app.use(bodyParser.json());
 }).unless({ path: ['/users/authenticate', '/users/register'] }));*/
  
 // routes
+app.use('/', require('./controller/healthCheck.controller'));
 app.use('/users', require('./controller/users.controller'));
 
 mongoose.connect(settings.MONGO_CONNECTION_STRING);
@@ -45,8 +46,8 @@ mongoose.connection.on('error',(err)=>
 });
 
 // start server
-var port = settings.ENVIRONMENT === 'production' ? 80 : 4000;
-var server = app.listen(port, function () 
+var port = settings.SERVER.PORT;
+var server = app.listen(port, function ()
 {
     console.log('Server listening on port ' + port);
 });
