@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const settings = require('../settings');
+const settings = require('../../settings');
 
 module.exports.sendEmail = function sendEmail(mailOptions) {
     nodemailer.createTestAccount((err, account) => {

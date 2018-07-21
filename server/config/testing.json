@@ -21,10 +21,18 @@
   "server": {
     "port": 4000
   },
+  "client": {
+    "url": "http://localhost:4200"
+  },
   "aws": {
     "region": "eu-west-1",
     "s3Bucket": "files.testing.workonblockchain.com",
     "accessKey": "AKIAIKSQJ5LKFPGP3K6Q",
     "secretAccessKey": "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"
+  },
+  "mandrill": {
+    "fromAddress": "contact@staging.workonblockchain.com",
+    "fromName": "TESTING - Work on Blockchain",
+    "apiKey": "QXLhIhx6BJwpJC0QRax-yQ"
   }
 }

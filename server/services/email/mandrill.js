@@ -1,4 +1,4 @@
-const settings = require('../settings');
+const settings = require('../../settings');
 const mandrill = require('mandrill-api/mandrill');
 
 module.exports.sendEmail = function sendEmail(mandrillOptions) {
