@@ -1,18 +1,6 @@
 const settings = require('../settings');
 const mandrill = require('mandrill-api/mandrill');
 
-// mandrillOptions = {
-//     templateName,
-//     message: {
-//         global_merge_vars: [],
-//         subject,
-//         to,
-//         from_email,
-//         from_name,
-//         merge_language
-//     },
-//
-// }
 module.exports.sendEmail = function sendEmail(mandrillOptions) {
     mandrillOptions.message.from_email = settings.MANDRILL.FROM_ADDRESS;
     mandrillOptions.message.from_name = settings.MANDRILL.FROM_NAME;
