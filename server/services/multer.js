@@ -2,6 +2,7 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
 const settings = require('../settings');
+const sanitizer = require('./sanitizer');
 
 let appMulter;
 
@@ -22,7 +23,8 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
             bucket: settings.AWS.S3_BUCKET,
             key: function (req, file, cb) {
                 console.log('file', file);
-                cb(null, Date.now().toString() + file.originalname);
+                const originalname = sanitizer.recursivelySanitize(file.originalname);
+                cb(null, Date.now().toString() + originalname);
             }
         })
     });
@@ -35,7 +37,8 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
                 cb(null, 'uploads')
             },
             filename: function (req, file, cb) {
-                cb(null, Date.now().toString() + file.originalname)
+                const originalname = sanitizer.recursivelySanitize(file.originalname);
+                cb(null, Date.now().toString() + originalname)
             }
         })
     });
