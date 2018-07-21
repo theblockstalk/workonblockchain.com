@@ -2831,7 +2831,6 @@ input:checked + .slider:before {
 
 #cookie-btn {
     background: #253245;
-    color: #000;
     height: 29px;
     padding: 4px;
     border: 1px solid #ccc;
