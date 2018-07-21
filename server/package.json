@@ -24,6 +24,7 @@
     "linkedin-public-profile-parser": "^3.0.2",
     "mandrill-api": "^1.0.45",
     "md5": "^2.2.1",
+    "mongo-sanitize": "^1.0.0",
     "mongoose": "^5.2.1",
     "mongoskin": "^2.1.0",
     "multer": "^1.3.0",
@@ -31,6 +32,7 @@
     "ng2-file-upload": "^1.3.0",
     "nodemailer": "^4.6.5",
     "q": "^1.5.1",
-    "rootpath": "^0.1.2"
+    "rootpath": "^0.1.2",
+    "sanitizer": "^0.1.3"
   }
 }
