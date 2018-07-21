@@ -1,12 +1,4 @@
 {
-  "nodemailer": {
-    "auth": {
-      "user": "workonblockchain@mwancloud.com",
-      "pass": "e71$AGVy"
-    },
-    "host": "mail.mwancloud.com",
-    "port": 25
-  },
   "mongo": {
     "username": "testing",
     "password": "DNSpi52ECNf5tx3I",
