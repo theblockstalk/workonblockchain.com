@@ -72,6 +72,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { MyDatePickerModule } from 'mydatepicker';
 import { JwSocialButtonsModule } from 'jw-angular-social-buttons';
 
+
 let config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,

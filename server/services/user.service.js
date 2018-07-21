@@ -81,6 +81,7 @@ service.save_chat_file = save_chat_file;
 service.insert_message_job = insert_message_job;
 service.update_job_message = update_job_message;
 service.get_job_desc_msgs = get_job_desc_msgs;
+service.set_unread_msgs_emails_status = set_unread_msgs_emails_status;
 
 ////////admin functions/////////////////////////
 service.admin_role = admin_role;
@@ -2229,7 +2230,7 @@ function get_unread_msgs(){
 		}
 		else{
 			for(var i=0;i<result.length;i++){
-				users.findOne({ _id: result[i]},{"email":1}, function (err, newResult){
+				users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1}, function (err, newResult){
 					if(newResult){
 						chatReminderEmail.sendEmail(newResult.email);
 					}
@@ -2265,6 +2266,24 @@ function get_job_desc_msgs(data){
 			});
 		}
 	});
+	return deferred.promise;
+}
+
+function set_unread_msgs_emails_status(data){
+	var deferred = Q.defer();
+	console.log(data.user_id);
+		var set = 
+		{
+			 is_unread_msgs_to_send: data.status,
+			 
+		};
+		users.update({ _id: data.user_id},{ $set: set }, function (err, doc) 
+		{
+			if (err) 
+			   deferred.reject(err.name + ': ' + err.message);
+			else
+			   deferred.resolve(set);
+		});
 	return deferred.promise;
 }
 

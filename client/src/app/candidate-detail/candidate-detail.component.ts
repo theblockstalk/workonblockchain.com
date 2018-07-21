@@ -125,8 +125,9 @@ export class CandidateDetailComponent implements OnInit {
   msg_body;
   job_offer_log;   
   job_offer_msg;
+  full_name;
   send_job_offer(msgForm : NgForm){
-		console.log(this.credentials);
+		this.full_name = this.first_name+' '+this.last_name;
         if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
@@ -142,7 +143,7 @@ export class CandidateDetailComponent implements OnInit {
 						this.is_company_reply = 0;
 						this.msg_body = this.credentials.job_desc+' Job Title: '+this.credentials.job_title+', Job Type: '+this.credentials.job_type+', Salary: '+this.credentials.salary+' '+this.credentials.currency;
 						this.credentials.salary = this.credentials.salary+' '+this.credentials.currency;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.currentUser.email,this.credentials.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
+						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.currentUser.email,this.full_name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
 							.subscribe(
 								data => {
 									console.log(data);

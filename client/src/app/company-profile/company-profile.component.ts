@@ -82,7 +82,9 @@ export class CompanyProfileComponent implements OnInit {
                       if(data.company_logo != null )
                       {                        
                       //console.log(data.image);                     
+
                         this.imgPath =  data.company_logo;
+
                         console.log(this.imgPath);
                         
                       }

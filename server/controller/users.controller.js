@@ -71,6 +71,7 @@ router.post('/admin_company_filter' , admin_company_filter);
 router.post('/update_chat_msg_status' , update_chat_msg_status);
 router.get('/get_unread_msgs' , get_unread_msgs);
 router.post('/get_job_desc_msgs' , get_job_desc_msgs);
+router.post('/set_unread_msgs_emails_status' , set_unread_msgs_emails_status);
 
 /////////admin CMS fucntions////////////////////////////////
 router.put('/add_privacy_content'  , add_privacy_content);
@@ -80,6 +81,8 @@ router.get('/get_all_content', get_all_content);
 module.exports = router;
 
 const my_url = 'http://localhost/workonblockchain.com/server/uploads/';
+//for live
+//const my_url = 'http://workonblockchainuploads.mwancloud.com/';
 
 /***********authentication functions **************/
 
@@ -1054,6 +1057,24 @@ function get_unread_msgs(req,res){
 
 function get_job_desc_msgs(req,res){
 	userService.get_job_desc_msgs(req.body).then(function (err, about) 
+	{
+		if (about) 
+		{
+			res.json(about);
+		} 
+		else 
+		{
+			res.json(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function set_unread_msgs_emails_status(req,res){
+	userService.set_unread_msgs_emails_status(req.body).then(function (err, about) 
 	{
 		if (about) 
 		{

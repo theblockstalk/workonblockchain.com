@@ -728,4 +728,17 @@ export class UserService {
             return data
         });
 	}
+	
+	set_unread_msgs_emails_status(user_id: string, status: any) 
+    {
+		return this.http.post<any>(URL+'users/set_unread_msgs_emails_status', {user_id:user_id,status:status})
+        .map(data => {
+			if (data){
+				return data;
+            }
+			else{
+				return data.msg;
+			}
+		});
+    }
 }

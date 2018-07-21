@@ -73,6 +73,11 @@ const UserSchema = mongoose.Schema({
 		required:true,
 		default:0
 	},	
+	is_unread_msgs_to_send:
+	{
+		type:Boolean,
+    	default:true
+	},
 	created_date:
 	{
 		type:String,
