@@ -6,10 +6,11 @@ import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
 import { NgxAutoScrollModule } from 'ngx-auto-scroll';
 import { Router, ActivatedRoute } from '@angular/router';
+import {IMyDpOptions} from 'mydatepicker';
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
 //const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
-const URL = environment.img_url;
+
 const back_url = environment.backend_url;
 
 @Component({
@@ -18,6 +19,13 @@ const back_url = environment.backend_url;
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+	
+	/*date(formdata: NgForm)
+    {
+		console.log("date");
+		console.log(this.model);
+		console.log(formdata.value);
+    }*/
 
     log = '';
     currentUser: User;
@@ -50,7 +58,7 @@ export class ChatComponent implements OnInit {
     approved_user;
     file_url;
     profile_pic;
-    display_name
+    display_name;
   constructor(
     private authenticationService: UserService,
     private fb: FormBuilder,
@@ -124,7 +132,6 @@ export class ChatComponent implements OnInit {
         else{
             console.log('allowed');
             if(this.currentUser.type=="company"){
-              console.log(this.currentUser);
               console.log('company');
               this.display_list = 1;
               /*this.authenticationService.getCandidate(this.type)
@@ -140,7 +147,6 @@ export class ChatComponent implements OnInit {
                     }
                 );*/
               //below code for only contacted candidates
-              console.log(this.currentUser);
               console.log('company');
               this.display_list = 1;
               this.authenticationService.get_user_messages_only(this.currentUser._creator)
@@ -148,13 +154,14 @@ export class ChatComponent implements OnInit {
                     msg_data => {
                         if(msg_data['datas'].length>0){
                             console.log(msg_data['datas']);
-                            this.authenticationService.getCandidate(this.type)
+							this.authenticationService.getCandidate(this.type)
                                 .subscribe(
                                     data => {
+										console.log(data['users']);
                                         for (var key in msg_data['datas']) {
                                             for (var key_user in data['users']) {
-                                                if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id){
-                                                    if(this.users.indexOf(data['users'][key_user]) === -1){
+                                                if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id || msg_data['datas'][key].receiver_id == data['users'][key_user]._creator._id){
+													if(this.users.indexOf(data['users'][key_user]) === -1){
                                                         console.log('if');
                                                         this.users.push(data['users'][key_user]);
                                                     }
@@ -222,7 +229,7 @@ export class ChatComponent implements OnInit {
   }
   
   send_message(msgForm : NgForm){
-      if(this.credentials.msg_body && this.credentials.id){
+	  if(this.credentials.msg_body && this.credentials.id){
           //console.log(this.credentials);
           this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
           //console.log(this.msgs);
@@ -238,7 +245,7 @@ export class ChatComponent implements OnInit {
               this.is_company_reply = 0;
               console.log(this.job_title);
           }
-          this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+          this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
             .subscribe(
                 data => {
                     console.log(data);
@@ -250,7 +257,7 @@ export class ChatComponent implements OnInit {
                             console.log(data['datas']);
                             this.new_msgss = data['datas'];
                             this.job_desc = data['datas'][0];
-                            this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
+                            /*this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
                             .subscribe(
                                 data => {
                                     console.log('done');
@@ -260,7 +267,7 @@ export class ChatComponent implements OnInit {
                                     console.log('error');
                                     console.log(error);
                                 }
-                            );
+                            );*/
                         },
                         error => {
                             console.log('error');
@@ -285,7 +292,7 @@ export class ChatComponent implements OnInit {
       this.is_company_reply = 0;
       this.show_accpet_reject = 3;
       this.msg_tag = 'normal';
-      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
         .subscribe(
             data => {
                 console.log(data);
@@ -301,12 +308,11 @@ export class ChatComponent implements OnInit {
   
   accept_offer(msgForm : NgForm){
       console.log('accept');
-      console.log(this.credentials);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.is_company_reply = 1;
       this.show_accpet_reject = 4;
       this.msg_tag = 'normal';
-      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
         .subscribe(
             data => {
                 console.log(data);
@@ -321,15 +327,14 @@ export class ChatComponent implements OnInit {
   }
   
   send_interview_message(msgForm : NgForm){
-      if(this.credentials.date && this.credentials.time && this.credentials.location){
+	  if(this.credentials.date && this.credentials.time && this.credentials.location){
           console.log('interview');
-          console.log(this.credentials);
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
           this.is_company_reply = 1;
           this.msg_tag = 'interview_offer';
-          this.credentials.msg_body = 'Please come for interview details are given below:\n Date: ' + this.credentials.date + '\n Time: '+this.credentials.time+'\n Location: '+this.credentials.location;
+          this.credentials.msg_body = 'Please come for interview details are given below:\n Date: ' + this.credentials.date.formatted + ',\n Time: '+this.credentials.time+',\n Location: '+this.credentials.location;
           console.log(this.credentials.msg_body);
-          this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+          this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
             .subscribe(
                 data => {
                     console.log(data);
@@ -339,6 +344,18 @@ export class ChatComponent implements OnInit {
                     this.credentials.time = '';
                     this.credentials.location = '';
                     this.credentials.description = '';
+					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+                    .subscribe(
+                        data => {
+                            console.log('data');
+                            this.new_msgss = data['datas'];
+                            this.job_desc = data['datas'][0];
+                        },
+                        error => {
+                            console.log('error');
+                            console.log(error);
+                        }
+                    );
                 },
                 error => {
                     console.log('error');
@@ -353,15 +370,15 @@ export class ChatComponent implements OnInit {
   }
   
   send_job_message(msgForm : NgForm){
-      if(this.credentials.job_title && this.credentials.base_salary && this.credentials.start_date){
+	  if(this.credentials.job_title && this.credentials.base_salary && this.credentials.start_date.formatted){
           console.log('job offered');
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
           this.is_company_reply = 1;
           this.msg_tag = 'job_offered';
           this.is_job_offer = 1;
-          this.credentials.msg_body = 'We are offering you a job. Details are given below:\n Job Title: '+this.credentials.job_title+' \n Joining Date: ' + this.credentials.start_date + '\n Yearly Base Salary: '+this.credentials.base_salary+' '+this.credentials.currency+'\n Employment Type: '+this.credentials.employment_type;
+          this.credentials.msg_body = 'We are offering you a job. Details are given below:\n Job Title: '+this.credentials.job_title+', \n Joining Date: ' + this.credentials.start_date.formatted + ', \n Yearly Base Salary: '+this.credentials.base_salary+' '+this.credentials.currency+', \n Employment Type: '+this.credentials.employment_type;
           console.log(this.credentials.msg_body);
-          this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
+          this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.credentials.job_title,this.credentials.base_salary,this.credentials.start_date.formatted,this.credentials.employment_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
             .subscribe(
                 data => {
                     console.log(data);
@@ -373,6 +390,18 @@ export class ChatComponent implements OnInit {
                     this.credentials.employment_type = '';
                     this.credentials.start_date = '';
                     this.credentials.job_description = '';
+					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+                    .subscribe(
+                        data => {
+                            console.log('data');
+                            this.new_msgss = data['datas'];
+                            this.job_desc = data['datas'][0];
+                        },
+                        error => {
+                            console.log('error');
+                            console.log(error);
+                        }
+                    );
                 },
                 error => {
                     console.log('error');
@@ -481,12 +510,13 @@ export class ChatComponent implements OnInit {
       this.msgs = '';
       this.new_msgss = '';
       console.log(id);
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	  this.credentials.id = id;
+	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       console.log("show_msg_area: " + this.show_msg_area);
         //setInterval(() => {
-            //receiver,sender
+			//receiver,sender
             console.log("ID: " + id);
-            this.authenticationService.get_user_messages(id,this.currentUser._creator)
+            this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
             .subscribe(
                 data => {
                     console.log('data');

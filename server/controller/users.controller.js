@@ -9,6 +9,7 @@ const multer = require('../services/multer');
 router.post('/authenticate', authenticate);
 router.put('/emailVerify/:email_hash' , emailVerify);
 router.put('/forgot_password/:email' , forgot_password);
+router.put('/change_password/:id' , change_password);
 router.put('/reset_password/:hash' , reset_password);
 router.put('/verify_client/:email' , verify_client);
 
@@ -70,6 +71,7 @@ router.post('/admin_company_filter' , admin_company_filter);
 router.post('/update_chat_msg_status' , update_chat_msg_status);
 router.get('/get_unread_msgs' , get_unread_msgs);
 router.post('/get_job_desc_msgs' , get_job_desc_msgs);
+router.post('/set_unread_msgs_emails_status' , set_unread_msgs_emails_status);
 
 /////////admin CMS fucntions////////////////////////////////
 router.put('/add_privacy_content'  , add_privacy_content);
@@ -77,6 +79,10 @@ router.get('/get_pages_content/:title', get_content);
 router.get('/get_all_content', get_all_content);
 
 module.exports = router;
+
+const my_url = 'http://localhost/workonblockchain.com/server/uploads/';
+//for live
+//const my_url = 'http://workonblockchainuploads.mwancloud.com/';
 
 /***********authentication functions **************/
 
@@ -128,7 +134,7 @@ function emailVerify(req,res)
 function verify_client(req,res)
 {
     //console.log(req.params.email);
-     userService.verify_client(req.params.email).then(function (err, data) 
+    userService.verify_client(req.params.email).then(function (err, data) 
     {
         if (data) 
         {
@@ -143,6 +149,28 @@ function verify_client(req,res)
     {
         res.json({error: err});
     });
+
+}
+
+/////////////change password///////////////////////
+
+function change_password(req,res)
+{
+	 userService.change_password(req.params.id , req.body).then(function (err, data) 
+			    {
+			        if (data) 
+			        {
+			            res.json(data);
+			        } 
+			        else 
+			        {  
+			           res.send(err);
+			        }
+			    })
+			    .catch(function (err) 
+			    {
+			        res.json({error: err});
+			    });
 
 }
 
@@ -376,7 +404,7 @@ function image(req, res)
     console.log('req.file', req.file);
     let path;
     if (req.file.filename) {
-        path = req.file.filename;
+		path = my_url+''+req.file.filename;
     } else {
         path = req.file.location; // for S3 bucket?
     }
@@ -555,7 +583,13 @@ function employer_image(req, res)
 			console.log(req.file);
 			console.log('done new');
 			res.json(req.file.filename);
-			userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
+			let path;
+			if (req.file.filename) {
+				path = my_url+''+req.file.filename;
+			} else {
+				path = req.file.location; // for S3 bucket?
+			}
+			userService.save_employer_image(path , req.params._id).then(function (err, about) 
 
             {
                 if (about) 
@@ -921,7 +955,13 @@ function upload_chat_file(req, res)
 {
     console.log(req.file);
     console.log('done new');
-    res.json(req.file.filename);
+	let path;
+	if (req.file.filename) {
+        path = my_url+''+req.file.filename;
+    } else {
+        path = req.file.location; // for S3 bucket?
+    }
+    res.json(path);
 }
 
 //inserting chat file in db
@@ -1017,6 +1057,24 @@ function get_unread_msgs(req,res){
 
 function get_job_desc_msgs(req,res){
 	userService.get_job_desc_msgs(req.body).then(function (err, about) 
+	{
+		if (about) 
+		{
+			res.json(about);
+		} 
+		else 
+		{
+			res.json(err);
+		}
+	})
+	.catch(function (err) 
+	{
+		res.json({error: err});
+	});
+}
+
+function set_unread_msgs_emails_status(req,res){
+	userService.set_unread_msgs_emails_status(req.body).then(function (err, about) 
 	{
 		if (about) 
 		{

@@ -33,7 +33,7 @@ const CandidateProfileSchema = mongoose.Schema({
     },
     contact_number: 
     {
-        type: Number,
+        type: String,
         
     },
     nationality: 

@@ -7,6 +7,9 @@ if (process.env.NODE_ENV === 'production') {
 } else if (process.env.NODE_ENV === 'staging') {
     settings.ENVIRONMENT = 'staging';
     config = require('../config/staging.json');
+} else if (process.env.NODE_ENV === 'testing') {
+    settings.ENVIRONMENT = 'testing';
+    config = require('../config/testing.json');
 } else if (process.env.NODE_ENV === 'test') {
     settings.ENVIRONMENT = 'test';
     config = require('../config/default.json');
@@ -16,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
     config = require('../config/default.json');
 }
 
-if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging') {
+if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging' || settings.ENVIRONMENT === 'testing') {
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.username + ":"
         + config.mongo.password + "@" + config.mongo.host + ":"
         + config.mongo.port + "/" + config.mongo.databaseName

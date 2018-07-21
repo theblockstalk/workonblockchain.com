@@ -6,8 +6,7 @@ import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '../../environments/environment';
 
-const imgsrc = environment.img_url;
-console.log(imgsrc);
+
 
 @Component({
   selector: 'app-admin-company-detail',
@@ -66,7 +65,7 @@ export class AdminCompanyDetailComponent implements OnInit {
                          if(data[0].company_logo != null )
                         {                        
                             //console.log(data.image);                     
-                              this.imgPath = imgsrc + data[0].company_logo;
+                              this.imgPath = data[0].company_logo;
                             console.log(this.imgPath);
                         
                         }

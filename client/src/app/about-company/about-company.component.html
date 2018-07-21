@@ -35,17 +35,13 @@
 							<p>{{funded_log}}</p>
 						</div>
 
-						<div class="form-group col-md-6 mr-top-33" *ngIf = '!image_src'>
+						<div class="form-group col-md-6 mr-top-33" >
 						    <input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="image" >
 						    <label id="fileLabel">Upload Company Logo (optional)</label>
 							
 						</div>
 						
-						 <div class="form-group col-md-6" *ngIf = 'image_src'>
-              					<label><p class = "label-p">Image</p></label>
-              					<img src = {{image_src}} >
-   
-            			</div>
+						
 						
 						
             

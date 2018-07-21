@@ -20,13 +20,14 @@ export class AccountSettingsComponent implements OnInit {
     info: any = {};
     log;
     message;
+	unread_msgs_emails = true;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService) 
    { }
 
   ngOnInit() 
   {
-      this.dataservice.currentMessage.subscribe(message => this.message = message);
+	  this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       console.log(this.currentUser.type);
        if(this.currentUser && this.currentUser.type=='candidate')
@@ -36,7 +37,10 @@ export class AccountSettingsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    if(data.disable_account || data.marketing_emails)
+					if(data._creator.is_unread_msgs_to_send){
+					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
+				    }
+					if(data.disable_account || data.marketing_emails)
                     {
                         this.info.marketing = data.marketing_emails;
                         this.info.disable_account= data.disable_account;
@@ -50,7 +54,10 @@ export class AccountSettingsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                   if(data.disable_account || data.marketing_emails)
+				   if(data._creator.is_unread_msgs_to_send){
+					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
+				   }
+				   if(data.disable_account || data.marketing_emails)
                     {
                         this.info.marketing = data.marketing_emails;
                         this.info.disable_account= data.disable_account;
@@ -115,6 +122,31 @@ export class AccountSettingsComponent implements OnInit {
                    
                 });
        }
+  }
+  
+  unread_msgs_emails_send(){
+	  console.log('set here');
+	  if(this.currentUser)
+      {
+		this.authenticationService.set_unread_msgs_emails_status(this.currentUser._creator,this.info.unread_msgs_emails)
+		.subscribe(
+			data => 
+			{
+				if(data.error )
+				{
+					this.log=data.error;
+				}
+				else
+				{
+					console.log(data);
+				}
+			},
+			error => {
+			  this.log = 'Something getting wrong';
+			   
+			}
+		);
+	  }
   }
 
 }

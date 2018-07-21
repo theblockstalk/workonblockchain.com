@@ -11,8 +11,6 @@ import {environment} from '../../environments/environment';
 const URL = environment.backend_url;
 //console.log(URL);
 
-const imgsrc = environment.img_url;
-console.log(imgsrc);
 
 @Component({
   selector: 'app-about-company',
@@ -23,7 +21,7 @@ export class AboutCompanyComponent implements OnInit {
      info : any;
     currentUser: User;log;
     founded_log;employee_log;funded_log;des_log;image_src;
-    company_founded;no_of_employees;company_funded;company_description;terms_active_class;about_active_class;
+    company_founded;no_of_employees;company_funded;company_description;terms_active_class;about_active_class;image;
   constructor(private route: ActivatedRoute,
         private router: Router,private http: HttpClient,
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
@@ -51,7 +49,7 @@ export class AboutCompanyComponent implements OnInit {
                      this.company_funded=data.company_funded;
                      this.company_description =data.company_description;
                        if(data.company_logo != null){
-                       this.image_src  = imgsrc + data.company_logo;
+                       this.image  =  data.company_logo;
                            }
                        
                       //this.router.navigate(['/login']);

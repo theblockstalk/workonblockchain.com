@@ -4,8 +4,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {NgForm} from '@angular/forms';
 import {environment} from '../../environments/environment';
-const imgsrc = environment.img_url;
-console.log(imgsrc);
+
 
 @Component({
   selector: 'app-candidate-detail',
@@ -105,19 +104,10 @@ export class CandidateDetailComponent implements OnInit {
                     this.current_salary = data[0].current_salary;
                      if(data[0].image != null )
                     {
-                        let x = data[0].image.split("://");
-                        console.log(x[0]);
-                        if(x[0] == 'http' || x[0] == 'https')
-                        {
-                            this.imgPath = data[0].image;
-                        }
-                        else
-                        {
-                      //console.log(data.image);
-                        this.image_src =  data[0].image ;
-                        this.imgPath = imgsrc + data[0].image;
+                        
+                        this.imgPath = data[0].image;
                         console.log(this.imgPath);
-                        }
+                        
                     }
 
             });          
@@ -135,9 +125,11 @@ export class CandidateDetailComponent implements OnInit {
   msg_body;
   job_offer_log;   
   job_offer_msg;
+  full_name;
   send_job_offer(msgForm : NgForm){
-		console.log(this.credentials);
-        if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
+		this.full_name = this.first_name+' '+this.last_name;
+        console.log(this.full_name);
+		/*if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
 			.subscribe(
@@ -152,7 +144,7 @@ export class CandidateDetailComponent implements OnInit {
 						this.is_company_reply = 0;
 						this.msg_body = this.credentials.job_desc+' Job Title: '+this.credentials.job_title+', Job Type: '+this.credentials.job_type+', Salary: '+this.credentials.salary+' '+this.credentials.currency;
 						this.credentials.salary = this.credentials.salary+' '+this.credentials.currency;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.currentUser.email,this.credentials.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
+						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.currentUser.email,this.full_name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
 							.subscribe(
 								data => {
 									console.log(data);
@@ -175,7 +167,7 @@ export class CandidateDetailComponent implements OnInit {
         }
         else{
             this.job_offer_msg = 'Please enter all info';
-        }
+        }*/
     }
 
 }

@@ -6,8 +6,7 @@ import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 //const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
-const imgsrc = environment.img_url;
-console.log(imgsrc);
+
 
 @Component({
   selector: 'app-admin-candidate-detail',
@@ -60,7 +59,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.verify =data[0]._creator.is_verify;
                 if(data[0].image != null )
                     {
-                        let x = data[0].image.split("://");
+                       /* let x = data[0].image.split("://");
                         console.log(x[0]);
                         if(x[0] == 'http' || x[0] == 'https')
                         {
@@ -69,10 +68,10 @@ export class AdminCandidateDetailComponent implements OnInit {
                         else
                         {
                       //console.log(data.image);
-                        this.image_src =  data[0].image ;
-                        this.imgPath = imgsrc + data[0].image;
+                       */
+                        this.imgPath =  data[0].image;
                         console.log(this.imgPath);
-                        }
+                        
                     }
                 console.log(this.verify);
                 if(this.approve === 1)
