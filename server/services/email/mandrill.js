@@ -13,12 +13,12 @@ const mandrill = require('mandrill-api/mandrill');
 //     },
 //
 // }
-module.exports.sendEmail = async function sendEmail(mandrillOptions) {
+module.exports.sendEmail = function sendEmail(mandrillOptions) {
     mandrillOptions.message.from_email = settings.MANDRILL.FROM_ADDRESS;
     mandrillOptions.message.from_name = settings.MANDRILL.FROM_NAME;
     mandrillOptions.message.merge_language = "mailchimp";
 
-    await mandrillSendTemplate(mandrillOptions.templateName, mandrillOptions.message)
+    mandrillSendTemplate(mandrillOptions.templateName, mandrillOptions.message)
 }
 
 function mandrillSendTemplate(templateName, message) {
@@ -32,12 +32,15 @@ function mandrillSendTemplate(templateName, message) {
         "ip_pool": "Main Pool"
     };
 
-    console.log('Sending email with mandrill: ', templateDetails)
+    console.log('Sending email with mandrill: ', templateDetails);
+
     mandrill_client.messages.sendTemplate(templateDetails, function(result) {
         if(result[0].status !== 'sent') {
             console.log('Status is not sent for email to : \nEmail: ' + message.to)
             console.log("\nTemplate : " + templateName + '\nMandrill ID : ' + result[0]._id
                 + 'Reason : ' + result[0].reject_reason);
+        } else {
+            console.log('Email was sent to ', message.to)
         }
     }, function(error) {
         // Mandrill returns the error as an object with name and message keys
