@@ -1276,6 +1276,28 @@ fieldset.scheduler-border {
     display: none;
 }
 
+.radio-toolbar input[type="radio"] {
+  display: none;
+}
+
+.radio-toolbar label {
+  display: inline-block;
+  padding: .5rem 1.5rem;
+  cursor: pointer;
+  min-height: 48px;
+  box-shadow: 0 5px 18px 0 hsla(0,0%,7%,.05);
+  border: 1px solid #acacb5;
+  font-size: 17px;
+  text-align: center;
+  height: 48px;
+}
+
+.radio-toolbar input[type="radio"]:checked+label {
+  color: #fff;
+  background-color: #537284;
+  border-color:#537284;
+}
+
 .rd_label{
     position: relative;
     left: 20px;

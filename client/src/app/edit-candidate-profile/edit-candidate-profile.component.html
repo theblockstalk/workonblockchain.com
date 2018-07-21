@@ -47,7 +47,7 @@
 
 							<div class="form-group col-md-6">
 								<label><p class = "label-p">Contact Number</p></label>
-								<input type="number" class="form-control" id="" placeholder="Phone number" name="contact_number" [(ngModel)]="info.contact_number">
+								<input type="tel" class="form-control" id="" placeholder="Phone number" name="contact_number" [(ngModel)]="info.contact_number">
 							</div>
 
 							<div class="form-group col-md-6">
@@ -268,15 +268,15 @@
                         <div class = "row" *ngFor="let option of commercially_worked; let i = index ">
             
                         <p class="rd_label label-p">{{option.value}}</p>
-                        <div class = "form-group col-md-12 controls__group">
-                        <div *ngFor="let exp of exp_year">
-                        <label class="">
-                          {{exp.name}} 
-                          <input type="radio" name="radiogroup- {{ option.value}}"  value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" /></label>
-                          <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
-                      </div>
-
-										</div>
+                        <div class = "form-group radio-toolbar col-md-12 controls__group">
+		<div *ngFor="let exp of exp_year; let i_ind =index">
+         <input type="radio" name="radiogroup- {{ option.value}}" id="rg{{option.value}}{{i_ind}}"  value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
+       <label class="radio-inline d-flex justify-content-center align-items-center" for="rg{{option.value}}{{i_ind}}">
+        {{exp.name}}
+          </label>
+		  </div>    
+		  <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
+      </div>
 									</div>
 							</div>
 							<hr>
@@ -313,17 +313,15 @@
           <div class = "row" *ngFor="let exp_value of platforms_designed;let i_index = index">
            
             <p class="rd_label label-p">{{exp_value.value}}</p>
-            <div class = "form-group col-md-12 controls__group">
-            <div *ngFor="let exp of exp_year ">
-              <label class="">{{exp.name}}
-                 <input type="radio" name="group - {{ exp_value.value }} "  [checked]=" designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value" 
-            value="{{exp.value}}" (change)="onPlatformYearOptions($event , exp_value.value)" 
-             /> </label>
-
-            <input type="text" class="form-control" name="platforms" [(ngModel)]='platforms' style="display: none;">
-            </div>
-               
-            </div>
+           <div class = "form-group radio-toolbar col-md-12 controls__group">
+		<div *ngFor="let exp of exp_year; let i_ind =index">
+         <input type="radio" name="radiogroup - {{ exp_value.value }} "  [checked]=" designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value" id="dg{{exp_value.value}}{{i_ind}}"  value="{{exp.value}}" (change)="onPlatformYearOptions($event , exp_value.value)"  > 
+       <label class="radio-inline d-flex justify-content-center align-items-center" for="dg{{exp_value.value}}{{i_ind}}">
+        {{exp.name}}
+          </label>
+		  </div>    
+		 <input type="text" class="form-control" name="platforms" [(ngModel)]='platforms' style="display: none;">
+      </div>
           </div>
           </div>   
                       
@@ -363,17 +361,17 @@
           <div class = "row" *ngFor="let exp_value of experimented_platform;let i_index = index">
            
             <p class="rd_label label-p">{{exp_value.value}}</p>
-            <div class = "form-group col-md-12 controls__group">
-            <div *ngFor="let exp of exp_year ">
-              <label class="">{{exp.name}}
-                 <input type="radio" name="group - {{ exp_value.value }} "  [checked]=" exp_expYear[i_index] === exp.value && exp_db_valye[i_index] === exp_value.value" 
-            value="{{exp.value}}" (change)="onExpYearOptions($event , exp_value.value)" 
-             /> </label>
-
-            <input type="text" class="form-control" name="experience_year" [(ngModel)]='expYear' style="display: none;">
-            </div>
-               
-            </div>
+            <div class = "form-group radio-toolbar col-md-12 controls__group">
+		<div *ngFor="let exp of exp_year; let i_ind =index">
+        <input type="radio" name="rrgroup - {{ exp_value.value }} "  [checked]=" exp_expYear[i_index] === exp.value && exp_db_valye[i_index] === exp_value.value" 
+            value="{{exp.value}}" (change)="onExpYearOptions($event , exp_value.value)" id="radiog{{exp_value.value}}{{i_ind}}">
+       <label class="radio-inline d-flex justify-content-center align-items-center" for="radiog{{exp_value.value}}{{i_ind}}">
+        {{exp.name}}
+          </label>
+		  </div>    
+		 <input type="text" class="form-control" name="experience_year" [(ngModel)]='expYear' style="display: none;">
+      </div>
+	  
           </div>
           </div>
 
@@ -441,16 +439,15 @@
           <div class = "row" *ngFor="let lang_value of language; let i = index ">
             
             <p class="rd_label label-p">{{lang_value.value}}</p>
-            <div class = "form-group col-md-12 controls__group">
-              <div *ngFor="let exp of exp_year">
-              <label class="">
-                {{exp.name}} 
-                   <input type="radio" name="radiogroup- {{ lang_value.value}}" [checked]="lang_expYear_db[i] === exp.value && lang_db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onLangExpYearOptions($event , lang_value.value)" /></label>
-                  <input type="text" class="form-control" name="language_experience_year" [(ngModel)]='LangexpYear' style="display: none;">
-                 </div>
-               
-              
-            </div>
+             <div class = "form-group radio-toolbar col-md-12 controls__group">
+		<div *ngFor="let exp of exp_year; let i_ind =index">
+       <input type="radio" name="radiogrop- {{ lang_value.value}}" [checked]="lang_expYear_db[i] === exp.value && lang_db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onLangExpYearOptions($event , lang_value.value)" id= "radiogrop{{lang_value.value}}{{i_ind}}" >
+       <label class="radio-inline d-flex justify-content-center align-items-center" for="radiogrop{{lang_value.value}}{{i_ind}}">
+        {{exp.name}}
+          </label>
+		  </div>    
+		  <input type="text" class="form-control" name="language_experience_year" [(ngModel)]='LangexpYear' style="display: none;">
+      </div>
           </div>
           </div>
           </div>
