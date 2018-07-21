@@ -34,6 +34,7 @@ service.forgot_password=forgot_password;
 service.reset_password=reset_password;
 service.emailVerify=emailVerify;
 service.verify_client = verify_client;
+service.change_password = change_password;
 ///////////candidate functions////////////////
 service.getAll = getAll;
 service.getById = getById;
@@ -304,6 +305,62 @@ function reset_password(hash,data)
     		}
         
     return deferred.promise;
+}
+
+////////////change password///////////////////////////
+function change_password(id , param)
+{
+	var deferred = Q.defer(); 
+	
+	console.log(id);
+		//console.log(token);
+		users.findOne({_id :id }, function (err, user)
+	    { 
+    	
+			console.log(user);
+			if (err) 
+				deferred.reject(err.name + ': ' + err.message);
+			if (user && bcrypt.compareSync(param.current_password, user.password)) 
+	        {
+				
+				
+				updatePassword(user._id);
+	        }
+			else
+			{
+				deferred.reject("Current Password Incorrect");
+			}
+				
+           
+	    });
+
+		function updatePassword(_id ) 
+		{
+			console.log(_id);
+			
+			//console.log(user.password);
+			 var user = _.omit(param, 'password'); 
+			 console.log(user);
+	          // add hashed password to user object
+	          user.password = bcrypt.hashSync(param.password, 10);
+			
+			var set = 
+			{
+					password:user.password,
+			};
+			users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
+		    {
+				if (err) 
+					deferred.reject(err.name + ': ' + err.message);
+				else
+            	{
+					
+					deferred.resolve({msg:'Password changed successfully'});
+            	}
+		    });
+		}
+	   
+		return deferred.promise;
 }
 
 /////////////////emailVerify///////////////////////////

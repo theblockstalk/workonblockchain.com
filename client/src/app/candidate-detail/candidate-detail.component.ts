@@ -4,8 +4,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {NgForm} from '@angular/forms';
 import {environment} from '../../environments/environment';
-const imgsrc = environment.img_url;
-console.log(imgsrc);
+
 
 @Component({
   selector: 'app-candidate-detail',
@@ -105,19 +104,10 @@ export class CandidateDetailComponent implements OnInit {
                     this.current_salary = data[0].current_salary;
                      if(data[0].image != null )
                     {
-                        let x = data[0].image.split("://");
-                        console.log(x[0]);
-                        if(x[0] == 'http' || x[0] == 'https')
-                        {
-                            this.imgPath = data[0].image;
-                        }
-                        else
-                        {
-                      //console.log(data.image);
-                        this.image_src =  data[0].image ;
-                        this.imgPath = imgsrc + data[0].image;
+                        
+                        this.imgPath = data[0].image;
                         console.log(this.imgPath);
-                        }
+                        
                     }
 
             });          

@@ -6,7 +6,6 @@
 export const environment = {
   production: false,
   backend_url: 'http://localhost:4000/',
-  img_url : 'http://localhost/workonblockchain.com/server/uploads/'
 };
 
 console.log(environment);

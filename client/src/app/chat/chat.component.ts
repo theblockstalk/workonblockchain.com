@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
 //const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
-const URL = environment.img_url;
+
 const back_url = environment.backend_url;
 
 @Component({

@@ -11,7 +11,7 @@
 				 		<span class = "p_img" *ngIf="!imgPath">
 				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
-				 		<span class = "p_img" *ngIf="imgPath">
+				 		<span class = "p_img" *ngIf="imgPath && company_reply === 1">
 				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
 				 		
@@ -55,7 +55,7 @@
 				 			</li>
 
 				 			<li>
-				 				<a href = "">
+				 				<a href = "" *ngIf='company_reply === 1'>
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 				 					<span class = "li_txt"> Contact Number : {{contact_number}}</span>
 				 				</a>
@@ -264,7 +264,7 @@
 				 	
 				 </section>
 
-				  <section class = "profile job_info">
+				  <section class = "profile job_info" *ngIf='company_reply === 1'>
 					<h3>Work History</h3>
 					<div class = "company_area" *ngFor='let work of history'>
 					 	<div class="info-area pro_br-btm">
@@ -334,7 +334,7 @@
 				 	
 				 </section>
 
-				 <section class = "profile job_info">
+				 <section class = "profile job_info" *ngIf='company_reply === 1'>
 					<h3>Education</h3>
 					
 				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>
