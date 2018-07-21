@@ -201,7 +201,7 @@ export class CompanySearchComponent implements OnInit {
                 data => 
                 {
                   console.log(data); 
-                  if(!data.terms)
+                  if(data.terms == false)
                   {
                       this.router.navigate(['/company_wizard']);
                   }
