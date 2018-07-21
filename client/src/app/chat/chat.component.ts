@@ -292,7 +292,7 @@ export class ChatComponent implements OnInit {
       this.is_company_reply = 0;
       this.show_accpet_reject = 3;
       this.msg_tag = 'normal';
-      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
         .subscribe(
             data => {
                 console.log(data);
@@ -308,12 +308,11 @@ export class ChatComponent implements OnInit {
   
   accept_offer(msgForm : NgForm){
       console.log('accept');
-      console.log(this.credentials);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.is_company_reply = 1;
       this.show_accpet_reject = 4;
       this.msg_tag = 'normal';
-      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.display_name,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
         .subscribe(
             data => {
                 console.log(data);
