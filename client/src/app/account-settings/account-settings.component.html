@@ -33,6 +33,21 @@
 							</div>
 						</div>
 				   </div>
+				   
+				   <div class="group">
+				   		<!--<h1>Required for platform use</h1>-->
+						
+						<div class="items">
+							<!--<label for="email">Email</label>-->
+							<span>Unread Chat Messages Email</span>
+							<div class="btn-container">
+								<label class="switch">
+								  <input type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="unread_msgs_emails_send()" >
+								  <span class="slider round"></span>
+								</label>
+							</div>
+						</div>
+				   </div>
 
 				   <div class="group">
 						

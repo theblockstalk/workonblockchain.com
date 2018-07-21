@@ -22,6 +22,7 @@ export class CompanySearchComponent implements OnInit {
   public current: string;
   msg;
     is_approved;
+	display_name;
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
     
   language_opt=
@@ -189,7 +190,8 @@ export class CompanySearchComponent implements OnInit {
             this.authenticationService.getCurrentCompany(this.currentUser._creator)
             .subscribe(
             data => {
-               console.log(data);
+                console.log(data);
+				this.display_name = data[0].first_name+' '+data[0].last_name;
                 this.is_approved = data[0]._creator.is_approved;
                 console.log(this.is_approved);
                if(this.is_approved === 0 )
@@ -494,7 +496,7 @@ export class CompanySearchComponent implements OnInit {
 						this.msg_tag = 'job_offer';
 						this.is_company_reply = 0;
 						this.msg_body = this.credentials.job_desc+' Job Title: '+this.credentials.job_title+', Job Type: '+this.credentials.job_type+', Salary: '+this.credentials.salary;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.currentUser.email,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
+						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
 							.subscribe(
 								data => {
 									console.log(data);

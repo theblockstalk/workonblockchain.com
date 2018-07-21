@@ -1970,7 +1970,7 @@ input[type=checkbox] {
 	position: relative;
     float: right;
     margin-right: 30px;
-    top: 6px;
+    top: -12px;
     font-size: 10px;
 }
 
@@ -1978,7 +1978,7 @@ input[type=checkbox] {
 	position: relative;
     float: left;
     margin-left: -10px;
-    top: 6px;
+    top: -12px;
     font-size: 10px;
 }
 
