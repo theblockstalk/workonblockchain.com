@@ -5,7 +5,7 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var expressJwt = require('express-jwt');
 var mongoose = require('mongoose');
-const settings = require('./services/settings');
+const settings = require('./settings');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
