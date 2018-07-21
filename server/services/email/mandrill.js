@@ -32,21 +32,18 @@ function mandrillSendTemplate(templateName, message) {
         "ip_pool": "Main Pool"
     };
 
-    console.log('Sending email with mandrill: ', templateDetails);
+    console.log('Sending email with mandrill: ', JSON.stringify(templateDetails, null, 2));
 
     mandrill_client.messages.sendTemplate(templateDetails, function(result) {
         if(result[0].status !== 'sent') {
-            console.log('Status is not sent for email to : \nEmail: ' + message.to)
-            console.log("\nTemplate : " + templateName + '\nMandrill ID : ' + result[0]._id
-                + 'Reason : ' + result[0].reject_reason);
+            console.log('Status is not sent for email to : \nEmail: ' + JSON.stringify(message.to))
+            console.log("Status: " + result[0].status + "\nTemplate : " + templateName + '\nMandrill ID : ' + result[0]._id + '\nReason : ' + result[0].reject_reason);
         } else {
             console.log('Email was sent to ', message.to)
         }
     }, function(error) {
-        // Mandrill returns the error as an object with name and message keys
         console.log('A mandrill error occurred: ' + error.name + ' - ' + error.message);
-        console.log('\nUnable to send email to \nEmail: ' + message.to
-            + "\nTemplate : " + templateName);
+        console.log('Unable to send email to \nEmail: ' + message.to + "\nTemplate : " + templateName);
 
     });
 }
