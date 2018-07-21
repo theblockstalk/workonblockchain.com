@@ -22,6 +22,7 @@ export class ReferralComponent implements OnInit {
 	email_subject = ' thinks that you should Work on Blockchain!';
 	mail_body = '';
 	show_refreal;
+	display_name;
 	
 	constructor(
 		private authenticationService: UserService
@@ -32,10 +33,18 @@ export class ReferralComponent implements OnInit {
 		this.show_refreal = 1;
 		if(this.currentUser){
 			this.show_refreal = 10;
-			console.log('cu');
+			this.authenticationService.getById(this.currentUser._creator)
+            .subscribe(
+                data => {
+                    this.display_name = data[0].first_name+' '+data[0].last_name;
+					this.mail_body = 'Hi, \n\nYou have been invited by '+this.display_name+' to join Work on Blockchain. \n\nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \n\nGive us a try! \n\nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
+					this.email_subject = this.display_name+this.email_subject;
+				},
+                error => {
+                    console.log('error');
+                }
+            );
 			this.ref_link = this.email_ref_link+this.currentUser.ref_link;
-			this.email_subject = this.currentUser.email+this.email_subject;
-			this.mail_body = 'Hi, \nYou have been invited by '+this.currentUser.email+' to join Work on Blockchain. \nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \nGive us a try! \nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
 		}
 		console.log(this.show_refreal);
 	}

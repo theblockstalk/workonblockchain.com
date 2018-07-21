@@ -272,6 +272,7 @@ export class UserService {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
         localStorage.removeItem('googleUser');
+         localStorage.removeItem('linkedinUser');
     }
 
     upload_image(formData:any) 
@@ -346,6 +347,29 @@ export class UserService {
     {
         
         return this.http.put<any>(URL+'users/reset_password/' + hash, data)
+            .map(data => {
+           
+                if (data) 
+                {
+                    console.log(data);
+                    return data;
+                }
+                else
+                {
+                    console.log(data);
+                    return data.msg;
+
+                }
+ 
+                
+            });
+
+    }   
+    
+    change_password(id: string, params : any) 
+    {
+        
+        return this.http.put<any>(URL+'users/change_password/' + id, params)
             .map(data => {
            
                 if (data) 
@@ -704,4 +728,17 @@ export class UserService {
             return data
         });
 	}
+	
+	set_unread_msgs_emails_status(user_id: string, status: any) 
+    {
+		return this.http.post<any>(URL+'users/set_unread_msgs_emails_status', {user_id:user_id,status:status})
+        .map(data => {
+			if (data){
+				return data;
+            }
+			else{
+				return data.msg;
+			}
+		});
+    }
 }

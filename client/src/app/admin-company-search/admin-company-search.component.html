@@ -83,11 +83,14 @@
                             && data.company_founded && data.company_funded && data.no_of_employees && data.disable_account == false)">
 <!-- 				    <div class="panel panel-default">
  -->				      <div class="panel-heading">
-				      	<div class = "user-pic">
+				      	<div class = "user-pic" *ngIf="!data.company_logo">
 				      		<img src = "/assets/profile/profile-image.png" alt = "candidate_pic">
-				      		<!--  <img src = "/assets/profile/profile-image.png" alt = "candidate_pic" *ngIf="!data.image">
-				      		<img  [attr.src]="'/var/www/html/workonblockchain/server/uploads/' + data.image" alt = "candidate_pic" *ngIf="data.image">
-				      		-->
+				      		
+				      	</div>
+				      	
+				      	<div class = "user-pic" *ngIf="data.company_logo">
+				      		<img src = "{{data.company_logo}}" alt = "candidate_pic">
+				      		
 				      	</div>
 
 				      	<div class = "user-detail">

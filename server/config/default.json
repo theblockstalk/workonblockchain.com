@@ -10,12 +10,18 @@
   "mongo": {
     "host": "localhost",
     "port": 27017,
-    "databaseName": "blockchain"
+    "databaseName": "wob"
   },
   "expressJwt": {
     "secret": "shhhhhhhhhhhhhhh"
   },
   "server": {
     "port": 4000
+  },
+  "aws": {
+    "region": "eu-west-1",
+    "s3Bucket": "files.testing.workonblockchain.com",
+    "accessKey": "AKIAIKSQJ5LKFPGP3K6Q",
+    "secretAccessKey": "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"
   }
 }

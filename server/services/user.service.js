@@ -7,7 +7,7 @@ var Q = require('q');
 var mongo = require('mongoskin');
 const users = require('../model/users');
 const CandidateProfile = require('../model/candidate_profile');
-var image = require('../model/image');
+//var image = require('../model/image');
 const Pages = require('../model/pages_content');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
@@ -34,6 +34,7 @@ service.forgot_password=forgot_password;
 service.reset_password=reset_password;
 service.emailVerify=emailVerify;
 service.verify_client = verify_client;
+service.change_password = change_password;
 ///////////candidate functions////////////////
 service.getAll = getAll;
 service.getById = getById;
@@ -80,6 +81,7 @@ service.save_chat_file = save_chat_file;
 service.insert_message_job = insert_message_job;
 service.update_job_message = update_job_message;
 service.get_job_desc_msgs = get_job_desc_msgs;
+service.set_unread_msgs_emails_status = set_unread_msgs_emails_status;
 
 ////////admin functions/////////////////////////
 service.admin_role = admin_role;
@@ -304,6 +306,62 @@ function reset_password(hash,data)
     		}
         
     return deferred.promise;
+}
+
+////////////change password///////////////////////////
+function change_password(id , param)
+{
+	var deferred = Q.defer(); 
+	
+	console.log(id);
+		//console.log(token);
+		users.findOne({_id :id }, function (err, user)
+	    { 
+    	
+			console.log(user);
+			if (err) 
+				deferred.reject(err.name + ': ' + err.message);
+			if (user && bcrypt.compareSync(param.current_password, user.password)) 
+	        {
+				
+				
+				updatePassword(user._id);
+	        }
+			else
+			{
+				deferred.reject("Current Password Incorrect");
+			}
+				
+           
+	    });
+
+		function updatePassword(_id ) 
+		{
+			console.log(_id);
+			
+			//console.log(user.password);
+			 var user = _.omit(param, 'password'); 
+			 console.log(user);
+	          // add hashed password to user object
+	          user.password = bcrypt.hashSync(param.password, 10);
+			
+			var set = 
+			{
+					password:user.password,
+			};
+			users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
+		    {
+				if (err) 
+					deferred.reject(err.name + ': ' + err.message);
+				else
+            	{
+					
+					deferred.resolve({msg:'Password changed successfully'});
+            	}
+		    });
+		}
+	   
+		return deferred.promise;
 }
 
 /////////////////emailVerify///////////////////////////
@@ -2143,10 +2201,11 @@ function update_chat_msg_status(data){
 		chat.update({
       $and : [
                { 
-                 $or : [
+				 receiver_id: data.sender_id
+                 /*$or : [
 					{ $and : [ { receiver_id : {$regex: data.receiver_id} }, { sender_id : {$regex: data.sender_id} } ] },
 					{ $and : [ { receiver_id : {$regex: data.sender_id} }, { sender_id : {$regex: data.receiver_id} } ] }
-				]
+				]*/
                },
                { 
                  is_read:data.status
@@ -2171,7 +2230,7 @@ function get_unread_msgs(){
 		}
 		else{
 			for(var i=0;i<result.length;i++){
-				users.findOne({ _id: result[i]},{"email":1}, function (err, newResult){
+				users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1}, function (err, newResult){
 					if(newResult){
 						chatReminderEmail.sendEmail(newResult.email);
 					}
@@ -2207,6 +2266,24 @@ function get_job_desc_msgs(data){
 			});
 		}
 	});
+	return deferred.promise;
+}
+
+function set_unread_msgs_emails_status(data){
+	var deferred = Q.defer();
+	console.log(data.user_id);
+		var set = 
+		{
+			 is_unread_msgs_to_send: data.status,
+			 
+		};
+		users.update({ _id: data.user_id},{ $set: set }, function (err, doc) 
+		{
+			if (err) 
+			   deferred.reject(err.name + ': ' + err.message);
+			else
+			   deferred.resolve(set);
+		});
 	return deferred.promise;
 }
 

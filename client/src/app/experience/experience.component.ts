@@ -104,7 +104,7 @@ export class ExperienceComponent implements OnInit
                         }
                         //this.exp_data.push(data.experience_roles) ;
                     //console.log(data.experience_roles.length);
-                      if(data.experience_roles.length>0)
+                      if(data.experience_roles)
                       {
                           this.expYear = data.experience_roles;
                       for (let key of data.experience_roles) 
@@ -422,7 +422,7 @@ export class ExperienceComponent implements OnInit
     experience_submit(searchForm: NgForm)
     {
      
-     // console.log(searchForm.value);
+      console.log(searchForm.value);
        // console.log(this.EducationForm.value);
         
         if(!this.ExperienceForm.value.ExpItems[0].companyname || !this.ExperienceForm.value.ExpItems[0].positionname ||
@@ -444,7 +444,7 @@ export class ExperienceComponent implements OnInit
              {
              console.log("else");
              this.log='';
-       this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.EducationForm.value.itemRows , this.ExperienceForm.value.ExpItems , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
+            this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.EducationForm.value.itemRows , this.ExperienceForm.value.ExpItems , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
             .subscribe(
                 data => {
                 if(data)

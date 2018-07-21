@@ -54,7 +54,7 @@ export class EditCompanyProfileComponent implements OnInit {
                      this.company_funded=data.company_funded;
                      this.company_description =data.company_description;
                        if(data.company_logo != null){
-                       this.image_src  = data.company_logo;
+                       this.image  = data.company_logo;
                            }
                        
                       //this.router.navigate(['/login']);

@@ -137,11 +137,14 @@
 				     data.interest_area  && data.country && data.disable_account == false)">
 <!-- 				    <div class="panel panel-default">
  -->				      <div class="panel-heading">
-				      	<div class = "user-pic">
+				      	<div class = "user-pic" *ngIf="!data.company_logo">
 				      		<img src = "/assets/profile/profile-image.png" alt = "candidate_pic">
-				      		<!--  <img src = "/assets/profile/profile-image.png" alt = "candidate_pic" *ngIf="!data.image">
-				      		<img  [attr.src]="'/var/www/html/workonblockchain/server/uploads/' + data.image" alt = "candidate_pic" *ngIf="data.image">
-				      		-->
+				      		
+				      	</div>
+				      	
+				      	<div class = "user-pic" *ngIf="data.company_logo">
+				      		<img src = "{{data.company_logo}}" alt = "candidate_pic">
+				      		
 				      	</div>
 
 				      	<div class = "user-detail">
@@ -245,14 +248,14 @@
       <p class = "input_p">Job Description</p>
       <textarea class="form-control" name="job_desc" [(ngModel)]="credentials.job_desc" rows="5" id="comment" placeholder="something detail here"></textarea>
     </div>
-    <div class="checkbox">
+    <!--<div class="checkbox">
    <label class = "check-label"> Accept <a href = "">Workonblockchain.com  Term and Conditions </a>
     <input type = "checkbox" value = "">
     <span class="checkmark">
      <div></div>
     </span>
    </label>
-    </div>
+    </div>-->
 	<p style="color: green;font-size: 18px;">{{job_offer_log}}</p>
 		  <div class="modal-footer">
 				<button type="submit" class="btn btn-primary model-btn submit">Submit Job Offer</button>
