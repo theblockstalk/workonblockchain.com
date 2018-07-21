@@ -4,8 +4,7 @@ module.exports.sendEmail = function sendEmail(email) {
     const sendTo = {
         email: email,
         name: "NAME OF RECIPIENT - NEED TO ADD THIS!!!"
-    }
-    const sentToName = 'NAME OF RECIPIENT'; // We need to get the user's name...
+    };
     const subject = "New Message in Your Chat";
 
     const nodemonOptions = {
