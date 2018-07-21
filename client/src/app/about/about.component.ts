@@ -90,11 +90,11 @@ export class AboutComponent implements OnInit
                     if(data.image != null && data.social_type == "")
                     {
                       //console.log(data.image);
-                     //this.info.image_src = '/var/www/html/workonblockchain/server/uploads/' + data.image ;
+                     this.info.image_src = data.image ;
                     }
                     else if(data.image != null)
                     {
-                        //this.info.image_src = data.image ;
+                        this.info.image_src = '' ;
                      }
 
                     this.link= "/job";

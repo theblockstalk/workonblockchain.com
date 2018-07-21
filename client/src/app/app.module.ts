@@ -70,6 +70,8 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { MyDatePickerModule } from 'mydatepicker';
+import { JwSocialButtonsModule } from 'jw-angular-social-buttons';
+
 
 let config = new AuthServiceConfig([
   {
@@ -123,13 +125,15 @@ const appRoutes: Routes = [
     {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
     {path : 'admin-terms-and-condition-editor' , component: AdminTermsConditionEditorComponent},
     {path : 'privacy-policy' , component: PrivacyPolicyComponent},
-    {path : 'term-and-conditions' , component: TermsAndConditionComponent},
+    {path : 'terms-for-candidate' , component: TermsAndConditionComponent},
     {path : 'account-settings' , component: AccountSettingsComponent},
     {path : 'faq' , component: FaqComponent},
     {path : 'terms-for-company' , component: CompanyTermsAndConditionsComponent},
     {path : 'my-profile' , component: PublicProfileLinkComponent},
     {path : 'contact-us' , component: ContactUsComponent},
     {path : 'legal-notice' , component: LegalNoticeComponent},
+    
+    {path : 'change-password' , component: ChangePasswordComponent},
     //import { SettingsComponent } from './settings/settings.component';
 
     { path: '**', redirectTo: '' }
@@ -204,7 +208,8 @@ const appRoutes: Routes = [
     TooltipModule.forRoot(),
     AngularFontAwesomeModule,
     CKEditorModule,
-	MyDatePickerModule,
+    MyDatePickerModule,
+    JwSocialButtonsModule,
     RouterModule.forRoot(appRoutes),
 	ScrollToModule.forRoot()
   ],

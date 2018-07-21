@@ -40,6 +40,7 @@ export class TermsWizardComponent implements OnInit {
                 data => 
                 {
                   console.log(data);
+                    this.marketing_emails = data.marketing_emails;
                  if(data.terms)
                   {
                       this.termscondition = data.terms;

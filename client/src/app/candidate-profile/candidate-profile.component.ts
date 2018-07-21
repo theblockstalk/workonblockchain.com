@@ -8,8 +8,8 @@ import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../data.service";
 import {environment} from '../../environments/environment';
-const imgsrc = environment.img_url;
-console.log(imgsrc);
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-candidate-profile',
@@ -17,16 +17,22 @@ console.log(imgsrc);
   styleUrls: ['./candidate-profile.component.css']
 })
 export class CandidateProfileComponent implements OnInit {
+
         currentUser: User;
         first_name;last_name;description;companyname;degreename;
         interest_area;why_work;availability_day;
         countries;commercial;history;education;
         experimented;languages;current_currency;current_salary;image_src;
         imgPath;nationality;contact_number;id;
-    share_link;
+        share_link;
+   
 
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
-        private authenticationService: UserService,private dataservice: DataService) { }
+        private authenticationService: UserService,private dataservice: DataService,location: Location) 
+ { 
+ 
+     
+ }
 
   platforms;
   cand_id;htmlContent;
@@ -95,8 +101,7 @@ export class CandidateProfileComponent implements OnInit {
                 {
                   
                     this.id = data._creator._id; 
-                     this.share_link ='http://localhost:4200/admin-candidate-detail?user=' + data._creator._id; 
-                     console.log(this.share_link);                 
+                                  
                     this.first_name=data.first_name;
                     this.last_name =data.last_name;
                     this.nationality = data.nationality;
@@ -126,19 +131,10 @@ export class CandidateProfileComponent implements OnInit {
                     this.platforms=data.platforms;
                     if(data.image != null )
                     {
-                        let x = data.image.split("://");
-                        console.log(x[0]);
-                        if(x[0] == 'http' || x[0] == 'https')
-                        {
-                            this.imgPath = data.image;
-                        }
-                        else
-                        {
-                      //console.log(data.image);
-                        this.image_src =  data.image ;
-                        this.imgPath = imgsrc + data.image;
+                        
+                        this.imgPath = data.image;
                         console.log(this.imgPath);
-                        }
+                        
                     }
 
                    
@@ -153,7 +149,5 @@ export class CandidateProfileComponent implements OnInit {
        }
 
   }
-    
 
-  
 }

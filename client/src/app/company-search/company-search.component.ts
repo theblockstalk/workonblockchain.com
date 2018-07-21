@@ -22,7 +22,13 @@ export class CompanySearchComponent implements OnInit {
   public current: string;
   msg;
     is_approved;
+
+     first_name;last_name;company_name;company_website;company_phone;company_country;
+  company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
+    imgPath;
+
 	display_name;
+
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
     
   language_opt=
@@ -187,32 +193,80 @@ export class CompanySearchComponent implements OnInit {
       }
       else if(this.currentUser && this.currentUser.type == 'company')
       {
-            this.authenticationService.getCurrentCompany(this.currentUser._creator)
+              
+          
+          this.authenticationService.getCurrentCompany(this.currentUser._id)
             .subscribe(
-            data => {
-                console.log(data);
-				this.display_name = data[0].first_name+' '+data[0].last_name;
-                this.is_approved = data[0]._creator.is_approved;
+
+                data => 
+                {
+                  console.log(data); 
+                  if(!data.terms)
+                  {
+                      this.router.navigate(['/company_wizard']);
+                  }
+                    
+                  else if(!data.company_founded && !data.no_of_employees && !data.company_funded && !data.company_description )
+                  {
+                      this.router.navigate(['/about_comp']);
+                  }
+                  else
+                  {
+                      
+                      this.is_approved = data._creator.is_approved;
+
+       
+                
+				this.display_name = data.first_name+' '+data.last_name;
+                this.is_approved = data._creator.is_approved;
+
                 console.log(this.is_approved);
                if(this.is_approved === 0 )
                 {
                     this.msg = "You can access this feature when your profile has been approved"; 
                     this.log='';  
                 }
-                else if(data[0].disable_account == true)
+                else if(data.disable_account == true)
                 {
                      this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile"; 
                     this.log=''; 
                 }
                 else 
                 {
-                    this.msg='';
-                    this.log='';
-                    this.getVerrifiedCandidate();
+                    this.first_name=data.first_name;
+                      this.last_name=data.last_name;
+                      this.company_name=data.company_name;
+                      this.job_title=data.job_title;
+                      this.company_website=data.company_website;
+                      this.company_phone =data.company_phone;
+                      this.company_country =data.company_country;
+                      this.company_city=data.company_city;
+                      this.company_postcode=data.company_postcode;
+                      this.company_description=data.company_description;
+                      this.company_founded =data.company_founded;
+                      this.company_funded=data.company_funded;
+                      this.no_of_employees=data.no_of_employees;
+                      if(data.company_logo != null )
+                      {                        
+                      //console.log(data.image);                     
+                        this.imgPath =  data.company_logo;
+                        console.log(this.imgPath);
+                        
+                      }
+                   
+                   this.getVerrifiedCandidate();
           
                 }
+                      
 
-            });        
+                  
+                  }
+                  
+                },
+                error => 
+                {
+                  
+                });
            
             
       }

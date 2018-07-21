@@ -4,8 +4,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {NgForm,FormsModule} from '@angular/forms';
 import {environment} from '../../environments/environment';
-const imgsrc = environment.img_url;
-console.log(imgsrc);
+
 
 @Component({
   selector: 'app-company-profile',
@@ -83,7 +82,9 @@ export class CompanyProfileComponent implements OnInit {
                       if(data.company_logo != null )
                       {                        
                       //console.log(data.image);                     
-                        this.imgPath = data.company_logo;
+
+                        this.imgPath =  data.company_logo;
+
                         console.log(this.imgPath);
                         
                       }
