@@ -8,9 +8,12 @@
     "port": 25
   },
   "mongo": {
-    "host": "localhost",
+    "username": "testing",
+    "password": "DNSpi52ECNf5tx3I",
+    "host": "workonblockchain-staging-shard-00-00-mfxhx.mongodb.net:27017,workonblockchain-staging-shard-00-01-mfxhx.mongodb.net:27017,workonblockchain-staging-shard-00-02-mfxhx.mongodb.net",
     "port": 27017,
-    "databaseName": "wob"
+    "databaseName": "wob",
+    "options": "ssl=true&replicaSet=workonblockchain-staging-shard-0&authSource=admin&retryWrites=true"
   },
   "expressJwt": {
     "secret": "shhhhhhhhhhhhhhh"

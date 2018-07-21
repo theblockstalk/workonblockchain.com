@@ -2143,10 +2143,11 @@ function update_chat_msg_status(data){
 		chat.update({
       $and : [
                { 
-                 $or : [
+				 receiver_id: data.sender_id
+                 /*$or : [
 					{ $and : [ { receiver_id : {$regex: data.receiver_id} }, { sender_id : {$regex: data.sender_id} } ] },
 					{ $and : [ { receiver_id : {$regex: data.sender_id} }, { sender_id : {$regex: data.receiver_id} } ] }
-				]
+				]*/
                },
                { 
                  is_read:data.status

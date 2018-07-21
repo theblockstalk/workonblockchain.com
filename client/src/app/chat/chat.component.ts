@@ -250,7 +250,7 @@ export class ChatComponent implements OnInit {
                             console.log(data['datas']);
                             this.new_msgss = data['datas'];
                             this.job_desc = data['datas'][0];
-                            this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
+                            /*this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
                             .subscribe(
                                 data => {
                                     console.log('done');
@@ -260,7 +260,7 @@ export class ChatComponent implements OnInit {
                                     console.log('error');
                                     console.log(error);
                                 }
-                            );
+                            );*/
                         },
                         error => {
                             console.log('error');

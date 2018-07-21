@@ -78,6 +78,8 @@ router.get('/get_all_content', get_all_content);
 
 module.exports = router;
 
+const my_url = 'http://localhost/workonblockchain.com/server/uploads/';
+
 /***********authentication functions **************/
 
 ////for login authentication to verify the user////////////////
@@ -376,7 +378,7 @@ function image(req, res)
     console.log('req.file', req.file);
     let path;
     if (req.file.filename) {
-        path = req.file.filename;
+		path = my_url+''+req.file.filename;
     } else {
         path = req.file.location; // for S3 bucket?
     }
@@ -555,7 +557,13 @@ function employer_image(req, res)
 			console.log(req.file);
 			console.log('done new');
 			res.json(req.file.filename);
-			userService.save_employer_image(req.file.filename , req.params._id).then(function (err, about) 
+			let path;
+			if (req.file.filename) {
+				path = my_url+''+req.file.filename;
+			} else {
+				path = req.file.location; // for S3 bucket?
+			}
+			userService.save_employer_image(path , req.params._id).then(function (err, about) 
 
             {
                 if (about) 
@@ -921,7 +929,13 @@ function upload_chat_file(req, res)
 {
     console.log(req.file);
     console.log('done new');
-    res.json(req.file.filename);
+	let path;
+	if (req.file.filename) {
+        path = my_url+''+req.file.filename;
+    } else {
+        path = req.file.location; // for S3 bucket?
+    }
+    res.json(path);
 }
 
 //inserting chat file in db
