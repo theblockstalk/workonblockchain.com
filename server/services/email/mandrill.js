@@ -13,7 +13,7 @@ const mandrill = require('mandrill-api/mandrill');
 //     },
 //
 // }
-module.exports.sendEmail = function sendEmail(mandrillOptions) {
+module.exports.sendEmail = async function sendEmail(mandrillOptions) {
     mandrillOptions.message.from_email = settings.MANDRILL.FROM_ADDRESS;
     mandrillOptions.message.from_name = settings.MANDRILL.FROM_NAME;
     mandrillOptions.message.merge_language = "mailchimp";
