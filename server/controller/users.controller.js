@@ -5,7 +5,6 @@ const multer = require('../services/multer');
 
 /******** routes ****************/
 ///////authenticated routes//////
-router.post('/authenticate', authenticate);
 router.put('/emailVerify/:email_hash' , emailVerify);
 router.put('/forgot_password/:email' , forgot_password);
 router.put('/change_password/:id' , change_password);
@@ -85,28 +84,6 @@ const my_url = 'http://localhost/workonblockchain.com/server/uploads/';
 
 /***********authentication functions **************/
 
-////for login authentication to verify the user////////////////
-
-function authenticate(req, res) 
-{
-    userService.authenticate(req.body.email, req.body.password).then(function (user) 
-    {
-        if (user) 
-        {
-            // authentication successful
-            res.json(user);
-        } 
-        else 
-        {
-            // authentication failed
-            res.json({msg: 'Username or password is incorrect'});
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-}
 
 ///////////verify_email_address////////////////////////////
 function emailVerify(req,res)

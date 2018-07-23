@@ -29,7 +29,6 @@ var emails = ['gmail.com' , 'hotmail.com' , 'yahoo.com'];
 var service = {};
 
 //////////authentication function///////
-service.authenticate = authenticate;
 service.forgot_password=forgot_password;
 service.reset_password=reset_password;
 service.emailVerify=emailVerify;
@@ -105,91 +104,6 @@ module.exports = service;
 
 /***************authentication functions implementation******************/
 
-/////////login//////////////////////////
-function authenticate(email, password,type) 
-{	console.log(email);
-	var deferred = Q.defer();
-	   
-
-    users.findOne({ email: email }, function (err, user) 
-    {
-       
-        if (err) deferred.reject(err.name + ': ' + err.message);
-       // console.log(user);
-        
-        if (user && bcrypt.compareSync(password, user.password)) 
-        {   
-           
-            console.log(user.type);
-			if(user.type=='candidate')
-            {
-                CandidateProfile.findOne({ _creator:  user._id }, function (err, data) 
-                {
-                   
-                    if (err) deferred.reject(err.name + ': ' + err.message);
-                    
-                    if(data)
-                    {
-                    	 deferred.resolve({ 
-                             _id:data._id,
-                             _creator: data._creator,
-                             email: user.email,
-                             email_hash: user.email_hash,
-                             ref_link: user.ref_link,
-                             is_admin:user.is_admin,
- 							 type:user.type,
- 							 is_approved : user.is_approved,
-                             token: jwt.sign({ sub: user._id }, config.secret)
-                             });
-                    }
-
-                    else
-                    {
-                    	deferred.reject("Email Not found");
-                    }   
-
-
-                });
-            }
-            if(user.type=='company')
-            {
-                    //console.log("company");
-                EmployerProfile.findOne({ _creator:  user._id }, function (err, data) 
-                {
-                    //console.log(data);
-                    if (err) deferred.reject(err.name + ': ' + err.message);
-                    
-                   
-
-                    else
-                    {
-                        deferred.resolve({ 
-                            _id:data._id,
-                            _creator: data._creator,
-                            email: user.email,
-                            email_hash: user.email_hash,
-                            ref_link: user.ref_link,
-							type: user.type,
-							is_admin:user.is_admin,
-							is_approved : user.is_approved,
-                            token: jwt.sign({ sub: user._id }, config.secret)
-                            });
-                    }   
-
-
-                });
-            }
-
-           
-        } 
-        else 
-        {
-            deferred.reject("Password didn't match");
-        }
-    });
- 
-    return deferred.promise;
-}
 
 //////////////////forgot_password/////////////////////////////
 function forgot_password(email)
