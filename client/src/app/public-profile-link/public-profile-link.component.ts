@@ -31,7 +31,7 @@ export class PublicProfileLinkComponent implements OnInit {
   
   }
     currentUser: User;
-    info=[];createdDate;
+    info;createdDate;
     approve;verify;is_verify;information;
   ngOnInit() 
   {
@@ -49,7 +49,8 @@ export class PublicProfileLinkComponent implements OnInit {
                     
                 }
                 else
-                    this.info.push(data);  
+                    this.info = data;
+                    //this.info.push(data);  
                 console.log(data);            
                 
                

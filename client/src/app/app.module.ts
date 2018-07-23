@@ -70,7 +70,6 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { MyDatePickerModule } from 'mydatepicker';
-//import { JwSocialButtonsModule } from 'jw-angular-social-buttons';
 
 
 let config = new AuthServiceConfig([
@@ -209,7 +208,6 @@ const appRoutes: Routes = [
     AngularFontAwesomeModule,
     CKEditorModule,
     MyDatePickerModule,
-    //JwSocialButtonsModule,
     RouterModule.forRoot(appRoutes),
 	ScrollToModule.forRoot()
   ],

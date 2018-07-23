@@ -46,6 +46,7 @@ export class EditCandidateProfileComponent implements OnInit {
     current_currency;
     LangexpYear=[];lang_expYear_db=[];lang_db_valye=[];
     candidate_data=[];
+    img_src;
     
   constructor(private dataservice: DataService,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef) 
   { 
@@ -89,16 +90,17 @@ export class EditCandidateProfileComponent implements OnInit {
                     this.info.first_name =data.first_name;
                     this.info.last_name =data.last_name;
 
-                    if(data.image != null && data.social_type == "")
+                    if(data.image != null )
                     {
                       //console.log(data.image);
                      this.info.image_src =  data.image ;
+                        let x = this.info.image_src.split("/");
+     
+                        let last:any = x[x.length-1];
+                           
+                           this.img_src = last;
                     }
-                    else if(data.image != null)
-                    {
-                        this.info.image_src = data.image ;
-                        console.log(this.info.image_src);
-                     }
+                    
                                
                 }
                 

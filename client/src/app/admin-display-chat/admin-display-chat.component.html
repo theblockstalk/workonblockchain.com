@@ -7,12 +7,10 @@
 				<div class = "col-sm-4 col-xs-3" id="sidepanel">
 					<div id="profile" class = "padding_top-btm">
 						<div class="wrap">
-								<ng-container *ngIf="profile_pic">
-								
+								<ng-container *ngIf="profile_pic;else company_logo_top">
 									<img id="profile-img" src="{{profile_pic}}" alt="">
 								</ng-container>
-								<ng-template *ngIf  ="!profile_pic">
-								
+								<ng-template #company_logo_top>
 									<img src="/assets/profile/profile-image.png" alt="">
 								</ng-template>
 								<p>{{display_name}}</p>

@@ -6,7 +6,7 @@
         <div class="form-login">
                 <h3 class = "login_hd">Login to WOB</h3>
                 <div class="ref_msg">{{ref_msg}}</div>
-                 <div class="alert alert-danger error-alert" *ngIf="message">{{message}}</div>
+                 <div class="alert alert-success error-alert" *ngIf="message">{{message}}</div>
                 <h5 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h5>
                  <form class = "login_form" (submit)="login(loginForm)"  #loginForm = ngForm>
                

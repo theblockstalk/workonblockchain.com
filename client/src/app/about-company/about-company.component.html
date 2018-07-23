@@ -37,14 +37,12 @@
 
 						<div class="form-group col-md-6 mr-top-33" >
 						    <input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="image" >
-						    <label id="fileLabel">Upload Company Logo (optional)</label>
-							
+						    <label id="fileLabel" >
+								<span *ngIf="img_src" >{{img_src}}</span>
+								<span *ngIf="!img_src" >Upload Company Logo (optional)</span>
+								</label>
+						     
 						</div>
-						
-						
-						
-						
-            
             
 
 						<div class="form-group col-md-12 mr-top-04">

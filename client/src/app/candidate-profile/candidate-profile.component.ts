@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,OnInit, ElementRef, AfterViewInit, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import {NgForm} from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -16,8 +16,10 @@ import { Location } from '@angular/common';
   templateUrl: './candidate-profile.component.html',
   styleUrls: ['./candidate-profile.component.css']
 })
-export class CandidateProfileComponent implements OnInit {
-
+export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
+    
+    @ViewChild('element') element: ElementRef;
+ 
         currentUser: User;
         first_name;last_name;description;companyname;degreename;
         interest_area;why_work;availability_day;
@@ -25,21 +27,53 @@ export class CandidateProfileComponent implements OnInit {
         experimented;languages;current_currency;current_salary;image_src;
         imgPath;nationality;contact_number;id;
         share_link;
+    text;
+    platforms;
+    cand_id;htmlContent;
+    info;
+    share_url;
+   shareurl;
    
 
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
- 
+   const url = 'https://platform.linkedin.com/in.js';
+        if (!document.querySelector(`script[src='${url}']`)) {
+            let script = document.createElement('script');
+            script.src = url;
+            script.innerHTML = ' lang: en_US';
+            document.body.appendChild(script);
+        }
+     
+     const url2 = 'https://platform.twitter.com/widgets.js';
+        if (!document.querySelector(`script[src='${url2}']`)) {
+            let script = document.createElement('script');
+            script.src = url2;
+            document.body.appendChild(script);
+        }
      
  }
 
-  platforms;
-  cand_id;htmlContent;
-    info;
-    
+
+     ngAfterViewInit(): void {
+         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+         console.log(this.currentUser._creator);
+         this.share_url = location.href + '?user=' + this.currentUser._creator;
+        // add linkedin share button script tag to element
+        this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}"></script>`;
+ 
+        // render share button
+        window['IN'] && window['IN'].parse();
+         
+         this.shareurl = location.href;
+         
+          window['twttr'] && window['twttr'].widgets.load();
+    }
   ngOnInit() 
   {
+      
+     
       
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
      

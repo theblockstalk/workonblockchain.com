@@ -92,7 +92,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                 
                 if(user.error)
                 {
-                    this.dataservice.changeMessage(user.error);
+                    this.log  =user.error;
+                   // this.dataservice.changeMessage(user.error);
                 }
                
                 },

@@ -403,6 +403,7 @@ export class CompanySearchComponent implements OnInit {
        
     }
     
+    company_reply;
     //verify_candidate=[];
     getVerrifiedCandidate()
     {     
@@ -432,8 +433,33 @@ export class CompanySearchComponent implements OnInit {
                         {
                             if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
                             && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
-                             && res.commercial_platform && res.interest_area  && res.country )
+                            && res.commercial_platform && res.interest_area  && res.country )
                             {
+                                console.log(res._creator._id);
+                                this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
+                                .subscribe(
+                                 data => {
+                   
+                                    if(data['datas'][1]){
+                                    if(data['datas'][1].is_company_reply==1)
+                                    {
+                                        console.log('accept')
+                                        res.company_reply = 1;
+                                    }
+                                    else
+                                    {
+                                        res.company_reply = 0;
+                            
+                                    }
+                                        console.log(res.company_reply);
+                                }
+                                },
+                                error => {
+                                    console.log('error');
+                                    console.log(error);
+                    
+                               });
+                                
                                 this.length++;
                                 this.info.push(res);
                             }
@@ -453,9 +479,6 @@ export class CompanySearchComponent implements OnInit {
                          }
                          this.length = '';
                         //this.log='';
-                        
-
-                       
                     }
                  
                 },

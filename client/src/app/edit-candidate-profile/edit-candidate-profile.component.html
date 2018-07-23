@@ -62,8 +62,8 @@
             <div class="form-group col-md-6" ><br/><br/>
 								<input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="info.image">
 								<label id="fileLabel" >
-								<span *ngIf="info.image_src" >{{info.image_src}}</span>
-								<span *ngIf="!info.image_src" >Upload Image</span>
+								<span *ngIf="img_src" >{{img_src}}</span>
+								<span *ngIf="!img_src" >Upload Logo (optional)</span>
 								</label>
 							</div>
 							

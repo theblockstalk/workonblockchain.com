@@ -60,6 +60,7 @@ export class CandidateDetailComponent implements OnInit {
                             this.company_reply = 0;
                             
                         }
+                        console.log(this.company_reply);
                     }
                 },
                 error => {

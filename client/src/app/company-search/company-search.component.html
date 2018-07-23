@@ -116,7 +116,7 @@
 			<!--end-col-md-3-->
 			<div class="col-md-9" >
 				
-				<h2 *ngIf="msg!=''" class="alert alert-danger error-alert">{{msg}}</h2>
+				<h4 *ngIf="msg!=''" class="alert alert-danger error-alert">{{msg}}</h4>
 				
 				<div class = "result-status mr-top-form" *ngIf="length > 0">
 						<span>{{length}}</span> Candidate Match your search....
@@ -137,15 +137,20 @@
 				     data.interest_area  && data.country && data.disable_account == false)">
 <!-- 				    <div class="panel panel-default">
  -->				      <div class="panel-heading">
-				      	<div class = "user-pic" *ngIf="!data.company_logo">
-				      		<img src = "/assets/profile/profile-image.png" alt = "candidate_pic">
-				      		
-				      	</div>
+
+ 							<ng-container *ngIf="data.image && data.company_reply == 1;else company_logo_top">
+ 								<div class = "user-pic">
+ 								
+									<img src="{{data.image}}" alt="">
+									</div>
+								</ng-container>
+								<ng-template #company_logo_top>
+									<div class = "user-pic">
+									<img src="/assets/profile/profile-image.png" alt="">
+									</div>
+								</ng-template>
+
 				      	
-				      	<div class = "user-pic" *ngIf="data.company_logo">
-				      		<img src = "{{data.company_logo}}" alt = "candidate_pic">
-				      		
-				      	</div>
 
 				      	<div class = "user-detail">
 					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }"><h2>{{data.first_name}}</h2></a><br/>

@@ -250,8 +250,28 @@ function forgot_passwordEmail_send(data)
 	
 	 var hash = jwt_hash.decode(data,config.secret,'HS256');  
 	 console.log(hash.email);
+	 var name;
+	 
+	 users.findOne({ email :hash.email  }, function (err, result)
+		        {          
+		            if (err) 
+		                deferred.reject(err.name + ': ' + err.message);
 
-	 forgotPasswordEmail.sendEmail(hash,data);
+		            if(result)
+		            {   
+		            	console.log(result);
+		                name = result.first_name;
+		                console.log(name);
+		            }
+		            else
+		            {
+		                 deferred.resolve({error:'Email Not Found'});
+		            }
+
+		        });
+	 console.log(name);
+
+	 forgotPasswordEmail.sendEmail(hash,data , name);
 }
 
 //////////////////Reset Password///////////////////////
@@ -1750,7 +1770,7 @@ function search_word(word)
     		        	
     		        	//console.log(array);
     		        	CandidateProfile.find({
-    		        		$and : [{ $or : [ { why_work: {'$regex' :word }}, { description : {'$regex' : word} } ] },
+    		        		$and : [{ $or : [ { why_work: {'$regex' :word , $options: 'i'  }}, { description : {'$regex' : word , $options: 'i' } } ] },
 							{ "_creator": {$in: array}}]
     		        	}).populate('_creator').exec(function(err, result)
     		            {

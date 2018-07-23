@@ -22,13 +22,16 @@ export class AboutCompanyComponent implements OnInit {
     currentUser: User;log;
     founded_log;employee_log;funded_log;des_log;image_src;
     company_founded;no_of_employees;company_funded;company_description;terms_active_class;about_active_class;image;
+    img_data;
+   img_src;
+    text;
   constructor(private route: ActivatedRoute,
         private router: Router,private http: HttpClient,
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
        }
 
   ngOnInit() {
-      
+     
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       
        if(!this.currentUser)
@@ -41,6 +44,7 @@ export class AboutCompanyComponent implements OnInit {
             .subscribe(
                 data => 
                 {
+ 
                   console.log(data);
                    if(data.company_founded || data.no_of_employees || data.company_funded || data.company_description ||data.company_logo)
                   {
@@ -49,7 +53,14 @@ export class AboutCompanyComponent implements OnInit {
                      this.company_funded=data.company_funded;
                      this.company_description =data.company_description;
                        if(data.company_logo != null){
-                       this.image  =  data.company_logo;
+                       this.img_data  =  data.company_logo;
+
+                        let x = this.img_data.split("/");
+     
+                        let last:any = x[x.length-1];
+                           
+                           this.img_src = last;
+
                            }
                        
                       //this.router.navigate(['/login']);

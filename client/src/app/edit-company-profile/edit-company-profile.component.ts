@@ -25,6 +25,9 @@ export class EditCompanyProfileComponent implements OnInit {
     company_founded;no_of_employees;company_funded;company_description;
     last_name;first_name;job_title;company_website;company_name;company_phone;
     company_country;company_city;company_postcode;image;
+    img_data;
+    img_src;
+    
 
  constructor(private route: ActivatedRoute,
         private router: Router,private http: HttpClient,
@@ -54,7 +57,14 @@ export class EditCompanyProfileComponent implements OnInit {
                      this.company_funded=data.company_funded;
                      this.company_description =data.company_description;
                        if(data.company_logo != null){
-                       this.image  = data.company_logo;
+                      
+                           this.img_data  =  data.company_logo;
+
+                        let x = this.img_data.split("/");
+     
+                        let last:any = x[x.length-1];
+                           
+                           this.img_src = last;
                            }
                        
                       //this.router.navigate(['/login']);
