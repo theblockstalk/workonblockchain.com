@@ -334,9 +334,11 @@
 													Send
 												</button>
 												<br>
-												<input id="aa" #Image type="file" (change) ="upload_file()"  name="image" style="width: 14%;height: 30%;" ng-model='file'   class="btn btn-attached" />
-
-												
+												<div class="file btn">
+													<i class="fa fa-upload" aria-hidden="true"></i>
+													Upload
+													<input id="aa" #Image type="file" (change) ="upload_file()" name="file" ng-model='file' class = "file-upload"/>
+												</div>
 											</span>
 										</div>
 									</form>
@@ -366,7 +368,14 @@
       </div>
       <div class="modal-body">
         <form (submit)="send_interview_message(msgForm)" #msgForm = ngForm>
-          <div class="form-group col-md-6 padd_imp">
+          <ng-container *ngIf="interview_log;else no_modal">
+			<div class = "model_notif text-center">
+				{{interview_log}}
+            </div>
+		  </ng-container>
+		  <ng-template #no_modal>
+		  </ng-template>
+		  <div class="form-group col-md-6 padd_imp">
 		    <p>Date</p>
 			<my-date-picker name="mydateinterview" [(ngModel)]="credentials.date" required ></my-date-picker>
 		  </div>
@@ -383,7 +392,6 @@
 		    <p>Description (optional)</p>
 		    <input type="text" name="description" [(ngModel)]="credentials.description" class="form-control" id="">
 		  </div>
-		  <p style="color: green;font-size: 18px;">{{interview_log}}</p>
 		  <div class="modal-footer">
 			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
 			<button type="reset" class="btn btn-danger model-btn">Reset</button>
@@ -407,7 +415,14 @@
       </div>
       <div class="modal-body">
 	    <form (submit)="send_job_message(msgForm)" #msgForm = ngForm>
-          <div class="form-group col-md-12 padd_imp">
+          <ng-container *ngIf="job_offer_log;else no_modal">
+			<div class = "model_notif text-center">
+				{{job_offer_log}}
+            </div>
+		  </ng-container>
+		  <ng-template #no_modal>
+		  </ng-template>
+		  <div class="form-group col-md-12 padd_imp">
 		    <p>Job Title</p>
 		    <input type="text" class="form-control" name="job_title" [(ngModel)]="credentials.job_title" id="">
 		  </div>
@@ -441,7 +456,6 @@
 		    <p>Description (optional)</p>
 		    <input type="text" class="form-control" name="job_description" [(ngModel)]="credentials.job_description" id="">
 		  </div>
-		  <p style="color: green;font-size: 18px;">{{job_offer_log}}</p>
 		  <div class="modal-footer text-right">
 			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
 			<button type="reset" class="btn btn-danger model-btn">Reset</button>

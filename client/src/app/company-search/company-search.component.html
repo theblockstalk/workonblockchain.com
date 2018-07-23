@@ -221,7 +221,14 @@
       </div>
       <div class="modal-body">
         <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
-          <div class="form-group col-md-6 padd_imp">
+          <ng-container *ngIf="job_offer_log;else no_modal">
+			<div class = "model_notif text-center">
+				{{job_offer_log}}
+            </div>
+		  </ng-container>
+		  <ng-template #no_modal>
+		  </ng-template>
+		  <div class="form-group col-md-6 padd_imp">
       <p class = "input_p">Job Title</p>
       <input type="text" name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="fontend development">
     </div>
@@ -256,7 +263,6 @@
     </span>
    </label>
     </div>-->
-	<p style="color: green;font-size: 18px;">{{job_offer_log}}</p>
 		  <div class="modal-footer">
 				<button type="submit" class="btn btn-primary model-btn submit">Submit Job Offer</button>
 				<button type="reset" class="btn btn-danger model-btn">Reset</button>

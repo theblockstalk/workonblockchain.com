@@ -1937,8 +1937,7 @@ function get_candidate(user_type)
 
 function insert_message(data){
 	var current_date = new Date();
-	var day = current_date.getDay();
-	day = day+1;
+	var day = current_date.getDate();
 	if(day < 10){
 		day = '0'+day;
 	}
@@ -2057,8 +2056,7 @@ function get_chat()
 
 function save_chat_file(data){
 	var current_date = new Date();
-	var day = current_date.getDay();
-	day = day+1;
+	var day = current_date.getDate();
 	if(day < 10){
 		day = '0'+day;
 	}
@@ -2115,8 +2113,7 @@ function save_chat_file(data){
 
 function insert_message_job(data){
 	var current_date = new Date();
-	var day = current_date.getDay();
-	day = day+1;
+	var day = current_date.getDate();
 	if(day < 10){
 		day = '0'+day;
 	}
