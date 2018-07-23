@@ -31,6 +31,7 @@ export class CandidateDetailComponent implements OnInit {
   company_reply; currentUser: User;
   credentials: any = {};
   job_type = ["Part Time", "Full Time"];
+  company_name;
   ngOnInit() 
   {
       console.log(this.user_id);
@@ -74,8 +75,6 @@ export class CandidateDetailComponent implements OnInit {
           this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
-                console.log(data[0].first_name);
-					
 					this.first_name=data[0].first_name;
                     this.last_name =data[0].last_name;
                     this.nationality = data[0].nationality;
@@ -112,7 +111,16 @@ export class CandidateDetailComponent implements OnInit {
                         
                     }
 
-            });          
+            });
+			this.authenticationService.getCurrentCompany(this.currentUser._creator)
+            .subscribe(
+                data => {
+                    this.company_name = data[0].first_name+' '+data[0].last_name;
+                },
+                error => {
+                    console.log('error');
+                }
+            );
       }
       else
       {
@@ -130,8 +138,7 @@ export class CandidateDetailComponent implements OnInit {
   full_name;
   send_job_offer(msgForm : NgForm){
 		this.full_name = this.first_name+' '+this.last_name;
-        console.log(this.full_name);
-		/*if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
+        if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
 			.subscribe(
@@ -146,7 +153,7 @@ export class CandidateDetailComponent implements OnInit {
 						this.is_company_reply = 0;
 						this.msg_body = this.credentials.job_desc+' Job Title: '+this.credentials.job_title+', Job Type: '+this.credentials.job_type+', Salary: '+this.credentials.salary+' '+this.credentials.currency;
 						this.credentials.salary = this.credentials.salary+' '+this.credentials.currency;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.currentUser.email,this.full_name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
+						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
 							.subscribe(
 								data => {
 									console.log(data);
@@ -169,7 +176,7 @@ export class CandidateDetailComponent implements OnInit {
         }
         else{
             this.job_offer_msg = 'Please enter all info';
-        }*/
+        }
     }
 
 }

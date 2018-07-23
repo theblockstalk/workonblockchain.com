@@ -1,4 +1,12 @@
 {
+  "nodemailer": {
+    "auth": {
+      "user": "workonblockchain@mwancloud.com",
+      "pass": "e71$AGVy"
+    },
+    "host": "mail.mwancloud.com",
+    "port": 25
+  },
   "mongo": {
     "username": "testing",
     "password": "DNSpi52ECNf5tx3I",
@@ -21,10 +29,5 @@
     "s3Bucket": "files.testing.workonblockchain.com",
     "accessKey": "AKIAIKSQJ5LKFPGP3K6Q",
     "secretAccessKey": "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"
-  },
-  "mandrill": {
-    "fromAddress": "contact@staging.workonblockchain.com",
-    "fromName": "TESTING - Work on Blockchain",
-    "apiKey": "QXLhIhx6BJwpJC0QRax-yQ"
   }
 }

@@ -2172,6 +2172,15 @@ input[type=checkbox] {
     padding-left: 0px;
 }
 
+.model_notif {
+    background: rgba(149, 209, 251, 0.7294117647058823);
+    color: #000;
+    padding: 5px;
+    width: 70%;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
 .model-btn{
     font-weight: normal;
     font-size: initial;
@@ -3159,6 +3168,29 @@ input:checked + .slider:before {
     }
 }*/
 
+.file {
+	position: absolute;
+	right: 15px;
+	bottom: 10px;
+	padding: 6px 6px;
+	width: 95px;
+	background-color: #5eb9fa;
+	border-color: #5eb9fa;
+	border:0px solid;
+	color: #fff;
+	font-weight: bold;
+	border-radius: 0px;
+	cursor: pointer;
+}
+
+.file-upload{
+	position: absolute;
+	font-size: 50px;
+	opacity: 0;
+	right: 0;
+	top: 0;
+	width:95px;
+}
 
 @media (max-width: 768px){
     .center{

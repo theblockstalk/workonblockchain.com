@@ -59,6 +59,8 @@ export class ChatComponent implements OnInit {
     file_url;
     profile_pic;
     display_name;
+	unread_msgs = [];
+	unread_msgs_info: any;
   constructor(
     private authenticationService: UserService,
     private fb: FormBuilder,
@@ -157,12 +159,13 @@ export class ChatComponent implements OnInit {
 							this.authenticationService.getCandidate(this.type)
                                 .subscribe(
                                     data => {
-										console.log(data['users']);
-                                        for (var key in msg_data['datas']) {
+										for (var key in msg_data['datas']) {
                                             for (var key_user in data['users']) {
                                                 if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id || msg_data['datas'][key].receiver_id == data['users'][key_user]._creator._id){
+													if(msg_data['datas'][key].is_read==0){
+														console.log("Receiver: "+msg_data['datas'][key].receiver_id);
+													}
 													if(this.users.indexOf(data['users'][key_user]) === -1){
-                                                        console.log('if');
                                                         this.users.push(data['users'][key_user]);
                                                     }
                                                 }   
@@ -253,7 +256,6 @@ export class ChatComponent implements OnInit {
                     this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
                     .subscribe(
                         data => {
-                            console.log('data');
                             console.log(data['datas']);
                             this.new_msgss = data['datas'];
                             this.job_desc = data['datas'][0];
@@ -297,6 +299,17 @@ export class ChatComponent implements OnInit {
             data => {
                 console.log(data);
                 this.credentials.msg_body = '';
+				this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+				.subscribe(
+					data => {
+						this.new_msgss = data['datas'];
+						this.job_desc = data['datas'][0];
+					},
+					error => {
+						console.log('error');
+						console.log(error);
+					}
+				);
             },
             error => {
                 console.log('error');
@@ -317,6 +330,18 @@ export class ChatComponent implements OnInit {
             data => {
                 console.log(data);
                 this.credentials.msg_body = '';
+				this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+				.subscribe(
+					data => {
+						this.new_msgss = data['datas'];
+						this.job_desc = data['datas'][0];
+						this.company_reply = 1;
+					},
+					error => {
+						console.log('error');
+						console.log(error);
+					}
+				);
             },
             error => {
                 console.log('error');
@@ -347,7 +372,6 @@ export class ChatComponent implements OnInit {
 					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
                     .subscribe(
                         data => {
-                            console.log('data');
                             this.new_msgss = data['datas'];
                             this.job_desc = data['datas'][0];
                         },
@@ -393,7 +417,6 @@ export class ChatComponent implements OnInit {
 					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
                     .subscribe(
                         data => {
-                            console.log('data');
                             this.new_msgss = data['datas'];
                             this.job_desc = data['datas'][0];
                         },
@@ -418,7 +441,7 @@ export class ChatComponent implements OnInit {
   accept_job_offer(msgForm1 : NgForm){
       console.log('accepted');
       console.log(this.credentials);
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.is_company_reply = 1;
       this.cand_job_offer = 0;
       this.is_job_offer = 2;//2 for accepted
@@ -428,11 +451,22 @@ export class ChatComponent implements OnInit {
         .subscribe(
             data => {
                 console.log(data);
-                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
+                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
                     .subscribe(
                         data => {
                             console.log(data);
                             this.credentials.msg_body = '';
+							this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+							.subscribe(
+								data => {
+									this.new_msgss = data['datas'];
+									this.job_desc = data['datas'][0];
+								},
+								error => {
+									console.log('error');
+									console.log(error);
+								}
+							);
                         },
                         error => {
                             console.log('error');
@@ -452,7 +486,7 @@ export class ChatComponent implements OnInit {
   reject_job_offer(msgForm1 : NgForm){
       console.log('rejected');
       console.log(this.credentials);
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.is_company_reply = 1;
       this.cand_job_offer = 0;
       this.is_job_offer = 3;//3 for rejected
@@ -462,12 +496,23 @@ export class ChatComponent implements OnInit {
         .subscribe(
             data => {
                 console.log(data);
-                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
+                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
                     .subscribe(
                         data => {
                             console.log(data);
                             this.credentials.msg_body = '';
-                        },
+							this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+							.subscribe(
+								data => {
+									this.new_msgss = data['datas'];
+									this.job_desc = data['datas'][0];
+								},
+								error => {
+									console.log('error');
+									console.log(error);
+								}
+							);
+						},
                         error => {
                             console.log('error');
                             console.log(error);
@@ -579,7 +624,7 @@ export class ChatComponent implements OnInit {
                         this.cand_offer = 1;
                         this.first_message = 1;
                         this.show_msg_area = 0;
-                        this.credentials.msg_body = "Hi ! join us";
+                        this.credentials.msg_body = "";
                     }
                 },
                 error => {
