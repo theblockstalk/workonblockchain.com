@@ -221,7 +221,7 @@
 													<p class = "job-description">
 														{{msg.sender_name}}:
 														{{msg.message}}
-														<a href="{{msg.file_name}}">{{msg.file_name}}</a>
+														<a href="{{msg.file_name}}" target="_blank">{{msg.file_name}}</a>
 													</p>
 												</li>
 												<div class="chat_company">
@@ -233,7 +233,7 @@
 													<p class = "job-description">
 														{{msg.sender_name}}:
 														{{msg.message}}
-														<a href="{{msg.file_name}}">{{msg.file_name}}</a>
+														<a href="{{msg.file_name}}" target="_blank">{{msg.file_name}}</a>
 													</p>
 												</li>
 												<div class="chat_company">
@@ -247,7 +247,7 @@
 												<p>
 													{{msg.sender_name}}:
 													{{msg.message}}
-													<a href="{{msg.file_name}}">{{msg.file_name}}</a>
+													<a href="{{msg.file_name}}" target="_blank">{{msg.file_name}}</a>
 												</p>
 											</li>
 											<div class="chat_user">
@@ -368,7 +368,7 @@
         <form (submit)="send_interview_message(msgForm)" #msgForm = ngForm>
           <div class="form-group col-md-6 padd_imp">
 		    <p>Date</p>
-			<my-date-picker name="mydateinterview" [options]="myDatePickerOptions" [(ngModel)]="credentials.date" required ></my-date-picker>
+			<my-date-picker name="mydateinterview" [(ngModel)]="credentials.date" required ></my-date-picker>
 		  </div>
 
 		  <div class="form-group col-md-6 padd_imp">
@@ -435,7 +435,7 @@
 		  </div>
 		  <div class="form-group col-md-6 padd_imp">
 		    <p>Start Date</p>
-			<my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="credentials.start_date" required ></my-date-picker>
+			<my-date-picker name="mydate" [(ngModel)]="credentials.start_date" required ></my-date-picker>
 		  </div>
 		  <div class="form-group">
 		    <p>Description (optional)</p>
