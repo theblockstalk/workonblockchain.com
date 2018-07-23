@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "nodemon": "nodemon --ignore 'uploads/*'"
+    "start": "nodemon --ignore 'uploads/*'"
   },
   "author": "",
   "license": "ISC",
@@ -22,14 +21,18 @@
     "jwt-simple": "^0.5.1",
     "linkedin-public-profile": "^4.0.1",
     "linkedin-public-profile-parser": "^3.0.2",
+    "mandrill-api": "^1.0.45",
     "md5": "^2.2.1",
+    "mongo-sanitize": "^1.0.0",
     "mongoose": "^5.2.1",
     "mongoskin": "^2.1.0",
     "multer": "^1.3.0",
     "multer-s3": "^2.7.0",
     "ng2-file-upload": "^1.3.0",
     "nodemailer": "^4.6.5",
+    "nodemon": "^1.18.3",
     "q": "^1.5.1",
-    "rootpath": "^0.1.2"
+    "rootpath": "^0.1.2",
+    "sanitizer": "^0.1.3"
   }
 }

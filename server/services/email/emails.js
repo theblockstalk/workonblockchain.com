@@ -1,12 +1,11 @@
 const nodemailer = require('./nodemailer');
-const settings = require('../settings');
+const mandrill = require('./mandrill');
+const settings = require('../../settings');
 
-module.exports.sendEmail = function sendEmail(mailOptions) {
-    if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging') {
-        // We can do something else here
-        nodemailer.sendEmail(mailOptions);
-        //
+module.exports.sendEmail = function sendEmail(nodemonOptions, mandrillOptions) {
+    if (settings.isLiveApplication()) {
+        mandrill.sendEmail(mandrillOptions);
     } else {
-		nodemailer.sendEmail(mailOptions);
+		nodemailer.sendEmail(nodemonOptions);
     }
 }
