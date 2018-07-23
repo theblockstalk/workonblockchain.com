@@ -195,6 +195,7 @@ export class CompanySearchComponent implements OnInit {
       {
               
           
+            
           this.authenticationService.getCurrentCompany(this.currentUser._id)
             .subscribe(
 

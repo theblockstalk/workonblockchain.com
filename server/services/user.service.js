@@ -2377,7 +2377,7 @@ function search_by_name(word)
 	var deferred = Q.defer();
 	
 	CandidateProfile.find(
-		{ $or : [  { first_name : {'$regex' : word } }, { last_name : {'$regex' : word } }]}
+		{ $or : [  { first_name : {'$regex' : word, $options: 'i' } }, { last_name : {'$regex' : word , $options: 'i'} }]}
 	).populate('_creator').exec(function(err, result)
     {
        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
@@ -2603,7 +2603,7 @@ function admin_search_by_name(word)
 	var deferred = Q.defer();
 	
 	EmployerProfile.find(
-		{ $or : [  { first_name : {'$regex' : word  } }, { last_name : {'$regex' : word } }]}
+		{ $or : [  { first_name : {'$regex' : word ,$options: 'i' } }, { last_name : {'$regex' : word ,$options: 'i' } }]}
 	).populate('_creator').exec(function(err, result)
     {
        if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);

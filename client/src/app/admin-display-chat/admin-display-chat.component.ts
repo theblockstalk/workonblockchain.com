@@ -45,6 +45,9 @@ export class AdminDisplayChatComponent implements OnInit {
     length;
     company_type;
     admin_log;
+    file_url;
+    profile_pic;
+    display_name;
  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
  
@@ -100,15 +103,15 @@ export class AdminDisplayChatComponent implements OnInit {
                                 data => {
                                     console.log(data);
                                     for (var key in msg_data['datas']) {
-                                        for (var key_user in data['users']) {
-                                            if(msg_data['datas'][key].sender_id == data['users'][key_user]._id || msg_data['datas'][key].receiver_id == data['users'][key_user]._id){
-                                                if(this.users.indexOf(data['users'][key_user]) === -1){
-                                                    console.log('if');
-                                                    this.users.push(data['users'][key_user]);
-                                                }
-                                            }   
+                                            for (var key_user in data['users']) {
+                                                if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id || msg_data['datas'][key].receiver_id == data['users'][key_user]._creator._id){
+                                                    if(this.users.indexOf(data['users'][key_user]) === -1){
+                                                        console.log('if');
+                                                        this.users.push(data['users'][key_user]);
+                                                    }
+                                                }   
+                                            }
                                         }
-                                    }
                                     console.log(this.users);
                                 },
                                 error => {
@@ -142,16 +145,18 @@ export class AdminDisplayChatComponent implements OnInit {
                         this.authenticationService.getCandidate('company')
                         .subscribe(
                             data => {
+                                console.log(data['users']);
                                 for (var key in msg_data['datas']) {
-                                    for (var key_user in data['users']) {
-                                        if(msg_data['datas'][key].sender_id == data['users'][key_user]._id){
-                                            if(this.users.indexOf(data['users'][key_user]) === -1){
-                                                console.log('if');
-                                                this.users.push(data['users'][key_user]);
-                                            }
-                                        }   
+                                        for (var key_user in data['users']) {
+                                            if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id){
+                                                if(this.users.indexOf(data['users'][key_user]) === -1){
+                                                    console.log('if');
+                                                    this.users.push(data['users'][key_user]);
+                                                }
+                                            }   
+                                        }
                                     }
-                                }
+                                console.log(this.users);
                             },
                             error => {
                                 console.log('error');
@@ -275,9 +280,15 @@ export class AdminDisplayChatComponent implements OnInit {
                 }
                 if(data!= '')
                 {
-                    console.log("if");
+                    console.log("iffffffff");
+                    console.log(data[0].image);
+                   if(data[0].image!='')
+                   {
+                       console.log("candidate image");
+                    this.profile_pic = data[0].image;
+                    }
                    
-                    
+                    this.display_name = data[0].first_name+' '+data[0].last_name;
                          this.user_type = data[0]._creator.type;
                         localStorage.removeItem('company_type');
                          console.log(this.user_type);
@@ -303,6 +314,15 @@ export class AdminDisplayChatComponent implements OnInit {
                             else
                             {
                                 console.log("elseeeee");
+                                console.log(data[0].company_logo);
+                                if(data[0].company_logo!='')
+                                {
+                                    console.log("company_logo");
+                                     this.profile_pic = data[0].company_logo;
+                                    }
+                               
+                               
+                                 this.display_name = data[0].first_name+' '+data[0].last_name;
                                  this.user_type = data[0]._creator.type;
                                  //console.log(this.user_type);
                                 localStorage.setItem("company_type", this.user_type);

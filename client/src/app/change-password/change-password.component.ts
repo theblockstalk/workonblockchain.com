@@ -17,6 +17,8 @@ export class ChangePasswordComponent implements OnInit {
     confirm_password;
     id;
     log;
+    pass_log;
+
 
    constructor( private route: ActivatedRoute,
         private router: Router,

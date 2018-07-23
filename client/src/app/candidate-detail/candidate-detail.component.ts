@@ -34,6 +34,7 @@ export class CandidateDetailComponent implements OnInit {
   ngOnInit() 
   {
       console.log(this.user_id);
+      this.company_reply = 0;
 
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log('ftn')

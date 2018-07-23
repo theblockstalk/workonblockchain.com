@@ -7,20 +7,43 @@
 				<div class = "col-sm-4 col-xs-3" id="sidepanel">
 					<div id="profile" class = "padding_top-btm">
 						<div class="wrap">
-							<img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" alt="">
-							<p>{{email}}</p>
-						</div>
+								<ng-container *ngIf="profile_pic">
+								
+									<img id="profile-img" src="{{profile_pic}}" alt="">
+								</ng-container>
+								<ng-template *ngIf  ="!profile_pic">
+								
+									<img src="/assets/profile/profile-image.png" alt="">
+								</ng-template>
+								<p>{{display_name}}</p>
+							</div>
 					</div>
 					<div id="contacts">
 						<ul>
-							<li *ngFor="let person of users" class="contact closee" (click)="openDialog(person.email,person._id)">
-								<div class="wrap">
-									<img src="http://emilcarlsson.se/assets/louislitt.png" alt="">
-									<div class="meta">
-										<p class="name">{{ person.email }}</p>
+							<li *ngFor="let person of users" class="contact closee" (click)="openDialog(person.first_name,person._creator._id)">
+									<div class="wrap">
+										<ng-container *ngIf="currentUser.type == 'company';else cand_image">
+											<ng-container *ngIf="person.image;else person_image">
+												<img src="{{person.image}}" alt="">
+											</ng-container>
+											<ng-template #person_image>
+												<img src="/assets/profile/profile-image.png" alt="">
+											</ng-template>
+										</ng-container>
+										<ng-template #cand_image>
+											<ng-container *ngIf="person.company_logo;else company_image">
+												<img src="{{person.company_logo}}" alt="logo">
+											</ng-container>
+											<ng-template #company_image>
+												<img src="/assets/profile/profile-image.png" alt="">
+											</ng-template>
+											
+										</ng-template>
+										<div class="meta">
+											<p class="name">{{ person.first_name }} {{ person.last_name }}</p>
+										</div>
 									</div>
-								</div>
-							</li>
+								</li>
 						</ul>
 					</div>
 				</div>
@@ -57,6 +80,7 @@
 											<p class = "job-description">
 												{{msg.sender_name}}
 												{{msg.message}}
+												<a href="{{msg.file_name}}">{{msg.file_name}}</a>
 											</p>
 										</li>
 									</ng-container>
@@ -65,6 +89,7 @@
 											<p>
 												{{msg.sender_name}}
 												{{msg.message}}
+												<a href="{{msg.file_name}}">{{msg.file_name}}</a>
 											</p>
 										</li>
 									</ng-template>
