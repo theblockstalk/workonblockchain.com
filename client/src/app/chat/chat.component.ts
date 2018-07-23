@@ -650,6 +650,7 @@ export class ChatComponent implements OnInit {
         console.log('rece id: '+this.credentials.id);
         console.log('rece name: '+this.credentials.email);
         console.log(this.currentUser);
+		console.log(this.display_name);
         let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
         let fileCount: number = inputEl.files.length;
         let formData = new FormData();
@@ -664,12 +665,23 @@ export class ChatComponent implements OnInit {
               this.file_name = success;
               this.msg_tag = 'normal';
               this.credentials.msg_body = 'file sent';
-              this.authenticationService.send_file(this.currentUser._creator,this.credentials.id,this.currentUser.email,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.file_name)
+              this.authenticationService.send_file(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.file_name)
                 .subscribe(
                     data => {
                         console.log(data);
                         this.credentials.msg_body = '';
-                    },
+						this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+						.subscribe(
+							data => {
+								this.new_msgss = data['datas'];
+								this.job_desc = data['datas'][0];
+							},
+							error => {
+								console.log('error');
+								console.log(error);
+							}
+						);
+					},
                     error => {
                         console.log('error');
                         console.log(error);
