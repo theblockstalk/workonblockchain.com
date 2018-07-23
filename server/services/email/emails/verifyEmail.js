@@ -1,7 +1,7 @@
 const emails = require('../emails');
 const settings = require('../../../settings');
 
-module.exports.sendEmail = function sendEmail(data) {
+module.exports.sendEmail = function sendEmail(data,first_name) {
     const verifyEmailUrl = settings.CLIENT.URL + '/verify_email?email_hash='+data.token;
     const sendTo = {
         email: data.email,
@@ -14,7 +14,7 @@ module.exports.sendEmail = function sendEmail(data) {
         to : sendTo.email,
         subject : subject,
         text : 'Visit this ' + verifyEmailUrl,
-        html : '<p>Hi '+sendTo.email +'</p> <br/> <p> Welcome to the new house of blockchain wizards and nerds! </p><br/><p>workonblockchain.com is the coolest and best way to get into a blockchain project.</p><br/><p>Please click on the link below to verify your email for workonblockchain.com.</p><br/><a href="' + verifyEmailUrl + '"><H2>Verify Email</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
+        html : '<p>Hi '+first_name +'</p> <br/> <p> Welcome to the new house of blockchain wizards and nerds! </p><br/><p>workonblockchain.com is the coolest and best way to get into a blockchain project.</p><br/><p>Please click on the link below to verify your email for workonblockchain.com.</p><br/><a href="' + verifyEmailUrl + '"><H2>Verify Email</H2></a><p>If you cannot click on the link, please copy and paste it into your browser.</p><br/><p>Thanks,</p><p> Work on Blockchain team!</p>'
     };
 
     const sendToArray = [sendTo];

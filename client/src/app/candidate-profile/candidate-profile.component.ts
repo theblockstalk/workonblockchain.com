@@ -33,8 +33,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     info;
     share_url;
    shareurl;
-   
-
+   url;
+    user_id;
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
@@ -53,6 +53,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             document.body.appendChild(script);
         }
      
+     this.route.queryParams.subscribe(params => {
+        this.user_id = params['user'];
+        console.log(this.user_id); 
+    });
+     
  }
 
 
@@ -66,7 +71,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
         // render share button
         window['IN'] && window['IN'].parse();
          
-         this.shareurl = location.href;
          
           window['twttr'] && window['twttr'].widgets.load();
     }
@@ -76,8 +80,18 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
      
       
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      
+      if(!this.currentUser && this.user_id)
+      {
+          this.authenticationService.getById(this.user_id)
+            .subscribe(
+            data => {
+                console.log(data);
+                });
+          
+      }
      
-      if(!this.currentUser)
+      if(!this.currentUser && !this.user_id )
        {
           this.router.navigate(['/login']);
        }

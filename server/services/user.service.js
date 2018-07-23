@@ -249,7 +249,7 @@ function forgot_passwordEmail_send(data)
 {
 	
 	 var hash = jwt_hash.decode(data,config.secret,'HS256');  
-	 console.log(hash.email);
+	 //console.log(hash.email);
 	 var name;
 	 
 	 users.findOne({ email :hash.email  }, function (err, result)
@@ -258,10 +258,20 @@ function forgot_passwordEmail_send(data)
 		                deferred.reject(err.name + ': ' + err.message);
 
 		            if(result)
-		            {   
-		            	console.log(result);
-		                name = result.first_name;
-		                console.log(name);
+		            {  
+		            	 CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
+		            	{
+		            		 if (err) 
+		 		                deferred.reject(err.name + ': ' + err.message);
+		            		 if(query_data)
+		            	     {
+		            			//console.log(query_data);
+		 		                name = query_data[0].first_name;
+		 		                //console.log(name);
+		 		               forgotPasswordEmail.sendEmail(hash,data , name);
+		            	     }
+		            	});
+		            	
 		            }
 		            else
 		            {
@@ -269,9 +279,7 @@ function forgot_passwordEmail_send(data)
 		            }
 
 		        });
-	 console.log(name);
-
-	 forgotPasswordEmail.sendEmail(hash,data , name);
+	
 }
 
 //////////////////Reset Password///////////////////////
@@ -427,7 +435,41 @@ function emailVerify(token)
 
 //////////////send verify email when user signup///////////////////////////
 function verify_send_email(info) {
-    verifyEmailEmail.sendEmail(info);
+	//console.log(info.email);
+	var name;
+	 users.findOne({ email :info.email  }, function (err, result)
+		        {          
+		            if (err) 
+		                deferred.reject(err.name + ': ' + err.message);
+
+		            if(result)
+		            {  
+		            	 CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
+		            	{
+		            		 if (err) 
+		 		                deferred.reject(err.name + ': ' + err.message);
+		            		 if(query_data)
+		            	     {
+		            			//console.log(query_data);
+		            			if(query_data[0].first_name)
+		 		                 name = query_data[0].first_name;
+		            			else 
+		            				name = info.email;
+		 		                //console.log(name);
+		 		               verifyEmailEmail.sendEmail(info, name);
+		 		               //forgotPasswordEmail.sendEmail(hash,data , name);
+		            	     }
+		            	});
+		            	
+		            }
+		            else
+		            {
+		                 deferred.resolve({error:'Email Not Found'});
+		            }
+
+		        });
+	
+    
 }
 
 

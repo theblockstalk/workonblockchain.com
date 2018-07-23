@@ -3,7 +3,7 @@ const settings = require('../../../settings');
 
 module.exports.sendEmail = function sendEmail(data,hash,name) {
     const sendTo = {
-        email: data.email,
+        email:'sadiaabbas326@gmail.com', //data.email,
         name: "NAME OF RECIPIENT - NEED TO ADD THIS!!!"
     };
     const subject = "Forgot your password?";
