@@ -1,7 +1,9 @@
-const healthCheck = require('./services/healthCheck.controller');
+const express = require('express');
+const router = express.Router();
+
+const healthCheck = require('./controller/healthCheck.controller');
 const users = require('./controller/users.controller');
 
-module.exports.registerEndpoints = function (app) {
-    app.use('/', healthCheck);
-    app.use('/users', users);
-}
+router.get('/', healthCheck);
+
+module.exports = router;

@@ -15,7 +15,8 @@ app.use(bodyParser.json());
 
 app.use(sanitizer.middleware);
 
-routes.registerEndpoints(app);
+app.use(routes);
+app.use('/users', require('./controller/users.controller'));
 
 mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
