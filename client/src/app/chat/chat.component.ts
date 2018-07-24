@@ -364,7 +364,7 @@ export class ChatComponent implements OnInit {
                 data => {
                     console.log(data);
                     this.credentials.msg_body = '';
-                    this.interview_log = 'Msg Sent';
+                    this.interview_log = 'Message has been successfully sent';
                     this.credentials.date = '';
                     this.credentials.time = '';
                     this.credentials.location = '';
@@ -407,7 +407,7 @@ export class ChatComponent implements OnInit {
                 data => {
                     console.log(data);
                     this.credentials.msg_body = '';
-                    this.job_offer_log = 'Msg Sent';
+                    this.job_offer_log = 'Message has been successfully sent';
                     this.credentials.job_title = '';
                     this.credentials.base_salary = '';
                     this.credentials.currency = '';
@@ -553,8 +553,7 @@ export class ChatComponent implements OnInit {
   openDialog(email: string, id:string){
       //this.msgs = 'hi baby';
       this.msgs = '';
-      this.new_msgss = '';
-      console.log(id);
+	  this.new_msgss = '';
 	  this.credentials.id = id;
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       console.log("show_msg_area: " + this.show_msg_area);

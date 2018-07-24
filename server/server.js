@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const settings = require('./settings');
 const sanitizer = require('./services/sanitizer');
+const routes = require('./routes');
 
 let app = express();
 
@@ -14,8 +15,7 @@ app.use(bodyParser.json());
 
 app.use(sanitizer.middleware);
 
-// routes
-app.use('/', require('./controller/healthCheck.controller'));
+app.use(routes);
 app.use('/users', require('./controller/users.controller'));
 
 mongoose.connect(settings.MONGO_CONNECTION_STRING);

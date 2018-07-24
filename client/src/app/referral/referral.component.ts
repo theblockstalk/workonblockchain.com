@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
@@ -13,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ReferralComponent implements OnInit {
 	currentUser: User;
-	
+	@ViewChild('element') element: ElementRef;
 	credentials: any = {};
 	email_ref_link = 'http://workonblockchain.mwancloud.com/refer?code=';
 	log = '';
@@ -23,10 +23,23 @@ export class ReferralComponent implements OnInit {
 	mail_body = '';
 	show_refreal;
 	display_name;
+	share_url;
+	text;
 	
 	constructor(
 		private authenticationService: UserService
-	) { }
+	) {
+		const url2 = 'https://platform.twitter.com/widgets.js';
+        if (!document.querySelector(`script[src='${url2}']`)) {
+            let script = document.createElement('script');
+            script.src = url2;
+            document.body.appendChild(script);
+        }
+	}
+	
+	ngAfterViewInit(): void {
+		window['twttr'] && window['twttr'].widgets.load();
+    }
 
 	ngOnInit(){
 		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -45,6 +58,8 @@ export class ReferralComponent implements OnInit {
                 }
             );
 			this.ref_link = this.email_ref_link+this.currentUser.ref_link;
+			this.share_url = this.ref_link;
+			this.text = 'I am inviting you to workonblockchain.com! Sign up now and let companies apply to you. Receive 5  job offers in one week. Salaries from €35k - €100k';
 		}
 		console.log(this.show_refreal);
 	}

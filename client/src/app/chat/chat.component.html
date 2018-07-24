@@ -159,7 +159,7 @@
 						</div>
 						<div id="contacts">
 							<ul>
-								<li *ngFor="let person of users" class="contact closee" (click)="openDialog(person.first_name,person._creator._id)">
+								<li *ngFor="let person of users" [ngClass]="(credentials.id == person._creator._id)?'contact active':'contact closee'" (click)="openDialog(person.first_name,person._creator._id)">
 									<div class="wrap">
 										<ng-container *ngIf="currentUser.type == 'company';else cand_image">
 											<ng-container *ngIf="person.image;else person_image">
@@ -292,7 +292,7 @@
 										<div class = "offers">
 											<span class = "offers_btn">
 												<button type = "button" data-toggle="modal" data-target="#myModal" class = "btn btn_descp">Offer to Interview</button>
-												<button type = "button" data-toggle="modal" data-target="#Modal" class = "btn btn_descp">Offer to Employ</button>
+												<button type = "button" data-toggle="modal" data-target="#Modal" class = "btn btn_descp">Offer to Employee</button>
 											</span>
 										</div>
 									</ng-container>
@@ -411,7 +411,7 @@
     <div class="modal-content costom_model">
       <div class="modal-header model-head">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title text-center">Offer to Employ</h4>
+        <h4 class="modal-title text-center">Offer to Employee</h4>
       </div>
       <div class="modal-body">
 	    <form (submit)="send_job_message(msgForm)" #msgForm = ngForm>

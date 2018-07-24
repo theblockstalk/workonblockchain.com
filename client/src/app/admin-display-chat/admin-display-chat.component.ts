@@ -71,7 +71,6 @@ export class AdminDisplayChatComponent implements OnInit {
       //this.user_type = 'company';
       //console.log(this.user_type);
          
-         
        this.count=0;
        if(this.user_type=="company"){
           //console.log('company');
@@ -112,7 +111,7 @@ export class AdminDisplayChatComponent implements OnInit {
                                                 }   
                                             }
                                         }
-                                    console.log(this.users);
+                                    console.log(this.users[0].image);
                                 },
                                 error => {
                                     console.log('error');
