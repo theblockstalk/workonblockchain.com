@@ -18,6 +18,7 @@ app.use(sanitizer.middleware);
 app.use(routes);
 app.use('/users', require('./controller/users.controller'));
 
+
 mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
 mongoose.connection.on('connected',() =>
