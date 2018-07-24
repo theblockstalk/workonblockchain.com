@@ -2,9 +2,9 @@ const bcrypt = require('bcryptjs');
 const users = require('../../model/users');
 const CandidateProfile = require('../../model/candidate_profile');
 const EmployerProfile = require('../../model/employer_profile');
-var Q = require('q');
-var jwt = require('jsonwebtoken');
-var config = require('config.json');
+const Q = require('q');
+const jwt = require('jsonwebtoken');
+const settings = require('../../settings');
 
 module.exports = function (req, res)
 {
@@ -59,7 +59,7 @@ function authenticate(email, password,type)
                             is_admin:user.is_admin,
                             type:user.type,
                             is_approved : user.is_approved,
-                            token: jwt.sign({ sub: user._id }, config.secret)
+                            token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
                         });
                     }
 
