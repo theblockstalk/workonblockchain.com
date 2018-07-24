@@ -82,6 +82,7 @@ service.insert_message_job = insert_message_job;
 service.update_job_message = update_job_message;
 service.get_job_desc_msgs = get_job_desc_msgs;
 service.set_unread_msgs_emails_status = set_unread_msgs_emails_status;
+service.get_unread_msgs_of_user = get_unread_msgs_of_user;
 
 ////////admin functions/////////////////////////
 service.admin_role = admin_role;
@@ -2283,6 +2284,7 @@ function update_chat_msg_status(data){
 function get_unread_msgs(){
 	var deferred = Q.defer();
 	console.log('get all unread msgs');
+	//chat.aggregate({$group : {"receiver_id" : "$by_user", num_tutorial : {$sum : 1}}}, function (err, result){
 	chat.distinct("receiver_id", {is_read: {$gte:0}}, function (err, result){
 		if (err){
 			deferred.reject(err.name + ': ' + err.message);
@@ -2343,6 +2345,26 @@ function set_unread_msgs_emails_status(data){
 			else
 			   deferred.resolve(set);
 		});
+	return deferred.promise;
+}
+
+function get_unread_msgs_of_user(){
+	var deferred = Q.defer();
+	chat.count({ $and : [
+		   { 
+			 $and:[{receiver_id:{$regex: "5b4c8a9c63bcd50730139cf9"}},{sender_id: {$regex: "5b53071fbdda55194c8d83d7"}}]
+		   },
+		   { 
+			 is_read:0
+		   }
+	] }, function (err, result){
+		 if (err) 
+			   deferred.reject(err.name + ': ' + err.message);
+			else{
+				console.log(result);
+				deferred.resolve(result);
+			}
+	});
 	return deferred.promise;
 }
 
