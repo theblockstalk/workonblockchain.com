@@ -71,7 +71,8 @@ export class ChangePasswordComponent implements OnInit {
                             console.log(data);
                             localStorage.removeItem('currentUser');
                             localStorage.removeItem('googleUser');
-                             localStorage.removeItem('linkedinUser');
+                            localStorage.removeItem('linkedinUser');
+                            localStorage.removeItem('admin_log');
                         //this.router.navigate(['/login']);
                            window.location.href = '/login';
                         }

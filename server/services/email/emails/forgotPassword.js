@@ -6,11 +6,11 @@ module.exports.sendEmail = function sendEmail(data,hash,name) {
         email:data.email,
         name: "NAME OF RECIPIENT - NEED TO ADD THIS!!!"
     };
-    const subject = "Forgot your password?";
+    const subject = "Forgot password on Work on Blockchain";
 
     // Which of the following is correct???
     // const resetPassswordUrl = settings.CLIENT.URL + '/reset_password?hash='+hash;
-    const resetPassswordUrl = settings.CLIENT.URL + '/reset_password?hash='+hash;
+    const resetPassswordUrl = settings.CLIENT.URL + 'reset_password?hash='+hash;
 
     const nodemonOptions = {
         from: 'workonblockchain@mwancloud.com',

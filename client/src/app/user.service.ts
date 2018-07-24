@@ -273,6 +273,8 @@ export class UserService {
         localStorage.removeItem('currentUser');
         localStorage.removeItem('googleUser');
          localStorage.removeItem('linkedinUser');
+        localStorage.removeItem('admin_log');
+        
     }
 
     upload_image(formData:any) 

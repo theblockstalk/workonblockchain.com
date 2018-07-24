@@ -7,6 +7,7 @@
 				<div class = "col-sm-4 col-xs-3" id="sidepanel">
 					<div id="profile" class = "padding_top-btm">
 						<div class="wrap">
+						
 								<ng-container *ngIf="profile_pic;else company_logo_top">
 									<img id="profile-img" src="{{profile_pic}}" alt="">
 								</ng-container>
@@ -20,9 +21,9 @@
 						<ul>
 							<li *ngFor="let person of users" class="contact closee" (click)="openDialog(person.first_name,person._creator._id)">
 									<div class="wrap">
-										<ng-container *ngIf="currentUser.type == 'company';else cand_image">
+										<ng-container *ngIf="user_type == 'company';else cand_image">
 											<ng-container *ngIf="person.image;else person_image">
-												<img src="{{person.image}}" alt="">
+												<img src="{{person.image}}" alt="logo">
 											</ng-container>
 											<ng-template #person_image>
 												<img src="/assets/profile/profile-image.png" alt="">

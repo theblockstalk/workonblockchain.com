@@ -352,6 +352,30 @@ export class CompanySearchComponent implements OnInit {
                             && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
                              && res.commercial_platform && res.interest_area  && res.country && res.disable_account == false )
                             {
+                               console.log(res._creator._id);
+                                this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
+                                .subscribe(
+                                 data => {
+                   
+                                    if(data['datas'][1]){
+                                    if(data['datas'][1].is_company_reply==1)
+                                    {
+                                        console.log('accept')
+                                        res.company_reply = 1;
+                                    }
+                                    else
+                                    {
+                                        res.company_reply = 0;
+                            
+                                    }
+                                        console.log(res.company_reply);
+                                }
+                                },
+                                error => {
+                                    console.log('error');
+                                    console.log(error);
+                    
+                               });
                                 //this.search_result.push(res);
                                   this.length++;
                                 this.info.push(res);
@@ -487,12 +511,13 @@ export class CompanySearchComponent implements OnInit {
                   
                 });
     }
-    
+    informations;
     onSearchWord(f: NgForm)
     {
         //console.log(f.value.word);
         this.length=0;
         this.info=[];
+        this.informations='';
          this.authenticationService.searchByWord(f.value.word)
             .subscribe(
                 data => 
@@ -509,13 +534,40 @@ export class CompanySearchComponent implements OnInit {
                     }
                     else
                     {
-                        // console.log(this.log);
-                         for(let res of data)
+                         this.info=[];
+                         this.informations = this. filter_array(data);
+                         console.log(this.informations);
+                         console.log(this.info);
+                         for(let res of this.informations)
                         {
                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
                             && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
                              && res.commercial_platform && res.interest_area  && res.country )
                             {
+                               console.log(res._creator._id);
+                                this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
+                                .subscribe(
+                                 data => {
+                   
+                                    if(data['datas'][1]){
+                                    if(data['datas'][1].is_company_reply==1)
+                                    {
+                                        console.log('accept')
+                                        res.company_reply = 1;
+                                    }
+                                    else
+                                    {
+                                        res.company_reply = 0;
+                            
+                                    }
+                                        console.log(res.company_reply);
+                                }
+                                },
+                                error => {
+                                    console.log('error');
+                                    console.log(error);
+                    
+                               });
                                 //this.search_result.push(res);
                                   this.length++;
                                 this.info.push(res);

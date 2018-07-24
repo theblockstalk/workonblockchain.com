@@ -35,6 +35,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
    shareurl;
    url;
     user_id;
+    public_data;
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
@@ -51,7 +52,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             let script = document.createElement('script');
             script.src = url2;
             document.body.appendChild(script);
-        }
+        }     
      
      this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
@@ -62,10 +63,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
 
      ngAfterViewInit(): void {
-         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-         console.log(this.currentUser._creator);
-         this.share_url = location.href + '?user=' + this.currentUser._creator;
-        // add linkedin share button script tag to element
+      
         this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}"></script>`;
  
         // render share button
@@ -74,24 +72,29 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
          
           window['twttr'] && window['twttr'].widgets.load();
     }
+    tweet_text;
   ngOnInit() 
-  {
-      
-     
-      
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      
-      if(!this.currentUser && this.user_id)
+  {     
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
+      this.tweet_text = "dsfh dsjf sdgfsduf jhgfusd"; 
+      if(this.user_id)
       {
+          console.log("ifffffff");
+          this.share_url = location.href + '?user=' + this.user_id;
           this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
+                this.public_data = data;
                 console.log(data);
                 });
           
       }
      
-      if(!this.currentUser && !this.user_id )
+      else
+       {
+          console.log("elseeeee");
+          this.share_url = location.href + '?user=' + this.currentUser._creator;
+          if(!this.currentUser)
        {
           this.router.navigate(['/login']);
        }
@@ -195,6 +198,10 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
        {
            this.router.navigate(['/not_found']);
        }
+          
+         }
+     
+      
 
   }
 

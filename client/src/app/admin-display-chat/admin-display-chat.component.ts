@@ -265,7 +265,7 @@ export class AdminDisplayChatComponent implements OnInit {
         //});
     }
     
-    
+   
     get_user_type()
     {
     this.authenticationService.getById(this.user_id)
@@ -314,11 +314,12 @@ export class AdminDisplayChatComponent implements OnInit {
                             else
                             {
                                 console.log("elseeeee");
-                                console.log(data[0].company_logo);
+                                
                                 if(data[0].company_logo!='')
                                 {
                                     console.log("company_logo");
                                      this.profile_pic = data[0].company_logo;
+                                     console.log(this.profile_pic);
                                     }
                                
                                

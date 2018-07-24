@@ -5,7 +5,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-9">
-				 <section class = "profile personal_info">
+				 <section class = "profile personal_info" *ngIf="!public_data">
 
 				 	<div class="col-md-6" >
 				 		<span class = "p_img" *ngIf="!imgPath">
@@ -27,9 +27,9 @@
 						<div class = "twitter-share-button">
 							<a class = "twitter-share-button" href="https://twitter.com/intent/tweet?text=I%E2%80%99m%20inviting%20you%20to%20workonblockchain.com!%20Sign%20up%20now%20and%20let%20companies%20apply%20to%20you.%20Receive%205%20%20job%20offers%20in%20one%20week.%20Salaries%20from%20%E2%82%AC35k%20-%20%E2%82%AC100k&amp;url=http://workonblockchain.mwancloud.com/admin-candidate-detail?user={{currentUser._id}}">Tweet</a>
 						</div>-->
-					<div>
+					<div class = "short_intro">
 						 <div #element style="display: inline-block;position: relative;"></div>
-						 <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text" [attr.data-url]="url" class="twitter-share-button"></a>
+						 <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="tweet_text" [attr.data-url]="share_url" class="twitter-share-button"></a>
 						 
 							</div>
 						
@@ -78,7 +78,7 @@
 				 	</span>
 				 </section>
 
-				 <section class = "profile job_info">
+				 <section class = "profile job_info" *ngIf="!public_data">
 					<h3>Job </h3>
 				 	<div class="info-area pro_br-btm">
 						<div class = "col-md-3">
@@ -140,7 +140,7 @@
 				 	
 				 </section>
 
-				 <section class = "profile job_info">
+				 <section class = "profile job_info" *ngIf="!public_data">
 					<h3>BlockChain Experience</h3>
 
 					<div class = "discp info-area pro_br-btm">
@@ -192,19 +192,6 @@
 
 				 	</div>
 
-				 	<!--<div class="info-area pro_br-btm">
-
-						<div class = "col-md-4" >
-							<strong>Year of Experience each platform:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li>BitCoin : 4-5 Year</li>
-								<li>Ethereum : 3-4 Year</li>
-							</ul>
-						</div>
-
-				 	</div>-->
 
 				 	
 
@@ -216,7 +203,7 @@
 				 	
 				 </section>
 
-				 <section class = "profile job_info">
+				 <section class = "profile job_info" *ngIf="!public_data">
 					<h3>Experience</h3>				
 
 				 	<div class="info-area pro_br-btm">
@@ -246,19 +233,6 @@
 
 				 	</div>
 
-				 	<!--<div class="info-area pro_br-btm">
-
-						<div class = "col-md-4" >
-							<strong>Year of Experience each Language:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li>BitCoin : 4-5 Year</li>
-								<li>Ethereum : 3-4 Year</li>
-							</ul>
-						</div>
-
-				 	</div>-->
 
 				 		<span class = "edit_profile_link">
 				 		<a href="edit_profile#experience_candidate">
@@ -266,25 +240,13 @@
 				 		</a>
 				 	</span>
 
-				 	<!--<div class="info-area pro_br-btm">
-
-						<div class = "col-md-4" >
-							<strong>Year of Experience each Role:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li>BitCoin : 4-5 Year</li>
-								<li>Ethereum : 3-4 Year</li>
-							</ul>
-						</div>
-
-				 	</div>-->
+				 
 
 				 	
 				 	
 				 </section>
 
-				  <section class = "profile job_info">
+				  <section class = "profile job_info" *ngIf="!public_data">
 					<h3>Work History</h3>
 					<div class = "company_area" *ngFor='let work of history'>
 					 	<div class="info-area pro_br-btm">
@@ -358,7 +320,7 @@
 				 	
 				 </section>
 
-				 <section class = "profile job_info">
+				 <section class = "profile job_info" *ngIf="!public_data">
 					<h3>Education</h3>
 					
 				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>
@@ -386,10 +348,68 @@
 				 	</span>
 				 	
 				 </section>
-
+				 
+				 
 			</div> <!--End col-md-9--->
+			
+			<div *ngIf="public_data" class="col-md-12">
+				 <section class = "profile job_info" *ngFor="let data of public_data" >
+					<h3>My Information </h3>
+				 	<div class="info-area pro_br-btm">
+						<div class = "col-md-4">
+						
+							<strong>First Name </strong>
+						
+						</div>
+						<div class = "col-md-8">
+							
+				 			<p>{{data.first_name}}</p>
+				 				
+				 		
+						</div>
 
-			<div class = "col-md-3">
+				 	</div>
+
+				
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+						
+							<strong>Why they want to work on blockchain </strong>
+							
+						</div>
+						<div class = "col-md-8">
+							
+				 			<p>{{data.why_work}}</p>
+				 			
+						</div>
+
+				 	</div>
+
+				 	<div class="info-area pro_br-btm">
+
+						<div class = "col-md-4" >
+						
+							<strong>Quick intro	 </strong>
+							
+						</div>
+						<div class = "col-md-8">
+					
+				 			<p>{{data.description}}</p>
+				 			
+							
+						</div>
+
+				 	</div>
+
+				 
+				 	
+				 </section>
+				 </div>
+			
+
+			<div class = "col-md-3" *ngIf="!public_data">
 				<section class = "profile job_info side_rewiew">
 					<h3>We are very sorry</h3>
 					<p>
