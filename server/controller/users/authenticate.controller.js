@@ -2,7 +2,9 @@ const bcrypt = require('bcryptjs');
 const users = require('../../model/users');
 const CandidateProfile = require('../../model/candidate_profile');
 const EmployerProfile = require('../../model/employer_profile');
-
+var Q = require('q');
+var jwt = require('jsonwebtoken');
+var config = require('config.json');
 
 module.exports = function (req, res)
 {
