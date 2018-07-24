@@ -206,6 +206,7 @@ export class ChatComponent implements OnInit {
                                             }   
                                         }
                                     }
+									console.log(this.users);
                                 },
                                 error => {
                                     console.log('error');

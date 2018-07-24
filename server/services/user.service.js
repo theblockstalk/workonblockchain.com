@@ -2266,7 +2266,7 @@ function get_unread_msgs_of_user(){
 	var deferred = Q.defer();
 	chat.count({ $and : [
 		   { 
-			 $and:[{receiver_id:{$regex: "5b4c8a9c63bcd50730139cf9"}},{sender_id: {$regex: "5b53071fbdda55194c8d83d7"}}]
+			 $and:[{receiver_id:{$regex: "5b53071fbdda55194c8d83d7"}},{sender_id: {$regex: "5b4c8a9c63bcd50730139cf9"}}]
 		   },
 		   { 
 			 is_read:0
