@@ -1,19 +1,48 @@
 const settings = require('../../settings');
+const winston = require('winston');
 
-let logger = {};
+let winstonLogger
 
-logger.error = function error(...messages) {
-    console.log('ERROR:',  messages);
+if (settings.ENVIRONMENT === 'production') {
+    winstonLogger = winston.createLogger({
+        transports: [
+            new winston.transports.Console({
+                level: 'info',
+                // stringify: true,
+                timestamp: true,
+                // colorize: true,
+                // prettyPrint: true,
+                json: true
+            })
+        ]
+    })
+} else {
+    winstonLogger = winston.createLogger({
+        transports: [
+            new winston.transports.Console({
+                level: 'debug',
+                stringify: true,
+                timestamp: true,
+                // colorize: true,
+                prettyPrint: true,
+                // json: true
+            })
+        ]
+    })
 }
 
-logger.debug = function debug(...messages) {
-    if (settings.ENVIRONMENT !== 'production') {
-        console.log('DEBUG:',  messages);
-    }
-}
+module.exports = winstonLogger;
 
-logger.info = function info(...messages) {
-    console.log('INFO:',  messages);
-}
+/*
 
-module.exports = logger;
+The following functions can be called:
+
+logger.error()
+logger.warn()
+logger.info()
+logger.http()
+logger.verbose()
+logger.debug()
+logger.silly()
+
+ */
