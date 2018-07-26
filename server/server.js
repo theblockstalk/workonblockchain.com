@@ -28,7 +28,7 @@ app.use(sanitizer.middleware);
 app.use(routes);
 app.use('/users', require('./controller/users.controller'));
 
-app.use(errorHandler.handleError);
+app.use(errorHandler);
 
 mongoose.connect(settings.MONGO_CONNECTION_STRING);
 

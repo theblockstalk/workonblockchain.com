@@ -1,7 +1,7 @@
 const logger = require('../services/logger');
 const uuidv1 = require('uuid/v1');
 
-exports.handleError = function handleError(err, req, res, next) {
+module.exports = function middleware(err, req, res, next) {
     const requestID = uuidv1();
 
     let bug = {
