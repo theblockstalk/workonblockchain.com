@@ -1,17 +1,22 @@
-require('rootpath')();
+const rootpath = require('rootpath');
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
 const settings = require('./settings');
 const sanitizer = require('./controller/middleware/sanitizer');
 const errorHandler = require('./controller/middleware/errorHandler');
 const routes = require('./routes');
 
+rootpath();
+
 let app = express();
 
 app.use(cors());
 
+app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
