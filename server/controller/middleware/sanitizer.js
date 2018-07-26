@@ -1,5 +1,5 @@
 const mongoSanitize = require('mongo-sanitize');
-const xssSanitize = require('server/controller/middleware/sanitizer');
+const xssSanitize = require('sanitizer');
 
 function recursivelySanitize(obj) {
     if (obj instanceof Object) {

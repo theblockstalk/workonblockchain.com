@@ -1,4 +1,4 @@
-const logger = require('../logger');
+const logger = require('../services/logger');
 const uuidv1 = require('uuid/v1');
 
 exports.handleError = function handleError(err, req, res, next) {

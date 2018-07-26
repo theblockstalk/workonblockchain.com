@@ -1,18 +1,18 @@
 const settings = require('../../settings');
 
-let logger;
+let logger = {};
 
-logger.error(...messages) {
+logger.error = function error(...messages) {
     console.log('ERROR:',  messages);
 }
 
-logger.debug(...message) {
+logger.debug = function debug(...messages) {
     if (settings.ENVIRONMENT !== 'production') {
         console.log('DEBUG:',  messages);
     }
 }
 
-logger.info(...message) {
+logger.info = function info(...messages) {
     console.log('INFO:',  messages);
 }
 

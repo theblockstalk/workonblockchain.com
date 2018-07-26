@@ -6,9 +6,12 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const settings = require('./settings');
+const logger = require('./controller/services/logger');
 const sanitizer = require('./controller/middleware/sanitizer');
 const errorHandler = require('./controller/middleware/errorHandler');
 const routes = require('./routes');
+
+logger.debug('settings', settings);
 
 rootpath();
 
@@ -31,14 +34,14 @@ mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
 mongoose.connection.on('connected',() =>
 {
-    console.log('Connected to mongodb database');
+    logger.info('Connected to mongodb database');
 });
 
 mongoose.connection.on('error', (err) =>
 {
     if (err)
     {
-        console.log('Error in database connection'+ err);
+        logger.error('Error in database connection'+ err);
         process.exit(1);
     }
 });
@@ -46,5 +49,5 @@ mongoose.connection.on('error', (err) =>
 const port = settings.SERVER.PORT;
 
 app.listen(port, function () {
-    console.log('Server listening on port ' + port);
+    logger.info('Server listening on port ' + port);
 });
