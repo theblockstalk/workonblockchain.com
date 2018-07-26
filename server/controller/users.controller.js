@@ -58,7 +58,7 @@ router.post('/upload_chat_file/:_id', multer.single('photo'), upload_chat_file);
 router.post('/insert_chat_file', insert_chat_file);
 router.post('/insert_message_job', insert_message_job);
 router.post('/update_job_message', update_job_message);
-router.get('/get_unread_msgs_of_user', get_unread_msgs_of_user);
+router.post('/get_unread_msgs_of_user', get_unread_msgs_of_user);
 
 ///////admin functions//////////////////////////////////
 router.put('/admin_role', admin_role);
@@ -1069,7 +1069,7 @@ function set_unread_msgs_emails_status(req,res){
 }
 
 function get_unread_msgs_of_user(req,res){
-	userService.get_unread_msgs_of_user().then(function (err, about) 
+	userService.get_unread_msgs_of_user(req.body).then(function (err, about) 
 	{
 		if (about) 
 		{

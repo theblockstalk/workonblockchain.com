@@ -206,7 +206,12 @@ export class ChatComponent implements OnInit {
                                             }   
                                         }
                                     }
-									console.log(this.users);
+									for (var key_users in this.users) {
+										//call get_unread_msgs_of_user which is in node
+										//and get unread msgs of this user
+										console.log(this.users[key_users]);
+									}
+				
                                 },
                                 error => {
                                     console.log('error');

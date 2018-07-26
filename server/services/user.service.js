@@ -2262,11 +2262,11 @@ function set_unread_msgs_emails_status(data){
 	return deferred.promise;
 }
 
-function get_unread_msgs_of_user(){
+function get_unread_msgs_of_user(data){
 	var deferred = Q.defer();
 	chat.count({ $and : [
 		   { 
-			 $and:[{receiver_id:{$regex: "5b53071fbdda55194c8d83d7"}},{sender_id: {$regex: "5b4c8a9c63bcd50730139cf9"}}]
+			 $and:[{receiver_id:{$regex: data.receiver_id}},{sender_id: {$regex: data.sender_id}}]
 		   },
 		   { 
 			 is_read:0
