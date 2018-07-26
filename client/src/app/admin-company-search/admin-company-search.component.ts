@@ -201,6 +201,8 @@ export class AdminCompanySearchComponent implements OnInit {
                     }
                     else
                     {
+                         this.info=[];
+                         this.length='';
                         // console.log(this.log);
                        this.information = this.filter_array(data);
                        //console.log(this.inform.first_name);

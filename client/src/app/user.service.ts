@@ -86,7 +86,7 @@ export class UserService {
 
     candidate_login(username: string, password: string) 
     {
-      return this.http.post<any>(URL+'authenticate', { email: username, password: password })
+      return this.http.post<any>(URL+'users/authenticate', { email: username, password: password })
             .map(user => {
                 if (user && user.token) 
                 {

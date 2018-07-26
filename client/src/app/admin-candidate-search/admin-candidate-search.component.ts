@@ -12,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./admin-candidate-search.component.css']
 })
 export class AdminCandidateSearchComponent implements OnInit {
-   
+    p: number = 1;
    currentUser: User;
   log;info=[];roleChange;options2;length;page;searchWord;
     credentials: any = {};job_title;
@@ -99,7 +99,8 @@ export class AdminCandidateSearchComponent implements OnInit {
                     else
                     {
                         this.information = this.filter_array(data);
-
+                        this.info=[];
+                        this.length='';
                          //console.log(this.log);
                         
                        // this.info = this.information; 
@@ -137,6 +138,7 @@ export class AdminCandidateSearchComponent implements OnInit {
                 {
                   
                 });
+       console.log(this.info);
     }
     
     is_approve;

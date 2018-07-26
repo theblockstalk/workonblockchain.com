@@ -327,8 +327,6 @@ export class CompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                   
-                    
                     if(data.error)
                     {
                        // console.log(this.info);
@@ -341,7 +339,9 @@ export class CompanySearchComponent implements OnInit {
                     }
                     else
                     {
+                        this.info=[];
                          this.information = this. filter_array(data);
+                        //this.length='';
                     console.log(this.information);
                          //console.log(this.log);
                         
@@ -535,6 +535,7 @@ export class CompanySearchComponent implements OnInit {
                     else
                     {
                          this.info=[];
+                         this.length='';
                          this.informations = this. filter_array(data);
                          console.log(this.informations);
                          console.log(this.info);
