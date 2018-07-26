@@ -1,4 +1,4 @@
-var config = require('config.json');
+const settings = require('../settings');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var date = require('date-and-time');
@@ -7,10 +7,8 @@ var Q = require('q');
 var mongo = require('mongoskin');
 const users = require('../model/users');
 const CandidateProfile = require('../model/candidate_profile');
-//var image = require('../model/image');
 const Pages = require('../model/pages_content');
 var crypto = require('crypto');
-var nodemailer = require('nodemailer');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../model/employer_profile');
 var md5 = require('md5');
@@ -21,10 +19,10 @@ const verifyEmailEmail = require('./email/emails/verifyEmail');
 const referUserEmail = require('./email/emails/referUser');
 const chatReminderEmail = require('./email/emails/chatReminder');
 
-const USD = {GBP: "1.33", Euro: "1.17"};
-const GBP = {USD : "0.75" , Euro:"0.88"};
-const Euro = {USD : "0.85" , GBP : "1.13"};
-var emails = ['gmail.com' , 'hotmail.com' , 'yahoo.com'];
+const USD = settings.CURRENCY_RATES.USD;
+const GBP = settings.CURRENCY_RATES.GBP;
+const Euro = settings.CURRENCY_RATES.Euro;
+const emails = settings.COMPANY_EMAIL_BLACKLIST;
 
 var service = {};
 
@@ -136,7 +134,7 @@ function forgot_password(email)
             email_data.email = data.email;
             email_data.name = data.first_name;
             email_data.expiry = new Date(new Date().getTime() +  1800 *1000);
-            var token = jwt_hash.encode(email_data,config.secret,'HS256');
+            var token = jwt_hash.encode(email_data, settings.EXPRESS_JWT_SECRET, 'HS256');
             email_data.token = token;
             var set = 
             {
@@ -163,7 +161,7 @@ function forgot_password(email)
 function forgot_passwordEmail_send(data)
 {
 	
-	 var hash = jwt_hash.decode(data,config.secret,'HS256');  
+	 var hash = jwt_hash.decode(data, settings.EXPRESS_JWT_SECRET, 'HS256');
 	 //console.log(hash.email);
 	 var name;
 	 
@@ -203,7 +201,7 @@ function reset_password(hash,data)
     	var deferred = Q.defer(); 
     	//console.log(hash);
     	//console.log(data);
-    	var token = jwt_hash.decode(hash,config.secret,'HS256');  
+    	var token = jwt_hash.decode(hash, settings.EXPRESS_JWT_SECRET, 'HS256');
     	//console.log("data");
     	//console.log(data);
     	if(new Date(token.expiry) > new Date())
@@ -311,7 +309,7 @@ function change_password(id , param)
 function emailVerify(token)
 {
     var deferred = Q.defer()   
-    var data = jwt_hash.decode(token,config.secret,'HS256');  
+    var data = jwt_hash.decode(token, settings.EXPRESS_JWT_SECRET, 'HS256');
     if(new Date(data.expiry) > new Date())
     {
        users.findOne(  { email_hash:token  }, function (err, result)
@@ -419,7 +417,7 @@ function verify_client(email)
             user_info.email = email;
             //user_info.name = userParam.first_name;
             user_info.expiry = new Date(new Date().getTime() +  1800 *1000);  
-            var token = jwt_hash.encode(user_info,config.secret,'HS256');
+            var token = jwt_hash.encode(user_info, settings.EXPRESS_JWT_SECRET, 'HS256');
             user_info.token = token;
             var set = 
             {
@@ -531,7 +529,7 @@ function create(userParam)
           user_info.email = userParam.email;
           user_info.name = userParam.first_name;
           user_info.expiry = new Date(new Date().getTime() +  1800 *1000);  
-          var token = jwt_hash.encode(user_info,config.secret,'HS256');
+          var token = jwt_hash.encode(user_info, settings.EXPRESS_JWT_SECRET, 'HS256');
           user_info.token = token;
           console.log(user_info);
           // set user object to userParam without the cleartext password
@@ -589,7 +587,7 @@ function create(userParam)
 						   ref_link: newUser.ref_link,
 						   type: newUser.type,
 						   is_approved : user.is_approved,
-                           token: jwt.sign({ sub: user._id }, config.secret)
+                           token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
                        });
                      }
                   });      
@@ -1042,7 +1040,7 @@ function create_employer(userParam)
         company_info.email = userParam.email;
         company_info.name = userParam.first_name;
         company_info.expiry = new Date(new Date().getTime() +  1800 *1000);
-        var token = jwt_hash.encode(company_info,config.secret,'HS256');
+        var token = jwt_hash.encode(company_info, settings.EXPRESS_JWT_SECRET, 'HS256');
         company_info.token = token;
         // set user object to userParam without the cleartext password
         var user = _.omit(userParam, 'password'); 
@@ -1098,7 +1096,7 @@ function create_employer(userParam)
                             email_hash:newUser.email_hash,
                             email: newUser.email,
                             is_approved : user.is_approved,
-                            token: jwt.sign({ sub: user._id }, config.secret)
+                            token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
                         });
                       }
                });      
