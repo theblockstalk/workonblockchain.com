@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const healthCheck = require('./controller/healthCheck.controller');
-const authenticate = require('./controller/users/authenticate.controller');
+const authenticate = require('./controller/api/users/authenticate.controller');
 const users = require('./controller/users.controller');
 
 router.get('/', healthCheck);
