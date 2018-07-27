@@ -185,6 +185,7 @@ export class ChatComponent implements OnInit {
 												}
 											);
 										}
+										console.log(this.unread_msgs_info);
 									},
                                     error => {
                                         console.log('error');
@@ -604,21 +605,6 @@ export class ChatComponent implements OnInit {
                             console.log(error);
                         }
                     );
-					this.unread_msgs_info = [];
-					for (var key_users_new in this.users) {
-						//this.currentUser._creator //receiver
-						this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
-						.subscribe(
-							data => {
-								this.unread_msgs_info.push(data);
-							},
-							error => {
-								console.log('error');
-								console.log(error);
-							}
-						);
-					}
-					console.log(this.unread_msgs_info);
                     if(this.currentUser.type=='candidate'){
                         this.cand_job_offer = 0;
                         for(var key in data['datas']){
@@ -673,7 +659,22 @@ export class ChatComponent implements OnInit {
                     //this.log = error;
                 }
             );
-        //}, 2000);
+        //}, 3000);
+		this.unread_msgs_info = [];
+		for (var key_users_new in this.users) {
+			//this.currentUser._creator //receiver
+			this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+			.subscribe(
+				data => {
+					this.unread_msgs_info.push(data);
+				},
+				error => {
+					console.log('error');
+					console.log(error);
+				}
+			);
+		}
+		console.log(this.unread_msgs_info);
         this.candidate = email;
         this.credentials.email = email;
         this.credentials.id = id;
