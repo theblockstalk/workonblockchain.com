@@ -30,7 +30,7 @@ if (isLiveApplication()) {
 
     settings.AWS = {
         REGION: config.aws.region,
-        S3_BUCKET: config.aws.s3Bucket,
+        BUCKETS: config.aws.buckets,
         ACCESS_KEY: config.aws.accessKey,
         SECRET_ACCESS_KEY: config.aws.secretAccessKey
     }
