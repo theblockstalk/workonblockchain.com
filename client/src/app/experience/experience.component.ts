@@ -47,6 +47,7 @@ export class ExperienceComponent implements OnInit
     message;
   	ngOnInit() 
     {
+            this.current_currency =-1;
          this.jobData = [];
             this.eduData=[];
        this.dataservice.currentMessage.subscribe(message => this.message = message);
@@ -153,7 +154,11 @@ export class ExperienceComponent implements OnInit
 
                     this.salary = data.current_salary;
                     this.Intro =data.description;
-                    this.current_currency =data.current_currency;
+                    if(data.current_currency)
+                    {
+                        this.current_currency =data.current_currency;
+                     }
+                   // this.current_currency =-1;
 
                 }
                  if(data.country && data.roles && data.interest_area || data.expected_salary || data.availability_day )
@@ -420,24 +425,54 @@ export class ExperienceComponent implements OnInit
     }*/
     log;
     experience_submit(searchForm: NgForm)
-    {
-     
-      console.log(searchForm.value);
-       // console.log(this.EducationForm.value);
+    {    
+       console.log(searchForm.value);
+       console.log(this.ExperienceForm.value.ExpItems[0].currentwork);
+       console.log(this.ExperienceForm.value.ExpItems);
         
-        if(!this.ExperienceForm.value.ExpItems[0].companyname || !this.ExperienceForm.value.ExpItems[0].positionname ||
-        !this.ExperienceForm.value.ExpItems[0].locationname  || !this.ExperienceForm.value.ExpItems[0].descname ||
+        if(!this.ExperienceForm.value.ExpItems[0].enddate || !this.ExperienceForm.value.ExpItems[0].endyear )
+        {
+            if(this.ExperienceForm.value.ExpItems[0].currentwork==false)
+            {
+                this.log = "Please complete all fields for each work experience.";  
+               
+                
+            }
+            else    
+            {
+                this.log ='';
+                this.submit_info(searchForm);
+            }
+            
+            
+        }
+        else
+            {
+            this.submit_info(searchForm);
+            }
+            
+        
+        
+        
+    }
+
+    submit_info(searchForm)
+    {
+        
+     if(!this.ExperienceForm.value.ExpItems[0].companyname || !this.ExperienceForm.value.ExpItems[0].positionname ||
+        !this.ExperienceForm.value.ExpItems[0].locationname   ||
         !this.ExperienceForm.value.ExpItems[0].startdate || !this.ExperienceForm.value.ExpItems[0].startyear   )
         {
              console.log("iffff");
-            this.log = "Please enter atleast one full work history record";    
+            this.log = "Please complete all fields for each work experience.";    
         }
+
 
         else if(!this.EducationForm.value.itemRows[0].uniname || !this.EducationForm.value.itemRows[0].degreename
         || !this.EducationForm.value.itemRows[0].fieldname || !this.EducationForm.value.itemRows[0].eduyear)
         {
             console.log("if");
-            this.log = "Please enter atleast one full education record";
+            this.log = "Please complete all fields for each education record.";
             
         }
         else
@@ -449,9 +484,9 @@ export class ExperienceComponent implements OnInit
                 data => {
                 if(data)
                 {   console.log("data");
-                     window.location.href = '/candidate_profile';
+                    // window.location.href = '/candidate_profile';
 
-                    //this.router.navigate(['/candidate_profile']);
+                    this.router.navigate(['/candidate_profile']);
                 }
 
                 if(data.error )
@@ -465,9 +500,8 @@ export class ExperienceComponent implements OnInit
                    
                 });
              }
-
+   
     }
-
     selectedValue;langValue;
     onExpYearOptions(e, value)
     {

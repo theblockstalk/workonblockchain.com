@@ -5,11 +5,11 @@
       <div class="col-md-12 form_container_inner">
           <ul class="nav nav-tabs my_tab">
             <li class="active col-xs-6 tab-col">
-              <a data-toggle="tab" href="#home">Candidates SignUp</a>
+              <a data-toggle="tab" href="#home">Candidates</a>
             </li>
 
             <li class="col-xs-6 tab-col">
-              <a data-toggle="tab" href="#menu1">Company SignUp</a>
+              <a data-toggle="tab" href="#menu1">Companies</a>
             </li>
           </ul>
 
@@ -55,22 +55,22 @@
                   <input type="submit" class="form-control btn btn-signup" value = "Sign Up" [disabled]="!loginForm.valid ">
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <span class="saperate-line"></span>
                   <p class = "text-center">Or signup with your social Account</p>
-                </div>
+                </div>-->
 
                 <div class="form-group">
                   <a  class = "form-control btn btn-linkdIn" type = "submit" (click)="subscribeToLogin()">
                     <i class="fa fa-linkedin-square" aria-hidden="true"></i>
-                      Sign Up with LinkedIn
+                     Sign up with LinkedIn
                   </a>
                 </div>
 
                 <div class="form-group">
                   <a  class = "form-control btn btn-danger" type = "submit" (click)="signInWithGoogle()">
                     <i class="fa fa-google-plus-square" aria-hidden="true"></i>
-                      Sign Up with Google
+                      Sign up with Google
                   </a>
                 </div>
                </form>
@@ -108,7 +108,7 @@
 
                 <div class="form-group">
                   <span><i class="fa fa-building-o" aria-hidden="true"></i></span>
-                  <input type="text" class="form-control" placeholder="Company Website(www.company_name.com)" required name="company_website" [(ngModel)]="credentials.company_website">
+                  <input type="text" class="form-control" placeholder="Company Website" required name="company_website" [(ngModel)]="credentials.company_website">
                 </div>
 
                 <div class="form-group">

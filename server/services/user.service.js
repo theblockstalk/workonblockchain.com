@@ -270,7 +270,7 @@ function change_password(id , param)
 	        }
 			else
 			{
-				deferred.reject("Current Password Incorrect");
+				deferred.reject("Current Password is Incorrect");
 			}
 				
            
@@ -797,7 +797,7 @@ function resume_data(_id, userParam)
         {
             why_work: userParam.why_work,
             commercial_platform: userParam.commercial_experience_year,
-            experimented_platform: userParam.experience_year,
+            experimented_platform: userParam.experimented_platform,
             platforms: userParam.platforms
         };
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
@@ -923,7 +923,7 @@ function update_candidate_profile(_id,userParam)
 	         availability_day: userParam.detail.availability_day,
 	         why_work: userParam.detail.why_work,
 	         commercial_platform: userParam.detail.commercial_experience_year,
-	         experimented_platform: userParam.detail.experience_year,
+	         experimented_platform: userParam.detail.experimented_platform,
 	         platforms: userParam.detail.platforms,
 	         current_salary: userParam.detail.salary,
 	         current_currency : userParam.detail.current_currency,

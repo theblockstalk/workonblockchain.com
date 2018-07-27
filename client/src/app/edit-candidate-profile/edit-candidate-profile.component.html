@@ -36,12 +36,12 @@
             				</div>
 
 							<div class="form-group col-md-6">
-								<label><p class = "label-p">Github Account</p></label>
+								<label><p class = "label-p">Github account URL</p></label>
 								<input type="text" class="form-control" id="" name="github_account" [(ngModel)]="info.github_account" placeholder="Github account (optional)">
 							</div>
 
 							<div class="form-group col-md-6">
-								<label><p class = "label-p">Exchange Account</p></label>
+								<label><p class = "label-p">Stackexchange account URL</p></label>
 								<input type="text" class="form-control" id="" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account" >
 							</div>
 
@@ -88,7 +88,7 @@
 							<legend class="scheduler-border">Tell us more about your dream job</legend>
 							<div class="container collection col-md-12">
 								<div>
-									<p class = "question-label">Where they will work</p>
+									<p class = "question-label">Where are you available to work?</p>
 									
 									<div class="answer">
 										
@@ -124,7 +124,7 @@
 							<div class="form-group col-md-12">
 							<div class="container collection col-left col-md-12">
 								<div>
-									<p class = "question-label">Roles</p>
+									<p class = "question-label">What role are you looking for?</p>
 									
 									<div class="answer">
 										<div class = "row">
@@ -155,7 +155,7 @@
 							
 
 							<div class="form-group col-md-6">
-								<label><p class = "label-p">Yearly Expected base salary</p></label>
+								<label><p class = "label-p">Yearly expected base salary</p></label>
 								<input type="text" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="salary">
 							</div>
 							
@@ -236,7 +236,7 @@
 							<div class="col-md-12 collection">
 							
 									<div class="answer">
-										<label><p>Blockchain exposure</p></label>
+										
 										<div class = "row">
 											<div class="">
                       <span class = "checkbox-header"> <strong>Platforms commercially worked with </strong></span><br/>
@@ -264,7 +264,7 @@
 
                       <div *ngIf="commercially_worked?.length > 0">
                       
-                        <label><p>Year of Experience of each platform</p></label>
+                        <label><p>Number of years</p></label>
                         <div class = "row" *ngFor="let option of commercially_worked; let i = index ">
             
                         <p class="rd_label label-p">{{option.value}}</p>
@@ -309,7 +309,7 @@
                     
               <hr>
           <div *ngIf="platforms_designed?.length > 0">
-           <label><p>Year of Experience of each platform</p></label>
+           <label><p>Number of years</p></label>
           <div class = "row" *ngFor="let exp_value of platforms_designed;let i_index = index">
            
             <p class="rd_label label-p">{{exp_value.value}}</p>
@@ -356,8 +356,8 @@
                 </div>
               </div>
               <hr>
-          <div *ngIf="experimented_platform?.length > 0">
-          <label><p>Year of Experience of each platform</p></label>
+         <!--  <div *ngIf="experimented_platform?.length > 0">
+          <label><p>Number of years</p></label>
           <div class = "row" *ngFor="let exp_value of experimented_platform;let i_index = index">
            
             <p class="rd_label label-p">{{exp_value.value}}</p>
@@ -373,7 +373,7 @@
       </div>
 	  
           </div>
-          </div>
+          </div>-->
 
 						</fieldset>
 
@@ -516,7 +516,7 @@
 								</div>
 
 								<div class="form-group col-md-12">
-									<label><p>Description</p></label>
+									<label><p>Job description (optional)</p></label>
 									 <textarea rows="5" id="comment" maxlength="300" placeholder="Job description" formControlName="descname" class="form-control" #desc_field name="Description" required></textarea>
 								</div>
 
@@ -578,7 +578,7 @@
 						</div>
 						</div>
 						 <div class="form-group col-md-12">
-								<label><p class = "label-p">Quick Introduction here..</p></label>
+								<label><p class = "label-p">Please write a short 2-5 sentence bio for your profile</p></label>
 								 <textarea class="form-control" rows="5" id="comment" maxlength="300" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
 							</div>
 						</fieldset>

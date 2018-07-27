@@ -6,7 +6,7 @@
     <div class="row">
       <div class = "text-center steps-name">
         <ul class = "step-progress">
-           <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Summary of T&Cs</a></li>        
+           <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}">Terms & Conditions</a></li>        
           <li class = "step "><i class="{{active_class}}"></i><a routerLink="/about"> About</a></li>
           <li class = "step"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
           <li class = "step "><i class="{{active_class}}"></i><a href="/resume" >Blockchain</a></li>
@@ -17,7 +17,7 @@
       <div class="wizard-form">
 
         <form class = "login_form" (submit)="experience_submit(expForm)" #expForm = ngForm>
-        <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
+       
           <div class="alert alert-danger error-alert" *ngIf="message">{{message}}</div>
           
           <fieldset class="scheduler-border">
@@ -36,7 +36,7 @@
              <div class="form-group col-md-6 col-left setting-top_2">
                 <label><p  class = "label-p"></p></label>
                        <select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
-                   <!--  <option value="-1" disabled selected hidden >Choose currency</option>-->
+                   <option value="-1" disabled selected hidden >Please choose currency</option>
                 
                   <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
               
@@ -71,7 +71,7 @@
 
           <div *ngIf="language?.length > 0">
          <div class="form-group col-md-12">
-           <p class = "exp_p">Year of Experience of each Language</p>
+           <p class = "exp_p">Number of years</p>
           <div class = "row" *ngFor="let lang_value of language; let i = index ">
             
             <p class="rd_label label-p">{{lang_value.value}}</p>
@@ -90,8 +90,7 @@
 			
 			<div class="form-group col-md-12">
           <div class = "row work-history">
-            <h3>Work History</h3>
-            <p>Your profile will be hidden from all companies you have listed in your work history.</p>
+            <h3>Work History</h3>         
 
             <div class = "work-form" [formGroup]="ExperienceForm">
                <div formArrayName="ExpItems">
@@ -151,7 +150,7 @@
                      <input type="checkbox" id="1step" formControlName="currentwork" 
                    name="options" 
                    value="current" 
-                   (change)="onCurrentlyWork($event)" required  />
+                    required  />
                     I currently work there
                     <span class="checkmark">
                       <div></div>
@@ -161,7 +160,7 @@
               </div>
 
               <div class="form-group col-md-12">
-                <label class="lable"><p>Description</p></label>
+                <label class="lable"><p>Job description (optional)</p></label>
                   <textarea rows="5" id="comment" maxlength="300" placeholder="Job description" formControlName="descname" class="form-control" #desc_field name="Description" required></textarea>
               </div>
 
@@ -228,7 +227,7 @@
           </div>
           </div>
           <div class="form-group col-md-12">
-                <label><p class = "label-p">Quick Introduction here..</p></label>
+                <label><p class = "label-p">Please write a short 2-5 sentence bio for your profile</p></label>
                 <textarea class="form-control" rows="5" id="comment" maxlength="300" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
             </div>
           
@@ -238,7 +237,7 @@
               <a href="/resume" class = "btn btn-prev">Prev Step</a>
               <button type="submit" class = "btn btn-self btn-pdg" [disabled]=" intro.value=='' " >Done</button>
           </div>
-
+			 <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
         </form>
         
       </div>

@@ -103,6 +103,7 @@ export class CandidateDetailComponent implements OnInit {
                     this.languages= data[0].experience_roles;
                     this.current_currency = data[0].current_currency;
                     this.current_salary = data[0].current_salary;
+                    this.platforms = data[0].platforms;
                      if(data[0].image != null )
                     {
                         
