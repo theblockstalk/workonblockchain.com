@@ -584,7 +584,7 @@ export class ChatComponent implements OnInit {
 	  this.credentials.id = id;
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       console.log("show_msg_area: " + this.show_msg_area);
-		setInterval(() => {
+        setInterval(() => {
 			//receiver,sender
             console.log("ID: " + this.credentials.id);
             this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
@@ -594,7 +594,7 @@ export class ChatComponent implements OnInit {
                     console.log(data['datas']);
                     this.new_msgss = data['datas'];
                     this.job_desc = data['datas'][0];
-                    this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
+                    this.authenticationService.update_chat_msg_status(id,this.currentUser._creator,0)
                     .subscribe(
                         data => {
                             console.log('done');
@@ -629,7 +629,7 @@ export class ChatComponent implements OnInit {
                         this.company_reply = 0;
                         if(this.currentUser.type=='candidate'){
                             this.cand_offer = 1;
-                            this.credentials.msg_body = 'Yes ! i will join you';
+                            this.credentials.msg_body = '';
                         }
                         else{
                             this.cand_offer = 0;
@@ -639,7 +639,7 @@ export class ChatComponent implements OnInit {
                         this.first_message = 0;
                         this.show_msg_area = 1;
                         if(this.currentUser.type=='candidate' && this.cand_offer == 1){
-                            this.credentials.msg_body = 'Yes ! i will join you';
+                            this.credentials.msg_body = '';
                         }
                         else{
                             //this.credentials.msg_body = '';
@@ -659,7 +659,7 @@ export class ChatComponent implements OnInit {
                     //this.log = error;
                 }
             );
-        }, 3000);
+        }, 2000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver
