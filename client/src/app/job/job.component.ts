@@ -42,7 +42,7 @@ export class JobComponent implements OnInit {
   ngOnInit() 
   {
   //console.log(this.options.name);
- 
+    this.base_currency = -1;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       
        if(!this.currentUser)

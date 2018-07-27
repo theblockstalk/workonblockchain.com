@@ -155,8 +155,24 @@ export class ResumeComponent implements OnInit {
                      
                       if(data.experimented_platform)
                       {
-                         this.expYear = data.experimented_platform;                        
-                      for (let key of data.experimented_platform) 
+                          for (let plat of data.experimented_platform) 
+                     {
+                      
+                      for(let option of this.experimented)
+                      {
+
+                        if(option.value == plat.value)
+                        {
+                          option.checked=true;
+                          this.experimented_platform.push(plat);
+                          
+                        }
+                       
+                      }
+                      
+                    }
+                    // this.expYear = data.experimented_platform;                        
+                    /* for (let key of data.experimented_platform) 
                       {
                         for(var i in key)
                         {
@@ -196,7 +212,7 @@ export class ResumeComponent implements OnInit {
                           }
                           
                         }
-                      }
+                      }*/
                     }
 
 
@@ -326,7 +342,21 @@ export class ResumeComponent implements OnInit {
   onExpOptions(obj)
   {
 
-       let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
+      let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
+      let index = this.experimented_platform.indexOf(updateItem);
+      if(index > -1)
+      {
+        this.experimented_platform.splice(index, 1);
+        
+      }
+      else
+      {
+        obj.checked =true;
+        this.experimented_platform.push(obj);
+      }
+
+      
+      /* let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
       let index = this.experimented_platform.indexOf(updateItem);
       if(index > -1)
       {
@@ -346,7 +376,7 @@ export class ResumeComponent implements OnInit {
         obj.checked =true;
         this.experimented_platform.push(obj);
       }
-      console.log(this.experimented_platform);
+      */
   }
 
   

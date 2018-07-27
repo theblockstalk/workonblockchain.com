@@ -7,7 +7,7 @@
       <div class = "text-center steps-name">
 
          <ul class = "step-progress">
-         <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Summary of T&Cs</a></li>        
+         <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Terms & Conditions</a></li>        
           <li class = "step"><i class="{{about_active_class}}"></i><a routerLink="/about"> About</a></li>
           <li class = "step step-active"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
           <li class = "step"><i class="{{resume_active_class}}"></i><a href="{{resume_class}}" >Blockchain</a></li>
@@ -23,7 +23,7 @@
               <legend class="scheduler-border">Tell us more about your dream job</legend>
             <div class="container collection">
               <div>
-                  <p class = "question-label">Where they will work</p>
+                  <p class = "question-label">Where are you available to work?</p>
                 
                 <div class="answer"  >
                   
@@ -59,7 +59,7 @@
                       <div class="form-group col-md-12">
             <div class="container collection">
               <div>
-                  <p class = "question-label">Roles</p>
+                  <p class = "question-label">What role are you looking for?</p>
                 
                 <div class="answer">
                   <div class = "row" >
@@ -90,14 +90,14 @@
           </div>
               <hr>
               <div class="form-group col-md-6 col-left">
-                <label><p  class = "label-p">Yearly expected Base salary</p></label>
+                <label><p  class = "label-p">Yearly expected base salary</p></label>
                        <input type="text" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="salary">
           
             </div>
               <div class="form-group col-md-6 setting-top">
               <label><p class = "label-p"></p></label>
              <select [(ngModel)]="base_currency" class="form-control" id="currency" required name="base_currency" >
-                 <!--  <option value="-1" disabled selected hidden >Choose currency</option>-->
+                   <option value="-1" disabled selected hidden >Please choose currency</option>
                   
                   <option class='option' *ngFor='let base_currency of currency'  [value]="base_currency" selected>{{base_currency}}</option>
               
