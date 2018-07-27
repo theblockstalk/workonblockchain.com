@@ -5,7 +5,7 @@ module.exports.sendEmail = function sendEmail(data) {
         email: data.email,
         name: "NAME OF RECIPIENT - NEED TO ADD THIS!!!"
     };
-    const subject = "Referring a user";
+    const subject = data.subject;
 
     const nodemonOptions = {
         from: 'workonblockchain@mwancloud.com', // sender address
@@ -20,7 +20,11 @@ module.exports.sendEmail = function sendEmail(data) {
     const mandrillOptions = {
         templateName: "wob-refer-a-user",
         message: {
-            global_merge_vars: [],
+            global_merge_vars: [
+				{FNAME_REFEREE: data.first_name},
+				{LNAME_REFEREE: data.last_name},
+				{REFER_INVITATION_URL: data.share_url}
+			],
             subject: subject,
             to: sendToArray
         }

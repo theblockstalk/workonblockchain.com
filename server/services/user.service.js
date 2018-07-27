@@ -2173,11 +2173,10 @@ function update_chat_msg_status(data){
 		chat.update({
       $and : [
                { 
-				 receiver_id: data.sender_id
-                 /*$or : [
+				$or : [
 					{ $and : [ { receiver_id : {$regex: data.receiver_id} }, { sender_id : {$regex: data.sender_id} } ] },
 					{ $and : [ { receiver_id : {$regex: data.sender_id} }, { sender_id : {$regex: data.receiver_id} } ] }
-				]*/
+				]
                },
                { 
                  is_read:data.status
@@ -2274,7 +2273,11 @@ function get_unread_msgs_of_user(data){
 			   deferred.reject(err.name + ': ' + err.message);
 			else{
 				console.log(result);
-				deferred.resolve(result);
+				deferred.resolve({
+					receiver_id: data.receiver_id,
+					sender_id: data.sender_id,
+					number_of_unread_msgs:result
+				});
 			}
 	});
 	return deferred.promise;

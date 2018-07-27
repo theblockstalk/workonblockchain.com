@@ -59,8 +59,9 @@ export class ChatComponent implements OnInit {
     file_url;
     profile_pic;
     display_name;
-	unread_msgs = [];
-	unread_msgs_info: any;
+	unread_msgs : any;
+	unread_msgs_info = [];
+	new_users = [];
   constructor(
     private authenticationService: UserService,
     private fb: FormBuilder,
@@ -171,8 +172,20 @@ export class ChatComponent implements OnInit {
                                                 }   
                                             }
                                         }
-                                        console.log(this.users);
-                                    },
+										for (var key_users_new in this.users) {
+											//this.currentUser._creator //receiver
+											this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+											.subscribe(
+												data => {
+													this.unread_msgs_info.push(data);
+												},
+												error => {
+													console.log('error');
+													console.log(error);
+												}
+											);
+										}
+									},
                                     error => {
                                         console.log('error');
                                         console.log(error);
@@ -206,12 +219,19 @@ export class ChatComponent implements OnInit {
                                             }   
                                         }
                                     }
-									for (var key_users in this.users) {
-										//call get_unread_msgs_of_user which is in node
-										//and get unread msgs of this user
-										console.log(this.users[key_users]);
+									for (var key_users_new in this.users) {
+										//this.currentUser._creator //receiver
+										this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+										.subscribe(
+											data => {
+												this.unread_msgs_info.push(data);
+											},
+											error => {
+												console.log('error');
+												console.log(error);
+											}
+										);
 									}
-				
                                 },
                                 error => {
                                     console.log('error');
@@ -565,7 +585,7 @@ export class ChatComponent implements OnInit {
       console.log("show_msg_area: " + this.show_msg_area);
         //setInterval(() => {
 			//receiver,sender
-            console.log("ID: " + id);
+            console.log("ID: " + this.credentials.id);
             this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
             .subscribe(
                 data => {
@@ -573,7 +593,7 @@ export class ChatComponent implements OnInit {
                     console.log(data['datas']);
                     this.new_msgss = data['datas'];
                     this.job_desc = data['datas'][0];
-                    this.authenticationService.update_chat_msg_status(id,this.currentUser._creator,0)
+                    this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
                     .subscribe(
                         data => {
                             console.log('done');
@@ -584,6 +604,21 @@ export class ChatComponent implements OnInit {
                             console.log(error);
                         }
                     );
+					this.unread_msgs_info = [];
+					for (var key_users_new in this.users) {
+						//this.currentUser._creator //receiver
+						this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+						.subscribe(
+							data => {
+								this.unread_msgs_info.push(data);
+							},
+							error => {
+								console.log('error');
+								console.log(error);
+							}
+						);
+					}
+					console.log(this.unread_msgs_info);
                     if(this.currentUser.type=='candidate'){
                         this.cand_job_offer = 0;
                         for(var key in data['datas']){

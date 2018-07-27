@@ -2010,7 +2010,7 @@ input[type=checkbox] {
 .badge p{
 	position: relative;
     vertical-align: middle;
-    right: 4px;
+    right: 1px;
     top: 2px;
 }
 
