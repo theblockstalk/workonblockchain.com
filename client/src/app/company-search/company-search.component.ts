@@ -349,8 +349,8 @@ export class CompanySearchComponent implements OnInit {
                         for(let res of this.information)
                         {
                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
-                             && res.commercial_platform && res.interest_area  && res.country && res.disable_account == false )
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history  
+                             && res.interest_area  && res.country && res.disable_account == false )
                             {
                                console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
@@ -456,8 +456,8 @@ export class CompanySearchComponent implements OnInit {
                         for(let res of data)
                         {
                             if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
-                            && res.commercial_platform && res.interest_area  && res.country )
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history  
+                             && res.interest_area  && res.country )
                             {
                                 console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
@@ -542,8 +542,8 @@ export class CompanySearchComponent implements OnInit {
                          for(let res of this.informations)
                         {
                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
-                             && res.commercial_platform && res.interest_area  && res.country )
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history 
+                             && res.interest_area  && res.country )
                             {
                                console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)

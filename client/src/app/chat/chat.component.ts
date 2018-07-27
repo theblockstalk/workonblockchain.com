@@ -59,8 +59,9 @@ export class ChatComponent implements OnInit {
     file_url;
     profile_pic;
     display_name;
-	unread_msgs = [];
-	unread_msgs_info: any;
+	unread_msgs : any;
+	unread_msgs_info = [];
+	new_users = [];
   constructor(
     private authenticationService: UserService,
     private fb: FormBuilder,
@@ -171,8 +172,21 @@ export class ChatComponent implements OnInit {
                                                 }   
                                             }
                                         }
-                                        console.log(this.users);
-                                    },
+										for (var key_users_new in this.users) {
+											//this.currentUser._creator //receiver
+											this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+											.subscribe(
+												data => {
+													this.unread_msgs_info.push(data);
+												},
+												error => {
+													console.log('error');
+													console.log(error);
+												}
+											);
+										}
+										console.log(this.unread_msgs_info);
+									},
                                     error => {
                                         console.log('error');
                                         console.log(error);
@@ -206,12 +220,19 @@ export class ChatComponent implements OnInit {
                                             }   
                                         }
                                     }
-									for (var key_users in this.users) {
-										//call get_unread_msgs_of_user which is in node
-										//and get unread msgs of this user
-										console.log(this.users[key_users]);
+									for (var key_users_new in this.users) {
+										//this.currentUser._creator //receiver
+										this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+										.subscribe(
+											data => {
+												this.unread_msgs_info.push(data);
+											},
+											error => {
+												console.log('error');
+												console.log(error);
+											}
+										);
 									}
-				
                                 },
                                 error => {
                                     console.log('error');
@@ -563,9 +584,9 @@ export class ChatComponent implements OnInit {
 	  this.credentials.id = id;
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       console.log("show_msg_area: " + this.show_msg_area);
-        //setInterval(() => {
+		setInterval(() => {
 			//receiver,sender
-            console.log("ID: " + id);
+            console.log("ID: " + this.credentials.id);
             this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
             .subscribe(
                 data => {
@@ -573,7 +594,7 @@ export class ChatComponent implements OnInit {
                     console.log(data['datas']);
                     this.new_msgss = data['datas'];
                     this.job_desc = data['datas'][0];
-                    this.authenticationService.update_chat_msg_status(id,this.currentUser._creator,0)
+                    this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
                     .subscribe(
                         data => {
                             console.log('done');
@@ -638,7 +659,22 @@ export class ChatComponent implements OnInit {
                     //this.log = error;
                 }
             );
-        //}, 2000);
+        }, 3000);
+		this.unread_msgs_info = [];
+		for (var key_users_new in this.users) {
+			//this.currentUser._creator //receiver
+			this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+			.subscribe(
+				data => {
+					this.unread_msgs_info.push(data);
+				},
+				error => {
+					console.log('error');
+					console.log(error);
+				}
+			);
+		}
+		console.log(this.unread_msgs_info);
         this.candidate = email;
         this.credentials.email = email;
         this.credentials.id = id;

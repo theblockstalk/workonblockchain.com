@@ -270,7 +270,7 @@ function change_password(id , param)
 	        }
 			else
 			{
-				deferred.reject("Current Password Incorrect");
+				deferred.reject("Current Password is Incorrect");
 			}
 				
            
@@ -359,19 +359,36 @@ function verify_send_email(info) {
 		            {  
 		            	 CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
 		            	{
+		            		// console.log("name");
+		            		 //console.log(query_data[0]._creator.email);
+		            		 //console.log(query_data._creator.email);
+		            		
+		            		 
 		            		 if (err) 
 		 		                deferred.reject(err.name + ': ' + err.message);
-		            		 if(query_data)
+		            		 if(query_data!='')
 		            	     {
-		            			//console.log(query_data);
+		            			 
+		            			//
 		            			if(query_data[0].first_name)
-		 		                 name = query_data[0].first_name;
-		            			else 
+		            		    {
+		            				name = query_data[0].first_name;	
+		            		    }
+		            			 else 
+		            			 {
 		            				name = info.email;
+		            				
+		            			 }
 		 		                //console.log(name);
 		 		               verifyEmailEmail.sendEmail(info, name);
 		 		               //forgotPasswordEmail.sendEmail(hash,data , name);
 		            	     }
+		            		 else
+		            		 {
+		            			 name = info.email;
+		            			 verifyEmailEmail.sendEmail(info, name);
+		            			 }
+		            		
 		            	});
 		            	
 		            }
@@ -797,7 +814,7 @@ function resume_data(_id, userParam)
         {
             why_work: userParam.why_work,
             commercial_platform: userParam.commercial_experience_year,
-            experimented_platform: userParam.experience_year,
+            experimented_platform: userParam.experimented_platform,
             platforms: userParam.platforms
         };
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
@@ -923,7 +940,7 @@ function update_candidate_profile(_id,userParam)
 	         availability_day: userParam.detail.availability_day,
 	         why_work: userParam.detail.why_work,
 	         commercial_platform: userParam.detail.commercial_experience_year,
-	         experimented_platform: userParam.detail.experience_year,
+	         experimented_platform: userParam.detail.experimented_platform,
 	         platforms: userParam.detail.platforms,
 	         current_salary: userParam.detail.salary,
 	         current_currency : userParam.detail.current_currency,
@@ -2173,11 +2190,10 @@ function update_chat_msg_status(data){
 		chat.update({
       $and : [
                { 
-				 receiver_id: data.sender_id
-                 /*$or : [
+				$or : [
 					{ $and : [ { receiver_id : {$regex: data.receiver_id} }, { sender_id : {$regex: data.sender_id} } ] },
 					{ $and : [ { receiver_id : {$regex: data.sender_id} }, { sender_id : {$regex: data.receiver_id} } ] }
-				]*/
+				]
                },
                { 
                  is_read:data.status
@@ -2197,7 +2213,7 @@ function get_unread_msgs(){
 	var deferred = Q.defer();
 	console.log('get all unread msgs');
 	//chat.aggregate({$group : {"receiver_id" : "$by_user", num_tutorial : {$sum : 1}}}, function (err, result){
-	chat.distinct("receiver_id", {is_read: {$gte:0}}, function (err, result){
+	chat.distinct("receiver_id", {is_read: 0}, function (err, result){
 		if (err){
 			deferred.reject(err.name + ': ' + err.message);
 		}
@@ -2274,7 +2290,11 @@ function get_unread_msgs_of_user(data){
 			   deferred.reject(err.name + ': ' + err.message);
 			else{
 				console.log(result);
-				deferred.resolve(result);
+				deferred.resolve({
+					receiver_id: data.receiver_id,
+					sender_id: data.sender_id,
+					number_of_unread_msgs:result
+				});
 			}
 	});
 	return deferred.promise;

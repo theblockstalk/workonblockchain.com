@@ -70,13 +70,19 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { MyDatePickerModule } from 'mydatepicker';
+//import {environment} from '../environments/environment';
 
+const google_id = environment.google_id;
+//console.log(google_id);
+const linkedin_id = environment.linkedin_id;
+//console.log(linkedin_id);
 
 let config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
    // provider: new GoogleLoginProvider("507151802069-rbqn1iqupcbr7t7ge50nup74fu0td5g0.apps.googleusercontent.com") local
-       provider: new GoogleLoginProvider("507151802069-sedtrf34188eet5oo4adrm60vlsruo5r.apps.googleusercontent.com")
+      // provider: new GoogleLoginProvider("507151802069-sedtrf34188eet5oo4adrm60vlsruo5r.apps.googleusercontent.com")
+        provider : new GoogleLoginProvider(google_id)
   }
 ]);
 
@@ -218,7 +224,7 @@ const appRoutes: Routes = [
       provide: AuthServiceConfig,
       useFactory: provideConfig
     },
-    { provide: 'apiKey', useValue: '78axuc5uh894iq' } //useValue : '78lfupn2m88e4u'
+    { provide: 'apiKey', useValue: linkedin_id }//'78axuc5uh894iq' } //useValue : '78lfupn2m88e4u'
   ],
   bootstrap: [AppComponent]
 })

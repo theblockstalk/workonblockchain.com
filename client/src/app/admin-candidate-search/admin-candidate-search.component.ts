@@ -108,8 +108,8 @@ export class AdminCandidateSearchComponent implements OnInit {
                         for(let res of this.information)
                         {
                            if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
-                             && res.commercial_platform && res.interest_area  && res.country )
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history  
+                             && res.interest_area  && res.country )
                             {
                                
                                   this.length++;
@@ -217,8 +217,8 @@ export class AdminCandidateSearchComponent implements OnInit {
                         for(let res of this.information)
                         {
                            if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
-                             && res.commercial_platform && res.interest_area  && res.country )
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history 
+                             && res.interest_area  && res.country )
                             {
                                
                                   this.length++;
@@ -317,8 +317,8 @@ export class AdminCandidateSearchComponent implements OnInit {
                         for(let res of this.information)
                         {
                            if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history &&  res.platforms 
-                             && res.commercial_platform && res.interest_area  && res.country )
+                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history 
+                              && res.interest_area  && res.country )
                             {
                                
                                   this.length++;

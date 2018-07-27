@@ -9,7 +9,7 @@ import {environment} from '../environments/environment';
 
 
 const URL = environment.backend_url;
-console.log(URL);
+//console.log(URL);
 
 @Injectable()
 export class UserService {
@@ -391,8 +391,8 @@ export class UserService {
 
     }   
     
-    send_refreal(email: string, subject: string, body: string){
-        return this.http.post<any>(URL+'users/send_refreal/', { email: email, subject: subject, body: body })
+    send_refreal(email: string, subject: string, body: string,share_url: string, first_name: string, last_name: string){
+        return this.http.post<any>(URL+'users/send_refreal/', { email: email, subject: subject, body: body,share_url:share_url,first_name:first_name,last_name:last_name })
             .map(data => {
                 if (data){
                     return data;
@@ -743,4 +743,16 @@ export class UserService {
 			}
 		});
     }
+	
+	get_unread_msgs_of_user(sender_id:string,receiver_id:string){
+		return this.http.post<any>(URL+'users/get_unread_msgs_of_user', {sender_id:sender_id,receiver_id:receiver_id})
+        .map(data => {
+			if (data){
+				return data;
+            }
+			else{
+				return data.msg;
+			}
+		});
+	}
 }

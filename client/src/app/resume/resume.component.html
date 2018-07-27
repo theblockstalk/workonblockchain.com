@@ -6,7 +6,7 @@
     <div class="row">
       <div class = "text-center steps-name">
         <ul class = "step-progress">
-          <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Summary of T&Cs</a></li>        
+          <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Terms & Conditionss</a></li>        
           <li class = "step "><i class="{{active_class}}"></i><a routerLink="/about"> About</a></li>
           <li class = "step"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
           <li class = "step step-active"><i class="{{resume_active_class}}"></i><a href="/resume" >Blockchain</a></li>
@@ -22,13 +22,13 @@
               <legend class="scheduler-border">Blockchain Experience</legend>
               <div class="form-group col-md-12 col-left">
                 <label><p class = "label-p">Why do you want to work on blockchain?</p></label>
-                    <input type="text" class="form-control" id="" placeholder="i want to work on blockchain because ......."  #whywork name="why_work" required [(ngModel)]="why_work">
+                    <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because.."  #whywork name="why_work" required [(ngModel)]="why_work">
             </div>
 
             <div class="container collection col-md-12">
             
                 <div class="answer">
-                  <label><p>Blockchain exposure</p></label>
+                 
                   <div class = "row">
 
                     <div class=" collection-checkbox">
@@ -39,7 +39,7 @@
                       
                       <div class="checkbox" >
                         <label class = "check-label lable"> {{option.name}}  
-                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  required (change)="oncommerciallyOptions(option)"   />
+                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)"   />
             
                           <span class="checkmark">
                           <div></div>
@@ -52,7 +52,7 @@
                     </div>
 
                       <div *ngIf="commercially_worked?.length > 0">
-                        <p class = "exp_p">Year of Experience of each Platform</p>
+                        <p class = "exp_p">Number of years</p>
                         <div class = "row" *ngFor="let option of commercially_worked; let i = index ">
             
                         <p class="rd_label label-p">{{option.value}}</p>
@@ -75,7 +75,7 @@
                       <div class="checkbox" >
                         <label class = "check-label lable"> {{option.value}}  
                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked" 
-                          (change)="onPlatformOptions(option)" required  />
+                          (change)="onPlatformOptions(option)"  />
             
                           <span class="checkmark">
                           <div></div>
@@ -90,7 +90,7 @@
                     
               <hr>
           <div *ngIf="platforms_designed?.length > 0">
-           <p class = "exp_p">Year of Experience of each platform</p>
+           <p class = "exp_p">Number of years</p>
           <div class = "row" *ngFor="let exp_value of platforms_designed;let i_index = index">
            
             <p class="rd_label label-p">{{exp_value.value}}</p>
@@ -115,7 +115,7 @@
                       <div class="checkbox" >
                         <label class = "check-label lable"> {{option.value}}  
                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked" 
-                          (change)="onExpOptions(option)" required  />
+                          (change)="onExpOptions(option)"  />
             
                           <span class="checkmark">
                           <div></div>
@@ -133,7 +133,7 @@
                 </div>
               </div>
               <hr>
-          <div *ngIf="experimented_platform?.length > 0">
+         <!--  <div *ngIf="experimented_platform?.length > 0">
            <p class = "exp_p">Year of Experience of each platform</p>
           <div class = "row" *ngFor="let exp_value of experimented_platform;let i_index = index">
            
@@ -149,7 +149,7 @@
 		  <input type="text" class="form-control" name="experience_year" [(ngModel)]='expYear' style="display: none;">
       </div>
           </div>
-          </div>
+          </div>-->
 
           </fieldset>
 

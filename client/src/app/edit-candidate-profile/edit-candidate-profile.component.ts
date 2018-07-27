@@ -170,7 +170,7 @@ export class EditCandidateProfileComponent implements OnInit {
               
                     if(data.commercial_platform)
                     {
-                        this.commercial_expYear =data.commercial_platform;
+                      this.commercial_expYear =data.commercial_platform;
                      for (let key of data.commercial_platform) 
                       {
                         for(var i in key)
@@ -265,48 +265,23 @@ export class EditCandidateProfileComponent implements OnInit {
 
                       if(data.experimented_platform)
                       {
-                          this.expYear = data.experimented_platform;
-                      for (let key of data.experimented_platform) 
+                          this.experimented_platform = [];
+                           for (let plat of data.experimented_platform) 
+                     {
+                      
+                      for(let option of this.experimented)
                       {
-                        for(var i in key)
+
+                        if(option.value == plat.value)
                         {
-
-
-                          for(let option of this.experimented)
-                          { 
-                            
-                            if(option.value == key[i])
-                            {
-                              option.checked=true;
-                              this.exp_db_valye.push(key[i]);
-                              this.exp_db_lang= ({value: key[i]});
-                              this.experimented_platform.push(this.exp_db_lang);
-                              
-                            }
-                            else
-                            {
-
-                            }
-                       
-                          }
-
-                          
-                          for(let option of this.exp_year)
-                          {
-
-                            if(option.value == key[i])
-                            {
-                                option.checked=true;
-                                   
-                                //this.expYear.push(option);
-                                this.exp_expYear.push(key[i]);
-                                                           
-                            }
-                       
-                          }
+                          option.checked=true;
+                          this.experimented_platform.push(option);
                           
                         }
+                       
                       }
+                      
+                    }
                      }
                 }
                 
@@ -567,8 +542,23 @@ export class EditCandidateProfileComponent implements OnInit {
 
   onExpOptions(obj)
   {
+console.log(this.experimented_platform);
+      let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
+      let index = this.experimented_platform.indexOf(updateItem);
+      if(index > -1)
+      {
+        this.experimented_platform.splice(index, 1);
+          console.log("if");
+        
+      }
+      else
+      {
+          console.log("else");
+        obj.checked =true;
+        this.experimented_platform.push(obj);
+      }
 
-       let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
+       /*let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
       let index = this.experimented_platform.indexOf(updateItem);
       if(index > -1)
       {
@@ -587,7 +577,10 @@ export class EditCandidateProfileComponent implements OnInit {
       {
         obj.checked =true;
         this.experimented_platform.push(obj);
-      }
+      }*/
+      
+    
+      
   }
 
 

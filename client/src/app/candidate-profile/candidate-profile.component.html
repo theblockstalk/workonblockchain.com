@@ -151,7 +151,7 @@
 					</div>
 					
 
-				 	<div class="info-area pro_br-btm">
+				 	<div class="info-area pro_br-btm" *ngIf = "commercial">
 
 						<div class = "col-md-4" >
 							<strong>Platform commercially worked with:</strong>
@@ -165,7 +165,7 @@
 
 				 	</div>
 				 	
-				 	<div class="info-area pro_br-btm">
+				 	<div class="info-area pro_br-btm" *ngIf = "platforms">
 
 						<div class = "col-md-4" >
 							<strong>Platforms designed/developed smart contracts:</strong>
@@ -178,14 +178,14 @@
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm">
+				 	<div class="info-area pro_br-btm" *ngIf = "experimented!=''">
 
 						<div class = "col-md-4" >
 							<strong>Platform experimented with:</strong>
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let data of experimented;'>{{data.experimented_platform}}  : {{data.exp_year}}</li>
+								<li *ngFor='let data of experimented;'>{{data.value}}</li>
 								
 							</ul>
 						</div>
@@ -303,7 +303,7 @@
 
 					 	</div>
 
-					 	<div class = "discp info-area">
+					 	<div class = "discp info-area" *ngIf="work.descname">
 							<h4 class = "disc_hd">Description</h4>
 							<p>
 								{{work.descname}}

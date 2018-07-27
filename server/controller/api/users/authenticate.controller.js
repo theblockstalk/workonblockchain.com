@@ -92,7 +92,7 @@ function authenticate(email, password,type)
                             type: user.type,
                             is_admin:user.is_admin,
                             is_approved : user.is_approved,
-                            token: jwt.sign({ sub: user._id }, config.secret)
+							token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
                         });
                     }
 

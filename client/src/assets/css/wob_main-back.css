@@ -1,8 +1,4 @@
-/*Tayyab's Style*/
-.my-chat-design{
-	margin-left: 15%;
-	margin-top: 4%;
-}
+
 
 /*=======MAIN STYLES========*/
 
@@ -121,6 +117,7 @@ body{
     font-size: 17px;
     font-weight: 300;
     font-family: 'Roboto', sans-serif;
+    max-width: 650px;
 }
 
 .text-col{
@@ -128,6 +125,7 @@ body{
     overflow: hidden;
     height: 100%;
     padding-bottom: 40px;
+    padding-left: 80px;
 }
 
 #stripes {
@@ -148,11 +146,11 @@ body{
 }
 
 .mockup-top {
-	background: url('../images/background/mockup.png');
-	width: 50%;
-	position: absolute;
-	right: 0px;
-	height: 100%;
+   background: url('../images/background/mockup.png');
+   width: 50%;
+   position: absolute;
+   right: 0px;
+   height: 100%;
 }
 
 .mockup-top img {
@@ -218,7 +216,7 @@ body{
 }
 
 .logo-row li img{
-    max-height: 60px;
+    max-width: 130px;
 }
 
 .companies ul{
@@ -516,6 +514,7 @@ body{
     .company-slider{
         overflow: hidden;
         margin: 10px;
+        margin-bottom: 30px;
     }
     
     .common-BodyText, .common-Bodylink{
@@ -534,6 +533,7 @@ body{
     
     .slider-text{
         width: 100%;
+        height: 250px;
     }
     
     .slider-img{
@@ -642,8 +642,8 @@ body{
 .slider-inner::after{
     font-size: 180px;
     color: rgb(244, 245, 250);
-    top: 125px;
-    content: "“";
+    top: 158px;
+    content: "â€œ";
     bottom: 110px;
     font-family: Quicksand;
     font-weight: bold;
@@ -656,8 +656,8 @@ body{
     position: absolute;
     right: 40px;
     top: auto;
-    bottom: 110px;
-    content: "“";
+    bottom: 150px;
+    content: "â€œ";
     font-family: Quicksand;
     font-size: 150px;
     font-weight: bolder;
@@ -893,7 +893,7 @@ body{
 }
 
 .btn.focus, .btn:focus, .btn:hover {
-    color: #333;
+    color: #fff;
 }
 
 .btn-linkdIn{
@@ -1276,6 +1276,28 @@ fieldset.scheduler-border {
     display: none;
 }
 
+.radio-toolbar input[type="radio"] {
+  display: none;
+}
+
+.radio-toolbar label {
+  display: inline-block;
+  padding: .5rem 1.5rem;
+  cursor: pointer;
+  min-height: 48px;
+  box-shadow: 0 5px 18px 0 hsla(0,0%,7%,.05);
+  border: 1px solid #acacb5;
+  font-size: 17px;
+  text-align: center;
+  height: 48px;
+}
+
+.radio-toolbar input[type="radio"]:checked+label {
+  color: #fff;
+  background-color: #537284;
+  border-color:#537284;
+}
+
 .rd_label{
     position: relative;
     left: 20px;
@@ -1569,11 +1591,13 @@ input[type=checkbox] {
     margin-top: 0px;
     font-weight: bold;
     font-size: 18px;
+    margin-bottom: 30px;
 }
 
 .job_info .info-area{
     min-height: 60px;
     margin-bottom: 15px;
+    overflow: hidden;
 }
 
 .info-area p{
@@ -1880,19 +1904,21 @@ input[type=checkbox] {
 #frame .content .message-input .wrap {
     position: relative;
     padding: 10px 10px;
-    background: #5eb9fa;
+    background: #fff;
     overflow: hidden;
+    border: 5px solid #5eb9fa;
 }
 
-#frame .content .message-input .wrap input {
+#frame .content .message-input .wrap textarea {
     font-family: "proxima-nova", "Source Sans Pro", sans-serif;
     float: left;
     border: none;
-    width: 100%;
+    width: 83%;
     padding: 10px;
     font-size: 15px;
     color: #32465a;
     height: 70px;
+    background: #f6f9fc;
 }
 
 .btn-action{
@@ -1907,8 +1933,8 @@ input[type=checkbox] {
 
 .btn-send{
     position: absolute;
-    right: 20px;
-    top: 16px;
+    right: 15px;
+    top: 12px;
     padding:  3px 6px;
     width: 95px;
     background-color:  #5eb9fa;
@@ -1920,8 +1946,8 @@ input[type=checkbox] {
 
 .btn-attached{
     position: absolute;
-    right: 20px;
-    top: 45px;
+    right: 15px;
+    top: 50px;
     padding:  3px 6px;
     width: 95px;
     background-color:  #5eb9fa;
@@ -1944,17 +1970,15 @@ input[type=checkbox] {
 	position: relative;
     float: right;
     margin-right: 30px;
-    top: -15px;
+    top: -12px;
     font-size: 10px;
-	margin-bottom: 15px;
 }
 
 .chat_company{
 	position: relative;
     float: left;
     margin-left: -10px;
-    top: -15px;
-	margin-bottom: 5px;
+    top: -12px;
     font-size: 10px;
 }
 
@@ -1986,7 +2010,7 @@ input[type=checkbox] {
 .badge p{
 	position: relative;
     vertical-align: middle;
-    right: 4px;
+    right: 1px;
     top: 2px;
 }
 
@@ -2148,6 +2172,15 @@ input[type=checkbox] {
     padding-left: 0px;
 }
 
+.model_notif {
+    background: rgba(149, 209, 251, 0.7294117647058823);
+    color: #000;
+    padding: 5px;
+    width: 70%;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
 .model-btn{
     font-weight: normal;
     font-size: initial;
@@ -2284,11 +2317,15 @@ input[type=checkbox] {
 
 .user-detail{
     float: left;
+	max-width: 550px;
+    height: auto;
+    overflow: hidden;
 }
 
 .label-war {
     background-color: #ffbf06 ;
     border-radius: 0px;
+    margin-right:5px;
 }
 
 .why_join{
@@ -2542,6 +2579,13 @@ input[type=checkbox] {
         max-width: 500px;
         margin: auto;
     }
+    .text-col{
+        padding-left: 20px;
+    }
+
+    .text-setting{
+        text-align: center;
+    }
 }
 
 @media only screen and (max-width: 400px){
@@ -2552,60 +2596,14 @@ input[type=checkbox] {
     }
 }
 
-/*==== footer style here ====*/
 
-.footer{
-    position: relative;
-    background: #253245;
-    float: left;
-    width: 100%;
-    /*top: -85px;*/
+.terms{
+    background-color: #f6f9fc;
+    padding: 30px 10px;
     overflow: hidden;
 }
 
-.social-icons {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    position: relative;
-    overflow: hidden;
-    clear: both;
-    display: block;
-    font-size: 0;
-    line-height: 1em;
-}
-
-
-.footer .social-icons {
-    line-height: 120px;
-    vertical-align: middle;
-    display: inline-block;
-}
-
-.social-icons li {
-    display: inline-block;
-    margin: 0 5px;
-    vertical-align: middle;
-}
-
-.social-icons li:first-child {
-    margin-left: 0px !important;
-}
-
-.social-icons li a {
-    color: #fff;
-    display: block;
-    font-size: 30px;
-    line-height: 1em;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    background: #d3e0ed;
-    border-radius: 100%;
-    position: relative;
-    overflow: hidden;
-}
-.t-c_container {
+.t-c_container{
     background-color: #fff;
     border: 1px solid #dadbdd;
     border-top: none;
@@ -2613,25 +2611,66 @@ input[type=checkbox] {
     -webkit-box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
 }
 
-.A_heading {
+.terms-col{
+    padding: 15px 30px;
+}
+
+.terms h1{
+    font-size: 25.5px;
+    line-height: 31.2px;
+    font-family: 'Open Sans',sans-serif;
+    color: #686868;
+    font-weight: bold;
+}
+
+.terms h2{
+    font-size: 20px;
+    line-height: 31.2px;
+    font-weight: normal;
+    font-family: 'Open Sans',sans-serif;
+}
+
+.terms p{
+    margin: 0 0 15px 0;
+    font-size: 15px;
+    line-height: 24px;
+    font-family: 'Open Sans',sans-serif;
+    color: #686868;
+
+}
+
+.A_heading{
     border-bottom: 1px solid #e2e6e8;
     padding: 10px 30px 10px 30px;
 }
 
-
-
-.comp_ul {
-    border: 1px solid #f1f1f1;
-    padding: 20px 35px;
-    height: 300px;
+.A_heading span{
+    font-size: 16px;
+    font-weight: normal;
+    position: relative;
+    left: 10px;
 }
 
-.comp_ul li {
+.comp_ul{
+    border: 1px solid #f1f1f1;
+    padding: 20px 35px;
+    /* height: 300px; */
+    /* overflow-y: scroll; */
+    margin-bottom: 30px;
+}
+
+.comp_ul li{
     margin-bottom: 20px;
 }
 
-.footer .social-icons li a {
-    background: #fff;
+.btn-got-it {
+    border-radius: 0px !important;
+    color: #fff;
+    background-color: #537284;
+    border-color: #537284;
+    font-size: 18px;
+    padding: 7px 12px;
+    min-width: 140px;
 }
 
 /*====Setting page style here====*/
@@ -2733,7 +2772,7 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/ Rounded sliders /
+/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
@@ -2806,14 +2845,137 @@ input:checked + .slider:before {
     margin-bottom: 30px;
 }
 
-.btn-got-it {
-    border-radius: 0px !important;
+/*====== cokkies tab tyle ===== */
+
+.cookies_tab{
+    position: fixed;
+    border: 0;
+    width: 100%;
+    bottom: 0;
+    background: rgb(243, 243, 243);
+    color: #253245;
+    text-align: center;
+    z-index: 99999;
+    margin-bottom: 0px !important;
+    padding: 0px !important
+}
+
+#cookie-btn {
+    background: #253245;
+    height: 29px;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    cursor: pointer;
+    width: 85px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.cookie_a{
+    color:  #fff !important;
+}
+
+.pra-cookie {
+    margin-top: 15px;
+    margin-left: 160px;
+    float: left;
+}
+
+.company_area{
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 20px 10px;
+}
+
+.slider_p{
+    max-width: 700px;
+    margin: auto;
+    height: 150px;
+}
+
+/*==== Disable / Anable notification message show*/
+
+#text1, #text2{
+	display:none;
+	position: fixed;
+    z-index: 111;
+    top: 15%;
+    left: 50%;
+	width: 60%;
+    transform: translate(-50%, -50%);
+	-webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:15%; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:15%; opacity:1}
+}
+
+
+/*==== footer style here ====*/
+
+.footer{
+    position: relative;
+    background: #253245;
+    float: left;
+    width: 100%;
+    /*top: -85px;*/
+    overflow: hidden;
+}
+
+.social-icons {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: relative;
+    overflow: hidden;
+    clear: both;
+    display: block;
+    font-size: 0;
+    line-height: 1em;
+}
+
+.footer .social-icons {
+    line-height: 120px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.social-icons li {
+    display: inline-block;
+    margin: 0 5px;
+    vertical-align: middle;
+}
+
+.social-icons li:first-child {
+    margin-left: 0px !important;
+}
+
+.social-icons li a {
     color: #fff;
-    background-color: #537284;
-    border-color: #537284;
-    font-size: 18px;
-    padding: 7px 12px;
-    min-width: 140px;
+    display: block;
+    font-size: 30px;
+    line-height: 1em;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    background: #d3e0ed;
+    border-radius: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer .social-icons li a {
+    background: #fff;
 }
 
 .social-icons li a i {
@@ -2958,6 +3120,36 @@ input:checked + .slider:before {
     .mr-top{
         margin-top: 60px !important;
     }
+
+    .text-col{
+        text-align: center;
+    }
+
+    .row_main p{
+        text-align: center;
+        width: 100%;
+    }
+
+    .pra-cookie {
+        margin-top: 15px;
+        margin-left: 0px;
+        float: none;
+    }
+
+    #cookie-btn{
+        margin: auto;
+    }
+}
+
+@media only screen and (max-width: 992px) and (min-width: 768px){
+    .mad-container{
+        width: 100% !important;
+    }
+
+     .sm-6 {
+        width: 47%;
+    }
+    
 }
 
 
@@ -2976,24 +3168,29 @@ input:checked + .slider:before {
     }
 }*/
 
-.pro_list {
-    list-style: none;
-    padding-left: 0px;
+.file {
+	position: absolute;
+	right: 15px;
+	bottom: 10px;
+	padding: 6px 6px;
+	width: 95px;
+	background-color: #5eb9fa;
+	border-color: #5eb9fa;
+	border:0px solid;
+	color: #fff;
+	font-weight: bold;
+	border-radius: 0px;
+	cursor: pointer;
 }
 
-.pro_list li {
-    display: inline-block;
-    margin-right: 5px;
-    background-color: #f2f2f3;
-    padding: 5px;
-    text-align: center;
-    margin-bottom: 5px;
+.file-upload{
+	position: absolute;
+	font-size: 50px;
+	opacity: 0;
+	right: 0;
+	top: 0;
+	width:95px;
 }
-
-.pro_br-btm {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-}
-
 
 @media (max-width: 768px){
     .center{
@@ -3025,11 +3222,6 @@ input:checked + .slider:before {
         left: 13px !important;
     }
 
-	.pro_alert {
-    width: 70%;
-    margin: auto;
-	}
-	
     .my_tab>li a {
         padding: 10px 0px;
         font-size: 12px;
@@ -3099,6 +3291,16 @@ input:checked + .slider:before {
         position: absolute;
         bottom: 0px;
     }
+
+    .items label{
+        width: 100%;
+    }
+
+    .items.primary label,
+     .items.danger label {
+        width: 100%;
+    }
+
 }
 
 @media screen and (max-width: 735px){
@@ -3245,10 +3447,7 @@ input:checked + .slider:before {
 
 }
 
- input[type='radio']:checked:after {
-  color: #f00;
-  font-style: normal;
-} 
+
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 

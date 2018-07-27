@@ -66,7 +66,7 @@ export class CandidateFormComponent implements OnInit {
     email_log='';
     password_log=''; 
     pass_log='';
-
+    validation = '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}';
     signup_candidate(loginForm: NgForm) 
     {
 
@@ -286,8 +286,8 @@ export class CandidateFormComponent implements OnInit {
                         localStorage.setItem('currentUser', JSON.stringify(data));
                         //console.log(localStorage.getItem('currentUser'));
                         //localStorage.removeItem('userInfo');
-                        //this.router.navigate(['/company_profile']);
-                        window.location.href = '/company_profile';
+                        this.router.navigate(['/company_wizard']);
+                        //window.location.href = '/company_wizard';
                     }
                 },
                 error => 

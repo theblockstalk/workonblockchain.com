@@ -159,7 +159,7 @@
 						</div>
 						<div id="contacts">
 							<ul>
-								<li *ngFor="let person of users" [ngClass]="(credentials.id == person._creator._id)?'contact active':'contact closee'" (click)="openDialog(person.first_name,person._creator._id)">
+								<li *ngFor="let person of users;let i = index" [ngClass]="(credentials.id == person._creator._id)?'contact active':'contact closee'" (click)="openDialog(person.first_name,person._creator._id)">
 									<div class="wrap">
 										<ng-container *ngIf="currentUser.type == 'company';else cand_image">
 											<ng-container *ngIf="person.image;else person_image">
@@ -180,6 +180,9 @@
 										</ng-template>
 										<div class="meta">
 											<p class="name">{{ person.first_name }} {{ person.last_name }}</p>
+											<span class="badge" *ngIf="unread_msgs_info[i].number_of_unread_msgs">
+												<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
+											</span>
 										</div>
 									</div>
 								</li>
