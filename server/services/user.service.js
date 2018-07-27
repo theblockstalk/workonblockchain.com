@@ -359,19 +359,36 @@ function verify_send_email(info) {
 		            {  
 		            	 CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
 		            	{
+		            		// console.log("name");
+		            		 //console.log(query_data[0]._creator.email);
+		            		 //console.log(query_data._creator.email);
+		            		
+		            		 
 		            		 if (err) 
 		 		                deferred.reject(err.name + ': ' + err.message);
-		            		 if(query_data)
+		            		 if(query_data!='')
 		            	     {
-		            			//console.log(query_data);
+		            			 
+		            			//
 		            			if(query_data[0].first_name)
-		 		                 name = query_data[0].first_name;
-		            			else 
+		            		    {
+		            				name = query_data[0].first_name;	
+		            		    }
+		            			 else 
+		            			 {
 		            				name = info.email;
+		            				
+		            			 }
 		 		                //console.log(name);
 		 		               verifyEmailEmail.sendEmail(info, name);
 		 		               //forgotPasswordEmail.sendEmail(hash,data , name);
 		            	     }
+		            		 else
+		            		 {
+		            			 name = info.email;
+		            			 verifyEmailEmail.sendEmail(info, name);
+		            			 }
+		            		
 		            	});
 		            	
 		            }

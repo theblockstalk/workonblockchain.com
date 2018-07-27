@@ -9,7 +9,7 @@ import {environment} from '../environments/environment';
 
 
 const URL = environment.backend_url;
-console.log(URL);
+//console.log(URL);
 
 @Injectable()
 export class UserService {

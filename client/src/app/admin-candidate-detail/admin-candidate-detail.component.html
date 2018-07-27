@@ -150,7 +150,7 @@
 					</div>
 					
 
-				 	<div class="info-area pro_br-btm">
+				 	<div class="info-area pro_br-btm" *ngIf="data.commercial_platform">
 
 						<div class = "col-md-4" >
 							<strong>Platform commercially worked with:</strong>
@@ -164,7 +164,7 @@
 
 				 	</div>
 				 	
-				 	<div class="info-area pro_br-btm">
+				 	<div class="info-area pro_br-btm" *ngIf="data.platforms">
 
 						<div class = "col-md-4" >
 							<strong>Platforms designed/developed smart contracts:</strong>
@@ -177,7 +177,7 @@
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm">
+				 	<div class="info-area pro_br-btm" *ngIf="data.experimented_platform!=''">
 
 						<div class = "col-md-4" >
 							<strong>Platform experimented with:</strong>

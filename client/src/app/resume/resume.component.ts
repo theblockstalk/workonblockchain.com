@@ -224,7 +224,7 @@ export class ResumeComponent implements OnInit {
                        
                   }
                
-              if(data.commercial_platform && data.experimented_platform && data.why_work && data.platforms )
+              if(data.why_work  )
               {
                 this.exp_class = "/experience";
                 

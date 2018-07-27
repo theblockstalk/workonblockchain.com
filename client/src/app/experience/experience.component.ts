@@ -168,7 +168,7 @@ export class ExperienceComponent implements OnInit
                        
                   }
               
-              if(!data.commercial_platform || data.commercial_platform == "" || !data.experimented_platform || data.experimented_platform =="" || !data.why_work || !data.platforms ||data.platforms == "")
+              if(!data.why_work )
               {              
                 this.router.navigate(['/resume']);
               }

@@ -66,7 +66,7 @@ export class CandidateFormComponent implements OnInit {
     email_log='';
     password_log=''; 
     pass_log='';
-
+    validation = '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}';
     signup_candidate(loginForm: NgForm) 
     {
 

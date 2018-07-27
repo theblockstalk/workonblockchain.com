@@ -122,14 +122,14 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                  
                     this.router.navigate(['/job']); 
                 }
-                else if(!data.commercial_platform || !data.experimented_platform  || !data.why_work || !data.platforms)
+                else if(!data.why_work )
                 {
                     this.router.navigate(['/resume']);
                 }
-                else if(data.commercial_platform.length < 1 || data.experimented_platform.length < 1  || data.platforms.length < 1)
+               /* else if(data.commercial_platform.length < 1 || data.experimented_platform.length < 1  || data.platforms.length < 1)
                 {
                     this.router.navigate(['/resume']);
-                }
+                }*/
                 //console.log(data.experience_roles.length);
                 else if(!data.experience_roles &&  !data.current_salary  || data.experience_roles.length <1 )
                 {
