@@ -2213,7 +2213,7 @@ function get_unread_msgs(){
 	var deferred = Q.defer();
 	console.log('get all unread msgs');
 	//chat.aggregate({$group : {"receiver_id" : "$by_user", num_tutorial : {$sum : 1}}}, function (err, result){
-	chat.distinct("receiver_id", {is_read: {$gte:0}}, function (err, result){
+	chat.distinct("receiver_id", {is_read: 0}, function (err, result){
 		if (err){
 			deferred.reject(err.name + ': ' + err.message);
 		}
