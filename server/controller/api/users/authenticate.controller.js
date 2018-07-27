@@ -1,10 +1,10 @@
 const bcrypt = require('bcryptjs');
-const users = require('../../model/users');
-const CandidateProfile = require('../../model/candidate_profile');
-const EmployerProfile = require('../../model/employer_profile');
+const users = require('../../../model/users');
+const CandidateProfile = require('../../../model/candidate_profile');
+const EmployerProfile = require('../../../model/employer_profile');
 const Q = require('q');
 const jwt = require('jsonwebtoken');
-const settings = require('../../settings');
+const settings = require('../../../settings');
 
 module.exports = function (req, res)
 {
