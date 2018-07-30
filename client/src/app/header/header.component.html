@@ -15,12 +15,12 @@
       <ul class="nav navbar-nav navbar-right" >
         <li *ngIf="!currentUser"><a href="signup"> Sign Up</a></li>
         <li *ngIf="!currentUser"><a href="login">Login</a></li>       
-        <li *ngIf="!currentUser"><a href="referral">Referral - &euro; 500 Reward</a></li>
+        <li *ngIf="!currentUser"><a href="referral">Referral - &pound; 500 Reward</a></li>
        
         <li *ngIf="(currentUser && admin_route !== '/admin')"><a href="chat">Chat</a></li>
         <li *ngIf="(currentUser && is_admin === 1)"><a href="admin-dashboard">Dashboard</a></li>
         
-        <li *ngIf="(currentUser && user_type === 'candidate'  && admin_route !== '/admin')"><a href="referral">Referral - &euro; 500 Reward</a></li>
+        <li *ngIf="(currentUser && user_type === 'candidate'  && admin_route !== '/admin')"><a href="referral">Referral - &pound; 500 Reward</a></li>
         <li class="dropdown" *ngIf="(currentUser && admin_route !== '/admin')">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -55,7 +55,7 @@
 
 <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg && !close">
   <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="close_notify()">&times;</a>
-    <strong>Please!</strong> Your Account is not varify yet now. Kindly click on verify account for verify.
+    <strong>Please!</strong> Please check your inbox and click on the link to verify your email. To send a new verification link please click here.
     <a (click)="verify_client()" class = "">Verify Account</a>
     
  </div>
