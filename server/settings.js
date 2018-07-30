@@ -10,9 +10,6 @@ if (process.env.NODE_ENV === 'production') {
 } else if (process.env.NODE_ENV === 'testing') {
     settings.ENVIRONMENT = 'testing';
     config = require('./config/testing.json');
-} else if (process.env.NODE_ENV === 'test') {
-    settings.ENVIRONMENT = 'test';
-    config = require('./config/default.json');
 } else {
     process.env.NODE_ENV = 'test';
     settings.ENVIRONMENT = 'test';
@@ -33,7 +30,7 @@ if (isLiveApplication()) {
 
     settings.AWS = {
         REGION: config.aws.region,
-        S3_BUCKET: config.aws.s3Bucket,
+        BUCKETS: config.aws.buckets,
         ACCESS_KEY: config.aws.accessKey,
         SECRET_ACCESS_KEY: config.aws.secretAccessKey
     }
@@ -74,5 +71,4 @@ settings.CLIENT = {
     URL: config.client.url
 };
 
-console.log('settings', settings);
 module.exports = settings;

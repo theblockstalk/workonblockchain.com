@@ -2190,11 +2190,15 @@ function update_chat_msg_status(data){
 		chat.update({
       $and : [
                { 
-				$or : [
+				/*$or : [
 					{ $and : [ { receiver_id : {$regex: data.receiver_id} }, { sender_id : {$regex: data.sender_id} } ] },
 					{ $and : [ { receiver_id : {$regex: data.sender_id} }, { sender_id : {$regex: data.receiver_id} } ] }
-				]
+				]*/
+				receiver_id: data.sender_id
                },
+			   {
+				   sender_id: data.receiver_id
+			   },
                { 
                  is_read:data.status
                }
@@ -2213,7 +2217,7 @@ function get_unread_msgs(){
 	var deferred = Q.defer();
 	console.log('get all unread msgs');
 	//chat.aggregate({$group : {"receiver_id" : "$by_user", num_tutorial : {$sum : 1}}}, function (err, result){
-	chat.distinct("receiver_id", {is_read: {$gte:0}}, function (err, result){
+	chat.distinct("receiver_id", {is_read: 0}, function (err, result){
 		if (err){
 			deferred.reject(err.name + ': ' + err.message);
 		}

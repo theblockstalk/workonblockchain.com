@@ -1,13 +1,14 @@
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
-const settings = require('../settings');
+const settings = require('../../settings');
 const sanitizer = require('./sanitizer');
+const logger = require('../services/logger');
 
 let appMulter;
 
 if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging') {
-    console.log('Configuring multer with S3 bucket');
+    logger.info('Configuring multer with S3 bucket');
 
     aws.config.update({
         secretAccessKey: settings.AWS.SECRET_ACCESS_KEY,
@@ -20,16 +21,16 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
     appMulter = multer({
         storage: multerS3({
             s3: s3,
-            bucket: settings.AWS.S3_BUCKET,
+            bucket: settings.AWS.BUCKETS.files,
             key: function (req, file, cb) {
-                console.log('file', file);
+                logger.debug('file', file);
                 const originalname = sanitizer.recursivelySanitize(file.originalname);
                 cb(null, Date.now().toString() + originalname);
             }
         })
     });
 } else {
-    console.log('Configuring local multer to /uploads folder');
+    logger.info('Configuring local multer to /uploads folder');
 
     appMulter = multer({
         storage: multer.diskStorage({

@@ -210,7 +210,7 @@
 									</ng-template>
 								</ul>
 								<span class = "btn_rgt">
-									<button [scrollTo]="'#place1'" [scrollDuration]="1000" [scrollOffset]="-100" class = "btn btn_descp">View Job Description</button>
+									<button data-toggle="modal" data-target="#myModalNew" class = "btn btn_descp">View Job Description</button>
 								</span>
 							</div>
 							
@@ -462,6 +462,45 @@
 		  <div class="modal-footer text-right">
 			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
 			<button type="reset" class="btn btn-danger model-btn">Reset</button>
+		  </div>
+		</form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!--Job desc modal-->
+<!-- Modal -->
+<div id="myModalNew" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content costom_model">
+      <div class="modal-header model-head">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title text-center">Job Description</h4>
+      </div>
+      <div class="modal-body">
+        <form (submit)="send_interview_message(msgForm)" #msgForm = ngForm>
+          <ng-container *ngIf="new_msgss;else no_modal_job">
+			<div class="form-group col-md-12 padd_imp">
+				<p style="font-size: 16px;">Job Title: {{new_msgss[0].job_title}}</p>
+			</div>
+			<div class="form-group col-md-12 padd_imp">
+				<p style="font-size: 16px;">Job Type: {{new_msgss[0].job_type}}</p>
+			</div>
+			<div class="form-group col-md-12 padd_imp">
+				<p style="font-size: 16px;">Message: {{new_msgss[0].message}}</p>
+			</div>
+		  </ng-container>
+		  <ng-template #no_modal_job>
+			<div class = "model_notif text-center">
+				Please select one conversation 
+            </div>
+		  </ng-template>
+		  <div class="modal-footer">
+			<button type="button" data-dismiss="modal" class="btn btn-primary model-btn submit">Close</button>
 		  </div>
 		</form>
       </div>
