@@ -483,7 +483,7 @@
       </div>
       <div class="modal-body">
         <form (submit)="send_interview_message(msgForm)" #msgForm = ngForm>
-          <ng-container *ngIf="new_msgss;else no_modal">
+          <ng-container *ngIf="new_msgss;else no_modal_job">
 			<div class="form-group col-md-12 padd_imp">
 				<p style="font-size: 16px;">Job Title: {{new_msgss[0].job_title}}</p>
 			</div>
@@ -494,7 +494,7 @@
 				<p style="font-size: 16px;">Message: {{new_msgss[0].message}}</p>
 			</div>
 		  </ng-container>
-		  <ng-template #no_modal>
+		  <ng-template #no_modal_job>
 			<div class = "model_notif text-center">
 				Please select one conversation 
             </div>
