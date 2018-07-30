@@ -185,7 +185,7 @@ export class CompanySearchComponent implements OnInit {
     } 
     
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(this.currentUser);
+      //console.log(this.currentUser);
      
       if(!this.currentUser)
       {
@@ -201,7 +201,7 @@ export class CompanySearchComponent implements OnInit {
 
                 data => 
                 {
-                  console.log(data); 
+                  //console.log(data); 
                   if(data.terms == false)
                   {
                       this.router.navigate(['/company_wizard']);
@@ -221,7 +221,7 @@ export class CompanySearchComponent implements OnInit {
 				this.display_name = data.first_name+' '+data.last_name;
                 this.is_approved = data._creator.is_approved;
 
-                console.log(this.is_approved);
+                //console.log(this.is_approved);
                if(this.is_approved === 0 )
                 {
                     this.msg = "You can access this feature when your profile has been approved"; 
@@ -249,9 +249,9 @@ export class CompanySearchComponent implements OnInit {
                       this.no_of_employees=data.no_of_employees;
                       if(data.company_logo != null )
                       {                        
-                      //console.log(data.image);                     
+                      ////console.log(data.image);                     
                         this.imgPath =  data.company_logo;
-                        console.log(this.imgPath);
+                        //console.log(this.imgPath);
                         
                       }
                    
@@ -280,7 +280,7 @@ export class CompanySearchComponent implements OnInit {
   rolesItems;
   positionchanged(data) 
   {
-      console.log("position");
+      //console.log("position");
       this.rolesItems = data.value;    
       this.searchdata('roles' , this.rolesItems);  
   }
@@ -288,7 +288,7 @@ export class CompanySearchComponent implements OnInit {
   blockchainItems;
   blockchainchanged(data)
   {
-    console.log("blockchain"); 
+    //console.log("blockchain"); 
       this.blockchainItems = data.value; 
        this.searchdata('blockchain' , this.blockchainItems);
   
@@ -315,21 +315,21 @@ export class CompanySearchComponent implements OnInit {
         if(!this.select_value && !this.selecteddd &&!this.rolesItems && !this.salary && !this.blockchainItems && this.selectedObj === -1 &&  this.countryChange === -1 
         &&  this.currencyChange === -1 &&  this.availabilityChange ===-1 )
         {             
-            console.log("iffffffff"); 
+            //console.log("iffffffff"); 
              this.getVerrifiedCandidate();
         }
                
         else
         { 
 
-            console.log("else");
+            //console.log("else");
             this.authenticationService.filterSearch(this.selectedObj , this.countryChange , this.rolesItems ,this.blockchainItems, this.availabilityChange, this.salary , this.currencyChange )
             .subscribe(
                 data => 
                 {
                     if(data.error)
                     {
-                       // console.log(this.info);
+                       // //console.log(this.info);
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -342,8 +342,8 @@ export class CompanySearchComponent implements OnInit {
                         this.info=[];
                          this.information = this. filter_array(data);
                         //this.length='';
-                    console.log(this.information);
-                         //console.log(this.log);
+                    //console.log(this.information);
+                         ////console.log(this.log);
                         
                         //this.info = data; 
                         for(let res of this.information)
@@ -352,7 +352,7 @@ export class CompanySearchComponent implements OnInit {
                             && res.nationality && res.last_name  && res.contact_number && res.education && res.history  
                              && res.interest_area  && res.country && res.disable_account == false )
                             {
-                               console.log(res._creator._id);
+                               //console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
                                  data => {
@@ -360,7 +360,7 @@ export class CompanySearchComponent implements OnInit {
                                     if(data['datas'][1]){
                                     if(data['datas'][1].is_company_reply==1)
                                     {
-                                        console.log('accept')
+                                        //console.log('accept')
                                         res.company_reply = 1;
                                     }
                                     else
@@ -368,12 +368,12 @@ export class CompanySearchComponent implements OnInit {
                                         res.company_reply = 0;
                             
                                     }
-                                        console.log(res.company_reply);
+                                        //console.log(res.company_reply);
                                 }
                                 },
                                 error => {
-                                    console.log('error');
-                                    console.log(error);
+                                    //console.log('error');
+                                    //console.log(error);
                     
                                });
                                 //this.search_result.push(res);
@@ -381,7 +381,7 @@ export class CompanySearchComponent implements OnInit {
                                 this.info.push(res);
                             }
                             
-                            //console.log(this.search_result.length);
+                            ////console.log(this.search_result.length);
                         }
                         //this.length = data.length;
                         if(this.length> 0 )
@@ -395,7 +395,7 @@ export class CompanySearchComponent implements OnInit {
                         }
                        // this.page = data.length; 
                         this.page =this.length;   
-                        console.log(this.length);                   
+                        //console.log(this.length);                   
                     }
                             
                 },
@@ -411,7 +411,7 @@ export class CompanySearchComponent implements OnInit {
     select_value;selecteddd;
     reset()
     {
-        console.log("reset");
+        //console.log("reset");
         this.selectedObj=-1;
         this.countryChange=-1;
         this.rolesItems='';
@@ -437,8 +437,8 @@ export class CompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
-                  //console.log(data);
+                    //console.log(data);
+                  ////console.log(data);
                    
                     if(data.error)
                     {
@@ -452,14 +452,14 @@ export class CompanySearchComponent implements OnInit {
                     {
                         this.info=[];
                         //this.info = data;
-                        //console.log(this.info);
+                        ////console.log(this.info);
                         for(let res of data)
                         {
                             if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
                             && res.nationality && res.last_name  && res.contact_number && res.education && res.history  
                              && res.interest_area  && res.country )
                             {
-                                console.log(res._creator._id);
+                                //console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
                                  data => {
@@ -467,7 +467,7 @@ export class CompanySearchComponent implements OnInit {
                                     if(data['datas'][1]){
                                     if(data['datas'][1].is_company_reply==1)
                                     {
-                                        console.log('accept')
+                                        //console.log('accept')
                                         res.company_reply = 1;
                                     }
                                     else
@@ -475,27 +475,27 @@ export class CompanySearchComponent implements OnInit {
                                         res.company_reply = 0;
                             
                                     }
-                                        console.log(res.company_reply);
+                                        //console.log(res.company_reply);
                                 }
                                 },
                                 error => {
-                                    console.log('error');
-                                    console.log(error);
+                                    //console.log('error');
+                                    //console.log(error);
                     
                                });
                                 
                                 this.length++;
                                 this.info.push(res);
                             }
-                            //console.log(this.verify_candidate.length);
+                            ////console.log(this.verify_candidate.length);
                         }
                         
                          if(this.length> 0 )
                          {
                              this.page =this.length;
                              this.log='';
-                             console.log(this.page);
-                             console.log(this.length);
+                             //console.log(this.page);
+                             //console.log(this.length);
                          }
                          else
                          {
@@ -514,7 +514,7 @@ export class CompanySearchComponent implements OnInit {
     informations;
     onSearchWord(f: NgForm)
     {
-        //console.log(f.value.word);
+        ////console.log(f.value.word);
         this.length=0;
         this.info=[];
         this.informations='';
@@ -522,7 +522,7 @@ export class CompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                    ////console.log(data);
                     
                      if(data.error)
                     {
@@ -537,15 +537,15 @@ export class CompanySearchComponent implements OnInit {
                          this.info=[];
                          this.length='';
                          this.informations = this. filter_array(data);
-                         console.log(this.informations);
-                         console.log(this.info);
+                         //console.log(this.informations);
+                         //console.log(this.info);
                          for(let res of this.informations)
                         {
                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
                             && res.nationality && res.last_name  && res.contact_number && res.education && res.history 
                              && res.interest_area  && res.country )
                             {
-                               console.log(res._creator._id);
+                               //console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
                                  data => {
@@ -553,7 +553,7 @@ export class CompanySearchComponent implements OnInit {
                                     if(data['datas'][1]){
                                     if(data['datas'][1].is_company_reply==1)
                                     {
-                                        console.log('accept')
+                                        //console.log('accept')
                                         res.company_reply = 1;
                                     }
                                     else
@@ -561,12 +561,12 @@ export class CompanySearchComponent implements OnInit {
                                         res.company_reply = 0;
                             
                                     }
-                                        console.log(res.company_reply);
+                                        //console.log(res.company_reply);
                                 }
                                 },
                                 error => {
-                                    console.log('error');
-                                    console.log(error);
+                                    //console.log('error');
+                                    //console.log(error);
                     
                                });
                                 //this.search_result.push(res);
@@ -574,7 +574,7 @@ export class CompanySearchComponent implements OnInit {
                                 this.info.push(res);
                             }
                             
-                            //console.log(this.search_result.length);
+                            ////console.log(this.search_result.length);
                         }
                         //this.length = data.length;
                         if(this.length> 0 )
@@ -588,7 +588,7 @@ export class CompanySearchComponent implements OnInit {
                         }
                        // this.page = data.length; 
                         this.page =this.length;   
-                        console.log(this.length);                   
+                        //console.log(this.length);                   
                     }
                             
                 },
@@ -599,7 +599,7 @@ export class CompanySearchComponent implements OnInit {
     }
 	user_id;user_name;
 	onSubmit(val) {
-		console.log(val)
+		//console.log(val)
 		this.user_id =val;
 		this.user_name = val;
 	}
@@ -610,15 +610,15 @@ export class CompanySearchComponent implements OnInit {
 	msg_body;
 	job_offer_log;
     send_job_offer(msgForm : NgForm){
-		console.log("Used ID: " + this.user_id.id);
-        console.log("Name: " + this.user_id.name);
+		//console.log("Used ID: " + this.user_id.id);
+        //console.log("Name: " + this.user_id.name);
 		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         
 		if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
 			.subscribe(
 				data => {
-					console.log(data['datas']);
+					//console.log(data['datas']);
 					if(data['datas'].length>0){
 						this.job_offer_log = 'Message already sent';
 					}
@@ -630,20 +630,20 @@ export class CompanySearchComponent implements OnInit {
 						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
 							.subscribe(
 								data => {
-									console.log(data);
+									//console.log(data);
 									this.job_offer_log = 'Message successfully sent';
 								},
 								error => {
-									console.log('error');
-									console.log(error);
+									//console.log('error');
+									//console.log(error);
 									//this.log = error;
 								}
 							);
 					}
 				},
 				error => {
-					console.log('error');
-					console.log(error);
+					//console.log('error');
+					//console.log(error);
 					//this.log = error;
 				}
 			);

@@ -56,7 +56,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
      
      this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
-        console.log(this.user_id); 
+        ////console.log(this.user_id); 
     });
      
  }
@@ -79,20 +79,20 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       this.tweet_text = "dsfh dsjf sdgfsduf jhgfusd"; 
       if(this.user_id)
       {
-          console.log("ifffffff");
+          ////console.log("ifffffff");
           this.share_url = location.href + '?user=' + this.user_id;
           this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
                 this.public_data = data;
-                console.log(data);
+                ////console.log(data);
                 });
           
       }
      
       else
        {
-          console.log("elseeeee");
+          ////console.log("elseeeee");
           this.share_url = location.href + '?user=' + this.currentUser._creator;
           if(!this.currentUser)
        {
@@ -130,7 +130,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 {
                     this.router.navigate(['/resume']);
                 }*/
-                //console.log(data.experience_roles.length);
+                //////console.log(data.experience_roles.length);
                 else if(!data.experience_roles &&  !data.current_salary  || data.experience_roles.length <1 )
                 {
                         this.router.navigate(['/experience']);
@@ -184,7 +184,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     {
                         
                         this.imgPath = data.image;
-                        console.log(this.imgPath);
+                        ////console.log(this.imgPath);
                         
                     }
 

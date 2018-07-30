@@ -35,7 +35,7 @@ export class FinalComponent implements OnInit {
       this.authService.authState.subscribe((user) => 
       {    
         this.user = user; 
-        console.log(user);
+        //console.log(user);
         this.data = JSON.stringify(this.user);      
         this.result = JSON.parse(this.data);
       
@@ -73,7 +73,7 @@ export class FinalComponent implements OnInit {
 
   final(finalForm: NgForm)
   {
-    console.log(finalForm.value.intro);
+    //console.log(finalForm.value.intro);
      this.authenticationService.intro(this.currentUser._creator, finalForm.value)
             .subscribe(
                 data => {
@@ -84,7 +84,7 @@ export class FinalComponent implements OnInit {
 
                 if(data.error )
                 {
-                    //console.log(data.error);
+                    ////console.log(data.error);
                 }
                
                 },

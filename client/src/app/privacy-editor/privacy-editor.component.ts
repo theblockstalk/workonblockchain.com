@@ -54,10 +54,10 @@ export class PrivacyEditorComponent implements OnInit {
                 data => {
                    if(data)
                    {
-                       console.log(data);
+                       //console.log(data);
                         this.page_title = data[0].page_title;
                        this.editor_content = data[0].page_content;
-                       console.log(this.editor_content);
+                       //console.log(this.editor_content);
                        
                    }
                  });
@@ -74,7 +74,7 @@ export class PrivacyEditorComponent implements OnInit {
 
    editor(editorForm: NgForm)
    {
-       console.log(editorForm.value);
+       //console.log(editorForm.value);
        this.editor_text = this.editor_content;  
        this.authenticationService.pages_content(editorForm.value)
        .subscribe(

@@ -38,9 +38,9 @@ export class CandidateTermsComponent implements OnInit {
   {
      
       
-      console.log(this.termscondition);
+      //console.log(this.termscondition);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-       console.log(this.currentUser);
+       //console.log(this.currentUser);
       
       if(this.currentUser && this.currentUser.type=='candidate')
        {
@@ -49,7 +49,7 @@ export class CandidateTermsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                  console.log(data);
+                  //console.log(data);
                  
                   
                   if(data.terms ||data.marketing_emails)
@@ -123,7 +123,7 @@ export class CandidateTermsComponent implements OnInit {
     
   terms_and_condition(termsForm: NgForm)
   {   
-    console.log(termsForm.value);
+    //console.log(termsForm.value);
       this.authenticationService.terms(this.currentUser._creator,termsForm.value)
         .subscribe(
           data => 

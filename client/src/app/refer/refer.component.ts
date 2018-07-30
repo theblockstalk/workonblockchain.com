@@ -11,7 +11,7 @@ export class ReferComponent implements OnInit {
 	code = '';
 	constructor( private route: ActivatedRoute) {
 		this.code = route.snapshot.params['code'];
-		console.log(this.code);
+		//console.log(this.code);
     }
 	
 	ngOnInit(){

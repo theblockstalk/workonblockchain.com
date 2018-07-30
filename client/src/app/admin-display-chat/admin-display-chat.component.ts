@@ -54,8 +54,8 @@ export class AdminDisplayChatComponent implements OnInit {
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
         this.user_type = params['type'];
-        console.log(this.user_id); 
-            console.log(this.user_type);
+        //console.log(this.user_id); 
+            //console.log(this.user_type);
     });
         
    }
@@ -69,26 +69,26 @@ export class AdminDisplayChatComponent implements OnInit {
         {
          this.get_user_type();
       //this.user_type = 'company';
-      //console.log(this.user_type);
+      ////console.log(this.user_type);
          
        this.count=0;
        if(this.user_type=="company"){
-          //console.log('company');
+          ////console.log('company');
           this.display_list = 1;
           /*this.authenticationService.getCandidate(this.type)
             .subscribe(
                 data => {
-                    console.log('data');
+                    //console.log('data');
                     this.users = data['users'];
                 },
                 error => {
-                    console.log('error');
-                    console.log(error);
+                    //console.log('error');
+                    //console.log(error);
                     this.log = error;
                 }
             );*/
           //below code for only contacted candidates
-         // console.log('company');
+         // //console.log('company');
           this.display_list = 1;
           this.authenticationService.get_user_messages_only(this.user_id)
             .subscribe(
@@ -96,26 +96,26 @@ export class AdminDisplayChatComponent implements OnInit {
                     if(msg_data['datas'].length>0)
                     {
                         this.length = msg_data['datas'].length;
-                        //console.log(msg_data['datas'].length);
+                        ////console.log(msg_data['datas'].length);
                         this.authenticationService.getCandidate(this.type)
                             .subscribe(
                                 data => {
-                                    console.log(data);
+                                    //console.log(data);
                                     for (var key in msg_data['datas']) {
                                             for (var key_user in data['users']) {
                                                 if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id || msg_data['datas'][key].receiver_id == data['users'][key_user]._creator._id){
                                                     if(this.users.indexOf(data['users'][key_user]) === -1){
-                                                        console.log('if');
+                                                        //console.log('if');
                                                         this.users.push(data['users'][key_user]);
                                                     }
                                                 }   
                                             }
                                         }
-                                    console.log(this.users[0].image);
+                                    //console.log(this.users[0].image);
                                 },
                                 error => {
-                                    console.log('error');
-                                    console.log(error);
+                                    //console.log('error');
+                                    //console.log(error);
                                     this.log = error;
                                 }
                             );
@@ -123,13 +123,13 @@ export class AdminDisplayChatComponent implements OnInit {
                     else
                     {
                         this.length = 0;
-                        console.log("elseee");
+                        //console.log("elseee");
                         
                      }
                 },
                 error => {
-                    console.log('error');
-                    console.log(error);
+                    //console.log('error');
+                    //console.log(error);
                 }
             );
         }
@@ -138,28 +138,28 @@ export class AdminDisplayChatComponent implements OnInit {
             .subscribe(
                 msg_data => {
                     if(msg_data['datas'].length>0){
-                        console.log('msg_data');
+                        //console.log('msg_data');
                         this.length = msg_data['datas'].length
-                         //console.log(msg_data['datas'].length);
+                         ////console.log(msg_data['datas'].length);
                         this.authenticationService.getCandidate('company')
                         .subscribe(
                             data => {
-                                console.log(data['users']);
+                                //console.log(data['users']);
                                 for (var key in msg_data['datas']) {
                                         for (var key_user in data['users']) {
                                             if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id){
                                                 if(this.users.indexOf(data['users'][key_user]) === -1){
-                                                    console.log('if');
+                                                    //console.log('if');
                                                     this.users.push(data['users'][key_user]);
                                                 }
                                             }   
                                         }
                                     }
-                                console.log(this.users);
+                                //console.log(this.users);
                             },
                             error => {
-                                console.log('error');
-                                console.log(error);
+                                //console.log('error');
+                                //console.log(error);
                                 this.log = error;
                             }
                         );
@@ -168,18 +168,18 @@ export class AdminDisplayChatComponent implements OnInit {
                      else
                     {
                         this.length = 0;
-                        console.log("elseee   22");
+                        //console.log("elseee   22");
                         
                      }
                 },
                 error => {
-                    console.log('error');
-                    console.log(error);
+                    //console.log('error');
+                    //console.log(error);
                 }
             );
             
             this.display_list = 0;
-            //console.log('candidate');
+            ////console.log('candidate');
         }
        }
        else
@@ -200,16 +200,16 @@ export class AdminDisplayChatComponent implements OnInit {
       //this.msgs = 'hi baby';
       this.msgs = '';
       this.new_msgss = '';
-      console.log(id);
+      //console.log(id);
      // this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log("show_msg_area: " + this.show_msg_area);
+      //console.log("show_msg_area: " + this.show_msg_area);
         //Observable.interval(10000).subscribe(x => {
          //receiver,sender
          this.authenticationService.get_user_messages(id,this.user_id)
             .subscribe(
                 data => {
-                    console.log('data');
-                    console.log(data['datas']);
+                    //console.log('data');
+                    //console.log(data['datas']);
                     this.new_msgss = data['datas'];
                     this.job_desc = data['datas'][0];
                     if(data['datas'][1]){
@@ -249,8 +249,8 @@ export class AdminDisplayChatComponent implements OnInit {
                     }
                 },
                 error => {
-                    console.log('error');
-                    console.log(error);
+                    //console.log('error');
+                    //console.log(error);
                     //this.log = error;
                 }
             );
@@ -270,8 +270,8 @@ export class AdminDisplayChatComponent implements OnInit {
     this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
-                console.log(data);
-                //console.log(data[0]._creator);
+                //console.log(data);
+                ////console.log(data[0]._creator);
                 if(data.error)
                 {
                     this.log= "Something Went Wrong"; 
@@ -279,32 +279,32 @@ export class AdminDisplayChatComponent implements OnInit {
                 }
                 if(data!= '')
                 {
-                    console.log("iffffffff");
-                    console.log(data[0].image);
+                    //console.log("iffffffff");
+                    //console.log(data[0].image);
                    if(data[0].image!='')
                    {
-                       console.log("candidate image");
+                       //console.log("candidate image");
                     this.profile_pic = data[0].image;
                     }
                    
                     this.display_name = data[0].first_name+' '+data[0].last_name;
                          this.user_type = data[0]._creator.type;
                         localStorage.removeItem('company_type');
-                         console.log(this.user_type);
+                         //console.log(this.user_type);
                         this.email  = data[0]._creator.email;
-                        console.log(this.email);
+                        //console.log(this.email);
                         
                     
                     
                 }
                 else
                     {
-                    //console.log("else");
+                    ////console.log("else");
                     this.authenticationService.getCurrentCompany(this.user_id)
                         .subscribe(
                         data => 
                         {
-                            console.log(data);
+                            //console.log(data);
                             if(data.error)
                             {
                                 this.log= "Something Went Wrong";
@@ -312,23 +312,23 @@ export class AdminDisplayChatComponent implements OnInit {
                             }
                             else
                             {
-                                console.log("elseeeee");
+                                //console.log("elseeeee");
                                 
                                 if(data[0].company_logo!='')
                                 {
-                                    console.log("company_logo");
+                                    //console.log("company_logo");
                                      this.profile_pic = data[0].company_logo;
-                                     console.log(this.profile_pic);
+                                     //console.log(this.profile_pic);
                                     }
                                
                                
                                  this.display_name = data[0].first_name+' '+data[0].last_name;
                                  this.user_type = data[0]._creator.type;
-                                 //console.log(this.user_type);
+                                 ////console.log(this.user_type);
                                 localStorage.setItem("company_type", this.user_type);
                                 //localStorage.removeItem('type');
                                  this.email  = data[0]._creator.email;
-                                 console.log(this.email);
+                                 //console.log(this.email);
                             }
                       
                         },

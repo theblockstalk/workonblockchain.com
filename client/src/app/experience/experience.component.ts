@@ -72,7 +72,7 @@ export class ExperienceComponent implements OnInit
           this.authenticationService.getById(this.currentUser._id)
             .subscribe(
             data => {
-                console.log(data);
+                //console.log(data);
                
                  if(data.terms==true)
                   {
@@ -104,7 +104,7 @@ export class ExperienceComponent implements OnInit
                         
                         }
                         //this.exp_data.push(data.experience_roles) ;
-                    //console.log(data.experience_roles.length);
+                    ////console.log(data.experience_roles.length);
                       if(data.experience_roles)
                       {
                           this.expYear = data.experience_roles;
@@ -141,7 +141,7 @@ export class ExperienceComponent implements OnInit
                                    
                                 //this.expYear.push(option);
                                 this.expYear_db.push(key[i]);
-                                //console.log(this.expYear_db); 
+                                ////console.log(this.expYear_db); 
                                  
                             }
                        
@@ -249,7 +249,7 @@ export class ExperienceComponent implements OnInit
       {
         this.language.splice(index, 1);
         let updateItem2 = this.findObjectByKey(this.expYear, 'platform_name', obj.value);
-        //console.log(updateItem2);
+        ////console.log(updateItem2);
         let index2 = this.expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -265,8 +265,8 @@ export class ExperienceComponent implements OnInit
         this.language.push(obj);
       }
 
-     // console.log(this.language);
-            //console.log(this.expYear);
+     // //console.log(this.language);
+            ////console.log(this.expYear);
     
   	}
 
@@ -291,7 +291,7 @@ export class ExperienceComponent implements OnInit
         this.roles.push(obj);
       }
 
-      //console.log(this.roles);
+      ////console.log(this.roles);
     
   	}
 */
@@ -349,7 +349,7 @@ export class ExperienceComponent implements OnInit
 
     initExpRows() 
     {
-      //console.log(this.currentdate);
+      ////console.log(this.currentdate);
       return this._fb.group({
         companyname:[''],
         positionname:[''],
@@ -410,12 +410,12 @@ export class ExperienceComponent implements OnInit
 
    /* onCurrentlyWork(e)
     {
-        //console.log(e);
+        ////console.log(e);
         /*if(e.target.checked==true)
         {
          
           this.shown= false;
-          //console.log(this.today);
+          ////console.log(this.today);
 
         }
         else
@@ -426,10 +426,23 @@ export class ExperienceComponent implements OnInit
     log;
     experience_submit(searchForm: NgForm)
     {    
-       console.log(searchForm.value);
-       console.log(this.ExperienceForm.value.ExpItems[0].currentwork);
-       console.log(this.ExperienceForm.value.ExpItems);
+       //console.log(searchForm.value);
+       ////console.log(this.ExperienceForm.value.ExpItems[0].currentwork);
+       //console.log(this.ExperienceForm.value.ExpItems.length);
         
+        // //console.log(this.EducationForm.value.itemRows.length);
+        
+        if(this.ExperienceForm.value.ExpItems.length == 0 )
+        {
+            
+            this.log = "Please enter atleast one work history. "; 
+            
+        }
+        else
+        {
+        
+        
+
         if(!this.ExperienceForm.value.ExpItems[0].enddate || !this.ExperienceForm.value.ExpItems[0].endyear )
         {
             if(this.ExperienceForm.value.ExpItems[0].currentwork==false)
@@ -451,6 +464,8 @@ export class ExperienceComponent implements OnInit
             this.submit_info(searchForm);
             }
             
+            }
+            
         
         
         
@@ -463,27 +478,32 @@ export class ExperienceComponent implements OnInit
         !this.ExperienceForm.value.ExpItems[0].locationname   ||
         !this.ExperienceForm.value.ExpItems[0].startdate || !this.ExperienceForm.value.ExpItems[0].startyear   )
         {
-             console.log("iffff");
+             //console.log("iffff");
             this.log = "Please complete all fields for each work experience.";    
         }
 
-
+        else if(this.EducationForm.value.itemRows.length == 0)
+        {
+         
+          this.log = "Please enter atleast one education. "; 
+         
+         }
         else if(!this.EducationForm.value.itemRows[0].uniname || !this.EducationForm.value.itemRows[0].degreename
         || !this.EducationForm.value.itemRows[0].fieldname || !this.EducationForm.value.itemRows[0].eduyear)
         {
-            console.log("if");
+            //console.log("if");
             this.log = "Please complete all fields for each education record.";
             
         }
         else
              {
-             console.log("else");
+             //console.log("else");
              this.log='';
             this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.EducationForm.value.itemRows , this.ExperienceForm.value.ExpItems , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
             .subscribe(
                 data => {
                 if(data)
-                {   console.log("data");
+                {   //console.log("data");
                     // window.location.href = '/candidate_profile';
 
                     this.router.navigate(['/candidate_profile']);
@@ -491,7 +511,7 @@ export class ExperienceComponent implements OnInit
 
                 if(data.error )
                 {
-                    //console.log(data.error);
+                    ////console.log(data.error);
                 }
                
                 },
@@ -510,7 +530,7 @@ export class ExperienceComponent implements OnInit
      
         
         let updateItem = this.findObjectByKey(this.expYear, 'platform_name', value);
-       //console.log(updateItem);
+       ////console.log(updateItem);
         let index = this.expYear.indexOf(updateItem);
 
       if(index > -1)
@@ -520,31 +540,31 @@ export class ExperienceComponent implements OnInit
         this.value=value;
         this.referringData = { platform_name :this.value, exp_year: e.target.value};  
         this.expYear.push(this.referringData); 
-        //console.log(this.LangexpYear); 
+        ////console.log(this.LangexpYear); 
           
         
       }
       else
       {   
-      //console.log("not exists");
+      ////console.log("not exists");
         this.value=value;
         this.referringData = { platform_name:this.value, exp_year: e.target.value};  
         this.expYear.push(this.referringData); 
-        //console.log(this.LangexpYear); 
+        ////console.log(this.LangexpYear); 
         
       }
-        console.log(this.expYear);
+        //console.log(this.expYear);
    }
     
     findObjectByKey(array, key, value) 
     {
-      // console.log(array.length);
+      // //console.log(array.length);
         for (var i = 0; i < array.length; i++) 
         {
-        // console.log(array[i][key]);
+        // //console.log(array[i][key]);
             if (array[i][key] === value) 
             {
-                // console.log( array[i]);
+                // //console.log( array[i]);
                 return array[i];
             }
        
@@ -557,7 +577,7 @@ export class ExperienceComponent implements OnInit
       this.value=value;
       this.referringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.expYearRole.push(this.referringData); 
-      //console.log(this.expYearRole); 
+      ////console.log(this.expYearRole); 
    }
 
    work_start_data(e)

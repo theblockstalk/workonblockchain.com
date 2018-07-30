@@ -23,7 +23,7 @@ export class CandidateDetailComponent implements OnInit {
  
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
-        console.log(this.user_id); 
+        //console.log(this.user_id); 
     });
             
   
@@ -34,12 +34,12 @@ export class CandidateDetailComponent implements OnInit {
   company_name;
   ngOnInit() 
   {
-      console.log(this.user_id);
+      //console.log(this.user_id);
       this.company_reply = 0;
 
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      //console.log('ftn')
-      //console.log(this.user_id)
+      ////console.log('ftn')
+      ////console.log(this.user_id)
 	  this.credentials.user_id = this.user_id;
 
       
@@ -48,25 +48,25 @@ export class CandidateDetailComponent implements OnInit {
           this.authenticationService.get_user_messages(this.user_id,this.currentUser._creator)
             .subscribe(
                 data => {
-                   // console.log('data');
-                   // console.log(data['datas']);
+                   // //console.log('data');
+                   // //console.log(data['datas']);
                     //this.new_msgss = data['datas'];
                     //this.job_desc = data['datas'][0];
                     if(data['datas'][1]){
                         if(data['datas'][1].is_company_reply==1){
-                            console.log('accept')
+                            //console.log('accept')
                             this.company_reply = 1;
                         }
                         else{
                             this.company_reply = 0;
                             
                         }
-                        console.log(this.company_reply);
+                        //console.log(this.company_reply);
                     }
                 },
                 error => {
-                    console.log('error');
-                    console.log(error);
+                    //console.log('error');
+                    //console.log(error);
                     //this.log = error;
                 }
             );
@@ -108,7 +108,7 @@ export class CandidateDetailComponent implements OnInit {
                     {
                         
                         this.imgPath = data[0].image;
-                        console.log(this.imgPath);
+                        //console.log(this.imgPath);
                         
                     }
 
@@ -119,7 +119,7 @@ export class CandidateDetailComponent implements OnInit {
                     this.company_name = data[0].first_name+' '+data[0].last_name;
                 },
                 error => {
-                    console.log('error');
+                    //console.log('error');
                 }
             );
       }
@@ -144,7 +144,7 @@ export class CandidateDetailComponent implements OnInit {
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
 			.subscribe(
 				data => {
-					console.log(data['datas']);
+					//console.log(data['datas']);
 					if(data['datas'].length>0){
 						this.job_offer_msg = 'Message already sent';
 					}
@@ -157,20 +157,20 @@ export class CandidateDetailComponent implements OnInit {
 						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
 							.subscribe(
 								data => {
-									console.log(data);
+									//console.log(data);
 									this.job_offer_msg = 'Message has been successfully sent';
 								},
 								error => {
-									console.log('error');
-									console.log(error);
+									//console.log('error');
+									//console.log(error);
 									//this.log = error;
 								}
 							);
 					}
 				},
 				error => {
-					console.log('error');
-					console.log(error);
+					//console.log('error');
+					//console.log(error);
 					//this.log = error;
 				}
 			);

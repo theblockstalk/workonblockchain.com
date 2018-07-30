@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
       {
        
         this.user = user; 
-        console.log(user);
+        //console.log(user);
         this.data = JSON.stringify(this.user);      
         this.result = JSON.parse(this.data);
       
@@ -70,21 +70,21 @@ export class HomeComponent implements OnInit {
 
    Search(searchForm: NgForm) 
    {
-    console.log(searchForm.value);
+    //console.log(searchForm.value);
      this.authenticationService.search(searchForm.value)
             .subscribe(
                 data => {
                 if(data)
                 {
-                    //console.log(data[0].country);
-                     console.log(data);
+                    ////console.log(data[0].country);
+                     //console.log(data);
                     this.log =data;
                     //this.log1 =data.nationality;
                 }
 
                 if(data.error )
                 {
-                    console.log(data.error);
+                    //console.log(data.error);
                 }
                
                 },

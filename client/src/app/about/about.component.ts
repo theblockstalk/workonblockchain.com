@@ -6,7 +6,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {environment} from '../../environments/environment';
 const URL = environment.backend_url;
-console.log(URL);
+//console.log(URL);
 
 @Component({
   selector: 'app-about',
@@ -38,16 +38,16 @@ export class AboutComponent implements OnInit
   ngOnInit()
   {
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-       console.log(this.currentUser);
+       //console.log(this.currentUser);
        this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-       console.log(this.googleUser);
+       //console.log(this.googleUser);
 
        this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-       //console.log(this.linkedinUser);
+       ////console.log(this.linkedinUser);
 
        if(this.googleUser)
        {
-           console.log("jhcskjsdhkk");
+           //console.log("jhcskjsdhkk");
           this.info.image_src = this.googleUser.photoUrl;
           this.info.first_name= this.googleUser.firstName;
           this.info.last_name = this.googleUser.lastName;
@@ -68,8 +68,8 @@ export class AboutComponent implements OnInit
             .subscribe(
                 data =>
                 {
-                  console.log(data);
-                  console.log(data._creator.social_type);
+                  //console.log(data);
+                  //console.log(data._creator.social_type);
 
                   if(data.terms)
                   {
@@ -90,7 +90,7 @@ export class AboutComponent implements OnInit
 
                     if(data.image != null )
                     {
-                      //console.log(data.image);
+                      ////console.log(data.image);
                      this.info.image_src = data.image ;
                        
 
@@ -147,7 +147,7 @@ export class AboutComponent implements OnInit
   onGenderSelected(event)
   {
     this.info.gender= event.target.value;
-    console.log(this.info.gender);
+    //console.log(this.info.gender);
 
   }
 
@@ -173,7 +173,7 @@ export class AboutComponent implements OnInit
                 this.http.post(URL+'users/image/'+this.currentUser._creator, formData).map((res) => res).subscribe(
                 (success) =>
                 {
-                  console.log(success);
+                  //console.log(success);
                   this.router.navigate(['/job']);
                 },
                 (error) => alert(error))

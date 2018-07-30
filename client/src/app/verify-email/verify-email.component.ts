@@ -16,11 +16,11 @@ export class VerifyEmailComponent implements OnInit {
         private router: Router,
         private authenticationService: UserService,private dataservice: DataService) {
           /*this.hash = route.snapshot.params['email_hash'];
-          console.log(this.hash);*/
+          //console.log(this.hash);*/
              this.route.queryParams.subscribe(params => 
              {
                  this.hash = params['email_hash'];
-                 console.log(this.hash); // Print the parameter to the console. 
+                 //console.log(this.hash); // Print the parameter to the console. 
             });
          }
 
@@ -28,7 +28,7 @@ export class VerifyEmailComponent implements OnInit {
   {
 
   		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      //console.log(this.currentUser);
+      ////console.log(this.currentUser);
        
      
 
@@ -36,7 +36,7 @@ export class VerifyEmailComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
                     if(data)
                     {
                         if(!this.currentUser)
@@ -65,7 +65,7 @@ export class VerifyEmailComponent implements OnInit {
                 },
                 error => 
                 {
-                    console.log("error");
+                    //console.log("error");
                   this.dataservice.changeMessage(error);
                 	 this.router.navigate(['/login']);
                 });

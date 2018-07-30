@@ -31,18 +31,18 @@ export class AdminCompanyDetailComponent implements OnInit {
   {
     this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
-        console.log(this.user_id);     
+        //console.log(this.user_id);     
     });
   }
 
   ngOnInit() 
   {
-      console.log(this.user_id);
+      //console.log(this.user_id);
      
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
-      //console.log('ftn')
-      //console.log(this.user_id)
+      ////console.log('ftn')
+      ////console.log(this.user_id)
       this.credentials.user_id = this.user_id;
 
       
@@ -52,7 +52,7 @@ export class AdminCompanyDetailComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
                     if(data.error)
                     {
                         this.error= "Something Went Wrong";  
@@ -64,12 +64,12 @@ export class AdminCompanyDetailComponent implements OnInit {
                         this.verify =data[0]._creator.is_verify;
                          if(data[0].company_logo != null )
                         {                        
-                            //console.log(data.image);                     
+                            ////console.log(data.image);                     
                               this.imgPath = data[0].company_logo;
-                            console.log(this.imgPath);
+                            //console.log(this.imgPath);
                         
                         }
-                        console.log(this.verify);
+                        //console.log(this.verify);
                         if(this.approve === 1)
                         {
                             this.is_approved = "Aprroved";
@@ -96,7 +96,7 @@ export class AdminCompanyDetailComponent implements OnInit {
     
    approveClick(event , approveForm: NgForm)
     {
-        //console.log(approveForm.value.id);
+        ////console.log(approveForm.value.id);
          if(event.srcElement.innerHTML ==='Active' )
          {
              this.is_approve = 1;
@@ -110,7 +110,7 @@ export class AdminCompanyDetailComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    //console.log(data.is_approved);
+                    ////console.log(data.is_approved);
                      
                     if(data.is_approved === 1 )
                     {

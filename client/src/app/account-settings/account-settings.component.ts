@@ -29,7 +29,7 @@ export class AccountSettingsComponent implements OnInit {
   {
 	  this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(this.currentUser.type);
+      //console.log(this.currentUser.type);
        if(this.currentUser && this.currentUser.type=='candidate')
        {
          
@@ -83,7 +83,7 @@ export class AccountSettingsComponent implements OnInit {
     this.message = '';
       if(this.currentUser && this.currentUser.type=='candidate')
       {
-    //console.log(this.marketing);
+    ////console.log(this.marketing);
      this.authenticationService.terms(this.currentUser._creator,this.info)
         .subscribe(
           data => 
@@ -125,7 +125,7 @@ export class AccountSettingsComponent implements OnInit {
   }
   
   unread_msgs_emails_send(){
-	  console.log('set here');
+	  //console.log('set here');
 	  if(this.currentUser)
       {
 		this.authenticationService.set_unread_msgs_emails_status(this.currentUser._creator,this.info.unread_msgs_emails)
@@ -138,7 +138,7 @@ export class AccountSettingsComponent implements OnInit {
 				}
 				else
 				{
-					console.log(data);
+					//console.log(data);
 				}
 			},
 			error => {

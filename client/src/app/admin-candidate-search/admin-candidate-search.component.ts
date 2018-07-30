@@ -85,10 +85,10 @@ export class AdminCandidateSearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                  //console.log(data);
+                  ////console.log(data);
                     if(data.error)
                     {
-                       // console.log(this.info);
+                       // //console.log(this.info);
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -101,7 +101,7 @@ export class AdminCandidateSearchComponent implements OnInit {
                         this.information = this.filter_array(data);
                         this.info=[];
                         this.length='';
-                         //console.log(this.log);
+                         ////console.log(this.log);
                         
                        // this.info = this.information; 
                         
@@ -138,13 +138,13 @@ export class AdminCandidateSearchComponent implements OnInit {
                 {
                   
                 });
-       console.log(this.info);
+       //console.log(this.info);
     }
     
     is_approve;
     approveClick(event , approveForm: NgForm)
     {
-        //console.log(approveForm.value.id);
+        ////console.log(approveForm.value.id);
          if(event.srcElement.innerHTML ==='Active' )
          {
              this.is_approve = 1;
@@ -158,7 +158,7 @@ export class AdminCandidateSearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    //console.log(data.is_approved);
+                    ////console.log(data.is_approved);
                      
                     if(data.is_approved === 1 )
                     {
@@ -193,14 +193,14 @@ export class AdminCandidateSearchComponent implements OnInit {
     
     onSearchName(f: NgForm)
     {
-        //console.log(f.value.word);
+        ////console.log(f.value.word);
         this.length=0;
         this.info=[];
          this.authenticationService.searchByName(f.value.word)
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                    ////console.log(data);
                     
                      if(data.error)
                     {
@@ -251,15 +251,15 @@ export class AdminCandidateSearchComponent implements OnInit {
     messagetag_changed(data)
     {
           this.msgtags = data.value;
-           // console.log(data.value);
+           // //console.log(data.value);
           this.search(this.msgtags);
-        console.log(this.msgtags);
+        //console.log(this.msgtags);
      }
     
     search_approved(event)
     {
          this.approve =event;
-        console.log(this.approve);
+        //console.log(this.approve);
         this.search(this.approve);
         
     }
@@ -283,14 +283,14 @@ export class AdminCandidateSearchComponent implements OnInit {
         this.info=[];
         if(this.approve == -1 && !this.msgtags  )
         {             
-            console.log("iffffffff"); 
+            //console.log("iffffffff"); 
              this.getAllCandidate();
         }
                
         else
         { 
 
-            console.log("else");
+            //console.log("else");
             this.authenticationService.admin_candidate_filter(this.approve , this.msgtags)
             .subscribe(
                 data => 
@@ -298,7 +298,7 @@ export class AdminCandidateSearchComponent implements OnInit {
  
                     if(data.error)
                     {
-                       // console.log(this.info);
+                       // //console.log(this.info);
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -310,7 +310,7 @@ export class AdminCandidateSearchComponent implements OnInit {
                     {
                         this.information = this.filter_array(data);
 
-                         //console.log(this.log);
+                         ////console.log(this.log);
                         
                        // this.info = this.information; 
                         
@@ -359,13 +359,13 @@ export class AdminCandidateSearchComponent implements OnInit {
         this.select_value='';
         this.approve=-1;
         this.info=[];
-        console.log("reset");
+        //console.log("reset");
         this.getAllCandidate();
        /* this.msgtags='';
         
        
         
-        console.log(this.select_value);
+        //console.log(this.select_value);
          
         //this.positionchanged(this.select_value);
         */
