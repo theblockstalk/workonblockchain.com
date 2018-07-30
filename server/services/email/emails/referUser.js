@@ -7,13 +7,13 @@ module.exports.sendEmail = function sendEmail(data) {
     };
     const subject = data.subject;
 
-    const nodemonOptions = {
+    /*const nodemonOptions = {
         from: 'workonblockchain@mwancloud.com', // sender address
         to : 'sadiaabbas326@gmail.com',//sendTo.email,
         subject: subject,
         text : data.body,
         html : data.body
-    };
+    };*/
 
     const sendToArray = [sendTo];
 
@@ -30,5 +30,6 @@ module.exports.sendEmail = function sendEmail(data) {
         }
     };
 
-    emails.sendEmail(nodemonOptions, mandrillOptions);
+    //emails.sendEmail(nodemonOptions, mandrillOptions);
+	emails.sendEmail(mandrillOptions);
 }

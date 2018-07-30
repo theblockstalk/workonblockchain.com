@@ -8,13 +8,13 @@ module.exports.sendEmail = function sendEmail(data) {
     };
     const subject = data.info.referred_fname + ' has created a profile on Work on Blockchain!';
 
-    const nodemonOptions = {
+    /*const nodemonOptions = {
         from: 'workonblockchain@mwancloud.com', // sender address
         to : data.info.email,//sendTo.email,
         subject: subject,
         text : data.body,
         html : '<p>Hi '+data.info.fname+'</p> <br/><p>Great news!</p><br/><p>  You have referred '+data.info.referred_fname+' '+data.info.referred_lname+' to Work on Blockchain and they have created a profile. When this person is hired through the platform you will be rewarded with £500 (please see the FAQs for more details)! </p> <br/><p>We will notify you if and when this happens.</p><br/><p>Thanks,</p><br/><p> Work on Blockchain team!</p>'
-    };
+    };*/
 
     const sendToArray = [sendTo];
 
@@ -31,5 +31,6 @@ module.exports.sendEmail = function sendEmail(data) {
         }
     };
 
-    emails.sendEmail(nodemonOptions, mandrillOptions);
+    //emails.sendEmail(nodemonOptions, mandrillOptions);
+	emails.sendEmail(mandrillOptions);
 }
