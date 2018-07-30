@@ -38,7 +38,7 @@
                        <select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
                    <option value="-1" disabled selected hidden >Please choose currency</option>
                 
-                  <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
+                  <option class='option' *ngFor='let current_currency of currency' #choose_currency [value]="current_currency" selected>{{current_currency}}</option>
               
                 </select>
                   </div>
@@ -52,13 +52,13 @@
                       <div class="checkbox" >
                         <label class = "check-label lable"> {{option.name}}  
                            <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
-                          (change)="onExpOptions(option)" required  />
+                          (change)="onExpOptions(option)" required #lang  />
             
                           <span class="checkmark">
                           <div></div>
                           </span>
                         </label>
-                        <input type="text" class="form-control" [(ngModel)]='language' name="language" style="display: none;">
+                        <input type="text" class="form-control"  [(ngModel)]='language' name="language" style="display: none;">
                       </div>
 
                     </div>
@@ -235,7 +235,7 @@
 
           <div class = "form-group text-right">
               <a href="/resume" class = "btn btn-prev">Prev Step</a>
-              <button type="submit" class = "btn btn-self btn-pdg" [disabled]=" intro.value=='' " >Done</button>
+              <button type="submit" class = "btn btn-self btn-pdg" [disabled]=" intro.value=='' || salary_field.value =='' || choose_currency.value=='' " >Done</button>
           </div>
 			 <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
         </form>

@@ -29,10 +29,10 @@
                 <div class="form-group">
                   <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
                   <div class = "show_pass"><i toggle="#password-field" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
-                  <input type="password" #uname="ngModel" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}" class="form-control" placeholder="password" id="password-field" name="password"  [(ngModel)]="credentials.password">
+                  <input type="password" #uname="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" class="form-control" placeholder="password" id="password-field" name="password"  [(ngModel)]="credentials.password">
                 <p>{{pass_log}}</p>
                 <div *ngIf="uname.errors" class="alert alert-danger error-alert">
-    					Password must be at least 9 characters with at least 1x lower case, 1x upper case and 1x number.
+						Password must contain 8 characters including a number and lower and upper case letter.
 				</div> 
                 </div>
 
@@ -136,10 +136,10 @@
                 <div class="form-group">
                   <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
                   <div class = "show_pass"><i toggle="#password-field1" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
-                  <input type="password" #upass="ngModel"  pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}" class="form-control" placeholder="password" id="password-field1" name="password" [(ngModel)]="credentials.password">
+                  <input type="password" #upass="ngModel"  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" class="form-control" placeholder="password" id="password-field1" name="password" [(ngModel)]="credentials.password">
                    <p >{{pass_log}}</p>
                    <div *ngIf="upass.errors" class="alert alert-danger error-alert">
-    					Password must be at least 9 characters with at least 1x lower case, 1x upper case and 1x number.
+						Password must contain 8 characters including a number and lower and upper case letter.
 				</div> 
                 </div>
 
