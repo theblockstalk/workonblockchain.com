@@ -6,8 +6,7 @@ const Q = require('q');
 const jwt = require('jsonwebtoken');
 const settings = require('../../../settings');
 
-module.exports = function (req, res)
-{
+module.exports = function (req, res) {
     authenticate(req.body.email, req.body.password).then(function (user)
     {
         if (user)

@@ -27,13 +27,15 @@
 
 				<div class = "form-group col-md-6">
 					<div class="checkbox">
-						<label class = "check-label"> Accept <a  routerLink="/terms-for-candidate" target="_blank" >Term and Conditions </a> & <a routerLink="/privacy-policy" target="_blank">Privacy Policy</a>
+
+						<label class = "check-label"> I have read and accepted the <a  routerLink="/terms-for-candidate" target="_blank" >Term and Conditions </a> and the Privacy Policy.
+
 							<input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
 							<span class="checkmark">
 								<div></div>
 							</span>
 						</label>
-						<label class = "check-label"> Accept Marketing Emails 
+						<label class = "check-label"> I consent to receive marketing and promotional emails related to the workonblockchain.com platform.
 							<input type = "checkbox" value = ""  name="marketing" [(ngModel)]="marketing_emails">
 							<span class="checkmark">
 								<div></div>

@@ -883,7 +883,7 @@ body{
 
 .btn-signup {
     color: #fff;
-    background-color: #537284;
+    background-color: #537284 !important;
     border-color: #537284;
 }
 
@@ -2192,6 +2192,37 @@ input[type=checkbox] {
     font-weight: normal;
     font-size: initial;
     border-radius: 0px;
+}
+
+.dec_model{
+	padding: 10px;
+    border: 1px solid #ececec;
+    border-radius: 5px;
+}
+
+.dec_model b{
+	
+}
+
+.dec_model span{
+	margin-left:10px;
+}
+
+.dec_model .job_decs{
+	margin-left: 10px;
+    background: #ececec;
+    padding: 10px;
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+.dec_model .job_decs::-webkit-scrollbar {
+  width: 4px;
+  background: #ddd;
+}
+
+.dec_model .job_decs::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .submit{

@@ -172,7 +172,12 @@ export class ChatComponent implements OnInit {
                                                 }   
                                             }
                                         }
+										this.count = 0;
 										for (var key_users_new in this.users) {
+											if(this.count == 0){
+												this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id);
+											}
+											this.count = this.count + 1;
 											//this.currentUser._creator //receiver
 											this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
 											.subscribe(
@@ -220,7 +225,12 @@ export class ChatComponent implements OnInit {
                                             }   
                                         }
                                     }
+									this.count = 0;
 									for (var key_users_new in this.users) {
+										if(this.count == 0){
+											this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id);
+										}
+										this.count = this.count + 1;
 										//this.currentUser._creator //receiver
 										this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
 										.subscribe(
@@ -250,7 +260,7 @@ export class ChatComponent implements OnInit {
                 
                 this.display_list = 0;
                 console.log('candidate');
-            }
+			}
         }
       }
       else{
