@@ -78,6 +78,9 @@ router.put('/add_privacy_content'  , add_privacy_content);
 router.get('/get_pages_content/:title', get_content);
 router.get('/get_all_content', get_all_content);
 
+
+const logger = require('../controller/services/logger');
+
 module.exports = router;
 
 const my_url = 'http://localhost/workonblockchain.com/server/uploads/';
@@ -401,7 +404,7 @@ function image(req, res)
 {
 
     
-    console.log('req.file', req.file);
+    logger.debug('req.file', {file: req.file});
     let path;
     if (req.file.filename) {
 		path = my_url+''+req.file.filename;

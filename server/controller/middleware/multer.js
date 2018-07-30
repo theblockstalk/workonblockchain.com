@@ -23,9 +23,9 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
             s3: s3,
             bucket: settings.AWS.BUCKETS.files,
             key: function (req, file, cb) {
-                logger.debug('file', file);
+                logger.debug('file', {file: file});
                 const originalname = sanitizer.recursivelySanitize(file.originalname);
-                cb(null, Date.now().toString() + originalname);
+                cb(null, 'application/' + Date.now().toString() + '/' + originalname);
             }
         })
     });
