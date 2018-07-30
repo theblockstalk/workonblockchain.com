@@ -17,13 +17,8 @@ if (settings.isLiveApplication()) {
     });
 }
 
-// transport.on('error', function(err){/* ... */});
 
-// var s3Logger = new (winston.Logger)({
-//     transports: [file_transport]
-// });
-
-let winstonLogger
+let winstonLogger;
 
 if (settings.ENVIRONMENT === 'production') {
     winstonLogger = winston.createLogger({
@@ -58,11 +53,19 @@ if (settings.ENVIRONMENT === 'production') {
         transports: [
             new winston.transports.Console({
                 level: 'debug',
-                stringify: true,
-                timestamp: true,
+                // stringify: true,
+                // timestamp: true,
                 // colorize: true,
-                prettyPrint: true,
-                // json: true
+                // prettyPrint: true,
+                // prettyPrint: JSON.stringify,
+                // json: true,
+                // format: winston.format(genericFormatter)(),
+                // prettyPrint: function ( object ){
+                //     return JSON.stringify(object);
+                // },
+                // handleExceptions: true,
+                json: true,
+                // colorize: true
             })
         ]
     })
@@ -82,4 +85,8 @@ logger.verbose()
 logger.debug()
 logger.silly()
 
+format:
+logger.debug("I am a string")
+metadata = { info: "More information" }
+logger.debug("Message description", metadata)
  */
