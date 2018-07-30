@@ -42,7 +42,7 @@ export class CompanyProfileComponent implements OnInit {
    
   ngOnInit() 
   {
-     // console.log(this.htmlContent);
+     // //console.log(this.htmlContent);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if(!this.currentUser)
       {
@@ -54,7 +54,7 @@ export class CompanyProfileComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                  console.log(data); 
+                  //console.log(data); 
                   if(!data.terms)
                   {
                       this.router.navigate(['/company_wizard']);
@@ -81,11 +81,11 @@ export class CompanyProfileComponent implements OnInit {
                       this.no_of_employees=data.no_of_employees;
                       if(data.company_logo != null )
                       {                        
-                      //console.log(data.image);                     
+                      ////console.log(data.image);                     
 
                         this.imgPath =  data.company_logo;
 
-                        console.log(this.imgPath);
+                        //console.log(this.imgPath);
                         
                       }
 
@@ -107,13 +107,13 @@ export class CompanyProfileComponent implements OnInit {
   search(searchForm: NgForm)
       {
           
-          console.log(searchForm.value);
+          //console.log(searchForm.value);
           
           }
       
       onlanguageChange(e)
       {
-          console.log(e.value);
+          //console.log(e.value);
           }
 
 }

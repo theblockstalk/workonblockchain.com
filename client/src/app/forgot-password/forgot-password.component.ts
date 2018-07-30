@@ -34,7 +34,7 @@ export class ForgotPasswordComponent implements OnInit {
             this.authenticationService.forgot_password(f.value.email)
             .subscribe(
                 data => {      
-                	console.log(data);
+                	//console.log(data);
                 	if(!data['error'])
                 	{
                 		this.dataservice.changeMessage("Please check your email to reset the password.");

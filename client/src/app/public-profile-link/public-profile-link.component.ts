@@ -25,7 +25,7 @@ export class PublicProfileLinkComponent implements OnInit {
  
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
-       // console.log(this.user_id); 
+       // //console.log(this.user_id); 
     });
             
   
@@ -35,7 +35,7 @@ export class PublicProfileLinkComponent implements OnInit {
     approve;verify;is_verify;information;
   ngOnInit() 
   {
-      console.log(this.user_id);
+      //console.log(this.user_id);
 
         
       if(this.user_id )
@@ -51,7 +51,7 @@ export class PublicProfileLinkComponent implements OnInit {
                 else
                     this.info = data;
                     //this.info.push(data);  
-                console.log(data);            
+                //console.log(data);            
                 
                
 
@@ -64,7 +64,7 @@ export class PublicProfileLinkComponent implements OnInit {
           this.router.navigate(['/not_found']);
           
       }      
-      //console.log(this.currentUser._id); 
+      ////console.log(this.currentUser._id); 
   }
     
   

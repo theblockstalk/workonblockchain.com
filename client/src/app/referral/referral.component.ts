@@ -58,36 +58,36 @@ export class ReferralComponent implements OnInit {
 					this.email_subject = data[0].first_name+this.email_subject;
 				},
                 error => {
-                    console.log('error');
+                    //console.log('error');
                 }
             );
 			this.ref_link = this.email_ref_link+this.currentUser.ref_link;
 			this.share_url = this.ref_link;
 			this.text = 'I am inviting you to workonblockchain.com! Sign up now and let companies apply to you. Receive 5  job offers in one week. Salaries from €35k - €100k';
 		}
-		console.log(this.show_refreal);
+		//console.log(this.show_refreal);
 	}
 	
 	send_email() {
 		this.log = 'Sending your Email';
-		console.log(this.share_url);
+		//console.log(this.share_url);
 		if(this.credentials.email && this.email_subject && this.mail_body){
 			this.authenticationService.send_refreal(this.credentials.email, this.email_subject, this.mail_body,this.share_url,this.first_name,this.last_name)
 				.subscribe(
 					data => {
-						console.log('data');
-						console.log(data);
+						//console.log('data');
+						//console.log(data);
 						this.log = data;
 					},
 					error => {
-						console.log('error');
-						console.log(error);
+						//console.log('error');
+						//console.log(error);
 						this.log = error;
 					}
 				);
 		}
 		else{
-			console.log('not good');
+			//console.log('not good');
 			this.log = 'Please fill all fields';
 		}
 	}

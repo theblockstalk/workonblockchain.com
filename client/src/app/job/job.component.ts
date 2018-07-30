@@ -41,7 +41,7 @@ export class JobComponent implements OnInit {
     term_link;
   ngOnInit() 
   {
-  //console.log(this.options.name);
+  ////console.log(this.options.name);
     this.base_currency = -1;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       
@@ -118,7 +118,7 @@ export class JobComponent implements OnInit {
                       
                       for(let option of this.dropdown_options)
                       {
-                       // console.log(option);
+                       // //console.log(option);
                         if(option.value == area)
                         {
                           option.checked=true;
@@ -279,10 +279,10 @@ export class JobComponent implements OnInit {
      if(e.target.checked)
      {
       this.selectedcountry.push(e.target.value);
-      //console.log("if");
+      ////console.log("if");
     }
     else{
-    //console.log("else");
+    ////console.log("else");
      let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value.maintenancetype);
 
      let index = this.selectedcountry.indexOf(updateItem);
@@ -290,7 +290,7 @@ export class JobComponent implements OnInit {
      this.selectedcountry.splice(index, 1);
     }
 
-    console.log(this.selectedcountry);
+    //console.log(this.selectedcountry);
 
   }
 
@@ -301,10 +301,10 @@ export class JobComponent implements OnInit {
      if(e.target.checked)
      {
       this.selectedValue.push(e.target.value);
-      //console.log("if");
+      ////console.log("if");
     }
     else{
-    //console.log("else");
+    ////console.log("else");
      let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
 
      let index = this.selectedValue.indexOf(updateItem);
@@ -321,10 +321,10 @@ export class JobComponent implements OnInit {
      if(e.target.checked)
      {
       this.jobselected.push(e.target.value);
-      //console.log("if");
+      ////console.log("if");
     }
     else{
-    //console.log("else");
+    ////console.log("else");
      let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
 
      let index = this.jobselected.indexOf(updateItem);
@@ -337,7 +337,7 @@ export class JobComponent implements OnInit {
 
   
    findIndexToUpdate(type) { 
-   //console.log("funct");
+   ////console.log("funct");
         return type == this;
     }
 
@@ -345,14 +345,14 @@ export class JobComponent implements OnInit {
     {
       this.experience_year=event.target.value;
       this.expYear.push(event.target.value);
-      //console.log(event.target.value);
+      ////console.log(event.target.value);
     }
 
      
 
       onSubmit(f: NgForm) 
       {
-        console.log(f.value);
+        //console.log(f.value);
       
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
    

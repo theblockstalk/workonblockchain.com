@@ -11,7 +11,7 @@ import { DataService } from "../data.service";
 //const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
 const URL = environment.backend_url;
-//console.log(URL);
+////console.log(URL);
 
 @Component({
   selector: 'app-edit-candidate-profile',
@@ -92,7 +92,7 @@ export class EditCandidateProfileComponent implements OnInit {
 
                     if(data.image != null )
                     {
-                      //console.log(data.image);
+                      ////console.log(data.image);
                      this.info.image_src =  data.image ;
                         let x = this.info.image_src.split("/");
      
@@ -147,7 +147,7 @@ export class EditCandidateProfileComponent implements OnInit {
                       
                       for(let option of this.dropdown_options)
                       {
-                       // console.log(option);
+                       // //console.log(option);
                         if(option.value == area)
                         {
                           option.checked=true;
@@ -204,7 +204,7 @@ export class EditCandidateProfileComponent implements OnInit {
                                    
                                 //this.commercial_expYear.push(option);
                                 this.expYear_db.push(key[i]);
-                                //console.log(this.expYear_db); 
+                                ////console.log(this.expYear_db); 
                                  
                             }
                        
@@ -342,7 +342,7 @@ export class EditCandidateProfileComponent implements OnInit {
                                    
                                 //this.expYear.push(option);
                                 this.lang_expYear_db.push(key[i]);
-                                console.log(this.lang_expYear_db); 
+                                //console.log(this.lang_expYear_db); 
                                  
                             }
                        
@@ -542,18 +542,18 @@ export class EditCandidateProfileComponent implements OnInit {
 
   onExpOptions(obj)
   {
-console.log(this.experimented_platform);
+//console.log(this.experimented_platform);
       let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
       let index = this.experimented_platform.indexOf(updateItem);
       if(index > -1)
       {
         this.experimented_platform.splice(index, 1);
-          console.log("if");
+          //console.log("if");
         
       }
       else
       {
-          console.log("else");
+          //console.log("else");
         obj.checked =true;
         this.experimented_platform.push(obj);
       }
@@ -564,7 +564,7 @@ console.log(this.experimented_platform);
       {
         this.experimented_platform.splice(index, 1);
           let updateItem2 = this.findObjectByKey(this.expYear, 'experimented_platform', obj.value);
-       //console.log(updateItem);
+       ////console.log(updateItem);
       let index2 = this.expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -593,7 +593,7 @@ console.log(this.experimented_platform);
       {
         this.commercially_worked.splice(index, 1);
           let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'platform_name', obj.value);
-        //console.log(updateItem);
+        ////console.log(updateItem);
         let index2 = this.commercial_expYear.indexOf(updateItem2);
 
         if(index2 > -1)
@@ -620,7 +620,7 @@ console.log(this.experimented_platform);
       {
         this.platforms_designed.splice(index, 1);
         let updateItem2 = this.findObjectByKey(this.platforms, 'platform_name', obj.value);
-       //console.log(updateItem);
+       ////console.log(updateItem);
       let index2 = this.platforms.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -642,7 +642,7 @@ console.log(this.experimented_platform);
    {      
 
       let updateItem = this.findObjectByKey(this.expYear, 'experimented_platform', value);
-       //console.log(updateItem);
+       ////console.log(updateItem);
       let index = this.expYear.indexOf(updateItem);
 
       if(index > -1)
@@ -652,16 +652,16 @@ console.log(this.experimented_platform);
         this.value=value;
         this.referringData = { experimented_platform:this.value, exp_year: e.target.value};  
         this.expYear.push(this.referringData); 
-        console.log(this.expYear); 
+        //console.log(this.expYear); 
         
       }
       else
       {   
-      //console.log("not exists");
+      ////console.log("not exists");
         this.value=value;
         this.referringData = { experimented_platform:this.value, exp_year: e.target.value};  
         this.expYear.push(this.referringData); 
-        console.log(this.expYear); 
+        //console.log(this.expYear); 
         
       }
        
@@ -677,7 +677,7 @@ console.log(this.experimented_platform);
       this.commercial_expYear.push(this.referringData); */
        
        let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
-       //console.log(updateItem);
+       ////console.log(updateItem);
       let index = this.commercial_expYear.indexOf(updateItem);
 
       if(index > -1)
@@ -687,16 +687,16 @@ console.log(this.experimented_platform);
         this.value=value;
         this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
         this.commercial_expYear.push(this.referringData); 
-        console.log(this.commercial_expYear); 
+        //console.log(this.commercial_expYear); 
         
       }
       else
       {   
-      //console.log("not exists");
+      ////console.log("not exists");
         this.value=value;
         this.referringData = { platform_name :this.value, exp_year: e.target.value};   
         this.commercial_expYear.push(this.referringData); 
-        console.log(this.commercial_expYear); 
+        //console.log(this.commercial_expYear); 
         
       }
        
@@ -710,11 +710,11 @@ console.log(this.experimented_platform);
      /* this.value=value;
       this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.platforms.push(this.platformreferringData); 
-      console.log(this.platforms);*/
+      //console.log(this.platforms);*/
        
        
        let updateItem = this.findObjectByKey(this.platforms, 'platform_name', value);
-       //console.log(updateItem);
+       ////console.log(updateItem);
       let index = this.platforms.indexOf(updateItem);
 
       if(index > -1)
@@ -724,16 +724,16 @@ console.log(this.experimented_platform);
         this.value=value;
         this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.platforms.push(this.platformreferringData);  
-        //console.log(this.expYear); 
+        ////console.log(this.expYear); 
         
       }
       else
       {   
-      //console.log("not exists");
+      ////console.log("not exists");
         this.value=value;
          this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.platforms.push(this.platformreferringData); 
-        //console.log(this.expYear); 
+        ////console.log(this.expYear); 
         
       }
        
@@ -741,11 +741,11 @@ console.log(this.experimented_platform);
    }
     
     findObjectByKey(array, key, value) {
-      // console.log(array.length);
+      // //console.log(array.length);
     for (var i = 0; i < array.length; i++) {
-       // console.log(array[i][key]);
+       // //console.log(array[i][key]);
         if (array[i][key] === value) {
-           // console.log( array[i]);
+           // //console.log( array[i]);
             return array[i];
         }
        
@@ -799,7 +799,7 @@ console.log(this.experimented_platform);
       {
         this.language.splice(index, 1);
         let updateItem2 = this.findObjectByKey(this.LangexpYear, 'platform_name', obj.value);
-          //console.log(updateItem);
+          ////console.log(updateItem);
         let index2 = this.LangexpYear.indexOf(updateItem2);
 
         if(index2 > -1)
@@ -814,7 +814,7 @@ console.log(this.experimented_platform);
         this.language.push(obj);
       }
 
-      console.log(this.language);
+      //console.log(this.language);
     
     }
 
@@ -875,7 +875,7 @@ console.log(this.experimented_platform);
 
     initExpRows() 
     {
-      //console.log(this.currentdate);
+      ////console.log(this.currentdate);
       return this._fb.group({
         companyname:[''],
         positionname:[''],
@@ -945,7 +945,7 @@ console.log(this.experimented_platform);
         
         
       let updateItem = this.findObjectByKey(this.LangexpYear, 'platform_name', value);
-       //console.log(updateItem);
+       ////console.log(updateItem);
       let index = this.LangexpYear.indexOf(updateItem);
 
       if(index > -1)
@@ -955,19 +955,19 @@ console.log(this.experimented_platform);
         this.value=value;
         this.referringData = { platform_name:this.value, exp_year: e.target.value};  
         this.LangexpYear.push(this.referringData); 
-        //console.log(this.LangexpYear); 
+        ////console.log(this.LangexpYear); 
         
       }
       else
       {   
-      //console.log("not exists");
+      ////console.log("not exists");
         this.value=value;
         this.referringData = { platform_name:this.value, exp_year: e.target.value};  
         this.LangexpYear.push(this.referringData); 
-        //console.log(this.LangexpYear); 
+        ////console.log(this.LangexpYear); 
         
       }
-                //console.log(this.LangexpYear); 
+                ////console.log(this.LangexpYear); 
 
    }
    onRoleYearOptions(e, value)
@@ -975,7 +975,7 @@ console.log(this.experimented_platform);
       this.value=value;
       this.referringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.expYearRole.push(this.referringData); 
-      //console.log(this.expYearRole); 
+      ////console.log(this.expYearRole); 
    }
 
    work_start_data(e)
@@ -994,10 +994,10 @@ console.log(this.experimented_platform);
      if(e.target.checked)
      {
       this.selectedValue.push(e.target.value);
-      //console.log("if");
+      ////console.log("if");
     }
     else{
-    //console.log("else");
+    ////console.log("else");
      let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
 
      let index = this.selectedValue.indexOf(updateItem);
@@ -1014,10 +1014,10 @@ console.log(this.experimented_platform);
      if(e.target.checked)
      {
       this.selectedcountry.push(e.target.value);
-      //console.log("if");
+      ////console.log("if");
     }
     else{
-    //console.log("else");
+    ////console.log("else");
      let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value.maintenancetype);
 
      let index = this.selectedcountry.indexOf(updateItem);
@@ -1025,13 +1025,13 @@ console.log(this.experimented_platform);
      this.selectedcountry.splice(index, 1);
     }
 
-    console.log(this.selectedcountry);
+    //console.log(this.selectedcountry);
 
   }
     ////////////////////////save edit profile data//////////////////////////////////
     candidate_profile(profileForm: NgForm)
     {
-        console.log(profileForm.value);
+        //console.log(profileForm.value);
          this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         
    
@@ -1050,7 +1050,7 @@ console.log(this.experimented_platform);
                         this.http.post(URL+'users/image/'+this.currentUser._creator, formData).map((res) => res).subscribe(                
                         (success) => 
                         {
-                             console.log(success);
+                             //console.log(success);
                              window.location.href = '/candidate_profile';
 
                               //this.router.navigate(['/candidate_profile']); 
@@ -1080,7 +1080,7 @@ console.log(this.experimented_platform);
      onGenderSelected(event)
   {
     this.info.gender= event.target.value;
-    console.log(this.info.gender);
+    //console.log(this.info.gender);
    
   }
 

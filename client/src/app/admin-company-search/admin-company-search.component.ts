@@ -90,7 +90,7 @@ export class AdminCompanySearchComponent implements OnInit {
                    else
                    {
                         
-                        //console.log(this.info);
+                        ////console.log(this.info);
                         for(let res of data)
                         {
                             if(res.first_name && res.last_name && res.job_title && res.company_name && res.company_website
@@ -102,7 +102,7 @@ export class AdminCompanySearchComponent implements OnInit {
                                 
                              }
                             
-                            //console.log(this.verify_candidate.length);
+                            ////console.log(this.verify_candidate.length);
                         }
                         
                          if(this.length> 0 )
@@ -110,8 +110,8 @@ export class AdminCompanySearchComponent implements OnInit {
                              this.page =this.length;
                              this.log='';
                             
-                            // console.log(this.page);
-                            // console.log(this.length);
+                            // //console.log(this.page);
+                            // //console.log(this.length);
                          }
                          else
                          {
@@ -134,7 +134,7 @@ export class AdminCompanySearchComponent implements OnInit {
     
     approveClick(event , approveForm: NgForm)
     {
-        //console.log(approveForm.value.id);
+        ////console.log(approveForm.value.id);
          if(event.srcElement.innerHTML ==='Active' )
          {
              this.is_approve = 1;
@@ -148,7 +148,7 @@ export class AdminCompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    //console.log(data.is_approved);
+                    ////console.log(data.is_approved);
                      
                     if(data.is_approved === 1 )
                     {
@@ -184,12 +184,12 @@ export class AdminCompanySearchComponent implements OnInit {
     {
         this.length=0;
         this.info=[];
-        //console.log(f.value.word);
+        ////console.log(f.value.word);
          this.authenticationService.admin_search_by_name(f.value.word)
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                    ////console.log(data);
                     
                      if(data.error)
                     {
@@ -203,9 +203,9 @@ export class AdminCompanySearchComponent implements OnInit {
                     {
                          this.info=[];
                          this.length='';
-                        // console.log(this.log);
+                        // //console.log(this.log);
                        this.information = this.filter_array(data);
-                       //console.log(this.inform.first_name);
+                       ////console.log(this.inform.first_name);
                         
                         for(let res of this.information)
                         {    
@@ -214,7 +214,7 @@ export class AdminCompanySearchComponent implements OnInit {
                             && res.company_founded && res.company_funded && res.no_of_employees)
                             {                                               
                                  this.length++; 
-                                // console.log(res);
+                                // //console.log(res);
                                 this.info.push(res);
                                
                             }                          
@@ -248,15 +248,15 @@ export class AdminCompanySearchComponent implements OnInit {
     messagetag_changed(data)
     {
           this.msgtags = data.value;
-           // console.log(data.value);
+           // //console.log(data.value);
           this.search(this.msgtags);
-           console.log(this.msgtags);
+           //console.log(this.msgtags);
      }
     
     search_approved(event)
     {
          this.approve =event;
-        console.log(this.approve);
+        //console.log(this.approve);
         this.search(this.approve);
         
     }
@@ -278,12 +278,12 @@ export class AdminCompanySearchComponent implements OnInit {
         this.length=0;
         this.page =0;
         this.info=[];
-        console.log(this.approve);
-        console.log(this.msgtags);
+        //console.log(this.approve);
+        //console.log(this.msgtags);
         
         if(this.approve === -1 && !this.msgtags )
         {
-            console.log("iffff both are empty");
+            //console.log("iffff both are empty");
             this.getAllCompanies();
             
         }
@@ -297,7 +297,7 @@ export class AdminCompanySearchComponent implements OnInit {
 
                     if(data.error)
                     {
-                       // console.log(this.info);
+                       // //console.log(this.info);
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -307,10 +307,10 @@ export class AdminCompanySearchComponent implements OnInit {
                     }
                     else
                     {
-                         //console.log(this.log);
+                         ////console.log(this.log);
                         this.information = this.filter_array(data);
                        
-                        //console.log(this.inform.first_name);
+                        ////console.log(this.inform.first_name);
                         
                         for(let res of this.information)
                         {    
@@ -319,7 +319,7 @@ export class AdminCompanySearchComponent implements OnInit {
                             && res.company_founded && res.company_funded && res.no_of_employees)
                             {                                               
                                  this.length++; 
-                                // console.log(res);
+                                // //console.log(res);
                                 this.info.push(res);
                                
                             }                          
@@ -358,13 +358,13 @@ export class AdminCompanySearchComponent implements OnInit {
         this.select_value='';
         this.approve=-1;
         this.info=[];
-        console.log("reset");
+        //console.log("reset");
         this.getAllCompanies();
        /* this.msgtags='';
         
        
         
-        console.log(this.select_value);
+        //console.log(this.select_value);
          
         //this.positionchanged(this.select_value);
         */

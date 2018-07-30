@@ -40,13 +40,13 @@ export class ChangePasswordComponent implements OnInit {
     
     change_password(formdata: NgForm)
     {
-        console.log(formdata.value);
-        console.log(this.credentials.password);
-        console.log(this.credentials.confirm_password);
+        //console.log(formdata.value);
+        //console.log(this.credentials.password);
+        //console.log(this.credentials.confirm_password);
         
         if(this.credentials.password != this.credentials.confirm_password)
         {
-            console.log("if");
+            //console.log("if");
             this.confirm_password ="Password doesn't matched";
             
        }
@@ -54,7 +54,7 @@ export class ChangePasswordComponent implements OnInit {
        else
        {
             this.confirm_password='';
-            console.log("else");
+            //console.log("else");
             
             this.authenticationService.change_password(this.id ,  this.credentials)
             .subscribe(
@@ -68,7 +68,7 @@ export class ChangePasswordComponent implements OnInit {
                         {
                          this.log='';
                          this.dataservice.changeMessage("Password Changed successfully");
-                            console.log(data);
+                            //console.log(data);
                             localStorage.removeItem('currentUser');
                             localStorage.removeItem('googleUser');
                             localStorage.removeItem('linkedinUser');

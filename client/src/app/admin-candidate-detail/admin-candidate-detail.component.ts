@@ -28,7 +28,7 @@ export class AdminCandidateDetailComponent implements OnInit {
  
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
-       // console.log(this.user_id); 
+       // //console.log(this.user_id); 
     });
             
   
@@ -38,12 +38,12 @@ export class AdminCandidateDetailComponent implements OnInit {
     approve;verify;is_verify;information;
   ngOnInit() 
   {
-      console.log(this.user_id);
+      //console.log(this.user_id);
 
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
-      //console.log('ftn')
-      //console.log(this.user_id)
+      ////console.log('ftn')
+      ////console.log(this.user_id)
       this.credentials.user_id = this.user_id;
 
       
@@ -60,20 +60,20 @@ export class AdminCandidateDetailComponent implements OnInit {
                 if(data[0].image != null )
                     {
                        /* let x = data[0].image.split("://");
-                        console.log(x[0]);
+                        //console.log(x[0]);
                         if(x[0] == 'http' || x[0] == 'https')
                         {
                             this.imgPath = data[0].image;
                         }
                         else
                         {
-                      //console.log(data.image);
+                      ////console.log(data.image);
                        */
                         this.imgPath =  data[0].image;
-                        console.log(this.imgPath);
+                        //console.log(this.imgPath);
                         
                     }
-                console.log(this.verify);
+                //console.log(this.verify);
                 if(this.approve === 1)
                 {
                     this.is_approved = "Aprroved";
@@ -109,13 +109,13 @@ export class AdminCandidateDetailComponent implements OnInit {
           this.router.navigate(['/not_found']);
           
       }      
-      //console.log(this.currentUser._id); 
+      ////console.log(this.currentUser._id); 
   }
     
   is_approve;is_approved;
     approveClick(event , approveForm: NgForm)
     {
-        //console.log(approveForm.value.id);
+        ////console.log(approveForm.value.id);
          if(event.srcElement.innerHTML ==='Active' )
          {
              this.is_approve = 1;
@@ -129,7 +129,7 @@ export class AdminCandidateDetailComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    //console.log(data.is_approved);
+                    ////console.log(data.is_approved);
                      
                     if(data.is_approved === 1 )
                     {

@@ -28,7 +28,7 @@ export class AdminAccountSettingsComponent implements OnInit {
   {
        this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(this.currentUser.type);
+      //console.log(this.currentUser.type);
        if(this.currentUser && this.currentUser.type=='candidate')
        {
          
@@ -75,7 +75,7 @@ export class AdminAccountSettingsComponent implements OnInit {
     
   account_setting()
   {
-    console.log(this.info);
+    //console.log(this.info);
       
       if(this.info.disable_account==true)
       {
@@ -90,7 +90,7 @@ export class AdminAccountSettingsComponent implements OnInit {
       this.message='';
       if(this.currentUser && this.currentUser.type=='candidate')
       {
-    //console.log(this.marketing);
+    ////console.log(this.marketing);
      this.authenticationService.terms(this.currentUser._creator,this.info)
         .subscribe(
           data => 

@@ -17,12 +17,12 @@ export class ResetPasswordComponent implements OnInit {
         private router: Router,
         private authenticationService: UserService,private dataservice: DataService) {
         	/*this.hash = route.snapshot.params['hash'];
-        	console.log(this.hash);*/
+        	//console.log(this.hash);*/
         
              this.route.queryParams.subscribe(params => 
              {
                  this.hash = params['hash'];
-                 console.log(this.hash); // Print the parameter to the console. 
+                 //console.log(this.hash); // Print the parameter to the console. 
             });
 
          }
@@ -42,7 +42,7 @@ export class ResetPasswordComponent implements OnInit {
                 if(data.error)
                 {
                 	this.log = data.error;
-                    console.log("error");
+                    //console.log("error");
                 }
                 else
                     {

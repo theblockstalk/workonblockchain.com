@@ -30,9 +30,9 @@ export class HeaderComponent implements OnInit {
       router.events.subscribe((val) => {
       if(location.path() != ''){
         this.route = location.path();
-          //console.log(this.route);
+          ////console.log(this.route);
           let loc= this.route;
-             // console.log(this.loc);
+             // //console.log(this.loc);
          let x = loc.split("-");
           this.admin_route = x[0];
 
@@ -45,10 +45,10 @@ export class HeaderComponent implements OnInit {
      //this.date = this.datePipe.transform(this.today + 30*60000, 'h:MM:ss');
           //this.date = new Date(new Date().getTime() +  1800 *1000);
           
-   //console.log(this.admin_route);
+   ////console.log(this.admin_route);
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')); 
-     // console.log(this.currentUser);
+     // //console.log(this.currentUser);
      
       if(this.currentUser )
       {
@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
                     if(data)
                     {
                         this.is_verify = data._creator.is_verify;
@@ -80,12 +80,12 @@ export class HeaderComponent implements OnInit {
          }
          else if(this.user_type === 'company')
          {
-              console.log("else if");
+              //console.log("else if");
               this.authenticationService.getCurrentCompany(this.currentUser._creator)
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
                     if(data)
                     {
                         this.is_verify = data[0]._creator.is_verify;
@@ -130,7 +130,7 @@ export class HeaderComponent implements OnInit {
            this.authenticationService.verify_client(this.currentUser.email)
             .subscribe(
                 data => {      
-                    console.log(data);
+                    //console.log(data);
                     if(data['msg'])
                     {
                         this.dataservice.changeMessage('Please check your email to verify your account');

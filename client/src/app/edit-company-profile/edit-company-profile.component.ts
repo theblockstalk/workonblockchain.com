@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 //const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
 const URL = environment.backend_url;
-//console.log(URL);
+////console.log(URL);
 
 
 @Component({
@@ -49,7 +49,7 @@ export class EditCompanyProfileComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                  console.log(data);
+                  //console.log(data);
                   if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
                   {
                      this.company_founded=data.company_founded;
@@ -102,7 +102,7 @@ export class EditCompanyProfileComponent implements OnInit {
     
   company_profile(profileForm: NgForm)
   {
-      console.log(profileForm.value);
+      //console.log(profileForm.value);
        this.authenticationService.edit_company_profile(this.currentUser._creator,profileForm.value)
             .subscribe(
                 data => {
@@ -118,7 +118,7 @@ export class EditCompanyProfileComponent implements OnInit {
                         this.http.post(URL+'users/employer_image/'+this.currentUser._creator, formData).map((res) => res).subscribe(                
                         (success) => 
                         {
-                             console.log(success);
+                             //console.log(success);
                              window.location.href = '/company_profile';
 
                               //this.router.navigate(['/candidate_profile']); 

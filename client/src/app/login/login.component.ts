@@ -33,19 +33,19 @@ export class LoginComponent implements OnInit, OnDestroy {
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService) {
 
         //this.code = route.snapshot.params['code'];
-       // console.log(this.code);
-        // console.log(this.code);
+       // //console.log(this.code);
+        // //console.log(this.code);
         /*if(this.code){
-            console.log('in if');
+            //console.log('in if');
             this.authenticationService.getByRefrenceCode(this.code)
                 .subscribe(
                     data => {
-                        console.log(data);
+                        //console.log(data);
                         this.ref_msg = data.email+' thinks you should join workonblockchain.com';
                     },
                     error => {
-                        console.log('error');
-                        console.log(error);
+                        //console.log('error');
+                        //console.log(error);
                         this.log = error;
                     }
                 );
@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
             .subscribe(
                 user => {
-                console.log(user);
+                //console.log(user);
                
                 if(user.type == 'company')
                 {
@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                
                 },
                 error => {
-                console.log(error);
+                //console.log(error);
                     this.log = 'Something getting wrong';
                    
                 });
@@ -112,7 +112,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
    ngOnDestroy() {
-   //console.log("ngOndesctroy");
+   ////console.log("ngOndesctroy");
 
     }
 
@@ -125,19 +125,19 @@ export class LoginComponent implements OnInit, OnDestroy {
         {
        
             this.user = user; 
-            //console.log(user);
+            ////console.log(user);
             this.data = JSON.stringify(this.user);      
             this.result = JSON.parse(this.data);
             localStorage.setItem('googleUser', JSON.stringify(this.result));
             //this.router.navigate(['/candidate_profile']);
       
         });
-        console.log(this.result);
+        //console.log(this.result);
         if(this.result!='')
         {
-             console.log(this.result);
+             //console.log(this.result);
              this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-            console.log(this.googleUser);
+            //console.log(this.googleUser);
              this.credentials.email= this.googleUser.email;
              this.credentials.password= '';
              this.credentials.type="candidate";
@@ -147,19 +147,19 @@ export class LoginComponent implements OnInit, OnDestroy {
              this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
             .subscribe(
                 user => {
-                console.log(user);
+                //console.log(user);
                
                 if(user.error)
                 {
                     this.log = user.error;
-                  /*console.log("ifffffffffffff");
+                  /*//console.log("ifffffffffffff");
                  
                   this.log = 'Credentials not match';
                   this.authenticationService.create(this.credentials)
                   .subscribe(
                   data => 
                   {
-                    console.log(data);
+                    //console.log(data);
                     this.credentials.email= '';
                     if(data.error)
                     {
@@ -185,14 +185,14 @@ export class LoginComponent implements OnInit, OnDestroy {
                 {
                    //this.router.navigate(['/candidate_profile']);
                     //
-                     console.log("elseeeeeeeeeeeeee");
+                     //console.log("elseeeeeeeeeeeeee");
                     //this.router.navigate(['/candidate_profile']);
                     window.location.href = '/candidate_profile';
                   //this.router.navigate(['/login']);
                 }
                 },
                 error => {
-                console.log(error);
+                //console.log(error);
                   this.log = error;
                    
                 });
@@ -214,7 +214,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             const url = '/people/~:(id,picture-url,location,industry,positions,specialties,summary,email-address)?format=json';
             this._linkedInService.raw(url).asObservable().subscribe({
                 next: (data) => {
-                    console.log(data);
+                    //console.log(data);
                      localStorage.setItem('linkedinUser', JSON.stringify(data));
                     if(data)
                     {    
@@ -228,7 +228,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
                         .subscribe(
                         user => {
-                          console.log(user);
+                          //console.log(user);
                
                           if(user)
                           {
@@ -243,7 +243,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                             this.authenticationService.create(this.credentials)
                         .subscribe(
                             data => {
-                                console.log(data);
+                                //console.log(data);
                                 this.credentials.email= '';
                             if(data.error)
                             {
@@ -265,7 +265,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         }
                 },
                 error => {
-                console.log(error);
+                //console.log(error);
                   this.log = 'Something getting wrong';
                    
                 });
@@ -276,10 +276,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: (err) => {
-                    console.log(err);
+                    //console.log(err);
                 },
                 complete: () => {
-                    console.log('RAW API call completed');
+                    //console.log('RAW API call completed');
                 }
             });
         },

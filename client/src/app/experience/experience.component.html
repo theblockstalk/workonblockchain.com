@@ -234,7 +234,7 @@
 
           <div class = "form-group text-right">
               <a href="/resume" class = "btn btn-prev">Prev Step</a>
-              <button type="submit" class = "btn btn-self btn-pdg" [disabled]=" intro.value=='' || salary_field.value =='' || choose_currency.value=='' " >Done</button>
+              <button type="submit" class = "btn btn-self btn-pdg" [disabled]=" intro.value=='' || salary_field.value =='' || language.length==0 || current_currency.value== -1 " >Done</button>
           </div>
 			 <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
         </form>

@@ -26,10 +26,10 @@ export class TermsAndConditionComponent implements OnInit {
                 data => {
                    if(data)
                    {
-                       console.log(data);
+                       //console.log(data);
                       this.page_title= data[0].page_title;
                        this.editor_content = data[0].page_content;
-                       console.log(this.editor_content);
+                       //console.log(this.editor_content);
                        
                    }
                  });
