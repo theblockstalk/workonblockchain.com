@@ -6,7 +6,7 @@ router.get('/' , healthCheck);
 module.exports = router;
 
 function healthCheck(req, res) {
-    res.json({
+   res.json({
         success: true,
         message: "this is a health check for the API"
     });
