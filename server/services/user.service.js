@@ -2223,9 +2223,27 @@ function get_unread_msgs(){
 		}
 		else{
 			for(var i=0;i<result.length;i++){
-				users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1}, function (err, newResult){
+				console.log(result[i]);
+				users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1,"type":1}, function (err, newResult){
 					if(newResult){
-						chatReminderEmail.sendEmail(newResult.email);
+						if(newResult.type == 'candidate'){
+							CandidateProfile.find({ _creator: newResult._id},{"first_name":1}, function (err, query_data){
+								if (err) 
+									deferred.reject(err.name + ': ' + err.message);
+								if(query_data){
+									chatReminderEmail.sendEmail(newResult.email,query_data[0].first_name);
+								}
+							});
+						}
+						else{
+							EmployerProfile.find({ _creator: newResult._id},{"first_name":1}, function (err, query_data){
+								if (err) 
+									deferred.reject(err.name + ': ' + err.message);
+								if(query_data){
+									chatReminderEmail.sendEmail(newResult.email,query_data[0].first_name);
+								}
+							});
+						}
 					}
 				});
 			}
