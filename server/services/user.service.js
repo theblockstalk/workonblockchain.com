@@ -18,6 +18,7 @@ const forgotPasswordEmail = require('./email/emails/forgotPassword');
 const verifyEmailEmail = require('./email/emails/verifyEmail');
 const referUserEmail = require('./email/emails/referUser');
 const chatReminderEmail = require('./email/emails/chatReminder');
+const referedUserEmail = require('./email/emails/referredFriend');
 
 const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
@@ -32,6 +33,7 @@ service.reset_password=reset_password;
 service.emailVerify=emailVerify;
 service.verify_client = verify_client;
 service.change_password = change_password;
+service.referred_email = referred_email;
 ///////////candidate functions////////////////
 service.getAll = getAll;
 service.getById = getById;
@@ -213,8 +215,15 @@ function reset_password(hash,data)
     			//console.log(result);
     			if (err) 
     				deferred.reject(err.name + ': ' + err.message);
-    			else
+    			if(result)
+    			{
     				updateData(result._id);
+    			}
+    			
+    			else
+    		    {
+    				deferred.reject("Result not found");
+    		    }
                
     	    });
  
@@ -316,9 +325,12 @@ function emailVerify(token)
         {          
             if (err) 
                 deferred.reject(err.name + ': ' + err.message);
-
+            if(result)
+            {
+            	updateData(result._id); 
+            }
             else   
-                updateData(result._id);  
+            	deferred.reject("Result not found");
         });
  
         function updateData(_id) 
@@ -366,7 +378,7 @@ function verify_send_email(info) {
 		            		 
 		            		 if (err) 
 		 		                deferred.reject(err.name + ': ' + err.message);
-		            		 if(query_data!='')
+		            		 if(query_data)
 		            	     {
 		            			 
 		            			//
@@ -387,7 +399,7 @@ function verify_send_email(info) {
 		            		 {
 		            			 name = info.email;
 		            			 verifyEmailEmail.sendEmail(info, name);
-		            			 }
+		            		 }
 		            		
 		            	});
 		            	
@@ -400,6 +412,16 @@ function verify_send_email(info) {
 		        });
 	
     
+}
+
+
+function referred_email(data)
+{
+	 var deferred = Q.defer();
+	//console.log(data);
+	referedUserEmail.sendEmail(data);
+	 return deferred.promise;
+	//
 }
 
 

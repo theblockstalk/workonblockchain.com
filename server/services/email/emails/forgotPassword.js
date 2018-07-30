@@ -25,12 +25,10 @@ module.exports.sendEmail = function sendEmail(data,hash,name) {
     const mandrillOptions = {
         templateName: "wob-forgot-password",
         message: {
-            global_merge_vars: [
-                {
-                    "name": "RESET_PASSWORD_URL",
-                    "content": resetPassswordUrl
-                }
-            ],
+        	 global_merge_vars: [
+ 				{FNAME : name},
+ 				{RESET_PASSWORD_URL  : resetPassswordUrl}
+ 			],
             subject: subject,
             to: sendToArray
         }

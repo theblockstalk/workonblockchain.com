@@ -29,6 +29,8 @@ export class PrivacyPolicyComponent implements OnInit {
                        //console.log(this.editor_content);
                        
                    }
+                    
+                   
                  });
       
   }

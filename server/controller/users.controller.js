@@ -10,6 +10,7 @@ router.put('/forgot_password/:email' , forgot_password);
 router.put('/change_password/:id' , change_password);
 router.put('/reset_password/:hash' , reset_password);
 router.put('/verify_client/:email' , verify_client);
+router.post('/refered_user_email' , referred_email)
 
 ////////candidate routes//////////
 router.post('/register', register);
@@ -107,7 +108,7 @@ function emailVerify(req,res)
 
 }
 
-///////////forgot_password////////////////////////////
+///////////verify////////////////////////////
 function verify_client(req,res)
 {
     //console.log(req.params.email);
@@ -128,6 +129,28 @@ function verify_client(req,res)
     });
 
 }
+
+function referred_email(req,res)
+{
+	 //console.log(req.params.email);
+    userService.referred_email(req.body).then(function (err, data) 
+    {
+        if (data) 
+        {
+            res.json(data);
+        } 
+        else 
+        {  
+           res.send(err);
+        }
+    })
+    .catch(function (err) 
+    {
+        res.json({error: err});
+    });
+
+}
+
 
 /////////////change password///////////////////////
 

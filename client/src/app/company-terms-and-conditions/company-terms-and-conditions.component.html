@@ -1,16 +1,27 @@
 <br/><br/>
-<section class = "terms">
+
+<section class = "terms" *ngIf="company_editor_content">
   <div class="container t-c_container">
-	<div class="row">
-			<div class = "A_heading">
+	<div class="row" >
+			<div class = "A_heading" >
 				<h1>{{company_page_title}}</h1>
 			</div>
 			
 		<div class="col-md-12 terms-col">
-			<div [innerHTML]="company_editor_content | safeHtml " *ngIf="company_editor_content"></div>
+			<div [innerHTML]="company_editor_content | safeHtml " *ngIf="editor_content"></div>
 			
 		</div>
 	</div>
+	
   </div>	
   <br/><br/>
+</section>
+
+<section class = "terms" *ngIf="!company_editor_content" style="padding:150px 10px;">
+ <div class="container t-c_container">
+ <div  row>
+	 <p> We will upload the contentt soon </p>
+	</div>
+ </div>
+
 </section>

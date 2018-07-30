@@ -90,14 +90,14 @@ export class UserService {
             .map(user => {
                 if (user && user.token) 
                 {
-                    console.log(user);
+                    //console.log(user);
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     return user;
                 }
                 else
                 {   
-                console.log(user);
+                //console.log(user);
                     //console.log(user.error);
                     return user;
 
@@ -115,7 +115,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     //localStorage.setItem('currentUser', JSON.stringify(user));
                     return data;
@@ -139,7 +139,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     //localStorage.setItem('currentUser', JSON.stringify(user));
                     return data;
@@ -163,7 +163,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     //localStorage.setItem('currentUser', JSON.stringify(user));
                     return data;
@@ -187,7 +187,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 else
@@ -209,7 +209,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 else
@@ -231,7 +231,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 else
@@ -253,7 +253,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 else
@@ -302,7 +302,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                    //console.log(data);
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     //localStorage.setItem('currentUser', JSON.stringify(user));
                     return data;
@@ -325,7 +325,7 @@ export class UserService {
             return data;
         });*/
         //console.log("dhsdg");
-        console.log("data");
+        //console.log("data");
         return this.http.put(URL+'users/emailVerify/'+ email_hash , '').map(data => {  
         
            // console.log("data");       
@@ -353,12 +353,12 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 else
                 {
-                    console.log(data);
+                    //console.log(data);
                     return data.msg;
 
                 }
@@ -376,12 +376,12 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 else
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data.msg;
 
                 }
@@ -446,7 +446,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 
@@ -461,7 +461,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 
@@ -556,7 +556,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 
@@ -606,7 +606,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                    //console.log(data);
                     return data;
                 }
                 
@@ -622,7 +622,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 
@@ -636,7 +636,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 
@@ -670,7 +670,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 
@@ -712,7 +712,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    console.log(data);
+                   // console.log(data);
                     return data;
                 }
                 
@@ -755,4 +755,10 @@ export class UserService {
 			}
 		});
 	}
+    
+    email_referred_user(data: any){
+        return this.http.post<any>(URL+'users/refered_user_email', {info : data}) .map(ref_code => {
+            return ref_code
+        });
+    }
 }

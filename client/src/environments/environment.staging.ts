@@ -5,4 +5,4 @@ export const environment = {
   google_id: '699068166900-h9dp76b47mh4biq33e8c31ju8tvfgvqj.apps.googleusercontent.com',
   linkedin_id : '',
 };
-console.log(environment);
+//console.log(environment);

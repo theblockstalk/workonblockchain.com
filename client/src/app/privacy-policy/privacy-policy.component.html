@@ -1,8 +1,8 @@
 <br/><br/>
-<section class = "terms">
+<section class = "terms" *ngIf="editor_content">
   <div class="container t-c_container">
-	<div class="row">
-			<div class = "A_heading">
+	<div class="row" >
+			<div class = "A_heading" >
 				<h1>{{page_title}}</h1>
 			</div>
 			
@@ -11,6 +11,16 @@
 			
 		</div>
 	</div>
+	
   </div>	
   <br/><br/>
+</section>
+
+<section class = "terms" *ngIf="!editor_content" style="padding:150px 10px;">
+ <div class="container t-c_container">
+ <div  row>
+	 <p> We will upload the content soon </p>
+	</div>
+ </div>
+
 </section>

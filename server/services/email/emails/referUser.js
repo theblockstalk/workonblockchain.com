@@ -9,7 +9,7 @@ module.exports.sendEmail = function sendEmail(data) {
 
     const nodemonOptions = {
         from: 'workonblockchain@mwancloud.com', // sender address
-        to : sendTo.email,
+        to : 'sadiaabbas326@gmail.com',//sendTo.email,
         subject: subject,
         text : data.body,
         html : data.body

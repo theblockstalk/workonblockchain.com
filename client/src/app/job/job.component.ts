@@ -57,6 +57,7 @@ export class JobComponent implements OnInit {
             .subscribe(
                 data => {
 
+                   
                 if(data.experience_roles!="")
                   {
                     this.exp_class = "btn";

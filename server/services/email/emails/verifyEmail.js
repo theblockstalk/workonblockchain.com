@@ -22,16 +22,10 @@ module.exports.sendEmail = function sendEmail(data,first_name) {
     const mandrillOptions = {
         templateName: "wob-verify-email",
         message: {
-            global_merge_vars: [
-                {
-                    "name": "EMAIL",
-                    "content": sendTo
-                },
-                {
-                    "name": "VERIFY_EMAIL_URL",
-                    "content": verifyEmailUrl
-                }
-            ],
+        	 global_merge_vars: [
+  				{FNAME : first_name},
+  				{VERIFY_EMAIL_URL   : verifyEmailUrl}
+  			],
             subject: subject,
             to: sendToArray
         }

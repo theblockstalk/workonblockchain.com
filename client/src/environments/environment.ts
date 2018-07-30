@@ -11,4 +11,4 @@ export const environment = {
   linkedin_id: '78lfupn2m88e4u'
 };
 
-console.log(environment);
+//console.log(environment);
