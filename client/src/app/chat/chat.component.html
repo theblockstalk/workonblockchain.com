@@ -482,22 +482,26 @@
         <h4 class="modal-title text-center">Job Description</h4>
       </div>
       <div class="modal-body">
-        <div class = "dec_model">
-			<p>
-				<b>Job Title:</b><br>
-				<span>{{new_msgss[0].job_title}}</span>
-			</p>
-			<p>
-				<b>Job Type:</b><br>
-				<span>{{new_msgss[0].job_type}}</span>
-			</p>
-			<div>
-				<b>Job Description:</b><br>
-				<p class="job_decs">
-					{{new_msgss[0].message}}
+		<ng-container *ngIf="new_msgss;else no_job_desc_popup">
+			<div class = "dec_model">
+				<p>
+					<b>Job Title:</b><br>
+					<span>{{new_msgss[0].job_title}}</span>
 				</p>
+				<p>
+					<b>Job Type:</b><br>
+					<span>{{new_msgss[0].job_type}}</span>
+				</p>
+				<div>
+					<b>Job Description:</b><br>
+					<p class="job_decs">
+						{{new_msgss[0].message}}
+					</p>
+				</div>
 			</div>
-		</div>
+		</ng-container>
+		<ng-template #no_job_desc_popup>
+		</ng-template>
 		<div class="modal-footer">
 			<button type="button" data-dismiss="modal" class="btn btn-primary model-btn submit">Close</button>
 		</div>
