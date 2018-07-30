@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const healthCheck = require('./controller/healthCheck.controller');
+const healthCheck = require('./controller/api/healthCheck.controller');
 const authenticate = require('./controller/api/users/authenticate.controller');
 const users = require('./controller/users.controller');
 

@@ -11,43 +11,44 @@ const sanitizer = require('./controller/middleware/sanitizer');
 const errorHandler = require('./controller/middleware/errorHandler');
 const routes = require('./routes');
 
-logger.debug('settings', settings);
+try {
+    logger.debug('settings', settings);
 
-rootpath();
+    rootpath();
 
-let app = express();
+    let app = express();
 
-app.use(cors());
+    app.use(cors());
 
-app.use(helmet());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+    app.use(helmet());
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
 
-app.use(sanitizer.middleware);
+    app.use(sanitizer.middleware);
 
-app.use(routes);
-app.use('/users', require('./controller/users.controller'));
+    app.use(routes);
+    app.use('/users', require('./controller/users.controller'));
 
-app.use(errorHandler);
+    app.use(errorHandler);
 
-mongoose.connect(settings.MONGO_CONNECTION_STRING);
+    mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
-mongoose.connection.on('connected',() =>
-{
-    logger.info('Connected to mongodb database');
-});
+    mongoose.connection.on('connected',() => {
+        logger.info('Connected to mongodb database');
+    });
 
-mongoose.connection.on('error', (err) =>
-{
-    if (err)
-    {
-        logger.error('Error in database connection'+ err);
-        process.exit(1);
-    }
-});
+    mongoose.connection.on('error', (error) => {
+        if (error) {
+            logger.error(error.message, {stack: err.stack});
+            process.exit(1);
+        }
+    });
 
-const port = settings.SERVER.PORT;
+    const port = settings.SERVER.PORT;
 
-app.listen(port, function () {
-    logger.info('Server listening on port ' + port);
-});
+    app.listen(port, function () {
+        logger.info('Server listening on port ' + port);
+    });
+} catch(error) {
+    logger.error(error.message, {stack: error.stack});
+}
