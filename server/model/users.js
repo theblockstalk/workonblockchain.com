@@ -14,28 +14,33 @@ const UserSchema = mongoose.Schema({
 	type:
 	{
 		type:String,
+		enum: ['candidate', 'company'],
 		required:true
 	},
 
 	is_verify:
 	{
-		type:Number,
+		type:Number, // 0 = false, 1 = true
 		default:0
 	},
 	social_type:
 	{
-		type:String
+		type:String,
+		enum: ['GOOGLE', 'LINKEDIN']
 	},
 	is_approved:
 	{	
-		type:Number,
+		type:Number, // 0 = false, 1 = true
 		required:true,
 		default:0
 	},
-	email_hash:
+	email_hash: // What is this?
+	// In staging database this = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJoYXNoIjoiZjQwZTY3N2ZlOGVlMzM2M2Y4NGI1MDczZDZmNDdmMDYiLCJlbWFpbCI6InNhZGlhLmFiYmFzQG13YW5tb2JpbGUuY29tIiwiZXhwaXJ5IjoiMjAxOC0wNy0yN1QxNzo0MToyMS42NTdaIn0.jBchvNvFMFiDW97bP8D5sV5QtLN0QU7Nf0zbYNsLJGI" for all users
 	{	
 		type:String,
 	},
+	// Need to store salt for each user
+	// passwordHash = hash(passwordPlainText + salt);
 	password_key:
 	{
 		type:String,
@@ -48,28 +53,28 @@ const UserSchema = mongoose.Schema({
 	{
 		type:String,
 	},
-	social_type:
-	{
-		type:String
-	},
-	is_approved:
-	{	
-		type:Number,
-		required:true,
-		default:0
-	},
-	email_hash:
-	{	
-		type:String,
-
-	},
-	password_key:
-	{
-		type:String,
-	},
+	// social_type: // This is duplicated
+	// {
+	// 	type:String
+	// },
+	// is_approved:
+	// {
+	// 	type:Number,
+	// 	required:true,
+	// 	default:0
+	// },
+	// email_hash:
+	// {
+	// 	type:String,
+    //
+	// },
+	// password_key:
+	// {
+	// 	type:String,
+	// },
 	is_admin:
 	{
-		type:Number,
+		type:Number, // 0 = false, 1 = true
 		required:true,
 		default:0
 	},	
@@ -80,8 +85,8 @@ const UserSchema = mongoose.Schema({
 	},
 	created_date:
 	{
-		type:String,
-	}	
+		type: Date
+	}
 
 });
 const User = module.exports = mongoose.model('User',UserSchema);

@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
+
+const ObjectId = mongoose.Schema.Types.ObjectId;
+
 const ChatSchema = mongoose.Schema({
 	sender_id: 
 	{
-		type:String,
-		required:true
+        type: ObjectId,
+        required:true
 	},
 	receiver_id: 
 	{
-		type:String,
+		type: ObjectId,
 		required:true
 	},
 	sender_name: 
@@ -29,25 +32,29 @@ const ChatSchema = mongoose.Schema({
 	{
 		type:String
 	},
-	salary: 
+	salary: // we need to also capture currency
 	{
 		type:String
 	},
 	date_of_joining: 
 	{
-		type:String
+		type:Date
 	},
 	msg_tag: 
 	{
-		type:String
+		type:String,
+		enum: ['normal', 'job_offer', 'job_offer_accepted',
+			'job_offer_rejected', 'interview_offer'], // TODO: complete this
+		required: true
 	},
 	is_company_reply: 
 	{
-		type:Number
+		type:Number // 0 = false, 1 = true ???
 	},
 	job_type: 
 	{
-		type:String
+		type:String,
+		enum: ['Full time', 'Part time']
 	},
 	file_name: 
 	{
@@ -55,18 +62,19 @@ const ChatSchema = mongoose.Schema({
 	},
 	is_job_offered: 
 	{
-		type:Number,
+		type:Number, // 0 = false, 1 = true ???
 		default:0
 	},
 	is_read: 
 	{
-		type:Number,
+		type:Number, // 0 = false, 1 = true ???
 		required:true,
 		default:0
 	},
 	date_created:
 	{
-		type:String
+		type:Date,
+		required: true
 	}
 });
 const Chat = module.exports = mongoose.model('Chat',ChatSchema);
