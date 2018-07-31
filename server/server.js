@@ -39,7 +39,7 @@ try {
 
     mongoose.connection.on('error', (error) => {
         if (error) {
-            logger.error(error.message, {stack: err.stack});
+            logger.error(error.message, {stack: error.stack});
             process.exit(1);
         }
     });
