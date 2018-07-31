@@ -15,11 +15,11 @@ var md5 = require('md5');
 const chat = require('../model/chat');
 const logger = require('../controller/services/logger');
 
-const forgotPasswordEmail = require('./email/emails/forgotPassword');
-const verifyEmailEmail = require('./email/emails/verifyEmail');
-const referUserEmail = require('./email/emails/referUser');
-const chatReminderEmail = require('./email/emails/chatReminder');
-const referedUserEmail = require('./email/emails/referredFriend');
+const forgotPasswordEmail = require('../controller/services/email/emails/forgotPassword');
+const verifyEmailEmail = require('../controller/services/email/emails/verifyEmail');
+const referUserEmail = require('../controller/services/email/emails/referUser');
+const chatReminderEmail = require('../controller/services/email/emails/chatReminder');
+const referedUserEmail = require('../controller/services/email/emails/referredFriend');
 
 const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
