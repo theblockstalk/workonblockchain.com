@@ -18,6 +18,12 @@ export class CandidateDetailComponent implements OnInit {
         countries;commercial;history;education;
         experimented;languages;current_currency;current_salary;image_src;
         imgPath;nationality;contact_number;platforms;
+    github;
+    stack;
+    roles;
+     expected_currency;
+    expected_salary;
+    email;
   constructor(private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
  
@@ -82,7 +88,20 @@ export class CandidateDetailComponent implements OnInit {
                     this.description =data[0].description;
                     this.history =data[0].history;
                     this.education = data[0].education;
+                     this.email =data[0]._creator.email;  
                     
+                    if(data[0].github_account)
+                    {
+                      this.github=data[0].github_account;   
+                    }
+                    if(data[0].stackexchange_account)
+                    {
+                      this.stack=data[0].stackexchange_account;   
+                    }
+                                       
+                    this.expected_currency = data[0].expected_salary_currency;
+                    this.expected_salary = data[0].expected_salary;
+                    this.roles  = data[0].roles;
 					this.credentials.name = this.first_name;
 					
                     for(let data1 of data[0].history)

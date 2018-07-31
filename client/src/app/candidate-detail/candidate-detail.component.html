@@ -37,35 +37,97 @@
 
 				 		<ul>
 				 			<li>
-				 				<a href = "">
+				 				
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 					 				<span class = "li_txt">{{companyname}}</span>
-				 				</a>
+				 			
 				 			</li>
 
 				 			<li>
-				 				<a href = "">
+				 				
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 					 				<span class = "li_txt">{{degreename}}</span>
-				 				</a>
+				 				
 				 			</li>
 
 				 			<li>
-				 				<a href = "">
+				 				
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 				 					<span class = "li_txt">Nationality : {{nationality}}</span>
-				 				</a>
+				 				
 				 			</li>
 
-				 			<li>
-				 				<a href = "" *ngIf='company_reply === 1'>
+				 			<li *ngIf='company_reply === 1'>
+				 				
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 				 					<span class = "li_txt"> Contact Number : {{contact_number}}</span>
-				 				</a>
+				 			
 				 			</li>
 				 		</ul>
 				 		
 				 	</div>
+				 	
+				 </section>
+				 
+				  <section class = "profile job_info" >
+					<h3>About</h3>
+					<div class="info-area pro_br-btm" >
+						<div class = "col-md-3">
+							<strong>Email Address :</strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{email}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+					
+					
+					<div class="info-area pro_br-btm" *ngIf="contact_number">
+						<div class = "col-md-3">
+							<strong>Contact Number :  </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{contact_number}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+					
+				 	<div class="info-area pro_br-btm" *ngIf="github">
+						<div class = "col-md-3">
+							<strong>Github account URL : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{github}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+
+				 	<div class="info-area pro_br-btm" *ngIf="stack">
+
+						<div class = "col-md-3" >
+							<strong>Stackexchange account URL : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{stack}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+				 	
+				
 				 	
 				 </section>
 
@@ -109,6 +171,33 @@
 						</div>
 
 				 	</div>
+				 	
+				 	<div class="info-area pro_br-btm" *ngIf="roles">
+
+						<div class = "col-md-3" >
+							<strong>Roles : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li *ngFor='let roles_data of roles'>{{roles_data}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+				 	
+				 	<div class="info-area pro_br-btm" *ngIf="expected_salary">
+
+						<div class = "col-md-3" >
+							<strong>Expected salary: </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li>{{expected_currency}} {{expected_salary}}</li>
+							</ul>
+						</div>
+
+				 	</div>
 
 				 	<div class="info-area pro_br-btm">
 
@@ -123,11 +212,7 @@
 
 				 	</div>
 
-				 	<span class = "edit_profile_link">
-				 		<a href="edit_profile#job_candidate">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
+				 	
 				 	
 				 </section>
 
@@ -149,7 +234,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let data of commercial;'>{{data.platform_name}}  : {{data.exp_year}}</li>
+								<li *ngFor='let data of commercial;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
 								
 							</ul>
 						</div>
@@ -163,7 +248,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let data of platforms;'>{{data.platform_name}}  : {{data.exp_year}}</li>
+								<li *ngFor='let data of platforms;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
 							</ul>
 						</div>
 
@@ -226,7 +311,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let lang of languages;'>{{lang.platform_name}} : {{lang.exp_year}}</li>
+								<li *ngFor='let lang of languages;'>{{lang.platform_name}} : {{lang.exp_year}} years</li>
 								
 							</ul>
 						</div>
@@ -272,7 +357,7 @@
 					<div class = "company_area" *ngFor='let work of history'>
 					 	<div class="info-area pro_br-btm" *ngIf='company_reply === 1'>
 							<div class = "col-md-4">
-								<strong>Company Name : </strong>
+								<strong>Company name: </strong>
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list">
@@ -285,7 +370,7 @@
 
 					 	<div class="info-area pro_br-btm">
 					 		<div class = "col-md-4" >
-								<strong>Position : </strong>
+								<strong>Position: </strong>
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list">
@@ -298,11 +383,11 @@
 					 	<div class="info-area pro_br-btm">
 
 							<div class = "col-md-4" >
-								<strong>When you start job here?: </strong>
+								<strong>Start and finish date: </strong>
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list" *ngIf='work.currentwork== true' >
-							<li>{{work.startdate}} {{work.startyear}}, Currently Working here.</li>
+							<li>{{work.startdate}} {{work.startyear}}, till now.</li>
 						</ul>
 						<ul class = "pro_list" *ngIf='work.currentwork== false' >
 							<li>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</li>
@@ -314,7 +399,7 @@
 					 	<div class="info-area pro_br-btm">
 
 							<div class = "col-md-4" >
-								<strong>Current Location : </strong>
+								<strong>Location: </strong>
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list">
@@ -325,7 +410,7 @@
 					 	</div>
 
 					 	<div class = "discp info-area" *ngIf = "work.descname">
-							<h4 class = "disc_hd">Description</h4>
+							<h4 class = "disc_hd">Description:</h4>
 							<p>
 								{{work.descname}}
 							</p>
@@ -367,7 +452,7 @@
 
 		<div class = "col-md-3">
 				<section class = "profile job_info side_rewiew offer-profile">
-					<h3>Send Job Offer</h3>
+					<h3>Send job description</h3>
 					<form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
 			          <div class="form-group">
 					    <input type="text" name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Job Title">

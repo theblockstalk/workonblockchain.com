@@ -8,7 +8,7 @@
 			<div class = "col-md-12 text-center">
 				<form class="form-inline search-form" #f="ngForm" (ngSubmit)="onSearchWord(f)">
 					<div class="form-group">
-					    <input type="text" class="form-control input_main" [disabled]="msg !== '' ? true : false"  placeholder="&#xF002; Search in Words" [(ngModel)]='searchWord' name="word" required id="search">
+					    <input type="text" class="form-control input_main" [disabled]="msg !== '' ? true : false"  placeholder="search" [(ngModel)]='searchWord' name="word" required id="search">
 					 </div>
 					 <div class="form-group">
 					    <button type="submit" class="btn btn-filter btn-md btn_main-srh" value = "search" [disabled]="!f.valid " >
@@ -164,7 +164,7 @@
 								<input type="hidden" name="id" [ngModel]="data._creator._id">
 								<input type="hidden" name="name" [ngModel]="data.first_name">
 								<div class="submit-button">
-									<button type="submit" class = "btn btn_descp" data-toggle="modal" data-target="#myModal" >Send job offer</button>
+									<button type="submit" class = "btn btn_descp" data-toggle="modal" data-target="#myModal" >Send job description</button>
 								</div>
 							</form>
 						</div>
@@ -184,7 +184,7 @@
 				      		<div class="col-sm-4">
 				      			<h4>Languages</h4>
 				      			<ul>
-				      				<li *ngFor = 'let lang of data.experience_roles'> {{lang.platform_name}} &nbsp;&nbsp; &nbsp;&nbsp;   {{lang.exp_year}} Year Experience </li>
+				      				<li *ngFor = 'let lang of data.experience_roles'> {{lang.platform_name}} &nbsp;&nbsp; &nbsp;&nbsp;   {{lang.exp_year}} years </li>
 				      			</ul>
 				      		</div>
 				      </div>
@@ -222,7 +222,7 @@
     <div class="modal-content costom_model">
       <div class="modal-header model-head">
         <button type="button" class="close" data-dismiss="modal">x</button>
-        <h4 class="modal-title text-center">Send Job Discription</h4>
+        <h4 class="modal-title text-center">Send Job Description</h4>
       </div>
       <div class="modal-body">
         <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>

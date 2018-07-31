@@ -1191,8 +1191,7 @@ fieldset.scheduler-border {
 }
 
 .exp_p{
-    position: relative;
-    left: 12px;
+    position: relative;  
     font-weight: bold;
 }
 
@@ -1572,7 +1571,7 @@ input[type=checkbox] {
     margin-bottom: 15px;
 }
 
-.side-info ul li a{
+.side-info ul li {
     box-sizing: border-box;
     display: flex;
     align-items: center;

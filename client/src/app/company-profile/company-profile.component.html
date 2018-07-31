@@ -33,33 +33,34 @@
 
 				 		<ul>
 				 			<li>
-				 				<a>
+				 				
 					 				<span class = "list-icon span_bg"><img src="assets/profile/comp.png"> </span> 
 					 				<span class = "li_txt">{{company_name}}</span>
-					 				</a>
+					 			
 				 				
 				 			</li>
 
 				 			<li>
-				 				<a>
+				 				
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 					 				<span class = "li_txt"><a [href]="('http://' + company_website)" target="_blank">{{company_website}}</a></span>
-				 				</a>
+				 				
 				 			</li>
 
 				 			<li>
-				 				<a>
+				 				
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 				 					<span class = "li_txt">Country : {{company_country}}</span>
-				 				</a>
+				 				
 				 			</li>
 
 				 			<li>
-				 				<a>
+				 			
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 				 					<span class = "li_txt"> Contact Number : {{company_phone}}</span>
-				 			</a>
+				 			
 				 			</li>
+				 			
 				 		</ul>
 				 		
 				 	</div>
@@ -83,6 +84,13 @@
 				 	
 				 	<div class="col-md-6 info-area">
 				 		<p>
+							<strong>Email Address: </strong>
+							<span>{{email}}</span>
+						</p>
+				 	</div>
+				 	
+				 	<div class="col-md-6 info-area">
+				 		<p>
 							<strong>Job Title: </strong>
 							<span>{{job_title}}</span>
 						</p>
@@ -90,7 +98,7 @@
 				 	<div class="col-md-6 info-area">
       					<p>
 							<strong>Company Website: </strong>
-							<span>{{company_website}}</span>
+							<span><a [href]="('http://' + company_website)" target="_blank">{{company_website}}</a></span>
 						</p>
 
       				</div>
