@@ -57,6 +57,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.info = data;
                 this.approve = data[0]._creator.is_approved;
                 this.verify =data[0]._creator.is_verify;
+                
                 if(data[0].image != null )
                     {
                        /* let x = data[0].image.split("://");

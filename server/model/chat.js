@@ -56,6 +56,14 @@ const ChatSchema = mongoose.Schema({
 		type:String,
 		enum: ['Full time', 'Part time']
 	},
+	interview_location: 
+	{
+		type:String
+	},
+	interview_time: 
+	{
+		type:String
+	},
 	file_name: 
 	{
 		type:String

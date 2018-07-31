@@ -17,6 +17,7 @@ export class CompanyProfileComponent implements OnInit {
   first_name;last_name;company_name;job_title;company_website;company_phone;company_country;
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
     imgPath;
+    email;
   constructor( private route: ActivatedRoute,
         private router: Router,
         private authenticationService: UserService) { }
@@ -67,6 +68,7 @@ export class CompanyProfileComponent implements OnInit {
                   else
                   {
                       this.first_name=data.first_name;
+                       this.email=data._creator.email;
                       this.last_name=data.last_name;
                       this.company_name=data.company_name;
                       this.job_title=data.job_title;

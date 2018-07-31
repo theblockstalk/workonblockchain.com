@@ -36,6 +36,12 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
    url;
     user_id;
     public_data;
+    github;
+    stack;
+    roles;
+     expected_currency;
+    expected_salary;
+    email;
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
@@ -76,7 +82,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   ngOnInit() 
   {     
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
-      this.tweet_text = "dsfh dsjf sdgfsduf jhgfusd"; 
+      this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
       {
           ////console.log("ifffffff");
@@ -152,7 +158,19 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 {
                   
                     this.id = data._creator._id; 
-                                  
+                    this.email =data._creator.email;  
+                    
+                    if(data.github_account)
+                    {
+                      this.github=data.github_account;   
+                    }
+                    if(data.stackexchange_account)
+                    {
+                      this.stack=data.stackexchange_account;   
+                    }
+                                       
+                    this.expected_currency = data.expected_salary_currency;
+                    this.expected_salary = data.expected_salary;
                     this.first_name=data.first_name;
                     this.last_name =data.last_name;
                     this.nationality = data.nationality;
@@ -172,6 +190,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     }
                     this.countries = data.country;
                     this.interest_area =data.interest_area;
+                    this.roles  = data.roles;
                     this.availability_day =data.availability_day;
                     this.why_work = data.why_work;
                     this.commercial = data.commercial_platform;
@@ -179,6 +198,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     this.languages= data.experience_roles;
                     this.current_currency = data.current_currency;
                     this.current_salary = data.current_salary;
+
                     this.platforms=data.platforms;
                     if(data.image != null )
                     {
