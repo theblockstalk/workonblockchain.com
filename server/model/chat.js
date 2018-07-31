@@ -49,6 +49,14 @@ const ChatSchema = mongoose.Schema({
 	{
 		type:String
 	},
+	interview_location: 
+	{
+		type:String
+	},
+	interview_time: 
+	{
+		type:String
+	},
 	file_name: 
 	{
 		type:String

@@ -1987,6 +1987,8 @@ function insert_message(data){
 		msg_tag: data.msg_tag,
 		is_company_reply: data.is_company_reply,
 		job_type: data.job_type,
+		interview_location: data.interview_location,
+		interview_time: data.interview_time,
 		is_read: 0,
 		date_created: my_date
 	});
@@ -2037,7 +2039,7 @@ function get_user_messages(id){
 	var deferred = Q.defer();
 	chat.find({
 		$or:[{receiver_id:{$regex: id}},{sender_id: {$regex: id}}]
-	}, function (err, data) 
+	}).sort({date_created: 'descending'}).exec(function(err, data)
     {
 		if (err){
 			console.log(err);

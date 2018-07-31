@@ -32,11 +32,13 @@ export class CandidateDetailComponent implements OnInit {
   credentials: any = {};
   job_type = ["Part Time", "Full Time"];
   company_name;
+  interview_location = '';
+  interview_time = '';
   ngOnInit() 
   {
       //console.log(this.user_id);
       this.company_reply = 0;
-
+	  this.credentials.currency = -1;
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       ////console.log('ftn')
       ////console.log(this.user_id)
@@ -152,9 +154,9 @@ export class CandidateDetailComponent implements OnInit {
 						this.date_of_joining = '10-07-2018';
 						this.msg_tag = 'job_offer';
 						this.is_company_reply = 0;
-						this.msg_body = this.credentials.job_desc+' Job Title: '+this.credentials.job_title+', Job Type: '+this.credentials.job_type+', Salary: '+this.credentials.salary+' '+this.credentials.currency;
+						this.msg_body = this.credentials.job_desc;
 						this.credentials.salary = this.credentials.salary+' '+this.credentials.currency;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
+						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
 							.subscribe(
 								data => {
 									//console.log(data);
