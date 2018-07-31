@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 
-const ObjectId = mongoose.Schema.Types.ObjectId;
-
 const ChatSchema = mongoose.Schema({
 	sender_id: 
 	{
-        type: ObjectId,
+        type: String,
+		ref: 'User',
         required:true
 	},
 	receiver_id: 
 	{
-		type: ObjectId,
+		type: String,
+        ref: 'User',
 		required:true
 	},
 	sender_name: 
@@ -44,7 +44,8 @@ const ChatSchema = mongoose.Schema({
 	{
 		type:String,
 		enum: ['normal', 'job_offer', 'job_offer_accepted',
-			'job_offer_rejected', 'interview_offer'], // TODO: complete this
+			'job_offer_rejected', 'interview_offer'],
+		// TODO: complete this
 		required: true
 	},
 	is_company_reply: 
