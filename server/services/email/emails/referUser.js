@@ -2,18 +2,9 @@ const emails = require('../emails');
 
 module.exports.sendEmail = function sendEmail(data) {
     const sendTo = {
-        email: data.email,
-        name: "NAME OF RECIPIENT - NEED TO ADD THIS!!!"
+        email: data.email
     };
     const subject = data.subject;
-
-    /*const nodemonOptions = {
-        from: 'workonblockchain@mwancloud.com', // sender address
-        to : 'sadiaabbas326@gmail.com',//sendTo.email,
-        subject: subject,
-        text : data.body,
-        html : data.body
-    };*/
 
     const sendToArray = [sendTo];
 
@@ -30,6 +21,5 @@ module.exports.sendEmail = function sendEmail(data) {
         }
     };
 
-    //emails.sendEmail(nodemonOptions, mandrillOptions);
 	emails.sendEmail(mandrillOptions);
 }
