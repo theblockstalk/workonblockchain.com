@@ -28,6 +28,8 @@ export class CompanySearchComponent implements OnInit {
     imgPath;
 
 	display_name;
+	interview_location = '';
+	interview_time = '';
 
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
     
@@ -127,6 +129,7 @@ export class CompanySearchComponent implements OnInit {
       this.availabilityChange=-1;
       this.info = [];
       this.msg='';
+	  this.credentials.currency = -1;
       this.rolesData = 
        [
             {id:'Backend Developer', text:'Backend Developer'},
@@ -613,8 +616,7 @@ export class CompanySearchComponent implements OnInit {
 		//console.log("Used ID: " + this.user_id.id);
         //console.log("Name: " + this.user_id.name);
 		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        
-		if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
+        if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
 			.subscribe(
 				data => {
@@ -626,8 +628,9 @@ export class CompanySearchComponent implements OnInit {
 						this.date_of_joining = '10-07-2018';
 						this.msg_tag = 'job_offer';
 						this.is_company_reply = 0;
-						this.msg_body = this.credentials.job_desc+' Job Title: '+this.credentials.job_title+', Job Type: '+this.credentials.job_type+', Salary: '+this.credentials.salary;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply)
+						this.msg_body = this.credentials.job_desc;
+						this.credentials.salary = this.credentials.salary+' '+this.credentials.currency;
+						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
 							.subscribe(
 								data => {
 									//console.log(data);

@@ -2098,6 +2098,7 @@ input[type=checkbox] {
 }
 
 .offers_b{
+	height: 45px;
     width: 100%;
     background: transparent;
     padding: 10px;
