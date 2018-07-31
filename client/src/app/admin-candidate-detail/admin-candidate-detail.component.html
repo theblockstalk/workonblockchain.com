@@ -15,19 +15,20 @@
 				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
 				 		<span class = "name">
-				 			<h3>{{data.first_name}} {{data.last_name}} <span *ngIf ="verify === 1">(Verified)</span> <span *ngIf="is_approved !== ''">({{is_approved}})</span> </h3>
+				 			<h3>{{data.first_name}} {{data.last_name}} </h3>
 
 				 		</span>
 				 		<span class = "short_intro">
 				 			<p>{{data.description}}</p>
 				 		</span>
+				 		
 						
 						<span class = "short_intro">
 						<p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Companies</a></p>
 				 		</span>
 				 		
 				 		<span class = "short_intro">
-				 			<p>{{data._creator.created_date}}</p>
+				 			<strong>Date created : </strong><span>{{data._creator.created_date}}</span>
 				 		</span>
 				 		<span class = "short_intro">
 				 		<form #approve_form="ngForm" >
@@ -53,45 +54,154 @@
 
 				 		<ul>
 						<li *ngIf="data._creator.refered_id && data._creator.refered_id!='undefined'">
-				 				<a href = "">
+				 			
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 					 				<span class = "li_txt" >Refered By: <a [routerLink]="['/admin-candidate-detail']" target="_blank" [queryParams]="{user: data._creator.refered_id }">{{first_name}} {{last_name}}</a>
 					 				</span>
-				 				</a>
+				 				
 				 			</li>
 				 			<li>
-				 				<a href = "">
+				 				
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 					 				<span class = "li_txt">{{data.history[0].companyname}}</span>
-				 				</a>
+				 				
 				 			</li>
 
 				 			<li>
-				 				<a href = "">
+				 			
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 					 				<span class = "li_txt">{{data.education[0].degreename}}</span>
-				 				</a>
+				 				
 				 			</li>
 
 				 			<li>
-				 				<a href = "">
+				 				
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 				 					<span class = "li_txt">Nationality : {{data.nationality}}</span>
-				 				</a>
+				 				
 				 			</li>
 
 				 			<li >
-				 				<a href = "">
+				 			
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 				 					<span class = "li_txt"> Contact Number : {{data.contact_number}}</span>
-				 				</a>
+				 				
 				 			</li>
 				 		</ul>
 				 		
 				 	</div>
 				 	
 				 </section>
+				 
+				 <section class = "profile job_info">
+				
+				<div class="col-md-6 info-area">
+				 <ng-container *ngIf="verify === 1;else no_verify">
+				 	<p>
+				 	<strong>Email verified :</strong>
+				 	<span>Yes</span>
+				 	</p>
+				 </ng-container>
+				 <ng-template #no_verify>
+				 		<p>
+				 	<strong>Email verified :</strong>
+				 	<span>No</span>
+				 	</p>
+				 </ng-template>
+				 </div>
+				 <div class="col-md-6 info-area">
+				  <ng-container *ngIf="data.disable_account === false;else no_enable">
+				 	<p>
+				 	<strong>Account enabled :</strong>
+				 	<span>Yes</span>
+				 	</p>
+				 </ng-container>
+				 <ng-template #no_enable>
+				 		<p>
+				 	<strong>Account enabled :</strong>
+				 	<span>No</span>
+				 	</p>
+				 </ng-template>
+				 </div>
+				 <div class="col-md-6 info-area">
+				 <ng-container *ngIf="is_approved !== '';else no_approve">
+				 	<p>
+				 	<strong>Approved by admin :</strong>
+				 	<span>Yes</span>
+				 	</p>
+				 </ng-container>
+				 <ng-template #no_approve>
+				 		<p>
+				 	<strong>Approved by admin :</strong>
+				 	<span>No</span>
+				 	</p>
+				 </ng-template>
+				</div>
+				 	
+      				
+				 </section>
+				
+				 <section class = "profile job_info" >
+					<h3>About</h3>
+					<div class="info-area pro_br-btm" >
+						<div class = "col-md-3">
+							<strong>Email Address :</strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{data._creator.email}}</li>
+								
+							</ul>
+						</div>
 
+				 	</div>
+					
+					
+					<div class="info-area pro_br-btm" *ngIf="data.contact_number">
+						<div class = "col-md-3">
+							<strong>Contact Number :  </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{data.contact_number}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+					
+				 	<div class="info-area pro_br-btm" *ngIf="data.github_account">
+						<div class = "col-md-3">
+							<strong>Github account URL : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{data.github_account}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+
+				 	<div class="info-area pro_br-btm" *ngIf="data.stackexchange_account">
+
+						<div class = "col-md-3" >
+							<strong>Stackexchange account URL : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{data.stackexchange_account}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+				 
+				 	
+				 </section>
+				 
 				 <section class = "profile job_info">
 					<h3>Job </h3>
 				 	<div class="info-area pro_br-btm">
@@ -117,6 +227,33 @@
 							<ul class = "pro_list">
 								<li *ngFor='let interest_area of data.interest_area;'>{{interest_area}}</li>
 								
+							</ul>
+						</div>
+
+				 	</div>
+				 	
+				 		<div class="info-area pro_br-btm" *ngIf="data.roles">
+
+						<div class = "col-md-3" >
+							<strong>Roles : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li *ngFor='let roles_data of data.roles'>{{roles_data}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+				 	
+				 	<div class="info-area pro_br-btm" *ngIf="data.expected_salary">
+
+						<div class = "col-md-3" >
+							<strong>Expected salary: </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li>{{data.expected_salary_currency}} {{data.expected_salary}}</li>
 							</ul>
 						</div>
 
@@ -157,7 +294,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let commercial_platform of data.commercial_platform;'>{{commercial_platform.platform_name}}  : {{commercial_platform.exp_year}}</li>
+								<li *ngFor='let commercial_platform of data.commercial_platform;'>{{commercial_platform.platform_name}}  : {{commercial_platform.exp_year}} years</li>
 								
 							</ul>
 						</div>
@@ -171,7 +308,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let data of data.platforms;'>{{data.platform_name}}  : {{data.exp_year}}</li>
+								<li *ngFor='let data of data.platforms;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
 							</ul>
 						</div>
 
@@ -219,7 +356,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let lang of data.experience_roles;'>{{lang.platform_name}} : {{lang.exp_year}}</li>
+								<li *ngFor='let lang of data.experience_roles;'>{{lang.platform_name}} : {{lang.exp_year}} years</li>
 								
 							</ul>
 						</div>
@@ -235,7 +372,7 @@
 					<div class = "company_area" *ngFor='let work of data.history'>
 					 	<div class="info-area pro_br-btm">
 							<div class = "col-md-4">
-								<strong>Company Name : </strong>
+								<strong>Company name: </strong>
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list">
@@ -248,7 +385,7 @@
 
 					 	<div class="info-area pro_br-btm">
 					 		<div class = "col-md-4" >
-								<strong>Position : </strong>
+								<strong>Position: </strong>
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list">
@@ -261,11 +398,11 @@
 					 	<div class="info-area pro_br-btm">
 
 							<div class = "col-md-4" >
-								<strong>When you start job here?: </strong>
+								<strong>Start and finish date: </strong>
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list" *ngIf='work.currentwork== true' >
-							<li>{{work.startdate}} {{work.startyear}}, Currently Working here.</li>
+							<li>{{work.startdate}} {{work.startyear}},  till now.</li>
 						</ul>
 						<ul class = "pro_list" *ngIf='work.currentwork== false' >
 							<li>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</li>
@@ -277,7 +414,7 @@
 					 	<div class="info-area pro_br-btm">
 
 							<div class = "col-md-4" >
-								<strong>Current Location : </strong>
+								<strong>Location: </strong>
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list">
@@ -288,7 +425,7 @@
 					 	</div>
 
 					 	<div class = "discp info-area" *ngIf="work.descname">
-							<h4 class = "disc_hd">Description</h4>
+							<h4 class = "disc_hd">Description:</h4>
 							<p>
 								{{work.descname}}
 							</p>

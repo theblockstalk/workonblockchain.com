@@ -62,6 +62,8 @@ export class ChatComponent implements OnInit {
 	unread_msgs : any;
 	unread_msgs_info = [];
 	new_users = [];
+	interview_location = '';
+	interview_time = '';
   constructor(
     private authenticationService: UserService,
     private fb: FormBuilder,
@@ -115,7 +117,7 @@ export class ChatComponent implements OnInit {
                     //data[0]._creator.is_approved = 1;
                     //data[0].disable_account == false;
                     this.profile_pic = data[0].company_logo;
-                    this.display_name = data[0].first_name+' '+data[0].last_name;
+                    this.display_name = data[0].company_name;
                     if(data[0]._creator.is_approved == 0 || data[0].disable_account == true){
                         this.approved_user = 0;
                     }
@@ -285,7 +287,7 @@ export class ChatComponent implements OnInit {
               this.is_company_reply = 0;
               console.log(this.job_title);
           }
-          this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+          this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
             .subscribe(
                 data => {
                     console.log(data);
@@ -331,7 +333,7 @@ export class ChatComponent implements OnInit {
       this.is_company_reply = 0;
       this.show_accpet_reject = 3;
       this.msg_tag = 'normal';
-      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
         .subscribe(
             data => {
                 console.log(data);
@@ -362,7 +364,7 @@ export class ChatComponent implements OnInit {
       this.is_company_reply = 1;
       this.show_accpet_reject = 4;
       this.msg_tag = 'normal';
-      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
         .subscribe(
             data => {
                 console.log(data);
@@ -394,9 +396,12 @@ export class ChatComponent implements OnInit {
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
           this.is_company_reply = 1;
           this.msg_tag = 'interview_offer';
-          this.credentials.msg_body = 'Please come for interview details are given below:\n Date: ' + this.credentials.date.formatted + ',\n Time: '+this.credentials.time+',\n Location: '+this.credentials.location;
+          this.credentials.msg_body = 'You have been invited for a job interview. Please send message to rsvp.';
           console.log(this.credentials.msg_body);
-          this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply)
+		  this.date_of_joining = this.credentials.date.formatted;
+          this.interview_location = this.credentials.location;
+		  this.interview_time = this.credentials.time;
+		  this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
             .subscribe(
                 data => {
                     console.log(data);
@@ -437,8 +442,9 @@ export class ChatComponent implements OnInit {
           this.is_company_reply = 1;
           this.msg_tag = 'job_offered';
           this.is_job_offer = 1;
-          this.credentials.msg_body = 'We are offering you a job. Details are given below:\n Job Title: '+this.credentials.job_title+', \n Joining Date: ' + this.credentials.start_date.formatted + ', \n Yearly Base Salary: '+this.credentials.base_salary+' '+this.credentials.currency+', \n Employment Type: '+this.credentials.employment_type;
+          this.credentials.msg_body = 'You have been send an employment offer!';
           console.log(this.credentials.msg_body);
+		  this.credentials.base_salary = this.credentials.base_salary+' '+this.credentials.currency;
           this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.credentials.job_title,this.credentials.base_salary,this.credentials.start_date.formatted,this.credentials.employment_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
             .subscribe(
                 data => {
@@ -483,7 +489,7 @@ export class ChatComponent implements OnInit {
       this.cand_job_offer = 0;
       this.is_job_offer = 2;//2 for accepted
       this.msg_tag = 'job_offer_accepted';
-      this.credentials.msg_body = 'Job offer accepted';
+      this.credentials.msg_body = 'I am interested, lets chat!';
       this.authenticationService.update_job_message(this.credentials.job_offer_id,this.is_job_offer)
         .subscribe(
             data => {
@@ -528,7 +534,7 @@ export class ChatComponent implements OnInit {
       this.cand_job_offer = 0;
       this.is_job_offer = 3;//3 for rejected
       this.msg_tag = 'job_offer_rejected';
-      this.credentials.msg_body = 'Job offer rejected';
+      this.credentials.msg_body = 'I am not interested';
       this.authenticationService.update_job_message(this.credentials.job_offer_id,this.is_job_offer)
         .subscribe(
             data => {

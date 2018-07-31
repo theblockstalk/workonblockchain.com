@@ -369,32 +369,29 @@ function verify_send_email(info) {
 		                deferred.reject(err.name + ': ' + err.message);
 
 		            if(result)
-		            {  
-		            	 CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
+		            {
+		            	if(result.type== 'candidate')
 		            	{
-		            		// console.log("name");
-		            		 //console.log(query_data[0]._creator.email);
-		            		 //console.log(query_data._creator.email);
 		            		
-		            		 
+		            		CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
+		            	    {
+
 		            		 if (err) 
 		 		                deferred.reject(err.name + ': ' + err.message);
 		            		 if(query_data)
 		            	     {
-		            			 
-		            			//
-		            			if(query_data[0].first_name)
-		            		    {
-		            				name = query_data[0].first_name;	
-		            		    }
-		            			 else 
-		            			 {
-		            				name = info.email;
+		            			
+		            				if(query_data[0].first_name)
+		            				{
+		            					name = query_data[0].first_name;	
+		            				}
+		            				else 
+		            				{
+		            					name = info.email;
 		            				
-		            			 }
-		 		                //console.log(name);
-		 		               verifyEmailEmail.sendEmail(info, name);
-		 		               //forgotPasswordEmail.sendEmail(hash,data , name);
+		            				}
+		            				verifyEmailEmail.sendEmail(info, name);
+
 		            	     }
 		            		 else
 		            		 {
@@ -402,7 +399,39 @@ function verify_send_email(info) {
 		            			 verifyEmailEmail.sendEmail(info, name);
 		            		 }
 		            		
-		            	});
+		            	    });
+		            	}
+		            	else
+		                {
+		            		
+		            		EmployerProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
+				            	    {
+
+				            		 if (err) 
+				 		                deferred.reject(err.name + ': ' + err.message);
+				            		 if(query_data)
+				            	     {
+				            			
+				            				if(query_data[0].first_name)
+				            				{
+				            					name = query_data[0].first_name;	
+				            				}
+				            				else 
+				            				{
+				            					name = info.email;
+				            				
+				            				}
+				            				verifyEmailEmail.sendEmail(info, name);
+
+				            	     }
+				            		 else
+				            		 {
+				            			 name = info.email;
+				            			 verifyEmailEmail.sendEmail(info, name);
+				            		 }
+				            		
+				            	    });
+		                }
 		            	
 		            }
 		            else
@@ -1601,6 +1630,8 @@ function filter(params)
 {
 	var result_array = [];
 	var query_result=[];
+	var query;
+	console.log(params);
 	//var array = USD;
 	//console.log(array);
 	if(params.currency== '$ USD' && params.salary)
@@ -1640,7 +1671,7 @@ function filter(params)
    var deferred = Q.defer();
 	 
    users.find({type : 'candidate' , is_verify :1, is_approved :1,   }, function (err, data) 			
-   		{
+   {
    				
    		        if (err) 
    		             deferred.reject(err.name + ': ' + err.message);
@@ -1652,82 +1683,60 @@ function filter(params)
    		        	    array.push(item._id);
    		        	});
    		        	
-   		        	//console.log(array);
-   		     	CandidateProfile.find({
-		        		$and : [{ $or : [ { "roles": {$in: params.position}}, { "experience_roles.platform_name":  params.skill} ,{ "country": params.location  } , { "platforms.platform_name": {$in :params.blockchain }}, { "commercial_platform.platform_name" : {$in : params.blockchain} } ,{"experimented_platform.experimented_platform" : {$in : params.blockchain}} , { availability_day: params.availability}  ] },
-						{ "_creator": {$in: array}}]
-		        	}).populate('_creator').exec(function(err, result)
+   		        	const skillsFilter = { "experience_roles.platform_name":  params.skill};  	
+   		        	const locationFilter = { "country": params.location };
+                    const rolesFilter = { "roles": {$in: params.position}};
+                    const platformFilter = { $or: [
+                        {"commercial_platform.platform_name": {$in: params.blockchain}},
+                            {"platforms.platform_name": {$in: params.blockchain}}
+                            ] };
+                    const salaryFilter = {}; 
+                    /*const salaryFilter = {
+       		         		$or : [
+       		         			{ $and : [ { expected_salary_currency : "$ USD" }, { expected_salary : {$lte: result_array.USD} } ] },
+       		         			{ $and : [ { expected_salary_currency : "£ GBP" }, { expected_salary : {$lte: result_array.GBP} } ] },
+       		         			{ $and : [ { expected_salary_currency : "€ EUR" }, { expected_salary : {$lte: result_array.Euro} } ] }
+       		         			
+       		         			
+       		         		]	
+       		         		};*/ // TODO
+                    const availabilityFilter = { availability_day: params.availability };
+
+                    /*const wordSearchWhyWork = { why_work: {'$regex' : params.word , $options: 'i'  }};
+                    const wordSearchDescription = { description : {'$regex' : params.word , $options: 'i' } };
+
+                    const wordSearch = { $or: [wordSearchWhyWork, wordSearchDescription]};*/
+                    
+                    const usersToSearch = { "_creator": {$in: array}};
+
+                    const searchQuery = { $and: [skillsFilter, locationFilter, rolesFilter, platformFilter, salaryFilter, availabilityFilter, usersToSearch]};
+                    CandidateProfile.find(searchQuery)
+   		        	.populate('_creator').exec(function(err, result)
    		            {
-		        		result.forEach(function(item) 
-		    		        	{
-		        			query_result.push(item);
-		    		        	});
+		        		
 		        		
    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
    		                		        
-   		               if (result == '' && result_array == '') 
+   		               if(result)
    		               {
-   		            	   deferred.reject("Not Found Any Data");
-   		                		         
-   		               } 
-   		               if(result!= ''  && result_array == '')
-   		               {
-   		            	
-   		            	deferred.resolve(query_result);
-   		            	
+   		            	   deferred.resolve(result);
    		               }
-   		               if(result_array!="")
-   		               { 	   
-   		            	CandidateProfile.find({
-   		         		$or : [
-   		         			{ $and : [ { expected_salary_currency : "$ USD" }, { expected_salary : {$lte: result_array.USD} } ] },
-   		         			{ $and : [ { expected_salary_currency : "£ GBP" }, { expected_salary : {$lte: result_array.GBP} } ] },
-   		         			{ $and : [ { expected_salary_currency : "€ EUR" }, { expected_salary : {$lte: result_array.Euro} } , { "_creator": {$in: array}} ] }
-   		         			
-   		         			
-   		         		]	
-   		         		} ).populate('_creator').exec(function(err, salary_result)
-   		         				{
-   		            				if(err) console.log(err);
-   		            					//deferred.reject(err.name + ': ' + err.message);
-		                			if(salary_result == '' && result == '')
-		                			{
-		                				//console.log("ifffffffffffff");
-		                				deferred.reject("Not Found Any Data");
-		                				
-		                			}
-		                			
-		                			else
-		                			{
-		                				//console.log("elseeeeeeee");
-		                				salary_result.forEach(function(item) 
-		        		    		        	{
-		        		        					query_result.push(item);
-		        		    		        	});
-		                				//console.log(salary_result);
-		                				deferred.resolve(query_result);
-		                			}
-		                			
-		                			
-		                		});
-   		                	
-   		                	
-   		                }
    		               
-   		               
-   		                	
-   		            
-   		        	 
-   		        	});
-   		        }
-   		        	
    		        	else
    		        	{
    		        		deferred.reject("Not Found Any Data");
    		        	}
 
-   		    }); 
-
+   		            	}); 
+   		        }
+   		        
+   		     else
+	        	{
+	        		deferred.reject("Not Found Any Data");
+	        	}
+   		        
+   });
+                    
   
     return deferred.promise;
 }
@@ -1988,6 +1997,8 @@ function insert_message(data){
 		msg_tag: data.msg_tag,
 		is_company_reply: data.is_company_reply,
 		job_type: data.job_type,
+		interview_location: data.interview_location,
+		interview_time: data.interview_time,
 		is_read: 0,
 		date_created: my_date
 	});
@@ -2038,7 +2049,7 @@ function get_user_messages(id){
 	var deferred = Q.defer();
 	chat.find({
 		$or:[{receiver_id:{$regex: id}},{sender_id: {$regex: id}}]
-	}, function (err, data) 
+	}).sort({date_created: 'descending'}).exec(function(err, data)
     {
 		if (err){
 			console.log(err);
