@@ -103,7 +103,7 @@ function authenticate(email, password,type)
         }
         else
         {
-            deferred.reject("Password didn't match");
+            deferred.reject("Incorrect Username or Password");
         }
     });
 

@@ -55,7 +55,7 @@
 
 <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg && !close">
   <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="close_notify()">&times;</a>
-    <strong>Please!</strong> Please check your inbox and click on the link to verify your email. To send a new verification link please click here.
-    <a (click)="verify_client()" class = "">Verify Account</a>
+    <strong>Please!</strong> Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class = "">here</a>.
+    <!-- <a (click)="verify_client()" class = "">Verify Account</a>-->
     
  </div>

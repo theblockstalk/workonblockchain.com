@@ -3274,6 +3274,13 @@ input:checked + .slider:before {
     #cookie-btn{
         margin: auto;
     }
+    .p_img{
+		top: -130px;
+	}
+	
+	.side-info{
+		float: left;
+	}
 }
 
 @media only screen and (max-width: 992px) and (min-width: 768px){

@@ -6,7 +6,7 @@
 	<div class="container">
 		<div class="row">
 			<div class = "col-md-12 text-center">
-				<form class="form-inline search-form" #f="ngForm" (ngSubmit)="onSearchWord(f)">
+				<form class="form-inline search-form" #f="ngForm" (ngSubmit)="searchdata('search', searchWord)">
 					<div class="form-group">
 					    <input type="text" class="form-control input_main" [disabled]="msg !== '' ? true : false"  placeholder="search" [(ngModel)]='searchWord' name="word" required id="search">
 					 </div>
@@ -63,7 +63,7 @@
 								</select>-->
 								
 								
-								<select2  [data]="rolesData" [disabled]="msg !== '' ? true : false" [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="positionchanged($event)">
+								<select2  [data]="rolesData" allowClear="true"  [disabled]="msg !== '' ? true : false" [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="positionchanged($event)">
 								
 								
 								</select2>
@@ -109,7 +109,7 @@
 				<div class = "text-right btn-div">
 					<!-- <button type = "button" class = "btn btn-filter"> Filter </button> 
 					<button type = "reset" class = "btn reset-bttn"> Reset </button>-->
-					<a  (click)="reset()" class = "btn reset-bttn"> Reset</a>
+					<a  (click)="reset()" id="reset" class = "btn reset-bttn"> Reset</a>
 					
 				</div>
 			</div>

@@ -47,6 +47,8 @@ export class EditCandidateProfileComponent implements OnInit {
     LangexpYear=[];lang_expYear_db=[];lang_db_valye=[];
     candidate_data=[];
     img_src;
+     nationality = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
+ 
     
   constructor(private dataservice: DataService,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef) 
   { 
@@ -66,6 +68,7 @@ export class EditCandidateProfileComponent implements OnInit {
     
   ngOnInit() 
   {
+      this.info.nationality = -1;
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
        this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()]) 
@@ -819,14 +822,32 @@ export class EditCandidateProfileComponent implements OnInit {
     }
 
     
-    findIndexToUpdate(obj) 
+    /*findIndexToUpdate(obj) 
     { 
         return obj.value === this;
+    }*/
+    
+    findIndexToUpdate(type) { 
+   ////console.log("funct");
+        return type == this;
     }
 
-    onJobSelected(event)
+    onJobSelected(e)
     {
-        this.yearselected= event.target.value;
+        //this.yearselected= event.target.value;
+        if(e.target.checked)
+        {
+            this.jobselected.push(e.target.value);
+            ////console.log("if");
+        }
+        else{
+    
+        let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
+
+        let index = this.jobselected.indexOf(updateItem);
+
+        this.jobselected.splice(index, 1);
+        }
       //this.position = event.target.value;
     }
 
@@ -1018,7 +1039,7 @@ export class EditCandidateProfileComponent implements OnInit {
     }
     else{
     ////console.log("else");
-     let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value.maintenancetype);
+     let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value);
 
      let index = this.selectedcountry.indexOf(updateItem);
 

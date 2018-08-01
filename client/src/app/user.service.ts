@@ -563,9 +563,9 @@ export class UserService {
             });
     }
     
-    filterSearch(skill : string , location: string , position:any , blockchain:any , avail:string, salary :string ,currency :string)
+    filterSearch(word :string , skill : string , location: string , position:any , blockchain:any , avail:string, salary :string ,currency :string)
     {
-         return this.http.post<any>(URL+'users/filter', { skill : skill , location :location , position :position , blockchain : blockchain , availability : avail,salary:salary , currency :currency})
+         return this.http.post<any>(URL+'users/filter', {word : word, skill : skill , location :location , position :position , blockchain : blockchain , availability : avail,salary:salary , currency :currency})
             .map(data => {
            
                 if (data) 

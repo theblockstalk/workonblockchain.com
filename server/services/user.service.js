@@ -13,7 +13,6 @@ var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../model/employer_profile');
 var md5 = require('md5');
 const chat = require('../model/chat');
-const logger = require('../controller/services/logger');
 
 const forgotPasswordEmail = require('./email/emails/forgotPassword');
 const verifyEmailEmail = require('./email/emails/verifyEmail');
@@ -1631,15 +1630,15 @@ function filter(params)
 	var result_array = [];
 	var query_result=[];
 	var query;
+	
 	console.log(params);
-	//var array = USD;
-	//console.log(array);
+	
 	if(params.currency== '$ USD' && params.salary)
 	{
 		var result = expected_salary_converter(params.salary, USD.GBP , USD.Euro );
 		//console.log(result);
 		result_array= {USD : params.salary , GBP : result[0] , Euro :result[1]};
-		console.log(result_array);
+		//console.log(result_array.length);
 
 	}
 	
@@ -1647,7 +1646,7 @@ function filter(params)
 	{
 		var result = expected_salary_converter(params.salary, GBP.USD , GBP.Euro );
 		result_array= {USD : result[0] , GBP : params.salary , Euro :result[1]};
-		console.log(result_array);
+		//console.log(result_array.length);
 		//console.log(result);
 	}
 	if(params.currency== '€ EUR' && params.salary)
@@ -1655,20 +1654,12 @@ function filter(params)
 		var result = expected_salary_converter(params.salary, Euro.USD , Euro.GBP );
 		//console.log(result);
 		result_array= {USD : result[0] , GBP : result[1]  , Euro : params.salary};
-		console.log(result_array);
+		//console.log(result_array.length);
 	}
 	
 	var deferred = Q.defer();
-   if(!params.position)
-   {
-	  params.position = [];
-   }
-   if(!params.blockchain)
-   {
-	   params.blockchain=[];
-   }
-   
-   var deferred = Q.defer();
+ 
+
 	 
    users.find({type : 'candidate' , is_verify :1, is_approved :1,   }, function (err, data) 			
    {
@@ -1683,60 +1674,103 @@ function filter(params)
    		        	    array.push(item._id);
    		        	});
    		        	
-   		        	const skillsFilter = { "experience_roles.platform_name":  params.skill};  	
-   		        	const locationFilter = { "country": params.location };
-                    const rolesFilter = { "roles": {$in: params.position}};
-                    const platformFilter = { $or: [
-                        {"commercial_platform.platform_name": {$in: params.blockchain}},
-                            {"platforms.platform_name": {$in: params.blockchain}}
-                            ] };
-                    const salaryFilter = {}; 
-                    /*const salaryFilter = {
-       		         		$or : [
-       		         			{ $and : [ { expected_salary_currency : "$ USD" }, { expected_salary : {$lte: result_array.USD} } ] },
-       		         			{ $and : [ { expected_salary_currency : "£ GBP" }, { expected_salary : {$lte: result_array.GBP} } ] },
-       		         			{ $and : [ { expected_salary_currency : "€ EUR" }, { expected_salary : {$lte: result_array.Euro} } ] }
-       		         			
-       		         			
-       		         		]	
-       		         		};*/ // TODO
-                    const availabilityFilter = { availability_day: params.availability };
-
-                    /*const wordSearchWhyWork = { why_work: {'$regex' : params.word , $options: 'i'  }};
-                    const wordSearchDescription = { description : {'$regex' : params.word , $options: 'i' } };
-
-                    const wordSearch = { $or: [wordSearchWhyWork, wordSearchDescription]};*/
-                    
+   		        	let queryString = [];
+   		        	
+   		        	
                     const usersToSearch = { "_creator": {$in: array}};
+                    queryString.push(usersToSearch);
+                    
+                  
+                    
+                    if(params.position )
+					{
+                    	const rolesFilter = { "roles": {$in: params.position}};
+                    	queryString.push(rolesFilter);
+                    	
+					}
+					
+                   
+					if(params.skill !== -1 )
+					{						
+						const skillsFilter = {"experience_roles.platform_name" :  params.skill};
+						queryString.push(skillsFilter);
+					
+					}
+					
+					
+					if(params.location !== -1)
+					{
+						const locationFilter = { "country": params.location };
+						queryString.push(locationFilter);
+					
+					}
+					
+					if(params.blockchain)
+					{
+						const platformFilter = { $or: [
+	                        {"commercial_platform.platform_name": {$in: params.blockchain}},
+	                            {"platforms.platform_name": {$in: params.blockchain}}
+	                            ] };
+						queryString.push(platformFilter);
+						
+					}
+					
+					if(params.availability!==-1)
+					{
+						const availabilityFilter = { availability_day: params.availability };
+						queryString.push(availabilityFilter);
+						
+					}
+					
+					if(result_array.length !== 0)
+					{
+						console.log("result array");
+						const searchFilter = {
+		   		         		$or : [
+		   		         			{ $and : [ { expected_salary_currency : "$ USD" }, { expected_salary : {$lte: result_array.USD} } ] },
+		   		         			{ $and : [ { expected_salary_currency : "£ GBP" }, { expected_salary : {$lte: result_array.GBP} } ] },
+		   		         			{ $and : [ { expected_salary_currency : "€ EUR" }, { expected_salary : {$lte: result_array.Euro} } ] }	
+		   		         		]	
+		   		         		};
+						queryString.push(searchFilter);
+					}
+					
+					if(params.word)
+					{
+					
+						const wordSearchWhyWork = { why_work: {'$regex' : params.word , $options: 'i'  }};
+                        const wordSearchDescription = { description : {'$regex' : params.word , $options: 'i' } };
 
-                    const searchQuery = { $and: [skillsFilter, locationFilter, rolesFilter, platformFilter, salaryFilter, availabilityFilter, usersToSearch]};
-                    CandidateProfile.find(searchQuery)
-   		        	.populate('_creator').exec(function(err, result)
+                        const wordSearch = { $or: [{ why_work: {'$regex' : params.word , $options: 'i'  }} , { description : {'$regex' : params.word , $options: 'i' } }] };
+                        
+						queryString.push(wordSearch);
+						
+					}
+					
+					
+					const searchQuery = { $and: queryString };
+					
+   		        	CandidateProfile.find(searchQuery).populate('_creator').exec(function(err, result)
    		            {
 		        		
 		        		
    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
    		                		        
    		               if(result)
-   		               {
+   		            	{
    		            	   deferred.resolve(result);
-   		               }
-   		               
+   		            	}
+   		        	 
+   		        	});
+   		        	}
+   		        	
    		        	else
    		        	{
    		        		deferred.reject("Not Found Any Data");
    		        	}
 
-   		            	}); 
-   		        }
-   		        
-   		     else
-	        	{
-	        		deferred.reject("Not Found Any Data");
-	        	}
-   		        
-   });
-                    
+   		    }); 
+
   
     return deferred.promise;
 }
@@ -1997,8 +2031,6 @@ function insert_message(data){
 		msg_tag: data.msg_tag,
 		is_company_reply: data.is_company_reply,
 		job_type: data.job_type,
-		interview_location: data.interview_location,
-		interview_time: data.interview_time,
 		is_read: 0,
 		date_created: my_date
 	});
@@ -2049,7 +2081,7 @@ function get_user_messages(id){
 	var deferred = Q.defer();
 	chat.find({
 		$or:[{receiver_id:{$regex: id}},{sender_id: {$regex: id}}]
-	}).sort({date_created: 'descending'}).exec(function(err, data)
+	}, function (err, data) 
     {
 		if (err){
 			console.log(err);
