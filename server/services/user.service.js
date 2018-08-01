@@ -2049,7 +2049,7 @@ function get_user_messages(id){
 	var deferred = Q.defer();
 	chat.find({
 		$or:[{receiver_id:{$regex: id}},{sender_id: {$regex: id}}]
-	}).sort({date_created: 'descending'}).exec(function(err, data)
+	}).sort({_id: 'descending'}).exec(function(err, data)
     {
 		if (err){
 			console.log(err);

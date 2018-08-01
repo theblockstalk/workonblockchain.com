@@ -333,6 +333,7 @@ export class ChatComponent implements OnInit {
       this.is_company_reply = 0;
       this.show_accpet_reject = 3;
       this.msg_tag = 'normal';
+	  this.credentials.msg_body = 'I am not interested';
       this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
         .subscribe(
             data => {
@@ -364,6 +365,7 @@ export class ChatComponent implements OnInit {
       this.is_company_reply = 1;
       this.show_accpet_reject = 4;
       this.msg_tag = 'normal';
+	  this.credentials.msg_body = '	I am interested, lets chat!';
       this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
         .subscribe(
             data => {
@@ -489,7 +491,7 @@ export class ChatComponent implements OnInit {
       this.cand_job_offer = 0;
       this.is_job_offer = 2;//2 for accepted
       this.msg_tag = 'job_offer_accepted';
-      this.credentials.msg_body = 'I am interested, lets chat!';
+      this.credentials.msg_body = 'I am interested';
       this.authenticationService.update_job_message(this.credentials.job_offer_id,this.is_job_offer)
         .subscribe(
             data => {
