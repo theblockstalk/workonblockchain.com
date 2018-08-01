@@ -416,17 +416,7 @@ export class CompanySearchComponent implements OnInit {
     select_value;selecteddd;
     reset()
     {
-         this.options = {
-      multiple: true,
-      placeholder: 'Position',
-      allowClear :true
-    }
-      
-      this.options2 = {
-      multiple: true,
-      placeholder: 'Blockchain experience',
-      allowClear :true
-    } 
+        
         //console.log("reset");
         this.selectedObj=-1;
         this.countryChange=-1;

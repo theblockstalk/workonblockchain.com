@@ -14,11 +14,11 @@ const EmployerProfile = require('../model/employer_profile');
 var md5 = require('md5');
 const chat = require('../model/chat');
 
-const forgotPasswordEmail = require('./email/emails/forgotPassword');
-const verifyEmailEmail = require('./email/emails/verifyEmail');
-const referUserEmail = require('./email/emails/referUser');
-const chatReminderEmail = require('./email/emails/chatReminder');
-const referedUserEmail = require('./email/emails/referredFriend');
+const forgotPasswordEmail = require('../controller/services/email/emails/forgotPassword');
+const verifyEmailEmail = require('../controller/services/email/emails/verifyEmail');
+const referUserEmail = require('../controller/services/email/emails/referUser');
+const chatReminderEmail = require('../controller/services/email/emails/chatReminder');
+const referedUserEmail = require('../controller/services/email/emails/referredFriend');
 
 const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
@@ -2081,7 +2081,7 @@ function get_user_messages(id){
 	var deferred = Q.defer();
 	chat.find({
 		$or:[{receiver_id:{$regex: id}},{sender_id: {$regex: id}}]
-	}, function (err, data) 
+	}).sort({_id: 'descending'}).exec(function(err, data)
     {
 		if (err){
 			console.log(err);
