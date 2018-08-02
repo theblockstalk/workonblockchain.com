@@ -4,13 +4,13 @@ const ChatSchema = mongoose.Schema({
 	sender_id: 
 	{
         type: String,
-		ref: 'User',
+		ref: 'User', // Is this right???
         required:true
 	},
 	receiver_id: 
 	{
 		type: String,
-        ref: 'User',
+        ref: 'User', // Is this right???
 		required:true
 	},
 	sender_name: 
@@ -38,7 +38,7 @@ const ChatSchema = mongoose.Schema({
 	},
 	date_of_joining: 
 	{
-		type:Date
+		type:String // Date
 	},
 	msg_tag: 
 	{
@@ -82,7 +82,7 @@ const ChatSchema = mongoose.Schema({
 	},
 	date_created:
 	{
-		type:Date,
+		type: String, // Date
 		required: true
 	}
 });

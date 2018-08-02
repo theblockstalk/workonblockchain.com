@@ -76,12 +76,12 @@ const CompanyProfileSchema = new Schema({
     company_founded:
     {
         type:Number,
-        min: 1990
+        // min: 1990
     },
     no_of_employees:
     {
     	type:Number,
-        min: 1
+        // min: 1
     },
     company_funded:
     {

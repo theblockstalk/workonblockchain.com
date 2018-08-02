@@ -91,7 +91,7 @@ const CandidateProfileSchema = new Schema({
     expected_salary:
     {
         type:Number,
-        min: 0
+        // min: 0
     },
     interest_area:
     {
@@ -185,9 +185,9 @@ const CandidateProfileSchema = new Schema({
                 type: String,
                 required: true
             },
-            edudate: Date,
+            edudate: String, // Date
             eduyear: {
-                type: Number,
+                type: String, // Number
                 required: true
             }
         })]
@@ -214,14 +214,14 @@ const CandidateProfileSchema = new Schema({
                 required: true
             },
             startyear: {
-                type: Number,
+                type: String, // Number
                 required: true
             },
             enddate: {
                 type: String,
                 // enum: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
             },
-            endyear: Number,
+            endyear: String, // Number
             currentwork: {
                 type: Boolean,
                 required: true
@@ -230,7 +230,7 @@ const CandidateProfileSchema = new Schema({
                 type: String,
                 // enum: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
             },
-            currentendyear: Number
+            currentendyear: String, // Number
         })],
     },
     description:

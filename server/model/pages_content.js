@@ -17,7 +17,7 @@ const PagesSchema = mongoose.Schema({
 	},	
 	updated_date:
 	{
-		type:Date,
+		type:String, // Date
 		required:true,
 	}
 });
