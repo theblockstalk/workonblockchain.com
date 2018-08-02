@@ -26,7 +26,7 @@ const UserSchema = mongoose.Schema({
 	social_type:
 	{
 		type:String,
-		enum: ['GOOGLE', 'LINKEDIN']
+		enum: ['GOOGLE', 'LINKEDIN', '']
 	},
 	is_approved:
 	{	
