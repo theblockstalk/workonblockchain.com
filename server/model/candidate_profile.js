@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 //     },
 //     currencies: {
 //         type: String,
-//         enum: ['â‚¬ EUR', '$ USD', 'Â£ GBP']
+//         enum: ['€ EUR', '$ USD', '£ GBP']
 //     },
 //     programmingLanguages: {
 //         type: String,
@@ -127,8 +127,9 @@ const CandidateProfileSchema = new Schema({
     experimented_platform:
     {
         type: [new Schema({
-            experimented_platform: String,
-            exp_year: String
+            name: String,
+            value: String,
+            checked : Boolean
         })]
 
     },
