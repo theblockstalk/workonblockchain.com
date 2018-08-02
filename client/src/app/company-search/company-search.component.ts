@@ -418,6 +418,11 @@ export class CompanySearchComponent implements OnInit {
     {
         
         //console.log("reset");
+        if(this.blockchainItems || this.rolesItems)
+        {
+            window.location.href = '/candidate-search';
+            
+        }
         this.selectedObj=-1;
         this.countryChange=-1;
         this.rolesItems='';
@@ -425,10 +430,12 @@ export class CompanySearchComponent implements OnInit {
         this.currencyChange= -1;
         this.availabilityChange=-1;
         this.blockchainItems='';
+        
         this.select_value ='';
         this.selecteddd = '';
         this.info = [];
         this.searchWord='';
+       
         this.getVerrifiedCandidate();
        
     }

@@ -49,7 +49,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
         if (!document.querySelector(`script[src='${url}']`)) {
             let script = document.createElement('script');
             script.src = url;
-            script.innerHTML = ' lang: en_US';
+            script.innerHTML = 'lang: en_US';
             document.body.appendChild(script);
         }
      
@@ -69,7 +69,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
 
      ngAfterViewInit(): void {
-      
+     
         this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}"></script>`;
  
         // render share button
