@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         localStorage.removeItem('currentUser');    
     
   }
-
+   reset;
    login(loginForm: NgForm) 
     {
         this.message='';
@@ -92,7 +92,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                 
                 if(user.error)
                 {
-                    this.log  =user.error;
+                    this.reset= "reset";
+                   // this.log  ="Your email or password is incorrect. If you don't remember your password, please click on here to reset it. ";
                    // this.dataservice.changeMessage(user.error);
                 }
                
@@ -288,6 +289,46 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
         });
     }
+
+
+ reset_passsword()
+ {
+    this.reset='';
+    if(this.credentials.email)
+    {
+   this.authenticationService.forgot_password(this.credentials.email)
+            .subscribe(
+                data => {      
+                    //console.log(data);
+                    if(!data['error'])
+                    {
+                        this.dataservice.changeMessage("Please check your email to reset the password.");
+                        this.router.navigate(["/login"]);
+                        
+                    }
+
+                    else
+                    {
+                        this.dataservice.changeMessage(data['error']);
+                        this.log= data['error'];
+                        
+                        
+                    }
+               
+                },
+                error => {
+                 this.dataservice.changeMessage(error);
+                   
+                });  
+        }
+    else
+        {
+        
+        this.log= "Please enter you email";
+        
+        }
+    
+ }
 
 
 

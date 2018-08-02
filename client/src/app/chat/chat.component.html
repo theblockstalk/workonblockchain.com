@@ -229,7 +229,7 @@
 								</span>
 							</div>
 							
-							<div class="messages">
+							<div class="messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
 								<ul>
 									<div *ngFor="let msg of new_msgss">
 										<ng-container *ngIf="msg.sender_name == display_name;else second">

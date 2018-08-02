@@ -6,7 +6,7 @@
 	<div class="container">
 		<div class="row">
 			<div class = "col-md-12 text-center">
-				<form class="form-inline search-form" #f="ngForm" (ngSubmit)="onSearchWord(f)">
+				<form class="form-inline search-form" #f="ngForm" (ngSubmit)="searchdata('search', searchWord)">
 					<div class="form-group">
 					    <input type="text" class="form-control input_main" [disabled]="msg !== '' ? true : false"  placeholder="search" [(ngModel)]='searchWord' name="word" required id="search">
 					 </div>
@@ -63,7 +63,7 @@
 								</select>-->
 								
 								
-								<select2  [data]="rolesData" [disabled]="msg !== '' ? true : false" [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="positionchanged($event)">
+								<select2  [data]="rolesData" allowClear="true"  [disabled]="msg !== '' ? true : false" [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="positionchanged($event)">
 								
 								
 								</select2>
@@ -71,7 +71,7 @@
 								
 							</div>
 						 </li>
-						<li> 
+						<li > 
 							<div class = "form-group">
 									<!-- <select class="form-control progControlSelect3" multiple="true" [(ngModel)]="blockChange" (ngModelChange)="OnblockChange($event)">
 									
@@ -84,6 +84,7 @@
 								<input type="text" class="form-control" [(ngModel)]='blockchainItems' name="blockchain" style="display: none;">
 							</div>
 						 </li>
+						 
 						<li> 
 							<div class="form-group">
 							    <input type="text" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Expected Salary">
@@ -109,7 +110,7 @@
 				<div class = "text-right btn-div">
 					<!-- <button type = "button" class = "btn btn-filter"> Filter </button> 
 					<button type = "reset" class = "btn reset-bttn"> Reset </button>-->
-					<a  (click)="reset()" class = "btn reset-bttn"> Reset</a>
+					<a  (click)="reset()" id="reset" class = "btn reset-bttn"> Reset</a>
 					
 				</div>
 			</div>
@@ -263,7 +264,7 @@
 	 
     </div>
    
-    <p class="form-group col-md-12">Job Description</p>
+    <p style="margin-left: -3%;" class="form-group col-md-12">Job Description</p>
     <div class="form-group">
       <textarea class="form-control" name="job_desc" [(ngModel)]="credentials.job_desc" rows="5" id="comment" placeholder="something detail here"></textarea>
     </div>

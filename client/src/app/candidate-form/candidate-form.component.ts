@@ -211,8 +211,7 @@ export class CandidateFormComponent implements OnInit {
                     localStorage.setItem('linkedinUser', JSON.stringify(data));
                     if(data)
                     {
-                        this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-                       
+                        this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));                      
                         this.credentials.email= this.linkedinUser.emailAddress;
                         this.credentials.password= '';
                         this.credentials.type="candidate";

@@ -8,6 +8,7 @@
                 <div class="ref_msg">{{ref_msg}}</div>
                  <div class="alert alert-success error-alert" *ngIf="message">{{message}}</div>
                 <h5 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h5>
+                <h5 class="alert alert-danger error-alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on here to reset it.<a (click)="reset_passsword()" class = "">here</a></h5>
                  <form class = "login_form" (submit)="login(loginForm)"  #loginForm = ngForm>
                
                 <div class="form-group">
@@ -21,13 +22,13 @@
                   <input type="password" class="form-control" placeholder="password" id="password-field" name="password"  [(ngModel)]="credentials.password">
                 </div>
 
-               <div class="checkbox">
+               <!-- <div class="checkbox">
         <label class="check-label"> Remember Me 
          <input type="checkbox" value="">
          <span class="checkmark">
           <div></div>
          </span>
-        </label> </div>
+        </label> </div>-->
 
                 <div class="form-group">
                   <input type="submit" class="form-control btn btn-signup" value = "Log In" [disabled]="!loginForm.valid ">

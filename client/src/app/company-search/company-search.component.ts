@@ -179,12 +179,14 @@ export class CompanySearchComponent implements OnInit {
 
     this.options = {
       multiple: true,
-      placeholder: 'Position' 
+      placeholder: 'Position',
+      allowClear :true
     }
       
       this.options2 = {
       multiple: true,
-      placeholder: 'Blockchain experience' 
+      placeholder: 'Blockchain experience',
+      allowClear :true
     } 
     
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -315,7 +317,8 @@ export class CompanySearchComponent implements OnInit {
     {
         this.length =0; 
         this.info=[];
-        if(!this.select_value && !this.selecteddd &&!this.rolesItems && !this.salary && !this.blockchainItems && this.selectedObj === -1 &&  this.countryChange === -1 
+       
+        if(!this.searchWord && !this.select_value && !this.selecteddd &&!this.rolesItems && !this.salary && !this.blockchainItems && this.selectedObj === -1 &&  this.countryChange === -1 
         &&  this.currencyChange === -1 &&  this.availabilityChange ===-1 )
         {             
             //console.log("iffffffff"); 
@@ -326,7 +329,7 @@ export class CompanySearchComponent implements OnInit {
         { 
 
             //console.log("else");
-            this.authenticationService.filterSearch(this.selectedObj , this.countryChange , this.rolesItems ,this.blockchainItems, this.availabilityChange, this.salary , this.currencyChange )
+            this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.rolesItems ,this.blockchainItems, this.availabilityChange, this.salary , this.currencyChange )
             .subscribe(
                 data => 
                 {
@@ -337,12 +340,11 @@ export class CompanySearchComponent implements OnInit {
                         this.log = data.error;
                         this.info=[];
                         this.page='';
-                        
-
                     }
                     else
                     {
                         this.info=[];
+                        
                          this.information = this. filter_array(data);
                         //this.length='';
                     //console.log(this.information);
@@ -414,7 +416,13 @@ export class CompanySearchComponent implements OnInit {
     select_value;selecteddd;
     reset()
     {
+        
         //console.log("reset");
+        if(this.blockchainItems || this.rolesItems)
+        {
+            window.location.href = '/candidate-search';
+            
+        }
         this.selectedObj=-1;
         this.countryChange=-1;
         this.rolesItems='';
@@ -422,10 +430,12 @@ export class CompanySearchComponent implements OnInit {
         this.currencyChange= -1;
         this.availabilityChange=-1;
         this.blockchainItems='';
+        
         this.select_value ='';
         this.selecteddd = '';
         this.info = [];
-        //this.positionchanged(this.select_value);
+        this.searchWord='';
+       
         this.getVerrifiedCandidate();
        
     }
@@ -515,7 +525,7 @@ export class CompanySearchComponent implements OnInit {
                 });
     }
     informations;
-    onSearchWord(f: NgForm)
+   /* onSearchWord(f: NgForm)
     {
         ////console.log(f.value.word);
         this.length=0;
@@ -599,7 +609,7 @@ export class CompanySearchComponent implements OnInit {
                 {
                   
                 });
-    }
+    }*/
 	user_id;user_name;
 	onSubmit(val) {
 		//console.log(val)
