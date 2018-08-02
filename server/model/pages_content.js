@@ -21,7 +21,8 @@ const PagesSchema = mongoose.Schema({
 		required:true,
 	}
 });
-const pages_content = module.exports = mongoose.model('pages_content', PagesSchema);
+
+module.exports = mongoose.model('pages_content', PagesSchema);
 
 
 

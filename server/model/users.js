@@ -18,7 +18,6 @@ const UserSchema = mongoose.Schema({
 		enum: ['candidate', 'company'],
 		required:true
 	},
-
 	is_verify:
 	{
 		type:Number, // 0 = false, 1 = true

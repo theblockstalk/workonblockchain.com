@@ -43,9 +43,9 @@ const ChatSchema = mongoose.Schema({
 	msg_tag: 
 	{
 		type:String,
-		enum: ['normal', 'job_offer', 'job_offer_accepted',
-			'job_offer_rejected', 'interview_offer'],
-		// TODO: complete this
+		// enum: ['normal', 'job_offer', 'job_offer_accepted',
+		// 	'job_offer_rejected', 'interview_offer'],
+		// // TODO: complete this
 		required: true
 	},
 	is_company_reply: 
@@ -86,7 +86,8 @@ const ChatSchema = mongoose.Schema({
 		required: true
 	}
 });
-const Chat = module.exports = mongoose.model('Chat',ChatSchema);
+
+module.exports = mongoose.model('Chat',ChatSchema);
 
 
 
