@@ -234,14 +234,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                         user => {
                           //console.log(user);
                
-                          if(user)
+                          if(user.error)
                           {        
                             //this.router.navigate(['/candidate_profile']);
-                            window.location.href = '/candidate_profile';
-
-                          }
-                          else
-                          {
+                            
                             this.log = 'Credentials not match';
                             this.authenticationService.create(this.credentials)
                             .subscribe(
@@ -267,6 +263,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                         
                         
                             //this.router.navigate(['/login']);
+
+                          }
+                          else
+                          {
+                            window.location.href = '/candidate_profile';
                         }
                         
                       

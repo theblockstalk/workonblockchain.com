@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild ,ElementRef } from '@angular/core';
 import {UserService} from '../user.service';
 import {NgForm} from '@angular/forms';
 import { Select2OptionData } from 'ng2-select2';
@@ -22,7 +22,7 @@ export class CompanySearchComponent implements OnInit {
   public current: string;
   msg;
     is_approved;
-
+//@ViewChild('chosenuser') public blockchainData : Array<Select2OptionData>;
      first_name;last_name;company_name;company_website;company_phone;company_country;
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
     imgPath;
@@ -198,9 +198,7 @@ export class CompanySearchComponent implements OnInit {
       }
       else if(this.currentUser && this.currentUser.type == 'company')
       {
-              
-          
-            
+
           this.authenticationService.getCurrentCompany(this.currentUser._id)
             .subscribe(
 
@@ -414,15 +412,19 @@ export class CompanySearchComponent implements OnInit {
         
     }
     select_value;selecteddd;
+
+
     reset()
     {
-        
+           
+        //this.blockchainData.value = [];
         //console.log("reset");
-        if(this.blockchainItems || this.rolesItems)
+       if(this.blockchainItems || this.rolesItems)
         {
             window.location.href = '/candidate-search';
             
         }
+
         this.selectedObj=-1;
         this.countryChange=-1;
         this.rolesItems='';

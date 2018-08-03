@@ -157,7 +157,7 @@ export class CandidateFormComponent implements OnInit {
             ////console.log(user);
             this.data = JSON.stringify(this.user);      
             this.result = JSON.parse(this.data);
-            localStorage.setItem('googleUser', JSON.stringify(this.result));
+            localStorage.setItem('googleUser', JSON.stringify(this.result));      
             //console.log(this.result);
       
         });
@@ -215,7 +215,7 @@ export class CandidateFormComponent implements OnInit {
                         this.credentials.email= this.linkedinUser.emailAddress;
                         this.credentials.password= '';
                         this.credentials.type="candidate";
-                        this.credentials.social_type='LINKKEDIN';
+                        this.credentials.social_type='LINKEDIN';
                         if(this.linkedinUser.emailAddress)
                         {
                         this.authenticationService.create(this.credentials)

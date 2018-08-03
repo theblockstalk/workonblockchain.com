@@ -54,6 +54,14 @@ export class AboutComponent implements OnInit
        {
            ////console.log("jhcskjsdhkk");
           this.info.image_src = this.googleUser.photoUrl;
+           if( this.info.image_src)
+           {
+                let x = this.info.image_src.split("/");
+     
+                let last:any = x[x.length-1];
+                           
+                 this.img_src = last;
+            }
           this.info.first_name= this.googleUser.firstName;
           this.info.last_name = this.googleUser.lastName;
        }

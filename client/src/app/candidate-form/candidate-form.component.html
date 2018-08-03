@@ -22,8 +22,9 @@
                 
                 <div class="form-group">
                   <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-                  <input type="email" class="form-control" placeholder="Email" name="name" required  [(ngModel)]="credentials.email" email>
+                  <input type="email"  pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" class="form-control" placeholder="Email" name="name" required  [(ngModel)]="credentials.email" email>
                 <p>{{email_log}}</p>
+                 
                 </div>
 
                 <div class="form-group">
@@ -86,7 +87,8 @@
 
                 <div class="form-group">
                   <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-                  <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="credentials.email" email required  >
+                  <input type="email"  pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" class="form-control" placeholder="Email" name="email" [(ngModel)]="credentials.email" email required  >
+               
                 </div>
 
                 <div class="form-group">

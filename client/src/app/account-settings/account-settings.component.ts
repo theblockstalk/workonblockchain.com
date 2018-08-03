@@ -77,9 +77,22 @@ export class AccountSettingsComponent implements OnInit {
        }
   }
     
-    
+    disable_msg;enable_msg;
   account_setting()
   {
+      if(this.info.disable_account==true)
+      {
+          this.disable_msg = "disable";
+          this.enable_msg='';
+          
+      }
+      if(this.info.disable_account==false)
+      {
+          this.enable_msg ="enable";
+          this.disable_msg ='';
+         
+      }
+      this.message='';
     this.message = '';
       if(this.currentUser && this.currentUser.type=='candidate')
       {

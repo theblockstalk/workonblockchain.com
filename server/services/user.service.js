@@ -709,8 +709,9 @@ function _delete(_id) {
    CandidateProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
    {
         if (err)
-			logger.error(err.message, {stack: err.stack});
+        {	logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
+        }
  
             users.remove({ _id: mongo.helper.toObjectID(_id) }, function (err) 
             {

@@ -590,7 +590,7 @@ export class EditCandidateProfileComponent implements OnInit {
    oncommerciallyOptions(obj)
    {
     
-   let updateItem = this.commercially_worked.find(this.findIndexToUpdate, obj.value);
+   let updateItem = this.commercially_worked.find(this.findIndexToUpdate_funct, obj.value);
       let index = this.commercially_worked.indexOf(updateItem);
       if(index > -1)
       {
@@ -617,7 +617,7 @@ export class EditCandidateProfileComponent implements OnInit {
    onPlatformOptions(obj)
    {
     
-   let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
+   let updateItem = this.platforms_designed.find(this.findIndexToUpdate_funct, obj.value);
       let index = this.platforms_designed.indexOf(updateItem);
       if(index > -1)
       {
@@ -796,7 +796,7 @@ export class EditCandidateProfileComponent implements OnInit {
    
     onLangExpOptions(obj)
     {
-      let updateItem = this.language.find(this.findIndexToUpdate, obj.value);
+      let updateItem = this.language.find(this.findIndexToUpdate_funct, obj.value);
       let index = this.language.indexOf(updateItem);
       if(index > -1)
       {
@@ -822,10 +822,10 @@ export class EditCandidateProfileComponent implements OnInit {
     }
 
     
-    /*findIndexToUpdate(obj) 
+    findIndexToUpdate_funct(obj) 
     { 
         return obj.value === this;
-    }*/
+    }
     
     findIndexToUpdate(type) { 
    ////console.log("funct");
