@@ -601,7 +601,7 @@ export class ChatComponent implements OnInit {
 	  this.new_msgss = '';
 	  this.credentials.id = id;
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log("show_msg_area: " + this.show_msg_area);
+      //console.log("show_msg_area: " + this.show_msg_area);
         setInterval(() => {
 			//receiver,sender
             //console.log("ID: " + this.credentials.id);
