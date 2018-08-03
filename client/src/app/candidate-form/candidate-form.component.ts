@@ -216,7 +216,8 @@ export class CandidateFormComponent implements OnInit {
                         this.credentials.password= '';
                         this.credentials.type="candidate";
                         this.credentials.social_type='LINKKEDIN';
-
+                        if(this.linkedinUser.emailAddress)
+                        {
                         this.authenticationService.create(this.credentials)
                         .subscribe(
                             data => {
@@ -238,6 +239,11 @@ export class CandidateFormComponent implements OnInit {
                             this.log = 'Something getting wrong';
                             this.loading = false;
                         });  
+                            }
+                        else
+                            {
+                                this.log = 'Something getting wrong';
+                            }
                     }
                 },
                 error: (err) => {

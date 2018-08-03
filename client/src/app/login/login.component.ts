@@ -90,8 +90,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                     
                 }
                 
-                if(user.error)
+                if(user.error )
                 {
+                     this.log='';
                     this.reset= "reset";
                    // this.log  ="Your email or password is incorrect. If you don't remember your password, please click on here to reset it. ";
                    // this.dataservice.changeMessage(user.error);
@@ -225,15 +226,16 @@ export class LoginComponent implements OnInit, OnDestroy {
                         this.credentials.password= '';
                         this.credentials.type="candidate";
                         this.credentials.social_type='LINKEDIN';
-
+                        
+                        if(this.linkedinUser.emailAddress)
+                        {
                         this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
                         .subscribe(
                         user => {
                           //console.log(user);
                
                           if(user)
-                          {
-                  
+                          {        
                             //this.router.navigate(['/candidate_profile']);
                             window.location.href = '/candidate_profile';
 
@@ -242,7 +244,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                           {
                             this.log = 'Credentials not match';
                             this.authenticationService.create(this.credentials)
-                        .subscribe(
+                            .subscribe(
                             data => {
                                 //console.log(data);
                                 this.credentials.email= '';
@@ -262,15 +264,25 @@ export class LoginComponent implements OnInit, OnDestroy {
                             this.log = 'Something getting wrong';
                            
                         });  
+                        
+                        
                             //this.router.navigate(['/login']);
                         }
-                },
-                error => {
-                //console.log(error);
-                  this.log = 'Something getting wrong';
+                        
+                      
+                    },
+                    error => {
+                    //console.log(error);
+                    this.log = 'Something getting wrong';
                    
-                });
+                    });
                     }
+                        
+                        else
+                        {
+                            this.log = 'Something getting wrong';
+                        }
+                        }
                     else
                     {
                         this.router.navigate(['/login']);
@@ -294,9 +306,10 @@ export class LoginComponent implements OnInit, OnDestroy {
  reset_passsword()
  {
     this.reset='';
+   
     if(this.credentials.email)
     {
-   this.authenticationService.forgot_password(this.credentials.email)
+        this.authenticationService.forgot_password(this.credentials.email)
             .subscribe(
                 data => {      
                     //console.log(data);
@@ -309,7 +322,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
                     else
                     {
-                        this.dataservice.changeMessage(data['error']);
+                        //this.dataservice.changeMessage(data['error']);
                         this.log= data['error'];
                         
                         

@@ -8,7 +8,7 @@
                 <div class="ref_msg">{{ref_msg}}</div>
                  <div class="alert alert-success error-alert" *ngIf="message">{{message}}</div>
                 <h5 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h5>
-                <h5 class="alert alert-danger error-alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on here to reset it.<a (click)="reset_passsword()" class = "">here</a></h5>
+                <h5 class="alert alert-danger error-alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on <a (click)="reset_passsword()" class = "">here</a> to reset it.</h5>
                  <form class = "login_form" (submit)="login(loginForm)"  #loginForm = ngForm>
                
                 <div class="form-group">

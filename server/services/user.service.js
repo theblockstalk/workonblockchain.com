@@ -13,7 +13,7 @@ var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../model/employer_profile');
 var md5 = require('md5');
 const chat = require('../model/chat');
-
+const logger = require('../controller/services/logger');
 const forgotPasswordEmail = require('../controller/services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../controller/services/email/emails/verifyEmail');
 const referUserEmail = require('../controller/services/email/emails/referUser');
@@ -113,7 +113,7 @@ function forgot_password(email)
     users.findOne({ email :email  }, function (err, result)
         {          
             if (err) 
-                deferred.reject(err.name + ': ' + err.message);
+            	logger.error(err.message, {stack: err.stack});
 
             if(result)
             {   
@@ -903,8 +903,8 @@ function experience_data(_id, userParam)
             current_salary: userParam.detail.salary,
             languages: userParam.detail.language,
             experience_roles: userParam.language_exp,
-            work_experience: userParam.detail.roles,
-            work_experience_year : userParam.platform_exp,
+            //work_experience: userParam.detail.roles,
+           // work_experience_year : userParam.platform_exp,
             education :  userParam.education,
             history: userParam.work,
             description :userParam.detail.intro,
@@ -997,7 +997,7 @@ function update_candidate_profile(_id,userParam)
 	         current_currency : userParam.detail.current_currency,
 	         languages: userParam.detail.language,
 	         experience_roles: userParam.detail.language_experience_year,
-	         work_experience_year : userParam.detail.platform_exp,
+	        // work_experience_year : userParam.detail.platform_exp,
 	         education :  userParam.education,
 	         history: userParam.work,
 	         description :userParam.detail.intro
