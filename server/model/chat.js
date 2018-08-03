@@ -55,7 +55,7 @@ const ChatSchema = mongoose.Schema({
 	job_type: 
 	{
 		type:String,
-		enum: ['Full time', 'Part time','']
+		enum: ['Full Time', 'Part Time','','Contract']
 	},
 	interview_location: 
 	{
