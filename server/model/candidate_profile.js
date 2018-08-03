@@ -224,7 +224,7 @@ const CandidateProfileSchema = new Schema({
             },
             endyear: String, // Number
             currentwork: {
-                type: Boolean,
+                type: String,
                 required: true
             },
             currentenddate: {
