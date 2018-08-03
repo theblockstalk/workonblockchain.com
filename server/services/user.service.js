@@ -13,7 +13,7 @@ var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../model/employer_profile');
 var md5 = require('md5');
 const chat = require('../model/chat');
-const logger = require('../controller/services/logger');
+
 const forgotPasswordEmail = require('../controller/services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../controller/services/email/emails/verifyEmail');
 const referUserEmail = require('../controller/services/email/emails/referUser');
@@ -24,6 +24,7 @@ const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
+const logger = require('../controller/services/logger');
 
 var service = {};
 
@@ -112,8 +113,11 @@ function forgot_password(email)
     var deferred = Q.defer();
     users.findOne({ email :email  }, function (err, result)
         {          
-            if (err) 
-            	logger.error(err.message, {stack: err.stack});
+
+            if (err){
+				logger.error(err.message, {stack: err.stack});
+                deferred.reject(err.name + ': ' + err.message);
+			}
 
             if(result)
             {   
@@ -145,9 +149,11 @@ function forgot_password(email)
             };
             users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc) 
             {
-                if (err) 
+                if (err){ 
+					logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
-                else
+                }
+				else
                 {
                     forgot_passwordEmail_send(email_data.token)
                     deferred.resolve({msg:'Email Send'});
@@ -176,9 +182,11 @@ function forgot_passwordEmail_send(data)
 		            {  
 		            	 CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
 		            	{
-		            		 if (err) 
+		            		 if (err){
+								logger.error(err.message, {stack: err.stack});
 		 		                deferred.reject(err.name + ': ' + err.message);
-		            		 if(query_data)
+		            		 }
+							 if(query_data)
 		            	     {
 		            			//console.log(query_data);
 		 		                name = query_data[0].first_name;
@@ -213,9 +221,11 @@ function reset_password(hash,data)
     	    { 
         	
     			//console.log(result);
-    			if (err) 
+    			if (err){ 
+					logger.error(err.message, {stack: err.stack});
     				deferred.reject(err.name + ': ' + err.message);
-    			if(result)
+    			}
+				if(result)
     			{
     				updateData(result._id);
     			}
@@ -241,9 +251,11 @@ function reset_password(hash,data)
     			};
     			users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
     		    {
-    				if (err) 
+    				if (err){
+						logger.error(err.message, {stack: err.stack});
     					deferred.reject(err.name + ': ' + err.message);
-    				else
+    				}
+					else
                 	{
     					deferred.resolve({msg:'Password reset successfully'});
                 	}
@@ -263,14 +275,16 @@ function change_password(id , param)
 {
 	var deferred = Q.defer(); 
 	
-	console.log(id);
+	//console.log(id);
 		//console.log(token);
 		users.findOne({_id :id }, function (err, user)
 	    { 
     	
-			console.log(user);
-			if (err) 
+			//console.log(user);
+			if (err){
+				logger.error(err.message, {stack: err.stack});
 				deferred.reject(err.name + ': ' + err.message);
+			}
 			if (user && bcrypt.compareSync(param.current_password, user.password)) 
 	        {
 				
@@ -287,11 +301,11 @@ function change_password(id , param)
 
 		function updatePassword(_id ) 
 		{
-			console.log(_id);
+			//console.log(_id);
 			
 			//console.log(user.password);
 			 var user = _.omit(param, 'password'); 
-			 console.log(user);
+			 //console.log(user);
 	          // add hashed password to user object
 	          user.password = bcrypt.hashSync(param.password, 10);
 			
@@ -301,8 +315,10 @@ function change_password(id , param)
 			};
 			users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
 		    {
-				if (err) 
+				if (err){ 
+					logger.error(err.message, {stack: err.stack});
 					deferred.reject(err.name + ': ' + err.message);
+				}
 				else
             	{
 					
@@ -323,9 +339,11 @@ function emailVerify(token)
     {
        users.findOne(  { email_hash:token  }, function (err, result)
         {          
-            if (err) 
+            if (err){ 
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            if(result)
+            }
+			if(result)
             {
             	updateData(result._id); 
             }
@@ -341,9 +359,11 @@ function emailVerify(token)
             };
             users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
             {
-                if (err) 
+                if (err){ 
+					logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
-                else
+                }
+				else
                     deferred.resolve({msg:'Email Verified'});
             });
         }
@@ -364,9 +384,10 @@ function verify_send_email(info) {
 	var name;
 	 users.findOne({ email :info.email  }, function (err, result)
 		        {          
-		            if (err) 
+		            if (err){
+						logger.error(err.message, {stack: err.stack});
 		                deferred.reject(err.name + ': ' + err.message);
-
+					}
 		            if(result)
 		            {
 		            	if(result.type== 'candidate')
@@ -375,9 +396,11 @@ function verify_send_email(info) {
 		            		CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
 		            	    {
 
-		            		 if (err) 
+		            		 if (err){ 
+								logger.error(err.message, {stack: err.stack});
 		 		                deferred.reject(err.name + ': ' + err.message);
-		            		 if(query_data)
+		            		 }
+							 if(query_data)
 		            	     {
 		            			
 		            				if(query_data[0].first_name)
@@ -406,9 +429,11 @@ function verify_send_email(info) {
 		            		EmployerProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data) 
 				            	    {
 
-				            		 if (err) 
+				            		 if (err){
+										logger.error(err.message, {stack: err.stack});
 				 		                deferred.reject(err.name + ': ' + err.message);
-				            		 if(query_data)
+				            		 }
+									 if(query_data)
 				            	     {
 				            			
 				            				if(query_data[0].first_name)
@@ -460,9 +485,10 @@ function verify_client(email)
     var deferred = Q.defer();
     users.findOne({ email :email  }, function (err, result)
         {          
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-
+			}
             if(result)
             {   
                 updateData(result);
@@ -494,9 +520,11 @@ function verify_client(email)
             };
             users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc) 
             {
-                if (err) 
+                if (err){
+					logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
-                else
+                }
+				else
                 {
                 	verify_send_email(user_info);
                     deferred.resolve({msg:'Email Send'});
@@ -519,9 +547,11 @@ function getAll()
     var deferred = Q.defer();  
     CandidateProfile.find().populate('_creator').exec(function(err, result) 
     {
-        if (err) 
-             deferred.reject(err.name + ': ' + err.message);
-        else
+        if (err){ 
+			logger.error(err.message, {stack: err.stack});
+            deferred.reject(err.name + ': ' + err.message);
+        }
+		else
             deferred.resolve(result);
 
     });
@@ -533,19 +563,23 @@ function getAll()
 function getById(_id) 
 {
     var deferred = Q.defer();
-	console.log(_id);
+	//console.log(_id);
     CandidateProfile.findById(_id).populate('_creator').exec(function(err, result) 
     {
         //console.log(result);
-        if (err) 
-             deferred.reject(err.name + ': ' + err.message);
-        if(!result)
+        if (err){
+			logger.error(err.message, {stack: err.stack});
+            deferred.reject(err.name + ': ' + err.message);
+        }
+		if(!result)
         {
             CandidateProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
             {
-                if (err) 
-                     deferred.reject(err.name + ': ' + err.message);
-                else
+                if (err){ 
+					logger.error(err.message, {stack: err.stack});
+                    deferred.reject(err.name + ': ' + err.message);
+                }
+				else
                     deferred.resolve(result);
             });
         }
@@ -568,9 +602,10 @@ function create(userParam)
 	var createdDate;  	
     users.findOne({ email: userParam.email }, function (err, user) 
     {
-         if (err) 
-             deferred.reject(err.name + ': ' + err.message);
- 
+         if (err){
+			logger.error(err.message, {stack: err.stack});
+            deferred.reject(err.name + ': ' + err.message);
+		 }
          if (user) 
          {
              deferred.reject('Email "' + userParam.email + '" is already taken');
@@ -599,7 +634,7 @@ function create(userParam)
           user_info.expiry = new Date(new Date().getTime() +  1800 *1000);  
           var token = jwt_hash.encode(user_info, settings.EXPRESS_JWT_SECRET, 'HS256');
           user_info.token = token;
-          console.log(user_info);
+          //console.log(user_info);
           // set user object to userParam without the cleartext password
           var user = _.omit(userParam, 'password'); 
           // add hashed password to user object
@@ -624,6 +659,7 @@ function create(userParam)
           {
              if(err)
              {
+				 logger.error(err.message, {stack: err.stack});
                  deferred.reject(err.name + ': ' + err.message);
              }
              else
@@ -637,6 +673,7 @@ function create(userParam)
                 {
                    if(err)
                    {
+					   logger.error(err.message, {stack: err.stack});
                        deferred.reject(err.name + ': ' + err.message);
                    }
                    else
@@ -671,23 +708,27 @@ function _delete(_id) {
    var deferred = Q.defer();
    CandidateProfile.remove({ _creator: mongo.helper.toObjectID(_id) },function (err) 
    {
-        if (err) 
+        if (err)
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
  
             users.remove({ _id: mongo.helper.toObjectID(_id) }, function (err) 
             {
-                if (err) 
+                if (err){
+					logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
-                else 
+                }
+				else 
                     deferred.resolve();
             });
     }); 
    
    Pages.remove({ _id : mongo.helper.toObjectID('5b489267e2f74420b8b7f612') },function (err) 
 		   {
-		        if (err) 
+		        if (err){ 
+					logger.error(err.message, {stack: err.stack});
 		            deferred.reject(err.name + ': ' + err.message);
-		 
+				}
 		        else
 		        	deferred.resolve();
 		        	
@@ -720,9 +761,10 @@ function terms_and_condition(_id , userParam)
 
     CandidateProfile.findOne({ _creator: _id }, function (err, data) 
     {
-        if (err) 
+        if (err){
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-
+		}
         else 
             updateUser(_id);
         
@@ -754,9 +796,11 @@ function terms_and_condition(_id , userParam)
 
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+			}	
+			else
                 deferred.resolve(set);
         });
     }
@@ -771,9 +815,10 @@ function about_data(_id, userParam)
 
     CandidateProfile.findOne({ _creator: _id }, function (err, data) 
     {
-        if (err) 
+        if (err){
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-
+		}
         else 
             updateUser(_id);
         
@@ -795,9 +840,11 @@ function about_data(_id, userParam)
 
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+			}
+			else
                 deferred.resolve(set);
         });
     }
@@ -813,9 +860,10 @@ function job_data(_id, userParam)
     var deferred = Q.defer();
     CandidateProfile.findOne({ _creator: _id }, function (err, data) 
     {
-        if (err) 
+        if (err){
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-
+		}
         else   
             updateJob(_id);
         
@@ -834,9 +882,11 @@ function job_data(_id, userParam)
         };
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
         {
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+            }
+			else
                 deferred.resolve(set);
         });
     }
@@ -851,9 +901,10 @@ function resume_data(_id, userParam)
     var deferred = Q.defer();
     CandidateProfile.findOne({ _creator: _id }, function (err, data) 
     {
-        if (err) 
+        if (err){
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-
+		}
         else   
             updateResume(_id);
         
@@ -870,9 +921,11 @@ function resume_data(_id, userParam)
         };
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
         {
-            if (err) 
+            if (err){ 
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+            }
+			else
                 deferred.resolve(set);
         });
     }
@@ -887,9 +940,10 @@ function experience_data(_id, userParam)
     var deferred = Q.defer();
     CandidateProfile.findOne({ _creator: _id }, function (err, data) 
     {
-        if (err) 
+        if (err){ 
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-
+		}
         else   
             updateExp(_id);
         
@@ -914,9 +968,11 @@ function experience_data(_id, userParam)
         };
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
         {
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+            }
+			else
                 deferred.resolve(set);
         });
     }
@@ -946,9 +1002,11 @@ function save_image(filename,_id)
  
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+            }
+			else
                 deferred.resolve(set);
         });
     }
@@ -964,9 +1022,10 @@ function update_candidate_profile(_id,userParam)
 	//console.log(userParam.education);
 	 CandidateProfile.findOne({ _creator: _id }, function (err, data) 
 	 {
-	     if (err) 
+	     if (err){
+			 logger.error(err.message, {stack: err.stack});
 	         deferred.reject(err.name + ': ' + err.message);
-
+		}
 	     else 
 	         updateUser(_id);
 	        
@@ -1006,9 +1065,11 @@ function update_candidate_profile(_id,userParam)
 
 	      CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
 	      {
-	          if (err) 
+	          if (err){
+				  logger.error(err.message, {stack: err.stack});
 	              deferred.reject(err.name + ': ' + err.message);
-	          else
+	          }
+			  else
 	              deferred.resolve(set);
 	      });
 	  }
@@ -1027,10 +1088,12 @@ function refered_id(idd , data)
 	//console.log(data.info);
 	CandidateProfile.findOne({ _creator: data.info }, function (err, data) 
 		    {
-		console.log(data);
-		        if (err) 
+		//console.log(data);
+		        if (err){ 
+					logger.error(err.message, {stack: err.stack});
 		            deferred.reject(err.name + ': ' + err.message);
-		        else
+		        }
+				else
 		            updateRefer(data._creator);
 		     });
 		 
@@ -1043,10 +1106,12 @@ function refered_id(idd , data)
 		 
 		        users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
 		        {
-		        	console.log(doc);
-		            if (err) 
+		        	//console.log(doc);
+		            if (err){ 
+						logger.error(err.message, {stack: err.stack});
 		                deferred.reject(err.name + ': ' + err.message);
-		            else
+					}
+					else
 		                deferred.resolve(set);
 		        });
 		    }
@@ -1084,9 +1149,10 @@ function create_employer(userParam)
     {    
         users.findOne({ email: userParam.email }, function (err, user) 
         {
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
- 
+			}
             if (user) 
             {
                 deferred.reject('Email "' + userParam.email + '" is already taken');
@@ -1128,6 +1194,7 @@ function create_employer(userParam)
         {
             if(err)
             {
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
             }
             else
@@ -1151,6 +1218,7 @@ function create_employer(userParam)
                 {
                     if(err)
                     {
+						logger.error(err.message, {stack: err.stack});
                         deferred.reject(err.name + ': ' + err.message);
                     }
                     else
@@ -1184,9 +1252,11 @@ function getCompany()
    
     EmployerProfile.find().populate('_creator').exec(function(err, result) 
     {
-        if (err) 
-             deferred.reject(err.name + ': ' + err.message);
-        else
+        if (err){ 
+			logger.error(err.message, {stack: err.stack});
+            deferred.reject(err.name + ': ' + err.message);
+		}
+		else
             deferred.resolve(result);
         //console.log(result);
     });
@@ -1199,12 +1269,13 @@ function getCompany()
 
 function get_company_byId(_id) 
 {
-	console.log(_id);
+	//console.log(_id);
     var deferred = Q.defer();
     EmployerProfile.findById(_id).populate('_creator').exec(function(err, result) 
     {  	
         if (err) 
         {
+			logger.error(err.message, {stack: err.stack});
         	//console.log("Not found");
         	 deferred.resolve({error:"Not found"});
         }// deferred.reject(err.name + ': ' + err.message);
@@ -1212,9 +1283,11 @@ function get_company_byId(_id)
         {
         	EmployerProfile.find({_creator : _id}).populate('_creator').exec(function(err, result) 
             {
-                if (err) 
-                     deferred.reject(err.name + ': ' + err.message);
-                else
+                if (err){ 
+					logger.error(err.message, {stack: err.stack});
+                    deferred.reject(err.name + ': ' + err.message);
+                }
+				else
                     deferred.resolve(result);
             });
         }
@@ -1238,9 +1311,10 @@ function company_summary(_id, companyParam)
 
     EmployerProfile.findOne({ _creator: _id }, function (err, data) 
     {
-        if (err) 
+        if (err){
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-
+		}
         else 
             updateEmployer(_id);
         
@@ -1269,9 +1343,11 @@ function company_summary(_id, companyParam)
 
         EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
-            if (err) 
+            if (err){ 
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+            }
+			else
                 deferred.resolve(set);
         });
     }
@@ -1287,9 +1363,10 @@ function about_company(_id, companyParam)
 
     EmployerProfile.findOne({ _creator: _id }, function (err, data) 
     {
-        if (err) 
+        if (err){ 
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-
+		}
         else 
             updateEmployer(_id);
         
@@ -1310,9 +1387,11 @@ function about_company(_id, companyParam)
 
         EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
-            if (err) 
+            if (err){ 
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+            }
+			else
                 deferred.resolve(set);
         });
     }
@@ -1326,9 +1405,11 @@ function save_employer_image(filename,_id)
     var deferred = Q.defer();
     EmployerProfile.findOne({ _creator: _id }, function (err, data) 
     {
-        if (err) 
+        if (err){ 
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-        else 
+        }
+		else 
             updateImage(_id);
      });
  
@@ -1341,9 +1422,11 @@ function save_employer_image(filename,_id)
  
         EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+            }
+			else
                 deferred.resolve(set);
         });
     }
@@ -1358,9 +1441,10 @@ function update_company_profile(_id , companyParam)
 
     EmployerProfile.findOne({ _creator: _id }, function (err, data) 
     {
-        if (err) 
+        if (err){
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-
+		}	
         else 
             updateEmployer(_id);
         
@@ -1390,9 +1474,11 @@ function update_company_profile(_id , companyParam)
 
         EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+            }
+			else
                 deferred.resolve(set);
         });
     }
@@ -1631,7 +1717,7 @@ function filter(params)
 	var query_result=[];
 	var query;
 	
-	console.log(params);
+	//console.log(params);
 	
 	if(params.currency== '$ USD' && params.salary)
 	{
@@ -1664,9 +1750,11 @@ function filter(params)
    users.find({type : 'candidate' , is_verify :1, is_approved :1,   }, function (err, data) 			
    {
    				
-   		        if (err) 
-   		             deferred.reject(err.name + ': ' + err.message);
-   		        if(data)
+   		        if (err){ 
+					logger.error(err.message, {stack: err.stack});
+   		            deferred.reject(err.name + ': ' + err.message);
+   		        }
+				if(data)
    		        {
    		        	var array = [];
    		        	data.forEach(function(item) 
@@ -1724,7 +1812,7 @@ function filter(params)
 					
 					if(result_array.length !== 0)
 					{
-						console.log("result array");
+						//console.log("result array");
 						const searchFilter = {
 		   		         		$or : [
 		   		         			{ $and : [ { expected_salary_currency : "$ USD" }, { expected_salary : {$lte: result_array.USD} } ] },
@@ -1754,8 +1842,10 @@ function filter(params)
    		            {
 		        		
 		        		
-   		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-   		                		        
+   		               if (err){
+						   logger.error(err.message, {stack: err.stack});
+						   //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+					   }	        
    		               if(result)
    		            	{
    		            	   deferred.resolve(result);
@@ -1812,8 +1902,10 @@ function search_word(word)
 							{ "_creator": {$in: array}}]
     		        	}).populate('_creator').exec(function(err, result)
     		            {
-    		               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-    		                		        
+    		               if (err){
+							   logger.error(err.message, {stack: err.stack});
+							   //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+						   }        
     		               if (result == '') 
     		               {
     		            	   deferred.reject("Not Found Any Data");
@@ -1857,8 +1949,10 @@ function verified_candidate()
 	        	//console.log(array);
 	        	CandidateProfile.find({ "_creator": {$in: array}}).populate('_creator').exec(function(err, result)
 	            {
-	               if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-	                		        
+	               if (err){
+					   logger.error(err.message, {stack: err.stack});
+					   //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+				   }	        
 	               if (result) 
 	               {
 	                	 deferred.resolve(result);
@@ -1897,6 +1991,7 @@ function get_refr_code(data){
     users.findOne({ ref_link: data.code }, function (err, user) 
     {
         if (err){ 
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
 		}
         else{
@@ -1931,7 +2026,7 @@ function get_candidate(user_type)
     });
  
     return deferred.promise;*/
-	console.log(user_type);
+	//console.log(user_type);
 	var deferred = Q.defer();
 	users.find({type : user_type}, function (err, data) 			
 	{
@@ -1949,8 +2044,10 @@ function get_candidate(user_type)
 	        	if(user_type == 'candidate'){
 					CandidateProfile.find({ "_creator": {$in: array}}).populate('_creator').exec(function(err, result)
 					{
-					   if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-										
+					   if (err){
+						   logger.error(err.message, {stack: err.stack});
+						   //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+					   }				
 					   if (result) 
 					   {	
 							deferred.resolve({ 
@@ -1966,8 +2063,10 @@ function get_candidate(user_type)
 				else{
 					EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
 					{
-					   if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-										
+					   if (err){
+						   //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+						   logger.error(err.message, {stack: err.stack});
+					   }				
 					   if (result) 
 					   {	
 							deferred.resolve({ 
@@ -2038,11 +2137,11 @@ function insert_message(data){
 	newChat.save((err,data)=>
 	{
 		if(err){
-			console.log(err);
+			logger.error(err.message, {stack: err.stack});
 			deferred.reject(err.name + ': ' + err.message);
 		}
 		else{
-			console.log('done');
+			//console.log('done');
 			deferred.resolve({Success:'Msg sent'});
 		}
 	});
@@ -2050,7 +2149,7 @@ function insert_message(data){
 }
 
 function get_messages(receiver_id,sender_id){
-	console.log(receiver_id)
+	//console.log(receiver_id)
 	var deferred = Q.defer();
 	/*$or : [
         { $and : [ { receiver_id : {$regex: receiver_id} }, { sender_id : {$regex: sender_id} } ] },
@@ -2064,11 +2163,11 @@ function get_messages(receiver_id,sender_id){
 		}, function (err, data) 
     {
 		if (err){
-			console.log(err);
+			logger.error(err.message, {stack: err.stack});
 			deferred.reject(err.name + ': ' + err.message);
         }
         else{
-			console.log(data);
+			//console.log(data);
 			deferred.resolve({ 
 				datas:data
 			});
@@ -2084,11 +2183,11 @@ function get_user_messages(id){
 	}).sort({_id: 'descending'}).exec(function(err, data)
     {
 		if (err){
-			console.log(err);
+			logger.error(err.message, {stack: err.stack});
 			deferred.reject(err.name + ': ' + err.message);
         }
         else{
-			console.log(data);
+			//console.log(data);
 			deferred.resolve({ 
 				datas:data
 			});
@@ -2102,9 +2201,11 @@ function get_chat()
 	 var deferred = Q.defer();  
 	    chat.find().exec(function(err, result) 
 	    {
-	        if (err) 
-	             deferred.reject(err.name + ': ' + err.message);
-	        else
+	        if (err){
+				logger.error(err.message, {stack: err.stack});
+	            deferred.reject(err.name + ': ' + err.message);
+			}
+			else
 	            deferred.resolve(result);
 
 	    });
@@ -2158,11 +2259,11 @@ function save_chat_file(data){
 	newChat.save((err,data)=>
 	{
 		if(err){
-			console.log(err);
+			logger.error(err.message, {stack: err.stack});
 			deferred.reject(err.name + ': ' + err.message);
 		}
 		else{
-			console.log('done');
+			//console.log('done');
 			deferred.resolve({Success:'Msg sent'});
 		}
 	});
@@ -2216,11 +2317,11 @@ function insert_message_job(data){
 	newChat.save((err,data)=>
 	{
 		if(err){
-			console.log(err);
+			logger.error(err.message, {stack: err.stack});
 			deferred.reject(err.name + ': ' + err.message);
 		}
 		else{
-			console.log('done');
+			//console.log('done');
 			deferred.resolve({Success:'Msg sent'});
 		}
 	});
@@ -2229,7 +2330,7 @@ function insert_message_job(data){
 
 function update_job_message(data){
 	var deferred = Q.defer();
-	console.log(data.id);
+	//console.log(data.id);
 		var set = 
 		{
 			 is_job_offered: data.status,
@@ -2237,8 +2338,10 @@ function update_job_message(data){
 		};
 		chat.update({ _id: data.id},{ $set: set }, function (err, doc) 
 		{
-			if (err) 
+			if (err){ 
+			   logger.error(err.message, {stack: err.stack});
 			   deferred.reject(err.name + ': ' + err.message);
+			}
 			else
 			   deferred.resolve(set);
 		});
@@ -2247,7 +2350,7 @@ function update_job_message(data){
 
 function update_chat_msg_status(data){
 	var deferred = Q.defer();
-	console.log(data);
+	//console.log(data);
 		var set = 
 		{
 			is_read: 1,
@@ -2271,8 +2374,10 @@ function update_chat_msg_status(data){
              ]
     } ,{ $set: set },{multi: true}, function (err, doc) 
 		{
-			if (err) 
+			if (err){ 
+			   logger.error(err.message, {stack: err.stack});
 			   deferred.reject(err.name + ': ' + err.message);
+			}
 			else
 			   deferred.resolve(set);
 		});
@@ -2281,7 +2386,7 @@ function update_chat_msg_status(data){
 
 function get_unread_msgs(){
 	var deferred = Q.defer();
-	console.log('get all unread msgs');
+	//console.log('get all unread msgs');
 	//chat.aggregate({$group : {"receiver_id" : "$by_user", num_tutorial : {$sum : 1}}}, function (err, result){
 	chat.distinct("receiver_id", {is_read: 0}, function (err, result){
 		if (err){
@@ -2289,13 +2394,15 @@ function get_unread_msgs(){
 		}
 		else{
 			for(var i=0;i<result.length;i++){
-				console.log(result[i]);
+				//console.log(result[i]);
 				users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1,"type":1}, function (err, newResult){
 					if(newResult){
 						if(newResult.type == 'candidate'){
 							CandidateProfile.find({ _creator: newResult._id},{"first_name":1}, function (err, query_data){
-								if (err) 
+								if (err){
+									logger.error(err.message, {stack: err.stack});
 									deferred.reject(err.name + ': ' + err.message);
+								}
 								if(query_data){
 									chatReminderEmail.sendEmail(newResult.email,query_data[0].first_name);
 								}
@@ -2303,8 +2410,10 @@ function get_unread_msgs(){
 						}
 						else{
 							EmployerProfile.find({ _creator: newResult._id},{"first_name":1}, function (err, query_data){
-								if (err) 
+								if (err){ 
+									logger.error(err.message, {stack: err.stack});
 									deferred.reject(err.name + ': ' + err.message);
+								}
 								if(query_data){
 									chatReminderEmail.sendEmail(newResult.email,query_data[0].first_name);
 								}
@@ -2333,11 +2442,11 @@ function get_job_desc_msgs(data){
 	}, function (err, data) 
     {
 		if (err){
-			console.log(err);
+			logger.error(err.message, {stack: err.stack});
 			deferred.reject(err.name + ': ' + err.message);
         }
         else{
-			console.log(data);
+			//console.log(data);
 			deferred.resolve({ 
 				datas:data
 			});
@@ -2348,7 +2457,7 @@ function get_job_desc_msgs(data){
 
 function set_unread_msgs_emails_status(data){
 	var deferred = Q.defer();
-	console.log(data.user_id);
+	//console.log(data.user_id);
 		var set = 
 		{
 			 is_unread_msgs_to_send: data.status,
@@ -2356,8 +2465,10 @@ function set_unread_msgs_emails_status(data){
 		};
 		users.update({ _id: data.user_id},{ $set: set }, function (err, doc) 
 		{
-			if (err) 
+			if (err){ 
+			   logger.error(err.message, {stack: err.stack});
 			   deferred.reject(err.name + ': ' + err.message);
+			}
 			else
 			   deferred.resolve(set);
 		});
@@ -2374,10 +2485,12 @@ function get_unread_msgs_of_user(data){
 			 is_read:0
 		   }
 	] }, function (err, result){
-		 if (err) 
+		 if (err){ 
+		       logger.error(err.message, {stack: err.stack});
 			   deferred.reject(err.name + ': ' + err.message);
+		 }
 			else{
-				console.log(result);
+				//console.log(result);
 				deferred.resolve({
 					receiver_id: data.receiver_id,
 					sender_id: data.sender_id,
@@ -2393,13 +2506,14 @@ function get_unread_msgs_of_user(data){
 function admin_role(data)
 {
 	var deferred = Q.defer();
-	console.log(data);
+	//console.log(data);
 	 users.findOne({ email: data.email }, function (err, result) 
 	 {
-		 console.log(result);
-	      if (err) 
+		 //console.log(result);
+	      if (err){
+			  logger.error(err.message, {stack: err.stack});
 			  deferred.reject(err.name + ': ' + err.message);
-	      
+	      }
 	      if(result)
 	    	  updateAdminRole(result._id);
 	    	  
@@ -2411,7 +2525,7 @@ function admin_role(data)
 			 
 	function updateAdminRole(_id) 
 	{
-		console.log(_id);
+		//console.log(_id);
 		var set = 
 		{
 			 is_admin: 1,
@@ -2419,8 +2533,10 @@ function admin_role(data)
 		};
 		users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
 		{
-			if (err) 
+			if (err){ 
+			   logger.error(err.message, {stack: err.stack});
 			   deferred.reject(err.name + ': ' + err.message);
+			}
 			else
 			   deferred.resolve(set);
 		});
@@ -2438,9 +2554,10 @@ function approve_users(_id , data)
 	//console.log(data.is_approve);
 	 users.findOne({ _id: _id}, function (err, result) 
 	 {
-	      if (err) 
+	      if (err){
+			  logger.error(err.message, {stack: err.stack});
 			  deferred.reject(err.name + ': ' + err.message);
-	      
+	      }
 	      if(result)
 	    	  admin_approval(result._id);
 	    	  
@@ -2460,8 +2577,10 @@ function approve_users(_id , data)
 		};
 		users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc) 
 		{
-			if (err) 
+			if (err){
+			   logger.error(err.message, {stack: err.stack});
 			   deferred.reject(err.name + ': ' + err.message);
+			}
 			else
 			   deferred.resolve(set);
 		});
@@ -2481,8 +2600,10 @@ function search_by_name(word)
 		{ $or : [  { first_name : {'$regex' : word, $options: 'i' } }, { last_name : {'$regex' : word , $options: 'i'} }]}
 	).populate('_creator').exec(function(err, result)
     {
-       if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-        		        
+       if (err){
+		   logger.error(err.message, {stack: err.stack});
+		   //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	   }		        
        if (result == '') 
        {
     	   deferred.reject("Not Found Any Data");
@@ -2529,13 +2650,15 @@ function admin_candidate_filter(data)
 	//console.log(data.msg_tags);
 	if(data.is_approve!== -1 && data.msg_tags )
 	{
-		console.log("both true");
-		console.log(data.msg_tags);
+		//console.log("both true");
+		//console.log(data.msg_tags);
 		users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, dataa) 			
 		{
 			//console.log(dataa);
-			if(err)
-				  deferred.reject(err.name + ': ' + err.message);
+			if(err){
+				logger.error(err.message, {stack: err.stack});
+				deferred.reject(err.name + ': ' + err.message);
+			}
 			if(dataa)
 			{        	
 			   var array2 = [];
@@ -2547,8 +2670,10 @@ function admin_candidate_filter(data)
 			   CandidateProfile.find({"_creator" : {$in : array2}} ).populate('_creator').exec(function(err, result)
 	    	   {
 	    	    	//console.log(result);
-	    	    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-	    	    		                		        
+	    	    	if (err){
+						logger.error(err.message, {stack: err.stack});
+						//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	    	    	}	                		        
 	    	    	if (result) 
 	    	    	{
 	    	    		result.forEach(function(item) 
@@ -2572,8 +2697,10 @@ function admin_candidate_filter(data)
 			        		    CandidateProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result2)
 			        		    {
 			        		    	//console.log(result);
-			        		    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-			        		    		                		        
+			        		    	if (err){
+										logger.error(err.message, {stack: err.stack});
+										//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+			        		    	}	                		        
 			        		    	if (result2 == '' && dataa == '') 
 			        		    	{
 			        		    		  deferred.reject("Not Found Any Data");
@@ -2586,7 +2713,7 @@ function admin_candidate_filter(data)
 			        		    		 {
 			        		    			 query_result.push(item );
 			        		    		 });
-			        		    		console.log(query_result.length);
+			        		    		//console.log(query_result.length);
 			        		    		// var non_duplidated_data = array_unique($query_result, SORT_REGULAR);
 
 			        		    		// var non_duplidated_data = _.uniq(query_result, '_id');
@@ -2617,11 +2744,13 @@ function admin_candidate_filter(data)
 	
 	else if(data.is_approve!== -1)
 	{
-		console.log("is_approve");
+		//console.log("is_approve");
 		users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, data) 			
 		{
-			if(err)
-				 deferred.reject(err.name + ': ' + err.message);
+			if(err){
+				logger.error(err.message, {stack: err.stack});
+				deferred.reject(err.name + ': ' + err.message);
+			}
 			if(data=='')
 			{
 				deferred.reject("Not Found Any Data");
@@ -2638,8 +2767,10 @@ function admin_candidate_filter(data)
 	    		CandidateProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
 	    	    {
 	    	    	//console.log(result);
-	    	    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-	    	    		                		        
+	    	    	if (err){
+						logger.error(err.message, {stack: err.stack});
+						//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	    	    	}	                		        
 	    	    	if (result == '') 
 	    	    	{
 	    	    		 deferred.reject("Not Found Any Data");
@@ -2658,12 +2789,14 @@ function admin_candidate_filter(data)
 	
 	else if(data.msg_tags)
 	{
-		console.log("msg_tags");
-		console.log(data.msg_tags);
+		//console.log("msg_tags");
+		//console.log(data.msg_tags);
 		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
 		{
-			if(err)
-				 deferred.reject(err.name + ': ' + err.message);
+			if(err){
+				logger.error(err.message, {stack: err.stack});
+				deferred.reject(err.name + ': ' + err.message);
+			}
 			if(data)
 			{
 				        	//console.log(data);
@@ -2677,8 +2810,10 @@ function admin_candidate_filter(data)
 	    		CandidateProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
 	    		{
 	    		     //console.log(result);
-	    		     if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-	    		                		        
+	    		     if (err) {
+						logger.error(err.message, {stack: err.stack});
+						//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+					 }          		        
 	    		     if (result == '') 
 	    		     {
 	    		        deferred.reject("Not Found Any Data");
@@ -2707,8 +2842,10 @@ function admin_search_by_name(word)
 		{ $or : [  { first_name : {'$regex' : word ,$options: 'i' } }, { last_name : {'$regex' : word ,$options: 'i' } }]}
 	).populate('_creator').exec(function(err, result)
     {
-       if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-        		        
+       if (err){
+		   logger.error(err.message, {stack: err.stack});
+		   //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	   }		        
        if (result == '') 
        {
     	   deferred.reject("Not Found Any Data");
@@ -2758,8 +2895,8 @@ function admin_company_filter(data)
 	
 	if(data.is_approve!== -1 && data.msg_tags )
 	{
-		console.log("both true");
-		console.log(data.msg_tags);
+		//console.log("both true");
+		//console.log(data.msg_tags);
 		users.find({type : 'company' , is_approved :data.is_approve }, function (err, dataa) 			
 		{
 
@@ -2776,7 +2913,9 @@ function admin_company_filter(data)
     		   EmployerProfile.find({"_creator" : {$in : array2}} ).populate('_creator').exec(function(err, result)
 	    	   {
 	    	    	
-	    	    	if (err) console.log(err);
+	    	    	if (err){
+						logger.error(err.message, {stack: err.stack});
+					}
 	    	    		                		        
 	    	    	if (result) 
 	    	    	{
@@ -2787,9 +2926,11 @@ function admin_company_filter(data)
 	    	    		
 	    	    		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
 						{
-			        		if(err)
-			        			 deferred.reject(err.name + ': ' + err.message);
-			        		if(data)
+			        		if(err){
+								logger.error(err.message, {stack: err.stack});
+			        			deferred.reject(err.name + ': ' + err.message);
+			        		}
+							if(data)
 			        		{
 			        			//console.log(data);
 			        			var array = [];
@@ -2801,8 +2942,10 @@ function admin_company_filter(data)
 			        		    EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result2)
 			        		    {
 			        		    	//console.log(result);
-			        		    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-			        		    		                		        
+			        		    	if (err){
+										logger.error(err.message, {stack: err.stack});
+										//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+			        		    	}	                		        
 			        		    	if (result2 == '' && dataa == '') 
 			        		    	{
 			        		    		  deferred.reject("Not Found Any Data");
@@ -2842,11 +2985,13 @@ function admin_company_filter(data)
 	
 	else if(data.is_approve!== -1)
 	{
-		console.log("is_approve");
+		//console.log("is_approve");
 		users.find({type : 'company' , is_approved :data.is_approve }, function (err, data) 			
 		{
-			if(err)
-				 deferred.reject(err.name + ': ' + err.message);
+			if(err){
+				logger.error(err.message, {stack: err.stack});
+				deferred.reject(err.name + ': ' + err.message);
+			}
 			if(data=='')
 			{
 				deferred.reject("Not Found Any Data");
@@ -2863,8 +3008,10 @@ function admin_company_filter(data)
 	    		EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
 	    	    {
 	    	    	//console.log(result);
-	    	    	if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-	    	    		                		        
+	    	    	if (err){
+						logger.error(err.message, {stack: err.stack});
+						//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	    	    	}	                		        
 	    	    	if (result == '') 
 	    	    	{
 	    	    		 deferred.reject("Not Found Any Data");
@@ -2883,8 +3030,8 @@ function admin_company_filter(data)
 	
 	else if(data.msg_tags)
 	{
-		console.log("msg_tags");
-		console.log(data.msg_tags);
+		//console.log("msg_tags");
+		//console.log(data.msg_tags);
 		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data) 			
 		{
 			if(err)
@@ -2902,8 +3049,10 @@ function admin_company_filter(data)
 	    		EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
 	    		{
 	    		     //console.log(result);
-	    		     if (err) console.log(err);//deferred.reject(err.name + ': ' + err.message);
-	    		                		        
+	    		     if (err){
+						 logger.error(err.message, {stack: err.stack});
+						 //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+	    		     }           		        
 	    		     if (result == '') 
 	    		     {
 	    		        deferred.reject("Not Found Any Data");
@@ -2928,23 +3077,24 @@ function add_privacy_content(info)
 	 var createdDate;  
      let now = new Date();
      createdDate= date.format(now, 'DD/MM/YYYY');
-     console.log(info.page_title);
+     //console.log(info.page_title);
     Pages.findOne({ page_name: info.page_name}, function (err, data) 
     {
-    	console.log(data);
-        if (err) 
+    	//console.log(data);
+        if (err){
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
-
+		}
        if(data==null)
        {
-    	   console.log("if");
+    	   //console.log("if");
     	   insertContent();
     	   
     	}
             
         else
         {
-        	console.log("else");
+        	//console.log("else");
         	updateContent(data._id);
         }
         
@@ -2952,7 +3102,7 @@ function add_privacy_content(info)
  
     function updateContent(_id) 
     {
-    	console.log("update");
+    	//console.log("update");
         var set = 
         {     		
                  page_content : info.html_text,
@@ -2962,16 +3112,18 @@ function add_privacy_content(info)
 
         Pages.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
         {
-            if (err) 
+            if (err){
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
-            else
+            }
+			else
                 deferred.resolve(set);
         });
     }
     
     function insertContent()
     {
-    	console.log("insert");
+    	//console.log("insert");
     	let add_content = new Pages
         ({
        	 	page_title : info.page_title,
@@ -2985,6 +3137,7 @@ function add_privacy_content(info)
         {
             if(err)
             {
+				logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
             }
             else
@@ -3011,6 +3164,7 @@ function get_content(name)
     {
 		
         if (err){ 
+			logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
 		}
         else{
@@ -3027,7 +3181,8 @@ function get_all_content()
 	Pages.find().exec(function(err, result) 
 		    {
 				
-		        if (err){ 
+		        if (err){
+					logger.error(err.message, {stack: err.stack});
 		            deferred.reject(err.name + ': ' + err.message);
 				}
 		        else{

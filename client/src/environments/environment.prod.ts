@@ -1,9 +1,9 @@
 export const environment = {
   production: true,
   backend_url:'https://production-api.workonblockchain.com/',
-  frontend_url: 'http://workonblockchain.mwancloud.com/',
-  google_id: '507151802069-sedtrf34188eet5oo4adrm60vlsruo5r.apps.googleusercontent.com',
-  linkedin_id : '78axuc5uh894iq',
+  frontend_url: 'https://production.workonblockchain.com/',
+  google_id: '699068166900-296254o3gj8i3vcvfojp4pbqselaav9k.apps.googleusercontent.com',
+  linkedin_id : '861pkvi3iz4wp2',
 
 };
 //console.log(environment);

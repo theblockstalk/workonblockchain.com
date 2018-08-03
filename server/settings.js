@@ -3,7 +3,7 @@ let config;
 
 if (process.env.NODE_ENV === 'production') {
     settings.ENVIRONMENT = 'production';
-    config = require('../config/production.json');
+    config = require('./config/production.json');
 } else if (process.env.NODE_ENV === 'staging') {
     settings.ENVIRONMENT = 'staging';
     config = require('./config/staging.json');
