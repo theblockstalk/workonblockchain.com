@@ -15,8 +15,7 @@ import { DataService } from "../data.service";
 })
 export class CandidateFormComponent implements OnInit {
     loading = false;
-    returnUrl: string;
-    
+    returnUrl: string;   
      data;result;
      user;googleUser;email;linkedinUser;message;
     terms;company_terms;
@@ -57,6 +56,7 @@ export class CandidateFormComponent implements OnInit {
  
     ngOnInit() 
     {
+        this.credentials.email='';
         this.dataservice.currentMessage.subscribe(message => this.message = message);
        
         this.authenticationService.logout();
@@ -66,7 +66,7 @@ export class CandidateFormComponent implements OnInit {
     email_log='';
     password_log=''; 
     pass_log='';
-    validation = '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}';
+   
     signup_candidate(loginForm: NgForm) 
     {
 
@@ -84,7 +84,7 @@ export class CandidateFormComponent implements OnInit {
 
         if(this.credentials.password != this.credentials.confirm_password )
         {
-            this.password_log = "Password doesn't matched";
+            this.password_log = "Password do not match";
         }
         else
         {
@@ -270,7 +270,7 @@ export class CandidateFormComponent implements OnInit {
             {
                 this.credentials.password = '';
                 this.credentials.confirm_password = '';
-                this.password_log = "Password doesn't matched";
+                this.password_log = "Password do not match";
             }
             else
             {

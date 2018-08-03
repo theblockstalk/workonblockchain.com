@@ -21,7 +21,7 @@
 					<li> This is only a summary, please refer to Terms and Conditions for full details.</li>
 				</ul>
 
-				<div class = "form-group col-md-6">
+				<div class = "form-group col-md-8">
 					<div class="checkbox">
 						<label class = "check-label"> I have read and accepted the <a routerLink="/terms-for-company" target="_blank"> Terms and Conditions</a> and the <a routerLink="/privacy-policy" target="_blank">Privacy Policy</a>. 
 							<input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
@@ -39,7 +39,7 @@
 				</div>
 				
 
-					<div class = "form-group col-md-6 text-right">
+					<div class = "form-group col-md-4 text-right">
 							<button type="submit" class = "btn btn-self btn-pdg" [disabled]="termscondition==false" >Next Step</button>
 
 					</div>

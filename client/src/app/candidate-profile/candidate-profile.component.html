@@ -5,6 +5,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-9">
+			<ng-container *ngIf="!public_data;else public_section">
 				 <section class = "profile personal_info" *ngIf="!public_data">
 
 				 	<div class="col-md-6" >
@@ -444,9 +445,13 @@
 				 	
 				 </section>
 				 
-				 
+				</ng-container> 
 			</div> <!--End col-md-9--->
 			
+			
+			
+			
+			<ng-template #public_section>
 			<div *ngIf="public_data" class="col-md-12">
 				 <section class = "profile job_info" *ngFor="let data of public_data" >
 					<h3>My Information </h3>
@@ -502,7 +507,7 @@
 				 	
 				 </section>
 				 </div>
-			
+			</ng-template>
 
 			<!-- <div class = "col-md-3" *ngIf="!public_data">
 				<section class = "profile job_info side_rewiew">
