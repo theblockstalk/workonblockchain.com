@@ -329,7 +329,7 @@ export class ChatComponent implements OnInit {
       //console.log('reject');
       //console.log(this.credentials);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      this.credentials.msg_body = 'rejected';
+      this.credentials.msg_body = 'I am not interested';
       this.is_company_reply = 0;
       this.show_accpet_reject = 3;
       this.msg_tag = 'normal';
