@@ -376,10 +376,10 @@
 								<strong>Start and finish date:</strong>
 							</div>
 							<div class = "col-md-8">
-								<ul class = "pro_list" *ngIf='work.currentwork== true' >
+								<ul class = "pro_list" *ngIf='work.currentwork== "true"' >
 							<li>{{work.startdate}} {{work.startyear}}, till now.</li>
 						</ul>
-						<ul class = "pro_list" *ngIf='work.currentwork== false' >
+						<ul class = "pro_list" *ngIf='work.currentwork== "" ||  work.currentwork== "false" ' >
 							<li>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</li>
 						</ul>
 							</div>

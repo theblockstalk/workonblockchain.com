@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 //     },
 //     currencies: {
 //         type: String,
-//         enum: ['€ EUR', '$ USD', '£ GBP']
+//         enum: ['ï¿½ EUR', '$ USD', 'ï¿½ GBP']
 //     },
 //     programmingLanguages: {
 //         type: String,
@@ -224,7 +224,7 @@ const CandidateProfileSchema = new Schema({
             },
             endyear: String, // Number
             currentwork: {
-                type: Boolean,
+                type: String,
                 required: true
             },
             currentenddate: {
@@ -233,6 +233,7 @@ const CandidateProfileSchema = new Schema({
             },
             currentendyear: String, // Number
         })],
+    	//type:Array,
     },
     description:
     {
