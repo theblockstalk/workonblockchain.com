@@ -1,30 +1,30 @@
-const settings = require('../settings');
+const settings = require('../../settings');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var date = require('date-and-time');
 var bcrypt = require('bcryptjs');
 var Q = require('q');
 var mongo = require('mongoskin');
-const users = require('../model/users');
-const CandidateProfile = require('../model/candidate_profile');
-const Pages = require('../model/pages_content');
+const users = require('../../model/users');
+const CandidateProfile = require('../../model/candidate_profile');
+const Pages = require('../../model/pages_content');
 var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
-const EmployerProfile = require('../model/employer_profile');
+const EmployerProfile = require('../../model/employer_profile');
 var md5 = require('md5');
-const chat = require('../model/chat');
+const chat = require('../../model/chat');
 
-const forgotPasswordEmail = require('../controller/services/email/emails/forgotPassword');
-const verifyEmailEmail = require('../controller/services/email/emails/verifyEmail');
-const referUserEmail = require('../controller/services/email/emails/referUser');
-const chatReminderEmail = require('../controller/services/email/emails/chatReminder');
-const referedUserEmail = require('../controller/services/email/emails/referredFriend');
+const forgotPasswordEmail = require('./email/emails/forgotPassword');
+const verifyEmailEmail = require('./email/emails/verifyEmail');
+const referUserEmail = require('./email/emails/referUser');
+const chatReminderEmail = require('./email/emails/chatReminder');
+const referedUserEmail = require('./email/emails/referredFriend');
 
 const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
-const logger = require('../controller/services/logger');
+const logger = require('./logger');
 
 var service = {};
 
