@@ -723,7 +723,7 @@ export class ChatComponent implements OnInit {
               //console.log(success);
               this.file_name = success;
               this.msg_tag = 'normal';
-              this.credentials.msg_body = 'file sent';
+              this.credentials.msg_body = 'file ';
               this.authenticationService.send_file(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.file_name)
                 .subscribe(
                     data => {
