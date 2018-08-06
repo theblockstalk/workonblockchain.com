@@ -34,10 +34,19 @@ export class CandidateTermsComponent implements OnInit {
     {
       
       }
+    
+    about_disable;
+    job_disable;
+    resume_disable;
+    exp_disable;
+    
   ngOnInit() 
   {
      
-      
+      this.about_disable = "disabled";
+      this.job_disable = "disabled";
+      this.resume_disable = "disabled";
+      this.exp_disable = "disabled";
       //console.log(this.termscondition);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
        //console.log(this.currentUser);
@@ -49,8 +58,7 @@ export class CandidateTermsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                  //console.log(data);
-                 
+                  //console.log(data); 
                   
                   if(data.terms ||data.marketing_emails)
                   {
@@ -61,7 +69,7 @@ export class CandidateTermsComponent implements OnInit {
                   }
                   if(data.terms == true)
                   {
-                      
+                      this.about_disable = "";
                       this.active_class='fa fa-check-circle text-success';
                       this.about_link="/about";
                   }
@@ -72,7 +80,7 @@ export class CandidateTermsComponent implements OnInit {
                     
                   if(data.contact_number  && data.nationality && data.first_name && data.last_name)
                   {
-                      
+                      this.job_disable = "";
                       this.about_active_class = 'fa fa-check-circle text-success';
                       this.about_link="/about";
                       this.link="/job";
@@ -80,6 +88,7 @@ export class CandidateTermsComponent implements OnInit {
                     
                   if(data.country && data.roles && data.interest_area && data.expected_salary && data.availability_day )
                   {
+                       this.resume_disable = "";
                       this.link="/job";
                       this.resume_class="/resume";
                       this.job_active_class = 'fa fa-check-circle text-success';
@@ -87,8 +96,9 @@ export class CandidateTermsComponent implements OnInit {
                   }
                     
                
-                    if(data.commercial_platform && data.experimented_platform && data.why_work &&data.platforms)
+                    if(data.why_work )
                     {
+                        this.exp_disable = "";
                         this.resume_class="/resume";
                         this.exp_class = "/experience";
                         this.resume_active_class='fa fa-check-circle text-success';

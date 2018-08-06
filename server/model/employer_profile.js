@@ -51,7 +51,7 @@ const CompanyProfileSchema = new Schema({
     },
     company_postcode:
     {
-        type:Number
+        type:String
     },
     // company_pay: // Are these in use???
     // {

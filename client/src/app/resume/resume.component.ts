@@ -27,6 +27,7 @@ export class ResumeComponent implements OnInit {
   exp_active_class;resume_active_class;resume_class;
   platformreferringData;designed_expYear_db=[];
   term_active_class;term_link;
+    exp_disable;
 
    constructor(private route: ActivatedRoute, private http: HttpClient,
         private router: Router,
@@ -34,7 +35,7 @@ export class ResumeComponent implements OnInit {
 
   ngOnInit()
   {
-            
+     this.exp_disable = "disabled";       
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
    
        if(!this.currentUser)
@@ -227,7 +228,7 @@ export class ResumeComponent implements OnInit {
               if(data.why_work  )
               {
                 this.exp_class = "/experience";
-                
+                 this.exp_disable = "";   
                 this.resume_active_class='fa fa-check-circle text-success';
                // this.router.navigate(['/resume']);
               }

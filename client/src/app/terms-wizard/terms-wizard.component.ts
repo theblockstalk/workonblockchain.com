@@ -19,6 +19,7 @@ export class TermsWizardComponent implements OnInit {
     termscondition=false;
     marketing_emails;
     agree;
+    about_disable;
 
    constructor(private route: ActivatedRoute,
         private router: Router,
@@ -27,6 +28,7 @@ export class TermsWizardComponent implements OnInit {
   
 
   ngOnInit() {
+      this.about_disable= "disabled";
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       
        if(!this.currentUser)
@@ -45,12 +47,14 @@ export class TermsWizardComponent implements OnInit {
                   {
                       this.termscondition = data.terms;
                       this.marketing_emails = data.marketing_emails;
+                    
                       this.about_company = '/about_comp';
                      
                   }
                     
                   if(data.terms == true)
                   {
+                       this.about_disable='';
                         this.terms_active_class = 'fa fa-check-circle text-success';
                        this.about_company = '/about_comp';
                         }

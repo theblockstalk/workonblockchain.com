@@ -27,6 +27,7 @@ export class AccountSettingsComponent implements OnInit {
 
   ngOnInit() 
   {
+       this.inform='';
 	  this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log(this.currentUser.type);
@@ -78,9 +79,11 @@ export class AccountSettingsComponent implements OnInit {
   }
     
     disable_msg;enable_msg;
+    inform;
   account_setting()
   {
-      if(this.info.disable_account==true)
+      this.inform='';
+     /* if(this.info.disable_account==true)
       {
           this.disable_msg = "disable";
           this.enable_msg='';
@@ -91,9 +94,9 @@ export class AccountSettingsComponent implements OnInit {
           this.enable_msg ="enable";
           this.disable_msg ='';
          
-      }
-      this.message='';
-    this.message = '';
+      }*/
+
+      this.message = '';
       if(this.currentUser && this.currentUser.type=='candidate')
       {
     ////console.log(this.marketing);
@@ -107,6 +110,7 @@ export class AccountSettingsComponent implements OnInit {
                 }
                else
                {
+                    this.inform = data;
                   //this.dataservice.changeMessage("Settings Updated Sucessfully");
                 }
               
@@ -119,6 +123,7 @@ export class AccountSettingsComponent implements OnInit {
             .subscribe(
                 data => {
 
+                    
                 if(data.error )
                 {
                     this.log=data.error;
@@ -126,6 +131,7 @@ export class AccountSettingsComponent implements OnInit {
                 
                else
                {
+                    this.inform=data;
                   //this.dataservice.changeMessage("Settings Updated Sucessfully");
                 }
                     
@@ -138,6 +144,7 @@ export class AccountSettingsComponent implements OnInit {
   }
   
   unread_msgs_emails_send(){
+       this.inform='';
 	  //console.log('set here');
 	  if(this.currentUser)
       {
@@ -151,6 +158,7 @@ export class AccountSettingsComponent implements OnInit {
 				}
 				else
 				{
+                    this.inform=data;
 					//console.log(data);
 				}
 			},

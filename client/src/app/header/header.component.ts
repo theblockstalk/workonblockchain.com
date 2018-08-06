@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit {
   increment;
   user_name = 'Admin';
   setting;
+  log;success;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe) 
   {
@@ -115,6 +116,7 @@ export class HeaderComponent implements OnInit {
  
   ngOnInit() 
   {
+      this.success='';
       if(this.currentUser)
       {
           this.dataservice.currentMessage.subscribe(message => this.msg = message);
@@ -122,7 +124,7 @@ export class HeaderComponent implements OnInit {
        }
   }
   
-  log;
+  
   verify_client()
   {
       if(this.currentUser.email)

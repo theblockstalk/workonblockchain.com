@@ -33,6 +33,9 @@ export class AboutComponent implements OnInit
   term_link;
     img_src;
     referred_id;
+    job_disable;
+    resume_disable;
+    exp_disable;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -41,6 +44,9 @@ export class AboutComponent implements OnInit
 
   ngOnInit()
   {
+       this.job_disable = "disabled";
+      this.resume_disable = "disabled";
+      this.exp_disable = "disabled";
       this.info.nationality=-1;
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
        ////console.log(this.currentUser);
@@ -73,10 +79,7 @@ export class AboutComponent implements OnInit
 
        if(this.currentUser && this.currentUser.type=='candidate')
        {
-          this.class="btn disabled";
-          this.resume_class = "btn disabled";
-          this.exp_class = "btn disabled";
-          this.final_class = "btn disabled";
+          
            this.authenticationService.getById(this.currentUser._id)
             .subscribe(
                 data =>
@@ -119,19 +122,21 @@ export class AboutComponent implements OnInit
                         
                     }
                    
-
+                    this.job_disable = '';
                     this.link= "/job";
 
                   }
 
                   if(data.country && data.roles && data.interest_area && data.expected_salary && data.availability_day )
                   {
+                      this.resume_disable = '';
                       this.job_active_class = 'fa fa-check-circle text-success';
                       this.resume_class="/resume";
                   }
 
-                 if(data.commercial_platform && data.experimented_platform && data.why_work && data.platforms)
+                 if(data.why_work )
                 {
+                     this.exp_disable = '';
                     this.resume_class="/resume";
                      this.exp_class = "/experience";
                     this.resume_active_class='fa fa-check-circle text-success';

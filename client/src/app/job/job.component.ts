@@ -39,10 +39,15 @@ export class JobComponent implements OnInit {
     about_active_class;
     term_active_class;
     term_link;
+    resume_disable;
+    exp_disable;
+    
   ngOnInit() 
   {
   ////console.log(this.options.name);
     this.base_currency = -1;
+    this.resume_disable = "disabled";
+    this.exp_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       
        if(!this.currentUser)
@@ -134,6 +139,7 @@ export class JobComponent implements OnInit {
                     this.salary = data.expected_salary;
                     this.availability_day = data.availability_day;
                     this.base_currency = data.expected_salary_currency;
+                    this.resume_disable ='';
                     this.resume_class="/resume";
 
                     if(data.country && data.roles && data.interest_area || data.expected_salary || data.availability_day )
@@ -143,9 +149,9 @@ export class JobComponent implements OnInit {
                        
                   }
                
-              if(data.commercial_platform && data.experimented_platform && data.why_work)
+              if(data.why_work)
               {
-                
+                this.exp_disable ='';
                 this.resume_active_class='fa fa-check-circle text-success';
                // this.router.navigate(['/resume']);
                    this.exp_class = "/experience";
