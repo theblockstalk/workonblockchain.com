@@ -20,12 +20,14 @@ export class AdminAccountSettingsComponent implements OnInit {
     info: any = {};
     log;
     message;
+    inform;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService) 
    { }
 
   ngOnInit() 
   {
+       this.inform='';
        this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log(this.currentUser.type);
@@ -82,8 +84,8 @@ export class AdminAccountSettingsComponent implements OnInit {
   account_setting()
   {
     //console.log(this.info);
-      
-      if(this.info.disable_account==true)
+       this.inform='';
+      /*if(this.info.disable_account==true)
       {
           this.disable_msg = "disable";
           this.enable_msg='';
@@ -92,7 +94,7 @@ export class AdminAccountSettingsComponent implements OnInit {
       {
           this.enable_msg ="enable";
           this.disable_msg ='';
-      }
+      }*/
       this.message='';
       if(this.currentUser && this.currentUser.type=='candidate')
       {
@@ -107,6 +109,7 @@ export class AdminAccountSettingsComponent implements OnInit {
                 }
               else
                {
+                 this.inform=data;
                   //this.dataservice.changeMessage("Settings Updated Sucessfully");
                 }
               
@@ -125,6 +128,7 @@ export class AdminAccountSettingsComponent implements OnInit {
                 }
                 else
                 {
+                    this.inform=data;
                     //this.dataservice.changeMessage("Settings Updated Sucessfully");
                 }
                 },
@@ -136,6 +140,7 @@ export class AdminAccountSettingsComponent implements OnInit {
   }
     
     unread_msgs_emails_send(){
+         this.inform='';
       //console.log('set here');
       if(this.currentUser)
       {
@@ -149,6 +154,7 @@ export class AdminAccountSettingsComponent implements OnInit {
                 }
                 else
                 {
+                    this.inform=data;
                     //console.log(data);
                 }
             },

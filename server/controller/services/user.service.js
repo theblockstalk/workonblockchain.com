@@ -305,9 +305,10 @@ function change_password(id , param)
 			
 			//console.log(user.password);
 			 var user = _.omit(param, 'password'); 
-			 //console.log(user);
+			 var salt = bcrypt.genSaltSync(10);
+			
 	          // add hashed password to user object
-	          user.password = bcrypt.hashSync(param.password, 10);
+	          user.password = bcrypt.hashSync(param.password, salt);
 			
 			var set = 
 			{
@@ -637,8 +638,9 @@ function create(userParam)
           //console.log(user_info);
           // set user object to userParam without the cleartext password
           var user = _.omit(userParam, 'password'); 
+          var salt = bcrypt.genSaltSync(10);
           // add hashed password to user object
-          user.password = bcrypt.hashSync(userParam.password, 10);
+          user.password = bcrypt.hashSync(userParam.password, salt);
           email = userParam.email;
 		  email = email.split("@"); 
 		  email = md5(email[0]);
@@ -1180,8 +1182,9 @@ function create_employer(userParam)
         company_info.token = token;
         // set user object to userParam without the cleartext password
         var user = _.omit(userParam, 'password'); 
+        var salt = bcrypt.genSaltSync(10);
         // add hashed password to user object
-        user.password = bcrypt.hashSync(userParam.password, 10);
+        user.password = bcrypt.hashSync(userParam.password, salt);
         let newUser = new users
         ({
             email: userParam.email,
@@ -1468,8 +1471,7 @@ function update_company_profile(_id , companyParam)
             company_postcode:companyParam.postal_code,
             company_founded:companyParam.company_founded,
         	no_of_employees:companyParam.no_of_employees,
-        	company_funded: companyParam.company_funded,
-        	company_logo: companyParam.company_logo,
+        	company_funded: companyParam.company_funded,        	
         	company_description:companyParam.company_description,       	
            
         };

@@ -82,7 +82,7 @@ export class ExperienceComponent implements OnInit
                 if(data.history || data.education|| data.experience_roles ||data.current_salary || data.current_currency)
                 {
                     
-                    this.exp_active_class = 'fa fa-check-circle text-success';
+                    
                     if(data.history.length>0)
                     {
                     this.jobData = data.history; 
@@ -160,6 +160,10 @@ export class ExperienceComponent implements OnInit
                      }
                    // this.current_currency =-1;
 
+                }
+                 if(data.history && data.education&& data.experience_roles &&data.current_salary && data.current_currency)
+                 {
+                     this.exp_active_class = 'fa fa-check-circle text-success';
                 }
                  if(data.country && data.roles && data.interest_area || data.expected_salary || data.availability_day )
                   {

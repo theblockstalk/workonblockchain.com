@@ -42,6 +42,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
      expected_currency;
     expected_salary;
     email;
+    currentwork;
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
@@ -182,6 +183,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     for(let data1 of data.history)
                     {
                         this.companyname = data1.companyname;
+                        this.currentwork = data1.currentwork;
                        
                     }
                     for(let edu of data.education)

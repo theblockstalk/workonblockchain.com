@@ -49,9 +49,10 @@
   </div>
 </nav>
 
-<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "msg && close">
+<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "msg && close && !success">
     {{msg}}    
  </div>
+ 
 
 <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg && !close">
   <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="close_notify()">&times;</a>
