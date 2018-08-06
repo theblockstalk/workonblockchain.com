@@ -11,9 +11,10 @@ module.exports.sendEmail = function sendEmail(data) {
     const mandrillOptions = {
         templateName: "wob-refer-a-user",
         message: {
-            global_merge_vars: [
-				{MESSAGE_BODY: data.body}
-			],
+            global_merge_vars: [{
+                "name": "MESSAGE_BODY",
+                "content": data.body
+            }],
             subject: subject,
             to: sendToArray
         }

@@ -12,11 +12,16 @@ module.exports.sendEmail = function sendEmail(data) {
     const mandrillOptions = {
         templateName: "wob-you-referred-a-friend",
         message: {
-            global_merge_vars: [
-				{FNAME : data.info.fname},
-				{FNAME_REFERRED : data.info.referred_fname},
-				{LNAME_REFERRED : data.info.referred_lname}
-			],
+            global_merge_vars: [{
+                "name": "FNAME",
+                "content": data.info.fname
+            }, {
+                "name": "FNAME_REFERRED",
+                "content": data.info.referred_fname
+            },	{
+                "name": "LNAME_REFERRED",
+                "content": data.info.referred_lname
+            }],
             subject: subject,
             to: sendToArray
         }

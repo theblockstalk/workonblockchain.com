@@ -11,9 +11,10 @@ module.exports.sendEmail = function sendEmail(email,first_name) {
     const mandrillOptions = {
         templateName: "wob-chat-reminder",
         message: {
-            global_merge_vars: [
-				{FNAME: first_name}
-			],
+            global_merge_vars: [{
+                "name": "FNAME",
+                "content": first_name
+            }],
             subject: subject,
             to: sendToArray
         }
