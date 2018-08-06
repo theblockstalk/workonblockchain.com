@@ -1136,6 +1136,28 @@ fieldset.scheduler-border {
     text-decoration: none;
 }
 
+.step-progress li .btn{
+	font-size: 18px;
+    padding: 0px;
+    border:none; 
+    border: 0px;
+   vertical-align: baseline;
+}
+
+.step-progress li .btn:hover
+{
+	border:none !important; 
+    border: 0px;
+    vertical-align: baseline;
+}
+
+
+
+
+.step-progress li .btn:hover{
+	color: #23527c;
+}
+
 .step-progress li a:hover, 
 .step-progress li a:focus{
     text-decoration: none !important;
@@ -3614,11 +3636,6 @@ input:checked + .slider:before {
 	}
 }
 
-.panel_head
-{
-	font-size :18px !important; 
-	padding:0px !important;
-}
 
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/

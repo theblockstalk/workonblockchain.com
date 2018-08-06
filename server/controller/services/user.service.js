@@ -176,7 +176,10 @@ function forgot_passwordEmail_send(data)
 	 users.findOne({ email :hash.email  }, function (err, result)
 		        {          
 		            if (err) 
-		                deferred.reject(err.name + ': ' + err.message);
+		            {
+						logger.error(err.message, {stack: err.stack});
+ 		                deferred.reject(err.name + ': ' + err.message);
+            		 }
 
 		            if(result)
 		            {  
@@ -992,7 +995,10 @@ function save_image(filename,_id)
     CandidateProfile.findOne({ _creator: _id }, function (err, data) 
     {
         if (err) 
-            deferred.reject(err.name + ': ' + err.message);
+        {
+			logger.error(err.message, {stack: err.stack});
+             deferred.reject(err.name + ': ' + err.message);
+		 }
         else 
             updateImage(_id);
      });
