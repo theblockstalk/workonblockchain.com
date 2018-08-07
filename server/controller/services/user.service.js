@@ -23,8 +23,6 @@ const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('./logger');
 
-const verify_send_email = require('../api/users/auth/verify_send_email');
-
 var service = {};
 
 ///////////candidate functions////////////////
