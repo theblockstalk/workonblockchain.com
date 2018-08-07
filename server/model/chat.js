@@ -34,10 +34,6 @@ const ChatSchema = new Schema({
 		type: String,
 		enum: enumerations.currencies
 	},
-	interview_or_job_commencement_date:
-	{
-		type:Date
-	},
 	msg_tag: 
 	{
 		type:String,
@@ -45,10 +41,9 @@ const ChatSchema = new Schema({
 		enum: ['normal', 'job_offer', 'job_offer_accepted', 'job_offer_rejected', 'interview_offer'],
 		required: true
 	},
-	candidate_accept_job_description:
+    job_offer_time:
 	{
-		type:Number, // 0 = false, 1 = true
-        enum: [0, 1]
+		type: Date
 	},
 	job_type: 
 	{
@@ -70,8 +65,11 @@ const ChatSchema = new Schema({
 	},
 	is_job_offered: 
 	{
-		type:Number, // 0 = false, 1 = true ???
-        enum: [0, 1],
+		type:Number,
+        enum: [1, 2, 3],
+        // 1 = job offered
+        // 2 = job offer accepted by candidate
+        // 3 = job offer rejected by candidate
 		default:0
 	},
 	is_read: 
