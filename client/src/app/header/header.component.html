@@ -30,7 +30,7 @@
         <li *ngIf="(currentUser && user_type === 'company')"><a routerLink="edit_company_profile">Edit Profile</a></li>
         <li *ngIf="(currentUser && user_type === 'company')"><a routerLink="candidate-search">Search Candidate</a></li>
          <li><a routerLink="account-settings"><i class="icon-cog icon-right"></i>Setting</a></li>
-        <li *ngIf="currentUser"><a routerLink="" (click)="logout()">Logout</a></li>
+        <li *ngIf="currentUser"><a href="" (click)="logout()">Logout</a></li>
           </ul>
         </li>
        
