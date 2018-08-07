@@ -63,7 +63,6 @@ service.verified_candidate = verified_candidate;
 service.refreal_email = refreal_email;
 service.get_refr_code = get_refr_code;
 service.get_candidate=get_candidate;
-service.insert_message = insert_message;
 service.get_messages = get_messages;
 service.get_user_messages = get_user_messages;
 service.get_chat= get_chat;
@@ -83,7 +82,6 @@ service.admin_search_by_name=admin_search_by_name;
 service.admin_company_filter=admin_company_filter;
 
 ////admin CMS function/////////////////////////////
-service.add_privacy_content = add_privacy_content;
 service.get_content =get_content;
 service.get_all_content=get_all_content;
 
@@ -1424,62 +1422,6 @@ function get_candidate(user_type)
     return deferred.promise;
 }
 
-function insert_message(data){
-	var current_date = new Date();
-	var day = current_date.getDate();
-	if(day < 10){
-		day = '0'+day;
-	}
-	var month = current_date.getMonth();
-	month = month+1;
-	if(month < 10){
-		month = '0'+month;
-	}
-	var year = current_date.getFullYear();
-	var hours = current_date.getHours();
-	if(hours < 10){
-		hours = '0'+hours;
-	}
-	var minutes = current_date.getMinutes();
-	if(minutes < 10){
-		minutes = '0'+minutes;
-	}
-	var seconds = current_date.getSeconds();
-	if(seconds < 10){
-		seconds = '0'+seconds;
-	}
-	var my_date = day+'/'+month+'/'+year+' '+hours+':'+minutes+':'+seconds;
-	var deferred = Q.defer();
-	let newChat = new chat({
-		sender_id: data.sender_id,
-		receiver_id: data.receiver_id,
-		sender_name: data.sender_name,
-		receiver_name: data.receiver_name,
-		message: data.message,
-		job_title: data.job_title,
-		salary: data.salary,
-		date_of_joining: data.date_of_joining,
-		msg_tag: data.msg_tag,
-		is_company_reply: data.is_company_reply,
-		job_type: data.job_type,
-		is_read: 0,
-		date_created: my_date
-	});
-
-	newChat.save((err,data)=>
-	{
-		if(err){
-			logger.error(err.message, {stack: err.stack});
-			deferred.reject(err.name + ': ' + err.message);
-		}
-		else{
-			//console.log('done');
-			deferred.resolve({Success:'Msg sent'});
-		}
-	});
-	return deferred.promise;
-}
-
 function get_messages(receiver_id,sender_id){
 	//console.log(receiver_id)
 	var deferred = Q.defer();
@@ -2401,91 +2343,6 @@ function admin_company_filter(data)
 	}
 	
 	return deferred.promise;
-}
-
-function add_privacy_content(info)
-{
-	var deferred = Q.defer();
-	 var createdDate;  
-     let now = new Date();
-     createdDate= date.format(now, 'DD/MM/YYYY');
-     //console.log(info.page_title);
-    Pages.findOne({ page_name: info.page_name}, function (err, data) 
-    {
-    	//console.log(data);
-        if (err){
-			logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-		}
-       if(data==null)
-       {
-    	   //console.log("if");
-    	   insertContent();
-    	   
-    	}
-            
-        else
-        {
-        	//console.log("else");
-        	updateContent(data._id);
-        }
-        
-    });
- 
-    function updateContent(_id) 
-    {
-    	//console.log("update");
-        var set = 
-        {     		
-                 page_content : info.html_text,
-                 page_title : info.page_title,
-                 updated_date:createdDate,
-        };
-
-        Pages.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc) 
-        {
-            if (err){
-				logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-			else
-                deferred.resolve(set);
-        });
-    }
-    
-    function insertContent()
-    {
-    	//console.log("insert");
-    	let add_content = new Pages
-        ({
-       	 	page_title : info.page_title,
-            page_content : info.html_text,
-            page_name : info.page_name,
-            updated_date:createdDate,
-
-        });
-        
-   	 	add_content.save((err,data)=>
-        {
-            if(err)
-            {
-				logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-            {
-               
-                deferred.resolve
-                ({
-                     information :data
-                });
-              }
-       }); 
-    	
-    }
-	
-	return deferred.promise;
-	
 }
 
 

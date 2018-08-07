@@ -44,7 +44,6 @@ router.get('/verified_candidate', verified_candidate);
 router.post('/send_refreal',refreal_email_send);
 router.post('/get_refrence_code',get_refrence_code);
 router.post('/get_candidate', get_candidate);
-router.post('/insert_message', insert_message);
 router.post('/get_messages', get_messages);
 router.post('/get_user_messages', get_user_messages);
 router.get('/all_chat' , get_chat);
@@ -67,7 +66,6 @@ router.post('/get_job_desc_msgs' , get_job_desc_msgs);
 router.post('/set_unread_msgs_emails_status' , set_unread_msgs_emails_status);
 
 /////////admin CMS fucntions////////////////////////////////
-router.put('/add_privacy_content'  , add_privacy_content);
 router.get('/get_pages_content/:title', get_content);
 router.get('/get_all_content', get_all_content);
 
@@ -690,27 +688,6 @@ function get_candidate(req, res)
     });
 }
 
-//////////inserting message in DB ////////////
-
-function insert_message(req, res) 
-{
-    userService.insert_message(req.body).then(function (data) 
-    {
-        if (data) 
-        {
-			console.log(data);
-            res.send(data);
-        } 
-        else 
-        {
-            res.sendStatus(404);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.status(400).send(err);
-    });
-}
 
 //////////get messages of a user/company from DB ////////////
 
@@ -1037,26 +1014,6 @@ function admin_company_filter(req,res)
 {
 	//console.log(req.body);
 	userService.admin_company_filter(req.body).then(function (err, data) 
-			{
-				if (data) 
-				{
-					res.json(data);
-				} 
-				else 
-				{  
-					res.send(err);
-				}
-			})
-			.catch(function (err) 
-			{
-				res.json({error: err});
-			});
-}
-
-
-function add_privacy_content(req,res)
-{
-	userService.add_privacy_content(req.body).then(function (err, data) 
 			{
 				if (data) 
 				{
