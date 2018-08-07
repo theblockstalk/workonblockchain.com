@@ -49,6 +49,8 @@ if (isLiveApplication()) {
         HOST: config.nodemailer.host,
         PORT: config.nodemailer.port
     };
+
+    settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
 }
 
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;

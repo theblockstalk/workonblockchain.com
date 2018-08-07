@@ -74,9 +74,6 @@ const logger = require('../controller/services/logger');
 
 module.exports = router;
 
-const my_url = 'http://localhost/workonblockchain.com/server/uploads/';
-
-
 
 /*********** candidate functions *********************/
 
@@ -248,10 +245,16 @@ function image(req, res)
     
     logger.debug('req.file', {file: req.file});
     let path;
-    if (req.file.filename) {
-		path = my_url+''+req.file.filename;
+    if (settings.isLiveApplication()) {
+        path = req.file.location;
     } else {
-        path = req.file.location; // for S3 bucket?
+        let pathUrl = settings.CLIENT.URL
+        path = pathUrl + req.file.location
+    }
+    if (settings.isLiveApplication()) {
+        path = req.file.location; // for S3 bucket
+    } else {
+        path = settings.FILE_URL+req.file.filename;
     }
     userService.save_image(path , req.params._id).then(function (err, about)
     {
@@ -407,11 +410,11 @@ function employer_image(req, res)
 			console.log('done new');
 			res.json(req.file.filename);
 			let path;
-			if (req.file.filename) {
-				path = my_url+''+req.file.filename;
-			} else {
-				path = req.file.location; // for S3 bucket?
-			}
+            if (settings.isLiveApplication()) {
+                path = req.file.location; // for S3 bucket
+            } else {
+                path = settings.FILE_URL+req.file.filename;
+            }
 			userService.save_employer_image(path , req.params._id).then(function (err, about) 
 
             {
@@ -758,10 +761,10 @@ function upload_chat_file(req, res)
     console.log(req.file);
     console.log('done new');
 	let path;
-	if (req.file.filename) {
-        path = my_url+''+req.file.filename;
+    if (settings.isLiveApplication()) {
+        path = req.file.location; // for S3 bucket
     } else {
-        path = req.file.location; // for S3 bucket?
+        path = settings.FILE_URL+req.file.filename;
     }
     res.json(path);
 }
