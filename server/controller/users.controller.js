@@ -5,12 +5,7 @@ const multer = require('./middleware/multer');
 
 /******** routes ****************/
 ///////authenticated routes//////
-router.put('/emailVerify/:email_hash' , emailVerify);
-router.put('/forgot_password/:email' , forgot_password);
-router.put('/change_password/:id' , change_password);
-router.put('/reset_password/:hash' , reset_password);
-router.put('/verify_client/:email' , verify_client);
-router.post('/refered_user_email' , referred_email)
+// router.post('/refered_user_email' , referred_email)
 
 ////////candidate routes//////////
 router.post('/register', register);
@@ -90,49 +85,6 @@ const my_url = 'http://localhost/workonblockchain.com/server/uploads/';
 /***********authentication functions **************/
 
 
-///////////verify_email_address////////////////////////////
-function emailVerify(req,res)
-{
-    //console.log(req.params.token);
-     userService.emailVerify(req.params.email_hash).then(function (err, data) 
-    {
-    	 //console.log(data);
-    	 console.log(err);
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-   
-
-}
-
-///////////verify////////////////////////////
-function verify_client(req,res)
-{
-    //console.log(req.params.email);
-    userService.verify_client(req.params.email).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-
-}
-
 function referred_email(req,res)
 {
 	 //console.log(req.params.email);
@@ -154,72 +106,8 @@ function referred_email(req,res)
 
 }
 
-
-/////////////change password///////////////////////
-
-function change_password(req,res)
-{
-	 userService.change_password(req.params.id , req.body).then(function (err, data) 
-			    {
-			        if (data) 
-			        {
-			            res.json(data);
-			        } 
-			        else 
-			        {  
-			           res.send(err);
-			        }
-			    })
-			    .catch(function (err) 
-			    {
-			        res.json({error: err});
-			    });
-
-}
-
-///////////forgot_password////////////////////////////
-function forgot_password(req,res)
-{
-    //console.log(req.params.email);
-     userService.forgot_password(req.params.email).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-
-}
-
 ///////////reset_password////////////////////////////
-function reset_password(req,res)
-{
-   // console.log(req.params.hash);
-     userService.reset_password(req.params.hash,req.body).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
 
-}
 
 /***********authentication functions ends**************/
 
