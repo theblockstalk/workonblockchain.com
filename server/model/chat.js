@@ -1,61 +1,59 @@
 const mongoose = require('mongoose');
+const regexes = require('./regexes');
+const enumerations = require('./enumerations');
 
-const ChatSchema = mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const ChatSchema = new Schema({
 	sender_id: 
 	{
-        type: String,
-		ref: 'User', // Is this right???
+        type: Schema.Types.ObjectId,
+		ref: 'User',
         required:true
 	},
 	receiver_id: 
 	{
+		type: Schema.Types.ObjectId,
+        ref: 'User',
+		required:true
+	},
+	message:
+	{
+		type:String,
+		required:false
+	},
+	job_title:
+	{
+		type:String
+	},
+	salary:
+	{
+		type:String
+	},
+	salary_currency: {
 		type: String,
-        ref: 'User', // Is this right???
-		required:true
+		enum: enumerations.currencies
 	},
-	sender_name: 
+	interview_or_job_commencement_date:
 	{
-		type:String,
-		required:true
-	},
-	receiver_name: 
-	{
-		type:String,
-		required:true
-	},
-	message: 
-	{
-		type:String,
-		required:true
-	},
-	job_title: 
-	{
-		type:String
-	},
-	salary: // we need to also capture currency
-	{
-		type:String
-	},
-	date_of_joining: 
-	{
-		type:String // Date
+		type:Date
 	},
 	msg_tag: 
 	{
 		type:String,
-		// enum: ['normal', 'job_offer', 'job_offer_accepted',
-		// 	'job_offer_rejected', 'interview_offer'],
-		// // TODO: complete this
+        // // TODO: complete this
+		enum: ['normal', 'job_offer', 'job_offer_accepted', 'job_offer_rejected', 'interview_offer'],
 		required: true
 	},
-	is_company_reply: 
+	candidate_accept_job_description:
 	{
-		type:Number // 0 = false, 1 = true ???
+		type:Number, // 0 = false, 1 = true
+        enum: [0, 1]
 	},
 	job_type: 
 	{
 		type:String,
-		enum: ['Full Time', 'Part Time','','Contract']
+		enum: ['Full Time', 'Part Time','Contract', '']
 	},
 	interview_location: 
 	{
@@ -63,26 +61,29 @@ const ChatSchema = mongoose.Schema({
 	},
 	interview_time: 
 	{
-		type:String
+		type: Date
 	},
 	file_name: 
 	{
-		type:String
+		type:String,
+		validate: regexes.url
 	},
 	is_job_offered: 
 	{
 		type:Number, // 0 = false, 1 = true ???
+        enum: [0, 1],
 		default:0
 	},
 	is_read: 
 	{
-		type:Number, // 0 = false, 1 = true ???
+		type:Number, // 0 = false, 1 = true
+        enum: [0, 1],
 		required:true,
 		default:0
 	},
 	date_created:
 	{
-		type: String, // Date
+		type: Date,
 		required: true
 	}
 });

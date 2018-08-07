@@ -1,26 +1,8 @@
 const mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const regexes = require('./regexes');
+const enumerations = require('./enumerations');
 
-// const customTypes = {
-//     blockchainPlatforms: {
-//         type: String,
-//         enum: ['Bitcoin', 'Ethereum']
-//         // TODO: complete this
-//     },
-//     currencies: {
-//         type: String,
-//         enum: ['� EUR', '$ USD', '� GBP']
-//     },
-//     programmingLanguages: {
-//         type: String,
-//         enum: ['PHP']
-//         // TODO: complete this
-//     },
-//     experienceYears: {
-//         type: String,
-//         match: /\d-\d/
-//     }
-// };
+const Schema = mongoose.Schema;
 
 const CandidateProfileSchema = new Schema({
     terms:
@@ -30,7 +12,7 @@ const CandidateProfileSchema = new Schema({
     marketing_emails:
     {
     	type:Boolean,
-    	default:true
+    	default:false
     },
     disable_account:
     {
@@ -47,131 +29,132 @@ const CandidateProfileSchema = new Schema({
     },
     github_account:
     {
-        type:String
+        type:String,
+        validate: regexes.url
     },
     stackexchange_account:
     {
-        type:String
+        type:String,
+        validate: regexes.url
     },
     contact_number:
     {
-        type: String,
+        type: String
     },
     nationality:
     {
         type:String,
-        // enum: ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean']
+        enum: enumerations.nationalities
     },
     image:
     {
-        type:String, // URL to file
-        // data: Buffer, // Not used anymore???
+        type: String,
+        validate: regexes.url
     },
-    // gender: // Not used anymore
-    // {
-    //     type:String,
-    // },
-    country:
+    locations:
     {
         type: [{
             type: String,
-            // enum: ['remote', 'Los Angeles']
-            // // TODO: complete this
+            enum: enumerations.workLocations
         }]
     },
     roles:
     {
         type: [{
             type: String,
-            // enum: ['Backend Developer', 'Fullstack Developer']
-            // // TODO: complete this
-        }],
+            enum: enumerations.workRoles
+        }]
     },
-    expected_salary_currency: String,
+    expected_salary_currency:
+    {
+        type: String,
+        enum: enumerations.currencies
+    },
     expected_salary:
     {
         type:Number,
-        // min: 0
+        min: 0
     },
     interest_area:
     {
         type:[{
             type: String,
-            // enum: ['Enterprise blockchain']
-            // // TODO: complete this
-        }],
+            enum: enumerations.workBlockchainInterests
+        }]
     },
     availability_day:
     {
         type:String,
-        // enum: ['1 month']
-        // // TODO: complete this
+        enum: enumerations.workAvailability
     },
-    // availability_year: // Not used???
-    // {
-    //     type:String,
-    //
-    // },
     why_work:
     {
-        type:String,
-
+        type:String
     },
     commercial_platform:
     {
-        type: [new Schema({
-            platform_name: String,
-            exp_year: String
-        })]
+        type: [{
+            platform_name: {
+                type: String,
+                enum: enumerations.blockchainPlatforms
+            },
+            exp_year: {
+                type: String,
+                enum: enumerations.experienceYears
+            }
+        }]
     },
     experimented_platform:
     {
-        type: [new Schema({
-            name: String,
-            value: String,
+        type: [{
+            name: {
+                type: String,
+                enum: enumerations.blockchainPlatforms
+            },
+            value: {
+                type: String,
+                enum: enumerations.blockchainPlatforms
+            },
             checked : Boolean
-        })]
+        }]
 
     },
     platforms:
     {
-        type: [new Schema({
-            platform_name: String,
-            exp_year: String
-        })]
+        type: [{
+            platform_name: {
+                type: String,
+                enum: enumerations.blockchainPlatforms
+            },
+            exp_year: {
+                type: String,
+                enum: enumerations.experienceYears
+            }
+        }]
     },
-    current_currency: String,
+    current_currency: {
+        type: String,
+        enum: enumerations.currencies
+    },
     current_salary:
     {
         type:Number,
-        // min: 0
+        min: 0
     },
-    languages:
+    programming_languages:
     {
-        type: [new Schema({
-            name: String,
-            value: String,
-            checked : Boolean
-        })]
+        type:[{
+            language: {
+                type: String,
+                enum: enumerations.programmingLanguages
+            },
+            exp_year: {
+                type: String,
+                enum: enumerations.experienceYears
+            }
+        }]
     },
-    experience_roles:
-    {
-        type:[new Schema({
-            platform_name: String,
-            exp_year: String
-        })]
-    },
-    // work_experience: // Are these used???
-    // {
-    //     type:Array,
-    //
-    // },
-    //  work_experience_year:
-    // {
-    //     type:Array,
-    //
-    // },
-    education:
+    education_history:
     {
         type:[new Schema({
             uniname: {
@@ -186,14 +169,10 @@ const CandidateProfileSchema = new Schema({
                 type: String,
                 required: true
             },
-            edudate: String, // Date
-            eduyear: {
-                type: String, // Number
-                required: true
-            }
+            edudate: Date
         })]
     },
-    history:
+    work_history:
     {
         type:[new Schema({
             companyname: {
@@ -208,32 +187,11 @@ const CandidateProfileSchema = new Schema({
                 type: String,
                 required: true
             },
-            descname: String,
-            startdate: {
-                type: String,
-                // enum: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                required: true
-            },
-            startyear: {
-                type: String, // Number
-                required: true
-            },
-            enddate: {
-                type: String,
-                // enum: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-            },
-            endyear: String, // Number
-            currentwork: {
-                type: String,
-                required: true
-            },
-            currentenddate: {
-                type: String,
-                // enum: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-            },
-            currentendyear: String, // Number
+            description: String,
+            startdate: Date,
+            enddate: Date,
+            currentwork: Boolean,
         })],
-    	//type:Array,
     },
     description:
     {
@@ -241,7 +199,7 @@ const CandidateProfileSchema = new Schema({
     },
     _creator : 
     { 
-        type: String, 
+        type: Schema.Types.ObjectId,
         ref: 'User' 
     },
 

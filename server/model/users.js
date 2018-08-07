@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
+const regexes = require('./regexes');
 
-const UserSchema = mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
 	email: 
 	{
 		type:String,
-		required:true,
-		unique: true
+		required:true
 	},
-	password: 
+	password_hash:
 	{
 		type:String,
 		required:true
@@ -21,6 +23,7 @@ const UserSchema = mongoose.Schema({
 	is_verify:
 	{
 		type:Number, // 0 = false, 1 = true
+		enum: [0, 1],
 		default:0
 	},
 	social_type:
@@ -31,50 +34,31 @@ const UserSchema = mongoose.Schema({
 	is_approved:
 	{	
 		type:Number, // 0 = false, 1 = true
+        enum: [0, 1],
 		required:true,
 		default:0
 	},
-	email_hash: // What is this?
-	// In staging database this = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJoYXNoIjoiZjQwZTY3N2ZlOGVlMzM2M2Y4NGI1MDczZDZmNDdmMDYiLCJlbWFpbCI6InNhZGlhLmFiYmFzQG13YW5tb2JpbGUuY29tIiwiZXhwaXJ5IjoiMjAxOC0wNy0yN1QxNzo0MToyMS42NTdaIn0.jBchvNvFMFiDW97bP8D5sV5QtLN0QU7Nf0zbYNsLJGI" for all users
-	{	
-		type:String,
-	},
-	// Need to store salt for each user
-	// passwordHash = hash(passwordPlainText + salt);
-	password_key:
+	verify_email_key:
 	{
-		type:String,
+		type:String, // This is a hash
+	},
+	forgot_password_key:
+	{
+		type:String, // This is a hash
 	},
 	ref_link:
 	{
 		type:String,
+        validate: regexes.url
 	},
 	refered_id:
 	{
-		type:String,
+		type: Schema.Types.ObjectId
 	},
-	// social_type: // This is duplicated
-	// {
-	// 	type:String
-	// },
-	// is_approved:
-	// {
-	// 	type:Number,
-	// 	required:true,
-	// 	default:0
-	// },
-	// email_hash:
-	// {
-	// 	type:String,
-    //
-	// },
-	// password_key:
-	// {
-	// 	type:String,
-	// },
 	is_admin:
 	{
 		type:Number, // 0 = false, 1 = true
+        enum: [0, 1],
 		required:true,
 		default:0
 	},	
@@ -85,7 +69,7 @@ const UserSchema = mongoose.Schema({
 	},
 	created_date:
 	{
-		type: String // Date
+		type: Date
 	}
 
 });
