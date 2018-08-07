@@ -117,14 +117,14 @@ $(function() {
 });
 
 //date picker
-$( function() {
+/*$( function() {
     $( "#datepicker" ).datepicker();
   } );
 
 $( function() {
     $( "#datepicker_b" ).datepicker();
   } );
-
+*/
 
 // select javascript here   
 
