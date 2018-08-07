@@ -12,6 +12,7 @@ import { DataService } from "../data.service";
 import {environment} from '../../environments/environment';
 const URL = environment.backend_url;
 ////console.log(URL);
+declare var $: any;
 
 @Component({
   selector: 'app-edit-candidate-profile',
@@ -68,6 +69,18 @@ export class EditCandidateProfileComponent implements OnInit {
     
   ngOnInit() 
   {
+       $(document).ready(function(){
+        $(function () {
+    $('#1step').change(function () {
+        if ($('#1step').is(':checked')) {
+            $("#input_field").hide();
+        } else {
+            $("#input_field").show();
+        }
+    }).change();
+});
+    });
+    
       this.info.nationality = -1;
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
        this.EducationForm = this._fb.group({

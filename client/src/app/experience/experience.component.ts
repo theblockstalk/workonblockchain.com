@@ -7,6 +7,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../data.service";
+declare var $: any;
 
 @Component({
   selector: 'app-experience',
@@ -47,6 +48,19 @@ export class ExperienceComponent implements OnInit
     message;
   	ngOnInit() 
     {
+
+        $(document).ready(function(){
+        $(function () {
+    $('#1step').change(function () {
+        if ($('#1step').is(':checked')) {
+            $("#input_field").hide();
+        } else {
+            $("#input_field").show();
+        }
+    }).change();
+});
+    });
+    
             this.current_currency =-1;
          this.jobData = [];
             this.eduData=[];
@@ -371,6 +385,7 @@ export class ExperienceComponent implements OnInit
 
     addNewExpRow()
     {
+     
       // control refers to your formarray
       const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
       // add new formgroup

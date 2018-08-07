@@ -397,8 +397,8 @@ export class ResumeComponent implements OnInit {
                 data => {
                 if(data && this.currentUser)
                 {
-                    //this.router.navigate(['/experience']);
-                    window.location.href = '/experience';
+                    this.router.navigate(['/experience']);
+                    //window.location.href = '/experience';
                 }
 
                 if(data.error )

@@ -13,32 +13,32 @@
     <div class="collapse navbar-collapse" id="myNavbar" >
     
       <ul class="nav navbar-nav navbar-right" >
-        <li *ngIf="!currentUser"><a href="signup"> Sign Up</a></li>
-        <li *ngIf="!currentUser"><a href="login">Login</a></li>       
-        <li *ngIf="!currentUser"><a href="referral">Referral - &pound; 500 Reward</a></li>
+        <li *ngIf="!currentUser"><a routerLink="signup"> Sign Up</a></li>
+        <li *ngIf="!currentUser"><a routerLink="login">Login</a></li>       
+        <li *ngIf="!currentUser"><a routerLink="referral">Referral - &pound; 500 Reward</a></li>
        
-        <li *ngIf="(currentUser && admin_route !== '/admin')"><a href="chat">Chat</a></li>
-        <li *ngIf="(currentUser && is_admin === 1)"><a href="admin-dashboard">Dashboard</a></li>
+        <li *ngIf="(currentUser && admin_route !== '/admin')"><a routerLink="chat">Chat</a></li>
+        <li *ngIf="(currentUser && is_admin === 1)"><a routerLink="admin-dashboard">Dashboard</a></li>
         
-        <li *ngIf="(currentUser && user_type === 'candidate'  && admin_route !== '/admin')"><a href="referral">Referral - &pound; 500 Reward</a></li>
+        <li *ngIf="(currentUser && user_type === 'candidate'  && admin_route !== '/admin')"><a routerLink="referral">Referral - &pound; 500 Reward</a></li>
         <li class="dropdown" *ngIf="(currentUser && admin_route !== '/admin')">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li *ngIf="(currentUser && user_type === 'candidate')"><a href="candidate_profile">Profile</a></li>
-        <li *ngIf="(currentUser && user_type === 'candidate')"><a href="edit_profile">Edit Profile</a></li>
-        <li *ngIf="(currentUser && user_type === 'company')"><a href="company_profile">Profile</a></li>
-        <li *ngIf="(currentUser && user_type === 'company')"><a href="edit_company_profile">Edit Profile</a></li>
-        <li *ngIf="(currentUser && user_type === 'company')"><a href="candidate-search">Search Candidate</a></li>
-         <li><a href="account-settings"><i class="icon-cog icon-right"></i>Setting</a></li>
-        <li *ngIf="currentUser"><a href="" (click)="logout()">Logout</a></li>
+            <li *ngIf="(currentUser && user_type === 'candidate')"><a routerLink="candidate_profile">Profile</a></li>
+        <li *ngIf="(currentUser && user_type === 'candidate')"><a routerLink="edit_profile">Edit Profile</a></li>
+        <li *ngIf="(currentUser && user_type === 'company')"><a routerLink="company_profile">Profile</a></li>
+        <li *ngIf="(currentUser && user_type === 'company')"><a routerLink="edit_company_profile">Edit Profile</a></li>
+        <li *ngIf="(currentUser && user_type === 'company')"><a routerLink="candidate-search">Search Candidate</a></li>
+         <li><a routerLink="account-settings"><i class="icon-cog icon-right"></i>Setting</a></li>
+        <li *ngIf="currentUser"><a routerLink="" (click)="logout()">Logout</a></li>
           </ul>
         </li>
        
         <li class="dropdown" *ngIf="(currentUser && admin_route === '/admin')">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{user_name}}<span class="caret"></span></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account<span class="caret"></span></a>
           <ul class="dropdown-menu nav-dropdown">
-            <li><a href="#"><i class="icon-user icon-right"></i>Account</a></li>
-            <li><a href="admin-account-settings"><i class="icon-cog icon-right"></i>Setting</a></li>
+            <!-- <li><a href="#"><i class="icon-user icon-right"></i>Account</a></li>-->
+            <li><a routerLink="admin-account-settings"><i class="icon-cog icon-right"></i>Setting</a></li>
             <li><a href="" (click)="logout()"><i class="icon-exit icon-right"></i>Log Out</a></li>
           </ul>
         </li>
