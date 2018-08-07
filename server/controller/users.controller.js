@@ -8,7 +8,6 @@ const multer = require('./middleware/multer');
 // router.post('/refered_user_email' , referred_email)
 
 ////////candidate routes//////////
-router.post('/register', register);
 router.get('/', getAll);
 router.get('/current/:id', getCurrent);
 router.delete('/:_id', _delete);
@@ -22,7 +21,6 @@ router.put('/refered_id/:id' , refered_id);
 router.put('/update_profile/:_id' , update_candidate_profile);
 
 ////////company routes///////////
-router.post('/create_employer', create_employer);
 router.get('/company', getCompany);
 router.get('/current_company/:id', getCurrentCompany);
 router.put('/company_wizard/:_id',company_summary);
@@ -79,53 +77,11 @@ const logger = require('../controller/services/logger');
 module.exports = router;
 
 const my_url = 'http://localhost/workonblockchain.com/server/uploads/';
-//for live
-//const my_url = 'http://workonblockchainuploads.mwancloud.com/';
-
-/***********authentication functions **************/
 
 
-function referred_email(req,res)
-{
-	 //console.log(req.params.email);
-    userService.referred_email(req.body).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-
-}
-
-///////////reset_password////////////////////////////
-
-
-/***********authentication functions ends**************/
 
 /*********** candidate functions *********************/
 
-///////to create new candidate//////////////////////////// 
-
-function register(req, res) 
-{
-    userService.create(req.body).then(function (data) 
-    {
-        res.json(data);
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-}
 
 //////////get sign-up data from db of all candidate////////////
 
@@ -362,28 +318,6 @@ function refered_id(req,res)
 /*********candidate functions end **********/
 
 /********employer functions****************/
-
-///////////Create Employer////////////////////////////
-function create_employer(req,res)
-{
-
-    userService.create_employer(req.body).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-
-}
 
 //////////get sign-up data from db of all companies////////////
 

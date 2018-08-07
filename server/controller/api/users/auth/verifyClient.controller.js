@@ -26,7 +26,7 @@ const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
 
-const verify_send_email = requir('./verifySendEmail');
+const verify_send_email = require('./verify_send_email');
 
 module.exports = function verify_client(req,res)
 {
