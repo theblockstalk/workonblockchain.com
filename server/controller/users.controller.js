@@ -4,9 +4,6 @@ var userService = require('./services/user.service');
 const multer = require('./middleware/multer');
 
 /******** routes ****************/
-///////authenticated routes//////
-// router.post('/refered_user_email' , referred_email)
-
 ////////candidate routes//////////
 router.get('/', getAll);
 router.get('/current/:id', getCurrent);
