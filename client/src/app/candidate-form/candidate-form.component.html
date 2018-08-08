@@ -37,7 +37,7 @@
                   <input type="password" #uname="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" placeholder="Password" id="password-field" name="password"  [(ngModel)]="credentials.password">
                 <p>{{pass_log}}</p>
                 <div *ngIf="uname.errors" class="alert alert-danger error-alert">
-						Password must contain 8 characters including a number and lower and upper case letter.
+						Password must contain a minimum of 8 characters including a number and lower and upper case letter.
 				</div> 
                 </div>
 
@@ -147,7 +147,7 @@
                   <input type="password" #upass="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" placeholder="Password" id="password-field1" name="password" [(ngModel)]="credentials.password">
                    <p >{{pass_log}}</p>
                    <div *ngIf="upass.errors" class="alert alert-danger error-alert">
-						Password must contain 8 characters including a number and lower and upper case letter.
+						Password must contain a minimum of 8 characters including a number and lower and upper case letter.
 				</div> 
                 </div>
 

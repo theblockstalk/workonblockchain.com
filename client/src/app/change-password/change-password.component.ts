@@ -67,7 +67,9 @@ export class ChangePasswordComponent implements OnInit {
                     else
                         {
                          this.log='';
-                         this.dataservice.changeMessage("Password Changed successfully");
+                        
+                        localStorage.setItem('password_change_msg', JSON.stringify("Your password has been successfully changed. Please log back in to continue!"));
+                         //this.dataservice.changeMessage("Password Changed successfully");
                             //console.log(data);
                             localStorage.removeItem('currentUser');
                             localStorage.removeItem('googleUser');

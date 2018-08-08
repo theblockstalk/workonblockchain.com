@@ -53,6 +53,11 @@
     {{msg}}    
  </div>
  
+ 
+<div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg!='' ">
+    {{success_msg}}    
+ </div>
+ 
 
 <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg && !close">
   <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="close_notify()">&times;</a>

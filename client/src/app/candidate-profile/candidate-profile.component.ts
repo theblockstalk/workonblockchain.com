@@ -43,6 +43,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     expected_salary;
     email;
     currentwork;
+    message;
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
@@ -82,6 +83,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     tweet_text;
   ngOnInit() 
   {     
+  
+      this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)

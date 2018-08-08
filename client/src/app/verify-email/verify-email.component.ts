@@ -14,7 +14,8 @@ export class VerifyEmailComponent implements OnInit {
   navigationExtras: NavigationExtras;
   constructor( private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: UserService,private dataservice: DataService) {
+        private authenticationService: UserService,private dataservice: DataService) 
+        {
           /*this.hash = route.snapshot.params['email_hash'];
           //console.log(this.hash);*/
              this.route.queryParams.subscribe(params => 
@@ -29,9 +30,6 @@ export class VerifyEmailComponent implements OnInit {
 
   		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       ////console.log(this.currentUser);
-       
-     
-
   			this.authenticationService.verify_email(this.hash)
             .subscribe(
                 data => 
@@ -45,13 +43,31 @@ export class VerifyEmailComponent implements OnInit {
                             this.router.navigate(['/login']);
                         }
 
-                        else
+                        else if(this.currentUser.type=="candidate")
                         {
                             this.dataservice.changeMessage(data['msg']);
                             //this.router.navigate(['/login']);
-                            this.router.navigate(["/home"]);                   
+                            this.router.navigate(["/candidate_profile"]);                   
                         }
+                        
+                        else if(this.currentUser.type=="company")
+                        {
+                            this.dataservice.changeMessage(data['msg']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/company_profile"]);                   
+                        }
+                        else
+                        {
+                            this.dataservice.errorMessage("Something getting wrong");
+                            this.router.navigate(['/login']);
+                         }
                     }
+                    
+                    else
+                    {               
+                        this.dataservice.errorMessage("Something getting wrong");
+                        this.router.navigate(['/login']);
+                     }
                     
                    /* else
                     { 
@@ -65,9 +81,33 @@ export class VerifyEmailComponent implements OnInit {
                 },
                 error => 
                 {
+                        if(!this.currentUser)
+                        {
+                            this.dataservice.errorMessage(error);
+                            this.router.navigate(['/login']);
+                        }
+
+                       else if(this.currentUser.type=="candidate")
+                        {
+                            this.dataservice.errorMessage(error);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/candidate_profile"]);                   
+                        }
+                        
+                       else if(this.currentUser.type=="company")
+                        {
+                            this.dataservice.errorMessage(error);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/company_profile"]);                   
+                        }
+                        else 
+                        {
+                            this.dataservice.errorMessage("Something getting wrong");
+                            this.router.navigate(['/login']);    
+                        }
                     //console.log("error");
-                  this.dataservice.changeMessage(error);
-                	 this.router.navigate(['/login']);
+                  //this.dataservice.changeMessage(error);
+                	// this.router.navigate(['/login']);
                 });
 
   		

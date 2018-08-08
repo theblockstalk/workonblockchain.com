@@ -1,7 +1,7 @@
 <!--Profile-inner-->
 
 <section class = "wizard_page">	
-
+   <div class="alert alert-info error-alert" *ngIf="message">{{message}}</div>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-9">
@@ -43,7 +43,7 @@
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-				 			<li>
+				 			<!-- <li>
 				 				
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 					 				<span class = "li_txt" >{{companyname}}</span>
@@ -56,6 +56,7 @@
 					 				<span class = "li_txt">{{degreename}}</span>
 				 				
 				 			</li>
+				 			-->
 
 				 			<li>
 				 			
@@ -70,6 +71,8 @@
 				 					<span class = "li_txt"> Contact Number : {{contact_number}}</span>
 				 				
 				 			</li>
+				 			
+				 			
 				 		</ul>
 				 		
 				 	</div>

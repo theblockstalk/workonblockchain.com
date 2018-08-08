@@ -1050,8 +1050,7 @@ function update_candidate_profile(_id,userParam)
 	         github_account: userParam.detail.github_account,
 	         stackexchange_account: userParam.detail.exchange_account,
 	         contact_number: userParam.detail.contact_number,
-	         nationality: userParam.detail.nationality,
-	         
+	         nationality: userParam.detail.nationality,	         
 	         country: userParam.detail.country,
 	         roles: userParam.detail.roles,
 	         interest_area: userParam.detail.interest_area,
