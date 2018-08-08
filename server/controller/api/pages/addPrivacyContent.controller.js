@@ -57,8 +57,10 @@ function add_privacy_content(info)
     Pages.findOne({ page_name: info.page_name}, function (err, data)
     {
         //console.log(data);
+
         if (err)
 		{
+
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }
@@ -118,6 +120,7 @@ function add_privacy_content(info)
                 deferred.reject(err.name + ': ' + err.message);
             }
             else
+
             {
 
                 deferred.resolve
