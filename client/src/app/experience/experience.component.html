@@ -97,7 +97,7 @@
                 <!-- Check the correct way to iterate your form array -->
                 <!-- <div *ngFor="let itemrow of ExperienceForm.controls.ExpItems.controls; let i=index"  [formGroupName]="i">-->
 				<div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
-                
+                {{itemrow.currentwork}}
               <div class="form-group col-md-4">
                 <label class="lable"><p>Company</p></label>
                   <input type="text" id="" placeholder="" formControlName="companyname" class="form-control" #company_field name="company">
@@ -128,7 +128,7 @@
             </select>
               </div>
 
-              <div class="form-group col-md-4" id="input_field">
+              <div class="form-group col-md-4" id="input_field" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork==false " >
                 <label class="lable"><p>End Date</p></label>
                  <select formControlName="enddate" class="form-control xs_input"  required name="roles"  required=""  >
             <option  *ngFor='let end_month of month'  [value]="end_month" selected>{{end_month}}</option>
@@ -143,13 +143,13 @@
                   
               </div>
 
-              <div class="form-group col-md-4">
-                <div class="checkbox mr-top">
-                  <label class = "check-label">  I currently work there
+               <div class="form-group col-md-4" >
+                <div class="checkbox mr-top" *ngFor="let current of current_work">
+                  <label class = "check-label" >  {{current.name}}
                    
-                     <input type="checkbox" id="1step" formControlName="currentwork" 
-                   name="options" 
-                   value="current" 
+                     <input type="checkbox"  formControlName="currentwork" 
+                   name="current.name" [checked]="current_work_check[i] "
+                   value="current.value" 
                     required  />
                     <span class="checkmark">
                       <div></div>

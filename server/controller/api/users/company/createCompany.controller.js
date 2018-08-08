@@ -13,6 +13,7 @@ var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../model/employer_profile');
 var md5 = require('md5');
 const chat = require('../../../../model/chat');
+const verify_send_email = require('../auth/verify_send_email');
 
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');

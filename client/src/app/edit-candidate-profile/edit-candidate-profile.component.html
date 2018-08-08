@@ -27,6 +27,11 @@
 							<legend class="scheduler-border">About You</legend>
 							
 							<div class="form-group col-md-6">
+                				<label><p class = "label-p">Email</p></label>
+                				<input type="text" class="form-control" disabled name="email" [(ngModel)]="info.email" id=""  name="email" [(ngModel)]="info.email">
+            				</div>
+							
+							<div class="form-group col-md-6">
                 				<label><p class = "label-p">First Name</p></label>
                 				<input type="text" class="form-control" name="first_name" [(ngModel)]="info.first_name" id="" placeholder="First Name"  name="first_name" [(ngModel)]="info.first_name">
             				</div>
@@ -494,7 +499,7 @@
             </select>
               </div>
 
-								<div class="form-group col-md-4" id="input_field">
+								<div class="form-group col-md-4" id="input_field" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork==false ">
                 <label class="lable"><p>End Date</p></label>
                  <select formControlName="enddate" class="form-control xs_input"  required name="roles"  required=""  >
             <option  *ngFor='let end_month of calen_month'  [value]="end_month" selected>{{end_month}}</option>
@@ -507,19 +512,22 @@
     </select>
                   
                   
+              </div>							
+								
+								<div class="form-group col-md-4" >
+                <div class="checkbox mr-top" *ngFor="let current of current_work">
+                  <label class = "check-label" >  {{current.name}}
+                   
+                     <input type="checkbox"  formControlName="currentwork" 
+                   name="current.name" [checked]="current_work_check[i] "
+                   value="current.value" 
+                    required  />
+                    <span class="checkmark">
+                      <div></div>
+                    </span>
+                  </label>
+                </div>
               </div>
-
-
-								<div class="form-group col-md-4">
-									<div class="checkbox mr-top">
-										<label class = "check-label">  I currently work there
-										<input type="checkbox" id="1step" formControlName="currentwork" name="options" value="current" (change)="onCurrentlyWork($event)" required  />
-											<span class="checkmark">
-												<div></div>
-											</span>
-										</label>
-									</div>
-								</div>
 
 								<div class="form-group col-md-12">
 									<label><p>Job description (optional)</p></label>
