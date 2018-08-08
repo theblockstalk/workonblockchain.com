@@ -27,7 +27,6 @@ try {
     app.use(sanitizer.middleware);
 
     app.use(routes);
-    app.use('/users', require('./controller/users.controller'));
 
     app.use(errorHandler);
 
