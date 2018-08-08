@@ -129,8 +129,12 @@
                 
                 
                  <div class="form-group spec-group">
-                  <input type="text" class="form-control left-input" placeholder="Country" id="country" required name="country" [(ngModel)]="credentials.country">
-
+                  <!-- <input type="text" class="form-control left-input" placeholder="Country" id="country" required name="country" [(ngModel)]="credentials.country">
+ -->			 <select class="form-control left-input"  required name="country" [(ngModel)]="credentials.country"  required="">
+              <option value="-1" disabled selected hidden >Please choose country</option>
+        
+                <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
+                </select>
                   <span><i class="fa fa-address-card-o" aria-hidden="true"></i></span>
                   <input type="text" class="form-control right-input" placeholder="Postal Code" id="post_no" required name="postal_code" [(ngModel)]="credentials.postal_code">
 

@@ -61,7 +61,7 @@ $("#example-one").on("click", function() {
 //hide step when click checkbox....
 
 
-$(function () {
+/*$(function () {
     $('#1step').change(function () {
         if ($('#1step').is(':checked')) {
             $("#input_field").hide();
@@ -69,7 +69,7 @@ $(function () {
             $("#input_field").show();
         }
     }).change();
-});
+});*/
 
 
 //show hide password

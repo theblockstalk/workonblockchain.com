@@ -46,11 +46,9 @@ export class ExperienceComponent implements OnInit
       }
 
     message;
+    current_work_check=[];
   	ngOnInit() 
     {
-
-     
-    
             this.current_currency =-1;
          this.jobData = [];
             this.eduData=[];
@@ -84,12 +82,21 @@ export class ExperienceComponent implements OnInit
                      this.term_link = '/terms-and-condition';
                   }
                 if(data.history || data.education|| data.experience_roles ||data.current_salary || data.current_currency)
-                {
-                    
+                {               
                     
                     if(data.history.length>0)
                     {
                     this.jobData = data.history; 
+                       
+                        
+                        for(let data1 of data.history)
+                        {
+                            //this.companyname = data1.companyname;
+                            this.current_work_check.push(data1.currentwork);
+                            console.log(this.current_work_check);
+                       
+                        }
+                        
                     this.ExperienceForm = this._fb.group({
                               ExpItems: this._fb.array(
                                     this.history_data()
@@ -200,6 +207,11 @@ export class ExperienceComponent implements OnInit
     currency=
     [
       "£ GBP" ,"€ EUR" , "$ USD"
+    ]
+    
+    current_work= 
+    [
+        {name:'I currently work there', value:'current', checked:false}
     ]
 
   	language_opt=
@@ -337,22 +349,7 @@ export class ExperienceComponent implements OnInit
 
     }
 
-    initExpRows_db() 
-    {
-      return this._fb.group({
-        companyname: [this.companyname],
-        positionname:[this.positionname],
-        locationname: [this.locationname],
-        descname: [this.descname] ,
-        startdate:[this.startdate],
-        startyear:[this.startyear],
-        enddate:[this.enddate],
-        endyear:[this.endyear],
-        currentwork:[this.currentwork],
-        currentenddate:[this.currentdate],
-        currentendyear:[this.currentyear]
-      });
-    }
+   
    
 
     initExpRows() 
@@ -367,7 +364,7 @@ export class ExperienceComponent implements OnInit
         startyear:[''],
         enddate:[''],
         endyear:[''],
-        currentwork:[''],
+        currentwork:[false],
         currentenddate:[this.currentdate],
         currentendyear:[this.currentyear]
       });

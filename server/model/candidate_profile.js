@@ -190,7 +190,10 @@ const CandidateProfileSchema = new Schema({
             description: String,
             startdate: Date,
             enddate: Date,
-            currentwork: Boolean,
+            currentwork: {
+                type: Boolean,
+                    required: true
+            }
         })],
     },
     description:
