@@ -16,6 +16,11 @@ const UserSchema = new Schema({
 		type:String,
 		required:true
 	},
+	salt:
+	{
+		type: String,
+		required: true
+	},
 	type:
 	{
 		type:String,
@@ -39,6 +44,10 @@ const UserSchema = new Schema({
         enum: [0, 1],
 		required:true,
 		default:0
+	},
+    jwt_token:
+	{
+		type:String,
 	},
 	verify_email_key:
 	{
