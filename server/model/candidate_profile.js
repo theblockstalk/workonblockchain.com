@@ -169,7 +169,7 @@ const CandidateProfileSchema = new Schema({
                 type: String,
                 required: true
             },
-            edudate: Date
+            eduyear: Number
         })]
     },
     work_history:
