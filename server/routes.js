@@ -39,9 +39,22 @@ const companySearchWord = require('./controller/api/users/company/searchCandidat
 const companySearchFilter = require('./controller/api/users/company/searchCandidates/filter.controller');
 const companySearchVerifiedCandidates = require('./controller/api/users/company/searchCandidates/verifiedCandidate.controller');
 
-const insertMessage = require('./controller/api/chat/insertMessage.controller');
+const chatGetCandidate = require('./controller/api/chat/getCandidate.controller');
+const chatGetChat = require('./controller/api/chat/getChat.controller');
+const chatGetMessages = require('./controller/api/chat/getMessages.controller');
+const chatGetUnreadUser = require('./controller/api/chat/getUnreadMessagesUser.controller');
+const chatGetUserMsgs = require('./controller/api/chat/getUserMessages.controller');
+const chatInsertMessage = require('./controller/api/chat/insertMessage.controller');
+const chatInsertMessageJob = require('./controller/api/chat/insertMessageJob.controller');
+const chatInsertFile = require('./controller/api/chat/insertChatFile.controller');
+const chatUpdateJobMessage = require('./controller/api/chat/updateJobMessage.controller');
+const chatUploadFile = require('./controller/api/chat/uploadChatFile.controller');
 
 const addPrivacyContent = require('./controller/api/pages/addPrivacyContent.controller');
+const chatGetJobDescMsg = require('./controller/api/users/admins/chat/getJobDescMessage.controller');
+const chatGetUnread = require('./controller/api/users/admins/chat/getUnreadMessages.controller');
+const chatSetUnreadMsgStatus = require('./controller/api/users/admins/chat/setUnreadMessageStatus.controller');
+const chatUpdateMsgStatus = require('./controller/api/users/admins/chat/updateChatMessageStatus.controller');
 
 router.get('/', healthCheck);
 {
@@ -85,16 +98,16 @@ router.get('/', healthCheck);
     router.get('/users/verified_candidate', companySearchVerifiedCandidates);
 }
 // Chat
-router.post('/users/insert_message', insertMessage);
-router.post('/users/get_candidate', get_candidate);
-router.post('/users/get_messages', get_messages);
-router.post('/users/get_user_messages', get_user_messages);
-router.get('/users/all_chat' , get_chat);
-router.post('/users/upload_chat_file/:_id', multer.single('photo'), upload_chat_file);
-router.post('/users/insert_chat_file', insert_chat_file);
-router.post('/users/insert_message_job', insert_message_job);
-router.post('/users/update_job_message', update_job_message);
-router.post('/users/get_unread_msgs_of_user', get_unread_msgs_of_user);
+router.post('/users/insert_message', chatInsertMessage);
+router.post('/users/get_candidate', chatGetCandidate);
+router.post('/users/get_messages', chatGetMessages);
+router.post('/users/get_user_messages', chatGetUserMsgs);
+router.get('/users/all_chat' , chatGetChat);
+router.post('/users/upload_chat_file/:_id', multer.single('photo'), chatUploadFile);
+router.post('/users/insert_chat_file', chatInsertFile);
+router.post('/users/insert_message_job', chatInsertMessageJob);
+router.post('/users/update_job_message', chatUpdateJobMessage);
+router.post('/users/get_unread_msgs_of_user', chatGetUnreadUser);
 
 // Pages
 router.put('/users/add_privacy_content'  , addPrivacyContent);
