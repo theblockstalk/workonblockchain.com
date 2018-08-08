@@ -26,8 +26,6 @@ const logger = require('./logger');
 var service = {};
 
 /////////referal and chat functions////////////
-service.refreal_email = refreal_email;
-service.get_refr_code = get_refr_code;
 service.get_candidate=get_candidate;
 service.get_messages = get_messages;
 service.get_user_messages = get_user_messages;
@@ -55,33 +53,6 @@ service.update_chat_msg_status=update_chat_msg_status;
 service.get_unread_msgs=get_unread_msgs;
 
 module.exports = service;
-
-
-function refreal_email(data){
-	var deferred = Q.defer();
-	referUserEmail.sendEmail(data)
-	deferred.resolve('Email has been sent successfully.');
-	return deferred.promise;
-}
-
-function get_refr_code(data){
-	var deferred = Q.defer();
-
-    users.findOne({ ref_link: data.code }, function (err, user) 
-    {
-        if (err){ 
-			logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-		}
-        else{
-        	//console.log(user);
-            deferred.resolve(user);
-        }
-    });
-	return deferred.promise;
-}
-
-
 
 function get_candidate(user_type) 
 {
@@ -612,7 +583,7 @@ function approve_users(_id , data)
 	return deferred.promise;
 }
 
-//////////////////admin can search candidate by name/////////////////
+//////////////////admin can searchCandidates candidate by name/////////////////
 
 function search_by_name(word)
 {
@@ -641,7 +612,7 @@ function search_by_name(word)
     return deferred.promise;
 }
 
-//////////////////admin can search candidate by filter/////////////////
+//////////////////admin can searchCandidates candidate by filter/////////////////
 
 function admin_candidate_filter(data)
 {
@@ -854,7 +825,7 @@ function admin_candidate_filter(data)
     	 return deferred.promise;
 }
 
-//////////////////admin can search company by name/////////////////
+//////////////////admin can searchCandidates company by name/////////////////
 
 
 function admin_search_by_name(word)
@@ -883,7 +854,7 @@ function admin_search_by_name(word)
     return deferred.promise;
 }
 
-//////////////////admin can search candidate by filter/////////////////
+//////////////////admin can searchCandidates candidate by filter/////////////////
 
 
 function admin_company_filter(data)

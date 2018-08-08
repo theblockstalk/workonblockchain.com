@@ -5,20 +5,6 @@ const multer = require('./middleware/multer');
 
 /******** routes ****************/
 
-
-//////referral and chat routes////
-router.post('/send_refreal',refreal_email_send);
-router.post('/get_refrence_code',get_refrence_code);
-router.post('/get_candidate', get_candidate);
-router.post('/get_messages', get_messages);
-router.post('/get_user_messages', get_user_messages);
-router.get('/all_chat' , get_chat);
-router.post('/upload_chat_file/:_id', multer.single('photo'), upload_chat_file);
-router.post('/insert_chat_file', insert_chat_file);
-router.post('/insert_message_job', insert_message_job);
-router.post('/update_job_message', update_job_message);
-router.post('/get_unread_msgs_of_user', get_unread_msgs_of_user);
-
 ///////admin functions//////////////////////////////////
 router.put('/admin_role', admin_role);
 router.put('/approve/:_id'  , approve_users);
@@ -36,34 +22,9 @@ router.get('/get_pages_content/:title', get_content);
 router.get('/get_all_content', get_all_content);
 
 
-const logger = require('../controller/services/logger');
-
 module.exports = router;
 
-//to send email for referral
-function refreal_email_send(req, res) {
-    userService.refreal_email(req.body).then(function (data){
-        console.log('done');
-		res.json(data);
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-}
 
-//use to get referral code of a user
-function get_refrence_code(req, res) {
-	//console.log(req.body);
-    userService.get_refr_code(req.body).then(function (data){
-        console.log('done');
-		res.json(data);
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-}
 
 //////////getting all candidates ////////////
 

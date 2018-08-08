@@ -10,7 +10,10 @@ const authForgotPassword = require('./controller/api/users/auth/forgotPassword.c
 const authChangePassword = require('./controller/api/users/auth/changePassword.controller');
 const authResetPassword = require('./controller/api/users/auth/resetPassword.controller');
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
-const authReferredEmail = require('./controller/api/users/auth/referredEmail.controller');
+
+const refReferredEmail = require('./controller/api/users/referrals/referredEmail.controller');
+const refGetReferralCode = require('./controller/api/users/referrals/getReferralCode.controller');
+const refReferral = require('./controller/api/users/referrals/referral.controller');
 
 const candidateRegister = require('./controller/api/users/candidate/register.controller');
 const candidateDelete = require('./controller/api/users/candidate/delete.controller');
@@ -32,9 +35,9 @@ const companyImage = require('./controller/api/users/company/image.controller');
 const companyUpdate = require('./controller/api/users/company/updateCompany.controller');
 const companyWizardAbout = require('./controller/api/users/company/wizard/about.controller');
 const companyWizardTnT = require('./controller/api/users/company/wizard/getSummaryTnC.controller');
-const companySearchWord = require('./controller/api/users/company/search/searchWord.controller');
-const companySearchFilter = require('./controller/api/users/company/search/filter.controller');
-const companySearchVerifiedCandidates = require('./controller/api/users/company/search/verifiedCandidate.controller');
+const companySearchWord = require('./controller/api/users/company/searchCandidates/searchWord.controller');
+const companySearchFilter = require('./controller/api/users/company/searchCandidates/filter.controller');
+const companySearchVerifiedCandidates = require('./controller/api/users/company/searchCandidates/verifiedCandidate.controller');
 
 const insertMessage = require('./controller/api/chat/insertMessage.controller');
 
@@ -49,7 +52,11 @@ router.get('/', healthCheck);
     router.put('/users/change_password/:id', authChangePassword);
     router.put('/users/reset_password/:hash', authResetPassword);
     router.put('/users/verify_client/:email', authVerifyClient);
-    router.post('/users/refered_user_email', authReferredEmail)
+
+// Referrals
+    router.post('/users/refered_user_email', refReferredEmail)
+    router.post('/users/send_refreal',refReferral);
+    router.post('/users/get_refrence_code',refGetReferralCode);
 
 // Candidates
     router.post('/users/register', candidateRegister);
@@ -79,6 +86,15 @@ router.get('/', healthCheck);
 }
 // Chat
 router.post('/users/insert_message', insertMessage);
+router.post('/users/get_candidate', get_candidate);
+router.post('/users/get_messages', get_messages);
+router.post('/users/get_user_messages', get_user_messages);
+router.get('/users/all_chat' , get_chat);
+router.post('/users/upload_chat_file/:_id', multer.single('photo'), upload_chat_file);
+router.post('/users/insert_chat_file', insert_chat_file);
+router.post('/users/insert_message_job', insert_message_job);
+router.post('/users/update_job_message', update_job_message);
+router.post('/users/get_unread_msgs_of_user', get_unread_msgs_of_user);
 
 // Pages
 router.put('/users/add_privacy_content'  , addPrivacyContent);
