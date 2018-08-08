@@ -7,6 +7,7 @@ const UserSchema = new Schema({
 	email: 
 	{
 		type:String,
+		validate: regexes.email,
         lowercase: true,
 		required:true
 	},
