@@ -28,19 +28,60 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req, res)
 {
-    userService.get_candidate(req.body.type).then(function (user)
+    approve_users(req.params._id, req.body).then(function (err, data)
     {
-        if (user)
+        if (data)
         {
-            res.send(user);
+            res.json(data);
         }
         else
         {
-            res.sendStatus(404);
+            res.send(err);
         }
     })
         .catch(function (err)
         {
-            res.status(400).send(err);
+            res.json({error: err});
         });
+}
+
+function approve_users(_id , data)
+{
+    var deferred = Q.defer();
+    //console.log(data.is_approve);
+    users.findOne({ _id: _id}, function (err, result)
+    {
+        if (err){
+            logger.error(err.message, {stack: err.stack});
+            deferred.reject(err.name + ': ' + err.message);
+        }
+        if(result)
+            admin_approval(result._id);
+
+        else
+            deferred.reject('Email Not Found');
+
+
+    });
+
+    function admin_approval(_id)
+    {
+        //console.log(_id);
+        var set =
+            {
+                is_approved: data.is_approve,
+
+            };
+        users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
+        {
+            if (err){
+                logger.error(err.message, {stack: err.stack});
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            else
+                deferred.resolve(set);
+        });
+    }
+
+    return deferred.promise;
 }
