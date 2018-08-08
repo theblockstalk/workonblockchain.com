@@ -25,9 +25,11 @@ export class HeaderComponent implements OnInit {
   user_name = 'Admin';
   setting;
   log;success;
+    success_msg;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe) 
   {
+      this.success_msg='';
       router.events.subscribe((val) => {
       if(location.path() != ''){
         this.route = location.path();
@@ -117,6 +119,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() 
   {
       this.success='';
+      this.success_msg = '';
+      this.msg='';
       if(this.currentUser)
       {
           this.dataservice.currentMessage.subscribe(message => this.msg = message);
@@ -127,6 +131,9 @@ export class HeaderComponent implements OnInit {
   
   verify_client()
   {
+      this.success_msg='';
+      this.close = "close"; 
+        localStorage.setItem('close_notify', JSON.stringify(this.close));
       if(this.currentUser.email)
       {
            this.authenticationService.verify_client(this.currentUser.email)
@@ -135,8 +142,11 @@ export class HeaderComponent implements OnInit {
                     //console.log(data);
                     if(data['msg'])
                     {
-                        this.dataservice.changeMessage('Please check your email to verify your account');
-                        //this.router.navigate(["/login"]);
+                        
+                        this.success_msg = "Please check your email to verify your account" ;
+                        setInterval(() => {  
+                                this.success_msg = "" ;
+                        }, 2000);
                         
                     }
 
@@ -159,6 +169,7 @@ export class HeaderComponent implements OnInit {
     close;
     close_notify()
     {
+        this.success_msg='';
         this.close = "close"; 
         localStorage.setItem('close_notify', JSON.stringify(this.close)); 
          

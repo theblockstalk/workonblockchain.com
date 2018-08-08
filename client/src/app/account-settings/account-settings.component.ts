@@ -28,7 +28,7 @@ export class AccountSettingsComponent implements OnInit {
   ngOnInit() 
   {
        this.inform='';
-	  this.dataservice.currentMessage.subscribe(message => this.message = message);
+	 // this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log(this.currentUser.type);
        if(this.currentUser && this.currentUser.type=='candidate')

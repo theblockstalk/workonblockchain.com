@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     code; ref_msg;
     
      message:string;
-    
+    error;
 
   constructor(private route: ActivatedRoute,
         private router: Router,
@@ -54,9 +54,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() 
   {
+      
       this.dataservice.currentMessage.subscribe(message => this.message = message);
+      this.dataservice.ecurrentMessage.subscribe(message => this.error = message);
+       setInterval(() => {  
+                                this.message = "" ;
+                                this.error = '';
+                        }, 4000);
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');    
+      this.message = JSON.parse(localStorage.getItem('password_change_msg'));
+      localStorage.removeItem('password_change_msg');    
     
   }
    reset;

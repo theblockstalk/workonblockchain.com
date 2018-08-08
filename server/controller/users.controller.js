@@ -4,16 +4,7 @@ var userService = require('./services/user.service');
 const multer = require('./middleware/multer');
 
 /******** routes ****************/
-///////authenticated routes//////
-router.put('/emailVerify/:email_hash' , emailVerify);
-router.put('/forgot_password/:email' , forgot_password);
-router.put('/change_password/:id' , change_password);
-router.put('/reset_password/:hash' , reset_password);
-router.put('/verify_client/:email' , verify_client);
-router.post('/refered_user_email' , referred_email)
-
 ////////candidate routes//////////
-router.post('/register', register);
 router.get('/', getAll);
 router.get('/current/:id', getCurrent);
 router.delete('/:_id', _delete);
@@ -27,7 +18,6 @@ router.put('/refered_id/:id' , refered_id);
 router.put('/update_profile/:_id' , update_candidate_profile);
 
 ////////company routes///////////
-router.post('/create_employer', create_employer);
 router.get('/company', getCompany);
 router.get('/current_company/:id', getCurrentCompany);
 router.put('/company_wizard/:_id',company_summary);
@@ -51,7 +41,6 @@ router.get('/verified_candidate', verified_candidate);
 router.post('/send_refreal',refreal_email_send);
 router.post('/get_refrence_code',get_refrence_code);
 router.post('/get_candidate', get_candidate);
-router.post('/insert_message', insert_message);
 router.post('/get_messages', get_messages);
 router.post('/get_user_messages', get_user_messages);
 router.get('/all_chat' , get_chat);
@@ -74,7 +63,6 @@ router.post('/get_job_desc_msgs' , get_job_desc_msgs);
 router.post('/set_unread_msgs_emails_status' , set_unread_msgs_emails_status);
 
 /////////admin CMS fucntions////////////////////////////////
-router.put('/add_privacy_content'  , add_privacy_content);
 router.get('/get_pages_content/:title', get_content);
 router.get('/get_all_content', get_all_content);
 
@@ -83,161 +71,9 @@ const logger = require('../controller/services/logger');
 
 module.exports = router;
 
-const my_url = 'http://localhost/workonblockchain.com/server/uploads/';
-//for live
-//const my_url = 'http://workonblockchainuploads.mwancloud.com/';
-
-/***********authentication functions **************/
-
-
-///////////verify_email_address////////////////////////////
-function emailVerify(req,res)
-{
-    //console.log(req.params.token);
-     userService.emailVerify(req.params.email_hash).then(function (err, data) 
-    {
-    	 //console.log(data);
-    	 console.log(err);
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-   
-
-}
-
-///////////verify////////////////////////////
-function verify_client(req,res)
-{
-    //console.log(req.params.email);
-    userService.verify_client(req.params.email).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-
-}
-
-function referred_email(req,res)
-{
-	 //console.log(req.params.email);
-    userService.referred_email(req.body).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-
-}
-
-
-/////////////change password///////////////////////
-
-function change_password(req,res)
-{
-	 userService.change_password(req.params.id , req.body).then(function (err, data) 
-			    {
-			        if (data) 
-			        {
-			            res.json(data);
-			        } 
-			        else 
-			        {  
-			           res.send(err);
-			        }
-			    })
-			    .catch(function (err) 
-			    {
-			        res.json({error: err});
-			    });
-
-}
-
-///////////forgot_password////////////////////////////
-function forgot_password(req,res)
-{
-    //console.log(req.params.email);
-     userService.forgot_password(req.params.email).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-
-}
-
-///////////reset_password////////////////////////////
-function reset_password(req,res)
-{
-   // console.log(req.params.hash);
-     userService.reset_password(req.params.hash,req.body).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-
-}
-
-/***********authentication functions ends**************/
 
 /*********** candidate functions *********************/
 
-///////to create new candidate//////////////////////////// 
-
-function register(req, res) 
-{
-    userService.create(req.body).then(function (data) 
-    {
-        res.json(data);
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-}
 
 //////////get sign-up data from db of all candidate////////////
 
@@ -406,10 +242,16 @@ function image(req, res)
     
     logger.debug('req.file', {file: req.file});
     let path;
-    if (req.file.filename) {
-		path = my_url+''+req.file.filename;
+    if (settings.isLiveApplication()) {
+        path = req.file.location;
     } else {
-        path = req.file.location; // for S3 bucket?
+        let pathUrl = settings.CLIENT.URL
+        path = pathUrl + req.file.location
+    }
+    if (settings.isLiveApplication()) {
+        path = req.file.location; // for S3 bucket
+    } else {
+        path = settings.FILE_URL+req.file.filename;
     }
     userService.save_image(path , req.params._id).then(function (err, about)
     {
@@ -474,28 +316,6 @@ function refered_id(req,res)
 /*********candidate functions end **********/
 
 /********employer functions****************/
-
-///////////Create Employer////////////////////////////
-function create_employer(req,res)
-{
-
-    userService.create_employer(req.body).then(function (err, data) 
-    {
-        if (data) 
-        {
-            res.json(data);
-        } 
-        else 
-        {  
-           res.send(err);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.json({error: err});
-    });
-
-}
 
 //////////get sign-up data from db of all companies////////////
 
@@ -587,11 +407,11 @@ function employer_image(req, res)
 			console.log('done new');
 			res.json(req.file.filename);
 			let path;
-			if (req.file.filename) {
-				path = my_url+''+req.file.filename;
-			} else {
-				path = req.file.location; // for S3 bucket?
-			}
+            if (settings.isLiveApplication()) {
+                path = req.file.location; // for S3 bucket
+            } else {
+                path = settings.FILE_URL+req.file.filename;
+            }
 			userService.save_employer_image(path , req.params._id).then(function (err, about) 
 
             {
@@ -868,27 +688,6 @@ function get_candidate(req, res)
     });
 }
 
-//////////inserting message in DB ////////////
-
-function insert_message(req, res) 
-{
-    userService.insert_message(req.body).then(function (data) 
-    {
-        if (data) 
-        {
-			console.log(data);
-            res.send(data);
-        } 
-        else 
-        {
-            res.sendStatus(404);
-        }
-    })
-    .catch(function (err) 
-    {
-        res.status(400).send(err);
-    });
-}
 
 //////////get messages of a user/company from DB ////////////
 
@@ -959,10 +758,10 @@ function upload_chat_file(req, res)
     console.log(req.file);
     console.log('done new');
 	let path;
-	if (req.file.filename) {
-        path = my_url+''+req.file.filename;
+    if (settings.isLiveApplication()) {
+        path = req.file.location; // for S3 bucket
     } else {
-        path = req.file.location; // for S3 bucket?
+        path = settings.FILE_URL+req.file.filename;
     }
     res.json(path);
 }
@@ -1215,26 +1014,6 @@ function admin_company_filter(req,res)
 {
 	//console.log(req.body);
 	userService.admin_company_filter(req.body).then(function (err, data) 
-			{
-				if (data) 
-				{
-					res.json(data);
-				} 
-				else 
-				{  
-					res.send(err);
-				}
-			})
-			.catch(function (err) 
-			{
-				res.json({error: err});
-			});
-}
-
-
-function add_privacy_content(req,res)
-{
-	userService.add_privacy_content(req.body).then(function (err, data) 
 			{
 				if (data) 
 				{
