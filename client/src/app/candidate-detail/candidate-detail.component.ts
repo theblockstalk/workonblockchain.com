@@ -137,7 +137,7 @@ export class CandidateDetailComponent implements OnInit {
 			this.authenticationService.getCurrentCompany(this.currentUser._creator)
             .subscribe(
                 data => {
-                    this.company_name = data[0].first_name+' '+data[0].last_name;
+                    this.company_name = data[0].company_name;
                 },
                 error => {
                     //console.log('error');

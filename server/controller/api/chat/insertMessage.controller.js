@@ -30,7 +30,7 @@ const logger = require('../../services/logger');
 
 module.exports = function insert_message(req, res)
 {
-    insert_message(req.body).then(function (data)
+    insert_message_new(req.body).then(function (data)
     {
         if (data)
         {
@@ -48,7 +48,7 @@ module.exports = function insert_message(req, res)
         });
 }
 
-function insert_message(data){
+function insert_message_new(data){
     var current_date = new Date();
     var day = current_date.getDate();
     if(day < 10){
@@ -87,6 +87,8 @@ function insert_message(data){
         is_company_reply: data.is_company_reply,
         job_type: data.job_type,
         is_read: 0,
+		interview_location: data.interview_location,
+		interview_time: data.interview_time,
         date_created: my_date
     });
 

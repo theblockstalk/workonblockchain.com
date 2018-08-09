@@ -220,8 +220,7 @@ export class CompanySearchComponent implements OnInit {
                       this.is_approved = data._creator.is_approved;
 
        
-                
-				this.display_name = data.first_name+' '+data.last_name;
+                this.display_name = data.company_name;
                 this.is_approved = data._creator.is_approved;
 
                 //console.log(this.is_approved);
