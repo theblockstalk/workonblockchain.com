@@ -115,7 +115,7 @@ export class CandidateDetailComponent implements OnInit {
                     {
                         this.degreename = edu.degreename;
                     }
-                    this.countries = data[0].country;
+                    this.countries = data[0].locations;
                     this.interest_area =data[0].interest_area;
                     this.availability_day =data[0].availability_day;
                     this.why_work = data[0].why_work;

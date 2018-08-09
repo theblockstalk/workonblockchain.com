@@ -78,12 +78,12 @@ export class JobComponent implements OnInit {
                       this.term_link = '/terms-and-condition';
                   }
 
-                if(data.country && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
+                if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
                 {
                     this.active_class = 'fa fa-check-circle text-success';
                     this.class = "btn";
                    
-                     for (let country1 of data.country) 
+                     for (let country1 of data.locations) 
                      {
                       
                       for(let option of this.options)
@@ -142,7 +142,7 @@ export class JobComponent implements OnInit {
                     this.resume_disable ='';
                     this.resume_class="/resume";
 
-                    if(data.country && data.roles && data.interest_area || data.expected_salary || data.availability_day )
+                    if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day )
                   {
                       this.job_active_class = 'fa fa-check-circle text-success';
                         this.resume_class="/resume";
@@ -271,7 +271,7 @@ export class JobComponent implements OnInit {
 
   year=
     [
-      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
+      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991"
     ]
     month= ["Now","1 month","2 months","3 months","Longer than 3 months"]
 

@@ -30,12 +30,12 @@
 
               <div class="form-group col-md-6">
                 <label><p class = "label-p">Github account URL</p></label>
-                <input type="text" class="form-control" id="" placeholder="Github account (optional)"  name="github_account" [(ngModel)]="info.github_account">
+                <input type="text" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="" placeholder="Github account (optional)"  name="github_account" [(ngModel)]="info.github_account">
             </div>
 
             <div class="form-group col-md-6">
               <label><p class = "label-p">Stackexchange account URL</p></label>
-                <input type="text" class="form-control" id="" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account">
+                <input type="text" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account">
             </div>
 
             <div class="form-group col-md-6">

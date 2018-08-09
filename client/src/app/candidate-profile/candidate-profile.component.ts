@@ -127,7 +127,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                {
                         this.router.navigate(['/about']);
                }
-               else if(data.country.length < 1  && data.roles.length < 1 && data.interest_area.length < 1 || !data.expected_salary)
+               else if(data.locations.length < 1  && data.roles.length < 1 && data.interest_area.length < 1 || !data.expected_salary)
                {
                  
                     this.router.navigate(['/job']); 
@@ -140,18 +140,18 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 {
                     this.router.navigate(['/resume']);
                 }*/
-                //////console.log(data.experience_roles.length);
-                else if(!data.experience_roles &&  !data.current_salary  || data.experience_roles.length <1 )
+                //////console.log(data.programming_languages.length);
+                else if(!data.programming_languages &&  !data.current_salary  || data.programming_languages.length <1 )
                 {
                         this.router.navigate(['/experience']);
                 }
-                else if(data.history.length < 1 || !data.history.length )
+                else if(data.work_history.length < 1 || !data.work_history.length )
                 {
                     this.dataservice.changeMessage("Please enter atleast one work history record");
                     this.router.navigate(['/experience']);              
                 }
                     
-                else if(data.education.length < 1 || !data.education.length )
+                else if(data.education_history.length < 1 || !data.education_history.length )
                 {
                     this.dataservice.changeMessage("Please enter atleast one education record");
                     this.router.navigate(['/experience']);
@@ -180,27 +180,27 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     this.nationality = data.nationality;
                     this.contact_number =data.contact_number;
                     this.description =data.description;
-                    this.history =data.history;
-                    this.education = data.education;
+                    this.history =data.work_history;
+                    this.education = data.education_history;
                     
-                    for(let data1 of data.history)
+                    for(let data1 of data.work_history)
                     {
                         this.companyname = data1.companyname;
                         this.currentwork = data1.currentwork;
                        
                     }
-                    for(let edu of data.education)
+                    for(let edu of data.education_history)
                     {
                         this.degreename = edu.degreename;
                     }
-                    this.countries = data.country;
+                    this.countries = data.locations;
                     this.interest_area =data.interest_area;
                     this.roles  = data.roles;
                     this.availability_day =data.availability_day;
                     this.why_work = data.why_work;
                     this.commercial = data.commercial_platform;
                     this.experimented = data.experimented_platform;
-                    this.languages= data.experience_roles;
+                    this.languages= data.programming_languages;
                     this.current_currency = data.current_currency;
                     this.current_salary = data.current_salary;
 

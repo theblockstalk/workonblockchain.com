@@ -58,6 +58,10 @@ function create(userParam)
         }
 
         let now = new Date();
+		let salt = crypto.randomBytes(20);
+		let hash = crypto.createHmac('sha512', salt);
+		hash.update(userParam.password);
+		let hashedPasswordAndSalt = hash.digest('hex');
         createdDate= date.format(now, 'DD/MM/YYYY');
         var hashStr = crypto.createHash('md5').update(userParam.email).digest('hex');
         var user_info = {};
@@ -69,24 +73,28 @@ function create(userParam)
         user_info.token = token;
         //console.log(user_info);
         // set user object to userParam without the cleartext password
-        var user = _.omit(userParam, 'password');
-        var salt = bcrypt.genSaltSync(10);
+        //var user = _.omit(userParam, 'password');
+        //var salt = bcrypt.genSaltSync(10);
         // add hashed password to user object
-        user.password = bcrypt.hashSync(userParam.password, salt);
+        //user.password = bcrypt.hashSync(userParam.password, salt);
         email = userParam.email;
         email = email.split("@");
         email = md5(email[0]);
         email = md5(email);
+        let refered_id= 0;
         let newUser = new users
         ({
             email: userParam.email,
-            password: user.password,
+            password_hash: hashedPasswordAndSalt,
+			salt : salt,
             type: userParam.type,
             ref_link: email,
             social_type: userParam.social_type,
-            email_hash: token,
+            verify_email_key: token,
+            jwt_token:user_info.token,
             is_verify:is_verify,
             created_date: createdDate,
+            refered_id : refered_id,
         });
 
         newUser.save( (err,user) =>
@@ -103,35 +111,35 @@ function create(userParam)
                         _creator : newUser._id
                     });
 
-        info.save((err,user)=>
-        {
-            if(err)
-            {
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-            {
-                if(newUser.social_type == "")
-        {
-            verify_send_email(user_info);
-        }
-        deferred.resolve
-        ({
-            _id:user.id,
-            _creator: newUser._id,
-            email_hash:newUser.email_hash,
-            type:newUser.type,
-            email: newUser.email,
-            ref_link: newUser.ref_link,
-            type: newUser.type,
-            is_approved : user.is_approved,
-            token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
+                    info.save((err,user)=>
+                    {
+                    	if(err)
+                    	{
+                    		logger.error(err.message, {stack: err.stack});
+                    		deferred.reject(err.name + ': ' + err.message);
+                    	}
+                    	else
+                    	{
+                    		if(newUser.social_type == "")
+                    		{	
+                    			verify_send_email(user_info);
+                    		}
+                    		deferred.resolve
+                    		({
+                    			_id:user.id,
+                    			_creator: newUser._id,
+                    			email_hash:newUser.email_hash,
+                    			type:newUser.type,
+                    			email: newUser.email,
+                    			ref_link: newUser.ref_link,
+                    			type: newUser.type,
+                    			is_approved : user.is_approved,
+                    			token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
+                    		});
+                    	}
+                    });
+                }
         });
-    }
-    });
-    }
-    });
     }
 
     return deferred.promise;

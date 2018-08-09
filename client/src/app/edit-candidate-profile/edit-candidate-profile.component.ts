@@ -125,9 +125,9 @@ export class EditCandidateProfileComponent implements OnInit {
                                
                 }
                 
-                if(data.country && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
+                if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
                 {
-                    for (let country1 of data.country) 
+                    for (let country1 of data.locations) 
                      {
                       
                       for(let option of this.options)
@@ -307,14 +307,14 @@ export class EditCandidateProfileComponent implements OnInit {
                 }
                 
                 /////////////////experience////////////////////////
-                if(data.history && data.education|| data.experience_roles&&data.current_salary && data.current_currency)
+                if(data.work_history && data.education_history|| data.programming_languages&&data.current_salary && data.current_currency)
                 {
                     
                    
                     
-                    this.jobData = data.history; 
+                    this.jobData = data.work_history; 
                     
-                     for(let data1 of data.history)
+                     for(let data1 of data.work_history)
                         {
                             //this.companyname = data1.companyname;
                             this.current_work_check.push(data1.currentwork);
@@ -328,17 +328,17 @@ export class EditCandidateProfileComponent implements OnInit {
                           ) 
                           });
                  
-                    this.eduData = data.education; 
+                    this.eduData = data.education_history; 
                     this.EducationForm = this._fb.group({
                           itemRows: this._fb.array(
                                     this.education_data()
                           )
                         });
-                        //this.exp_data.push(data.experience_roles) ;
-                       if(data.experience_roles)
+                        //this.exp_data.push(data.programming_languages) ;
+                       if(data.programming_languages)
                        {
-                           this.LangexpYear = data.experience_roles;
-                      for (let key of data.experience_roles) 
+                           this.LangexpYear = data.programming_languages;
+                      for (let key of data.programming_languages) 
                       {
                         for(var i in key)
                         {
@@ -827,7 +827,7 @@ export class EditCandidateProfileComponent implements OnInit {
       if(index > -1)
       {
         this.language.splice(index, 1);
-        let updateItem2 = this.findObjectByKey(this.LangexpYear, 'platform_name', obj.value);
+        let updateItem2 = this.findObjectByKey(this.LangexpYear, 'language', obj.value);
           ////console.log(updateItem);
         let index2 = this.LangexpYear.indexOf(updateItem2);
 
@@ -992,7 +992,7 @@ export class EditCandidateProfileComponent implements OnInit {
         
         
         
-      let updateItem = this.findObjectByKey(this.LangexpYear, 'platform_name', value);
+      let updateItem = this.findObjectByKey(this.LangexpYear, 'language', value);
        ////console.log(updateItem);
       let index = this.LangexpYear.indexOf(updateItem);
 
@@ -1001,7 +1001,7 @@ export class EditCandidateProfileComponent implements OnInit {
           
         this.LangexpYear.splice(index, 1);
         this.value=value;
-        this.referringData = { platform_name:this.value, exp_year: e.target.value};  
+        this.referringData = { language:this.value, exp_year: e.target.value};  
         this.LangexpYear.push(this.referringData); 
         ////console.log(this.LangexpYear); 
         
@@ -1010,7 +1010,7 @@ export class EditCandidateProfileComponent implements OnInit {
       {   
       ////console.log("not exists");
         this.value=value;
-        this.referringData = { platform_name:this.value, exp_year: e.target.value};  
+        this.referringData = { language:this.value, exp_year: e.target.value};  
         this.LangexpYear.push(this.referringData); 
         ////console.log(this.LangexpYear); 
         
