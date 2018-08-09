@@ -57,7 +57,6 @@ const chatUploadFile = require('./controller/api/chat/uploadChatFile.controller'
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
 const adminChatGetJobDescMsg = require('./controller/api/users/admins/chat/getJobDescMessage.controller');
-const adminChatGetUnread = require('./controller/api/users/admins/chat/getUnreadMessages.controller');
 const adminChatSetUnreadMsgStatus = require('./controller/api/users/admins/chat/setUnreadMessageStatus.controller');
 const adminChatUpdateMsgStatus = require('./controller/api/users/admins/chat/updateChatMessageStatus.controller');
 const adminRoll = require('./controller/api/users/admins/adminRoll.controller');
@@ -132,7 +131,6 @@ router.post('/users/admin_candidate_filter' , adminCandidateFilter);
 router.post('/users/admin_search_by_name' , adminCompanySearch);
 router.post('/users/admin_company_filter' , adminComanyFilter);
 router.post('/users/update_chat_msg_status' , adminChatUpdateMsgStatus);
-router.get('/users/get_unread_msgs' , adminChatGetUnread);
 router.post('/users/get_job_desc_msgs' , adminChatGetJobDescMsg);
 router.post('/users/set_unread_msgs_emails_status' , adminChatSetUnreadMsgStatus);
 router.put('/users/add_privacy_content'  , adminAddPrivacyContent);

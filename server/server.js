@@ -10,6 +10,7 @@ const logger = require('./controller/services/logger');
 const sanitizer = require('./controller/middleware/sanitizer');
 const errorHandler = require('./controller/middleware/errorHandler');
 const routes = require('./routes');
+const cron = require('./cron');
 
 try {
     logger.debug('settings', settings);
@@ -29,6 +30,8 @@ try {
     app.use(routes);
 
     app.use(errorHandler);
+
+    cron.startCron();
 
     mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
