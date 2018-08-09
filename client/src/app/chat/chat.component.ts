@@ -394,7 +394,7 @@ export class ChatComponent implements OnInit {
   
   send_interview_message(msgForm : NgForm){
 	  if(this.credentials.date && this.credentials.time && this.credentials.location){
-          console.log('interview');
+          //console.log('interview');
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
           this.is_company_reply = 1;
           this.msg_tag = 'interview_offer';
@@ -407,6 +407,9 @@ export class ChatComponent implements OnInit {
             .subscribe(
                 data => {
                     //console.log(data);
+					this.date_of_joining = '';
+					this.interview_location  = '';
+					this.interview_time = '';
                     this.credentials.msg_body = '';
                     this.interview_log = 'Message has been successfully sent';
                     this.credentials.date = '';
