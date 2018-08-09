@@ -41,9 +41,9 @@ const ChatSchema = new Schema({
 		enum: ['normal', 'job_offer', 'job_offer_accepted', 'job_offer_rejected', 'interview_offer'],
 		required: true
 	},
-    job_offer_time:
+    job_offer_date:
 	{
-		type: Date
+		type: Date // Date when the candidate starts a job, sent in the job offer
 	},
 	job_type: 
 	{
@@ -56,7 +56,7 @@ const ChatSchema = new Schema({
 	},
 	interview_time: 
 	{
-		type: Date
+		type: Date // Date and time for interview offer
 	},
 	file_name: 
 	{
@@ -66,7 +66,8 @@ const ChatSchema = new Schema({
 	is_job_offered: 
 	{
 		type:Number,
-        enum: [1, 2, 3],
+        enum: [0, 1, 2, 3],
+		// 0 = no offer to candidate
         // 1 = job offered
         // 2 = job offer accepted by candidate
         // 3 = job offer rejected by candidate
