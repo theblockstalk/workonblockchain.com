@@ -96,7 +96,7 @@ function filter(params)
 
             if(params.skill !== -1 )
             {
-                const skillsFilter = {"experience_roles.platform_name" :  params.skill};
+                const skillsFilter = {"programming_languages.language" :  params.skill};
                 queryString.push(skillsFilter);
 
             }

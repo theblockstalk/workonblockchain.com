@@ -351,9 +351,9 @@ export class CompanySearchComponent implements OnInit {
                         //this.info = data; 
                         for(let res of this.information)
                         {
-                          if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history  
-                             && res.interest_area  && res.country && res.disable_account == false )
+                          if(res.first_name && res.roles && res.why_work && res.programming_languages && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education_history && res.work_history  
+                             && res.interest_area  && res.locations )
                             {
                                //console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
@@ -468,11 +468,12 @@ export class CompanySearchComponent implements OnInit {
                         this.info=[];
                         //this.info = data;
                         ////console.log(this.info);
+                        console.log(data);
                         for(let res of data)
                         {
-                            if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history  
-                             && res.interest_area  && res.country )
+                            if(res.first_name && res.roles && res.why_work && res.programming_languages && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education_history && res.work_history  
+                             && res.interest_area  && res.locations )
                             {
                                 //console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
@@ -556,8 +557,8 @@ export class CompanySearchComponent implements OnInit {
                          //console.log(this.info);
                          for(let res of this.informations)
                         {
-                          if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history 
+                          if(res.first_name && res.roles && res.why_work && res.programming_languages && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education_work_history && res.work_history 
                              && res.interest_area  && res.country )
                             {
                                //console.log(res._creator._id);

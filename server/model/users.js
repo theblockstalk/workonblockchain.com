@@ -62,11 +62,11 @@ const UserSchema = new Schema({
 		type:String,
        // validate: regexes.url
 	},
-	/*refered_id:
+	refered_id:
 	{
 		type: Schema.Types.ObjectId,
 		//required:false,
-	},*/
+	},
 	is_admin:
 	{
 		type:Number, // 0 = false, 1 = true

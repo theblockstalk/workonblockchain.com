@@ -42,8 +42,12 @@ export class ExperienceComponent implements OnInit
       private history_data(): FormGroup[] 
       {
           return this.jobData
-          .map(i => this._fb.group({ companyname: i.companyname , positionname : i.positionname, locationname:i.locationname, descname:i.descname,startdate:i.startdate, start_date:i.start_date , startyear: i.startyear , enddate:i.enddate, end_date:i.end_date , endyear:i.endyear , currentwork: i.currentwork} ));
+          .map(i => this._fb.group({ companyname: i.companyname , positionname : i.positionname, locationname:i.locationname, descname:i.descname,startdate:i.startdate, start_date:this.monthNumToName(this.datePipe.transform(i.startdate, 'MM') )/*this.datePipe.transform(i.startdate, 'MM') */, startyear: this.datePipe.transform(i.startdate, 'yyyy') , enddate :i.enddate , end_date:this.monthNumToName(this.datePipe.transform(i.enddate, 'MM')) , endyear:this.datePipe.transform(i.enddate, 'yyyy') , currentwork: i.currentwork} ));
       }
+   
+   monthNumToName(monthnum) {     
+    return this.month[monthnum-2] || '';
+}
 
     message;
     current_work_check=[];
@@ -52,7 +56,7 @@ export class ExperienceComponent implements OnInit
             this.current_currency =-1;
          this.jobData = [];
             this.eduData=[];
-       this.dataservice.currentMessage.subscribe(message => this.message = message);
+      // this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.shown=true;
       //this.currentdate = this.datePipe.transform(this.today, 'MMM');
@@ -87,9 +91,9 @@ export class ExperienceComponent implements OnInit
                     if(data.work_history.length>0)
                     {
                         this.jobData = data.work_history; 
-                        console.log(this.jobData);
-                        console.log(this.jobData[0].startdate);
-                        console.log(this.datePipe.transform(this.jobData[0].startdate, 'yyyy'));
+                       // console.log(this.jobData);
+                        //console.log(this.jobData[0].startdate);
+                       // console.log(this.datePipe.transform(((this.jobData[0].startdate)+1), 'MMMM'));
                         
                        
                         for(let data1 of data.work_history)
@@ -517,6 +521,7 @@ export class ExperienceComponent implements OnInit
                 this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);    
                 this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].descname,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork}; 
                 this.experiencearray.push(this.experiencejson);
+                //console.log(this.experiencearray);
 
             }
          

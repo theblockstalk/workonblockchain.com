@@ -84,7 +84,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   ngOnInit() 
   {     
   
-      this.dataservice.currentMessage.subscribe(message => this.message = message);
+      this.dataservice.eemailMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
@@ -147,13 +147,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 }
                 else if(data.work_history.length < 1 || !data.work_history.length )
                 {
-                    this.dataservice.changeMessage("Please enter atleast one work history record");
+                   // this.dataservice.changeMessage("Please enter atleast one work history record");
                     this.router.navigate(['/experience']);              
                 }
                     
                 else if(data.education_history.length < 1 || !data.education_history.length )
                 {
-                    this.dataservice.changeMessage("Please enter atleast one education record");
+                    //this.dataservice.changeMessage("Please enter atleast one education record");
                     this.router.navigate(['/experience']);
                     
                 }
@@ -182,7 +182,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     this.description =data.description;
                     this.history =data.work_history;
                     this.education = data.education_history;
-                    
+                    console.log(data.work_history);
                     for(let data1 of data.work_history)
                     {
                         this.companyname = data1.companyname;
