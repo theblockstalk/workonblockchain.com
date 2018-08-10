@@ -30,7 +30,7 @@ const logger = require('../../services/logger');
 
 module.exports = function insert_message(req, res)
 {
-    insert_message(req.body).then(function (data)
+    insert_message_new(req.body).then(function (data)
     {
         if (data)
         {
@@ -48,8 +48,12 @@ module.exports = function insert_message(req, res)
         });
 }
 
-function insert_message(data){
-    var current_date = new Date();
+function insert_message_new(data){
+	interview_date = '';
+	if(data.msg_tag == 'interview_offer'){
+		interview_date = data.date_of_joining+' '+data.interview_time+':00';
+	}
+	var current_date = new Date();
     var day = current_date.getDate();
     if(day < 10){
         day = '0'+day;
@@ -82,11 +86,14 @@ function insert_message(data){
         message: data.message,
         job_title: data.job_title,
         salary: data.salary,
-        date_of_joining: data.date_of_joining,
+		salary_currency: data.currency,
+        date_of_joining: '',
         msg_tag: data.msg_tag,
         is_company_reply: data.is_company_reply,
         job_type: data.job_type,
         is_read: 0,
+		interview_location: data.interview_location,
+		interview_date_time: interview_date,
         date_created: my_date
     });
 

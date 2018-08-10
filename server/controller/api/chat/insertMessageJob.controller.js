@@ -27,7 +27,7 @@ const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
 module.exports = function insert_message_job(req,res){
-    insert_message_job(req.body).then(function (err, about)
+    insert_message_job_new(req.body).then(function (err, about)
     {
         if (about)
         {
@@ -44,7 +44,7 @@ module.exports = function insert_message_job(req,res){
         });
 }
 
-function insert_message_job(data){
+function insert_message_job_new(data){
     var current_date = new Date();
     var day = current_date.getDate();
     if(day < 10){
@@ -78,6 +78,7 @@ function insert_message_job(data){
         message: data.message,
         job_title: data.job_title,
         salary: data.salary,
+		salary_currency: data.currency,
         date_of_joining: data.date_of_joining,
         msg_tag: data.msg_tag,
         is_company_reply: data.is_company_reply,

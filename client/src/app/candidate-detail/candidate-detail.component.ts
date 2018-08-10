@@ -137,7 +137,7 @@ export class CandidateDetailComponent implements OnInit {
 			this.authenticationService.getCurrentCompany(this.currentUser._creator)
             .subscribe(
                 data => {
-                    this.company_name = data[0].first_name+' '+data[0].last_name;
+                    this.company_name = data[0].company_name;
                 },
                 error => {
                     //console.log('error');
@@ -159,7 +159,7 @@ export class CandidateDetailComponent implements OnInit {
   job_offer_msg;
   full_name;
   send_job_offer(msgForm : NgForm){
-		this.full_name = this.first_name+' '+this.last_name;
+	    this.full_name = this.first_name+' '+this.last_name;
         if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
@@ -174,8 +174,7 @@ export class CandidateDetailComponent implements OnInit {
 						this.msg_tag = 'job_offer';
 						this.is_company_reply = 0;
 						this.msg_body = this.credentials.job_desc;
-						this.credentials.salary = this.credentials.salary+' '+this.credentials.currency;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
 							.subscribe(
 								data => {
 									//console.log(data);

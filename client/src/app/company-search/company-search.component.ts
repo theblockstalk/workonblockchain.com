@@ -221,7 +221,7 @@ export class CompanySearchComponent implements OnInit {
 
        
                 
-				this.display_name = data.first_name+' '+data.last_name;
+				this.display_name = data.company_name;
                 this.is_approved = data._creator.is_approved;
 
                 //console.log(this.is_approved);
@@ -641,8 +641,7 @@ export class CompanySearchComponent implements OnInit {
 						this.msg_tag = 'job_offer';
 						this.is_company_reply = 0;
 						this.msg_body = this.credentials.job_desc;
-						this.credentials.salary = this.credentials.salary+' '+this.credentials.currency;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
 							.subscribe(
 								data => {
 									//console.log(data);
