@@ -43,7 +43,7 @@ function job_data(_id, userParam)
     {
         var set =
             {
-                country: userParam.country,
+        		locations: userParam.country,
                 roles: userParam.roles,
                 interest_area: userParam.interest_area,
                 expected_salary_currency: userParam.base_currency,

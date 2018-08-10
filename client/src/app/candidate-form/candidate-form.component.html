@@ -22,8 +22,11 @@
                 
                 <div class="form-group">
                   <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-                  <input type="email" email class="form-control" placeholder="Email" name="name" required  [(ngModel)]="credentials.email">
+                  <input type="email" email class="form-control" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' placeholder="Email" name="name" required  [(ngModel)]="credentials.email">
                 <p>{{email_log}}</p>
+                 <div *ngIf="emailname.errors && credentials.email!=''" class="alert alert-danger error-alert">
+						Enter email in correct format like myemail@gmail.com.
+				</div>
                 
                 <!-- <div *ngIf="cand_email.errors&& credentials.email!=''" class="alert alert-danger error-alert">
 						Enter email in correct format myemail@gmail.com
@@ -91,10 +94,10 @@
 
                 <div class="form-group">
                   <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-                  <input type="email"  class="form-control" placeholder="Email" name="email" [(ngModel)]="credentials.email" email required  >
-               <!-- <div *ngIf="comp_email.errors&& credentials.email!=''" class="alert alert-danger error-alert">
-						Enter email in correct format myemail@gmail.com
-				</div>-->
+                  <input type="email"  class="form-control" #comp_email="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' placeholder="Email" name="email" [(ngModel)]="credentials.email" email required  >
+                 <div *ngIf="comp_email.errors&& credentials.email!=''" class="alert alert-danger error-alert">
+						Enter email in correct format like myemail@gmail.com.
+				</div>
                 </div>
 
                 <div class="form-group">

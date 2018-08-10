@@ -219,7 +219,7 @@ export class ResumeComponent implements OnInit {
 
                 }
 
-                if(data.country && data.roles && data.interest_area || data.expected_salary || data.availability_day )
+                if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day )
                   {
                       this.job_active_class = 'fa fa-check-circle text-success';
                        

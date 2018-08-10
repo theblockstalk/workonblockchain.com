@@ -76,7 +76,7 @@
 				 	
 				 </section>
 				 
-				  <section class = "profile job_info" >
+				  <section class = "profile job_info" *ngIf='company_reply === 1'>
 					<h3>About</h3>
 					<div class="info-area pro_br-btm" >
 						<div class = "col-md-3">
@@ -318,7 +318,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let lang of languages;'>{{lang.platform_name}} : {{lang.exp_year}} years</li>
+								<li *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
 								
 							</ul>
 						</div>
@@ -393,11 +393,11 @@
 								<strong>Start and finish date: </strong>
 							</div>
 							<div class = "col-md-8">
-								<ul class = "pro_list" *ngIf='work.currentwork== "true"' >
-							<li>{{work.startdate}} {{work.startyear}}, till now.</li>
+								<ul class = "pro_list" *ngIf='work.currentwork== true' >
+							<li>{{work.startdate| date:'MMMM-yyyy'}} , till now.</li>
 						</ul>
-						<ul class = "pro_list" *ngIf='work.currentwork== "false" || work.currentwork== "" ' >
-							<li>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</li>
+						<ul class = "pro_list" *ngIf='work.currentwork== false ' >
+							<li>{{work.startdate| date:'MMMM-yyyy'}} , {{work.enddate| date:'MMMM-yyyy'}} </li>
 						</ul>
 							</div>
 

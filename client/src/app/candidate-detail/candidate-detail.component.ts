@@ -88,8 +88,9 @@ export class CandidateDetailComponent implements OnInit {
                     this.nationality = data[0].nationality;
                     this.contact_number =data[0].contact_number;
                     this.description =data[0].description;
-                    this.history =data[0].history;
-                    this.education = data[0].education;
+                    this.history =data[0].work_history;
+               
+                    this.education = data[0].education_history;
                      this.email =data[0]._creator.email;  
                     
                     if(data[0].github_account)
@@ -106,22 +107,22 @@ export class CandidateDetailComponent implements OnInit {
                     this.roles  = data[0].roles;
 					this.credentials.name = this.first_name;
 					
-                    for(let data1 of data[0].history)
+                    for(let data1 of data[0].work_history)
                     {
                         this.companyname = data1.companyname;
                        
                     }
-                    for(let edu of data[0].education)
+                    for(let edu of data[0].education_history)
                     {
                         this.degreename = edu.degreename;
                     }
-                    this.countries = data[0].country;
+                    this.countries = data[0].locations;
                     this.interest_area =data[0].interest_area;
                     this.availability_day =data[0].availability_day;
                     this.why_work = data[0].why_work;
                     this.commercial = data[0].commercial_platform;
                     this.experimented = data[0].experimented_platform;
-                    this.languages= data[0].experience_roles;
+                    this.languages= data[0].programming_languages;
                     this.current_currency = data[0].current_currency;
                     this.current_salary = data[0].current_salary;
                     this.platforms = data[0].platforms;

@@ -5,6 +5,7 @@ const EmployerProfile = require('../../../../model/employer_profile');
 const Q = require('q');
 const jwt = require('jsonwebtoken');
 const settings = require('../../../../settings');
+const crypto = require('crypto');
 
 module.exports = function (req, res) {
     authenticate(req.body.email, req.body.password).then(function (user)
@@ -27,7 +28,8 @@ module.exports = function (req, res) {
 }
 
 function authenticate(email, password,type)
-{	console.log(email);
+{	
+	//console.log(email);
     var deferred = Q.defer();
 
     users.findOne({ email: email }, function (err, user)
@@ -36,20 +38,29 @@ function authenticate(email, password,type)
         if (err) deferred.reject(err.name + ': ' + err.message);
         // console.log(user);
 
-        if (user && bcrypt.compareSync(password, user.password))
+        if (user)
         {
+        	//console.log(user.salt);
+        	//console.log(password);
+        	
+        	let hash = crypto.createHmac('sha512', user.salt);
+        	hash.update(password);
+        	let hashedPasswordAndSalt = hash.digest('hex');
+        	//console.log(hashedPasswordAndSalt);
+        	
+        	if (hashedPasswordAndSalt === user.password_hash)
+        	{
+        		console.log(user.type);
+        		if(user.type=='candidate')
+        		{
+        			CandidateProfile.findOne({ _creator:  user._id }, function (err, data)
+        	        {
 
-            console.log(user.type);
-            if(user.type=='candidate')
-            {
-                CandidateProfile.findOne({ _creator:  user._id }, function (err, data)
-                {
+        				if (err) deferred.reject(err.name + ': ' + err.message);
 
-                    if (err) deferred.reject(err.name + ': ' + err.message);
-
-                    if(data)
-                    {
-                        deferred.resolve({
+        				if(data)
+        				{
+        					deferred.resolve({
                             _id:data._id,
                             _creator: data._creator,
                             email: user.email,
@@ -59,30 +70,28 @@ function authenticate(email, password,type)
                             type:user.type,
                             is_approved : user.is_approved,
                             token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
-                        });
-                    }
+        					});
+        				}
 
-                    else
-                    {
-                        deferred.reject("Email Not found");
-                    }
-
-
-                });
-            }
-            if(user.type=='company')
-            {
-                //console.log("company");
-                EmployerProfile.findOne({ _creator:  user._id }, function (err, data)
-                {
-                    //console.log(data);
-                    if (err) deferred.reject(err.name + ': ' + err.message);
+        				else
+        				{
+        					deferred.reject("Email Not found");
+        				}
 
 
+        	        });
+        		}
+        		if(user.type=='company')
+        		{
+        			//console.log("company");
+        			EmployerProfile.findOne({ _creator:  user._id }, function (err, data)
+        		    {
+        				//console.log(data);
+        				if (err) deferred.reject(err.name + ': ' + err.message);
 
-                    else
-                    {
-                        deferred.resolve({
+        				else
+        				{
+        					deferred.resolve({
                             _id:data._id,
                             _creator: data._creator,
                             email: user.email,
@@ -92,13 +101,16 @@ function authenticate(email, password,type)
                             is_admin:user.is_admin,
                             is_approved : user.is_approved,
 							token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
-                        });
-                    }
+        					});
+        				}
 
-
-                });
-            }
-
+        		    });
+        		}
+        	}
+        	else
+        	{
+        		deferred.reject("Incorrect Password");
+        	}
 
         }
         else

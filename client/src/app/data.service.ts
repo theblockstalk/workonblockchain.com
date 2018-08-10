@@ -9,15 +9,25 @@ export class DataService {
     
     private emessageSource = new BehaviorSubject<string>("");
   ecurrentMessage = this.emessageSource.asObservable();
+    
+     private emailmessageSource = new BehaviorSubject<string>("");
+    eemailMessage = this.emailmessageSource.asObservable();
+    
 
   constructor() { }
 
-  changeMessage(message: string) {
+  changeMessage(message: string) 
+  {
     this.messageSource.next(message)
   }
     
-    errorMessage(message: string) {
+    errorMessage(message: string) 
+    {
     this.emessageSource.next(message)
+  }
+    
+     emailMessage(message: string) {
+    this.emailmessageSource.next(message)
   }
 
 }

@@ -5,11 +5,12 @@ var date = require('date-and-time');
 var bcrypt = require('bcryptjs');
 var Q = require('q');
 const users = require('../../../../model/users');
-var crypto = require('crypto');
+const crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../model/employer_profile');
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
+const verify_send_email = require('../auth/verify_send_email');
 
 module.exports = function (req,res)
 {
@@ -84,17 +85,21 @@ function create_employer(userParam)
         company_info.expiry = new Date(new Date().getTime() +  1800 *1000);
         var token = jwt_hash.encode(company_info, settings.EXPRESS_JWT_SECRET, 'HS256');
         company_info.token = token;
-        // set user object to userParam without the cleartext password
-        var user = _.omit(userParam, 'password');
-        var salt = bcrypt.genSaltSync(10);
-        // add hashed password to user object
-        user.password = bcrypt.hashSync(userParam.password, salt);
+       
+        let salt = crypto.randomBytes(16).toString('base64');
+        let hash = crypto.createHmac('sha512', salt);
+		hash.update(userParam.password);
+		let hashedPasswordAndSalt = hash.digest('hex');
+		
+		 let random = crypto.randomBytes(16).toString('base64');
         let newUser = new users
         ({
             email: userParam.email,
-            password: user.password,
+            password_hash: hashedPasswordAndSalt,
+            salt : salt,
             type: userParam.type,
             email_hash: token,
+            jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
             created_date: createdDate,
 
         });
@@ -107,48 +112,46 @@ function create_employer(userParam)
                 deferred.reject(err.name + ': ' + err.message);
             }
             else
-                {
-                    let info = new EmployerProfile
-                    ({
-                        _creator : newUser._id,
-                        first_name : userParam.first_name,
-                        last_name: userParam.last_name,
-                        job_title:userParam.job_title,
-                        company_name: userParam.company_name,
-                        company_website:userParam.company_website,
-                        company_phone:userParam.phone_number,
-                        company_country:userParam.country,
-                        company_city:userParam.city,
-                        company_postcode:userParam.postal_code,
-
-                    });
-
-        info.save((err,user)=>
-        {
-            if(err)
             {
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
+               let info = new EmployerProfile
+               ({
+                   _creator : newUser._id,
+                   first_name : userParam.first_name,
+                   last_name: userParam.last_name,
+                   job_title:userParam.job_title,
+                   company_name: userParam.company_name,
+                   company_website:userParam.company_website,
+                   company_phone:userParam.phone_number,
+                   company_country:userParam.country,
+                   company_city:userParam.city,
+                   company_postcode:userParam.postal_code,
+                 });
+
+               info.save((err,user)=>
+               {
+            	   if(err)
+            	   {
+            		   logger.error(err.message, {stack: err.stack});
+            		   deferred.reject(err.name + ': ' + err.message);
+            	   }
+            	   else
+            	   {
+            		   verify_send_email(company_info);
+            		   deferred.resolve
+            		   ({
+            			   _id:user.id,
+            			   _creator: newUser._id,
+            			   type:newUser.type,
+            			   email_hash:newUser.email_hash,
+            			   email: newUser.email,
+            			   is_approved : user.is_approved,
+            			   token: newUser.jwt_token
+            		   });
+            	   }
+               });
             }
-            else
-                {
-                    verify_send_email(company_info);
-        deferred.resolve
-        ({
-            _id:user.id,
-            _creator: newUser._id,
-            type:newUser.type,
-            email_hash:newUser.email_hash,
-            email: newUser.email,
-            is_approved : user.is_approved,
-            token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
         });
     }
-    });
-    }
-    });
-    }
-
 
     return deferred.promise;
 }

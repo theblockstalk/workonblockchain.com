@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
-//const Schema = mongoose.Schema;
+const regexes = require('./regexes');
+const enumerations = require('./enumerations');
 
-const ChatSchema = mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const ChatSchema = new Schema({
 	sender_id: 
 	{
         type: String,
@@ -22,18 +25,25 @@ const ChatSchema = mongoose.Schema({
 	receiver_name: 
 	{
 		type:String,
+		ref: 'User',
+        required:true
+	},
+	receiver_id: 
+	{
+		type: String,
+        ref: 'User',
 		required:true
 	},
-	message: 
+	message:
 	{
 		type:String,
-		required:true
+		required:false
 	},
-	job_title: 
+	job_title:
 	{
 		type:String
 	},
-	salary: // we need to also capture currency
+	salary:
 	{
 		type:Number
 	},
@@ -51,16 +61,10 @@ const ChatSchema = mongoose.Schema({
 		enum: ['normal', 'job_offer','job_offered', 'job_offer_accepted','job_offer_rejected', 'interview_offer'],
 		required: true
 	},
-	is_company_reply: 
-	{
-		type:Number, // 0 = false, 1 = true ???
-		enum: [0,1],
-		default: 0
-	},
 	job_type: 
 	{
 		type:String,
-		enum: ['Full Time', 'Part Time','','Contract']
+		enum: ['Full Time', 'Part Time','Contract', '']
 	},
 	interview_location: 
 	{
@@ -68,27 +72,31 @@ const ChatSchema = mongoose.Schema({
 	},
 	interview_date_time: 
 	{
-		type:Date
+		type: Date // Date and time for interview offer
 	},
 	file_name: 
 	{
-		type:String
+		type:String,
+		validate: regexes.url
 	},
 	is_job_offered: 
 	{
-		type:Number, // 0 = false, 1 = true ???
-		enum: [0,1,2,3],
+        enum: [0, 1, 2, 3],
+		// 0 = no offer to candidate
+        // 1 = job offered
+        // 2 = job offer accepted by candidate
+        // 3 = job offer rejected by candidate
 		default:0
 	},
 	is_read: 
 	{
 		type:Number, // 0 = false, 1 = true
-		enum: [0,1],
+        enum: [0, 1],
 		default:0
 	},
 	date_created:
 	{
-		type: Date, // Date
+		type: Date,
 		required: true
 	}
 });

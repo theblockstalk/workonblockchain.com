@@ -91,7 +91,7 @@
 			<div class="form-group col-md-12">
           <div class = "row work-history">
             <h3>Work History</h3>         
-
+{{jobData.startdate }}
             <div class = "work-form" [formGroup]="ExperienceForm">
                <div formArrayName="ExpItems">
                 <!-- Check the correct way to iterate your form array -->
@@ -117,7 +117,7 @@
               <div class="form-group col-md-4">
                 <label class="lable"><p>Start Date</p></label>
                  
-                 <select formControlName="startdate" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
+                 <select formControlName="start_date" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
                 <option  *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
               <br/>
             </select>
@@ -126,12 +126,15 @@
               <option  *ngFor='let start_year of year'  [value]="start_year" selected>{{start_year}}</option>
               <br/>
             </select>
+            
+        
+            
               </div>
 
               <div class="form-group col-md-4" id="input_field" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork==false " >
                 <label class="lable"><p>End Date</p></label>
-                 <select formControlName="enddate" class="form-control xs_input"  required name="roles"  required=""  >
-            <option  *ngFor='let end_month of month'  [value]="end_month" selected>{{end_month}}</option>
+                 <select formControlName="end_date" class="form-control xs_input"  required name="roles"  required=""  >
+            <option  *ngFor='let end_month of month'  [value]="end_month" selected >{{end_month}}</option>
         <br/>
     </select>
     <select formControlName="endyear" class="form-control xs_input" required name="roles" required=""  >
