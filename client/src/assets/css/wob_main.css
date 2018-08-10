@@ -2410,7 +2410,24 @@ input[type=checkbox] {
 
 .panel-body ul li{
     list-style: none;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    overflow: hidden; 
+}
+
+.panel-body .lang_name{
+	width: 80px;
+    margin-right: 10px;
+    overflow: hidden;
+    float: left;
+    height: auto;
+	word-break: break-word;
+}
+
+.panel-body .exp_time{
+	width: 140px;
+    overflow: hidden;
+    height: auto;
+	display: inline-flex;
 }
 
 .ofr_btn{
@@ -2652,6 +2669,31 @@ input[type=checkbox] {
     .text-setting{
         text-align: center;
     }
+    .ofr_btn{
+		margin-bottom: 15px;
+		float: left;
+	}
+	
+	.user-pic, .user-detail{
+		width: 100%;
+	}
+	
+	.input_main{
+		width: 100%;
+		margin: auto;
+	}
+	
+	.btn_main-srh{
+		float: left;
+	}
+	
+	.search-form{
+		padding: 15px 20px;
+	}
+	
+	.btn-div{
+		max-width: 95%;
+	}
 }
 
 @media only screen and (max-width: 400px){

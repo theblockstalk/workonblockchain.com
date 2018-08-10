@@ -46,7 +46,7 @@ export class ExperienceComponent implements OnInit
       }
    
    monthNumToName(monthnum) {     
-    return this.month[monthnum-2] || '';
+    return this.month[monthnum-1] || '';
 }
 
     message;
@@ -435,9 +435,9 @@ export class ExperienceComponent implements OnInit
     experiencearray=[];
     experiencejson;
     monthNameToNum(monthname) {
-    this.start_monthh = this.month.indexOf(monthname);
-        this.start_monthh = "0"  + (this.start_monthh + 1);
-    return this.start_monthh ?  this.start_monthh : 0;
+        this.start_monthh = this.month.indexOf(monthname);
+        this.start_monthh = "0"  + (this.start_monthh);
+        return this.start_monthh ?  this.start_monthh : 0;
     }
     startmonthIndex;endmonthIndex;
     experience_submit(searchForm: NgForm)
@@ -515,8 +515,8 @@ export class ExperienceComponent implements OnInit
             {
                 this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
                 this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);              
-                this.ExperienceForm.value.ExpItems[key].startdate = "01/"+this.startmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].startyear;
-                this.ExperienceForm.value.ExpItems[key].enddate ="01/"+ this.endmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].endyear;
+                //this.ExperienceForm.value.ExpItems[key].startdate = "01/"+this.startmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].startyear;
+                //this.ExperienceForm.value.ExpItems[key].enddate ="01/"+ this.endmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].endyear;
                 this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
                 this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);    
                 this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].descname,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork}; 

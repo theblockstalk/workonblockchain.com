@@ -159,7 +159,7 @@ export class JobComponent implements OnInit {
                     
                     
      
-              if(data.history && data.education && data.experience_roles && data.current_salary)
+              if(data.history && data.education && data.programming_languages && data.current_salary)
               {
                   this.exp_class = "/experience";
                   this.exp_active_class = 'fa fa-check-circle text-success';

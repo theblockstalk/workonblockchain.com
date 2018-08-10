@@ -116,6 +116,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         else
         {
+            this.reset= "";
             this.log = 'Please fill all fields';
         }
 

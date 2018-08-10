@@ -78,8 +78,8 @@
 				
 				<div class="panel-group mr-top-form" *ngFor= "let data of info | paginate: { itemsPerPage:10, currentPage: p }">
  								      
-				   <div class="panel panel-default" *ngIf = "(data.first_name  && data.roles && data.why_work && data.experience_roles && data.availability_day && data.nationality && data.last_name 
-				    && data.contact_number && data.education && data.history &&   data.interest_area  && data.country )">
+				   <div class="panel panel-default" *ngIf = "(data.first_name  && data.roles && data.why_work && data.programming_languages && data.availability_day && data.nationality && data.last_name 
+				    && data.contact_number && data.education_history && data.work_history && data.interest_area  && data.locations )">
 <!-- 				    <div class="panel panel-default">
  -->				      <div class="panel-heading">
 				      	<div class = "user-pic" *ngIf="!data.image">
@@ -133,7 +133,7 @@
 				      		<div class="col-sm-4">
 				      			<h4>Languages</h4>
 				      			<ul>
-				      				<li *ngFor = 'let lang of data.experience_roles'> {{lang.platform_name}} &nbsp;&nbsp; &nbsp;&nbsp;   {{lang.exp_year}} Year Experience </li>
+				      				<li *ngFor = 'let lang of data.programming_languages'> {{lang.language}} &nbsp;&nbsp; &nbsp;&nbsp;   {{lang.exp_year}} Year Experience </li>
 				      			</ul>
 				      		</div>
 				      </div>

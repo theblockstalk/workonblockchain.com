@@ -124,6 +124,9 @@ export class HeaderComponent implements OnInit {
       if(this.currentUser)
       {
           this.dataservice.currentMessage.subscribe(message => this.msg = message);
+          setInterval(() => {  
+                                this.msg = "" ;
+                        }, 3000);
           this.close = JSON.parse(localStorage.getItem('close_notify')); 
        }
   }
@@ -133,9 +136,10 @@ export class HeaderComponent implements OnInit {
   {
       this.success_msg='';
       this.close = "close"; 
-        localStorage.setItem('close_notify', JSON.stringify(this.close));
+      localStorage.setItem('close_notify', JSON.stringify(this.close));
       if(this.currentUser.email)
       {
+          console.log(this.currentUser.email);
            this.authenticationService.verify_client(this.currentUser.email)
             .subscribe(
                 data => {      
@@ -146,7 +150,7 @@ export class HeaderComponent implements OnInit {
                         this.success_msg = "Please check your email to verify your account" ;
                         setInterval(() => {  
                                 this.success_msg = "" ;
-                        }, 2000);
+                        }, 3000);
                         
                     }
 
@@ -163,6 +167,10 @@ export class HeaderComponent implements OnInit {
                  this.dataservice.changeMessage(error);
                    
                 });
+          
+      }
+      else
+      {
           
       }
   }

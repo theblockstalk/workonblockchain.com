@@ -233,7 +233,7 @@ export class ResumeComponent implements OnInit {
                // this.router.navigate(['/resume']);
               }
      
-              if( data.experience_roles && data.current_salary )
+              if( data.programming_languages && data.current_salary )
               {
                   
                   this.exp_active_class = 'fa fa-check-circle text-success';
@@ -443,7 +443,7 @@ export class ResumeComponent implements OnInit {
    onPlatformOptions(obj)
    {
     
-   let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
+      let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
       let index = this.platforms_designed.indexOf(updateItem);
       if(index > -1)
       {

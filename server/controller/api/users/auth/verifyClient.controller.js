@@ -30,7 +30,7 @@ const verify_send_email = require('./verify_send_email');
 
 module.exports = function verify_client(req,res)
 {
-    //console.log(req.params.email);
+    console.log(req.params.email);
     verify_client(req.params.email).then(function (err, data)
     {
         if (data)
@@ -52,6 +52,7 @@ module.exports = function verify_client(req,res)
 function verify_client(email)
 {
     var deferred = Q.defer();
+    console.log(email);
     users.findOne({ email :email  }, function (err, result)
     {
         if (err){
@@ -71,6 +72,7 @@ function verify_client(email)
 
     function updateData(data)
     {
+    	console.log(email)
         var hashStr = crypto.createHash('md5').update(email).digest('hex');
         // console.log(hashStr);
         // console.log(data._id);
@@ -84,7 +86,7 @@ function verify_client(email)
         user_info.token = token;
         var set =
             {
-                email_hash: token,
+        		verify_email_key: token,
 
             };
         users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc)

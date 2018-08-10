@@ -107,9 +107,9 @@ export class AdminCandidateSearchComponent implements OnInit {
                         
                         for(let res of this.information)
                         {
-                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history  
-                             && res.interest_area  && res.country )
+                           if(res.first_name && res.roles && res.why_work && res.programming_languages && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education_history && res.work_history 
+                             && res.interest_area  && res.locations )
                             {
                                
                                   this.length++;
@@ -216,9 +216,9 @@ export class AdminCandidateSearchComponent implements OnInit {
                         this.information = this.filter_array(data);
                         for(let res of this.information)
                         {
-                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history 
-                             && res.interest_area  && res.country )
+                            if(res.first_name && res.roles && res.why_work && res.programming_languages && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education_history && res.work_history 
+                             && res.interest_area  && res.locations )
                             {
                                
                                   this.length++;
@@ -316,9 +316,9 @@ export class AdminCandidateSearchComponent implements OnInit {
                         
                         for(let res of this.information)
                         {
-                           if(res.first_name && res.roles && res.why_work && res.experience_roles && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education && res.history 
-                              && res.interest_area  && res.country )
+                            if(res.first_name && res.roles && res.why_work && res.programming_languages && res.availability_day 
+                            && res.nationality && res.last_name  && res.contact_number && res.education_history && res.work_history 
+                             && res.interest_area  && res.locations )
                             {
                                
                                   this.length++;

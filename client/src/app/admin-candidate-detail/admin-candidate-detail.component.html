@@ -28,7 +28,7 @@
 				 		</span>
 				 		
 				 		<span class = "short_intro">
-				 			<strong>Date created : </strong><span>{{data._creator.created_date}}</span>
+				 			<strong>Date created : </strong><span>{{data._creator.created_date | date : 'dd-MMMM-yyyy'}}</span>
 				 		</span>
 				 		<span class = "short_intro">
 				 		<form #approve_form="ngForm" >
@@ -356,7 +356,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let lang of data.experience_roles;'>{{lang.platform_name}} : {{lang.exp_year}} years</li>
+								<li *ngFor='let lang of data.programming_languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
 								
 							</ul>
 						</div>
@@ -369,7 +369,7 @@
 
 				  <section class = "profile job_info">
 					<h3>Work History</h3>
-					<div class = "company_area" *ngFor='let work of data.history'>
+					<div class = "company_area" *ngFor='let work of data.work_history'>
 					 	<div class="info-area pro_br-btm">
 							<div class = "col-md-4">
 								<strong>Company name: </strong>
@@ -401,11 +401,11 @@
 								<strong>Start and finish date: </strong>
 							</div>
 							<div class = "col-md-8">
-								<ul class = "pro_list" *ngIf='work.currentwork == "true"' >
-							<li>{{work.startdate}} {{work.startyear}},  till now.</li>
+								<ul class = "pro_list" *ngIf='work.currentwork == true' >
+							<li>{{work.startdate | date : 'MMMM-yyyy'}} ,  till now.</li>
 						</ul>
-					<ul class = "pro_list" *ngIf='work.currentwork== "false" || work.currentwork=="" ' >
-							<li>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</li>
+					<ul class = "pro_list" *ngIf='work.currentwork== false ' >
+							<li>{{work.startdate | date : 'MMMM-yyyy'}} , {{work.enddate | date : 'MMMM-yyyy'}} </li>
 						</ul>
 							</div>
 
@@ -440,7 +440,7 @@
 				 <section class = "profile job_info">
 					<h3>Education</h3>
 					
-				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of data.education'>
+				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of data.education_history'>
 				 		<div class = "edu_feild">
 							<p>
 								<strong>{{edu.uniname}} </strong>

@@ -185,7 +185,15 @@
 				      		<div class="col-sm-4">
 				      			<h4>Languages</h4>
 				      			<ul>
-				      				<li *ngFor = 'let lang of data.programming_languages'> {{lang.language}} &nbsp;&nbsp; &nbsp;&nbsp;   {{lang.exp_year}} years </li>
+				      				<li *ngFor = 'let lang of data.programming_languages'>
+				      				<span class = "lang_name">
+
+				      				 {{lang.language}}
+				      				 </span>   
+				      				 <span class = "exp_time"> 
+				      				 {{lang.exp_year}} years
+				      				 </span>
+				      				  </li>
 				      			</ul>
 				      		</div>
 				      </div>

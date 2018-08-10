@@ -125,16 +125,17 @@ export class EditCompanyProfileComponent implements OnInit {
                         (success) => 
                         {
                              //console.log(success);
-                             window.location.href = '/company_profile';
+                             //window.location.href = '/company_profile';
 
-                              //this.router.navigate(['/candidate_profile']); 
+                              this.router.navigate(['/company_profile']); 
                         },
                         (error) => console.log(error))
                      }
                      else
-                          window.location.href = '/company_profile';
+                          this.router.navigate(['/company_profile']);
+                         // window.location.href = '/company_profile';
 
-                        //this.router.navigate(['/candidate_profile']);
+                       
                 }
 
                 if(data.error)
