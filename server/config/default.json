@@ -10,7 +10,7 @@
   "mongo": {
     "host": "localhost",
     "port": 27017,
-    "databaseName": "test_wob"
+    "databaseName": "wob"
   },
   "expressJwt": {
     "secret": "shhhhhhhhhhhhhhh"

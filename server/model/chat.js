@@ -7,13 +7,30 @@ const Schema = mongoose.Schema;
 const ChatSchema = new Schema({
 	sender_id: 
 	{
-        type: Schema.Types.ObjectId,
+        type: String,
+		ref: 'User',
+		required:true
+	},
+	receiver_id: 
+	{
+		type: String,
+		ref: 'User',
+		required:true
+	},
+	sender_name: 
+	{
+		type:String,
+		required:true
+	},
+	receiver_name: 
+	{
+		type:String,
 		ref: 'User',
         required:true
 	},
 	receiver_id: 
 	{
-		type: Schema.Types.ObjectId,
+		type: String,
         ref: 'User',
 		required:true
 	},
@@ -28,22 +45,21 @@ const ChatSchema = new Schema({
 	},
 	salary:
 	{
-		type:String
+		type:Number
 	},
 	salary_currency: {
 		type: String,
-		enum: enumerations.currencies
+		enum: ['£ GBP' ,'€ EUR' , '$ USD', '']
+ 	},
+	date_of_joining: //used in case of offer to employ
+	{
+		type:Date // Date
 	},
 	msg_tag: 
 	{
 		type:String,
-        // // TODO: complete this
-		enum: ['normal', 'job_offer', 'job_offer_accepted', 'job_offer_rejected', 'interview_offer'],
+		enum: ['normal', 'job_offer','job_offered', 'job_offer_accepted','job_offer_rejected', 'interview_offer'],
 		required: true
-	},
-    job_offer_date:
-	{
-		type: Date // Date when the candidate starts a job, sent in the job offer
 	},
 	job_type: 
 	{
@@ -54,7 +70,7 @@ const ChatSchema = new Schema({
 	{
 		type:String
 	},
-	interview_time: 
+	interview_date_time: 
 	{
 		type: Date // Date and time for interview offer
 	},
@@ -65,7 +81,6 @@ const ChatSchema = new Schema({
 	},
 	is_job_offered: 
 	{
-		type:Number,
         enum: [0, 1, 2, 3],
 		// 0 = no offer to candidate
         // 1 = job offered
@@ -77,7 +92,6 @@ const ChatSchema = new Schema({
 	{
 		type:Number, // 0 = false, 1 = true
         enum: [0, 1],
-		required:true,
 		default:0
 	},
 	date_created:

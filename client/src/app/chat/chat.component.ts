@@ -64,6 +64,7 @@ export class ChatComponent implements OnInit {
 	new_users = [];
 	interview_location = '';
 	interview_time = '';
+	salary_currency = '';
   constructor(
     private authenticationService: UserService,
     private fb: FormBuilder,
@@ -287,7 +288,7 @@ export class ChatComponent implements OnInit {
               this.is_company_reply = 0;
               //console.log(this.job_title);
           }
-          this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+          this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
             .subscribe(
                 data => {
                     //console.log(data);
@@ -334,7 +335,7 @@ export class ChatComponent implements OnInit {
       this.show_accpet_reject = 3;
       this.msg_tag = 'normal';
 	  this.credentials.msg_body = 'I am not interested';
-      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
         .subscribe(
             data => {
                 //console.log(data);
@@ -366,7 +367,7 @@ export class ChatComponent implements OnInit {
       this.show_accpet_reject = 4;
       this.msg_tag = 'normal';
 	  this.credentials.msg_body = '	I am interested, lets chat!';
-      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+      this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
         .subscribe(
             data => {
                 //console.log(data);
@@ -403,10 +404,13 @@ export class ChatComponent implements OnInit {
 		  this.date_of_joining = this.credentials.date.formatted;
           this.interview_location = this.credentials.location;
 		  this.interview_time = this.credentials.time;
-		  this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+		  this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
             .subscribe(
                 data => {
                     //console.log(data);
+					this.date_of_joining = '';
+					this.interview_location  = '';
+					this.interview_time = '';
                     this.credentials.msg_body = '';
                     this.interview_log = 'Message has been successfully sent';
                     this.credentials.date = '';
@@ -446,8 +450,7 @@ export class ChatComponent implements OnInit {
           this.is_job_offer = 1;
           this.credentials.msg_body = 'You have been send an employment offer!';
           //console.log(this.credentials.msg_body);
-		  this.credentials.base_salary = this.credentials.base_salary+' '+this.credentials.currency;
-          this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.credentials.job_title,this.credentials.base_salary,this.credentials.start_date.formatted,this.credentials.employment_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
+		  this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.credentials.job_title,this.credentials.base_salary,this.credentials.currency,this.credentials.start_date.formatted,this.credentials.employment_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
             .subscribe(
                 data => {
                     //console.log(data);
@@ -496,7 +499,7 @@ export class ChatComponent implements OnInit {
         .subscribe(
             data => {
                 //console.log(data);
-                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
+                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
                     .subscribe(
                         data => {
                             //console.log(data);
@@ -541,7 +544,7 @@ export class ChatComponent implements OnInit {
         .subscribe(
             data => {
                 //console.log(data);
-                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
+                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer)
                     .subscribe(
                         data => {
                             //console.log(data);
