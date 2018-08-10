@@ -28,7 +28,8 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req,res)
     {
-	console.log(req.body);
+	
+	//console.log(req.body);
         search_by_name(req.body.search).then(function (err, data)
         {
             if (data)
