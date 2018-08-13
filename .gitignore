@@ -1,6 +1,7 @@
 .idea
 temp
 node_modules
+scripts/access/*
 *.zip
 *.pem
 *.tar.gz
