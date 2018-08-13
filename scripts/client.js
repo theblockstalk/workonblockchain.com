@@ -1,9 +1,10 @@
 const aws = require('aws-sdk');
-const accessKey = require('./access/accessKey');
 const fs = require('fs');
 const ncp = require('ncp').ncp;
 const gitRev = require('git-rev')
 const archiver = require('archiver');
+const config = require('./config');
+const accessKey = require('./access/accessKey');
 
 ncp.limit = 16;
 
@@ -15,41 +16,17 @@ aws.config.update({
 
 (async function run() {
     console.log('deploying the backend to elastic beanstalk');
-    await deployBackend();
+    await deployFontend();
     console.log("finished");
 })();
 
-const config = {
-    "eb": {
-        "appName": "workonblockchain.com",
-        "staging": {
-            "envName": "testing-api-workonblockchain-com-env"
-        },
-        "production": {
-            "envName": ""
-        }
-    },
-    "s3": {
-        "bucketName": "distributions.workonblockchain.com"
-    },
-    "tempDirs": {
-        "temp": "temp",
-        "server": "server"
-    }
-};
-
 const tempDirName = './' + config.tempDirs.temp;
 const tempServerDirName = './' + config.tempDirs.temp + '/' + config.tempDirs.server + '/';
-const appName = config.eb.appName;
-const envName = config.eb.staging.envName;
 const s3bucket = config.s3.bucketName;
 
-const s3 = new aws.S3();
-const eb = new aws.ElasticBeanstalk();
-
-async function deployBackend() {
+async function deployFontend() {
     try {
-        console.log('This script will deploy the latest in the /server directory to the backend application');
+        console.log('This script will deploy the latest in the /client directory to the frontend application');
         console.log('Please make sure there is no files in the working directory (do a `git stash` if you are unsure)');
 
         await prettEnterKey();

@@ -1,0 +1,18 @@
+{
+  "eb": {
+    "appName": "workonblockchain.com",
+    "staging": {
+      "envName": "testing-api-workonblockchain-com-env"
+    },
+    "production": {
+      "envName": ""
+    }
+  },
+  "s3": {
+    "bucketName": "distributions.workonblockchain.com"
+  },
+  "tempDirs": {
+    "temp": "temp",
+    "server": "server"
+  }
+}
