@@ -1,6 +1,4 @@
 const aws = require('aws-sdk');
-const fs = require('fs');
-const archiver = require('archiver');
 const config = require('./config');
 const accessKey = require('./access/accessKey');
 const scriptUtils = require('./utils');
@@ -23,7 +21,6 @@ const appName = config.eb.appName;
 const envName = config.eb.staging.envName;
 const s3bucket = config.s3.bucketName;
 
-const s3 = new aws.S3();
 const eb = new aws.ElasticBeanstalk();
 
 async function deployBackend() {
@@ -47,11 +44,11 @@ async function deployBackend() {
         // TODO: delete contents of tempServerDirName
         await scriptUtils.createTempServerDir(tempServerDirName);
         // TODO: add in some tags for application to serve the version commit
-        const zipFileName = await zipServerDir(gitInfo.commit);
+        const zipFileName = await scriptUtils.zipServerDir(tempDirName, tempServerDirName, gitInfo.commit);
 
         console.log(zipFileName);
         console.log('(3/5) uploading the environment version (distribution) to S3');
-        let distributionS3File = await uploadToS3(zipFileName);
+        let distributionS3File = await scriptUtils.uploadToS3(envName, s3bucket, zipFileName);
         console.log(distributionS3File);
 
         console.log();
@@ -86,76 +83,7 @@ async function deployBackend() {
             VersionLabel: zipFileName.name
         }).promise();
         console.log(ebUpdate);
-        return;
     } catch(error) {
         console.log(error);
-        return;
     }
-}
-
-async function zipServerDir(commit) {
-    const directoryToZip = tempDirName + config.tempDirs.server;
-    const zipPath = tempDirName;
-    const zipName = 'server_' + commit;
-    const zipFile = zipPath + '/' + zipName + '.zip';
-    // create a file to stream archive data to.
-    let output = fs.createWriteStream(zipFile);
-    let archive = archiver('zip', {
-        zlib: { level: 9 } // Sets the compression level.
-    });
-
-    return new Promise((resolve, reject) => {
-        // listen for all archive data to be written
-        // 'close' event is fired only when a file descriptor is involved
-        output.on('close', function() {
-            console.log(archive.pointer() + ' total bytes');
-            console.log('archiver has been finalized and the output file descriptor has closed.');
-            resolve({
-                path: zipPath,
-                name: zipName,
-                file: zipFile
-            })
-        });
-
-        // This event is fired when the data source is drained no matter what was the data source.
-        // It is not part of this library but rather from the NodeJS Stream API.
-        // @see: https://nodejs.org/api/stream.html#stream_event_end
-        output.on('end', function() {
-            console.log('Data has been drained');
-        });
-
-        // good practice to catch warnings (ie stat failures and other non-blocking errors)
-        archive.on('warning', function(err) {
-            if (err.code === 'ENOENT') {
-                console.log(err);
-            } else {
-                reject(err);
-            }
-        });
-
-        // good practice to catch this error explicitly
-        archive.on('error', function(err) {
-            reject(err);
-        });
-
-        // pipe archive data to the file
-        archive.pipe(output);
-
-        // append files from a sub-directory, putting its contents at the root of archive
-        archive.directory(directoryToZip, false);
-
-        // finalize the archive (ie we are done appending files but streams have to finish yet)
-        // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
-        archive.finalize();
-    });
-}
-
-async function uploadToS3(zipFileName) {
-    const s3Key = envName + '/' + zipFileName.name + '.zip';
-
-    return await s3.upload({
-        Bucket: s3bucket,
-        Key: s3Key,
-        Body: fs.createReadStream(zipFileName.file)
-    }).promise();
 }
