@@ -3,6 +3,7 @@ const accessKey = require('./access/accessKey');
 const fs = require('fs');
 const ncp = require('ncp').ncp;
 const gitRev = require('git-rev')
+const archiver = require('archiver');
 
 ncp.limit = 16;
 
@@ -19,86 +20,68 @@ aws.config.update({
 })();
 
 const config = {
-    "staging": {
-        "eb": {
-            "appName": "workonblockchain.com",
+    "eb": {
+        "appName": "workonblockchain.com",
+        "staging": {
             "envName": "staging-api-workonblockchain-com-env"
         },
-        "s3": {
-            "bucketName": "distributions.workonblockchain.com"
+        "production": {
+            "envName": ""
         }
+    },
+    "s3": {
+        "bucketName": "distributions.workonblockchain.com"
+    },
+    "tempDirs": {
+        "temp": "temp",
+        "server": "server"
     }
 };
 
+const tempDirName = './' + config.tempDirs.temp;
+const tempServerDirName = './' + config.tempDirs.temp + '/' + config.tempDirs.server + '/';
+const appName = config.eb.appName;
+const envName = config.eb.staging.envName;
+const s3bucket = config.s3.bucketName;
+
+const s3 = new aws.S3();
+const eb = new aws.ElasticBeanstalk();
+
 async function deployBackend() {
     try {
-        const s3 = new aws.S3();
-        const eb = new aws.ElasticBeanstalk();
-
-        const appName = 'workonblockchain.com';
-        const envName = 'testing-api-workonblockchain-com-env';
-        const s3bucket = 'distributions.workonblockchain.com';
-
         console.log();
         console.log('(1/5) getting branch and commit info');
         const gitInfo = await getGitCommit();
         console.log(gitInfo);
 
         if (gitInfo.branch !== 'staging') {
-            throw new Error('You can only deploy to the staging environment on the staging branch');
+            // throw new Error('You can only deploy to the staging environment on the staging branch');
         }
-        // return;
-
 
         console.log();
-        console.log('(1/5) creating distribution package from server/');
-        const options = {
-            // Do not copy the node_modules folder
-            filter: /^((?!node_modules).)*$/
-        };
-        await new Promise((resolve, reject) => {
-            ncp('./server', './temp/server', options, function (err) {
-                if (err) {
-                    reject(err);
-                }
-                resolve();
-            });
-        });
+        console.log('(2/5) creating distribution package from server/');
+        await createTempServerDir();
+        const zipFileName = await zipServerDir(gitInfo.commit);
 
-        fs.unlinkSync('./temp/server/config/production.json');
-        return;
-        // zip into file
-        // filename is that of git hash
-
-        const zipFileName = 'server_0f46ec';
-        const zipFilePath = 'temp/server/';
-        const zipFile = zipFilePath + zipFileName + '.zip';
+        console.log(zipFileName);
+        console.log('(3/5) uploading the environment version (distribution) to S3');
+        let distributionS3File = await uploadToS3(zipFileName);
+        console.log(distributionS3File);
 
         console.log();
-        console.log('(2/5) uploading the environment version (distribution) to S3');
-        const s3Key = appName + '_' + envName + '_' + zipFileName;
-
-        let s3Object = await s3.upload({
-            Bucket: s3bucket,
-            Key: s3Key,
-            Body: fs.createReadStream(zipFile)
-        }).promise();
-        console.log(s3Object);
-
-        console.log();
-        console.log('(3/5) creating a new application version');
+        console.log('(4/5) creating a new application version');
         const ebVersion = await eb.createApplicationVersion({
             ApplicationName: appName,
-            VersionLabel: zipFileName,
+            VersionLabel: zipFileName.name,
             SourceBundle: {
                 S3Bucket: s3bucket,
-                S3Key: s3Key
+                S3Key: distributionS3File.Key
             }
         }).promise();
         console.log(ebVersion);
 
         console.log();
-        console.log('(4/5) updating the elastic beanstalk environment');
+        console.log('(5/5) updating the elastic beanstalk environment');
         const ebUpdate = await eb.updateEnvironment({
             ApplicationName: appName,
             EnvironmentName: envName,
@@ -107,7 +90,7 @@ async function deployBackend() {
                 OptionName: 'NodeCommand',
                 Value: 'npm start'
             }],
-            VersionLabel: zipFileName
+            VersionLabel: zipFileName.name
         }).promise();
         console.log(ebUpdate);
 
@@ -133,4 +116,91 @@ async function getGitCommit() {
         branch: branch,
         commit: commitHead
     }
+}
+
+async function createTempServerDir() {
+    const options = {
+        // Do not copy the node_modules folder
+        filter: /^((?!node_modules).)*$/
+    };
+
+    console.log(tempServerDirName);
+
+    await new Promise((resolve, reject) => {
+        ncp('./server', tempServerDirName, options, function (err) {
+            if (err) {
+                reject(err);
+            }
+            resolve();
+        });
+    });
+
+    fs.unlinkSync(tempServerDirName + 'config/production.json');
+}
+
+async function zipServerDir(commit) {
+    const directoryToZip = tempDirName + config.tempDirs.server;
+    const zipPath = tempDirName;
+    const zipName = 'server_' + commit;
+    const zipFile = zipPath + '/' + zipName + '.zip';
+    // create a file to stream archive data to.
+    let output = fs.createWriteStream(zipFile);
+    let archive = archiver('zip', {
+        zlib: { level: 9 } // Sets the compression level.
+    });
+
+    return new Promise((resolve, reject) => {
+        // listen for all archive data to be written
+        // 'close' event is fired only when a file descriptor is involved
+        output.on('close', function() {
+            console.log(archive.pointer() + ' total bytes');
+            console.log('archiver has been finalized and the output file descriptor has closed.');
+            resolve({
+                path: zipPath,
+                name: zipName,
+                file: zipFile
+            })
+        });
+
+        // This event is fired when the data source is drained no matter what was the data source.
+        // It is not part of this library but rather from the NodeJS Stream API.
+        // @see: https://nodejs.org/api/stream.html#stream_event_end
+        output.on('end', function() {
+            console.log('Data has been drained');
+        });
+
+        // good practice to catch warnings (ie stat failures and other non-blocking errors)
+        archive.on('warning', function(err) {
+            if (err.code === 'ENOENT') {
+                console.log(err);
+            } else {
+                reject(err);
+            }
+        });
+
+        // good practice to catch this error explicitly
+        archive.on('error', function(err) {
+            reject(err);
+        });
+
+        // pipe archive data to the file
+        archive.pipe(output);
+
+        // append files from a sub-directory, putting its contents at the root of archive
+        archive.directory(directoryToZip, false);
+
+        // finalize the archive (ie we are done appending files but streams have to finish yet)
+        // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
+        archive.finalize();
+    });
+}
+
+async function uploadToS3(zipFileName) {
+    const s3Key = envName + '/' + zipFileName.name + '.zip';
+
+    return await s3.upload({
+        Bucket: s3bucket,
+        Key: s3Key,
+        Body: fs.createReadStream(zipFileName.file)
+    }).promise();
 }
