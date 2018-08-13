@@ -37,7 +37,7 @@ async function deployBackend() {
 
     console.log(zipFileName);
     console.log('(3/5) uploading the environment version (distribution) to S3');
-    let distributionS3File = await scriptUtils.uploadToS3(envName, s3bucket, zipFileName);
+    let distributionS3File = await scriptUtils.uploadZipfileToS3(envName, s3bucket, zipFileName);
     console.log(distributionS3File);
 
     console.log();

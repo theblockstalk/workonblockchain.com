@@ -1,6 +1,5 @@
 const config = require('./config');
 const scriptUtils = require('./utils');
-const { exec, spawn } = require('child_process');
 
 (async function run() {
     console.log('deploying the frontend to S3 bucket');
@@ -9,8 +8,7 @@ const { exec, spawn } = require('child_process');
     console.log("you may have to wait up to an hour for the Cloudfront Distribution CDN caches to clear before you see the new application frontend");
 })();
 
-const tempDirName = './temp';
-const tempClientDirName = './temp/client/';
+const tempClientDirName = './temp/client/dist';
 const s3bucket = config.s3.frontendBucket.staging;
 
 async function deployFrontend() {
@@ -20,7 +18,7 @@ async function deployFrontend() {
     await scriptUtils.pressEnterToContinue();
 
     console.log();
-    console.log('(1/5) getting branch and commit info');
+    console.log('(1/4) getting branch and commit info');
     const gitInfo = await scriptUtils.getGitCommit();
     console.log(gitInfo);
 
@@ -29,20 +27,18 @@ async function deployFrontend() {
     }
 
     console.log();
-    console.log('(2/5) building distribution in client/dist/');
-    await new Promise((resolve, reject) => {
-        exec('cd ./client && npm run-script build-staging', (err, stdout, stderr) => {
-            if (err) {
-                reject(err);
-            }
-
-            // the *entire* stdout and stderr (buffered)
-            console.log(`stdout: `, stdout);
-            console.log(`stderr: `, stderr);
-            resolve();
-        });
-    });
+    console.log('(2/4) building distribution in client/dist/');
     // TODO: delete contents of tempClientDirName
-    await scriptUtils.createTempClientDir(tempClientDirName);
     // TODO: add in some tags for application to serve the version commit
+    await scriptUtils.buildAngularDistribution();
+
+    console.log();
+    console.log('(3/4) moving to temporary directory temp/client/dist');
+    await scriptUtils.createTempClientDir(tempClientDirName);
+
+    console.log();
+    console.log('(4/4) syncing to S3 bucket');
+    await scriptUtils.syncDirwithS3(s3bucket, tempClientDirName);
+
+
 }

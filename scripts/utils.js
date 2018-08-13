@@ -1,9 +1,11 @@
 const gitRev = require('git-rev');
 const ncp = require('ncp').ncp;
 const fs = require('fs');
-const aws = require('aws-sdk');
 const archiver = require('archiver');
+const aws = require('aws-sdk');
+const s3 = require('s3');
 const accessKey = require('./access/accessKey');
+const { exec } = require('child_process');
 
 ncp.limit = 16;
 
@@ -130,7 +132,7 @@ module.exports.zipServerDir = async function zipServerDir(tempDirName, directory
     });
 };
 
-module.exports.uploadToS3 = async function uploadToS3(envName, s3bucket, zipFileName) {
+module.exports.uploadZipfileToS3 = async function uploadToS3(envName, s3bucket, zipFileName) {
     const s3Key = envName + '/' + zipFileName.name + '.zip';
 
     return await s3.upload({
@@ -170,4 +172,75 @@ module.exports.updateElisticEnvironment = async function updateElisticEnvironmen
         }],
         VersionLabel: zipFileName.name
     }).promise();
-}
+};
+
+module.exports.buildAngularDistribution = async function buildAngularDistribution() {
+    return new Promise((resolve, reject) => {
+        exec('cd ./client && npm run-script build-staging', (err, stdout, stderr) => {
+            if (err) {
+                reject(err);
+            }
+
+            console.log(`stdout: `, stdout);
+            console.log(`stderr: `, stderr);
+            resolve();
+        });
+    });
+};
+
+module.exports.syncDirwithS3 = async function syncDirwithS3(s3bucket, tempClientDirName) {
+    const s3Client = s3.createClient({
+        // maxAsyncS3: 20,     // this is the default
+        // s3RetryCount: 3,    // this is the default
+        // s3RetryDelay: 1000, // this is the default
+        // multipartUploadThreshold: 20971520, // this is the default (20 MB)
+        // multipartUploadSize: 15728640, // this is the default (15 MB)
+        s3Options: {
+            secretAccessKey: accessKey.secretAccessKey,
+            accessKeyId: accessKey.accessKeyId,
+            region: "eu-west-1",
+            // endpoint: s3bucket,
+            // sslEnabled: true
+            // any other options are passed to new AWS.S3()
+            // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#constructor-property
+        },
+    });
+
+    const params = {
+        localDir: tempClientDirName,
+        deleteRemoved: true, // default false, whether to remove s3 objects
+                             // that have no corresponding local file.
+
+        s3Params: {
+            Bucket: s3bucket,
+            // Prefix: "some/remote/dir/",
+            // other options supported by putObject, except Body and ContentLength.
+            // See: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
+        },
+    };
+
+    console.log(params)
+
+    await new Promise((resolve, reject) => {
+        let uploader = s3Client.uploadDir(params);
+        uploader.on('error', function(err) {
+            console.error("unable to sync:", err.stack);
+            reject(err);
+        });
+
+        let counter = 0, counterLimit = 100;
+        uploader.on('progress', function() {
+            counter++;
+            if (counter === counterLimit) {
+                console.log(uploader.progressAmount/ 1000000, ' Mb of ', uploader.progressTotal / 1000000, ' Mb completed');
+                counter = 0;
+            }
+
+        });
+        uploader.on('end', function() {
+            console.log("done uploading");
+            resolve();
+        });
+    })
+
+};
