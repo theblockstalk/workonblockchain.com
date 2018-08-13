@@ -1,6 +1,10 @@
 const aws = require('aws-sdk');
 const accessKey = require('./access/accessKey');
 const fs = require('fs');
+const ncp = require('ncp').ncp;
+const gitRev = require('git-rev')
+
+ncp.limit = 16;
 
 aws.config.update({
     secretAccessKey: accessKey.secretAccessKey,
@@ -35,13 +39,38 @@ async function deployBackend() {
         const envName = 'testing-api-workonblockchain-com-env';
         const s3bucket = 'distributions.workonblockchain.com';
 
-
+        // console.log();
+        // console.log('(1/5) getting branch and commit info');
+        // const commitHead = await new Promise((resolve, reject) => {
+        //     gitRev.short( (hash) => {
+        //         resolve(hash);
+        //     });
+        // });
+        // // gitRev.short(function (str) {
+        // //     console.log('short', str)
+        // //     // => aefdd94
+        // // })
+        // console.log(commitHead);
+        // return;
 
 
         console.log();
-        console.log('(1/4) creating distribution package from server/');
-        // Get all files in /server and copy to /temp/server
-        // remove production.json
+        console.log('(1/5) creating distribution package from server/');
+        const options = {
+            // Do not copy the node_modules folder
+            filter: /^((?!node_modules).)*$/
+        };
+        await new Promise((resolve, reject) => {
+            ncp('./server', './temp/server', options, function (err) {
+                if (err) {
+                    reject(err);
+                }
+                resolve();
+            });
+        });
+
+        fs.unlinkSync('./temp/server/config/production.json');
+        return;
         // zip into file
         // filename is that of git hash
 
@@ -50,7 +79,7 @@ async function deployBackend() {
         const zipFile = zipFilePath + zipFileName + '.zip';
 
         console.log();
-        console.log('(2/4) uploading the environment version (distribution) to S3');
+        console.log('(2/5) uploading the environment version (distribution) to S3');
         const s3Key = appName + '_' + envName + '_' + zipFileName;
 
         let s3Object = await s3.upload({
@@ -61,7 +90,7 @@ async function deployBackend() {
         console.log(s3Object);
 
         console.log();
-        console.log('(3/4) creating a new application version');
+        console.log('(3/5) creating a new application version');
         const ebVersion = await eb.createApplicationVersion({
             ApplicationName: appName,
             VersionLabel: zipFileName,
@@ -73,7 +102,7 @@ async function deployBackend() {
         console.log(ebVersion);
 
         console.log();
-        console.log('(4/4) updating the elastic beanstalk environment');
+        console.log('(4/5) updating the elastic beanstalk environment');
         const ebUpdate = await eb.updateEnvironment({
             ApplicationName: appName,
             EnvironmentName: envName,

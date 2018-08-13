@@ -14,6 +14,8 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/biotslimted/workonblockchain.com#readme",
   "dependencies": {
-    "aws-sdk": "^2.291.0"
+    "aws-sdk": "^2.291.0",
+    "git-rev": "^0.2.1",
+    "ncp": "^2.0.0"
   }
 }
