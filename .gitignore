@@ -1,3 +1,6 @@
 .idea
+temp
+node_modules
 *.zip
+*.pem
 *.tar.gz
