@@ -51,8 +51,6 @@ module.exports.createTempServerDir = async function createTempServerDir(tempServ
         filter: /^((?!node_modules).)*$/
     };
 
-    console.log(tempServerDirName);
-
     await new Promise((resolve, reject) => {
         ncp('./server', tempServerDirName, options, function (err) {
             if (err) {
@@ -63,6 +61,17 @@ module.exports.createTempServerDir = async function createTempServerDir(tempServ
     });
 
     fs.unlinkSync(tempServerDirName + 'config/production.json');
+};
+
+module.exports.createTempClientDir = async function createTempClientDir(tempClientDirName) {
+    await new Promise((resolve, reject) => {
+        ncp('./client/dist', tempClientDirName, function (err) {
+            if (err) {
+                reject(err);
+            }
+            resolve();
+        });
+    });
 };
 
 module.exports.zipServerDir = async function zipServerDir(tempDirName, directoryToZip, commit) {
