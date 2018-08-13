@@ -39,18 +39,14 @@ async function deployBackend() {
         const envName = 'testing-api-workonblockchain-com-env';
         const s3bucket = 'distributions.workonblockchain.com';
 
-        // console.log();
-        // console.log('(1/5) getting branch and commit info');
-        // const commitHead = await new Promise((resolve, reject) => {
-        //     gitRev.short( (hash) => {
-        //         resolve(hash);
-        //     });
-        // });
-        // // gitRev.short(function (str) {
-        // //     console.log('short', str)
-        // //     // => aefdd94
-        // // })
-        // console.log(commitHead);
+        console.log();
+        console.log('(1/5) getting branch and commit info');
+        const gitInfo = await getGitCommit();
+        console.log(gitInfo);
+
+        if (gitInfo.branch !== 'staging') {
+            throw new Error('You can only deploy to the staging environment on the staging branch');
+        }
         // return;
 
 
@@ -117,5 +113,24 @@ async function deployBackend() {
 
     } catch(error) {
         console.log(error);
+    }
+}
+
+async function getGitCommit() {
+    const commitHead = await new Promise((resolve, reject) => {
+        gitRev.short( (hash) => {
+            resolve(hash);
+        });
+    });
+
+    const branch = await new Promise((resolve, reject) => {
+        gitRev.branch(function (name) {
+            resolve(name);
+        })
+    })
+
+    return {
+        branch: branch,
+        commit: commitHead
     }
 }
