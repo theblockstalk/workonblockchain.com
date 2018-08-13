@@ -1,13 +1,5 @@
-const aws = require('aws-sdk');
 const config = require('./config');
-const accessKey = require('./access/accessKey');
 const scriptUtils = require('./utils');
-
-aws.config.update({
-    secretAccessKey: accessKey.secretAccessKey,
-    accessKeyId: accessKey.accessKeyId,
-    region: "eu-west-1"
-});
 
 (async function run() {
     console.log('deploying the backend to elastic beanstalk');
@@ -20,8 +12,6 @@ const tempServerDirName = './' + config.tempDirs.temp + '/' + config.tempDirs.se
 const appName = config.eb.appName;
 const envName = config.eb.staging.envName;
 const s3bucket = config.s3.bucketName;
-
-const eb = new aws.ElasticBeanstalk();
 
 async function deployBackend() {
     try {
@@ -53,35 +43,11 @@ async function deployBackend() {
 
         console.log();
         console.log('(4/5) creating a new application version');
-        try {
-            const ebVersion = await eb.createApplicationVersion({
-                ApplicationName: appName,
-                VersionLabel: zipFileName.name,
-                SourceBundle: {
-                    S3Bucket: s3bucket,
-                    S3Key: distributionS3File.Key
-                }
-            }).promise();
-
-            console.log(ebVersion);
-        } catch(error) {
-            if (error.message === 'Application Version ' + zipFileName.name + ' already exists.')
-                console.log('Application version was already found for the elastic beanstalk application');
-            else throw error;
-        }
+        await scriptUtils.addElasticEnvironmentVersion(s3bucket, appName, zipFileName, distributionS3File);
 
         console.log();
         console.log('(5/5) updating the elastic beanstalk environment');
-        const ebUpdate = await eb.updateEnvironment({
-            ApplicationName: appName,
-            EnvironmentName: envName,
-            OptionSettings: [{
-                Namespace: 'aws:elasticbeanstalk:container:nodejs',
-                OptionName: 'NodeCommand',
-                Value: 'npm start'
-            }],
-            VersionLabel: zipFileName.name
-        }).promise();
+        const ebUpdate = await scriptUtils.updateElisticEnvironment(appName, envName, zipFileName);
         console.log(ebUpdate);
     } catch(error) {
         console.log(error);

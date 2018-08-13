@@ -14,6 +14,7 @@ aws.config.update({
 });
 
 const s3 = new aws.S3();
+const eb = new aws.ElasticBeanstalk();
 
 module.exports.pressEnterToContinue = async function pressEnterToContinue() {
     return new Promise((resolve, reject) => {
@@ -127,5 +128,37 @@ module.exports.uploadToS3 = async function uploadToS3(envName, s3bucket, zipFile
         Bucket: s3bucket,
         Key: s3Key,
         Body: fs.createReadStream(zipFileName.file)
+    }).promise();
+};
+
+module.exports.addElasticEnvironmentVersion = async function addElisticEnvironmentVersion(s3bucket, appName, zipFileName, distributionS3File) {
+    try {
+        const ebVersion = await eb.createApplicationVersion({
+            ApplicationName: appName,
+            VersionLabel: zipFileName.name,
+            SourceBundle: {
+                S3Bucket: s3bucket,
+                S3Key: distributionS3File.Key
+            }
+        }).promise();
+
+        console.log(ebVersion);
+    } catch(error) {
+        if (error.message === 'Application Version ' + zipFileName.name + ' already exists.')
+            console.log('Application version was already found for the elastic beanstalk application');
+        else throw error;
+    }
+};
+
+module.exports.updateElisticEnvironment = async function updateElisticEnvironment(appName, envName, zipFileName) {
+    return eb.updateEnvironment({
+        ApplicationName: appName,
+        EnvironmentName: envName,
+        OptionSettings: [{
+            Namespace: 'aws:elasticbeanstalk:container:nodejs',
+            OptionName: 'NodeCommand',
+            Value: 'npm start'
+        }],
+        VersionLabel: zipFileName.name
     }).promise();
 }
