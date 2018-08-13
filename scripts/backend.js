@@ -23,7 +23,7 @@ const config = {
     "eb": {
         "appName": "workonblockchain.com",
         "staging": {
-            "envName": "staging-api-workonblockchain-com-env"
+            "envName": "testing-api-workonblockchain-com-env"
         },
         "production": {
             "envName": ""
@@ -49,6 +49,11 @@ const eb = new aws.ElasticBeanstalk();
 
 async function deployBackend() {
     try {
+        console.log('This script will deploy the latest in the /server directory to the backend application');
+        console.log('Please make sure there is no files in the working directory (do a `git stash` if you are unsure)');
+
+        await prettEnterKey();
+
         console.log();
         console.log('(1/5) getting branch and commit info');
         const gitInfo = await getGitCommit();
@@ -70,15 +75,22 @@ async function deployBackend() {
 
         console.log();
         console.log('(4/5) creating a new application version');
-        const ebVersion = await eb.createApplicationVersion({
-            ApplicationName: appName,
-            VersionLabel: zipFileName.name,
-            SourceBundle: {
-                S3Bucket: s3bucket,
-                S3Key: distributionS3File.Key
-            }
-        }).promise();
-        console.log(ebVersion);
+        try {
+            const ebVersion = await eb.createApplicationVersion({
+                ApplicationName: appName,
+                VersionLabel: zipFileName.name,
+                SourceBundle: {
+                    S3Bucket: s3bucket,
+                    S3Key: distributionS3File.Key
+                }
+            }).promise();
+
+            console.log(ebVersion);
+        } catch(error) {
+            if (error.message === 'Application Version ' + zipFileName.name + ' already exists.')
+                console.log('Application version was already found for the elastic beanstalk application');
+            else throw error;
+        }
 
         console.log();
         console.log('(5/5) updating the elastic beanstalk environment');
@@ -97,6 +109,16 @@ async function deployBackend() {
     } catch(error) {
         console.log(error);
     }
+}
+
+async function prettEnterKey() {
+    return new Promise((resolve, reject) => {
+        console.log();
+        console.log('Press enter/return key to continue');
+        process.stdin.once('data', function () {
+            resolve();
+        });
+    });
 }
 
 async function getGitCommit() {
