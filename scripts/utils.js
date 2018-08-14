@@ -160,7 +160,7 @@ module.exports.zipServerDir = async function zipServerDir(tempDirName, directory
 };
 
 module.exports.uploadZipfileToS3 = async function uploadToS3(envName, s3bucket, zipFileName) {
-    const s3Key = envName + '/' + zipFileName.name + '.zip';
+    const s3Key = 'versions/' + envName + '/' + zipFileName.name + '.zip';
 
     return await awsS3.upload({
         Bucket: s3bucket,

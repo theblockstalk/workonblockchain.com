@@ -7,7 +7,7 @@
     }
   },
   "s3": {
-    "distributionsBucket": "distributions.workonblockchain.com",
+    "distributionsBucket": "elasticbeanstalk-eu-west-1-831241436261",
     "frontendBucket": {
       "staging": "testing.workonblockchain.com",
       "production": ""
