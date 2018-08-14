@@ -8,7 +8,7 @@ const scriptUtils = require('./utils');
     console.log("you may have to wait up to an hour for the Cloudfront Distribution CDN caches to clear before you see the new application frontend");
 })();
 
-const tempClientDirName = './temp/client/dist';
+const tempClientDirName = './temp/client/dist/';
 const s3bucket = config.s3.frontendBucket.staging;
 
 async function deployFrontend() {
@@ -18,13 +18,11 @@ async function deployFrontend() {
     await scriptUtils.pressEnterToContinue();
 
     console.log();
-    console.log('(1/4) getting branch and commit info');
+    console.log('(1/4) getting Git branch and commit info');
     const gitInfo = await scriptUtils.getGitCommit();
     console.log(gitInfo);
 
-    if (gitInfo.branch !== 'staging') {
-        // throw new Error('You can only deploy to the staging environment on the staging branch');
-    }
+    scriptUtils.checkGitBranch(gitInfo.branch, 'staging');
 
     console.log();
     console.log('(2/4) building distribution in client/dist/');

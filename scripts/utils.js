@@ -7,6 +7,7 @@ const s3 = require('s3');
 const accessKey = require('./access/accessKey');
 const { exec } = require('child_process');
 const del = require('del');
+const mkdirp = require('mkdirp');
 
 ncp.limit = 16;
 
@@ -49,6 +50,23 @@ module.exports.getGitCommit = async function getGitCommit() {
     }
 };
 
+module.exports.checkGitBranch = function checkGitBranch(branch, deployment) {
+    let expectedBranch;
+    switch (deployment) {
+        case 'staging':
+            expectedBranch = 'staging';
+            break;
+        case 'production':
+            expectedBranch = 'staging';
+            break;
+        default:
+            throw new Error("Deployment" + deployment + " is not valid");
+    }
+    if (branch !== expectedBranch) {
+        throw new Error('You can only deploy to the ' + deploment + ' environment on the ' + expectedBranch + ' branch');
+    }
+};
+
 module.exports.createTempServerDir = async function createTempServerDir(tempServerDirName) {
     const options = {
         // Do not copy the node_modules folder
@@ -65,11 +83,14 @@ module.exports.createTempClientDir = async function createTempClientDir(tempClie
 };
 
 async function copyDir(from, to, options) {
+    await mkdirp(to);
+
     await del(to + '*');
 
     return new Promise((resolve, reject) => {
         let cb = function cb(err) {
             if (err) {
+                console.log(err);
                 reject(err);
             }
             resolve();
@@ -238,7 +259,7 @@ module.exports.syncDirwithS3 = async function syncDirwithS3(s3bucket, tempClient
         uploader.on('progress', function() {
             counter++;
             if (counter === counterLimit) {
-                console.log(uploader.progressAmount/ 1000000, ' Mb of ', uploader.progressTotal / 1000000, ' Mb completed');
+                console.log(uploader.progressAmount/ 1000000 + ' Mb of ' + uploader.progressTotal / 1000000 + ' Mb completed');
                 counter = 0;
             }
 

@@ -20,13 +20,11 @@ async function deployBackend() {
     await scriptUtils.pressEnterToContinue();
 
     console.log();
-    console.log('(1/5) getting branch and commit info');
+    console.log('(1/5) getting Git branch and commit info');
     const gitInfo = await scriptUtils.getGitCommit();
     console.log(gitInfo);
 
-    if (gitInfo.branch !== 'staging') {
-        // throw new Error('You can only deploy to the staging environment on the staging branch');
-    }
+    scriptUtils.checkGitBranch(gitInfo.branch, 'staging');
 
     console.log();
     console.log('(2/5) creating distribution package from server/');
