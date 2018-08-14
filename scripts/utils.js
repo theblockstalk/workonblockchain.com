@@ -6,6 +6,7 @@ const aws = require('aws-sdk');
 const s3 = require('s3');
 const accessKey = require('./access/accessKey');
 const { exec } = require('child_process');
+const del = require('del');
 
 ncp.limit = 16;
 
@@ -15,13 +16,14 @@ aws.config.update({
     region: "eu-west-1"
 });
 
-const s3 = new aws.S3();
-const eb = new aws.ElasticBeanstalk();
+const awsS3 = new aws.S3();
+const awsEb = new aws.ElasticBeanstalk();
 
-module.exports.pressEnterToContinue = async function pressEnterToContinue() {
+module.exports.pressEnterToContinue = async function pressEnterToContinue(message) {
+    if (!message) message = 'Press enter/return key to continue, or Ctr+C to exit.';
     return new Promise((resolve, reject) => {
         console.log();
-        console.log('Press enter/return key to continue, or Ctr+C to exit.');
+        console.log(message);
         process.stdin.once('data', function () {
             resolve();
         });
@@ -39,7 +41,7 @@ module.exports.getGitCommit = async function getGitCommit() {
         gitRev.branch(function (name) {
             resolve(name);
         })
-    })
+    });
 
     return {
         branch: branch,
@@ -53,28 +55,32 @@ module.exports.createTempServerDir = async function createTempServerDir(tempServ
         filter: /^((?!node_modules).)*$/
     };
 
-    await new Promise((resolve, reject) => {
-        ncp('./server', tempServerDirName, options, function (err) {
-            if (err) {
-                reject(err);
-            }
-            resolve();
-        });
-    });
+    await copyDir('./server', tempServerDirName, options);
 
     fs.unlinkSync(tempServerDirName + 'config/production.json');
 };
 
 module.exports.createTempClientDir = async function createTempClientDir(tempClientDirName) {
-    await new Promise((resolve, reject) => {
-        ncp('./client/dist', tempClientDirName, function (err) {
+    await copyDir('./client/dist', tempClientDirName);
+};
+
+async function copyDir(from, to, options) {
+    await del(to + '*');
+
+    return new Promise((resolve, reject) => {
+        let cb = function cb(err) {
             if (err) {
                 reject(err);
             }
             resolve();
-        });
+        };
+        if (options) {
+            ncp(from, to, options, cb);
+        } else {
+            ncp(from, to, cb);
+        }
     });
-};
+}
 
 module.exports.zipServerDir = async function zipServerDir(tempDirName, directoryToZip, commit) {
     const zipPath = tempDirName;
@@ -135,7 +141,7 @@ module.exports.zipServerDir = async function zipServerDir(tempDirName, directory
 module.exports.uploadZipfileToS3 = async function uploadToS3(envName, s3bucket, zipFileName) {
     const s3Key = envName + '/' + zipFileName.name + '.zip';
 
-    return await s3.upload({
+    return await awsS3.upload({
         Bucket: s3bucket,
         Key: s3Key,
         Body: fs.createReadStream(zipFileName.file)
@@ -144,7 +150,7 @@ module.exports.uploadZipfileToS3 = async function uploadToS3(envName, s3bucket, 
 
 module.exports.addElasticEnvironmentVersion = async function addElisticEnvironmentVersion(s3bucket, appName, zipFileName, distributionS3File) {
     try {
-        const ebVersion = await eb.createApplicationVersion({
+        const ebVersion = await awsEb.createApplicationVersion({
             ApplicationName: appName,
             VersionLabel: zipFileName.name,
             SourceBundle: {
@@ -162,7 +168,7 @@ module.exports.addElasticEnvironmentVersion = async function addElisticEnvironme
 };
 
 module.exports.updateElisticEnvironment = async function updateElisticEnvironment(appName, envName, zipFileName) {
-    return eb.updateEnvironment({
+    return awsEb.updateEnvironment({
         ApplicationName: appName,
         EnvironmentName: envName,
         OptionSettings: [{

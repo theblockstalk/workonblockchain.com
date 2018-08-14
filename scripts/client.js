@@ -28,7 +28,7 @@ async function deployFrontend() {
 
     console.log();
     console.log('(2/4) building distribution in client/dist/');
-    // TODO: delete contents of tempClientDirName
+    await scriptUtils.pressEnterToContinue();
     // TODO: add in some tags for application to serve the version commit
     await scriptUtils.buildAngularDistribution();
 
@@ -38,6 +38,7 @@ async function deployFrontend() {
 
     console.log();
     console.log('(4/4) syncing to S3 bucket');
+    await scriptUtils.pressEnterToContinue();
     await scriptUtils.syncDirwithS3(s3bucket, tempClientDirName);
 
 
