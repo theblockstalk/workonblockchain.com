@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('./controller/middleware/multer');
+const auth = require('./controller/middleware/auth');
 
 const healthCheck = require('./controller/api/healthCheck.controller');
 
@@ -90,14 +91,14 @@ router.post('/users/get_refrence_code', refGetReferralCode);
 router.post('/users/register', candidateRegister);
 router.get('/users/', candidateGetAll);
 router.get('/users/current/:id', candidateGetCurrent);
-router.put('/users/welcome/terms/:_id', candidateWizardTnC);
-router.put('/users/welcome/about/:_id', candidateWizardAbout);
-router.put('/users/welcome/job/:_id', candidateWizardJob);
-router.put('/users/welcome/resume/:_id', candidateWizardResume);
-router.put('/users/welcome/exp/:_id', candidateWizardExperience);
-router.post('/users/image/:_id', multer.single('photo'), candidateImage);
-router.put('/users/refered_id/:id', candidateReferred);
-router.put('/users/update_profile/:_id', candidateUpdate);
+router.put('/users/welcome/terms/:_id', auth.isLoggedIn(), candidateWizardTnC);
+router.put('/users/welcome/about/:_id', auth.isLoggedIn(), candidateWizardAbout);
+router.put('/users/welcome/job/:_id', auth.isLoggedIn(), candidateWizardJob);
+router.put('/users/welcome/resume/:_id', auth.isLoggedIn(), candidateWizardResume);
+router.put('/users/welcome/exp/:_id', auth.isLoggedIn(), candidateWizardExperience);
+router.post('/users/image/:_id', auth.isLoggedIn(), multer.single('photo'), candidateImage);
+router.put('/users/refered_id/:id', auth.isLoggedIn(), candidateReferred);
+router.put('/users/update_profile/:_id', auth.isLoggedIn(), candidateUpdate);
 
 // Companies
 router.post('/users/create_employer', companyRegister);

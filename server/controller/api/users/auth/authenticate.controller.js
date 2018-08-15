@@ -3,8 +3,7 @@ const users = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 const Q = require('q');
-const jwt = require('jsonwebtoken');
-const settings = require('../../../../settings');
+const jwtToken = require('../../../services/jwtToken');
 
 module.exports = function (req, res) {
     authenticate(req.body.email, req.body.password).then(function (user)
@@ -49,6 +48,7 @@ function authenticate(email, password,type)
 
                     if(data)
                     {
+                        let token = jwtToken.createJwtToken(user);
                         deferred.resolve({
                             _id:data._id,
                             _creator: data._creator,
@@ -58,8 +58,16 @@ function authenticate(email, password,type)
                             is_admin:user.is_admin,
                             type:user.type,
                             is_approved : user.is_approved,
-                            token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
+                            token: token
                         });
+                        /*
+                        TODO: need to send the token to the client in the response header (I think).
+                        The client needs to store the token as a cookie or in browser storage and use it again for next endpoint call
+
+                        This is my rough estimate
+                        res.header.someFieldToBeStoredInClientCookies = token
+
+                         */
                     }
 
                     else
@@ -82,6 +90,7 @@ function authenticate(email, password,type)
 
                     else
                     {
+                        let token = jwtToken.createJwtToken(user);
                         deferred.resolve({
                             _id:data._id,
                             _creator: data._creator,
@@ -91,8 +100,17 @@ function authenticate(email, password,type)
                             type: user.type,
                             is_admin:user.is_admin,
                             is_approved : user.is_approved,
-							token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
+							token: token
                         });
+
+                        /*
+                        TODO: need to send the token to the client in the response header (I think).
+                        The client needs to store the token as a cookie or in browser storage and use it again for next endpoint call
+
+                        This is my rough estimate
+                        res.header.someFieldToBeStoredInClientCookies = token
+
+                         */
                     }
 
 
