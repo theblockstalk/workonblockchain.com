@@ -88,9 +88,9 @@ router.post('/users/send_refreal', refReferral);
 router.post('/users/get_refrence_code', refGetReferralCode);
 
 // Candidates
-router.post('/users/register', candidateRegister);
-router.get('/users/', candidateGetAll);
-router.get('/users/current/:id', candidateGetCurrent);
+router.post('/users/register', auth.isLoggedIn(), candidateRegister);
+router.get('/users/', candidateGetAll); // Auth: ???
+router.get('/users/current/:id', auth.isLoggedIn(), candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms/:_id', auth.isLoggedIn(), candidateWizardTnC);
 router.put('/users/welcome/about/:_id', auth.isLoggedIn(), candidateWizardAbout);
 router.put('/users/welcome/job/:_id', auth.isLoggedIn(), candidateWizardJob);
@@ -113,8 +113,8 @@ router.post('/users/filter', companySearchFilter);
 router.get('/users/verified_candidate', companySearchVerifiedCandidates);
 
 // Chat
-router.post('/users/insert_message', chatInsertMessage);
-router.post('/users/get_candidate', chatGetCandidate);
+router.post('/users/insert_message', auth.isValidUser(), chatInsertMessage);
+router.post('/users/get_candidate', auth.isValidUser(), chatGetCandidate);
 router.post('/users/get_messages', chatGetMessages);
 router.post('/users/get_user_messages', chatGetUserMsgs);
 router.get('/users/all_chat', chatGetChat);
@@ -125,7 +125,7 @@ router.post('/users/update_job_message', chatUpdateJobMessage);
     router.post('/users/get_unread_msgs_of_user', chatGetUnreadUser);
 
 // Admin
-router.put('/users/admin_role', adminRoll);
+router.put('/users/admin_role', auth.isAdmin(), adminRoll);
 router.put('/users/approve/:_id'  , adminApproveUser);
 router.post('/users/search_by_name' , adminCandidateSearch);
 router.post('/users/admin_candidate_filter' , adminCandidateFilter);
