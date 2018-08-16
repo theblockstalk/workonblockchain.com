@@ -93,7 +93,7 @@ export class AccountSettingsComponent implements OnInit {
       {
           this.enable_msg ="enable";
           this.disable_msg ='';
-         
+          
       }*/
 
       this.message = '';
@@ -111,7 +111,19 @@ export class AccountSettingsComponent implements OnInit {
                else
                {
                     this.inform = data;
-                  //this.dataservice.changeMessage("Settings Updated Sucessfully");
+					if(this.info.disable_account){
+						this.message = 'Your profile is currently disabled';
+					}
+					else{
+						this.message = 'Your profile is currently enabled';
+					}
+					if(this.info.marketing){
+						this.message = 'Your account settings for marketing emails is enabled';
+					}
+					else{
+						this.message = 'Your account settings for marketing emails is disabled';
+					}
+                  //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
               
           });
@@ -132,7 +144,19 @@ export class AccountSettingsComponent implements OnInit {
                else
                {
                     this.inform=data;
-                  //this.dataservice.changeMessage("Settings Updated Sucessfully");
+					if(this.info.disable_account){
+						this.message = 'Your profile is currently disabled';
+					}
+					else{
+						this.message = 'Your profile is currently enabled';
+					}
+					if(this.info.marketing){
+						this.message = 'Your account settings for marketing emails is enabled';
+					}
+					else{
+						this.message = 'Your account settings for marketing emails is disabled';
+					}
+                  //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
                     
                 },
@@ -188,7 +212,13 @@ export class AccountSettingsComponent implements OnInit {
 				else
 				{
                     this.inform=data;
-					//console.log(data);
+					if(this.info.unread_msgs_emails){
+						this.message = 'Your account settings for Unread Chat Messages Email is enabled';
+					}
+					else{
+						this.message = 'Your account settings for Unread Chat Messages Email is disabled';
+					}
+					//console.log(this.inform);
 				}
 			},
 			error => {

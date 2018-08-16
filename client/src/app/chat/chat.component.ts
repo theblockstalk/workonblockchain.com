@@ -599,6 +599,7 @@ export class ChatComponent implements OnInit {
   }*/
   
   openDialog(email: string, id:string){
+	  console.log(email);
       //this.msgs = 'hi baby';
       this.msgs = '';
 	  this.new_msgss = '';
