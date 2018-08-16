@@ -103,9 +103,15 @@ async function copyDir(from, to, options) {
     });
 }
 
-module.exports.zipServerDir = async function zipServerDir(tempDirName, directoryToZip, commit) {
+module.exports.addServerVersion = async function addServerVersion(tempServerDirName, versonName) {
+    const versionObj = {
+        version: versonName
+    };
+    fs.writeFileSync(tempServerDirName + 'config/version.json', JSON.stringify(versionObj));
+};
+
+module.exports.zipServerDir = async function zipServerDir(tempDirName, directoryToZip, zipName) {
     const zipPath = tempDirName;
-    const zipName = 'server_' + commit;
     const zipFile = zipPath + '/' + zipName + '.zip';
     // create a file to stream archive data to.
     let output = fs.createWriteStream(zipFile);

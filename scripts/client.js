@@ -6,6 +6,7 @@ const scriptUtils = require('./utils');
     await deployFrontend();
     console.log("finished");
     console.log("you may have to wait up to an hour for the Cloudfront Distribution CDN caches to clear before you see the new application frontend");
+    process.exit(0);
 })();
 
 const tempClientDirName = './temp/client/dist/';

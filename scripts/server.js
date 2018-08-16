@@ -5,6 +5,7 @@ const scriptUtils = require('./utils');
     console.log('deploying the backend to elastic beanstalk');
     await deployBackend();
     console.log("finished");
+    process.exit(0);
 })();
 
 const tempDirName = './temp';
@@ -29,9 +30,10 @@ async function deployBackend() {
 
         console.log();
         console.log('(2/5) creating distribution package from server/');
+        const versonName = 'server_' + gitInfo.commit + '_staging';
         await scriptUtils.createTempServerDir(tempServerDirName);
-        // TODO: add in some tags for application to serve the version commit
-        const zipFileName = await scriptUtils.zipServerDir(tempDirName, tempServerDirName, gitInfo.commit);
+        await scriptUtils.addServerVersion(tempServerDirName, versonName);
+        const zipFileName = await scriptUtils.zipServerDir(tempDirName, tempServerDirName, versonName);
 
         console.log(zipFileName);
         console.log('(3/5) uploading the environment version (distribution) to S3');
