@@ -1,0 +1,25 @@
+{
+  "name": "workonblockchain.com",
+  "version": "1.0.0",
+  "description": "First start MongoDB ``` mongod ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jackandtheblockstalk@bitbucket.org/biotslimted/workonblockchain.com.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/biotslimted/workonblockchain.com#readme",
+  "dependencies": {
+    "archiver": "^2.1.1",
+    "aws-sdk": "^2.291.0",
+    "del": "^3.0.0",
+    "git-rev": "^0.2.1",
+    "mkdir": "0.0.2",
+    "ncp": "^2.0.0",
+    "s3": "^4.4.0"
+  }
+}
