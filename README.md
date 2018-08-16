@@ -35,8 +35,9 @@ Front end is running on localhost:4200
 
 1. Finish all work and commit all changes. Merge all changes for deployment to the `staging` branch.
 2. Run the backend app once to check that it starts
-3. Place your access key in the `scipts/access` folder
-3. Deploy the backend
+3. Ensure that all commits are pushed to bitbucket
+4. Place your access key in the `scipts/access` folder
+5. Deploy the backend
 
 ```
 npm install
@@ -50,3 +51,19 @@ node scripts/server.js production
 ```
 
 ## Deploy the frontend
+1. Finish all work and commit all changes. Merge all changes for deployment to the `staging` branch.
+2. Run the backend app once to check that it starts
+3. Ensure that all commits are pushed to bitbucket
+4. Place your access key in the `scipts/access` folder
+5. Deploy the backend
+
+```
+npm install
+node scripts/client.js staging
+```
+
+Or
+
+```
+node scripts/client.js production
+```
