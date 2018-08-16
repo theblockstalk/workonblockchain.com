@@ -969,7 +969,7 @@ body{
 }
 
 .custom_form .form-group{
-	position: relative;
+	/*position: relative;*/
 }
 
 .form_error .error{
