@@ -4,7 +4,7 @@
 
 <div class="alert alert-info pro_alert alert-dismissible" *ngIf="inform">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-	  	Your account settings is succesfully updated.
+	  	{{message}}
 </div>
 
 <!--<div class="alert alert-success pro_alert alert-dismissible" *ngIf="enable_msg">
@@ -14,9 +14,6 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 wizard-form sett_padd">
-<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "message ">
-    {{message}}    
- </div>
 				<h1 class = "text-center sett-mr-btm">Account Settings</h1>
 				   <div class="group">
 				   		<!--<h1>Required for platform use</h1>-->
@@ -54,7 +51,7 @@
 							<span>Disable my account and stop receiving all communications (email, phone and post)</span>
 							<div class="btn-container">
 								<label class="switch">
-								  <input type="checkbox" id="myCheck"  [(ngModel)]="info.disable_account" (change)="account_setting()">
+								  <input type="checkbox" id="myCheck"  [(ngModel)]="info.disable_account" (change)="disbale_setting()">
 								  <span class="slider round"></span>
 								</label>
 							</div>

@@ -41,22 +41,21 @@ function experience_data(_id, userParam)
             updateExp(_id);
 
     });
-
+    console.log(userParam.work);
+   
+   
+    
     function updateExp(_id)
     {
 
         var set =
             {
                 current_salary: userParam.detail.salary,
-                languages: userParam.detail.language,
-                experience_roles: userParam.language_exp,
-                //work_experience: userParam.detail.roles,
-                // work_experience_year : userParam.platform_exp,
-                education :  userParam.education,
-                history: userParam.work,
+                current_currency : userParam.detail.current_currency,
+                programming_languages: userParam.language_exp,
+                education_history :  userParam.education,
+                work_history: userParam.work,
                 description :userParam.detail.intro,
-                current_currency : userParam.detail.current_currency
-
 
             };
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)

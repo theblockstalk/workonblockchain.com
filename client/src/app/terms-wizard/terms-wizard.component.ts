@@ -16,7 +16,7 @@ export class TermsWizardComponent implements OnInit {
         currentUser: User;log;
         company_pay;company_declare;company_found;only_summary;about_company;
     terms_active_class;about_active_class;
-    termscondition=false;
+    termscondition;
     marketing_emails;
     agree;
     about_disable;
@@ -75,11 +75,17 @@ export class TermsWizardComponent implements OnInit {
            this.router.navigate(['/not_found']);
            }
   }
-    
+    terms_log;
     terms_wizard(termsForm: NgForm) 
     {
          //console.log(termsForm.value);
-       
+       if(this.termscondition!=true)
+       {
+           console.log("if");
+        this.terms_log = "Please accept terms and condition";   
+       }
+        else
+        {
         this.authenticationService.company_terms(this.currentUser._creator,termsForm.value)
             .subscribe(
                 data => {
@@ -98,7 +104,7 @@ export class TermsWizardComponent implements OnInit {
                   this.log = 'Something getting wrong';
                    
                 });
-          
+          }
     }
 
 }

@@ -2,7 +2,7 @@ import { Component,OnInit, ElementRef, AfterViewInit, Input, ViewChild } from '@
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import {NgForm} from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute,NavigationEnd  } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
@@ -68,9 +68,31 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     });
      
  }
+    sectionScroll;
+    internalRoute(page,dst){
+    this.sectionScroll=dst;
+    this.router.navigate([page], {fragment: dst});
+}
+    
+    doScroll() {
+
+    if (!this.sectionScroll) {
+      return;
+    }
+    try {
+      var elements = document.getElementById(this.sectionScroll);
+
+      elements.scrollIntoView();
+    }
+    finally{
+      this.sectionScroll = null;
+    }
+  } 
 
 
-     ngAfterViewInit(): void {
+     ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);
      
         this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
  
@@ -79,23 +101,34 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
          
          
           window['twttr'] && window['twttr'].widgets.load();
+         
     }
     tweet_text;
+ 
   ngOnInit() 
   {     
   
-      this.dataservice.currentMessage.subscribe(message => this.message = message);
+       this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      this.doScroll();
+      this.sectionScroll= null;
+    });
+  
+      this.dataservice.eemailMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
       {
           ////console.log("ifffffff");
+         
           this.share_url = location.href + '?user=' + this.user_id;
-          this.authenticationService.getById(this.user_id)
+          this.authenticationService.public_profile(this.user_id)
             .subscribe(
             data => {
                 this.public_data = data;
-                ////console.log(data);
+                //console.log(data);
                 });
           
       }
@@ -123,11 +156,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     
                 }
               
-               else if(!data.contact_number && !data.nationality && !data.first_name && !data.last_name)
+               else if(!data.contact_number || !data.nationality || !data.first_name || !data.last_name)
                {
                         this.router.navigate(['/about']);
                }
-               else if(data.country.length < 1  && data.roles.length < 1 && data.interest_area.length < 1 || !data.expected_salary)
+               else if(data.locations.length < 1  || data.roles.length < 1 || data.interest_area.length < 1 || !data.expected_salary)
                {
                  
                     this.router.navigate(['/job']); 
@@ -140,23 +173,29 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 {
                     this.router.navigate(['/resume']);
                 }*/
-                //////console.log(data.experience_roles.length);
-                else if(!data.experience_roles &&  !data.current_salary  || data.experience_roles.length <1 )
+                //////console.log(data.programming_languages.length);
+                else if(!data.programming_languages ||  !data.current_salary  || data.programming_languages.length <1 )
                 {
                         this.router.navigate(['/experience']);
                 }
-                else if(data.history.length < 1 || !data.history.length )
-                {
-                    this.dataservice.changeMessage("Please enter atleast one work history record");
-                    this.router.navigate(['/experience']);              
-                }
                     
-                else if(data.education.length < 1 || !data.education.length )
+                 else if(!data.description)
                 {
-                    this.dataservice.changeMessage("Please enter atleast one education record");
                     this.router.navigate(['/experience']);
                     
                 }
+                /*else if(data.work_history.length < 1 || !data.work_history.length )
+                {
+                   // this.dataservice.changeMessage("Please enter atleast one work history record");
+                    this.router.navigate(['/experience']);              
+                }
+                    
+                else if(data.education_history.length < 1 || !data.education_history.length )
+                {
+                    //this.dataservice.changeMessage("Please enter atleast one education record");
+                    this.router.navigate(['/experience']);
+                    
+                }*/
                     
                 else 
                 {
@@ -180,27 +219,27 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     this.nationality = data.nationality;
                     this.contact_number =data.contact_number;
                     this.description =data.description;
-                    this.history =data.history;
-                    this.education = data.education;
-                    
-                    for(let data1 of data.history)
+                    this.history =data.work_history;
+                    this.education = data.education_history;
+                    console.log(this.history);
+                    for(let data1 of data.work_history)
                     {
                         this.companyname = data1.companyname;
                         this.currentwork = data1.currentwork;
                        
                     }
-                    for(let edu of data.education)
+                    for(let edu of data.education_history)
                     {
                         this.degreename = edu.degreename;
                     }
-                    this.countries = data.country;
+                    this.countries = data.locations;
                     this.interest_area =data.interest_area;
                     this.roles  = data.roles;
                     this.availability_day =data.availability_day;
                     this.why_work = data.why_work;
                     this.commercial = data.commercial_platform;
                     this.experimented = data.experimented_platform;
-                    this.languages= data.experience_roles;
+                    this.languages= data.programming_languages;
                     this.current_currency = data.current_currency;
                     this.current_salary = data.current_salary;
 

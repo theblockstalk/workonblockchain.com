@@ -6,7 +6,7 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req, res)
     {
-        getById(req.params.id).then(function (user)
+        get_public_profile(req.params._id).then(function (user)
         {
             if (user)
             {
@@ -23,34 +23,33 @@ module.exports = function (req, res)
             });
     }
 
-function getById(_id)
+function get_public_profile(_id)
 {
+	
     var deferred = Q.defer();
-    //console.log(_id);
-    CandidateProfile.findById(_id).populate('_creator' ,  'created_date , email , is_admin , is_approved , is_unread_msgs_to_send , is_verify ,  jwt_token , type , refered_id , ref_link ').exec(function(err, result)
-    {
-        //console.log(result);
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        if(!result)
-        {
-            CandidateProfile.find({_creator : _id}).populate('_creator').exec(function(err, result)
+  
+   
+            CandidateProfile.find({_creator : _id}, { "first_name": 1,"_id": 0 , "why_work" : 1 , "description" : 1 }).populate('_creator' , "email").exec(function(err, result)
             {
-                if (err){
+                if (err)
+                {
                     logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
                 }
+                else if(result)
+                {
+                	deferred.resolve(result);
+                }
                 else
-                    deferred.resolve(result);
+                {
+                	logger.error(err.message, {stack: err.stack});
+                    deferred.reject(err.name + ': ' + err.message);
+                }
             });
-        }
-        else
-            deferred.resolve(result);
+       
 
 
-    });
+    
 
     return deferred.promise;
 

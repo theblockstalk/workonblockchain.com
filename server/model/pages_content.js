@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
-const PagesSchema = mongoose.Schema({
+
+const Schema = mongoose.Schema;
+
+const PagesSchema = new Schema({
 	page_name: 
 	{
 		type:String,
+		enum: ['Privacy Policy', 'Terms and Condition for candidate', 'Terms and Condition for company', 'FAQ'],
 		required:true,
 	},
 	page_title: 
@@ -17,7 +21,7 @@ const PagesSchema = mongoose.Schema({
 	},	
 	updated_date:
 	{
-		type:String, // Date
+		type:Date,
 		required:true,
 	}
 });

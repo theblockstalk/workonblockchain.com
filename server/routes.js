@@ -11,6 +11,7 @@ const authForgotPassword = require('./controller/api/users/auth/forgotPassword.c
 const authChangePassword = require('./controller/api/users/auth/changePassword.controller');
 const authResetPassword = require('./controller/api/users/auth/resetPassword.controller');
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
+const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
 
 // Referrals
 const refReferredEmail = require('./controller/api/users/referrals/referredEmail.controller');
@@ -29,6 +30,7 @@ const candidateWizardExperience = require('./controller/api/users/candidate/wiza
 const candidateWizardJob = require('./controller/api/users/candidate/wizard/job.controller');
 const candidateWizardResume = require('./controller/api/users/candidate/wizard/resume.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
+const candidatePublicProfile = require('./controller/api/users/candidate/publicProfile.controller');
 
 // Companies
 const companyRegister = require('./controller/api/users/company/createCompany.controller');
@@ -80,6 +82,7 @@ router.put('/users/forgot_password/:email', authForgotPassword);
 router.put('/users/change_password/:id', authChangePassword);
 router.put('/users/reset_password/:hash', authResetPassword);
 router.put('/users/verify_client/:email', authVerifyClient);
+router.post('/users/set_disable_status' , authAccountDisableSetting);
 
 // Referrals
 router.post('/users/refered_user_email', refReferredEmail)
@@ -98,6 +101,7 @@ router.put('/users/welcome/exp/:_id', candidateWizardExperience);
 router.post('/users/image/:_id', multer.single('photo'), candidateImage);
 router.put('/users/refered_id/:id', candidateReferred);
 router.put('/users/update_profile/:_id', candidateUpdate);
+router.get('/users/public_profile/:_id' , candidatePublicProfile);
 
 // Companies
 router.post('/users/create_employer', companyRegister);

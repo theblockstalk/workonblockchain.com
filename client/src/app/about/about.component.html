@@ -15,32 +15,54 @@
       </div>
       <div class="col-md-12 wizard-form">
 
-        <form class = "login_form"  (submit)="about()" #aboutForm = ngForm>
+        <form class = "login_form custom_form"  (submit)="about()" #aboutForm = ngForm novalidate>
           
           <fieldset class="scheduler-border">
               <legend class="scheduler-border">About You</legend>
               <div class="form-group col-md-6">
                 <label><p class = "label-p">First Name</p></label>
-                <input type="text" class="form-control" id="" placeholder="First Name"  name="first_name" [(ngModel)]="info.first_name">
+                <input type="text" class="form-control" required id=""  placeholder="First Name"  name="first_name" [(ngModel)]="info.first_name">
+           
+				
+				<div class = "form_error" *ngIf="!info.first_name">
+								<span class = "error">{{first_name_log}}</span>
+							</div>
             </div>
             <div class="form-group col-md-6">
                 <label><p class = "label-p">Last Name</p></label>
                 <input type="text" class="form-control" id="" placeholder="Last Name"  name="last_name" [(ngModel)]="info.last_name">
+            
+				<div class = "form_error" *ngIf="!info.last_name">
+								<span class = "error">{{last_name_log}}</span>
+							</div>
             </div>
 
               <div class="form-group col-md-6">
                 <label><p class = "label-p">Github account URL</p></label>
-                <input type="text" class="form-control" id="" placeholder="Github account (optional)"  name="github_account" [(ngModel)]="info.github_account">
+                <input type="text" #gitaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="" placeholder="Github account (optional)"  name="github_account" [(ngModel)]="info.github_account">
+            	 
+				<div class = "form_error" *ngIf="gitaccount.errors">
+								<span class = "error">Enter url in proper format.</span>
+							</div>
             </div>
 
             <div class="form-group col-md-6">
               <label><p class = "label-p">Stackexchange account URL</p></label>
-                <input type="text" class="form-control" id="" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account">
+                <input type="text" #stackaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account">
+            	 
+				<div class = "form_error" *ngIf="stackaccount.errors">
+								<span class = "error">Enter url in proper format.</span>
+							</div>
             </div>
 
             <div class="form-group col-md-6">
               <label><p class = "label-p">Contact Number</p></label>
                 <input type="tel" class="form-control" id="" placeholder="Phone number" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
+           	 
+				
+				<div class = "form_error" *ngIf="!info.contact_number">
+								<span class = "error">{{contact_name_log}}</span>
+							</div>
             </div>
             
 
@@ -53,7 +75,10 @@
         
                 <option class='option' *ngFor='let options of nationality' placeholder="Nationality"  [value]="options" selected>{{options}}</option>
                 </select>
-
+				
+				<div class = "form_error" *ngIf="info.nationality == -1">
+								<span class = "error">{{nationality_log}}</span>
+							</div>
 		</div>
 
             <div class="form-group col-md-6" >
@@ -81,8 +106,8 @@
           </fieldset>
 
           <div class = "form-group text-right">
-          <a href="/terms-and-condition" class = "btn btn-prev">Prev Step</a>
-              <button type="submit" class = "btn btn-self btn-pdg" [disabled]="!aboutForm.valid" >Next Step</button>
+          <a routerLink="/terms-and-condition" class = "btn btn-prev">Prev Step</a>
+              <button type="submit" class = "btn btn-self btn-pdg"  >Next Step</button>
           </div>
 
         </form>

@@ -42,7 +42,7 @@ export class CandidateFormComponent implements OnInit {
                         //console.log(data);
                         //console.log('data');
                         this.ref_msg = data.email+' thinks you should join workonblockchain.com';
-                        this.refer_by = data._id;
+                        this.credentials.refer_by = data._id;
                     },
                     error => {
                         //console.log('error');
@@ -119,7 +119,7 @@ export class CandidateFormComponent implements OnInit {
                     {
                        localStorage.setItem('currentUser', JSON.stringify(data));
                        ////console.log("elseeee");
-                        this.authenticationService.refered_id(this.refer_by , data._creator)
+                        /*this.authenticationService.refered_id(this.refer_by , data._creator)
                         .subscribe(
                         data => 
                         {
@@ -134,6 +134,8 @@ export class CandidateFormComponent implements OnInit {
                             }
                             
                         });
+                        */
+                        window.location.href = '/terms-and-condition';
                         //localStorage.removeItem('userInfo');
                         //this.router.navigate(['/about']);
                        // window.location.href = '/about';

@@ -81,6 +81,36 @@ export class AdminAccountSettingsComponent implements OnInit {
   disable_msg; 
   enable_msg;
     
+    disbale_setting()
+  {
+      
+       this.inform='';
+      //console.log('set here');
+      if(this.currentUser)
+      {
+        this.authenticationService.set_disable_status(this.currentUser._creator,this.info.disable_account)
+        .subscribe(
+            data => 
+            {
+                if(data.error )
+                {
+                    this.log=data.error;
+                }
+                else
+                {
+                    this.inform=data;
+                    //console.log(data);
+                }
+            },
+            error => {
+              this.log = 'Something getting wrong';
+               
+            }
+        );
+      }
+      
+  }
+    
   account_setting()
   {
     //console.log(this.info);

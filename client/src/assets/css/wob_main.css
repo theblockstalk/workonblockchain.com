@@ -956,6 +956,37 @@ body{
 	
 }
 
+.select_error
+{
+	bottom : -18px;
+}
+
+.form_error{
+	
+    margin-top: 1px;
+	position: absolute;
+    font-size: 12px;
+}
+
+.custom_form .form-group{
+	position: relative;
+}
+
+.form_error .error{
+	color: #e80000;
+	position: relative;
+    left: 5px;
+}
+
+.custom_form .fixed_error{
+	position: absolute;
+    top: 35px;
+}
+
+.custom_form .error_feild{
+	border-color: #e80000;
+}
+
 .login_hd{
     background: #f9f9f9;
     padding: 20px 0px;
@@ -2410,7 +2441,24 @@ input[type=checkbox] {
 
 .panel-body ul li{
     list-style: none;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    overflow: hidden; 
+}
+
+.panel-body .lang_name{
+	width: 80px;
+    margin-right: 10px;
+    overflow: hidden;
+    float: left;
+    height: auto;
+	word-break: break-word;
+}
+
+.panel-body .exp_time{
+	width: 140px;
+    overflow: hidden;
+    height: auto;
+	display: inline-flex;
 }
 
 .ofr_btn{
@@ -2652,6 +2700,48 @@ input[type=checkbox] {
     .text-setting{
         text-align: center;
     }
+    .ofr_btn{
+		margin-bottom: 15px;
+		float: left;
+	}
+	
+	.user-pic, .user-detail{
+		width: 100%;
+	}
+	
+	.input_main{
+		width: 100%;
+		margin: auto;
+	}
+	
+	.btn_main-srh{
+		float: left;
+	}
+	
+	.search-form{
+		padding: 15px 20px;
+	}
+	
+	.btn-div{
+		max-width: 95%;
+	}
+	
+	.custom_form .form-group {
+	    position: relative;
+	    margin-bottom: 5px; 
+	}
+	
+	.form_error
+	{
+	    position: relative;
+	}
+	
+	.select_error
+	{
+		bottom:0px;
+	}
+	
+	
 }
 
 @media only screen and (max-width: 400px){

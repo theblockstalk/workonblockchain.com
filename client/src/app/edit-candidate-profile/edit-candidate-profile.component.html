@@ -488,7 +488,7 @@
 								<div class="form-group col-md-4">
                 <label class="lable"><p>Start Date</p></label>
                  
-                 <select formControlName="startdate" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
+                 <select formControlName="start_date" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
                 <option  *ngFor='let start_month of calen_month'  [value]="start_month" selected>{{start_month}}</option>
               <br/>
             </select>
@@ -501,7 +501,7 @@
 
 								<div class="form-group col-md-4" id="input_field" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork==false ">
                 <label class="lable"><p>End Date</p></label>
-                 <select formControlName="enddate" class="form-control xs_input"  required name="roles"  required=""  >
+                 <select formControlName="end_date" class="form-control xs_input"  required name="roles"  required=""  >
             <option  *ngFor='let end_month of calen_month'  [value]="end_month" selected>{{end_month}}</option>
         <br/>
     </select>
