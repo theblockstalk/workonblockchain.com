@@ -7,9 +7,6 @@ if (process.env.NODE_ENV === 'production') {
 } else if (process.env.NODE_ENV === 'staging') {
     settings.ENVIRONMENT = 'staging';
     config = require('./config/staging.json');
-} else if (process.env.NODE_ENV === 'testing') {
-    settings.ENVIRONMENT = 'testing';
-    config = require('./config/testing.json');
 } else {
     process.env.NODE_ENV = 'test';
     settings.ENVIRONMENT = 'test';
@@ -17,7 +14,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 function isLiveApplication() {
-    return settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging' || settings.ENVIRONMENT === 'testing'
+    return settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging'
 }
 
 settings.isLiveApplication = isLiveApplication;
@@ -52,6 +49,10 @@ if (isLiveApplication()) {
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
 }
+
+settings.CRON = {
+    UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick
+};
 
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;
 

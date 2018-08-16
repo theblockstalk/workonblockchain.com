@@ -26,15 +26,12 @@ const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
-//////////inserting message in DB ////////////
-
-module.exports = function insert_message(req, res)
+module.exports = function (req, res)
 {
-    insert_message_new(req.body).then(function (data)
+    get_user_messages(req.body.id).then(function (data)
     {
         if (data)
         {
-            console.log(data);
             res.send(data);
         }
         else
@@ -48,60 +45,22 @@ module.exports = function insert_message(req, res)
         });
 }
 
-function insert_message_new(data){
-    var current_date = new Date();
-    var day = current_date.getDate();
-    if(day < 10){
-        day = '0'+day;
-    }
-    var month = current_date.getMonth();
-    month = month+1;
-    if(month < 10){
-        month = '0'+month;
-    }
-    var year = current_date.getFullYear();
-    var hours = current_date.getHours();
-    if(hours < 10){
-        hours = '0'+hours;
-    }
-    var minutes = current_date.getMinutes();
-    if(minutes < 10){
-        minutes = '0'+minutes;
-    }
-    var seconds = current_date.getSeconds();
-    if(seconds < 10){
-        seconds = '0'+seconds;
-    }
-    var my_date = day+'/'+month+'/'+year+' '+hours+':'+minutes+':'+seconds;
+function get_user_messages(id){
     var deferred = Q.defer();
-    let newChat = new chat({
-        sender_id: data.sender_id,
-        receiver_id: data.receiver_id,
-        sender_name: data.sender_name,
-        receiver_name: data.receiver_name,
-        message: data.message,
-        job_title: data.job_title,
-        salary: data.salary,
-        date_of_joining: data.date_of_joining,
-        msg_tag: data.msg_tag,
-        is_company_reply: data.is_company_reply,
-        job_type: data.job_type,
-        is_read: 0,
-		interview_location: data.interview_location,
-		interview_time: data.interview_time,
-        date_created: my_date
-    });
-
-    newChat.save((err,data)=>
+    chat.find({
+        $or:[{receiver_id:{$regex: id}},{sender_id: {$regex: id}}]
+    }).sort({_id: 'descending'}).exec(function(err, data)
     {
-        if(err){
+        if (err){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log('done');
-            deferred.resolve({Success:'Msg sent'});
-}
-});
+            //console.log(data);
+            deferred.resolve({
+                datas:data
+            });
+        }
+    });
     return deferred.promise;
 }

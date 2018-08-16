@@ -35,5 +35,8 @@
       "GBP": 1.13
     }
   },
-  "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"]
+  "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
+  "cron": {
+    "unreadMessagesTick": "10 * * * * *"
+  }
 }

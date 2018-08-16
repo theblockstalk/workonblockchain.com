@@ -26,29 +26,25 @@ const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
-//////////inserting message in DB ////////////
-
-module.exports = function insert_message(req, res)
-{
-    insert_message_new(req.body).then(function (data)
+module.exports = function insert_message_job(req,res){
+    insert_message_job_new(req.body).then(function (err, about)
     {
-        if (data)
+        if (about)
         {
-            console.log(data);
-            res.send(data);
+            res.json(about);
         }
         else
         {
-            res.sendStatus(404);
+            res.json(err);
         }
     })
         .catch(function (err)
         {
-            res.status(400).send(err);
+            res.json({error: err});
         });
 }
 
-function insert_message_new(data){
+function insert_message_job_new(data){
     var current_date = new Date();
     var day = current_date.getDate();
     if(day < 10){
@@ -86,9 +82,9 @@ function insert_message_new(data){
         msg_tag: data.msg_tag,
         is_company_reply: data.is_company_reply,
         job_type: data.job_type,
+        file_name: data.file_name,
+        is_job_offered: data.job_offered,
         is_read: 0,
-		interview_location: data.interview_location,
-		interview_time: data.interview_time,
         date_created: my_date
     });
 

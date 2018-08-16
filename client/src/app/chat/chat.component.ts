@@ -407,6 +407,9 @@ export class ChatComponent implements OnInit {
             .subscribe(
                 data => {
                     //console.log(data);
+					this.date_of_joining = '';
+					this.interview_location  = '';
+					this.interview_time = '';
                     this.credentials.msg_body = '';
                     this.interview_log = 'Message has been successfully sent';
                     this.credentials.date = '';
