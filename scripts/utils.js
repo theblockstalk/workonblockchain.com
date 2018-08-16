@@ -67,7 +67,7 @@ module.exports.checkGitBranch = function checkGitBranch(branch, deployment) {
     }
 };
 
-module.exports.createTempServerDir = async function createTempServerDir(tempServerDirName) {
+module.exports.createTempServerDir = async function createTempServerDir(tempServerDirName, environmentName) {
     const options = {
         // Do not copy the node_modules folder
         filter: /^((?!node_modules).)*$/
@@ -75,7 +75,12 @@ module.exports.createTempServerDir = async function createTempServerDir(tempServ
 
     await copyDir('./server', tempServerDirName, options);
 
-    fs.unlinkSync(tempServerDirName + 'config/production.json');
+    if (environmentName === 'production') {
+        fs.unlinkSync(tempServerDirName + 'config/staging.json');
+    } else {
+        fs.unlinkSync(tempServerDirName + 'config/production.json');
+    }
+
 };
 
 module.exports.createTempClientDir = async function createTempClientDir(tempClientDirName) {
@@ -207,9 +212,9 @@ module.exports.updateElisticEnvironment = async function updateElisticEnvironmen
     }).promise();
 };
 
-module.exports.buildAngularDistribution = async function buildAngularDistribution() {
+module.exports.buildAngularDistribution = async function buildAngularDistribution(buildCommand) {
     return new Promise((resolve, reject) => {
-        exec('cd ./client && npm run-script build-staging', (err, stdout, stderr) => {
+        exec('cd ./client && ' + buildCommand, (err, stdout, stderr) => {
             if (err) {
                 reject(err);
             }

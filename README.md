@@ -50,6 +50,9 @@ Or
 node scripts/server.js production
 ```
 
+You can check what version is currently deployed by going to the api url. eg
+https://staging-api.workonblockchain.com/
+
 ## Deploy the frontend
 1. Finish all work and commit all changes. Merge all changes for deployment to the `staging` branch.
 2. Run the backend app once to check that it starts

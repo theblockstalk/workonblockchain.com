@@ -3,6 +3,7 @@ const scriptUtils = require('./utils');
 
 const tempClientDirName = './temp/client/dist/';
 let s3bucket;
+let buildCommand;
 
 (async function run() {
     try {
@@ -10,8 +11,10 @@ let s3bucket;
         console.log('deploying the frontend to S3 bucket');
         if (environmentName === 'production') {
             s3bucket = config.s3.frontendBucket.staging;
+            buildCommand = 'npm run-script build-staging';
         } else if (environmentName === 'staging') {
             s3bucket = config.s3.frontendBucket.staging;
+            buildCommand = 'npm run-script build-prod';
         } else {
             throw new Error("Need to provide argument for the environment: staging or production");
         }
@@ -42,7 +45,7 @@ async function deployFrontend(environmentName) {
     console.log('(2/4) building distribution in client/dist/');
     await scriptUtils.pressEnterToContinue();
     // TODO: add in some tags for application to serve the version commit
-    await scriptUtils.buildAngularDistribution();
+    await scriptUtils.buildAngularDistribution(buildCommand);
 
     console.log();
     console.log('(3/4) moving to temporary directory temp/client/dist');

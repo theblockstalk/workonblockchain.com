@@ -42,7 +42,7 @@ async function deployBackend(environmentName) {
     console.log();
     console.log('(2/5) creating distribution package from server/');
     const versonName = 'server_' + gitInfo.commit + '_' + environmentName;
-    await scriptUtils.createTempServerDir(tempServerDirName);
+    await scriptUtils.createTempServerDir(tempServerDirName, environmentName);
     await scriptUtils.addServerVersion(tempServerDirName, versonName);
     const zipFileName = await scriptUtils.zipServerDir(tempDirName, tempServerDirName, versonName);
 
