@@ -61,6 +61,12 @@ const ChatSchema = new Schema({
 		enum: ['normal', 'job_offer','job_offered', 'job_offer_accepted','job_offer_rejected', 'interview_offer'],
 		required: true
 	},
+	is_company_reply: 
+	{
+		type:Number, // 0 = false, 1 = true ???
+		enum: [0, 1],
+		default:0
+	},
 	job_type: 
 	{
 		type:String,
@@ -76,8 +82,8 @@ const ChatSchema = new Schema({
 	},
 	file_name: 
 	{
-		type:String,
-		validate: regexes.url
+		type:String
+		//validate: regexes.url
 	},
 	is_job_offered: 
 	{
