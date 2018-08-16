@@ -20,7 +20,6 @@ const refReferral = require('./controller/api/users/referrals/referral.controlle
 
 // Candidates
 const candidateRegister = require('./controller/api/users/candidate/register.controller');
-const candidateDelete = require('./controller/api/users/candidate/delete.controller');
 const candidateGetAll = require('./controller/api/users/candidate/getAll.controller');
 const candidateGetCurrent = require('./controller/api/users/candidate/getCurrent.controller');
 const candidateImage = require('./controller/api/users/candidate/image.controller');
@@ -95,7 +94,6 @@ router.post('/users/get_refrence_code', refGetReferralCode);
 router.post('/users/register', candidateRegister);
 router.get('/users/', candidateGetAll);
 router.get('/users/current/:id', candidateGetCurrent);
-router.delete('/users/:_id', candidateDelete);
 router.put('/users/welcome/terms/:_id', candidateWizardTnC);
 router.put('/users/welcome/about/:_id', candidateWizardAbout);
 router.put('/users/welcome/job/:_id', candidateWizardJob);

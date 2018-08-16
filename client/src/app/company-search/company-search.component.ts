@@ -215,11 +215,8 @@ export class CompanySearchComponent implements OnInit {
                   }
                   else
                   {
-                      
                         this.is_approved = data._creator.is_approved;      
-                
 				        this.display_name = data.company_name;
-                        this.is_approved = data._creator.is_approved;
 
                         //console.log(this.is_approved);
                         if(this.is_approved === 0 )
