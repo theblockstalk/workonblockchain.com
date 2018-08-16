@@ -1,6 +1,6 @@
 const config = require('./config');
 const scriptUtils = require('./utils');
- 
+
 (async function run() {
     console.log('deploying the backend to elastic beanstalk');
     await deployBackend();
