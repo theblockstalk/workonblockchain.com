@@ -45,6 +45,7 @@ export class JobComponent implements OnInit {
   ngOnInit() 
   {
   ////console.log(this.options.name);
+    
     this.base_currency = -1;
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
@@ -78,11 +79,12 @@ export class JobComponent implements OnInit {
                       this.term_link = '/terms-and-condition';
                   }
 
-                if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
+                if(data.locations.length>0 || data.roles.length>0 || data.interest_area.length>0 ||  data.expected_salary || data.availability_day || data.expected_salary_currency)
                 {
-                    this.active_class = 'fa fa-check-circle text-success';
-                    this.class = "btn";
+                    
                    
+                    if(data.locations)
+                    {
                      for (let country1 of data.locations) 
                      {
                       
@@ -99,7 +101,11 @@ export class JobComponent implements OnInit {
                       }
                       
                     }
-
+                    }
+                    
+                    
+                    if(data.interest_area)
+                    {
                     for (let interest of data.interest_area) 
                      {
                       
@@ -116,9 +122,12 @@ export class JobComponent implements OnInit {
                       }
                       
                     }
+                    }
                    // this.jobselected=data.roles;
                     
                     //this.selectedValue = data.interest_area;
+                    if(data.roles)
+                    {
                     for (let area of data.roles) 
                      {
                       
@@ -135,16 +144,20 @@ export class JobComponent implements OnInit {
                       }
                       
                     }
+                    }
           
                     this.salary = data.expected_salary;
                     this.availability_day = data.availability_day;
                     this.base_currency = data.expected_salary_currency;
-                    this.resume_disable ='';
-                    this.resume_class="/resume";
+                    
+                    //this.resume_class="/resume";
 
-                    if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day )
-                  {
+                    if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day )
+                    {
+                        this.active_class = 'fa fa-check-circle text-success';
+                    this.class = "btn";
                       this.job_active_class = 'fa fa-check-circle text-success';
+                        this.resume_disable ='';
                         this.resume_class="/resume";
                        
                   }
@@ -159,7 +172,7 @@ export class JobComponent implements OnInit {
                     
                     
      
-              if(data.history && data.education && data.programming_languages && data.current_salary)
+              if( data.programming_languages && data.current_salary)
               {
                   this.exp_class = "/experience";
                   this.exp_active_class = 'fa fa-check-circle text-success';
@@ -356,13 +369,44 @@ export class JobComponent implements OnInit {
     }
 
      
-
+country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
       onSubmit(f: NgForm) 
       {
         //console.log(f.value);
       
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-   
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if(this.selectedcountry.length <=0)
+        {
+            this.country_log = "Please select min 1 location";
+        }
+          
+        if(this.jobselected.length<=0)
+        {
+            this.roles_log = "Please select min 1 role1";
+        }
+        
+        if(this.base_currency==-1)
+        {
+            this.currency_log = "Please choose currency";
+        }
+          
+        if(!this.salary)
+        {
+            this.salary_log = "Please enter expected yearly salary";
+        }
+          
+        if(this.selectedValue.length<=0)
+        {
+            this.interest_log = "Please select min 1 area of interest";
+        }
+          
+        if(!this.availability_day)
+        {
+            this.avail_log = "Please select employment availability";
+        }
+          
+        if(this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
+        {
         this.authenticationService.job(this.currentUser._creator,f.value)
             .subscribe(
                 data => {
@@ -382,7 +426,7 @@ export class JobComponent implements OnInit {
                    
                 });
         
-
+        }
       }
 
        logout() {

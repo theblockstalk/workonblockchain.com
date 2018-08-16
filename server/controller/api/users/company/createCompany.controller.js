@@ -76,8 +76,8 @@ function create_employer(userParam)
     function createEmployer()
     {
         let now = new Date();
-        createdDate= date.format(now, 'DD/MM/YYYY');
-        var hashStr = crypto.createHash('md5').update(userParam.email).digest('hex');
+        createdDate= now;
+        var hashStr = crypto.createHash('sha256').update(userParam.email).digest('base64');
         var company_info = {};
         company_info.hash = hashStr;
         company_info.email = userParam.email;
@@ -98,7 +98,7 @@ function create_employer(userParam)
             password_hash: hashedPasswordAndSalt,
             salt : salt,
             type: userParam.type,
-            email_hash: token,
+            verify_email_key: token,
             jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
             created_date: createdDate,
 

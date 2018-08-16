@@ -79,6 +79,11 @@ const UserSchema = new Schema({
 		type:Boolean,
     	default:true
 	},
+	disable_account:
+    {
+    	type:Boolean,
+    	default:false
+    },
 	created_date:
 	{
 		type: Date

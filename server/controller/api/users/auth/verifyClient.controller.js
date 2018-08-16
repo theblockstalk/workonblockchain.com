@@ -31,7 +31,7 @@ const verify_send_email = require('./verify_send_email');
 module.exports = function verify_client(req,res)
 {
     console.log(req.params.email);
-    verify_client(req.params.email).then(function (err, data)
+    verify_client_email(req.params.email).then(function (err, data)
     {
         if (data)
         {
@@ -49,7 +49,7 @@ module.exports = function verify_client(req,res)
 
 }
 
-function verify_client(email)
+function verify_client_email(email)
 {
     var deferred = Q.defer();
     console.log(email);

@@ -93,14 +93,11 @@ export class AdminCompanySearchComponent implements OnInit {
                         ////console.log(this.info);
                         for(let res of data)
                         {
-                            if(res.first_name && res.last_name && res.job_title && res.company_name && res.company_website
-                            && res.company_phone && res.company_country && res.company_city && res.company_postcode && res.company_description
-                            && res.company_founded && res.company_funded && res.no_of_employees)
-                            { 
+                           
                                 this.length++;
                                 this.info.push(res);
                                 
-                             }
+                             
                             
                             ////console.log(this.verify_candidate.length);
                         }
@@ -209,15 +206,12 @@ export class AdminCompanySearchComponent implements OnInit {
                         
                         for(let res of this.information)
                         {    
-                            if(res.first_name && res.last_name && res.job_title && res.company_name && res.company_website
-                            && res.company_phone && res.company_country && res.company_city && res.company_postcode && res.company_description
-                            && res.company_founded && res.company_funded && res.no_of_employees)
-                            {                                               
+                                                                          
                                  this.length++; 
                                 // //console.log(res);
                                 this.info.push(res);
                                
-                            }                          
+                                                     
 
                         }
                        
@@ -314,15 +308,12 @@ export class AdminCompanySearchComponent implements OnInit {
                         
                         for(let res of this.information)
                         {    
-                            if(res.first_name && res.last_name && res.job_title && res.company_name && res.company_website
-                            && res.company_phone && res.company_country && res.company_city && res.company_postcode && res.company_description
-                            && res.company_founded && res.company_funded && res.no_of_employees)
-                            {                                               
+                                                                           
                                  this.length++; 
                                 // //console.log(res);
                                 this.info.push(res);
                                
-                            }                          
+                                                      
 
                         }
                        

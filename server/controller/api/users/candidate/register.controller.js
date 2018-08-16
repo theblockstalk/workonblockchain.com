@@ -67,8 +67,8 @@ function create(userParam)
 		hash.update(userParam.password);
 		let hashedPasswordAndSalt = hash.digest('hex');
 		//console.log(hashedPasswordAndSalt);
-        createdDate= date.format(now, 'DD/MM/YYYY');
-        var hashStr = crypto.createHash('md5').update(userParam.email).digest('hex');
+        createdDate= now;
+        var hashStr = crypto.createHash('sha256').update(userParam.email).digest('base64');
         var user_info = {};
         user_info.hash = hashStr;
         user_info.email = userParam.email;

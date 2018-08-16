@@ -73,9 +73,10 @@ export class EditCandidateProfileComponent implements OnInit {
     return this.calen_month[monthnum-1] || '';
 }
     
+    
   ngOnInit() 
   {
-       $(document).ready(function(){
+      /* $(document).ready(function(){
         $(function () {
     $('#1step').change(function () {
         if ($('#1step').is(':checked')) {
@@ -85,7 +86,7 @@ export class EditCandidateProfileComponent implements OnInit {
         }
     }).change();
 });
-    });
+    });*/
     
       this.info.nationality = -1;
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));

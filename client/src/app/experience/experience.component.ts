@@ -53,6 +53,7 @@ export class ExperienceComponent implements OnInit
     current_work_check=[];
   	ngOnInit() 
     {
+            this.salary='';
             this.current_currency =-1;
          this.jobData = [];
             this.eduData=[];
@@ -78,7 +79,7 @@ export class ExperienceComponent implements OnInit
           this.authenticationService.getById(this.currentUser._id)
             .subscribe(
             data => {
-                console.log(data.education_history_history);
+                //console.log(data.education_history_history);
                
                  if(data.terms==true)
                   {
@@ -440,107 +441,223 @@ export class ExperienceComponent implements OnInit
         return this.start_monthh ?  this.start_monthh : 0;
     }
     startmonthIndex;endmonthIndex;
+    
+    current_sal_log;current_currency_log;lang_log;
+    exp_lang_log;intro_log;uni_name_log;degree_log;
+    field_log;eduYear_log;company_log;position_log;
+    location_log;start_date_log;start_year_log;end_date_log;
+    exp_count=0;edu_count=0;
     experience_submit(searchForm: NgForm)
     {    
-
-       
-        if(this.ExperienceForm.value.ExpItems.length == 0 )
+    
+       if(!this.salary)
+       {
+           this.current_sal_log = "Please fill current base salary";
+           
+       }
+       if(this.current_currency ==-1)
+       {
+           this.current_currency_log = "Please choose currency";
+       }
+       if(this.language.length<=0)
+       {
+           
+           this.lang_log="Please select min 1 language";
+       }
+        
+        if(this.expYear.length <=0 )
         {
-            
-            this.log = "Please enter atleast one work history. "; 
-            
+            this.exp_lang_log="Please fill year of experience";
         }
-        else
+        if(!this.Intro)
         {
+            
+            this.intro_log="Please fill 2-5 sentence bio"
+        }
         
-        
-
-        if(!this.ExperienceForm.value.ExpItems[0].end_date || !this.ExperienceForm.value.ExpItems[0].endyear )
-        {
-            if(this.ExperienceForm.value.ExpItems[0].currentwork==false)
+      
+        if(this.EducationForm.value.itemRows.length >= 1)
+        {     
+            for (var key in this.EducationForm.value.itemRows) 
             {
-                this.log = "Please complete all fields for each work experience.";  
-               
+                if(!this.EducationForm.value.itemRows[key].uniname)
+                {
+                    this.uni_name_log = "Please fill university";
+                }
+                
+                if(!this.EducationForm.value.itemRows[key].degreename)
+                {
+                    this.degree_log = "Please fill degree";
+                }
+                
+                if(!this.EducationForm.value.itemRows[key].fieldname)
+                {
+                    this.field_log = "Please fill field of study";
+                }
+                
+                if(!this.EducationForm.value.itemRows[key].eduyear)
+                {
+                    this.eduYear_log = "Please fill graduation year";
+                }
+                if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename && this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
+                {
+                                       
+                    this.edu_count = parseInt(key) + 1;
+                    //console.log(this.edu_count);
+                }
                 
             }
-            else    
+         
+        }
+        if(this.ExperienceForm.value.ExpItems.length >=1)
+        {
+            this.exp_count =0;
+            for (var key in this.ExperienceForm.value.ExpItems) 
             {
-                this.log ='';
-                this.submit_info(searchForm);
+                if(!this.ExperienceForm.value.ExpItems[key].companyname)
+                {
+                    this.company_log = "Please fill company";
+                }
+                    
+                if(!this.ExperienceForm.value.ExpItems[key].positionname)
+                {
+                    this.position_log = "Please fill position";
+                }
+                
+                    
+                if(!this.ExperienceForm.value.ExpItems[key].locationname)
+                {
+                    this.location_log = "Please fill location";
+                    
+                }
+            
+                if(!this.ExperienceForm.value.ExpItems[key].start_date || !this.ExperienceForm.value.ExpItems[key].startyear)
+                {
+                    this.start_date_log = "Please fill start date ";
+                }
+                
+                if(!this.ExperienceForm.value.ExpItems[key].end_date || !this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].companyname==false)
+                {
+                    this.end_date_log = "Please fill end date ";
+                }
+            
+                if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname &&
+               this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].start_date && 
+               this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date && 
+               this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
+               {
+                   //console.log("false"); 
+                  this.exp_count = parseInt(key) + 1;
+                    
+               }
+                
+                
+                if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname &&
+                this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].start_date && 
+                this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
+               {
+                    //console.log("true");
+                  this.exp_count = parseInt(key) + 1;
+                    
+               } 
+                
             }
             
+               
+            
+          
             
         }
-        else
-            {
-            this.submit_info(searchForm);
-            }
-            
-            }    
         
+        //console.log(this.ExperienceForm.value.ExpItems.length);
+        //console.log(this.exp_count);
+       
+       /* if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count == 0 && this.exp_count == 0 )
+        {
+           console.log("hiii");
+           this.submit_info(searchForm);
+            
+        }*/
+        
+        if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
+        {
+           //console.log("else if 3");
+           this.submit_info(searchForm);
+            
+        }
+        
+       /* else if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count == 0 && this.exp_count === this.ExperienceForm.value.ExpItems.length )
+        {
+           console.log("else if 2");
+           this.submit_info(searchForm);
+            
+        }
+            
+        else if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count == 0)
+        {
+           console.log("else if 1");
+           this.submit_info(searchForm);
+            
+        }*/
+        
+        
+        
+        
+        
+        else
+        {
+            
+          console.log("else");  
+         }
+     
+              
+         
     }
 
     start_date_format;
     end_date_format;
     educationjson; education_json_array=[];
-    submit_info(searchForm)
+    submit_info(searchForm )
     {
-        
-     if(!this.ExperienceForm.value.ExpItems[0].companyname || !this.ExperienceForm.value.ExpItems[0].positionname ||
-        !this.ExperienceForm.value.ExpItems[0].locationname   ||
-        !this.ExperienceForm.value.ExpItems[0].start_date || !this.ExperienceForm.value.ExpItems[0].startyear   )
-        {
-             //console.log("iffff");
-            this.log = "Please complete all fields for each work experience.";    
-        }
-
-        else if(this.EducationForm.value.itemRows.length == 0)
-        {
-         
-          this.log = "Please enter atleast one education. "; 
-         
-         }
-        else if(!this.EducationForm.value.itemRows[0].uniname || !this.EducationForm.value.itemRows[0].degreename
-        || !this.EducationForm.value.itemRows[0].fieldname || !this.EducationForm.value.itemRows[0].eduyear)
-        {
-            //console.log("if");
-            this.log = "Please complete all fields for each education record.";
-            
-        }
-        else
-             {
-             //console.log("else");
+      
              this.log='';
-            for (var key in this.ExperienceForm.value.ExpItems) 
+            
+        
+            if(this.ExperienceForm.value.ExpItems)
             {
-                this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
-                this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);              
-                //this.ExperienceForm.value.ExpItems[key].startdate = "01/"+this.startmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].startyear;
-                //this.ExperienceForm.value.ExpItems[key].enddate ="01/"+ this.endmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].endyear;
-                this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
-                this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);    
-                this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].descname,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork}; 
-                this.experiencearray.push(this.experiencejson);
-                //console.log(this.experiencearray);
+                 for (var key in this.ExperienceForm.value.ExpItems) 
+                    {
+                        this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
+                        this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);              
+                        //this.ExperienceForm.value.ExpItems[key].startdate = "01/"+this.startmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].startyear;
+                        //this.ExperienceForm.value.ExpItems[key].enddate ="01/"+ this.endmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].endyear;
+                        this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
+                        this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);    
+                        this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].descname,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork}; 
+                        this.experiencearray.push(this.experiencejson);
+                        //console.log(this.experiencearray);
 
+                    }
+                
             }
          
-            for ( var key in this.EducationForm.value.itemRows)
+            if(this.EducationForm.value.itemRows)
             {
-               this.EducationForm.value.itemRows[key].eduyear =  parseInt(this.EducationForm.value.itemRows[key].eduyear);
-             this.educationjson = {uniname : this.EducationForm.value.itemRows[key].uniname , degreename :  this.EducationForm.value.itemRows[key].degreename
+                 for ( var key in this.EducationForm.value.itemRows)
+                    {
+                        this.EducationForm.value.itemRows[key].eduyear =  parseInt(this.EducationForm.value.itemRows[key].eduyear);
+                        this.educationjson = {uniname : this.EducationForm.value.itemRows[key].uniname , degreename :  this.EducationForm.value.itemRows[key].degreename
                                     ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
-                this.education_json_array.push(this.educationjson) ;
+                        this.education_json_array.push(this.educationjson) ;
+                    }
             }
                 
-         console.log(this.EducationForm.value.itemRows);
+         
             this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.education_json_array , this.experiencearray , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
             .subscribe(
                 data => {
                 if(data)
-                {   //console.log("data");
-                    // window.location.href = '/candidate_profile';
-
+                {   
                     this.router.navigate(['/candidate_profile']);
                 }
 
@@ -554,7 +671,7 @@ export class ExperienceComponent implements OnInit
                   //this.log = 'Something getting wrong';
                    
                 });
-             }
+             
    
     }
     selectedValue;langValue;

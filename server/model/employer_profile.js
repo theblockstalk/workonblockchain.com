@@ -14,11 +14,6 @@ const CompanyProfileSchema = new Schema({
     	type:Boolean,
     	default:false
     },
-    disable_account:
-    {
-    	type:Boolean,
-    	default:false
-    },
     first_name:
     {
         type:String

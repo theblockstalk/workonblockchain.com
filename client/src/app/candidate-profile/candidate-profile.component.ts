@@ -2,7 +2,7 @@ import { Component,OnInit, ElementRef, AfterViewInit, Input, ViewChild } from '@
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import {NgForm} from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute,NavigationEnd  } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
@@ -68,9 +68,31 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     });
      
  }
+    sectionScroll;
+    internalRoute(page,dst){
+    this.sectionScroll=dst;
+    this.router.navigate([page], {fragment: dst});
+}
+    
+    doScroll() {
+
+    if (!this.sectionScroll) {
+      return;
+    }
+    try {
+      var elements = document.getElementById(this.sectionScroll);
+
+      elements.scrollIntoView();
+    }
+    finally{
+      this.sectionScroll = null;
+    }
+  } 
 
 
-     ngAfterViewInit(): void {
+     ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);
      
         this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
  
@@ -79,10 +101,20 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
          
          
           window['twttr'] && window['twttr'].widgets.load();
+         
     }
     tweet_text;
+ 
   ngOnInit() 
   {     
+  
+       this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      this.doScroll();
+      this.sectionScroll= null;
+    });
   
       this.dataservice.eemailMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
@@ -90,12 +122,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       if(this.user_id)
       {
           ////console.log("ifffffff");
+         
           this.share_url = location.href + '?user=' + this.user_id;
-          this.authenticationService.getById(this.user_id)
+          this.authenticationService.public_profile(this.user_id)
             .subscribe(
             data => {
                 this.public_data = data;
-                ////console.log(data);
+                //console.log(data);
                 });
           
       }
@@ -123,11 +156,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     
                 }
               
-               else if(!data.contact_number && !data.nationality && !data.first_name && !data.last_name)
+               else if(!data.contact_number || !data.nationality || !data.first_name || !data.last_name)
                {
                         this.router.navigate(['/about']);
                }
-               else if(data.locations.length < 1  && data.roles.length < 1 && data.interest_area.length < 1 || !data.expected_salary)
+               else if(data.locations.length < 1  || data.roles.length < 1 || data.interest_area.length < 1 || !data.expected_salary)
                {
                  
                     this.router.navigate(['/job']); 
@@ -141,11 +174,17 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     this.router.navigate(['/resume']);
                 }*/
                 //////console.log(data.programming_languages.length);
-                else if(!data.programming_languages &&  !data.current_salary  || data.programming_languages.length <1 )
+                else if(!data.programming_languages ||  !data.current_salary  || data.programming_languages.length <1 )
                 {
                         this.router.navigate(['/experience']);
                 }
-                else if(data.work_history.length < 1 || !data.work_history.length )
+                    
+                 else if(!data.description)
+                {
+                    this.router.navigate(['/experience']);
+                    
+                }
+                /*else if(data.work_history.length < 1 || !data.work_history.length )
                 {
                    // this.dataservice.changeMessage("Please enter atleast one work history record");
                     this.router.navigate(['/experience']);              
@@ -156,7 +195,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     //this.dataservice.changeMessage("Please enter atleast one education record");
                     this.router.navigate(['/experience']);
                     
-                }
+                }*/
                     
                 else 
                 {
@@ -182,7 +221,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     this.description =data.description;
                     this.history =data.work_history;
                     this.education = data.education_history;
-                    console.log(data.work_history);
+                    console.log(this.history);
                     for(let data1 of data.work_history)
                     {
                         this.companyname = data1.companyname;

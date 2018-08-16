@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input  } from '@angular/core';
+import { Component, OnInit,ElementRef, Input  , AfterViewInit} from '@angular/core';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
@@ -17,7 +17,7 @@ const URL = environment.backend_url;
   templateUrl: './edit-company-profile.component.html',
   styleUrls: ['./edit-company-profile.component.css']
 })
-export class EditCompanyProfileComponent implements OnInit {
+export class EditCompanyProfileComponent implements OnInit ,  AfterViewInit {
         
    info : any;
     currentUser: User;log;
@@ -35,6 +35,33 @@ export class EditCompanyProfileComponent implements OnInit {
         private router: Router,private http: HttpClient,
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
        }
+    
+    sectionScroll;
+    internalRoute(page,dst){
+    this.sectionScroll=dst;
+    this.router.navigate([page], {fragment: dst});
+}
+    
+    doScroll() {
+
+    if (!this.sectionScroll) {
+      return;
+    }
+    try {
+      var elements = document.getElementById(this.sectionScroll);
+
+      elements.scrollIntoView();
+    }
+    finally{
+      this.sectionScroll = null;
+    }
+  } 
+    
+     ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);
+         
+         }
 
   ngOnInit()
   {

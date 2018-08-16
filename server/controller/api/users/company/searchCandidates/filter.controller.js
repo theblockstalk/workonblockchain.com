@@ -63,7 +63,7 @@ function filter(params)
 
 
 
-    users.find({type : 'candidate' , is_verify :1, is_approved :1,   }, function (err, data)
+    users.find({type : 'candidate' , is_verify :1, is_approved :1, disable_account : true   }, function (err, data)
     {
 
         if (err){

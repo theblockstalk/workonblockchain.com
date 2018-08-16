@@ -35,13 +35,14 @@
                 </div>
 
                 <div class="form-group">
-                  <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                  <div class = "show_pass"><i toggle="#password-field" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
-                  <input type="password" #uname="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" placeholder="Password" id="password-field" name="password"  [(ngModel)]="credentials.password">
-                <p>{{pass_log}}</p>
-                <div *ngIf="uname.errors" class="alert alert-danger error-alert">
+                  	<span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+                  	<div class = "show_pass"><i toggle="#password-field" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
+                  	<input type="password" #uname="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" placeholder="Password" id="password-field" name="password"  [(ngModel)]="credentials.password">
+                	<p>{{pass_log}}</p>
+                	<div *ngIf="uname.errors" class="alert alert-danger error-alert">
 						Password must contain a minimum of 8 characters including a number and lower and upper case letter.
-				</div> 
+					</div> 
+					
                 </div>
 
                 <div class="form-group">
@@ -122,7 +123,10 @@
 
                 <div class="form-group">
                   <span><i class="fa fa-building-o" aria-hidden="true"></i></span>
-                  <input type="text" class="form-control" placeholder="Company Website" required name="company_website" [(ngModel)]="credentials.company_website">
+                  <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="Company Website" name="company_website" [(ngModel)]="credentials.company_website">
+                <div class="alert alert-danger error-alert" *ngIf="website.errors && credentials.company_website!=''">
+								Enter url in proper format.
+							</div>
                 </div>
 
                 <div class="form-group">
@@ -151,7 +155,7 @@
                 <div class="form-group">
                   <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
                   <div class = "show_pass"><i toggle="#password-field1" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
-                  <input type="password" #upass="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" placeholder="Password" id="password-field1" name="password" [(ngModel)]="credentials.password">
+                  <input type="password" #upass="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" placeholder="Password" id="password-field1" name="password" [(ngModel)]="credentials.password">
                    <p >{{pass_log}}</p>
                    <div *ngIf="upass.errors" class="alert alert-danger error-alert">
 						Password must contain a minimum of 8 characters including a number and lower and upper case letter.

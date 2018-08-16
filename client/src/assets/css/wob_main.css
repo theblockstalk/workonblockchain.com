@@ -956,6 +956,37 @@ body{
 	
 }
 
+.select_error
+{
+	bottom : -18px;
+}
+
+.form_error{
+	
+    margin-top: 1px;
+	position: absolute;
+    font-size: 12px;
+}
+
+.custom_form .form-group{
+	position: relative;
+}
+
+.form_error .error{
+	color: #e80000;
+	position: relative;
+    left: 5px;
+}
+
+.custom_form .fixed_error{
+	position: absolute;
+    top: 35px;
+}
+
+.custom_form .error_feild{
+	border-color: #e80000;
+}
+
 .login_hd{
     background: #f9f9f9;
     padding: 20px 0px;
@@ -2694,6 +2725,23 @@ input[type=checkbox] {
 	.btn-div{
 		max-width: 95%;
 	}
+	
+	.custom_form .form-group {
+	    position: relative;
+	    margin-bottom: 5px; 
+	}
+	
+	.form_error
+	{
+	    position: relative;
+	}
+	
+	.select_error
+	{
+		bottom:0px;
+	}
+	
+	
 }
 
 @media only screen and (max-width: 400px){

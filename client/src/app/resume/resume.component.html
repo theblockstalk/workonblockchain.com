@@ -23,6 +23,10 @@
               <div class="form-group col-md-12 col-left">
                 <label><p class = "label-p">Why do you want to work on blockchain?</p></label>
                     <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because.."  #whywork name="why_work" required [(ngModel)]="why_work">
+            	
+            	<div class = "form_error" *ngIf="!why_work">
+								<span class = "error">{{why_work_log}}</span>
+							</div>
             </div>
 
             <div class="container collection col-md-12">
@@ -155,7 +159,7 @@
 
           <div class = "form-group text-right">
               <a routerLink="/job" class = "btn btn-prev">Prev Step</a>
-              <button type=submit [disabled]="!expForm.valid " class = "btn btn-self btn-pdg">Next Step</button>
+              <button type=submit  class = "btn btn-self btn-pdg">Next Step</button>
           </div>
 
         </form>

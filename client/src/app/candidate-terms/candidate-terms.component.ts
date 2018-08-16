@@ -130,11 +130,18 @@ export class CandidateTermsComponent implements OnInit {
   }
     
 
-    
+  terms_log;
   terms_and_condition(termsForm: NgForm)
   {   
     //console.log(termsForm.value);
-      this.authenticationService.terms(this.currentUser._creator,termsForm.value)
+      
+      if(this.termscondition == false)
+      {
+          this.terms_log = "Please accept terms and conditions";
+      }
+      else
+      {
+        this.authenticationService.terms(this.currentUser._creator,termsForm.value)
         .subscribe(
           data => 
           {
@@ -144,6 +151,7 @@ export class CandidateTermsComponent implements OnInit {
               }
               
           });
+       }
   }
 
 }

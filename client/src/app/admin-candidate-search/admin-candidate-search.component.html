@@ -78,8 +78,7 @@
 				
 				<div class="panel-group mr-top-form" *ngFor= "let data of info | paginate: { itemsPerPage:10, currentPage: p }">
  								      
-				   <div class="panel panel-default" *ngIf = "(data.first_name  && data.roles && data.why_work && data.programming_languages && data.availability_day && data.nationality && data.last_name 
-				    && data.contact_number && data.education_history && data.work_history && data.interest_area  && data.locations )">
+				   <div class="panel panel-default">
 <!-- 				    <div class="panel panel-default">
  -->				      <div class="panel-heading">
 				      	<div class = "user-pic" *ngIf="!data.image">

@@ -16,7 +16,7 @@
       </div>
       <div class="wizard-form">
 
-        <form class = "login_form" (submit)="experience_submit(expForm)" #expForm = ngForm>
+        <form class = "login_form custom_form" (submit)="experience_submit(expForm)" #expForm = ngForm novalidate>
        
           <div class="alert alert-danger error-alert" *ngIf="message">{{message}}</div>
           
@@ -25,22 +25,29 @@
           
 				
               <div class="form-group col-md-6 col-left">
-                <label><p  class = "label-p">Current Base salary</p></label>
-                   
+                <label><p  class = "label-p">Current Base salary</p></label>               
                 
-                 <input type="text" class="form-control" id="" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">
+                <input type="number" #esalary="ngModel" class="form-control" id="" placeholder="2000" #salary_field name="salary"  [(ngModel)]="salary">
                
+				
+				<div class = "form_error" *ngIf="!salary ">
+								<span class = "error">{{current_sal_log}}</span>
+							</div> 
                   
             </div>
 
              <div class="form-group col-md-6 col-left setting-top_2">
                 <label><p  class = "label-p"></p></label>
-                       <select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
+                       <select [(ngModel)]="current_currency" class="form-control" id="currency"  required name="current_currency" >
                    <option value="-1" disabled selected hidden >Please choose currency</option>
                 
                   <option class='option' *ngFor='let current_currency of currency' #choose_currency [value]="current_currency" selected>{{current_currency}}</option>
               
                 </select>
+                 
+				<div class = "form_error" *ngIf="current_currency==-1 ">
+								<span class = "error">{{current_currency_log}}</span>
+							</div> 
                   </div>
 			<div class="form-group col-md-12">
             <div class="collection">
@@ -65,6 +72,11 @@
                     </div>
 
                   </div>
+		
+				<div class = "form_error" *ngIf="language.length <=0 ">
+								<span class = "error">{{lang_log}}</span>
+							</div>  
+							
               </div>
              </div>
           
@@ -85,6 +97,10 @@
 		  <input type="text" class="form-control"  name="language_experience_year" [(ngModel)]='expYear' style="display: none;">
       </div>
           </div>
+        
+				<div class = "form_error" *ngIf="expYear.length <=0 ">
+								<span class = "error">{{exp_lang_log}}</span>
+							</div>  
           </div>
           </div>
 			
@@ -97,21 +113,32 @@
                 <!-- Check the correct way to iterate your form array -->
                 <!-- <div *ngFor="let itemrow of ExperienceForm.controls.ExpItems.controls; let i=index"  [formGroupName]="i">-->
 				<div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
-                {{itemrow.currentwork}}
+               
               <div class="form-group col-md-4">
                 <label class="lable"><p>Company</p></label>
-                  <input type="text" id="" placeholder="" formControlName="companyname" class="form-control" #company_field name="company">
+                  <input type="text" id="" placeholder="" required formControlName="companyname" class="form-control" #company_field name="company">
+              		
+              		<div class = "form_error" *ngIf="!this.ExperienceForm.value.ExpItems[i].companyname">
+								<span class = "error">{{company_log}}</span>
+							</div>
               </div>
               
               <div class="form-group col-md-4">
                 <label class="lable"><p>Position</p></label>
                 <input type="text" formControlName="positionname" class="form-control" #position_field name="position" required  >
+              
+              <div class = "form_error" *ngIf="!this.ExperienceForm.value.ExpItems[i].positionname">
+								<span class = "error">{{position_log}}</span>
+							</div>
               </div>
 
               <div class="form-group col-md-4">
                 <label class="lable"><p>Location</p></label>
                     <input type="text" formControlName="locationname" class="form-control" #location_field name="location" required  >
-
+				
+				<div class = "form_error" *ngIf="!this.ExperienceForm.value.ExpItems[i].locationname">
+								<span class = "error">{{location_log}}</span>
+							</div>
               </div>
 
               <div class="form-group col-md-4">
@@ -127,8 +154,9 @@
               <br/>
             </select>
             
-        
-            
+        		<div class = "form_error select_error" *ngIf="!this.ExperienceForm.value.ExpItems[i].start_date || !this.ExperienceForm.value.ExpItems[i].startyear">
+								<span class = "error">{{start_date_log}}</span>
+							</div>
               </div>
 
               <div class="form-group col-md-4" id="input_field" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork==false " >
@@ -143,7 +171,9 @@
       
     </select>
                   
-                  
+                  <div class = "form_error select_error" *ngIf="!this.ExperienceForm.value.ExpItems[i].end_date || !this.ExperienceForm.value.ExpItems[i].endyear && this.ExperienceForm.value.ExpItems[i].companyname==false">
+								<span class = "error">{{end_date_log}}</span>
+							</div>
               </div>
 
                <div class="form-group col-md-4" >
@@ -159,6 +189,8 @@
                     </span>
                   </label>
                 </div>
+                
+                
               </div>
 
               <div class="form-group col-md-12">
@@ -193,16 +225,28 @@
               <div class="form-group col-md-3">
                 <label class="lable"><p>University</p></label>
                   <input formControlName="uniname" class="form-control" type="text" #uni_field name="uni" required >
+                  
+                  <div class = "form_error" *ngIf="!this.EducationForm.value.itemRows[i].uniname">
+								<span class = "error">{{uni_name_log}}</span>
+							</div>
               </div>
               
               <div class="form-group col-md-3">
                 <label class="lable"><p>Degree</p></label>
                   <input formControlName="degreename" class="form-control" type="text" #degree_field name="uni" required  >
-              </div>
+              		
+              		 <div class = "form_error" *ngIf="!this.EducationForm.value.itemRows[i].degreename">
+								<span class = "error">{{degree_log}}</span>
+							</div>
+              	</div>
 
               <div class="form-group col-md-3">
                 <label class="lable"><p>Field of study</p></label>
                    <input formControlName="fieldname" class="form-control" type="text" #study_field name="study" required  >
+              
+              <div class = "form_error" *ngIf="!this.EducationForm.value.itemRows[i].fieldname">
+								<span class = "error">{{field_log}}</span>
+							</div>
               </div>
 
               <div class="form-group col-md-3">
@@ -211,7 +255,11 @@
                   <option class='option' *ngFor='let graduation_year of year'  [value]="graduation_year" selected>{{graduation_year}}</option>
                   <br/>
                 </select>
-
+				
+				<div class = "form_error" *ngIf="!this.EducationForm.value.itemRows[i].eduyear">
+								<span class = "error">{{eduYear_log}}</span>
+							</div>
+							
               </div>
 
               <div class = "form-group text-right">
@@ -231,13 +279,17 @@
           <div class="form-group col-md-12">
                 <label><p class = "label-p">Please write a short 2-5 sentence bio for your profile</p></label>
                 <textarea class="form-control" rows="5" id="comment" maxlength="300" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+            
+            <div class = "form_error" *ngIf="!Intro">
+								<span class = "error">{{intro_log}}</span>
+							</div>
             </div>
           
           </fieldset>
 
           <div class = "form-group text-right">
-              <a href="/resume" class = "btn btn-prev">Prev Step</a>
-              <button type="submit" class = "btn btn-self btn-pdg" [disabled]=" intro.value=='' || salary_field.value =='' || language.length==0 || current_currency.value== -1 " >Done</button>
+              <a routerLink="/resume" class = "btn btn-prev">Prev Step</a>
+              <button type="submit" class = "btn btn-self btn-pdg"  >Done</button>
           </div>
 			 <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
         </form>

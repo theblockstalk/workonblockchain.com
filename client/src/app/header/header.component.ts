@@ -143,7 +143,7 @@ export class HeaderComponent implements OnInit {
            this.authenticationService.verify_client(this.currentUser.email)
             .subscribe(
                 data => {      
-                    //console.log(data);
+                    console.log(data);
                     if(data['msg'])
                     {
                         

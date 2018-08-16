@@ -77,7 +77,7 @@
 				 		
 				 	</div>
 				 	<span class = "edit_profile_link">
-				 		<a  [routerLink]="['/edit_profile']" fragment="about_you">
+				 		<a  (click)="internalRoute('edit_profile','about_you')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -142,7 +142,7 @@
 
 				 	
 				 	<span class = "edit_profile_link">
-				 		<a  [routerLink]="['/edit_profile']" fragment="about_you">
+				 		<a  (click)="internalRoute('edit_profile','about_you')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -232,7 +232,7 @@
 				 	</div>
 
 				 	<span class = "edit_profile_link">
-				 		<a  [routerLink]="['/edit_profile']" fragment="job_candidate">
+				 		<a (click)="internalRoute('edit_profile','job_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -295,7 +295,7 @@
 				 	
 
 				 	<span class = "edit_profile_link">
-				 		<a  [routerLink]="['/edit_profile']" fragment="resume_candidate">
+				 		<a  (click)="internalRoute('edit_profile','resume_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -334,7 +334,7 @@
 
 
 				 		<span class = "edit_profile_link">
-				 		<a [routerLink]="['/edit_profile']" fragment="experience_candidate">
+				 		<a  (click)="internalRoute('edit_profile','experience_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -345,7 +345,8 @@
 				 	
 				 </section>
 
-				  <section class = "profile job_info" *ngIf="!public_data && history">
+				  <section class = "profile job_info" *ngIf="!public_data && history!='' ">
+				  
 					<h3>Work History</h3>
 					<div class = "company_area" *ngFor='let work of history'>
 					 	<div class="info-area pro_br-btm">
@@ -410,16 +411,18 @@
 						</div>
 
 					</div>
+					
 
 				 	<span class = "edit_profile_link">
-				 		<a  [routerLink]="['/edit_profile']" fragment="work_candidate">
+				 		<a (click)="internalRoute('edit_profile','work_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-				 	
+				 
 				 </section>
 
-				 <section class = "profile job_info" *ngIf="!public_data && education">
+				 <section class = "profile job_info" *ngIf="!public_data && education !='' ">
+				 
 					<h3>Education</h3>
 					
 				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>
@@ -441,11 +444,11 @@
 				 	</div>
 
 				 		<span class = "edit_profile_link">
-				 		<a [routerLink]="['/edit_profile']" fragment="education_candidate">
+				 		<a (click)="internalRoute('edit_profile','education_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-				 	
+				
 				 </section>
 				 
 				</ng-container> 

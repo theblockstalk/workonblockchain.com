@@ -190,7 +190,7 @@ export class CompanySearchComponent implements OnInit {
     } 
     
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      //console.log(this.currentUser);
+      console.log(this.currentUser);
      
       if(!this.currentUser)
       {
@@ -204,7 +204,6 @@ export class CompanySearchComponent implements OnInit {
 
                 data => 
                 {
-                  //console.log(data); 
                   if(data.terms == false)
                   {
                       this.router.navigate(['/company_wizard']);
@@ -217,50 +216,46 @@ export class CompanySearchComponent implements OnInit {
                   else
                   {
                       
-                      this.is_approved = data._creator.is_approved;
-
-       
+                        this.is_approved = data._creator.is_approved;      
                 
-				this.display_name = data.company_name;
-                this.is_approved = data._creator.is_approved;
+				        this.display_name = data.company_name;
+                        this.is_approved = data._creator.is_approved;
 
-                //console.log(this.is_approved);
-               if(this.is_approved === 0 )
-                {
-                    this.msg = "You can access this feature when your profile has been approved"; 
-                    this.log='';  
-                }
-                else if(data.disable_account == true)
-                {
-                     this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile"; 
-                    this.log=''; 
-                }
-                else 
-                {
-                    this.first_name=data.first_name;
-                      this.last_name=data.last_name;
-                      this.company_name=data.company_name;
-                      this.job_title=data.job_title;
-                      this.company_website=data.company_website;
-                      this.company_phone =data.company_phone;
-                      this.company_country =data.company_country;
-                      this.company_city=data.company_city;
-                      this.company_postcode=data.company_postcode;
-                      this.company_description=data.company_description;
-                      this.company_founded =data.company_founded;
-                      this.company_funded=data.company_funded;
-                      this.no_of_employees=data.no_of_employees;
-                      if(data.company_logo != null )
-                      {                        
-                      ////console.log(data.image);                     
-                        this.imgPath =  data.company_logo;
-                        //console.log(this.imgPath);
-                        
-                      }
+                        //console.log(this.is_approved);
+                        if(this.is_approved === 0 )
+                        {
+                            this.msg = "You can access this feature when your profile has been approved"; 
+                            this.log='';  
+                        }
+                        else if(data._creator.disable_account == true)
+                        {
+                            this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile"; 
+                            this.log=''; 
+                        }
+                        else 
+                        {
+                            this.first_name=data.first_name;
+                            this.last_name=data.last_name;
+                            this.company_name=data.company_name;
+                            this.job_title=data.job_title;
+                            this.company_website=data.company_website;
+                            this.company_phone =data.company_phone;
+                            this.company_country =data.company_country;
+                            this.company_city=data.company_city;
+                            this.company_postcode=data.company_postcode;
+                            this.company_description=data.company_description;
+                            this.company_founded =data.company_founded;
+                            this.company_funded=data.company_funded;
+                            this.no_of_employees=data.no_of_employees;
+                            if(data.company_logo != null )
+                            {                        
+                                ////console.log(data.image);                     
+                                this.imgPath =  data.company_logo;
+                                //console.log(this.imgPath);
+                            }
                    
-                   this.getVerrifiedCandidate();
-          
-                }
+                            this.getVerrifiedCandidate();          
+                        }
                       
 
                   
@@ -351,10 +346,7 @@ export class CompanySearchComponent implements OnInit {
                         //this.info = data; 
                         for(let res of this.information)
                         {
-                          if(res.first_name && res.roles && res.why_work && res.programming_languages && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education_history && res.work_history  
-                             && res.interest_area  && res.locations )
-                            {
+                          
                                //console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
@@ -382,7 +374,7 @@ export class CompanySearchComponent implements OnInit {
                                 //this.search_result.push(res);
                                   this.length++;
                                 this.info.push(res);
-                            }
+                            
                             
                             ////console.log(this.search_result.length);
                         }
@@ -471,10 +463,7 @@ export class CompanySearchComponent implements OnInit {
                         console.log(data);
                         for(let res of data)
                         {
-                            if(res.first_name && res.roles && res.why_work && res.programming_languages && res.availability_day 
-                            && res.nationality && res.last_name  && res.contact_number && res.education_history && res.work_history  
-                             && res.interest_area  && res.locations )
-                            {
+                           
                                 //console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
@@ -502,7 +491,7 @@ export class CompanySearchComponent implements OnInit {
                                 
                                 this.length++;
                                 this.info.push(res);
-                            }
+                            
                             ////console.log(this.verify_candidate.length);
                         }
                         

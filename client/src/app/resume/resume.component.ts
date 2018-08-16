@@ -386,12 +386,18 @@ export class ResumeComponent implements OnInit {
         return obj.value === this;
     }
 
+    why_work_log;
    blockchain_exp(expForm: NgForm) 
    {
       //console.log(expForm.value);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     
-
+        if(!this.why_work)
+        {
+          this.why_work_log = "Please fill why do you want to work on blockchain?"; 
+         }
+       if(this.why_work)
+       {
         this.authenticationService.resume(this.currentUser._creator,expForm.value)
             .subscribe(
                 data => {
@@ -411,6 +417,7 @@ export class ResumeComponent implements OnInit {
                   //this.log = 'Something getting wrong';
                    
                 });
+      }
    }
 
    oncommerciallyOptions(obj)

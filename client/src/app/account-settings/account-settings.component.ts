@@ -142,7 +142,36 @@ export class AccountSettingsComponent implements OnInit {
                 });
        }
   }
-  
+    
+  disbale_setting()
+  {
+      
+       this.inform='';
+      //console.log('set here');
+      if(this.currentUser)
+      {
+        this.authenticationService.set_disable_status(this.currentUser._creator,this.info.disable_account)
+        .subscribe(
+            data => 
+            {
+                if(data.error )
+                {
+                    this.log=data.error;
+                }
+                else
+                {
+                    this.inform=data;
+                    //console.log(data);
+                }
+            },
+            error => {
+              this.log = 'Something getting wrong';
+               
+            }
+        );
+      }
+      
+  }
   unread_msgs_emails_send(){
        this.inform='';
 	  //console.log('set here');
@@ -167,7 +196,8 @@ export class AccountSettingsComponent implements OnInit {
 			   
 			}
 		);
-	  }
+	  }   
+      
   }
 
 }

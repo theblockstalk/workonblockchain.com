@@ -26,6 +26,12 @@ export class UserService {
         return this.http.get<any>(URL+'users/current/' + _id);
     }
     
+    public_profile(_id: string) 
+    {
+        return this.http.get<any>(URL+'users/public_profile/' + _id);
+    }
+    
+    
     getByRefrenceCode(code: string){
         return this.http.post<any>(URL+'users/get_refrence_code', {code:code}) .map(ref_code => {
             return ref_code
@@ -759,6 +765,19 @@ export class UserService {
     email_referred_user(data: any){
         return this.http.post<any>(URL+'users/refered_user_email', {info : data}) .map(ref_code => {
             return ref_code
+        });
+    }
+    
+    set_disable_status(user_id: string, status: any) 
+    {
+        return this.http.post<any>(URL+'users/set_disable_status', {user_id:user_id,status:status})
+        .map(data => {
+            if (data){
+                return data;
+            }
+            else{
+                return data.msg;
+            }
         });
     }
 }
