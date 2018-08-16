@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input } from '@angular/core';
+import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
@@ -36,14 +36,23 @@ export class AboutComponent implements OnInit
     job_disable;
     resume_disable;
     exp_disable;
+    first_name_log;
+    last_name_log;
+    contact_name_log;
+    nationality_log;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
   }
 
+   
 
   ngOnInit()
   {
+      /*this.info.first_name ='';
+      this.info.last_name='';
+      this.info.contact_number='';
+      this.info.nationality='';*/
        this.job_disable = "disabled";
       this.resume_disable = "disabled";
       this.exp_disable = "disabled";
@@ -84,7 +93,7 @@ export class AboutComponent implements OnInit
             .subscribe(
                 data =>
                 {
-
+                      //  console.log(data);
                     if(data._creator.refered_id != 'undefined' && !data.first_name && !data.last_name)
                     {
                         //console.log("ifffffffffff");
@@ -97,7 +106,7 @@ export class AboutComponent implements OnInit
                       this.term_link = '/terms-and-condition';
                   }
 
-                  if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+                  if(data.contact_number  || data.nationality || data.first_name || data.last_name)
                   {
                     this.active_class='fa fa-check-circle text-success';
                     this.info.contact_number = data.contact_number;
@@ -127,7 +136,7 @@ export class AboutComponent implements OnInit
 
                   }
 
-                  if(data.country && data.roles && data.interest_area && data.expected_salary && data.availability_day )
+                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day )
                   {
                       this.resume_disable = '';
                       this.job_active_class = 'fa fa-check-circle text-success';
@@ -143,7 +152,7 @@ export class AboutComponent implements OnInit
                 // this.router.navigate(['/resume']);
                 }
 
-                if(data.history && data.education && data.experience_roles && data.current_salary )
+                if( data.programming_languages && data.current_salary )
                 {
                     this.exp_class = "/experience";
                     this.exp_active_class = 'fa fa-check-circle text-success';
@@ -176,6 +185,27 @@ export class AboutComponent implements OnInit
   about()
   {
 
+    if(!this.info.first_name)
+    {
+        this.first_name_log="Please enter first name";
+    
+    }
+    if(!this.info.last_name)
+    {
+        this.last_name_log="Please enter last name";
+    
+    }
+    if(!this.info.contact_number)
+    {
+        this.contact_name_log ="Please enter contact number";
+    }
+    
+    if(this.info.nationality==-1)
+    {
+        this.nationality_log ="Please choose nationality";
+    }
+    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1)
+    {
       this.authenticationService.about(this.currentUser._creator,this.info)
         .subscribe(
           data =>
@@ -254,5 +284,9 @@ export class AboutComponent implements OnInit
           {
             this.log = 'Something getting wrong';
           });
+          
+    }      
+    
   }
+        
 }

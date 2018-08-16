@@ -51,7 +51,7 @@ function update_candidate_profile(_id,userParam)
                 stackexchange_account: userParam.detail.exchange_account,
                 contact_number: userParam.detail.contact_number,
                 nationality: userParam.detail.nationality,
-                country: userParam.detail.country,
+                locations: userParam.detail.country,
                 roles: userParam.detail.roles,
                 interest_area: userParam.detail.interest_area,
                 expected_salary_currency: userParam.detail.base_currency,
@@ -62,12 +62,11 @@ function update_candidate_profile(_id,userParam)
                 experimented_platform: userParam.detail.experimented_platform,
                 platforms: userParam.detail.platforms,
                 current_salary: userParam.detail.salary,
-                current_currency : userParam.detail.current_currency,
-                languages: userParam.detail.language,
-                experience_roles: userParam.detail.language_experience_year,
+                current_currency : userParam.detail.current_currency,                
+                programming_languages: userParam.detail.language_experience_year,
                 // work_experience_year : userParam.detail.platform_exp,
-                education :  userParam.education,
-                history: userParam.work,
+                education_history :  userParam.education,
+                work_history: userParam.work,
                 description :userParam.detail.intro
 
             };

@@ -7,12 +7,9 @@ import {User} from '../Model/user';
 import {NgForm} from '@angular/forms';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import { DataService } from "../data.service";
-//const URL = 'http://workonblockchain.mwancloud.com:4000/';
-//const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
 const URL = environment.backend_url;
-////console.log(URL);
-declare var $: any;
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit-candidate-profile',
@@ -56,25 +53,30 @@ export class EditCandidateProfileComponent implements OnInit {
         {name:'I currently work there', value:'current', checked:false}
     ]
     
-  constructor(private dataservice: DataService,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef) 
+  constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef) 
   { 
   }
-   
-   private education_data(): FormGroup[] 
+    
+     private education_data(): FormGroup[] 
       {
           return this.eduData
-          .map(i => this._fb.group({ uniname: i.uniname , degreename : i.degreename,fieldname:i.fieldname, edudate:i.edudate,eduyear:i.eduyear} ));
+          .map(i => this._fb.group({ uniname: i.uniname , degreename : i.degreename,fieldname:i.fieldname,eduyear:i.eduyear} ));
       }
 
       private history_data(): FormGroup[] 
       {
           return this.jobData
-          .map(i => this._fb.group({ companyname: i.companyname , positionname : i.positionname, locationname:i.locationname, descname:i.descname,startdate:i.startdate , startyear: i.startyear , enddate:i.enddate , endyear:i.endyear , currentwork: i.currentwork , currentenddate:i.currentenddate , currentendyear:i.currentendyear} ));
+          .map(i => this._fb.group({ companyname: i.companyname , positionname : i.positionname, locationname:i.locationname, descname:i.descname,startdate:i.startdate, start_date:this.monthNumToName(this.datePipe.transform(i.startdate, 'MM') )/*this.datePipe.transform(i.startdate, 'MM') */, startyear: this.datePipe.transform(i.startdate, 'yyyy') , enddate :i.enddate , end_date:this.monthNumToName(this.datePipe.transform(i.enddate, 'MM')) , endyear:this.datePipe.transform(i.enddate, 'yyyy') , currentwork: i.currentwork} ));
       }
+   
+   monthNumToName(monthnum) {     
+    return this.calen_month[monthnum-1] || '';
+}
+    
     
   ngOnInit() 
   {
-       $(document).ready(function(){
+      /* $(document).ready(function(){
         $(function () {
     $('#1step').change(function () {
         if ($('#1step').is(':checked')) {
@@ -84,7 +86,7 @@ export class EditCandidateProfileComponent implements OnInit {
         }
     }).change();
 });
-    });
+    });*/
     
       this.info.nationality = -1;
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -125,9 +127,9 @@ export class EditCandidateProfileComponent implements OnInit {
                                
                 }
                 
-                if(data.country && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
+                if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
                 {
-                    for (let country1 of data.country) 
+                    for (let country1 of data.locations) 
                      {
                       
                       for(let option of this.options)
@@ -307,14 +309,14 @@ export class EditCandidateProfileComponent implements OnInit {
                 }
                 
                 /////////////////experience////////////////////////
-                if(data.history && data.education|| data.experience_roles&&data.current_salary && data.current_currency)
+                if(data.work_history && data.education_history|| data.programming_languages&&data.current_salary && data.current_currency)
                 {
                     
                    
                     
-                    this.jobData = data.history; 
+                    this.jobData = data.work_history; 
                     
-                     for(let data1 of data.history)
+                     for(let data1 of data.work_history)
                         {
                             //this.companyname = data1.companyname;
                             this.current_work_check.push(data1.currentwork);
@@ -328,17 +330,17 @@ export class EditCandidateProfileComponent implements OnInit {
                           ) 
                           });
                  
-                    this.eduData = data.education; 
+                    this.eduData = data.education_history; 
                     this.EducationForm = this._fb.group({
                           itemRows: this._fb.array(
                                     this.education_data()
                           )
                         });
-                        //this.exp_data.push(data.experience_roles) ;
-                       if(data.experience_roles)
+                        //this.exp_data.push(data.programming_languages) ;
+                       if(data.programming_languages)
                        {
-                           this.LangexpYear = data.experience_roles;
-                      for (let key of data.experience_roles) 
+                           this.LangexpYear = data.programming_languages;
+                      for (let key of data.programming_languages) 
                       {
                         for(var i in key)
                         {
@@ -827,7 +829,7 @@ export class EditCandidateProfileComponent implements OnInit {
       if(index > -1)
       {
         this.language.splice(index, 1);
-        let updateItem2 = this.findObjectByKey(this.LangexpYear, 'platform_name', obj.value);
+        let updateItem2 = this.findObjectByKey(this.LangexpYear, 'language', obj.value);
           ////console.log(updateItem);
         let index2 = this.LangexpYear.indexOf(updateItem2);
 
@@ -883,12 +885,10 @@ export class EditCandidateProfileComponent implements OnInit {
         uniname: [''],
         degreename:[''],
         fieldname:[''],
-        edudate:[''],
-        eduyear:['']
+        eduyear:[]
       });
      
     }
-
     initItemRows_db() 
     {
       return this._fb.group({
@@ -928,15 +928,17 @@ export class EditCandidateProfileComponent implements OnInit {
         positionname:[''],
         locationname: [''],
         descname: [''] ,
-        startdate:[''],
-        startyear:[''],
-        enddate:[''],
-        endyear:[''],
+        startdate:[],
+        startyear:[],
+        end_date:[],
+        endyear:[],
+        start_date:[],
+        enddate:[],       
         currentwork:[false],
-        currentenddate:[this.currentdate],
-        currentendyear:[this.currentyear]
+       
       });
     }
+
 
     addNewExpRow()
     {
@@ -992,7 +994,7 @@ export class EditCandidateProfileComponent implements OnInit {
         
         
         
-      let updateItem = this.findObjectByKey(this.LangexpYear, 'platform_name', value);
+      let updateItem = this.findObjectByKey(this.LangexpYear, 'language', value);
        ////console.log(updateItem);
       let index = this.LangexpYear.indexOf(updateItem);
 
@@ -1001,7 +1003,7 @@ export class EditCandidateProfileComponent implements OnInit {
           
         this.LangexpYear.splice(index, 1);
         this.value=value;
-        this.referringData = { platform_name:this.value, exp_year: e.target.value};  
+        this.referringData = { language:this.value, exp_year: e.target.value};  
         this.LangexpYear.push(this.referringData); 
         ////console.log(this.LangexpYear); 
         
@@ -1010,7 +1012,7 @@ export class EditCandidateProfileComponent implements OnInit {
       {   
       ////console.log("not exists");
         this.value=value;
-        this.referringData = { platform_name:this.value, exp_year: e.target.value};  
+        this.referringData = { language:this.value, exp_year: e.target.value};  
         this.LangexpYear.push(this.referringData); 
         ////console.log(this.LangexpYear); 
         
@@ -1077,13 +1079,44 @@ export class EditCandidateProfileComponent implements OnInit {
 
   }
     ////////////////////////save edit profile data//////////////////////////////////
+    month_number;start_monthh;
+    experiencearray=[];
+    experiencejson;
+    monthNameToNum(monthname) {
+        this.start_monthh = this.calen_month.indexOf(monthname);
+        this.start_monthh = "0"  + (this.start_monthh);
+        return this.start_monthh ?  this.start_monthh : 0;
+    }
+    startmonthIndex;endmonthIndex;
+    start_date_format;end_date_format;
+    educationjson;education_json_array=[];
     candidate_profile(profileForm: NgForm)
     {
         //console.log(profileForm.value);
          this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         
-   
-        this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm.value,this.EducationForm.value.itemRows , this.ExperienceForm.value.ExpItems)
+        for (var key in this.ExperienceForm.value.ExpItems) 
+            {
+                this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
+                this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);              
+                //this.ExperienceForm.value.ExpItems[key].startdate = "01/"+this.startmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].startyear;
+                //this.ExperienceForm.value.ExpItems[key].enddate ="01/"+ this.endmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].endyear;
+                this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
+                this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);    
+                this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].descname,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork}; 
+                this.experiencearray.push(this.experiencejson);
+                //console.log(this.experiencearray);
+
+            }
+         
+            for ( var key in this.EducationForm.value.itemRows)
+            {
+               this.EducationForm.value.itemRows[key].eduyear =  parseInt(this.EducationForm.value.itemRows[key].eduyear);
+             this.educationjson = {uniname : this.EducationForm.value.itemRows[key].uniname , degreename :  this.EducationForm.value.itemRows[key].degreename
+                                    ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
+                this.education_json_array.push(this.educationjson) ;
+            }
+        this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm.value,this.education_json_array , this.experiencearray)
             .subscribe(
                 data => {
                 if(data && this.currentUser)
@@ -1099,16 +1132,16 @@ export class EditCandidateProfileComponent implements OnInit {
                         (success) => 
                         {
                              //console.log(success);
-                             window.location.href = '/candidate_profile';
+                             //window.location.href = '/candidate_profile';
 
-                              //this.router.navigate(['/candidate_profile']); 
+                              this.router.navigate(['/candidate_profile']); 
                         },
                         (error) => console.log(error))
                      }
                      else
-                          window.location.href = '/candidate_profile';
+                          //window.location.href = '/candidate_profile';
 
-                        //this.router.navigate(['/candidate_profile']);
+                        this.router.navigate(['/candidate_profile']);
                 }
 
                 if(data.error)

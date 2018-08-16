@@ -45,14 +45,14 @@ export class VerifyEmailComponent implements OnInit {
 
                         else if(this.currentUser.type=="candidate")
                         {
-                            this.dataservice.changeMessage(data['msg']);
+                            this.dataservice.emailMessage(data['msg']);
                             //this.router.navigate(['/login']);
                             this.router.navigate(["/candidate_profile"]);                   
                         }
                         
                         else if(this.currentUser.type=="company")
                         {
-                            this.dataservice.changeMessage(data['msg']);
+                            this.dataservice.emailMessage(data['msg']);
                             //this.router.navigate(['/login']);
                             this.router.navigate(["/company_profile"]);                   
                         }
@@ -89,14 +89,14 @@ export class VerifyEmailComponent implements OnInit {
 
                        else if(this.currentUser.type=="candidate")
                         {
-                            this.dataservice.errorMessage(error);
+                            this.dataservice.emailMessage(error);
                             //this.router.navigate(['/login']);
                             this.router.navigate(["/candidate_profile"]);                   
                         }
                         
                        else if(this.currentUser.type=="company")
                         {
-                            this.dataservice.errorMessage(error);
+                            this.dataservice.emailMessage(error);
                             //this.router.navigate(['/login']);
                             this.router.navigate(["/company_profile"]);                   
                         }

@@ -219,7 +219,7 @@ export class ResumeComponent implements OnInit {
 
                 }
 
-                if(data.country && data.roles && data.interest_area || data.expected_salary || data.availability_day )
+                if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day )
                   {
                       this.job_active_class = 'fa fa-check-circle text-success';
                        
@@ -233,7 +233,7 @@ export class ResumeComponent implements OnInit {
                // this.router.navigate(['/resume']);
               }
      
-              if( data.experience_roles && data.current_salary )
+              if( data.programming_languages && data.current_salary )
               {
                   
                   this.exp_active_class = 'fa fa-check-circle text-success';
@@ -386,12 +386,18 @@ export class ResumeComponent implements OnInit {
         return obj.value === this;
     }
 
+    why_work_log;
    blockchain_exp(expForm: NgForm) 
    {
       //console.log(expForm.value);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     
-
+        if(!this.why_work)
+        {
+          this.why_work_log = "Please fill why do you want to work on blockchain?"; 
+         }
+       if(this.why_work)
+       {
         this.authenticationService.resume(this.currentUser._creator,expForm.value)
             .subscribe(
                 data => {
@@ -411,6 +417,7 @@ export class ResumeComponent implements OnInit {
                   //this.log = 'Something getting wrong';
                    
                 });
+      }
    }
 
    oncommerciallyOptions(obj)
@@ -443,7 +450,7 @@ export class ResumeComponent implements OnInit {
    onPlatformOptions(obj)
    {
     
-   let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
+      let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
       let index = this.platforms_designed.indexOf(updateItem);
       if(index > -1)
       {

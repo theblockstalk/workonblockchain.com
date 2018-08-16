@@ -77,14 +77,14 @@
 				 		
 				 	</div>
 				 	<span class = "edit_profile_link">
-				 		<a href="edit_profile#about_you">
+				 		<a  (click)="internalRoute('edit_profile','about_you')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
 				 </section>
 				 
 				 <section class = "profile job_info" *ngIf="!public_data ">
-					<h3>About</h3>
+					<h3>About you</h3>
 					<div class="info-area pro_br-btm" >
 						<div class = "col-md-3">
 							<strong>Email Address :</strong>
@@ -142,7 +142,7 @@
 
 				 	
 				 	<span class = "edit_profile_link">
-				 		<a href="edit_profile#about_you">
+				 		<a  (click)="internalRoute('edit_profile','about_you')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -150,7 +150,7 @@
 				 </section>
 
 				 <section class = "profile job_info" *ngIf="!public_data">
-					<h3>Job </h3>
+					<h3>Desired Job</h3>
 				 	<div class="info-area pro_br-btm" *ngIf="countries">
 						<div class = "col-md-3">
 							<strong>Desired Location : </strong>
@@ -179,7 +179,7 @@
 				 	<div class="info-area pro_br-btm">
 
 						<div class = "col-md-3" *ngIf="interest_area">
-							<strong>Desired Position : </strong>
+							<strong>Area of interest : </strong>
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
@@ -193,7 +193,7 @@
 				 	<div class="info-area pro_br-btm" *ngIf="roles">
 
 						<div class = "col-md-3" >
-							<strong>Roles : </strong>
+							<strong>Desired roles : </strong>
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
@@ -217,6 +217,18 @@
 
 				 	</div>
 				 	
+					<div class="info-area pro_br-btm" *ngIf="current_salary">
+
+						<div class = "col-md-3" >
+							<strong>Yearly current base salary:</strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li>{{current_currency}} {{current_salary}}</li>
+							</ul>
+						</div>
+
+				 	</div>
 
 				 	<div class="info-area pro_br-btm" *ngIf="availability_day">
 
@@ -232,7 +244,7 @@
 				 	</div>
 
 				 	<span class = "edit_profile_link">
-				 		<a href="edit_profile#job_candidate">
+				 		<a (click)="internalRoute('edit_profile','job_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -240,10 +252,10 @@
 				 </section>
 
 				 <section class = "profile job_info" *ngIf="!public_data">
-					<h3>BlockChain Experience</h3>
+					<h3>Blockchain and DLT Experience</h3>
 
 					<div class = "discp info-area pro_br-btm" *ngIf="why_work">
-						<h4 class = "disc_hd">Why do you want to work on BlockChain?</h4>
+						<h4 class = "disc_hd">Why do you want to work on Blockchain?</h4>
 						<p>
 							{{why_work}}
 						</p>
@@ -295,7 +307,7 @@
 				 	
 
 				 	<span class = "edit_profile_link">
-				 		<a href="edit_profile#resume_candidate">
+				 		<a  (click)="internalRoute('edit_profile','resume_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -305,19 +317,6 @@
 				 <section class = "profile job_info" *ngIf="!public_data">
 					<h3>Experience</h3>				
 
-				 	<div class="info-area pro_br-btm" *ngIf="current_salary">
-
-						<div class = "col-md-4" >
-							<strong>Current Base salary:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li>{{current_currency}} {{current_salary}}</li>
-							</ul>
-						</div>
-
-				 	</div>
-
 				 	<div class="info-area pro_br-btm" *ngIf="languages">
 
 						<div class = "col-md-4" >
@@ -325,7 +324,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let lang of languages;'>{{lang.platform_name}} : {{lang.exp_year}} years</li>
+								<li *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
 								
 							</ul>
 						</div>
@@ -334,7 +333,7 @@
 
 
 				 		<span class = "edit_profile_link">
-				 		<a href="edit_profile#experience_candidate">
+				 		<a  (click)="internalRoute('edit_profile','experience_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -345,7 +344,8 @@
 				 	
 				 </section>
 
-				  <section class = "profile job_info" *ngIf="!public_data && history">
+				  <section class = "profile job_info" *ngIf="!public_data && history!='' ">
+				  
 					<h3>Work History</h3>
 					<div class = "company_area" *ngFor='let work of history'>
 					 	<div class="info-area pro_br-btm">
@@ -380,10 +380,10 @@
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list" *ngIf='work.currentwork== true' >
-							<li>{{work.startdate}} {{work.startyear}}, till now.</li>
+							<li>{{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}}, till now.</li>
 						</ul>
 						<ul class = "pro_list" *ngIf='work.currentwork== false ' >
-							<li>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</li>
+							<li>{{work.startdate | date:'MMMM-yyyy'}} , {{work.enddate | date:'MMMM-yyyy'}} </li>
 						</ul>
 							</div>
 
@@ -410,16 +410,18 @@
 						</div>
 
 					</div>
+					
 
 				 	<span class = "edit_profile_link">
-				 		<a href="edit_profile#experience_candidate">
+				 		<a (click)="internalRoute('edit_profile','work_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-				 	
+				 
 				 </section>
 
-				 <section class = "profile job_info" *ngIf="!public_data && education">
+				 <section class = "profile job_info" *ngIf="!public_data && education !='' ">
+				 
 					<h3>Education</h3>
 					
 				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>
@@ -441,11 +443,11 @@
 				 	</div>
 
 				 		<span class = "edit_profile_link">
-				 		<a href="edit_profile#experience_candidate">
+				 		<a (click)="internalRoute('edit_profile','education_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-				 	
+				
 				 </section>
 				 
 				</ng-container> 

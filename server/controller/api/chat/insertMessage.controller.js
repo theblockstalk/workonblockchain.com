@@ -49,30 +49,12 @@ module.exports = function insert_message(req, res)
 }
 
 function insert_message_new(data){
-    var current_date = new Date();
-    var day = current_date.getDate();
-    if(day < 10){
-        day = '0'+day;
-    }
-    var month = current_date.getMonth();
-    month = month+1;
-    if(month < 10){
-        month = '0'+month;
-    }
-    var year = current_date.getFullYear();
-    var hours = current_date.getHours();
-    if(hours < 10){
-        hours = '0'+hours;
-    }
-    var minutes = current_date.getMinutes();
-    if(minutes < 10){
-        minutes = '0'+minutes;
-    }
-    var seconds = current_date.getSeconds();
-    if(seconds < 10){
-        seconds = '0'+seconds;
-    }
-    var my_date = day+'/'+month+'/'+year+' '+hours+':'+minutes+':'+seconds;
+	interview_date = '';
+	if(data.msg_tag == 'interview_offer'){
+		interview_date = data.date_of_joining+' '+data.interview_time+':00';
+	}
+	var current_date = new Date();
+	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
     let newChat = new chat({
         sender_id: data.sender_id,
@@ -82,13 +64,14 @@ function insert_message_new(data){
         message: data.message,
         job_title: data.job_title,
         salary: data.salary,
-        date_of_joining: data.date_of_joining,
+		salary_currency: data.currency,
+        date_of_joining: '',
         msg_tag: data.msg_tag,
         is_company_reply: data.is_company_reply,
         job_type: data.job_type,
         is_read: 0,
 		interview_location: data.interview_location,
-		interview_time: data.interview_time,
+		interview_date_time: interview_date,
         date_created: my_date
     });
 

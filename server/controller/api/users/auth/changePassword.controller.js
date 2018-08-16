@@ -5,6 +5,7 @@ var Q = require('q');
 var mongo = require('mongoskin');
 const users = require('../../../../model/users');
 const logger = require('../../../services/logger');
+var crypto = require('crypto');
 
 module.exports = function (req,res)
 {
@@ -29,7 +30,7 @@ module.exports = function (req,res)
 function change_password(id , param)
 {
     var deferred = Q.defer();
-
+//console.log(param.password);
     //console.log(id);
     //console.log(token);
     users.findOne({_id :id }, function (err, user)
@@ -40,15 +41,24 @@ function change_password(id , param)
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }
-        if (user && bcrypt.compareSync(param.current_password, user.password))
+        if (user)
         {
-
-
-            updatePassword(user._id);
+        	let hash = crypto.createHmac('sha512', user.salt);
+        	hash.update(param.current_password);
+        	let hashedPasswordAndSalt = hash.digest('hex');
+        	//console.log(hashedPasswordAndSalt);
+        	if (hashedPasswordAndSalt === user.password_hash)
+        	{
+        		updatePassword(user._id);
+        	}
+        	else
+        	{
+        		deferred.reject("Current password is incorrect");
+        	}
         }
         else
         {
-            deferred.reject("Current Password is Incorrect");
+            deferred.reject("Email not found");
         }
 
 
@@ -59,15 +69,22 @@ function change_password(id , param)
         //console.log(_id);
 
         //console.log(user.password);
-        var user = _.omit(param, 'password');
+        /*var user = _.omit(param, 'password');
         var salt = bcrypt.genSaltSync(10);
 
         // add hashed password to user object
-        user.password = bcrypt.hashSync(param.password, salt);
+        user.password = bcrypt.hashSync(param.password, salt);*/
+        
+        let salt = crypto.randomBytes(16).toString('base64');
+        let hash = crypto.createHmac('sha512', salt);
+		hash.update(param.password);
+		let hashedPasswordAndSalt = hash.digest('hex');
+		//console.log(hashedPasswordAndSalt);
 
         var set =
             {
-                password:user.password,
+        		password_hash:hashedPasswordAndSalt,
+        		salt :salt
             };
         users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
         {
