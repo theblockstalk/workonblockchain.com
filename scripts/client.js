@@ -11,10 +11,10 @@ let buildCommand;
         console.log('deploying the frontend to S3 bucket');
         if (environmentName === 'production') {
             s3bucket = config.s3.frontendBucket.staging;
-            buildCommand = 'npm run-script build-staging';
+            buildCommand = 'npm run-script build-prod';
         } else if (environmentName === 'staging') {
             s3bucket = config.s3.frontendBucket.staging;
-            buildCommand = 'npm run-script build-prod';
+            buildCommand = 'npm run-script build-staging';
         } else {
             throw new Error("Need to provide argument for the environment: staging or production");
         }
