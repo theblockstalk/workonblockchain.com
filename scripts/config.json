@@ -1,0 +1,16 @@
+{
+  "eb": {
+    "appName": "workonblockchain.com",
+    "envName": {
+      "staging": "staging-api-workonblockchain-com-env",
+      "production": "production-api-workonblockchain-com-env"
+    }
+  },
+  "s3": {
+    "distributionsBucket": "elasticbeanstalk-eu-west-1-831241436261",
+    "frontendBucket": {
+      "staging": "staging.workonblockchain.com",
+      "production": "production.workonblockchain.com"
+    }
+  }
+}
