@@ -322,7 +322,7 @@ export class AdminDisplayChatComponent implements OnInit {
                                     }
                                
                                
-                                 this.display_name = data[0].first_name+' '+data[0].last_name;
+                                 this.display_name = data[0].company_name;
                                  this.user_type = data[0]._creator.type;
                                  ////console.log(this.user_type);
                                 localStorage.setItem("company_type", this.user_type);

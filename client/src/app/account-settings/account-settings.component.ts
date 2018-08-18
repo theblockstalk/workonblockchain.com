@@ -38,13 +38,14 @@ export class AccountSettingsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
+                    console.log(data);
 					if(data._creator.is_unread_msgs_to_send){
 					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
 				    }
-					if(data.disable_account || data.marketing_emails)
+					if(data._creator.disable_account || data.marketing_emails)
                     {
                         this.info.marketing = data.marketing_emails;
-                        this.info.disable_account= data.disable_account;
+                        this.info.disable_account= data._creator.disable_account;
                     }
                 });
      }
@@ -58,10 +59,10 @@ export class AccountSettingsComponent implements OnInit {
 				   if(data._creator.is_unread_msgs_to_send){
 					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
 				   }
-				   if(data.disable_account || data.marketing_emails)
+				   if(data._creator.disable_account || data.marketing_emails)
                     {
                         this.info.marketing = data.marketing_emails;
-                        this.info.disable_account= data.disable_account;
+                        this.info.disable_account= data._creator.disable_account;
                     }
                   
                 },
@@ -83,19 +84,6 @@ export class AccountSettingsComponent implements OnInit {
   account_setting()
   {
       this.inform='';
-     /* if(this.info.disable_account==true)
-      {
-          this.disable_msg = "disable";
-          this.enable_msg='';
-          
-      }
-      if(this.info.disable_account==false)
-      {
-          this.enable_msg ="enable";
-          this.disable_msg ='';
-         
-      }*/
-
       this.message = '';
       if(this.currentUser && this.currentUser.type=='candidate')
       {
@@ -111,7 +99,14 @@ export class AccountSettingsComponent implements OnInit {
                else
                {
                     this.inform = data;
-                  //this.dataservice.changeMessage("Settings Updated Sucessfully");
+					
+					if(this.info.marketing){
+						this.message = 'Your account settings for marketing emails is enabled';
+					}
+					else{
+						this.message = 'Your account settings for marketing emails is disabled';
+					}
+                  //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
               
           });
@@ -132,7 +127,14 @@ export class AccountSettingsComponent implements OnInit {
                else
                {
                     this.inform=data;
-                  //this.dataservice.changeMessage("Settings Updated Sucessfully");
+					
+					if(this.info.marketing){
+						this.message = 'Your account settings for marketing emails is enabled';
+					}
+					else{
+						this.message = 'Your account settings for marketing emails is disabled';
+					}
+                  //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
                     
                 },
@@ -142,7 +144,42 @@ export class AccountSettingsComponent implements OnInit {
                 });
        }
   }
-  
+    
+  disbale_setting()
+  {
+      
+       this.inform='';
+      //console.log('set here');
+      if(this.currentUser)
+      {
+        this.authenticationService.set_disable_status(this.currentUser._creator,this.info.disable_account)
+        .subscribe(
+            data => 
+            {
+                if(data.error )
+                {
+                    this.log=data.error;
+                }
+                else
+                {
+                    this.inform=data;
+                    if(this.info.disable_account){
+                        this.message = 'Your profile is currently enabled';
+                    }
+                    else{
+                        this.message = 'Your profile is currently disabled';
+                    }
+                    //console.log(data);
+                }
+            },
+            error => {
+              this.log = 'Something getting wrong';
+               
+            }
+        );
+      }
+      
+  }
   unread_msgs_emails_send(){
        this.inform='';
 	  //console.log('set here');
@@ -159,7 +196,13 @@ export class AccountSettingsComponent implements OnInit {
 				else
 				{
                     this.inform=data;
-					//console.log(data);
+					if(this.info.unread_msgs_emails){
+						this.message = 'Your account settings for Unread Chat Messages Email is enabled';
+					}
+					else{
+						this.message = 'Your account settings for Unread Chat Messages Email is disabled';
+					}
+					//console.log(this.inform);
 				}
 			},
 			error => {
@@ -167,7 +210,8 @@ export class AccountSettingsComponent implements OnInit {
 			   
 			}
 		);
-	  }
+	  }   
+      
   }
 
 }

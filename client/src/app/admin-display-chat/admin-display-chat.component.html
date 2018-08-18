@@ -19,7 +19,7 @@
 					</div>
 					<div id="contacts">
 						<ul>
-							<li *ngFor="let person of users" class="contact closee" (click)="openDialog(person.first_name,person._creator._id)">
+							<li *ngFor="let person of users" [ngClass]="(credentials.id == person._creator._id)?'contact active':'contact closee'" (click)="openDialog(person.first_name,person._creator._id)">
 									<div class="wrap">
 										<ng-container *ngIf="user_type == 'company';else cand_image">
 											<ng-container *ngIf="person.image;else person_image">
@@ -52,18 +52,18 @@
 								<ng-container *ngIf="user_type == 'company';else cand">
 									<li>Candidate Name : {{candidate}}</li>
 									<ng-container *ngIf="job_desc;else no_job_desc">
-										<li>Availablity : {{job_desc.date_of_joining}}</li>
+										<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
 										<li>Job Title : {{job_desc.job_title}}</li>
 									</ng-container>
 									<ng-template #no_job_desc>
-										<li>Availablity : N/A</li>
+										<li>Salary : N/A</li>
 										<li>Job Title : N/A</li>
 									</ng-template>
 								</ng-container>
 								<ng-template #cand>
 									<li>Company Name : {{candidate}}</li>
 									<li>Job Title : {{job_desc.job_title}}</li>
-									<li>Salary : {{job_desc.salary}}</li>
+									<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
 								</ng-template>
 							</ul>
 							<!-- <span class = "btn_rgt">
@@ -71,26 +71,110 @@
 							</span>-->
 						</div>
 						
-						<div class="messages">
+						<div class="messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
 							<ul>
 								<div *ngFor="let msg of new_msgss">
 									<ng-container *ngIf="msg.sender_name == display_name;else second">
 										<li class="sent">
 											<p class = "job-description">
-												{{msg.sender_name}}
-												{{msg.message}}
-												<a href="{{msg.file_name}}">{{msg.file_name}}</a>
+												{{msg.sender_name}}:
+												<span *ngIf="msg.job_title !== ''">
+													<br/>
+													Job Title:
+													{{msg.job_title}}
+													<br/>
+												</span>
+												<span *ngIf="msg.salary">
+													Salary:
+													{{msg.salary}} {{msg.salary_currency}}
+													<br/>
+												</span>
+												<span *ngIf="msg.job_type !== ''">
+													Job Type:
+													{{msg.job_type}}
+													<br/>
+												</span>
+												<span *ngIf="msg.msg_tag == 'job_offered'">
+													Joining Date:
+													{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
+													<br/>
+												</span>
+												<span *ngIf="msg.job_title !== ''">
+													Description:
+													{{msg.message}}
+													<br/>
+												</span>
+												<span *ngIf="msg.interview_date_time">
+													<br/>
+													Interview Date & Time:
+													{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
+													<br/>
+												</span>
+												<span *ngIf="msg.interview_location">
+													Interview Location:
+													{{msg.interview_location}}
+													<br/>
+												</span>
+												<span *ngIf="msg.job_title == ''">
+													{{msg.message}}
+												</span>
+												<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name | slice:70:103}}</a> <!-- for local you can use 53 instead of 70 -->
 											</p>
 										</li>
+										<div class="chat_company">
+											{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
+										</div>
 									</ng-container>
 									<ng-template #second>
 										<li class="replies">
 											<p>
-												{{msg.sender_name}}
-												{{msg.message}}
-												<a href="{{msg.file_name}}">{{msg.file_name}}</a>
+												{{msg.sender_name}}:
+												<span *ngIf="msg.job_title !== ''">
+													<br/>
+													Job Title:
+													{{msg.job_title}}
+													<br/>
+												</span>
+												<span *ngIf="msg.salary">
+													Salary:
+													{{msg.salary}} {{msg.salary_currency}}
+													<br/>
+												</span>
+												<span *ngIf="msg.job_type !== ''">
+													Job Type:
+													{{msg.job_type}}
+													<br/>
+												</span>
+												<span *ngIf="msg.msg_tag == 'job_offered'">
+													Joining Date:
+													{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
+													<br/>
+												</span>
+												<span *ngIf="msg.job_title !== ''">
+													Description:
+													{{msg.message}}
+													<br/>
+												</span>
+												<span *ngIf="msg.interview_date_time">
+													<br/>
+													Interview Date & Time:
+													{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
+													<br/>
+												</span>
+												<span *ngIf="msg.interview_location">
+													Interview Location:
+													{{msg.interview_location}}
+													<br/>
+												</span>
+												<span *ngIf="msg.job_title == ''">
+													{{msg.message}}
+												</span>
+												<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name | slice:70:103}}</a> <!-- for local you can use 53 instead of 70 -->
 											</p>
 										</li>
+										<div class="chat_user">
+											{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
+										</div>
 									</ng-template>
 								</div>
 								<li class = "offers_b"></li>

@@ -11,7 +11,6 @@ const Pages = require('../../../../model/pages_content');
 var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../model/employer_profile');
-var md5 = require('md5');
 const chat = require('../../../../model/chat');
 
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
@@ -28,6 +27,8 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req,res)
     {
+	
+	//console.log(req.body);
         search_by_name(req.body.search).then(function (err, data)
         {
             if (data)

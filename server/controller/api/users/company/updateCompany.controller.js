@@ -43,7 +43,7 @@ function update_company_profile(_id , companyParam)
     {
 
         var set =
-            {
+        {
                 first_name : companyParam.first_name,
                 last_name: companyParam.last_name,
                 job_title:companyParam.job_title,
@@ -57,8 +57,7 @@ function update_company_profile(_id , companyParam)
                 no_of_employees:companyParam.no_of_employees,
                 company_funded: companyParam.company_funded,
                 company_description:companyParam.company_description,
-
-            };
+        };
 
         EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
         {

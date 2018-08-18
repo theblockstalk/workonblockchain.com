@@ -53,7 +53,7 @@ function forgot_password(email)
 
     function updateData(data)
     {
-        var hashStr = crypto.createHash('md5').update(email).digest('hex');
+		var hashStr = crypto.createHash('sha256').update(email).digest('base64');
         // console.log(hashStr);
         // console.log(data._id);
         var email_data = {};

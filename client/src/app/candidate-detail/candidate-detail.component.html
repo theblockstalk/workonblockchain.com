@@ -23,7 +23,7 @@
 				 		</span>
 				 		
 				 		<span class = "name" *ngIf='company_reply !== 1'>
-				 			<h3>{{first_name}} </h3>
+				 			<h3>{{first_name | slice:0:1}} {{last_name | slice:0:1}} </h3>
 				 		</span>
 				 		<span class = "short_intro">
 				 			<p>{{description}}</p>
@@ -76,7 +76,7 @@
 				 	
 				 </section>
 				 
-				  <section class = "profile job_info" >
+				  <section class = "profile job_info" *ngIf='company_reply === 1'>
 					<h3>About</h3>
 					<div class="info-area pro_br-btm" >
 						<div class = "col-md-3">
@@ -105,33 +105,7 @@
 
 				 	</div>
 					
-				 	<div class="info-area pro_br-btm" *ngIf="github">
-						<div class = "col-md-3">
-							<strong>Github account URL : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li >{{github}}</li>
-								
-							</ul>
-						</div>
-
-				 	</div>
-
-
-				 	<div class="info-area pro_br-btm" *ngIf="stack">
-
-						<div class = "col-md-3" >
-							<strong>Stackexchange account URL : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li >{{stack}}</li>
-								
-							</ul>
-						</div>
-
-				 	</div>
+				 	
 
 				 	
 				
@@ -318,7 +292,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let lang of languages;'>{{lang.platform_name}} : {{lang.exp_year}} years</li>
+								<li *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
 								
 							</ul>
 						</div>
@@ -393,11 +367,11 @@
 								<strong>Start and finish date: </strong>
 							</div>
 							<div class = "col-md-8">
-								<ul class = "pro_list" *ngIf='work.currentwork== "true"' >
-							<li>{{work.startdate}} {{work.startyear}}, till now.</li>
+								<ul class = "pro_list" *ngIf='work.currentwork== true' >
+							<li>{{work.startdate| date:'MMMM-yyyy'}} , till now.</li>
 						</ul>
-						<ul class = "pro_list" *ngIf='work.currentwork== "false" || work.currentwork== "" ' >
-							<li>{{work.startdate}} {{work.startyear}}, {{work.enddate}} {{work.endyear}}</li>
+						<ul class = "pro_list" *ngIf='work.currentwork== false ' >
+							<li>{{work.startdate| date:'MMMM-yyyy'}} , {{work.enddate| date:'MMMM-yyyy'}} </li>
 						</ul>
 							</div>
 
@@ -473,9 +447,9 @@
 					  <div class="form-group">
 							<select class="form-control" name="currency" [(ngModel)]="credentials.currency" id="sel1">
 								<option value="-1" disabled selected hidden >Please choose currency</option>
-								<option value="GBP">£ GBP</option>
-								<option value="EUR">€ EUR</option>
-								<option value="USD">$ USD</option>
+								<option value="£ GBP">£ GBP</option>
+								<option value="€ EUR">€ EUR</option>
+								<option value="$ USD">$ USD</option>
 							</select>
 					  </div>
 					  <div class="form-group">

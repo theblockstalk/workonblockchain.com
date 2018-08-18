@@ -59,7 +59,7 @@ function terms_and_condition(_id , userParam)
 
             var set =
                 {
-                    disable_account:userParam.disable_account,
+                    
                     marketing_emails: userParam.marketing,
 
 

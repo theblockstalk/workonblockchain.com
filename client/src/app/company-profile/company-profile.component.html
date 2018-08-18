@@ -1,8 +1,8 @@
 <section class = "wizard_page">
 
 	<div class="container">
-		<div class="row">
-			<div class="col-md-9">
+		<div class="row profile_group">
+			<div class="col-md-12">
 				 <section class = "profile personal_info">
 
 				 	<div class="col-md-6">
@@ -65,7 +65,7 @@
 				 		
 				 	</div>
 				 	<span class = "edit_profile_link">
-				 		<a href="edit_company_profile#information">
+				 		<a  (click)="internalRoute('edit_company_profile','information')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -123,7 +123,7 @@
 				 	
 
 				 	<span class = "edit_profile_link">
-				 		<a href="edit_company_profile#information">
+				 		<a (click)="internalRoute('edit_company_profile','information')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
@@ -166,7 +166,7 @@
 				 	
 
 				 	<span class = "edit_profile_link">
-				 		<a href="edit_company_profile#about_you">
+				 		<a (click)="internalRoute('edit_company_profile','about_you')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>

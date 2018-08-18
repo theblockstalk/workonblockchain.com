@@ -57,8 +57,7 @@ function company_summary(_id, companyParam)
         else
         {
             var set =
-                {
-                    disable_account:companyParam.disable_account,
+                {                  
                     marketing_emails: companyParam.marketing,
 
                 };

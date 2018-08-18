@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
@@ -11,7 +11,8 @@ import {environment} from '../../environments/environment';
   templateUrl: './company-profile.component.html',
   styleUrls: ['./company-profile.component.css']
 })
-export class CompanyProfileComponent implements OnInit {
+export class CompanyProfileComponent implements OnInit ,  AfterViewInit 
+{
     
   currentUser: User; 
   first_name;last_name;company_name;job_title;company_website;company_phone;company_country;
@@ -40,6 +41,34 @@ export class CompanyProfileComponent implements OnInit {
       {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
 
     ]
+    
+    
+    sectionScroll;
+    internalRoute(page,dst){
+    this.sectionScroll=dst;
+    this.router.navigate([page], {fragment: dst});
+}
+    
+    doScroll() {
+
+    if (!this.sectionScroll) {
+      return;
+    }
+    try {
+      var elements = document.getElementById(this.sectionScroll);
+
+      elements.scrollIntoView();
+    }
+    finally{
+      this.sectionScroll = null;
+    }
+  } 
+    
+    ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);
+        
+        }
    
   ngOnInit() 
   {
@@ -61,7 +90,7 @@ export class CompanyProfileComponent implements OnInit {
                       this.router.navigate(['/company_wizard']);
                   }
                     
-                  else if(!data.company_founded && !data.no_of_employees && !data.company_funded && !data.company_description )
+                  else if(!data.company_founded || !data.no_of_employees || !data.company_funded || !data.company_description )
                   {
                       this.router.navigate(['/about_comp']);
                   }

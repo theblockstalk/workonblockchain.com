@@ -11,7 +11,6 @@ const Pages = require('../../../model/pages_content');
 var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../model/employer_profile');
-var md5 = require('md5');
 const chat = require('../../../model/chat');
 
 const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
@@ -46,29 +45,7 @@ module.exports = function insert_message_job(req,res){
 
 function insert_message_job_new(data){
     var current_date = new Date();
-    var day = current_date.getDate();
-    if(day < 10){
-        day = '0'+day;
-    }
-    var month = current_date.getMonth();
-    month = month+1;
-    if(month < 10){
-        month = '0'+month;
-    }
-    var year = current_date.getFullYear();
-    var hours = current_date.getHours();
-    if(hours < 10){
-        hours = '0'+hours;
-    }
-    var minutes = current_date.getMinutes();
-    if(minutes < 10){
-        minutes = '0'+minutes;
-    }
-    var seconds = current_date.getSeconds();
-    if(seconds < 10){
-        seconds = '0'+seconds;
-    }
-    var my_date = day+'/'+month+'/'+year+' '+hours+':'+minutes+':'+seconds;
+	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
     let newChat = new chat({
         sender_id: data.sender_id,
@@ -76,8 +53,10 @@ function insert_message_job_new(data){
         sender_name: data.sender_name,
         receiver_name: data.receiver_name,
         message: data.message,
+		description: data.description,
         job_title: data.job_title,
         salary: data.salary,
+		salary_currency: data.currency,
         date_of_joining: data.date_of_joining,
         msg_tag: data.msg_tag,
         is_company_reply: data.is_company_reply,

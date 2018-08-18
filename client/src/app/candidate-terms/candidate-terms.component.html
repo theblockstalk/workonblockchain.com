@@ -9,8 +9,8 @@
 					<li class = "step step-active"><i class="{{active_class}}"></i><a routerLink="/terms-and-condition"> Terms & Conditions</a></li>
 					<li class = "step "><i class="{{about_active_class}}"></i><a  routerLink="{{about_link}}" class="btn {{about_disable}}"> About</a></li>
           <li class = "step"><i class="{{job_active_class}}"></i><a routerLink="{{link}}" class="btn {{job_disable}}">Jobs</a></li>
-          <li class = "step"><i class="{{resume_active_class}}"></i><a href="{{resume_class}}" class="btn {{resume_disable}}">Blockchain</a></li>
-          <li class = "step"><i class="{{exp_active_class}}"></i><a href="{{exp_class}}" class="btn {{exp_disable}}">Experience</a></li>
+          <li class = "step"><i class="{{resume_active_class}}"></i><a routerLink="{{resume_class}}" class="btn {{resume_disable}}">Blockchain</a></li>
+          <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn {{exp_disable}}">Experience</a></li>
           
 				</ul>
 			</div>
@@ -42,11 +42,15 @@
 							</span>
 						</label>
 				  </div>
+				  
+				  <div class = "form_error" *ngIf="termscondition == false">
+								<span class = "error">{{terms_log}}</span>
+							</div>
 				</div>
 				
 
 					<div class = "form-group col-md-4 text-right">
-							<button type="submit" class = "btn btn-self btn-pdg" [disabled]="termscondition === false" >Next Step</button>
+							<button type="submit" class = "btn btn-self btn-pdg"  >Next Step</button>
 
 					</div>
 

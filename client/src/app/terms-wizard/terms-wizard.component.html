@@ -36,11 +36,14 @@
 							</span>
 						</label>
 				  </div>
+				  <div class = "form_error" *ngIf ="termscondition!=true">
+								<span class = "error">{{this.terms_log}}</span>
+							</div>
 				</div>
 				
 
 					<div class = "form-group col-md-4 text-right">
-							<button type="submit" class = "btn btn-self btn-pdg" [disabled]="termscondition==false" >Next Step</button>
+							<button type="submit" class = "btn btn-self btn-pdg" >Next Step</button>
 
 					</div>
 

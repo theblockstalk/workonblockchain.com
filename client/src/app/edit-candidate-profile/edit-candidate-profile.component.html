@@ -2,22 +2,11 @@
 
 <section class="wizard_page">
 	<div class="container">
-		<div class="row">
+		<div class="row profile_group">
 			
-			<div class = "col-md-3 hidden-sm hidden-xs">
-				<div class = "wizard-form mr-top-form side_bar fixed_pos" id = "side_bar">
-					<ul>
-						<li> <a href = "/edit_profile#about_you">Personal Information</a> </li>
-						<li> <a href = "/edit_profile#resume_candidate">Spoken Languages</a> </li>
-						<li> <a href = "/edit_profile#job_candidate">Job Preferences</a> </li>
-						<li> <a href = "/edit_profile#work_candidate">Work History</a> </li>
-						<li> <a href = "/edit_profile#education_candidate">Education</a> </li>
-						<!-- <li> <a href = "/edit_profile#">Web Preferences</a> </li>-->
-					</ul>
-				</div>
-			</div>
+			
 			 <form  (submit)="candidate_profile(profileForm)" #profileForm = ngForm>
-			<div class="col-md-9">
+			<div class="col-md-12">
 					
 				<!--about us form-->
 				<div class = "wizard-form mr-top-form" id = "about_you">
@@ -105,7 +94,7 @@
 										
 										<div class = "row">  
 
-											<div class="col-md-4 collection-checkbox max-width" *ngFor="let option of options">
+											<div class="col-md-4 collection-checkbox" *ngFor="let option of options">
 											<span class = "checkbox-header"> <!--<strong>{{country.value}}</strong>--></span>
 											<div class="checkbox" >
 												<!--<div *ngIf=" country.id === option.country_code ">-->
@@ -140,7 +129,7 @@
 									<div class="answer">
 										<div class = "row">
 
-											<div class="col-md-4 collection-checkbox max-width" *ngFor="let position_option of dropdown_options">
+											<div class="col-md-4 collection-checkbox" *ngFor="let position_option of dropdown_options">
 												
 												<div class="checkbox">
 													<label class = "check-label lable"> {{position_option.name}}
@@ -188,7 +177,7 @@
 									<div class="answer">
 										<div class = "row">
 
-											<div class="col-md-6 collection-checkbox max-width" *ngFor='let position_option of area_interested'>
+											<div class="col-md-4 collection-checkbox" *ngFor='let position_option of area_interested'>
 												
 												<div class="checkbox">
 													<label class = "check-label lable"> {{position_option.name}}
@@ -254,7 +243,7 @@
                        <div class="answer">
 										<div class = "row">
 
-											<div class="col-md-6 collection-checkbox max-width" *ngFor="let option of commercially">
+											<div class="col-md-4 collection-checkbox" *ngFor="let option of commercially">
 												
 												<div class="checkbox">
 													<label class = "check-label lable"> {{option.name}}  
@@ -275,7 +264,7 @@
 
                       <div *ngIf="commercially_worked?.length > 0">
                       
-                        <label><p>Number of years</p></label>
+                        <label><p>Years of experience</p></label>
                         <div class = "row" *ngFor="let option of commercially_worked; let i = index ">
             
                         <p class="rd_label label-p">{{option.value}}</p>
@@ -297,7 +286,7 @@
                     <br/> <div class="answer">
 										<div class = "row">
 
-											<div class="col-md-6 collection-checkbox max-width" *ngFor="let option of designed">
+											<div class="col-md-4 collection-checkbox" *ngFor="let option of designed">
 												
 												<div class="checkbox">
 													<label class = "check-label lable"> {{option.value}}  
@@ -320,7 +309,7 @@
                     
               <hr>
           <div *ngIf="platforms_designed?.length > 0">
-           <label><p>Number of years</p></label>
+           <label><p>Years of experience</p></label>
           <div class = "row" *ngFor="let exp_value of platforms_designed;let i_index = index">
            
             <p class="rd_label label-p">{{exp_value.value}}</p>
@@ -341,7 +330,7 @@
                       <div class="answer">
 										<div class = "row">
 
-											<div class="col-md-6 collection-checkbox max-width" *ngFor="let option of experimented">
+											<div class="col-md-4 collection-checkbox" *ngFor="let option of experimented">
 												
 												<div class="checkbox">
 													<label class = "check-label lable"> {{option.value}}  
@@ -446,7 +435,7 @@
 
 						<div *ngIf="language?.length > 0">
          <div class="form-group col-md-12">
-          <p class = "exp_p">Year of Experience of each Language</p>
+          <p class = "exp_p">Years of experience</p>
           <div class = "row" *ngFor="let lang_value of language; let i = index ">
             
             <p class="rd_label label-p">{{lang_value.value}}</p>
@@ -488,7 +477,7 @@
 								<div class="form-group col-md-4">
                 <label class="lable"><p>Start Date</p></label>
                  
-                 <select formControlName="startdate" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
+                 <select formControlName="start_date" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
                 <option  *ngFor='let start_month of calen_month'  [value]="start_month" selected>{{start_month}}</option>
               <br/>
             </select>
@@ -501,7 +490,7 @@
 
 								<div class="form-group col-md-4" id="input_field" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork==false ">
                 <label class="lable"><p>End Date</p></label>
-                 <select formControlName="enddate" class="form-control xs_input"  required name="roles"  required=""  >
+                 <select formControlName="end_date" class="form-control xs_input"  required name="roles"  required=""  >
             <option  *ngFor='let end_month of calen_month'  [value]="end_month" selected>{{end_month}}</option>
         <br/>
     </select>

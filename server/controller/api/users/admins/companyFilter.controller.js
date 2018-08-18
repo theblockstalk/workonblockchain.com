@@ -11,7 +11,6 @@ const Pages = require('../../../../model/pages_content');
 var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../model/employer_profile');
-var md5 = require('md5');
 const chat = require('../../../../model/chat');
 
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
@@ -28,8 +27,9 @@ const logger = require('../../../services/logger');
 
 module.exports = function admin_company_filter(req,res)
 {
-    //console.log(req.body);
-    admin_company_filter(req.body).then(function (err, data)
+	console.log("company bodyyyyyyyyyyyyyy");
+    console.log(req.body);
+    admin_company_filter_new(req.body).then(function (err, data)
     {
         if (data)
         {
@@ -46,8 +46,10 @@ module.exports = function admin_company_filter(req,res)
         });
 }
 
-function admin_company_filter(data)
+function admin_company_filter_new(data)
 {
+	console.log("dataaaaaaaaa");
+	console.log(data);
     var deferred = Q.defer();
 
     var query_result = [];

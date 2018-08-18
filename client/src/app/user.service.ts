@@ -26,6 +26,12 @@ export class UserService {
         return this.http.get<any>(URL+'users/current/' + _id);
     }
     
+    public_profile(_id: string) 
+    {
+        return this.http.get<any>(URL+'users/public_profile/' + _id);
+    }
+    
+    
     getByRefrenceCode(code: string){
         return this.http.post<any>(URL+'users/get_refrence_code', {code:code}) .map(ref_code => {
             return ref_code
@@ -201,7 +207,7 @@ export class UserService {
 
     }
 
-    experience(user_id: string, detail: CandidateProfile , exp : CandidateProfile , history : CandidateProfile,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
+    experience(user_id: string, detail: CandidateProfile , exp : any , history : any,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
     {
         
         return this.http.put<any>(URL+'users/welcome/exp/' + user_id, { detail: detail, education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp })
@@ -415,9 +421,9 @@ export class UserService {
         return this.http.get<any>(URL+'users/current_company/' + _id);
     }
     
-    insertMessage(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,interview_location:string,interview_time:string) 
+    insertMessage(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,description:string,job_title:string,salary:string,currency:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,interview_location:string,interview_time:string) 
     {
-        return this.http.post<any>(URL+'users/insert_message', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,interview_location:interview_location,interview_time:interview_time}) .map(data => {
+        return this.http.post<any>(URL+'users/insert_message', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,interview_location:interview_location,interview_time:interview_time}) .map(data => {
             return data
         });
     }
@@ -585,9 +591,9 @@ export class UserService {
         });
     }
 	
-	insert_job_message(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,job_offered:number) 
+	insert_job_message(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,description:string,job_title:string,salary:string,currency:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,job_offered:number) 
     {
-        return this.http.post<any>(URL+'users/insert_message_job', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,job_offered:job_offered}) .map(data => {
+        return this.http.post<any>(URL+'users/insert_message_job', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,job_offered:job_offered}) .map(data => {
             return data
         });
     }
@@ -759,6 +765,19 @@ export class UserService {
     email_referred_user(data: any){
         return this.http.post<any>(URL+'users/refered_user_email', {info : data}) .map(ref_code => {
             return ref_code
+        });
+    }
+    
+    set_disable_status(user_id: string, status: any) 
+    {
+        return this.http.post<any>(URL+'users/set_disable_status', {user_id:user_id,status:status})
+        .map(data => {
+            if (data){
+                return data;
+            }
+            else{
+                return data.msg;
+            }
         });
     }
 }

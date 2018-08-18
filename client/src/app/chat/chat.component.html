@@ -174,11 +174,11 @@
 														<p class="name">{{ person.first_name }} {{ person.last_name }}</p>
 													</ng-container>
 													<ng-template #no_is_company_reply_show>
-														<p class="name">{{ person.first_name }}</p>
+														<p class="name">{{ person.first_name.charAt(0) }}{{ person.last_name.charAt(0) }}</p>
 													</ng-template>
 												</ng-container>
 												<ng-template #no_is_company_reply>
-													<p class="name">{{ person.first_name }}</p>
+													<p class="name">{{ person.first_name.charAt(0) }}{{ person.last_name.charAt(0) }}</p>
 												</ng-template>
 												<span class="badge" *ngIf="unread_msgs_info[i].number_of_unread_msgs">
 													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
@@ -210,11 +210,11 @@
 									<ng-container *ngIf="currentUser.type == 'company';else cand">
 										<li>Candidate Name : {{candidate}}</li>
 										<ng-container *ngIf="job_desc;else no_job_desc">
-											<li>Availablity : {{job_desc.date_of_joining}}</li>
+											<li>Job Type : {{job_desc.job_type}}</li>
 											<li>Job Title : {{job_desc.job_title}}</li>
 										</ng-container>
 										<ng-template #no_job_desc>
-											<li>Availablity : N/A</li>
+											<li>Job Type : N/A</li>
 											<li>Job Title : N/A</li>
 										</ng-template>
 									</ng-container>
@@ -240,9 +240,9 @@
 														{{msg.job_title}}
 														<br/>
 													</span>
-													<span *ngIf="msg.salary !== ''">
+													<span *ngIf="msg.salary">
 														Salary:
-														{{msg.salary}}
+														{{msg.salary}} {{msg.salary_currency}}
 														<br/>
 													</span>
 													<span *ngIf="msg.job_type !== ''">
@@ -252,27 +252,22 @@
 													</span>
 													<span *ngIf="msg.msg_tag == 'job_offered'">
 														Joining Date:
-														{{msg.date_of_joining}}
+														{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
 														<br/>
 													</span>
-													<span *ngIf="msg.job_title !== ''">
-														Description:
-														{{msg.message}}
-														<br/>
-													</span>
-													<span *ngIf="msg.msg_tag == 'interview_offer'">
-														Interview Date:
-														{{msg.date_of_joining}}
-														<br/>
-													</span>
-													<span *ngIf="msg.interview_time">
-														Interview Time:
-														{{msg.interview_time}}
+													<span *ngIf="msg.interview_date_time">
+														Interview Date & Time:
+														{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 														<br/>
 													</span>
 													<span *ngIf="msg.interview_location">
 														Interview Location:
 														{{msg.interview_location}}
+														<br/>
+													</span>
+													<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
+														Description:
+														{{msg.description}}
 														<br/>
 													</span>
 													<span *ngIf="msg.job_title == ''">
@@ -282,7 +277,7 @@
 												</p>
 											</li>
 											<div class="chat_user">
-												{{msg.date_created}}
+												{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
 											</div>
 										</ng-container>
 										<ng-template #second>
@@ -295,9 +290,9 @@
 														{{msg.job_title}}
 														<br/>
 													</span>
-													<span *ngIf="msg.salary !== ''">
+													<span *ngIf="msg.salary">
 														Salary:
-														{{msg.salary}}
+														{{msg.salary}} {{msg.salary_currency}}
 														<br/>
 													</span>
 													<span *ngIf="msg.job_type !== ''">
@@ -307,27 +302,22 @@
 													</span>
 													<span *ngIf="msg.msg_tag == 'job_offered'">
 														Joining Date:
-														{{msg.date_of_joining}}
+														{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
 														<br/>
 													</span>
-													<span *ngIf="msg.job_title !== ''">
-														Description:
-														{{msg.message}}
-														<br/>
-													</span>
-													<span *ngIf="msg.msg_tag == 'interview_offer'">
-														Interview Date:
-														{{msg.date_of_joining}}
-														<br/>
-													</span>
-													<span *ngIf="msg.interview_time">
-														Interview Time:
-														{{msg.interview_time}}
+													<span *ngIf="msg.interview_date_time">
+														Interview Date & Time:
+														{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 														<br/>
 													</span>
 													<span *ngIf="msg.interview_location">
 														Interview Location:
 														{{msg.interview_location}}
+														<br/>
+													</span>
+													<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
+														Description:
+														{{msg.description}}
 														<br/>
 													</span>
 													<span *ngIf="msg.job_title == ''">
@@ -337,7 +327,7 @@
 												</p>
 											</li>
 											<div class="chat_company">
-												{{msg.date_created}}
+												{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
 											</div>
 										</ng-template>
 									</div>
@@ -576,10 +566,14 @@
 					<b>Job Type:</b><br>
 					<span>{{new_msgss[0].job_type}}</span>
 				</p>
+				<p>
+					<b>Salary:</b><br>
+					<span>{{new_msgss[0].salary}} {{new_msgss[0].salary_currency}}</span>
+				</p>
 				<div>
 					<b>Job Description:</b><br>
 					<p class="job_decs">
-						{{new_msgss[0].message}}
+						{{new_msgss[0].description}}
 					</p>
 				</div>
 			</div>
