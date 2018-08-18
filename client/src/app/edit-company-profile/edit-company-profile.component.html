@@ -2,20 +2,11 @@
 
 <section class="wizard_page">
 	<div class="container">
-		<div class="row">
+		<div class="row profile_group">
 			
-			<div class = "col-md-3 hidden-sm hidden-xs">
-				<div class = "wizard-form mr-top-form side_bar fixed_pos" id = "side_bar">
-					<ul>
-						<li> <a href = "/edit_company_profile#information">Company Information</a> </li>
-						<li> <a href = "/edit_company_profile#about_you">About the Company</a> </li>
-						
-						<!-- <li> <a href = "/edit_profile#">Web Preferences</a> </li>-->
-					</ul>
-				</div>
-			</div>
+			
 			 <form  (submit)="company_profile(profileForm)" #profileForm = ngForm>
-			<div class="col-md-9">
+			<div class="col-md-12">
 			
 			<!--personal information form-->
 				<div class = "wizard-form mr-top-form" id = "information">

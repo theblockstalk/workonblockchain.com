@@ -1,9 +1,10 @@
-import { Component, OnInit,ViewChild ,ElementRef,AfterViewInit } from '@angular/core';
+import { Component, OnInit,ViewChild ,ElementRef } from '@angular/core';
 import {UserService} from '../user.service';
 import {NgForm} from '@angular/forms';
 import { Select2OptionData } from 'ng2-select2';
 import {User} from '../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
+import 'select2';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './company-search.component.html',
   styleUrls: ['./company-search.component.css']
 })
-export class CompanySearchComponent implements OnInit,AfterViewInit {
+export class CompanySearchComponent implements OnInit {
    currentUser: User;
   log;info=[];roleChange;options2;length;page;searchWord;
     credentials: any = {};job_title;
@@ -27,11 +28,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
     imgPath;
 
-    display_name;
-    interview_location = '';
-    interview_time = '';
-    select_value='';selecteddd='';
-    
+	display_name;
+	interview_location = '';
+	interview_time = '';
 
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
     
@@ -110,7 +109,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     
   currency=
   [
-      "? GBP" ,"? EUR" , "$ USD"
+      "£ GBP" ,"€ EUR" , "$ USD"
   ]
     
   month= 
@@ -120,70 +119,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   
   job_type = ["Part Time", "Full Time"];
 
-   ngAfterViewInit(): void 
-     {
-       /*this.rolesData = 
-       [
-            {id:'Backend Developer', text:'Backend Developer'},
-            {id:'Frontend Developer', text:'Frontend Developer'},
-            {id:'UI Developer', text:'UI Developer'},
-            {id:'UX Designer', text:'UX Designer'},
-            {id:'Fullstack Developer', text:'Fullstack Developer'},
-            {id:'Blockchain Developer', text:'Blockchain Developer'},
-            {id:'Smart Contract Developer', text:'Smart Contract Developer'},
-            {id:'Architect', text:'Architect'},
-            {id:'DevOps', text:'DevOps'},
-            {id:'Software Tester', text:'Software Tester'},
-            {id:'CTO', text:'CTO'},
-            {id:'Technical Lead', text:'Technical Lead'},
-            {id:'Product Manager', text:'Product Manager'},
-            {id:'Intern Developer', text:'Intern Developer'},
-            {id:'Researcher ', text:'Researcher '},
-      ];
-      
-    this.blockchainData =
-    [
-            {id:'Bitcoin', text:'Bitcoin'},
-            {id:'Ethereum', text:'Ethereum'},
-            {id:'Ripple', text:'Ripple'},
-            {id:'Stellar', text:'Stellar'},
-            {id:'Hyperledger Fabric', text:'Hyperledger Fabric'},
-            {id:'Hyperledger Sawtooth', text:'Hyperledger Sawtooth'},
-            {id:'Quorum', text:'Quorum'},
-            {id:'Corda', text:'Corda'},
-            {id:'EOS', text:'EOS'},
-            {id:'NEO', text:'NEO'},
-            {id:'Waves', text:'Waves'},
-            {id:'Steem', text:'Steem'},
-            {id:'Lisk', text:'Lisk'},
-            {id:'Quantum', text:'Quantum'},
-            {id:'Tezos', text:'Tezos'},
-            {id:'Cardano', text:'Cardano'},
-            {id:'Litecoin', text:'Litecoin'},
-            {id:'Monero', text:'Monero'},
-            {id:'ZCash', text:'ZCash'},
-            {id:'IOTA', text:'IOTA'},
-            {id:'NEM', text:'NEM'},
-            {id:'NXT', text:'NXT'},
-            {id:'Dash', text:'Dash'},
-            {id:'Doge', text:'Doge'},
-    ]
-
-    this.options = {
-      multiple: true,
-      placeholder: 'Position',
-      allowClear :true
-    }
-      
-      this.options2 = {
-      multiple: true,
-      placeholder: 'Blockchain experience',
-      allowClear :true
-    } */
-       
-       }
+ 
   ngOnInit() 
   {
+    $(".test").select2({
+        placeholder: "Skills"//placeholder
+    });
       this.length='';
       this.log='';
       this.selectedObj=-1;
@@ -192,7 +133,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.availabilityChange=-1;
       this.info = [];
       this.msg='';
-      this.credentials.currency = -1;
+	  this.credentials.currency = -1;
+      var data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, 
+
+    text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
        this.rolesData = 
        [
             {id:'Backend Developer', text:'Backend Developer'},
@@ -243,17 +187,29 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.options = {
       multiple: true,
       placeholder: 'Position',
-      allowClear :true
+      allowClear :true,
+     
     }
+      
+     
       
       this.options2 = {
       multiple: true,
       placeholder: 'Blockchain experience',
       allowClear :true
     } 
-    
+ var data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, 
+
+    text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
+        
+        $(".reset_roles").select2({
+                placeholder: "Position",
+                allowClear: true,
+                data: data,
+                multiple : true
+        });
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(this.currentUser);
+      //console.log(this.currentUser);
      
       if(!this.currentUser)
       {
@@ -279,9 +235,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   else
                   {
                         this.is_approved = data._creator.is_approved;      
-                        this.display_name = data.company_name;
+				        this.display_name = data.company_name;
 
-                        //console.log(this.is_approved);
+                        ////console.log(this.is_approved);
                         if(this.is_approved === 0 )
                         {
                             this.msg = "You can access this feature when your profile has been approved"; 
@@ -309,9 +265,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                             this.no_of_employees=data.no_of_employees;
                             if(data.company_logo != null )
                             {                        
-                                ////console.log(data.image);                     
+                                //////console.log(data.image);                     
                                 this.imgPath =  data.company_logo;
-                                //console.log(this.imgPath);
+                                ////console.log(this.imgPath);
                             }
                    
                             this.getVerrifiedCandidate();          
@@ -334,33 +290,35 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
            this.router.navigate(['/not_found']);
       }
   }
+selectedValue;
+  unselect(): void {
+   this.selectedValue = undefined;
+}
+  myFunction() {
+      console.log("my function");
+  document.getElementById("demo").innerHTML = "Hello World";
+}
 
   rolesItems;
-
   positionchanged(data) 
   {
-      console.log( data);
-      if(this.select_value  !== data.value)
-      {
-        this.select_value = data.value;             
-        this.searchdata('roles' , this.select_value); 
-        }  
-       
+      console.log(data);
+      ////console.log("position");
+      this.rolesItems = data.value;    
+      this.searchdata('roles' , this.rolesItems);  
   }
 
   blockchainItems;
   blockchainchanged(data)
   {
-    //console.log("blockchain"); 
-      if(this.selecteddd  !== data.value)
-      {
-        this.selecteddd = data.value; 
-       this.searchdata('blockchain' , this.selecteddd);
-      }
+      console.log(data);
+    ////console.log("blockchain"); 
+      this.blockchainItems = data.value; 
+       this.searchdata('blockchain' , this.blockchainItems);
   
    }
     
-    filter_array(arr) 
+     filter_array(arr) 
     {
         var hashTable = {};
 
@@ -375,26 +333,29 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     selectedObj;countryChange;positionChange;availabilityChange;blockchainChange;salary;currencyChange;
     search_result=[];information;
     searchdata(key , value)
-    {   
+    {
         this.length =0; 
         this.info=[];
-       
-        if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1 
+       console.log(value);
+        if(!this.searchWord && !this.select_value && !this.selecteddd &&!this.rolesItems && !this.salary && !this.blockchainItems && this.selectedObj === -1 &&  this.countryChange === -1 
         &&  this.currencyChange === -1 &&  this.availabilityChange ===-1 )
         {             
-            
+            ////console.log("iffffffff"); 
              this.getVerrifiedCandidate();
         }
                
         else
         { 
-          this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
+
+            ////console.log("else");
+            this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.rolesItems ,this.blockchainItems, this.availabilityChange, this.salary , this.currencyChange )
             .subscribe(
                 data => 
                 {
+                    //console.log(data);
                     if(data.error)
                     {
-                       // //console.log(this.info);
+                       // ////console.log(this.info);
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -406,14 +367,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         
                          this.information = this. filter_array(data);
                         //this.length='';
-                    //console.log(this.information);
-                         ////console.log(this.log);
+                    ////console.log(this.information);
+                         //////console.log(this.log);
                         
                         //this.info = data; 
                         for(let res of this.information)
                         {
                           
-                               //console.log(res._creator._id);
+                               ////console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
                                  data => {
@@ -421,7 +382,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                     if(data['datas'][1]){
                                     if(data['datas'][1].is_company_reply==1)
                                     {
-                                        //console.log('accept')
+                                        ////console.log('accept')
                                         res.company_reply = 1;
                                     }
                                     else
@@ -429,12 +390,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                         res.company_reply = 0;
                             
                                     }
-                                        //console.log(res.company_reply);
+                                        ////console.log(res.company_reply);
                                 }
                                 },
                                 error => {
-                                    //console.log('error');
-                                    //console.log(error);
+                                    ////console.log('error');
+                                    ////console.log(error);
                     
                                });
                                 //this.search_result.push(res);
@@ -442,7 +403,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                 this.info.push(res);
                             
                             
-                            ////console.log(this.search_result.length);
+                            //////console.log(this.search_result.length);
                         }
                         //this.length = data.length;
                         if(this.length> 0 )
@@ -456,8 +417,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         }
                        // this.page = data.length; 
                         this.page =this.length;   
-                       // this.select_value='';
-                        //console.log(this.length);                   
+                        ////console.log(this.length);                   
                     }
                             
                 },
@@ -470,23 +430,61 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         
         
     }
-    
-actionType;
-
-
+    select_value;selecteddd;
+selectedDevice;
+    onChange(newValue) {
+    console.log(newValue);
+    this.selectedDevice = newValue;
+    }
     reset()
     {
-  
-   // this.positionchanged([]);
+           this.selectedDevice='';
+       
+       /*if(this.blockchainItems || this.rolesItems)
+        {
+            window.location.href = '/candidate-search';
+            
+        }*/
+
+       /* $('.select2-container').val('').trigger('change');       
+        $('.select2-container').select2({
+            allowClear: true,          
+            multiple : true
+        });
+       
+        */
+        //$('select2element').val(null).trigger("change")
+
+        //$('.blockchain_test').val('').trigger('change');
+       $('.progControlSelect3').val('').trigger('change');
+       
+       
+        for ( var key in this.rolesData)
+        {
+            var newOption = new Option(this.rolesData[key].text, this.rolesData[key].id, false, false);
+            $('.reset_roles').append(newOption).trigger('change');
+        }
+        
+        
+        $('.blockchain_select').val('').trigger('change');
+        $(".blockchain_select").select2({
+                placeholder: "Blockchain experience",
+                allowClear: true,
+                data: this.blockchainData,
+                multiple : true
+        });
+
+        
         this.selectedObj=-1;
         this.countryChange=-1;
         this.rolesItems='';
         this.salary='';
         this.currencyChange= -1;
         this.availabilityChange=-1;
-        this.blockchainItems='';       
-        this.select_value ='';
-        this.selecteddd = '';
+        this.blockchainItems='';
+        
+        this.select_value =[];
+        this.selecteddd = [];
         this.info = [];
         this.searchWord='';
        
@@ -504,8 +502,8 @@ actionType;
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
-                  ////console.log(data);
+                    ////console.log(data);
+                  //////console.log(data);
                    
                     if(data.error)
                     {
@@ -519,12 +517,12 @@ actionType;
                     {
                         this.info=[];
                         //this.info = data;
-                        ////console.log(this.info);
-                        console.log(data);
+                        //////console.log(this.info);
+                      
                         for(let res of data)
                         {
                            
-                                //console.log(res._creator._id);
+                                ////console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
                                  data => {
@@ -532,7 +530,7 @@ actionType;
                                     if(data['datas'][1]){
                                     if(data['datas'][1].is_company_reply==1)
                                     {
-                                        //console.log('accept')
+                                        ////console.log('accept')
                                         res.company_reply = 1;
                                     }
                                     else
@@ -540,27 +538,27 @@ actionType;
                                         res.company_reply = 0;
                             
                                     }
-                                        //console.log(res.company_reply);
+                                        ////console.log(res.company_reply);
                                 }
                                 },
                                 error => {
-                                    //console.log('error');
-                                    //console.log(error);
+                                    ////console.log('error');
+                                    ////console.log(error);
                     
                                });
                                 
                                 this.length++;
                                 this.info.push(res);
                             
-                            ////console.log(this.verify_candidate.length);
+                            //////console.log(this.verify_candidate.length);
                         }
                         
                          if(this.length> 0 )
                          {
                              this.page =this.length;
                              this.log='';
-                             //console.log(this.page);
-                             //console.log(this.length);
+                             ////console.log(this.page);
+                             ////console.log(this.length);
                          }
                          else
                          {
@@ -579,7 +577,7 @@ actionType;
     informations;
    /* onSearchWord(f: NgForm)
     {
-        ////console.log(f.value.word);
+        //////console.log(f.value.word);
         this.length=0;
         this.info=[];
         this.informations='';
@@ -587,7 +585,7 @@ actionType;
             .subscribe(
                 data => 
                 {
-                    ////console.log(data);
+                    //////console.log(data);
                     
                      if(data.error)
                     {
@@ -602,15 +600,15 @@ actionType;
                          this.info=[];
                          this.length='';
                          this.informations = this. filter_array(data);
-                         //console.log(this.informations);
-                         //console.log(this.info);
+                         ////console.log(this.informations);
+                         ////console.log(this.info);
                          for(let res of this.informations)
                         {
                           if(res.first_name && res.roles && res.why_work && res.programming_languages && res.availability_day 
                             && res.nationality && res.last_name  && res.contact_number && res.education_work_history && res.work_history 
                              && res.interest_area  && res.country )
                             {
-                               //console.log(res._creator._id);
+                               ////console.log(res._creator._id);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
                                  data => {
@@ -618,7 +616,7 @@ actionType;
                                     if(data['datas'][1]){
                                     if(data['datas'][1].is_company_reply==1)
                                     {
-                                        //console.log('accept')
+                                        ////console.log('accept')
                                         res.company_reply = 1;
                                     }
                                     else
@@ -626,12 +624,12 @@ actionType;
                                         res.company_reply = 0;
                             
                                     }
-                                        //console.log(res.company_reply);
+                                        ////console.log(res.company_reply);
                                 }
                                 },
                                 error => {
-                                    //console.log('error');
-                                    //console.log(error);
+                                    ////console.log('error');
+                                    ////console.log(error);
                     
                                });
                                 //this.search_result.push(res);
@@ -639,7 +637,7 @@ actionType;
                                 this.info.push(res);
                             }
                             
-                            ////console.log(this.search_result.length);
+                            //////console.log(this.search_result.length);
                         }
                         //this.length = data.length;
                         if(this.length> 0 )
@@ -653,7 +651,7 @@ actionType;
                         }
                        // this.page = data.length; 
                         this.page =this.length;   
-                        //console.log(this.length);                   
+                        ////console.log(this.length);                   
                     }
                             
                 },
@@ -662,55 +660,55 @@ actionType;
                   
                 });
     }*/
-    user_id;user_name;
-    onSubmit(val) {
-        //console.log(val)
-        this.user_id =val;
-        this.user_name = val;
-    }
+	user_id;user_name;
+	onSubmit(val) {
+		////console.log(val)
+		this.user_id =val;
+		this.user_name = val;
+	}
 
-    date_of_joining;
-    msg_tag;
-    is_company_reply = 0;
-    msg_body;
-    job_offer_log;
+	date_of_joining;
+	msg_tag;
+	is_company_reply = 0;
+	msg_body;
+	job_offer_log;
     send_job_offer(msgForm : NgForm){
-        //console.log("Used ID: " + this.user_id.id);
-        //console.log("Name: " + this.user_id.name);
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+		////console.log("Used ID: " + this.user_id.id);
+        ////console.log("Name: " + this.user_id.name);
+		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
-            .subscribe(
-                data => {
-                    //console.log(data['datas']);
-                    if(data['datas'].length>0){
-                        this.job_offer_log = 'Message already sent';
-                    }
-                    else{
-                        this.date_of_joining = '10-07-2018';
-                        this.msg_tag = 'job_offer';
-                        this.is_company_reply = 0;
-                        this.msg_body = this.credentials.job_desc;
-                        this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
-                            .subscribe(
-                                data => {
-                                    //console.log(data);
-                                    this.job_offer_log = 'Message successfully sent';
-                                },
-                                error => {
-                                    //console.log('error');
-                                    //console.log(error);
-                                    //this.log = error;
-                                }
-                            );
-                    }
-                },
-                error => {
-                    //console.log('error');
-                    //console.log(error);
-                    //this.log = error;
-                }
-            );
+			.subscribe(
+				data => {
+					////console.log(data['datas']);
+					if(data['datas'].length>0){
+						this.job_offer_log = 'Message already sent';
+					}
+					else{
+						this.date_of_joining = '10-07-2018';
+						this.msg_tag = 'job_offer';
+						this.is_company_reply = 0;
+						this.msg_body = this.credentials.job_desc;
+						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+							.subscribe(
+								data => {
+									////console.log(data);
+									this.job_offer_log = 'Message successfully sent';
+								},
+								error => {
+									////console.log('error');
+									////console.log(error);
+									//this.log = error;
+								}
+							);
+					}
+				},
+				error => {
+					////console.log('error');
+					////console.log(error);
+					//this.log = error;
+				}
+			);
         }
         else{
             this.job_offer_log = 'Please enter all info';

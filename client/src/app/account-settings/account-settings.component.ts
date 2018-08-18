@@ -38,13 +38,14 @@ export class AccountSettingsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
+                    console.log(data);
 					if(data._creator.is_unread_msgs_to_send){
 					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
 				    }
-					if(data.disable_account || data.marketing_emails)
+					if(data._creator.disable_account || data.marketing_emails)
                     {
                         this.info.marketing = data.marketing_emails;
-                        this.info.disable_account= data.disable_account;
+                        this.info.disable_account= data._creator.disable_account;
                     }
                 });
      }
@@ -58,10 +59,10 @@ export class AccountSettingsComponent implements OnInit {
 				   if(data._creator.is_unread_msgs_to_send){
 					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
 				   }
-				   if(data.disable_account || data.marketing_emails)
+				   if(data._creator.disable_account || data.marketing_emails)
                     {
                         this.info.marketing = data.marketing_emails;
-                        this.info.disable_account= data.disable_account;
+                        this.info.disable_account= data._creator.disable_account;
                     }
                   
                 },
@@ -83,19 +84,6 @@ export class AccountSettingsComponent implements OnInit {
   account_setting()
   {
       this.inform='';
-     /* if(this.info.disable_account==true)
-      {
-          this.disable_msg = "disable";
-          this.enable_msg='';
-          
-      }
-      if(this.info.disable_account==false)
-      {
-          this.enable_msg ="enable";
-          this.disable_msg ='';
-          
-      }*/
-
       this.message = '';
       if(this.currentUser && this.currentUser.type=='candidate')
       {
@@ -111,12 +99,7 @@ export class AccountSettingsComponent implements OnInit {
                else
                {
                     this.inform = data;
-					if(this.info.disable_account){
-						this.message = 'Your profile is currently disabled';
-					}
-					else{
-						this.message = 'Your profile is currently enabled';
-					}
+					
 					if(this.info.marketing){
 						this.message = 'Your account settings for marketing emails is enabled';
 					}
@@ -144,12 +127,7 @@ export class AccountSettingsComponent implements OnInit {
                else
                {
                     this.inform=data;
-					if(this.info.disable_account){
-						this.message = 'Your profile is currently disabled';
-					}
-					else{
-						this.message = 'Your profile is currently enabled';
-					}
+					
 					if(this.info.marketing){
 						this.message = 'Your account settings for marketing emails is enabled';
 					}
@@ -185,6 +163,12 @@ export class AccountSettingsComponent implements OnInit {
                 else
                 {
                     this.inform=data;
+                    if(this.info.disable_account){
+                        this.message = 'Your profile is currently enabled';
+                    }
+                    else{
+                        this.message = 'Your profile is currently disabled';
+                    }
                     //console.log(data);
                 }
             },

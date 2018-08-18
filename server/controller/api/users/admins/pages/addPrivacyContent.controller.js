@@ -11,7 +11,6 @@ const Pages = require('../../../../../model/pages_content');
 var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../../model/employer_profile');
-var md5 = require('md5');
 const chat = require('../../../../../model/chat');
 
 const forgotPasswordEmail = require('../../../../services/email/emails/forgotPassword');

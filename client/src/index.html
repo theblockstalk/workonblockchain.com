@@ -54,7 +54,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="./assets/js/custom.js"></script>
 <script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
-
+<script src="http://cdn.kendostatic.com/2013.1.514/js/kendo.all.min.js"></script>
 <script> CKEDITOR.config.forcePasteAsPlainText = true; </script>
 <!-- Load Facebook SDK for JavaScript -->
  <div id="fb-root"></div>
@@ -173,6 +173,14 @@ $("#mobile-number").intlTelInput({
 //===== WYSIWYG editor =====//
 
 </script>
+
+<script>
+$("#required").kendoMultiSelect()
+$("form").kendoValidator();
+function resetForm(){
+  console.log("reset");
+  document.getElementById("myForm").reset();
+}</script>
 
 
 </body>

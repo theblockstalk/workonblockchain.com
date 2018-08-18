@@ -16,7 +16,7 @@
       </div>
       <div class="wizard-form">
 
-        <form class = "login_form custom_form" (submit)="experience_submit(expForm)" #expForm = ngForm novalidate>
+        <form class = "cand_form login_form custom_form" (submit)="experience_submit(expForm)" #expForm = ngForm novalidate>
        
           <div class="alert alert-danger error-alert" *ngIf="message">{{message}}</div>
           
@@ -83,7 +83,7 @@
 
           <div *ngIf="language?.length > 0">
          <div class="form-group col-md-12">
-           <p class = "exp_p">Number of years</p>
+           <p class = "exp_p">Years of experience</p>
           <div class = "row" *ngFor="let lang_value of language; let i = index ">
             
             <p class="rd_label label-p">{{lang_value.value}}</p>
