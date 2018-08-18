@@ -1,8 +1,9 @@
 const jwtToken = require('../services/jwtToken');
 const mongooseUsers = require('../../model/users');
+const logger = require('../services/logger');
 
 function getUserFromToken(req, cb) {
-    console.log(JSON.stringify(req, null, 2));
+    logger.debug('req', {req: req});
     let token = req.cookies.aCookie // TODO: not sure if this is right
 
     let payload = jwtToken.verifyJwtToken(token);
