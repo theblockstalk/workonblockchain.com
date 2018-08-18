@@ -18,7 +18,7 @@ export class ExperienceComponent implements OnInit
 {
     EducationForm: FormGroup;
     ExperienceForm: FormGroup;
-  	language=[]; roles=[];yearselected;shown; work_experience_year;
+    language=[]; roles=[];yearselected;shown; work_experience_year;
     today = Date.now();
     currentdate;currentyear;currentUser: User;language_checked;language_exp=[];expYear_db=[];expYearRole_db=[];
     value;referringData;expYear=[];expYearRole=[];start_month;start_year;salary;db_lang;
@@ -28,7 +28,7 @@ export class ExperienceComponent implements OnInit
 
     inputArray=[];
 
-  	constructor(private _fb: FormBuilder,private datePipe: DatePipe,private route: ActivatedRoute, private http: HttpClient,
+    constructor(private _fb: FormBuilder,private datePipe: DatePipe,private route: ActivatedRoute, private http: HttpClient,
         private router: Router,private dataservice: DataService,
         private authenticationService: UserService) { }
       
@@ -51,7 +51,7 @@ export class ExperienceComponent implements OnInit
 
     message;
     current_work_check=[];
-  	ngOnInit() 
+    ngOnInit() 
     {
             this.salary='';
             this.current_currency =-1;
@@ -211,7 +211,7 @@ export class ExperienceComponent implements OnInit
            this.router.navigate(['/not_found']);
        }
 
-  	}
+    }
 
     currency=
     [
@@ -223,9 +223,9 @@ export class ExperienceComponent implements OnInit
         {name:'I currently work there', value:'current', checked:false}
     ]
 
-  	language_opt=
-  	[
-    	{name:'Java', value:'Java', checked:false},{name:'C', value:'C', checked:false},
+    language_opt=
+    [
+      {name:'Java', value:'Java', checked:false},{name:'C', value:'C', checked:false},
       {name:'C++', value:'C++', checked:false},{name:'C#', value:'C#', checked:false},
       {name:'Python', value:'Python', checked:false},{name:'Visual Basic .NET', value:'Visual Basic .NET', checked:false},
       {name:'PHP', value:'PHP', checked:false},{name:'JavaScript', value:'JavaScript', checked:false},
@@ -240,39 +240,39 @@ export class ExperienceComponent implements OnInit
       {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
       {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
 
-  	]
+    ]
 
-  	exp_year=
-  	[
-    	{name:'0-1', value:'0-1', checked:false},
-    	{name:'1-2', value:'1-2', checked:false},
-    	{name:'2-4', value:'2-4', checked:false},
-    	{name:'4-6', value:'4-6', checked:false},
-    	{name:'6+', value:'6+', checked:false}
-  	]
+    exp_year=
+    [
+      {name:'0-1', value:'0-1', checked:false},
+      {name:'1-2', value:'1-2', checked:false},
+      {name:'2-4', value:'2-4', checked:false},
+      {name:'4-6', value:'4-6', checked:false},
+      {name:'6+', value:'6+', checked:false}
+    ]
 
-  	roles_opt =  
-  	[
-    	{name:'Backend Developer', value:'Backend Developer', checked:false},
-    	{name:'BI Engineer', value:'BI Engineer', checked:false},
-    	{name:'Big Data Engineer', value:'Big Data Engineer', checked:false},
-    	{name:'CTO', value:'CTO', checked:false},
-    	{name:'Lead Developer', value:'Lead Developer', checked:false},
-    	{name:'Database Administrator', value:'Database Administrator', checked:false},
-    	{name:'Security Engineer', value:'Security Engineer', checked:false},
-    	{name:'Frontend Developer', value:'Frontend Developer', checked:false},
-  	]
+    roles_opt =  
+    [
+      {name:'Backend Developer', value:'Backend Developer', checked:false},
+      {name:'BI Engineer', value:'BI Engineer', checked:false},
+      {name:'Big Data Engineer', value:'Big Data Engineer', checked:false},
+      {name:'CTO', value:'CTO', checked:false},
+      {name:'Lead Developer', value:'Lead Developer', checked:false},
+      {name:'Database Administrator', value:'Database Administrator', checked:false},
+      {name:'Security Engineer', value:'Security Engineer', checked:false},
+      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
+    ]
 
-  	year=
-  	[
-  		"2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
-  	]
+    year=
+    [
+      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
+    ]
     month= ["January","Februray","March","April","May","June","July","August","September","October","November","December"]
 
-  	onExpOptions(obj)
-  	{         
+    onExpOptions(obj)
+    {         
         
-    	let updateItem = this.language.find(this.findIndexToUpdate, obj.value);
+      let updateItem = this.language.find(this.findIndexToUpdate, obj.value);
       let index = this.language.indexOf(updateItem);
       if(index > -1)
       {
@@ -297,7 +297,7 @@ export class ExperienceComponent implements OnInit
      // //console.log(this.language);
             ////console.log(this.expYear);
     
-  	}
+    }
 
     
     findIndexToUpdate(obj) 
@@ -305,9 +305,9 @@ export class ExperienceComponent implements OnInit
         return obj.value === this;
     }
 
-  	/*onRolesOptions(obj)
-  	{
-    	
+    /*onRolesOptions(obj)
+    {
+      
       let updateItem = this.roles.find(this.findIndexToUpdate, obj.value);
       let index = this.roles.indexOf(updateItem);
       if(index > -1)
@@ -322,11 +322,11 @@ export class ExperienceComponent implements OnInit
 
       ////console.log(this.roles);
     
-  	}
+    }
 */
     onJobSelected(event)
-	{
-    	this.yearselected= event.target.value;
+  {
+      this.yearselected= event.target.value;
       //this.position = event.target.value;
     }
 

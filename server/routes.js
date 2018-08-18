@@ -120,15 +120,13 @@ router.post('/users/insert_message', chatInsertMessage);
 router.post('/users/get_candidate', chatGetCandidate);
 router.post('/users/get_messages', chatGetMessages);
 router.post('/users/get_user_messages', chatGetUserMsgs);
-router.get('/users/all_chat', chatGetChat);
 router.post('/users/upload_chat_file/:_id', multer.single('photo'), chatUploadFile);
 router.post('/users/insert_chat_file', chatInsertFile);
 router.post('/users/insert_message_job', chatInsertMessageJob);
 router.post('/users/update_job_message', chatUpdateJobMessage);
-    router.post('/users/get_unread_msgs_of_user', chatGetUnreadUser);
+router.post('/users/get_unread_msgs_of_user', chatGetUnreadUser);
 
 // Admin
-router.put('/users/admin_role', adminRoll);
 router.put('/users/approve/:_id'  , adminApproveUser);
 router.post('/users/search_by_name' , adminCandidateSearch);
 router.post('/users/admin_candidate_filter' , adminCandidateFilter);

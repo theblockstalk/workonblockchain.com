@@ -23,6 +23,7 @@ export class EditCandidateProfileComponent implements OnInit {
   selectedValue = [];
   selectedcountry = [];
   expYear=[];jobselected=[]; salary;
+  expected_salaryyy;
   availability_day;base_currency;
   experimented_platform = [];
   commercially_worked = [];
@@ -181,8 +182,9 @@ export class EditCandidateProfileComponent implements OnInit {
                       }
                       
                     }
-          
-                    this.salary = data.expected_salary;
+         
+                    this.expected_salaryyy = data.expected_salary;
+                   
                     this.availability_day = data.availability_day;
                     this.base_currency = data.expected_salary_currency;
                 }
