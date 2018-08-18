@@ -174,11 +174,11 @@
 														<p class="name">{{ person.first_name }} {{ person.last_name }}</p>
 													</ng-container>
 													<ng-template #no_is_company_reply_show>
-														<p class="name">{{ person.first_name }}</p>
+														<p class="name">{{ person.first_name.charAt(0) }}{{ person.last_name.charAt(0) }}</p>
 													</ng-template>
 												</ng-container>
 												<ng-template #no_is_company_reply>
-													<p class="name">{{ person.first_name }}</p>
+													<p class="name">{{ person.first_name.charAt(0) }}{{ person.last_name.charAt(0) }}</p>
 												</ng-template>
 												<span class="badge" *ngIf="unread_msgs_info[i].number_of_unread_msgs">
 													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
@@ -255,11 +255,6 @@
 														{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
 														<br/>
 													</span>
-													<span *ngIf="msg.job_title !== ''">
-														Description:
-														{{msg.message}}
-														<br/>
-													</span>
 													<span *ngIf="msg.interview_date_time">
 														Interview Date & Time:
 														{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
@@ -268,6 +263,11 @@
 													<span *ngIf="msg.interview_location">
 														Interview Location:
 														{{msg.interview_location}}
+														<br/>
+													</span>
+													<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
+														Description:
+														{{msg.description}}
 														<br/>
 													</span>
 													<span *ngIf="msg.job_title == ''">
@@ -305,11 +305,6 @@
 														{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
 														<br/>
 													</span>
-													<span *ngIf="msg.job_title !== ''">
-														Description:
-														{{msg.message}}
-														<br/>
-													</span>
 													<span *ngIf="msg.interview_date_time">
 														Interview Date & Time:
 														{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
@@ -318,6 +313,11 @@
 													<span *ngIf="msg.interview_location">
 														Interview Location:
 														{{msg.interview_location}}
+														<br/>
+													</span>
+													<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
+														Description:
+														{{msg.description}}
 														<br/>
 													</span>
 													<span *ngIf="msg.job_title == ''">
@@ -566,10 +566,14 @@
 					<b>Job Type:</b><br>
 					<span>{{new_msgss[0].job_type}}</span>
 				</p>
+				<p>
+					<b>Salary:</b><br>
+					<span>{{new_msgss[0].salary}} {{new_msgss[0].salary_currency}}</span>
+				</p>
 				<div>
 					<b>Job Description:</b><br>
 					<p class="job_decs">
-						{{new_msgss[0].message}}
+						{{new_msgss[0].description}}
 					</p>
 				</div>
 			</div>

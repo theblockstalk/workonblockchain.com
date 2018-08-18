@@ -39,6 +39,11 @@ const ChatSchema = new Schema({
 		type:String,
 		required:false
 	},
+	description:
+	{
+		type:String,
+		required:false
+	},
 	job_title:
 	{
 		type:String

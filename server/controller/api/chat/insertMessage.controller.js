@@ -62,6 +62,7 @@ function insert_message_new(data){
         sender_name: data.sender_name,
         receiver_name: data.receiver_name,
         message: data.message,
+		description: data.description,
         job_title: data.job_title,
         salary: data.salary,
 		salary_currency: data.currency,

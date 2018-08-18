@@ -8,7 +8,6 @@ const users = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
-var md5 = require('md5');
 const verify_send_email = require('../auth/verify_send_email');
 const mongoose = require('mongoose');
 
@@ -79,8 +78,7 @@ function create(userParam)
 
         email = userParam.email;
         email = email.split("@");
-        email = md5(email[0]);
-        email = md5(email);
+        email = crypto.createHash('sha256').update(email[0]).digest('base64');
         let refered_id= 0;
         let newUser = new users
         ({

@@ -71,13 +71,13 @@
 							</span>-->
 						</div>
 						
-						<div class="messages">
+						<div class="messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
 							<ul>
 								<div *ngFor="let msg of new_msgss">
 									<ng-container *ngIf="msg.sender_name == display_name;else second">
 										<li class="sent">
 											<p class = "job-description">
-												{{msg.sender_name}}
+												{{msg.sender_name}}:
 												<span *ngIf="msg.job_title !== ''">
 													<br/>
 													Job Title:
@@ -122,13 +122,13 @@
 											</p>
 										</li>
 										<div class="chat_company">
-											{{msg.date_created | date: 'dd/MM/yyyy HH:mm:ss'}}
+											{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
 										</div>
 									</ng-container>
 									<ng-template #second>
 										<li class="replies">
 											<p>
-												{{msg.sender_name}}
+												{{msg.sender_name}}:
 												<span *ngIf="msg.job_title !== ''">
 													<br/>
 													Job Title:
@@ -173,7 +173,7 @@
 											</p>
 										</li>
 										<div class="chat_user">
-											{{msg.date_created | date: 'dd/MM/yyyy HH:mm:ss'}}
+											{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
 										</div>
 									</ng-template>
 								</div>

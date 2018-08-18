@@ -11,7 +11,6 @@ const Pages = require('../../../../model/pages_content');
 var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../model/employer_profile');
-var md5 = require('md5');
 const chat = require('../../../../model/chat');
 
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
@@ -72,8 +71,8 @@ function verify_client_email(email)
 
     function updateData(data)
     {
-    	console.log(email)
-        var hashStr = crypto.createHash('md5').update(email).digest('hex');
+    	console.log(email);
+		var hashStr = crypto.createHash('sha256').update(email).digest('base64');
         // console.log(hashStr);
         // console.log(data._id);
 
