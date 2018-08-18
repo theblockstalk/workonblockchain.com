@@ -24,12 +24,13 @@
 		<div class="row">
 
 			<div class="col-md-3">
+			<form id="myForm" action = "">
 				<div class = "wizard-form mr-top-form filter_bar" id = "side_bar">
 					<ul>
 						<li> 
 							<div class = "form-group">
 
-                				<select class="form-control " [disabled]="msg !== '' ? true : false" [(ngModel)]="selectedObj" (ngModelChange)="searchdata('skill' , $event)">
+                				<select class="form-control " [disabled]="msg !== '' ? true : false" name="skill" [(ngModel)]="selectedObj" (ngModelChange)="searchdata('skill' , $event)" id="required" name="required">
 									
 									<option value="-1" disabled selected hidden>Skills</option>
                   					<option class='option' *ngFor='let option of language_opt'  [value]="option.value" >{{option.name}}</option>
@@ -42,7 +43,7 @@
 
 						<li>
 							<div class = "form-group">
-								<select class="form-control " [disabled]="msg !== '' ? true : false" [(ngModel)]="countryChange" (ngModelChange)="searchdata('location' , $event)">
+								<select class="form-control " name="location" [disabled]="msg !== '' ? true : false" [(ngModel)]="countryChange" (ngModelChange)="searchdata('location' , $event)" id="required" name="required">
 									
 									<option value="-1" disabled selected hidden>Desired Location</option>
                   					<option class='option' *ngFor='let option of cities'  [value]="option.value" >{{option.name}}</option>
@@ -70,6 +71,7 @@
 								<input type="text" class="form-control" [(ngModel)]='rolesItems' name="roles" style="display: none;">
 								
 							</div>
+
 						 </li>
 						<li > 
 							<div class = "form-group">
@@ -80,15 +82,15 @@
 
 
 								</select>-->
-								<select2  [data]="blockchainData" [disabled]="msg !== '' ? true : false" [options]="options2" [width]="500" [value]="selecteddd" (valueChanged)="blockchainchanged($event)"></select2>
+								<select2  [data]="blockchainData" [disabled]="msg !== '' ? true : false" [options]="options2" [width]="500" [value]="selecteddd"  (valueChanged)="blockchainchanged($event)" id="required" ></select2>
 								<input type="text" class="form-control" [(ngModel)]='blockchainItems' name="blockchain" style="display: none;">
 							</div>
 						 </li>
 						 
 						<li> 
 							<div class="form-group">
-							    <input type="text" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Expected Salary">
-							    <select [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" (ngModelChange)="searchdata('currency' , $event)">
+							    <input type="text" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Expected Salary">
+							    <select [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="searchdata('currency' , $event)" id="required" name="required">
 								     	<!-- <option [ngValue]="undefined" hidden selected>$ USD</option>-->
 								     	 <option value="-1" disabled selected hidden >$ USD</option>
 								     	 <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
@@ -98,7 +100,7 @@
 						 </li>
 						 <li>
 							<div class = "form-group">
-								<select class="form-control " [disabled]="msg !== '' ? true : false"  [(ngModel)]="availabilityChange" (ngModelChange)="searchdata('avail' , $event)" >
+								<select class="form-control " [disabled]="msg !== '' ? true : false"  [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)" id="required" name="required">
 									 
 									  <option value="-1" disabled selected hidden >Availability</option>
 									  <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
@@ -113,6 +115,8 @@
 					<a  (click)="reset()" id="reset" class = "btn reset-bttn"> Reset</a>
 					
 				</div>
+				</form>
+				
 			</div>
 			<!--end-col-md-3-->
 			<div class="col-md-9" >
@@ -152,7 +156,9 @@
 				      	
 
 				      	<div class = "user-detail">
-					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }"><h2>{{data.first_name}}</h2></a><br/>
+					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply !== 1"><h2>{{data.first_name | slice:0:1}} {{data.last_name | slice:0:1}}</h2></a><br/>
+					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}} {{data.last_name }}</h2></a><br/>
+					      	
 					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>
 					      	
 					     	

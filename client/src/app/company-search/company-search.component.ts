@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild ,ElementRef } from '@angular/core';
+import { Component, OnInit,ViewChild ,ElementRef,AfterViewInit } from '@angular/core';
 import {UserService} from '../user.service';
 import {NgForm} from '@angular/forms';
 import { Select2OptionData } from 'ng2-select2';
@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './company-search.component.html',
   styleUrls: ['./company-search.component.css']
 })
-export class CompanySearchComponent implements OnInit {
+export class CompanySearchComponent implements OnInit,AfterViewInit {
    currentUser: User;
   log;info=[];roleChange;options2;length;page;searchWord;
     credentials: any = {};job_title;
@@ -27,9 +27,11 @@ export class CompanySearchComponent implements OnInit {
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
     imgPath;
 
-	display_name;
-	interview_location = '';
-	interview_time = '';
+    display_name;
+    interview_location = '';
+    interview_time = '';
+    select_value='';selecteddd='';
+    
 
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
     
@@ -108,7 +110,7 @@ export class CompanySearchComponent implements OnInit {
     
   currency=
   [
-      "£ GBP" ,"€ EUR" , "$ USD"
+      "? GBP" ,"? EUR" , "$ USD"
   ]
     
   month= 
@@ -118,7 +120,68 @@ export class CompanySearchComponent implements OnInit {
   
   job_type = ["Part Time", "Full Time"];
 
+   ngAfterViewInit(): void 
+     {
+       /*this.rolesData = 
+       [
+            {id:'Backend Developer', text:'Backend Developer'},
+            {id:'Frontend Developer', text:'Frontend Developer'},
+            {id:'UI Developer', text:'UI Developer'},
+            {id:'UX Designer', text:'UX Designer'},
+            {id:'Fullstack Developer', text:'Fullstack Developer'},
+            {id:'Blockchain Developer', text:'Blockchain Developer'},
+            {id:'Smart Contract Developer', text:'Smart Contract Developer'},
+            {id:'Architect', text:'Architect'},
+            {id:'DevOps', text:'DevOps'},
+            {id:'Software Tester', text:'Software Tester'},
+            {id:'CTO', text:'CTO'},
+            {id:'Technical Lead', text:'Technical Lead'},
+            {id:'Product Manager', text:'Product Manager'},
+            {id:'Intern Developer', text:'Intern Developer'},
+            {id:'Researcher ', text:'Researcher '},
+      ];
+      
+    this.blockchainData =
+    [
+            {id:'Bitcoin', text:'Bitcoin'},
+            {id:'Ethereum', text:'Ethereum'},
+            {id:'Ripple', text:'Ripple'},
+            {id:'Stellar', text:'Stellar'},
+            {id:'Hyperledger Fabric', text:'Hyperledger Fabric'},
+            {id:'Hyperledger Sawtooth', text:'Hyperledger Sawtooth'},
+            {id:'Quorum', text:'Quorum'},
+            {id:'Corda', text:'Corda'},
+            {id:'EOS', text:'EOS'},
+            {id:'NEO', text:'NEO'},
+            {id:'Waves', text:'Waves'},
+            {id:'Steem', text:'Steem'},
+            {id:'Lisk', text:'Lisk'},
+            {id:'Quantum', text:'Quantum'},
+            {id:'Tezos', text:'Tezos'},
+            {id:'Cardano', text:'Cardano'},
+            {id:'Litecoin', text:'Litecoin'},
+            {id:'Monero', text:'Monero'},
+            {id:'ZCash', text:'ZCash'},
+            {id:'IOTA', text:'IOTA'},
+            {id:'NEM', text:'NEM'},
+            {id:'NXT', text:'NXT'},
+            {id:'Dash', text:'Dash'},
+            {id:'Doge', text:'Doge'},
+    ]
 
+    this.options = {
+      multiple: true,
+      placeholder: 'Position',
+      allowClear :true
+    }
+      
+      this.options2 = {
+      multiple: true,
+      placeholder: 'Blockchain experience',
+      allowClear :true
+    } */
+       
+       }
   ngOnInit() 
   {
       this.length='';
@@ -129,8 +192,8 @@ export class CompanySearchComponent implements OnInit {
       this.availabilityChange=-1;
       this.info = [];
       this.msg='';
-	  this.credentials.currency = -1;
-      this.rolesData = 
+      this.credentials.currency = -1;
+       this.rolesData = 
        [
             {id:'Backend Developer', text:'Backend Developer'},
             {id:'Frontend Developer', text:'Frontend Developer'},
@@ -216,7 +279,7 @@ export class CompanySearchComponent implements OnInit {
                   else
                   {
                         this.is_approved = data._creator.is_approved;      
-				        this.display_name = data.company_name;
+                        this.display_name = data.company_name;
 
                         //console.log(this.is_approved);
                         if(this.is_approved === 0 )
@@ -273,23 +336,31 @@ export class CompanySearchComponent implements OnInit {
   }
 
   rolesItems;
+
   positionchanged(data) 
   {
-      //console.log("position");
-      this.rolesItems = data.value;    
-      this.searchdata('roles' , this.rolesItems);  
+      console.log( data);
+      if(this.select_value  !== data.value)
+      {
+        this.select_value = data.value;             
+        this.searchdata('roles' , this.select_value); 
+        }  
+       
   }
 
   blockchainItems;
   blockchainchanged(data)
   {
     //console.log("blockchain"); 
-      this.blockchainItems = data.value; 
-       this.searchdata('blockchain' , this.blockchainItems);
+      if(this.selecteddd  !== data.value)
+      {
+        this.selecteddd = data.value; 
+       this.searchdata('blockchain' , this.selecteddd);
+      }
   
    }
     
-     filter_array(arr) 
+    filter_array(arr) 
     {
         var hashTable = {};
 
@@ -304,22 +375,20 @@ export class CompanySearchComponent implements OnInit {
     selectedObj;countryChange;positionChange;availabilityChange;blockchainChange;salary;currencyChange;
     search_result=[];information;
     searchdata(key , value)
-    {
+    {   
         this.length =0; 
         this.info=[];
        
-        if(!this.searchWord && !this.select_value && !this.selecteddd &&!this.rolesItems && !this.salary && !this.blockchainItems && this.selectedObj === -1 &&  this.countryChange === -1 
+        if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1 
         &&  this.currencyChange === -1 &&  this.availabilityChange ===-1 )
         {             
-            //console.log("iffffffff"); 
+            
              this.getVerrifiedCandidate();
         }
                
         else
         { 
-
-            //console.log("else");
-            this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.rolesItems ,this.blockchainItems, this.availabilityChange, this.salary , this.currencyChange )
+          this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
             .subscribe(
                 data => 
                 {
@@ -387,6 +456,7 @@ export class CompanySearchComponent implements OnInit {
                         }
                        // this.page = data.length; 
                         this.page =this.length;   
+                       // this.select_value='';
                         //console.log(this.length);                   
                     }
                             
@@ -400,28 +470,21 @@ export class CompanySearchComponent implements OnInit {
         
         
     }
-    select_value;selecteddd;
+    
+actionType;
 
 
     reset()
     {
-           
-        //this.blockchainData.value = [];
-        //console.log("reset");
-       if(this.blockchainItems || this.rolesItems)
-        {
-            window.location.href = '/candidate-search';
-            
-        }
-
+  
+   // this.positionchanged([]);
         this.selectedObj=-1;
         this.countryChange=-1;
         this.rolesItems='';
         this.salary='';
         this.currencyChange= -1;
         this.availabilityChange=-1;
-        this.blockchainItems='';
-        
+        this.blockchainItems='';       
         this.select_value ='';
         this.selecteddd = '';
         this.info = [];
@@ -599,12 +662,12 @@ export class CompanySearchComponent implements OnInit {
                   
                 });
     }*/
-	user_id;user_name;
-	onSubmit(val) {
-		//console.log(val)
-		this.user_id =val;
-		this.user_name = val;
-	}
+    user_id;user_name;
+    onSubmit(val) {
+        //console.log(val)
+        this.user_id =val;
+        this.user_name = val;
+    }
 
 	date_of_joining;
 	msg_tag;
@@ -613,9 +676,9 @@ export class CompanySearchComponent implements OnInit {
 	job_offer_log;
 	description;
     send_job_offer(msgForm : NgForm){
-		//console.log("Used ID: " + this.user_id.id);
+        //console.log("Used ID: " + this.user_id.id);
         //console.log("Name: " + this.user_id.name);
-		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
 			.subscribe(

@@ -128,6 +128,12 @@ $( function() {
 
 // select javascript here   
 
+function resetForm(){
+	console.log("reset");
+	$("#drp_assign_list option[value]").remove();
+	  document.getElementById("myForm").reset();
+	}
+
 $(document).ready(function(){
   var $progControl = $(".progControlSelect0").select2({
         placeholder: "Skills"//placeholder

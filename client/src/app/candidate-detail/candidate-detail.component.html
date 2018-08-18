@@ -23,7 +23,7 @@
 				 		</span>
 				 		
 				 		<span class = "name" *ngIf='company_reply !== 1'>
-				 			<h3>{{first_name}} </h3>
+				 			<h3>{{first_name | slice:0:1}} {{last_name | slice:0:1}} </h3>
 				 		</span>
 				 		<span class = "short_intro">
 				 			<p>{{description}}</p>
@@ -105,33 +105,7 @@
 
 				 	</div>
 					
-				 	<div class="info-area pro_br-btm" *ngIf="github">
-						<div class = "col-md-3">
-							<strong>Github account URL : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li >{{github}}</li>
-								
-							</ul>
-						</div>
-
-				 	</div>
-
-
-				 	<div class="info-area pro_br-btm" *ngIf="stack">
-
-						<div class = "col-md-3" >
-							<strong>Stackexchange account URL : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li >{{stack}}</li>
-								
-							</ul>
-						</div>
-
-				 	</div>
+				 	
 
 				 	
 				
