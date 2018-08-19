@@ -1,13 +1,10 @@
 const jwtToken = require('../services/jwtToken');
 const mongooseUsers = require('../../model/users');
-const express = require('express');
-
+const logger = require('../services/logger');
 
 function getUserFromToken(req, cb) {
-	//console.log(JSON.stringify(req.headers));
-
-    let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJFVXRWdmNnT2tDNGhQdHpHTlVaV0JBPT0iLCJpYXQiOjE1MzQ0MjQ0NjR9.SrbIyFDNIDr_yFJ-EotJiMMp7a26Ji7rZg4jlvU4a-w';//req.getHeader("Content-Language") // TODO: not sure if this is right
-
+    logger.debug('req', {req: req});
+    let token = req.cookies.aCookie // TODO: not sure if this is right
     let payload = jwtToken.verifyJwtToken(token);
 
     mongooseUsers.findOne({_id: payload.id}, function(user) {
@@ -22,6 +19,8 @@ function getUserFromToken(req, cb) {
 };
 
 module.exports.isLoggedIn = function isLoggedIn(req, res, next) {
+
+    console.log(JSON.stringify(req, null, 2));
     getUserFromToken(req, next);
 };
 
@@ -49,6 +48,7 @@ module.exports.isValidCompany = function isValidCompany(req, res, next) {
         if (user.is_verify !== true) throw new Error("User is not verified");
         if (user.is_approved !== true) throw new Error("User is not a approved");
         if (user.disable_account !== false) throw new Error("User account was dissabled"); // TODO: disable_account should be in the user collection
+        // if (user.disable_account !== false) throw new Error("User account was dissabled"); // TODO: disable_account should be in the user collection
         next();
     });
 };
@@ -60,6 +60,7 @@ module.exports.isValidCandidate = function isValidCandidate(req, res, next) {
         if (user.is_verify !== true) throw new Error("User is not verified");
         if (user.is_approved !== true) throw new Error("User is not a approved");
         if (user.disable_account !== false) throw new Error("User account was dissabled"); // TODO: disable_account should be in the user collection
+
         next();
     });
 };
