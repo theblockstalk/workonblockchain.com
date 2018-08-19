@@ -24,35 +24,35 @@ module.exports.isLoggedIn = asyncMiddleware(async function isLoggedIn(req, res, 
 
 module.exports.isAdmin = asyncMiddleware(async function (req, res, next) {
     await getUserFromToken(req);
-    if (req.auth.user.is_admin !== true) throw new Error("User is not an admin");
+    if (req.auth.user.is_admin !== true) errors.throwError("User is not an admin", 403);
     next();
 });
 
 module.exports.isValidUser = asyncMiddleware(async function isValidUser(req, res, next) {
     await getUserFromToken(req);
     let user = req.auth.user;
-    if (user.is_verify !== true) throw new Error("User is not verified");
-    if (user.is_approved !== true) throw new Error("User is not a approved");
+    if (user.is_verify !== true) errors.throwError("User is not verified", 403);
+    if (user.is_approved !== true) errors.throwError("User is not a approved", 403);
     next();
 });
 
 module.exports.isValidCompany = asyncMiddleware(async function isValidCompany(req, res, next) {
     await getUserFromToken(req);
     let user = req.auth.user;
-    if (user.type !== 'company') throw new Error("User is not a company");
-    if (user.is_verify !== true) throw new Error("User is not verified");
-    if (user.is_approved !== true) throw new Error("User is not a approved");
-    if (user.disable_account !== false) throw new Error("User account was dissabled"); // TODO: disable_account should be in the user collection
-    // if (user.disable_account !== false) throw new Error("User account was dissabled"); // TODO: disable_account should be in the user collection
+    if (user.type !== 'company') errors.throwError("User is not a company", 403);
+    if (user.is_verify !== true) errors.throwError("User is not verified", 403);
+    if (user.is_approved !== true) errors.throwError(("User is not a approved", 403);
+    if (user.disable_account !== false) errors.throwError("User account was dissabled", 403); // TODO: disable_account should be in the user collection
+    // if (user.disable_account !== false) errors.throwError("User account was dissabled", 403); // TODO: disable_account should be in the user collection
     next();
 });
 
 module.exports.isValidCandidate = asyncMiddleware(async function isValidCandidate(req, res, next) {
     await getUserFromToken(req);
     let user = req.auth.user;
-    if (user.type !== 'candidate') throw new Error("User is not a candidate");
-    if (user.is_verify !== true) throw new Error("User is not verified");
-    if (user.is_approved !== true) throw new Error("User is not a approved");
-    // if (user.disable_account !== false) throw new Error("User account was dissabled"); // TODO: disable_account should be in the user collection
+    if (user.type !== 'candidate') errors.throwError("User is not a candidate", 403);
+    if (user.is_verify !== true) errors.throwError("User is not verified", 403);
+    if (user.is_approved !== true) errors.throwError("User is not a approved", 403);
+    // if (user.disable_account !== false) errors.throwError("User account was dissabled", 403); // TODO: disable_account should be in the user collection
     next();
 });
