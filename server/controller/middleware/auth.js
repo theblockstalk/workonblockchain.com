@@ -41,7 +41,7 @@ module.exports.isValidCompany = asyncMiddleware(async function isValidCompany(re
     let user = req.auth.user;
     if (user.type !== 'company') errors.throwError("User is not a company", 403);
     if (user.is_verify !== true) errors.throwError("User is not verified", 403);
-    if (user.is_approved !== true) errors.throwError(("User is not a approved", 403);
+    if (user.is_approved !== true) errors.throwError("User is not a approved", 403);
     if (user.disable_account !== false) errors.throwError("User account was dissabled", 403); // TODO: disable_account should be in the user collection
     // if (user.disable_account !== false) errors.throwError("User account was dissabled", 403); // TODO: disable_account should be in the user collection
     next();
