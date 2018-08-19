@@ -1,6 +1,7 @@
 const jwtToken = require('../services/jwtToken');
 const mongooseUsers = require('../../model/users');
 const asyncMiddleware = require('./asyncMiddleware');
+const errors = require('../services/errors');
 
 async function getUserFromToken(req) {
     let token = req.headers.authorization;
@@ -8,7 +9,7 @@ async function getUserFromToken(req) {
 
     const user = await mongooseUsers.findOne({_id : payload.id});
 
-    if (user.jwt_token !== token) throw new Error("Jwt token not found");
+    if (user.jwt_token !== token) errors.throwError("Jwt token not found", 401);
 
     req.auth = {
         user: user
