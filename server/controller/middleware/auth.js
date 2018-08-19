@@ -4,23 +4,26 @@ const logger = require('../services/logger');
 
 function getUserFromToken(req, cb) {
     logger.debug('req', {req: req});
-    let token = req.cookies.aCookie // TODO: not sure if this is right
+    let token = req.headers.authorization; 
     let payload = jwtToken.verifyJwtToken(token);
 
-    mongooseUsers.findOne({_id: payload.id}, function(user) {
-        if (user.token !== token) throw new Error("Jwt token not found");
-
+    mongooseUsers.findOne({_id : payload.id}, function (err, user)
+    {
+    	if (user.jwt_token !== token) throw new Error("Jwt token not found");
+        
         req.auth = {
             user: user
         };
 
         cb();
+    	
+    	
     });
+    
 };
 
 module.exports.isLoggedIn = function isLoggedIn(req, res, next) {
-
-    console.log(JSON.stringify(req, null, 2));
+    //console.log(JSON.stringify(req, null, 2));
     getUserFromToken(req, next);
 };
 

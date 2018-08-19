@@ -10,6 +10,7 @@ const crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const verify_send_email = require('../auth/verify_send_email');
 const mongoose = require('mongoose');
+const jwtToken = require('../../../services/jwtToken');
 
 const logger = require('../../../services/logger');
 
@@ -104,38 +105,60 @@ function create(userParam)
             }
             else
                 {
-                    let info = new CandidateProfile
-                    ({
-                        _creator : newUser._id
-                    });
+            	
+            	let jwt_token = jwtToken.createJwtToken(user);
+                console.log(token);
+                
+                var set =
+                {
+                	    jwt_token: jwt_token,
 
-                    info.save((err,user)=>
-                    {
-                    	if(err)
-                    	{
-                    		logger.error(err.message, {stack: err.stack});
-                    		deferred.reject(err.name + ': ' + err.message);
-                    	}
-                    	else
-                    	{
-                    		if(newUser.social_type == "")
-                    		{	
-                    			verify_send_email(user_info);
-                    		}
-                    		deferred.resolve
-                    		({
-                    			_id:user.id,
-                    			_creator: newUser._id,
-                    			email_hash:newUser.email_hash,
-                    			type:newUser.type,
-                    			email: newUser.email,
-                    			ref_link: newUser.ref_link,
-                    			type: newUser.type,
-                    			is_approved : user.is_approved,
-                    			token: newUser.jwt_token
-                    		});
-                    	}
-                    });
+                };
+                users.update({ _id: user._id},{ $set: set }, function (err, doc)
+                {
+                	if (err)
+                	{
+                		logger.error(err.message, {stack: err.stack});
+                		deferred.reject(err.name + ': ' + err.message);
+                	}
+                	else
+                	{
+                		let info = new CandidateProfile
+                        ({
+                            _creator : newUser._id
+                        });
+
+                        info.save((err,user)=>
+                        {
+                        	if(err)
+                        	{
+                        		logger.error(err.message, {stack: err.stack});
+                        		deferred.reject(err.name + ': ' + err.message);
+                        	}
+                        	else
+                        	{
+                        		if(newUser.social_type == "")
+                        		{	
+                        			verify_send_email(user_info);
+                        		}
+                        		deferred.resolve
+                        		({
+                        			_id:user.id,
+                        			_creator: newUser._id,
+                        			email_hash:newUser.email_hash,
+                        			type:newUser.type,
+                        			email: newUser.email,
+                        			ref_link: newUser.ref_link,
+                        			type: newUser.type,
+                        			is_approved : user.is_approved,
+                        			token: jwt_token
+                        		});
+                        	}
+                        });
+                	}
+                		
+                });
+                    
                 }
         });
     }

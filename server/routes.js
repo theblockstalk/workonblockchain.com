@@ -91,7 +91,7 @@ router.post('/users/send_refreal', refReferral);
 router.post('/users/get_refrence_code', refGetReferralCode);
 
 // Candidates
-router.post('/users/register', auth.isLoggedIn, candidateRegister);
+router.post('/users/register', candidateRegister);
 router.get('/users/', candidateGetAll); // Auth: ???
 router.get('/users/current/:id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms/:_id', auth.isLoggedIn, candidateWizardTnC);

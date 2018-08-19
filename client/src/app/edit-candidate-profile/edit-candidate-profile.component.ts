@@ -1,5 +1,5 @@
 import { Component, OnInit ,ElementRef, Input } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
@@ -103,21 +103,21 @@ export class EditCandidateProfileComponent implements OnInit {
           this.authenticationService.getById(this.currentUser._id)
             .subscribe(data => 
             {
-                if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+                if(data[0].contact_number  && data[0].nationality && data[0].first_name && data[0].last_name)
                 {
-                   this.info.email = data._creator.email;
-                    this.info.contact_number = data.contact_number;
-                    this.info.github_account = data.github_account;
-                    this.info.exchange_account = data.stackexchange_account;
-                    this.info.nationality = data.nationality;
-                    //this.info.gender = data.gender;
-                    this.info.first_name =data.first_name;
-                    this.info.last_name =data.last_name;
+                   this.info.email = data[0]._creator.email;
+                    this.info.contact_number = data[0].contact_number;
+                    this.info.github_account = data[0].github_account;
+                    this.info.exchange_account = data[0].stackexchange_account;
+                    this.info.nationality = data[0].nationality;
+                    //this.info.gender = data[0].gender;
+                    this.info.first_name =data[0].first_name;
+                    this.info.last_name =data[0].last_name;
 
-                    if(data.image != null )
+                    if(data[0].image != null )
                     {
-                      ////console.log(data.image);
-                     this.info.image_src =  data.image ;
+                      ////console.log(data[0].image);
+                     this.info.image_src =  data[0].image ;
                         let x = this.info.image_src.split("/");
      
                         let last:any = x[x.length-1];
@@ -128,9 +128,9 @@ export class EditCandidateProfileComponent implements OnInit {
                                
                 }
                 
-                if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
+                if(data[0].locations && data[0].roles && data[0].interest_area &&  data[0].expected_salary && data[0].availability_day && data[0].expected_salary_currency)
                 {
-                    for (let country1 of data.locations) 
+                    for (let country1 of data[0].locations) 
                      {
                       
                       for(let option of this.options)
@@ -147,7 +147,7 @@ export class EditCandidateProfileComponent implements OnInit {
                       
                     }
                     
-                     for(let interest of data.interest_area) 
+                     for(let interest of data[0].interest_area) 
                      {
                       
                       for(let option of this.area_interested)
@@ -163,10 +163,10 @@ export class EditCandidateProfileComponent implements OnInit {
                       }
                       
                     }
-                   // this.jobselected=data.roles;
+                   // this.jobselected=data[0].roles;
                     
-                    //this.selectedValue = data.interest_area;
-                    for (let area of data.roles) 
+                    //this.selectedValue = data[0].interest_area;
+                    for (let area of data[0].roles) 
                      {
                       
                       for(let option of this.dropdown_options)
@@ -183,20 +183,20 @@ export class EditCandidateProfileComponent implements OnInit {
                       
                     }
          
-                    this.expected_salaryyy = data.expected_salary;
+                    this.expected_salaryyy = data[0].expected_salary;
                    
-                    this.availability_day = data.availability_day;
-                    this.base_currency = data.expected_salary_currency;
+                    this.availability_day = data[0].availability_day;
+                    this.base_currency = data[0].expected_salary_currency;
                 }
                 
-                if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
+                if(data[0].commercial_platform || data[0].experimented_platform || data[0].why_work || data[0].platforms)
                 {
-                  this.why_work=data.why_work;
+                  this.why_work=data[0].why_work;
               
-                    if(data.commercial_platform)
+                    if(data[0].commercial_platform)
                     {
-                      this.commercial_expYear =data.commercial_platform;
-                     for (let key of data.commercial_platform) 
+                      this.commercial_expYear =data[0].commercial_platform;
+                     for (let key of data[0].commercial_platform) 
                       {
                         for(var i in key)
                         {
@@ -241,10 +241,10 @@ export class EditCandidateProfileComponent implements OnInit {
                      }
                     
                     
-                      if(data.platforms)
+                      if(data[0].platforms)
                       {
-                          this.platforms = data.platforms;
-                      for (let key of data.platforms) 
+                          this.platforms = data[0].platforms;
+                      for (let key of data[0].platforms) 
                       {
                         for(var i in key)
                         {
@@ -288,10 +288,10 @@ export class EditCandidateProfileComponent implements OnInit {
                      }
 
 
-                      if(data.experimented_platform)
+                      if(data[0].experimented_platform)
                       {
                           this.experimented_platform = [];
-                           for (let plat of data.experimented_platform) 
+                           for (let plat of data[0].experimented_platform) 
                      {
                       
                       for(let option of this.experimented)
@@ -311,16 +311,16 @@ export class EditCandidateProfileComponent implements OnInit {
                 }
                 
                 /////////////////experience////////////////////////
-                if(data.work_history && data.education_history|| data.programming_languages&&data.current_salary && data.current_currency)
+                if(data[0].work_history && data[0].education_history|| data[0].programming_languages&&data[0].current_salary && data[0].current_currency)
                 {
                     
                    
                     
-                    this.jobData = data.work_history; 
+                    this.jobData = data[0].work_history; 
                     
-                     for(let data1 of data.work_history)
+                     for(let data1 of data[0].work_history)
                         {
-                            //this.companyname = data1.companyname;
+                            //this.companyname = data[0]1.companyname;
                             this.current_work_check.push(data1.currentwork);
                             console.log(this.current_work_check);
                        
@@ -332,17 +332,17 @@ export class EditCandidateProfileComponent implements OnInit {
                           ) 
                           });
                  
-                    this.eduData = data.education_history; 
+                    this.eduData = data[0].education_history; 
                     this.EducationForm = this._fb.group({
                           itemRows: this._fb.array(
                                     this.education_data()
                           )
                         });
-                        //this.exp_data.push(data.programming_languages) ;
-                       if(data.programming_languages)
+                        //this.exp_data[0].push(data[0].programming_languages) ;
+                       if(data[0].programming_languages)
                        {
-                           this.LangexpYear = data.programming_languages;
-                      for (let key of data.programming_languages) 
+                           this.LangexpYear = data[0].programming_languages;
+                      for (let key of data[0].programming_languages) 
                       {
                         for(var i in key)
                         {
@@ -385,9 +385,9 @@ export class EditCandidateProfileComponent implements OnInit {
                       }
                     }                    
 
-                    this.salary = data.current_salary;
-                    this.Intro =data.description;
-                    this.current_currency =data.current_currency;
+                    this.salary = data[0].current_salary;
+                    this.Intro =data[0].description;
+                    this.current_currency =data[0].current_currency;
 
                 }
             },
@@ -1130,7 +1130,9 @@ export class EditCandidateProfileComponent implements OnInit {
                      { 
                         formData.append('photo', inputEl.files.item(0));
                     
-                        this.http.post(URL+'users/image/'+this.currentUser._creator, formData).map((res) => res).subscribe(                
+                        this.http.post(URL+'users/image/'+this.currentUser._creator, formData ,  {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        }).map((res) => res).subscribe(                
                         (success) => 
                         {
                              //console.log(success);

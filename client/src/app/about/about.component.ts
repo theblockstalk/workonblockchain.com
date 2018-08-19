@@ -1,5 +1,5 @@
 import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
@@ -94,33 +94,33 @@ export class AboutComponent implements OnInit
                 data =>
                 {
                       //  console.log(data);
-                    if(data._creator.refered_id != 'undefined' && !data.first_name && !data.last_name)
+                    if(data[0]._creator.refered_id != 'undefined' && !data[0].first_name && !data[0].last_name)
                     {
                         //console.log("ifffffffffff");
-                        this.referred_id = data._creator.refered_id;
+                        this.referred_id = data[0]._creator.refered_id;
                         
                     }
-                  if(data.terms)
+                  if(data[0].terms)
                   {
                       this.term_active_class='fa fa-check-circle text-success';
                       this.term_link = '/terms-and-condition';
                   }
 
-                  if(data.contact_number  || data.nationality || data.first_name || data.last_name)
+                  if(data[0].contact_number  || data[0].nationality || data[0].first_name || data[0].last_name)
                   {
                     this.active_class='fa fa-check-circle text-success';
-                    this.info.contact_number = data.contact_number;
-                    this.info.github_account = data.github_account;
-                    this.info.exchange_account = data.stackexchange_account;
-                    this.info.nationality = data.nationality;
+                    this.info.contact_number = data[0].contact_number;
+                    this.info.github_account = data[0].github_account;
+                    this.info.exchange_account = data[0].stackexchange_account;
+                    this.info.nationality = data[0].nationality;
                     //this.info.gender = data.gender;
-                    this.info.first_name =data.first_name;
-                    this.info.last_name =data.last_name;
+                    this.info.first_name =data[0].first_name;
+                    this.info.last_name =data[0].last_name;
 
                     if(data.image != null )
                     {
                       //////console.log(data.image);
-                     this.info.image_src = data.image ;
+                     this.info.image_src = data[0].image ;
                        
 
                         let x = this.info.image_src.split("/");
@@ -136,14 +136,14 @@ export class AboutComponent implements OnInit
 
                   }
 
-                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day )
+                  if(data[0].locations && data[0].roles && data[0].interest_area && data[0].expected_salary && data[0].availability_day )
                   {
                       this.resume_disable = '';
                       this.job_active_class = 'fa fa-check-circle text-success';
                       this.resume_class="/resume";
                   }
 
-                 if(data.why_work )
+                 if(data[0].why_work )
                 {
                      this.exp_disable = '';
                     this.resume_class="/resume";
@@ -152,7 +152,7 @@ export class AboutComponent implements OnInit
                 // this.router.navigate(['/resume']);
                 }
 
-                if( data.programming_languages && data.current_salary )
+                if( data[0].programming_languages && data[0].current_salary )
                 {
                     this.exp_class = "/experience";
                     this.exp_active_class = 'fa fa-check-circle text-success';
@@ -255,7 +255,9 @@ export class AboutComponent implements OnInit
               {
                 formData.append('photo', inputEl.files.item(0));
 
-                this.http.post(URL+'users/image/'+this.currentUser._creator, formData).map((res) => res).subscribe(
+                this.http.post(URL+'users/image/'+this.currentUser._creator, formData ,  {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        }).map((res) => res).subscribe(
                 (success) =>
                 {
                   ////console.log(success);

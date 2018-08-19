@@ -6,7 +6,8 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req, res)
     {
-        getById(req.params.id).then(function (user)
+	    let userId = req.auth.user._id;
+        getById(userId).then(function (user)
         {
             if (user)
             {

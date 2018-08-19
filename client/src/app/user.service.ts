@@ -20,7 +20,9 @@ export class UserService {
   constructor(private http: HttpClient) 
   {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.currentUser.token
+      
+      console.log(this.currentUser);
+    
   }
 
     getAll() 
@@ -42,7 +44,7 @@ export class UserService {
     
     
     getByRefrenceCode(code: string){
-        return this.http.post<any>(URL+'users/get_refrence_code', {code:code}) .map(ref_code => {
+        return this.http.post<any>(URL+'users/get_refrence_code', {code:code} ) .map(ref_code => {
             return ref_code
         });
     }
@@ -125,7 +127,9 @@ export class UserService {
     terms(user_id: string, data: any) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/terms/' + user_id, data)
+        return this.http.put<any>(URL+'users/welcome/terms/' + user_id, data , {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        })
             .map(data => {
            
                 if (data) 
@@ -149,7 +153,9 @@ export class UserService {
     about(user_id: string, detail: CandidateProfile) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/about/' + user_id, detail)
+        return this.http.put<any>(URL+'users/welcome/about/' + user_id, detail , {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        })
             .map(data => {
            
                 if (data) 
@@ -173,7 +179,9 @@ export class UserService {
     job(user_id: string, detail: CandidateProfile) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/job/' + user_id, detail)
+        return this.http.put<any>(URL+'users/welcome/job/' + user_id, detail , {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        } )
             .map(data => {
            
                 if (data) 
@@ -197,7 +205,9 @@ export class UserService {
     resume(user_id: string, detail: CandidateProfile) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/resume/' + user_id, detail)
+        return this.http.put<any>(URL+'users/welcome/resume/' + user_id, detail , {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        })
             .map(data => {
            
                 if (data) 
@@ -219,7 +229,9 @@ export class UserService {
     experience(user_id: string, detail: CandidateProfile , exp : any , history : any,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/exp/' + user_id, { detail: detail, education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp })
+        return this.http.put<any>(URL+'users/welcome/exp/' + user_id, { detail: detail, education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp } , {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        })
             .map(data => {
            
                 if (data) 
@@ -456,7 +468,9 @@ export class UserService {
     edit_candidate_profile(user_id: string, detail: any,  edu :any , history:any ) 
     {
         
-        return this.http.put<any>(URL+'users/update_profile/' + user_id, { detail: detail, education: edu  , work : history})
+        return this.http.put<any>(URL+'users/update_profile/' + user_id, { detail: detail, education: edu  , work : history} , {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        })
             .map(data => {
            
                 if (data) 
@@ -616,7 +630,9 @@ export class UserService {
     
     refered_id(_id: number , data : number)
     {
-          return this.http.put<any>(URL+'users/refered_id/' + _id, {info : data})
+          return this.http.put<any>(URL+'users/refered_id/' + _id, {info : data} ,  {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        })
             .map(data => {
            
                 if (data) 
@@ -779,7 +795,9 @@ export class UserService {
     
     set_disable_status(user_id: string, status: any) 
     {
-        return this.http.post<any>(URL+'users/set_disable_status', {user_id:user_id,status:status})
+        return this.http.post<any>(URL+'users/set_disable_status', {user_id:user_id,status:status} , {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        })
         .map(data => {
             if (data){
                 return data;

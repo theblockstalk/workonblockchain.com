@@ -51,20 +51,20 @@ export class ResumeComponent implements OnInit {
             .subscribe(
                 data => {
 
-                if(data.terms==true)
+                if(data[0].terms==true)
                   {
                       this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
                ////console.log(data);
-                if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
+                if(data[0].commercial_platform || data[0].experimented_platform || data[0].why_work || data[0].platforms)
                 {
-                  this.why_work=data.why_work;
+                  this.why_work=data[0].why_work;
 
-                    if(data.commercial_platform)
+                    if(data[0].commercial_platform)
                     {
-                        this.commercial_expYear =data.commercial_platform;
-                     for (let key of data.commercial_platform) 
+                        this.commercial_expYear =data[0].commercial_platform;
+                     for (let key of data[0].commercial_platform) 
                       {
                         for(var i in key)
                         {
@@ -107,10 +107,10 @@ export class ResumeComponent implements OnInit {
                       }
                      }
 
-                      if(data.platforms)
+                      if(data[0].platforms)
                       {
-                          this.platforms = data.platforms;
-                       for (let key of data.platforms) 
+                          this.platforms = data[0].platforms;
+                       for (let key of data[0].platforms) 
                       {
                         for(var i in key)
                         {
@@ -154,9 +154,9 @@ export class ResumeComponent implements OnInit {
                      }
 
                      
-                      if(data.experimented_platform)
+                      if(data[0].experimented_platform)
                       {
-                          for (let plat of data.experimented_platform) 
+                          for (let plat of data[0].experimented_platform) 
                      {
                       
                       for(let option of this.experimented)
@@ -219,13 +219,13 @@ export class ResumeComponent implements OnInit {
 
                 }
 
-                if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day )
+                if(data[0].locations && data[0].roles && data[0].interest_area || data[0].expected_salary || data[0].availability_day )
                   {
                       this.job_active_class = 'fa fa-check-circle text-success';
                        
                   }
                
-              if(data.why_work  )
+              if(data[0].why_work  )
               {
                 this.exp_class = "/experience";
                  this.exp_disable = "";   
@@ -233,7 +233,7 @@ export class ResumeComponent implements OnInit {
                // this.router.navigate(['/resume']);
               }
      
-              if( data.programming_languages && data.current_salary )
+              if( data[0].programming_languages && data[0].current_salary )
               {
                   
                   this.exp_active_class = 'fa fa-check-circle text-success';

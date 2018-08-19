@@ -150,49 +150,49 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             .subscribe(
             data => {
                 
-                if(!data.terms || data.terms == false)
+                if(!data[0].terms || data[0].terms == false)
                 {
                      this.router.navigate(['/terms-and-condition']);
                     
                 }
               
-               else if(!data.contact_number || !data.nationality || !data.first_name || !data.last_name)
+               else if(!data[0].contact_number || !data[0].nationality || !data[0].first_name || !data[0].last_name)
                {
                         this.router.navigate(['/about']);
                }
-               else if(data.locations.length < 1  || data.roles.length < 1 || data.interest_area.length < 1 || !data.expected_salary)
+               else if(data[0].locations.length < 1  || data[0].roles.length < 1 || data[0].interest_area.length < 1 || !data[0].expected_salary)
                {
                  
                     this.router.navigate(['/job']); 
                 }
-                else if(!data.why_work )
+                else if(!data[0].why_work )
                 {
                     this.router.navigate(['/resume']);
                 }
-               /* else if(data.commercial_platform.length < 1 || data.experimented_platform.length < 1  || data.platforms.length < 1)
+               /* else if(data[0].commercial_platform.length < 1 || data[0].experimented_platform.length < 1  || data[0].platforms.length < 1)
                 {
                     this.router.navigate(['/resume']);
                 }*/
-                //////console.log(data.programming_languages.length);
-                else if(!data.programming_languages ||  !data.current_salary  || data.programming_languages.length <1 )
+                //////console.log(data[0].programming_languages.length);
+                else if(!data[0].programming_languages ||  !data[0].current_salary  || data[0].programming_languages.length <1 )
                 {
                         this.router.navigate(['/experience']);
                 }
                     
-                 else if(!data.description)
+                 else if(!data[0].description)
                 {
                     this.router.navigate(['/experience']);
                     
                 }
-                /*else if(data.work_history.length < 1 || !data.work_history.length )
+                /*else if(data[0].work_history.length < 1 || !data[0].work_history.length )
                 {
-                   // this.dataservice.changeMessage("Please enter atleast one work history record");
+                   // this.data[0]service.changeMessage("Please enter atleast one work history record");
                     this.router.navigate(['/experience']);              
                 }
                     
-                else if(data.education_history.length < 1 || !data.education_history.length )
+                else if(data[0].education_history.length < 1 || !data[0].education_history.length )
                 {
-                    //this.dataservice.changeMessage("Please enter atleast one education record");
+                    //this.data[0]service.changeMessage("Please enter atleast one education record");
                     this.router.navigate(['/experience']);
                     
                 }*/
@@ -200,54 +200,54 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 else 
                 {
                   
-                    this.id = data._creator._id; 
-                    this.email =data._creator.email;  
+                    this.id = data[0]._creator._id; 
+                    this.email =data[0]._creator.email;  
                     
-                    if(data.github_account)
+                    if(data[0].github_account)
                     {
-                      this.github=data.github_account;   
+                      this.github=data[0].github_account;   
                     }
-                    if(data.stackexchange_account)
+                    if(data[0].stackexchange_account)
                     {
-                      this.stack=data.stackexchange_account;   
+                      this.stack=data[0].stackexchange_account;   
                     }
                                        
-                    this.expected_currency = data.expected_salary_currency;
-                    this.expected_salary = data.expected_salary;
-                    this.first_name=data.first_name;
-                    this.last_name =data.last_name;
-                    this.nationality = data.nationality;
-                    this.contact_number =data.contact_number;
-                    this.description =data.description;
-                    this.history =data.work_history;
-                    this.education = data.education_history;
+                    this.expected_currency = data[0].expected_salary_currency;
+                    this.expected_salary = data[0].expected_salary;
+                    this.first_name=data[0].first_name;
+                    this.last_name =data[0].last_name;
+                    this.nationality = data[0].nationality;
+                    this.contact_number =data[0].contact_number;
+                    this.description =data[0].description;
+                    this.history =data[0].work_history;
+                    this.education = data[0].education_history;
                     console.log(this.history);
-                    for(let data1 of data.work_history)
+                    for(let data1 of data[0].work_history)
                     {
                         this.companyname = data1.companyname;
                         this.currentwork = data1.currentwork;
                        
                     }
-                    for(let edu of data.education_history)
+                    for(let edu of data[0].education_history)
                     {
                         this.degreename = edu.degreename;
                     }
-                    this.countries = data.locations;
-                    this.interest_area =data.interest_area;
-                    this.roles  = data.roles;
-                    this.availability_day =data.availability_day;
-                    this.why_work = data.why_work;
-                    this.commercial = data.commercial_platform;
-                    this.experimented = data.experimented_platform;
-                    this.languages= data.programming_languages;
-                    this.current_currency = data.current_currency;
-                    this.current_salary = data.current_salary;
+                    this.countries = data[0].locations;
+                    this.interest_area =data[0].interest_area;
+                    this.roles  = data[0].roles;
+                    this.availability_day =data[0].availability_day;
+                    this.why_work = data[0].why_work;
+                    this.commercial = data[0].commercial_platform;
+                    this.experimented = data[0].experimented_platform;
+                    this.languages= data[0].programming_languages;
+                    this.current_currency = data[0].current_currency;
+                    this.current_salary = data[0].current_salary;
 
-                    this.platforms=data.platforms;
-                    if(data.image != null )
+                    this.platforms=data[0].platforms;
+                    if(data[0].image != null )
                     {
                         
-                        this.imgPath = data.image;
+                        this.imgPath = data[0].image;
                         ////console.log(this.imgPath);
                         
                     }
