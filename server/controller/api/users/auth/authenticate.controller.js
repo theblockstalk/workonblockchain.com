@@ -4,8 +4,8 @@ const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 const Q = require('q');
 const jwtToken = require('../../../services/jwtToken');
-const settings = require('../../../../settings');
 const crypto = require('crypto');
+const logger = require('../../../services/logger');
 
 module.exports = function (req, res) {
     authenticate(req.body.email, req.body.password).then(function (user)
@@ -57,7 +57,7 @@ function authenticate(email, password,type)
         				if(data)
         				{
                             let token = jwtToken.createJwtToken(user);
-                            console.log(token);
+                            logger.debug(logger);
                             
                             var set =
                             {
