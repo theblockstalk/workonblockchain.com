@@ -12,11 +12,6 @@ const errorHandler = require('./controller/middleware/errorHandler');
 const routes = require('./routes');
 const cron = require('./cron');
 
-// This temporary function should be used on all middleware that returns a promise or uses async await
-let wrapAsync = function fn(...args) {
-    fn(...args).catch(args[2]);
-}
-
 try {
     logger.debug('settings', settings);
 
@@ -34,7 +29,7 @@ try {
 
     app.use(routes);
 
-    app.use(wrapAsync(errorHandler));
+    app.use(errorHandler);
 
     cron.startCron();
 
