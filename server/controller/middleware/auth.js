@@ -3,8 +3,7 @@ const mongooseUsers = require('../../model/users');
 const logger = require('../services/logger');
 
 function getUserFromToken(req, cb) {
-    logger.debug('req', {req: req});
-    let token = req.headers.authorization; 
+    let token = req.headers.authorization;
     let payload = jwtToken.verifyJwtToken(token);
 
     mongooseUsers.findOne({_id : payload.id}, function (err, user)
@@ -16,7 +15,6 @@ function getUserFromToken(req, cb) {
         };
 
         cb();
-    	
     	
     });
     
