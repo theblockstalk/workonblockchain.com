@@ -94,13 +94,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
      {
          window.scrollTo(0, 0);
      
-        this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
+       /* this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
  
-        // render share button
+         render share button
         window['IN'] && window['IN'].parse();
          
          
-          window['twttr'] && window['twttr'].widgets.load();
+          window['twttr'] && window['twttr'].widgets.load();*/
          
     }
     tweet_text;

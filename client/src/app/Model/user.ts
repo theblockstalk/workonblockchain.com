@@ -10,4 +10,5 @@ export class User
     ref_link:string;
     is_admin: number;
     is_approved:number;
+    token:string;
 }

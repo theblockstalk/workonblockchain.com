@@ -94,6 +94,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                   {
                       this.router.navigate(['/about_comp']);
                   }
+                  
                   else
                   {
                       this.first_name=data.first_name;

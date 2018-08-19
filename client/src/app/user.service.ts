@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import {User} from './Model/user';
 import {CandidateProfile} from './Model/CandidateProfile';
 import { Observable } from 'rxjs/Observable';
@@ -13,8 +13,15 @@ const URL = environment.backend_url;
 
 @Injectable()
 export class UserService {
+    
 
-  constructor(private http: HttpClient) { }
+    currentUser: User;
+
+  constructor(private http: HttpClient) 
+  {
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser.token
+  }
 
     getAll() 
     {
@@ -23,7 +30,9 @@ export class UserService {
  
     getById(_id: string) 
     {
-        return this.http.get<any>(URL+'users/current/' + _id);
+        return this.http.get<any>(URL+'users/current/' + _id ,  {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+        });
     }
     
     public_profile(_id: string) 
