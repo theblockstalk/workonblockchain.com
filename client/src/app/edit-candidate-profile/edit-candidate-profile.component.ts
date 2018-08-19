@@ -1131,7 +1131,7 @@ export class EditCandidateProfileComponent implements OnInit {
                         formData.append('photo', inputEl.files.item(0));
                     
                         this.http.post(URL+'users/image/'+this.currentUser._creator, formData ,  {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
         }).map((res) => res).subscribe(                
                         (success) => 
                         {

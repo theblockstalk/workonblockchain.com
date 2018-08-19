@@ -24,6 +24,7 @@ module.exports = function middleware(err, req, res, next) {
     } else {
         res.status(500);
     }
-
+    console.log("response data");
+console.log(responseData);
     res.send(responseData);
 };

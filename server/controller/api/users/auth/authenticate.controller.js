@@ -82,7 +82,7 @@ function authenticate(email, password,type)
                                         is_admin:user.is_admin,
                                         type:user.type,
                                         is_approved : user.is_approved,
-                                        token: token
+                                        jwt_token: token
                     					});
                             	}
                             		
@@ -126,7 +126,7 @@ function authenticate(email, password,type)
                             type: user.type,
                             is_admin:user.is_admin,
                             is_approved : user.is_approved,
-                            token: token
+                            jwt_token: token
                         });
                             /*
                             TODO: need to send the token to the client in the response header (I think).

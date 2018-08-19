@@ -90,7 +90,6 @@ function create(userParam)
             ref_link: email,
             social_type: userParam.social_type,
             verify_email_key: token,
-            jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
             is_verify:is_verify,
             created_date: createdDate,
             refered_id : mongoose.Types.ObjectId(userParam.refer_by),
@@ -106,12 +105,12 @@ function create(userParam)
             else
                 {
             	
-            	let jwt_token = jwtToken.createJwtToken(user);
-                console.log(token);
+            	let tokenn = jwtToken.createJwtToken(user);
+                
                 
                 var set =
                 {
-                	    jwt_token: jwt_token,
+                	    jwt_token: tokenn,
 
                 };
                 users.update({ _id: user._id},{ $set: set }, function (err, doc)
@@ -151,7 +150,7 @@ function create(userParam)
                         			ref_link: newUser.ref_link,
                         			type: newUser.type,
                         			is_approved : user.is_approved,
-                        			token: jwt_token
+                        			jwt_token: tokenn
                         		});
                         	}
                         });

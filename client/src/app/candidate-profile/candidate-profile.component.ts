@@ -118,25 +118,26 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   
       this.dataservice.eemailMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
+      console.log(this.currentUser);
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
       {
           ////console.log("ifffffff");
          
-          this.share_url = location.href + '?user=' + this.user_id;
+          /*this.share_url = location.href + '?user=' + this.user_id;
           this.authenticationService.public_profile(this.user_id)
             .subscribe(
             data => {
                 this.public_data = data;
                 //console.log(data);
-                });
+                });*/
           
       }
      
       else
        {
           ////console.log("elseeeee");
-          this.share_url = location.href + '?user=' + this.currentUser._creator;
+          //this.share_url = location.href + '?user=' + this.currentUser._creator;
           if(!this.currentUser)
        {
           this.router.navigate(['/login']);

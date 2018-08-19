@@ -16,12 +16,15 @@ export class UserService {
     
 
     currentUser: User;
-
+    token;
   constructor(private http: HttpClient) 
   {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      
-      console.log(this.currentUser);
+      if(this.currentUser)
+      {
+        this.token = this.currentUser.jwt_token;
+      }
+      //console.log(this.currentUser);
     
   }
 
@@ -33,7 +36,7 @@ export class UserService {
     getById(_id: string) 
     {
         return this.http.get<any>(URL+'users/current/' + _id ,  {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.token)
         });
     }
     
@@ -105,7 +108,7 @@ export class UserService {
     {
       return this.http.post<any>(URL+'users/authenticate', { email: username, password: password })
             .map(user => {
-                if (user && user.token) 
+                if (user && user.jwt_token) 
                 {
                     //console.log(user);
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -128,7 +131,7 @@ export class UserService {
     {
         
         return this.http.put<any>(URL+'users/welcome/terms/' + user_id, data , {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map(data => {
            
@@ -154,7 +157,7 @@ export class UserService {
     {
         
         return this.http.put<any>(URL+'users/welcome/about/' + user_id, detail , {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map(data => {
            
@@ -180,7 +183,7 @@ export class UserService {
     {
         
         return this.http.put<any>(URL+'users/welcome/job/' + user_id, detail , {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.token)
         } )
             .map(data => {
            
@@ -206,7 +209,7 @@ export class UserService {
     {
         
         return this.http.put<any>(URL+'users/welcome/resume/' + user_id, detail , {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map(data => {
            
@@ -230,7 +233,7 @@ export class UserService {
     {
         
         return this.http.put<any>(URL+'users/welcome/exp/' + user_id, { detail: detail, education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp } , {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map(data => {
            
@@ -469,7 +472,7 @@ export class UserService {
     {
         
         return this.http.put<any>(URL+'users/update_profile/' + user_id, { detail: detail, education: edu  , work : history} , {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map(data => {
            
@@ -631,7 +634,7 @@ export class UserService {
     refered_id(_id: number , data : number)
     {
           return this.http.put<any>(URL+'users/refered_id/' + _id, {info : data} ,  {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map(data => {
            
@@ -796,7 +799,7 @@ export class UserService {
     set_disable_status(user_id: string, status: any) 
     {
         return this.http.post<any>(URL+'users/set_disable_status', {user_id:user_id,status:status} , {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.token)
+            headers: new HttpHeaders().set('Authorization', this.token)
         })
         .map(data => {
             if (data){
