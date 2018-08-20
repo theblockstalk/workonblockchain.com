@@ -93,15 +93,15 @@ router.post('/users/get_refrence_code', refGetReferralCode);
 // Candidates
 router.post('/users/register', candidateRegister);
 router.get('/users/', candidateGetAll); // Auth: ???
-router.get('/users/current/:id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
-router.put('/users/welcome/terms/:_id', auth.isLoggedIn, candidateWizardTnC);
-router.put('/users/welcome/about/:_id', auth.isLoggedIn, candidateWizardAbout);
-router.put('/users/welcome/job/:_id', auth.isLoggedIn, candidateWizardJob);
-router.put('/users/welcome/resume/:_id', auth.isLoggedIn, candidateWizardResume);
-router.put('/users/welcome/exp/:_id', auth.isLoggedIn, candidateWizardExperience);
-router.post('/users/image/:_id', auth.isLoggedIn, multer.single('photo'), candidateImage);
-router.put('/users/refered_id/:id', auth.isLoggedIn, candidateReferred);
-router.put('/users/update_profile/:_id', auth.isLoggedIn, candidateUpdate);
+router.get('/users/current', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
+router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
+router.put('/users/welcome/about', auth.isLoggedIn, candidateWizardAbout);
+router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
+router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
+router.put('/users/welcome/exp', auth.isLoggedIn, candidateWizardExperience);
+router.post('/users/image', auth.isLoggedIn, multer.single('photo'), candidateImage);
+router.put('/users/refered_id', auth.isLoggedIn, candidateReferred);
+router.put('/users/update_profile', auth.isLoggedIn, candidateUpdate);
 
 // Companies
 router.post('/users/create_employer', companyRegister);
