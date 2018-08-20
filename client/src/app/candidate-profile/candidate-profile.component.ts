@@ -47,25 +47,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
-   const url = 'https://platform.linkedin.com/in.js';
-        if (!document.querySelector(`script[src='${url}']`)) {
-            let script = document.createElement('script');
-            script.src = url;
-            script.innerHTML = 'lang: en_US';
-            document.body.appendChild(script);
-        }
-     
-     const url2 = 'https://platform.twitter.com/widgets.js';
-        if (!document.querySelector(`script[src='${url2}']`)) {
-            let script = document.createElement('script');
-            script.src = url2;
-            document.body.appendChild(script);
-        }     
-     
-     this.route.queryParams.subscribe(params => {
-        this.user_id = params['user'];
-        ////console.log(this.user_id); 
-    });
+   
      
  }
     sectionScroll;
@@ -94,13 +76,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
      {
          window.scrollTo(0, 0);
      
-        this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
+       /* this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
  
         // render share button
         window['IN'] && window['IN'].parse();
          
          
-          window['twttr'] && window['twttr'].widgets.load();
+          window['twttr'] && window['twttr'].widgets.load();*/
          
     }
     tweet_text;
