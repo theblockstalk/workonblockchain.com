@@ -14,7 +14,7 @@ const anonymosCandidateFields = ['image', 'location', 'roles', 'expected_salary_
 
 module.exports.anonymousCandidateData = function anonymousCandidateData(candidateDoc) {
     const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);
-    filterWhiteListFields(candidateDoc);
+    filterWhiteListFields(candidateDoc, anonymosCandidateFields);
     candidateDoc.work_history = candidateDoc.work_history.map((work) => {
         delete work.companyname;
         return work;
@@ -23,19 +23,24 @@ module.exports.anonymousCandidateData = function anonymousCandidateData(candidat
     return candidateDoc;
 };
 
-const anonymosCandidateFields = ['company_name', 'company_website', 'company_country', 'company_city'];
+const anonymosCompanyFields = ['company_name', 'company_website', 'company_country', 'company_city'];
 // TODO: finish
 
 module.exports.anonymousCandidateData = function anonymousCandidateData(companyDoc) {
-    filterWhiteListFields(companyDoc);
-    companyDoc.initials = initials;
+    filterWhiteListFields(companyDoc, anonymosCompanyFields);
     return companyDoc;
 };
 
-function filterWhiteListFields(obj) {
-    // TODO: go through each key and delete if not in list anonymosCandidateFields
+function filterWhiteListFields(obj, whitelist) {
+    let filteredObj = {};
+    for (let key in obj) {
+        if (whitelist.includes(key)) {
+            filteredObj[key] = obj[key];
+        }
+    }
+    return filteredObj;
 }
 
 function createInitials(first_name, last_name) {
-    // TODO: return initials from names
+    return first_name.charAt(0).toUpperCase() + last_name.charAt(0).toUpperCase();
 }

@@ -1,6 +1,7 @@
 var Q = require('q');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const logger = require('../../../services/logger');
+const filterReturnData = require('../filterReturnData');
 
 //////////get sign-up data from db of specific candidate////////////
 
@@ -43,11 +44,11 @@ function getById(_id)
                     deferred.reject(err.name + ': ' + err.message);
                 }
                 else
-                    deferred.resolve(result);
+                    deferred.resolve(filterReturnData.removeSensativeData(result));
             });
         }
         else
-            deferred.resolve(result);
+            deferred.resolve(filterReturnData.removeSensativeData(result));
 
 
     });
