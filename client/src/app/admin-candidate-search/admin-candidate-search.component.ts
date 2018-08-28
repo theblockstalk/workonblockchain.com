@@ -32,8 +32,7 @@ export class AdminCandidateSearchComponent implements OnInit {
   ngOnInit() 
   {
       this.length='';
-      this.log='';
-     
+      this.log='';   
       this.approve=-1;
       this.rolesData = 
        [
@@ -133,6 +132,16 @@ export class AdminCandidateSearchComponent implements OnInit {
                 },
                 error => 
                 {
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                   
                 });
        //console.log(this.info);
@@ -184,6 +193,20 @@ export class AdminCandidateSearchComponent implements OnInit {
                         }
                    }
                     
+                },
+                 
+                error=>
+                {
+                 if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        }    
                 });
     }
     
@@ -197,8 +220,7 @@ export class AdminCandidateSearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    ////console.log(data);
-                    
+               
                      if(data.error)
                     {
                       
@@ -237,6 +259,16 @@ export class AdminCandidateSearchComponent implements OnInit {
                 },
                 error => 
                 {
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                   
                 });
     }
@@ -335,6 +367,16 @@ export class AdminCandidateSearchComponent implements OnInit {
                 },
                 error => 
                 {
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                   
                 });
             

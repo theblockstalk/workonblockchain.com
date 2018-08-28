@@ -25,7 +25,7 @@ export class CompanyTermsAndConditionsComponent implements OnInit {
                 data => {
                    if(data)
                    {
-                       //console.log(data);
+                       console.log(data);
                       this.company_page_title= data[0].page_title;
                        this.company_editor_content = data[0].page_content;
                        //console.log(this.editor_content);

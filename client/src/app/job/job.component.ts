@@ -185,7 +185,16 @@ export class JobComponent implements OnInit {
               
                 },
                 error => {
-                  this.log = 'Something getting wrong';
+                   if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
                    
                 });
           //this.router.navigate(['/about']);
@@ -382,7 +391,7 @@ country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
           
         if(this.jobselected.length<=0)
         {
-            this.roles_log = "Please select min 1 role1";
+            this.roles_log = "Please select min 1 role";
         }
         
         if(this.base_currency==-1)
@@ -422,7 +431,16 @@ country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
                
                 },
                 error => {
-                  this.log = 'Something getting wrong';
+                    if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
                    
                 });
         

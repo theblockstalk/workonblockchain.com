@@ -26,7 +26,7 @@ module.exports = function (req,res)
 function verified_candidate()
 {
     var deferred = Q.defer();
-    users.find({type : 'candidate' , is_verify :1, is_approved :1 }, function (err, data)
+    users.find({type : 'candidate' , is_verify :1, is_approved :1 , disable_account : false }, function (err, data)
     {
 
         if (err)

@@ -34,6 +34,11 @@ export class AdminTermsConditionEditorComponent implements OnInit {
   }
 
   ngOnInit() {
+   
+       setInterval(() => {  
+                                this.error = "" ;
+                                this.success = "" ;
+                        }, 5000);
        this.dataservice.currentMessage.subscribe(message => this.message = message);
        this.ckeConfig = {
       allowedContent: false,
@@ -76,7 +81,21 @@ export class AdminTermsConditionEditorComponent implements OnInit {
                        //console.log(this.editor_content);
                        
                    }
-                 });
+                   },
+                 error =>
+                 {
+                     if(error.message == 500 || error.message == 401)
+                     {
+                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                         
+                     }
+                     else
+                     {
+                         
+                    }
+                }
+                 );
            }
            else
                this.router.navigate(['/not_found']);
@@ -88,6 +107,7 @@ export class AdminTermsConditionEditorComponent implements OnInit {
         }
   }
 
+   success ; error;
    editor(editorForm: NgForm)
    {
         
@@ -97,14 +117,15 @@ export class AdminTermsConditionEditorComponent implements OnInit {
        .subscribe(
        data => 
        {
-           if(data.error)
+           if(data)
            {
-               this.dataservice.changeMessage("Something went wrong");
-              
+               this.success = "Content Successfully Updated";
+               //this.dataservice.changeMessage("Content Successfully Updated");
            }
            else
            {
-                this.dataservice.changeMessage("Content Successfully Updated");
+               this.error="Something went wrong";
+               
            }
        });
    }

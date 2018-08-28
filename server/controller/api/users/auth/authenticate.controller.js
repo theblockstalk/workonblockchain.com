@@ -3,9 +3,9 @@ const users = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 const Q = require('q');
-const jwt = require('jsonwebtoken');
-const settings = require('../../../../settings');
+const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
+const logger = require('../../../services/logger');
 
 module.exports = function (req, res) {
     authenticate(req.body.email, req.body.password).then(function (user)
@@ -40,13 +40,9 @@ function authenticate(email, password,type)
 
         if (user)
         {
-        	//console.log(user.salt);
-        	//console.log(password);
-        	
         	let hash = crypto.createHmac('sha512', user.salt);
         	hash.update(password);
         	let hashedPasswordAndSalt = hash.digest('hex');
-        	//console.log(hashedPasswordAndSalt);
         	
         	if (hashedPasswordAndSalt === user.password_hash)
         	{
@@ -60,17 +56,46 @@ function authenticate(email, password,type)
 
         				if(data)
         				{
-        					deferred.resolve({
-                            _id:data._id,
-                            _creator: data._creator,
-                            email: user.email,
-                            email_hash: user.email_hash,
-                            ref_link: user.ref_link,
-                            is_admin:user.is_admin,
-                            type:user.type,
-                            is_approved : user.is_approved,
-                            token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
-        					});
+                            let token = jwtToken.createJwtToken(user);
+                            logger.debug(logger);
+                            
+                            var set =
+                            {
+                            	    jwt_token: token,
+
+                            };
+                            users.update({ _id: user._id},{ $set: set }, function (err, doc)
+                            {
+                            	if (err)
+                            	{
+                            		logger.error(err.message, {stack: err.stack});
+                            		deferred.reject(err.name + ': ' + err.message);
+                            	}
+                            	else
+                            	{
+                            		deferred.resolve({
+                                        _id:data._id,
+                                        _creator: data._creator,
+                                        email: user.email,
+                                        email_hash: user.email_hash,
+                                        ref_link: user.ref_link,
+                                        is_admin:user.is_admin,
+                                        type:user.type,
+                                        is_approved : user.is_approved,
+                                        jwt_token: token
+                    					});
+                            	}
+                            		
+                            });
+                            
+                            
+                            /*
+                            TODO: need to send the token to the client in the response header (I think).
+                            The client needs to store the token as a cookie or in browser storage and use it again for next endpoint call
+
+                            This is my rough estimate
+                            res.header.someFieldToBeStoredInClientCookies = token
+                            */
         				}
 
         				else
@@ -89,20 +114,53 @@ function authenticate(email, password,type)
         				//console.log(data);
         				if (err) deferred.reject(err.name + ': ' + err.message);
 
-        				else
+        				if(data)
         				{
-        					deferred.resolve({
-                            _id:data._id,
-                            _creator: data._creator,
-                            email: user.email,
-                            email_hash: user.email_hash,
-                            ref_link: user.ref_link,
-                            type: user.type,
-                            is_admin:user.is_admin,
-                            is_approved : user.is_approved,
-							token: jwt.sign({ sub: user._id }, settings.EXPRESS_JWT_SECRET)
-        					});
+        					let token = jwtToken.createJwtToken(user);
+                            logger.debug(logger);
+                            
+                            var set =
+                            {
+                            	    jwt_token: token,
+
+                            };
+                            users.update({ _id: user._id},{ $set: set }, function (err, doc)
+                            {
+                            	if (err)
+                            	{
+                            		logger.error(err.message, {stack: err.stack});
+                            		deferred.reject(err.name + ': ' + err.message);
+                            	}
+                            	else
+                            	{
+                            		deferred.resolve({
+                                        _id:data._id,
+                                        _creator: data._creator,
+                                        email: user.email,
+                                        email_hash: user.email_hash,
+                                        ref_link: user.ref_link,
+                                        is_admin:user.is_admin,
+                                        type:user.type,
+                                        is_approved : user.is_approved,
+                                        jwt_token: token
+                    					});
+                            	}
+                            		
+                            });
+                            
+                            /*
+                            TODO: need to send the token to the client in the response header (I think).
+                            The client needs to store the token as a cookie or in browser storage and use it again for next endpoint call
+
+                            This is my rough estimate
+                            res.header.someFieldToBeStoredInClientCookies = token
+                            */
         				}
+        				
+        				else
+        			    {
+        					deferred.reject("Email Not found");
+        			    }
 
         		    });
         		}

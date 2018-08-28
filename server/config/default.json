@@ -10,7 +10,7 @@
   "mongo": {
     "host": "localhost",
     "port": 27017,
-    "databaseName": "wob"
+    "databaseName": "wob-staging"
   },
   "expressJwt": {
     "secret": "shhhhhhhhhhhhhhh"
@@ -37,6 +37,6 @@
   },
   "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
-    "unreadMessagesTick": "10 * * * * *"
+    "unreadMessagesTick": "60 * * * * *"
   }
 }

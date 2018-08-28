@@ -267,6 +267,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
                 data => 
                 {
+                    console.log(data.terms);
                   if(data.terms == false)
                   {
                       this.router.navigate(['/company_wizard']);
@@ -309,13 +310,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                             this.no_of_employees=data.no_of_employees;
                             if(data.company_logo != null )
                             {                        
-                                ////console.log(data.image);                     
+                                ////console.log(data[0].image);                     
                                 this.imgPath =  data.company_logo;
                                 //console.log(this.imgPath);
                             }
                    
                             this.getVerrifiedCandidate();          
                         }
+                        
                       
 
                   
@@ -324,6 +326,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 },
                 error => 
                 {
+                    if(error.message == 500)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
                   
                 });
            
@@ -405,11 +417,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         this.info=[];
                         
                          this.information = this. filter_array(data);
-                        //this.length='';
-                    //console.log(this.information);
-                         ////console.log(this.log);
-                        
-                        //this.info = data; 
+
                         for(let res of this.information)
                         {
                           
@@ -417,7 +425,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
                                  data => {
-                   
+                  
                                     if(data['datas'][1]){
                                     if(data['datas'][1].is_company_reply==1)
                                     {
@@ -463,6 +471,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 },
                 error => 
                 {
+                    if(error.message == 500)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
                   
                 });
             
@@ -504,7 +522,7 @@ actionType;
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                    console.log(data);
                   ////console.log(data);
                    
                     if(data.error)
@@ -525,10 +543,11 @@ actionType;
                         {
                            
                                 //console.log(res._creator._id);
+                            //console.log(this.currentUser._creator);
                                 this.authenticationService.get_user_messages(res._creator._id,this.currentUser._creator)
                                 .subscribe(
                                  data => {
-                   
+                    console.log(data['datas'][1]);
                                     if(data['datas'][1]){
                                     if(data['datas'][1].is_company_reply==1)
                                     {
@@ -573,7 +592,16 @@ actionType;
                 },
                 error => 
                 {
-                  
+                    if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
                 });
     }
     informations;
@@ -683,7 +711,7 @@ actionType;
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
 			.subscribe(
 				data => {
-					//console.log(data['datas']);
+					console.log(data['datas']);
 					if(data['datas'].length>0){
 						this.job_offer_log = 'Message already sent';
 					}
@@ -708,9 +736,16 @@ actionType;
 					}
 				},
 				error => {
-					//console.log('error');
-					//console.log(error);
-					//this.log = error;
+					 if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
 				}
 			);
         }

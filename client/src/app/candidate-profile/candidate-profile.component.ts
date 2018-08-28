@@ -78,7 +78,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
      
        /* this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
  
-        // render share button
+         render share button
         window['IN'] && window['IN'].parse();
          
          
@@ -100,25 +100,26 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   
       this.dataservice.eemailMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
+      console.log(this.currentUser);
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
       {
           ////console.log("ifffffff");
          
-          this.share_url = location.href + '?user=' + this.user_id;
+          /*this.share_url = location.href + '?user=' + this.user_id;
           this.authenticationService.public_profile(this.user_id)
             .subscribe(
             data => {
                 this.public_data = data;
                 //console.log(data);
-                });
+                });*/
           
       }
      
       else
        {
           ////console.log("elseeeee");
-          this.share_url = location.href + '?user=' + this.currentUser._creator;
+          //this.share_url = location.href + '?user=' + this.currentUser._creator;
           if(!this.currentUser)
        {
           this.router.navigate(['/login']);
@@ -238,6 +239,14 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 }
                 
 
+            },
+            err =>
+            {
+                if(err.message == 500 || err.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
             });
        }
        else

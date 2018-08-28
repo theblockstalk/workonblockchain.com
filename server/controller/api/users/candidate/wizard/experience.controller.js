@@ -9,7 +9,8 @@ const logger = require('../../../../services/logger');
 module.exports = function (req,res)
 {
     //console.log(req.body);
-    experience_data(req.params._id,req.body).then(function (err, data)
+	let userId = req.auth.user._id;
+    experience_data(userId,req.body).then(function (err, data)
     {
         if (data)
         {
