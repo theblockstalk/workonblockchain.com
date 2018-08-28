@@ -13,6 +13,7 @@ const authChangePassword = require('./controller/api/users/auth/changePassword.c
 const authResetPassword = require('./controller/api/users/auth/resetPassword.controller');
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
 const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
+const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
 
 // Referrals
 const refReferredEmail = require('./controller/api/users/referrals/referredEmail.controller');
@@ -44,6 +45,7 @@ const companyWizardTnT = require('./controller/api/users/company/wizard/getSumma
 const companySearchWord = require('./controller/api/users/company/searchCandidates/searchWord.controller');
 const companySearchFilter = require('./controller/api/users/company/searchCandidates/filter.controller');
 const companySearchVerifiedCandidates = require('./controller/api/users/company/searchCandidates/verifiedCandidate.controller');
+const candidateVerifiedCandidateDetail = require('./controller/api/users/company/searchCandidates/getVerifiedCandidateDetail.controller');
 
 // Chat
 const chatGetCandidate = require('./controller/api/chat/getCandidate.controller');
@@ -80,20 +82,21 @@ router.get('/', healthCheck);
 router.post('/users/authenticate', authAthenticate);
 router.put('/users/emailVerify/:email_hash', authVerifyEmail);
 router.put('/users/forgot_password/:email', authForgotPassword);
-router.put('/users/change_password/:id', authChangePassword);
+router.put('/users/change_password/:id',auth.isLoggedIn, authChangePassword);
 router.put('/users/reset_password/:hash', authResetPassword);
 router.put('/users/verify_client/:email', authVerifyClient);
-router.post('/users/set_disable_status' , authAccountDisableSetting);
+router.post('/users/set_disable_status' , auth.isLoggedIn , authAccountDisableSetting);
+router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
 
 // Referrals
 router.post('/users/refered_user_email', refReferredEmail)
-router.post('/users/send_refreal', refReferral);
+router.post('/users/send_refreal',auth.isLoggedIn, refReferral);
 router.post('/users/get_refrence_code', refGetReferralCode);
 
 // Candidates
 router.post('/users/register', candidateRegister);
-router.get('/users/', candidateGetAll); // Auth: ???
-router.get('/users/current', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
+router.get('/users/',auth.isLoggedIn, candidateGetAll); // Auth: ???
+router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
 router.put('/users/welcome/about', auth.isLoggedIn, candidateWizardAbout);
 router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
@@ -105,42 +108,42 @@ router.put('/users/update_profile', auth.isLoggedIn, candidateUpdate);
 
 // Companies
 router.post('/users/create_employer', companyRegister);
-router.get('/users/company', companyGet);
-router.get('/users/current_company/:id', companyGetCurrent);
-router.put('/users/company_wizard/:_id', companyWizardTnT);
-router.put('/users/about_company/:_id', companyWizardAbout);
-router.post('/users/employer_image/:_id', multer.single('photo'), companyImage);
-router.put('/users/update_company_profile/:_id', companyUpdate);
-router.post('/users/search_word', companySearchWord);
-router.post('/users/filter', companySearchFilter);
-router.get('/users/verified_candidate', companySearchVerifiedCandidates);
+router.get('/users/company',auth.isLoggedIn, companyGet);
+router.get('/users/current_company/:_id',auth.isLoggedIn, companyGetCurrent);
+router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
+router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
+router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), companyImage);
+router.put('/users/update_company_profile',auth.isLoggedIn, companyUpdate);
+router.post('/users/search_word',auth.isValidCompany, companySearchWord);
+router.post('/users/filter',auth.isValidCompany, companySearchFilter);
+router.get('/users/verified_candidate',auth.isValidCompany, companySearchVerifiedCandidates);
 
 // Chat
 router.post('/users/insert_message', auth.isValidUser, chatInsertMessage);
 router.post('/users/get_candidate', auth.isValidUser, chatGetCandidate);
-router.post('/users/get_messages', chatGetMessages);
-router.post('/users/get_user_messages', chatGetUserMsgs);
-router.get('/users/all_chat', chatGetChat);
-router.post('/users/upload_chat_file/:_id', multer.single('photo'), chatUploadFile);
-router.post('/users/insert_chat_file', chatInsertFile);
-router.post('/users/insert_message_job', chatInsertMessageJob);
-router.post('/users/update_job_message', chatUpdateJobMessage);
-    router.post('/users/get_unread_msgs_of_user', chatGetUnreadUser);
+router.post('/users/get_messages',auth.isValidUser, chatGetMessages);
+router.post('/users/get_user_messages',auth.isValidUser, chatGetUserMsgs);
+router.get('/users/all_chat',auth.isValidUser, chatGetChat);
+router.post('/users/upload_chat_file/:_id',auth.isValidUser, multer.single('photo'), chatUploadFile);
+router.post('/users/insert_chat_file',auth.isValidUser, chatInsertFile);
+router.post('/users/insert_message_job',auth.isValidCompany, chatInsertMessageJob);
+router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
+router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
 
 // Admin
 router.put('/users/admin_role', auth.isAdmin, adminRoll);
-router.put('/users/approve/:_id'  , adminApproveUser);
-router.post('/users/search_by_name' , adminCandidateSearch);
-router.post('/users/admin_candidate_filter' , adminCandidateFilter);
-router.post('/users/admin_search_by_name' , adminCompanySearch);
-router.post('/users/admin_company_filter' , adminComanyFilter);
-router.post('/users/update_chat_msg_status' , adminChatUpdateMsgStatus);
-router.post('/users/get_job_desc_msgs' , adminChatGetJobDescMsg);
-router.post('/users/set_unread_msgs_emails_status' , adminChatSetUnreadMsgStatus);
-router.put('/users/add_privacy_content'  , adminAddPrivacyContent);
+router.put('/users/approve/:_id', auth.isAdmin  , adminApproveUser);
+router.post('/users/search_by_name', auth.isAdmin , adminCandidateSearch);
+router.post('/users/admin_candidate_filter', auth.isAdmin , adminCandidateFilter);
+router.post('/users/admin_search_by_name', auth.isAdmin , adminCompanySearch);
+router.post('/users/admin_company_filter', auth.isAdmin , adminComanyFilter);
+router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent);
+router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
+router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
+router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
+
 
 // Pages
 router.get('/users/get_pages_content/:title', pagesGetContent);
-router.get('/users/get_all_content', pagesGetAllContent);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 import { Component, OnInit,ElementRef, Input } from '@angular/core';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient , HttpHeaders} from '@angular/common/http';
 import { DataService } from "../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -78,7 +78,16 @@ export class AboutCompanyComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 });
        }
       else
@@ -136,13 +145,26 @@ export class AboutCompanyComponent implements OnInit {
               //console.log("data");
                 formData.append('photo', inputEl.files.item(0));
                     
-                this.http.post(URL+'users/employer_image/'+this.currentUser._creator, formData).map((res) => res).subscribe(                
+                this.http.post(URL+'users/employer_image', formData , {
+                    headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
+                }).map((res) => res).subscribe(                
                 (success) => 
                 {
                   //console.log(success);
                   this.router.navigate(['/company_profile']); 
                 },
-                (error) => alert(error))
+                (error) => {
+                   if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                       // this.router.navigate(['/not_found']);                        
+                    }  
+                })
               }
                else
               {
@@ -160,7 +182,16 @@ export class AboutCompanyComponent implements OnInit {
           },
           error => 
           {
-            this.log = 'Something getting wrong';
+                    if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
           });
             }
           }

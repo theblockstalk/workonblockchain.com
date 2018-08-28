@@ -1,5 +1,5 @@
 import { Component, OnInit,AfterViewInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {NgForm,FormsModule} from '@angular/forms';
@@ -73,6 +73,14 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
   ngOnInit() 
   {
      // //console.log(this.htmlContent);
+       this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      this.doScroll();
+      this.sectionScroll= null;
+    });
+  
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if(!this.currentUser)
       {
@@ -113,7 +121,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                       this.no_of_employees=data.no_of_employees;
                       if(data.company_logo != null )
                       {                        
-                      ////console.log(data.image);                     
+                      ////console.log(data[0].image);                     
 
                         this.imgPath =  data.company_logo;
 
@@ -127,7 +135,19 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                 },
                 error => 
                 {
-                  
+                   
+                   if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
+                    
+                    
                 });
       }
       else

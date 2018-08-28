@@ -27,6 +27,8 @@ const logger = require('../../services/logger');
 
 module.exports = function (req, res)
 {
+	console.log("idddddddddddd");
+	console.log(req.body.id);
     get_user_messages(req.body.id).then(function (data)
     {
         if (data)

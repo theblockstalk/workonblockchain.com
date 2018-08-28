@@ -114,7 +114,7 @@ function forgot_passwordEmail_send(data)
                 {
                     //console.log(query_data);
                     name = query_data[0].first_name;
-                    //console.log(name);
+                    console.log(name);
                     forgotPasswordEmail.sendEmail(hash,data , name);
                 }
             });

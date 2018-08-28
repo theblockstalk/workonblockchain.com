@@ -35,7 +35,8 @@ export class AdminCandidateDetailComponent implements OnInit {
   }
     currentUser: User;
     info;createdDate;
-    approve;verify;is_verify;information;
+    approve;verify;is_verify;information;refeered;
+    
   ngOnInit() 
   {
       //console.log(this.user_id);
@@ -60,21 +61,12 @@ export class AdminCandidateDetailComponent implements OnInit {
                 
                 if(data[0].image != null )
                     {
-                       /* let x = data[0].image.split("://");
-                        //console.log(x[0]);
-                        if(x[0] == 'http' || x[0] == 'https')
-                        {
-                            this.imgPath = data[0].image;
-                        }
-                        else
-                        {
-                      ////console.log(data.image);
-                       */
+                       
                         this.imgPath =  data[0].image;
-                        //console.log(this.imgPath);
+                        
                         
                     }
-                //console.log(this.verify);
+                
                 if(this.approve === 1)
                 {
                     this.is_approved = "Aprroved";
@@ -84,19 +76,42 @@ export class AdminCandidateDetailComponent implements OnInit {
                 {
                     this.is_approved = "";
                  }
-                
+               
                 if(data[0]._creator.refered_id)
                 {
                      this.authenticationService.getById(data[0]._creator.refered_id)
                     .subscribe(
                     data => {
-                        this.first_name = data[0].first_name;
-                        this.last_name =data[0].last_name;
+                        
+                        if(data!='')
+                        {
+                            this.first_name = data[0].first_name;
+                            this.last_name =data[0].last_name;
+                        }
+                        else
+                        {                            
+                            this.refeered="null";
+                        }
                         });
                 
             
                 }
 
+            },
+                
+            error =>
+            {
+                if(error.message == 500 || error.message == 401 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
+                
             });
           }
            else
@@ -163,6 +178,20 @@ export class AdminCandidateDetailComponent implements OnInit {
                         }
                    }
                     
+                },
+                error =>
+                {
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
+                
                 });
     }
     

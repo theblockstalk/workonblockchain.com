@@ -60,25 +60,25 @@ export class CandidateTermsComponent implements OnInit {
                 {
                   //console.log(data); 
                   
-                  if(data[0].terms ||data[0].marketing_emails)
+                  if(data.terms ||data.marketing_emails)
                   {
                     
-                    this.termscondition = data[0].terms;
-                    this.marketing_emails = data[0].marketing_emails;  
+                    this.termscondition = data.terms;
+                    this.marketing_emails = data.marketing_emails;  
                               
                   }
-                  if(data[0].terms == true)
+                  if(data.terms == true)
                   {
                       this.about_disable = "";
                       this.active_class='fa fa-check-circle text-success';
                       this.about_link="/about";
                   }
-                  if(!data[0].terms)
+                  if(!data.terms)
                   {
                     this.termscondition = false;
                   }
                     
-                  if(data[0].contact_number  && data[0].nationality && data[0].first_name && data[0].last_name)
+                  if(data.contact_number  && data.nationality && data.first_name && data.last_name)
                   {
                       this.job_disable = "";
                       this.about_active_class = 'fa fa-check-circle text-success';
@@ -86,7 +86,7 @@ export class CandidateTermsComponent implements OnInit {
                       this.link="/job";
                   }
                     
-                  if(data[0].locations && data[0].roles && data[0].interest_area && data[0].expected_salary && data[0].availability_day )
+                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day )
                   {
                        this.resume_disable = "";
                       this.link="/job";
@@ -96,7 +96,7 @@ export class CandidateTermsComponent implements OnInit {
                   }
                     
                
-                    if(data[0].why_work )
+                    if(data.why_work )
                     {
                         this.exp_disable = "";
                         this.resume_class="/resume";
@@ -105,7 +105,7 @@ export class CandidateTermsComponent implements OnInit {
                     // this.router.navigate(['/resume']);
                     }
      
-                    if(data[0].work_history && data[0].education_history && data[0].programming_languages && data[0].current_salary )
+                    if(data.work_history && data.education_history && data.programming_languages && data.current_salary )
                     {
                         this.exp_class = "/experience";
                         this.exp_active_class = 'fa fa-check-circle text-success';
@@ -119,7 +119,17 @@ export class CandidateTermsComponent implements OnInit {
                 },
                 error => 
                 {
-                  this.log = 'Something getting wrong';
+                  
+                     if(error.message == 500 || error.message == 401)
+                     {
+                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                         
+                     }
+                     else
+                     {
+                         
+                    }
                 });
               
        }
@@ -150,6 +160,19 @@ export class CandidateTermsComponent implements OnInit {
                   this.router.navigate(['/about']);
               }
               
+          },
+          error=>
+          {            
+                     if(error.message == 500 || error.message == 401)
+                     {
+                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                         
+                     }
+                     else
+                     {
+                         
+                    }   
           });
        }
   }

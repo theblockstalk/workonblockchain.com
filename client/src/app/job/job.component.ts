@@ -64,28 +64,28 @@ export class JobComponent implements OnInit {
                 data => {
 
                    
-                if(data[0].experience_roles!="")
+                if(data.experience_roles!="")
                   {
                     this.exp_class = "btn";
                   }
                     
-                  if(data[0].contact_number  && data[0].nationality && data[0].first_name && data[0].last_name)
+                  if(data.contact_number  && data.nationality && data.first_name && data.last_name)
                   {
                         this.about_active_class = 'fa fa-check-circle text-success';
                   }
-                  if(data[0].terms==true)
+                  if(data.terms==true)
                   {
                         this.term_active_class='fa fa-check-circle text-success';
                       this.term_link = '/terms-and-condition';
                   }
 
-                if(data[0].locations.length>0 || data[0].roles.length>0 || data[0].interest_area.length>0 ||  data[0].expected_salary || data[0].availability_day || data[0].expected_salary_currency)
+                if(data.locations.length>0 || data.roles.length>0 || data.interest_area.length>0 ||  data.expected_salary || data.availability_day || data.expected_salary_currency)
                 {
                     
                    
-                    if(data[0].locations)
+                    if(data.locations)
                     {
-                     for (let country1 of data[0].locations) 
+                     for (let country1 of data.locations) 
                      {
                       
                       for(let option of this.options)
@@ -104,9 +104,9 @@ export class JobComponent implements OnInit {
                     }
                     
                     
-                    if(data[0].interest_area)
+                    if(data.interest_area)
                     {
-                    for (let interest of data[0].interest_area) 
+                    for (let interest of data.interest_area) 
                      {
                       
                       for(let option of this.area_interested)
@@ -126,9 +126,9 @@ export class JobComponent implements OnInit {
                    // this.jobselected=data.roles;
                     
                     //this.selectedValue = data.interest_area;
-                    if(data[0].roles)
+                    if(data.roles)
                     {
-                    for (let area of data[0].roles) 
+                    for (let area of data.roles) 
                      {
                       
                       for(let option of this.dropdown_options)
@@ -146,13 +146,13 @@ export class JobComponent implements OnInit {
                     }
                     }
           
-                    this.salary = data[0].expected_salary;
-                    this.availability_day = data[0].availability_day;
-                    this.base_currency = data[0].expected_salary_currency;
+                    this.salary = data.expected_salary;
+                    this.availability_day = data.availability_day;
+                    this.base_currency = data.expected_salary_currency;
                     
                     //this.resume_class="/resume";
 
-                    if(data[0].locations && data[0].roles && data[0].interest_area && data[0].expected_salary && data[0].availability_day )
+                    if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day )
                     {
                         this.active_class = 'fa fa-check-circle text-success';
                     this.class = "btn";
@@ -162,7 +162,7 @@ export class JobComponent implements OnInit {
                        
                   }
                
-              if(data[0].why_work)
+              if(data.why_work)
               {
                 this.exp_disable ='';
                 this.resume_active_class='fa fa-check-circle text-success';
@@ -172,7 +172,7 @@ export class JobComponent implements OnInit {
                     
                     
      
-              if( data[0].programming_languages && data[0].current_salary)
+              if( data.programming_languages && data.current_salary)
               {
                   this.exp_class = "/experience";
                   this.exp_active_class = 'fa fa-check-circle text-success';
@@ -185,7 +185,16 @@ export class JobComponent implements OnInit {
               
                 },
                 error => {
-                  this.log = 'Something getting wrong';
+                   if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
                    
                 });
           //this.router.navigate(['/about']);
@@ -382,7 +391,7 @@ country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
           
         if(this.jobselected.length<=0)
         {
-            this.roles_log = "Please select min 1 role1";
+            this.roles_log = "Please select min 1 role";
         }
         
         if(this.base_currency==-1)
@@ -422,7 +431,16 @@ country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
                
                 },
                 error => {
-                  this.log = 'Something getting wrong';
+                    if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
                    
                 });
         

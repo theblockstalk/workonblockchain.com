@@ -51,20 +51,20 @@ export class ResumeComponent implements OnInit {
             .subscribe(
                 data => {
 
-                if(data[0].terms==true)
+                if(data.terms==true)
                   {
                       this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
                ////console.log(data);
-                if(data[0].commercial_platform || data[0].experimented_platform || data[0].why_work || data[0].platforms)
+                if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
                 {
-                  this.why_work=data[0].why_work;
+                  this.why_work=data.why_work;
 
-                    if(data[0].commercial_platform)
+                    if(data.commercial_platform)
                     {
-                        this.commercial_expYear =data[0].commercial_platform;
-                     for (let key of data[0].commercial_platform) 
+                        this.commercial_expYear =data.commercial_platform;
+                     for (let key of data.commercial_platform) 
                       {
                         for(var i in key)
                         {
@@ -107,10 +107,10 @@ export class ResumeComponent implements OnInit {
                       }
                      }
 
-                      if(data[0].platforms)
+                      if(data.platforms)
                       {
-                          this.platforms = data[0].platforms;
-                       for (let key of data[0].platforms) 
+                          this.platforms = data.platforms;
+                       for (let key of data.platforms) 
                       {
                         for(var i in key)
                         {
@@ -154,9 +154,9 @@ export class ResumeComponent implements OnInit {
                      }
 
                      
-                      if(data[0].experimented_platform)
+                      if(data.experimented_platform)
                       {
-                          for (let plat of data[0].experimented_platform) 
+                          for (let plat of data.experimented_platform) 
                      {
                       
                       for(let option of this.experimented)
@@ -219,13 +219,13 @@ export class ResumeComponent implements OnInit {
 
                 }
 
-                if(data[0].locations && data[0].roles && data[0].interest_area || data[0].expected_salary || data[0].availability_day )
+                if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day )
                   {
                       this.job_active_class = 'fa fa-check-circle text-success';
                        
                   }
                
-              if(data[0].why_work  )
+              if(data.why_work  )
               {
                 this.exp_class = "/experience";
                  this.exp_disable = "";   
@@ -233,7 +233,7 @@ export class ResumeComponent implements OnInit {
                // this.router.navigate(['/resume']);
               }
      
-              if( data[0].programming_languages && data[0].current_salary )
+              if( data.programming_languages && data.current_salary )
               {
                   
                   this.exp_active_class = 'fa fa-check-circle text-success';
@@ -244,7 +244,16 @@ export class ResumeComponent implements OnInit {
               
                 },
                 error => {
-                  //this.log = 'Something getting wrong';
+                   if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
                    
                 });
           //this.router.navigate(['/about']);
@@ -407,14 +416,20 @@ export class ResumeComponent implements OnInit {
                     //window.location.href = '/experience';
                 }
 
-                if(data.error )
-                {
-                    //console.log(data.error);
-                }
                
                 },
                 error => {
-                  //this.log = 'Something getting wrong';
+                   
+                     if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
                    
                 });
       }
