@@ -101,9 +101,7 @@ export class UserService {
     
     
     getByRefrenceCode(code: string){
-        return this.http.post<any>(URL+'users/get_refrence_code', {code:code} , {
-            headers: new HttpHeaders().set('Authorization', this.token)
-        })
+        return this.http.post<any>(URL+'users/get_refrence_code', {code:code} )
             .map((res: Response) => 
             {
                 if (res) 
@@ -290,10 +288,10 @@ export class UserService {
 
     }
 
-    experience(user_id: string, detail: CandidateProfile , exp : any , history : any,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
+    experience(user_id: string,detail : CandidateProfile ,  exp : any , history : any,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/exp' , { detail: detail, education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp } , {
+        return this.http.put<any>(URL+'users/welcome/exp' , { detail :detail , education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp } , {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) => 
@@ -1054,6 +1052,29 @@ export class UserService {
                
             });
         
+    }
+    
+    
+    approval_email(detail: string) 
+    {
+       
+        return this.http.post(URL+'users/approval_email' , detail, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;               
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
  
 }

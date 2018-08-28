@@ -188,19 +188,13 @@ export class HeaderComponent implements OnInit {
     
     logout()
     {
-        
-        
+   
          this.authenticationService.destroyToken(this.currentUser._id)
             .subscribe(
-                data => {      
-                console.log(data);
+                data => {                    
                     if(data)
                     {
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('googleUser');
-                        localStorage.removeItem('close_notify');
-                        localStorage.removeItem('linkedinUser');
-                        localStorage.removeItem('admin_log');
+                        
                     }
                     
                     },
@@ -214,7 +208,11 @@ export class HeaderComponent implements OnInit {
                     
                     });
         
-        
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
        
     }
     

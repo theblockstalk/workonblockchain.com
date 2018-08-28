@@ -3,8 +3,8 @@
 <section class = "wizard_page">	
 
 	<div class="container">
-		<div class="row">
-			<div class="col-md-9" *ngFor = "let data of info">
+		<div class="row profile_group">
+			<div class="col-md-12" *ngFor = "let data of info">
 				 <section class = "profile personal_info">
 
 				 	<div class="col-md-6" >
@@ -32,7 +32,8 @@
 				 		</span>
 				 		<span class = "short_intro">
 				 		<form #approve_form="ngForm" >
-								
+								<input type="hidden" name="type"  [ngModel]="data._creator.type">
+								<input type="hidden" name="email"  [ngModel]="data._creator.email">
 								<input type="hidden" name="name"  [ngModel]="data.first_name">
 								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
 								<input type="hidden" name="id" [ngModel]="data._creator._id">

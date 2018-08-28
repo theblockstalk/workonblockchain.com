@@ -101,10 +101,9 @@ function filter(params)
 
             }
 
-
             if(params.location !== -1)
             {
-                const locationFilter = { "country": params.location };
+                const locationFilter = { "locations": {$in:params.location} };
                 queryString.push(locationFilter);
 
             }

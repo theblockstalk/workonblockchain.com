@@ -97,7 +97,8 @@
            <div class = "form_error" *ngIf="jobselected.length<=0">
 								<span class = "error">{{roles_log}}</span>
 							</div>
-              <hr>
+              <div class = "form-group col-md-12 salary_class">
+              
               <div class="form-group col-md-6 col-left">
                 <label><p  class = "label-p">Yearly expected base salary</p></label>
                        <input type="number" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="salary">
@@ -120,8 +121,35 @@
 								<span class = "error">{{currency_log}}</span>
 							</div>
             </div>
-             
-            <hr>
+            </div>
+            
+      
+           <div class = "form-group col-md-12 salary_class">
+           <div class="form-group col-md-6 col-left">
+					<label><p  class = "label-p">Current Base salary</p></label>
+                       <input type="number" #esalary="ngModel" class="form-control" id="" placeholder="2000" #salary_field name="current_salary"  [(ngModel)]="current_salary">
+               
+        
+					<div class = "form_error" *ngIf="!current_salary ">
+						<span class = "error">{{current_sal_log}}</span>
+					</div> 
+			</div>
+            <div class="form-group col-md-6 setting-top">
+              <label><p class = "label-p"></p></label>
+            <select [(ngModel)]="current_currency" class="form-control" id="currency"  required name="current_currency" >
+                   <option value="-1" disabled selected hidden >Please choose currency</option>
+                
+                  <option class='option' *ngFor='let current_currency of currency' #choose_currency [value]="current_currency" selected>{{current_currency}}</option>
+              
+                </select>
+                
+                
+                <div class = "form_error" *ngIf="current_currency==-1 ">
+                <span class = "error">{{current_currency_log}}</span>
+              </div> 
+            </div>
+            </div>
+                  <hr>
 
             <div class="form-group col-md-12 area_interest">
             <div class="container collection">

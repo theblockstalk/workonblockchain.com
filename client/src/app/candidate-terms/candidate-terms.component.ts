@@ -86,7 +86,7 @@ export class CandidateTermsComponent implements OnInit {
                       this.link="/job";
                   }
                     
-                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day )
+                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day  && data.current_salary )
                   {
                        this.resume_disable = "";
                       this.link="/job";
@@ -105,7 +105,7 @@ export class CandidateTermsComponent implements OnInit {
                     // this.router.navigate(['/resume']);
                     }
      
-                    if(data.work_history && data.education_history && data.programming_languages && data.current_salary )
+                    if(data.programming_languages.length>0 &&data.description)
                     {
                         this.exp_class = "/experience";
                         this.exp_active_class = 'fa fa-check-circle text-success';

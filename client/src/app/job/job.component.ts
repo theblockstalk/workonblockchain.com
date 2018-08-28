@@ -41,11 +41,12 @@ export class JobComponent implements OnInit {
     term_link;
     resume_disable;
     exp_disable;
-    
+    current_currency;
+    current_salary
   ngOnInit() 
   {
   ////console.log(this.options.name);
-    
+    this.current_currency =-1;
     this.base_currency = -1;
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
@@ -148,11 +149,15 @@ export class JobComponent implements OnInit {
           
                     this.salary = data.expected_salary;
                     this.availability_day = data.availability_day;
-                    this.base_currency = data.expected_salary_currency;
+                    if(data.expected_salary_currency)
+                        this.base_currency = data.expected_salary_currency;
+                    this.current_salary = data.current_salary;
+                    if(data.current_currency)   
+                        this.current_currency =data.current_currency;                    
                     
                     //this.resume_class="/resume";
 
-                    if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day )
+                    if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day&& data.current_salary )
                     {
                         this.active_class = 'fa fa-check-circle text-success';
                     this.class = "btn";
@@ -172,7 +177,7 @@ export class JobComponent implements OnInit {
                     
                     
      
-              if( data.programming_languages && data.current_salary)
+              if( data.programming_languages.length>0 &&data.description )
               {
                   this.exp_class = "/experience";
                   this.exp_active_class = 'fa fa-check-circle text-success';
@@ -378,7 +383,8 @@ export class JobComponent implements OnInit {
     }
 
      
-country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
+    country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
+    current_sal_log; current_currency_log;
       onSubmit(f: NgForm) 
       {
         //console.log(f.value);
@@ -413,8 +419,17 @@ country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
         {
             this.avail_log = "Please select employment availability";
         }
+        if(!this.current_salary)
+       {
+           this.current_sal_log = "Please fill current base salary";
           
-        if(this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
+       }
+       if(this.current_currency ==-1)
+       {
+           this.current_currency_log = "Please choose currency";
+       }
+          
+        if(this.current_salary && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
         {
         this.authenticationService.job(this.currentUser._creator,f.value)
             .subscribe(

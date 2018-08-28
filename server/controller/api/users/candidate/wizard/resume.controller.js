@@ -47,7 +47,8 @@ function resume_data(_id, userParam)
                 why_work: userParam.why_work,
                 commercial_platform: userParam.commercial_experience_year,
                 experimented_platform: userParam.experimented_platform,
-                platforms: userParam.platforms
+                platforms: userParam.platforms,
+                
             };
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
         {

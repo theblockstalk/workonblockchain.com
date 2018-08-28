@@ -99,8 +99,9 @@
 						<div class = "ofr_btn">
 												
 						<form #approve_form="ngForm" >
-								
+								<input type="hidden" name="email"  [ngModel]="data._creator.email">
 								<input type="hidden" name="name"  [ngModel]="data.first_name">
+								<input type="hidden" name="type"  [ngModel]="data._creator.type">
 								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
 								<input type="hidden" name="id" [ngModel]="data._creator._id">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">

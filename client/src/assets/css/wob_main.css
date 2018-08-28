@@ -3772,6 +3772,11 @@ input:checked + .slider:before {
     }
 }
 
+.salary_class
+{
+	padding-left: 0px;
+}
+
 
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/

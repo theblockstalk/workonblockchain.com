@@ -5,8 +5,8 @@
 	</div>
 
 	<div class="container" *ngIf = "!error">
-		<div class="row">
-			<div class="col-md-9" *ngFor = "let data of info">
+		<div class="row profile_group">
+			<div class="col-md-12" *ngFor = "let data of info">
 				 <section class = "profile personal_info">
 
 				 	<div class="col-md-6">
@@ -18,7 +18,7 @@
 				 		</span>
 				 		
 				 		<span class = "name">
-				 			<h3>{{data.first_name}} {{data.last_name}} </h3>
+				 			<h3>{{data.company_name}} </h3>
 				 		</span>
 
 				 		<span class = "short_intro">
@@ -32,9 +32,10 @@
 				 		<p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Candidates</a></p>
 				 		</span>
 				 		<span class = "short_intro">
-				 		<form #approve_form="ngForm" >
-								
+				 			<form #approve_form="ngForm" >
+								<input type="hidden" name="email"  [ngModel]="data._creator.email">
 								<input type="hidden" name="name"  [ngModel]="data.first_name">
+								<input type="hidden" name="type"  [ngModel]="data._creator.type">
 								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
 								<input type="hidden" name="id" [ngModel]="data._creator._id">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
@@ -58,12 +59,7 @@
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-				 			<li>
-				 				
-					 				<span class = "list-icon span_bg"><img src="assets/profile/comp.png"> </span> 
-					 				<span class = "li_txt">{{data.company_name}}</span>
-				 				
-				 			</li>
+				 			
 
 				 			<li>
 				 				
@@ -78,11 +74,23 @@
 				 					<span class = "li_txt">Country : {{data.company_country}}</span>
 				 		
 				 			</li>
-
+							<li>
+				 				
+					 				<span class = "list-icon span_bg"><img src="assets/profile/comp.png"> </span> 
+					 				<span class = "li_txt">City: {{data.company_city}}</span>
+				 				
+				 			</li>
+				 			
+				 			<li>
+				 				
+					 				<span class = "list-icon span_bg"><img src="assets/profile/comp.png"> </span> 
+					 				<span class = "li_txt">Postcode: {{data.company_postcode}}</span>
+				 				
+				 			</li>
 				 			<li>
 				 				
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-				 					<span class = "li_txt"> Contact Number : {{data.company_phone}}</span>
+				 					<span class = "li_txt"> Phone : {{data.company_phone}}</span>
 				 			
 				 			</li>
 				 		</ul>
@@ -139,50 +147,10 @@
       				
 				 </section>
 				 
-				 <section class = "profile job_info">
-					<h3>Company Information</h3>
-				 	
-				 
-
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Email Address: </strong>
-							<span>{{data._creator.email}}</span>
-						</p>
-				 	</div>
-				 	
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Job Title: </strong>
-							<span>{{data.job_title}}</span>
-						</p>
-				 	</div>
-				 	<div class="col-md-6 info-area">
-      					<p>
-							<strong>Company Website: </strong>
-							<span><a [href]="('http://' + data.company_website)" target="_blank">{{data.company_website}}</a></span>
-						</p>
-
-      				</div>
-      				
-      				<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Company City</strong>
-							<span>{{data.company_city}}</span>
-						</p>
-				 	</div>
-				 	
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Company Postcode</strong>
-							<span>{{data.company_postcode}}</span>
-						</p>
-				 	</div>
-				 				 	
-				 </section>
+				
 				 
 				 <section class = "profile job_info">
-					<h3>About the company</h3>
+					<h3>Company Info</h3>
 				 	
 				 	<!--<div class="col-md-6 info-area">
 				 		<p>
@@ -199,6 +167,12 @@
 						</p>
 				 	</div>
 				 	<div class="col-md-6 info-area">
+				 		<p>
+							<strong>How is the company funded:</strong>
+							<span>{{data.company_funded}}</span>
+						</p>
+				 	</div>
+				 	<div class="col-md-6 info-area">
       					<p>
 							<strong>Number of employees: </strong>
 							<span>{{data.no_of_employees}}</span>
@@ -206,15 +180,36 @@
 
       				</div>
       				
-      				<div class="col-md-6 info-area">
-				 		<p>
-							<strong>How is the company funded</strong>
-							<span>{{data.company_funded}}</span>
-						</p>
-				 	</div>
+      				
 				 	
 				 </section>
+				  <section class = "profile job_info">
+					<h3>Company Administration</h3>
+				 	
+				 	<div class="col-md-6 info-area">
+				 		<p>
+							
+							<span class="alignment">{{data.first_name}} {{data.last_name}}</span>
+						</p>
+				 	</div>
 				 
+				 	
+				 	<div class="col-md-6 info-area">
+				 		<p>
+							<strong>Title: </strong>
+							<span>{{data.job_title}}</span>
+						</p>
+				 	</div>
+				 
+				 	<div class="col-md-6 info-area">
+				 		<p>
+							<strong>Email Address: </strong>
+							<span>{{data._creator.email}}</span>
+						</p>
+				 	</div>
+				 					 	
+				 				 	
+				 </section>
 				 
 				 
 				 </div>

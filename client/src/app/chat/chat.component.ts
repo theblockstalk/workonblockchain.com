@@ -108,7 +108,16 @@ export class ChatComponent implements OnInit {
                     }
                 },
                 error => {
-                    //console.log('error');
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 }
             );
         }
@@ -128,7 +137,16 @@ export class ChatComponent implements OnInit {
                     }
                 },
                 error => {
-                    //console.log('error');
+                   if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 }
             );
         }
@@ -205,8 +223,16 @@ export class ChatComponent implements OnInit {
                         }
                     },
                     error => {
-                        //console.log('error');
-                        //console.log(error);
+                        if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                     }
                 );
             }
@@ -249,16 +275,32 @@ export class ChatComponent implements OnInit {
 									}
                                 },
                                 error => {
-                                    //console.log('error');
-                                    //console.log(error);
+                                    if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                    if(error.message == 403)
+                                    {
+                                        // this.router.navigate(['/not_found']);                        
+                                    } 
                                     this.log = error;
                                 }
                             );
                         }
                     },
                     error => {
-                        //console.log('error');
-                        //console.log(error);
+                        if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        }   
                     }
                 );
                 
@@ -300,28 +342,33 @@ export class ChatComponent implements OnInit {
                             //console.log(data['datas']);
                             this.new_msgss = data['datas'];
                             this.job_desc = data['datas'][0];
-                            /*this.authenticationService.update_chat_msg_status(this.credentials.id,this.currentUser._creator,0)
-                            .subscribe(
-                                data => {
-                                    //console.log('done');
-                                    //console.log(data);
-                                },
-                                error => {
-                                    //console.log('error');
-                                    //console.log(error);
-                                }
-                            );*/
+                           
                         },
                         error => {
-                            //console.log('error');
-                            //console.log(error);
+                            if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                         }
                     );
                 },
                 error => {
-                    //console.log('error');
-                    //console.log(error);
-                    //this.log = error;
+                   if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 }
             );
       }
@@ -354,9 +401,16 @@ export class ChatComponent implements OnInit {
 				);
             },
             error => {
-                //console.log('error');
-                //console.log(error);
-                //this.log = error;
+                if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
             }
         );
   }
@@ -381,15 +435,30 @@ export class ChatComponent implements OnInit {
 						this.company_reply = 1;
 					},
 					error => {
-						//console.log('error');
-						//console.log(error);
+						if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
 					}
 				);
             },
             error => {
-                //console.log('error');
-                //console.log(error);
-                //this.log = error;
+                if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
             }
         );
   }
@@ -426,15 +495,30 @@ export class ChatComponent implements OnInit {
                             this.job_desc = data['datas'][0];
                         },
                         error => {
-                            //console.log('error');
-                            //console.log(error);
+                            if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                         }
                     );
                 },
                 error => {
-                    //console.log('error');
-                    //console.log(error);
-                    //this.log = error;
+                   if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 }
             );
         }
@@ -472,15 +556,30 @@ export class ChatComponent implements OnInit {
                             this.job_desc = data['datas'][0];
                         },
                         error => {
-                            //console.log('error');
-                            //console.log(error);
+                            if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                         }
                     );
                 },
                 error => {
-                    //console.log('error');
-                    //console.log(error);
-                    //this.log = error;
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 }
             );
       }
@@ -514,22 +613,44 @@ export class ChatComponent implements OnInit {
 									this.job_desc = data['datas'][0];
 								},
 								error => {
-									//console.log('error');
-									//console.log(error);
+									if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
 								}
 							);
                         },
                         error => {
-                            //console.log('error');
-                            //console.log(error);
-                            //this.log = error;
+                            if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                         }
                     );
             },
             error => {
-                //console.log('error');
-                //console.log(error);
-                //this.log = error;
+                if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
             }
         );
   }
@@ -559,22 +680,44 @@ export class ChatComponent implements OnInit {
 									this.job_desc = data['datas'][0];
 								},
 								error => {
-									//console.log('error');
-									//console.log(error);
+									if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
 								}
 							);
 						},
                         error => {
-                            //console.log('error');
-                            //console.log(error);
-                            //this.log = error;
+                            if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                         }
                     );
             },
             error => {
-                //console.log('error');
-                //console.log(error);
-                //this.log = error;
+                if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
             }
         );
   }
@@ -626,8 +769,16 @@ export class ChatComponent implements OnInit {
                             //console.log(data);
                         },
                         error => {
-                            //console.log('error');
-                            //console.log(error);
+                            if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                         }
                     );
                     if(this.currentUser.type=='candidate'){
@@ -679,9 +830,16 @@ export class ChatComponent implements OnInit {
                     }
                 },
                 error => {
-                    //console.log('error');
-                    //console.log(error);
-                    //this.log = error;
+                    if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                 }
             );
         }, 2000);
@@ -694,8 +852,16 @@ export class ChatComponent implements OnInit {
 					this.unread_msgs_info.push(data);
 				},
 				error => {
-					//console.log('error');
-					//console.log(error);
+					if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
 				}
 			);
 		}
@@ -743,15 +909,30 @@ export class ChatComponent implements OnInit {
 								this.job_desc = data['datas'][0];
 							},
 							error => {
-								//console.log('error');
-								//console.log(error);
+								if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
 							}
 						);
 					},
                     error => {
-                        //console.log('error');
-                        //console.log(error);
-                        //this.log = error;
+                        if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                     }
                 );
             },

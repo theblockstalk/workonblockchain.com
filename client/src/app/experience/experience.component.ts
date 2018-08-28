@@ -181,11 +181,11 @@ export class ExperienceComponent implements OnInit
                    // this.current_currency =-1;
 
                 }
-                 if(data.work_history && data.education_history&& data.programming_languages &&data.current_salary && data.current_currency)
+                 if(data.programming_languages.length>0 &&data.description)
                  {
                      this.exp_active_class = 'fa fa-check-circle text-success';
                 }
-                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day )
+                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day &&data.current_salary && data.current_currency )
                   {
                     this.active_class='fa fa-check-circle text-success';
                      // this.job_active_class = 'fa fa-check-circle text-success';
@@ -464,15 +464,7 @@ export class ExperienceComponent implements OnInit
     experience_submit(searchForm: NgForm)
     {    
     
-       if(!this.salary)
-       {
-           this.current_sal_log = "Please fill current base salary";
-           
-       }
-       if(this.current_currency ==-1)
-       {
-           this.current_currency_log = "Please choose currency";
-       }
+       
        if(this.language.length<=0)
        {
            
@@ -583,37 +575,16 @@ export class ExperienceComponent implements OnInit
             
         }
         
-        //console.log(this.ExperienceForm.value.ExpItems.length);
-        //console.log(this.exp_count);
-       
-       /* if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count == 0 && this.exp_count == 0 )
-        {
-           console.log("hiii");
-           this.submit_info(searchForm);
-            
-        }*/
+     
         
-        if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
+        if(this.language && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
         {
            //console.log("else if 3");
            this.submit_info(searchForm);
             
         }
         
-       /* else if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count == 0 && this.exp_count === this.ExperienceForm.value.ExpItems.length )
-        {
-           console.log("else if 2");
-           this.submit_info(searchForm);
-            
-        }
-            
-        else if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count == 0)
-        {
-           console.log("else if 1");
-           this.submit_info(searchForm);
-            
-        }*/
-        
+      
         
         
         

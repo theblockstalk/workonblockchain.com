@@ -121,7 +121,7 @@
 							</div>
 							<hr>
 							
-							<div class="form-group col-md-12">
+							<div class="form-group ">
 							<div class="container collection col-left col-md-12">
 								<div>
 									<p class = "question-label">What role are you looking for?</p>
@@ -153,7 +153,7 @@
 						<hr/>
 
 							
-
+						<div class="form-group col-md-12 salary_class">
 							<div class="form-group col-md-6">
 								<label><p class = "label-p">Yearly expected base salary</p></label>
 								<input type="text" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="expected_salaryyy">
@@ -166,10 +166,22 @@
               
 								</select>
 							</div>
+						</div>
+						<div class="form-group col-md-12 salary_class">
+							<div class="form-group col-md-6">
+								<label><p  class = "label-p">Current Base salary</p></label>
+								<input type="text" class="form-control" id="" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">							
+							</div>
+						
+							<div class="form-group col-md-6 setting-top">
+							<label><p  class = "label-p"></p></label>
+							<select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
+								<option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>          
+							</select>
+							</div>
+							</div>
 							
-							
-							
-							<div class="form-group col-md-12">
+							<div class="form-group">
 							<div class="container collection col-left col-md-12">
 								<div>
 									<p class = "question-label">Which area are you interested in?</p>
@@ -237,7 +249,7 @@
 							
 									<div class="answer">
 										
-										<div class = "row">
+										<div class = "">
 											<div class="">
                       <span class = "checkbox-header"> <strong>Platforms commercially worked with </strong></span><br/>
                        <div class="answer">
@@ -356,24 +368,7 @@
                 </div>
               </div>
               <hr>
-         <!--  <div *ngIf="experimented_platform?.length > 0">
-          <label><p>Number of years</p></label>
-          <div class = "row" *ngFor="let exp_value of experimented_platform;let i_index = index">
-           
-            <p class="rd_label label-p">{{exp_value.value}}</p>
-            <div class = "form-group radio-toolbar col-md-12 controls__group">
-		<div *ngFor="let exp of exp_year; let i_ind =index">
-        <input type="radio" name="rrgroup - {{ exp_value.value }} "  [checked]=" exp_expYear[i_index] === exp.value && exp_db_valye[i_index] === exp_value.value" 
-            value="{{exp.value}}" (change)="onExpYearOptions($event , exp_value.value)" id="radiog{{exp_value.value}}{{i_ind}}">
-       <label class="radio-inline d-flex justify-content-center align-items-center" for="radiog{{exp_value.value}}{{i_ind}}">
-        {{exp.name}}
-          </label>
-		  </div>    
-		 <input type="text" class="form-control" name="experience_year" [(ngModel)]='expYear' style="display: none;">
-      </div>
-	  
-          </div>
-          </div>-->
+       
 
 						</fieldset>
 
@@ -393,17 +388,7 @@
 							<legend class="scheduler-border">Experience</legend>
 					
 
-							<div class="form-group col-md-6 col-left">
-								<label><p  class = "label-p">Current Base salary</p></label>
-								<input type="text" class="form-control" id="" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">							
-							</div>
 							
-							<div class="form-group col-md-6 col-left setting-top_2">
-							<label><p  class = "label-p"></p></label>
-							<select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
-								<option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>          
-							</select>
-							</div>
 					<div class="form-group col-md-12">
 							<div class="collection">
 										<div class = "answer">

@@ -114,9 +114,16 @@ export class AdminDisplayChatComponent implements OnInit {
                                     //console.log(this.users[0].image);
                                 },
                                 error => {
-                                    //console.log('error');
-                                    //console.log(error);
-                                    this.log = error;
+                                    if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                                 }
                             );
                     }
@@ -128,8 +135,16 @@ export class AdminDisplayChatComponent implements OnInit {
                      }
                 },
                 error => {
-                    //console.log('error');
-                    //console.log(error);
+                    if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                 }
             );
         }
@@ -158,9 +173,16 @@ export class AdminDisplayChatComponent implements OnInit {
                                 //console.log(this.users);
                             },
                             error => {
-                                //console.log('error');
-                                //console.log(error);
-                                this.log = error;
+                                if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                             }
                         );
                     }
@@ -173,8 +195,16 @@ export class AdminDisplayChatComponent implements OnInit {
                      }
                 },
                 error => {
-                    //console.log('error');
-                    //console.log(error);
+                    if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                 }
             );
             
@@ -249,9 +279,16 @@ export class AdminDisplayChatComponent implements OnInit {
                     }
                 },
                 error => {
-                    //console.log('error');
-                    //console.log(error);
-                    //this.log = error;
+                    if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                 }
             );
             this.candidate = email;
@@ -334,6 +371,16 @@ export class AdminDisplayChatComponent implements OnInit {
                         },
                         error => 
                         {
+                            if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
                   
                          }); 
                     
