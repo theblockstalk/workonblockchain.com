@@ -10,6 +10,7 @@ import { LinkedInService } from 'angular-linkedin-sdk';
 //import { Subscription } from 'rxjs/Subscription';
 import { DataService } from "../data.service";
 import {NgForm} from '@angular/forms';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -30,8 +31,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService) {
-
+        private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService,private titleService: Title,private newMeta: Meta) {
+		this.titleService.setTitle('Work on Blockchain | Login');
         //this.code = route.snapshot.params['code'];
        // //console.log(this.code);
         // //console.log(this.code);
@@ -54,7 +55,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() 
   {
-      
+      this.newMeta.addTags([
+			{ name: 'description', content: 'Login developers' },
+			{ name: 'keywords', content: 'login blockchain recruitment developers workonblockchain.com' }
+		]);
       this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.dataservice.ecurrentMessage.subscribe(message => this.error = message);
        setInterval(() => {  

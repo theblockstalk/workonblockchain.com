@@ -70,6 +70,7 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { MyDatePickerModule } from 'mydatepicker';
+import { FeesComponent } from './fees/fees.component';
 //import {environment} from '../environments/environment';
 
 const google_id = environment.google_id;
@@ -129,7 +130,7 @@ const appRoutes: Routes = [
     {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
     {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
     {path : 'admin-terms-and-condition-editor' , component: AdminTermsConditionEditorComponent},
-    {path : 'privacy-policy' , component: PrivacyPolicyComponent},
+    {path : 'privacy-notice' , component: PrivacyPolicyComponent},
     {path : 'terms-for-candidate' , component: TermsAndConditionComponent},
     {path : 'account-settings' , component: AccountSettingsComponent},
     {path : 'faq' , component: FaqComponent},
@@ -137,7 +138,7 @@ const appRoutes: Routes = [
     {path : 'my-profile' , component: PublicProfileLinkComponent},
     {path : 'contact-us' , component: ContactUsComponent},
     {path : 'legal-notice' , component: LegalNoticeComponent},
-    
+    {path : 'fees' , component: FeesComponent},
     {path : 'change-password' , component: ChangePasswordComponent},
     //import { SettingsComponent } from './settings/settings.component';
 
@@ -197,6 +198,7 @@ const appRoutes: Routes = [
     ContactUsComponent,
     LegalNoticeComponent,
     ChangePasswordComponent,
+    FeesComponent,
     	
 
   ],

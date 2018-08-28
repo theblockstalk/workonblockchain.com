@@ -110,7 +110,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     
   currency=
   [
-      "? GBP" ,"? EUR" , "$ USD"
+      "£ GBP" ,"€ EUR" , "$ USD"
   ]
     
   month= 
@@ -284,7 +284,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         //console.log(this.is_approved);
                         if(this.is_approved === 0 )
                         {
-                            this.msg = "You can access this feature when your profile has been approved"; 
+                            this.msg = "You can access this page when your account has been approved by an admin."; 
                             this.log='';  
                         }
                         else if(data._creator.disable_account == true)
