@@ -687,7 +687,23 @@ body{
     }
 }
 
+.newsletter_signup {
+    position: relative;
+    background: #f6f9fc;
+    float: left;
+    width: 100%;
+    z-index: 999;
+    padding: 30px 0px;
+}
 
+.newsletter_signup h2 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 23px;
+    margin-bottom: 30px;
+    color: #32325d;
+}
 
 /*====Question ask section====*/
 .question{
@@ -3772,11 +3788,19 @@ input:checked + .slider:before {
     }
 }
 
+
 .salary_class
 {
 	padding-left: 0px;
 }
 
+
+.ref_msg{
+	color: green;
+	margin-bottom: 2%;
+	margin-left: 16%;
+	font-weight: bold;
+}
 
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/

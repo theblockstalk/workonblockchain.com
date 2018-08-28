@@ -208,11 +208,13 @@ export class HeaderComponent implements OnInit {
                     
                     });
         
+
                         localStorage.removeItem('currentUser');
                         localStorage.removeItem('googleUser');
                         localStorage.removeItem('close_notify');
                         localStorage.removeItem('linkedinUser');
                         localStorage.removeItem('admin_log');
+
        
     }
     
