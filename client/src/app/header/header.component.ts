@@ -196,11 +196,7 @@ export class HeaderComponent implements OnInit {
                 console.log(data);
                     if(data)
                     {
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('googleUser');
-                        localStorage.removeItem('close_notify');
-                        localStorage.removeItem('linkedinUser');
-                        localStorage.removeItem('admin_log');
+                        
                     }
                     
                     },
@@ -214,7 +210,11 @@ export class HeaderComponent implements OnInit {
                     
                     });
         
-        
+					localStorage.removeItem('currentUser');
+					localStorage.removeItem('googleUser');
+					localStorage.removeItem('close_notify');
+					localStorage.removeItem('linkedinUser');
+					localStorage.removeItem('admin_log');
        
     }
     

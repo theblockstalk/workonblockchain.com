@@ -102,7 +102,7 @@ export class UserService {
     
     getByRefrenceCode(code: string){
         return this.http.post<any>(URL+'users/get_refrence_code', {code:code} , {
-            headers: new HttpHeaders().set('Authorization', this.token)
+            
         })
             .map((res: Response) => 
             {

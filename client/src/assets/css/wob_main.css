@@ -3788,7 +3788,12 @@ input:checked + .slider:before {
     }
 }
 
-
+.ref_msg{
+	color: green;
+	margin-bottom: 2%;
+	margin-left: 16%;
+	font-weight: bold;
+}
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
