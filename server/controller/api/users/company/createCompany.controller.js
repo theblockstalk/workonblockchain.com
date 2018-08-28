@@ -11,6 +11,7 @@ const EmployerProfile = require('../../../../model/employer_profile');
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
 const verify_send_email = require('../auth/verify_send_email');
+const jwtToken = require('../../../services/jwtToken');
 
 module.exports = function (req,res)
 {
@@ -113,42 +114,61 @@ function create_employer(userParam)
             }
             else
             {
-               let info = new EmployerProfile
-               ({
-                   _creator : newUser._id,
-                   first_name : userParam.first_name,
-                   last_name: userParam.last_name,
-                   job_title:userParam.job_title,
-                   company_name: userParam.company_name,
-                   company_website:userParam.company_website,
-                   company_phone:userParam.phone_number,
-                   company_country:userParam.country,
-                   company_city:userParam.city,
-                   company_postcode:userParam.postal_code,
-                 });
+            	let tokenn = jwtToken.createJwtToken(user);
+                
+                
+                var set =
+                {
+                	    jwt_token: tokenn,
 
-               info.save((err,user)=>
-               {
-            	   if(err)
-            	   {
-            		   logger.error(err.message, {stack: err.stack});
-            		   deferred.reject(err.name + ': ' + err.message);
-            	   }
-            	   else
-            	   {
-            		   verify_send_email(company_info);
-            		   deferred.resolve
-            		   ({
-            			   _id:user.id,
-            			   _creator: newUser._id,
-            			   type:newUser.type,
-            			   email_hash:newUser.email_hash,
-            			   email: newUser.email,
-            			   is_approved : user.is_approved,
-            			   token: newUser.jwt_token
-            		   });
-            	   }
-               });
+                };
+                users.update({ _id: user._id},{ $set: set }, function (err, doc)
+                {
+                	if (err)
+                	{
+                		logger.error(err.message, {stack: err.stack});
+                		deferred.reject(err.name + ': ' + err.message);
+                	}
+                	else
+                	{
+                		let info = new EmployerProfile
+                		({
+                			_creator : newUser._id,
+                			first_name : userParam.first_name,
+                			last_name: userParam.last_name,
+                			job_title:userParam.job_title,
+                			company_name: userParam.company_name,
+                			company_website:userParam.company_website,
+                			company_phone:userParam.phone_number,
+                			company_country:userParam.country,
+                			company_city:userParam.city,
+                			company_postcode:userParam.postal_code,
+                		});
+
+                		info.save((err,user)=>
+                		{
+                			if(err)
+                			{
+                				logger.error(err.message, {stack: err.stack});
+                				deferred.reject(err.name + ': ' + err.message);
+                			}
+                			else
+                			{
+                				verify_send_email(company_info);
+                				deferred.resolve
+                				({
+                					_id:user.id,
+                					_creator: newUser._id,
+                					type:newUser.type,
+                					email_hash:newUser.email_hash,
+                					email: newUser.email,
+                					is_approved : user.is_approved,
+                					jwt_token: tokenn
+                				});
+                			}
+                		});
+                	}
+                });
             }
         });
     }

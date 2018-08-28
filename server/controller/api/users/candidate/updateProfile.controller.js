@@ -7,7 +7,9 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req, res)
 {
-    update_candidate_profile(req.params._id, req.body).then(function (err, data)
+    let userId = req.auth.user._id;
+    
+    update_candidate_profile(userId, req.body).then(function (err, data)
     {
         if (data)
         {

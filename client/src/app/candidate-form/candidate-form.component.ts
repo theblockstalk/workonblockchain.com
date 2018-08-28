@@ -65,9 +65,13 @@ export class CandidateFormComponent implements OnInit {
 			{ name: 'keywords', content: 'blockchain developer signup workonblockchain.com' }
 		]);
         this.credentials.email='';
+        
         this.credentials.country=-1;
         this.dataservice.currentMessage.subscribe(message => this.message = message);
-       
+         setInterval(() => {  
+                                this.message = "" ;
+                                this.log='';
+                        }, 8000);
         this.authenticationService.logout();
 
     }
@@ -124,27 +128,9 @@ export class CandidateFormComponent implements OnInit {
                     else
                     {
                        localStorage.setItem('currentUser', JSON.stringify(data));
-                       ////console.log("elseeee");
-                        /*this.authenticationService.refered_id(this.refer_by , data._creator)
-                        .subscribe(
-                        data => 
-                        {
-                           // //console.log(data);
-                            if(data.error)
-                            {
-                                this.log = 'Something getting wrong';
-                            }
-                            else
-                            {
-                                 window.location.href = '/terms-and-condition';
-                            }
-                            
-                        });
-                        */
+                      
                         window.location.href = '/terms-and-condition';
-                        //localStorage.removeItem('userInfo');
-                        //this.router.navigate(['/about']);
-                       // window.location.href = '/about';
+                        
                     }
                 },
                 error => 

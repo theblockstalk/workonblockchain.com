@@ -64,7 +64,7 @@ export class HeaderComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                   
                     if(data)
                     {
                         this.is_verify = data._creator.is_verify;
@@ -135,8 +135,9 @@ export class HeaderComponent implements OnInit {
   verify_client()
   {
       this.success_msg='';
-      this.close = "close"; 
-      localStorage.setItem('close_notify', JSON.stringify(this.close));
+      this.msg='';
+      this.close = "no close"; 
+      //localStorage.setItem('close_notify', JSON.stringify(this.close));
       if(this.currentUser.email)
       {
           console.log(this.currentUser.email);
@@ -148,9 +149,11 @@ export class HeaderComponent implements OnInit {
                     {
                         
                         this.success_msg = "Please check your email to verify your account" ;
+                        
                         setInterval(() => {  
                                 this.success_msg = "" ;
-                        }, 3000);
+                                this.close = "";
+                        }, 9000);
                         
                     }
 
@@ -185,11 +188,34 @@ export class HeaderComponent implements OnInit {
     
     logout()
     {
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('googleUser');
-         localStorage.removeItem('close_notify');
-         localStorage.removeItem('linkedinUser');
-        localStorage.removeItem('admin_log');
+        
+        
+         this.authenticationService.destroyToken(this.currentUser._id)
+            .subscribe(
+                data => {      
+                console.log(data);
+                    if(data)
+                    {
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
+                    }
+                    
+                    },
+                error =>
+                {
+                    if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    });
+        
+        
+       
     }
     
 

@@ -31,6 +31,13 @@ export class AdminFaqEditorComponent implements OnInit {
   }
 
   ngOnInit() {
+      
+       setInterval(() => {  
+                                this.error = "" ;
+                                this.success = "" ;
+                        }, 5000);
+      
+      
        this.dataservice.currentMessage.subscribe(message => this.message = message);
        this.ckeConfig = {
       allowedContent: false,
@@ -60,7 +67,21 @@ export class AdminFaqEditorComponent implements OnInit {
                        //console.log(this.editor_content);
                        
                    }
-                 });
+                 },
+                   
+                 error =>
+                 {
+                     if(error.message == 500 || error.message == 401)
+                     {
+                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                         
+                     }
+                     else
+                     {
+                         
+                    }
+                });
            }
            else
                this.router.navigate(['/not_found']);
@@ -72,6 +93,7 @@ export class AdminFaqEditorComponent implements OnInit {
         }
   }
 
+    success; error;
    editor(editorForm: NgForm)
    {
        //console.log(editorForm.value);
@@ -82,12 +104,18 @@ export class AdminFaqEditorComponent implements OnInit {
        {
            if(data)
            {
-               this.dataservice.changeMessage("Content Successfully Updated");
+               this.success = "Content Successfully Updated";
+               //this.dataservice.changeMessage("Content Successfully Updated");
            }
            else
            {
-               this.dataservice.changeMessage("Something went wrong");
+               this.error="Something went wrong";
+               
            }
+       },
+       error =>
+       {
+           
        });
    }
 }

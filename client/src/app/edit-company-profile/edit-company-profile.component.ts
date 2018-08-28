@@ -1,7 +1,7 @@
 import { Component, OnInit,ElementRef, Input  , AfterViewInit} from '@angular/core';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataService } from "../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -17,7 +17,7 @@ const URL = environment.backend_url;
   templateUrl: './edit-company-profile.component.html',
   styleUrls: ['./edit-company-profile.component.css']
 })
-export class EditCompanyProfileComponent implements OnInit ,  AfterViewInit {
+export class EditCompanyProfileComponent implements OnInit  {
         
    info : any;
     currentUser: User;log;
@@ -36,32 +36,6 @@ export class EditCompanyProfileComponent implements OnInit ,  AfterViewInit {
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
        }
     
-    sectionScroll;
-    internalRoute(page,dst){
-    this.sectionScroll=dst;
-    this.router.navigate([page], {fragment: dst});
-}
-    
-    doScroll() {
-
-    if (!this.sectionScroll) {
-      return;
-    }
-    try {
-      var elements = document.getElementById(this.sectionScroll);
-
-      elements.scrollIntoView();
-    }
-    finally{
-      this.sectionScroll = null;
-    }
-  } 
-    
-     ngAfterViewInit(): void 
-     {
-         window.scrollTo(0, 0);
-         
-         }
 
   ngOnInit()
   {
@@ -82,7 +56,7 @@ export class EditCompanyProfileComponent implements OnInit ,  AfterViewInit {
                     {
                         this.email = data._creator.email;
                     }
-                  //console.log(data);
+                  //console.log(data[0]);
                   if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
                   {
                      this.company_founded=data.company_founded;
@@ -118,9 +92,20 @@ export class EditCompanyProfileComponent implements OnInit ,  AfterViewInit {
                      
                   }
                   
+                  
                 },
                 error => 
                 {
+                    if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
                   
                 });
        }
@@ -132,10 +117,74 @@ export class EditCompanyProfileComponent implements OnInit ,  AfterViewInit {
            }
       
   }
+    company_postcode_log;
+    first_name_log;
+    last_name_log;
+    job_title_log;
+    company_name_log;
+    company_website_log;
+    company_phone_log;
+    company_country_log;
+    company_city_log;
     
   company_profile(profileForm: NgForm)
   {
       //console.log(profileForm.value);
+    if(!this.first_name)
+    {
+        this.first_name_log="Please enter first name";
+    
+    }
+      
+    if(!this.last_name)
+    {
+        this.last_name_log="Please enter first name";
+    
+    }
+      
+    if(!this.job_title)
+    {
+        this.job_title_log="Please enter first name";
+    
+    }
+      
+    if(!this.company_name)
+    {
+        this.company_name_log="Please enter first name";
+    
+    }
+      
+    if(!this.company_website)
+    {
+        this.company_website_log="Please enter first name";
+    
+    }
+      
+    if(!this.company_phone)
+    {
+        this.company_phone_log="Please enter first name";
+    
+    }
+      
+    if(this.company_country==-1)
+    {
+        this.company_country_log="Please enter company name";
+    
+    }
+    if(!this.company_city)
+    {
+        this.company_city_log="Please enter city name";
+    
+    }
+    if(!this.company_postcode)
+    {
+        this.company_postcode_log="Please enter post code";
+    
+    }
+      if(this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
+      this.company_phone && this.company_country!=-1 && this.company_city && this.company_postcode)
+          
+      {
        this.authenticationService.edit_company_profile(this.currentUser._creator,profileForm.value)
             .subscribe(
                 data => {
@@ -148,15 +197,21 @@ export class EditCompanyProfileComponent implements OnInit ,  AfterViewInit {
                      { 
                         formData.append('photo', inputEl.files.item(0));
                     
-                        this.http.post(URL+'users/employer_image/'+this.currentUser._creator, formData).map((res) => res).subscribe(                
+                        this.http.post(URL+'users/employer_image', formData, {
+                        headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
+                        }).map((res) => res).subscribe(                
                         (success) => 
                         {
-                             //console.log(success);
-                             //window.location.href = '/company_profile';
-
-                              this.router.navigate(['/company_profile']); 
+                            //console.log(success);
+                            this.router.navigate(['/company_profile']); 
                         },
-                        (error) => console.log(error))
+                        (error) => {
+                        if(error.message == 500)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }    
+                        })
                      }
                      else
                           this.router.navigate(['/company_profile']);
@@ -177,6 +232,7 @@ export class EditCompanyProfileComponent implements OnInit ,  AfterViewInit {
                   this.log = 'Something getting wrong';
                    
                 });
+          }
   }
 
 }

@@ -93,8 +93,8 @@ export class ExperienceComponent implements OnInit
                     {
                         this.jobData = data.work_history; 
                        // console.log(this.jobData);
-                        //console.log(this.jobData[0].startdate);
-                       // console.log(this.datePipe.transform(((this.jobData[0].startdate)+1), 'MMMM'));
+                        //console.log(this.jobData.startdate);
+                       // console.log(this.datePipe.transform(((this.jobData.startdate)+1), 'MMMM'));
                         
                        
                         for(let data1 of data.work_history)
@@ -204,7 +204,21 @@ export class ExperienceComponent implements OnInit
                    //this.router.navigate(['/resume']);
                 }               
 
-            });
+            },
+            error=>
+            {
+                if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
+                
+           });
        }
        else
        {
@@ -661,14 +675,15 @@ export class ExperienceComponent implements OnInit
                     this.router.navigate(['/candidate_profile']);
                 }
 
-                if(data.error )
-                {
-                    ////console.log(data.error);
-                }
+                
                
                 },
                 error => {
-                  //this.log = 'Something getting wrong';
+                  if(error.message == 500)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
                    
                 });
              

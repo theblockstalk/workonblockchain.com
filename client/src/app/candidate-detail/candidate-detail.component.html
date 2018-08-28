@@ -104,6 +104,34 @@
 						</div>
 
 				 	</div>
+				 	
+				 	<div class="info-area pro_br-btm" *ngIf="github">
+						<div class = "col-md-3">
+							<strong>Github account URL : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{github}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
+
+
+				 	<div class="info-area pro_br-btm" *ngIf="stack">
+
+						<div class = "col-md-3" >
+							<strong>Stackexchange account URL : </strong>
+						</div>
+						<div class = "col-md-9">
+							<ul class = "pro_list">
+								<li >{{stack}}</li>
+								
+							</ul>
+						</div>
+
+				 	</div>
 					
 				 	
 
@@ -333,7 +361,7 @@
 				 	
 				 </section>
 
-				  <section class = "profile job_info" >
+				  <section class = "profile job_info" *ngIf="history!=''" >
 					<h3>Work History</h3>
 					<div class = "company_area" *ngFor='let work of history'>
 					 	<div class="info-area pro_br-btm" *ngIf='company_reply === 1'>
@@ -403,7 +431,7 @@
 				 	
 				 </section>
 
-				 <section class = "profile job_info" >
+				 <section class = "profile job_info" *ngIf="education!=''" >
 					<h3>Education</h3>
 					
 				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>

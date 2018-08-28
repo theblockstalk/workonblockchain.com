@@ -244,7 +244,16 @@ export class ResumeComponent implements OnInit {
               
                 },
                 error => {
-                  //this.log = 'Something getting wrong';
+                   if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
                    
                 });
           //this.router.navigate(['/about']);
@@ -407,14 +416,20 @@ export class ResumeComponent implements OnInit {
                     //window.location.href = '/experience';
                 }
 
-                if(data.error )
-                {
-                    //console.log(data.error);
-                }
                
                 },
                 error => {
-                  //this.log = 'Something getting wrong';
+                   
+                     if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
                    
                 });
       }

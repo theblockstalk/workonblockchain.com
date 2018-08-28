@@ -47,25 +47,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
-   const url = 'https://platform.linkedin.com/in.js';
-        if (!document.querySelector(`script[src='${url}']`)) {
-            let script = document.createElement('script');
-            script.src = url;
-            script.innerHTML = 'lang: en_US';
-            document.body.appendChild(script);
-        }
-     
-     const url2 = 'https://platform.twitter.com/widgets.js';
-        if (!document.querySelector(`script[src='${url2}']`)) {
-            let script = document.createElement('script');
-            script.src = url2;
-            document.body.appendChild(script);
-        }     
-     
-     this.route.queryParams.subscribe(params => {
-        this.user_id = params['user'];
-        ////console.log(this.user_id); 
-    });
+   
      
  }
     sectionScroll;
@@ -94,13 +76,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
      {
          window.scrollTo(0, 0);
      
-        this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
+       /* this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
  
-        // render share button
+         render share button
         window['IN'] && window['IN'].parse();
          
          
-          window['twttr'] && window['twttr'].widgets.load();
+          window['twttr'] && window['twttr'].widgets.load();*/
          
     }
     tweet_text;
@@ -118,25 +100,26 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   
       this.dataservice.eemailMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
+      console.log(this.currentUser);
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
       {
           ////console.log("ifffffff");
          
-          this.share_url = location.href + '?user=' + this.user_id;
+          /*this.share_url = location.href + '?user=' + this.user_id;
           this.authenticationService.public_profile(this.user_id)
             .subscribe(
             data => {
                 this.public_data = data;
                 //console.log(data);
-                });
+                });*/
           
       }
      
       else
        {
           ////console.log("elseeeee");
-          this.share_url = location.href + '?user=' + this.currentUser._creator;
+          //this.share_url = location.href + '?user=' + this.currentUser._creator;
           if(!this.currentUser)
        {
           this.router.navigate(['/login']);
@@ -256,6 +239,14 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 }
                 
 
+            },
+            err =>
+            {
+                if(err.message == 500 || err.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
             });
        }
        else

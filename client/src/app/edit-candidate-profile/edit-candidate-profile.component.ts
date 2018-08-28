@@ -1,5 +1,5 @@
 import { Component, OnInit ,ElementRef, Input } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
@@ -77,17 +77,6 @@ export class EditCandidateProfileComponent implements OnInit {
     
   ngOnInit() 
   {
-      /* $(document).ready(function(){
-        $(function () {
-    $('#1step').change(function () {
-        if ($('#1step').is(':checked')) {
-            $("#input_field").hide();
-        } else {
-            $("#input_field").show();
-        }
-    }).change();
-});
-    });*/
     
       this.info.nationality = -1;
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -393,7 +382,16 @@ export class EditCandidateProfileComponent implements OnInit {
             },
             error => 
             {
-               this.log = 'Something getting wrong';
+              if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
             });
       }
   }
@@ -1130,7 +1128,9 @@ export class EditCandidateProfileComponent implements OnInit {
                      { 
                         formData.append('photo', inputEl.files.item(0));
                     
-                        this.http.post(URL+'users/image/'+this.currentUser._creator, formData).map((res) => res).subscribe(                
+                        this.http.post(URL+'users/image', formData ,  {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
+        }).map((res) => res).subscribe(                
                         (success) => 
                         {
                              //console.log(success);
@@ -1156,6 +1156,11 @@ export class EditCandidateProfileComponent implements OnInit {
                 error => {
                      this.dataservice.changeMessage(error);
                   this.log = 'Something getting wrong';
+                    if(error.message == 500)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
                    
                 });
     }

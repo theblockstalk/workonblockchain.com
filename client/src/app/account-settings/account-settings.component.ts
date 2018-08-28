@@ -56,6 +56,7 @@ export class AccountSettingsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
+                    console.log(data);
 				   if(data._creator.is_unread_msgs_to_send){
 					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
 				   }
@@ -68,7 +69,16 @@ export class AccountSettingsComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 });
        }
       
@@ -109,6 +119,20 @@ export class AccountSettingsComponent implements OnInit {
                   //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
               
+          },
+            
+          error =>
+          {
+            if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        }    
           });
       }
       
@@ -139,7 +163,16 @@ export class AccountSettingsComponent implements OnInit {
                     
                 },
                 error => {
-                  this.log = 'Something getting wrong';
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                    
                 });
        }
@@ -173,7 +206,16 @@ export class AccountSettingsComponent implements OnInit {
                 }
             },
             error => {
-              this.log = 'Something getting wrong';
+              if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                
             }
         );
@@ -206,7 +248,16 @@ export class AccountSettingsComponent implements OnInit {
 				}
 			},
 			error => {
-			  this.log = 'Something getting wrong';
+			  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
 			   
 			}
 		);

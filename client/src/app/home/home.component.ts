@@ -72,32 +72,7 @@ export class HomeComponent implements OnInit {
 
 
     //});
-
   }
 
-   Search(searchForm: NgForm) 
-   {
-    //console.log(searchForm.value);
-     this.authenticationService.search(searchForm.value)
-            .subscribe(
-                data => {
-                if(data)
-                {
-                    ////console.log(data[0].country);
-                     //console.log(data);
-                    this.log =data;
-                    //this.log1 =data.nationality;
-                }
-
-                if(data.error )
-                {
-                    //console.log(data.error);
-                }
-               
-                },
-                error => {
-                  //this.log = 'Something getting wrong';
-                   
-                });
-   }
+  
 }

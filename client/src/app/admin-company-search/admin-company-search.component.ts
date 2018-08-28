@@ -106,9 +106,6 @@ export class AdminCompanySearchComponent implements OnInit {
                          {
                              this.page =this.length;
                              this.log='';
-                            
-                            // //console.log(this.page);
-                            // //console.log(this.length);
                          }
                          else
                          {
@@ -124,7 +121,16 @@ export class AdminCompanySearchComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 });
     }
     
@@ -174,7 +180,21 @@ export class AdminCompanySearchComponent implements OnInit {
                         }
                    }
                     
-                });
+                },
+                
+                error =>
+                {
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
+                 });
     }
     
     onSearchName(f: NgForm)
@@ -234,7 +254,16 @@ export class AdminCompanySearchComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 });
     }
     
@@ -336,7 +365,16 @@ export class AdminCompanySearchComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 });
             }
          
