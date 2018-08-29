@@ -72,8 +72,6 @@ export class CandidateFormComponent implements OnInit {
                                 this.message = "" ;
                                 this.log='';
                         }, 8000);
-        this.authenticationService.logout();
-
     }
     log = '';
     email_log='';
