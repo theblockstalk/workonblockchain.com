@@ -83,7 +83,7 @@ function create_employer(userParam)
         company_info.hash = hashStr;
         company_info.email = userParam.email;
         company_info.name = userParam.first_name;
-        company_info.expiry = new Date(new Date().getTime() +  1800 *1000);
+        company_info.expiry = new Date(new Date().getTime() +  4800 *1000);
         var token = jwt_hash.encode(company_info, settings.EXPRESS_JWT_SECRET, 'HS256');
         company_info.token = token;
        
