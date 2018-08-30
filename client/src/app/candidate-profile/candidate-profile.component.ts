@@ -95,8 +95,10 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
         if (year1.eduyear < year2.eduyear) return 1;
         return 0;
    };
+    infoo;
   ngOnInit() 
-  {     
+  {    
+       this.infoo=''; 
        this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
@@ -138,8 +140,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
           
           this.authenticationService.getProfileById(this.currentUser._id)
             .subscribe(
-            data => {
-                 
+            data => {                
                 if(data) 
                 {
                     this.id = data._creator._id; 
@@ -195,7 +196,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                         
                     }
 
-                   
+                  this.infoo= data; 
                 }
                 
 

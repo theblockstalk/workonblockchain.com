@@ -5,7 +5,10 @@
 	<div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12">
-			<ng-container *ngIf="!public_data;else public_section">
+			<div *ngIf="infoo ==''">
+					<img src = "assets/images/loading.gif" class = "img-responsive" alt = "loading"/>
+			</div>
+			<ng-container *ngIf="!public_data;else public_section && infoo!=''" >
 				 <section class = "profile personal_info" *ngIf="!public_data">
 
 				 	<div class="col-md-6" >
