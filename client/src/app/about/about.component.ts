@@ -264,7 +264,7 @@ export class AboutComponent implements OnInit
               {
                 formData.append('photo', inputEl.files.item(0));
 
-                this.http.post(URL+'users/image/'+this.currentUser._creator, formData ,  {
+                this.http.post(URL+'users/image', formData ,  {
             headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
         }).map((res) => res).subscribe(
                 (success) =>
