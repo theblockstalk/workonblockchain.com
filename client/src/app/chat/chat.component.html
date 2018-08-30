@@ -174,7 +174,7 @@
 											</ng-template>
 											<div class="meta">
 												<ng-container *ngIf="new_msgss[1];else no_is_company_reply">
-													<ng-container *ngIf="new_msgss[1].is_company_reply == 1;else no_is_company_reply_show">
+													<ng-container *ngIf="new_msgss[1].is_company_reply == 1 && new_msgss[1].sender_id == person._creator._id;else no_is_company_reply_show">
 														<p class="name">{{ person.first_name }} {{ person.last_name }}</p>
 													</ng-container>
 													<ng-template #no_is_company_reply_show>
@@ -277,7 +277,7 @@
 													<span *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
-													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name | slice:70:103}}</a> <!-- for local you can use 53 instead of 70 -->
+													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
 												</p>
 											</li>
 											<div class="chat_user">
@@ -327,7 +327,7 @@
 													<span *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
-													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name | slice:70:103}}</a> <!-- for local you can use 53 instead of 70 -->
+													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
 												</p>
 											</li>
 											<div class="chat_company">
