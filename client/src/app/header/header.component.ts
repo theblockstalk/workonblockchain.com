@@ -115,7 +115,8 @@ export class HeaderComponent implements OnInit {
       
   }
 
- 
+    verifysuccessmsg;
+    verifyerrormsg;
   ngOnInit() 
   {
       this.success='';
@@ -129,6 +130,15 @@ export class HeaderComponent implements OnInit {
                         }, 3000);
           this.close = JSON.parse(localStorage.getItem('close_notify')); 
        }
+      
+      this.dataservice.verifycurrentMessage.subscribe(message => this.verifysuccessmsg = message);
+       this.dataservice.verifyerrorMessage.subscribe(message => this.verifyerrormsg = message);
+      
+       setInterval(() => {  
+                                this.verifysuccessmsg = "" ;
+                                this.verifyerrormsg='';
+                        }, 20000);
+      
   }
   
   
@@ -136,7 +146,8 @@ export class HeaderComponent implements OnInit {
   {
       this.success_msg='';
       this.msg='';
-      this.close = "no close"; 
+      this.close = "close"; 
+      localStorage.setItem('close_notify', JSON.stringify(this.close)); 
       //localStorage.setItem('close_notify', JSON.stringify(this.close));
       if(this.currentUser.email)
       {
@@ -152,7 +163,7 @@ export class HeaderComponent implements OnInit {
                         
                         setInterval(() => {  
                                 this.success_msg = "" ;
-                                this.close = "";
+                                
                         }, 9000);
                         
                     }

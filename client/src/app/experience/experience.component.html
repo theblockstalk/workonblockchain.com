@@ -74,7 +74,7 @@
       </div>
           </div>
         
-        <div class = "form_error" *ngIf="expYear.length <=0 ">
+        <div class = "form_error" *ngIf="expYear.length !== language.length">
                 <span class = "error">{{exp_lang_log}}</span>
               </div>  
           </div>

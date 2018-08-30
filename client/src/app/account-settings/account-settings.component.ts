@@ -111,10 +111,10 @@ export class AccountSettingsComponent implements OnInit {
                     this.inform = data;
 					
 					if(this.info.marketing){
-						this.message = 'Your account settings for marketing emails is enabled';
+						this.message = 'Your profile is currently enabled for marketing emails.';
 					}
 					else{
-						this.message = 'Your account settings for marketing emails is disabled';
+						this.message = 'Your profile is currently disabled for marketing emails.';
 					}
                   //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
@@ -153,10 +153,10 @@ export class AccountSettingsComponent implements OnInit {
                     this.inform=data;
 					
 					if(this.info.marketing){
-						this.message = 'Your account settings for marketing emails is enabled';
+						this.message = 'Your profile is currently enabled for marketing emails.';
 					}
 					else{
-						this.message = 'Your account settings for marketing emails is disabled';
+						this.message = 'Your profile is currently disabled for marketing emails.';
 					}
                   //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
@@ -239,10 +239,10 @@ export class AccountSettingsComponent implements OnInit {
 				{
                     this.inform=data;
 					if(this.info.unread_msgs_emails){
-						this.message = 'Your account settings for Unread Chat Messages Email is enabled';
+						this.message = 'Your profile is currently enabled for unread chat messages email';
 					}
 					else{
-						this.message = 'Your account settings for Unread Chat Messages Email is disabled';
+						this.message = 'Your profile is currently disabled for unread chat messages email';
 					}
 					//console.log(this.inform);
 				}

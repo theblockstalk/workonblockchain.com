@@ -10,7 +10,8 @@
   "mongo": {
     "host": "localhost",
     "port": 27017,
-    "databaseName": "wob-staging"
+    "databaseName": "local_wob"
+
   },
   "expressJwt": {
     "secret": "shhhhhhhhhhhhhhh"
@@ -23,16 +24,16 @@
   },
   "currencyRates": {
     "USD": {
-      "GBP": 1.33,
+      "GBP": 1.29,
       "Euro": 1.17
     },
     "GBP": {
-      "USD": 0.75,
-      "Euro": 0.88
+      "USD": 0.77,
+      "Euro": 0.90
     },
     "Euro": {
       "USD": 0.85,
-      "GBP": 1.13
+      "GBP": 1.10
     }
   },
   "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],

@@ -80,7 +80,7 @@ function verify_client_email(email)
         user_info.hash = hashStr;
         user_info.email = email;
         //user_info.name = userParam.first_name;
-        user_info.expiry = new Date(new Date().getTime() +  4800 *1000);
+        user_info.expiry = new Date(new Date().getTime() +  1800 *1000);
         var token = jwt_hash.encode(user_info, settings.EXPRESS_JWT_SECRET, 'HS256');
         user_info.token = token;
         var set =

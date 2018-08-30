@@ -48,7 +48,8 @@ export class AdminCandidateSearchComponent implements OnInit {
 
     this.options = {
       multiple: true,
-      placeholder: 'Message Tags' 
+      placeholder: 'Message Tags',
+      allowClear :true
     }
       
 
@@ -71,8 +72,6 @@ export class AdminCandidateSearchComponent implements OnInit {
            this.router.navigate(['/not_found']);
           
        }
-      
-      //this.getAllCandidate();
 
   }
     
@@ -253,7 +252,9 @@ export class AdminCandidateSearchComponent implements OnInit {
                     }
                     else
                     {
-
+                        
+                        this.length =0;
+                        this.info=[];
                         this.information = this.filter_array(data);
                         for(let res of this.information)
                         {
@@ -297,10 +298,13 @@ export class AdminCandidateSearchComponent implements OnInit {
     
     msgtags;
     messagetag_changed(data)
-    {
-          this.msgtags = data.value;
-           // //console.log(data.value);
-          this.search(this.msgtags);
+    {       
+         if(this.select_value  !== data.value)
+        {
+            this.select_value = data.value;
+            console.log(this.select_value);
+            this.search(this.select_value);
+       }
         //console.log(this.msgtags);
      }
     
@@ -329,7 +333,7 @@ export class AdminCandidateSearchComponent implements OnInit {
 
         this.length =0;
         this.info=[];
-        if(this.approve == -1 && !this.msgtags  )
+        if(this.approve == -1 && !this.select_value  )
         {             
             //console.log("iffffffff"); 
              this.getAllCandidate();
@@ -337,9 +341,8 @@ export class AdminCandidateSearchComponent implements OnInit {
                
         else
         { 
-
             //console.log("else");
-            this.authenticationService.admin_candidate_filter(this.approve , this.msgtags)
+            this.authenticationService.admin_candidate_filter(this.approve , this.select_value)
             .subscribe(
                 data => 
                 {
@@ -356,6 +359,9 @@ export class AdminCandidateSearchComponent implements OnInit {
                     }
                     else
                     {
+                        
+                        this.length =0;
+                        this.info=[];
                         this.information = this.filter_array(data);
 
                          ////console.log(this.log);

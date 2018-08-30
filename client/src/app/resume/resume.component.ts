@@ -1,4 +1,4 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit,AfterViewInit  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
@@ -12,7 +12,7 @@ import {NgForm} from '@angular/forms';
   templateUrl: './resume.component.html',
   styleUrls: ['./resume.component.css']
 })
-export class ResumeComponent implements OnInit {
+export class ResumeComponent implements OnInit,AfterViewInit {
   
   experimented_platform = [];
   commercially_worked = [];
@@ -33,6 +33,11 @@ export class ResumeComponent implements OnInit {
         private router: Router,
         private authenticationService: UserService) { }
 
+     ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);   
+         
+    }
   ngOnInit()
   {
      this.exp_disable = "disabled";       
@@ -395,17 +400,26 @@ export class ResumeComponent implements OnInit {
         return obj.value === this;
     }
 
-    why_work_log;
+    why_work_log;commercial_log;platform_log;
    blockchain_exp(expForm: NgForm) 
    {
       //console.log(expForm.value);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+       
+        if(this.commercially_worked.length !== this.commercial_expYear.length )
+        {
+            this.commercial_log = "Please fill year of experience";
+        }
+        if(this.platforms_designed.length !== this.platforms.length)
+        {
+            this.platform_log = "Please fill year of experience";
+        }
     
         if(!this.why_work)
         {
           this.why_work_log = "Please fill why do you want to work on blockchain?"; 
          }
-       if(this.why_work)
+       if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length)
        {
         this.authenticationService.resume(this.currentUser._creator,expForm.value)
             .subscribe(

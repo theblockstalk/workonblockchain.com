@@ -29,6 +29,7 @@ const logger = require('../../../../services/logger');
 
 module.exports = function (req,res)
 {
+	logger.info(req.body);
     add_privacy_content(req.body).then(function (err, data)
     {
         if (data)

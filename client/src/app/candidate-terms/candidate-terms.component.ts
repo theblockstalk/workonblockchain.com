@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 declare var synapseThrow: any;
@@ -11,7 +11,7 @@ import {User} from '../Model/user';
   templateUrl: './candidate-terms.component.html',
   styleUrls: ['./candidate-terms.component.css']
 })
-export class CandidateTermsComponent implements OnInit {
+export class CandidateTermsComponent implements OnInit,AfterViewInit {
     terms ;
     agree;
     currentUser: User;
@@ -39,7 +39,11 @@ export class CandidateTermsComponent implements OnInit {
     job_disable;
     resume_disable;
     exp_disable;
-    
+     ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);   
+         
+    }
   ngOnInit() 
   {
      

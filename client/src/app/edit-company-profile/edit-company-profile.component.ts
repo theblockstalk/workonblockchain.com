@@ -181,7 +181,34 @@ export class EditCompanyProfileComponent implements OnInit  {
         this.company_postcode_log="Please enter post code";
     
     }
-      if(this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
+      
+    if(!this.company_founded)
+        {
+            this.founded_log = 'Please fill when was the company founded';
+            //console.log(this.founded_log);
+        }
+       
+        if(!this.no_of_employees)
+        {
+            this.employee_log = 'Please fill no. of employees';
+           
+        }
+       
+        
+        if(!this.company_funded)
+        {
+            this.funded_log = 'Please fill how is the company funded';
+            
+        }
+       
+        
+        if(!this.company_description)
+        {
+            this.des_log = 'Please fill Company Description';
+            
+        }
+      if(this.company_founded && this.no_of_employees && this.company_funded && this.company_description &&
+      this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country!=-1 && this.company_city && this.company_postcode)
           
       {

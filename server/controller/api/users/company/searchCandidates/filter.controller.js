@@ -29,6 +29,7 @@ module.exports = function (req,res)
 
 function filter(params)
 {
+	
     var result_array = [];
     var query_result=[];
     var query;
@@ -58,7 +59,7 @@ function filter(params)
         result_array= {USD : result[0] , GBP : result[1]  , Euro : params.salary};
         //console.log(result_array.length);
     }
-
+console.log(result_array);
     var deferred = Q.defer();
 
 
@@ -182,13 +183,14 @@ function filter(params)
 
 function expected_salary_converter(salary_value, currency1, currency2)
 {
-    var value1 = (currency1 * salary_value).toFixed();
-    var value2 = (currency2 * salary_value).toFixed();
+	
+    var value1 = (  salary_value / currency1).toFixed();
+    var value2 = (salary_value/currency2).toFixed();
     var array = [];
 
     array.push(value1);
     array.push(value2);
-
+console.log(array);
     return array;
 
 }

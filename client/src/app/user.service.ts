@@ -3,6 +3,8 @@ import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import {User} from './Model/user';
 import {CandidateProfile} from './Model/CandidateProfile';
 import { Observable } from 'rxjs/Observable';
+import { DataService } from "./data.service";
+import { Router, ActivatedRoute,NavigationExtras } from '@angular/router';
 import 'rxjs/Rx';
 
 import 'rxjs/add/operator/map'
@@ -19,7 +21,8 @@ export class UserService {
 
     currentUser: User;
     token;
-  constructor(private http: HttpClient) 
+  constructor(private http: HttpClient,private route: ActivatedRoute,
+        private router: Router ,private dataservice: DataService) 
   {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if(this.currentUser)
@@ -59,7 +62,7 @@ export class UserService {
             headers: new HttpHeaders().set('Authorization', this.token)
         }).map((res: Response) => 
             {
-            console.log(res);
+            
                 if (res) 
                 {    
                         return res;             
@@ -73,6 +76,68 @@ export class UserService {
                 }
                
             });
+    }
+    
+    getProfileById(_id:string)
+    {
+        return this.http.get<any>(URL+'users/current/' + _id,  {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        }).map((res: Response) => 
+            {
+            
+                if (res) 
+                { 
+                    if(!res['terms'] || res['terms'] == false)
+                {
+                     this.router.navigate(['/terms-and-condition']);
+                    
+                }
+              
+               else if(!res['contact_number'] || !res['nationality'] || !res['first_name'] || !res['last_name'])
+               {
+                        this.router.navigate(['/about']);
+               }
+               else if(res['locations'].length < 1  || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary'])
+               {
+                 
+                    this.router.navigate(['/job']); 
+                }
+                else if(!res['why_work'] )
+                {
+                    this.router.navigate(['/resume']);
+                }
+               /* else if(data.commercial_platform.length < 1 || data.experimented_platform.length < 1  || data.platforms.length < 1)
+                {
+                    this.router.navigate(['/resume']);
+                }*/
+                //////console.log(data.programming_languages.length);
+                else if(!res['programming_languages'] ||  !res['current_salary']  || res['programming_languages'].length <1 )
+                {
+                        this.router.navigate(['/experience']);
+                }
+                    
+                 else if(!res['description'])
+                {
+                    this.router.navigate(['/experience']);
+                    
+                }
+                    
+                else
+                {
+                        return res; 
+                 }
+                       // return res;             
+                }
+            }).catch((error: any) => 
+            {
+                console.log(error.status);
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
+        
     }
     
     getVerifiedCandidateDetail(_id:string)
@@ -377,14 +442,53 @@ export class UserService {
    
 
     verify_email(email_hash: string) 
-    {
-       
-        return this.http.put(URL+'users/emailVerify/'+ email_hash , '').map(data => {  
-        
-                if (data) 
+    {     
+    console.log(email_hash);
+        return this.http.put(URL+'users/emailVerify/'+ email_hash , '').map(data => {        
+                if (data['msg']) 
                 {
-                    
-                    return data;
+                        if(!this.currentUser)
+                        {
+                            this.dataservice.verifySuccessMessage('Email verified. Please login to continue.');
+                            this.router.navigate(['/login']);
+                        }
+
+                        else if(this.currentUser.type=="candidate")
+                        {
+                            this.dataservice.verifySuccessMessage(data['msg']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/candidate_profile"]);                   
+                        }
+                        
+                        else if(this.currentUser.type=="company")
+                        {
+                            this.dataservice.verifySuccessMessage(data['msg']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/company_profile"]);                   
+                        }
+                   // return data;
+                }
+                if(data['error'])
+                {
+                    if(!this.currentUser)
+                        {
+                            this.dataservice.verifyErrorMessage(data['error']);
+                            this.router.navigate(['/login']);
+                        }
+
+                        else if(this.currentUser.type=="candidate")
+                        {
+                            this.dataservice.verifyErrorMessage(data['error']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/candidate_profile"]);                   
+                        }
+                        
+                        else if(this.currentUser.type=="company")
+                        {
+                            this.dataservice.verifyErrorMessage(data['error']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/company_profile"]);                   
+                        }
                 }
                 else
                 {
@@ -915,13 +1019,10 @@ export class UserService {
     
     pages_content(info:any )
     {
-        //console.log(user_id);
-       // console.log(detail);
         return this.http.put<any>(URL+'users/add_privacy_content/', info,  {
             headers: new HttpHeaders().set('Authorization', this.token)
         }).map((res: Response) => 
             {
-            console.log(res);
                 if (res) 
                 {    
                         return res;             

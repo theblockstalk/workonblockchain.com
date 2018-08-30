@@ -1,7 +1,7 @@
 import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
 import { NgxAutoScrollModule } from 'ngx-auto-scroll';
@@ -890,7 +890,9 @@ export class ChatComponent implements OnInit {
         { 
             formData.append('photo', inputEl.files.item(0));
             //console.log(fileCount);
-            this.http.post(back_url+'users/upload_chat_file/'+this.currentUser._creator,formData).map((res) => res).subscribe(                
+            this.http.post(back_url+'users/upload_chat_file/'+this.currentUser._creator,formData, {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
+        }).map((res) => res).subscribe(                
             (success) => 
             {
               //console.log(success);

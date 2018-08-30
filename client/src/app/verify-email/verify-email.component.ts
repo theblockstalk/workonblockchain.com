@@ -34,77 +34,12 @@ export class VerifyEmailComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
-                    if(data)
-                    {
-                        if(!this.currentUser)
-                        {
-                            this.dataservice.changeMessage(data['msg']);
-                            this.router.navigate(['/login']);
-                        }
+                    console.log(data);
 
-                        else if(this.currentUser.type=="candidate")
-                        {
-                            this.dataservice.emailMessage(data['msg']);
-                            //this.router.navigate(['/login']);
-                            this.router.navigate(["/candidate_profile"]);                   
-                        }
-                        
-                        else if(this.currentUser.type=="company")
-                        {
-                            this.dataservice.emailMessage(data['msg']);
-                            //this.router.navigate(['/login']);
-                            this.router.navigate(["/company_profile"]);                   
-                        }
-                        else
-                        {
-                            this.dataservice.errorMessage("Something getting wrong");
-                            this.router.navigate(['/login']);
-                         }
-                    }
-                    
-                    else
-                    {               
-                        this.dataservice.errorMessage("Something getting wrong");
-                        this.router.navigate(['/login']);
-                     }
-                    
-                   /* else
-                    { 
-                       
-                             
-                     }*/
-                    
-                    
-                    
-                    
                 },
                 error => 
                 {
-                        if(!this.currentUser)
-                        {
-                            this.dataservice.errorMessage(error);
-                            this.router.navigate(['/login']);
-                        }
-
-                       else if(this.currentUser.type=="candidate")
-                        {
-                            this.dataservice.emailMessage(error);
-                            //this.router.navigate(['/login']);
-                            this.router.navigate(["/candidate_profile"]);                   
-                        }
-                        
-                       else if(this.currentUser.type=="company")
-                        {
-                            this.dataservice.emailMessage(error);
-                            //this.router.navigate(['/login']);
-                            this.router.navigate(["/company_profile"]);                   
-                        }
-                        else 
-                        {
-                            this.dataservice.errorMessage("Something getting wrong");
-                            this.router.navigate(['/login']);    
-                        }
+                       
                     //console.log("error");
                   //this.dataservice.changeMessage(error);
                 	// this.router.navigate(['/login']);

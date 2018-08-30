@@ -53,6 +53,15 @@
     {{msg}}    
  </div>
  
+ <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg=='' && verifysuccessmsg!=''">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{verifysuccessmsg}}    
+ </div>
+ 
+ <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "success_msg=='' && verifyerrormsg!=''">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{verifyerrormsg}}    
+ </div>
  
 <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg!=''">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

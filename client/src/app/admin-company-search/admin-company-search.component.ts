@@ -25,7 +25,7 @@ export class AdminCompanySearchComponent implements OnInit {
     msgtags;
     information;
     is_approve;
-    select_value;
+    select_value='';
 	searchWord;
     admin_log;
     is_admin;
@@ -51,7 +51,8 @@ export class AdminCompanySearchComponent implements OnInit {
         this.options = 
         {
             multiple: true,
-            placeholder: 'Message Tags' 
+            placeholder: 'Message Tags',
+            allowClear :true
         }
         
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -241,7 +242,7 @@ export class AdminCompanySearchComponent implements OnInit {
                     else
                     {
                          this.info=[];
-                         this.length='';
+                         this.length=0;
                         // //console.log(this.log);
                        this.information = this.filter_array(data);
                        ////console.log(this.inform.first_name);
@@ -292,10 +293,14 @@ export class AdminCompanySearchComponent implements OnInit {
     
     messagetag_changed(data)
     {
-          this.msgtags = data.value;
-           // //console.log(data.value);
-          this.search(this.msgtags);
-           //console.log(this.msgtags);
+        if(this.select_value  !== data.value)
+        {
+            this.select_value = data.value;
+            // //console.log(data.value);
+            console.log(this.select_value);
+            this.search(this.select_value);
+       }
+           
      }
     
     search_approved(event)
@@ -326,7 +331,7 @@ export class AdminCompanySearchComponent implements OnInit {
         //console.log(this.approve);
         //console.log(this.msgtags);
         
-        if(this.approve === -1 && !this.msgtags )
+        if(this.approve === -1 && !this.select_value )
         {
             //console.log("iffff both are empty");
             this.getAllCompanies();
@@ -335,7 +340,7 @@ export class AdminCompanySearchComponent implements OnInit {
         else
         {
            
-            this.authenticationService.admin_company_filter(this.approve , this.msgtags)
+            this.authenticationService.admin_company_filter(this.approve , this.select_value)
             .subscribe(
                 data => 
                 {

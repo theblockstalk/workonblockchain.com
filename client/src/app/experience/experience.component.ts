@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import {NgForm} from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -14,7 +14,7 @@ import { DataService } from "../data.service";
   templateUrl: './experience.component.html',
   styleUrls: ['./experience.component.css']
 })
-export class ExperienceComponent implements OnInit 
+export class ExperienceComponent implements OnInit , AfterViewInit
 {
     EducationForm: FormGroup;
     ExperienceForm: FormGroup;
@@ -49,6 +49,11 @@ export class ExperienceComponent implements OnInit
     return this.month[monthnum-1] || '';
 }
 
+     ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);   
+         
+    }
     message;
     current_work_check=[];
     ngOnInit() 
@@ -85,6 +90,16 @@ export class ExperienceComponent implements OnInit
                   {
                         this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
+                  }
+                if(data.programming_languages.length>0 &&data.description)
+                 {
+                     this.exp_active_class = 'fa fa-check-circle text-success';
+                }
+                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day &&data.current_salary && data.current_currency )
+                  {
+                    this.active_class='fa fa-check-circle text-success';
+                     // this.job_active_class = 'fa fa-check-circle text-success';
+                       
                   }
                 if(data.work_history || data.education_history|| data.programming_languages ||data.current_salary || data.current_currency)
                 {               
@@ -181,16 +196,7 @@ export class ExperienceComponent implements OnInit
                    // this.current_currency =-1;
 
                 }
-                 if(data.programming_languages.length>0 &&data.description)
-                 {
-                     this.exp_active_class = 'fa fa-check-circle text-success';
-                }
-                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day &&data.current_salary && data.current_currency )
-                  {
-                    this.active_class='fa fa-check-circle text-success';
-                     // this.job_active_class = 'fa fa-check-circle text-success';
-                       
-                  }
+                 
               
               if(!data.why_work )
               {              
@@ -471,8 +477,9 @@ export class ExperienceComponent implements OnInit
            this.lang_log="Please select min 1 language";
        }
         
-        if(this.expYear.length <=0 )
+        if(this.expYear.length !== this.language.length)
         {
+           
             this.exp_lang_log="Please fill year of experience";
         }
         if(!this.Intro)
@@ -577,7 +584,7 @@ export class ExperienceComponent implements OnInit
         
      
         
-        if(this.language && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
+        if(this.language &&this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
         {
            //console.log("else if 3");
            this.submit_info(searchForm);

@@ -36,7 +36,20 @@ export class AdminCandidateDetailComponent implements OnInit {
     currentUser: User;
     info;createdDate;
     approve;verify;is_verify;information;refeered;
+    work_history;education_history;
+    date_sort_desc = function (date1, date2) 
+    {
+        if (date1.enddate > date2.enddate) return -1;
+        if (date1.enddate < date2.enddate) return 1;
+        return 0;
+    };
     
+    education_sort_desc = function (year1, year2) 
+    {
+        if (year1.eduyear > year2.eduyear) return -1;
+        if (year1.eduyear < year2.eduyear) return 1;
+        return 0;
+    };
   ngOnInit() 
   {
       //console.log(this.user_id);
@@ -58,7 +71,10 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.info = data;
                 this.approve = data[0]._creator.is_approved;
                 this.verify =data[0]._creator.is_verify;
-                
+                this.work_history = data[0].work_history; 
+                this.work_history.sort(this.date_sort_desc);
+                this.education_history = data[0].education_history;
+                this.education_history.sort(this.education_sort_desc);
                 if(data[0].image != null )
                     {
                        
@@ -87,6 +103,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                         {
                             this.first_name = data[0].first_name;
                             this.last_name =data[0].last_name;
+                            
                         }
                         else
                         {                            

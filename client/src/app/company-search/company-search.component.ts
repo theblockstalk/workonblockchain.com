@@ -414,6 +414,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     }
                     else
                     {
+                        this.length=0;
                         this.info=[];
                         
                          this.information = this. filter_array(data);

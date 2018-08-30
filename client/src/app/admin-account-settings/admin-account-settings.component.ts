@@ -108,6 +108,12 @@ export class AdminAccountSettingsComponent implements OnInit {
                 else
                 {
                     this.inform=data;
+                     if(this.info.disable_account){
+                        this.message = 'Your profile is currently enabled';
+                    }
+                    else{
+                        this.message = 'Your profile is currently disabled';
+                    }
                     //console.log(data);
                 }
             },
@@ -158,7 +164,12 @@ export class AdminAccountSettingsComponent implements OnInit {
               else
                {
                  this.inform=data;
-                  //this.dataservice.changeMessage("Settings Updated Sucessfully");
+                  if(this.info.marketing){
+                        this.message = 'Your profile is currently enabled for marketing emails.';
+                    }
+                    else{
+                        this.message = 'Your profile is currently disabled for marketing emails.';
+                    }
                 }
               
           });
@@ -177,6 +188,12 @@ export class AdminAccountSettingsComponent implements OnInit {
                 else
                 {
                     this.inform=data;
+                    if(this.info.marketing){
+                        this.message = 'Your profile is currently enabled for marketing emails.';
+                    }
+                    else{
+                        this.message = 'Your profile is currently disabled for marketing emails.';
+                    }
                     //this.dataservice.changeMessage("Settings Updated Sucessfully");
                 }
                 },
@@ -212,6 +229,12 @@ export class AdminAccountSettingsComponent implements OnInit {
                 else
                 {
                     this.inform=data;
+                    if(this.info.unread_msgs_emails){
+                        this.message = 'Your profile is currently enabled for unread chat messages email';
+                    }
+                    else{
+                        this.message = 'Your profile is currently disabled for unread chat messages email';
+                    }
                     //console.log(data);
                 }
             },

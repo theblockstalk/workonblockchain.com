@@ -13,7 +13,7 @@ const URL = environment.backend_url;
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.css']
 })
-export class AboutComponent implements OnInit
+export class AboutComponent implements OnInit,AfterViewInit
 {
   currentUser: User;
   log='';
@@ -45,7 +45,11 @@ export class AboutComponent implements OnInit
   {
   }
 
-   
+    ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);   
+         
+    }
 
   ngOnInit()
   {
@@ -254,8 +258,8 @@ export class AboutComponent implements OnInit
                         });
                
               }
-                
-              if(!this.info.image_src)
+               // console.log(this.info.image_src);
+              if(this.info.image)
               {
               let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
               let fileCount: number = inputEl.files.length;
@@ -263,17 +267,17 @@ export class AboutComponent implements OnInit
               if (fileCount > 0 )
               {
                 formData.append('photo', inputEl.files.item(0));
-
+                 
                 this.http.post(URL+'users/image', formData ,  {
             headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
         }).map((res) => res).subscribe(
                 (success) =>
                 {
+                  
                   ////console.log(success);
                   this.router.navigate(['/job']);
                 },
-                (error) => 
-                
+                (error) =>                
                     {
                         if(error.message == 500 || error.message == 401)
                         {
