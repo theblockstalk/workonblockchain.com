@@ -17,10 +17,9 @@ export class FaqComponent implements OnInit {
 		this.titleService.setTitle('Work on Blockchain | FAQ Frequently asked questions');
 	}
   ngOnInit() {
-	  this.newMeta.addTags([
-			{ name: 'description', content: 'Frequently asked questions for the workonblockchain.com blockchain recruitment hiring platform for blockchain developers, software developers and technical professionals.' },
-			{ name: 'keywords', content: 'frequently asked questions workonblockchain.com' }
-		]);
+	  this.newMeta.updateTag({ name: 'description', content: 'Frequently asked questions for the workonblockchain.com blockchain recruitment hiring platform for blockchain developers, software developers and technical professionals.' });
+	  this.newMeta.updateTag({ name: 'keywords', content: 'frequently asked questions workonblockchain.com' });
+	  
       this.page_name = 'FAQ';
       
       this.authenticationService.get_page_content(this.page_name)

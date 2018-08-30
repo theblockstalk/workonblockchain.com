@@ -13,10 +13,8 @@ export class ContactUsComponent implements OnInit {
   }
 
   ngOnInit() {
-	  this.newMeta.addTags([
-			{ name: 'description', content: 'Contact the friendly Work on Blockchain team :)' },
-			{ name: 'keywords', content: 'contact' }
-		]);
+	  this.newMeta.updateTag({ name: 'description', content: 'Contact the friendly Work on Blockchain team :)' });
+	  this.newMeta.updateTag({ name: 'keywords', content: 'contact' });
   }
 
 }

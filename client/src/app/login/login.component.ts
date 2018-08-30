@@ -56,10 +56,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   password_message;
   ngOnInit() 
   {
-      this.newMeta.addTags([
-			{ name: 'description', content: 'Login developers' },
-			{ name: 'keywords', content: 'login blockchain recruitment developers workonblockchain.com' }
-		]);
+	  this.newMeta.updateTag({ name: 'description', content: 'Login developers' });
+	  this.newMeta.updateTag({ name: 'keywords', content: 'login blockchain recruitment developers workonblockchain.com' });
+      
       this.password_message='';
 	  this.dataservice.ecurrentMessage.subscribe(message => this.error = message);
        setInterval(() => {  

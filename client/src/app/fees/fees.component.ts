@@ -13,10 +13,8 @@ export class FeesComponent implements OnInit {
   }
 
   ngOnInit() {
-	  this.newMeta.addTags([
-			{ name: 'description', content: 'Fees for hiring companies that use the workonblockchain.com blockchain recruitment platform to hire developers and technical professionals.' },
-			{ name: 'keywords', content: 'fees workonblockchain.com' }
-		]);
+	  this.newMeta.updateTag({ name: 'description', content: 'Fees for hiring companies that use the workonblockchain.com blockchain recruitment platform to hire developers and technical professionals.' });
+	  this.newMeta.updateTag({ name: 'keywords', content: 'fees workonblockchain.com' });
   }
 
 }

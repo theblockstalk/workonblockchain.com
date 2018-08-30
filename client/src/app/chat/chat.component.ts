@@ -26,7 +26,7 @@ export class ChatComponent implements OnInit {
 		//console.log(this.model);
 		//console.log(formdata.value);
     }*/
-
+	public loading = false;
     log = '';
     currentUser: User;
     form: FormGroup;
@@ -84,6 +84,7 @@ export class ChatComponent implements OnInit {
     }
 
   ngOnInit() {
+	  this.loading = true;
       this.count=0;
       //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -150,11 +151,12 @@ export class ChatComponent implements OnInit {
                 }
             );
         }
-      
         if(this.approved_user == 0){
+			this.loading = false;
             //console.log('not allowed');
         }
         else{
+			this.loading = false;
             //console.log('allowed');
             if(this.currentUser.type=="company"){
               //console.log('company');
@@ -174,6 +176,7 @@ export class ChatComponent implements OnInit {
               //below code for only contacted candidates
               //console.log('company');
               this.display_list = 1;
+			  this.loading = true;
               this.authenticationService.get_user_messages_only(this.currentUser._creator)
                 .subscribe(
                     msg_data => {
@@ -240,6 +243,7 @@ export class ChatComponent implements OnInit {
                 this.authenticationService.get_user_messages_only(this.currentUser._creator)
                 .subscribe(
                     msg_data => {
+						this.loading = false;
                         if(msg_data['datas'].length>0){
                             //console.log('msg_data');
                             this.authenticationService.getCandidate('company')
@@ -303,7 +307,6 @@ export class ChatComponent implements OnInit {
                         }   
                     }
                 );
-                
                 this.display_list = 0;
                 //console.log('candidate');
 			}
@@ -745,7 +748,8 @@ export class ChatComponent implements OnInit {
   }*/
   
   openDialog(email: string, id:string){
-	  console.log(email);
+	  console.log(id);
+	  this.loading = true;
       //this.msgs = 'hi baby';
       this.msgs = '';
 	  this.new_msgss = '';
@@ -761,10 +765,12 @@ export class ChatComponent implements OnInit {
                     //console.log('data');
                     //console.log(data['datas']);
                     this.new_msgss = data['datas'];
+					console.log(this.new_msgss);
                     this.job_desc = data['datas'][0];
                     this.authenticationService.update_chat_msg_status(id,this.currentUser._creator,0)
                     .subscribe(
                         data => {
+							this.loading = false;
                             //console.log('done');
                             //console.log(data);
                         },

@@ -72,6 +72,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { MyDatePickerModule } from 'mydatepicker';
 import { FeesComponent } from './fees/fees.component';
 //import {environment} from '../environments/environment';
+import { LoadingModule } from 'ngx-loading';
 
 const google_id = environment.google_id;
 //console.log(google_id);
@@ -217,7 +218,8 @@ const appRoutes: Routes = [
     CKEditorModule,
     MyDatePickerModule,
     RouterModule.forRoot(appRoutes),
-	ScrollToModule.forRoot()
+	ScrollToModule.forRoot(),
+	LoadingModule
   ],
   providers: 
   [

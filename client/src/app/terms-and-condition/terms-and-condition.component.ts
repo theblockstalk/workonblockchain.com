@@ -21,10 +21,9 @@ export class TermsAndConditionComponent implements OnInit {
 		this.titleService.setTitle('Work on Blockchain | Candidate terms');
 	}
   ngOnInit() {
-      this.newMeta.addTags([
-			{ name: 'description', content: 'Terms for candidates that use the workonblockchain.com blockchain recruitment hiring platform to find employment as blockchain developers and technical people.' },
-			{ name: 'keywords', content: 'candidate terms conditions workonblockchain.com' }
-		]);
+	  this.newMeta.updateTag({ name: 'description', content: 'Terms for candidates that use the workonblockchain.com blockchain recruitment hiring platform to find employment as blockchain developers and technical people.' });
+	  this.newMeta.updateTag({ name: 'keywords', content: 'candidate terms conditions workonblockchain.com' });
+      
       this.authenticationService.get_page_content('Terms and Condition for candidate')
             .subscribe(
                 data => {

@@ -46,10 +46,9 @@ export class ReferralComponent implements OnInit {
     }
 
 	ngOnInit(){
-		this.newMeta.addTags([
-			{ name: 'description', content: 'Refer a friend to workonblockchain.com, the blockchain recruitment platform for developers, and get £500 when they are successfully employed by a company through the platform.' },
-			{ name: 'keywords', content: 'refer developer referral reward workonblockchain.com' }
-		]);
+		this.newMeta.updateTag({ name: 'description', content: 'Refer a friend to workonblockchain.com, the blockchain recruitment platform for developers, and get £500 when they are successfully employed by a company through the platform.' });
+	    this.newMeta.updateTag({ name: 'keywords', content: 'refer developer referral reward workonblockchain.com' });
+		
 		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 		this.show_refreal = 1;
 		if(this.currentUser){
