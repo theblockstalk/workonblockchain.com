@@ -18,10 +18,9 @@ export class PrivacyPolicyComponent implements OnInit {
 		this.titleService.setTitle('Work on Blockchain | Privacy Notice');
 	}
   ngOnInit() {
-	  this.newMeta.addTags([
-			{ name: 'description', content: 'Privacy notice for how we use your data and your rights with your data on the workonblockchain.com blockchain recruitment platform for developers.' },
-			{ name: 'keywords', content: 'privacy notice workonblockchain.com' }
-		]);
+	  this.newMeta.updateTag({ name: 'description', content: 'Privacy notice for how we use your data and your rights with your data on the workonblockchain.com blockchain recruitment platform for developers.' });
+	  this.newMeta.updateTag({ name: 'keywords', content: 'privacy notice workonblockchain.com' });
+	 
       this.page_name = 'Privacy Policy';
       
       this.authenticationService.get_page_content(this.page_name)

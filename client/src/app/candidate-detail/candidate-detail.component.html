@@ -19,11 +19,11 @@
 				 		</span>
 				 		
 						<span class = "name" *ngIf='company_reply === 1'>
-				 			<h3>{{first_name}} {{last_name}}</h3>
+				 			<h3 class="text-capitalize">{{first_name}} {{last_name}}</h3>
 				 		</span>
 				 		
 				 		<span class = "name" *ngIf='company_reply !== 1'>
-				 			<h3>{{first_name | slice:0:1}} {{last_name | slice:0:1}} </h3>
+				 			<h3>{{first_name.charAt(0).toUpperCase()}}{{last_name.charAt(0).toUpperCase()}} </h3>
 				 		</span>
 				 		<span class = "short_intro">
 				 			<p>{{description}}</p>
@@ -165,7 +165,7 @@
 				 	<div class="info-area pro_br-btm">
 
 						<div class = "col-md-3" >
-							<strong>Desired Position : </strong>
+							<strong>Area of interest : </strong>
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">

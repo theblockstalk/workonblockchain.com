@@ -97,7 +97,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
    };
   ngOnInit() 
   {     
-  
        this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
@@ -143,7 +142,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                  
                 if(data) 
                 {
-                  
                     this.id = data._creator._id; 
                     this.email =data._creator.email;  
                     

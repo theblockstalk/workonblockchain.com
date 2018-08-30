@@ -60,10 +60,9 @@ export class CandidateFormComponent implements OnInit {
  
     ngOnInit() 
     {
-		this.newMeta.addTags([
-			{ name: 'description', content: 'Signup for companies to apply to you! workonblockchain.com is a global blockchain agnostic hiring recruitment platform for blockchain developers, software developers, designers, product managers, CTOs and software engineer interns who are passionate about working on public and enterprise blockchain technology and cryptocurrencies.' },
-			{ name: 'keywords', content: 'blockchain developer signup workonblockchain.com' }
-		]);
+		this.newMeta.updateTag({ name: 'description', content: 'Signup for companies to apply to you! workonblockchain.com is a global blockchain agnostic hiring recruitment platform for blockchain developers, software developers, designers, product managers, CTOs and software engineer interns who are passionate about working on public and enterprise blockchain technology and cryptocurrencies.' });
+	    this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developer signup workonblockchain.com' });
+		
         this.credentials.email='';
         
         this.credentials.country=-1;

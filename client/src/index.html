@@ -11,7 +11,7 @@
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">-->
 
-  <title>WOB</title>
+  <title>Work on Blockchain</title>
   <base href="./">
   <meta charset="utf-8">  
  
@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-
+	<div class="se-pre-con"></div>
   <app-root></app-root>
 
      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
@@ -58,6 +58,14 @@
 <script> CKEDITOR.config.forcePasteAsPlainText = true; </script>
 <!-- Load Facebook SDK for JavaScript -->
  <div id="fb-root"></div>
+ <script>
+	//paste this code under head tag or in a seperate js file.
+	// Wait for window load
+	$(window).load(function() {
+		// Animate loader off screen
+		$(".se-pre-con").fadeOut("slow");;
+	});
+</script>
 <script>
 		(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];
@@ -128,7 +136,7 @@ window.addEventListener('load', function() {
 });
 
 </script>
-<script >
+<script>
 $(".messages").animate({ scrollTop: $(document).height() }, "fast");
 
 function newMessage() {
@@ -174,6 +182,16 @@ $("#mobile-number").intlTelInput({
 
 </script>
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119052122-1"></script>
+
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'UA-119052122-1');
+</script>
 
 
 

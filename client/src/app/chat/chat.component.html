@@ -133,14 +133,18 @@
 	<!-- </section> -->
 	
 	<!--Profile-inner-->
+	<!-- uncomment for use -->
+	<!--<div class="my-container">
+		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	</div>-->
 <section class = "wizard_page">
 	<div class="container">
 			<div class="row chat-row">
 				<ng-container *ngIf="approved_user == 0;else chat_enable">
 					<div class = "col-md-9" id="my-chat-design">
-						<h2 class="alert alert-danger error-alert" style="margin-left: 10%;margin-bottom: 12%;">
+						<h4 class="alert alert-danger error-alert" style="margin-left: 10%;margin-bottom: 12%;">
 							You can access this page when your account has been approved by an admin.
-						</h2>
+						</h4>
 					</div>
 				</ng-container>
 				<ng-template #chat_enable>
@@ -174,11 +178,11 @@
 														<p class="name">{{ person.first_name }} {{ person.last_name }}</p>
 													</ng-container>
 													<ng-template #no_is_company_reply_show>
-														<p class="name">{{ person.first_name.charAt(0) }}{{ person.last_name.charAt(0) }}</p>
+														<p class="name">{{ person.first_name.charAt(0).toUpperCase() }}{{ person.last_name.charAt(0).toUpperCase() }}</p>
 													</ng-template>
 												</ng-container>
 												<ng-template #no_is_company_reply>
-													<p class="name">{{ person.first_name.charAt(0) }}{{ person.last_name.charAt(0) }}</p>
+													<p class="name">{{ person.first_name.charAt(0).toUpperCase() }}{{ person.last_name.charAt(0).toUpperCase() }}</p>
 												</ng-template>
 												<span class="badge" *ngIf="unread_msgs_info[i].number_of_unread_msgs">
 													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>

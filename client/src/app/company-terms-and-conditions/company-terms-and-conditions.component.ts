@@ -21,10 +21,9 @@ export class CompanyTermsAndConditionsComponent implements OnInit {
 	}
 
   ngOnInit() {
-      this.newMeta.addTags([
-			{ name: 'description', content: 'Terms of business for companies that use the workonblockchain.com blockchain recruitment hiring platform to find and employ blockchain developers and technical people.' },
-			{ name: 'keywords', content: 'company terms business workonblockchain.com' }
-		]);
+	  this.newMeta.updateTag({ name: 'description', content: 'Terms of business for companies that use the workonblockchain.com blockchain recruitment hiring platform to find and employ blockchain developers and technical people.' });
+	  this.newMeta.updateTag({ name: 'keywords', content: 'company terms business workonblockchain.com' });
+      
       this.authenticationService.get_page_content('Terms and Condition for company')
             .subscribe(
                 data => {

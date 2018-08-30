@@ -25,10 +25,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() 
   {
-	this.newMeta.addTags([
-		{ name: 'description', content: 'Global blockchain agnostic recruitment hiring platform for blockchain developers, software developers, designers, product managers, CTOs, researchers and software engineer interns who are passionate about public and enterprise blockchain technology and cryptocurrencies. On workonblockchain.com, companies apply to active candidates looking for jobs.' },
-		{ name: 'keywords', content: 'blockchain developers work recruitment jobs' }
-	]);
+	this.newMeta.updateTag({ name: 'description', content: 'Global blockchain agnostic recruitment hiring platform for blockchain developers, software developers, designers, product managers, CTOs, researchers and software engineer interns who are passionate about public and enterprise blockchain technology and cryptocurrencies. On workonblockchain.com, companies apply to active candidates looking for jobs.' });
+	this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developers work recruitment jobs' });
+	
 	/*this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
    	if(!this.currentUser)
     {
