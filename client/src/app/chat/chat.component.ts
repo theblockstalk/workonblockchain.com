@@ -99,7 +99,7 @@ export class ChatComponent implements OnInit {
                 data => {
                     //data[0]._creator.is_approved = 1;
                     //data[0].disable_account == false;
-                    this.profile_pic = data[0].image;
+					this.profile_pic = data[0].image;
                     this.display_name = data[0].first_name+' '+data[0].last_name;
                     if(data[0]._creator.is_approved == 0 || data[0].disable_account == true){
                         this.approved_user = 0;
@@ -748,7 +748,6 @@ export class ChatComponent implements OnInit {
   }*/
   
   openDialog(email: string, id:string){
-	  console.log(id);
 	  this.loading = true;
       //this.msgs = 'hi baby';
       this.msgs = '';
@@ -765,8 +764,7 @@ export class ChatComponent implements OnInit {
                     //console.log('data');
                     //console.log(data['datas']);
                     this.new_msgss = data['datas'];
-					console.log(this.new_msgss);
-                    this.job_desc = data['datas'][0];
+					this.job_desc = data['datas'][0];
                     this.authenticationService.update_chat_msg_status(id,this.currentUser._creator,0)
                     .subscribe(
                         data => {
