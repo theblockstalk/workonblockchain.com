@@ -341,11 +341,12 @@ export class AdminCandidateSearchComponent implements OnInit {
                
         else
         { 
-            //console.log("else");
+            console.log("else");
             this.authenticationService.admin_candidate_filter(this.approve , this.select_value)
             .subscribe(
                 data => 
                 {
+                    console.log(data);
  
                     if(data.error)
                     {

@@ -116,7 +116,6 @@ router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
 router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), companyImage);
 router.put('/users/update_company_profile',auth.isLoggedIn, companyUpdate);
-router.post('/users/search_word',auth.isValidCompany, companySearchWord);
 router.post('/users/filter',auth.isValidCompany, companySearchFilter);
 router.get('/users/verified_candidate',auth.isValidCompany, companySearchVerifiedCandidates);
 
@@ -134,7 +133,7 @@ router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMes
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
 
 // Admin
-router.put('/users/admin_role', auth.isAdmin, adminRoll);
+
 router.put('/users/approve/:_id', auth.isAdmin  , adminApproveUser);
 router.post('/users/search_by_name', auth.isAdmin , adminCandidateSearch);
 router.post('/users/admin_candidate_filter', auth.isAdmin , adminCandidateFilter);

@@ -5,10 +5,11 @@
 	<div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12">
-			<div *ngIf="infoo ==''">
+			
+			<ng-container *ngIf="infoo==='';else profile_section" >
 					<img src = "assets/images/loading.gif" class = "img-responsive" alt = "loading"/>
-			</div>
-			<ng-container *ngIf="!public_data;else public_section && infoo!=''" >
+			</ng-container>
+			<ng-template #profile_section >
 				 <section class = "profile personal_info" *ngIf="!public_data">
 
 				 	<div class="col-md-6" >
@@ -447,69 +448,13 @@
 				
 				 </section>
 				 
-				</ng-container> 
+				</ng-template> 
 			</div> <!--End col-md-9--->
 			
 			
 			
 			
-			<ng-template #public_section>
-			<div *ngIf="public_data" class="col-md-12">
-				 <section class = "profile job_info" *ngFor="let data of public_data" >
-					<h3>My Information </h3>
-				 	<div class="info-area pro_br-btm">
-						<div class = "col-md-4">
-						
-							<strong>First Name </strong>
-						
-						</div>
-						<div class = "col-md-8">
-							
-				 			<p>{{data.first_name}}</p>
-				 				
-				 		
-						</div>
-
-				 	</div>
-
-				
-
-				 	<div class="info-area pro_br-btm">
-
-						<div class = "col-md-4" >
-						
-							<strong>Why they want to work on blockchain </strong>
-							
-						</div>
-						<div class = "col-md-8">
-							
-				 			<p>{{data.why_work}}</p>
-				 			
-						</div>
-
-				 	</div>
-
-				 	<div class="info-area pro_br-btm">
-
-						<div class = "col-md-4" >
-						
-							<strong>Quick intro	 </strong>
-							
-						</div>
-						<div class = "col-md-8">
-					
-				 			<p>{{data.description}}</p>
-				 			
-							
-						</div>
-
-				 	</div>
-
-				 
-				 	
-				 </section>
-				 </div>
-			</ng-template>
+			
 
 			<!-- <div class = "col-md-3" *ngIf="!public_data">
 				<section class = "profile job_info side_rewiew">
