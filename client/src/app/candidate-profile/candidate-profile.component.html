@@ -3,16 +3,20 @@
 	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 </div>-->
 <!--Profile-inner-->
+<ng-container *ngIf="infoo==='';else profile_section" >
+<div class="se-pre-con"></div>
+</ng-container>
 
+<ng-template #profile_section >
 <section class = "wizard_page">	
    <div class="alert alert-info error-alert" *ngIf="message">{{message}}</div>
 	<div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12">
-			<ng-container *ngIf="infoo==='';else profile_section" >
-					<img src = "assets/images/loader-64x/Preloader_2.gif" class = "img-responsive" alt = "loading"/>
-			</ng-container>
-			<ng-template #profile_section >
+			
+					
+			
+			
 
 				 <section class = "profile personal_info" *ngIf="!public_data">
 
@@ -452,7 +456,7 @@
 				
 				 </section>
 				 
-				</ng-template> 
+				
 			</div> <!--End col-md-9--->
 			
 			
@@ -475,6 +479,6 @@
 	</div>
 
 </section>
-
+</ng-template> 
 
 <!--Profile-inner end-->
