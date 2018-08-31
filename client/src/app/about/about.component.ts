@@ -236,17 +236,23 @@ export class AboutComponent implements OnInit,AfterViewInit
                             if(data)
                             {
                                 ////console.log(data);
-                                this.email_data.fname = data.first_name;
-                                this.email_data.email = data._creator.email;
-                                this.email_data.referred_fname = this.info.first_name;
-                                this.email_data.referred_lname = this.info.last_name;
-                               this.authenticationService.email_referred_user(this.email_data).subscribe(
-                                data =>
+                                if(data._creator.email)
                                 {
+                                    this.email_data.fname = data.first_name;
+                                    this.email_data.email = data._creator.email;
+                                    this.email_data.referred_fname = this.info.first_name;
+                                    this.email_data.referred_lname = this.info.last_name;
+                                    this.authenticationService.email_referred_user(this.email_data).subscribe(
+                                    data =>
+                                    {
                                  
-                                    ////console.log(data);
+                                        ////console.log(data);
                                     });
-                                
+                               }
+                               else
+                               {
+                                    
+                               }
                             }
                              
                             else
