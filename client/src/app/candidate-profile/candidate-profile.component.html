@@ -1,3 +1,7 @@
+<!-- uncomment for use -->
+<!--<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+</div>-->
 <!--Profile-inner-->
 
 <section class = "wizard_page">	
@@ -5,9 +9,6 @@
 	<div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12">
-			<div *ngIf="infoo ==''">
-					<img src = "assets/images/loading.gif" class = "img-responsive" alt = "loading"/>
-			</div>
 			<ng-container *ngIf="!public_data;else public_section && infoo!=''" >
 				 <section class = "profile personal_info" *ngIf="!public_data">
 

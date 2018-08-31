@@ -44,6 +44,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     email;
     currentwork;
     message;
+	public loading = false;
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
