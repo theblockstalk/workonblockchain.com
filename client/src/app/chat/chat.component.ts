@@ -98,7 +98,8 @@ export class ChatComponent implements OnInit {
                 data => {
                     //data[0]._creator.is_approved = 1;
                     //data[0].disable_account == false;
-                    this.profile_pic = data[0].image;
+                    console.log(data[0]);
+					this.profile_pic = data[0].image;
                     this.display_name = data[0].first_name+' '+data[0].last_name;
                     if(data[0]._creator.is_approved == 0 || data[0].disable_account == true){
                         this.approved_user = 0;
@@ -609,7 +610,7 @@ export class ChatComponent implements OnInit {
 	  this.credentials.id = id;
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log("show_msg_area: " + this.show_msg_area);
-        setInterval(() => {
+        //setInterval(() => {
 			//receiver,sender
             //console.log("ID: " + this.credentials.id);
             this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
@@ -684,7 +685,7 @@ export class ChatComponent implements OnInit {
                     //this.log = error;
                 }
             );
-        }, 2000);
+        //}, 2000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver

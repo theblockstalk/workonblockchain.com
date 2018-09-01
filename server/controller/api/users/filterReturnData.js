@@ -4,7 +4,6 @@ module.exports.removeSensativeData = function removeSensativeData(userDoc) {
     delete userDoc.jwt_token;
     delete userDoc.verify_email_key;
     delete userDoc.forgot_password_key;
-
     return userDoc;
 };
 

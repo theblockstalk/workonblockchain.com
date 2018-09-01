@@ -110,7 +110,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     
   currency=
   [
-      "? GBP" ,"? EUR" , "$ USD"
+      "£ GBP" ,"€ EUR" , "$ USD"
   ]
     
   month= 

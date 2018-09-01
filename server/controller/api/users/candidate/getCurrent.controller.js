@@ -43,14 +43,16 @@ function getById(_id)
                     logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
                 }
-                else
+                else{
+					//var query_result = result.toObject();
                     deferred.resolve(filterReturnData.removeSensativeData(result));
-            });
+				}
+			});
         }
-        else
+        else{
+			//var query_result = result.toObject();
             deferred.resolve(filterReturnData.removeSensativeData(result));
-
-
+		}
     });
 
     return deferred.promise;
