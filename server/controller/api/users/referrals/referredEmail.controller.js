@@ -4,8 +4,8 @@ const logger = require('../../../services/logger');
 
 module.exports = function referred_email(req,res)
 {
-    //console.log(req.params.email);
-    referred_email(req.body).then(function (err, data)
+  
+    referred_email_user(req.body).then(function (err, data)
     {
         if (data)
         {
@@ -23,7 +23,7 @@ module.exports = function referred_email(req,res)
 
 }
 
-function referred_email(data)
+function referred_email_user(data)
 {
     var deferred = Q.defer();
     //console.log(data);
@@ -31,3 +31,5 @@ function referred_email(data)
     return deferred.promise;
     //
 }
+
+

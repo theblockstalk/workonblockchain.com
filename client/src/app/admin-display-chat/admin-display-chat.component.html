@@ -39,7 +39,8 @@
 											
 										</ng-template>
 										<div class="meta">
-											<p class="name" class="text-capitalize">{{ person.company_name }}</p>
+											<p class="name" class="text-capitalize" *ngIf="user_type == 'company'">{{ person.first_name }} {{ person.last_name }}</p>
+											<p class="name" class="text-capitalize" *ngIf="user_type == 'candidate'">{{ person.company_name }}</p>
 										</div>
 									</div>
 								</li>

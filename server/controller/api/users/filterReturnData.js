@@ -1,12 +1,11 @@
 module.exports.removeSensativeData = function removeSensativeData(userDoc) {
-	console.log("userDoc");
-	
-    delete userDoc._creator.password_hash;
-    delete userDoc._creator.salt;
-    delete userDoc._creator.jwt_token;
-    delete userDoc._creator.verify_email_key;
-    delete userDoc._creator.forgot_password_key;
-   
+
+    delete userDoc.password_hash;
+    delete userDoc.salt;
+    delete userDoc.jwt_token;
+    delete userDoc.verify_email_key;
+    delete userDoc.forgot_password_key;
+
     return userDoc;
 };
 
