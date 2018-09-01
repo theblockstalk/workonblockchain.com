@@ -97,6 +97,7 @@ export class ChatComponent implements OnInit {
             this.authenticationService.getById(this.currentUser._creator)
             .subscribe(
                 data => {
+                    console.log(data);
                     //data[0]._creator.is_approved = 1;
                     //data[0].disable_account == false;
 					console.log(data);

@@ -219,14 +219,15 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
     if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1)
     {
+        console.log("jdsbj");
       this.authenticationService.about(this.currentUser._creator,this.info)
         .subscribe(
           data =>
           {
             if(data)
             {
-                //console.log(data);
-               
+
+                //console.log(data);               
                 //console.log(this.info.image);
               if(this.info.image)
               {
@@ -303,8 +304,8 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   referred_email()
   {
-      //console.log(this.referred_id);
-      //console.log("referred_email");
+      console.log(this.referred_id);
+      console.log("referred_email");
       if(this.referred_id)
                {
                    ////console.log("ifffffffff refrred _id");
@@ -314,11 +315,11 @@ export class AboutComponent implements OnInit,AfterViewInit
                          data => {
                             if(data)
                             {
-                                //console.log(data);
-                                if(data[0]._creator.email)
+                                console.log(data);
+                                if(data._creator.email)
                                 {
-                                    this.email_data.fname = data[0].first_name;
-                                    this.email_data.email = data[0]._creator.email;
+                                    this.email_data.fname = data.first_name;
+                                    this.email_data.email = data._creator.email;
                                     this.email_data.referred_fname = this.info.first_name;
                                     this.email_data.referred_lname = this.info.last_name;
                                     //console.log(this.email_data);

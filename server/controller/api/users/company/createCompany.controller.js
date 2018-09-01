@@ -160,7 +160,6 @@ function create_employer(userParam)
                 					_id:user.id,
                 					_creator: newUser._id,
                 					type:newUser.type,
-                					email_hash:newUser.email_hash,
                 					email: newUser.email,
                 					is_approved : user.is_approved,
                 					jwt_token: tokenn
