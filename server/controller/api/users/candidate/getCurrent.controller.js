@@ -4,7 +4,7 @@ const logger = require('../../../services/logger');
 const filterReturnData = require('../filterReturnData');
 
 //////////get sign-up data from db of specific candidate////////////
-
+console.log("current");
 module.exports = function (req, res)
     {
 	    //let userId = req.auth.user._id;
@@ -28,8 +28,8 @@ module.exports = function (req, res)
 function getById(_id)
 {
     var deferred = Q.defer();
-    console.log(_id);
-    CandidateProfile.findById(_id).populate('_creator' ,  'created_date , email , is_admin , is_approved , is_unread_msgs_to_send , is_verify ,  jwt_token , type , refered_id , ref_link , disable_account').exec(function(err, result)
+   
+    CandidateProfile.findById(_id).populate('_creator').exec(function(err, result)
     {
         //console.log(result);
         if (err){
@@ -38,22 +38,26 @@ function getById(_id)
         }
         if(!result)
         {
-            CandidateProfile.find({_creator : _id}).populate('_creator' ,  'created_date , email , is_admin , is_approved , is_unread_msgs_to_send , is_verify ,  jwt_token , type , refered_id , ref_link , disable_account').exec(function(err, result)
+            CandidateProfile.find({_creator : _id}).populate('_creator' ).exec(function(err, result)
             {
                 if (err){
                     logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
                 }
-                else{
-					//var query_result = result.toObject();
-                    deferred.resolve(filterReturnData.removeSensativeData(result));
-				}
-			});
+                else
+                {	
+                	var query_result = result[0].toObject();      
+                    deferred.resolve(filterReturnData.removeSensativeData(query_result));
+                }
+            });
         }
-        else{
-			//var query_result = result.toObject();
-            deferred.resolve(filterReturnData.removeSensativeData(result));
-		}
+        else
+        {
+        	var query_result = result.toObject();        	
+        	deferred.resolve(filterReturnData.removeSensativeData(query_result));
+        }
+
+
     });
 
     return deferred.promise;
