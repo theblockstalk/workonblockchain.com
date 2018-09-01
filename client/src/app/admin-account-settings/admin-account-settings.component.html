@@ -2,23 +2,18 @@
 
 <section class = "setting">
 
-
 <div class="alert alert-info pro_alert alert-dismissible" *ngIf="inform">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-	  	Your account settings is succesfully updated.
+	  	{{message}}
 </div>
 
 <!--<div class="alert alert-success pro_alert alert-dismissible" *ngIf="enable_msg">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 	  	Your profile is currently enable.
 </div>-->
-
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 wizard-form sett_padd">
-<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "message ">
-    {{message}}    
- </div>
 				<h1 class = "text-center sett-mr-btm">Account Settings</h1>
 				   <div class="group">
 				   		<!--<h1>Required for platform use</h1>-->
@@ -35,7 +30,7 @@
 						</div>
 				   </div>
 				   
-				    <div class="group">
+				   <div class="group">
 				   		<!--<h1>Required for platform use</h1>-->
 						
 						<div class="items">
@@ -66,13 +61,13 @@
 
 				   </div>
 				   
+				   
 				   <div class="group">	
 						<div class="items">
 							<a routerLink="/change-password" >Change Password</a>
 							
 						</div>
 				   </div>
-				   
 
 				   <div class = "group">
 				   		<div class="items no-line primary">

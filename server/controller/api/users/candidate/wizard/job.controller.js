@@ -8,7 +8,8 @@ const logger = require('../../../../services/logger');
 
 module.exports = function (req,res)
 {
-    job_data(req.params._id,req.body).then(function (err, data)
+	let userId = req.auth.user._id;
+    job_data(userId,req.body).then(function (err, data)
     {
         if (data)
         {
@@ -48,7 +49,9 @@ function job_data(_id, userParam)
                 interest_area: userParam.interest_area,
                 expected_salary_currency: userParam.base_currency,
                 expected_salary: userParam.expected_salary,
-                availability_day: userParam.availability_day
+                availability_day: userParam.availability_day,
+                current_salary: userParam.current_salary,
+                current_currency : userParam.current_currency,
             };
         CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
         {

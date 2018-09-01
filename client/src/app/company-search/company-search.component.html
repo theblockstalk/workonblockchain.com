@@ -156,8 +156,8 @@
 				      	
 
 				      	<div class = "user-detail">
-					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply !== 1"><h2>{{data.first_name | slice:0:1}} {{data.last_name | slice:0:1}}</h2></a><br/>
-					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}} {{data.last_name }}</h2></a><br/>
+					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply !== 1"><h2>{{data.first_name | slice:0:1}}{{data.last_name | slice:0:1}}</h2><br/></a>
+					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}}</h2></a><br/>
 					      	
 					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>
 					      	

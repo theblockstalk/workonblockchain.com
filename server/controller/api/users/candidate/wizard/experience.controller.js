@@ -9,7 +9,8 @@ const logger = require('../../../../services/logger');
 module.exports = function (req,res)
 {
     //console.log(req.body);
-    experience_data(req.params._id,req.body).then(function (err, data)
+	let userId = req.auth.user._id;
+    experience_data(userId,req.body).then(function (err, data)
     {
         if (data)
         {
@@ -50,8 +51,7 @@ function experience_data(_id, userParam)
 
         var set =
             {
-                current_salary: userParam.detail.salary,
-                current_currency : userParam.detail.current_currency,
+                
                 programming_languages: userParam.language_exp,
                 education_history :  userParam.education,
                 work_history: userParam.work,

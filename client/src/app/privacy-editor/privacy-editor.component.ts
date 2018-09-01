@@ -40,6 +40,11 @@ export class PrivacyEditorComponent implements OnInit {
     minHeight: '10rem',
     };
       
+       setInterval(() => {  
+                                this.error = "" ;
+                                this.success = "" ;
+                        }, 5000);
+      
       this.page_name = 'Privacy Policy';
       
      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -54,7 +59,7 @@ export class PrivacyEditorComponent implements OnInit {
                 data => {
                    if(data)
                    {
-                       console.log(data);
+                      // console.log(data);
                         this.page_title = data[0].page_title;
                        this.editor_content = data[0].page_content;
                        //console.log(this.editor_content);
@@ -72,9 +77,10 @@ export class PrivacyEditorComponent implements OnInit {
         }
   }
 
+    success; error;
    editor(editorForm: NgForm)
    {
-       //console.log(editorForm.value);
+       console.log(editorForm.value);
        this.editor_text = this.editor_content;  
        this.authenticationService.pages_content(editorForm.value)
        .subscribe(
@@ -82,12 +88,27 @@ export class PrivacyEditorComponent implements OnInit {
        {
            if(data)
            {
-               this.dataservice.changeMessage("Content Successfully Updated");
+               this.success = "Content Successfully Updated";
+               //this.dataservice.changeMessage("Content Successfully Updated");
            }
            else
            {
-               this.dataservice.changeMessage("Something went wrong");
+               this.error="Something went wrong";
+               
            }
+       },
+       error =>
+       {
+             if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }      
        });
    }
 

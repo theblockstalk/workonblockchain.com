@@ -64,7 +64,7 @@ export class HeaderComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                   
                     if(data)
                     {
                         this.is_verify = data._creator.is_verify;
@@ -115,7 +115,8 @@ export class HeaderComponent implements OnInit {
       
   }
 
- 
+    verifysuccessmsg;
+    verifyerrormsg;
   ngOnInit() 
   {
       this.success='';
@@ -129,14 +130,25 @@ export class HeaderComponent implements OnInit {
                         }, 3000);
           this.close = JSON.parse(localStorage.getItem('close_notify')); 
        }
+      
+      this.dataservice.verifycurrentMessage.subscribe(message => this.verifysuccessmsg = message);
+       this.dataservice.verifyerrorMessage.subscribe(message => this.verifyerrormsg = message);
+      
+       setInterval(() => {  
+                                this.verifysuccessmsg = "" ;
+                                this.verifyerrormsg='';
+                        }, 20000);
+      
   }
   
   
   verify_client()
   {
       this.success_msg='';
+      this.msg='';
       this.close = "close"; 
-      localStorage.setItem('close_notify', JSON.stringify(this.close));
+      localStorage.setItem('close_notify', JSON.stringify(this.close)); 
+      //localStorage.setItem('close_notify', JSON.stringify(this.close));
       if(this.currentUser.email)
       {
           console.log(this.currentUser.email);
@@ -148,9 +160,11 @@ export class HeaderComponent implements OnInit {
                     {
                         
                         this.success_msg = "Please check your email to verify your account" ;
+                        
                         setInterval(() => {  
                                 this.success_msg = "" ;
-                        }, 3000);
+                                
+                        }, 9000);
                         
                     }
 
@@ -185,11 +199,34 @@ export class HeaderComponent implements OnInit {
     
     logout()
     {
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('googleUser');
-         localStorage.removeItem('close_notify');
-         localStorage.removeItem('linkedinUser');
-        localStorage.removeItem('admin_log');
+   
+         this.authenticationService.destroyToken(this.currentUser._id)
+            .subscribe(
+                data => {                    
+                    if(data)
+                    {
+                        
+                    }
+                    
+                    },
+                error =>
+                {
+                    if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    });
+        
+
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
+
+       
     }
     
 

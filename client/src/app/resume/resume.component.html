@@ -69,7 +69,11 @@
 		  </div>    
 		  <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
       </div>
+      						
                 </div>
+                <div class = "form_error" *ngIf="commercially_worked.length !== commercial_expYear.length">
+								<span class = "error">{{commercial_log}}</span>
+							</div>
           </div>
 
                    <span class = "checkbox-header"> <strong> Platforms designed/developed smart contracts on </strong></span>
@@ -108,7 +112,11 @@
 		  </div>    
 		  <input type="text" class="form-control" name="platforms" [(ngModel)]='platforms' style="display: none;">
       </div>
+      
           </div>
+          <div class = "form_error" *ngIf="platforms_designed.length !== platforms.length">
+								<span class = "error">{{platform_log}}</span>
+							</div>
           </div>   
                       
 

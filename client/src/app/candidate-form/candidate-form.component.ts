@@ -7,6 +7,7 @@ import { GoogleLoginProvider } from "angular4-social-login";
 import { LinkedInService } from 'angular-linkedin-sdk';
 import {NgForm} from '@angular/forms';
 import { DataService } from "../data.service";
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-candidate-form',
@@ -28,8 +29,9 @@ export class CandidateFormComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,private dataservice: DataService,
-        private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService
+        private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private titleService: Title,private newMeta: Meta
        ) {
+		this.titleService.setTitle('Work on Blockchain | Signup developer or company');
 		this.route.queryParams.subscribe(params => {
 			this.code = params['code'];   
 		});
@@ -58,12 +60,17 @@ export class CandidateFormComponent implements OnInit {
  
     ngOnInit() 
     {
+		this.newMeta.updateTag({ name: 'description', content: 'Signup for companies to apply to you! workonblockchain.com is a global blockchain agnostic hiring recruitment platform for blockchain developers, software developers, designers, product managers, CTOs and software engineer interns who are passionate about working on public and enterprise blockchain technology and cryptocurrencies.' });
+	    this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developer signup workonblockchain.com' });
+		
         this.credentials.email='';
+        
         this.credentials.country=-1;
         this.dataservice.currentMessage.subscribe(message => this.message = message);
-       
-        this.authenticationService.logout();
-
+         setInterval(() => {  
+                                this.message = "" ;
+                                this.log='';
+                        }, 8000);
     }
     log = '';
     email_log='';
@@ -118,27 +125,9 @@ export class CandidateFormComponent implements OnInit {
                     else
                     {
                        localStorage.setItem('currentUser', JSON.stringify(data));
-                       ////console.log("elseeee");
-                        /*this.authenticationService.refered_id(this.refer_by , data._creator)
-                        .subscribe(
-                        data => 
-                        {
-                           // //console.log(data);
-                            if(data.error)
-                            {
-                                this.log = 'Something getting wrong';
-                            }
-                            else
-                            {
-                                 window.location.href = '/terms-and-condition';
-                            }
-                            
-                        });
-                        */
+                      
                         window.location.href = '/terms-and-condition';
-                        //localStorage.removeItem('userInfo');
-                        //this.router.navigate(['/about']);
-                       // window.location.href = '/about';
+                        
                     }
                 },
                 error => 

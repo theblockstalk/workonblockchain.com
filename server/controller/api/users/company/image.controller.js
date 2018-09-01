@@ -17,7 +17,8 @@ module.exports = function (req, res)
     } else {
         path = settings.FILE_URL+req.file.filename;
     }
-    save_employer_image(path , req.params._id).then(function (err, about)
+    let userId = req.auth.user._id;
+    save_employer_image(path , userId).then(function (err, about)
 
     {
         if (about)

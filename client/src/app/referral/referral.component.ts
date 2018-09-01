@@ -5,6 +5,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {ProfileDetail} from '../Model/ProfileDetail';
 import { HttpClient } from '@angular/common/http';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-referral',
@@ -15,7 +16,7 @@ export class ReferralComponent implements OnInit {
 	currentUser: User;
 	@ViewChild('element') element: ElementRef;
 	credentials: any = {};
-	email_ref_link = 'http://workonblockchain.mwancloud.com/refer?code=';
+	email_ref_link = 'https://staging.workonblockchain.com/refer?code=';
 	log = '';
 	title = 'My Ref Page';
 	ref_link = '';
@@ -29,8 +30,9 @@ export class ReferralComponent implements OnInit {
 	last_name;
 	
 	constructor(
-		private authenticationService: UserService
+		private authenticationService: UserService,private titleService: Title,private newMeta: Meta
 	) {
+		this.titleService.setTitle('Work on Blockchain | £500 reward for referrals');
 		const url2 = 'https://platform.twitter.com/widgets.js';
         if (!document.querySelector(`script[src='${url2}']`)) {
             let script = document.createElement('script');
@@ -44,6 +46,9 @@ export class ReferralComponent implements OnInit {
     }
 
 	ngOnInit(){
+		this.newMeta.updateTag({ name: 'description', content: 'Refer a friend to workonblockchain.com, the blockchain recruitment platform for developers, and get £500 when they are successfully employed by a company through the platform.' });
+	    this.newMeta.updateTag({ name: 'keywords', content: 'refer developer referral reward workonblockchain.com' });
+		
 		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 		this.show_refreal = 1;
 		if(this.currentUser){

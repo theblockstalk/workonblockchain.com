@@ -13,7 +13,7 @@
     <div class="collapse navbar-collapse" id="myNavbar" >
     
       <ul class="nav navbar-nav navbar-right" >
-        <li *ngIf="!currentUser"><a routerLink="signup"> Sign Up</a></li>
+        <li *ngIf="!currentUser"><a routerLink="signup"> <b>SIGN UP</b></a></li>
         <li *ngIf="!currentUser"><a routerLink="login">Login</a></li>       
         <li *ngIf="!currentUser"><a routerLink="referral">Referral - &pound; 500 Reward</a></li>
        
@@ -49,17 +49,27 @@
   </div>
 </nav>
 
-<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "msg && close && !success">
+<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "msg && close && !success  ">
     {{msg}}    
  </div>
  
+ <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg=='' && verifysuccessmsg!=''">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{verifysuccessmsg}}    
+ </div>
  
-<div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg!='' ">
+ <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "success_msg=='' && verifyerrormsg!=''">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{verifyerrormsg}}    
+ </div>
+ 
+<div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg!=''">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     {{success_msg}}    
  </div>
  
 
-<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg && !close">
+<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg && !close ">
   <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="close_notify()">&times;</a>
     Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class = "">here</a>.
     <!-- <a (click)="verify_client()" class = "">Verify Account</a>-->

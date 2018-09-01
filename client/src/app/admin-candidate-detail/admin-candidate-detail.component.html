@@ -3,8 +3,8 @@
 <section class = "wizard_page">	
 
 	<div class="container">
-		<div class="row">
-			<div class="col-md-9" *ngFor = "let data of info">
+		<div class="row profile_group">
+			<div class="col-md-12" *ngFor = "let data of info">
 				 <section class = "profile personal_info">
 
 				 	<div class="col-md-6" >
@@ -15,7 +15,7 @@
 				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
 				 		<span class = "name">
-				 			<h3>{{data.first_name}} {{data.last_name}} </h3>
+				 			<h3 class="text-capitalize">{{data.first_name}} {{data.last_name}} </h3>
 
 				 		</span>
 				 		<span class = "short_intro">
@@ -32,7 +32,8 @@
 				 		</span>
 				 		<span class = "short_intro">
 				 		<form #approve_form="ngForm" >
-								
+								<input type="hidden" name="type"  [ngModel]="data._creator.type">
+								<input type="hidden" name="email"  [ngModel]="data._creator.email">
 								<input type="hidden" name="name"  [ngModel]="data.first_name">
 								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
 								<input type="hidden" name="id" [ngModel]="data._creator._id">
@@ -53,7 +54,7 @@
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-						<li *ngIf="data._creator.refered_id && data._creator.refered_id!='undefined'">
+						<li *ngIf="data._creator.refered_id && refeered!='null'">
 				 			
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 					 				<span class = "li_txt" >Refered By: <a [routerLink]="['/admin-candidate-detail']" target="_blank" [queryParams]="{user: data._creator.refered_id }">{{first_name}} {{last_name}}</a>
@@ -369,7 +370,7 @@
 
 				  <section class = "profile job_info">
 					<h3>Work History</h3>
-					<div class = "company_area" *ngFor='let work of data.work_history'>
+					<div class = "company_area" *ngFor='let work of work_history'>
 					 	<div class="info-area pro_br-btm">
 							<div class = "col-md-4">
 								<strong>Company name: </strong>
@@ -440,7 +441,7 @@
 				 <section class = "profile job_info">
 					<h3>Education</h3>
 					
-				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of data.education_history'>
+				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education_history'>
 				 		<div class = "edu_feild">
 							<p>
 								<strong>{{edu.uniname}} </strong>

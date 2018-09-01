@@ -16,7 +16,8 @@
 				 			<img  [src]="(imgPath + image_src)" class = "img-responsive" alt = "profile-img"/>
 				 		</span>-->
 				 		<span class = "name">
-				 			<h3>{{first_name}} {{last_name}}</h3>
+				 		<h3 class="text-capitalize">{{company_name}}</h3>
+				 			
 				 		</span>
 
 				 		<span class = "short_intro">
@@ -32,13 +33,7 @@
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-				 			<li>
-				 				
-					 				<span class = "list-icon span_bg"><img src="assets/profile/comp.png"> </span> 
-					 				<span class = "li_txt">{{company_name}}</span>
-					 			
-				 				
-				 			</li>
+				 			
 
 				 			<li>
 				 				
@@ -54,10 +49,24 @@
 				 				
 				 			</li>
 
+						    <li>
+				 				
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+				 					<span class = "li_txt">City : {{company_city}}</span>
+				 				
+				 			</li>
+				 			
+				 			<li>
+				 				
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+				 					<span class = "li_txt">Postcode : {{company_postcode}}</span>
+				 				
+				 			</li>
+						    
 				 			<li>
 				 			
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-				 					<span class = "li_txt"> Contact Number : {{company_phone}}</span>
+				 					<span class = "li_txt"> Phone : {{company_phone}}</span>
 				 			
 				 			</li>
 				 			
@@ -71,67 +80,10 @@
 				 	</span>
 				 </section>
 				 
-				 <section class = "profile job_info">
-					<h3>Company Information</h3>
-				 	
-				 	<!--<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Position Type : </strong>
-							<span>Full Time, Part Time .</span>
-						</p>
-				 	</div>-->
-
-				 	
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Email Address: </strong>
-							<span>{{email}}</span>
-						</p>
-				 	</div>
-				 	
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Job Title: </strong>
-							<span>{{job_title}}</span>
-						</p>
-				 	</div>
-				 	<div class="col-md-6 info-area">
-      					<p>
-							<strong>Company Website: </strong>
-							<span><a [href]="('http://' + company_website)" target="_blank">{{company_website}}</a></span>
-						</p>
-
-      				</div>
-      				
-      				<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Company City</strong>
-							<span>{{company_city}}</span>
-						</p>
-				 	</div>
-				 	
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Company Postcode</strong>
-							<span>{{company_postcode}}</span>
-						</p>
-				 	</div>
-				 	
-				 
-				 	
-				 	
-				 	
-
-				 	<span class = "edit_profile_link">
-				 		<a (click)="internalRoute('edit_company_profile','information')">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-				 	
-				 </section>
+				
 				 
 				 <section class = "profile job_info">
-					<h3>About the company</h3>
+					<h3>Company Info</h3>
 				 	
 				 	<!--<div class="col-md-6 info-area">
 				 		<p>
@@ -148,21 +100,18 @@
 						</p>
 				 	</div>
 				 	<div class="col-md-6 info-area">
+				 		<p>
+							<strong>How is the company funded:</strong>
+							<span>{{company_funded}}</span>
+						</p>
+				 	</div>
+				 	<div class="col-md-6 info-area">
       					<p>
 							<strong>Number of employees: </strong>
 							<span>{{no_of_employees}}</span>
 						</p>
 
       				</div>
-      				
-      				<div class="col-md-6 info-area">
-				 		<p>
-							<strong>How is the company funded</strong>
-							<span>{{company_funded}}</span>
-						</p>
-				 	</div>
-				 	
-				 	
 				 	
 
 				 	<span class = "edit_profile_link">
@@ -173,7 +122,49 @@
 				 	
 				 </section>
 				 
+				  <section class = "profile job_info">
+					<h3>Company Administration</h3>
+				 	
+				 	<!--<div class="col-md-6 info-area">
+				 		<p>
+							<strong>Position Type : </strong>
+							<span>Full Time, Part Time .</span>
+						</p>
+				 	</div>-->
+					<div class="col-md-6 info-area">
+				 		<p>
+							
+							<span class="alignment">{{first_name}} {{last_name}}</span>
+						</p>
+				 	</div>
+				 	
+				 	
+				 	
+				 	<div class="col-md-6 info-area">
+				 		<p>
+							<strong>Title: </strong>
+							<span>{{job_title}}</span>
+						</p>
+				 	</div>
+				 	<div class="col-md-6 info-area">
+				 		<p>
+							<strong>Email: </strong>
+							<span>{{email}}</span>
+						</p>
+				 	</div>
+				 	
 				 
+				 	
+				 	
+				 	
+
+				 	<span class = "edit_profile_link">
+				 		<a (click)="internalRoute('edit_company_profile','information')">
+				 			<i class="fa fa-pencil" aria-hidden="true"></i>
+				 		</a>
+				 	</span>
+				 	
+				 </section>
 				 
 				 </div>
 				 </div>

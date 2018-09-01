@@ -1,0 +1,14 @@
+.info-area
+{
+	min-height:40px;
+    margin-bottom: 15px;
+}
+.info-area strong {
+   
+    min-width: 0px;
+}
+
+.alignment
+{
+	margin-left:0px;
+}

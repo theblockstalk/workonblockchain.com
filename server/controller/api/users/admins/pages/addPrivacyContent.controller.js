@@ -29,6 +29,7 @@ const logger = require('../../../../services/logger');
 
 module.exports = function (req,res)
 {
+	logger.info(req.body);
     add_privacy_content(req.body).then(function (err, data)
     {
         if (data)
@@ -51,7 +52,7 @@ function add_privacy_content(info)
     var deferred = Q.defer();
     var createdDate;
     let now = new Date();
-    createdDate= date.format(now, 'DD/MM/YYYY');
+    createdDate= now;
     //console.log(info.page_title);
     Pages.findOne({ page_name: info.page_name}, function (err, data)
     {
@@ -65,14 +66,14 @@ function add_privacy_content(info)
         }
         if(data==null)
         {
-            //console.log("if");
+            console.log("if");
             insertContent();
 
         }
 
         else
         {
-            //console.log("else");
+            console.log("else");
             updateContent(data._id);
         }
 

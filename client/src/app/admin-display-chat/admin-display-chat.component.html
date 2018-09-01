@@ -14,7 +14,7 @@
 								<ng-template #company_logo_top>
 									<img src="/assets/profile/profile-image.png" alt="">
 								</ng-template>
-								<p>{{display_name}}</p>
+								<p class="text-capitalize">{{display_name}}</p>
 							</div>
 					</div>
 					<div id="contacts">
@@ -39,7 +39,8 @@
 											
 										</ng-template>
 										<div class="meta">
-											<p class="name">{{ person.first_name }} {{ person.last_name }}</p>
+											<p class="name" class="text-capitalize" *ngIf="user_type == 'company'">{{ person.first_name }} {{ person.last_name }}</p>
+											<p class="name" class="text-capitalize" *ngIf="user_type == 'candidate'">{{ person.company_name }}</p>
 										</div>
 									</div>
 								</li>
@@ -50,7 +51,7 @@
 						<div class="contact-profile">
 							<ul class = "cand_info-ul">
 								<ng-container *ngIf="user_type == 'company';else cand">
-									<li>Candidate Name : {{candidate}}</li>
+									<li class="text-capitalize">Candidate Name : {{candidate}}</li>
 									<ng-container *ngIf="job_desc;else no_job_desc">
 										<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
 										<li>Job Title : {{job_desc.job_title}}</li>
@@ -61,7 +62,7 @@
 									</ng-template>
 								</ng-container>
 								<ng-template #cand>
-									<li>Company Name : {{candidate}}</li>
+									<li class="text-capitalize">Company Name : {{candidate}}</li>
 									<li>Job Title : {{job_desc.job_title}}</li>
 									<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
 								</ng-template>
@@ -77,7 +78,7 @@
 									<ng-container *ngIf="msg.sender_name == display_name;else second">
 										<li class="sent">
 											<p class = "job-description">
-												{{msg.sender_name}}:
+												<span class="text-capitalize">{{msg.sender_name}}:</span>
 												<span *ngIf="msg.job_title !== ''">
 													<br/>
 													Job Title:
@@ -128,7 +129,7 @@
 									<ng-template #second>
 										<li class="replies">
 											<p>
-												{{msg.sender_name}}:
+												<span class="text-capitalize">{{msg.sender_name}}:</span>
 												<span *ngIf="msg.job_title !== ''">
 													<br/>
 													Job Title:

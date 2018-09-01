@@ -25,7 +25,7 @@ module.exports = function (req,res)
 function admin_role(data)
 {
     var deferred = Q.defer();
-    //console.log(data);
+    console.log(data);
     users.findOne({ email: data.email }, function (err, result)
     {
         //console.log(result);

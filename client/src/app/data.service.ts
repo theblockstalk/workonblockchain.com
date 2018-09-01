@@ -13,6 +13,14 @@ export class DataService {
      private emailmessageSource = new BehaviorSubject<string>("");
     eemailMessage = this.emailmessageSource.asObservable();
     
+    
+     private verifymessageSource = new BehaviorSubject<string>("");
+    verifycurrentMessage = this.verifymessageSource.asObservable();
+    
+    
+    private verifyerrormessageSource = new BehaviorSubject<string>("");
+    verifyerrorMessage = this.verifyerrormessageSource.asObservable();
+    
 
   constructor() { }
 
@@ -29,5 +37,17 @@ export class DataService {
      emailMessage(message: string) {
     this.emailmessageSource.next(message)
   }
+    
+    verifySuccessMessage(message:string)
+    {
+        this.verifymessageSource.next(message)      
+   }
+    
+    verifyErrorMessage(error:string)
+    {
+        
+        this.verifyerrormessageSource.next(error) 
+        
+    }
 
 }
