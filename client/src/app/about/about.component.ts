@@ -6,7 +6,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {environment} from '../../environments/environment';
 const URL = environment.backend_url;
-////console.log(URL);
+//////console.log(URL);
 
 @Component({
   selector: 'app-about',
@@ -62,16 +62,16 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.exp_disable = "disabled";
       this.info.nationality=-1;
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-       ////console.log(this.currentUser);
+       //////console.log(this.currentUser);
        this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-       ////console.log(this.googleUser);
+       //////console.log(this.googleUser);
 
        this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-       //////console.log(this.linkedinUser);
+       ////////console.log(this.linkedinUser);
 
        if(this.googleUser)
        {
-           ////console.log("jhcskjsdhkk");
+           //////console.log("jhcskjsdhkk");
           this.info.image_src = this.googleUser.photoUrl;
            if( this.info.image_src)
            {
@@ -97,8 +97,8 @@ export class AboutComponent implements OnInit,AfterViewInit
             .subscribe(
                 data =>
                 {
-                      //  console.log(data);
-                    if(data._creator.refered_id != 'undefined' && !data.first_name && !data.last_name)
+                       
+                    if(data._creator.refered_id && !data.first_name && !data.last_name)
                     {
                         //console.log("ifffffffffff");
                         this.referred_id = data._creator.refered_id;
@@ -123,7 +123,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
                     if(data.image != null )
                     {
-                      //////console.log(data.image);
+                      ////////console.log(data.image);
                      this.info.image_src = data.image ;
                        
 
@@ -191,7 +191,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   onGenderSelected(event)
   {
     this.info.gender= event.target.value;
-    ////console.log(this.info.gender);
+    //////console.log(this.info.gender);
   }
 
 
@@ -225,48 +225,12 @@ export class AboutComponent implements OnInit,AfterViewInit
           {
             if(data)
             {
-                
-               if(this.referred_id)
-               {
-                   //console.log("ifffffffff refrred _id");
-                        ////console.log(data.refered_id);
-                         this.authenticationService.getById(this.referred_id)
-                         .subscribe(
-                         data => {
-                            if(data)
-                            {
-                                ////console.log(data);
-                                if(data._creator.email)
-                                {
-                                    this.email_data.fname = data.first_name;
-                                    this.email_data.email = data._creator.email;
-                                    this.email_data.referred_fname = this.info.first_name;
-                                    this.email_data.referred_lname = this.info.last_name;
-                                    this.authenticationService.email_referred_user(this.email_data).subscribe(
-                                    data =>
-                                    {
-                                 
-                                        ////console.log(data);
-                                    });
-                               }
-                               else
-                               {
-                                    
-                               }
-                            }
-                             
-                            else
-                            {
-                                
-                                
-                            }
-                    
-                        });
+                //console.log(data);
                
-              }
-               // console.log(this.info.image_src);
+                //console.log(this.info.image);
               if(this.info.image)
               {
+              //console.log("image");
               let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
               let fileCount: number = inputEl.files.length;
               let formData = new FormData();
@@ -280,7 +244,8 @@ export class AboutComponent implements OnInit,AfterViewInit
                 (success) =>
                 {
                   
-                  ////console.log(success);
+                  //console.log(success);
+                  this.referred_email();
                   this.router.navigate(['/job']);
                 },
                 (error) =>                
@@ -297,22 +262,26 @@ export class AboutComponent implements OnInit,AfterViewInit
                         } 
                     })
               }
-               else
+              else 
               {
+              //console.log("else");
+                this.referred_email();
                 this.router.navigate(['/job']);
               }
 
               }
-              else if (this.info.image_src)
+
+               else 
               {
+              //console.log("else");
+                this.referred_email();
                 this.router.navigate(['/job']);
               }
+              
+             
 
             }
-            if(data.error )
-            {
-              this.log=data.error;
-            }
+           
           },
           error =>
           {
@@ -330,6 +299,51 @@ export class AboutComponent implements OnInit,AfterViewInit
           
     }      
     
+  }
+
+  referred_email()
+  {
+      //console.log(this.referred_id);
+      //console.log("referred_email");
+      if(this.referred_id)
+               {
+                   ////console.log("ifffffffff refrred _id");
+                        //////console.log(data.refered_id);
+                         this.authenticationService.getById(this.referred_id)
+                         .subscribe(
+                         data => {
+                            if(data)
+                            {
+                                //console.log(data);
+                                if(data[0]._creator.email)
+                                {
+                                    this.email_data.fname = data[0].first_name;
+                                    this.email_data.email = data[0]._creator.email;
+                                    this.email_data.referred_fname = this.info.first_name;
+                                    this.email_data.referred_lname = this.info.last_name;
+                                    //console.log(this.email_data);
+                                    this.authenticationService.email_referred_user(this.email_data).subscribe(
+                                    data =>
+                                    {
+                                        //this.router.navigate(['/job']);
+                                        //////console.log(data);
+                                    });
+                               }
+                               else
+                               {
+                                    
+                               }
+                            }
+                             
+                            else
+                            {
+                                
+                                
+                            }
+                    
+                        });
+               
+              }
   }
         
 }
