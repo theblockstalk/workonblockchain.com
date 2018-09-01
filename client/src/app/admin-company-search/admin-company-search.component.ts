@@ -25,7 +25,7 @@ export class AdminCompanySearchComponent implements OnInit {
     msgtags;
     information;
     is_approve;
-    select_value;
+    select_value='';
 	searchWord;
     admin_log;
     is_admin;
@@ -51,7 +51,8 @@ export class AdminCompanySearchComponent implements OnInit {
         this.options = 
         {
             multiple: true,
-            placeholder: 'Message Tags' 
+            placeholder: 'Message Tags',
+            allowClear :true
         }
         
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -106,9 +107,6 @@ export class AdminCompanySearchComponent implements OnInit {
                          {
                              this.page =this.length;
                              this.log='';
-                            
-                            // //console.log(this.page);
-                            // //console.log(this.length);
                          }
                          else
                          {
@@ -124,7 +122,16 @@ export class AdminCompanySearchComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 });
     }
     
@@ -132,6 +139,7 @@ export class AdminCompanySearchComponent implements OnInit {
     approveClick(event , approveForm: NgForm)
     {
         ////console.log(approveForm.value.id);
+        
          if(event.srcElement.innerHTML ==='Active' )
          {
              this.is_approve = 1;
@@ -149,6 +157,27 @@ export class AdminCompanySearchComponent implements OnInit {
                      
                     if(data.is_approved === 1 )
                     {
+                        console.log(approveForm.value);
+                        this.authenticationService.approval_email(approveForm.value)
+                        .subscribe(
+                        data =>
+                        {
+                            
+                            
+                        },
+                        error =>
+                        {
+                            if(error.message == 500 || error.message == 401)
+                            {
+                                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                    window.location.href = '/login';
+                            }
+                    
+                            if(error.message == 403)
+                            {
+                                this.router.navigate(['/not_found']);                        
+                             }   
+                        });
                         if(event.srcElement.innerHTML ==='Active' )
                         {
                                 //// perform add action
@@ -174,7 +203,21 @@ export class AdminCompanySearchComponent implements OnInit {
                         }
                    }
                     
-                });
+                },
+                
+                error =>
+                {
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
+                 });
     }
     
     onSearchName(f: NgForm)
@@ -199,7 +242,7 @@ export class AdminCompanySearchComponent implements OnInit {
                     else
                     {
                          this.info=[];
-                         this.length='';
+                         this.length=0;
                         // //console.log(this.log);
                        this.information = this.filter_array(data);
                        ////console.log(this.inform.first_name);
@@ -234,17 +277,30 @@ export class AdminCompanySearchComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 });
     }
     
     
     messagetag_changed(data)
     {
-          this.msgtags = data.value;
-           // //console.log(data.value);
-          this.search(this.msgtags);
-           //console.log(this.msgtags);
+        if(this.select_value  !== data.value)
+        {
+            this.select_value = data.value;
+            // //console.log(data.value);
+            console.log(this.select_value);
+            this.search(this.select_value);
+       }
+           
      }
     
     search_approved(event)
@@ -275,7 +331,7 @@ export class AdminCompanySearchComponent implements OnInit {
         //console.log(this.approve);
         //console.log(this.msgtags);
         
-        if(this.approve === -1 && !this.msgtags )
+        if(this.approve === -1 && !this.select_value )
         {
             //console.log("iffff both are empty");
             this.getAllCompanies();
@@ -284,7 +340,7 @@ export class AdminCompanySearchComponent implements OnInit {
         else
         {
            
-            this.authenticationService.admin_company_filter(this.approve , this.msgtags)
+            this.authenticationService.admin_company_filter(this.approve , this.select_value)
             .subscribe(
                 data => 
                 {
@@ -336,7 +392,16 @@ export class AdminCompanySearchComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 });
             }
          

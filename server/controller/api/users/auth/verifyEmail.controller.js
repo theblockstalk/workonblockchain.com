@@ -30,20 +30,25 @@ function emailVerify(token)
 {
     var deferred = Q.defer()
     var data = jwt_hash.decode(token, settings.EXPRESS_JWT_SECRET, 'HS256');
+    console.log(Date(data.expiry));
+    console.log(new Date(new Date().getTime()));
     if(new Date(data.expiry) > new Date())
-    {
-        users.findOne(  { email_hash:token  }, function (err, result)
+    {   	    	
+        users.findOne(  { verify_email_key:token  }, function (err, result)
         {
+        	
             if (err){
                 logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
             }
             if(result)
             {
+      
                 updateData(result._id);
             }
             else
-                deferred.reject("Result not found");
+           
+                deferred.resolve({error:'Link Expired'});
         });
 
         function updateData(_id)
@@ -66,7 +71,8 @@ function emailVerify(token)
 
     else
     {
-        deferred.resolve({msg:'Link Expired'});
+    	
+        deferred.resolve({error:'Link Expired'});
         //deferred.reject('Link expired');
     }
     return deferred.promise;

@@ -28,7 +28,14 @@
 			 <input type="text" class="form-control" style="display:none;" name="page_name" [(ngModel)]="page_name" >
 				
 				<button type="submit" class = "btn btn-self btn-pdg" >Save</button>
-				
+				<div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success">
+    				{{success}}    
+ 			</div>
+ 			
+ 			<div class="alert alert-error pro_alert alert-dismissible" *ngIf = "error">
+    				{{error}}    
+ 			</div>
+ 			
 			</form>
 			</div>
 			</div>

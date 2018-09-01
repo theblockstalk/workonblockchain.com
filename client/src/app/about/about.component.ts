@@ -1,5 +1,5 @@
 import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
@@ -13,7 +13,7 @@ const URL = environment.backend_url;
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.css']
 })
-export class AboutComponent implements OnInit
+export class AboutComponent implements OnInit,AfterViewInit
 {
   currentUser: User;
   log='';
@@ -45,7 +45,11 @@ export class AboutComponent implements OnInit
   {
   }
 
-   
+    ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);   
+         
+    }
 
   ngOnInit()
   {
@@ -136,7 +140,7 @@ export class AboutComponent implements OnInit
 
                   }
 
-                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day )
+                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day&& data.current_salary )
                   {
                       this.resume_disable = '';
                       this.job_active_class = 'fa fa-check-circle text-success';
@@ -152,7 +156,7 @@ export class AboutComponent implements OnInit
                 // this.router.navigate(['/resume']);
                 }
 
-                if( data.programming_languages && data.current_salary )
+                if( data.programming_languages.length>0  &&data.description)
                 {
                     this.exp_class = "/experience";
                     this.exp_active_class = 'fa fa-check-circle text-success';
@@ -164,7 +168,16 @@ export class AboutComponent implements OnInit
                 },
                 error =>
                 {
-                  this.log = 'Something getting wrong';
+                   if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                       // this.router.navigate(['/not_found']);                        
+                    } 
                 });
                 this.router.navigate(['/about']);
        }
@@ -223,17 +236,23 @@ export class AboutComponent implements OnInit
                             if(data)
                             {
                                 ////console.log(data);
-                                this.email_data.fname = data[0].first_name;
-                                this.email_data.email = data[0]._creator.email;
-                                this.email_data.referred_fname = this.info.first_name;
-                                this.email_data.referred_lname = this.info.last_name;
-                               this.authenticationService.email_referred_user(this.email_data).subscribe(
-                                data =>
+                                if(data._creator.email)
                                 {
+                                    this.email_data.fname = data.first_name;
+                                    this.email_data.email = data._creator.email;
+                                    this.email_data.referred_fname = this.info.first_name;
+                                    this.email_data.referred_lname = this.info.last_name;
+                                    this.authenticationService.email_referred_user(this.email_data).subscribe(
+                                    data =>
+                                    {
                                  
-                                    ////console.log(data);
+                                        ////console.log(data);
                                     });
-                                
+                               }
+                               else
+                               {
+                                    
+                               }
                             }
                              
                             else
@@ -245,8 +264,8 @@ export class AboutComponent implements OnInit
                         });
                
               }
-                
-              if(!this.info.image_src)
+               // console.log(this.info.image_src);
+              if(this.info.image)
               {
               let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
               let fileCount: number = inputEl.files.length;
@@ -254,14 +273,29 @@ export class AboutComponent implements OnInit
               if (fileCount > 0 )
               {
                 formData.append('photo', inputEl.files.item(0));
-
-                this.http.post(URL+'users/image/'+this.currentUser._creator, formData).map((res) => res).subscribe(
+                 
+                this.http.post(URL+'users/image', formData ,  {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
+        }).map((res) => res).subscribe(
                 (success) =>
                 {
+                  
                   ////console.log(success);
                   this.router.navigate(['/job']);
                 },
-                (error) => alert(error))
+                (error) =>                
+                    {
+                        if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
+                    })
               }
                else
               {
@@ -282,7 +316,16 @@ export class AboutComponent implements OnInit
           },
           error =>
           {
-            this.log = 'Something getting wrong';
+            if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
           });
           
     }      

@@ -1,5 +1,5 @@
 import { Component, OnInit ,ElementRef, Input } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
@@ -46,6 +46,18 @@ export class EditCandidateProfileComponent implements OnInit {
     LangexpYear=[];lang_expYear_db=[];lang_db_valye=[];
     candidate_data=[];
     img_src;
+    current_sal_log;current_currency_log;lang_log;
+    exp_lang_log;intro_log;uni_name_log;degree_log;
+    field_log;eduYear_log;company_log;position_log;
+    location_log;start_date_log;start_year_log;end_date_log;
+    exp_count=0;edu_count=0;
+    why_work_log;
+    country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
+    current_sal_logg; current_currency_logg;
+    first_name_log;
+    last_name_log;
+    contact_name_log;
+    nationality_log;
   nationality = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
  
     current_work_check=[];
@@ -77,19 +89,10 @@ export class EditCandidateProfileComponent implements OnInit {
     
   ngOnInit() 
   {
-      /* $(document).ready(function(){
-        $(function () {
-    $('#1step').change(function () {
-        if ($('#1step').is(':checked')) {
-            $("#input_field").hide();
-        } else {
-            $("#input_field").show();
-        }
-    }).change();
-});
-    });*/
     
-      this.info.nationality = -1;
+        this.info.nationality = -1;
+        this.current_currency =-1;
+        this.base_currency=-1;
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
        this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()]) 
@@ -103,9 +106,11 @@ export class EditCandidateProfileComponent implements OnInit {
           this.authenticationService.getById(this.currentUser._id)
             .subscribe(data => 
             {
+                if(data)
+                    this.info.email = data._creator.email;
                 if(data.contact_number  && data.nationality && data.first_name && data.last_name)
                 {
-                   this.info.email = data._creator.email;
+                   
                     this.info.contact_number = data.contact_number;
                     this.info.github_account = data.github_account;
                     this.info.exchange_account = data.stackexchange_account;
@@ -186,7 +191,8 @@ export class EditCandidateProfileComponent implements OnInit {
                     this.expected_salaryyy = data.expected_salary;
                    
                     this.availability_day = data.availability_day;
-                    this.base_currency = data.expected_salary_currency;
+                    if(data.expected_salary_currency)
+                        this.base_currency = data.expected_salary_currency;
                 }
                 
                 if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
@@ -387,13 +393,23 @@ export class EditCandidateProfileComponent implements OnInit {
 
                     this.salary = data.current_salary;
                     this.Intro =data.description;
-                    this.current_currency =data.current_currency;
+                    if(data.current_currency)
+                        this.current_currency =data.current_currency;
 
                 }
             },
             error => 
             {
-               this.log = 'Something getting wrong';
+              if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
             });
       }
   }
@@ -575,7 +591,7 @@ export class EditCandidateProfileComponent implements OnInit {
 
   onExpOptions(obj)
   {
-//console.log(this.experimented_platform);
+
       let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
       let index = this.experimented_platform.indexOf(updateItem);
       if(index > -1)
@@ -591,28 +607,6 @@ export class EditCandidateProfileComponent implements OnInit {
         this.experimented_platform.push(obj);
       }
 
-       /*let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
-      let index = this.experimented_platform.indexOf(updateItem);
-      if(index > -1)
-      {
-        this.experimented_platform.splice(index, 1);
-          let updateItem2 = this.findObjectByKey(this.expYear, 'experimented_platform', obj.value);
-       ////console.log(updateItem);
-      let index2 = this.expYear.indexOf(updateItem2);
-
-      if(index2 > -1)
-      {
-          
-        this.expYear.splice(index2, 1);
-          }
-      }
-      else
-      {
-        obj.checked =true;
-        this.experimented_platform.push(obj);
-      }*/
-      
-    
       
   }
 
@@ -1019,7 +1013,7 @@ export class EditCandidateProfileComponent implements OnInit {
         ////console.log(this.LangexpYear); 
         
       }
-                ////console.log(this.LangexpYear); 
+                
 
    }
    onRoleYearOptions(e, value)
@@ -1092,11 +1086,210 @@ export class EditCandidateProfileComponent implements OnInit {
     startmonthIndex;endmonthIndex;
     start_date_format;end_date_format;
     educationjson;education_json_array=[];
+    commercial_log;platform_log;
     candidate_profile(profileForm: NgForm)
     {
         //console.log(profileForm.value);
          this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if(!this.info.first_name)
+        {
+            this.first_name_log="Please enter first name";
+    
+        }
+        if(!this.info.last_name)
+        {
+            this.last_name_log="Please enter last name";
+    
+        }
+        if(!this.info.contact_number)
+        {
+            this.contact_name_log ="Please enter contact number";
+        }
+    
+        if(this.info.nationality==-1)
+        {
+            this.nationality_log ="Please choose nationality";
+        }
+        if(this.selectedcountry.length <=0)
+        {
+            this.country_log = "Please select min 1 location";
+        }
+          
+        if(this.jobselected.length<=0)
+        {
+            this.roles_log = "Please select min 1 role";
+        }
         
+        
+        if(this.base_currency==-1)
+        {
+            this.currency_log = "Please choose currency";
+        }
+          
+        if(!this.expected_salaryyy)
+        {
+            this.salary_log = "Please enter expected yearly salary";
+        }
+          
+        if(this.selectedValue.length<=0)
+        {
+            this.interest_log = "Please select min 1 area of interest";
+        }
+          
+        if(!this.availability_day)
+        {
+            this.avail_log = "Please select employment availability";
+        }
+        if(!this.salary)
+       {
+           this.current_sal_logg = "Please enter current base salary";
+          
+       }
+        
+       if(this.current_currency ==-1)
+       {
+           this.current_currency_logg = "Please choose currency";
+       }
+        if(!this.why_work)
+        {
+          this.why_work_log = "Please fill why do you want to work on blockchain?"; 
+         }
+        
+        if(this.commercially_worked.length !== this.commercial_expYear.length )
+        {
+            this.commercial_log = "Please fill year of experience";
+        }
+        if(this.platforms_designed.length !== this.platforms.length)
+        {
+            this.platform_log = "Please fill year of experience";
+        }
+            
+       if(this.language.length<=0)
+       {
+           console.log(this.language.length);
+           this.lang_log="Please select min 1 language";
+       }
+        
+        if(this.LangexpYear.length !==  this.language.length)
+        {
+           
+            this.exp_lang_log="Please fill year of experience";
+        }
+        if(!this.Intro)
+        {
+            
+            this.intro_log="Please fill 2-5 sentence bio"
+        }
+        
+      
+        if(this.EducationForm.value.itemRows.length >= 1)
+        {     
+            for (var key in this.EducationForm.value.itemRows) 
+            {
+                if(!this.EducationForm.value.itemRows[key].uniname)
+                {
+                    this.uni_name_log = "Please fill university";
+                }
+                
+                if(!this.EducationForm.value.itemRows[key].degreename)
+                {
+                    this.degree_log = "Please fill degree";
+                }
+                
+                if(!this.EducationForm.value.itemRows[key].fieldname)
+                {
+                    this.field_log = "Please fill field of study";
+                }
+                
+                if(!this.EducationForm.value.itemRows[key].eduyear)
+                {
+                    this.eduYear_log = "Please fill graduation year";
+                }
+                if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename && this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
+                {
+                                       
+                    this.edu_count = parseInt(key) + 1;
+                    //console.log(this.edu_count);
+                }
+                
+            }
+         
+        }
+        if(this.ExperienceForm.value.ExpItems.length >=1)
+        {
+            this.exp_count =0;
+            for (var key in this.ExperienceForm.value.ExpItems) 
+            {
+                if(!this.ExperienceForm.value.ExpItems[key].companyname)
+                {
+                    this.company_log = "Please fill company";
+                }
+                    
+                if(!this.ExperienceForm.value.ExpItems[key].positionname)
+                {
+                    this.position_log = "Please fill position";
+                }
+                
+                    
+                if(!this.ExperienceForm.value.ExpItems[key].locationname)
+                {
+                    this.location_log = "Please fill location";
+                    
+                }
+            
+                if(!this.ExperienceForm.value.ExpItems[key].start_date || !this.ExperienceForm.value.ExpItems[key].startyear)
+                {
+                    this.start_date_log = "Please fill start date ";
+                }
+                
+                if(!this.ExperienceForm.value.ExpItems[key].end_date || !this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].companyname==false)
+                {
+                    this.end_date_log = "Please fill end date ";
+                }
+            
+                if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname &&
+               this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].start_date && 
+               this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date && 
+               this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
+               {
+                   //console.log("false"); 
+                  this.exp_count = parseInt(key) + 1;
+                    
+               }
+                
+                
+                if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname &&
+                this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].start_date && 
+                this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
+               {
+                    //console.log("true");
+                    this.ExperienceForm.value.ExpItems[key].enddate = new Date();
+                    console.log(this.ExperienceForm.value.ExpItems[key].enddate);
+                  this.exp_count = parseInt(key) + 1;
+                    
+               } 
+                
+            }
+   
+            
+        }
+
+
+        if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 &&
+        this.expected_salaryyy && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day &&
+         this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
+             && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length   )
+        {
+            this.updateProfileData(profileForm.value);
+        }
+
+        //
+        
+    }
+
+
+    updateProfileData(profileForm)
+    {
         for (var key in this.ExperienceForm.value.ExpItems) 
             {
                 this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
@@ -1104,7 +1297,11 @@ export class EditCandidateProfileComponent implements OnInit {
                 //this.ExperienceForm.value.ExpItems[key].startdate = "01/"+this.startmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].startyear;
                 //this.ExperienceForm.value.ExpItems[key].enddate ="01/"+ this.endmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].endyear;
                 this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
-                this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);    
+                this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex); 
+                if(this.ExperienceForm.value.ExpItems[key].currentwork == true )
+                {
+                    this.end_date_format = new Date();
+                }
                 this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].descname,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork}; 
                 this.experiencearray.push(this.experiencejson);
                 //console.log(this.experiencearray);
@@ -1118,7 +1315,7 @@ export class EditCandidateProfileComponent implements OnInit {
                                     ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
                 this.education_json_array.push(this.educationjson) ;
             }
-        this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm.value,this.education_json_array , this.experiencearray)
+        this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
             .subscribe(
                 data => {
                 if(data && this.currentUser)
@@ -1130,7 +1327,9 @@ export class EditCandidateProfileComponent implements OnInit {
                      { 
                         formData.append('photo', inputEl.files.item(0));
                     
-                        this.http.post(URL+'users/image/'+this.currentUser._creator, formData).map((res) => res).subscribe(                
+                        this.http.post(URL+'users/image', formData ,  {
+            headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
+        }).map((res) => res).subscribe(                
                         (success) => 
                         {
                              //console.log(success);
@@ -1156,9 +1355,15 @@ export class EditCandidateProfileComponent implements OnInit {
                 error => {
                      this.dataservice.changeMessage(error);
                   this.log = 'Something getting wrong';
+                    if(error.message == 500)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
                    
                 });
-    }
+
+     }
     
      onGenderSelected(event)
   {

@@ -84,7 +84,16 @@ export class AdminCompanyDetailComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 }); 
       }
       else
@@ -97,6 +106,7 @@ export class AdminCompanyDetailComponent implements OnInit {
    approveClick(event , approveForm: NgForm)
     {
         ////console.log(approveForm.value.id);
+        
          if(event.srcElement.innerHTML ==='Active' )
          {
              this.is_approve = 1;
@@ -114,17 +124,36 @@ export class AdminCompanyDetailComponent implements OnInit {
                      
                     if(data.is_approved === 1 )
                     {
+                        console.log(approveForm.value);
+                        this.authenticationService.approval_email(approveForm.value)
+                        .subscribe(
+                        data =>
+                        {
+                            
+                            
+                        },
+                        error =>
+                        {
+                            if(error.message == 500 || error.message == 401)
+                            {
+                                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                    window.location.href = '/login';
+                            }
+                    
+                            if(error.message == 403)
+                            {
+                                this.router.navigate(['/not_found']);                        
+                             }   
+                        });
                         if(event.srcElement.innerHTML ==='Active' )
                         {
                                 //// perform add action
                                 event.srcElement.innerHTML="Inactive";
-                                this.is_approved = "Aprroved";
                         }
                         else if(event.srcElement.innerHTML ==='Inactive')
                         {
                              //// perform remove action
-                             event.srcElement.innerHTML="Active";
-                            this.is_approved = "";                           
+                             event.srcElement.innerHTML="Active";                           
                         }
                     } 
                     else if(data.is_approved ===0)
@@ -133,17 +162,28 @@ export class AdminCompanyDetailComponent implements OnInit {
                         {
                                 //// perform add action
                                 event.srcElement.innerHTML="Inactive";
-                                this.is_approved = "Aprroved";
                         }
                         else if(event.srcElement.innerHTML ==='Inactive')
                         {
                              //// perform remove action
-                             event.srcElement.innerHTML="Active"; 
-                            this.is_approved = "";                          
+                             event.srcElement.innerHTML="Active";                           
                         }
                    }
                     
-                });
+                },
+                
+                error =>
+                {
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
+                 });
     }
-
 }

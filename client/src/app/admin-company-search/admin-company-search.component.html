@@ -29,7 +29,7 @@
 						<li> 
 							<div class = "form-group">
 
-                				<select2  [data]="rolesData" [options]="options"  [width]="500" [value]="select_value" (valueChanged)="messagetag_changed($event)">
+								<select2  [data]="rolesData" allowClear="true"   [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="messagetag_changed($event)">
 								
 								
 								</select2>
@@ -92,15 +92,16 @@
 				      	</div>
 
 				      	<div class = "user-detail">
-					      	<a [routerLink]="['/admin-company-detail']" [queryParams]="{user: data._creator._id }"><h2>{{data.first_name}}</h2></a><br/>
+					      	<a [routerLink]="['/admin-company-detail']" [queryParams]="{user: data._creator._id }"><h2>{{data.company_name}}</h2></a><br/>
 					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>	
 					    </div>
 
 						<div class = "ofr_btn">
 												
 						<form #approve_form="ngForm" >
-								
+								<input type="hidden" name="email"  [ngModel]="data._creator.email">
 								<input type="hidden" name="name"  [ngModel]="data.first_name">
+								<input type="hidden" name="type"  [ngModel]="data._creator.type">
 								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
 								<input type="hidden" name="id" [ngModel]="data._creator._id">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
@@ -129,7 +130,7 @@
 				      		<div class="col-sm-4">
 				      			<h4>Detail</h4>
 				      			<ul> 				      			
-				      				<li > Company Name : {{data.company_name}} </li>
+				      				
 				      				<li > Website : <a [href]="('http://' + data.company_website)" target="_blank">{{data.company_website}}</a> </li>
 				      				<li > Company Founded : {{data.company_founded}} </li>
 				      			</ul>

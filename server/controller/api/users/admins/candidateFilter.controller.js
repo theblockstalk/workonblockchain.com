@@ -74,7 +74,7 @@ function admin_candidate_filter(data)
     //console.log(data.msg_tags);
     if(data.is_approve!== -1 && data.msg_tags )
     {
-        //console.log("both true");
+        console.log("both true");
         //console.log(data.msg_tags);
         users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, dataa)
         {
@@ -168,7 +168,7 @@ function admin_candidate_filter(data)
 
     else if(data.is_approve!== -1)
     {
-        //console.log("is_approve");
+        console.log("is_approve");
         users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, data)
         {
             if(err){
@@ -213,7 +213,7 @@ function admin_candidate_filter(data)
 
     else if(data.msg_tags)
     {
-        //console.log("msg_tags");
+        console.log("msg_tags");
         //console.log(data.msg_tags);
         chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data)
         {

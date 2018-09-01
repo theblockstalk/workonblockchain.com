@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import {User} from './Model/user';
 import {CandidateProfile} from './Model/CandidateProfile';
 import { Observable } from 'rxjs/Observable';
+import { DataService } from "./data.service";
+import { Router, ActivatedRoute,NavigationExtras } from '@angular/router';
+import 'rxjs/Rx';
+
 import 'rxjs/add/operator/map'
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
 import {environment} from '../environments/environment';
@@ -13,29 +17,171 @@ const URL = environment.backend_url;
 
 @Injectable()
 export class UserService {
+    
 
-  constructor(private http: HttpClient) { }
+    currentUser: User;
+    token;
+  constructor(private http: HttpClient,private route: ActivatedRoute,
+        private router: Router ,private dataservice: DataService) 
+  {
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if(this.currentUser)
+      {
+        this.token = this.currentUser.jwt_token;
+          console.log(this.token);
+      }
+      //console.log(this.currentUser);
+    
+  }
 
     getAll() 
     {
-        return this.http.get<any>(URL+'users');
-    }
- 
-    getById(_id: string) 
-    {
-        return this.http.get<any>(URL+'users/current/' + _id);
+        return this.http.get<any>(URL+'users', {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
     
-    public_profile(_id: string) 
+    
+    getById(_id: string) 
     {
-        return this.http.get<any>(URL+'users/public_profile/' + _id);
+        return this.http.get<any>(URL+'users/current/' + _id,  {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        }).map((res: Response) => 
+            {
+            
+                if (res) 
+                {    
+                        return res;             
+                }
+            }).catch((error: any) => 
+            {
+                console.log(error.status);
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
+    
+    getProfileById(_id:string)
+    {
+        return this.http.get<any>(URL+'users/current/' + _id,  {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        }).map((res: Response) => 
+            {
+            
+                if (res) 
+                { 
+                    if(!res['terms'] || res['terms'] == false)
+                {
+                     this.router.navigate(['/terms-and-condition']);
+                    
+                }
+              
+               else if(!res['contact_number'] || !res['nationality'] || !res['first_name'] || !res['last_name'])
+               {
+                        this.router.navigate(['/about']);
+               }
+               else if(res['locations'].length < 1  || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary'])
+               {
+                 
+                    this.router.navigate(['/job']); 
+                }
+                else if(!res['why_work'] )
+                {
+                    this.router.navigate(['/resume']);
+                }
+               /* else if(data.commercial_platform.length < 1 || data.experimented_platform.length < 1  || data.platforms.length < 1)
+                {
+                    this.router.navigate(['/resume']);
+                }*/
+                //////console.log(data.programming_languages.length);
+                else if(!res['programming_languages'] ||  !res['current_salary']  || res['programming_languages'].length <1 )
+                {
+                        this.router.navigate(['/experience']);
+                }
+                    
+                 else if(!res['description'])
+                {
+                    this.router.navigate(['/experience']);
+                    
+                }
+                    
+                else
+                {
+                        return res; 
+                 }
+                       // return res;             
+                }
+            }).catch((error: any) => 
+            {
+                console.log(error.status);
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
+        
+    }
+    
+    getVerifiedCandidateDetail(_id:string)
+    {
+         return this.http.get<any>(URL+'users/verified_candidate_detail/'+_id,  {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        }).map((res: Response) => 
+            {
+            console.log(res);
+                if (res) 
+                {    
+                        return res;             
+                }
+            }).catch((error: any) => 
+            {
+                console.log(error.status);
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
+    }
+    
+    
     
     
     getByRefrenceCode(code: string){
-        return this.http.post<any>(URL+'users/get_refrence_code', {code:code}) .map(ref_code => {
-            return ref_code
-        });
+
+        return this.http.post<any>(URL+'users/get_refrence_code', {code:code} )
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;               
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
  
     create(user: User) 
@@ -94,7 +240,7 @@ export class UserService {
     {
       return this.http.post<any>(URL+'users/authenticate', { email: username, password: password })
             .map(user => {
-                if (user && user.token) 
+                if (user && user.jwt_token) 
                 {
                     //console.log(user);
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -116,23 +262,22 @@ export class UserService {
     terms(user_id: string, data: any) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/terms/' + user_id, data)
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    //localStorage.setItem('currentUser', JSON.stringify(user));
-                    return data;
+        return this.http.put<any>(URL+'users/welcome/terms', data , {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                else
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
                 {
-                    return data.msg;
-
+                    return Observable.throw(new Error(error.status));
                 }
- 
-                
+               
             });
 
     }
@@ -140,23 +285,22 @@ export class UserService {
     about(user_id: string, detail: CandidateProfile) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/about/' + user_id, detail)
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    //localStorage.setItem('currentUser', JSON.stringify(user));
-                    return data;
+        return this.http.put<any>(URL+'users/welcome/about' , detail , {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                else
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
                 {
-                    return data.msg;
-
+                    return Observable.throw(new Error(error.status));
                 }
- 
-                
+               
             });
 
     }
@@ -164,23 +308,22 @@ export class UserService {
     job(user_id: string, detail: CandidateProfile) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/job/' + user_id, detail)
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    //localStorage.setItem('currentUser', JSON.stringify(user));
-                    return data;
+        return this.http.put<any>(URL+'users/welcome/job' , detail , {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        } )
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                else
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
                 {
-                    return data.msg;
-
+                    return Observable.throw(new Error(error.status));
                 }
- 
-                
+               
             });
 
     }
@@ -188,43 +331,48 @@ export class UserService {
     resume(user_id: string, detail: CandidateProfile) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/resume/' + user_id, detail)
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.put<any>(URL+'users/welcome/resume' , detail , {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                else
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
                 {
-                    return data.msg;
-
+                    return Observable.throw(new Error(error.status));
                 }
- 
-                
+               
             });
+                
+                
+                
 
     }
 
-    experience(user_id: string, detail: CandidateProfile , exp : any , history : any,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
+    experience(user_id: string,detail : CandidateProfile ,  exp : any , history : any,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
     {
         
-        return this.http.put<any>(URL+'users/welcome/exp/' + user_id, { detail: detail, education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp })
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.put<any>(URL+'users/welcome/exp' , { detail :detail , education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp } , {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                else
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
                 {
-                    return data.msg;
-
+                    return Observable.throw(new Error(error.status));
                 }
- 
-                
+               
             });
 
     }
@@ -232,54 +380,54 @@ export class UserService {
     company_terms(user_id: string, detail: any) 
     {
         
-        return this.http.put<any>(URL+'users/company_wizard/' + user_id, detail)
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.put<any>(URL+'users/company_wizard' , detail, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                else
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
                 {
-                    return data;
-
+                    return Observable.throw(new Error(error.status));
                 }
- 
-                
+               
             });
-
     }
     
     about_company(user_id: string, detail: any) 
     {
         
-        return this.http.put<any>(URL+'users/about_company/' + user_id, detail)
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.put<any>(URL+'users/about_company' , detail, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                else
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
                 {
-                    return data;
-
+                    return Observable.throw(new Error(error.status));
                 }
- 
-                
+               
             });
-
     }
  
     logout() 
     {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+       /* localStorage.removeItem('currentUser');
         localStorage.removeItem('googleUser');
          localStorage.removeItem('linkedinUser');
-        localStorage.removeItem('admin_log');
+        localStorage.removeItem('admin_log');*/
         
     }
 
@@ -291,54 +439,56 @@ export class UserService {
         });
 
     }
-
-    search(data: String) 
-    {
-        return this.http.post<any>(URL+'users/search', data) .map(Data => {
-            return Data;
-        });
-
-    }
-
-    intro(user_id: string, detail: CandidateProfile) 
-    {
-        
-        return this.http.put<any>(URL+'users/welcome/intro/' + user_id, detail)
-            .map(data => {
-           
-                if (data) 
-                {
-                    //console.log(data);
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    //localStorage.setItem('currentUser', JSON.stringify(user));
-                    return data;
-                }
-                else
-                {
-                    return data.msg;
-
-                }
- 
-                
-            });
-
-    }
+   
 
     verify_email(email_hash: string) 
-    {
-        /*console.log(email_hash);
-        return this.http.post<any>('http://localhost:4000/users/emailVerify/'+ email_hash).map(data => {
-            return data;
-        });*/
-        //console.log("dhsdg");
-        //console.log("data");
-        return this.http.put(URL+'users/emailVerify/'+ email_hash , '').map(data => {  
-        
-           // console.log("data");       
-                if (data) 
+    {     
+    console.log(email_hash);
+        return this.http.put(URL+'users/emailVerify/'+ email_hash , '').map(data => {        
+                if (data['msg']) 
                 {
-                    
-                    return data;
+                        if(!this.currentUser)
+                        {
+                            this.dataservice.verifySuccessMessage('Email verified. Please login to continue.');
+                            this.router.navigate(['/login']);
+                        }
+
+                        else if(this.currentUser.type=="candidate")
+                        {
+                            this.dataservice.verifySuccessMessage(data['msg']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/candidate_profile"]);                   
+                        }
+                        
+                        else if(this.currentUser.type=="company")
+                        {
+                            this.dataservice.verifySuccessMessage(data['msg']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/company_profile"]);                   
+                        }
+                   // return data;
+                }
+                if(data['error'])
+                {
+                    if(!this.currentUser)
+                        {
+                            this.dataservice.verifyErrorMessage(data['error']);
+                            this.router.navigate(['/login']);
+                        }
+
+                        else if(this.currentUser.type=="candidate")
+                        {
+                            this.dataservice.verifyErrorMessage(data['error']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/candidate_profile"]);                   
+                        }
+                        
+                        else if(this.currentUser.type=="company")
+                        {
+                            this.dataservice.verifyErrorMessage(data['error']);
+                            //this.router.navigate(['/login']);
+                            this.router.navigate(["/company_profile"]);                   
+                        }
                 }
                 else
                 {
@@ -377,69 +527,151 @@ export class UserService {
     change_password(id: string, params : any) 
     {
         
-        return this.http.put<any>(URL+'users/change_password/' + id, params)
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.put<any>(URL+'users/change_password/' + id, params, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                else
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
                 {
-                   // console.log(data);
-                    return data.msg;
-
+                    return Observable.throw(new Error(error.status));
                 }
- 
-                
+               
             });
 
     }   
     
     send_refreal(email: string, subject: string, body: string,share_url: string, first_name: string, last_name: string){
-        return this.http.post<any>(URL+'users/send_refreal/', { email: email, subject: subject, body: body,share_url:share_url,first_name:first_name,last_name:last_name })
-            .map(data => {
-                if (data){
-                    return data;
+        return this.http.post<any>(URL+'users/send_refreal/', { email: email, subject: subject, body: body,share_url:share_url,first_name:first_name,last_name:last_name }, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;              
                 }
-                else{
-                    return data.msg;
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
                 }
+               
             });
     }
     
     getCandidate(type: string) 
     {
-        return this.http.post<any>(URL+'users/get_candidate', {type:type}) .map(data => {
-            return data
-        });
+        return this.http.post<any>(URL+'users/get_candidate', {type:type}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
     
     getCurrentCompany(_id: string) 
     {
-        return this.http.get<any>(URL+'users/current_company/' + _id);
+        return this.http.get<any>(URL+'users/current_company/' +_id, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                
+                if (res) 
+                {           
+                        return res  ;             
+                }
+            }).catch((error: any) => 
+            {
+                
+                if (error.status) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
     
     insertMessage(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,description:string,job_title:string,salary:string,currency:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,interview_location:string,interview_time:string) 
     {
-        return this.http.post<any>(URL+'users/insert_message', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,interview_location:interview_location,interview_time:interview_time}) .map(data => {
-            return data
-        });
+        return this.http.post<any>(URL+'users/insert_message', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,interview_location:interview_location,interview_time:interview_time}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
     
     get_user_messages(receiver_id: string,sender_id: string) 
     {
-        return this.http.post<any>(URL+'users/get_messages', {receiver_id:receiver_id,sender_id:sender_id}) .map(data => {
-            return data
-        });
+        return this.http.post<any>(URL+'users/get_messages', {receiver_id:receiver_id,sender_id:sender_id}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
     
     get_user_messages_only(id: string) 
     {
-        return this.http.post<any>(URL+'users/get_user_messages', {id:id}) .map(data => {
-            return data
-        });
+        return this.http.post<any>(URL+'users/get_user_messages', {id:id}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
     
     /////candidate edit profile
@@ -447,167 +679,183 @@ export class UserService {
     edit_candidate_profile(user_id: string, detail: any,  edu :any , history:any ) 
     {
         
-        return this.http.put<any>(URL+'users/update_profile/' + user_id, { detail: detail, education: edu  , work : history})
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.put<any>(URL+'users/update_profile' , { detail: detail, education: edu  , work : history} , {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
             });
-
     }
     
     edit_company_profile(user_id:string , detail :any )
     {
-        return this.http.put<any>(URL+'users/update_company_profile/' + user_id, detail)
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.put<any>(URL+'users/update_company_profile', detail, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
             });
     } 
     
     //////////////filters function call////////////////////////////////
     getVerrifiedCandidate()
     {
-       return this.http.get<any>(URL+'users/verified_candidate' );
+       return this.http.get<any>(URL+'users/verified_candidate' , {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                console.log(res);
+                if (res) 
+                {           
+                        return res;                
+                }
+            }).catch((error: any) => 
+            {
+                console.log(error.status);
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
 
     }
-    
-   /* searchByskill(skill:string)
-    {
-        console.log(skill);
-         return this.http.post<any>(URL+'users/search_skill', { search: skill})
-            .map(data => {
-           
-                if (data) 
-                {
-                    console.log(data);
-                    return data;
-                }
-                
-            });
-    }
-    
-    searchBylocation(location:string)
-    {
-         return this.http.post<any>(URL+'users/search_location', { search: location})
-            .map(data => {
-           
-                if (data) 
-                {
-                    console.log(data);
-                    return data;
-                }
-                
-            });
-    }
-    
-    searchByAvailability( availability :string)
-    {
-        
-        return this.http.post<any>(URL+'users/search_availibility', { search: availability})
-            .map(data => {
-           
-                if (data) 
-                {
-                    console.log(data);
-                    return data;
-                }
-                
-            });
-    }
-    
-   
-    
-    searchByposition(position :any)
-    {
-         return this.http.post<any>(URL+'users/search_position', { search: position})
-            .map(data => {
-           
-                if (data) 
-                {
-                    console.log(data);
-                    return data;
-                }
-                
-            });
-    }
-    
-    searchByBlockchain(blockchain:any)
-    {
-        return this.http.post<any>(URL+'users/search_blockchain', { search: blockchain})
-            .map(data => {
-           
-                if (data) 
-                {
-                    console.log(data);
-                    return data;
-                }
-                
-            });
-    }*/
+
     
     searchByWord(word:string)
     {
-         return this.http.post<any>(URL+'users/search_word', { search: word})
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+         return this.http.post<any>(URL+'users/search_word', { search: word}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
             });
     }
     
     filterSearch(word :string , skill : string , location: string , position:any , blockchain:any , avail:string, salary :string ,currency :string)
     {
-         return this.http.post<any>(URL+'users/filter', {word : word, skill : skill , location :location , position :position , blockchain : blockchain , availability : avail,salary:salary , currency :currency})
-            .map(data => {
-           
-                if (data) 
-                {
-                    //console.log(data);
-                    return data;
+         return this.http.post<any>(URL+'users/filter', {word : word, skill : skill , location :location , position :position , blockchain : blockchain , availability : avail,salary:salary , currency :currency}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                
                 }
-                
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
             });
          
     }
 	
 	send_file(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,file_name:string) 
     {
-        return this.http.post<any>(URL+'users/insert_chat_file', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,file_name:file_name}) .map(data => {
-            return data
-        });
+        return this.http.post<any>(URL+'users/insert_chat_file', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,file_name:file_name}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
 	
 	insert_job_message(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,description:string,job_title:string,salary:string,currency:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,job_offered:number) 
     {
-        return this.http.post<any>(URL+'users/insert_message_job', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,job_offered:job_offered}) .map(data => {
-            return data
-        });
+        return this.http.post<any>(URL+'users/insert_message_job', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,job_offered:job_offered}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
 	
 	update_job_message(id:string,status:number) 
     {
-        return this.http.post<any>(URL+'users/update_job_message', {id:id,status:status}) .map(data => {
-            return data
-        });
+        return this.http.post<any>(URL+'users/update_job_message', {id:id,status:status}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
     
     refered_id(_id: number , data : number)
     {
-          return this.http.put<any>(URL+'users/refered_id/' + _id, {info : data})
+          return this.http.put<any>(URL+'users/refered_id/' + _id, {info : data} ,  {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
             .map(data => {
            
                 if (data) 
@@ -623,105 +871,170 @@ export class UserService {
     {
         //console.log(user_id);
        // console.log(detail);
-        return this.http.put<any>(URL+'users/approve/' + user_id, {is_approve : detail})
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.put<any>(URL+'users/approve/' + user_id, {is_approve : detail}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
             });
     } 
     
     searchByName(word:string)
     {
-        return this.http.post<any>(URL+'users/search_by_name', { search: word})
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.post<any>(URL+'users/search_by_name', { search: word}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
             });
         
      }
     
     admin_candidate_filter(is_approve : number , msg_tags : any)
     {
-        return this.http.post<any>(URL+'users/admin_candidate_filter', { is_approve: is_approve , msg_tags : msg_tags})
-            .map(data => {
-           
-                if (data) 
-                {
-                    //console.log(data);
-                    return data;
+        return this.http.post<any>(URL+'users/admin_candidate_filter', { is_approve: is_approve , msg_tags : msg_tags}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
             });
     }
     allCompanies()
     {
-        return this.http.get<any>(URL+'users/company');
+        return this.http.get<any>(URL+'users/company', {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
         
     }
     
     admin_search_by_name(word:string)
     {
-        return this.http.post<any>(URL+'users/admin_search_by_name', { search: word})
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.post<any>(URL+'users/admin_search_by_name', { search: word}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                
-            });        
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
     
     admin_company_filter(is_approve : number , msg_tags : any)
     {
-        return this.http.post<any>(URL+'users/admin_company_filter', { is_approve: is_approve , msg_tags : msg_tags})
-            .map(data => {
-           
-                if (data) 
-                {
-                    //console.log(data);
-                    return data;
+        return this.http.post<any>(URL+'users/admin_company_filter', { is_approve: is_approve , msg_tags : msg_tags}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
-                
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
             });
     }
     
-    getCompanyById(_id: string) 
-    {
-        return this.http.get<any>(URL+'users/get_company_by_id/' + _id);
-
-    }
 	
 	update_chat_msg_status(receiver_id: string,sender_id: string,status:number){
-		return this.http.post<any>(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,sender_id:sender_id,status:status}) .map(data => {
-            return data
-        });
+		return this.http.post<any>(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,sender_id:sender_id,status:status}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
     
     pages_content(info:any )
     {
-        //console.log(user_id);
-       // console.log(detail);
-        return this.http.put<any>(URL+'users/add_privacy_content/', info)
-            .map(data => {
-           
-                if (data) 
-                {
-                   // console.log(data);
-                    return data;
+        return this.http.put<any>(URL+'users/add_privacy_content/', info,  {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        }).map((res: Response) => 
+            {
+                if (res) 
+                {    
+                        return res;             
                 }
-                
+            }).catch((error: any) => 
+            {
+                console.log(error.status);
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
             });
     } 
     
@@ -732,34 +1045,64 @@ export class UserService {
     }
 	
 	get_job_desc_msgs(sender_id:string,receiver_id:string,msg_tag:string){
-		return this.http.post<any>(URL+'users/get_job_desc_msgs', {sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag}) .map(data => {
-            return data
-        });
+		return this.http.post<any>(URL+'users/get_job_desc_msgs', {sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
 	}
 	
 	set_unread_msgs_emails_status(user_id: string, status: any) 
     {
-		return this.http.post<any>(URL+'users/set_unread_msgs_emails_status', {user_id:user_id,status:status})
-        .map(data => {
-			if (data){
-				return data;
-            }
-			else{
-				return data.msg;
-			}
-		});
+		return this.http.post<any>(URL+'users/set_unread_msgs_emails_status', {user_id:user_id,status:status}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
 	
 	get_unread_msgs_of_user(sender_id:string,receiver_id:string){
-		return this.http.post<any>(URL+'users/get_unread_msgs_of_user', {sender_id:sender_id,receiver_id:receiver_id})
-        .map(data => {
-			if (data){
-				return data;
-            }
-			else{
-				return data.msg;
-			}
-		});
+		return this.http.post<any>(URL+'users/get_unread_msgs_of_user', {sender_id:sender_id,receiver_id:receiver_id}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
 	}
     
     email_referred_user(data: any){
@@ -770,14 +1113,70 @@ export class UserService {
     
     set_disable_status(user_id: string, status: any) 
     {
-        return this.http.post<any>(URL+'users/set_disable_status', {user_id:user_id,status:status})
-        .map(data => {
-            if (data){
-                return data;
-            }
-            else{
-                return data.msg;
-            }
-        });
+        return this.http.post<any>(URL+'users/set_disable_status', {user_id:user_id,status:status} , {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+        .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
     }
+    
+    destroyToken(_id:string)
+    {
+        console.log(this.token);
+        
+     return this.http.post<any>(URL+'users/destroy_token', {id:_id} , {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;               
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
+        
+    }
+    
+    
+    approval_email(detail: string) 
+    {
+       
+        return this.http.post(URL+'users/approval_email' , detail, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;               
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
+    }
+ 
 }

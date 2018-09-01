@@ -56,6 +56,7 @@ export class AccountSettingsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
+                    console.log(data);
 				   if(data._creator.is_unread_msgs_to_send){
 					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
 				   }
@@ -68,7 +69,16 @@ export class AccountSettingsComponent implements OnInit {
                 },
                 error => 
                 {
-                  
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                 });
        }
       
@@ -101,14 +111,28 @@ export class AccountSettingsComponent implements OnInit {
                     this.inform = data;
 					
 					if(this.info.marketing){
-						this.message = 'Your account settings for marketing emails is enabled';
+						this.message = 'Your profile is currently enabled for marketing emails.';
 					}
 					else{
-						this.message = 'Your account settings for marketing emails is disabled';
+						this.message = 'Your profile is currently disabled for marketing emails.';
 					}
                   //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
               
+          },
+            
+          error =>
+          {
+            if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        }    
           });
       }
       
@@ -129,17 +153,26 @@ export class AccountSettingsComponent implements OnInit {
                     this.inform=data;
 					
 					if(this.info.marketing){
-						this.message = 'Your account settings for marketing emails is enabled';
+						this.message = 'Your profile is currently enabled for marketing emails.';
 					}
 					else{
-						this.message = 'Your account settings for marketing emails is disabled';
+						this.message = 'Your profile is currently disabled for marketing emails.';
 					}
                   //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
                     
                 },
                 error => {
-                  this.log = 'Something getting wrong';
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                    
                 });
        }
@@ -173,7 +206,16 @@ export class AccountSettingsComponent implements OnInit {
                 }
             },
             error => {
-              this.log = 'Something getting wrong';
+              if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
                
             }
         );
@@ -197,16 +239,25 @@ export class AccountSettingsComponent implements OnInit {
 				{
                     this.inform=data;
 					if(this.info.unread_msgs_emails){
-						this.message = 'Your account settings for Unread Chat Messages Email is enabled';
+						this.message = 'Your profile is currently enabled for unread chat messages email';
 					}
 					else{
-						this.message = 'Your account settings for Unread Chat Messages Email is disabled';
+						this.message = 'Your profile is currently disabled for unread chat messages email';
 					}
 					//console.log(this.inform);
 				}
 			},
 			error => {
-			  this.log = 'Something getting wrong';
+			  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
 			   
 			}
 		);

@@ -1,11 +1,23 @@
+<!-- uncomment for use -->
+<!--<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+</div>-->
 <!--Profile-inner-->
+<ng-container *ngIf="infoo==='';else profile_section" >
+<div class="se-pre-con"></div>
+</ng-container>
 
+<ng-template #profile_section >
 <section class = "wizard_page">	
    <div class="alert alert-info error-alert" *ngIf="message">{{message}}</div>
 	<div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12">
-			<ng-container *ngIf="!public_data;else public_section">
+			
+					
+			
+			
+
 				 <section class = "profile personal_info" *ngIf="!public_data">
 
 				 	<div class="col-md-6" >
@@ -16,7 +28,7 @@
 				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
 				 		<span class = "name">
-				 			<h3>{{first_name}} {{last_name}}</h3>
+				 			<h3 class="text-capitalize">{{first_name}} {{last_name}}</h3>
 				 				
 				 		</span>
 				 		<span class = "short_intro">
@@ -444,69 +456,13 @@
 				
 				 </section>
 				 
-				</ng-container> 
+				
 			</div> <!--End col-md-9--->
 			
 			
 			
 			
-			<ng-template #public_section>
-			<div *ngIf="public_data" class="col-md-12">
-				 <section class = "profile job_info" *ngFor="let data of public_data" >
-					<h3>My Information </h3>
-				 	<div class="info-area pro_br-btm">
-						<div class = "col-md-4">
-						
-							<strong>First Name </strong>
-						
-						</div>
-						<div class = "col-md-8">
-							
-				 			<p>{{data.first_name}}</p>
-				 				
-				 		
-						</div>
-
-				 	</div>
-
-				
-
-				 	<div class="info-area pro_br-btm">
-
-						<div class = "col-md-4" >
-						
-							<strong>Why they want to work on blockchain </strong>
-							
-						</div>
-						<div class = "col-md-8">
-							
-				 			<p>{{data.why_work}}</p>
-				 			
-						</div>
-
-				 	</div>
-
-				 	<div class="info-area pro_br-btm">
-
-						<div class = "col-md-4" >
-						
-							<strong>Quick intro	 </strong>
-							
-						</div>
-						<div class = "col-md-8">
-					
-				 			<p>{{data.description}}</p>
-				 			
-							
-						</div>
-
-				 	</div>
-
-				 
-				 	
-				 </section>
-				 </div>
-			</ng-template>
+			
 
 			<!-- <div class = "col-md-3" *ngIf="!public_data">
 				<section class = "profile job_info side_rewiew">
@@ -523,6 +479,6 @@
 	</div>
 
 </section>
-
+</ng-template> 
 
 <!--Profile-inner end-->

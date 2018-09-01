@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 declare var synapseThrow: any;
@@ -11,7 +11,7 @@ import {User} from '../Model/user';
   templateUrl: './candidate-terms.component.html',
   styleUrls: ['./candidate-terms.component.css']
 })
-export class CandidateTermsComponent implements OnInit {
+export class CandidateTermsComponent implements OnInit,AfterViewInit {
     terms ;
     agree;
     currentUser: User;
@@ -39,7 +39,11 @@ export class CandidateTermsComponent implements OnInit {
     job_disable;
     resume_disable;
     exp_disable;
-    
+     ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);   
+         
+    }
   ngOnInit() 
   {
      
@@ -86,7 +90,7 @@ export class CandidateTermsComponent implements OnInit {
                       this.link="/job";
                   }
                     
-                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day )
+                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day  && data.current_salary )
                   {
                        this.resume_disable = "";
                       this.link="/job";
@@ -105,7 +109,7 @@ export class CandidateTermsComponent implements OnInit {
                     // this.router.navigate(['/resume']);
                     }
      
-                    if(data.work_history && data.education_history && data.programming_languages && data.current_salary )
+                    if(data.programming_languages.length>0 &&data.description)
                     {
                         this.exp_class = "/experience";
                         this.exp_active_class = 'fa fa-check-circle text-success';
@@ -119,7 +123,17 @@ export class CandidateTermsComponent implements OnInit {
                 },
                 error => 
                 {
-                  this.log = 'Something getting wrong';
+                  
+                     if(error.message == 500 || error.message == 401)
+                     {
+                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                         
+                     }
+                     else
+                     {
+                         
+                    }
                 });
               
        }
@@ -150,6 +164,19 @@ export class CandidateTermsComponent implements OnInit {
                   this.router.navigate(['/about']);
               }
               
+          },
+          error=>
+          {            
+                     if(error.message == 500 || error.message == 401)
+                     {
+                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                         
+                     }
+                     else
+                     {
+                         
+                    }   
           });
        }
   }

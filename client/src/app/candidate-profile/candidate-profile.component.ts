@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from "../data.service";
 import {environment} from '../../environments/environment';
 import { Location } from '@angular/common';
-
+declare var $: any;
 
 @Component({
   selector: 'app-candidate-profile',
@@ -44,28 +44,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     email;
     currentwork;
     message;
+	public loading = false;
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
  { 
-   const url = 'https://platform.linkedin.com/in.js';
-        if (!document.querySelector(`script[src='${url}']`)) {
-            let script = document.createElement('script');
-            script.src = url;
-            script.innerHTML = 'lang: en_US';
-            document.body.appendChild(script);
-        }
-     
-     const url2 = 'https://platform.twitter.com/widgets.js';
-        if (!document.querySelector(`script[src='${url2}']`)) {
-            let script = document.createElement('script');
-            script.src = url2;
-            document.body.appendChild(script);
-        }     
-     
-     this.route.queryParams.subscribe(params => {
-        this.user_id = params['user'];
-        ////console.log(this.user_id); 
-    });
+   
      
  }
     sectionScroll;
@@ -92,22 +75,31 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
      ngAfterViewInit(): void 
      {
-         window.scrollTo(0, 0);
-     
-        this.element.nativeElement.innerHTML = `<script type="IN/Share" data-url="${this.share_url}" data-text = "${this.tweet_text}"></script>`;
- 
-        // render share button
-        window['IN'] && window['IN'].parse();
-         
-         
-          window['twttr'] && window['twttr'].widgets.load();
+         window.scrollTo(0, 0);   
          
     }
     tweet_text;
- 
+    dateA;dateB;
+    sort_history;
+    date_sort_desc = function (date1, date2) 
+    {
+        // DESCENDING order.
+        if (date1.enddate > date2.enddate) return -1;
+        if (date1.enddate < date2.enddate) return 1;
+        return 0;
+    };
+    
+    education_sort_desc = function (year1, year2) 
+    {
+        // DESCENDING order.
+        if (year1.eduyear > year2.eduyear) return -1;
+        if (year1.eduyear < year2.eduyear) return 1;
+        return 0;
+   };
+    infoo;
   ngOnInit() 
-  {     
-  
+  {    
+       this.infoo=''; 
        this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
@@ -118,25 +110,26 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   
       this.dataservice.eemailMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
+      console.log(this.currentUser);
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
       {
           ////console.log("ifffffff");
          
-          this.share_url = location.href + '?user=' + this.user_id;
+          /*this.share_url = location.href + '?user=' + this.user_id;
           this.authenticationService.public_profile(this.user_id)
             .subscribe(
             data => {
                 this.public_data = data;
                 //console.log(data);
-                });
+                });*/
           
       }
      
       else
        {
           ////console.log("elseeeee");
-          this.share_url = location.href + '?user=' + this.currentUser._creator;
+          //this.share_url = location.href + '?user=' + this.currentUser._creator;
           if(!this.currentUser)
        {
           this.router.navigate(['/login']);
@@ -146,60 +139,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
            this.cand_id= this.currentUser._creator;
            
           
-          this.authenticationService.getById(this.currentUser._id)
+          this.authenticationService.getProfileById(this.currentUser._id)
             .subscribe(
-            data => {
-                
-                if(!data.terms || data.terms == false)
+            data => {                
+                if(data) 
                 {
-                     this.router.navigate(['/terms-and-condition']);
-                    
-                }
-              
-               else if(!data.contact_number || !data.nationality || !data.first_name || !data.last_name)
-               {
-                        this.router.navigate(['/about']);
-               }
-               else if(data.locations.length < 1  || data.roles.length < 1 || data.interest_area.length < 1 || !data.expected_salary)
-               {
-                 
-                    this.router.navigate(['/job']); 
-                }
-                else if(!data.why_work )
-                {
-                    this.router.navigate(['/resume']);
-                }
-               /* else if(data.commercial_platform.length < 1 || data.experimented_platform.length < 1  || data.platforms.length < 1)
-                {
-                    this.router.navigate(['/resume']);
-                }*/
-                //////console.log(data.programming_languages.length);
-                else if(!data.programming_languages ||  !data.current_salary  || data.programming_languages.length <1 )
-                {
-                        this.router.navigate(['/experience']);
-                }
-                    
-                 else if(!data.description)
-                {
-                    this.router.navigate(['/experience']);
-                    
-                }
-                /*else if(data.work_history.length < 1 || !data.work_history.length )
-                {
-                   // this.dataservice.changeMessage("Please enter atleast one work history record");
-                    this.router.navigate(['/experience']);              
-                }
-                    
-                else if(data.education_history.length < 1 || !data.education_history.length )
-                {
-                    //this.dataservice.changeMessage("Please enter atleast one education record");
-                    this.router.navigate(['/experience']);
-                    
-                }*/
-                    
-                else 
-                {
-                  
                     this.id = data._creator._id; 
                     this.email =data._creator.email;  
                     
@@ -220,8 +164,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     this.contact_number =data.contact_number;
                     this.description =data.description;
                     this.history =data.work_history;
+                    this.history.sort(this.date_sort_desc);
                     this.education = data.education_history;
-                    console.log(this.history);
+                    this.education.sort(this.education_sort_desc);
                     for(let data1 of data.work_history)
                     {
                         this.companyname = data1.companyname;
@@ -252,10 +197,18 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                         
                     }
 
-                   
+                  this.infoo= data; 
                 }
                 
 
+            },
+            err =>
+            {
+                if(err.message == 500 || err.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
             });
        }
        else

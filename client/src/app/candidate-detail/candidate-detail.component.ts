@@ -29,7 +29,7 @@ export class CandidateDetailComponent implements OnInit {
  
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
-        //console.log(this.user_id); 
+       console.log(this.user_id); 
     });
             
   
@@ -40,6 +40,23 @@ export class CandidateDetailComponent implements OnInit {
   company_name;
   interview_location = '';
   interview_time = '';
+    
+    date_sort_desc = function (date1, date2) 
+    {
+        // DESCENDING order.
+        if (date1.enddate > date2.enddate) return -1;
+        if (date1.enddate < date2.enddate) return 1;
+        return 0;
+    };
+    
+    education_sort_desc = function (year1, year2) 
+    {
+        // DESCENDING order.
+        if (year1.eduyear > year2.eduyear) return -1;
+        if (year1.eduyear < year2.eduyear) return 1;
+        return 0;
+   };
+    
   ngOnInit() 
   {
       //console.log(this.user_id);
@@ -83,14 +100,16 @@ export class CandidateDetailComponent implements OnInit {
           this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
+                console.log(data);
 					this.first_name=data[0].first_name;
                     this.last_name =data[0].last_name;
                     this.nationality = data[0].nationality;
                     this.contact_number =data[0].contact_number;
                     this.description =data[0].description;
                     this.history =data[0].work_history;
-               
+                    this.history.sort(this.date_sort_desc);
                     this.education = data[0].education_history;
+                    this.education.sort(this.education_sort_desc);
                      this.email =data[0]._creator.email;  
                     
                     if(data[0].github_account)
@@ -141,7 +160,16 @@ export class CandidateDetailComponent implements OnInit {
                     this.company_name = data[0].company_name;
                 },
                 error => {
-                    //console.log('error');
+                    if(error.message == 500 || error.message == 401  )
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
                 }
             );
       }
@@ -192,9 +220,16 @@ export class CandidateDetailComponent implements OnInit {
 					}
 				},
 				error => {
-					//console.log('error');
-					//console.log(error);
-					//this.log = error;
+					if(error.message == 500)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }
 				}
 			);
         }

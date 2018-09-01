@@ -133,14 +133,18 @@
 	<!-- </section> -->
 	
 	<!--Profile-inner-->
+	<!-- uncomment for use -->
+	<!--<div class="my-container">
+		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	</div>-->
 <section class = "wizard_page">
 	<div class="container">
 			<div class="row chat-row">
 				<ng-container *ngIf="approved_user == 0;else chat_enable">
 					<div class = "col-md-9" id="my-chat-design">
-						<h2 class="alert alert-danger error-alert" style="margin-left: 10%;margin-bottom: 12%;">
-							You are not authorized to access this page.
-						</h2>
+						<h4 class="alert alert-danger error-alert" style="margin-left: 10%;margin-bottom: 12%;">
+							You can access this page when your account has been approved by an admin.
+						</h4>
 					</div>
 				</ng-container>
 				<ng-template #chat_enable>
@@ -154,7 +158,7 @@
 								<ng-template #company_logo_top>
 									<img src="/assets/profile/profile-image.png" alt="">
 								</ng-template>
-								<p>{{display_name}}</p>
+								<p class="text-capitalize">{{display_name}}</p>
 							</div>
 						</div>
 						<div id="contacts">
@@ -171,14 +175,14 @@
 											<div class="meta">
 												<ng-container *ngIf="new_msgss[1];else no_is_company_reply">
 													<ng-container *ngIf="new_msgss[1].is_company_reply == 1;else no_is_company_reply_show">
-														<p class="name">{{ person.first_name }} {{ person.last_name }}</p>
+														<p class="name text-capitalize">{{ person.first_name }} {{ person.last_name }}</p>
 													</ng-container>
 													<ng-template #no_is_company_reply_show>
-														<p class="name">{{ person.first_name.charAt(0) }}{{ person.last_name.charAt(0) }}</p>
+														<p class="name">{{ person.first_name.charAt(0).toUpperCase() }}{{ person.last_name.charAt(0).toUpperCase() }}</p>
 													</ng-template>
 												</ng-container>
 												<ng-template #no_is_company_reply>
-													<p class="name">{{ person.first_name.charAt(0) }}{{ person.last_name.charAt(0) }}</p>
+													<p class="name">{{ person.first_name.charAt(0).toUpperCase() }}{{ person.last_name.charAt(0).toUpperCase() }}</p>
 												</ng-template>
 												<span class="badge" *ngIf="unread_msgs_info[i].number_of_unread_msgs">
 													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
@@ -193,7 +197,7 @@
 												<img src="/assets/profile/profile-image.png" alt="">
 											</ng-template>
 											<div class="meta">
-												<p class="name">{{ person.company_name }}</p>
+												<p class="name text-capitalize">{{ person.company_name }}</p>
 												<span class="badge" *ngIf="unread_msgs_info[i].number_of_unread_msgs">
 													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
 												</span>
@@ -208,7 +212,7 @@
 							<div class="contact-profile">
 								<ul class = "cand_info-ul">
 									<ng-container *ngIf="currentUser.type == 'company';else cand">
-										<li>Candidate Name : {{candidate}}</li>
+										<li class="text-capitalize">Candidate Name : {{candidate}}</li>
 										<ng-container *ngIf="job_desc;else no_job_desc">
 											<li>Job Type : {{job_desc.job_type}}</li>
 											<li>Job Title : {{job_desc.job_title}}</li>
@@ -219,7 +223,7 @@
 										</ng-template>
 									</ng-container>
 									<ng-template #cand>
-										<li>Company Name : {{candidate}}</li>
+										<li class="text-capitalize">Company Name : {{candidate}}</li>
 										<li>Job Title : {{job_desc.job_title}}</li>
 										<li>Salary : {{job_desc.salary}}</li>
 									</ng-template>
@@ -273,7 +277,7 @@
 													<span *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
-													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name | slice:70:103}}</a> <!-- for local you can use 53 instead of 70 -->
+													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
 												</p>
 											</li>
 											<div class="chat_user">
@@ -283,7 +287,7 @@
 										<ng-template #second>
 											<li class="sent">
 												<p  class = "job-description">
-													{{msg.sender_name}}:
+													<span class="text-capitalize"> {{msg.sender_name}}:</span>
 													<span *ngIf="msg.job_title !== ''">
 														<br/>
 														Job Title:
@@ -323,7 +327,7 @@
 													<span *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
-													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name | slice:70:103}}</a> <!-- for local you can use 53 instead of 70 -->
+													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
 												</p>
 											</li>
 											<div class="chat_company">
@@ -559,15 +563,15 @@
 		<ng-container *ngIf="new_msgss;else no_job_desc_popup">
 			<div class = "dec_model">
 				<p>
-					<b>Job Title:</b><br>
+					<b>Job Title:</b>
 					<span>{{new_msgss[0].job_title}}</span>
 				</p>
 				<p>
-					<b>Job Type:</b><br>
+					<b>Job Type:</b>
 					<span>{{new_msgss[0].job_type}}</span>
 				</p>
 				<p>
-					<b>Salary:</b><br>
+					<b>Salary:</b>
 					<span>{{new_msgss[0].salary}} {{new_msgss[0].salary_currency}}</span>
 				</p>
 				<div>

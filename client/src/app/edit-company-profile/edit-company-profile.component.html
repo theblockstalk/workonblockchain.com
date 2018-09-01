@@ -23,31 +23,49 @@
 							 <div class="form-group col-md-6">
                    <label><p class = "label-p">First Name</p></label>
                   <input type="Text" class="form-control" placeholder="First Name" id="user" required name="first_name" [(ngModel)]="first_name" >
+               <div class = "form_error" *ngIf="!first_name">
+								<span class = "error">{{first_name_log}}</span>
+							</div>
                 </div>
 
                 <div class="form-group col-md-6">
                    <label><p class = "label-p">Last Name</p></label>
                   <input type="Text" class="form-control" placeholder="Last Name" required name="last_name" [(ngModel)]="last_name" >
+                <div class = "form_error" *ngIf="!last_name">
+								<span class = "error">{{last_name_log}}</span>
+							</div>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">Job Title</p></label>
                   <input type="text" class="form-control" placeholder="Job Title" required name="job_title" [(ngModel)]="job_title">
+                	<div class = "form_error" *ngIf="!job_title">
+								<span class = "error">{{job_title_log}}</span>
+							</div>
                 </div>
 
                  <div class="form-group col-md-6">
                   <label><p class = "label-p">Company Name</p></label>
                   <input type="text" class="form-control" placeholder="Company Name" id="com_name" required name="company_name" [(ngModel)]="company_name">
+                	<div class = "form_error" *ngIf="!company_name">
+								<span class = "error">{{company_name_log}}</span>
+							</div>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">Company Website</p></label>
                   <input type="text" class="form-control" placeholder="Company Website" required name="company_website" [(ngModel)]="company_website">
+                  <div class = "form_error" *ngIf="!company_website">
+								<span class = "error">{{company_website_log}}</span>
+							</div>
                 </div>
 
                  <div class="form-group col-md-6">
                   <label><p class = "label-p">Phone Number</p></label>
                   <input type="tel" class="form-control" placeholder="Phone Number" id="phone_no" required name="phone_number" [(ngModel)]="company_phone">
+                  <div class = "form_error" *ngIf="!company_phone">
+								<span class = "error">{{company_phone_log}}</span>
+							</div>
                 </div>
 
                  <div class="form-group col-md-6">
@@ -58,17 +76,24 @@
         
                 <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
                 </select>
-                 
+                 <div class = "form_error" *ngIf="company_country==-1">
+								<span class = "error">{{company_country_log}}</span>
+							</div>
                 </div>
                 <div class="form-group col-md-6">
                  <label><p class = "label-p">Postal Code</p></label>
-                  <input type="Number" class="form-control" placeholder="Postal Code" id="post_no" required name="postal_code" [(ngModel)]="company_postcode">
-                
+                  <input type="text" class="form-control" placeholder="Postal Code" id="post_no" required name="postal_code" [(ngModel)]="company_postcode">
+                <div class = "form_error" *ngIf="!company_postcode">
+								<span class = "error">{{company_postcode_log}}</span>
+							</div>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">City Name</p></label>
                   <input type="text" class="form-control" placeholder="City" required name="city" [(ngModel)]="company_city">
+                  <div class = "form_error" *ngIf="!company_city">
+								<span class = "error">{{company_city_log}}</span>
+							</div>
                 </div>
 							
 							  <!-- <div class="form-group col-md-6" *ngIf = 'info.image_src'>
@@ -93,19 +118,25 @@
 							 <div class="form-group col-md-6">
 					    	<label><p class = "label-p">When was the company founded?</p></label>
 						    <input type="text" class="form-control" id="" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
-							<p>{{founded_log}}</p>
+							<div class = "form_error" *ngIf="!company_founded">
+								<span class = "error">{{founded_log}}</span>
+							</div>
 						</div>
 
 						<div class="form-group col-md-6">
 							<label><p class = "label-p">Number of employees?</p></label>
 						    <input type="number" class="form-control" id="" placeholder="Number of employees?" name="no_of_employees" [(ngModel)]="no_of_employees">
-							<p>{{employee_log}}</p>
+							<div class = "form_error" *ngIf="!no_of_employees">
+								<span class = "error">{{employee_log}}</span>
+							</div>
 						</div>
 
 						<div class="form-group col-md-6">
 							<label><p class = "label-p">How is the company funded?</p></label>
 						    <input type="text" class="form-control" id="" placeholder="How's compnay funded?" name="company_funded" [(ngModel)]="company_funded">
-							<p>{{funded_log}}</p>
+							<div class = "form_error" *ngIf="!company_funded">
+								<span class = "error">{{funded_log}}</span>
+							</div>
 						</div>
 
 					
@@ -131,7 +162,9 @@
 						<div class="form-group col-md-12 mr-top-04">
 								<label><p>Company Description</p></label>
 							    <textarea class="form-control" rows="5" id="comment" maxlength="300" placeholder="" name="company_description" [(ngModel)]="company_description"></textarea>
-								<p>{{des_log}}</p>
+								<div class = "form_error" *ngIf="!company_description">
+								<span class = "error">{{des_log}}</span>
+							</div>
 						</div>
 							
 							  <!-- <div class="form-group col-md-6" *ngIf = 'info.image_src'>

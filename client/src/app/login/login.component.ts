@@ -10,6 +10,7 @@ import { LinkedInService } from 'angular-linkedin-sdk';
 //import { Subscription } from 'rxjs/Subscription';
 import { DataService } from "../data.service";
 import {NgForm} from '@angular/forms';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -30,8 +31,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService) {
-
+        private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService,private titleService: Title,private newMeta: Meta) {
+		this.titleService.setTitle('Work on Blockchain | Login');
         //this.code = route.snapshot.params['code'];
        // //console.log(this.code);
         // //console.log(this.code);
@@ -52,19 +53,27 @@ export class LoginComponent implements OnInit, OnDestroy {
         }*/
       }
 
+  password_message;
   ngOnInit() 
   {
+	  this.newMeta.updateTag({ name: 'description', content: 'Login developers' });
+	  this.newMeta.updateTag({ name: 'keywords', content: 'login blockchain recruitment developers workonblockchain.com' });
       
-      this.dataservice.currentMessage.subscribe(message => this.message = message);
-      this.dataservice.ecurrentMessage.subscribe(message => this.error = message);
+      this.password_message='';
+	  this.dataservice.ecurrentMessage.subscribe(message => this.error = message);
        setInterval(() => {  
                                 this.message = "" ;
                                 this.error = '';
-                        }, 4000);
+           this.log='';
+                        }, 12000);
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');    
-      this.message = JSON.parse(localStorage.getItem('password_change_msg'));
+      this.password_message = JSON.parse(localStorage.getItem('password_change_msg'));
       localStorage.removeItem('password_change_msg');    
+      
+      
+       this.error = localStorage.getItem('jwt_not_found');
+      localStorage.removeItem('jwt_not_found');   
     
   }
    reset;
@@ -102,6 +111,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 {
                      this.log='';
                     this.reset= "reset";
+                    this.password_message ='';
                    // this.log  ="Your email or password is incorrect. If you don't remember your password, please click on here to reset it. ";
                    // this.dataservice.changeMessage(user.error);
                 }
@@ -246,7 +256,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                           if(user.error)
                           {        
                             //this.router.navigate(['/candidate_profile']);
-                            
+                            this.password_message='';
                             this.log = 'Credentials not match';
                             this.authenticationService.create(this.credentials)
                             .subscribe(
@@ -316,7 +326,7 @@ export class LoginComponent implements OnInit, OnDestroy {
  reset_passsword()
  {
     this.reset='';
-   
+   this.password_message='';
     if(this.credentials.email)
     {
         this.authenticationService.forgot_password(this.credentials.email)

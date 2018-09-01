@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit } from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import {NgForm} from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -14,7 +14,7 @@ import { DataService } from "../data.service";
   templateUrl: './experience.component.html',
   styleUrls: ['./experience.component.css']
 })
-export class ExperienceComponent implements OnInit 
+export class ExperienceComponent implements OnInit , AfterViewInit
 {
     EducationForm: FormGroup;
     ExperienceForm: FormGroup;
@@ -49,6 +49,11 @@ export class ExperienceComponent implements OnInit
     return this.month[monthnum-1] || '';
 }
 
+     ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);   
+         
+    }
     message;
     current_work_check=[];
     ngOnInit() 
@@ -86,6 +91,16 @@ export class ExperienceComponent implements OnInit
                         this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
+                if(data.programming_languages.length>0 &&data.description)
+                 {
+                     this.exp_active_class = 'fa fa-check-circle text-success';
+                }
+                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day &&data.current_salary && data.current_currency )
+                  {
+                    this.active_class='fa fa-check-circle text-success';
+                     // this.job_active_class = 'fa fa-check-circle text-success';
+                       
+                  }
                 if(data.work_history || data.education_history|| data.programming_languages ||data.current_salary || data.current_currency)
                 {               
                     
@@ -93,8 +108,8 @@ export class ExperienceComponent implements OnInit
                     {
                         this.jobData = data.work_history; 
                        // console.log(this.jobData);
-                        //console.log(this.jobData[0].startdate);
-                       // console.log(this.datePipe.transform(((this.jobData[0].startdate)+1), 'MMMM'));
+                        //console.log(this.jobData.startdate);
+                       // console.log(this.datePipe.transform(((this.jobData.startdate)+1), 'MMMM'));
                         
                        
                         for(let data1 of data.work_history)
@@ -181,16 +196,7 @@ export class ExperienceComponent implements OnInit
                    // this.current_currency =-1;
 
                 }
-                 if(data.work_history && data.education_history&& data.programming_languages &&data.current_salary && data.current_currency)
-                 {
-                     this.exp_active_class = 'fa fa-check-circle text-success';
-                }
-                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day )
-                  {
-                    this.active_class='fa fa-check-circle text-success';
-                     // this.job_active_class = 'fa fa-check-circle text-success';
-                       
-                  }
+                 
               
               if(!data.why_work )
               {              
@@ -204,7 +210,21 @@ export class ExperienceComponent implements OnInit
                    //this.router.navigate(['/resume']);
                 }               
 
-            });
+            },
+            error=>
+            {
+                if(error.message == 500 || error.message == 401)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
+                    
+                    if(error.message == 403)
+                    {
+                        this.router.navigate(['/not_found']);                        
+                    }   
+                
+           });
        }
        else
        {
@@ -450,23 +470,16 @@ export class ExperienceComponent implements OnInit
     experience_submit(searchForm: NgForm)
     {    
     
-       if(!this.salary)
-       {
-           this.current_sal_log = "Please fill current base salary";
-           
-       }
-       if(this.current_currency ==-1)
-       {
-           this.current_currency_log = "Please choose currency";
-       }
+       
        if(this.language.length<=0)
        {
            
            this.lang_log="Please select min 1 language";
        }
         
-        if(this.expYear.length <=0 )
+        if(this.expYear.length !== this.language.length)
         {
+           
             this.exp_lang_log="Please fill year of experience";
         }
         if(!this.Intro)
@@ -569,37 +582,16 @@ export class ExperienceComponent implements OnInit
             
         }
         
-        //console.log(this.ExperienceForm.value.ExpItems.length);
-        //console.log(this.exp_count);
-       
-       /* if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count == 0 && this.exp_count == 0 )
-        {
-           console.log("hiii");
-           this.submit_info(searchForm);
-            
-        }*/
+     
         
-        if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
+        if(this.language &&this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
         {
            //console.log("else if 3");
            this.submit_info(searchForm);
             
         }
         
-       /* else if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count == 0 && this.exp_count === this.ExperienceForm.value.ExpItems.length )
-        {
-           console.log("else if 2");
-           this.submit_info(searchForm);
-            
-        }
-            
-        else if(this.salary && this.current_currency !=-1 && this.language && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count == 0)
-        {
-           console.log("else if 1");
-           this.submit_info(searchForm);
-            
-        }*/
-        
+      
         
         
         
@@ -661,14 +653,15 @@ export class ExperienceComponent implements OnInit
                     this.router.navigate(['/candidate_profile']);
                 }
 
-                if(data.error )
-                {
-                    ////console.log(data.error);
-                }
+                
                
                 },
                 error => {
-                  //this.log = 'Something getting wrong';
+                  if(error.message == 500)
+                    {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        window.location.href = '/login';
+                    }
                    
                 });
              

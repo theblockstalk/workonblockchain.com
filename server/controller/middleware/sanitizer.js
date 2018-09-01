@@ -17,14 +17,6 @@ function recursivelySanitize(obj) {
     }
 }
 
-function sanitizeMultiple(...objects) {
-    let newObjects = [];
-    for(let obj in objects) {
-        newObjects.push(recursivelySanitize(obj));
-    }
-    return newObjects;
-}
-
 function middleware(req, res, next) {
     if (req.body) {
         recursivelySanitize(req.body);
@@ -39,5 +31,4 @@ function middleware(req, res, next) {
 }
 
 module.exports.recursivelySanitize = recursivelySanitize;
-module.exports.sanitizeMultiple = sanitizeMultiple;
 module.exports.middleware = middleware;
