@@ -144,6 +144,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {                
                 if(data) 
                 {
+                    console.log(data);
                     this.id = data._creator._id; 
                     this.email =data._creator.email;  
                     

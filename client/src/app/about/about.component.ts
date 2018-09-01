@@ -219,6 +219,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
     if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1)
     {
+        console.log("jdsbj");
       this.authenticationService.about(this.currentUser._creator,this.info)
         .subscribe(
           data =>
@@ -228,14 +229,14 @@ export class AboutComponent implements OnInit,AfterViewInit
                 
                if(this.referred_id)
                {
-                   //console.log("ifffffffff refrred _id");
+                   console.log("ifffffffff refrred _id");
                         ////console.log(data.refered_id);
                          this.authenticationService.getById(this.referred_id)
                          .subscribe(
                          data => {
                             if(data)
                             {
-                                ////console.log(data);
+                                console.log(data);
                                 if(data._creator.email)
                                 {
                                     this.email_data.fname = data.first_name;
@@ -245,7 +246,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                                     this.authenticationService.email_referred_user(this.email_data).subscribe(
                                     data =>
                                     {
-                                 
+                                        this.router.navigate(['/job']);
                                         ////console.log(data);
                                     });
                                }
@@ -261,6 +262,10 @@ export class AboutComponent implements OnInit,AfterViewInit
                                 
                             }
                     
+                        },
+                        error=>
+                        {
+                            console.log("error");
                         });
                
               }
