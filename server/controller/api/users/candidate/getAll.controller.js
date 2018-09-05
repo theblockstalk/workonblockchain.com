@@ -33,10 +33,10 @@ function getAll()
                    array.push(filterReturnData.removeSensativeData(item.toObject()));
             });
 
-            let anonymisedCandidates = array.map((candidate) => {
+            /*let anonymisedCandidates = array.map((candidate) => {
                 return filterReturnData.anonymousCandidateData(candidate)
-            })
-            deferred.resolve(anonymisedCandidates);
+            })*/
+            deferred.resolve(array);
         }
 
     });

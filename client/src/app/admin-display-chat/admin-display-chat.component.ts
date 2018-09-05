@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Component, OnInit,ElementRef, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
@@ -49,6 +48,7 @@ export class AdminDisplayChatComponent implements OnInit {
     file_url;
     profile_pic;
     display_name;
+	new_messges = [];
  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
   {
  
@@ -94,39 +94,54 @@ export class AdminDisplayChatComponent implements OnInit {
           this.authenticationService.get_user_messages_only(this.user_id)
             .subscribe(
                 msg_data => {
-                    if(msg_data['datas'].length>0)
+					if(msg_data['datas'].length>0)
                     {
-                        this.length = msg_data['datas'].length;
-                        ////console.log(msg_data['datas'].length);
-                        this.authenticationService.getCandidate('0','0',0,this.type)
-                            .subscribe(
-                                data => {
-                                    //console.log(data);
-                                    for (var key in msg_data['datas']) {
-                                            for (var key_user in data['users']) {
-                                                if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id || msg_data['datas'][key].receiver_id == data['users'][key_user]._creator._id){
-                                                    if(this.users.indexOf(data['users'][key_user]) === -1){
-                                                        //console.log('if');
-                                                        this.users.push(data['users'][key_user]);
-                                                    }
-                                                }   
-                                            }
-                                        }
-                                    //console.log(this.users[0].image);
-                                },
-                                error => {
-                                    if(error.message == 500 || error.message == 401)
-                                    {
-                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                        window.location.href = '/login';
-                                    }
-                    
-                                     if(error.message == 403)
-                                    {
-                                            // this.router.navigate(['/not_found']);                        
-                                    } 
-                                }
-                            );
+						this.new_messges.push(msg_data['datas']);
+						this.new_messges = this.filter_array(msg_data['datas']);
+						this.length = msg_data['datas'].length;
+                        for (var key_messages in this.new_messges) {
+							if(this.user_id == this.new_messges[key_messages].receiver_id){
+								console.log('my');
+							}
+							else{
+								this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].is_company_reply,this.type)
+								.subscribe(
+									data => {
+										this.users.push(data['users']);
+										console.log(this.users);
+										this.count = 0;
+										for (var key_users_new in this.users) {
+											if(this.count == 0){
+												if(this.users[key_users_new].first_name){
+													this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'');
+												}
+												else{
+													this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'');
+												}
+											}
+											this.count = this.count + 1;
+											//this.currentUser._creator //receiver
+											/*this.authenticationService.get_unread_msgs_of_user(this.currentUser._creator,this.users[key_users_new]._creator._id)
+											.subscribe(
+												data => {
+													this.unread_msgs_info.push(data);
+												},
+												error => {
+													//console.log('error');
+													//console.log(error);
+												}
+											);*/
+										}
+										//console.log(this.unread_msgs_info);
+									},
+									error => {
+										//console.log('error');
+										//console.log(error);
+										this.log = error;
+									}
+								);
+							}
+						}
                     }
                     else
                     {
@@ -153,39 +168,56 @@ export class AdminDisplayChatComponent implements OnInit {
             this.authenticationService.get_user_messages_only(this.user_id)
             .subscribe(
                 msg_data => {
-                    if(msg_data['datas'].length>0){
-                        //console.log('msg_data');
-                        this.length = msg_data['datas'].length
-                         ////console.log(msg_data['datas'].length);
-                        this.authenticationService.getCandidate('0','0',0,'company')
-                        .subscribe(
-                            data => {
-                                //console.log(data['users']);
-                                for (var key in msg_data['datas']) {
-                                        for (var key_user in data['users']) {
-                                            if(msg_data['datas'][key].sender_id == data['users'][key_user]._creator._id){
-                                                if(this.users.indexOf(data['users'][key_user]) === -1){
-                                                    //console.log('if');
-                                                    this.users.push(data['users'][key_user]);
-                                                }
-                                            }   
-                                        }
-                                    }
-                                //console.log(this.users);
-                            },
-                            error => {
-                                if(error.message == 500 || error.message == 401)
-                                    {
-                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                        window.location.href = '/login';
-                                    }
-                    
-                                     if(error.message == 403)
-                                    {
-                                            // this.router.navigate(['/not_found']);                        
-                                    } 
-                            }
-                        );
+					if(msg_data['datas'].length>0){
+                        this.new_messges.push(msg_data['datas']);
+						this.new_messges = this.filter_array(msg_data['datas']);
+						console.log(this.new_messges);
+                        this.length = msg_data['datas'].length;
+						for (var key_messages in this.new_messges) {
+							if(this.user_id == this.new_messges[key_messages].sender_id){
+								console.log('my');
+							}
+							else{
+								this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',0,'company')
+								.subscribe(
+									data => {
+										this.users.push(data['users']);
+										console.log(this.users);
+										this.count = 0;
+										for (var key_users_new in this.users) {
+											if(this.count == 0){
+												this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name);
+											}
+											this.count = this.count + 1;
+											//this.currentUser._creator //receiver
+											/*this.authenticationService.get_unread_msgs_of_user(this.currentUser._creator,this.users[key_users_new]._creator._id)
+											.subscribe(
+												data => {
+													this.unread_msgs_info.push(data);
+												},
+												error => {
+													//console.log('error');
+													//console.log(error);
+												}
+											);*/
+										}
+									},
+									error => {
+										if(error.message == 500 || error.message == 401)
+										{
+											localStorage.setItem('jwt_not_found', 'Jwt token not found');
+											window.location.href = '/login';
+										}
+						
+										if(error.message == 403)
+										{
+											// this.router.navigate(['/not_found']);                        
+										} 
+										this.log = error;
+									}
+								);
+							}
+						}
                     }
                     
                      else
@@ -226,7 +258,7 @@ export class AdminDisplayChatComponent implements OnInit {
       
   }
     
-    openDialog(email: string, id:string){
+    openDialog(email: string, id:string,current_compnay_name:string){
       
       //this.msgs = 'hi baby';
       this.msgs = '';
@@ -305,88 +337,72 @@ export class AdminDisplayChatComponent implements OnInit {
    
     get_user_type()
     {
-    this.authenticationService.getById(this.user_id)
-            .subscribe(
-            data => {
-                //console.log(data);
-                ////console.log(data[0]._creator);
-                if(data.error)
-                {
-                    this.log= "Something Went Wrong"; 
-                    localStorage.removeItem('company_type');
-                }
-                if(data!= '')
-                {
-                    //console.log("iffffffff");
-                    //console.log(data[0].image);
-                   if(data[0].image!='')
-                   {
-                       //console.log("candidate image");
-                    this.profile_pic = data[0].image;
-                    }
-                   
-                    this.display_name = data[0].first_name+' '+data[0].last_name;
-                         this.user_type = data[0]._creator.type;
-                        localStorage.removeItem('company_type');
-                         //console.log(this.user_type);
-                        this.email  = data[0]._creator.email;
-                        //console.log(this.email);
-                        
-                    
-                    
-                }
-                else
-                    {
-                    ////console.log("else");
-                    this.authenticationService.getCurrentCompany(this.user_id)
-                        .subscribe(
-                        data => 
-                        {
-                            //console.log(data);
-                            if(data.error)
-                            {
-                                this.log= "Something Went Wrong";
-                                localStorage.removeItem('company_type');  
-                            }
-                            else
-                            {
-                                //console.log("elseeeee");
-                                
-                                if(data[0].company_logo!='')
-                                {
-                                    //console.log("company_logo");
-                                     this.profile_pic = data[0].company_logo;
-                                     //console.log(this.profile_pic);
-                                    }
-                               
-                               
-                                 this.display_name = data[0].company_name;
-                                 this.user_type = data[0]._creator.type;
-                                 ////console.log(this.user_type);
-                                localStorage.setItem("company_type", this.user_type);
-                                //localStorage.removeItem('type');
-                                 this.email  = data[0]._creator.email;
-                                 //console.log(this.email);
-                            }
-                      
-                        },
-                        error => 
-                        {
-                            if(error.message == 500 || error.message == 401)
-                                    {
-                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                        window.location.href = '/login';
-                                    }
-                    
-                                     if(error.message == 403)
-                                    {
-                                            // this.router.navigate(['/not_found']);                        
-                                    } 
-                  
-                         }); 
-                    
-                    }
-                
-                });
-    
+		console.log(this.user_type);
+		if(this.user_type == 'company'){
+			this.authenticationService.getCandidate(this.user_id,'0',1,this.user_type)
+			.subscribe(
+				data => {
+					data = data.users;
+					if(data.company_logo!='')
+					{
+						this.profile_pic = data.company_logo;
+					}
+					this.display_name = data.company_name;
+					this.user_type = data._creator.type;
+					//localStorage.setItem("company_type", this.user_type);
+					//localStorage.removeItem('type');
+					this.email  = data._creator.email;
+				},
+				error => 
+				{
+					if(error.message == 500 || error.message == 401)
+					{
+						localStorage.setItem('jwt_not_found', 'Jwt token not found');
+						window.location.href = '/login';
+					}
+					if(error.message == 403)
+					{
+							// this.router.navigate(['/not_found']);                        
+					} 
+		  
+				 }
+			);
+		}
+		else{
+			this.authenticationService.getById(this.user_id)
+			.subscribe(
+				data => {
+					if(data.error)
+					{
+						this.log= "Something Went Wrong"; 
+						localStorage.removeItem('company_type');
+					}
+					else
+					{
+						if(data.image!='')
+						{
+							this.profile_pic = data.image;
+						}
+						this.display_name = data.first_name+' '+data.last_name;
+						this.user_type = data._creator.type;
+						//localStorage.removeItem('company_type');
+						this.email  = data._creator.email;
+					}
+						
+				}
+			);
+		}
     }
+	
+	filter_array(arr) 
+    {
+        var hashTable = {};
+
+        return arr.filter(function (el) {
+            var key = JSON.stringify(el);
+            var match = Boolean(hashTable[key]);
+
+            return (match ? false : hashTable[key] = true);
+        });
+    }
+}

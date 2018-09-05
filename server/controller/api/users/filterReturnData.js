@@ -25,8 +25,7 @@ const anonymosCandidateFields = ['image', 'location', 'roles', 'expected_salary_
     'current_salary', 'programming_languages', 'education_history', 'work_history', 'description', '_creator'];
 
 module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
-	
-    const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);
+	const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);
     candidateDoc = filterWhiteListFields(candidateDoc, anonymosCandidateFields);
     candidateDoc.work_history = candidateDoc.work_history.map((work) => {
         delete work.companyname;

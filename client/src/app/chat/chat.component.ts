@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';

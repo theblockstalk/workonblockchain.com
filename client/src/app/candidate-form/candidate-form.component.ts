@@ -41,10 +41,10 @@ export class CandidateFormComponent implements OnInit {
             this.authenticationService.getByRefrenceCode(this.code)
                 .subscribe(
                     data => {
-                        //console.log(data);
+                        console.log(data);
                         //console.log('data');
-                        this.ref_msg = data.email+' thinks you should join workonblockchain.com';
-                        this.credentials.refer_by = data._id;
+                        this.ref_msg = data._creator.email+' thinks you should join workonblockchain.com';
+                        this.credentials.refer_by = data._creator._id;
                     },
                     error => {
                         //console.log('error');

@@ -83,7 +83,6 @@ export class AdminCandidateSearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                  console.log(data);
                     if(data.error)
                     {
                        // //console.log(this.info);
@@ -113,7 +112,6 @@ export class AdminCandidateSearchComponent implements OnInit {
                             
 
                         }
-                       
                         if(this.length> 0 )
                         {
                             

@@ -56,11 +56,11 @@ export class ReferralComponent implements OnInit {
 			this.authenticationService.getById(this.currentUser._creator)
             .subscribe(
                 data => {
-                    this.first_name = data[0].first_name;
-					this.last_name = data[0].last_name;
-					this.display_name = data[0].first_name+' '+data[0].last_name;
+                    this.first_name = data.first_name;
+					this.last_name = data.last_name;
+					this.display_name = data.first_name+' '+data.last_name;
 					this.mail_body = 'Hi, \n\nYou have been invited by '+this.display_name+' to join Work on Blockchain. \n\nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \n\nGive us a try! \n\nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
-					this.email_subject = data[0].first_name+this.email_subject;
+					this.email_subject = data.first_name+this.email_subject;
 				},
                 error => {
                     //console.log('error');

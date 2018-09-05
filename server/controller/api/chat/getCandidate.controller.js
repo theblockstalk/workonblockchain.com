@@ -114,6 +114,8 @@ function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
 		});
 	}  
 	else{
+		console.log(receiver_id);
+		console.log(user_type);
 		users.find({$and : [{ _id : receiver_id }, { type : user_type } ]}, function (err, data)
 		{
 
