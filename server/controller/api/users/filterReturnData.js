@@ -9,18 +9,8 @@ module.exports.removeSensativeData = function removeSensativeData(userDoc) {
     return userDoc;
 };
 
-module.exports.removeSensativeDataFromUsers = function removeSensativeDataFromUsers(userDoc) {
 
-    delete userDoc.password_hash;
-    delete userDoc.salt;
-    delete userDoc.jwt_token;
-    delete userDoc.verify_email_key;
-    delete userDoc.forgot_password_key;
-   
-    return userDoc;
-};
-
-const anonymosCandidateFields = ['image', 'location', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_area',
+const anonymosCandidateFields = ['image', 'locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_area',
     'availability_day', 'why_work', 'commercial_platform', 'experimented_platform', 'platforms', 'current_currency',
     'current_salary', 'programming_languages', 'education_history', 'work_history', 'description', '_creator'];
 

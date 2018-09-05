@@ -157,11 +157,7 @@ function filter(params, userId)
 
             CandidateProfile.find(searchQuery).populate('_creator').exec(function(err, result)
             {
-            	 var array = [];
-            	 result.forEach(function(item)
-                 {
-                     array.push(item._creator._id);
-                 });
+            	 
             	 
             	
 
@@ -172,29 +168,17 @@ function filter(params, userId)
                 }
                 if(result)
                 {
-                	  chat.find({
-                          $or : [
-                              { $and : [ { receiver_id : {$in: array} }, { sender_id : {$regex: userId} } ] },
-                              { $and : [ { receiver_id : {$regex: userId} }, { sender_id : {$in: array} } ] }
-                          ]
-                      }).limit(2).exec(function (err, data)
-                      {
-                      	
-                          if (err)
-                          {
-                              logger.error(err.message, {stack: err.stack});
-                              deferred.reject(err.name + ': ' + err.message);
-                          }
-                          else
-                          {
-                        	  var arrayy=[];
-                          	var datata= {datas : data ,ids : array };
-              				arrayy.push(datata);
+                	var result_array = [];
+               	 	result.forEach(function(item)
+                    {
+               	 		result_array.push(item._creator._id);
+                    });
+               	 	
+                	var ids_arrayy=[];
+                  	var datata= {ids : result_array };
+                  	ids_arrayy.push(datata);
 
-                          	deferred.resolve(arrayy);
-                          }
-
-                      });
+                  	deferred.resolve(ids_arrayy);
                    
                 }
 

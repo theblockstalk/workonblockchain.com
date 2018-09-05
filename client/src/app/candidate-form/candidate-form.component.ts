@@ -297,7 +297,4 @@ export class CandidateFormComponent implements OnInit {
                 });
             }
     }
-
-  
-
 }

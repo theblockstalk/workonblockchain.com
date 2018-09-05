@@ -38,42 +38,27 @@ function verified_candidate(params)
 	var query_result=[];
     var deferred = Q.defer();
    
-    users.find({type : 'candidate' , is_verify :1, is_approved :1 , disable_account : false }, function (err, data)
+    users.find({type : 'candidate' , is_verify :1, is_approved :1 , disable_account : false }, function (err, result)
     {
 
         if (err)
             deferred.reject(err.name + ': ' + err.message);
-        if(data)
+        if(result)
         {
-            var array = [];
-            data.forEach(function(item)
+                    	
+        	var result_array = [];
+       	 	result.forEach(function(item)
             {
-                array.push(item._id);
+       	 		result_array.push(item._id);
             });
+       	 	
+        	var ids_arrayy=[];
+          	var datata= {ids : result_array };
+          	ids_arrayy.push(datata);
 
+          	deferred.resolve(ids_arrayy);
 
-            chat.find({
-                $or : [
-                    { $and : [ { receiver_id : {$in: array} }, { sender_id : {$regex: params._id} } ] },
-                    { $and : [ { receiver_id : {$regex: params._id} }, { sender_id : {$in: array} } ] }
-                ]
-            }).limit(2).exec(function (err, data)
-            {
-            	
-                if (err){
-                    logger.error(err.message, {stack: err.stack});
-                    deferred.reject(err.name + ': ' + err.message);
-                }
-                else{
-                	var arrayy=[];
-                	var datata= {datas : data ,ids : array };
-    				arrayy.push(datata);
-
-                	deferred.resolve(arrayy);
-                   
-                }
-
-        });
+           
         }
         else
         {
