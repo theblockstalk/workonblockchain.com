@@ -59,6 +59,7 @@ const chatInsertMessageJob = require('./controller/api/chat/insertMessageJob.con
 const chatInsertFile = require('./controller/api/chat/insertChatFile.controller');
 const chatUpdateJobMessage = require('./controller/api/chat/updateJobMessage.controller');
 const chatUploadFile = require('./controller/api/chat/uploadChatFile.controller');
+const chatUpdateIsCompanyReplyStatus = require('./controller/api/chat/updateIsCompanyReplyStatus.controller');
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
@@ -131,6 +132,7 @@ router.post('/users/insert_chat_file',auth.isValidUser, chatInsertFile);
 router.post('/users/insert_message_job',auth.isValidCompany, chatInsertMessageJob);
 router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
+router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);
 
 // Admin
 

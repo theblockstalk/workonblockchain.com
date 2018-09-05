@@ -97,7 +97,7 @@ export class AdminDisplayChatComponent implements OnInit {
                     {
                         this.length = msg_data['datas'].length;
                         ////console.log(msg_data['datas'].length);
-                        this.authenticationService.getCandidate(this.type)
+                        this.authenticationService.getCandidate('0','0',0,this.type)
                             .subscribe(
                                 data => {
                                     //console.log(data);
@@ -156,7 +156,7 @@ export class AdminDisplayChatComponent implements OnInit {
                         //console.log('msg_data');
                         this.length = msg_data['datas'].length
                          ////console.log(msg_data['datas'].length);
-                        this.authenticationService.getCandidate('company')
+                        this.authenticationService.getCandidate('0','0',0,'company')
                         .subscribe(
                             data => {
                                 //console.log(data['users']);

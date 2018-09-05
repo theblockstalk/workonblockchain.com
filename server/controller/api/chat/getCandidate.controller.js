@@ -24,10 +24,11 @@ const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
+const filterReturnData = require('../users/filterReturnData');
 
 module.exports = function (req, res)
 {
-    get_candidate(req.body.type).then(function (user)
+    get_candidate(req.body.sender_id, req.body.receiver_id,req.body.is_company_reply,req.body.type).then(function (user)
     {
         if (user)
         {
@@ -44,7 +45,7 @@ module.exports = function (req, res)
         });
 }
 
-function get_candidate(user_type)
+function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
 {
     /*var deferred = Q.defer();
 
@@ -66,68 +67,98 @@ function get_candidate(user_type)
     });
 
     return deferred.promise;*/
-    //console.log(user_type);
     var deferred = Q.defer();
-    users.find({type : user_type}, function (err, data)
-    {
+	//old one-> db.users.find(  { type: user_type }  )
+    query = '';
+	if(user_type == 'company'){
+		console.log(sender_id);
+		users.find({$and : [{ _id : sender_id }, { type : user_type } ]}, function (err, data)
+		{
 
-        if (err)
-            deferred.reject(err.name + ': ' + err.message);
-        if(data)
-        {
-            var array = [];
-            data.forEach(function(item)
-            {
-                array.push(item._id);
-            });
+			if (err)
+				deferred.reject(err.name + ': ' + err.message);
+			if(data)
+			{
+				console.log(data);
+				var array = [];
+				data.forEach(function(item)
+				{
+					array.push(item._id);
+				});
+				EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
+				{
+					if (err){
+						//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+						logger.error(err.message, {stack: err.stack});
+					}
+					if (result)
+					{
+						var query_result = result[0].toObject();      
+						query_result = filterReturnData.removeSensativeData(query_result);
+						query_result = filterReturnData.anonymousCandidateData(query_result);
+						deferred.resolve({
+							users:query_result
+						});
+					}
+					else
+					{
+						deferred.reject("Not Found");
+					}
+				});
+			}
+			else
+			{
+				deferred.reject("Not Found");
+			}
 
-            if(user_type == 'candidate'){
-                CandidateProfile.find({ "_creator": {$in: array}}).populate('_creator').exec(function(err, result)
-                {
-                    if (err){
-                        logger.error(err.message, {stack: err.stack});
-                        //console.log(err);//deferred.reject(err.name + ': ' + err.message);
-                    }
-                    if (result)
-                    {
-                        deferred.resolve({
-                            users:result
-                        });
-                    }
-                    else
-                    {
-                        deferred.reject("Not Found");
-                    }
-                });
-            }
-            else{
-                EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
-                {
-                    if (err){
-                        //console.log(err);//deferred.reject(err.name + ': ' + err.message);
-                        logger.error(err.message, {stack: err.stack});
-                    }
-                    if (result)
-                    {
-                        deferred.resolve({
-                            users:result
-                        });
-                    }
-                    else
-                    {
-                        deferred.reject("Not Found");
-                    }
-                });
-            }
+		});
+	}  
+	else{
+		users.find({$and : [{ _id : receiver_id }, { type : user_type } ]}, function (err, data)
+		{
 
-        }
+			if (err)
+				deferred.reject(err.name + ': ' + err.message);
+			if(data)
+			{
+				var array = [];
+				data.forEach(function(item)
+				{
+					array.push(item._id);
+				});
+				
+				CandidateProfile.find({ "_creator": {$in: array}}).populate('_creator').exec(function(err, result)
+				{
+					if (err){
+						logger.error(err.message, {stack: err.stack});
+						//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+					}
+					if (result)
+					{
+						var query_result = result[0].toObject();      
+						query_result = filterReturnData.removeSensativeData(query_result);
+						if(is_company_reply == 1){
+							console.log('matched');
+						}
+						else{
+							query_result = filterReturnData.anonymousSearchCandidateData(query_result);
+						}
+						deferred.resolve({
+							users:query_result
+						});
+					}
+					else
+					{
+						deferred.reject("Not Found");
+					}
+				});
+			}
+			else
+			{
+				deferred.reject("Not Found");
+			}
 
-        else
-        {
-            deferred.reject("Not Found");
-        }
-
-    });
-
+		});
+	}
     return deferred.promise;
 }
