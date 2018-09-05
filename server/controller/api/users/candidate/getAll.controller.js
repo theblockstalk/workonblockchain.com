@@ -27,7 +27,13 @@ function getAll()
             deferred.reject(err.name + ': ' + err.message);
         }
         else {
-            let anonymisedCandidates = result.map((candidate) => {
+        	var array=[];
+       	 	result.forEach(function(item)
+            {
+                   array.push(filterReturnData.removeSensativeData(item.toObject()));
+            });
+
+            let anonymisedCandidates = array.map((candidate) => {
                 return filterReturnData.anonymousCandidateData(candidate)
             })
             deferred.resolve(anonymisedCandidates);

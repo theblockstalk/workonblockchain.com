@@ -37,12 +37,25 @@ export class ChangePasswordComponent implements OnInit {
      }
   }
     
-    
+    new_log;current_log;
     change_password(formdata: NgForm)
     {
         //console.log(formdata.value);
         //console.log(this.credentials.password);
         //console.log(this.credentials.confirm_password);
+        
+         if(!this.credentials.current_password)
+        {
+           
+           this.new_log="Please enter current password";
+        }
+        
+        if(!this.credentials.password)
+        {
+           
+            this.current_log="Please enter new password";
+        }
+       
         
         if(this.credentials.password != this.credentials.confirm_password)
         {
@@ -51,7 +64,7 @@ export class ChangePasswordComponent implements OnInit {
             
        }
        
-       else
+       if(this.credentials.password && this.credentials.current_password && this.credentials.password == this.credentials.confirm_password)
        {
             this.confirm_password='';
             //console.log("else");
@@ -86,6 +99,11 @@ export class ChangePasswordComponent implements OnInit {
                      if(error.message == 500 || error.message == 401)
                      {
                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                         localStorage.removeItem('currentUser');
+                         localStorage.removeItem('googleUser');
+                         localStorage.removeItem('close_notify');
+                         localStorage.removeItem('linkedinUser');
+                         localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                          
                      }

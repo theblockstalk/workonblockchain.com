@@ -7,10 +7,14 @@ const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const logger = require('../../../../services/logger');
+const filterReturnData = require('../../filterReturnData');
+const chat = require('../../../../../model/chat');
 
 module.exports = function (req,res)
 {
-    filter(req.body).then(function (err, data)
+	let userId = req.auth.user._id;
+
+    filter(req.body, userId).then(function (err, data)
     {
         if (data)
         {
@@ -27,7 +31,7 @@ module.exports = function (req,res)
         });
 }
 
-function filter(params)
+function filter(params, userId)
 {
 	
     var result_array = [];
@@ -59,7 +63,7 @@ function filter(params)
         result_array= {USD : result[0] , GBP : result[1]  , Euro : params.salary};
         //console.log(result_array.length);
     }
-console.log(result_array);
+
     var deferred = Q.defer();
 
 
@@ -81,11 +85,8 @@ console.log(result_array);
 
             let queryString = [];
 
-
             const usersToSearch = { "_creator": {$in: array}};
             queryString.push(usersToSearch);
-
-
 
             if(params.position )
             {
@@ -156,6 +157,13 @@ console.log(result_array);
 
             CandidateProfile.find(searchQuery).populate('_creator').exec(function(err, result)
             {
+            	 var array = [];
+            	 result.forEach(function(item)
+                 {
+                     array.push(item._creator._id);
+                 });
+            	 
+            	
 
 
                 if (err){
@@ -164,7 +172,30 @@ console.log(result_array);
                 }
                 if(result)
                 {
-                    deferred.resolve(result);
+                	  chat.find({
+                          $or : [
+                              { $and : [ { receiver_id : {$in: array} }, { sender_id : {$regex: userId} } ] },
+                              { $and : [ { receiver_id : {$regex: userId} }, { sender_id : {$in: array} } ] }
+                          ]
+                      }).limit(2).exec(function (err, data)
+                      {
+                      	
+                          if (err)
+                          {
+                              logger.error(err.message, {stack: err.stack});
+                              deferred.reject(err.name + ': ' + err.message);
+                          }
+                          else
+                          {
+                        	  var arrayy=[];
+                          	var datata= {datas : data ,ids : array };
+              				arrayy.push(datata);
+
+                          	deferred.resolve(arrayy);
+                          }
+
+                      });
+                   
                 }
 
             });
@@ -190,7 +221,7 @@ function expected_salary_converter(salary_value, currency1, currency2)
 
     array.push(value1);
     array.push(value2);
-console.log(array);
+
     return array;
 
 }

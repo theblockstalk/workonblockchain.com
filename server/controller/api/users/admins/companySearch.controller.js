@@ -24,6 +24,7 @@ const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
+const filterReturnData = require('../filterReturnData');
 
 module.exports = function (req,res)
 {
@@ -63,7 +64,13 @@ function admin_search_by_name(word)
         }
         else
         {
-            deferred.resolve(result)
+        	var array=[];
+       	 	result.forEach(function(item)
+            {
+                   array.push(filterReturnData.removeSensativeData(item.toObject()));
+            });
+       	 	deferred.resolve(array);
+           // deferred.resolve(result)
         }
     });
 

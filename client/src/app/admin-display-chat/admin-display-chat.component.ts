@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, OnInit,ElementRef, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
@@ -389,5 +390,3 @@ export class AdminDisplayChatComponent implements OnInit {
                 });
     
     }
-
-}

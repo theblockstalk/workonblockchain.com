@@ -34,7 +34,7 @@ export class AdminCandidateDetailComponent implements OnInit {
   
   }
     currentUser: User;
-    info;createdDate;
+    info=[];createdDate;
     approve;verify;is_verify;information;refeered;
     work_history;education_history;
     date_sort_desc = function (date1, date2) 
@@ -68,17 +68,18 @@ export class AdminCandidateDetailComponent implements OnInit {
           this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
-                this.info = data;
-                this.approve = data[0]._creator.is_approved;
-                this.verify =data[0]._creator.is_verify;
-                this.work_history = data[0].work_history; 
+                console.log(data);
+                this.info.push(data);
+                this.approve = data._creator.is_approved;
+                this.verify =data._creator.is_verify;
+                this.work_history = data.work_history; 
                 this.work_history.sort(this.date_sort_desc);
-                this.education_history = data[0].education_history;
+                this.education_history = data.education_history;
                 this.education_history.sort(this.education_sort_desc);
-                if(data[0].image != null )
+                if(data.image != null )
                     {
                        
-                        this.imgPath =  data[0].image;
+                        this.imgPath =  data.image;
                         
                         
                     }
@@ -93,16 +94,16 @@ export class AdminCandidateDetailComponent implements OnInit {
                     this.is_approved = "";
                  }
                
-                if(data[0]._creator.refered_id)
+                if(data._creator.refered_id)
                 {
-                     this.authenticationService.getById(data[0]._creator.refered_id)
+                     this.authenticationService.getById(data._creator.refered_id)
                     .subscribe(
                     data => {
                         
                         if(data!='')
                         {
-                            this.first_name = data[0].first_name;
-                            this.last_name =data[0].last_name;
+                            this.first_name = data.first_name;
+                            this.last_name =data.last_name;
                             
                         }
                         else
@@ -121,6 +122,11 @@ export class AdminCandidateDetailComponent implements OnInit {
                 if(error.message == 500 || error.message == 401 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                            localStorage.removeItem('googleUser');
+                            localStorage.removeItem('close_notify');
+                            localStorage.removeItem('linkedinUser');
+                            localStorage.removeItem('admin_log'); 
                             window.location.href = '/login';
                         }
                     
@@ -178,6 +184,11 @@ export class AdminCandidateDetailComponent implements OnInit {
                             if(error.message == 500 || error.message == 401)
                             {
                                     localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                    localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log'); 
                                     window.location.href = '/login';
                             }
                     
@@ -223,6 +234,11 @@ export class AdminCandidateDetailComponent implements OnInit {
                     if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log'); 
                             window.location.href = '/login';
                         }
                     

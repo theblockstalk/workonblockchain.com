@@ -1,14 +1,14 @@
 var Q = require('q');
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const logger = require('../../../../services/logger');
-
+const filterReturnData = require('../../filterReturnData');
 //////////get sign-up data from db of specific candidate////////////
 
 module.exports = function (req, res)
     {
 	    //let userId = req.auth.user._id;
 	
-        getVerifiedCandidateDetail(req.params._id).then(function (user)
+        getVerifiedCandidateDetail(req.body).then(function (user)
         {
             if (user)
             {
@@ -25,34 +25,39 @@ module.exports = function (req, res)
             });
     }
 
-function getVerifiedCandidateDetail(_id)
+function getVerifiedCandidateDetail(params)
 {
     var deferred = Q.defer();
+    var arrayy=[];
     
-    CandidateProfile.findById(_id).populate('_creator' ,  'created_date , email , is_admin , is_approved , is_unread_msgs_to_send , is_verify ,  jwt_token , type , refered_id , ref_link , disable_account').exec(function(err, result)
-    {
-        //console.log(result);
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        if(!result)
-        {
-            CandidateProfile.find({_creator : _id}).populate('_creator' ,  'created_date , email , is_admin , is_approved , is_unread_msgs_to_send , is_verify ,  jwt_token , type , refered_id , ref_link , disable_account').exec(function(err, result)
+    CandidateProfile.find({_creator : params._id}).populate('_creator' ).exec(function(err, result)
             {
-                if (err){
+                if (err)
+                {
                     logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
                 }
                 else
-                    deferred.resolve(result);
+                {	
+                	if(params.company_reply == 1 )
+                    {               		
+                        var query_result = result[0].toObject();  
+                		let anonymous = filterReturnData.removeSensativeData(query_result);
+                		
+        				 deferred.resolve(anonymous);
+                    }
+                	
+                	if(params.company_reply == 0 )
+                    {
+                		var query_result = result[0].toObject();      
+                        let anonymisedCandidates = filterReturnData.anonymousSearchCandidateData(query_result);
+                       
+                        deferred.resolve(anonymisedCandidates);
+                    }
+                	
+                	
+                }
             });
-        }
-        else
-            deferred.resolve(result);
-
-
-    });
 
     return deferred.promise;
 

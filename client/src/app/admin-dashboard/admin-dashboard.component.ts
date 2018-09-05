@@ -52,6 +52,11 @@ export class AdminDashboardComponent implements OnInit {
                     if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
                     
@@ -73,10 +78,10 @@ export class AdminDashboardComponent implements OnInit {
                     if(data)
                     {
                         //this.is_verify = data[0]._creator.is_verify;
-                         this.is_admin = data[0]._creator.is_admin;
+                         this.is_admin = data._creator.is_admin;
                         if(this.is_admin == 1)
                         {
-                            localStorage.setItem('admin_log', JSON.stringify(data[0]._creator));
+                            localStorage.setItem('admin_log', JSON.stringify(data._creator));
                         }
                         else
                         {

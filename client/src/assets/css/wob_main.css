@@ -948,6 +948,7 @@ body{
 
 .spec-group{
     margin-bottom: 0px !important;
+    -webkit-appearance: none;
 }
 
 .left-input{

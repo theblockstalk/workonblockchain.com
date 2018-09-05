@@ -55,6 +55,28 @@ export class UserService {
             });
     }
     
+    candidate_detail(_id :any , company_reply :any)
+    {
+         return this.http.post<any>(URL+'users/candidate_detail', {_id:_id , company_reply :company_reply}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
+        
+    }
+    
     
     getById(_id: string) 
     {
@@ -639,6 +661,7 @@ export class UserService {
         })
             .map((res: Response) => 
             {
+               
                 if (res) 
                 {           
                         return res;                  
@@ -720,14 +743,13 @@ export class UserService {
     } 
     
     //////////////filters function call////////////////////////////////
-    getVerrifiedCandidate()
+    getVerrifiedCandidate(current : string)
     {
-       return this.http.get<any>(URL+'users/verified_candidate' , {
+       return this.http.post<any>(URL+'users/verified_candidate' , {_id : current} , {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) => 
             {
-                console.log(res);
                 if (res) 
                 {           
                         return res;                
