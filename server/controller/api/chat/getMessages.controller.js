@@ -56,7 +56,7 @@ function get_messages(receiver_id,sender_id){
             { $and : [ { receiver_id : {$regex: receiver_id} }, { sender_id : {$regex: sender_id} } ] },
             { $and : [ { receiver_id : {$regex: sender_id} }, { sender_id : {$regex: receiver_id} } ] }
         ]
-    }, function (err, data)
+    }).sort({_id: 'descending'}).exec(function(err, data)
     {
         if (err){
             logger.error(err.message, {stack: err.stack});
