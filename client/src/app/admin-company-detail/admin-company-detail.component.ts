@@ -17,7 +17,7 @@ export class AdminCompanyDetailComponent implements OnInit {
 
     user_id;
     currentUser: User;
-    info;
+    info=[];
     credentials: any = {};
     approve;
     verify;
@@ -35,6 +35,7 @@ export class AdminCompanyDetailComponent implements OnInit {
     });
   }
 
+  
   ngOnInit() 
   {
       //console.log(this.user_id);
@@ -52,20 +53,21 @@ export class AdminCompanyDetailComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                    console.log(data);
+                    
                     if(data.error)
                     {
                         this.error= "Something Went Wrong";  
                     }
                     else
                      {
-                        this.info= data;
-                        this.approve = data[0]._creator.is_approved;
-                        this.verify =data[0]._creator.is_verify;
-                         if(data[0].company_logo != null )
+                        this.info.push(data);;
+                        this.approve = data._creator.is_approved;
+                        this.verify =data._creator.is_verify;
+                         if(data.company_logo != null )
                         {                        
                             ////console.log(data.image);                     
-                              this.imgPath = data[0].company_logo;
+                              this.imgPath = data.company_logo;
                             //console.log(this.imgPath);
                         
                         }
@@ -87,6 +89,11 @@ export class AdminCompanyDetailComponent implements OnInit {
                   if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                            localStorage.removeItem('googleUser');
+                            localStorage.removeItem('close_notify');
+                            localStorage.removeItem('linkedinUser');
+                            localStorage.removeItem('admin_log'); 
                             window.location.href = '/login';
                         }
                     
@@ -137,6 +144,11 @@ export class AdminCompanyDetailComponent implements OnInit {
                             if(error.message == 500 || error.message == 401)
                             {
                                     localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                    localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log'); 
                                     window.location.href = '/login';
                             }
                     
@@ -177,6 +189,11 @@ export class AdminCompanyDetailComponent implements OnInit {
                     if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
                     

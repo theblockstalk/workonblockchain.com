@@ -1,8 +1,7 @@
 const emails = require('../emails');
 
 module.exports.sendEmail = function sendEmail(data) {
-	console.log("referred friend");
-	console.log(data.info.email);
+
     const sendTo = {
         email: data.info.email
     };

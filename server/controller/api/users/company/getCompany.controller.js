@@ -2,6 +2,7 @@ const settings = require('../../../../settings');
 var Q = require('q');
 const EmployerProfile = require('../../../../model/employer_profile');
 const logger = require('../../../services/logger');
+const filterReturnData = require('../filterReturnData');
 
 //////////get sign-up data from db of all companies////////////
 
@@ -23,12 +24,25 @@ function getCompany()
 
     EmployerProfile.find().populate('_creator').exec(function(err, result)
     {
-        if (err){
+        if (err)
+        {
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }
         else
-            deferred.resolve(result);
+        {
+        	var array=[];
+       	 	result.forEach(function(item)
+            {
+                   array.push(filterReturnData.removeSensativeData(item.toObject()));
+            });
+
+           
+            deferred.resolve(array);
+           //deferred.resolve(result);
+        	
+        }
+               
         //console.log(result);
     });
 

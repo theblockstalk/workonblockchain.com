@@ -43,7 +43,6 @@ const companyImage = require('./controller/api/users/company/image.controller');
 const companyUpdate = require('./controller/api/users/company/updateCompany.controller');
 const companyWizardAbout = require('./controller/api/users/company/wizard/about.controller');
 const companyWizardTnT = require('./controller/api/users/company/wizard/getSummaryTnC.controller');
-const companySearchWord = require('./controller/api/users/company/searchCandidates/searchWord.controller');
 const companySearchFilter = require('./controller/api/users/company/searchCandidates/filter.controller');
 const companySearchVerifiedCandidates = require('./controller/api/users/company/searchCandidates/verifiedCandidate.controller');
 const candidateVerifiedCandidateDetail = require('./controller/api/users/company/searchCandidates/getVerifiedCandidateDetail.controller');
@@ -65,7 +64,6 @@ const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addP
 const adminChatGetJobDescMsg = require('./controller/api/users/admins/chat/getJobDescMessage.controller');
 const adminChatSetUnreadMsgStatus = require('./controller/api/users/admins/chat/setUnreadMessageStatus.controller');
 const adminChatUpdateMsgStatus = require('./controller/api/users/admins/chat/updateChatMessageStatus.controller');
-const adminRoll = require('./controller/api/users/admins/adminRoll.controller');
 const adminApproveUser = require('./controller/api/users/admins/approveUser.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminCandidateSearch = require('./controller/api/users/admins/candidateSearch.controller');
@@ -117,7 +115,8 @@ router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), companyImage);
 router.put('/users/update_company_profile',auth.isLoggedIn, companyUpdate);
 router.post('/users/filter',auth.isValidCompany, companySearchFilter);
-router.get('/users/verified_candidate',auth.isValidCompany, companySearchVerifiedCandidates);
+router.post('/users/verified_candidate',auth.isValidCompany, companySearchVerifiedCandidates);
+router.post('/users/candidate_detail',auth.isValidCompany,candidateVerifiedCandidateDetail);
 
 // Chat
 

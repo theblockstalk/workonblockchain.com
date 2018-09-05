@@ -125,6 +125,11 @@ export class AdminCompanySearchComponent implements OnInit {
                   if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
                     
@@ -170,6 +175,11 @@ export class AdminCompanySearchComponent implements OnInit {
                             if(error.message == 500 || error.message == 401)
                             {
                                     localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                    localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log');
                                     window.location.href = '/login';
                             }
                     
@@ -210,6 +220,11 @@ export class AdminCompanySearchComponent implements OnInit {
                     if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
                     
@@ -229,7 +244,7 @@ export class AdminCompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    ////console.log(data);
+                    console.log(data);
                     
                      if(data.error)
                     {
@@ -280,6 +295,11 @@ export class AdminCompanySearchComponent implements OnInit {
                   if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
                     
@@ -344,7 +364,7 @@ export class AdminCompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-
+                console.log(data);
                     if(data.error)
                     {
                        // //console.log(this.info);
@@ -395,6 +415,11 @@ export class AdminCompanySearchComponent implements OnInit {
                   if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
                     

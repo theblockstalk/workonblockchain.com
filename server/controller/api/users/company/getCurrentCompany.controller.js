@@ -2,6 +2,7 @@ const settings = require('../../../../settings');
 var Q = require('q');
 const EmployerProfile = require('../../../../model/employer_profile');
 const logger = require('../../../services/logger');
+const filterReturnData = require('../filterReturnData');
 
 //////////get sign-up data from db of specific company////////////
 
@@ -48,7 +49,7 @@ function get_company_byId(_id)
                 }
                 else
                 {
-                	var query_result = result.toObject();      
+                	var query_result = result[0].toObject();      
                     deferred.resolve(filterReturnData.removeSensativeData(query_result));
                 }
             });

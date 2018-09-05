@@ -24,6 +24,7 @@ const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
+const filterReturnData = require('../filterReturnData');
 
 module.exports = function (req,res)
 {
@@ -137,12 +138,15 @@ function admin_candidate_filter(data)
                                         {
                                             query_result.push(item );
                                         });
-                                        //console.log(query_result.length);
-                                        // var non_duplidated_data = array_unique($query_result, SORT_REGULAR);
-
-                                        // var non_duplidated_data = _.uniq(query_result, '_id');
-
-                                        deferred.resolve(query_result);
+                                        
+                                        var array=[];
+                                        query_result.forEach(function(item)
+                                        {
+                                               array.push(filterReturnData.removeSensativeData(item.toObject()));
+                                        });
+                                   	 	deferred.resolve(array);
+                                       
+                                       // deferred.resolve(query_result);
                                     }
                                 });
 
@@ -154,7 +158,12 @@ function admin_candidate_filter(data)
                     }
                     else
                     {
-                        deferred.resolve(result)
+                    	var array=[];
+                   	 	result.forEach(function(item)
+                        {
+                               array.push(filterReturnData.removeSensativeData(item.toObject()));
+                        });
+                   	 	deferred.resolve(array);
                     }
                 });
 
@@ -202,7 +211,12 @@ function admin_candidate_filter(data)
                     }
                     else
                     {
-                        deferred.resolve(result)
+                    	var array=[];
+                   	 	result.forEach(function(item)
+                        {
+                               array.push(filterReturnData.removeSensativeData(item.toObject()));
+                        });
+                   	 	deferred.resolve(array);
                     }
                 });
 
@@ -245,7 +259,13 @@ function admin_candidate_filter(data)
                     }
                     else
                     {
-                        deferred.resolve(result)
+                    	var array=[];
+                   	 	result.forEach(function(item)
+                        {
+                               array.push(filterReturnData.removeSensativeData(item.toObject()));
+                        });
+                   	 	deferred.resolve(array);
+                        
                     }
                 });
                 //deferred.resolve(data);

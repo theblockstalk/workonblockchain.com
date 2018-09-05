@@ -19,11 +19,8 @@ const referUserEmail = require('../../../services/email/emails/referUser');
 const chatReminderEmail = require('../../../services/email/emails/chatReminder');
 const referedUserEmail = require('../../../services/email/emails/referredFriend');
 
-const USD = settings.CURRENCY_RATES.USD;
-const GBP = settings.CURRENCY_RATES.GBP;
-const Euro = settings.CURRENCY_RATES.Euro;
-const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
+const filterReturnData = require('../filterReturnData');
 
 module.exports = function (req,res)
     {
@@ -66,7 +63,13 @@ function search_by_name(word)
         }
         else
         {
-            deferred.resolve(result)
+        	var array=[];
+       	 	result.forEach(function(item)
+            {
+                   array.push(filterReturnData.removeSensativeData(item.toObject()));
+            });
+       	 	deferred.resolve(array);
+            //deferred.resolve(result)
         }
     });
 

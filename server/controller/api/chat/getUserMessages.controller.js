@@ -57,7 +57,7 @@ function get_user_messages(id){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log(data);
+            console.log(data);
             deferred.resolve({
                 datas:data
             });

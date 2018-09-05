@@ -1,6 +1,7 @@
 var Q = require('q');
 const users = require('../../../../model/users');
 const logger = require('../../../services/logger');
+const filterReturnData = require('../filterReturnData');
 
 //use to get referral code of a user
 
@@ -26,8 +27,11 @@ function get_refr_code(data){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log(user);
-            deferred.resolve(user);
+            console.log(user);
+        	var query_result = user.toObject();  
+        	var data = {_creator : query_result};
+            deferred.resolve(filterReturnData.removeSensativeData(data));
+           
         }
     });
     return deferred.promise;

@@ -54,7 +54,7 @@
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-						<li *ngIf="data._creator.refered_id && refeered!='null'">
+						<li *ngIf="first_name && last_name">
 				 			
 					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
 					 				<span class = "li_txt" >Refered By: <a [routerLink]="['/admin-candidate-detail']" target="_blank" [queryParams]="{user: data._creator.refered_id }">{{first_name}} {{last_name}}</a>

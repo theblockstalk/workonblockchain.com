@@ -72,6 +72,11 @@ export class AccountSettingsComponent implements OnInit {
                   if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                              localStorage.removeItem('currentUser');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
                     
@@ -126,6 +131,11 @@ export class AccountSettingsComponent implements OnInit {
             if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                              localStorage.removeItem('currentUser');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
                     
@@ -166,6 +176,11 @@ export class AccountSettingsComponent implements OnInit {
                   if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                              localStorage.removeItem('currentUser');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
                     
@@ -209,6 +224,11 @@ export class AccountSettingsComponent implements OnInit {
               if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                            localStorage.removeItem('googleUser');
+                            localStorage.removeItem('close_notify');
+                            localStorage.removeItem('linkedinUser');
+                            localStorage.removeItem('admin_log');   
                             window.location.href = '/login';
                         }
                     
@@ -251,6 +271,11 @@ export class AccountSettingsComponent implements OnInit {
 			  if(error.message == 500 || error.message == 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                            localStorage.removeItem('googleUser');
+                            localStorage.removeItem('close_notify');
+                            localStorage.removeItem('linkedinUser');
+                            localStorage.removeItem('admin_log'); 
                             window.location.href = '/login';
                         }
                     

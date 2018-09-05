@@ -121,21 +121,21 @@
 			<!--end-col-md-3-->
 			<div class="col-md-9" >
 				
-				<h4 *ngIf="msg!=''" class="alert alert-danger error-alert">{{msg}}</h4>
+				<h4 *ngIf="msg!=''&& lengthmsgg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
 				
-				<div class = "result-status mr-top-form" *ngIf="length > 0">
-						<span>{{length}}</span> Candidate Match your search....
+				<div class = "result-status mr-top-form" *ngIf="cand_data.length > 0 && lengthmsgg!=''">
+						<span>{{cand_data.length}}</span> Candidate Match your search....
 						<i class="fa fa-check tickk" aria-hidden="true"></i>
 				</div>
-				<div class = "result-status mr-top-form" *ngIf="log !== ''">
-						<span>{{log}}</span> 
+				<div class = "result-status mr-top-form" *ngIf="cand_data.length <= 0 && lengthmsgg!='' && msg=='' ">
+						<span>Not Found Any Data</span> 
 						<i class="fa fa-check tickk" aria-hidden="true"></i>
 				</div>
 
 				<!--candidate 1st-->
 				<div *ngIf="info && msg === '' " >
 				
-				<div class="panel-group mr-top-form" *ngFor= "let data of info | paginate: { itemsPerPage:10, currentPage: p }">
+				<div class="panel-group mr-top-form" *ngFor= "let data of cand_data | paginate: { itemsPerPage:10, currentPage: p }">
  								     
 				   <div class="panel panel-default" >
 <!-- 				    <div class="panel panel-default">
@@ -156,7 +156,7 @@
 				      	
 
 				      	<div class = "user-detail">
-					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply !== 1"><h2>{{data.first_name | slice:0:1}}{{data.last_name | slice:0:1}}</h2><br/></a>
+					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 0"><h2>{{data.initials}}</h2><br/></a>
 					      	<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}}</h2></a><br/>
 					      	
 					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>
@@ -167,7 +167,7 @@
 						<div class = "ofr_btn">
 							<form #abc_form="ngForm" (ngSubmit)="onSubmit(abc_form.value)">
 								<input type="hidden" name="id" [ngModel]="data._creator._id">
-								<input type="hidden" name="name" [ngModel]="data.first_name">
+								<input type="hidden" name="name" [ngModel]="data.initials">
 								<div class="submit-button">
 									<button type="submit" class = "btn btn_descp" data-toggle="modal" data-target="#myModal" >Send job description</button>
 								</div>
@@ -209,7 +209,7 @@
 				<!--end candidate-->
 
 				
-				<pagination-controls (pageChange)="p = $event" *ngIf="page > 10"></pagination-controls>
+				<pagination-controls (pageChange)="p = $event" *ngIf="cand_data.length > 10"></pagination-controls>
 					<!-- <ul class="pagination">
 					  <li class="active"><a href="#">1</a></li>
 					  <li><a href="#">2</a></li>

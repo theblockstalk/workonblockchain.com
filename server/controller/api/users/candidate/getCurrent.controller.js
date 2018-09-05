@@ -4,7 +4,7 @@ const logger = require('../../../services/logger');
 const filterReturnData = require('../filterReturnData');
 
 //////////get sign-up data from db of specific candidate////////////
-console.log("current");
+
 module.exports = function (req, res)
     {
 	    //let userId = req.auth.user._id;
@@ -46,14 +46,18 @@ function getById(_id)
                 }
                 else
                 {	
-                	var query_result = result[0].toObject();      
-                    deferred.resolve(filterReturnData.removeSensativeData(query_result));
+                	if(result!='')
+                	{
+                		var query_result = result[0].toObject();      
+                        deferred.resolve(filterReturnData.removeSensativeData(query_result));
+                	}
+                	
                 }
             });
         }
         else
         {
-        	var query_result = result.toObject();        	
+        	var query_result = result.toObject(); 
         	deferred.resolve(filterReturnData.removeSensativeData(query_result));
         }
 

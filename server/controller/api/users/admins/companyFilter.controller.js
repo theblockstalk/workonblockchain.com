@@ -24,11 +24,12 @@ const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
+const filterReturnData = require('../filterReturnData');
+
 
 module.exports = function admin_company_filter(req,res)
 {
-	console.log("company bodyyyyyyyyyyyyyy");
-    console.log(req.body);
+
     admin_company_filter_new(req.body).then(function (err, data)
     {
         if (data)
@@ -48,8 +49,7 @@ module.exports = function admin_company_filter(req,res)
 
 function admin_company_filter_new(data)
 {
-	console.log("dataaaaaaaaa");
-	console.log(data);
+
     var deferred = Q.defer();
 
     var query_result = [];
@@ -143,9 +143,15 @@ function admin_company_filter_new(data)
                                         {
                                             query_result.push(item );
                                         });
+                                        
+                                        var array=[];
+                                        query_result.forEach(function(item)
+                                        {
+                                               array.push(filterReturnData.removeSensativeData(item.toObject()));
+                                        });
+                                   	 	deferred.resolve(array);
 
-
-                                        deferred.resolve(query_result);
+                                        //deferred.resolve(query_result);
                                     }
                                 });
 
@@ -157,7 +163,12 @@ function admin_company_filter_new(data)
                     }
                     else
                     {
-                        deferred.resolve(result)
+                    	var array=[];
+                   	 	result.forEach(function(item)
+                        {
+                               array.push(filterReturnData.removeSensativeData(item.toObject()));
+                        });
+                   	 	deferred.resolve(array);
                     }
                 });
 
@@ -204,7 +215,12 @@ function admin_company_filter_new(data)
                     }
                     else
                     {
-                        deferred.resolve(result)
+                    	var array=[];
+                   	 	result.forEach(function(item)
+                        {
+                               array.push(filterReturnData.removeSensativeData(item.toObject()));
+                        });
+                   	 	deferred.resolve(array);
                     }
                 });
 
@@ -245,7 +261,12 @@ function admin_company_filter_new(data)
                     }
                     else
                     {
-                        deferred.resolve(result)
+                    	var array=[];
+                   	 	result.forEach(function(item)
+                        {
+                               array.push(filterReturnData.removeSensativeData(item.toObject()));
+                        });
+                   	 	deferred.resolve(array);
                     }
                 });
                 //deferred.resolve(data);
