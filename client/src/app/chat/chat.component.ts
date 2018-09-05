@@ -100,7 +100,7 @@ export class ChatComponent implements OnInit {
                     console.log(data);
                     //data[0]._creator.is_approved = 1;
                     //data[0].disable_account == false;
-					console.log(data[0]);
+					console.log(data);
 					this.profile_pic = data[0].image;
                     this.display_name = data[0].first_name+' '+data[0].last_name;
                     if(data[0]._creator.is_approved == 0 || data[0].disable_account == true){
