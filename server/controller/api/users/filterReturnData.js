@@ -17,7 +17,7 @@ const anonymosCandidateFields = ['image', 'location', 'roles', 'expected_salary_
 module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
 	
     const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);
-    filterWhiteListFields(candidateDoc, anonymosCandidateFields);
+    candidateDoc = filterWhiteListFields(candidateDoc, anonymosCandidateFields);
     candidateDoc.work_history = candidateDoc.work_history.map((work) => {
         delete work.companyname;
         return work;
@@ -34,11 +34,11 @@ module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateD
 };
 
 const anonymosCompanyFields = ['company_name', 'company_website', 'company_country', 'company_city','company_description',
-		'company_logo', 'company_funded','no_of_employees','company_founded','company_postcode','company_phone','job_title'];
+		'company_logo', 'company_funded','no_of_employees','company_founded','company_postcode','company_phone','job_title','_creator'];
 // TODO: finish
 
 module.exports.anonymousCandidateData = function anonymousCandidateData(companyDoc) {
-    filterWhiteListFields(companyDoc, anonymosCompanyFields);
+    companyDoc = filterWhiteListFields(companyDoc, anonymosCompanyFields);
     return companyDoc;
 };
 

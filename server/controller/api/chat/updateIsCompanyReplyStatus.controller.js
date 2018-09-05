@@ -25,43 +25,40 @@ const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
-module.exports = function (req, res)
-{
-	console.log("idddddddddddd");
-	console.log(req.body.id);
-    get_user_messages(req.body.id).then(function (data)
+module.exports = function (req,res){
+    update_is_company_reply(req.body).then(function (err, about)
     {
-        if (data)
+        if (about)
         {
-            res.send(data);
+            res.json(about);
         }
         else
         {
-            res.sendStatus(404);
+            res.json(err);
         }
     })
         .catch(function (err)
         {
-            res.status(400).send(err);
+            res.json({error: err});
         });
 }
 
-function get_user_messages(id){
+function update_is_company_reply(data){
     var deferred = Q.defer();
-    chat.find({
-        $or:[{receiver_id:{$regex: id}},{sender_id: {$regex: id}}]
-    },{_id:0,sender_id:1,receiver_id:1,is_company_reply:1}).sort({_id: 'descending'}).exec(function(err, data)
+    var set =
+        {
+            is_company_reply: data.status,
+
+        };
+    chat.update({ receiver_id: data.id},{ $set: set },{multi: true}, function (err, doc)
     {
         if (err){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log(data);
-            deferred.resolve({
-                datas:data
-            });
-        }
+            deferred.resolve(set);
+		}
     });
     return deferred.promise;
 }

@@ -589,9 +589,9 @@ export class UserService {
             });
     }
     
-    getCandidate(type: string) 
+    getCandidate(sender_id:string,receiver_id:string,is_company_reply:number,type: string) 
     {
-        return this.http.post<any>(URL+'users/get_candidate', {type:type}, {
+        return this.http.post<any>(URL+'users/get_candidate', {type:type,sender_id:sender_id,receiver_id:receiver_id,is_company_reply:is_company_reply}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) => 
@@ -1190,6 +1190,27 @@ export class UserService {
                 if (res) 
                 {           
                         return res;               
+                }
+            }).catch((error: any) => 
+            {
+                if (error.status ) 
+                {
+                    return Observable.throw(new Error(error.status));
+                }
+               
+            });
+    }
+	
+	update_is_company_reply_status(id:string,status:number) 
+    {
+        return this.http.post<any>(URL+'users/update_is_company_reply_status', {id:id,status:status}, {
+            headers: new HttpHeaders().set('Authorization', this.token)
+        })
+            .map((res: Response) => 
+            {
+                if (res) 
+                {           
+                        return res;                  
                 }
             }).catch((error: any) => 
             {

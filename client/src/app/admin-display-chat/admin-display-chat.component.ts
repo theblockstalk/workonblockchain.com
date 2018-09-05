@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, OnInit,ElementRef, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
@@ -97,7 +98,7 @@ export class AdminDisplayChatComponent implements OnInit {
                     {
                         this.length = msg_data['datas'].length;
                         ////console.log(msg_data['datas'].length);
-                        this.authenticationService.getCandidate(this.type)
+                        this.authenticationService.getCandidate('0','0',0,this.type)
                             .subscribe(
                                 data => {
                                     //console.log(data);
@@ -117,11 +118,6 @@ export class AdminDisplayChatComponent implements OnInit {
                                     if(error.message == 500 || error.message == 401)
                                     {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                        localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
                                         window.location.href = '/login';
                                     }
                     
@@ -143,11 +139,6 @@ export class AdminDisplayChatComponent implements OnInit {
                     if(error.message == 500 || error.message == 401)
                                     {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                        localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
                                         window.location.href = '/login';
                                     }
                     
@@ -166,7 +157,7 @@ export class AdminDisplayChatComponent implements OnInit {
                         //console.log('msg_data');
                         this.length = msg_data['datas'].length
                          ////console.log(msg_data['datas'].length);
-                        this.authenticationService.getCandidate('company')
+                        this.authenticationService.getCandidate('0','0',0,'company')
                         .subscribe(
                             data => {
                                 //console.log(data['users']);
@@ -186,11 +177,6 @@ export class AdminDisplayChatComponent implements OnInit {
                                 if(error.message == 500 || error.message == 401)
                                     {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                        localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
                                         window.location.href = '/login';
                                     }
                     
@@ -213,11 +199,6 @@ export class AdminDisplayChatComponent implements OnInit {
                     if(error.message == 500 || error.message == 401)
                                     {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                        localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
                                         window.location.href = '/login';
                                     }
                     
@@ -302,11 +283,6 @@ export class AdminDisplayChatComponent implements OnInit {
                     if(error.message == 500 || error.message == 401)
                                     {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                        localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
                                         window.location.href = '/login';
                                     }
                     
@@ -399,11 +375,6 @@ export class AdminDisplayChatComponent implements OnInit {
                             if(error.message == 500 || error.message == 401)
                                     {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                        localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
                                         window.location.href = '/login';
                                     }
                     
@@ -419,5 +390,3 @@ export class AdminDisplayChatComponent implements OnInit {
                 });
     
     }
-
-}

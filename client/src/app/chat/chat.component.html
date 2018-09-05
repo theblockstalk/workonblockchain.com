@@ -163,7 +163,7 @@
 						</div>
 						<div id="contacts">
 							<ul>
-								<li *ngFor="let person of users;let i = index" [ngClass]="(credentials.id == person._creator._id)?'contact active':'contact closee'" (click)="openDialog(person.first_name,person._creator._id)">
+								<li *ngFor="let person of users;let i = index" [ngClass]="(credentials.id == person._creator._id)?'contact active':'contact closee'" (click)="openDialog(person.first_name,person._creator._id,person.company_name)">
 									<div class="wrap">
 										<ng-container *ngIf="currentUser.type == 'company';else cand_image">
 											<ng-container *ngIf="person.image;else person_image">
@@ -173,17 +173,8 @@
 												<img src="/assets/profile/profile-image.png" alt="">
 											</ng-template>
 											<div class="meta">
-												<ng-container *ngIf="new_msgss[1];else no_is_company_reply">
-													<ng-container *ngIf="new_msgss[1].is_company_reply == 1;else no_is_company_reply_show">
-														<p class="name text-capitalize">{{ person.first_name }} {{ person.last_name }}</p>
-													</ng-container>
-													<ng-template #no_is_company_reply_show>
-														<p class="name">{{ person.first_name.charAt(0).toUpperCase() }}{{ person.last_name.charAt(0).toUpperCase() }}</p>
-													</ng-template>
-												</ng-container>
-												<ng-template #no_is_company_reply>
-													<p class="name">{{ person.first_name.charAt(0).toUpperCase() }}{{ person.last_name.charAt(0).toUpperCase() }}</p>
-												</ng-template>
+												<p *ngIf="person.initials" class="name text-capitalize">{{ person.initials }}</p>
+												<p *ngIf="person.first_name" class="name text-capitalize">{{ person.first_name }} {{ person.last_name }}</p>
 												<span class="badge" *ngIf="unread_msgs_info[i].number_of_unread_msgs">
 													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
 												</span>
@@ -212,20 +203,21 @@
 							<div class="contact-profile">
 								<ul class = "cand_info-ul">
 									<ng-container *ngIf="currentUser.type == 'company';else cand">
-										<li class="text-capitalize">Candidate Name : {{candidate}}</li>
 										<ng-container *ngIf="job_desc;else no_job_desc">
 											<li>Job Type : {{job_desc.job_type}}</li>
 											<li>Job Title : {{job_desc.job_title}}</li>
+											<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
 										</ng-container>
 										<ng-template #no_job_desc>
 											<li>Job Type : N/A</li>
 											<li>Job Title : N/A</li>
+											<li>Salary : N/A</li>
 										</ng-template>
 									</ng-container>
 									<ng-template #cand>
-										<li class="text-capitalize">Company Name : {{candidate}}</li>
 										<li>Job Title : {{job_desc.job_title}}</li>
-										<li>Salary : {{job_desc.salary}}</li>
+										<li class="text-capitalize">Job Type : {{job_desc.job_type}}</li>
+										<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
 									</ng-template>
 								</ul>
 								<span class = "btn_rgt">
