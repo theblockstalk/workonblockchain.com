@@ -43,9 +43,7 @@ function filter(params, userId)
     if(params.currency== '$ USD' && params.salary)
     {
         var result = expected_salary_converter(params.salary, USD.GBP , USD.Euro );
-        //console.log(result);
         result_array= {USD : params.salary , GBP : result[0] , Euro :result[1]};
-        //console.log(result_array.length);
 
     }
 
@@ -53,20 +51,15 @@ function filter(params, userId)
     {
         var result = expected_salary_converter(params.salary, GBP.USD , GBP.Euro );
         result_array= {USD : result[0] , GBP : params.salary , Euro :result[1]};
-        //console.log(result_array.length);
-        //console.log(result);
+
     }
     if(params.currency== '€ EUR' && params.salary)
     {
         var result = expected_salary_converter(params.salary, Euro.USD , Euro.GBP );
-        //console.log(result);
         result_array= {USD : result[0] , GBP : result[1]  , Euro : params.salary};
-        //console.log(result_array.length);
     }
 
     var deferred = Q.defer();
-
-
 
     users.find({type : 'candidate' , is_verify :1, is_approved :1, disable_account : false   }, function (err, data)
     {
@@ -156,11 +149,7 @@ function filter(params, userId)
             const searchQuery = { $and: queryString };
 
             CandidateProfile.find(searchQuery).populate('_creator').exec(function(err, result)
-            {
-            	 
-            	 
-            	
-
+            {            	 
 
                 if (err){
                     logger.error(err.message, {stack: err.stack});

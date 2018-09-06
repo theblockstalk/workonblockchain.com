@@ -114,10 +114,11 @@ export class AdminAccountSettingsComponent implements OnInit {
                 {
                     this.inform=data;
                      if(this.info.disable_account){
-                        this.message = 'Your profile is currently enabled';
+                        this.message = 'Your profile is currently disabled';
                     }
                     else{
-                        this.message = 'Your profile is currently disabled';
+                         this.message = 'Your profile is currently enabled';
+                        
                     }
                     //console.log(data);
                 }

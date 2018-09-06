@@ -14,8 +14,8 @@
 				 		<span class = "p_img" *ngIf="data.company_reply === 0 ">
 				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
-				 		<span class = "p_img" *ngIf="imgPath && data.company_reply === 1">
-				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
+				 		<span class = "p_img" *ngIf="data.image && data.company_reply === 1">
+				 			<img src = "{{data.image}}" class = "img-responsive" alt = "profile-image"/>
 				 		</span>
 				 		
 						<span class = "name" *ngIf='data.company_reply === 1'>
