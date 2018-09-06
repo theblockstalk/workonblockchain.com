@@ -86,7 +86,11 @@ export class CandidateDetailComponent implements OnInit {
                              {
                                   if(dataa)
                                   {
-                                        dataa.company_reply =data['datas'][1].is_company_reply;                                                        
+                                        dataa.company_reply =data['datas'][1].is_company_reply;   
+                                        this.history =dataa.work_history;
+                                        this.history.sort(this.date_sort_desc);
+                                        this.education = dataa.education_history;
+                                        this.education.sort(this.education_sort_desc);                                                     
                                         this.cand_data.push(dataa);
                                         console.log(this.cand_data);
                                    }
@@ -111,40 +115,7 @@ export class CandidateDetailComponent implements OnInit {
                   
                                                         });
                         }
-                        else{
-                            console.log("elseeeeeeeee");
-                            this.rply =0;
-                            this.authenticationService.candidate_detail(this.user_id,  this.rply )
-                            .subscribe(
-                                   dataa => 
-                                   {
-                                        if(dataa)
-                                        {
-                                            dataa.company_reply =0;
-                                            this.first_name = dataa.initials;
-                                            this.cand_data.push(dataa);
-                                            console.log(this.cand_data);
-                                        }
-                                    },
-                                    error => 
-                                    {
-                                         if(error.message == 500)
-                                         {
-                                              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                              localStorage.removeItem('currentUser');
-                                              localStorage.removeItem('googleUser');
-                                              localStorage.removeItem('close_notify');
-                                              localStorage.removeItem('linkedinUser');
-                                              localStorage.removeItem('admin_log');
-                                              window.location.href = '/login';
-                                         }
-                                         if(error.message == 403)
-                                         {
-                                               this.router.navigate(['/not_found']);                        
-                                         }
-                  
-                                     });
-                        }
+                        
                         //console.log(this.company_reply);
                     }
                     else
@@ -158,6 +129,10 @@ export class CandidateDetailComponent implements OnInit {
                              if(dataa)
                              {
                                    dataa.company_reply =0;
+                                   this.history =dataa.work_history;
+                                   this.history.sort(this.date_sort_desc);
+                                   this.education = dataa.education_history;
+                                   this.education.sort(this.education_sort_desc); 
                                    this.cand_data.push(dataa);
                                    this.first_name = dataa.initials;
                                    console.log(this.cand_data);

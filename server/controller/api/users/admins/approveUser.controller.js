@@ -46,6 +46,7 @@ module.exports = function (req, res)
 
 function approve_users(_id , data)
 {
+	
     var deferred = Q.defer();
     //console.log(data.is_approve);
     users.findOne({ _id: _id}, function (err, result)
