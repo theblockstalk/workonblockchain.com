@@ -29,6 +29,7 @@ function getById(_id)
 {
     var deferred = Q.defer();
     console.log("IDD: "+_id);
+   
     CandidateProfile.findById(_id).populate('_creator').exec(function(err, result)
     {
         //console.log(result);
