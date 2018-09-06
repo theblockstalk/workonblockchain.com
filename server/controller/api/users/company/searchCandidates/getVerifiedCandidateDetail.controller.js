@@ -37,23 +37,22 @@ function getVerifiedCandidateDetail(params)
                     logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
                 }
-                else
+                if(result)
                 {	
+                	var query_result = result[0].toObject();  
+            		let anonymous = filterReturnData.removeSensativeData(query_result);
+            		
                 	if(params.company_reply == 1 )
                     {               		
-                        var query_result = result[0].toObject();  
-                		let anonymous = filterReturnData.removeSensativeData(query_result);
-                		
         				 deferred.resolve(anonymous);
                     }
                 	
                 	if(params.company_reply == 0 )
-                    {
-                		var query_result = result[0].toObject();      
-                        let anonymisedCandidates = filterReturnData.anonymousSearchCandidateData(query_result);
-                       
-                        deferred.resolve(anonymisedCandidates);
+                    {               		
+                        anonymous = filterReturnData.anonymousSearchCandidateData(anonymous);
+                                              
                     }
+                	deferred.resolve(anonymous);
                 	
                 	
                 }
