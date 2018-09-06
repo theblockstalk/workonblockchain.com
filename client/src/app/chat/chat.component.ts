@@ -193,8 +193,10 @@ export class ChatComponent implements OnInit {
 									.subscribe(
 										data => {
 											this.users.push(data['users']);
+											console.log(this.users);
 											this.count = 0;
 											for (var key_users_new in this.users) {
+												console.log(this.users[key_users_new]._creator._id);
 												if(this.count == 0){
 													if(this.users[key_users_new].first_name){
 														this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'');
@@ -205,9 +207,10 @@ export class ChatComponent implements OnInit {
 												}
 												this.count = this.count + 1;
 												//this.currentUser._creator //receiver
-												this.authenticationService.get_unread_msgs_of_user(this.currentUser._creator,this.users[key_users_new]._creator._id)
+												this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
 												.subscribe(
 													data => {
+														console.log(data);
 														this.unread_msgs_info.push(data);
 													},
 													error => {
@@ -247,6 +250,7 @@ export class ChatComponent implements OnInit {
                 .subscribe(
                     msg_data => {
 						this.loading = false;
+						console.log(msg_data['datas']);
                         if(msg_data['datas'].length>0){
 							console.log('this.currentUser._creator: '+this.currentUser._creator);
 							this.new_messges.push(msg_data['datas']);
@@ -270,9 +274,10 @@ export class ChatComponent implements OnInit {
 												}
 												this.count = this.count + 1;
 												//this.currentUser._creator //receiver
-												this.authenticationService.get_unread_msgs_of_user(this.currentUser._creator,this.users[key_users_new]._creator._id)
+												this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
 												.subscribe(
 													data => {
+														console.log(data);
 														this.unread_msgs_info.push(data);
 													},
 													error => {
@@ -776,7 +781,6 @@ export class ChatComponent implements OnInit {
 	  if(selected_company_name){
 		  email = selected_company_name;
 	  }
-	  console.log(email);
 	  this.loading = true;
       //this.msgs = 'hi baby';
       this.msgs = '';
@@ -791,8 +795,8 @@ export class ChatComponent implements OnInit {
             .subscribe(
                 data => {
                     //console.log('data');
-                    console.log(data['datas']);
                     this.new_msgss = data['datas'];
+					console.log(this.new_msgss);
 					this.job_desc = data['datas'][0];
                     this.authenticationService.update_chat_msg_status(id,this.currentUser._creator,0)
                     .subscribe(

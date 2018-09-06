@@ -175,7 +175,7 @@
 											<div class="meta">
 												<p *ngIf="person.initials" class="name text-capitalize">{{ person.initials }}</p>
 												<p *ngIf="person.first_name" class="name text-capitalize">{{ person.first_name }} {{ person.last_name }}</p>
-												<span class="badge" *ngIf="unread_msgs_info[i].number_of_unread_msgs">
+												<span class="badge" *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs">
 													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
 												</span>
 											</div>
@@ -189,7 +189,7 @@
 											</ng-template>
 											<div class="meta">
 												<p class="name text-capitalize">{{ person.company_name }}</p>
-												<span class="badge" *ngIf="unread_msgs_info[i].number_of_unread_msgs">
+												<span class="badge" *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs">
 													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
 												</span>
 											</div>
