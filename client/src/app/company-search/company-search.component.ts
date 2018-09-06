@@ -529,6 +529,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
          this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
          .subscribe(
          dataa => {
+			 console.log(dataa);
              for(let res of dataa)
              { console.log("ids");
                 for(let ids of res['ids'])
@@ -552,7 +553,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                              {
                                   if(dataa)
                                   {
-                                      console.log("1");
+										console.log("1");
                                         dataa.company_reply =data['datas'][1].is_company_reply;                                                        
                                         this.cand_data.push(dataa);
                                         //console.log(this.cand_data);
