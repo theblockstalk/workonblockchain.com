@@ -38,7 +38,7 @@ export class AccountSettingsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
 					if(data._creator.is_unread_msgs_to_send){
 					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
 				    }
@@ -56,7 +56,7 @@ export class AccountSettingsComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
 				   if(data._creator.is_unread_msgs_to_send){
 					   this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
 				   }

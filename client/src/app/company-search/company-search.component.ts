@@ -195,7 +195,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     } 
     
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(this.currentUser);
+      //console.log(this.currentUser);
      
       if(!this.currentUser)
       {
@@ -209,7 +209,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
                 data => 
                 {
-                    console.log(data.terms);
+                    //console.log(data.terms);
                   if(data.terms == false)
                   {
                       this.router.navigate(['/company_wizard']);
@@ -298,7 +298,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   positionchanged(data) 
   {
-      console.log( data);
+      //console.log( data);
       if(this.select_value  !== data.value)
       {
         this.select_value = data.value;             
@@ -368,7 +368,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         this.lengthmsgg='not initial';
                         for(let res of this.information)
                         {
-                            console.log(res);
+                            //console.log(res);
                             for(let ids of res['ids'])
                             {
                                  this.authenticationService.get_user_messages(ids,this.currentUser._creator)
@@ -379,7 +379,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                         if(data['datas'][1].is_company_reply==1)
                                         {
                                             //console.log('accept')
-                                            console.log("iffffffffffff");
+                                            //console.log("iffffffffffff");
                                             this.authenticationService.candidate_detail(ids, data['datas'][1].is_company_reply  )
                                             .subscribe(
                                             dataa => 
@@ -416,7 +416,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                     }
                                     else
                                     {
-                                        console.log("else");
+                                        //console.log("else");
                                         this.rply =0;
                                         this.authenticationService.candidate_detail(ids,  this.rply )
                                         .subscribe(
@@ -525,229 +525,184 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.info = [];
         this.cand_data=[];
         this.lengthmsgg='';
-    
-         this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
-         .subscribe(
-         dataa => {
-			 console.log(dataa);
-             for(let res of dataa)
-             { console.log("ids");
-                for(let ids of res['ids'])
-                {
-                    
-                    
-                   
-                    this.authenticationService.get_user_messages(ids,this.currentUser._creator)
-                    .subscribe(
-                    data => {
-
-                    if(data['datas'][1]){
-                        if(data['datas'][1].is_company_reply==1){
-                           
-                            //console.log('accept')
-                            console.log("iffffffffffff");
-                             console.log(ids);
-                             this.authenticationService.candidate_detail(ids, data['datas'][1].is_company_reply  )
-                             .subscribe(
-                             dataa => 
-                             {
-                                  if(dataa)
-                                  {
-										console.log("1");
-                                        dataa.company_reply =data['datas'][1].is_company_reply;                                                        
-                                        this.cand_data.push(dataa);
-                                        //console.log(this.cand_data);
-                                   }
-                             },
-                             error => 
-                             {
-                                  if(error.message == 500)
-                                  {
-                                                                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                                                localStorage.removeItem('currentUser');
-                                                                localStorage.removeItem('googleUser');
-                                                                localStorage.removeItem('close_notify');
-                                                                localStorage.removeItem('linkedinUser');
-                                                                localStorage.removeItem('admin_log');
-                                                                window.location.href = '/login';
-                                                            }
-                    
-                                                            if(error.message == 403)
-                                                            {
-                                                                this.router.navigate(['/not_found']);                        
-                                                            }
-                  
-                                                        });
-                        }
-                       
-                    }
-                    else
-                    {
-                         console.log("else");
-                         console.log(ids);
-                         this.rply =0;
-                         this.authenticationService.candidate_detail(ids,  this.rply )
-                         .subscribe(
-                         result => 
-                         {
-                             if(result)
-                             {
-                                 console.log("2");
-                                   result.company_reply =0;
-                                   this.cand_data.push(result);
-                                   this.first_name = result.initials;
-                                   //console.log(this.cand_data);
-                              }
-                         },
-                         error => 
-                         {
-                              if(error.message == 500)
-                              {
-                                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                    localStorage.removeItem('currentUser');
-                                    localStorage.removeItem('googleUser');
-                                    localStorage.removeItem('close_notify');
-                                    localStorage.removeItem('linkedinUser');
-                                    localStorage.removeItem('admin_log');
-                                    window.location.href = '/login';
-                              }
-                              if(error.message == 403)
-                              {
-                                    this.router.navigate(['/not_found']);                        
-                              }
-                  
-                        });
-                   }
-                        
-                      
-                },
-                error => {
-                    //console.log('error');
-                    //console.log(error);
-                    //this.log = error;
-                }
-            );
-
-          
-          
-          
-            this.authenticationService.getCurrentCompany(this.currentUser._creator)
-            .subscribe(
-                data => {
-                    this.company_name = data.company_name;
-                },
-                error => {
-                    if(error.message == 500 || error.message == 401  )
-                    {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        window.location.href = '/login';
-                    }
-                    
-                    if(error.message == 403)
-                    {
-                        this.router.navigate(['/not_found']);                        
-                    }
-                }
-            );
-                 }
-         
-             }
-            /*for(let res of dataa)
-            {
-                console.log("res");
-                 console.log(res);
-                
-                     for( let datas of res['datas'])
-                     {
-                         console.log(datas);
-                      if(res['datas'])
-                      {
-                            //console.log(res['datas'][1].sender_id);
-                           // console.log(ids);
-                            //console.log(res['datas'][1].is_company_reply);
-                            if(res['datas'].sender_id ==ids &&  res['datas'].is_company_reply==1 )
-                            {
-                                  console.log("if");
-                                                 
-                                  this.authenticationService.candidate_detail(ids, res['datas'][1].is_company_reply  )
-                                  .subscribe(
-                                  dataa => {
-                                        dataa.company_reply =res['datas'][1].is_company_reply;
-                                        this.cand_data.push(dataa);
-                                   });
-                            }
-                                             
-                            else
-                            {
-                                  console.log("else");
-                                  this.rply =0;
-                                  this.authenticationService.candidate_detail(ids,  this.rply )
-                                  .subscribe(
-                                  dataa => {
-                                        dataa.company_reply =0;
-                                        this.cand_data.push(dataa);
-                                  });
-                                                 
-                                                 
-                            }
-                     }
-                     else
-                     {
-                          this.rply =0;
-                          this.authenticationService.candidate_detail(ids,  this.rply )
-                          .subscribe(
-                               dataa => {
-                                      dataa.company_reply =0;
-                                      this.cand_data.push(dataa);
-                               });
-                                                 
-                                                 
-                     }
-                         
-                                          
-                 }
-                                         
-             }
-                   */                  
-                                  
-                                  
-           },
+		this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
+        .subscribe(
+			dataa => {
+				//console.log(dataa);
+				for(let res of dataa)
+				{ 
+					//console.log("ids");
+					for(let ids of res['ids'])
+					{
+						this.authenticationService.get_user_messages(ids,this.currentUser._creator)
+						.subscribe(
+							data => {
+								if(data['datas'][0]){
+									if(data['datas'][0].is_company_reply==1){
+										//console.log('accept')
+										//console.log("iffffffffffff");
+										//console.log(ids);
+										this.authenticationService.candidate_detail(ids, data['datas'][0].is_company_reply  )
+										.subscribe(
+											dataa =>
+											{
+												if(dataa)
+												{
+													//console.log("1");
+													dataa.company_reply =data['datas'][0].is_company_reply;                                                        
+													this.cand_data.push(dataa);
+													//console.log(this.cand_data);
+												}
+											},
+											error =>
+											{
+												if(error.message == 500)
+												{
+													localStorage.setItem('jwt_not_found', 'Jwt token not found');
+													localStorage.removeItem('currentUser');
+													localStorage.removeItem('googleUser');
+													localStorage.removeItem('close_notify');
+													localStorage.removeItem('linkedinUser');
+													localStorage.removeItem('admin_log');
+													window.location.href = '/login';
+												}
+												if(error.message == 403)
+												{
+													this.router.navigate(['/not_found']);                        
+												}
+											}
+										);
+									}
+									else
+									{
+										//console.log("else");
+										//console.log(ids);
+										this.rply =0;
+										this.authenticationService.candidate_detail(ids,  this.rply )
+										.subscribe(
+											result =>
+											{
+												if(result)
+												{
+													//console.log("2");
+													result.company_reply =0;
+													this.cand_data.push(result);
+													this.first_name = result.initials;
+													//console.log(this.cand_data);
+												}
+											},
+											error =>
+											{
+												if(error.message == 500)
+												{
+													localStorage.setItem('jwt_not_found', 'Jwt token not found');
+													localStorage.removeItem('currentUser');
+													localStorage.removeItem('googleUser');
+													localStorage.removeItem('close_notify');
+													localStorage.removeItem('linkedinUser');
+													localStorage.removeItem('admin_log');
+													window.location.href = '/login';
+												}
+												if(error.message == 403)
+												{
+													this.router.navigate(['/not_found']);                        
+												}
+											}
+										);
+									}
+								}
+								else
+								{
+									//console.log("else");
+									//console.log(ids);
+									this.rply =0;
+									this.authenticationService.candidate_detail(ids,  this.rply )
+									.subscribe(
+										result => 
+										{
+											if(result)
+											{
+												//console.log("2");
+												result.company_reply =0;
+												this.cand_data.push(result);
+												this.first_name = result.initials;
+												//console.log(this.cand_data);
+											}
+										},
+										error =>
+										{
+											if(error.message == 500)
+											{
+												localStorage.setItem('jwt_not_found', 'Jwt token not found');
+												localStorage.removeItem('currentUser');
+												localStorage.removeItem('googleUser');
+												localStorage.removeItem('close_notify');
+												localStorage.removeItem('linkedinUser');
+												localStorage.removeItem('admin_log');
+												window.location.href = '/login';
+											}
+											if(error.message == 403)
+											{
+												this.router.navigate(['/not_found']);                        
+											}
+										}
+									);
+								}
+							},
+							error => {
+								//console.log('error');
+								//console.log(error);
+								//this.log = error;
+							}
+						);
+						this.authenticationService.getCurrentCompany(this.currentUser._creator)
+						.subscribe(
+							data => {
+								this.company_name = data.company_name;
+							},
+							error => {
+								if(error.message == 500 || error.message == 401  )
+								{
+									localStorage.setItem('jwt_not_found', 'Jwt token not found');
+									window.location.href = '/login';
+								}
+								if(error.message == 403)
+								{
+									this.router.navigate(['/not_found']);                        
+								}
+							}
+						);
+					}
+				} 
+			},
             error => {
-                                    
-                  if(error.message == 500)
-                  {
-                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                         localStorage.removeItem('currentUser');
-                         localStorage.removeItem('googleUser');
-                         localStorage.removeItem('close_notify');
-                         localStorage.removeItem('linkedinUser');
-                         localStorage.removeItem('admin_log');
-                         window.location.href = '/login';
-                  }
+				if(error.message == 500)
+				{
+					localStorage.setItem('jwt_not_found', 'Jwt token not found');
+					localStorage.removeItem('currentUser');
+					localStorage.removeItem('googleUser');
+					localStorage.removeItem('close_notify');
+					localStorage.removeItem('linkedinUser');
+					localStorage.removeItem('admin_log');
+					window.location.href = '/login';
+                }
+				if(error.message == 403)
+				{
+					this.router.navigate(['/not_found']);                        
+                }
                     
-                  if(error.message == 403)
-                  {
-                        this.router.navigate(['/not_found']);                        
-                  }
-                    
-            });
-                               
-            this.length++;
-                                
-                                               
-                        
-            if(this.length> 0 )
-            {
-                   this.page =this.length;
-                    this.log='';
-
             }
-            else
-            {
-                   this.log= 'Not Found Any Data';                           
-            }
-            this.length = '';
-         
+		);
+		this.length++;
+		if(this.length> 0 )
+		{
+			this.page =this.length;
+			this.log='';
+		}else
+		{
+			this.log= 'Not Found Any Data';                           
+        }
+		this.length = '';
     }
     informations;
  
@@ -765,14 +720,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 	job_offer_log;
 	description;
     send_job_offer(msgForm : NgForm){
-        console.log("Used ID: " + this.user_id.id);
+        //console.log("Used ID: " + this.user_id.id);
         //console.log("Name: " + this.user_id.name);
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
 			.subscribe(
 				data => {
-					console.log(data['datas']);
+					//console.log(data['datas']);
 					if(data['datas'].length>0){
 						this.job_offer_log = 'Message already sent';
 					}

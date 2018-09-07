@@ -255,7 +255,7 @@ export class AdminCandidateSearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
                      if(data.error)
                     {
                       
@@ -321,7 +321,7 @@ export class AdminCandidateSearchComponent implements OnInit {
          if(this.select_value  !== data.value)
         {
             this.select_value = data.value;
-            console.log(this.select_value);
+            //console.log(this.select_value);
             this.search(this.select_value);
        }
         //console.log(this.msgtags);
@@ -360,12 +360,12 @@ export class AdminCandidateSearchComponent implements OnInit {
                
         else
         { 
-            console.log("else");
+            //console.log("else");
             this.authenticationService.admin_candidate_filter(this.approve , this.select_value)
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
  
                     if(data.error)
                     {

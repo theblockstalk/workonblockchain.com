@@ -12,6 +12,7 @@ var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../../model/employer_profile');
 const chat = require('../../../../../model/chat');
+const mongoose = require('mongoose');
 
 const forgotPasswordEmail = require('../../../../services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../../../../services/email/emails/verifyEmail');
@@ -58,10 +59,10 @@ function update_chat_msg_status(data){
                     { $and : [ { receiver_id : {$regex: data.receiver_id} }, { sender_id : {$regex: data.sender_id} } ] },
                     { $and : [ { receiver_id : {$regex: data.sender_id} }, { sender_id : {$regex: data.receiver_id} } ] }
                 ]*/
-                receiver_id: data.sender_id
+                receiver_id: mongoose.Types.ObjectId(data.receiver_id)
             },
             {
-                sender_id: data.receiver_id
+                sender_id: mongoose.Types.ObjectId(data.sender_id)
             },
             {
                 is_read:data.status

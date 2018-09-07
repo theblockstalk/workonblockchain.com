@@ -48,7 +48,7 @@ function get_job_desc_msgs(data){
     chat.find({
         $and : [
             {
-                $and:[{receiver_id:{$regex: data.receiver_id}},{sender_id: {$regex: data.sender_id}}]
+                $and:[{receiver_id:data.receiver_id},{sender_id: data.sender_id}]
             },
             {
                 msg_tag:data.msg_tag

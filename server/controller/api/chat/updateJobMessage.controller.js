@@ -12,6 +12,7 @@ var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../model/employer_profile');
 const chat = require('../../../model/chat');
+const mongoose = require('mongoose');
 
 const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../../services/email/emails/verifyEmail');

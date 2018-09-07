@@ -162,7 +162,7 @@ export class AdminCompanySearchComponent implements OnInit {
                      
                     if(data.is_approved === 1 )
                     {
-                        console.log(approveForm.value);
+                        //console.log(approveForm.value);
                         this.authenticationService.approval_email(approveForm.value)
                         .subscribe(
                         data =>
@@ -244,7 +244,7 @@ export class AdminCompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
                     
                      if(data.error)
                     {
@@ -317,7 +317,7 @@ export class AdminCompanySearchComponent implements OnInit {
         {
             this.select_value = data.value;
             // //console.log(data.value);
-            console.log(this.select_value);
+            //console.log(this.select_value);
             this.search(this.select_value);
        }
            
@@ -364,7 +364,7 @@ export class AdminCompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                console.log(data);
+                //console.log(data);
                     if(data.error)
                     {
                        // //console.log(this.info);

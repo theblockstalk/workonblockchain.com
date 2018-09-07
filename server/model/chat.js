@@ -7,14 +7,14 @@ const Schema = mongoose.Schema;
 const ChatSchema = new Schema({
 	sender_id: 
 	{
-        type: String,
-		ref: 'User',
+        type: Schema.Types.ObjectId,
+        ref: 'User',
 		required:true
 	},
 	receiver_id: 
 	{
-		type: String,
-		ref: 'User',
+		type: Schema.Types.ObjectId,
+        ref: 'User',
 		required:true
 	},
 	sender_name: 
@@ -27,12 +27,6 @@ const ChatSchema = new Schema({
 		type:String,
 		ref: 'User',
         required:true
-	},
-	receiver_id: 
-	{
-		type: String,
-        ref: 'User',
-		required:true
 	},
 	message:
 	{

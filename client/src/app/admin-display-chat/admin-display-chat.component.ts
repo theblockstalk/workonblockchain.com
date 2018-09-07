@@ -101,14 +101,14 @@ export class AdminDisplayChatComponent implements OnInit {
 						this.length = msg_data['datas'].length;
                         for (var key_messages in this.new_messges) {
 							if(this.user_id == this.new_messges[key_messages].receiver_id){
-								console.log('my');
+								//console.log('my');
 							}
 							else{
 								this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].is_company_reply,this.type)
 								.subscribe(
 									data => {
 										this.users.push(data['users']);
-										console.log(this.users);
+										//console.log(this.users);
 										this.count = 0;
 										for (var key_users_new in this.users) {
 											if(this.count == 0){
@@ -171,18 +171,18 @@ export class AdminDisplayChatComponent implements OnInit {
 					if(msg_data['datas'].length>0){
                         this.new_messges.push(msg_data['datas']);
 						this.new_messges = this.filter_array(msg_data['datas']);
-						console.log(this.new_messges);
+						//console.log(this.new_messges);
                         this.length = msg_data['datas'].length;
 						for (var key_messages in this.new_messges) {
 							if(this.user_id == this.new_messges[key_messages].sender_id){
-								console.log('my');
+								//console.log('my');
 							}
 							else{
 								this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',0,'company')
 								.subscribe(
 									data => {
 										this.users.push(data['users']);
-										console.log(this.users);
+										//console.log(this.users);
 										this.count = 0;
 										for (var key_users_new in this.users) {
 											if(this.count == 0){
@@ -337,7 +337,7 @@ export class AdminDisplayChatComponent implements OnInit {
    
     get_user_type()
     {
-		console.log(this.user_type);
+		//console.log(this.user_type);
 		if(this.user_type == 'company'){
 			this.authenticationService.getCandidate(this.user_id,'0',1,this.user_type)
 			.subscribe(
