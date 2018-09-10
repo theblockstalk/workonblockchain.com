@@ -333,24 +333,32 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     
     selectedObj;countryChange;positionChange;availabilityChange;blockchainChange;salary;currencyChange;
     search_result=[];information;
+    not_found;
     searchdata(key , value)
     {   
+        this.not_found='';
         this.length =0; 
         this.cand_data=[];
        this.log='';
+
         if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1 
-        &&  this.currencyChange === -1 &&  this.availabilityChange ===-1 )
+        &&  this.currencyChange === -1 &&  this.availabilityChange === -1 )
         {             
-            
+           
              this.getVerrifiedCandidate();
         }
-               
+        
+       
         else
         { 
+        console.log("else");
           this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
             .subscribe(
                 data => 
                 {
+                    
+                    this.response = "data";
+                    
                     if(data.error)
                     {
                        
@@ -368,7 +376,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         this.lengthmsgg='not initial';
                         for(let res of this.information)
                         {
-                            //console.log(res);
+                            
+                            if(res['ids'].length<=0)
+                            {
+                              this.not_found= "Not Found Any Data";
+                            }
+                            else
+                            {
                             for(let ids of res['ids'])
                             {
                                  this.authenticationService.get_user_messages(ids,this.currentUser._creator)
@@ -460,7 +474,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                 );
                                            
                               }
-
+                                }
                         }
                                       
                     }
@@ -519,6 +533,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     rply;
     lengthmsgg;
     filter_data;
+    response;
     getVerrifiedCandidate()
     {     
         this.length=0;
@@ -528,10 +543,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 		this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
         .subscribe(
 			dataa => {
+                this.response = "data";
 				//console.log(dataa);
 				for(let res of dataa)
 				{ 
 					//console.log("ids");
+                    if(res['ids'].length<=0)
+                    {
+                        this.not_found = "Not found any data";
+                        
+                    }
+                    else
+                    {
 					for(let ids of res['ids'])
 					{
 						this.authenticationService.get_user_messages(ids,this.currentUser._creator)
@@ -673,6 +696,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 							}
 						);
 					}
+                        }
 				} 
 			},
             error => {

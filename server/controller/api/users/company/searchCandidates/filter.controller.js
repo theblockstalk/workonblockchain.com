@@ -10,6 +10,7 @@ const logger = require('../../../../services/logger');
 const filterReturnData = require('../../filterReturnData');
 const chat = require('../../../../../model/chat');
 
+console.log("filterrrrrrrrrrrr");
 module.exports = function (req,res)
 {
 	let userId = req.auth.user._id;
@@ -38,7 +39,6 @@ function filter(params, userId)
     var query_result=[];
     var query;
 
-    ////console.log(params);
 
     if(params.currency== '$ USD' && params.salary)
     {
@@ -120,7 +120,7 @@ function filter(params, userId)
 
             }
 
-            if(result_array.length !== 0)
+            if(result_array.length !== 0 && params.currency!== -1 && params.salary)
             {
                 ////console.log("result array");
                 const searchFilter = {
@@ -145,6 +145,9 @@ function filter(params, userId)
 
             }
 
+            console.log("length");
+            
+            
 
             const searchQuery = { $and: queryString };
 

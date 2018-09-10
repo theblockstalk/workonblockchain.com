@@ -1,6 +1,6 @@
 <!--company side candidate listing search page code start here-->
 
-<ng-container *ngIf="!display_name;else profile_section" >
+<ng-container *ngIf="!display_name && response !='data';else profile_section" >
 	<div class="se-pre-con"></div>
 </ng-container>
 
@@ -143,8 +143,8 @@
 							<span>{{cand_data.length}}</span> Candidate Match your search....
 							<i class="fa fa-check tickk" aria-hidden="true"></i>
 					</div>
-					<div class = "result-status mr-top-form" *ngIf="cand_data.length <= 0 && lengthmsgg!='' && msg=='' ">
-							<span>Not Found Any Data</span> 
+					<div class = "result-status mr-top-form" *ngIf="not_found!='' && lengthmsgg!='' && msg=='' ">
+							<span>{{not_found}}</span> 
 							<i class="fa fa-check tickk" aria-hidden="true"></i>
 					</div>
 					
