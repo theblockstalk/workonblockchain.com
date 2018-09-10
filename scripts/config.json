@@ -1,9 +1,12 @@
 {
   "eb": {
-    "appName": "workonblockchain.com",
+    "appName": {
+      "staging": "staging.workonblockchain.com",
+      "production": "production.workonblockchain.com",
+    },
     "envName": {
-      "staging": "staging-api-workonblockchain-com-env",
-      "production": "production-api-workonblockchain-com-env"
+      "staging": "staging-api-workonblockchain-com",
+      "production": "production-api-workonblockchain-com"
     }
   },
   "s3": {

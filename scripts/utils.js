@@ -214,7 +214,7 @@ module.exports.updateElisticEnvironment = async function updateElisticEnvironmen
 
 module.exports.buildAngularDistribution = async function buildAngularDistribution(buildCommand) {
     return new Promise((resolve, reject) => {
-        exec('cd ./client && ' + buildCommand, (err, stdout, stderr) => {
+        exec('cd ./client && npm install && ' + buildCommand, (err, stdout, stderr) => {
             if (err) {
                 reject(err);
             }
