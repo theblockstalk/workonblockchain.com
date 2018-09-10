@@ -1,3 +1,8 @@
+<ng-container *ngIf="company_name==='';else profile_section" >
+	<div class="se-pre-con"></div>
+</ng-container>
+
+<ng-template #profile_section >
 <section class = "wizard_page">
 
 	<div class="container">
@@ -172,4 +177,4 @@
 				 </section>
 				 <br/><br/><br/>
 				 
-				 
+				 </ng-template> 
