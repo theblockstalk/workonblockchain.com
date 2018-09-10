@@ -4,7 +4,7 @@ const scriptUtils = require('./utils');
 const tempDirName = './temp';
 const tempServerDirName = './temp/server/';
 const s3bucket = config.s3.distributionsBucket;
-let envName;
+let envName, appName;
 
 (async function run() {
     try {
@@ -13,8 +13,10 @@ let envName;
         console.log('deploying the backend to elastic beanstalk');
         if (environmentName === 'production') {
             envName = config.eb.envName.production;
+            appName = config.eb.appName.production;
         } else if (environmentName === 'staging') {
             envName = config.eb.envName.staging;
+            appName = config.eb.appName.staging;
         }
         await deployBackend(environmentName);
         console.log("finished");
@@ -26,7 +28,6 @@ let envName;
 })();
 
 async function deployBackend(environmentName) {
-    const appName = config.eb.appName[environmentName];
     console.log('This script will deploy the latest in the /server directory to the backend application');
     console.log('Please make sure there is no files in the working directory (responsibly do a `git stash` if you are unsure)');
 
