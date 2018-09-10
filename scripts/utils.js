@@ -217,7 +217,7 @@ module.exports.buildAngularDistribution = async function buildAngularDistributio
     console.log('Running command: ' + command);
 
     return new Promise((resolve, reject) => {
-        exec(comand, (err, stdout, stderr) => {
+        exec(command, (err, stdout, stderr) => {
             if (err) {
                 reject(err);
             }
