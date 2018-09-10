@@ -24,6 +24,7 @@ const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
+const mongoose = require('mongoose');
 
 module.exports = function insert_message_job(req,res){
     insert_message_job_new(req.body).then(function (err, about)
@@ -49,7 +50,7 @@ function insert_message_job_new(data){
     var deferred = Q.defer();
     let newChat = new chat({
         sender_id: data.sender_id,
-        receiver_id: data.receiver_id,
+        receiver_id: mongoose.Types.ObjectId(data.receiver_id),
         sender_name: data.sender_name,
         receiver_name: data.receiver_name,
         message: data.message,

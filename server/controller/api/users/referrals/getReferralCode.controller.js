@@ -26,11 +26,14 @@ function get_refr_code(data){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }
-        else{
-            console.log(user);
-        	var query_result = user.toObject();  
-        	var data = {_creator : query_result};
-            deferred.resolve(filterReturnData.removeSensativeData(data));
+        else
+		{
+            if(user)
+        	{
+             	var query_result = user.toObject();  
+             	var data = {_creator : query_result};
+                 deferred.resolve(filterReturnData.removeSensativeData(data));                
+        	}
            
         }
     });

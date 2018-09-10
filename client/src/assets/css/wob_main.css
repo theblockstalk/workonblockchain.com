@@ -859,6 +859,7 @@ body{
     /*border-radius: 0px;*/
     margin-bottom: 25px;
     padding:  12px 42px;
+    -webkit-appearance: none;
 }
 
 .form-contant .tab-pane form p,

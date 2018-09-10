@@ -53,8 +53,8 @@ function get_messages(receiver_id,sender_id){
     ]*/
     chat.find({
         $or : [
-            { $and : [ { receiver_id : {$regex: receiver_id} }, { sender_id : {$regex: sender_id} } ] },
-            { $and : [ { receiver_id : {$regex: sender_id} }, { sender_id : {$regex: receiver_id} } ] }
+            { $and : [ { receiver_id :  receiver_id }, { sender_id : sender_id } ] },
+            { $and : [ { receiver_id : sender_id}, { sender_id :  receiver_id } ] }
         ]
     }).sort({_id: 'descending'}).exec(function(err, data)
     {

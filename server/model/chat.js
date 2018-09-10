@@ -13,7 +13,7 @@ const ChatSchema = new Schema({
 	},
 	receiver_id: 
 	{
-		type: String,
+		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required:true
 	},
@@ -28,12 +28,7 @@ const ChatSchema = new Schema({
 		ref: 'User',
         required:true
 	},
-	receiver_id: 
-	{
-		type: String,
-        ref: 'User',
-		required:true
-	},
+
 	message:
 	{
 		type:String,
