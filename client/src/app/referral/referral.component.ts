@@ -6,6 +6,8 @@ import {User} from '../Model/user';
 import {ProfileDetail} from '../Model/ProfileDetail';
 import { HttpClient } from '@angular/common/http';
 import { Title, Meta } from '@angular/platform-browser';
+import {environment} from '../../environments/environment';
+const URL = environment.frontend_url;
 
 @Component({
   selector: 'app-referral',
@@ -16,7 +18,7 @@ export class ReferralComponent implements OnInit {
 	currentUser: User;
 	@ViewChild('element') element: ElementRef;
 	credentials: any = {};
-	email_ref_link = 'https://staging.workonblockchain.com/refer?code=';
+	email_ref_link = URL + 'refer?code=';
 	log = '';
 	title = 'My Ref Page';
 	ref_link = '';
