@@ -161,11 +161,13 @@ export class AdminCompanyDetailComponent implements OnInit {
                         {
                                 //// perform add action
                                 event.srcElement.innerHTML="Inactive";
+                                this.is_approved = "Aprroved";
                         }
                         else if(event.srcElement.innerHTML ==='Inactive')
                         {
                              //// perform remove action
-                             event.srcElement.innerHTML="Active";                           
+                             event.srcElement.innerHTML="Active";   
+                             this.is_approved = "";                        
                         }
                     } 
                     else if(data.is_approved ===0)
@@ -174,11 +176,13 @@ export class AdminCompanyDetailComponent implements OnInit {
                         {
                                 //// perform add action
                                 event.srcElement.innerHTML="Inactive";
+                                this.is_approved = "Aprroved";
                         }
                         else if(event.srcElement.innerHTML ==='Inactive')
                         {
                              //// perform remove action
-                             event.srcElement.innerHTML="Active";                           
+                             event.srcElement.innerHTML="Active"; 
+                             this.is_approved = "";                           
                         }
                    }
                     

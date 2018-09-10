@@ -91,12 +91,37 @@
 				      		
 				      	</div>
 
-				      	<div class = "user-detail">
+						<div class = "user-detail" *ngIf="data.users">
+					      	<a [routerLink]="['/admin-company-detail']" [queryParams]="{user: data.users[0]._id }"><h2>{{data.company_name}}</h2></a><br/>
+					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>	
+					    </div>
+					    
+				      	<div class = "user-detail" *ngIf="!data.users">
 					      	<a [routerLink]="['/admin-company-detail']" [queryParams]="{user: data._creator._id }"><h2>{{data.company_name}}</h2></a><br/>
 					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>	
 					    </div>
 
 						<div class = "ofr_btn">
+												
+						<form #approve_form="ngForm" *ngIf="data.users">
+								<input type="hidden" name="email"  [ngModel]="data.users[0].email">
+								<input type="hidden" name="name"  [ngModel]="data.first_name">
+								<input type="hidden" name="type"  [ngModel]="data.users[0].type">
+								<input type="hidden" name="is_verify" [ngModel]="data.users[0].is_verify">
+								<input type="hidden" name="id" [ngModel]="data.users[0]._id">
+								<input type= "hidden" *ngIf='(data.users[0].is_verify ===1 && data.users[0].is_approved === 0)' name="is_approve" [ngModel]="1">
+								<input type= "hidden" *ngIf='(data.users[0].is_verify ===1 && data.users[0].is_approved === 1)' name="is_approve" [ngModel]="0">
+								
+								<div class="submit-button">						
+									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data.users[0].is_verify ===1 && data.users[0].is_approved === 0)" >Active</button>
+									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data.users[0].is_verify ===1 && data.users[0].is_approved === 1)" >Inactive</button>
+									<button type="submit" class = "btn btn_descp" *ngIf = "data.users[0].is_verify ===0" disabled>Active</button>
+									
+								</div>
+							</form>
+						</div>
+						
+						<div class = "ofr_btn" *ngIf="!data.users">
 												
 						<form #approve_form="ngForm" >
 								<input type="hidden" name="email"  [ngModel]="data._creator.email">

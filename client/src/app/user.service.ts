@@ -13,7 +13,7 @@ import {environment} from '../environments/environment';
 
 
 const URL = environment.backend_url;
-//console.log(URL);
+////console.log(URL);
 
 @Injectable()
 export class UserService {
@@ -28,9 +28,9 @@ export class UserService {
       if(this.currentUser)
       {
         this.token = this.currentUser.jwt_token;
-          //console.log(this.token);
+          ////console.log(this.token);
       }
-      //console.log(this.currentUser);
+      ////console.log(this.currentUser);
     
   }
 
@@ -91,7 +91,7 @@ export class UserService {
                 }
             }).catch((error: any) => 
             {
-                console.log(error.status);
+                //console.log(error.status);
                 if (error.status ) 
                 {
                     return Observable.throw(new Error(error.status));
@@ -132,7 +132,7 @@ export class UserService {
                 {
                     this.router.navigate(['/resume']);
                 }*/
-                //////console.log(data.programming_languages.length);
+                ////////console.log(data.programming_languages.length);
                 else if(!res['programming_languages'] ||  !res['current_salary']  || res['programming_languages'].length <1 )
                 {
                         this.router.navigate(['/experience']);
@@ -152,7 +152,7 @@ export class UserService {
                 }
             }).catch((error: any) => 
             {
-                console.log(error.status);
+                //console.log(error.status);
                 if (error.status ) 
                 {
                     return Observable.throw(new Error(error.status));
@@ -168,14 +168,14 @@ export class UserService {
             headers: new HttpHeaders().set('Authorization', this.token)
         }).map((res: Response) => 
             {
-            console.log(res);
+            //console.log(res);
                 if (res) 
                 {    
                         return res;             
                 }
             }).catch((error: any) => 
             {
-                console.log(error.status);
+                //console.log(error.status);
                 if (error.status ) 
                 {
                     return Observable.throw(new Error(error.status));
@@ -264,15 +264,15 @@ export class UserService {
             .map(user => {
                 if (user && user.jwt_token) 
                 {
-                    //console.log(user);
+                    ////console.log(user);
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     return user;
                 }
                 else
                 {   
-                //console.log(user);
-                    //console.log(user.error);
+                ////console.log(user);
+                    ////console.log(user.error);
                     return user;
 
                 }
@@ -465,7 +465,7 @@ export class UserService {
 
     verify_email(email_hash: string) 
     {     
-    console.log(email_hash);
+    //console.log(email_hash);
         return this.http.put(URL+'users/emailVerify/'+ email_hash , '').map(data => {        
                 if (data['msg']) 
                 {
@@ -514,7 +514,7 @@ export class UserService {
                 }
                 else
                 {
-                    //console.log(data);
+                    ////console.log(data);
                     return data;
 
                 }
@@ -531,12 +531,12 @@ export class UserService {
            
                 if (data) 
                 {
-                   // console.log(data);
+                   // //console.log(data);
                     return data;
                 }
                 else
                 {
-                    //console.log(data);
+                    ////console.log(data);
                     return data.msg;
 
                 }
@@ -756,7 +756,7 @@ export class UserService {
                 }
             }).catch((error: any) => 
             {
-                console.log(error.status);
+                //console.log(error.status);
                 if (error.status ) 
                 {
                     return Observable.throw(new Error(error.status));
@@ -882,7 +882,7 @@ export class UserService {
            
                 if (data) 
                 {
-                    //console.log(data);
+                    ////console.log(data);
                     return data;
                 }
                 
@@ -891,8 +891,8 @@ export class UserService {
     //////////////call admin functions//////////////////
     aprrove_user(user_id:string , detail :number )
     {
-        //console.log(user_id);
-       // console.log(detail);
+        ////console.log(user_id);
+       // //console.log(detail);
         return this.http.put<any>(URL+'users/approve/' + user_id, {is_approve : detail}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
@@ -1012,7 +1012,7 @@ export class UserService {
                 }
             }).catch((error: any) => 
             {
-                console.log(error.status);
+                //console.log(error.status);
                 if (error.status ) 
                 {
                     return Observable.throw(new Error(error.status));
@@ -1117,7 +1117,7 @@ export class UserService {
     
     destroyToken(_id:string)
     {
-        console.log(this.token);
+        //console.log(this.token);
         
      return this.http.post<any>(URL+'users/destroy_token', {id:_id} , {
             headers: new HttpHeaders().set('Authorization', this.token)
