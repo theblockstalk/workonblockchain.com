@@ -1,6 +1,10 @@
 <!--company side candidate listing search page code start here-->
 
+<ng-container *ngIf="!display_name;else profile_section" >
+	<div class="se-pre-con"></div>
+</ng-container>
 
+<ng-template #profile_section>
 <section class = "main-search" >
 
 	<div class="container">
@@ -238,6 +242,7 @@
 	</div> <!--container end-->
 	
 </section>
+</ng-template>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
