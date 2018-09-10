@@ -6,9 +6,9 @@ const filterReturnData = require('../filterReturnData');
 //use to get referral code of a user
 
 module.exports = function (req, res) {
-    //console.log(req.body);
+    ////console.log(req.body);
     get_refr_code(req.body).then(function (data){
-        console.log('done');
+       
         res.json(data);
     })
         .catch(function (err)

@@ -31,7 +31,7 @@ module.exports = function (req,res){
 
 function set_disable_status(data){
     var deferred = Q.defer();
-    //console.log(data.user_id);
+    ////console.log(data.user_id);
     var set =
         {
             disable_account: data.status,

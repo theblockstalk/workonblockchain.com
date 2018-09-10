@@ -107,7 +107,3 @@ const ChatSchema = new Schema({
 });
 
 module.exports = mongoose.model('Chat',ChatSchema);
-
-
-
-

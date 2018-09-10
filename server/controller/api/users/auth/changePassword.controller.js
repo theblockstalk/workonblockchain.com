@@ -30,13 +30,13 @@ module.exports = function (req,res)
 function change_password(id , param)
 {
     var deferred = Q.defer();
-//console.log(param.password);
-    //console.log(id);
-    //console.log(token);
+////console.log(param.password);
+    ////console.log(id);
+    ////console.log(token);
     users.findOne({_id :id }, function (err, user)
     {
 
-        //console.log(user);
+        ////console.log(user);
         if (err){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
@@ -46,7 +46,7 @@ function change_password(id , param)
         	let hash = crypto.createHmac('sha512', user.salt);
         	hash.update(param.current_password);
         	let hashedPasswordAndSalt = hash.digest('hex');
-        	//console.log(hashedPasswordAndSalt);
+        	////console.log(hashedPasswordAndSalt);
         	if (hashedPasswordAndSalt === user.password_hash)
         	{
         		updatePassword(user._id);
@@ -66,9 +66,9 @@ function change_password(id , param)
 
     function updatePassword(_id )
     {
-        //console.log(_id);
+        ////console.log(_id);
 
-        //console.log(user.password);
+        ////console.log(user.password);
         /*var user = _.omit(param, 'password');
         var salt = bcrypt.genSaltSync(10);
 
@@ -79,7 +79,7 @@ function change_password(id , param)
         let hash = crypto.createHmac('sha512', salt);
 		hash.update(param.password);
 		let hashedPasswordAndSalt = hash.digest('hex');
-		//console.log(hashedPasswordAndSalt);
+		////console.log(hashedPasswordAndSalt);
 
         var set =
             {

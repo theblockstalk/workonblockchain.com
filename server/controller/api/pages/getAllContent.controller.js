@@ -56,7 +56,7 @@ function get_all_content()
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log(user);
+            ////console.log(user);
             deferred.resolve(result);
         }
     });

@@ -63,10 +63,10 @@ export class AdminTermsConditionEditorComponent implements OnInit {
                 data => {
                    if(data)
                    {
-                       ////console.log(data);
+                       //////console.log(data);
                         this.page_title = data[0].page_title;
                        this.editor_content = data[0].page_content;
-                       //console.log(this.editor_content);
+                       ////console.log(this.editor_content);
                        
                    }
                  });
@@ -75,10 +75,10 @@ export class AdminTermsConditionEditorComponent implements OnInit {
                 data => {
                    if(data)
                    {
-                      // //console.log(data);
+                      // ////console.log(data);
                         this.company_page_title = data[0].page_title;
                        this.company_editor_content = data[0].page_content;
-                       //console.log(this.editor_content);
+                       ////console.log(this.editor_content);
                        
                    }
                    },
@@ -116,7 +116,7 @@ export class AdminTermsConditionEditorComponent implements OnInit {
    editor(editorForm: NgForm)
    {
         
-       //console.log(editorForm.value);
+       ////console.log(editorForm.value);
        this.editor_text = this.editor_content;  
        this.authenticationService.pages_content(editorForm.value)
        .subscribe(
@@ -138,7 +138,7 @@ export class AdminTermsConditionEditorComponent implements OnInit {
    company_editor(companyeditor: NgForm)
    {
        this.company_page_name = 'Terms and Condition for company';
-       //console.log(companyeditor.value);
+       ////console.log(companyeditor.value);
        this.authenticationService.pages_content(companyeditor.value)
        .subscribe(
        data => 

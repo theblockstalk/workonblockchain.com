@@ -41,7 +41,7 @@ export class TermsWizardComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                  //console.log(data);
+                  ////console.log(data);
                     this.marketing_emails = data.marketing_emails;
                  if(data.terms)
                   {
@@ -92,10 +92,10 @@ export class TermsWizardComponent implements OnInit {
     terms_log;
     terms_wizard(termsForm: NgForm) 
     {
-         //console.log(termsForm.value);
+         ////console.log(termsForm.value);
        if(this.termscondition!=true)
        {
-           console.log("if");
+           //console.log("if");
         this.terms_log = "Please accept terms and condition";   
        }
         else

@@ -46,7 +46,7 @@ module.exports = function (req,res){
 
 function update_job_message(data){
     var deferred = Q.defer();
-    //console.log(data.id);
+    ////console.log(data.id);
     var set =
         {
             is_job_offered: data.status,

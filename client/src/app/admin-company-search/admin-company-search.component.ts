@@ -91,7 +91,7 @@ export class AdminCompanySearchComponent implements OnInit {
                    else
                    {
                         
-                        ////console.log(this.info);
+                        //////console.log(this.info);
                         for(let res of data)
                         {
                            
@@ -100,7 +100,7 @@ export class AdminCompanySearchComponent implements OnInit {
                                 
                              
                             
-                            ////console.log(this.verify_candidate.length);
+                            //////console.log(this.verify_candidate.length);
                         }
                         
                          if(this.length> 0 )
@@ -143,7 +143,7 @@ export class AdminCompanySearchComponent implements OnInit {
     
     approveClick(event , approveForm: NgForm)
     {
-        ////console.log(approveForm.value.id);
+        //////console.log(approveForm.value.id);
         
          if(event.srcElement.innerHTML ==='Active' )
          {
@@ -158,11 +158,11 @@ export class AdminCompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    ////console.log(data.is_approved);
+                    //////console.log(data.is_approved);
                      
                     if(data.is_approved === 1 )
                     {
-                        //console.log(approveForm.value);
+                        ////console.log(approveForm.value);
                         this.authenticationService.approval_email(approveForm.value)
                         .subscribe(
                         data =>
@@ -236,78 +236,9 @@ export class AdminCompanySearchComponent implements OnInit {
     }
     
     onSearchName(f: NgForm)
-    {
-        this.length=0;
-        this.info=[];
-        ////console.log(f.value.word);
-         this.authenticationService.admin_search_by_name(f.value.word)
-            .subscribe(
-                data => 
-                {
-                    //console.log(data);
-                    
-                     if(data.error)
-                    {
-                      
-                        this.length='';
-                        this.log = data.error;
-                        this.info=[];
-                        this.page='';
-                    }
-                    else
-                    {
-                         this.info=[];
-                         this.length=0;
-                        // //console.log(this.log);
-                       this.information = this.filter_array(data);
-                       ////console.log(this.inform.first_name);
-                        
-                        for(let res of this.information)
-                        {    
-                                                                          
-                                 this.length++; 
-                                // //console.log(res);
-                                this.info.push(res);
-                               
-                                                     
+    {     
+         this.search(f.value.word);
 
-                        }
-                       
-                       
-                        if(this.length> 0 )
-                        {
-                            
-                             this.log='';
-                             this.page =this.length;
-                           
-                        }
-                        else
-                        {
-                            this.log= 'Not Found Any Data';
-                        }
-                        
-                
-                    }
-                            
-                },
-                error => 
-                {
-                  if(error.message == 500 || error.message == 401)
-                        {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            localStorage.removeItem('currentUser');
-                                    localStorage.removeItem('googleUser');
-                                    localStorage.removeItem('close_notify');
-                                    localStorage.removeItem('linkedinUser');
-                                    localStorage.removeItem('admin_log');
-                            window.location.href = '/login';
-                        }
-                    
-                        if(error.message == 403)
-                        {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
-                });
     }
     
     
@@ -316,8 +247,8 @@ export class AdminCompanySearchComponent implements OnInit {
         if(this.select_value  !== data.value)
         {
             this.select_value = data.value;
-            // //console.log(data.value);
-            //console.log(this.select_value);
+            // ////console.log(data.value);
+            ////console.log(this.select_value);
             this.search(this.select_value);
        }
            
@@ -326,7 +257,7 @@ export class AdminCompanySearchComponent implements OnInit {
     search_approved(event)
     {
          this.approve =event;
-        //console.log(this.approve);
+        ////console.log(this.approve);
         this.search(this.approve);
         
     }
@@ -348,26 +279,26 @@ export class AdminCompanySearchComponent implements OnInit {
         this.length=0;
         this.page =0;
         this.info=[];
-        //console.log(this.approve);
-        //console.log(this.msgtags);
-        
-        if(this.approve === -1 && !this.select_value )
+        ////console.log(this.approve);
+        ////console.log(this.msgtags);
+      
+        if(this.approve === -1 && !this.select_value && !this.searchWord )
         {
-            //console.log("iffff both are empty");
+            ////console.log("iffff both are empty");
             this.getAllCompanies();
             
         }
         else
         {
            
-            this.authenticationService.admin_company_filter(this.approve , this.select_value)
+            this.authenticationService.admin_company_filter(this.approve , this.select_value, this.searchWord)
             .subscribe(
                 data => 
                 {
-                //console.log(data);
+                ////console.log(data);
                     if(data.error)
                     {
-                       // //console.log(this.info);
+                       // ////console.log(this.info);
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -377,16 +308,16 @@ export class AdminCompanySearchComponent implements OnInit {
                     }
                     else
                     {
-                         ////console.log(this.log);
+                         //////console.log(this.log);
                         this.information = this.filter_array(data);
                        
-                        ////console.log(this.inform.first_name);
+                        //////console.log(this.inform.first_name);
                         
                         for(let res of this.information)
                         {    
                                                                            
                                  this.length++; 
-                                // //console.log(res);
+                                // ////console.log(res);
                                 this.info.push(res);
                                
                                                       
@@ -439,17 +370,10 @@ export class AdminCompanySearchComponent implements OnInit {
         this.select_value='';
         this.approve=-1;
         this.info=[];
-        //console.log("reset");
+        this.searchWord='';
+        ////console.log("reset");
         this.getAllCompanies();
-       /* this.msgtags='';
-        
-       
-        
-        //console.log(this.select_value);
-         
-        //this.positionchanged(this.select_value);
-        */
-       
+  
     }   
     
     

@@ -67,9 +67,7 @@ const adminChatSetUnreadMsgStatus = require('./controller/api/users/admins/chat/
 const adminChatUpdateMsgStatus = require('./controller/api/users/admins/chat/updateChatMessageStatus.controller');
 const adminApproveUser = require('./controller/api/users/admins/approveUser.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
-const adminCandidateSearch = require('./controller/api/users/admins/candidateSearch.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
-const adminCompanySearch = require('./controller/api/users/admins/companySearch.controller');
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
@@ -136,9 +134,7 @@ router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chat
 // Admin
 
 router.put('/users/approve/:_id', auth.isAdmin  , adminApproveUser);
-router.post('/users/search_by_name', auth.isAdmin , adminCandidateSearch);
 router.post('/users/admin_candidate_filter', auth.isAdmin , adminCandidateFilter);
-router.post('/users/admin_search_by_name', auth.isAdmin , adminCompanySearch);
 router.post('/users/admin_company_filter', auth.isAdmin , adminComanyFilter);
 router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent);
 router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);

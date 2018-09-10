@@ -110,25 +110,25 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   
       this.dataservice.eemailMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
-      //console.log(this.currentUser);
+      ////console.log(this.currentUser);
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
       {
-          ////console.log("ifffffff");
+          //////console.log("ifffffff");
          
           /*this.share_url = location.href + '?user=' + this.user_id;
           this.authenticationService.public_profile(this.user_id)
             .subscribe(
             data => {
                 this.public_data = data;
-                //console.log(data);
+                ////console.log(data);
                 });*/
           
       }
      
       else
        {
-          ////console.log("elseeeee");
+          //////console.log("elseeeee");
           //this.share_url = location.href + '?user=' + this.currentUser._creator;
           if(!this.currentUser)
        {
@@ -144,7 +144,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {                
                 if(data) 
                 {
-                    //console.log(data);
+                    ////console.log(data);
                     this.id = data._creator._id; 
                     this.email =data._creator.email;  
                     
@@ -194,7 +194,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     {
                         
                         this.imgPath = data.image;
-                        ////console.log(this.imgPath);
+                        //////console.log(this.imgPath);
                         
                     }
 

@@ -37,25 +37,25 @@ export class CandidateFormComponent implements OnInit {
 		});
 		
         if(this.code){
-            //console.log('in if');
+            ////console.log('in if');
             this.authenticationService.getByRefrenceCode(this.code)
                 .subscribe(
                     data => {
-                        //console.log(data);
-                        //console.log('data');
+                        ////console.log(data);
+                        ////console.log('data');
                         this.ref_msg = data._creator.email+' thinks you should join workonblockchain.com';
                         this.credentials.refer_by = data._creator._id;
                     },
                     error => {
-                        //console.log('error');
-                        //console.log(error);
+                        ////console.log('error');
+                        ////console.log(error);
                         this.log = error;
                     }
                 );
         } 
 	}
  ngOnDestroy() {
-   //console.log("ngOndesctroy");
+   ////console.log("ngOndesctroy");
     }
  
     ngOnInit() 
@@ -82,7 +82,7 @@ export class CandidateFormComponent implements OnInit {
 
           this.credentials.type="candidate";
           this.credentials.social_type='';
-        //console.log(this.refer_by);
+        ////console.log(this.refer_by);
         if(!this.credentials.email)
         {
             this.email_log="can't be blank";
@@ -116,7 +116,7 @@ export class CandidateFormComponent implements OnInit {
                 data => 
                 {
                    
-                    ////console.log(data);
+                    //////console.log(data);
                     if(data.error)
                     {
                         this.log = data.error;
@@ -148,17 +148,17 @@ export class CandidateFormComponent implements OnInit {
         {
        
             this.user = user; 
-            ////console.log(user);
+            //////console.log(user);
             this.data = JSON.stringify(this.user);      
             this.result = JSON.parse(this.data);
             localStorage.setItem('googleUser', JSON.stringify(this.result));      
-            //console.log(this.result);
+            ////console.log(this.result);
       
         });
-        ////console.log(this.result);
+        //////console.log(this.result);
         if(this.result!='')
         {
-            //console.log(this.result);
+            ////console.log(this.result);
              this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
              this.credentials.email= this.googleUser.email;
              this.credentials.password= '';
@@ -167,7 +167,7 @@ export class CandidateFormComponent implements OnInit {
             this.authenticationService.create(this.credentials)
             .subscribe(
                 data => {
-                //console.log(data);
+                ////console.log(data);
                  this.credentials.email= '';
                 if(data.error)
                     {
@@ -201,7 +201,7 @@ export class CandidateFormComponent implements OnInit {
             const url = '/people/~:(id,picture-url,location,industry,positions,specialties,summary,email-address )?format=json';
             this._linkedInService.raw(url).asObservable().subscribe({
                 next: (data) => {
-                    //console.log(data);
+                    ////console.log(data);
                     localStorage.setItem('linkedinUser', JSON.stringify(data));
                     if(data)
                     {
@@ -215,7 +215,7 @@ export class CandidateFormComponent implements OnInit {
                         this.authenticationService.create(this.credentials)
                         .subscribe(
                             data => {
-                                //console.log(data);
+                                ////console.log(data);
                                 this.credentials.email= '';
                             if(data.error)
                             {
@@ -241,10 +241,10 @@ export class CandidateFormComponent implements OnInit {
                     }
                 },
                 error: (err) => {
-                    //console.log(err);
+                    ////console.log(err);
                 },
                 complete: () => {
-                    //console.log('RAW API call completed');
+                    ////console.log('RAW API call completed');
                 }
             });
         },
@@ -257,7 +257,7 @@ export class CandidateFormComponent implements OnInit {
 
     company_signup(signupForm: NgForm) 
     {
-            //console.log("comapny signup form");
+            ////console.log("comapny signup form");
             this.credentials.type="company";
             this.credentials.social_type='';
             if(this.credentials.password != this.credentials.confirm_password )
@@ -268,12 +268,12 @@ export class CandidateFormComponent implements OnInit {
             }
             else
             {
-				//console.log('else');
+				////console.log('else');
                 this.authenticationService.create_employer(this.credentials)
                 .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                    ////console.log(data);
                     if(data.error)
                     {
                         this.dataservice.changeMessage(data.error);
@@ -283,7 +283,7 @@ export class CandidateFormComponent implements OnInit {
                     else
                     {
                         localStorage.setItem('currentUser', JSON.stringify(data));
-                        ////console.log(localStorage.getItem('currentUser'));
+                        //////console.log(localStorage.getItem('currentUser'));
                         //localStorage.removeItem('userInfo');
                         //this.router.navigate(['/company_wizard']);
                         window.location.href = '/company_wizard';
@@ -291,7 +291,7 @@ export class CandidateFormComponent implements OnInit {
                 },
                 error => 
                 {
-                    ////console.log(error);
+                    //////console.log(error);
                     this.log = 'Something getting wrong';
                     this.loading = false;
                 });

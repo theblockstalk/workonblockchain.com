@@ -40,9 +40,7 @@ export class ChangePasswordComponent implements OnInit {
     new_log;current_log;
     change_password(formdata: NgForm)
     {
-        //console.log(formdata.value);
-        //console.log(this.credentials.password);
-        //console.log(this.credentials.confirm_password);
+        
         
          if(!this.credentials.current_password)
         {

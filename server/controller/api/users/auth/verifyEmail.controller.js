@@ -8,11 +8,11 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req,res)
 {
-    //console.log(req.params.token);
+    ////console.log(req.params.token);
     emailVerify(req.params.email_hash).then(function (err, data)
     {
-        //console.log(data);
-        console.log(err);
+        ////console.log(data);
+        //console.log(err);
         if (data)
         {
             res.json(data);
@@ -30,8 +30,8 @@ function emailVerify(token)
 {
     var deferred = Q.defer()
     var data = jwt_hash.decode(token, settings.EXPRESS_JWT_SECRET, 'HS256');
-    console.log(Date(data.expiry));
-    console.log(new Date(new Date().getTime()));
+    //console.log(Date(data.expiry));
+    //console.log(new Date(new Date().getTime()));
     if(new Date(data.expiry) > new Date())
     {   	    	
         users.findOne(  { verify_email_key:token  }, function (err, result)

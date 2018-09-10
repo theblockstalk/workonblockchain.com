@@ -45,12 +45,23 @@ module.exports = function (req,res)
         });
 }
 
+function removeDups(names) {
+	  let unique = {};
+	  names.forEach(function(i) {
+	    if(!unique[i]) {
+	      unique[i] = true;
+	    }
+	  });
+	  return Object.keys(unique);
+	}
+
 function admin_candidate_filter(data)
 {
+
     var query_result = [];
     var company_rply = [];
     var deferred = Q.defer();
-    //console.log(data);
+   
     var arr = data.msg_tags;
     if(arr)
     {
@@ -71,206 +82,165 @@ function admin_candidate_filter(data)
     {
         company_rply= [1,0];
     }
-    //console.log(company_rply);
-    //console.log(data.msg_tags);
-    if(data.is_approve!== -1 && data.msg_tags )
+    
+    if(data.msg_tags)
     {
-        console.log("both true");
-        //console.log(data.msg_tags);
-        users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, dataa)
-        {
-            //console.log(dataa);
-            if(err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            if(dataa)
-            {
-                var array2 = [];
-                dataa.forEach(function(item)
-                {
-                    array2.push(item._id );
-                });
-                //console.log(array2);
-                CandidateProfile.find({"_creator" : {$in : array2}} ).populate('_creator').exec(function(err, result)
-                {
-                    //console.log(result);
-                    if (err){
-                        logger.error(err.message, {stack: err.stack});
-                        //console.log(err);//deferred.reject(err.name + ': ' + err.message);
-                    }
-                    if (result)
-                    {
-                        result.forEach(function(item)
-                        {
-                            query_result.push(item );
-                        });
+    	
+    	let queryString = [];
+   		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, query_data)
+   		{
+   			  if(err)
+   			  {
+   			       logger.error(err.message, {stack: err.stack});
+   			       deferred.reject(err.name + ': ' + err.message);
+   			  }
+   			  if(query_data.length>0)
+   			  {
+   			       var array = [];
+   			       query_data.forEach(function(item)
+   			       {
+   			            array.push(item.receiver_id );
+   			       });
+   			       
+   			       if(array.length>0)
+   			                 {
+   			                	 const msgTagFilter = {"_creator" : {$in : array}};
+   			                	queryString.push(msgTagFilter);
+   			                	 
+   			                 }
+   			                 if(data.is_approve!== -1)
+   			                 {
+   			                	 
+   			                	
+   			                	const isApproveFilter = {"users.is_approved" : parseInt(data.is_approve)};
+   			                	 queryString.push(isApproveFilter);
+   			                 }
+   			                 if(data.word)
+   			                 {
+   			                	 const nameFilter = { $or : [  { first_name : {'$regex' : data.word, $options: 'i' } }, { last_name : {'$regex' : data.word , $options: 'i'} }]};
+   			                	 queryString.push(nameFilter);
+   			                 }
+   			                   			                 
+   			                
+   			                 if(queryString.length>0)
+   			                 {
+   			                	 var object = queryString.reduce((a, b) => Object.assign(a, b), {})
+   			                	              
+   			                	 const searchQuery = { $match: object };
+   			                	 //console.log(searchQuery);
+   			                	 CandidateProfile.aggregate([    	
+   			                     {
+   			                    	 $lookup:
+   			                    	 {
+   			                    		 from: "users",
+   			                    		 localField: "_creator",
+   			                    		 foreignField: "_id",
+   			                    		 as: "users"
+   			                    	 }
+   			                     }, searchQuery]).exec(function(err, cand_result)
+   			                    {
+   			                    	 ////console.log(result);
+   			                    	 if (err) {
+   			                    		 logger.error(err.message, {stack: err.stack});
+   			                    		 ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
+   			                    	 }
+   			                    	 if (cand_result == '')
+   			                    	 {
+   			                    		 deferred.reject("Not Found Any Data");
 
-                        chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data)
-                        {
-                            if(err)
-                                deferred.reject(err.name + ': ' + err.message);
-                            if(data)
-                            {
-                                //console.log(data);
-                                var array = [];
-                                data.forEach(function(item)
-                                {
-                                    array.push(item.receiver_id );
-                                });
-
-                                CandidateProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result2)
-                                {
-                                    //console.log(result);
-                                    if (err){
-                                        logger.error(err.message, {stack: err.stack});
-                                        //console.log(err);//deferred.reject(err.name + ': ' + err.message);
-                                    }
-                                    if (result2 == '' && dataa == '')
-                                    {
-                                        deferred.reject("Not Found Any Data");
-
-                                    }
-
-                                    else
-                                    {
-                                        result2.forEach(function(item)
-                                        {
-                                            query_result.push(item );
-                                        });
-                                        
-                                        var array=[];
-                                        query_result.forEach(function(item)
-                                        {
-                                               array.push(filterReturnData.removeSensativeData(item.toObject()));
-                                        });
-                                   	 	deferred.resolve(array);
-                                       
-                                       // deferred.resolve(query_result);
-                                    }
-                                });
-
-                                //deferred.resolve(data);
-                            }
-
-                        });
-
-                    }
-                    else
-                    {
-                    	var array=[];
-                   	 	result.forEach(function(item)
-                        {
-                               array.push(filterReturnData.removeSensativeData(item.toObject()));
-                        });
-                   	 	deferred.resolve(array);
-                    }
-                });
-
-            }
-
-            //console.log(data);
-        });
-
+   			                    	 }
+   			                    	 if(cand_result)
+   			                    	 {
+   			                    		   cand_result.forEach(function(item)
+   			                             	{
+   			                         			var query_result = item.users[0];          				
+   			                         			var data = {_creator : query_result};
+   			                        	 			filterReturnData.removeSensativeData(data);
+   			                             	});
+   			                        	 	deferred.resolve(cand_result);
+   			                           
+   			                    	 }
+   			                    });
+   			                 }
+   			                 else
+   			                 {
+   			                	deferred.reject("Not Found Any Data");
+   			                 }
+   			                 
+   			                 
+   			            }
+   			            else
+		                 {
+		                	deferred.reject("Not Found Any Data");
+		                 }
+   			});
+   		   
+    	
     }
-
-
-    else if(data.is_approve!== -1)
+    else
     {
-        console.log("is_approve");
-        users.find({type : 'candidate' , is_approved :data.is_approve }, function (err, data)
-        {
-            if(err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            if(data=='')
-            {
-                deferred.reject("Not Found Any Data");
-                //console.log(data);
-            }
-            else
-            {
-                var array = [];
-                data.forEach(function(item)
-                {
-                    array.push(item._id );
-                });
-                //console.log(array);
-                CandidateProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
-                {
-                    //console.log(result);
-                    if (err){
-                        logger.error(err.message, {stack: err.stack});
-                        //console.log(err);//deferred.reject(err.name + ': ' + err.message);
-                    }
-                    if (result == '')
-                    {
-                        deferred.reject("Not Found Any Data");
+    	let queryString=[];
+    	if(data.is_approve!== -1)
+           {
+          	
+          	
+          	const isApproveFilter = {"users.is_approved" : parseInt(data.is_approve)};
+          	 queryString.push(isApproveFilter);
+           }
+           if(data.word)
+           {
+          	 const nameFilter = { $or : [  { first_name : {'$regex' : data.word, $options: 'i' } }, { last_name : {'$regex' : data.word , $options: 'i'} }]};
+          	 queryString.push(nameFilter);
+           }
+           
+           if(queryString.length>0)
+           {
+             	 var object = queryString.reduce((a, b) => Object.assign(a, b), {})
+             	        
+             	 const searchQuery = { $match: object };
+             	 
+             	 CandidateProfile.aggregate([    	
+                  {
+                 	 $lookup:
+                 	 {
+                 		 from: "users",
+                 		 localField: "_creator",
+                 		 foreignField: "_id",
+                 		 as: "users"
+                 	 }
+                  }, searchQuery]).exec(function(err, cand_result)
+                 {
+                 	 
+                 	 if (err) {
+                 		 logger.error(err.message, {stack: err.stack});
+                 		 ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
+                 	 }
+                 	 if (cand_result == '')
+                 	 {
+                 		 deferred.reject("Not Found Any Data");
 
-                    }
-                    else
-                    {
-                    	var array=[];
-                   	 	result.forEach(function(item)
-                        {
-                               array.push(filterReturnData.removeSensativeData(item.toObject()));
-                        });
-                   	 	deferred.resolve(array);
-                    }
-                });
-
-            }
-
-        });
-    }
-
-    else if(data.msg_tags)
-    {
-        console.log("msg_tags");
-        //console.log(data.msg_tags);
-        chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, data)
-        {
-            if(err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            if(data)
-            {
-                //console.log(data);
-                var array = [];
-                data.forEach(function(item)
-                {
-                    array.push(item.receiver_id );
-                });
-                //console.log(array);
-
-                CandidateProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
-                {
-                    //console.log(result);
-                    if (err) {
-                        logger.error(err.message, {stack: err.stack});
-                        //console.log(err);//deferred.reject(err.name + ': ' + err.message);
-                    }
-                    if (result == '')
-                    {
-                        deferred.reject("Not Found Any Data");
-
-                    }
-                    else
-                    {
-                    	var array=[];
-                   	 	result.forEach(function(item)
-                        {
-                               array.push(filterReturnData.removeSensativeData(item.toObject()));
-                        });
-                   	 	deferred.resolve(array);
+                 	 }
+                 	 if(cand_result)
+                 	 {
+                    		cand_result.forEach(function(item)
+                        	{
+                    			var query_result = item.users[0];          				
+                    			var data = {_creator : query_result};
+                   	 			filterReturnData.removeSensativeData(data);
+                        	});
+                   	 		deferred.resolve(cand_result);
                         
-                    }
-                });
-                //deferred.resolve(data);
-            }
-        });
+                 	 }
+                 });
+              }
+              else
+              {
+             	deferred.reject("Not Found Any Data");
+              }
+	
     }
+    
+   
     return deferred.promise;
 }
+

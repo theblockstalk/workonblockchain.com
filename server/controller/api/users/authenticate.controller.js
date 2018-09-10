@@ -39,7 +39,7 @@ function authenticate(email, password,type)
         if (user && bcrypt.compareSync(password, user.password))
         {
 
-            console.log(user.type);
+          
             if(user.type=='candidate')
             {
                 CandidateProfile.findOne({ _creator:  user._id }, function (err, data)
@@ -72,13 +72,11 @@ function authenticate(email, password,type)
             }
             if(user.type=='company')
             {
-                //console.log("company");
+                
                 EmployerProfile.findOne({ _creator:  user._id }, function (err, data)
                 {
-                    //console.log(data);
+
                     if (err) deferred.reject(err.name + ': ' + err.message);
-
-
 
                     else
                     {

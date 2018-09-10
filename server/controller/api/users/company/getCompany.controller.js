@@ -43,7 +43,7 @@ function getCompany()
         	
         }
                
-        //console.log(result);
+      
     });
 
     return deferred.promise;

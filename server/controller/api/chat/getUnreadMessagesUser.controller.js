@@ -58,7 +58,7 @@ function get_unread_msgs_of_user(data){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log(result);
+            ////console.log(result);
             deferred.resolve({
                 receiver_id: data.receiver_id,
                 sender_id: data.sender_id,

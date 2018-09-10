@@ -912,31 +912,11 @@ export class UserService {
             });
     } 
     
-    searchByName(word:string)
-    {
-        return this.http.post<any>(URL+'users/search_by_name', { search: word}, {
-            headers: new HttpHeaders().set('Authorization', this.token)
-        })
-            .map((res: Response) => 
-            {
-                if (res) 
-                {           
-                        return res;                  
-                }
-            }).catch((error: any) => 
-            {
-                if (error.status ) 
-                {
-                    return Observable.throw(new Error(error.status));
-                }
-               
-            });
-        
-     }
     
-    admin_candidate_filter(is_approve : number , msg_tags : any)
+    
+    admin_candidate_filter(is_approve : number , msg_tags : any,word:any)
     {
-        return this.http.post<any>(URL+'users/admin_candidate_filter', { is_approve: is_approve , msg_tags : msg_tags}, {
+        return this.http.post<any>(URL+'users/admin_candidate_filter', { is_approve: is_approve , msg_tags : msg_tags, word : word}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) => 
@@ -976,30 +956,11 @@ export class UserService {
         
     }
     
-    admin_search_by_name(word:string)
-    {
-        return this.http.post<any>(URL+'users/admin_search_by_name', { search: word}, {
-            headers: new HttpHeaders().set('Authorization', this.token)
-        })
-            .map((res: Response) => 
-            {
-                if (res) 
-                {           
-                        return res;                  
-                }
-            }).catch((error: any) => 
-            {
-                if (error.status ) 
-                {
-                    return Observable.throw(new Error(error.status));
-                }
-               
-            });
-    }
+   
     
-    admin_company_filter(is_approve : number , msg_tags : any)
+    admin_company_filter(is_approve : number , msg_tags : any,word:any)
     {
-        return this.http.post<any>(URL+'users/admin_company_filter', { is_approve: is_approve , msg_tags : msg_tags}, {
+        return this.http.post<any>(URL+'users/admin_company_filter', { is_approve: is_approve , msg_tags : msg_tags , word:word}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) => 

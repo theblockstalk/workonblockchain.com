@@ -28,7 +28,7 @@ export class AdminCandidateDetailComponent implements OnInit {
  
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
-       // //console.log(this.user_id); 
+       // ////console.log(this.user_id); 
     });
             
   
@@ -52,12 +52,12 @@ export class AdminCandidateDetailComponent implements OnInit {
     };
   ngOnInit() 
   {
-      //console.log(this.user_id);
+      ////console.log(this.user_id);
 
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
-      ////console.log('ftn')
-      ////console.log(this.user_id)
+      //////console.log('ftn')
+      //////console.log(this.user_id)
       this.credentials.user_id = this.user_id;
 
       
@@ -68,7 +68,7 @@ export class AdminCandidateDetailComponent implements OnInit {
           this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
-                //console.log(data);
+                ////console.log(data);
                 this.info.push(data);
                 this.approve = data._creator.is_approved;
                 this.verify =data._creator.is_verify;
@@ -148,13 +148,13 @@ export class AdminCandidateDetailComponent implements OnInit {
           this.router.navigate(['/not_found']);
           
       }      
-      ////console.log(this.currentUser._id); 
+      //////console.log(this.currentUser._id); 
   }
     
   is_approve;is_approved;
     approveClick(event , approveForm: NgForm)
     {
-        ////console.log(approveForm.value.id);
+        //////console.log(approveForm.value.id);
          if(event.srcElement.innerHTML ==='Active' )
          {
              this.is_approve = 1;
@@ -168,7 +168,7 @@ export class AdminCandidateDetailComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    ////console.log(data.is_approved);
+                    //////console.log(data.is_approved);
                      
                     if(data.is_approved === 1 )
                     {

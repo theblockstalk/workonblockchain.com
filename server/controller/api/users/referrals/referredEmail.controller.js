@@ -26,10 +26,9 @@ module.exports = function referred_email(req,res)
 function referred_email_user(data)
 {
     var deferred = Q.defer();
-    //console.log(data);
     referedUserEmail.sendEmail(data);
     return deferred.promise;
-    //
+
 }
 
 

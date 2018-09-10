@@ -51,7 +51,7 @@ function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
 
     users.find({ type: user_type }, function (err, user)
     {
-       // console.log(bcrypt.compareSync(password, user.password));
+       // //console.log(bcrypt.compareSync(password, user.password));
         if (err) deferred.reject(err.name + ': ' + err.message);
 
         if (user){
@@ -71,7 +71,7 @@ function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
 	//old one-> db.users.find(  { type: user_type }  )
     query = '';
 	if(user_type == 'company'){
-		console.log(sender_id);
+		//console.log(sender_id);
 		users.find({$and : [{ _id : sender_id }, { type : user_type } ]}, function (err, data)
 		{
 
@@ -79,7 +79,7 @@ function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
 				deferred.reject(err.name + ': ' + err.message);
 			if(data)
 			{
-				console.log(data);
+				//console.log(data);
 				var array = [];
 				data.forEach(function(item)
 				{
@@ -88,7 +88,7 @@ function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
 				EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
 				{
 					if (err){
-						//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+						////console.log(err);//deferred.reject(err.name + ': ' + err.message);
 						logger.error(err.message, {stack: err.stack});
 					}
 					if (result)
@@ -114,8 +114,8 @@ function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
 		});
 	}  
 	else{
-		console.log(receiver_id);
-		console.log(user_type);
+		//console.log(receiver_id);
+		//console.log(user_type);
 		users.find({$and : [{ _id : receiver_id }, { type : user_type } ]}, function (err, data)
 		{
 
@@ -133,14 +133,14 @@ function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
 				{
 					if (err){
 						logger.error(err.message, {stack: err.stack});
-						//console.log(err);//deferred.reject(err.name + ': ' + err.message);
+						////console.log(err);//deferred.reject(err.name + ': ' + err.message);
 					}
 					if (result)
 					{
 						var query_result = result[0].toObject();      
 						query_result = filterReturnData.removeSensativeData(query_result);
 						if(is_company_reply == 1){
-							console.log('matched');
+							//console.log('matched');
 						}
 						else{
 							query_result = filterReturnData.anonymousSearchCandidateData(query_result);

@@ -45,7 +45,7 @@ module.exports = function (req, res)
 }
 
 function get_messages(receiver_id,sender_id){
-    //console.log(receiver_id)
+    ////console.log(receiver_id)
     var deferred = Q.defer();
     /*$or : [
         { $and : [ { receiver_id : {$regex: receiver_id} }, { sender_id : {$regex: sender_id} } ] },
@@ -63,7 +63,7 @@ function get_messages(receiver_id,sender_id){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log(data);
+            ////console.log(data);
             deferred.resolve({
                 datas:data
             });

@@ -45,7 +45,7 @@ module.exports = function (req,res){
 
 function set_unread_msgs_emails_status(data){
     var deferred = Q.defer();
-    //console.log(data.user_id);
+    ////console.log(data.user_id);
     var set =
         {
             is_unread_msgs_to_send: data.status,

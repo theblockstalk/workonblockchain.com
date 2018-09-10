@@ -38,7 +38,7 @@ function filter(params, userId)
     var query_result=[];
     var query;
 
-    //console.log(params);
+    ////console.log(params);
 
     if(params.currency== '$ USD' && params.salary)
     {
@@ -122,7 +122,7 @@ function filter(params, userId)
 
             if(result_array.length !== 0)
             {
-                //console.log("result array");
+                ////console.log("result array");
                 const searchFilter = {
                     $or : [
                         { $and : [ { expected_salary_currency : "$ USD" }, { expected_salary : {$lte: result_array.USD} } ] },
@@ -153,7 +153,7 @@ function filter(params, userId)
 
                 if (err){
                     logger.error(err.message, {stack: err.stack});
-                    //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+                    ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
                 }
                 if(result)
                 {

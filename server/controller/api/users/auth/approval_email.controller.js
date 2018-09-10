@@ -28,18 +28,18 @@ module.exports = function (req, res) {
 
 function approval_email(info)
 {	
-	//console.log(email);
+	////console.log(email);
     var deferred = Q.defer();
 
     if(info.type === 'candidate')
     {
-    	console.log("candidate");
+    	//console.log("candidate");
     	candidateApprovedEmail.sendEmail(info.email, info.name);
     }
     
     if(info.type === 'company')
     {
-    	console.log("comapny");
+    	//console.log("comapny");
     	companyApprovedEmail.sendEmail(info.email, info.name);
     }
     

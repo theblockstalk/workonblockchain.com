@@ -35,7 +35,7 @@ module.exports = function (req,res){
 
 function destroy_token(id){
     var deferred = Q.defer();
-    //console.log(data.user_id);
+    ////console.log(data.user_id);
     let token=null;
     var set =
         {
