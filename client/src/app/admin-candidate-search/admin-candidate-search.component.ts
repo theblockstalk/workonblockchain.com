@@ -85,7 +85,7 @@ export class AdminCandidateSearchComponent implements OnInit {
                 {
                     if(data.error)
                     {
-                       // //console.log(this.info);
+                       // ////console.log(this.info);
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -99,7 +99,7 @@ export class AdminCandidateSearchComponent implements OnInit {
                         this.information = this.filter_array(data);
                         this.info=[];
                         this.length='';
-                         ////console.log(this.log);
+                         //////console.log(this.log);
                         
                        // this.info = this.information; 
                         
@@ -147,13 +147,13 @@ export class AdminCandidateSearchComponent implements OnInit {
                         } 
                   
                 });
-       //console.log(this.info);
+       ////console.log(this.info);
     }
     
     is_approve;
     approveClick(event , approveForm: NgForm)
     {
-        ////console.log(approveForm.value.id);
+        //////console.log(approveForm.value.id);
          if(event.srcElement.innerHTML ==='Active' )
          {
              this.is_approve = 1;
@@ -167,7 +167,7 @@ export class AdminCandidateSearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    ////console.log(data.is_approved);
+                    //////console.log(data.is_approved);
                      
                     if(data.is_approved === 1 )
                     {
@@ -248,76 +248,9 @@ export class AdminCandidateSearchComponent implements OnInit {
     
     onSearchName(f: NgForm)
     {
-<<<<<<< HEAD
+
         this.search(f.value.word);
        
-=======
-        ////console.log(f.value.word);
-        this.length=0;
-        this.info=[];
-         this.authenticationService.searchByName(f.value.word)
-            .subscribe(
-                data => 
-                {
-                    //console.log(data);
-                     if(data.error)
-                    {
-                      
-                         this.length='';
-                        this.log = data.error;
-                        this.info=[];
-                        this.page='';
-                    }
-                    else
-                    {
-                        
-                        this.length =0;
-                        this.info=[];
-                        this.information = this.filter_array(data);
-                        for(let res of this.information)
-                        {
-                           
-                            
-                                  this.length++;
-                                this.info.push(res);
-                            
-
-                        }
-                       
-                        if(this.length> 0 )
-                        {
-                            
-                             this.log='';
-                        }
-                        else
-                        {
-                            this.log= 'Not Found Any Data';
-                        }
-                        
-                        this.page =this.length; 
-                    }
-                            
-                },
-                error => 
-                {
-                    if(error.message == 500 || error.message == 401)
-                        {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            localStorage.removeItem('currentUser');
-                                    localStorage.removeItem('googleUser');
-                                    localStorage.removeItem('close_notify');
-                                    localStorage.removeItem('linkedinUser');
-                                    localStorage.removeItem('admin_log'); 
-                            window.location.href = '/login';
-                        }
-                    
-                        if(error.message == 403)
-                        {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
-                  
-                });
->>>>>>> c758ec795e36b6e296dc59f4a8bbb9b9be258d18
     }
     
     msgtags;
@@ -326,16 +259,16 @@ export class AdminCandidateSearchComponent implements OnInit {
          if(this.select_value  !== data.value)
         {
             this.select_value = data.value;
-            //console.log(this.select_value);
+            ////console.log(this.select_value);
             this.search(this.select_value);
        }
-        //console.log(this.msgtags);
+        ////console.log(this.msgtags);
      }
     
     search_approved(event)
     {
          this.approve =event;
-        //console.log(this.approve);
+        ////console.log(this.approve);
         this.search(this.approve);
         
     }
@@ -359,27 +292,24 @@ export class AdminCandidateSearchComponent implements OnInit {
         this.info=[];
         if(this.approve == -1 && !this.select_value && !this.searchWord )
         {             
-            //console.log("iffffffff"); 
+            ////console.log("iffffffff"); 
              this.getAllCandidate();
         }
                
         else
         { 
-<<<<<<< HEAD
-            console.log("else");
-            this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord)
-=======
+
             //console.log("else");
-            this.authenticationService.admin_candidate_filter(this.approve , this.select_value)
->>>>>>> c758ec795e36b6e296dc59f4a8bbb9b9be258d18
+            this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord)
+
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                    ////console.log(data);
  
                     if(data.error)
                     {
-                       // //console.log(this.info);
+                       // ////console.log(this.info);
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -394,7 +324,7 @@ export class AdminCandidateSearchComponent implements OnInit {
                         this.info=[];
                         this.information = this.filter_array(data);
 
-                         ////console.log(this.log);
+                         //////console.log(this.log);
                         
                        // this.info = this.information; 
                         
@@ -456,16 +386,9 @@ export class AdminCandidateSearchComponent implements OnInit {
         this.approve=-1;
         this.info=[];
         this.searchWord='';
-        //console.log("reset");
+        ////console.log("reset");
         this.getAllCandidate();
-       /* this.msgtags='';
-        
-       
-        
-        //console.log(this.select_value);
-         
-        //this.positionchanged(this.select_value);
-        */
+ 
        
     }
 

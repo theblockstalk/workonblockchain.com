@@ -28,13 +28,11 @@ module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateD
 	delete candidateDoc.stackexchange_account;
 	delete candidateDoc._creator.email;
    
-   // console.log(candidateDoc);
     return candidateDoc;
 };
 
 const anonymosCompanyFields = ['company_name', 'company_website', 'company_country', 'company_city','company_description',
 		'company_logo', 'company_funded','no_of_employees','company_founded','company_postcode','company_phone','job_title','_creator'];
-// TODO: finish
 
 module.exports.anonymousCandidateData = function anonymousCandidateData(companyDoc) {
     companyDoc = filterWhiteListFields(companyDoc, anonymosCompanyFields);

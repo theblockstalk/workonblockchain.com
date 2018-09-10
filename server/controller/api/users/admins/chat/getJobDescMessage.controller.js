@@ -61,7 +61,7 @@ function get_job_desc_msgs(data){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log(data);
+            ////console.log(data);
             deferred.resolve({
                 datas:data
             });

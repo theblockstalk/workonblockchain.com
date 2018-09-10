@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 //const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
 const URL = environment.backend_url;
-////console.log(URL);
+//////console.log(URL);
 
 
 @Component({
@@ -45,7 +45,7 @@ export class AboutCompanyComponent implements OnInit {
                 data => 
                 {
  
-                  //console.log(data);
+                  ////console.log(data);
                    if(data.company_founded || data.no_of_employees || data.company_funded || data.company_description ||data.company_logo)
                   {
                      this.company_founded=data.company_founded;
@@ -105,11 +105,11 @@ export class AboutCompanyComponent implements OnInit {
     
     about_company(companyForm: NgForm) 
     {
-         //console.log(companyForm.value);
+         ////console.log(companyForm.value);
         if(!this.company_founded)
         {
             this.founded_log = 'Please fill when was the company founded';
-            //console.log(this.founded_log);
+            ////console.log(this.founded_log);
         }
        
         if(!this.no_of_employees)
@@ -147,7 +147,7 @@ export class AboutCompanyComponent implements OnInit {
               let formData = new FormData();
               if (fileCount > 0 ) 
               { 
-              //console.log("data");
+              ////console.log("data");
                 formData.append('photo', inputEl.files.item(0));
                     
                 this.http.post(URL+'users/employer_image', formData , {
@@ -155,7 +155,7 @@ export class AboutCompanyComponent implements OnInit {
                 }).map((res) => res).subscribe(                
                 (success) => 
                 {
-                  //console.log(success);
+                  ////console.log(success);
                   this.router.navigate(['/company_profile']); 
                 },
                 (error) => {

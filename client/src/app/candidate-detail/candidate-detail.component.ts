@@ -29,7 +29,7 @@ export class CandidateDetailComponent implements OnInit {
  
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
-       //console.log(this.user_id); 
+       ////console.log(this.user_id); 
     });
             
   
@@ -60,12 +60,12 @@ export class CandidateDetailComponent implements OnInit {
     rply;cand_data=[];
   ngOnInit() 
   {
-      //console.log(this.user_id);
+      ////console.log(this.user_id);
       this.company_reply = 0;
 	  this.credentials.currency = -1;
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      ////console.log('ftn')
-      ////console.log(this.user_id)
+      //////console.log('ftn')
+      //////console.log(this.user_id)
 	  this.credentials.user_id = this.user_id;
 
       
@@ -78,8 +78,8 @@ export class CandidateDetailComponent implements OnInit {
 
                     if(data['datas'][0]){
 						if(data['datas'][0].is_company_reply==1){
-                            //console.log('accept')
-                            //console.log("iffffffffffff");
+                            ////console.log('accept')
+                            ////console.log("iffffffffffff");
                              this.authenticationService.candidate_detail(this.user_id, data['datas'][0].is_company_reply  )
                              .subscribe(
                              dataa => 
@@ -92,7 +92,7 @@ export class CandidateDetailComponent implements OnInit {
                                         this.education = dataa.education_history;
                                         this.education.sort(this.education_sort_desc);                                                     
                                         this.cand_data.push(dataa);
-                                        //console.log(this.cand_data);
+                                        ////console.log(this.cand_data);
                                    }
                              },
                              error => 
@@ -117,7 +117,7 @@ export class CandidateDetailComponent implements OnInit {
                         }
                         else
 						{
-							 //console.log("else");
+							 ////console.log("else");
 							 this.rply =0;
 							 this.authenticationService.candidate_detail(this.user_id,  this.rply )
 							 .subscribe(
@@ -132,7 +132,7 @@ export class CandidateDetailComponent implements OnInit {
 									   this.education.sort(this.education_sort_desc); 
 									   this.cand_data.push(dataa);
 									   this.first_name = dataa.initials;
-									   //console.log(this.cand_data);
+									   ////console.log(this.cand_data);
 								  }
 							 },
 							 error => 
@@ -154,11 +154,11 @@ export class CandidateDetailComponent implements OnInit {
 					  
 							});
 						}
-                        //console.log(this.company_reply);
+                        ////console.log(this.company_reply);
                     }
                     else
                     {
-                         //console.log("else");
+                         ////console.log("else");
                          this.rply =0;
                          this.authenticationService.candidate_detail(this.user_id,  this.rply )
                          .subscribe(
@@ -173,7 +173,7 @@ export class CandidateDetailComponent implements OnInit {
                                    this.education.sort(this.education_sort_desc); 
                                    this.cand_data.push(dataa);
                                    this.first_name = dataa.initials;
-                                   //console.log(this.cand_data);
+                                   ////console.log(this.cand_data);
                               }
                          },
                          error => 
@@ -197,8 +197,8 @@ export class CandidateDetailComponent implements OnInit {
                    }
                 },
                 error => {
-                    //console.log('error');
-                    //console.log(error);
+                    ////console.log('error');
+                    ////console.log(error);
                     //this.log = error;
                 }
             );
@@ -242,13 +242,13 @@ export class CandidateDetailComponent implements OnInit {
   job_description;
   send_job_offer(msgForm : NgForm){
 	    this.full_name = this.first_name;
-        //console.log(this.full_name);
+        ////console.log(this.full_name);
         if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
 			.subscribe(
 				data => {
-					//console.log(data['datas']);
+					////console.log(data['datas']);
 					if(data['datas'].length>0){
 						this.job_offer_msg = 'Message already sent';
 					}
@@ -261,12 +261,12 @@ export class CandidateDetailComponent implements OnInit {
 						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.job_description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
 							.subscribe(
 								data => {
-									//console.log(data);
+									////console.log(data);
 									this.job_offer_msg = 'Message has been successfully sent';
 								},
 								error => {
-									//console.log('error');
-									//console.log(error);
+									////console.log('error');
+									////console.log(error);
 									//this.log = error;
 								}
 							);

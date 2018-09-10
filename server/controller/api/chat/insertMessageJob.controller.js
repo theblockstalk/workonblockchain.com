@@ -75,7 +75,7 @@ function insert_message_job_new(data){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log('done');
+            ////console.log('done');
             deferred.resolve({Success:'Msg sent'});
 }
 });

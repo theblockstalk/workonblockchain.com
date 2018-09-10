@@ -27,8 +27,8 @@ const logger = require('../../services/logger');
 
 module.exports = function (req, res)
 {
-	console.log("idddddddddddd");
-	console.log(req.body.id);
+	//console.log("idddddddddddd");
+	//console.log(req.body.id);
     get_user_messages(req.body.id).then(function (data)
     {
         if (data)
@@ -57,7 +57,7 @@ function get_user_messages(id){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log(data);
+            ////console.log(data);
             deferred.resolve({
                 datas:data
             });

@@ -30,7 +30,7 @@ module.exports = function register(req, res)
 
 function create(userParam)
 {
-	//console.log(userParam);
+	////console.log(userParam);
     var deferred = Q.defer();
     var count=0;
 
@@ -62,11 +62,11 @@ function create(userParam)
         let now = new Date();
 		let salt = crypto.randomBytes(16).toString('base64');
 		let random = crypto.randomBytes(16).toString('base64');
-		//console.log(salt);
+		////console.log(salt);
 		let hash = crypto.createHmac('sha512', salt);
 		hash.update(userParam.password);
 		let hashedPasswordAndSalt = hash.digest('hex');
-		//console.log(hashedPasswordAndSalt);
+		////console.log(hashedPasswordAndSalt);
         createdDate= now;
         var hashStr = crypto.createHash('sha256').update(userParam.email).digest('base64');
         var user_info = {};

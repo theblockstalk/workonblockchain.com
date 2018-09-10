@@ -35,7 +35,7 @@ module.exports = function insert_message(req, res)
     {
         if (data)
         {
-            console.log(data);
+            //console.log(data);
             res.send(data);
         }
         else
@@ -84,7 +84,7 @@ function insert_message_new(data){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            //console.log('done');
+            ////console.log('done');
             deferred.resolve({Success:'Msg sent'});
 }
 });

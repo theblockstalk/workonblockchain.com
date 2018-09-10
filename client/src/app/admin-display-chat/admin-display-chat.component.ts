@@ -55,8 +55,8 @@ export class AdminDisplayChatComponent implements OnInit {
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
         this.user_type = params['type'];
-        //console.log(this.user_id); 
-            //console.log(this.user_type);
+        ////console.log(this.user_id); 
+            ////console.log(this.user_type);
     });
         
    }
@@ -70,26 +70,26 @@ export class AdminDisplayChatComponent implements OnInit {
         {
          this.get_user_type();
       //this.user_type = 'company';
-      ////console.log(this.user_type);
+      //////console.log(this.user_type);
          
        this.count=0;
        if(this.user_type=="company"){
-          ////console.log('company');
+          //////console.log('company');
           this.display_list = 1;
           /*this.authenticationService.getCandidate(this.type)
             .subscribe(
                 data => {
-                    //console.log('data');
+                    ////console.log('data');
                     this.users = data['users'];
                 },
                 error => {
-                    //console.log('error');
-                    //console.log(error);
+                    ////console.log('error');
+                    ////console.log(error);
                     this.log = error;
                 }
             );*/
           //below code for only contacted candidates
-         // //console.log('company');
+         // ////console.log('company');
           this.display_list = 1;
           this.authenticationService.get_user_messages_only(this.user_id)
             .subscribe(
@@ -101,14 +101,14 @@ export class AdminDisplayChatComponent implements OnInit {
 						this.length = msg_data['datas'].length;
                         for (var key_messages in this.new_messges) {
 							if(this.user_id == this.new_messges[key_messages].receiver_id){
-								//console.log('my');
+								////console.log('my');
 							}
 							else{
 								this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].is_company_reply,this.type)
 								.subscribe(
 									data => {
 										this.users.push(data['users']);
-										//console.log(this.users);
+										////console.log(this.users);
 										this.count = 0;
 										for (var key_users_new in this.users) {
 											if(this.count == 0){
@@ -127,16 +127,16 @@ export class AdminDisplayChatComponent implements OnInit {
 													this.unread_msgs_info.push(data);
 												},
 												error => {
-													//console.log('error');
-													//console.log(error);
+													////console.log('error');
+													////console.log(error);
 												}
 											);*/
 										}
-										//console.log(this.unread_msgs_info);
+										////console.log(this.unread_msgs_info);
 									},
 									error => {
-										//console.log('error');
-										//console.log(error);
+										////console.log('error');
+										////console.log(error);
 										this.log = error;
 									}
 								);
@@ -146,7 +146,7 @@ export class AdminDisplayChatComponent implements OnInit {
                     else
                     {
                         this.length = 0;
-                        //console.log("elseee");
+                        ////console.log("elseee");
                         
                      }
                 },
@@ -171,18 +171,18 @@ export class AdminDisplayChatComponent implements OnInit {
 					if(msg_data['datas'].length>0){
                         this.new_messges.push(msg_data['datas']);
 						this.new_messges = this.filter_array(msg_data['datas']);
-						//console.log(this.new_messges);
+						////console.log(this.new_messges);
                         this.length = msg_data['datas'].length;
 						for (var key_messages in this.new_messges) {
 							if(this.user_id == this.new_messges[key_messages].sender_id){
-								//console.log('my');
+								////console.log('my');
 							}
 							else{
 								this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',0,'company')
 								.subscribe(
 									data => {
 										this.users.push(data['users']);
-										//console.log(this.users);
+										////console.log(this.users);
 										this.count = 0;
 										for (var key_users_new in this.users) {
 											if(this.count == 0){
@@ -196,8 +196,8 @@ export class AdminDisplayChatComponent implements OnInit {
 													this.unread_msgs_info.push(data);
 												},
 												error => {
-													//console.log('error');
-													//console.log(error);
+													////console.log('error');
+													////console.log(error);
 												}
 											);*/
 										}
@@ -223,7 +223,7 @@ export class AdminDisplayChatComponent implements OnInit {
                      else
                     {
                         this.length = 0;
-                        //console.log("elseee   22");
+                        ////console.log("elseee   22");
                         
                      }
                 },
@@ -242,7 +242,7 @@ export class AdminDisplayChatComponent implements OnInit {
             );
             
             this.display_list = 0;
-            ////console.log('candidate');
+            //////console.log('candidate');
         }
        }
        else
@@ -263,16 +263,16 @@ export class AdminDisplayChatComponent implements OnInit {
       //this.msgs = 'hi baby';
       this.msgs = '';
       this.new_msgss = '';
-      //console.log(id);
+      ////console.log(id);
      // this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      //console.log("show_msg_area: " + this.show_msg_area);
+      ////console.log("show_msg_area: " + this.show_msg_area);
         //Observable.interval(10000).subscribe(x => {
          //receiver,sender
          this.authenticationService.get_user_messages(id,this.user_id)
             .subscribe(
                 data => {
-                    //console.log('data');
-                    //console.log(data['datas']);
+                    ////console.log('data');
+                    ////console.log(data['datas']);
                     this.new_msgss = data['datas'];
                     this.job_desc = data['datas'][0];
                     if(data['datas'][1]){
@@ -337,7 +337,7 @@ export class AdminDisplayChatComponent implements OnInit {
    
     get_user_type()
     {
-		//console.log(this.user_type);
+		////console.log(this.user_type);
 		if(this.user_type == 'company'){
 			this.authenticationService.getCandidate(this.user_id,'0',1,this.user_type)
 			.subscribe(

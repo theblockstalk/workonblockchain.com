@@ -9,7 +9,7 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req,res)
 {
-    // console.log(req.params.hash);
+    // //console.log(req.params.hash);
     reset_password(req.params.hash,req.body).then(function (err, data)
     {
         if (data)
@@ -31,18 +31,18 @@ module.exports = function (req,res)
 function reset_password(hash,data)
 {
     var deferred = Q.defer();
-    //console.log(hash);
-    //console.log(data);
+    ////console.log(hash);
+    ////console.log(data);
     var token = jwt_hash.decode(hash, settings.EXPRESS_JWT_SECRET, 'HS256');
-    //console.log("data");
-    //console.log(data);
+    ////console.log("data");
+    ////console.log(data);
     if(new Date(token.expiry) > new Date())
     {
-        //console.log(token);
+        ////console.log(token);
         users.findOne({ password_key :hash  }, function (err, result)
         {
 
-            //console.log(result);
+            ////console.log(result);
             if (err){
                 logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
@@ -61,12 +61,12 @@ function reset_password(hash,data)
 
         function updateData(_id)
         {
-            //console.log(_id);
+            ////console.log(_id);
             var user = _.omit(data, 'password');
-            //console.log(user);
+            ////console.log(user);
             // add hashed password to user object
             user.password = bcrypt.hashSync(data.password, 10);
-            //console.log(user.password);
+            ////console.log(user.password);
             var set =
                 {
                     password:  user.password,

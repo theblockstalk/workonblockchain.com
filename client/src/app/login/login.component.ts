@@ -33,24 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         private router: Router,
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService,private titleService: Title,private newMeta: Meta) {
 		this.titleService.setTitle('Work on Blockchain | Login');
-        //this.code = route.snapshot.params['code'];
-       // //console.log(this.code);
-        // //console.log(this.code);
-        /*if(this.code){
-            //console.log('in if');
-            this.authenticationService.getByRefrenceCode(this.code)
-                .subscribe(
-                    data => {
-                        //console.log(data);
-                        this.ref_msg = data.email+' thinks you should join workonblockchain.com';
-                    },
-                    error => {
-                        //console.log('error');
-                        //console.log(error);
-                        this.log = error;
-                    }
-                );
-        }*/
+        
       }
 
   password_message;
@@ -173,41 +156,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                 if(user.error)
                 {
                     this.log = user.error;
-                  /*//console.log("ifffffffffffff");
                  
-                  this.log = 'Credentials not match';
-                  this.authenticationService.create(this.credentials)
-                  .subscribe(
-                  data => 
-                  {
-                    //console.log(data);
-                    this.credentials.email= '';
-                    if(data.error)
-                    {
-                        this.log = data.error;
-                    }
-                    else
-                    {
-                        localStorage.setItem('currentUser', JSON.stringify(data));
-                        //localStorage.removeItem('userInfo');
-                        //this.router.navigate(['/about']);
-                        window.location.href = '/terms-and-condition';
-
-                    }
-                  },
-                  error => {
-                    this.log = error;
-                    
-                  });*/
-              
                     
                 }
                 else
                 {
-                   //this.router.navigate(['/candidate_profile']);
-                    //
-                     //console.log("elseeeeeeeeeeeeee");
-                    //this.router.navigate(['/candidate_profile']);
                     window.location.href = '/candidate_profile';
                   //this.router.navigate(['/login']);
                 }

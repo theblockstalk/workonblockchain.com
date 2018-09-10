@@ -30,8 +30,8 @@ function update_candidate_profile(_id,userParam)
 {
     var deferred = Q.defer();
     var _id = _id;
-    // console.log(userParam);
-    //console.log(userParam.education);
+    // //console.log(userParam);
+    ////console.log(userParam.education);
     CandidateProfile.findOne({ _creator: _id }, function (err, data)
     {
         if (err){

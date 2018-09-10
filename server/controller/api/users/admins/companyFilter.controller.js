@@ -125,7 +125,7 @@ function admin_company_filter_new(data)
    			                	 var object = queryString.reduce((a, b) => Object.assign(a, b), {})
    			                	              
    			                	 const searchQuery = { $match: object };
-   			                	 console.log(searchQuery);
+   			                	 //console.log(searchQuery);
    			                	EmployerProfile.aggregate([    	
    			                     {
    			                    	 $lookup:
@@ -137,10 +137,10 @@ function admin_company_filter_new(data)
    			                    	 }
    			                     }, searchQuery]).exec(function(err, cand_result)
    			                    {
-   			                    	 //console.log(result);
+   			                    	 ////console.log(result);
    			                    	 if (err) {
    			                    		 logger.error(err.message, {stack: err.stack});
-   			                    		 //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+   			                    		 ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
    			                    	 }
    			                    	 if (cand_result == '')
    			                    	 {
@@ -210,7 +210,7 @@ function admin_company_filter_new(data)
                  	 
                  	 if (err) {
                  		 logger.error(err.message, {stack: err.stack});
-                 		 //console.log(err);//deferred.reject(err.name + ': ' + err.message);
+                 		 ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
                  	 }
                  	 if (cand_result == '')
                  	 {

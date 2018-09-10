@@ -61,7 +61,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                       this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
-               ////console.log(data);
+               //////console.log(data);
                 if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
                 {
                   this.why_work=data.why_work;
@@ -102,7 +102,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                               
                                 //this.commercial_expYear.push(option);
                                 this.expYear_db.push(key[i]);
-                                ////console.log(this.expYear_db); 
+                                //////console.log(this.expYear_db); 
                                  
                             }
                        
@@ -382,7 +382,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {
         this.experimented_platform.splice(index, 1);
           let updateItem2 = this.findObjectByKey(this.expYear, 'experimented_platform', obj.value);
-       ////console.log(updateItem);
+       //////console.log(updateItem);
       let index2 = this.expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -408,7 +408,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     why_work_log;commercial_log;platform_log;
    blockchain_exp(expForm: NgForm) 
    {
-      //console.log(expForm.value);
+      ////console.log(expForm.value);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
        
         if(this.commercially_worked.length !== this.commercial_expYear.length )
@@ -468,7 +468,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {
         this.commercially_worked.splice(index, 1);
           let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'platform_name',  obj.value);
-       ////console.log(updateItem);
+       //////console.log(updateItem);
       let index2 = this.commercial_expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -482,7 +482,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         obj.checked =true;
         this.commercially_worked.push(obj);
       }
-    //console.log(this.commercial_expYear);
+    ////console.log(this.commercial_expYear);
       
    }
 
@@ -495,7 +495,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {
         this.platforms_designed.splice(index, 1);
           let updateItem2 = this.findObjectByKey(this.platforms, 'platform_name', obj.value);
-       ////console.log(updateItem);
+       //////console.log(updateItem);
       let index2 = this.platforms.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -521,11 +521,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.expYear.push(this.referringData);*/ 
      
        this.selectedValue = e.target.value;
-       //console.log(value);
+       ////console.log(value);
        this.langValue = value;
-       //console.log(this.expYear);
+       ////console.log(this.expYear);
          let updateItem = this.findObjectByKey(this.expYear, 'experimented_platform', value);
-       ////console.log(updateItem);
+       //////console.log(updateItem);
       let index = this.expYear.indexOf(updateItem);
 
       if(index > -1)
@@ -535,16 +535,16 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.value=value;
         this.referringData = { experimented_platform:this.value, exp_year: e.target.value}; 
       this.expYear.push(this.referringData);
-        //console.log(this.expYear); 
+        ////console.log(this.expYear); 
         
       }
       else
       {   
-      ////console.log("not exists");
+      //////console.log("not exists");
         this.value=value;
        this.referringData = { experimented_platform :this.value, exp_year: e.target.value}; 
       this.expYear.push(this.referringData);
-        //console.log(this.expYear); 
+        ////console.log(this.expYear); 
         
       }
        
@@ -560,7 +560,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
      this.selectedValue = e.target.value;
        this.langValue = value;
         let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
-       ////console.log(updateItem);
+       //////console.log(updateItem);
       let index = this.commercial_expYear.indexOf(updateItem);
 
       if(index > -1)
@@ -570,16 +570,16 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.value=value;
         this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
       this.commercial_expYear.push(this.referringData);
-        ////console.log(this.LangexpYear); 
+        //////console.log(this.LangexpYear); 
         
       }
       else
       {   
-      ////console.log("not exists");
+      //////console.log("not exists");
         this.value=value;
        this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
       this.commercial_expYear.push(this.referringData);
-        ////console.log(this.LangexpYear); 
+        //////console.log(this.LangexpYear); 
         
       }
        
@@ -593,10 +593,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       /*this.value=value;
       this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.platforms.push(this.platformreferringData); 
-      //console.log(this.platforms);*/
+      ////console.log(this.platforms);*/
        
          let updateItem = this.findObjectByKey(this.platforms, 'platform_name', value);
-       ////console.log(updateItem);
+       //////console.log(updateItem);
       let index = this.platforms.indexOf(updateItem);
 
       if(index > -1)
@@ -606,16 +606,16 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.value=value;
         this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.platforms.push(this.platformreferringData);  
-        //console.log(this.platforms); 
+        ////console.log(this.platforms); 
         
       }
       else
       {   
-      ////console.log("not exists");
+      //////console.log("not exists");
         this.value=value;
         this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.platforms.push(this.platformreferringData); 
-        //console.log(this.platforms); 
+        ////console.log(this.platforms); 
         
       }
       
@@ -634,18 +634,18 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       let index = this.platform.indexOf(updateItem);
       this.platform.splice(index, 1);
     }
-    ////console.log(this.platform);
+    //////console.log(this.platform);
    }*/
 
    findObjectByKey(array, key, value) 
     {
-      // //console.log(array.length);
+      // ////console.log(array.length);
         for (var i = 0; i < array.length; i++) 
         {
-        // //console.log(array[i][key]);
+        // ////console.log(array[i][key]);
             if (array[i][key] === value) 
             {
-                // //console.log( array[i]);
+                // ////console.log( array[i]);
                 return array[i];
             }
        

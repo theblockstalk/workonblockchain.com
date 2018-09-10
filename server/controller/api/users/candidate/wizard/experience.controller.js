@@ -8,7 +8,7 @@ const logger = require('../../../../services/logger');
 
 module.exports = function (req,res)
 {
-    //console.log(req.body);
+    ////console.log(req.body);
 	let userId = req.auth.user._id;
     experience_data(userId,req.body).then(function (err, data)
     {
@@ -25,7 +25,7 @@ module.exports = function (req,res)
         {
             res.json({error: err});
         });
-    //console.log(req.body.experience);
+    ////console.log(req.body.experience);
 }
 
 function experience_data(_id, userParam)
@@ -42,7 +42,7 @@ function experience_data(_id, userParam)
             updateExp(_id);
 
     });
-    console.log(userParam.work);
+    //console.log(userParam.work);
    
    
     

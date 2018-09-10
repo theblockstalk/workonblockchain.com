@@ -48,7 +48,7 @@ function approve_users(_id , data)
 {
 	
     var deferred = Q.defer();
-    //console.log(data.is_approve);
+    ////console.log(data.is_approve);
     users.findOne({ _id: _id}, function (err, result)
     {
         if (err){
@@ -66,7 +66,7 @@ function approve_users(_id , data)
 
     function admin_approval(_id)
     {
-        //console.log(_id);
+        ////console.log(_id);
         var set =
             {
                 is_approved: data.is_approve,

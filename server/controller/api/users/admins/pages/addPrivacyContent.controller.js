@@ -53,10 +53,10 @@ function add_privacy_content(info)
     var createdDate;
     let now = new Date();
     createdDate= now;
-    //console.log(info.page_title);
+    ////console.log(info.page_title);
     Pages.findOne({ page_name: info.page_name}, function (err, data)
     {
-        //console.log(data);
+        ////console.log(data);
 
         if (err)
 		{
@@ -66,14 +66,14 @@ function add_privacy_content(info)
         }
         if(data==null)
         {
-            console.log("if");
+            //console.log("if");
             insertContent();
 
         }
 
         else
         {
-            console.log("else");
+            //console.log("else");
             updateContent(data._id);
         }
 
@@ -81,7 +81,7 @@ function add_privacy_content(info)
 
     function updateContent(_id)
     {
-        //console.log("update");
+        ////console.log("update");
         var set =
             {
                 page_content : info.html_text,
@@ -102,7 +102,7 @@ function add_privacy_content(info)
 
     function insertContent()
     {
-        //console.log("insert");
+        ////console.log("insert");
         let add_content = new Pages
         ({
             page_title : info.page_title,

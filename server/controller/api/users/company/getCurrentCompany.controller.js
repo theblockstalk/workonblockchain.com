@@ -28,14 +28,14 @@ module.exports = function (req, res)
 
 function get_company_byId(_id)
 {
-    //console.log(_id);
+   
     var deferred = Q.defer();
     EmployerProfile.findById(_id).populate('_creator').exec(function(err, result)
     {
         if (err)
         {
             logger.error(err.message, {stack: err.stack});
-            //console.log("Not found");
+           
             deferred.resolve({error:"Not found"});
         }// deferred.reject(err.name + ': ' + err.message);
         if(!result)

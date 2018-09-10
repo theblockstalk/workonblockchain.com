@@ -9,7 +9,7 @@ const logger = require('../../../services/logger');
 
 module.exports = function verify_send_email(info) {
     var deferred = Q.defer()
-    //console.log(info.email);
+    ////console.log(info.email);
     var name;
     users.findOne({ email :info.email  }, function (err, result)
     {

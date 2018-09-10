@@ -6,7 +6,7 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req, res) {
     refreal_email(req.body).then(function (data){
-        console.log('done');
+        
         res.json(data);
     })
         .catch(function (err)
