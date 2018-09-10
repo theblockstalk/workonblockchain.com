@@ -12,7 +12,7 @@ module.exports.removeSensativeData = function removeSensativeData(userDoc) {
 
 const anonymosCandidateFields = ['image', 'locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_area',
     'availability_day', 'why_work', 'commercial_platform', 'experimented_platform', 'platforms', 'current_currency',
-    'current_salary', 'programming_languages', 'education_history', 'work_history', 'description', '_creator'];
+    'current_salary', 'programming_languages', 'education_history', 'work_history', 'description', '_creator','nationality'];
 
 module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
 	const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);

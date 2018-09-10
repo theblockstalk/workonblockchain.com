@@ -110,7 +110,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   
       this.dataservice.eemailMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));  
-      console.log(this.currentUser);
+      //console.log(this.currentUser);
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
       {
@@ -144,7 +144,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {                
                 if(data) 
                 {
-                    console.log(data);
+                    //console.log(data);
                     this.id = data._creator._id; 
                     this.email =data._creator.email;  
                     

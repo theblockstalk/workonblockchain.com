@@ -13,6 +13,7 @@ var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../model/employer_profile');
 var md5 = require('md5');
 const chat = require('../../../model/chat');
+const mongoose = require('mongoose');
 
 const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../../services/email/emails/verifyEmail');
@@ -25,7 +26,6 @@ const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
-const mongoose = require('mongoose');
 
 //////////inserting message in DB ////////////
 
@@ -58,8 +58,8 @@ function insert_message_new(data){
 	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
     let newChat = new chat({
-        sender_id: data.sender_id,
-        receiver_id: mongoose.Types.ObjectId(data.receiver_id),
+        sender_id : mongoose.Types.ObjectId(data.sender_id),
+		receiver_id : mongoose.Types.ObjectId(data.receiver_id),
         sender_name: data.sender_name,
         receiver_name: data.receiver_name,
         message: data.message,

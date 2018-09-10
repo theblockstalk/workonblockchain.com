@@ -10,7 +10,7 @@ module.exports.sendEmail = function sendEmail(data) {
     const sendToArray = [sendTo];
 
     const mandrillOptions = {
-        templateName: "wob-you-referred-a-friend",
+        templateName: "wob-you-referred-a-user",
         message: {
             global_merge_vars: [{
                 "name": "FNAME",

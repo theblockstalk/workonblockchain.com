@@ -162,7 +162,7 @@ export class AdminCompanySearchComponent implements OnInit {
                      
                     if(data.is_approved === 1 )
                     {
-                        console.log(approveForm.value);
+                        //console.log(approveForm.value);
                         this.authenticationService.approval_email(approveForm.value)
                         .subscribe(
                         data =>
@@ -236,8 +236,83 @@ export class AdminCompanySearchComponent implements OnInit {
     }
     
     onSearchName(f: NgForm)
+<<<<<<< HEAD
     {     
          this.search(f.value.word);
+=======
+    {
+        this.length=0;
+        this.info=[];
+        ////console.log(f.value.word);
+         this.authenticationService.admin_search_by_name(f.value.word)
+            .subscribe(
+                data => 
+                {
+                    //console.log(data);
+                    
+                     if(data.error)
+                    {
+                      
+                        this.length='';
+                        this.log = data.error;
+                        this.info=[];
+                        this.page='';
+                    }
+                    else
+                    {
+                         this.info=[];
+                         this.length=0;
+                        // //console.log(this.log);
+                       this.information = this.filter_array(data);
+                       ////console.log(this.inform.first_name);
+                        
+                        for(let res of this.information)
+                        {    
+                                                                          
+                                 this.length++; 
+                                // //console.log(res);
+                                this.info.push(res);
+                               
+                                                     
+
+                        }
+                       
+                       
+                        if(this.length> 0 )
+                        {
+                            
+                             this.log='';
+                             this.page =this.length;
+                           
+                        }
+                        else
+                        {
+                            this.log= 'Not Found Any Data';
+                        }
+                        
+                
+                    }
+                            
+                },
+                error => 
+                {
+                  if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log');
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
+                });
+>>>>>>> c758ec795e36b6e296dc59f4a8bbb9b9be258d18
     }
     
     
@@ -247,7 +322,7 @@ export class AdminCompanySearchComponent implements OnInit {
         {
             this.select_value = data.value;
             // //console.log(data.value);
-            console.log(this.select_value);
+            //console.log(this.select_value);
             this.search(this.select_value);
        }
            
@@ -294,7 +369,7 @@ export class AdminCompanySearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                console.log(data);
+                //console.log(data);
                     if(data.error)
                     {
                        // //console.log(this.info);

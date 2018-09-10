@@ -248,8 +248,76 @@ export class AdminCandidateSearchComponent implements OnInit {
     
     onSearchName(f: NgForm)
     {
+<<<<<<< HEAD
         this.search(f.value.word);
        
+=======
+        ////console.log(f.value.word);
+        this.length=0;
+        this.info=[];
+         this.authenticationService.searchByName(f.value.word)
+            .subscribe(
+                data => 
+                {
+                    //console.log(data);
+                     if(data.error)
+                    {
+                      
+                         this.length='';
+                        this.log = data.error;
+                        this.info=[];
+                        this.page='';
+                    }
+                    else
+                    {
+                        
+                        this.length =0;
+                        this.info=[];
+                        this.information = this.filter_array(data);
+                        for(let res of this.information)
+                        {
+                           
+                            
+                                  this.length++;
+                                this.info.push(res);
+                            
+
+                        }
+                       
+                        if(this.length> 0 )
+                        {
+                            
+                             this.log='';
+                        }
+                        else
+                        {
+                            this.log= 'Not Found Any Data';
+                        }
+                        
+                        this.page =this.length; 
+                    }
+                            
+                },
+                error => 
+                {
+                    if(error.message == 500 || error.message == 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                                    localStorage.removeItem('googleUser');
+                                    localStorage.removeItem('close_notify');
+                                    localStorage.removeItem('linkedinUser');
+                                    localStorage.removeItem('admin_log'); 
+                            window.location.href = '/login';
+                        }
+                    
+                        if(error.message == 403)
+                        {
+                            // this.router.navigate(['/not_found']);                        
+                        } 
+                  
+                });
+>>>>>>> c758ec795e36b6e296dc59f4a8bbb9b9be258d18
     }
     
     msgtags;
@@ -258,7 +326,7 @@ export class AdminCandidateSearchComponent implements OnInit {
          if(this.select_value  !== data.value)
         {
             this.select_value = data.value;
-            console.log(this.select_value);
+            //console.log(this.select_value);
             this.search(this.select_value);
        }
         //console.log(this.msgtags);
@@ -297,12 +365,17 @@ export class AdminCandidateSearchComponent implements OnInit {
                
         else
         { 
+<<<<<<< HEAD
             console.log("else");
             this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord)
+=======
+            //console.log("else");
+            this.authenticationService.admin_candidate_filter(this.approve , this.select_value)
+>>>>>>> c758ec795e36b6e296dc59f4a8bbb9b9be258d18
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
  
                     if(data.error)
                     {

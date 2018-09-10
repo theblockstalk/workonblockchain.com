@@ -28,7 +28,7 @@ export class UserService {
       if(this.currentUser)
       {
         this.token = this.currentUser.jwt_token;
-          console.log(this.token);
+          //console.log(this.token);
       }
       //console.log(this.currentUser);
     

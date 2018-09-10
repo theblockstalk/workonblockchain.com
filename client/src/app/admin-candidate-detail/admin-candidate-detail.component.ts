@@ -68,7 +68,7 @@ export class AdminCandidateDetailComponent implements OnInit {
           this.authenticationService.getById(this.user_id)
             .subscribe(
             data => {
-                console.log(data);
+                //console.log(data);
                 this.info.push(data);
                 this.approve = data._creator.is_approved;
                 this.verify =data._creator.is_verify;

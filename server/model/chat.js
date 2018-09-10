@@ -7,14 +7,14 @@ const Schema = mongoose.Schema;
 const ChatSchema = new Schema({
 	sender_id: 
 	{
-        type: String,
-		ref: 'User',
+        type: Schema.Types.ObjectId,
+        ref: 'User',
 		required:true
 	},
 	receiver_id: 
 	{
 		type: Schema.Types.ObjectId,
-		ref: 'User',
+        ref: 'User',
 		required:true
 	},
 	sender_name: 
@@ -28,7 +28,6 @@ const ChatSchema = new Schema({
 		ref: 'User',
         required:true
 	},
-
 	message:
 	{
 		type:String,
@@ -108,7 +107,3 @@ const ChatSchema = new Schema({
 });
 
 module.exports = mongoose.model('Chat',ChatSchema);
-
-
-
-

@@ -12,6 +12,7 @@ var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../model/employer_profile');
 const chat = require('../../../model/chat');
+const mongoose = require('mongoose');
 
 const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../../services/email/emails/verifyEmail');
@@ -50,7 +51,7 @@ function update_is_company_reply(data){
             is_company_reply: data.status,
 
         };
-    chat.update({ receiver_id: data.id},{ $set: set },{multi: true}, function (err, doc)
+    chat.update({ receiver_id: mongoose.Types.ObjectId(data.id)},{ $set: set },{multi: true}, function (err, doc)
     {
         if (err){
             logger.error(err.message, {stack: err.stack});

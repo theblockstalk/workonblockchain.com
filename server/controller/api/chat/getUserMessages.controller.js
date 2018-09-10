@@ -49,7 +49,7 @@ module.exports = function (req, res)
 function get_user_messages(id){
     var deferred = Q.defer();
     chat.find({
-        $or:[{receiver_id:{$regex: id}},{sender_id: {$regex: id}}]
+        $or:[{receiver_id:id},{sender_id: id}]
     },{_id:0,sender_id:1,receiver_id:1,is_company_reply:1}).sort({_id: 'descending'}).exec(function(err, data)
     {
         if (err){

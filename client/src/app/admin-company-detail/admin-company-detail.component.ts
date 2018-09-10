@@ -53,7 +53,7 @@ export class AdminCompanyDetailComponent implements OnInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
                     
                     if(data.error)
                     {
@@ -131,7 +131,7 @@ export class AdminCompanyDetailComponent implements OnInit {
                      
                     if(data.is_approved === 1 )
                     {
-                        console.log(approveForm.value);
+                        //console.log(approveForm.value);
                         this.authenticationService.approval_email(approveForm.value)
                         .subscribe(
                         data =>
