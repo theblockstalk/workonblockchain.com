@@ -10,7 +10,7 @@ let buildCommand;
         const environmentName = process.argv[2];
         console.log('deploying the frontend to S3 bucket');
         if (environmentName === 'production') {
-            s3bucket = config.s3.frontendBucket.staging;
+            s3bucket = config.s3.frontendBucket.production;
             buildCommand = 'npm run-script build-prod';
         } else if (environmentName === 'staging') {
             s3bucket = config.s3.frontendBucket.staging;
