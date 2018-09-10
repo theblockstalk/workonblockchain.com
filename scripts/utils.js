@@ -57,7 +57,7 @@ module.exports.checkGitBranch = function checkGitBranch(branch, deployment) {
             expectedBranch = 'staging';
             break;
         case 'production':
-            expectedBranch = 'staging';
+            expectedBranch = 'master';
             break;
         default:
             throw new Error("Deployment" + deployment + " is not valid");
