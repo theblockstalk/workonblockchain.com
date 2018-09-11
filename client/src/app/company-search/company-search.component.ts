@@ -126,6 +126,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
        }
   ngOnInit() 
   {
+	  setInterval(() => {
+		  this.job_offer_log = '';
+	  }, 5000);
       this.length='';
       this.log='';
       this.selectedObj=-1;
@@ -783,6 +786,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 								data => {
 									//console.log(data);
 									this.job_offer_log = 'Message successfully sent';
+									this.credentials.job_title = '';
+									this.credentials.salary = '';
+									this.credentials.currency = '';
+									this.credentials.location = '';
+									this.credentials.job_type = '';
+									this.credentials.job_desc = '';
 								},
 								error => {
 									//console.log('error');

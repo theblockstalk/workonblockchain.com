@@ -852,7 +852,7 @@ export class ChatComponent implements OnInit {
                         this.first_message = 0;
                         this.show_msg_area = 1;
                         if(this.currentUser.type=='candidate' && this.cand_offer == 1){
-                            this.credentials.msg_body = '';
+                            //this.credentials.msg_body = '';
                         }
                         else{
                             //this.credentials.msg_body = '';
