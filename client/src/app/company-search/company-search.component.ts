@@ -500,9 +500,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                            
                               }
                                 }
+
+
                         }
                             
                          this.response = "data";
+
                     }
                             
                 },
