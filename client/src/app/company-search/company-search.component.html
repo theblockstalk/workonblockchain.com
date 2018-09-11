@@ -93,8 +93,8 @@
 						 
 						<li> 
 							<div class="form-group">
-							    <input type="text" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Expected Salary">
-							    <select [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="searchdata('currency' , $event)" id="required" name="required">
+							    <input type="text" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Expected Salary">
+							    <select [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)" id="required" name="required">
 								     	<!-- <option [ngValue]="undefined" hidden selected>$ USD</option>-->
 								     	 <option value="-1" disabled selected hidden >$ USD</option>
 								     	 <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
@@ -122,16 +122,9 @@
 				</form>
 				
 			</div>
-			<ng-container *ngIf="cand_data==='';else no_section" >
-				<div class="se-pre-con"></div>
-				<script>
-					//paste this code under head tag or in a seperate js file.
-					// Wait for window load
-					$(window).load(function() {
-						// Animate loader off screen
-						$(".se-pre-con").fadeOut("slow");;
-					});
-				</script>
+			<ng-container *ngIf="response === '';else no_section" >
+				<img src="/assets/profile/Loading_icon.gif" alt="Loading Gif">
+				
 			</ng-container>
 			<ng-template #no_section >
 				<!--end-col-md-3-->
@@ -143,7 +136,7 @@
 							<span>{{cand_data.length}}</span> Candidate Match your search....
 							<i class="fa fa-check tickk" aria-hidden="true"></i>
 					</div>
-					<div class = "result-status mr-top-form" *ngIf="not_found!='' && lengthmsgg!='' && msg=='' ">
+					<div class = "result-status mr-top-form" *ngIf="not_found != '' && lengthmsgg != '' && msg == '' ">
 							<span>{{not_found}}</span> 
 							<i class="fa fa-check tickk" aria-hidden="true"></i>
 					</div>
