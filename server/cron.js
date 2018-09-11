@@ -15,7 +15,6 @@ module.exports.startCron = function startCron() {
         timeZone: 'CET'
     });
     logger.debug('unreadMessagesJob', {job: unreadMessagesJob});
-    // unreadMessagesJob.start();
-
+    
     logger.info('Cron jobs started');
 }

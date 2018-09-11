@@ -6,6 +6,7 @@
         <div class="form-login">
                 <h3 class = "login_hd">Login to WOB</h3>
                 <div class="ref_msg">{{ref_msg}}</div>
+                <div class="alert alert-success error-alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
                  <div class="alert alert-success error-alert" *ngIf="message && !error">{{message}}</div>
                  <div class="alert alert-success error-alert" *ngIf="password_message && !message ">{{password_message}}</div>
                  <div class="alert alert-danger error-alert" *ngIf="error && !message ">{{error}}</div>

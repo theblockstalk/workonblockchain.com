@@ -334,12 +334,28 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     selectedObj;countryChange;positionChange;availabilityChange;blockchainChange;salary;currencyChange;
     search_result=[];information;
     not_found;
+    salarysearchdata(key , value)
+    {
+        
+        if(this.salary)
+        {
+            if(this.currencyChange !== -1)
+            {
+                this.searchdata(key , value);
+            }
+            
+        }
+            
+         
+    }
     searchdata(key , value)
     {   
+    
         this.not_found='';
         this.length =0; 
         this.cand_data=[];
        this.log='';
+        this.response='';
 
         if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1 
         &&  this.currencyChange === -1 &&  this.availabilityChange === -1 )
@@ -351,7 +367,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
        
         else
         { 
-        console.log("else");
+       
           this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
             .subscribe(
                 data => 
@@ -540,6 +556,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.info = [];
         this.cand_data=[];
         this.lengthmsgg='';
+        this.response='';
 		this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
         .subscribe(
 			dataa => {

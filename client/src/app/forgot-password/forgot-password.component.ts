@@ -37,7 +37,7 @@ export class ForgotPasswordComponent implements OnInit {
                 	//console.log(data);
                 	if(!data['error'])
                 	{
-                		this.dataservice.changeMessage("Please check your email to reset the password.");
+                		this.dataservice.forgertMessage("Please check your email to reset the password.");
         				this.router.navigate(["/login"]);
                     	
                 	}

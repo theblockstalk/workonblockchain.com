@@ -21,6 +21,10 @@ export class DataService {
     private verifyerrormessageSource = new BehaviorSubject<string>("");
     verifyerrorMessage = this.verifyerrormessageSource.asObservable();
     
+    
+    private forgertmessageSource = new BehaviorSubject<string>("");
+    forgetMessage = this.forgertmessageSource.asObservable();
+    
 
   constructor() { }
 
@@ -47,6 +51,14 @@ export class DataService {
     {
         
         this.verifyerrormessageSource.next(error) 
+        
+    }
+    
+    
+     forgertMessage(error:string)
+    {
+        
+        this.forgertmessageSource.next(error) 
         
     }
 

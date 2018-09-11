@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     
      message:string;
     error;
-
+forgetMessage;
   constructor(private route: ActivatedRoute,
         private router: Router,
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService,private titleService: Title,private newMeta: Meta) {
@@ -41,13 +41,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   {
 	  this.newMeta.updateTag({ name: 'description', content: 'Login developers' });
 	  this.newMeta.updateTag({ name: 'keywords', content: 'login blockchain recruitment developers workonblockchain.com' });
-      
+      this.dataservice.forgetMessage.subscribe(message => this.forgetMessage = message);
       this.password_message='';
 	  this.dataservice.ecurrentMessage.subscribe(message => this.error = message);
        setInterval(() => {  
                                 this.message = "" ;
                                 this.error = '';
-           this.log='';
+                                this.forgetMessage='';
+                                this.log='';
                         }, 12000);
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');    
