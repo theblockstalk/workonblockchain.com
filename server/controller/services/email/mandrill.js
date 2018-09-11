@@ -1,5 +1,6 @@
 const settings = require('../../../settings');
 const mandrill = require('mandrill-api/mandrill');
+const logger = require('../logger');
 
 module.exports.sendEmail = function sendEmail(mandrillOptions) {
     mandrillOptions.message.from_email = settings.MANDRILL.FROM_ADDRESS;
