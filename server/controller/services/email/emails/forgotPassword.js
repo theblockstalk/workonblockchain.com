@@ -12,7 +12,7 @@ module.exports.sendEmail = function sendEmail(data,hash,name) {
     //console.log("reset password url");
     //console.log(resetPassswordUrl);
     const sendToArray = [sendTo];
-    logger.debug({obj: resetPassswordUrl});
+    logger.debug('reset url: ' + resetPassswordUrl);
     const mandrillOptions = {
         templateName: "wob-forgot-password",
         message: {
@@ -28,7 +28,7 @@ module.exports.sendEmail = function sendEmail(data,hash,name) {
         }
     };
     
-    logger.debug({obj: mandrillOpions});
+    logger.debug('mandril options: ' + {obj: mandrillOpions});
 
 	emails.sendEmail(mandrillOptions);
 }
