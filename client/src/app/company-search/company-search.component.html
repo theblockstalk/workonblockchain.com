@@ -34,7 +34,7 @@
 						<li> 
 							<div class = "form-group">
 
-                				<select class="form-control " [disabled]="msg !== '' ? true : false" name="skill" [(ngModel)]="selectedObj" (ngModelChange)="searchdata('skill' , $event)" id="required" name="required">
+                				<select class="form-control" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" name="skill" [(ngModel)]="selectedObj" (ngModelChange)="searchdata('skill' , $event)" id="required" name="required">
 									
 									<option value="-1" disabled selected hidden>Skills</option>
                   					<option class='option' *ngFor='let option of language_opt'  [value]="option.value" >{{option.name}}</option>
@@ -47,7 +47,7 @@
 
 						<li>
 							<div class = "form-group">
-								<select class="form-control " name="location" [disabled]="msg !== '' ? true : false" [(ngModel)]="countryChange" (ngModelChange)="searchdata('location' , $event)" id="required" name="required">
+								<select class="form-control " name="location" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="countryChange" (ngModelChange)="searchdata('location' , $event)" id="required" name="required">
 									
 									<option value="-1" disabled selected hidden>Desired Location</option>
                   					<option class='option' *ngFor='let option of cities'  [value]="option.value" >{{option.name}}</option>
@@ -59,16 +59,9 @@
 
 						<li> 
 							<div class = "form-group">
-								<!-- <select class="form-control progControlSelect2" multiple="true" (valueChanged)="changed($event)"  >
-									
-									
-                  					<option class='option' *ngFor='let option of roles'  [value]="option.value" >{{option.name}}</option>
-
-
-								</select>-->
 								
 								
-								<select2  [data]="rolesData" allowClear="true"  [disabled]="msg !== '' ? true : false" [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="positionchanged($event)">
+								<select2  [data]="rolesData" allowClear="true" [attr.disabled]="disabled?'':null"  [disabled]="msg !== '' ? true : false" [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="positionchanged($event)">
 								
 								
 								</select2>
@@ -79,22 +72,16 @@
 						 </li>
 						<li > 
 							<div class = "form-group">
-									<!-- <select class="form-control progControlSelect3" multiple="true" [(ngModel)]="blockChange" (ngModelChange)="OnblockChange($event)">
 									
-									
-                  					<option class='option' *ngFor='let option of blockchain'  [value]="option.value" >{{option.name}}</option>
-
-
-								</select>-->
-								<select2  [data]="blockchainData" [disabled]="msg !== '' ? true : false" [options]="options2" [width]="500" [value]="selecteddd"  (valueChanged)="blockchainchanged($event)" id="required" ></select2>
+								<select2  [data]="blockchainData" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [options]="options2" [width]="500" [value]="selecteddd"  (valueChanged)="blockchainchanged($event)" id="required" ></select2>
 								<input type="text" class="form-control" [(ngModel)]='blockchainItems' name="blockchain" style="display: none;">
 							</div>
 						 </li>
 						 
 						<li> 
 							<div class="form-group">
-							    <input type="text" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Expected Salary">
-							    <select [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)" id="required" name="required">
+							    <input type="text" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Expected Salary">
+							    <select [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)"  name="required">
 								     	<!-- <option [ngValue]="undefined" hidden selected>$ USD</option>-->
 								     	 <option value="-1" disabled selected hidden >$ USD</option>
 								     	 <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
@@ -104,7 +91,7 @@
 						 </li>
 						 <li>
 							<div class = "form-group">
-								<select class="form-control " [disabled]="msg !== '' ? true : false"  [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)" id="required" name="required">
+								<select class="form-control " [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)"  name="required">
 									 
 									  <option value="-1" disabled selected hidden >Availability</option>
 									  <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
@@ -123,7 +110,9 @@
 				
 			</div>
 			<ng-container *ngIf="response === '';else no_section" >
+			<div class="col-md-9" >
 				<img src="/assets/profile/Loading_icon.gif" alt="Loading Gif">
+				</div>
 				
 			</ng-container>
 			<ng-template #no_section >
@@ -132,14 +121,17 @@
 					
 					<h4 *ngIf="msg!=''&& lengthmsgg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
 					
-					<div class = "result-status mr-top-form" *ngIf="cand_data.length > 0 && lengthmsgg!=''">
-							<span>{{cand_data.length}}</span> Candidate Match your search....
+					<div class = "result-status mr-top-form" *ngIf="msg === '' && lengthmsgg != ''">
+							<div *ngIf="cand_data.length > 0 ">
+								<span>{{cand_data.length}}</span> Candidate Match your search....
+								<i class="fa fa-check tickk" aria-hidden="true"></i>
+							</div>
+							<div *ngIf="not_found != '' && cand_data.length <=0 ">
+								<span>{{not_found}}</span> 
 							<i class="fa fa-check tickk" aria-hidden="true"></i>
+							</div>
 					</div>
-					<div class = "result-status mr-top-form" *ngIf="not_found != '' && lengthmsgg != '' && msg == '' ">
-							<span>{{not_found}}</span> 
-							<i class="fa fa-check tickk" aria-hidden="true"></i>
-					</div>
+					
 					
 					<!--candidate 1st-->
 					<div *ngIf="info && msg === '' " >
