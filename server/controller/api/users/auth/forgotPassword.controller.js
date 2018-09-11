@@ -59,10 +59,7 @@ function forgot_password(email)
         var email_data = {};
         email_data.password_key = hashStr;
         email_data.email = data.email;
-        if(data.first_name)
-        {
-        	email_data.name = data.first_name;
-        }
+        email_data.name = data.first_name;
         
         email_data.expiry = new Date(new Date().getTime() +  1800 *1000);
         var token = jwt_hash.encode(email_data, settings.EXPRESS_JWT_SECRET, 'HS256');
