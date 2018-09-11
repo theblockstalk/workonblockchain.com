@@ -346,7 +346,7 @@
 				 	
 				 </section>
 
-				  <section class = "profile job_info" *ngIf="!public_data && history!='' ">
+				  <section class = "profile job_info" *ngIf="!public_data && history.length>0 ">
 				  
 					<h3>Work History</h3>
 					<div class = "company_area" *ngFor='let work of history'>
@@ -422,7 +422,7 @@
 				 
 				 </section>
 
-				 <section class = "profile job_info" *ngIf="!public_data && education !='' ">
+				 <section class = "profile job_info" *ngIf="!public_data && education.length>0 ">
 				 
 					<h3>Education</h3>
 					

@@ -1295,6 +1295,8 @@ export class EditCandidateProfileComponent implements OnInit {
 
     updateProfileData(profileForm)
     {
+        this.experiencearray=[];
+        this.education_json_array=[];
         for (var key in this.ExperienceForm.value.ExpItems) 
             {
                 this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
@@ -1320,7 +1322,7 @@ export class EditCandidateProfileComponent implements OnInit {
                                     ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
                 this.education_json_array.push(this.educationjson) ;
             }
-        this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
+            this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
             .subscribe(
                 data => {
                 if(data && this.currentUser)
