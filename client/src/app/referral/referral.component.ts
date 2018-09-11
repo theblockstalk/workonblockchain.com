@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../environments/environment';
 const URL = environment.frontend_url;
+declare var $: any;
 
 @Component({
   selector: 'app-referral',
@@ -48,6 +49,13 @@ export class ReferralComponent implements OnInit {
     }
 
 	ngOnInit(){
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s); js.id = id;
+			js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.0';
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
 		this.newMeta.updateTag({ name: 'description', content: 'Refer a friend to workonblockchain.com, the blockchain recruitment platform for developers, and get £500 when they are successfully employed by a company through the platform.' });
 	    this.newMeta.updateTag({ name: 'keywords', content: 'refer developer referral reward workonblockchain.com' });
 		
