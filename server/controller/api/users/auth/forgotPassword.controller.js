@@ -65,7 +65,7 @@ function forgot_password(email)
         email_data.token = token;
         var set =
             {
-                password_key: token,
+        		forgot_password_key: token,
 
             };
         users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc)
