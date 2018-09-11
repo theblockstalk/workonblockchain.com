@@ -21,7 +21,7 @@ function mandrillSendTemplate(templateName, message) {
     };
 
     console.log('Sending email with mandrill: ', JSON.stringify(templateDetails, null, 2));
-
+    logger.debug('Sending email with mandrill: ' + JSON.stringify(templateDetails, null, 2));
     mandrill_client.messages.sendTemplate(templateDetails, function(result) {
         if(result[0].status !== 'sent') {
             console.log('Status is not sent for email to : \nEmail: ' + JSON.stringify(message.to))
