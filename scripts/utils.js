@@ -57,7 +57,7 @@ module.exports.checkGitBranch = function checkGitBranch(branch, deployment) {
             expectedBranch = 'staging';
             break;
         case 'production':
-            expectedBranch = 'staging';
+            expectedBranch = 'master';
             break;
         default:
             throw new Error("Deployment" + deployment + " is not valid");
@@ -213,8 +213,11 @@ module.exports.updateElisticEnvironment = async function updateElisticEnvironmen
 };
 
 module.exports.buildAngularDistribution = async function buildAngularDistribution(buildCommand) {
+    let command = 'cd ./client && npm install && ' + buildCommand;
+    console.log('Running command: ' + command);
+
     return new Promise((resolve, reject) => {
-        exec('cd ./client && ' + buildCommand, (err, stdout, stderr) => {
+        exec(command, (err, stdout, stderr) => {
             if (err) {
                 reject(err);
             }
