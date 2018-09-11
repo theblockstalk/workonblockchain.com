@@ -70,7 +70,7 @@ export class CandidateFormComponent implements OnInit {
          setInterval(() => {  
                                 this.message = "" ;
                                 this.log='';
-                        }, 8000);
+                        }, 13000);
     }
     log = '';
     email_log='';
