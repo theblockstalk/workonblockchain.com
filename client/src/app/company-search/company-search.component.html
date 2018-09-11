@@ -121,7 +121,7 @@
 					
 					<h4 *ngIf="msg!=''&& lengthmsgg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
 					
-					<div class = "result-status mr-top-form" *ngIf="msg === '' && lengthmsgg != ''">
+					<div class = "result-status mr-top-form" *ngIf="msg === '' && lengthmsgg != '' && response === 'data'">
 							<div *ngIf="cand_data.length > 0 ">
 								<span>{{cand_data.length}}</span> Candidate Match your search....
 								<i class="fa fa-check tickk" aria-hidden="true"></i>
