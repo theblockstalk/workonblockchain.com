@@ -26,7 +26,7 @@ module.exports.sendEmail = function sendEmail(data,hash,name) {
         }
     };
     
-    logger.debug('mandril options: ' + {obj: mandrillOptions});
+    logger.debug('mandril options: ' + JSON.stringify(mandrillOptions, null, 2));
 
 	emails.sendEmail(mandrillOptions);
 }
