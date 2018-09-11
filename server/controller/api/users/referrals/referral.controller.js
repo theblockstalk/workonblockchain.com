@@ -1,11 +1,13 @@
 var Q = require('q');
 const referUserEmail = require('../../../services/email/emails/referUser');
 const logger = require('../../../services/logger');
+const sanitizer = require('../../../services/logger');
 
 //to send email for referral
 
 module.exports = function (req, res) {
-    refreal_email(req.body).then(function (data){
+    let sanitizedHtmlBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body)
+    refreal_email(req.body, sanitizedHtmlBody).then(function (data){
         
         res.json(data);
     })
@@ -15,9 +17,9 @@ module.exports = function (req, res) {
         });
 }
 
-function refreal_email(data){
+function refreal_email(data, htmlBody){
     var deferred = Q.defer();
-    referUserEmail.sendEmail(data)
+    referUserEmail.sendEmail(data.email, data.subject, htmlBody);
     deferred.resolve('Email has been sent successfully.');
     return deferred.promise;
 }

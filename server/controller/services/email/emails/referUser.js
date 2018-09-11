@@ -1,10 +1,10 @@
 const emails = require('../emails');
 
-module.exports.sendEmail = function sendEmail(data) {
+module.exports.sendEmail = function sendEmail(email, subject, htmlBody) {
     const sendTo = {
-        email: data.email
+        email: email
     };
-    const subject = data.subject;
+    const subject = subject;
 
     const sendToArray = [sendTo];
 
@@ -13,7 +13,7 @@ module.exports.sendEmail = function sendEmail(data) {
         message: {
             global_merge_vars: [{
                 "name": "MESSAGE_BODY",
-                "content": data.body
+                "content": htmlBody
             }],
             subject: subject,
             to: sendToArray
