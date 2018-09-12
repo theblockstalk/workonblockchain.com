@@ -83,6 +83,7 @@ export class AdminCandidateSearchComponent implements OnInit {
             .subscribe(
                 data => 
                 {
+                    console.log(data);
                     if(data.error)
                     {
                        // ////console.log(this.info);

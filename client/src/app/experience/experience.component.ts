@@ -91,9 +91,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                         this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
-                if(data.programming_languages.length>0 &&data.description)
+                if(data.programming_languages &&data.description)
                  {
-                     this.exp_active_class = 'fa fa-check-circle text-success';
+                    if(data.programming_languages.length>0)
+                      this.exp_active_class = 'fa fa-check-circle text-success';
                 }
                  if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day &&data.current_salary && data.current_currency )
                   {
@@ -474,8 +475,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     exp_count=0;edu_count=0;
     experience_submit(searchForm: NgForm)
     {    
-    
-       
+       this.edu_count=0;
+       this.exp_count =0;
        if(this.language.length<=0)
        {
            
@@ -529,7 +530,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         }
         if(this.ExperienceForm.value.ExpItems.length >=1)
         {
-            this.exp_count =0;
+            
             for (var key in this.ExperienceForm.value.ExpItems) 
             {
                 if(!this.ExperienceForm.value.ExpItems[key].companyname)
@@ -588,8 +589,13 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         }
         
      
-        
-        if(this.language &&this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
+        console.log("language length " + this.language.length);
+        console.log("experience year length " + this.expYear.length);
+        console.log("education count " + this.edu_count);
+        console.log("education form count " + this.EducationForm.value.itemRows.length);
+        console.log("work history count " + this.exp_count);
+        console.log("work history form count " + this.ExperienceForm.value.ExpItems.length);
+        if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
         {
            //console.log("else if 3");
            this.submit_info(searchForm);

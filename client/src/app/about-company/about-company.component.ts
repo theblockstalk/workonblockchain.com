@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input } from '@angular/core';
+import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient , HttpHeaders} from '@angular/common/http';
@@ -17,7 +17,7 @@ const URL = environment.backend_url;
   templateUrl: './about-company.component.html',
   styleUrls: ['./about-company.component.css']
 })
-export class AboutCompanyComponent implements OnInit {
+export class AboutCompanyComponent implements OnInit,AfterViewInit {
      info : any;
     currentUser: User;log;
     founded_log;employee_log;funded_log;des_log;image_src;
@@ -29,6 +29,12 @@ export class AboutCompanyComponent implements OnInit {
         private router: Router,private http: HttpClient,
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
        }
+    
+     ngAfterViewInit(): void 
+     {
+         window.scrollTo(0, 0);   
+         
+    }
 
   ngOnInit() {
      
