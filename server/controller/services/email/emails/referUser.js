@@ -4,8 +4,6 @@ module.exports.sendEmail = function sendEmail(email, subject, htmlBody) {
     const sendTo = {
         email: email
     };
-    const subject = subject;
-
     const sendToArray = [sendTo];
 
     const mandrillOptions = {

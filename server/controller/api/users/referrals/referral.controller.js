@@ -1,7 +1,7 @@
 var Q = require('q');
 const referUserEmail = require('../../../services/email/emails/referUser');
 const logger = require('../../../services/logger');
-const sanitizer = require('../../../services/logger');
+const sanitizer = require('../../../middleware/sanitizer');
 
 //to send email for referral
 

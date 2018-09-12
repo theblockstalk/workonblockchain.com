@@ -1,8 +1,8 @@
-cost Q = require('q');
+const Q = require('q');
 const mongo = require('mongoskin');
 const Pages = require('../../../../../model/pages_content');
 const logger = require('../../../../services/logger');
-const sanitizer = require('../../../../services/logger');
+const sanitizer = require('../../../../middleware/sanitizer');
 
 //////////inserting message in DB ////////////
 
