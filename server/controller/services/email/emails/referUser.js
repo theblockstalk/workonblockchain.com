@@ -4,6 +4,9 @@ module.exports.sendEmail = function sendEmail(data) {
     const sendTo = {
         email: data.email
     };
+	variableABC = data.body;
+	new_message = variableABC.replace(/\n/g, "<br>");  
+	console.log(new_message);
     const subject = data.subject;
 
     const sendToArray = [sendTo];
@@ -13,7 +16,7 @@ module.exports.sendEmail = function sendEmail(data) {
         message: {
             global_merge_vars: [{
                 "name": "MESSAGE_BODY",
-                "content": data.body
+                "content": new_message
             }],
             subject: subject,
             to: sendToArray
