@@ -1,5 +1,10 @@
 const mongoSanitize = require('mongo-sanitize');
 const xssSanitize = require('sanitizer');
+const sanitizeHtmlRepo = require('sanitize-html');
+
+function copyObject(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
 
 function recursivelySanitize(obj) {
     if (obj instanceof Object) {
@@ -17,8 +22,13 @@ function recursivelySanitize(obj) {
     }
 }
 
+function sanitizeHtml(htmlString) {
+    return sanitizeHtmlRepo(htmlString);
+}
+
 function middleware(req, res, next) {
     if (req.body) {
+        req.unsanitizedBody = copyObject(req.body);
         recursivelySanitize(req.body);
     }
     if (req.params) {
@@ -31,4 +41,5 @@ function middleware(req, res, next) {
 }
 
 module.exports.recursivelySanitize = recursivelySanitize;
+module.exports.sanitizeHtml = sanitizeHtml;
 module.exports.middleware = middleware;

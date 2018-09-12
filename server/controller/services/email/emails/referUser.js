@@ -1,15 +1,12 @@
 const emails = require('../emails');
 
-module.exports.sendEmail = function sendEmail(data) {
+module.exports.sendEmail = function sendEmail(email, subject, htmlBody) {
     const sendTo = {
-        email: data.email
+        email: email
     };
-	const variableABC = data.body;
-	const new_message = variableABC.replace(/\n/g, "<br>");  
-	const subject = data.subject;
-
     const sendToArray = [sendTo];
-
+	const new_message = htmlBody.replace(/\n/g, "<br>");  
+	
     const mandrillOptions = {
         templateName: "wob-refer-a-user",
         message: {
