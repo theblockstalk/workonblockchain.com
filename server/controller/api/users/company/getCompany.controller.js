@@ -34,7 +34,11 @@ function getCompany()
         	var array=[];
        	 	result.forEach(function(item)
             {
-                   array.push(filterReturnData.removeSensativeData(item.toObject()));
+       	 		if(item._creator != null)
+       	 		{
+       	 		   array.push(filterReturnData.removeSensativeData(item.toObject()));
+       	 		}
+                   
             });
 
            
