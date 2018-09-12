@@ -48,7 +48,8 @@ function getVerifiedCandidateDetail(params)
                     }
                 	
                 	if(params.company_reply == 0 )
-                    {               		
+                    {    
+                		logger.debug("anonymous candidate : " + anonymous);
                         anonymous = filterReturnData.anonymousSearchCandidateData(anonymous);
                                               
                     }

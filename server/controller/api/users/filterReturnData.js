@@ -15,13 +15,19 @@ const anonymosCandidateFields = ['image', 'locations', 'roles', 'expected_salary
     'current_salary', 'programming_languages', 'education_history', 'work_history', 'description', '_creator','nationality'];
 
 module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
-	const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);
-    candidateDoc = filterWhiteListFields(candidateDoc, anonymosCandidateFields);
-    candidateDoc.work_history = candidateDoc.work_history.map((work) => {
-        delete work.companyname;
-        return work;
-    });
-    candidateDoc.initials = initials;
+    
+	if(candidateDoc.first_name && candidateDoc.last_name && candidateDoc.work_history)
+	{
+		const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);
+
+		candidateDoc = filterWhiteListFields(candidateDoc, anonymosCandidateFields);
+	    candidateDoc.work_history = candidateDoc.work_history.map((work) => {
+	        delete work.companyname;
+	        return work;
+	    });
+	    candidateDoc.initials = initials;   
+	}	
+    
     delete candidateDoc.first_name;
 	delete candidateDoc.last_name;
 	delete candidateDoc.github_account;

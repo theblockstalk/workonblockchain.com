@@ -601,6 +601,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 										.subscribe(
 											dataa =>
 											{
+                                                console.log(data);
 												if(dataa)
 												{
 													//console.log("1");
@@ -675,6 +676,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 									.subscribe(
 										result => 
 										{
+                                            console.log(result);
 											if(result)
 											{
 												//console.log("2");
@@ -728,9 +730,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 							}
 						);
 					}
-                        
+                        this.response = "data";
                         }
-                    this.response = "data";
+                    
 				} 
 			},
             error => {
