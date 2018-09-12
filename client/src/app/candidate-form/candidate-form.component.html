@@ -9,7 +9,7 @@
             </li>
 
             <li class="col-xs-6 tab-col">
-              <a data-toggle="tab" href="#menu1">Companies</a>
+              <a data-toggle="tab" href="#company">Companies</a>
             </li>
           </ul>
 
@@ -88,7 +88,7 @@
                </form>
               </div>
 
-              <div id="menu1" class="tab-pane fade">
+              <div id="company" class="tab-pane fade">
                 
                <form (submit)="company_signup(signupForm)"  #signupForm = ngForm>
                    <div class="alert alert-danger error-alert" *ngIf = "message" >{{message}}</div>

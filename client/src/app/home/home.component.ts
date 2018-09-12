@@ -72,6 +72,10 @@ export class HomeComponent implements OnInit {
 
     //});
   }
-
+	
+  internalRoute(page,dst){
+    //this.sectionScroll=dst;
+    this.router.navigate([page], {fragment: dst});
+  }
   
 }

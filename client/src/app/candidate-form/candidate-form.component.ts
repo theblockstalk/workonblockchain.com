@@ -8,6 +8,7 @@ import { LinkedInService } from 'angular-linkedin-sdk';
 import {NgForm} from '@angular/forms';
 import { DataService } from "../data.service";
 import { Title, Meta } from '@angular/platform-browser';
+declare var $: any;
 
 @Component({
   selector: 'app-candidate-form',
@@ -60,6 +61,17 @@ export class CandidateFormComponent implements OnInit {
  
     ngOnInit() 
     {
+		$(function(){
+			var hash = window.location.hash;
+			hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+			$('.nav-tabs a').click(function (e) {
+				$(this).tab('show');
+				var scrollmem = $('body').scrollTop();
+				window.location.hash = this.hash;
+				$('html,body').scrollTop(scrollmem);
+			});
+		});
+		
 		this.newMeta.updateTag({ name: 'description', content: 'Signup for companies to apply to you! workonblockchain.com is a global blockchain agnostic hiring recruitment platform for blockchain developers, software developers, designers, product managers, CTOs and software engineer interns who are passionate about working on public and enterprise blockchain technology and cryptocurrencies.' });
 	    this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developer signup workonblockchain.com' });
 		
