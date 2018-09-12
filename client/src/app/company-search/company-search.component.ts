@@ -501,10 +501,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                               }
                                 }
 
-
+                                this.response = "data";
                         }
                             
-                         this.response = "data";
+                         
 
                     }
                             
@@ -728,8 +728,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 							}
 						);
 					}
-                        this.response = "data";
+                        
                         }
+                    this.response = "data";
 				} 
 			},
             error => {
