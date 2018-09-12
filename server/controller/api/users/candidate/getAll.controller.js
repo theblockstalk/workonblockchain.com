@@ -27,16 +27,24 @@ function getAll()
             deferred.reject(err.name + ': ' + err.message);
         }
         else {
-        	var array=[];
-       	 	result.forEach(function(item)
-            {
-                   array.push(filterReturnData.removeSensativeData(item.toObject()));
-            });
+        	if(result)
+        	{
 
-            /*let anonymisedCandidates = array.map((candidate) => {
-                return filterReturnData.anonymousCandidateData(candidate)
-            })*/
-            deferred.resolve(array);
+        		var array=[];
+        		
+           	 	result.forEach(function(item)
+                {
+           	 		
+           	 		if(item._creator!= null)
+           	 		{
+           	 			array.push(filterReturnData.removeSensativeData(item.toObject()));
+           	 		}
+                    
+                });
+           	
+               deferred.resolve(array);
+        	}
+        	
         }
 
     });
