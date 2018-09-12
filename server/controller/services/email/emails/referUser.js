@@ -4,10 +4,9 @@ module.exports.sendEmail = function sendEmail(data) {
     const sendTo = {
         email: data.email
     };
-	variableABC = data.body;
-	new_message = variableABC.replace(/\n/g, "<br>");  
-	console.log(new_message);
-    const subject = data.subject;
+	const variableABC = data.body;
+	const new_message = variableABC.replace(/\n/g, "<br>");  
+	const subject = data.subject;
 
     const sendToArray = [sendTo];
 
