@@ -134,12 +134,8 @@ forgetMessage;
             this.data = JSON.stringify(this.user);      
             this.result = JSON.parse(this.data);
             localStorage.setItem('googleUser', JSON.stringify(this.result));
-            //this.router.navigate(['/candidate_profile']);
-      
-        });
-        //console.log(this.result);
-        if(this.result!='')
-        {
+              if(this.result!='')
+            {
              //console.log(this.result);
              this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
             //console.log(this.googleUser);
@@ -156,9 +152,8 @@ forgetMessage;
                
                 if(user.error)
                 {
-                    this.log = user.error;
-                 
-                    
+                    this.password_message='';
+                    this.log = 'Credentials not match';
                 }
                 else
                 {
@@ -177,6 +172,11 @@ forgetMessage;
         {
             this.router.navigate(['/login']);
         }
+            //this.router.navigate(['/candidate_profile']);
+      
+        });
+        //console.log(this.result);
+      
         
     }
 
@@ -212,7 +212,7 @@ forgetMessage;
                             //this.router.navigate(['/candidate_profile']);
                             this.password_message='';
                             this.log = 'Credentials not match';
-                            this.authenticationService.create(this.credentials)
+                            /*this.authenticationService.create(this.credentials)
                             .subscribe(
                             data => {
                                 //console.log(data);
@@ -232,7 +232,7 @@ forgetMessage;
                             error => {
                             this.log = 'Something getting wrong';
                            
-                        });  
+                        }); */ 
                         
                         
                             //this.router.navigate(['/login']);

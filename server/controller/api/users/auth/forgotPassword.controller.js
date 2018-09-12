@@ -60,12 +60,13 @@ function forgot_password(email)
         email_data.password_key = hashStr;
         email_data.email = data.email;
         email_data.name = data.first_name;
+        
         email_data.expiry = new Date(new Date().getTime() +  1800 *1000);
         var token = jwt_hash.encode(email_data, settings.EXPRESS_JWT_SECRET, 'HS256');
         email_data.token = token;
         var set =
             {
-                password_key: token,
+        		forgot_password_key: token,
 
             };
         users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc)
@@ -113,7 +114,15 @@ function forgot_passwordEmail_send(data)
                 if(query_data)
                 {
                     ////console.log(query_data);
-                    name = query_data[0].first_name;
+                	if(query_data[0].first_name)
+                	{
+                		name = query_data[0].first_name;
+                	}
+                	else
+                	{
+                		name = query_data[0]._creator.email;
+                	}
+                    
                     //console.log(name);
                     forgotPasswordEmail.sendEmail(hash,data , name);
                 }

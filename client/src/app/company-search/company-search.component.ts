@@ -4,7 +4,7 @@ import {NgForm} from '@angular/forms';
 import { Select2OptionData } from 'ng2-select2';
 import {User} from '../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
-
+declare var $:any;
 
 @Component({
   selector: 'app-company-search',
@@ -31,6 +31,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     interview_location = '';
     interview_time = '';
     select_value='';selecteddd='';
+    disabled;
     
 
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
@@ -230,16 +231,20 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         //console.log(this.is_approved);
                         if(this.is_approved === 0 )
                         {
+                            this.disabled = true;
                             this.msg = "You can access this page when your account has been approved by an admin."; 
                             this.log='';  
                         }
                         else if(data._creator.disable_account == true)
                         {
+                            this.disabled = true;
                             this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile"; 
                             this.log=''; 
+
                         }
                         else 
                         {
+                            this.disabled = false;
                             this.first_name=data.first_name;
                             this.last_name=data.last_name;
                             this.company_name=data.company_name;
@@ -376,7 +381,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 data => 
                 {
                     
-                    this.response = "data";
+                   
                     
                     if(data.error)
                     {
@@ -385,6 +390,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         this.log = data.error;
                         this.cand_data=[];
                         this.page='';
+                         this.response = "data";
                     }
                     else
                     {
@@ -494,8 +500,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                            
                               }
                                 }
+
+
                         }
-                                      
+                            
+                         this.response = "data";
+
                     }
                             
                 },
@@ -560,16 +570,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.cand_data=[];
         this.lengthmsgg='';
         this.response='';
+        this.msg='';
 		this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
         .subscribe(
 			dataa => {
-                this.response = "data";
+                
 				//console.log(dataa);
 				for(let res of dataa)
 				{ 
 					//console.log("ids");
                     if(res['ids'].length<=0)
                     {
+                        this.response = "data";
                         this.not_found = "Not found any data";
                         
                     }
@@ -716,6 +728,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 							}
 						);
 					}
+                        this.response = "data";
                         }
 				} 
 			},

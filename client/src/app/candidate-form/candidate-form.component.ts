@@ -70,7 +70,7 @@ export class CandidateFormComponent implements OnInit {
          setInterval(() => {  
                                 this.message = "" ;
                                 this.log='';
-                        }, 8000);
+                        }, 13000);
     }
     log = '';
     email_log='';
@@ -148,28 +148,24 @@ export class CandidateFormComponent implements OnInit {
         {
        
             this.user = user; 
-            //////console.log(user);
             this.data = JSON.stringify(this.user);      
             this.result = JSON.parse(this.data);
             localStorage.setItem('googleUser', JSON.stringify(this.result));      
-            ////console.log(this.result);
-      
-        });
-        //////console.log(this.result);
-        if(this.result!='')
-        {
-            ////console.log(this.result);
-             this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-             this.credentials.email= this.googleUser.email;
-             this.credentials.password= '';
-             this.credentials.type="candidate";
-             this.credentials.social_type=this.googleUser.provider;
-            this.authenticationService.create(this.credentials)
-            .subscribe(
-                data => {
-                ////console.log(data);
-                 this.credentials.email= '';
-                if(data.error)
+            console.log(this.result);
+            if(this.result)
+            {
+                 ////console.log(this.result);
+                 this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
+                 this.credentials.email= this.googleUser.email;
+                 this.credentials.password= '';
+                 this.credentials.type="candidate";
+                 this.credentials.social_type=this.googleUser.provider;
+                 this.authenticationService.create(this.credentials)
+                .subscribe(
+                    data => {
+                    ////console.log(data);
+                    this.credentials.email= '';
+                    if(data.error)
                     {
                         this.log = data.error;
                     }
@@ -185,11 +181,15 @@ export class CandidateFormComponent implements OnInit {
                     this.log = 'Something getting wrong';
                     this.loading = false;
                 });
-        }
-        else
-        {
-            this.router.navigate(['/signup']);
-        }
+            }
+            else
+            {
+                this.router.navigate(['/signup']);
+            }
+      
+        });
+        console.log(this.result);
+        
         
     }
 
@@ -201,7 +201,7 @@ export class CandidateFormComponent implements OnInit {
             const url = '/people/~:(id,picture-url,location,industry,positions,specialties,summary,email-address )?format=json';
             this._linkedInService.raw(url).asObservable().subscribe({
                 next: (data) => {
-                    ////console.log(data);
+                    console.log(data);
                     localStorage.setItem('linkedinUser', JSON.stringify(data));
                     if(data)
                     {

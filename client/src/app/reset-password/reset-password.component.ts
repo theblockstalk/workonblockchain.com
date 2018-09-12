@@ -46,7 +46,7 @@ export class ResetPasswordComponent implements OnInit {
                 }
                 else
                     {
-                    this.dataservice.changeMessage("Password updated successfully");
+                    this.dataservice.forgertMessage("Password updated successfully");
 
                     this.router.navigate(['/login']);
                 }

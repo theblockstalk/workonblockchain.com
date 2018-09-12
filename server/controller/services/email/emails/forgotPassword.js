@@ -1,5 +1,6 @@
 const emails = require('../emails');
 const settings = require('../../../../settings');
+const logger = require('../../logger');
 
 module.exports.sendEmail = function sendEmail(data,hash,name) {
     const sendTo = {
@@ -8,9 +9,8 @@ module.exports.sendEmail = function sendEmail(data,hash,name) {
     const subject = "Forgot password on Work on Blockchain";
 
     const resetPassswordUrl = settings.CLIENT.URL + 'reset_password?hash='+hash;
-console.log(resetPassswordUrl);
     const sendToArray = [sendTo];
-
+    logger.debug('reset url: ' + resetPassswordUrl);
     const mandrillOptions = {
         templateName: "wob-forgot-password",
         message: {
@@ -25,6 +25,8 @@ console.log(resetPassswordUrl);
             to: sendToArray
         }
     };
+    
+    logger.debug('mandril options: ' + JSON.stringify(mandrillOptions, null, 2));
 
 	emails.sendEmail(mandrillOptions);
 }

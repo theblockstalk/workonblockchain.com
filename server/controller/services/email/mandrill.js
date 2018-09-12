@@ -1,5 +1,6 @@
 const settings = require('../../../settings');
 const mandrill = require('mandrill-api/mandrill');
+const logger = require('../logger');
 
 module.exports.sendEmail = function sendEmail(mandrillOptions) {
     mandrillOptions.message.from_email = settings.MANDRILL.FROM_ADDRESS;
@@ -21,7 +22,7 @@ function mandrillSendTemplate(templateName, message) {
     };
 
     console.log('Sending email with mandrill: ', JSON.stringify(templateDetails, null, 2));
-
+    logger.debug('Sending email with mandrill: ' + JSON.stringify(templateDetails, null, 2));
     mandrill_client.messages.sendTemplate(templateDetails, function(result) {
         if(result[0].status !== 'sent') {
             console.log('Status is not sent for email to : \nEmail: ' + JSON.stringify(message.to))

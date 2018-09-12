@@ -6,7 +6,6 @@ module.exports.sendEmail = function sendEmail(data) {
         email: data.info.email
     };
     const subject = data.info.referred_fname + ' has created a profile on Work on Blockchain!';
-
     const sendToArray = [sendTo];
 
     const mandrillOptions = {
