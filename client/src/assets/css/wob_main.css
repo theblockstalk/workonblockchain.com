@@ -2834,8 +2834,6 @@ input[type=checkbox] {
 }
 
 .scroll_div{
-	max-height: 410px;
-    overflow-y: scroll;
     border: 1px solid #e4e4e4;
     padding: 10px;
     margin-bottom: 20px;
