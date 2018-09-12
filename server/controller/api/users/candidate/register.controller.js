@@ -77,10 +77,10 @@ function create(userParam)
         var token = jwt_hash.encode(user_info, settings.EXPRESS_JWT_SECRET, 'HS256');
         user_info.token = token;
 
-        email = userParam.email;
-        email = email.split("@");
-        email = crypto.createHash('sha256').update(email[0]).digest('base64');
-        let refered_id= 0;
+		let new_salt = crypto.randomBytes(16).toString('base64');
+		let new_hash = crypto.createHmac('sha512', new_salt);
+		let email = new_hash.digest('hex');
+		let refered_id= 0;
         let newUser = new users
         ({
             email: userParam.email,
