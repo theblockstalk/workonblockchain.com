@@ -121,25 +121,24 @@ forgetMessage;
 
     }
 
-    
+    dataa;
     signInWithGoogle()
     {
      this.message=''; 
-        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+       this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
         this.authService.authState.subscribe((user) => 
         {
        
             this.user = user; 
-            ////console.log(user);
             this.data = JSON.stringify(this.user);      
             this.result = JSON.parse(this.data);
-            localStorage.setItem('googleUser', JSON.stringify(this.result));
-              if(this.result!='')
+            localStorage.setItem('googleUser', JSON.stringify(this.result));      
+           
+            if(this.result)
             {
-             //console.log(this.result);
-             this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-            //console.log(this.googleUser);
-             this.credentials.email= this.googleUser.email;
+                 ////console.log(this.result);
+                 this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
+                 this.credentials.email= this.googleUser.email;
              this.credentials.password= '';
              this.credentials.type="candidate";
             
