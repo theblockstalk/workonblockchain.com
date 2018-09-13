@@ -83,9 +83,11 @@ export class ChatComponent implements OnInit {
         });
     }
 
+  is_approved;disabled;msg;
   ngOnInit() {
 	  this.loading = true;
       this.count=0;
+      this.msg='';
       //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log(this.currentUser);
@@ -101,11 +103,31 @@ export class ChatComponent implements OnInit {
                     //data[0].disable_account == false;
 					this.profile_pic = data.image;
                     this.display_name = data.first_name+' '+data.last_name;
-                    if(data._creator.is_approved == 0 || data._creator.disable_account == true){
+                    /*if(data._creator.is_approved == 0 || data._creator.disable_account == true){
                         this.approved_user = 0;
 					}
                     else{
                         this.approved_user = 1;
+                    }
+                    */
+                    this.is_approved = data._creator.is_approved;
+                    if(data._creator.is_approved === 0 )
+                    {
+                          this.disabled = true;
+                          this.msg = "You can access this page when your account has been approved by an admin."; 
+                          this.log='';  
+                    }
+                    else if(data._creator.disable_account == true)
+                    {
+                        this.disabled = true;
+                        this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile"; 
+                        this.log=''; 
+
+                    }
+                    else
+                    {
+                        this.msg='';
+                        this.display_msgs();
                     }
                 },
                 error => {
@@ -130,12 +152,35 @@ export class ChatComponent implements OnInit {
                     //data[0].disable_account == false;
                     this.profile_pic = data.company_logo;
                     this.display_name = data.company_name;
-					console.log(data);
-                    if(data._creator.is_approved == 0 || data._creator.disable_account == true){
+					//console.log(data);
+                    /*if(data._creator.is_approved == 0 || data._creator.disable_account == true){
                         this.approved_user = 0;
                     }
                     else{
                         this.approved_user = 1;
+                    }*/
+                    this.is_approved = data._creator.is_approved;
+                    this.approved_user = data._creator.is_approved;
+                    if(data._creator.is_approved === 0 )
+                    {
+                        console.log("if");
+                          this.disabled = true;
+                          this.msg = "You can access this page when your account has been approved by an admin."; 
+                          this.log='';  
+                    }
+                    else if(data._creator.disable_account == true)
+                    {
+                        console.log("if else");
+                        this.disabled = true;
+                        this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile"; 
+                        this.log=''; 
+
+                    }
+                    else
+                    {
+                        console.log("else");
+                        this.msg='';
+                        this.display_msgs();
                     }
                 },
                 error => {
@@ -152,12 +197,24 @@ export class ChatComponent implements OnInit {
                 }
             );
         }
-        if(this.approved_user == 0){
+       /* if(this.approved_user == 0){
 			this.loading = false;
             //console.log('not allowed');
         }
         else{
-			this.loading = false;
+			
+        }*/
+      }
+      else{
+          this.router.navigate(['/not_found']);
+      }
+  }
+  
+    
+    
+    display_msgs()
+    {
+        this.loading = false;
             //console.log('allowed');
             if(this.currentUser.type=="company"){
               //console.log('company');
@@ -177,59 +234,59 @@ export class ChatComponent implements OnInit {
               //below code for only contacted candidates
               //console.log('company');
               this.display_list = 1;
-			  this.loading = true;
+              this.loading = true;
               this.authenticationService.get_user_messages_only(this.currentUser._creator)
                 .subscribe(
                     msg_data => {
                         if(msg_data['datas'].length>0){
                             this.new_messges.push(msg_data['datas']);
-							this.new_messges = this.filter_array(msg_data['datas']);
-							//console.log(this.new_messges);
-							for (var key_messages in this.new_messges) {
-								if(this.currentUser._creator == this.new_messges[key_messages].receiver_id){
-									//console.log('my');
-								}
-								else{
-									this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].is_company_reply,'candidate')
-									.subscribe(
-										data => {
-											this.users.push(data['users']);
-											//console.log(this.users);
-											this.count = 0;
-											for (var key_users_new in this.users) {
-												//console.log(this.users[key_users_new]._creator._id);
-												if(this.count == 0){
-													if(this.users[key_users_new].first_name){
-														this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'');
-													}
-													else{
-														this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'');
-													}
-												}
-												this.count = this.count + 1;
-												//this.currentUser._creator //receiver
-												this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
-												.subscribe(
-													data => {
-														//console.log(data);
-														this.unread_msgs_info.push(data);
-													},
-													error => {
-														//console.log('error');
-														//console.log(error);
-													}
-												);
-											}
-											//console.log(this.unread_msgs_info);
-										},
-										error => {
-											//console.log('error');
-											//console.log(error);
-											this.log = error;
-										}
-									);
-								}
-							}
+                            this.new_messges = this.filter_array(msg_data['datas']);
+                            //console.log(this.new_messges);
+                            for (var key_messages in this.new_messges) {
+                                if(this.currentUser._creator == this.new_messges[key_messages].receiver_id){
+                                    //console.log('my');
+                                }
+                                else{
+                                    this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].is_company_reply,'candidate')
+                                    .subscribe(
+                                        data => {
+                                            this.users.push(data['users']);
+                                            //console.log(this.users);
+                                            this.count = 0;
+                                            for (var key_users_new in this.users) {
+                                                //console.log(this.users[key_users_new]._creator._id);
+                                                if(this.count == 0){
+                                                    if(this.users[key_users_new].first_name){
+                                                        this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'');
+                                                    }
+                                                    else{
+                                                        this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'');
+                                                    }
+                                                }
+                                                this.count = this.count + 1;
+                                                //this.currentUser._creator //receiver
+                                                this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+                                                .subscribe(
+                                                    data => {
+                                                        //console.log(data);
+                                                        this.unread_msgs_info.push(data);
+                                                    },
+                                                    error => {
+                                                        //console.log('error');
+                                                        //console.log(error);
+                                                    }
+                                                );
+                                            }
+                                            //console.log(this.unread_msgs_info);
+                                        },
+                                        error => {
+                                            //console.log('error');
+                                            //console.log(error);
+                                            this.log = error;
+                                        }
+                                    );
+                                }
+                            }
                         }
                     },
                     error => {
@@ -250,60 +307,60 @@ export class ChatComponent implements OnInit {
                 this.authenticationService.get_user_messages_only(this.currentUser._creator)
                 .subscribe(
                     msg_data => {
-						this.loading = false;
-						//console.log(msg_data['datas']);
+                        this.loading = false;
+                        //console.log(msg_data['datas']);
                         if(msg_data['datas'].length>0){
-							//console.log('this.currentUser._creator: '+this.currentUser._creator);
-							this.new_messges.push(msg_data['datas']);
-							this.new_messges = this.filter_array(msg_data['datas']);
-							//console.log(this.new_messges);
-							for (var key_messages in this.new_messges) {
-								//console.log('length: '+this.new_messges.length);
-								if(this.currentUser._creator == this.new_messges[key_messages].sender_id){
-									//console.log('my');
-								}
-								else{
-									this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',0,'company')
-									.subscribe(
-										data => {
-											this.users.push(data['users']);
-											//console.log(this.users);
-											this.count = 0;
-											for (var key_users_new in this.users) {
-												if(this.count == 0){
-													this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name);
-												}
-												this.count = this.count + 1;
-												//this.currentUser._creator //receiver
-												this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
-												.subscribe(
-													data => {
-														//console.log(data);
-														this.unread_msgs_info.push(data);
-													},
-													error => {
-														//console.log('error');
-														//console.log(error);
-													}
-												);
-											}
-										},
-										error => {
-											if(error.message == 500 || error.message == 401)
-											{
-												localStorage.setItem('jwt_not_found', 'Jwt token not found');
-												window.location.href = '/login';
-											}
-							
-											if(error.message == 403)
-											{
-												// this.router.navigate(['/not_found']);                        
-											} 
-											this.log = error;
-										}
-									);
-								}
-							}
+                            //console.log('this.currentUser._creator: '+this.currentUser._creator);
+                            this.new_messges.push(msg_data['datas']);
+                            this.new_messges = this.filter_array(msg_data['datas']);
+                            //console.log(this.new_messges);
+                            for (var key_messages in this.new_messges) {
+                                //console.log('length: '+this.new_messges.length);
+                                if(this.currentUser._creator == this.new_messges[key_messages].sender_id){
+                                    //console.log('my');
+                                }
+                                else{
+                                    this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',0,'company')
+                                    .subscribe(
+                                        data => {
+                                            this.users.push(data['users']);
+                                            //console.log(this.users);
+                                            this.count = 0;
+                                            for (var key_users_new in this.users) {
+                                                if(this.count == 0){
+                                                    this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name);
+                                                }
+                                                this.count = this.count + 1;
+                                                //this.currentUser._creator //receiver
+                                                this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+                                                .subscribe(
+                                                    data => {
+                                                        //console.log(data);
+                                                        this.unread_msgs_info.push(data);
+                                                    },
+                                                    error => {
+                                                        //console.log('error');
+                                                        //console.log(error);
+                                                    }
+                                                );
+                                            }
+                                        },
+                                        error => {
+                                            if(error.message == 500 || error.message == 401)
+                                            {
+                                                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                                window.location.href = '/login';
+                                            }
+                            
+                                            if(error.message == 403)
+                                            {
+                                                // this.router.navigate(['/not_found']);                        
+                                            } 
+                                            this.log = error;
+                                        }
+                                    );
+                                }
+                            }
                         }
                     },
                     error => {
@@ -321,14 +378,9 @@ export class ChatComponent implements OnInit {
                 );
                 this.display_list = 0;
                 //console.log('candidate');
-			}
-        }
-      }
-      else{
-          this.router.navigate(['/not_found']);
-      }
-  }
-  
+            }   
+        
+    }
   send_message(msgForm : NgForm){
 	  if(this.credentials.msg_body && this.credentials.id){
           //console.log(this.credentials.email);

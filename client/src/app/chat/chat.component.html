@@ -140,12 +140,12 @@
 <section class = "wizard_page">
 	<div class="container">
 			<div class="row chat-row">
-				<div *ngIf="approved_user!=1 && users !=[]" class = "col-md-12" id="my-chat-design">
+				<div *ngIf="msg!=''" class = "col-md-12" id="my-chat-design">
 					<h4 class="alert error-alert alert-danger pro_alert">
-						You can access this page when your account has been approved/enabled by an admin.
+						{{msg}}
 					</h4>
 				</div>
-				<div *ngIf="approved_user===1 && users" id = "frame">
+				<div *ngIf="users && msg === ''" id = "frame">
 					<div class = "col-sm-4 col-xs-3" id="sidepanel">
 						<div id="profile" class = "padding_top-btm">
 							<div class="wrap">
