@@ -87,7 +87,7 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
 	  this.loading = true;
       this.count=0;
-      this.msg='';
+      //this.msg='';
       //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log(this.currentUser);

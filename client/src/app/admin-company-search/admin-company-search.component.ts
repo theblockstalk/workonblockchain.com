@@ -116,7 +116,7 @@ export class AdminCompanySearchComponent implements OnInit {
                          }
                          else
                          {
-                            this.log= 'Not Found Any Data';
+                            this.log= 'No companies matched this search criteria';
                             this.info=[];
                             this.response = "data";
                             
@@ -345,7 +345,7 @@ export class AdminCompanySearchComponent implements OnInit {
                         else
                         {
                             this.response = "data";
-                            this.log= 'Not Found Any Data';
+                            this.log= 'No companies matched this search criteria';
                         }
                         
                 

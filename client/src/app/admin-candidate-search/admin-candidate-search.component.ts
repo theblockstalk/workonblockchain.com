@@ -128,7 +128,7 @@ export class AdminCandidateSearchComponent implements OnInit {
                         else
                         {
                             this.response = "data";
-                            this.log= 'Not Found Any Data';
+                            this.log= 'No candidates matched this search criteria';
                             
                         }
                         
@@ -357,7 +357,7 @@ export class AdminCandidateSearchComponent implements OnInit {
                         else
                         {
                             this.response = "data";
-                            this.log= 'Not Found Any Data';
+                            this.log= 'No candidates matched this search criteria';
                         }
                         
                         this.page =this.length;   

@@ -146,7 +146,7 @@ export class HeaderComponent implements OnInit {
   {
       this.success_msg='';
       this.msg='';
-      this.close = "close"; 
+      //this.close = "close"; 
       localStorage.setItem('close_notify', JSON.stringify(this.close)); 
       //localStorage.setItem('close_notify', JSON.stringify(this.close));
       if(this.currentUser.email)
