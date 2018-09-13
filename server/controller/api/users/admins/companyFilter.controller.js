@@ -144,7 +144,7 @@ function admin_company_filter_new(data)
    			                    	 }
    			                    	 if (cand_result == '')
    			                    	 {
-   			                    		 deferred.reject("Not Found Any Data");
+   			                    		 deferred.reject("No companies matched this search criteria");
 
    			                    	 }
    			                    	 if(cand_result)
@@ -162,14 +162,14 @@ function admin_company_filter_new(data)
    			                 }
    			                 else
    			                 {
-   			                	deferred.reject("Not Found Any Data");
+   			                	deferred.reject("No companies matched this search criteria");
    			                 }
    			                 
    			                 
    			            }
    			            else
 		                 {
-		                	deferred.reject("Not Found Any Data");
+		                	deferred.reject("No companies matched this search criteria");
 		                 }
    			});
    		   
