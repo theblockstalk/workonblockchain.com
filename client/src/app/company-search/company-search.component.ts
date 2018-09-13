@@ -491,8 +491,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                     if(res['ids'].length !== this.count)
                                     {
                                         this.count++;
-                                        this.response = "data";
-                                        console.log(this.count);
+                                                                 
+                                    }
+                                     
+                                     if(res['ids'].length === this.count)
+                                    {
+                                         this.response = "data";
+                                         
                                     }
                       
                                 },
@@ -716,9 +721,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                 if(res['ids'].length !== this.count)
                                 {
                                     this.count++;
-                                    this.response = "data";
-                                    console.log(this.count);
+                               
                                 }
+                                if(res['ids'].length === this.count)
+                                    {
+                                         this.response = "data";
+                                         
+                                    }
                                 
 							},
 							error => {
