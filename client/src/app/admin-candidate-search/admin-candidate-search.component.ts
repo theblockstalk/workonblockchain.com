@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , AfterViewInit} from '@angular/core';
 import {UserService} from '../user.service';
 import {NgForm} from '@angular/forms';
 import { Select2OptionData } from 'ng2-select2';
@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './admin-candidate-search.component.html',
   styleUrls: ['./admin-candidate-search.component.css']
 })
-export class AdminCandidateSearchComponent implements OnInit {
+export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     p: number = 1;
    currentUser: User;
   log;info=[];roleChange;options2;length;page;searchWord;
@@ -29,7 +29,10 @@ export class AdminCandidateSearchComponent implements OnInit {
     admin_log;
     response;
    constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
- 
+  ngAfterViewInit(): void 
+     {
+           window.scrollTo(0, 0);   
+       }
   ngOnInit() 
   {
       this.length='';
