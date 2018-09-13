@@ -103,7 +103,7 @@ export class ChatComponent implements OnInit {
                     this.display_name = data.first_name+' '+data.last_name;
                     if(data._creator.is_approved == 0 || data.disable_account == true){
                         this.approved_user = 0;
-                    }
+					}
                     else{
                         this.approved_user = 1;
                     }
