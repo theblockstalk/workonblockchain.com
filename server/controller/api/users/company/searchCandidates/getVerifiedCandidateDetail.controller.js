@@ -39,7 +39,8 @@ function getVerifiedCandidateDetail(params)
                 }
                 if(result)
                 {	
-                	var query_result = result[0].toObject();  
+                	var query_result = result[0].toObject();
+                	
             		let anonymous = filterReturnData.removeSensativeData(query_result);
             		
                 	if(params.company_reply == 1 )

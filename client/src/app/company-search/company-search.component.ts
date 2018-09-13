@@ -380,9 +380,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             .subscribe(
                 data => 
                 {
-                    
-                   
-                    
+  
                     if(data.error)
                     {
                        
@@ -404,6 +402,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                             
                             if(res['ids'].length<=0)
                             {
+                               this.response = "data";
                               this.not_found= "Not Found Any Data";
                             }
                             else
@@ -488,7 +487,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   
                                         });
                                     }
-                        
+                                    this.response = "data";
                       
                                 },
                                 error => {
@@ -501,7 +500,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                               }
                                 }
 
-                                this.response = "data";
+                                
                         }
                             
                          
@@ -601,7 +600,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 										.subscribe(
 											dataa =>
 											{
-                                                console.log(data);
+                                                //console.log(data);
 												if(dataa)
 												{
 													//console.log("1");
@@ -676,7 +675,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 									.subscribe(
 										result => 
 										{
-                                            console.log(result);
+                                            //console.log(result);
 											if(result)
 											{
 												//console.log("2");
@@ -705,32 +704,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 										}
 									);
 								}
+                                
+                                this.response = "data";
 							},
 							error => {
 								//console.log('error');
 								//console.log(error);
 								//this.log = error;
-							}
-						);
-						this.authenticationService.getCurrentCompany(this.currentUser._creator)
-						.subscribe(
-							data => {
-								this.company_name = data.company_name;
-							},
-							error => {
-								if(error.message == 500 || error.message == 401  )
-								{
-									localStorage.setItem('jwt_not_found', 'Jwt token not found');
-									window.location.href = '/login';
-								}
-								if(error.message == 403)
-								{
-									this.router.navigate(['/not_found']);                        
-								}
-							}
-						);
-					}
-                        this.response = "data";
+							});
+						
+					   }
+                        
                         }
                     
 				} 
@@ -751,8 +735,25 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 					this.router.navigate(['/not_found']);                        
                 }
                     
-            }
-		);
+            });
+        
+        this.authenticationService.getCurrentCompany(this.currentUser._creator)
+                        .subscribe(
+                            data => {
+                                this.company_name = data.company_name;
+                            },
+                            error => {
+                                if(error.message == 500 || error.message == 401  )
+                                {
+                                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                    window.location.href = '/login';
+                                }
+                                if(error.message == 403)
+                                {
+                                    this.router.navigate(['/not_found']);                        
+                                }
+                            }
+                        );
 		this.length++;
 		if(this.length> 0 )
 		{
