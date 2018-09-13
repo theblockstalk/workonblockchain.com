@@ -403,7 +403,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                             if(res['ids'].length<=0)
                             {
                                this.response = "data";
-                              this.not_found= "Not Found Any Data";
+                              this.not_found= "No candidates matched this search criteria";
                             }
                             else
                             {
@@ -581,7 +581,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     if(res['ids'].length<=0)
                     {
                         this.response = "data";
-                        this.not_found = "Not found any data";
+                        this.not_found = "No candidates matched this search criteria";
                         
                     }
                     else
@@ -761,7 +761,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 			this.log='';
 		}else
 		{
-			this.log= 'Not Found Any Data';                           
+			this.log= 'No candidates matched this search criteria';                           
         }
 		this.length = '';
     }
