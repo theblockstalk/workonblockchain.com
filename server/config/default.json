@@ -11,8 +11,6 @@
     "host": "localhost",
     "port": 27017,
     "databaseName": "wob_local_db"
-
-
   },
   "expressJwt": {
     "secret": "shhhhhhhhhhhhhhh"
