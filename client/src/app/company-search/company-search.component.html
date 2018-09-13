@@ -79,14 +79,19 @@
 						 </li>
 						 
 						<li> 
-							<div class="form-group">
-							    <input type="text" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Expected Salary">
-							    <select [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)"  name="required">
-								     	<!-- <option [ngValue]="undefined" hidden selected>$ USD</option>-->
-								     	 <option value="-1" disabled selected hidden >$ USD</option>
-								     	 <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
-              
-								</select>
+							<div class="form-group filter_grp"> 
+								<div class = "col-md-8 filter_col">
+							   	 <input type="text" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Expected Salary">
+							    </div>
+							    
+							    <div class = "col-md-4 filter_col">
+								    <select [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)"  name="required">
+									     	<!-- <option [ngValue]="undefined" hidden selected>$ USD</option>-->
+									     	 <option value="-1" disabled selected hidden >$ USD</option>
+									     	 <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
+	              
+									</select>
+								</div>
 							  </div>
 						 </li>
 						 <li>
@@ -146,19 +151,25 @@
 									<div class = "user-pic">
 									
 										<img src="{{data.image}}" alt="">
+										<a class = "mobile_name" [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 0"><h2>{{data.initials}}</h2><br/></a>
+										<a class = "mobile_name" [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}}</h2></a><br/>
 										</div>
 									</ng-container>
 									<ng-template #company_logo_top>
 										<div class = "user-pic">
 										<img src="/assets/profile/profile-image.png" alt="">
+										<a class = "mobile_name" [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 0"><h2>{{data.initials}}</h2><br/></a>
+										<a class = "mobile_name" [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}}</h2></a><br/>
 										</div>
 									</ng-template>
 
 							
+							
 
-							<div class = "user-detail">
-								<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 0"><h2>{{data.initials}}</h2><br/></a>
-								<a [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}}</h2></a><br/>
+							<div class = "user-detail ">
+								<a [routerLink]="['/candidate-detail']" class = "large_sec" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 0"><h2>{{data.initials}}</h2><br/></a>
+								<a [routerLink]="['/candidate-detail']" class = "large_sec" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}}</h2></a><br/>
+								
 								
 								<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>
 								
