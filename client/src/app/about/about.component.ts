@@ -327,7 +327,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                                     this.email_data.email = data._creator.email;
                                     this.email_data.referred_fname = this.info.first_name;
                                     this.email_data.referred_lname = this.info.last_name;
-                                    ////console.log(this.email_data);
+                                    console.log(this.email_data);
                                     this.authenticationService.email_referred_user(this.email_data).subscribe(
                                     data =>
                                     {
