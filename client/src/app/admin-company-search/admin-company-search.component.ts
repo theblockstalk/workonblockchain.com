@@ -29,6 +29,7 @@ export class AdminCompanySearchComponent implements OnInit {
 	searchWord;
     admin_log;
     is_admin;
+    response;
     
    constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
@@ -37,7 +38,7 @@ export class AdminCompanySearchComponent implements OnInit {
         this.length='';
         this.log='';
         this.approve=-1;
-
+        this.response = '';
         this.rolesData = 
         [
             {id:'job_offer', text:'Job description sent'},
@@ -81,13 +82,17 @@ export class AdminCompanySearchComponent implements OnInit {
     {
        this.length=0;
        this.info=[];
+        this.response = "";
           this.authenticationService.allCompanies()
             .subscribe(
                 data => 
                 {
                  
                    if(data.error)
+                   {
+                       this.response = "data";
                         this.log="Something went wrong";
+                  }
                    else
                    {
                         
@@ -107,11 +112,13 @@ export class AdminCompanySearchComponent implements OnInit {
                          {
                              this.page =this.length;
                              this.log='';
+                             this.response = "data";
                          }
                          else
                          {
                             this.log= 'Not Found Any Data';
                             this.info=[];
+                            this.response = "data";
                             
                          }
                          this.length = '';
@@ -279,6 +286,7 @@ export class AdminCompanySearchComponent implements OnInit {
         this.length=0;
         this.page =0;
         this.info=[];
+        this.response = "";
         ////console.log(this.approve);
         ////console.log(this.msgtags);
       
@@ -299,6 +307,7 @@ export class AdminCompanySearchComponent implements OnInit {
                     if(data.error)
                     {
                        // ////console.log(this.info);
+                        this.response = "data";
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -330,10 +339,12 @@ export class AdminCompanySearchComponent implements OnInit {
                             
                              this.log='';
                              this.page =this.length;
+                             this.response = "data";
                            
                         }
                         else
                         {
+                            this.response = "data";
                             this.log= 'Not Found Any Data';
                         }
                         

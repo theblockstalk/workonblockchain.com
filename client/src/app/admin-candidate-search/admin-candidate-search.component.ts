@@ -27,6 +27,7 @@ export class AdminCandidateSearchComponent implements OnInit {
     admin_check = [{name:1 , value:"Active"}, {name:0 , value:"Inactive"}];
     information;
     admin_log;
+    response;
    constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
  
   ngOnInit() 
@@ -34,6 +35,7 @@ export class AdminCandidateSearchComponent implements OnInit {
       this.length='';
       this.log='';   
       this.approve=-1;
+       this.response='';
       this.rolesData = 
        [
             {id:'job_offer', text:'Job description sent'},
@@ -79,6 +81,7 @@ export class AdminCandidateSearchComponent implements OnInit {
     {          
         this.length=0;
        this.info=[];
+        this.response='';
           this.authenticationService.getAll()
             .subscribe(
                 data => 
@@ -87,10 +90,12 @@ export class AdminCandidateSearchComponent implements OnInit {
                     if(data.error)
                     {
                        // ////console.log(this.info);
+                        this.response = "data";
                         this.length='';
                         this.log = data.error;
                         this.info=[];
                         this.page='';
+                        
                         
 
                     }
@@ -118,10 +123,13 @@ export class AdminCandidateSearchComponent implements OnInit {
                             
                              this.log='';
                             this.page =this.length; 
+                            this.response = "data";
                         }
                         else
                         {
+                            this.response = "data";
                             this.log= 'Not Found Any Data';
+                            
                         }
                         
                           this.length='';
@@ -291,6 +299,7 @@ export class AdminCandidateSearchComponent implements OnInit {
 
         this.length =0;
         this.info=[];
+        this.response = "";
         if(this.approve == -1 && !this.select_value && !this.searchWord )
         {             
             ////console.log("iffffffff"); 
@@ -311,6 +320,7 @@ export class AdminCandidateSearchComponent implements OnInit {
                     if(data.error)
                     {
                        // ////console.log(this.info);
+                        this.response = "data";
                         this.length='';
                         this.log = data.error;
                         this.info=[];
@@ -346,10 +356,12 @@ export class AdminCandidateSearchComponent implements OnInit {
                         }
                         else
                         {
+                            this.response = "data";
                             this.log= 'Not Found Any Data';
                         }
                         
                         this.page =this.length;   
+                        this.response = "data";
                                         
                     }
                             

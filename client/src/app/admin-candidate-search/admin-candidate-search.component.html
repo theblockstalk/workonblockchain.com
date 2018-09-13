@@ -61,6 +61,14 @@
 				</div>
 				</form>
 			</div>
+			
+			<ng-container *ngIf="response === '';else no_section" >
+			<div class="col-md-9 text-center" >
+				<img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
+				</div>
+				
+			</ng-container>
+			<ng-template #no_section >
 			<!--end-col-md-3-->
 			<div class="col-md-9">
 
@@ -180,6 +188,7 @@
 					</ul> -->
 
 			</div>
+			</ng-template>
 			<!--end-md-9-col-->
 
 		</div> <!--row end-->
