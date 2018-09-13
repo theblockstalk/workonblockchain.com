@@ -288,6 +288,9 @@ export class ChatComponent implements OnInit {
                                 }
                             }
                         }
+						else{
+							this.msg='You have not chatted yet';
+						}
                     },
                     error => {
                         if(error.message == 500 || error.message == 401)
@@ -362,6 +365,9 @@ export class ChatComponent implements OnInit {
                                 }
                             }
                         }
+						else{
+							this.msg='You have not chatted yet';
+						}
                     },
                     error => {
                         if(error.message == 500 || error.message == 401)
