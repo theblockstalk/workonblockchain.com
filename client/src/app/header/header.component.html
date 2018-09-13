@@ -53,26 +53,32 @@
     {{msg}}    
  </div>
  
- <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg=='' && verifysuccessmsg!=''">
+ <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg =='' && verifysuccessmsg!=''">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     {{verifysuccessmsg}}    
  </div>
  
- <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "success_msg=='' && verifyerrormsg!=''">
+ <div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "success_msg =='' && verifyerrormsg!=''">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     {{verifyerrormsg}}    
  </div>
  
-<div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg!=''">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+ 
+<div>
+
+ <div *ngIf = "success_msg!=''">
+ 
+ <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg!='' && success_msg!='not verify'">
+<a href="#"  data-dismiss="alert" ></a>
     {{success_msg}}    
  </div>
  
-<div>
-<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg && !close ">
+ 	<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' ">
   <a href="#" data-dismiss="alert"  ></a>
     Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class = "">here</a>.
     <!-- <a (click)="verify_client()" class = "">Verify Account</a>-->
     
+ </div>
  </div>
 </div>

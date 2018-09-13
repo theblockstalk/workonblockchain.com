@@ -68,6 +68,14 @@ export class HeaderComponent implements OnInit {
                     if(data)
                     {
                         this.is_verify = data._creator.is_verify;
+                        if(this.is_verify == 0)
+                        {
+                            this.success_msg = "not verify";
+                        }
+                        else
+                        {
+                            this.success_msg='';
+                        }
 						this.is_admin = data._creator.is_admin;
                         this.user_name = data.first_name+' '+data.last_name;
 						if(this.is_admin === 1)
@@ -162,9 +170,9 @@ export class HeaderComponent implements OnInit {
                         this.success_msg = "Please check your email to verify your account" ;
                         
                         setInterval(() => {  
-                                this.success_msg = "" ;
+                                this.success_msg = "not verify" ;
                                 
-                        }, 9000);
+                        }, 12000);
                         
                     }
 
