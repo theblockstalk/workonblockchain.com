@@ -146,7 +146,7 @@ function admin_candidate_filter(data)
    			                    	 }
    			                    	 if (cand_result == '')
    			                    	 {
-   			                    		 deferred.reject("Not Found Any Data");
+   			                    		 deferred.reject("No candidates matched this search criteria");
 
    			                    	 }
    			                    	 if(cand_result)
@@ -164,14 +164,14 @@ function admin_candidate_filter(data)
    			                 }
    			                 else
    			                 {
-   			                	deferred.reject("Not Found Any Data");
+   			                	deferred.reject("No candidates matched this search criteria");
    			                 }
    			                 
    			                 
    			            }
    			            else
 		                 {
-		                	deferred.reject("Not Found Any Data");
+		                	deferred.reject("No candidates matched this search criteria");
 		                 }
    			});
    		   
