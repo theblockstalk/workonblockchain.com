@@ -109,7 +109,7 @@
 				</form>
 				
 			</div>
-			<ng-container *ngIf="response === '';else no_section" >
+			<ng-container *ngIf="count !== cand_data.length;else no_section" >
 			<div class="col-md-9 text-center" >
 				<img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
 				</div>

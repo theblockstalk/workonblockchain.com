@@ -364,6 +364,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.cand_data=[];
        this.log='';
         this.response='';
+        this.count=0;
 
         if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1 
         &&  this.currencyChange === -1 &&  this.availabilityChange === -1 )
@@ -487,7 +488,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   
                                         });
                                     }
-                                    this.response = "data";
+                                    if(res['ids'].length !== this.count)
+                                    {
+                                        this.count++;
+                                        this.response = "data";
+                                        console.log(this.count);
+                                    }
                       
                                 },
                                 error => {
@@ -562,6 +568,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     lengthmsgg;
     filter_data;
     response;
+    count;
     getVerrifiedCandidate()
     {     
         this.length=0;
@@ -570,6 +577,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.lengthmsgg='';
         this.response='';
         this.msg='';
+        this.count=0;
 		this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
         .subscribe(
 			dataa => {
@@ -705,7 +713,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 									);
 								}
                                 
-                                this.response = "data";
+                                if(res['ids'].length !== this.count)
+                                {
+                                    this.count++;
+                                    this.response = "data";
+                                    console.log(this.count);
+                                }
+                                
 							},
 							error => {
 								//console.log('error');
