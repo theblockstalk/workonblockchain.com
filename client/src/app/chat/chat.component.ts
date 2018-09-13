@@ -101,7 +101,7 @@ export class ChatComponent implements OnInit {
                     //data[0].disable_account == false;
 					this.profile_pic = data.image;
                     this.display_name = data.first_name+' '+data.last_name;
-                    if(data._creator.is_approved == 0 || data.disable_account == true){
+                    if(data._creator.is_approved == 0 || data._creator.disable_account == true){
                         this.approved_user = 0;
 					}
                     else{
@@ -130,7 +130,8 @@ export class ChatComponent implements OnInit {
                     //data[0].disable_account == false;
                     this.profile_pic = data.company_logo;
                     this.display_name = data.company_name;
-                    if(data._creator.is_approved == 0 || data.disable_account == true){
+					console.log(data);
+                    if(data._creator.is_approved == 0 || data._creator.disable_account == true){
                         this.approved_user = 0;
                     }
                     else{
