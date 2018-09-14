@@ -38,17 +38,14 @@ export class HeaderComponent implements OnInit {
              // //console.log(this.loc);
          let x = loc.split("-");
           this.admin_route = x[0];
-
+       
       } else {
         //this.route = 'Home'
       }
     });
      
               
-     //this.date = this.datePipe.transform(this.today + 30*60000, 'h:MM:ss');
-          //this.date = new Date(new Date().getTime() +  1800 *1000);
-          
-   ////console.log(this.admin_route);
+   
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')); 
      // //console.log(this.currentUser);
@@ -138,22 +135,20 @@ export class HeaderComponent implements OnInit {
       this.success='';
       this.success_msg = '';
       this.msg='';
+      
       if(this.currentUser)
       {
           this.dataservice.currentMessage.subscribe(message => this.msg = message);
           setInterval(() => {  
                                 this.msg = "" ;
-                        }, 3000);
+                        }, 30000);
           this.close = JSON.parse(localStorage.getItem('close_notify')); 
        }
       
-      this.dataservice.verifycurrentMessage.subscribe(message => this.verifysuccessmsg = message);
-       this.dataservice.verifyerrorMessage.subscribe(message => this.verifyerrormsg = message);
+      //this.dataservice.verifycurrentMessage.subscribe(message => this.verifysuccessmsg = message);
+      // this.dataservice.verifyerrorMessage.subscribe(message => this.verifyerrormsg = message);
       
-       setInterval(() => {  
-                                this.verifysuccessmsg = "" ;
-                                this.verifyerrormsg='';
-                        }, 20000);
+      
       
   }
   

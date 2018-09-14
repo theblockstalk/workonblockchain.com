@@ -1089,7 +1089,6 @@ body{
     padding: 20px;
     font-size: 18px;
     font-weight: 300;
-	overflow:hidden;
 }
 
 .copy_btn{
@@ -2325,6 +2324,7 @@ input[type=checkbox] {
     background: #253245;
     padding-top: 15px;
     padding-bottom: 15px;
+    overflow:hidden;
 }
 
 .input_main{
@@ -2423,11 +2423,19 @@ input[type=checkbox] {
 }
 
 .user-pic img{
-	float:left;
     border-radius: 50%;
     height: 50px;
     width: 50px;
     margin-right: 10px;
+    float:left;
+}
+
+.large_sec{
+	display:block
+}
+
+.mobile_name{
+	display:none;
 }
 
 .panel-heading{
@@ -2450,14 +2458,6 @@ input[type=checkbox] {
 	max-width: 550px;
     height: auto;
     overflow: hidden;
-}
-
-.large_sec{
-	display:block
-}
-
-.mobile_name{
-	display:none;
 }
 
 .label-war {
@@ -2514,23 +2514,15 @@ input[type=checkbox] {
 }
 
 .currncy_input{
+    width: 60%;
     float: left;
 }
 
 .currncy_select{
+    width: 40%;
     color: #a59999;
     position: relative;
     left: 2px;
-}
-
-.filter_grp{
-	overflow:hidden;
-}
-
-.filter_col{
-	padding-right:0px;
-	padding-left: 0px;
-	margin-bottom: 10px;
 }
 
 .btn-div{
@@ -2760,7 +2752,7 @@ input[type=checkbox] {
 	}
 	
 	.input_main{
-		min-width: 100%;
+		width: 100%;
 		margin: auto;
 	}
 	
@@ -2770,7 +2762,6 @@ input[type=checkbox] {
 	
 	.search-form{
 		padding: 15px 20px;
-		overflow: hidden;
 	}
 	
 	.btn-div{
@@ -2791,10 +2782,7 @@ input[type=checkbox] {
 	{
 		bottom:0px;
 	}
-	.copy_btn
-	{
-		float:left;
-	}
+	
 	
 }
 
@@ -3292,7 +3280,6 @@ input:checked + .slider:before {
 
 .footer-list{
     text-align: center;
-	-webkit-padding-start: 0px;
 }
 
 .footer-list li{
@@ -3637,6 +3624,25 @@ input:checked + .slider:before {
     {
         bottom:0px;
     }
+    
+    .candidate-slider h2, .newsletter_signup h2{
+		font-size: 22px;
+	}
+	
+	.large_sec{
+		display:none;
+	}
+
+	.mobile_name{
+		display:block;
+		float: left;
+	}
+	
+	.form-login form p {
+		font-size: 12px;
+		top: -13px;
+		width: 43%;
+	}
 
 }
 
@@ -3677,11 +3683,6 @@ input:checked + .slider:before {
     #frame #sidepanel #contacts ul li.contact .wrap img {
         margin-right: 0px;
     }
-	
-	.candidate-slider h2, 
-	.newsletter_signup h2 {
-    font-size: 22px;
-}
 
 }
 
@@ -3691,17 +3692,7 @@ input:checked + .slider:before {
         width: 125px;
         text-align: center;
     }
-		
-		
-    .large_sec{
-		display:none;
-	}
-
-	.mobile_name{
-		display:block;
-		float: left;
-	}
-	
+    
     .btn-relative2 {
         font-size: 10px;
         width: 125px;
@@ -3832,12 +3823,6 @@ input:checked + .slider:before {
     #frame #sidepanel #profile .wrap{
         height: 60px;
     }
-	
-	.switch {
-		    width: 50px !important;
-			position: relative;
-			left: -24px;
-	}
 
 }
 

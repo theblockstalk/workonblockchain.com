@@ -25,21 +25,96 @@ export class VerifyEmailComponent implements OnInit {
             });
          }
 
+    errorMsg;
+    succesMsg;
+    count=0;
   ngOnInit() 
   {
-
+        this.errorMsg='';
+        this.succesMsg='';
+        this.count=0;
   		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //////console.log(this.currentUser);
   			this.authenticationService.verify_email(this.hash)
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
+                     if (data['msg']) 
+                    {
+                        if(!this.currentUser)
+                        {
+                            this.succesMsg= 'Email verified. Please login to continue.';
+                        
+                            window.location.href = '/login';
+
+                        }
+
+                        else if(this.currentUser.type=="candidate")
+                        {
+                            this.succesMsg = data['msg'];
+                            
+                                window.location.href = '/candidate_profile';
+                              
+                            //this.router.navigate(['/login']);
+                           /// this.router.navigate(["/candidate_profile"]);                   
+                        }
+                        
+                        else if(this.currentUser.type=="company")
+                        {
+                            this.succesMsg = data['msg'];
+                            //this.dataservice.verifySuccessMessage(data['msg']);
+                            
+                                window.location.href = '/company_profile'; 
+
+                            
+                            //this.router.navigate(['/login']);
+                            //this.router.navigate(["/company_profile"]);                   
+                        }
+                   // return data;
+                }
+                if(data['error'])
+                {
+                    if(!this.currentUser)
+                        {
+                            this.errorMsg = data['error'];
+                            
+                               window.location.href = '/login';
+
+                               
+                            
+                            //this.router.navigate(['/login']);
+                        }
+
+                        else if(this.currentUser.type=="candidate")
+                        {
+                            this.errorMsg = data['error'];
+                            //this.dataservice.verifyErrorMessage(data['error']);
+                             
+                                window.location.href = '/candidate_profile'; 
+
+                            
+                            
+                            //this.router.navigate(['/login']);
+                            //this.router.navigate(["/candidate_profile"]);                   
+                        }
+                        
+                        else if(this.currentUser.type=="company")
+                        {
+                            this.errorMsg = data['error'];
+                             
+                                window.location.href = '/company_profile'; 
+                              
+                              
+                            
+                            //this.router.navigate(['/login']);
+                            //this.router.navigate(["/company_profile"]);                   
+                        }
+                }
 
                 },
                 error => 
                 {
-                       
+                       this.dataservice.verifyErrorMessage(error);
                     ////console.log("error");
                   //this.dataservice.changeMessage(error);
                 	// this.router.navigate(['/login']);

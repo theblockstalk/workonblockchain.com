@@ -127,6 +127,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
        }
   ngOnInit() 
   {
+      $(document).ready(function(){
+          console.log("jquery function");
+  var $progControl = $(".progControlSelect0").select2({
+        placeholder: "Skills"//placeholder
+    });
+})
 	  setInterval(() => {
 		  this.job_offer_log = '';
 	  }, 5000);

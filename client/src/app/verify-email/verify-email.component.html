@@ -2,10 +2,24 @@
 <section class = "terms" >
   <div class="container t-c_container">
 	<div class="row" >
-			<div class = "A_heading" >
-				<h1>Please wait....</h1>
+			<div class = "A_heading" *ngIf="succesMsg ==='' && errorMsg === ''">
+				<h1>we are verifying your account...</h1>
 			</div>
 			
+			<!-- <div class="alert alert-danger pro_alert alert-dismissible msg_heading" *ngIf = "errorMsg !==''">
+		
+			<a href="#"  data-dismiss="alert" ></a>
+    			{{errorMsg}}    
+    			
+ 			</div>
+ 
+ 			<div class="alert alert-success pro_alert alert-dismissible msg_heading" *ngIf = "succesMsg !==''">
+ 		
+			<a href="#" data-dismiss="alert" ></a>
+    			{{succesMsg}}   
+    			
+ 			</div>
+			--->
 		
 	</div>
 	

@@ -113,9 +113,11 @@ function admin_company_filter_new(data)
    			                	const isApproveFilter = {"users.is_approved" : parseInt(data.is_approve)};
    			                	 queryString.push(isApproveFilter);
    			                 }
+   			                 
+   			                
    			                 if(data.word)
    			                 {
-   			                	 const nameFilter = { $or : [  { first_name : {'$regex' : data.word, $options: 'i' } }, { last_name : {'$regex' : data.word , $options: 'i'} }]};
+   			                	 const nameFilter = { company_name : {'$regex' : data.word, $options: 'i' } };
    			                	 queryString.push(nameFilter);
    			                 }
    			                   			                 
@@ -186,7 +188,7 @@ function admin_company_filter_new(data)
            }
            if(data.word)
            {
-          	 const nameFilter = { $or : [  { first_name : {'$regex' : data.word, $options: 'i' } }, { last_name : {'$regex' : data.word , $options: 'i'} }]};
+          	 const nameFilter =  { company_name : {'$regex' : data.word, $options: 'i' } };
           	 queryString.push(nameFilter);
            }
            

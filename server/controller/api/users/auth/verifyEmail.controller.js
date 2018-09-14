@@ -48,7 +48,7 @@ function emailVerify(token)
             }
             else
            
-                deferred.resolve({error:'Link Expired'});
+                deferred.resolve({error:'Email hash not found'});
         });
 
         function updateData(_id)

@@ -80,23 +80,23 @@
 						 
 						<li> 
 							<div class="form-group filter_grp"> 
-								<div class = "col-md-8 filter_col">
-							   	 <input type="text" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Expected Salary">
-							    </div>
+								
+							   	 <input type="text" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
+							   
 							    
-							    <div class = "col-md-4 filter_col">
-								    <select [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)"  name="required">
+							    
+								    <select [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select " id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)"  name="required">
 									     	<!-- <option [ngValue]="undefined" hidden selected>$ USD</option>-->
 									     	 <option value="-1" disabled selected hidden >$ USD</option>
 									     	 <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
 	              
 									</select>
-								</div>
+								
 							  </div>
 						 </li>
 						 <li>
 							<div class = "form-group">
-								<select class="form-control " [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)"  name="required">
+								<select class="form-control progControlSelect0 " [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)"  name="required">
 									 
 									  <option value="-1" disabled selected hidden >Availability</option>
 									  <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>

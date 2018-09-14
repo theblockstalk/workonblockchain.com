@@ -467,58 +467,11 @@ export class UserService {
     {     
     //console.log(email_hash);
         return this.http.put(URL+'users/emailVerify/'+ email_hash , '').map(data => {        
-                if (data['msg']) 
-                {
-                        if(!this.currentUser)
-                        {
-                            this.dataservice.verifySuccessMessage('Email verified. Please login to continue.');
-                            this.router.navigate(['/login']);
-                        }
 
-                        else if(this.currentUser.type=="candidate")
-                        {
-                            this.dataservice.verifySuccessMessage(data['msg']);
-                            //this.router.navigate(['/login']);
-                            this.router.navigate(["/candidate_profile"]);                   
-                        }
-                        
-                        else if(this.currentUser.type=="company")
-                        {
-                            this.dataservice.verifySuccessMessage(data['msg']);
-                            //this.router.navigate(['/login']);
-                            this.router.navigate(["/company_profile"]);                   
-                        }
-                   // return data;
-                }
-                if(data['error'])
-                {
-                    if(!this.currentUser)
-                        {
-                            this.dataservice.verifyErrorMessage(data['error']);
-                            this.router.navigate(['/login']);
-                        }
-
-                        else if(this.currentUser.type=="candidate")
-                        {
-                            this.dataservice.verifyErrorMessage(data['error']);
-                            //this.router.navigate(['/login']);
-                            this.router.navigate(["/candidate_profile"]);                   
-                        }
-                        
-                        else if(this.currentUser.type=="company")
-                        {
-                            this.dataservice.verifyErrorMessage(data['error']);
-                            //this.router.navigate(['/login']);
-                            this.router.navigate(["/company_profile"]);                   
-                        }
-                }
-                else
-                {
                     ////console.log(data);
                     return data;
 
-                }
- 
+
                 
             });
     }
