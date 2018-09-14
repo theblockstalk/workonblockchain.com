@@ -185,7 +185,7 @@
 						<div class="form-group col-md-12 salary_class">
 							<div class="form-group col-md-6">
 								<label><p class = "label-p">Yearly expected base salary</p></label>
-								<input type="text" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="expected_salaryyy">
+								<input type="number" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="expected_salaryyy">
 							<div class = "form_error" *ngIf="!expected_salaryyy">
 								<span class = "error">{{salary_log}}</span>
 							</div>
@@ -206,7 +206,7 @@
 						<div class="form-group col-md-12 salary_class">
 							<div class="form-group col-md-6">
 								<label><p  class = "label-p">Current Base salary</p></label>
-								<input type="text" class="form-control" id="" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">							
+								<input type="number" class="form-control" id="" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">							
 								<div class = "form_error" *ngIf="!salary ">
 						<span class = "error">{{current_sal_logg}}</span>
 					</div> 
