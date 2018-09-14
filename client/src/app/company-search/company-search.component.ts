@@ -813,7 +813,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         //console.log("Used ID: " + this.user_id.id);
         //console.log("Name: " + this.user_id.name);
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
+        if(this.credentials.job_title && this.credentials.salary && this.credentials.location && this.credentials.currency && this.credentials.job_desc && this.credentials.job_type){
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
 			.subscribe(
 				data => {

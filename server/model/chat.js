@@ -57,7 +57,7 @@ const ChatSchema = new Schema({
 	msg_tag: 
 	{
 		type:String,
-		enum: ['normal', 'job_offer','job_offered', 'job_offer_accepted','job_offer_rejected', 'interview_offer'],
+		enum: ['normal', 'job_offer', 'job_offer_accepted','job_offer_rejected', 'interview_offer', 'employment_offer', 'employment_offer_accepted', 'employment_offer_rejected'],
 		required: true
 	},
 	is_company_reply: 
@@ -86,6 +86,7 @@ const ChatSchema = new Schema({
 	},
 	is_job_offered: 
 	{
+		type:Number,
         enum: [0, 1, 2, 3],
 		// 0 = no offer to candidate
         // 1 = job offered

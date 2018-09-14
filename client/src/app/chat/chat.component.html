@@ -137,6 +137,12 @@
 	<!--<div class="my-container">
 		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>-->
+	<ng-container *ngIf="file_uploaded === 0;else no_section" >
+		<div class="col-md-12 text-center" >
+			<img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
+		</div>
+	</ng-container>
+	<ng-template #no_section >
 <section class = "wizard_page">
 	<div class="container">
 			<div class="row chat-row">
@@ -201,18 +207,18 @@
 								<ul class = "cand_info-ul">
 									<ng-container *ngIf="currentUser.type == 'company';else cand">
 										<ng-container *ngIf="job_desc;else no_job_desc">
-											<li>Job Type : {{job_desc.job_type}}</li>
-											<li>Job Title : {{job_desc.job_title}}</li>
+											<li>Job type : {{job_desc.job_type}}</li>
+											<li>Job title : {{job_desc.job_title}}</li>
 											<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
 										</ng-container>
 										<ng-template #no_job_desc>
-											<li>Job Type : N/A</li>
-											<li>Job Title : N/A</li>
+											<li>Job type : N/A</li>
+											<li>Job title : N/A</li>
 											<li>Salary : N/A</li>
 										</ng-template>
 									</ng-container>
 									<ng-template #cand>
-										<li>Job Title : {{job_desc.job_title}}</li>
+										<li>Job title : {{job_desc.job_title}}</li>
 										<li class="text-capitalize">Job Type : {{job_desc.job_type}}</li>
 										<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
 									</ng-template>
@@ -229,7 +235,7 @@
 											<li class="replies">
 												<p>
 													<span *ngIf="msg.job_title !== ''">
-														Job Title:
+														Job title:
 														{{msg.job_title}}
 														<br/>
 													</span>
@@ -239,26 +245,26 @@
 														<br/>
 													</span>
 													<span *ngIf="msg.job_type !== ''">
-														Job Type:
+														Job type:
 														{{msg.job_type}}
 														<br/>
 													</span>
-													<span *ngIf="msg.msg_tag == 'job_offered'">
-														Joining Date:
+													<span *ngIf="msg.msg_tag == 'employment_offer'">
+														Joining date:
 														{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
 														<br/>
 													</span>
 													<span *ngIf="msg.interview_date_time">
-														Interview Date & Time:
+														Interview date & time:
 														{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 														<br/>
 													</span>
 													<span *ngIf="msg.interview_location">
-														Interview Location:
+														Interview location:
 														{{msg.interview_location}}
 														<br/>
 													</span>
-													<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
+													<span *ngIf="msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
 														Description:
 														{{msg.description}}
 														<br/>
@@ -276,10 +282,10 @@
 										<ng-template #second>
 											<li class="sent">
 												<p  class = "job-description">
-													<span class="text-capitalize"> {{msg.sender_name}}:</span>
+													<span *ngIf="msg.job_title === ''" class="text-capitalize"> {{msg.sender_name}}:</span>
 													<span *ngIf="msg.job_title !== ''">
 														<br/>
-														Job Title:
+														Job title:
 														{{msg.job_title}}
 														<br/>
 													</span>
@@ -289,28 +295,32 @@
 														<br/>
 													</span>
 													<span *ngIf="msg.job_type !== ''">
-														Job Type:
+														Job type:
 														{{msg.job_type}}
 														<br/>
 													</span>
-													<span *ngIf="msg.msg_tag == 'job_offered'">
-														Joining Date:
+													<span *ngIf="msg.msg_tag == 'employment_offer'">
+														Joining date:
 														{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
 														<br/>
 													</span>
 													<span *ngIf="msg.interview_date_time">
-														Interview Date & Time:
+														Interview date & time:
 														{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 														<br/>
 													</span>
 													<span *ngIf="msg.interview_location">
-														Interview Location:
+														Interview location:
 														{{msg.interview_location}}
 														<br/>
 													</span>
-													<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
+													<span *ngIf="msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
 														Description:
 														{{msg.description}}
+														<br/>
+													</span>
+													<span *ngIf="msg.msg_tag == 'employment_offer'">
+														{{msg.message}}
 														<br/>
 													</span>
 													<span *ngIf="msg.job_title == ''">
@@ -336,7 +346,7 @@
 												<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 												<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
 												<span class = "offers_btn">
-													<button type="submit" class = "btn btn_descp">Accept Offer</button>
+													<button type="submit" class = "btn btn_descp">Accept offer</button>
 												</span>
 											</form>
 											<form (submit)="reject_offer(msgForm)" #msgForm = ngForm style="display:inline;">
@@ -344,7 +354,7 @@
 												<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 												<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
 												<span class = "offers_btn">
-													<button type="submit" class = "btn btn_descp">Reject Offer</button>
+													<button type="submit" class = "btn btn_descp">Reject offer</button>
 												</span>
 											</form>
 										</div>
@@ -360,8 +370,8 @@
 									<ng-container *ngIf="currentUser.type == 'company';else no_offers">
 										<div class = "offers">
 											<span class = "offers_btn">
-												<button type = "button" data-toggle="modal" data-target="#myModal" class = "btn btn_descp">Offer to Interview</button>
-												<button type = "button" data-toggle="modal" data-target="#Modal" class = "btn btn_descp">Offer to Employee</button>
+												<button type = "button" data-toggle="modal" data-target="#myModal" class = "btn btn_descp">Offer to interview</button>
+												<button type = "button" data-toggle="modal" data-target="#Modal" class = "btn btn_descp">Offer to employ</button>
 											</span>
 										</div>
 									</ng-container>
@@ -375,7 +385,7 @@
 												<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
 												<input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
 												<span class = "offers_btn">
-													<button type="submit" class = "btn btn_descp">Accept Offer</button>
+													<button type="submit" class = "btn btn_descp">Accept employment offer</button>
 												</span>
 											</form>
 											<form (submit)="reject_job_offer(msgForm)" #msgForm = ngForm style="display:inline;">
@@ -384,7 +394,7 @@
 												<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
 												<input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
 												<span class = "offers_btn">
-													<button type="submit" class = "btn btn_descp">Reject Offer</button>
+													<button type="submit" class = "btn btn_descp">Reject employment offer</button>
 												</span>
 											</form>
 										</div>
@@ -424,6 +434,7 @@
 		</div>
 
 </section>
+</ng-template>
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -432,7 +443,7 @@
     <div class="modal-content costom_model">
       <div class="modal-header model-head">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title text-center">Offer to Interview</h4>
+        <h4 class="modal-title text-center">Offer to interview</h4>
       </div>
       <div class="modal-body">
         <form (submit)="send_interview_message(msgForm)" #msgForm = ngForm style="overflow: hidden;">
@@ -445,7 +456,7 @@
 		  </ng-template>
 		  <div class="form-group col-md-6 padd_imp">
 		    <p>Date</p>
-			<my-date-picker name="mydateinterview" [(ngModel)]="credentials.date" required ></my-date-picker>
+			<my-date-picker name="mydateinterview" [options]="myDatePickerOptions" [(ngModel)]="credentials.date" required ></my-date-picker>
 		  </div>
 
 		  <div class="form-group col-md-6 padd_imp">
@@ -480,7 +491,7 @@
     <div class="modal-content costom_model">
       <div class="modal-header model-head">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title text-center">Offer to Employee</h4>
+        <h4 class="modal-title text-center">Offer to employ</h4>
       </div>
       <div class="modal-body">
 	    <form (submit)="send_job_message(msgForm)" #msgForm = ngForm>
@@ -492,12 +503,12 @@
 		  <ng-template #no_modal>
 		  </ng-template>
 		  <div class="form-group col-md-12 padd_imp">
-		    <p>Job Title</p>
+		    <p>Job title</p>
 		    <input type="text" class="form-control" name="job_title" [(ngModel)]="credentials.job_title" id="">
 		  </div>
 		  <div class="form-group col-md-8 padd_imp">
-		  	<p>Yearly Base Salary </p>
-		    <input type="text" class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" id="">
+		  	<p>Yearly base salary </p>
+		    <input type="number" class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" id="">
 		  </div>
 
 		  <div class="form-group col-md-4 padd_imp">
@@ -510,7 +521,7 @@
 		  </div>
 
 		  <div class="form-group col-md-6 padd_imp">
-		  	<p>Employment Type</p>
+		  	<p>Employment type</p>
 		   <select class="form-control" name="employment_type" [(ngModel)]="credentials.employment_type" id="sel1">
 			    <option>Part Time</option>
 			    <option>Full Time</option>
@@ -518,11 +529,11 @@
 			</select>
 		  </div>
 		  <div class="form-group col-md-6 padd_imp">
-		    <p>Start Date</p>
-			<my-date-picker name="mydate"  [(ngModel)]="credentials.start_date" required ></my-date-picker>
+		    <p>Start date</p>
+			<my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="credentials.start_date" required ></my-date-picker>
 		  </div>
 		  <div class="form-group">
-		    <p>Other details (optional)</p>
+		    <p>Job description</p>
 		    <input type="text" class="form-control" name="job_description" [(ngModel)]="credentials.job_description" id="">
 		  </div>
 		  <div class="modal-footer text-right">
@@ -545,17 +556,17 @@
     <div class="modal-content costom_model">
       <div class="modal-header model-head">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title text-center">Job Description</h4>
+        <h4 class="modal-title text-center">Job description</h4>
       </div>
       <div class="modal-body">
 		<ng-container *ngIf="new_msgss;else no_job_desc_popup">
 			<div class = "dec_model">
 				<p>
-					<b>Job Title:</b>
+					<b>Job title:</b>
 					<span>{{new_msgss[0].job_title}}</span>
 				</p>
 				<p>
-					<b>Job Type:</b>
+					<b>Job type:</b>
 					<span>{{new_msgss[0].job_type}}</span>
 				</p>
 				<p>
@@ -563,7 +574,7 @@
 					<span>{{new_msgss[0].salary}} {{new_msgss[0].salary_currency}}</span>
 				</p>
 				<div>
-					<b>Job Description:</b><br>
+					<b>Job description:</b><br>
 					<p class="job_decs">
 						{{new_msgss[0].description}}
 					</p>

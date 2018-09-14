@@ -243,7 +243,7 @@ export class CandidateDetailComponent implements OnInit {
   send_job_offer(msgForm : NgForm){
 	    this.full_name = this.first_name;
         ////console.log(this.full_name);
-        if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
+        if(this.credentials.job_title && this.credentials.salary && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
 			.subscribe(

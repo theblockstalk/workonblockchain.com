@@ -12,7 +12,6 @@
     "port": 27017,
     "databaseName": "wob"
 
-
   },
   "expressJwt": {
     "secret": "shhhhhhhhhhhhhhh"

@@ -104,11 +104,11 @@ export class AdminDisplayChatComponent implements OnInit {
 								////console.log('my');
 							}
 							else{
-								this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].is_company_reply,this.type)
+								this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,1,this.type)
 								.subscribe(
 									data => {
 										this.users.push(data['users']);
-										////console.log(this.users);
+										//console.log(this.users);
 										this.count = 0;
 										for (var key_users_new in this.users) {
 											if(this.count == 0){
@@ -178,7 +178,7 @@ export class AdminDisplayChatComponent implements OnInit {
 								////console.log('my');
 							}
 							else{
-								this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',0,'company')
+								this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',1,'company')
 								.subscribe(
 									data => {
 										this.users.push(data['users']);
