@@ -78,7 +78,7 @@ export class ReferralComponent implements OnInit {
             );
 			this.ref_link = this.email_ref_link+this.currentUser.ref_link;
 			this.share_url = this.ref_link;
-			this.text = 'I am inviting you to workonblockchain.com! Sign up now and let companies apply to you. Receive 5  job offers in one week. Salaries from €35k - €100k';
+			this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
 		}
 		////console.log(this.show_refreal);
 	}

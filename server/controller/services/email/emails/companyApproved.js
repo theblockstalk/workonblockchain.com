@@ -8,7 +8,7 @@ module.exports.sendEmail = function sendEmail(email,name) {
     const sendTo = {
         email:email
     };
-    const subject = "Account Approve";
+    const subject = "Your account has been approved!";
 
     const sendToArray = [sendTo];
 

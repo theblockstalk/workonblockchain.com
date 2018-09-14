@@ -235,6 +235,7 @@ export class ChatComponent implements OnInit {
     
     display_msgs()
     {
+        this.msg='';
         this.loading = false;
             //console.log('allowed');
             if(this.currentUser.type=="company"){
@@ -310,7 +311,8 @@ export class ChatComponent implements OnInit {
                             }
                         }
 						else{
-							this.msg='You have not chatted yet';
+                            this.msg='';
+							//this.msg='You have not chatted yet';
 						}
                     },
                     error => {
@@ -387,7 +389,8 @@ export class ChatComponent implements OnInit {
                             }
                         }
 						else{
-							this.msg='You have not chatted yet';
+							//this.msg='You have not chatted yet';
+                            this.msg='';
 						}
                     },
                     error => {

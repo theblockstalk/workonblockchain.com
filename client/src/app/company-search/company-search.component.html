@@ -96,7 +96,7 @@
 						 </li>
 						 <li>
 							<div class = "form-group">
-								<select class="form-control progControlSelect0 " [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)"  name="required">
+								<select class="form-control " id="sel1" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)"  name="required">
 									 
 									  <option value="-1" disabled selected hidden >Availability</option>
 									  <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
@@ -261,7 +261,7 @@
 		  </ng-template>
 		  <div class="form-group col-md-6 padd_imp">
       <p class = "input_p">Job Title</p>
-      <input type="text" name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="fontend development">
+      <input type="text" name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Frontend developer">
     </div>
     <div class="form-group col-md-6 padd_imp">
       <p class = "input_p">Salary</p>
@@ -279,7 +279,7 @@
       <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" id="" placeholder="London">
     </div>
     <div class="form-group col-md-6 padd_imp">
-      <p class = "input_p">Full/Part Time</p>
+      <p class = "input_p">Employment type</p>
       <div class="radio radio_custom" *ngFor="let options of job_type">
 		<label>
 			<input type="radio" id = "new-radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options"> 
@@ -291,7 +291,7 @@
    
     <p style="margin-left: -3%;" class="form-group col-md-12">Job Description</p>
     <div class="form-group">
-      <textarea class="form-control" name="job_desc" [(ngModel)]="credentials.job_desc" rows="5" id="comment" placeholder="something detail here"></textarea>
+      <textarea class="form-control" name="job_desc" [(ngModel)]="credentials.job_desc" rows="5" id="comment" placeholder="Description of job"></textarea>
     </div>
     <!--<div class="checkbox">
    <label class = "check-label"> Accept <a href = "">Workonblockchain.com  Term and Conditions </a>

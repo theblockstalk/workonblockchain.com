@@ -44,8 +44,18 @@ export class CandidateFormComponent implements OnInit {
                     data => {
                         ////console.log(data);
                         ////console.log('data');
+                        
                         this.ref_msg = data._creator.email+' thinks you should join workonblockchain.com';
                         this.credentials.refer_by = data._creator._id;
+                        
+                        /*console.log(this.credentials.refer_by);
+                        
+                        this.authenticationService.getById(this.credentials.refer_by)
+                        .subscribe(
+                        data => {
+                    
+                                console.log(data);
+                            });*/
                     },
                     error => {
                         ////console.log('error');

@@ -127,12 +127,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
        }
   ngOnInit() 
   {
-      $(document).ready(function(){
-          console.log("jquery function");
-  var $progControl = $(".progControlSelect0").select2({
-        placeholder: "Skills"//placeholder
-    });
-})
+      
 	  setInterval(() => {
 		  this.job_offer_log = '';
 	  }, 5000);
@@ -813,13 +808,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         //console.log("Used ID: " + this.user_id.id);
         //console.log("Name: " + this.user_id.name);
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if(this.credentials.job_title && this.credentials.salary && this.credentials.location && this.credentials.currency && this.credentials.job_desc && this.credentials.job_type){
+        if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
 			.subscribe(
 				data => {
 					//console.log(data['datas']);
 					if(data['datas'].length>0){
-						this.job_offer_log = 'Message already sent';
+						this.job_offer_log = 'You have already sent a job description to this candidate';
 					}
 					else{
 						this.date_of_joining = '10-07-2018';
