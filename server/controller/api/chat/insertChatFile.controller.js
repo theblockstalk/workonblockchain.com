@@ -45,11 +45,12 @@ module.exports = function (req,res){
 }
 
 function save_chat_file(data){
+	console.log(data.is_company_reply);
     var current_date = new Date();
 	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
     let newChat = new chat({
-        sender_id : mongoose.Types.ObjectId(data.sender_id),
+		sender_id : mongoose.Types.ObjectId(data.sender_id),
 		receiver_id : mongoose.Types.ObjectId(data.receiver_id),
         sender_name: data.sender_name,
         receiver_name: data.receiver_name,

@@ -89,7 +89,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
             .subscribe(
                 data => 
                 {
-                    console.log(data);
+                    //console.log(data);
                     if(data.error)
                     {
                        // ////console.log(this.info);

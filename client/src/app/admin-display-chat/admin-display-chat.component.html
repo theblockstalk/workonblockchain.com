@@ -54,19 +54,19 @@
 								<ng-container *ngIf="user_type == 'company';else cand">
 									<ng-container *ngIf="job_desc;else no_job_desc">
 										<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
-										<li>Job Title : {{job_desc.job_title}}</li>
-										<li>Job Type : {{job_desc.job_type}}</li>
+										<li>Job title : {{job_desc.job_title}}</li>
+										<li>Job type : {{job_desc.job_type}}</li>
 									</ng-container>
 									<ng-template #no_job_desc>
 										<li>Salary : N/A</li>
-										<li>Job Title : N/A</li>
-										<li>Job Type : N/A</li>
+										<li>Job title : N/A</li>
+										<li>Job type : N/A</li>
 									</ng-template>
 								</ng-container>
 								<ng-template #cand>
-									<li>Job Title : {{job_desc.job_title}}</li>
+									<li>Job title : {{job_desc.job_title}}</li>
 									<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
-									<li>Job Type : {{job_desc.job_type}}</li>
+									<li>Job type : {{job_desc.job_type}}</li>
 								</ng-template>
 							</ul>
 							<!-- <span class = "btn_rgt">
@@ -83,7 +83,7 @@
 												<span class="text-capitalize">{{msg.sender_name}}:</span>
 												<span *ngIf="msg.job_title !== ''">
 													<br/>
-													Job Title:
+													Job title:
 													{{msg.job_title}}
 													<br/>
 												</span>
@@ -93,29 +93,29 @@
 													<br/>
 												</span>
 												<span *ngIf="msg.job_type !== ''">
-													Job Type:
+													Job type:
 													{{msg.job_type}}
 													<br/>
 												</span>
 												<span *ngIf="msg.msg_tag == 'job_offered'">
-													Joining Date:
+													Joining date:
 													{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
-													<br/>
-												</span>
-												<span *ngIf="msg.job_title !== ''">
-													Description:
-													{{msg.message}}
 													<br/>
 												</span>
 												<span *ngIf="msg.interview_date_time">
 													<br/>
-													Interview Date & Time:
+													Interview date & time:
 													{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 													<br/>
 												</span>
 												<span *ngIf="msg.interview_location">
-													Interview Location:
+													Interview location:
 													{{msg.interview_location}}
+													<br/>
+												</span>
+												<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'interview_offer'">
+													Description:
+													{{msg.description}}
 													<br/>
 												</span>
 												<span *ngIf="msg.job_title == ''">
@@ -134,7 +134,7 @@
 												<span class="text-capitalize">{{msg.sender_name}}:</span>
 												<span *ngIf="msg.job_title !== ''">
 													<br/>
-													Job Title:
+													Job title:
 													{{msg.job_title}}
 													<br/>
 												</span>
@@ -144,29 +144,29 @@
 													<br/>
 												</span>
 												<span *ngIf="msg.job_type !== ''">
-													Job Type:
+													Job type:
 													{{msg.job_type}}
 													<br/>
 												</span>
 												<span *ngIf="msg.msg_tag == 'job_offered'">
-													Joining Date:
+													Joining date:
 													{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
-													<br/>
-												</span>
-												<span *ngIf="msg.job_title !== ''">
-													Description:
-													{{msg.message}}
 													<br/>
 												</span>
 												<span *ngIf="msg.interview_date_time">
 													<br/>
-													Interview Date & Time:
+													Interview date & time:
 													{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 													<br/>
 												</span>
 												<span *ngIf="msg.interview_location">
-													Interview Location:
+													Interview location:
 													{{msg.interview_location}}
+													<br/>
+												</span>
+												<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'interview_offer'">
+													Description:
+													{{msg.description}}
 													<br/>
 												</span>
 												<span *ngIf="msg.job_title == ''">

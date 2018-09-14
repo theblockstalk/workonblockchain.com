@@ -126,7 +126,7 @@ router.post('/users/get_user_messages',auth.isValidUser, chatGetUserMsgs);
 router.get('/users/all_chat',auth.isValidUser, chatGetChat);
 router.post('/users/upload_chat_file/:_id',auth.isValidUser, multer.single('photo'), chatUploadFile);
 router.post('/users/insert_chat_file',auth.isValidUser, chatInsertFile);
-router.post('/users/insert_message_job',auth.isValidCompany, chatInsertMessageJob);
+router.post('/users/insert_message_job',auth.isValidUser, chatInsertMessageJob);
 router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
 router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);

@@ -46,7 +46,7 @@ module.exports = function (req,res){
 
 function update_chat_msg_status(data){
     var deferred = Q.defer();
-    ////console.log(data);
+    //console.log(data);
     var set =
         {
             is_read: 1,
@@ -55,14 +55,10 @@ function update_chat_msg_status(data){
     chat.update({
         $and : [
             {
-                /*$or : [
-                    { $and : [ { receiver_id : {$regex: data.receiver_id} }, { sender_id : {$regex: data.sender_id} } ] },
-                    { $and : [ { receiver_id : {$regex: data.sender_id} }, { sender_id : {$regex: data.receiver_id} } ] }
-                ]*/
-                receiver_id: mongoose.Types.ObjectId(data.receiver_id)
-            },
-            {
-                sender_id: mongoose.Types.ObjectId(data.sender_id)
+                $or : [
+                    { $and : [ { receiver_id : mongoose.Types.ObjectId(data.receiver_id) }, { sender_id : mongoose.Types.ObjectId(data.sender_id) } ] },
+                    { $and : [ { receiver_id : mongoose.Types.ObjectId(data.sender_id) }, { sender_id : mongoose.Types.ObjectId(data.receiver_id) } ] }
+                ]
             },
             {
                 is_read:data.status
@@ -71,6 +67,7 @@ function update_chat_msg_status(data){
     } ,{ $set: set },{multi: true}, function (err, doc)
     {
         if (err){
+			console.log(err);
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }
