@@ -272,6 +272,9 @@
 													<span *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
+													<span *ngIf="msg.date_of_joining && msg.file_name !== ''">
+														Employment contract:
+													</span>
 													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
 												</p>
 											</li>
@@ -325,6 +328,9 @@
 													</span>
 													<span *ngIf="msg.job_title == ''">
 														{{msg.message}}
+													</span>
+													<span *ngIf="msg.date_of_joining">
+														Employment contract:
 													</span>
 													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
 												</p>
@@ -430,7 +436,11 @@
 						
 					</div><!--end col here-->
 				</div>
-			
+			<div *ngIf="file_msg!=''" class = "col-md-12" id="my-chat-design">
+				<h4 class="alert error-alert alert-danger pro_alert">
+					{{file_msg}}
+				</h4>
+			</div>
 		</div>
 
 </section>
@@ -535,6 +545,14 @@
 		  <div class="form-group">
 		    <p>Job description</p>
 		    <input type="text" class="form-control" name="job_description" [(ngModel)]="credentials.job_description" id="">
+		  </div>
+		  <div class="form-group">
+		    <p>Employment contract</p>
+		    <input id="my_aa" #Image type="file" (change)="show_file_name()" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" name="image" [(ngModel)]="credentials.employment_contract" class="form-control" />
+			<label id="fileLabel">
+				<span *ngIf="img_name">{{img_name}}</span>
+				<span *ngIf="!img_name">Upload contract file (optional)</span>
+			</label>
 		  </div>
 		  <div class="modal-footer text-right">
 			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
