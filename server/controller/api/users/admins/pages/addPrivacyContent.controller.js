@@ -2,14 +2,14 @@ const Q = require('q');
 const mongo = require('mongoskin');
 const Pages = require('../../../../../model/pages_content');
 const logger = require('../../../../services/logger');
-const sanitizer = require('../../../../middleware/sanitizer');
+const sanitize = require('../../../../services/sanitize');
 
 //////////inserting message in DB ////////////
 
 module.exports = function (req,res)
 {
 	logger.info(req.body);
-	const sanitizedHtml = sanitizer.sanitizeHtml(req.unsanitizedBody.html_text);
+	const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
     add_privacy_content(req.body, sanitizedHtml).then(function (err, data)
     {
         if (data)
