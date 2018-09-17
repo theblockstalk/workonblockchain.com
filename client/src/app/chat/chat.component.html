@@ -436,7 +436,11 @@
 						
 					</div><!--end col here-->
 				</div>
-			
+			<div *ngIf="file_msg!=''" class = "col-md-12" id="my-chat-design">
+				<h4 class="alert error-alert alert-danger pro_alert">
+					{{file_msg}}
+				</h4>
+			</div>
 		</div>
 
 </section>

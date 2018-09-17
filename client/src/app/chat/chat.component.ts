@@ -74,6 +74,7 @@ export class ChatComponent implements OnInit {
 	file_uploaded = 5;
 	file_msg = '';
 	img_name = '';
+	file_size = 5242880;
 	public myDatePickerOptions: IMyDpOptions;
 
   constructor(
@@ -105,6 +106,7 @@ export class ChatComponent implements OnInit {
 	  setInterval(() => {
 		  this.interview_log = '';
 		  this.job_offer_log = '';
+		  this.file_msg = '';
 	  }, 5000);
 	  
 	  this.loading = true;
@@ -653,7 +655,7 @@ export class ChatComponent implements OnInit {
       {
 		//console.log('file');
 		let toArray =  inputEl.files.item(0).type.split("/");
-	    if(inputEl.files.item(0).size <= 1048576 && (toArray[0]==='image' || inputEl.files.item(0).type==='application/pdf' || inputEl.files.item(0).type==='application/vnd.openxmlformats-officedocument.wordprocessingml.document')){
+	    if(inputEl.files.item(0).size <= this.file_size && (toArray[0]==='image' || inputEl.files.item(0).type==='application/pdf' || inputEl.files.item(0).type==='application/vnd.openxmlformats-officedocument.wordprocessingml.document')){
 			formData.append('photo', inputEl.files.item(0));
 			//console.log(inputEl.files.item(0));
 			this.http.post(back_url+'users/upload_chat_file/'+this.currentUser._creator,formData, {
@@ -673,7 +675,7 @@ export class ChatComponent implements OnInit {
 			)
 		}
 		else{
-		  this.job_offer_log = 'Only pdf,image & docx are allowed of size less than 1MB'
+		  this.job_offer_log = 'Only pdf,image & docx are allowed of size less than 5MB';
 		}
 	  }
 	  else{
@@ -956,7 +958,7 @@ export class ChatComponent implements OnInit {
         let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
         let fileCount: number = inputEl.files.length;
         let formData = new FormData();
-        if (fileCount > 0) 
+        if (fileCount > 0 && inputEl.files.item(0).size < this.file_size) 
         { 
             formData.append('photo', inputEl.files.item(0));
             //console.log(inputEl.files.item(0).size);
@@ -1014,7 +1016,7 @@ export class ChatComponent implements OnInit {
         }
 		else{
 			this.file_uploaded = 1;
-			this.file_msg = 'File should be less than 1MB';
+			this.file_msg = 'File size should be less than 5MB';
 		}
     }
 	
