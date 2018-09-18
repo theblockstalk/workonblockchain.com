@@ -1,29 +1,29 @@
 <section class = "wizard_page">
-  
+
   <div class="container">
     <div class="row">
       <div class = "text-center steps-name">
         <ul class = "step-progress">
         <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Terms & Conditions</a></li>
-        
+
           <li class = "step step-active"><i class="{{active_class}}"></i><a routerLink="/about"> About</a></li>
           <li class = "step"><i class="{{job_active_class}}"></i><a routerLink="{{link}}" class="btn  {{job_disable}}">Jobs</a></li>
           <li class = "step"><i class="{{resume_active_class}}"></i><a routerLink="{{resume_class}}" class="btn  {{resume_disable}}" >Blockchain</a></li>
           <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn  {{exp_disable}}">Experience</a></li>
-          
+
         </ul>
       </div>
       <div class="col-md-12 wizard-form">
 
         <form class = "login_form custom_form"  (submit)="about()" #aboutForm = ngForm novalidate>
-          
+
           <fieldset class="scheduler-border">
               <legend class="scheduler-border">About You</legend>
               <div class="form-group col-md-6">
                 <label><p class = "label-p">First Name</p></label>
                 <input type="text" class="form-control" required id=""  placeholder="First Name"  name="first_name" [(ngModel)]="info.first_name">
-           
-				
+
+
 				<div class = "form_error" *ngIf="!info.first_name">
 								<span class = "error">{{first_name_log}}</span>
 							</div>
@@ -31,7 +31,7 @@
             <div class="form-group col-md-6">
                 <label><p class = "label-p">Last Name</p></label>
                 <input type="text" class="form-control" id="" placeholder="Last Name"  name="last_name" [(ngModel)]="info.last_name">
-            
+
 				<div class = "form_error" *ngIf="!info.last_name">
 								<span class = "error">{{last_name_log}}</span>
 							</div>
@@ -40,7 +40,7 @@
               <div class="form-group col-md-6">
                 <label><p class = "label-p">Github account URL</p></label>
                 <input type="text" #gitaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="" placeholder="Github account (optional)"  name="github_account" [(ngModel)]="info.github_account">
-            	 
+
 				<div class = "form_error" *ngIf="gitaccount.errors">
 								<span class = "error">Enter url in proper format.</span>
 							</div>
@@ -49,33 +49,33 @@
             <div class="form-group col-md-6">
               <label><p class = "label-p">Stackexchange account URL</p></label>
                 <input type="text" #stackaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account">
-            	 
+
 				<div class = "form_error" *ngIf="stackaccount.errors">
 								<span class = "error">Enter url in proper format.</span>
 							</div>
             </div>
 
             <div class="form-group col-md-6">
-              <label><p class = "label-p">Contact Number</p></label>
-                <input type="tel" class="form-control" id="" placeholder="Phone number" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
-           	 
-				
+              <label><p class = "label-p">Phone number (including country code)</p></label>
+                <input type="tel" class="form-control" id="" placeholder="(+1) 01 2345 6789" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
+
+
 				<div class = "form_error" *ngIf="!info.contact_number">
 								<span class = "error">{{contact_name_log}}</span>
 							</div>
             </div>
-            
+
 
             <div class="form-group col-md-6">
               <label><p class = "label-p">Nationality</p></label>
               <!--  <input type="text" class="form-control" id="" placeholder="Nationality" name="nationality" #nationality required [(ngModel)]="info.nationality" >
--->            
+-->
 			 <select class="form-control" style="display:inline;" required name="nationality" [(ngModel)]='info.nationality'  required="">
               <option value="-1" disabled selected hidden >Please choose nationality</option>
-        
+
                 <option class='option' *ngFor='let options of nationality' placeholder="Nationality"  [value]="options" selected>{{options}}</option>
                 </select>
-				
+
 				<div class = "form_error" *ngIf="info.nationality == -1">
 								<span class = "error">{{nationality_log}}</span>
 							</div>
@@ -90,15 +90,15 @@
 								<span *ngIf="!img_src" >Upload Logo (optional)</span>
 								</label>
             </div>
-            
-           
-            
+
+
+
           <!-- <div class="form-group col-md-6">
                 <label><p class = "label-p  ">Gender</p></label>
-                
+
                  <select class="form-control" style="display:inline;" required name="gender" [(ngModel)]='info.gender' (change)='onGenderSelected($event)' required="">
-              
-        
+
+
                 <option class='option' *ngFor='let options of gender' placeholder="Gender"  [value]="options" selected>{{options}}</option>
                 </select>
             </div>-->
@@ -111,7 +111,7 @@
           </div>
 
         </form>
-        
+
       </div>
     </div>
   </div>
