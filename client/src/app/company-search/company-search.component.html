@@ -31,6 +31,7 @@
 			<form id="myForm" action = "">
 				<div class = "wizard-form mr-top-form filter_bar" id = "side_bar">
 					<ul>
+					
 						<li> 
 							<div class = "form-group">
 
@@ -47,7 +48,7 @@
 
 						<li>
 							<div class = "form-group">
-								<select class="form-control " name="location" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="countryChange" (ngModelChange)="searchdata('location' , $event)" id="required" name="required">
+								<select class="form-control" name="location" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="countryChange" (ngModelChange)="searchdata('location' , $event)" id="required" name="required">
 									
 									<option value="-1" disabled selected hidden>Desired Location</option>
                   					<option class='option' *ngFor='let option of cities'  [value]="option.value" >{{option.name}}</option>
@@ -85,7 +86,7 @@
 							   
 							    
 							    
-								    <select [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select " id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)"  name="required">
+								    <select [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)"  name="required">
 									     	<!-- <option [ngValue]="undefined" hidden selected>$ USD</option>-->
 									     	 <option value="-1" disabled selected hidden >$ USD</option>
 									     	 <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
@@ -96,7 +97,7 @@
 						 </li>
 						 <li>
 							<div class = "form-group">
-								<select class="form-control " id="sel1" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)"  name="required">
+								<select class="form-control" id="sel1" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)"  name="required">
 									 
 									  <option value="-1" disabled selected hidden >Availability</option>
 									  <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>

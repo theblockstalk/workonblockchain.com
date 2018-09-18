@@ -111,7 +111,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     
   currency=
   [
-      "£ GBP" ,"€ EUR" , "$ USD"
+      "Â£ GBP" ,"â‚¬ EUR" , "$ USD"
   ]
     
   month= 
@@ -127,7 +127,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
        }
   ngOnInit() 
   {
-      
+      $('.selectpicker').selectpicker();
       setInterval(() => {
           this.job_offer_log = '';
       }, 5000);
