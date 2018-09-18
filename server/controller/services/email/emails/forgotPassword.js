@@ -11,11 +11,10 @@ module.exports.sendEmail = function sendEmail(data,hash,name) {
     const resetPassswordUrl = settings.CLIENT.URL + 'reset_password?hash='+hash;
     const sendToArray = [sendTo];
     logger.debug('reset url: ' , resetPassswordUrl);
-    let queryString;
-    if(name)
+    let merge_tags;
+    if(name !== null)
     {
-
-        const FNAME = [{
+    	merge_tags = [{
        	     "name": "FNAME",
              "content": name
          }, {
@@ -23,31 +22,29 @@ module.exports.sendEmail = function sendEmail(data,hash,name) {
              "content": resetPassswordUrl
     	 }];
       
-        queryString = FNAME;
-
+       
     }
     
     else
     {
-    	 const URL = [{
+    	merge_tags = [{
     	     "name": "RESET_PASSWORD_URL",
              "content": resetPassswordUrl
     	 }];
       
-        queryString=URL;
     }
-    
-    logger.debug('forgot passowrd feature: ' , queryString);
-    	const mandrillOptions = {
-    	        templateName: "wob-forgot-password",
-    	        message: {
-    	        	 global_merge_vars: queryString ,
-    	            subject: subject,
-    	            to: sendToArray
-    	        }
-    	    };
+   
+    logger.debug('forgot passowrd feature: ' , merge_tags);
+    const mandrillOptions = {
+    	   templateName: "wob-forgot-password",
+    	    message: {
+    	    global_merge_vars: merge_tags ,
+    	    subject: subject,
+    	    to: sendToArray
+    	  }
+    };
     	
-    	logger.debug('mandril options: ' , mandrillOptions);
+    logger.debug('mandril options: ' , mandrillOptions);
 
-    	emails.sendEmail(mandrillOptions);  
+    emails.sendEmail(mandrillOptions);  
 }
