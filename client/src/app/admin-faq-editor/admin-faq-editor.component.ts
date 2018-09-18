@@ -40,12 +40,16 @@ export class AdminFaqEditorComponent implements OnInit {
       
        this.dataservice.currentMessage.subscribe(message => this.message = message);
        this.ckeConfig = {
-      allowedContent: false,
-      extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
-      height: '35rem',
-    minHeight: '10rem',
-    };
+            allowedContent: false,
+            extraPlugins: 'divarea',
+            forcePasteAsPlainText: true,
+            height: '35rem',
+            minHeight: '10rem',
+            //removeButtons:'Underline,Subscript,Superscript'
+        };
+      
+     // config.removeButtons = 'Underline,Subscript,Superscript';
+
       
       this.page_name = 'FAQ';
       
