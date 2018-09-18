@@ -46,7 +46,6 @@ module.exports = function (req,res){
 
 function update_chat_msg_status(data){
     var deferred = Q.defer();
-    console.log(data);
     var set =
         {
             is_read: 1,
