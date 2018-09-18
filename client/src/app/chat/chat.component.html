@@ -264,7 +264,7 @@
 														{{msg.interview_location}}
 														<br/>
 													</span>
-													<span *ngIf="msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
+													<span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														Description:
 														{{msg.description}}
 														<br/>
@@ -317,7 +317,7 @@
 														{{msg.interview_location}}
 														<br/>
 													</span>
-													<span *ngIf="msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer'">
+													<span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														Description:
 														{{msg.description}}
 														<br/>

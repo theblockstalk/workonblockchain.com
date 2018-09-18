@@ -583,14 +583,17 @@ export class ChatComponent implements OnInit {
   }
   
   send_interview_message(msgForm : NgForm){
-	  if(this.credentials.date && this.credentials.time && this.credentials.location && this.credentials.description){
+	  if(this.credentials.date && this.credentials.time && this.credentials.location){
           //console.log('interview');
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
           this.is_company_reply = 1;
           this.msg_tag = 'interview_offer';
           this.credentials.msg_body = 'You have been invited for a job interview. Please send message to rsvp.';
-		  this.description = this.credentials.description;
-          //console.log(this.credentials.msg_body);
+		  this.description = '';
+		  if(this.credentials.description){
+			this.description = this.credentials.description;
+          }
+		  //console.log(this.credentials.msg_body);
 		  this.date_of_joining = this.credentials.date.formatted;
           this.interview_location = this.credentials.location;
 		  this.interview_time = this.credentials.time;
