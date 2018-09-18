@@ -113,14 +113,15 @@ function forgot_passwordEmail_send(data)
                 }
                 if(query_data)
                 {
-                    ////console.log(query_data);
-                	if(query_data[0].first_name)
+                    //console.log(query_data);
+                	if(!query_data[0].first_name)
                 	{
-                		name = query_data[0].first_name;
+                		name = null;
+                		
                 	}
                 	else
                 	{
-                		name = query_data[0]._creator.email;
+                		name = query_data[0].first_name;
                 	}
                     
                     //console.log(name);
