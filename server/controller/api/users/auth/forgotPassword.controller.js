@@ -110,6 +110,7 @@ function forgot_passwordEmail_send(data)
                     logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
                 }
+                logger.debug('query_data', query_data);
                 if(query_data)
                 {
                   
