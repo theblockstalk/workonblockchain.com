@@ -1,12 +1,12 @@
 var Q = require('q');
 const referUserEmail = require('../../../services/email/emails/referUser');
 const logger = require('../../../services/logger');
-const sanitizer = require('../../../middleware/sanitizer');
+const sanitize = require('../../../services/sanitize');
 
 //to send email for referral
 
 module.exports = function (req, res) {
-    let sanitizedHtmlBody = sanitizer.sanitizeHtml(req.unsanitizedBody.body)
+    let sanitizedHtmlBody = sanitize.sanitizeHtml(req.unsanitizedBody.body)
     refreal_email(req.body, sanitizedHtmlBody).then(function (data){
         
         res.json(data);

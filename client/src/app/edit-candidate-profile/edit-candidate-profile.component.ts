@@ -39,7 +39,7 @@ export class EditCandidateProfileComponent implements OnInit {
     today = Date.now();
     currentdate;currentyear;
     expYearRole=[];start_month;start_year;
-    companyname;positionname;locationname;descname;startdate;startyear;enddate;endyear;
+    companyname;positionname;locationname;description;startdate;startyear;enddate;endyear;
     currentwork;currentenddate;currentendyear; uniname;degreename;fieldname;edudate;eduyear; 
     eduData; jobData;Intro;
     current_currency;
@@ -79,7 +79,7 @@ export class EditCandidateProfileComponent implements OnInit {
       private history_data(): FormGroup[] 
       {
           return this.jobData
-          .map(i => this._fb.group({ companyname: i.companyname , positionname : i.positionname, locationname:i.locationname, descname:i.descname,startdate:i.startdate, start_date:this.monthNumToName(this.datePipe.transform(i.startdate, 'MM') )/*this.datePipe.transform(i.startdate, 'MM') */, startyear: this.datePipe.transform(i.startdate, 'yyyy') , enddate :i.enddate , end_date:this.monthNumToName(this.datePipe.transform(i.enddate, 'MM')) , endyear:this.datePipe.transform(i.enddate, 'yyyy') , currentwork: i.currentwork} ));
+          .map(i => this._fb.group({ companyname: i.companyname , positionname : i.positionname, locationname:i.locationname, description:i.description,startdate:i.startdate, start_date:this.monthNumToName(this.datePipe.transform(i.startdate, 'MM') )/*this.datePipe.transform(i.startdate, 'MM') */, startyear: this.datePipe.transform(i.startdate, 'yyyy') , enddate :i.enddate , end_date:this.monthNumToName(this.datePipe.transform(i.enddate, 'MM')) , endyear:this.datePipe.transform(i.enddate, 'yyyy') , currentwork: i.currentwork} ));
       }
    
    monthNumToName(monthnum) {     
@@ -909,7 +909,7 @@ export class EditCandidateProfileComponent implements OnInit {
         companyname: [this.companyname],
         positionname:[this.positionname],
         locationname: [this.locationname],
-        descname: [this.descname] ,
+        description: [this.description] ,
         startdate:[this.startdate],
         startyear:[this.startyear],
         enddate:[this.enddate],
@@ -928,7 +928,7 @@ export class EditCandidateProfileComponent implements OnInit {
         companyname:[''],
         positionname:[''],
         locationname: [''],
-        descname: [''] ,
+        description: [''] ,
         startdate:[],
         startyear:[],
         end_date:[],
@@ -1309,7 +1309,7 @@ export class EditCandidateProfileComponent implements OnInit {
                 {
                     this.end_date_format = new Date();
                 }
-                this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].descname,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork}; 
+                this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork}; 
                 this.experiencearray.push(this.experiencejson);
                 //console.log(this.experiencearray);
 

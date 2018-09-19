@@ -127,10 +127,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
        }
   ngOnInit() 
   {
-      
-	  setInterval(() => {
-		  this.job_offer_log = '';
-	  }, 5000);
+      //$('.selectpicker').selectpicker();
+      setInterval(() => {
+          this.job_offer_log = '';
+      }, 5000);
       this.length='';
       this.log='';
       this.selectedObj=-1;
@@ -584,14 +584,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.response='';
         this.msg='';
         this.count=0;
-		this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
+        this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
         .subscribe(
-			dataa => {
+            dataa => {
                 
-				//console.log(dataa);
-				for(let res of dataa)
-				{ 
-					//console.log("ids");
+                //console.log(dataa);
+                for(let res of dataa)
+                { 
+                    //console.log("ids");
                     if(res['ids'].length<=0)
                     {
                         this.response = "data";
@@ -600,124 +600,124 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     }
                     else
                     {
-					for(let ids of res['ids'])
-					{
-						this.authenticationService.get_user_messages(ids,this.currentUser._creator)
-						.subscribe(
-							data => {
-								if(data['datas'][0]){
-									if(data['datas'][0].is_company_reply==1){
-										//console.log('accept')
-										//console.log("iffffffffffff");
-										//console.log(ids);
-										this.authenticationService.candidate_detail(ids, data['datas'][0].is_company_reply  )
-										.subscribe(
-											dataa =>
-											{
+                    for(let ids of res['ids'])
+                    {
+                        this.authenticationService.get_user_messages(ids,this.currentUser._creator)
+                        .subscribe(
+                            data => {
+                                if(data['datas'][0]){
+                                    if(data['datas'][0].is_company_reply==1){
+                                        //console.log('accept')
+                                        //console.log("iffffffffffff");
+                                        //console.log(ids);
+                                        this.authenticationService.candidate_detail(ids, data['datas'][0].is_company_reply  )
+                                        .subscribe(
+                                            dataa =>
+                                            {
                                                 //console.log(data);
-												if(dataa)
-												{
-													//console.log("1");
-													dataa.company_reply =data['datas'][0].is_company_reply;                                                        
-													this.cand_data.push(dataa);
-													//console.log(this.cand_data);
-												}
-											},
-											error =>
-											{
-												if(error.message == 500)
-												{
-													localStorage.setItem('jwt_not_found', 'Jwt token not found');
-													localStorage.removeItem('currentUser');
-													localStorage.removeItem('googleUser');
-													localStorage.removeItem('close_notify');
-													localStorage.removeItem('linkedinUser');
-													localStorage.removeItem('admin_log');
-													window.location.href = '/login';
-												}
-												if(error.message == 403)
-												{
-													this.router.navigate(['/not_found']);                        
-												}
-											}
-										);
-									}
-									else
-									{
-										//console.log("else");
-										//console.log(ids);
-										this.rply =0;
-										this.authenticationService.candidate_detail(ids,  this.rply )
-										.subscribe(
-											result =>
-											{
-												if(result)
-												{
-													//console.log("2");
-													result.company_reply =0;
-													this.cand_data.push(result);
-													this.first_name = result.initials;
-													//console.log(this.cand_data);
-												}
-											},
-											error =>
-											{
-												if(error.message == 500)
-												{
-													localStorage.setItem('jwt_not_found', 'Jwt token not found');
-													localStorage.removeItem('currentUser');
-													localStorage.removeItem('googleUser');
-													localStorage.removeItem('close_notify');
-													localStorage.removeItem('linkedinUser');
-													localStorage.removeItem('admin_log');
-													window.location.href = '/login';
-												}
-												if(error.message == 403)
-												{
-													this.router.navigate(['/not_found']);                        
-												}
-											}
-										);
-									}
-								}
-								else
-								{
-									//console.log("else");
-									//console.log(ids);
-									this.rply =0;
-									this.authenticationService.candidate_detail(ids,  this.rply )
-									.subscribe(
-										result => 
-										{
+                                                if(dataa)
+                                                {
+                                                    //console.log("1");
+                                                    dataa.company_reply =data['datas'][0].is_company_reply;                                                        
+                                                    this.cand_data.push(dataa);
+                                                    //console.log(this.cand_data);
+                                                }
+                                            },
+                                            error =>
+                                            {
+                                                if(error.message == 500)
+                                                {
+                                                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                                    localStorage.removeItem('currentUser');
+                                                    localStorage.removeItem('googleUser');
+                                                    localStorage.removeItem('close_notify');
+                                                    localStorage.removeItem('linkedinUser');
+                                                    localStorage.removeItem('admin_log');
+                                                    window.location.href = '/login';
+                                                }
+                                                if(error.message == 403)
+                                                {
+                                                    this.router.navigate(['/not_found']);                        
+                                                }
+                                            }
+                                        );
+                                    }
+                                    else
+                                    {
+                                        //console.log("else");
+                                        //console.log(ids);
+                                        this.rply =0;
+                                        this.authenticationService.candidate_detail(ids,  this.rply )
+                                        .subscribe(
+                                            result =>
+                                            {
+                                                if(result)
+                                                {
+                                                    //console.log("2");
+                                                    result.company_reply =0;
+                                                    this.cand_data.push(result);
+                                                    this.first_name = result.initials;
+                                                    //console.log(this.cand_data);
+                                                }
+                                            },
+                                            error =>
+                                            {
+                                                if(error.message == 500)
+                                                {
+                                                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                                    localStorage.removeItem('currentUser');
+                                                    localStorage.removeItem('googleUser');
+                                                    localStorage.removeItem('close_notify');
+                                                    localStorage.removeItem('linkedinUser');
+                                                    localStorage.removeItem('admin_log');
+                                                    window.location.href = '/login';
+                                                }
+                                                if(error.message == 403)
+                                                {
+                                                    this.router.navigate(['/not_found']);                        
+                                                }
+                                            }
+                                        );
+                                    }
+                                }
+                                else
+                                {
+                                    //console.log("else");
+                                    //console.log(ids);
+                                    this.rply =0;
+                                    this.authenticationService.candidate_detail(ids,  this.rply )
+                                    .subscribe(
+                                        result => 
+                                        {
                                             //console.log(result);
-											if(result)
-											{
-												//console.log("2");
-												result.company_reply =0;
-												this.cand_data.push(result);
-												this.first_name = result.initials;
-												//console.log(this.cand_data);
-											}
-										},
-										error =>
-										{
-											if(error.message == 500)
-											{
-												localStorage.setItem('jwt_not_found', 'Jwt token not found');
-												localStorage.removeItem('currentUser');
-												localStorage.removeItem('googleUser');
-												localStorage.removeItem('close_notify');
-												localStorage.removeItem('linkedinUser');
-												localStorage.removeItem('admin_log');
-												window.location.href = '/login';
-											}
-											if(error.message == 403)
-											{
-												this.router.navigate(['/not_found']);                        
-											}
-										}
-									);
-								}
+                                            if(result)
+                                            {
+                                                //console.log("2");
+                                                result.company_reply =0;
+                                                this.cand_data.push(result);
+                                                this.first_name = result.initials;
+                                                //console.log(this.cand_data);
+                                            }
+                                        },
+                                        error =>
+                                        {
+                                            if(error.message == 500)
+                                            {
+                                                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                                localStorage.removeItem('currentUser');
+                                                localStorage.removeItem('googleUser');
+                                                localStorage.removeItem('close_notify');
+                                                localStorage.removeItem('linkedinUser');
+                                                localStorage.removeItem('admin_log');
+                                                window.location.href = '/login';
+                                            }
+                                            if(error.message == 403)
+                                            {
+                                                this.router.navigate(['/not_found']);                        
+                                            }
+                                        }
+                                    );
+                                }
                                 
                                 if(res['ids'].length !== this.count)
                                 {
@@ -730,33 +730,33 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                          
                                     }
                                 
-							},
-							error => {
-								//console.log('error');
-								//console.log(error);
-								//this.log = error;
-							});
-						
-					   }
+                            },
+                            error => {
+                                //console.log('error');
+                                //console.log(error);
+                                //this.log = error;
+                            });
+                        
+                       }
                         
                         }
                     
-				} 
-			},
+                } 
+            },
             error => {
-				if(error.message == 500)
-				{
-					localStorage.setItem('jwt_not_found', 'Jwt token not found');
-					localStorage.removeItem('currentUser');
-					localStorage.removeItem('googleUser');
-					localStorage.removeItem('close_notify');
-					localStorage.removeItem('linkedinUser');
-					localStorage.removeItem('admin_log');
-					window.location.href = '/login';
+                if(error.message == 500)
+                {
+                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('googleUser');
+                    localStorage.removeItem('close_notify');
+                    localStorage.removeItem('linkedinUser');
+                    localStorage.removeItem('admin_log');
+                    window.location.href = '/login';
                 }
-				if(error.message == 403)
-				{
-					this.router.navigate(['/not_found']);                        
+                if(error.message == 403)
+                {
+                    this.router.navigate(['/not_found']);                        
                 }
                     
             });
@@ -778,16 +778,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                 }
                             }
                         );
-		this.length++;
-		if(this.length> 0 )
-		{
-			this.page =this.length;
-			this.log='';
-		}else
-		{
-			this.log= 'No candidates matched this search criteria';                           
+        this.length++;
+        if(this.length> 0 )
+        {
+            this.page =this.length;
+            this.log='';
+        }else
+        {
+            this.log= 'No candidates matched this search criteria';                           
         }
-		this.length = '';
+        this.length = '';
     }
     informations;
  
@@ -798,52 +798,52 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.user_name = val;
     }
 
-	date_of_joining;
-	msg_tag;
-	is_company_reply = 0;
-	msg_body;
-	job_offer_log;
-	description;
+    date_of_joining;
+    msg_tag;
+    is_company_reply = 0;
+    msg_body;
+    job_offer_log;
+    description;
     send_job_offer(msgForm : NgForm){
         //console.log("Used ID: " + this.user_id.id);
         //console.log("Name: " + this.user_id.name);
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.credentials.job_title && this.credentials.salary && this.credentials.location){
             this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
-			.subscribe(
-				data => {
-					//console.log(data['datas']);
-					if(data['datas'].length>0){
-						this.job_offer_log = 'You have already sent a job description to this candidate';
-					}
-					else{
-						this.date_of_joining = '10-07-2018';
-						this.msg_tag = 'job_offer';
-						this.is_company_reply = 0;
-						this.msg_body = '';
-						this.description = this.credentials.job_desc;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
-							.subscribe(
-								data => {
-									//console.log(data);
-									this.job_offer_log = 'Message successfully sent';
-									this.credentials.job_title = '';
-									this.credentials.salary = '';
-									this.credentials.currency = '';
-									this.credentials.location = '';
-									this.credentials.job_type = '';
-									this.credentials.job_desc = '';
-								},
-								error => {
-									//console.log('error');
-									//console.log(error);
-									//this.log = error;
-								}
-							);
-					}
-				},
-				error => {
-					 if(error.message == 500 || error.message == 401)
+            .subscribe(
+                data => {
+                    //console.log(data['datas']);
+                    if(data['datas'].length>0){
+                        this.job_offer_log = 'You have already sent a job description to this candidate';
+                    }
+                    else{
+                        this.date_of_joining = '10-07-2018';
+                        this.msg_tag = 'job_offer';
+                        this.is_company_reply = 0;
+                        this.msg_body = '';
+                        this.description = this.credentials.job_desc;
+                        this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+                            .subscribe(
+                                data => {
+                                    //console.log(data);
+                                    this.job_offer_log = 'Message successfully sent';
+                                    this.credentials.job_title = '';
+                                    this.credentials.salary = '';
+                                    this.credentials.currency = '';
+                                    this.credentials.location = '';
+                                    this.credentials.job_type = '';
+                                    this.credentials.job_desc = '';
+                                },
+                                error => {
+                                    //console.log('error');
+                                    //console.log(error);
+                                    //this.log = error;
+                                }
+                            );
+                    }
+                },
+                error => {
+                     if(error.message == 500 || error.message == 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                          localStorage.removeItem('currentUser');
@@ -858,8 +858,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     {
                         this.router.navigate(['/not_found']);                        
                     }
-				}
-			);
+                }
+            );
         }
         else{
             this.job_offer_log = 'Please enter all info';

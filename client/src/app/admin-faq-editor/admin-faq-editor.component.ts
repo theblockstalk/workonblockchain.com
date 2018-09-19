@@ -40,12 +40,16 @@ export class AdminFaqEditorComponent implements OnInit {
       
        this.dataservice.currentMessage.subscribe(message => this.message = message);
        this.ckeConfig = {
-      allowedContent: false,
-      extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
-      height: '35rem',
-    minHeight: '10rem',
-    };
+            allowedContent: false,
+            extraPlugins: 'divarea',
+            forcePasteAsPlainText: true,
+            height: '35rem',
+            minHeight: '10rem',
+            //removeButtons:'Underline,Subscript,Superscript'
+        };
+      
+     // config.removeButtons = 'Underline,Subscript,Superscript';
+
       
       this.page_name = 'FAQ';
       
@@ -101,26 +105,31 @@ export class AdminFaqEditorComponent implements OnInit {
     success; error;
    editor(editorForm: NgForm)
    {
-       ////console.log(editorForm.value);
-       this.editor_text = this.editor_content;  
-       this.authenticationService.pages_content(editorForm.value)
-       .subscribe(
-       data => 
-       {
-           if(data)
-           {
-               this.success = "Content Successfully Updated";
-               //this.dataservice.changeMessage("Content Successfully Updated");
-           }
-           else
-           {
-               this.error="Something went wrong";
-               
-           }
-       },
-       error =>
-       {
-           
-       });
+       //console.log(editorForm.value);
+	   if(editorForm.value.page_title && editorForm.value.html_text){
+		   this.editor_text = this.editor_content;  
+		   this.authenticationService.pages_content(editorForm.value)
+		   .subscribe(
+		   data => 
+		   {
+			   if(data)
+			   {
+				   this.success = "Content Successfully Updated";
+				   //this.dataservice.changeMessage("Content Successfully Updated");
+			   }
+			   else
+			   {
+				   this.error="Something went wrong";
+				   
+			   }
+		   },
+		   error =>
+		   {
+			   
+		   });
+	   }
+	   else{
+		   this.error="Please fill all fields";
+	   }
    }
 }

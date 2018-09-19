@@ -45,7 +45,7 @@ module.exports = function insert_message_job(req,res){
 }
 
 function insert_message_job_new(data){
-    var current_date = new Date();
+	var current_date = new Date();
 	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
     let newChat = new chat({
@@ -62,7 +62,7 @@ function insert_message_job_new(data){
         msg_tag: data.msg_tag,
         is_company_reply: data.is_company_reply,
         job_type: data.job_type,
-        file_name: data.file_name,
+        file_name: data.file_to_send,
         is_job_offered: data.job_offered,
         is_read: 0,
         date_created: my_date

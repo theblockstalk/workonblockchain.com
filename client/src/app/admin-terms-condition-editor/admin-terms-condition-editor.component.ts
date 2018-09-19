@@ -36,9 +36,11 @@ export class AdminTermsConditionEditorComponent implements OnInit {
   ngOnInit() {
    
        setInterval(() => {  
-                                this.error = "" ;
-                                this.success = "" ;
-                        }, 5000);
+		this.error = "";
+		this.success = "";
+		this.company_success = "";
+		this.company_error = "";
+	   }, 5000);
        this.dataservice.currentMessage.subscribe(message => this.message = message);
        this.ckeConfig = {
       allowedContent: false,
@@ -112,47 +114,57 @@ export class AdminTermsConditionEditorComponent implements OnInit {
         }
   }
 
-   success ; error;
+   success ; error;company_success;company_error;
    editor(editorForm: NgForm)
    {
         
-       ////console.log(editorForm.value);
-       this.editor_text = this.editor_content;  
-       this.authenticationService.pages_content(editorForm.value)
-       .subscribe(
-       data => 
-       {
-           if(data)
-           {
-               this.success = "Content Successfully Updated";
-               //this.dataservice.changeMessage("Content Successfully Updated");
-           }
-           else
-           {
-               this.error="Something went wrong";
-               
-           }
-       });
+       //console.log(editorForm.value);
+       if(editorForm.value.page_title && editorForm.value.html_text){
+		   this.editor_text = this.editor_content;  
+		   this.authenticationService.pages_content(editorForm.value)
+		   .subscribe(
+		   data => 
+		   {
+			   if(data)
+			   {
+				   this.success = "Content Successfully Updated";
+				   //this.dataservice.changeMessage("Content Successfully Updated");
+			   }
+			   else
+			   {
+				   this.error="Something went wrong";
+				   
+			   }
+		   });
+	   }
+	   else{
+		   this.error="Please fill all fields";
+	   }
    }
 
    company_editor(companyeditor: NgForm)
    {
        this.company_page_name = 'Terms and Condition for company';
-       ////console.log(companyeditor.value);
-       this.authenticationService.pages_content(companyeditor.value)
-       .subscribe(
-       data => 
-       {
-           if(data.error)
-           {
-               this.dataservice.changeMessage("Something went wrong");
-               
-           }
-           else
-           {
-               this.dataservice.changeMessage("Content Successfully Updated");
-           }
-       });
+       //console.log(companyeditor.value);
+       if(companyeditor.value.page_title && companyeditor.value.html_text){
+		   this.authenticationService.pages_content(companyeditor.value)
+		   .subscribe(
+		   data => 
+		   {
+			   if(data.error)
+			   {
+				   this.company_error("Something went wrong");
+				   
+			   }
+			   else
+			   {
+				   this.company_success("Content Successfully Updated");
+			   }
+		   });
+	   }
+	   else{
+		   this.company_error="Please fill all fields";
+	   }
    }
 
 }
