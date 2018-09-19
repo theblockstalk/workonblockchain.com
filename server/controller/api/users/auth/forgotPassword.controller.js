@@ -10,7 +10,7 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req,res)
 {
-    ////console.log(req.params.email);
+
     forgot_password(req.params.email).then(function (err, data)
     {
         if (data)
@@ -54,8 +54,7 @@ function forgot_password(email)
     function updateData(data)
     {
 		var hashStr = crypto.createHash('sha256').update(email).digest('base64');
-        // //console.log(hashStr);
-        // //console.log(data._id);
+
         var email_data = {};
         email_data.password_key = hashStr;
         email_data.email = data.email;
@@ -92,7 +91,7 @@ function forgot_passwordEmail_send(data)
 {
 
     var hash = jwt_hash.decode(data, settings.EXPRESS_JWT_SECRET, 'HS256');
-    ////console.log(hash.email);
+
     var name;
 
     users.findOne({ email :hash.email  }, function (err, result)
@@ -113,17 +112,18 @@ function forgot_passwordEmail_send(data)
                 }
                 if(query_data)
                 {
-                    ////console.log(query_data);
-                	if(query_data[0].first_name)
+                  
+                	if(!query_data[0].first_name)
                 	{
-                		name = query_data[0].first_name;
+                		name = null;
+                		
                 	}
                 	else
                 	{
-                		name = query_data[0]._creator.email;
+                		name = query_data[0].first_name;
                 	}
                     
-                    //console.log(name);
+                    
                     forgotPasswordEmail.sendEmail(hash,data , name);
                 }
             });

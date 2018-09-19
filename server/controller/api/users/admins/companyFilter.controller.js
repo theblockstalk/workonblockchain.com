@@ -67,7 +67,7 @@ function admin_company_filter_new(data)
         var employ_offer = arr.find(o => o === 'Employment offer accepted / reject');
         if(employ_offer)
         {
-            var offered = ['job_offer_rejected', 'job_offer_accepted'];
+            var offered = ['employment_offer_accepted', 'employment_offer_rejected'];
             //data.msg_tags = ['job_offer_rejected', 'job_offer_accepted'];
             offered.forEach(function(item)
             {
@@ -98,6 +98,7 @@ function admin_company_filter_new(data)
    			       query_data.forEach(function(item)
    			       {
    			            array.push(item.sender_id );
+                    array.push(item.receiver_id );
    			       });
    			       
    			       if(array.length>0)

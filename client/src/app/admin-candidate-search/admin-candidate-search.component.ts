@@ -44,7 +44,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
             {id:'job_offer', text:'Job description sent'},
             {id:'is_company_reply', text:'Job description accepted / reject'},
             {id:'interview_offer', text:'Interview request sent'},
-            {id:'job_offered', text:'Employment offer sent'},
+            {id:'employment_offer', text:'Employment offer sent'},
             {id:'Employment offer accepted / reject', text:'Employment offer accepted / reject'},
            
       ];

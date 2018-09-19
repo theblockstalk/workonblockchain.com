@@ -69,7 +69,7 @@ function admin_candidate_filter(data)
         var employ_offer = arr.find(o => o === 'Employment offer accepted / reject');
         if(employ_offer)
         {
-            var offered = ['job_offer_rejected', 'job_offer_accepted'];
+            var offered = ['employment_offer_accepted', 'employment_offer_rejected'];
             //data.msg_tags = ['job_offer_rejected', 'job_offer_accepted'];
             offered.forEach(function(item)
             {
@@ -82,13 +82,14 @@ function admin_candidate_filter(data)
     {
         company_rply= [1,0];
     }
-    
+
     if(data.msg_tags)
     {
     	
     	let queryString = [];
    		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, query_data)
    		{
+       
    			  if(err)
    			  {
    			       logger.error(err.message, {stack: err.stack});
@@ -100,6 +101,7 @@ function admin_candidate_filter(data)
    			       query_data.forEach(function(item)
    			       {
    			            array.push(item.receiver_id );
+                     array.push(item.sender_id );
    			       });
    			       
    			       if(array.length>0)
