@@ -80,41 +80,45 @@ export class PrivacyEditorComponent implements OnInit {
     success; error;
    editor(editorForm: NgForm)
    {
-      
-       this.editor_text = this.editor_content;  
-       this.authenticationService.pages_content(editorForm.value)
-       .subscribe(
-       data => 
-       {
-           if(data)
-           {
-               this.success = "Content Successfully Updated";
-               //this.dataservice.changeMessage("Content Successfully Updated");
-           }
-           else
-           {
-               this.error="Something went wrong";
-               
-           }
-       },
-       error =>
-       {
-             if(error.message == 500 || error.message == 401)
-                    {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                    }
-                    
-                    if(error.message == 403)
-                    {
-                        this.router.navigate(['/not_found']);                        
-                    }      
-       });
+       if(editorForm.value.page_title && editorForm.value.html_text){
+		   this.editor_text = this.editor_content;  
+		   this.authenticationService.pages_content(editorForm.value)
+		   .subscribe(
+		   data => 
+		   {
+			   if(data)
+			   {
+				   this.success = "Content Successfully Updated";
+				   //this.dataservice.changeMessage("Content Successfully Updated");
+			   }
+			   else
+			   {
+				   this.error="Something went wrong";
+				   
+			   }
+		   },
+		   error =>
+		   {
+				 if(error.message == 500 || error.message == 401)
+						{
+							localStorage.setItem('jwt_not_found', 'Jwt token not found');
+							localStorage.removeItem('currentUser');
+											localStorage.removeItem('googleUser');
+											localStorage.removeItem('close_notify');
+											localStorage.removeItem('linkedinUser');
+											localStorage.removeItem('admin_log');
+							window.location.href = '/login';
+						}
+						
+						if(error.message == 403)
+						{
+							this.router.navigate(['/not_found']);                        
+						}      
+		   });
+	   }
+	   else{
+		   this.error="Please fill all fields";
+	   }
    }
 
 }
