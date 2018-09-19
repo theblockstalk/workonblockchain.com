@@ -127,7 +127,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
        }
   ngOnInit() 
   {
-      $('.selectpicker').selectpicker();
+      //$('.selectpicker').selectpicker();
       setInterval(() => {
           this.job_offer_log = '';
       }, 5000);
