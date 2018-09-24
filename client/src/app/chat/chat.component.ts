@@ -707,44 +707,63 @@ export class ChatComponent implements OnInit {
       this.msg_tag = 'employment_offer_accepted';
       this.credentials.msg_body = 'I am interested';
       let file_to_send = '';
-	  this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.description,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file_to_send)
-	  .subscribe(
-		data => {
-			//console.log(data);
-			this.credentials.msg_body = '';
-			this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
-			.subscribe(
-				data => {
-					this.new_msgss = data['datas'];
-					this.job_desc = data['datas'][0];
-				},
-				error => {
-					if(error.message == 500 || error.message == 401)
-					{
-						localStorage.setItem('jwt_not_found', 'Jwt token not found');
-						window.location.href = '/login';
-					}
-	
-					 if(error.message == 403)
-					{
-							// this.router.navigate(['/not_found']);                        
-					} 
-				}
-			);
-		},
-		error => {
-			if(error.message == 500 || error.message == 401)
-					{
-						localStorage.setItem('jwt_not_found', 'Jwt token not found');
-						window.location.href = '/login';
-					}
-	
-					 if(error.message == 403)
-					{
-							// this.router.navigate(['/not_found']);                        
-					} 
-		}
-	);
+	  console.log(this.credentials.job_offer_id);
+	  this.authenticationService.update_job_message(this.credentials.job_offer_id,this.is_job_offer)
+        .subscribe(
+            data => {
+                //console.log(data);
+                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.description,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file_to_send,this.credentials.job_offer_id)
+                    .subscribe(
+                        data => {
+                            //console.log(data);
+                            this.credentials.msg_body = '';
+							this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+							.subscribe(
+								data => {
+									this.new_msgss = data['datas'];
+									this.job_desc = data['datas'][0];
+								},
+								error => {
+									if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
+								}
+							);
+                        },
+                        error => {
+                            if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
+                        }
+                    );
+            },
+            error => {
+                if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
+            }
+        );
   }
   
   reject_job_offer(msgForm1 : NgForm){
@@ -757,44 +776,63 @@ export class ChatComponent implements OnInit {
       this.msg_tag = 'employment_offer_rejected';
       this.credentials.msg_body = 'I am not interested';
       let file_to_send = '';
-	  this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.description,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file_to_send)
-	.subscribe(
-		data => {
-			//console.log(data);
-			this.credentials.msg_body = '';
-			this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
-			.subscribe(
-				data => {
-					this.new_msgss = data['datas'];
-					this.job_desc = data['datas'][0];
-				},
-				error => {
-					if(error.message == 500 || error.message == 401)
-					{
-						localStorage.setItem('jwt_not_found', 'Jwt token not found');
-						window.location.href = '/login';
-					}
-	
-					 if(error.message == 403)
-					{
-							// this.router.navigate(['/not_found']);                        
-					} 
-				}
-			);
-		},
-		error => {
-			if(error.message == 500 || error.message == 401)
-					{
-						localStorage.setItem('jwt_not_found', 'Jwt token not found');
-						window.location.href = '/login';
-					}
-	
-					 if(error.message == 403)
-					{
-							// this.router.navigate(['/not_found']);                        
-					} 
-		}
-	);
+	  console.log(this.credentials.job_offer_id);
+	  this.authenticationService.update_job_message(this.credentials.job_offer_id,this.is_job_offer)
+        .subscribe(
+            data => {
+                //console.log(data);
+                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.description,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file_to_send,this.credentials.job_offer_id)
+                    .subscribe(
+                        data => {
+                            //console.log(data);
+                            this.credentials.msg_body = '';
+							this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+							.subscribe(
+								data => {
+									this.new_msgss = data['datas'];
+									this.job_desc = data['datas'][0];
+								},
+								error => {
+									if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
+								}
+							);
+						},
+                        error => {
+                            if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
+                        }
+                    );
+            },
+            error => {
+                if(error.message == 500 || error.message == 401)
+                                    {
+                                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                        window.location.href = '/login';
+                                    }
+                    
+                                     if(error.message == 403)
+                                    {
+                                            // this.router.navigate(['/not_found']);                        
+                                    } 
+            }
+        );
   }
   
   /*send_message_candidate(msgForm1 : NgForm){
@@ -1050,64 +1088,85 @@ export class ChatComponent implements OnInit {
 	}
 	
 	send_employment_offer(my_credentials: any,file: any){
-	      if(file){
-		  }
-		  else{
-			  file = '';
-		  }
-		  //console.log(file);
-          this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-		  this.is_company_reply = 1;
-		  this.msg_tag = 'employment_offer';
-		  this.is_job_offer = 1;
-		  this.credentials.msg_body = 'You have been send an employment offer!';
-		  this.description = my_credentials.job_description;
-		  //console.log(this.credentials.msg_body);
-		  this.authenticationService.insert_job_message(this.currentUser._creator,my_credentials.id,this.display_name,my_credentials.email,this.credentials.msg_body,this.description,my_credentials.job_title,my_credentials.base_salary,my_credentials.currency,my_credentials.start_date.formatted,my_credentials.employment_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file)
+	      this.authenticationService.get_employment_offer_info(this.currentUser._creator,my_credentials.id,'employment_offer')
 			.subscribe(
 				data => {
-					//console.log(data);
-					this.credentials.msg_body = '';
-					this.job_offer_log = 'Message has been successfully sent';
-					this.credentials.job_title = '';
-					this.credentials.base_salary = '';
-					this.credentials.currency = '';
-					this.credentials.employment_type = '';
-					this.credentials.start_date = '';
-					this.credentials.job_description = '';
-					this.img_name = '';
-					$("#Modal").modal("hide");
-					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
-					.subscribe(
-						data => {
-							this.new_msgss = data['datas'];
-							this.job_desc = data['datas'][0];
-						},
-						error => {
-							if(error.message == 500 || error.message == 401)
-						{
-							localStorage.setItem('jwt_not_found', 'Jwt token not found');
-							window.location.href = '/login';
+					console.log(data['datas']);
+					if(data['datas']){
+						this.job_offer_log = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
+					}
+					else{
+						if(file){}
+						else{
+							file = '';
 						}
-					
-						if(error.message == 403)
-						{
-							// this.router.navigate(['/not_found']);                        
-						} 
-						}
-					);
+						//console.log(file);
+						this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+						this.is_company_reply = 1;
+						this.msg_tag = 'employment_offer';
+						this.is_job_offer = 1;
+						this.credentials.msg_body = 'You have been send an employment offer!';
+						this.description = my_credentials.job_description;
+						//console.log(this.credentials.msg_body);
+						this.authenticationService.insert_job_message(this.currentUser._creator,my_credentials.id,this.display_name,my_credentials.email,this.credentials.msg_body,this.description,my_credentials.job_title,my_credentials.base_salary,my_credentials.currency,my_credentials.start_date.formatted,my_credentials.employment_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file,'0')
+						.subscribe(
+							data => {
+								//console.log(data);
+								this.credentials.msg_body = '';
+								this.job_offer_log = 'Message has been successfully sent';
+								this.credentials.job_title = '';
+								this.credentials.base_salary = '';
+								this.credentials.currency = '';
+								this.credentials.employment_type = '';
+								this.credentials.start_date = '';
+								this.credentials.job_description = '';
+								this.img_name = '';
+								$("#Modal").modal("hide");
+								this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+								.subscribe(
+									data => {
+										this.new_msgss = data['datas'];
+										this.job_desc = data['datas'][0];
+									},
+									error => {
+										if(error.message == 500 || error.message == 401)
+										{
+											localStorage.setItem('jwt_not_found', 'Jwt token not found');
+											window.location.href = '/login';
+										}
+										if(error.message == 403)
+										{
+										// this.router.navigate(['/not_found']);                        
+										} 
+									}
+								);
+							},
+							error => {
+								if(error.message == 500 || error.message == 401)
+									{
+										localStorage.setItem('jwt_not_found', 'Jwt token not found');
+										window.location.href = '/login';
+									}
+								
+									if(error.message == 403)
+									{
+										// this.router.navigate(['/not_found']);                        
+									} 
+							}
+						);
+					}
 				},
 				error => {
 					if(error.message == 500 || error.message == 401)
-						{
-							localStorage.setItem('jwt_not_found', 'Jwt token not found');
-							window.location.href = '/login';
-						}
-					
-						if(error.message == 403)
-						{
-							// this.router.navigate(['/not_found']);                        
-						} 
+					{
+						localStorage.setItem('jwt_not_found', 'Jwt token not found');
+						window.location.href = '/login';
+					}
+				
+					if(error.message == 403)
+					{
+						// this.router.navigate(['/not_found']);                        
+					} 
 				}
 			);
 	}
