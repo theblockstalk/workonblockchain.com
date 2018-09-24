@@ -35,7 +35,7 @@ export class AdminCompanyDetailComponent implements OnInit {
     });
   }
 
-  
+  company_website;
   ngOnInit() 
   {
       ////console.log(this.user_id);
@@ -70,6 +70,20 @@ export class AdminCompanyDetailComponent implements OnInit {
                               this.imgPath = data.company_logo;
                             ////console.log(this.imgPath);
                         
+                        }
+                        
+                        if(data.company_website)
+                        {    
+                            let loc= data.company_website;          
+                            let x = loc.split("/");
+                            if(x[0] === 'http:' || x[0] === 'https:')
+                            {
+                                this.company_website = data.company_website;
+                            }
+                            else
+                            {
+                                this.company_website = 'http://' + data.company_website;  
+                            }
                         }
                         ////console.log(this.verify);
                         if(this.approve === 1)
