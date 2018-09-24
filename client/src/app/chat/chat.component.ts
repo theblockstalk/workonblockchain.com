@@ -668,7 +668,12 @@ export class ChatComponent implements OnInit {
 				{
 					//console.log(success);
 					if(this.credentials.job_title && this.credentials.base_salary && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description){
-						this.send_employment_offer(this.credentials,success);
+						if(isNaN(this.credentials.base_salary)){
+							this.job_offer_log = 'Salary should be a number';
+						}
+						else{
+							this.send_employment_offer(this.credentials,success);
+						}
 					}
 					else{
 						this.job_offer_log = 'Please enter all info';
