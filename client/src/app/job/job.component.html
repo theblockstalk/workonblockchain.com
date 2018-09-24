@@ -102,11 +102,14 @@
               
               <div class="form-group col-md-6 col-left">
                 <label><p  class = "label-p">Yearly expected base salary</p></label>
-                       <input type="number" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="salary">
+                       <input type="number" #expect_salary="ngModel"  pattern="^[0-9]*$" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="salary">
           		
-          			<div class = "form_error" *ngIf="!salary">
-								<span class = "error">{{salary_log}}</span>
+          			<div class = "form_error" >
+								<span class = "error" *ngIf="!salary ;else field_validation" >{{salary_log}}</span>
+								<span class = "error" #field_validation *ngIf="expect_salary.errors && salary!=''">  Yearly expected base salary should be a number. </span>
+								
 							</div>
+
             </div>
               <div class="form-group col-md-6 setting-top">
               <label><p class = "label-p"></p></label>
@@ -128,12 +131,15 @@
            <div class = "form-group col-md-12 salary_class">
            <div class="form-group col-md-6 col-left">
 					<label><p  class = "label-p">Currently yearly base salary</p></label>
-                       <input type="number" #esalary="ngModel" class="form-control" id="" placeholder="2000" #salary_field name="current_salary"  [(ngModel)]="current_salary">
+                       <input type="number" class="form-control" #base_validation="ngModel"  pattern="^[0-9]*$" required id="" placeholder="2000" name="current_salary"  [(ngModel)]="current_salary">
                
         
-					<div class = "form_error" *ngIf="!current_salary ">
-						<span class = "error">{{current_sal_log}}</span>
+					<div class = "form_error" >
+						<span class = "error" *ngIf="!current_salary; else base_salary_validation">{{current_sal_log}}</span>
+						<span class = "error" #base_salary_validation *ngIf="base_validation.errors && current_salary!=''" > Currently yearly base salary should be a number. </span>
+						
 					</div> 
+					
 			</div>
             <div class="form-group col-md-6 setting-top">
               <label><p class = "label-p"></p></label>

@@ -402,41 +402,41 @@ export class JobComponent implements OnInit,AfterViewInit {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.selectedcountry.length <=0)
         {
-            this.country_log = "Please select min 1 location";
+            this.country_log = "Please select min 1 location.";
         }
           
         if(this.jobselected.length<=0)
         {
-            this.roles_log = "Please select min 1 role";
+            this.roles_log = "Please select min 1 role.";
         }
         
         if(this.base_currency==-1)
         {
-            this.currency_log = "Please choose currency";
+            this.currency_log = "Please choose currency.";
         }
           
         if(!this.salary)
         {
-            this.salary_log = "Please enter expected yearly salary";
+            this.salary_log = "Please enter expected yearly salary.";
         }
           
         if(this.selectedValue.length<=0)
         {
-            this.interest_log = "Please select min 1 area of interest";
+            this.interest_log = "Please select min 1 area of interest.";
         }
           
         if(!this.availability_day)
         {
-            this.avail_log = "Please select employment availability";
+            this.avail_log = "Please select employment availability.";
         }
         if(!this.current_salary)
        {
-           this.current_sal_log = "Please fill current base salary";
+           this.current_sal_log = "Please fill current base salary.";
           
        }
        if(this.current_currency ==-1)
        {
-           this.current_currency_log = "Please choose currency";
+           this.current_currency_log = "Please choose currency.";
        }
           
         if(this.current_salary && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)

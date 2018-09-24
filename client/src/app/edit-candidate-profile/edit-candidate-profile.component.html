@@ -185,10 +185,13 @@
 						<div class="form-group col-md-12 salary_class">
 							<div class="form-group col-md-6">
 								<label><p class = "label-p">Yearly expected base salary</p></label>
-								<input type="number" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="expected_salaryyy">
+								<input type="number" class="form-control" id="" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="expected_salary" placeholder=" 2000" [(ngModel)]="expected_salaryyy">
 							<div class = "form_error" *ngIf="!expected_salaryyy">
 								<span class = "error">{{salary_log}}</span>
 							</div>
+							<div class = "form_error" *ngIf="expect_salary.errors && expected_salaryyy!=''">
+									<span class = "error"> Yearly expected base salary should be a number. </span>
+								</div>
 							</div>
 							
 							<div class="form-group col-md-6 setting-top">
@@ -205,11 +208,14 @@
 						</div>
 						<div class="form-group col-md-12 salary_class">
 							<div class="form-group col-md-6">
-								<label><p  class = "label-p">Current Base salary</p></label>
-								<input type="number" class="form-control" id="" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">							
+								<label><p  class = "label-p">Currently yearly base salary</p></label>
+								<input type="number" class="form-control" id="" #current_salary="ngModel"  pattern="^[0-9]*$" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">							
 								<div class = "form_error" *ngIf="!salary ">
-						<span class = "error">{{current_sal_logg}}</span>
-					</div> 
+										<span class = "error">{{current_sal_logg}}</span>
+								</div> 
+								<div class = "form_error" *ngIf="current_salary.errors && salary!=''">
+									<span class = "error"> Currently yearly base salary should be a number. </span>
+								</div>
 							</div>
 						
 							<div class="form-group col-md-6 setting-top">
@@ -219,8 +225,8 @@
 								<option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>          
 							</select>
 							<div class = "form_error" *ngIf="current_currency==-1 ">
-                <span class = "error">{{current_currency_logg}}</span>
-              </div>
+                				<span class = "error">{{current_currency_logg}}</span>
+              				</div>
 							</div>
 							</div>
 							
