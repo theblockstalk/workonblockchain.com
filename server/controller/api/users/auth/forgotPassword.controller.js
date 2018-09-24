@@ -160,7 +160,6 @@ function forgot_passwordEmail_send(data)
         	            });
         	}
             
-
         }
         else
         {
