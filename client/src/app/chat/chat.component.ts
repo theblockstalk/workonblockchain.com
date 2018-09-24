@@ -693,7 +693,7 @@ export class ChatComponent implements OnInit {
 				this.job_offer_log = 'Salary should be a number';
 			}
 			else{
-				this.send_employment_offer(this.credentials,success);
+				this.send_employment_offer(this.credentials,'');
 			}
 		}
 		else{
