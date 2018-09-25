@@ -132,7 +132,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
                 },
                 error => 
                 {
-                  if(error.message == 500 || error.message == 401)
+                  if(error.message === 500 || error.message === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             localStorage.removeItem('currentUser');
@@ -143,7 +143,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
                             window.location.href = '/login';
                         }
                     
-                        if(error.message == 403)
+                        if(error.message === 403)
                         {
                             // this.router.navigate(['/not_found']);                        
                         } 
@@ -182,7 +182,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
                         },
                         error =>
                         {
-                            if(error.message == 500 || error.message == 401)
+                            if(error.message === 500 || error.message === 401)
                             {
                                     localStorage.setItem('jwt_not_found', 'Jwt token not found');
                                     localStorage.removeItem('currentUser');
@@ -193,7 +193,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
                                     window.location.href = '/login';
                             }
                     
-                            if(error.message == 403)
+                            if(error.message === 403)
                             {
                                 this.router.navigate(['/not_found']);                        
                              }   
@@ -227,7 +227,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
                 
                 error =>
                 {
-                    if(error.message == 500 || error.message == 401)
+                    if(error.message === 500 || error.message === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             localStorage.removeItem('currentUser');
@@ -238,7 +238,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
                             window.location.href = '/login';
                         }
                     
-                        if(error.message == 403)
+                        if(error.message === 403)
                         {
                             // this.router.navigate(['/not_found']);                        
                         } 
@@ -357,7 +357,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
                 },
                 error => 
                 {
-                  if(error.message == 500 || error.message == 401)
+                  if(error.message === 500 || error.message === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             localStorage.removeItem('currentUser');
@@ -368,7 +368,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
                             window.location.href = '/login';
                         }
                     
-                        if(error.message == 403)
+                        if(error.message === 403)
                         {
                             // this.router.navigate(['/not_found']);                        
                         } 
