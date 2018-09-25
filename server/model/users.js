@@ -84,6 +84,10 @@ const UserSchema = new Schema({
     	type:Boolean,
     	default:false
     },
+    dissable_account_timestamp: 
+    {	
+    	type:Date
+	},
 	created_date:
 	{
 		type: Date

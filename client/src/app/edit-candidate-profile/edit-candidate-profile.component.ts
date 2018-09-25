@@ -400,7 +400,7 @@ export class EditCandidateProfileComponent implements OnInit {
             },
             error => 
             {
-              if(error.message == 500 || error.message == 401)
+              if(error.message === 500 || error.message === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         localStorage.removeItem('currentUser');
@@ -411,7 +411,7 @@ export class EditCandidateProfileComponent implements OnInit {
                         window.location.href = '/login';
                     }
                     
-                    if(error.message == 403)
+                    if(error.message === 403)
                     {
                         this.router.navigate(['/not_found']);                        
                     }
@@ -1362,7 +1362,7 @@ export class EditCandidateProfileComponent implements OnInit {
                 error => {
                      this.dataservice.changeMessage(error);
                   this.log = 'Something getting wrong';
-                    if(error.message == 500)
+                    if(error.message === 500)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         localStorage.removeItem('currentUser');
