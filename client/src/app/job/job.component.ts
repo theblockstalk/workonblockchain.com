@@ -402,12 +402,12 @@ export class JobComponent implements OnInit,AfterViewInit {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.selectedcountry.length <=0)
         {
-            this.country_log = "Please select min 1 location";
+            this.country_log = "Please select at least one location";
         }
           
         if(this.jobselected.length<=0)
         {
-            this.roles_log = "Please select min 1 role";
+            this.roles_log = "Please select at least one role";
         }
         
         if(this.base_currency==-1)
@@ -422,7 +422,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           
         if(this.selectedValue.length<=0)
         {
-            this.interest_log = "Please select min 1 area of interest";
+            this.interest_log = "Please select at least one area of interest";
         }
           
         if(!this.availability_day)
@@ -431,7 +431,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
         if(!this.current_salary)
        {
-           this.current_sal_log = "Please fill current base salary";
+           this.current_sal_log = "Please enter current base salary";
           
        }
        if(this.current_currency ==-1)
