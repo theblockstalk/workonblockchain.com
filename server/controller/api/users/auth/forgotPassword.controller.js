@@ -43,7 +43,22 @@ function forgot_password(email)
 
         if(result)
         {
-            updateData(result);
+        	console.log(result.social_type);
+        	if(result.social_type === 'GOOGLE')
+        	{
+        		deferred.resolve({error:'Please login using gmail'});
+        	}
+        	
+        	if(result.social_type === 'LINKEDIN')
+        	{
+        		deferred.resolve({error:'Please login using linkedin'});
+        	}
+        	
+        	if(!result.social_type)
+        	{
+        		updateData(result);
+        	}
+      
         }
         else
         {
@@ -77,6 +92,7 @@ function forgot_password(email)
             }
             else
             {
+            	
                 forgot_passwordEmail_send(email_data.token)
                 deferred.resolve({msg:'Email Send'});
             }
