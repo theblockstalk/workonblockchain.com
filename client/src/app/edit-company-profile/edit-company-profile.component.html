@@ -54,9 +54,12 @@
 
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">Company Website</p></label>
-                  <input type="text" class="form-control" placeholder="Company Website" required name="company_website" [(ngModel)]="company_website">
+                  <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="Company Website" required name="company_website" [(ngModel)]="company_website">
                   <div class = "form_error" *ngIf="!company_website">
 								<span class = "error">{{company_website_log}}</span>
+							</div>
+							<div class="form_error" *ngIf="website.errors && company_website !=''">
+								<span class = "error">Enter url in proper format.</span>
 							</div>
                 </div>
 

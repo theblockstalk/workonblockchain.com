@@ -49,7 +49,7 @@ export class AdminDashboardComponent implements OnInit {
                 },
                 error=>
                 {
-                    if(error.message == 500 || error.message == 401)
+                    if(error.message === 500 || error.message === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             localStorage.removeItem('currentUser');
@@ -60,7 +60,7 @@ export class AdminDashboardComponent implements OnInit {
                             window.location.href = '/login';
                         }
                     
-                        if(error.message == 403)
+                        if(error.message === 403)
                         {
                             // this.router.navigate(['/not_found']);                        
                         } 
