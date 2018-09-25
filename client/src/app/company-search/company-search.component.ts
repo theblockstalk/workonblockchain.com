@@ -809,10 +809,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         //console.log("Name: " + this.user_id.name);
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
-            if(!isNaN(this.credentials.salary)){
-				this.job_offer_log = 'Salary should be a number';
-			}
-			else{
+            if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
 				this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
 				.subscribe(
 					data => {
@@ -864,7 +861,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 						}
 					}
 				);
-			}	
+			}
+			else{
+				this.job_offer_log = 'Salary should be a number';
+			}
         }
         else{
             this.job_offer_log = 'Please enter all info';
