@@ -111,20 +111,6 @@
 				 </ng-template>
 				 </div>
 				 <div class="col-md-6 info-area">
-				  <ng-container *ngIf="data._creator.disable_account === false;else no_enable">
-				 	<p>
-				 	<strong>Account enabled :</strong>
-				 	<span>Yes</span>
-				 	</p>
-				 </ng-container>
-				 <ng-template #no_enable>
-				 		<p>
-				 	<strong>Account enabled :</strong>
-				 	<span>No</span>
-				 	</p>
-				 </ng-template>
-				 </div>
-				 <div class="col-md-6 info-area">
 				 <ng-container *ngIf="is_approved !== '';else no_approve">
 				 	<p>
 				 	<strong>Approved by admin :</strong>
@@ -139,6 +125,30 @@
 				 </ng-template>
 				</div>
 				 	
+				 <div class="col-md-6 info-area">
+				  <ng-container *ngIf="data._creator.disable_account === false;else no_enable">
+				 	<p>
+				 	<strong>Account enabled :</strong>
+				 	<span>Yes</span>
+				 	</p>
+				  </ng-container>
+				 <ng-template #no_enable>
+				 		<p>
+				 	<strong>Account enabled :</strong>
+				 	<span>No</span>
+				 	</p>
+				 </ng-template>
+				 </div>
+				 <div class="col-md-6 info-area" *ngIf="data._creator.dissable_account_timestamp">
+				  <ng-container >
+				 	<p>
+				 	<strong>Account enabled/disabled :</strong>
+				 	<span>{{data._creator.dissable_account_timestamp | date:'short'}}</span>
+				 	</p>
+				  </ng-container>
+				
+				 </div>
+				 
       				
 				 </section>
 				
