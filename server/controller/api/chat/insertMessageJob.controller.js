@@ -48,36 +48,71 @@ function insert_message_job_new(data){
 	var current_date = new Date();
 	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
-    let newChat = new chat({
-        sender_id : mongoose.Types.ObjectId(data.sender_id),
-		receiver_id : mongoose.Types.ObjectId(data.receiver_id),
-        sender_name: data.sender_name,
-        receiver_name: data.receiver_name,
-        message: data.message,
-		description: data.description,
-        job_title: data.job_title,
-        salary: data.salary,
-		salary_currency: data.currency,
-        date_of_joining: data.date_of_joining,
-        msg_tag: data.msg_tag,
-        is_company_reply: data.is_company_reply,
-        job_type: data.job_type,
-        file_name: data.file_to_send,
-        is_job_offered: data.job_offered,
-        is_read: 0,
-        date_created: my_date
-    });
-
-    newChat.save((err,data)=>
-    {
-        if(err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else{
-            ////console.log('done');
-            deferred.resolve({Success:'Msg sent'});
-}
-});
-    return deferred.promise;
+	if(data.employment_reference_id == 0){
+		let newChat = new chat({
+			sender_id : mongoose.Types.ObjectId(data.sender_id),
+			receiver_id : mongoose.Types.ObjectId(data.receiver_id),
+			sender_name: data.sender_name,
+			receiver_name: data.receiver_name,
+			message: data.message,
+			description: data.description,
+			job_title: data.job_title,
+			salary: data.salary,
+			salary_currency: data.currency,
+			date_of_joining: data.date_of_joining,
+			msg_tag: data.msg_tag,
+			is_company_reply: data.is_company_reply,
+			job_type: data.job_type,
+			file_name: data.file_to_send,
+			is_job_offered: data.job_offered,
+			is_read: 0,
+			date_created: my_date
+		});
+		newChat.save((err,data)=>
+		{
+			if(err){
+				logger.error(err.message, {stack: err.stack});
+				deferred.reject(err.name + ': ' + err.message);
+			}
+			else{
+				////console.log('done');
+				deferred.resolve({Success:'Msg sent'});
+			}
+		});
+		return deferred.promise;
+	}
+	else{
+		let newChat = new chat({
+			sender_id : mongoose.Types.ObjectId(data.sender_id),
+			receiver_id : mongoose.Types.ObjectId(data.receiver_id),
+			sender_name: data.sender_name,
+			receiver_name: data.receiver_name,
+			message: data.message,
+			description: data.description,
+			job_title: data.job_title,
+			salary: data.salary,
+			salary_currency: data.currency,
+			date_of_joining: data.date_of_joining,
+			msg_tag: data.msg_tag,
+			is_company_reply: data.is_company_reply,
+			job_type: data.job_type,
+			file_name: data.file_to_send,
+			is_job_offered: data.job_offered,
+			is_read: 0,
+			employment_offer_reference: mongoose.Types.ObjectId(data.employment_reference_id),
+			date_created: my_date
+		});
+		newChat.save((err,data)=>
+		{
+			if(err){
+				logger.error(err.message, {stack: err.stack});
+				deferred.reject(err.name + ': ' + err.message);
+			}
+			else{
+				////console.log('done');
+				deferred.resolve({Success:'Msg sent'});
+			}
+		});
+		return deferred.promise;
+	}
 }

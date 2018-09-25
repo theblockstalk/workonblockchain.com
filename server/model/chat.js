@@ -100,6 +100,10 @@ const ChatSchema = new Schema({
         enum: [0, 1],
 		default:0
 	},
+	employment_offer_reference:{
+		type: Schema.Types.ObjectId,
+        ref: 'Chat'
+	},
 	date_created:
 	{
 		type: Date,
