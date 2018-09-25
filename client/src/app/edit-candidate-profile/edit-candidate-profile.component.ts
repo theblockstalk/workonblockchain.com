@@ -1117,12 +1117,12 @@ export class EditCandidateProfileComponent implements OnInit {
         }
         if(this.selectedcountry.length <=0)
         {
-            this.country_log = "Please select min 1 location";
+            this.country_log = "Please select at least one location";
         }
           
         if(this.jobselected.length<=0)
         {
-            this.roles_log = "Please select min 1 role";
+            this.roles_log = "Please select at least one role";
         }
         
         
@@ -1138,7 +1138,7 @@ export class EditCandidateProfileComponent implements OnInit {
           
         if(this.selectedValue.length<=0)
         {
-            this.interest_log = "Please select min 1 area of interest";
+            this.interest_log = "Please select at least one area of interest";
         }
           
         if(!this.availability_day)

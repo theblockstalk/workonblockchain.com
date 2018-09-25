@@ -185,7 +185,7 @@
 						<div class="form-group col-md-12 salary_class">
 							<div class="form-group col-md-6">
 								<label><p class = "label-p">Yearly expected base salary</p></label>
-								<input type="number" class="form-control" id="" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="expected_salary" placeholder=" 2000" [(ngModel)]="expected_salaryyy">
+								<input type="number" class="form-control" id="" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="expected_salary" placeholder="2000" [(ngModel)]="expected_salaryyy">
 								<div class = "form_error" >
 									<span class = "error" *ngIf="!expected_salaryyy && expected_salaryyy !== null  ; else expected_validation" >{{salary_log}}</span>
 									<span class = "error" #expected_validation  *ngIf="expect_salary.errors && expected_salaryyy">  Yearly expected base salary should be a number. </span>
