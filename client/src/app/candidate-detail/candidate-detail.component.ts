@@ -247,10 +247,7 @@ export class CandidateDetailComponent implements OnInit {
 	    this.full_name = this.first_name;
         ////console.log(this.full_name);
         if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
-            if(!isNaN(this.credentials.salary)){
-				this.job_offer_msg = 'Salary should be a number';
-			}
-			else{
+            if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
 				this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 				this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
 				.subscribe(
@@ -297,6 +294,9 @@ export class CandidateDetailComponent implements OnInit {
 						}
 					}
 				);
+			}
+			else{
+				this.job_offer_msg = 'Salary should be a number';
 			}
         }
         else{

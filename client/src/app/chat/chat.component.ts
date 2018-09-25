@@ -668,11 +668,11 @@ export class ChatComponent implements OnInit {
 				{
 					//console.log(success);
 					if(this.credentials.job_title && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description){
-						if(!isNaN(this.credentials.base_salary)){
-							this.job_offer_log = 'Salary should be a number';
+						if(this.credentials.base_salary && Number(this.credentials.base_salary) && (Number(this.credentials.base_salary))>0 && this.credentials.base_salary % 1 === 0){
+							this.send_employment_offer(this.credentials,success);
 						}
 						else{
-							this.send_employment_offer(this.credentials,success);
+							this.job_offer_log = 'Salary should be a number';
 						}
 					}
 					else{
@@ -689,11 +689,11 @@ export class ChatComponent implements OnInit {
 	  else{
 		//console.log('no file');
 		if(this.credentials.job_title && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description){
-			if(!isNaN(this.credentials.base_salary)){
-				this.job_offer_log = 'Salary should be a number';
+			if(this.credentials.base_salary && Number(this.credentials.base_salary) && (Number(this.credentials.base_salary))>0 && this.credentials.base_salary % 1 === 0){
+				this.send_employment_offer(this.credentials,'');
 			}
 			else{
-				this.send_employment_offer(this.credentials,'');
+				this.job_offer_log = 'Salary should be a number';
 			}
 		}
 		else{
@@ -1096,7 +1096,7 @@ export class ChatComponent implements OnInit {
 	      this.authenticationService.get_employment_offer_info(this.currentUser._creator,my_credentials.id,'employment_offer')
 			.subscribe(
 				data => {
-					console.log(data['datas']);
+					//console.log(data['datas']);
 					if(data['datas']){
 						this.job_offer_log = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
 					}
