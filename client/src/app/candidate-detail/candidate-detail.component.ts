@@ -60,6 +60,9 @@ export class CandidateDetailComponent implements OnInit {
     rply;cand_data=[];
   ngOnInit() 
   {
+	  setInterval(() => {
+		  this.job_offer_msg = '';
+	  }, 7000);
       ////console.log(this.user_id);
       this.company_reply = 0;
 	  this.credentials.currency = -1;
@@ -243,9 +246,9 @@ export class CandidateDetailComponent implements OnInit {
   send_job_offer(msgForm : NgForm){
 	    this.full_name = this.first_name;
         ////console.log(this.full_name);
-        if(this.credentials.job_title && this.credentials.salary && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
-            if(isNaN(this.credentials.salary)){
-				this.job_offer_log = 'Salary should be a number';
+        if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
+            if(!isNaN(this.credentials.salary)){
+				this.job_offer_msg = 'Salary should be a number';
 			}
 			else{
 				this.currentUser = JSON.parse(localStorage.getItem('currentUser'));

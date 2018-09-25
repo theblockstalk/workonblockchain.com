@@ -808,8 +808,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         //console.log("Used ID: " + this.user_id.id);
         //console.log("Name: " + this.user_id.name);
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if(this.credentials.job_title && this.credentials.salary && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
-            if(isNaN(this.credentials.salary)){
+        if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
+            if(!isNaN(this.credentials.salary)){
 				this.job_offer_log = 'Salary should be a number';
 			}
 			else{
