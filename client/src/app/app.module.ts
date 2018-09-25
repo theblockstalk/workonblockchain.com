@@ -74,6 +74,7 @@ import { FeesComponent } from './fees/fees.component';
 //import {environment} from '../environments/environment';
 import { LoadingModule } from 'ngx-loading';
 import { LoginResolver } from './is-loggedin.resolver';
+import { SeoService } from './seo.service';
 
 const google_id = environment.google_id;
 //console.log(google_id);
@@ -224,7 +225,7 @@ const appRoutes: Routes = [
   ],
   providers: 
   [
-    UserService,DatePipe,DataService,CookieService,LoginResolver,
+    UserService,DatePipe,DataService,CookieService,LoginResolver,SeoService,
   {
       provide: AuthServiceConfig,
       useFactory: provideConfig
