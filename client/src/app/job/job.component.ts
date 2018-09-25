@@ -431,7 +431,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
         if(!this.current_salary)
        {
-           this.current_sal_log = "Please fill current base salary";
+           this.current_sal_log = "Please enter current base salary";
           
        }
        if(this.current_currency ==-1)
