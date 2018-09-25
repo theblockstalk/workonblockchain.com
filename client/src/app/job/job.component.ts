@@ -156,7 +156,8 @@ export class JobComponent implements OnInit,AfterViewInit {
                     this.availability_day = data.availability_day;
                     if(data.expected_salary_currency)
                         this.base_currency = data.expected_salary_currency;
-                    this.current_salary = data.current_salary;
+                    if(data.current_salary)
+                        this.current_salary = data.current_salary;
                     if(data.current_currency)   
                         this.current_currency =data.current_currency;                    
                     
@@ -431,7 +432,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
         if(!this.current_salary)
        {
-           this.current_sal_log = "Please fill current base salary.";
+           this.current_sal_log = "Please enter current base salary.";
           
        }
        if(this.current_currency ==-1)
