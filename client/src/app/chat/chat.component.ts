@@ -74,7 +74,7 @@ export class ChatComponent implements OnInit {
 	file_uploaded = 5;
 	file_msg = '';
 	img_name = '';
-	file_size = 5242880;
+	file_size = 1111923;
 	public myDatePickerOptions: IMyDpOptions;
 
   constructor(
@@ -685,7 +685,7 @@ export class ChatComponent implements OnInit {
 			)
 		}
 		else{
-		  this.job_offer_log = 'Only pdf,image & docx are allowed of size less than 5MB';
+		  this.job_offer_log = 'Only pdf,image & docx are allowed of size less than 1MB';
 		}
 	  }
 	  else{
@@ -1008,6 +1008,8 @@ export class ChatComponent implements OnInit {
         //console.log(this.currentUser);
 		//console.log(this.display_name);
 		this.file_uploaded = 0;
+		this.interview_log = '';
+		this.job_offer_log = '';
 		this.file_msg = '';
         let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
         let fileCount: number = inputEl.files.length;
@@ -1070,7 +1072,7 @@ export class ChatComponent implements OnInit {
         }
 		else{
 			this.file_uploaded = 1;
-			this.file_msg = 'File size should be less than 5MB';
+			this.file_msg = 'File size should be less than 1MB';
 		}
     }
 	
