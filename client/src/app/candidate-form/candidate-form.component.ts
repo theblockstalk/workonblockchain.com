@@ -208,9 +208,7 @@ export class CandidateFormComponent implements OnInit {
                 this.router.navigate(['/signup']);
             }
       
-        });
-        console.log(this.result);
-        
+        });       
         
     }
 
@@ -287,7 +285,9 @@ export class CandidateFormComponent implements OnInit {
                 this.credentials.confirm_password = '';
                 this.password_log = "Password do not match";
             }
-            else
+            else if( this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
+            && this.credentials.company_website && this.credentials.phone_number && this.credentials.country && this.credentials.postal_code &&  
+            this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
             {
 				////console.log('else');
                 this.authenticationService.create_employer(this.credentials)
@@ -316,6 +316,10 @@ export class CandidateFormComponent implements OnInit {
                     this.log = 'Something getting wrong';
                     this.loading = false;
                 });
+            }
+            else
+            {
+                this.message = "Please fill all the fields";
             }
     }
 }
