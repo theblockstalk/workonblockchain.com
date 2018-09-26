@@ -17,11 +17,11 @@
         <li *ngIf="!currentUser"><a routerLink="login">Login</a></li>       
         <li *ngIf="!currentUser"><a routerLink="referral">Referral - &pound; 500 Reward</a></li>
        
-        <li *ngIf="(currentUser && admin_route !== '/admin')"><a routerLink="chat">Chat</a></li>
+        <li *ngIf="(currentUser)"><a routerLink="chat">Chat</a></li>
         <li *ngIf="(currentUser && is_admin === 1)"><a routerLink="admin-dashboard">Dashboard</a></li>
         
-        <li *ngIf="(currentUser && user_type === 'candidate'  && admin_route !== '/admin')"><a routerLink="referral">Referral - &pound; 500 Reward</a></li>
-        <li class="dropdown" *ngIf="(currentUser && admin_route !== '/admin')">
+        <li *ngIf="(currentUser && user_type === 'candidate' )"><a routerLink="referral">Referral - &pound; 500 Reward</a></li>
+        <li class="dropdown" *ngIf="(currentUser)">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li *ngIf="(currentUser && user_type === 'candidate')"><a routerLink="candidate_profile">Profile</a></li>
@@ -34,14 +34,14 @@
           </ul>
         </li>
        
-        <li class="dropdown" *ngIf="(currentUser && admin_route === '/admin')">
+       <!-- <li class="dropdown" *ngIf="(currentUser && admin_route === '/admin')">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account<span class="caret"></span></a>
           <ul class="dropdown-menu nav-dropdown">
-            <!-- <li><a href="#"><i class="icon-user icon-right"></i>Account</a></li>-->
+           
             <li><a routerLink="admin-account-settings"><i class="icon-cog icon-right"></i>Setting</a></li>
             <li><a href="" (click)="logout()"><i class="icon-exit icon-right"></i>Log Out</a></li>
           </ul>
-        </li>
+        </li>-->
       </ul>
       
        
