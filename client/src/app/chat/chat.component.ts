@@ -1178,4 +1178,10 @@ export class ChatComponent implements OnInit {
 				}
 			);
 	}
+	
+	reset_msgs(){
+	  this.interview_log = '';
+	  this.job_offer_log = '';
+	  this.file_msg = '';
+	}
 }
