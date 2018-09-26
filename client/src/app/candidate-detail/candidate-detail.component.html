@@ -414,7 +414,10 @@
 					  </div>
 
 					  <div class="form-group">
-					    <input type="number" name="salary" [(ngModel)]="credentials.salary" class="form-control" id="" placeholder="Your salary eg 2000">
+					    <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" id="" placeholder="Your salary eg 2000">
+					    <div class = "form_error" >
+							<span class = "error" *ngIf="expect_salary.errors && credentials.salary"> Salary should be a number. </span>
+						</div>
 					  </div>
 					  <div class="form-group">
 							<select class="form-control" name="currency" [(ngModel)]="credentials.currency" id="sel1">
@@ -442,7 +445,7 @@
 					  </div>
 					  <p style="color: green;font-size: 18px;">{{job_offer_msg}}</p>
 					  <div class = "form-group text-center">
-					  		<button type="submit" class="btn btn-primary model-btn submit">Submit Job Offer</button>
+					  		<button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_desc || !credentials.job_type || !credentials.job_title || !credentials.location" class="btn btn-primary model-btn submit">Submit Job Offer</button>
 					  </div>
 					</form>
 				</section>
