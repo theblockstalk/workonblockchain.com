@@ -4,7 +4,7 @@
   "description": "authentication test app",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "export NODE_ENV=test && nyc mocha $(find test -name '*.spec.js') --recursive",
     "start": "nodemon --ignore 'uploads/*'"
   },
   "author": "",
@@ -13,6 +13,8 @@
     "aws-sdk": "^2.270.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
     "cors": "^2.8.4",
     "cron": "^1.4.0",
     "date-and-time": "^0.6.2",
@@ -25,6 +27,7 @@
     "linkedin-public-profile-parser": "^3.0.2",
     "mandrill-api": "^1.0.45",
     "md5": "^2.2.1",
+    "mocha": "^5.2.0",
     "mongo-sanitize": "^1.0.0",
     "mongoose": "^5.2.1",
     "mongoskin": "^2.1.0",
@@ -33,6 +36,7 @@
     "ng2-file-upload": "^1.3.0",
     "nodemailer": "^4.6.5",
     "nodemon": "^1.18.3",
+    "nyc": "^13.0.1",
     "q": "^1.5.1",
     "rootpath": "^0.1.2",
     "s3-streamlogger": "^1.3.1",
