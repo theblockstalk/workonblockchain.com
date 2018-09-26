@@ -1,21 +1,19 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../server');
+const mongo = require('../mongo');
 
+const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
 describe('healthCheck', function () {
-    // beforeEach(async () => {
-    //     console.log('connecting to database');
-    //     // await DB.connect();
-    // })
-    //
-    // afterEach(async () => {
-    //     console.log('dropping database');
-    //     // await DB.drop();
-    // })
+
+    afterEach(async () => {
+        console.log('dropping database');
+        await mongo.drop();
+    })
 
     describe('GET /', () => {
 
@@ -26,6 +24,11 @@ describe('healthCheck', function () {
                 .send();
 
             res.should.have.status(200);
+
+            // Three ways of running tests using chai
+            res.body.success.should.equal(true);
+            expect(res.body.version).to.equal("localhost");
+            assert(res.body.message === "this is a health check for the API");
         })
     })
 });
