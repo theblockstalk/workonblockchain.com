@@ -103,11 +103,6 @@ export class ChatComponent implements OnInit {
 	  this.myDatePickerOptions = {
 		 disableUntil: {year: this.start_year, month: this.start_month, day: this.start_day-1}
 	  };
-	  setInterval(() => {
-		  this.interview_log = '';
-		  this.job_offer_log = '';
-		  this.file_msg = '';
-	  }, 5000);
 	  
 	  this.loading = true;
       this.count=0;
@@ -415,6 +410,9 @@ export class ChatComponent implements OnInit {
         
     }
   send_message(msgForm : NgForm){
+	  this.interview_log = '';
+	  this.job_offer_log = '';
+	  this.file_msg = '';
 	  if(this.credentials.msg_body && this.credentials.id){
           //console.log(this.credentials.email);
           this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
@@ -583,6 +581,8 @@ export class ChatComponent implements OnInit {
   }
   
   send_interview_message(msgForm : NgForm){
+	  this.interview_log = '';
+	  this.job_offer_log = '';
 	  if(this.credentials.date && this.credentials.time && this.credentials.location){
           //console.log('interview');
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -651,6 +651,8 @@ export class ChatComponent implements OnInit {
   }
   
   send_job_message(msgForm : NgForm){
+	  this.interview_log = '';
+	  this.job_offer_log = '';
 	  let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
       let fileCount: number = inputEl.files.length;
       let formData = new FormData();
@@ -1006,6 +1008,7 @@ export class ChatComponent implements OnInit {
         //console.log(this.currentUser);
 		//console.log(this.display_name);
 		this.file_uploaded = 0;
+		this.file_msg = '';
         let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
         let fileCount: number = inputEl.files.length;
         let formData = new FormData();
