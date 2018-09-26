@@ -517,9 +517,9 @@
 		  </div>
 		  <div class="form-group col-md-8 padd_imp">
 		  	<p>Yearly base salary </p>
-		    <input type="number" #expect_salary="ngModel"  pattern="^[0-9]*$" required class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" id="">
+		    <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" id="">
 			<div class = "form_error" >
-				<span class = "error" *ngIf="expect_salary.errors && credentials.base_salary ===null"> Salary should be a number. </span>
+				<span class = "error" *ngIf="expect_salary.errors && credentials.base_salary"> Salary should be a number. </span>
 			</div>
 		  </div>
 
@@ -557,7 +557,7 @@
 			</label>
 		  </div>
 		  <div class="modal-footer text-right">
-			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
+			<button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_description || !credentials.employment_type || !credentials.job_title" class="btn btn-primary model-btn submit">Submit</button>
 			<button type="reset" class="btn btn-danger model-btn">Reset</button>
 		  </div>
 		</form>
