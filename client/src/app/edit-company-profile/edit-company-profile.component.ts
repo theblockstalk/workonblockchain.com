@@ -131,7 +131,7 @@ export class EditCompanyProfileComponent implements OnInit  {
     company_phone_log;
     company_country_log;
     company_city_log;
-    
+    website;
   company_profile(profileForm: NgForm)
   {
       //console.log(profileForm.value);
@@ -212,6 +212,7 @@ export class EditCompanyProfileComponent implements OnInit  {
             this.des_log = 'Please fill Company Description';
             
         }
+      
       if(this.company_founded && this.no_of_employees && this.company_funded && this.company_description &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country!=-1 && this.company_city && this.company_postcode)
