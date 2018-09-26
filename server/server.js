@@ -12,12 +12,14 @@ const errorHandler = require('./controller/middleware/errorHandler');
 const routes = require('./routes');
 const cron = require('./cron');
 
+let app = express();
+
+module.exports = app;
+
 try {
     logger.debug('settings', settings);
 
     rootpath();
-
-    let app = express();
 
     app.use(cors());
 
