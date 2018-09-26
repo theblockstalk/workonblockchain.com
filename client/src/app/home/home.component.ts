@@ -7,9 +7,7 @@ import { AuthService } from "angular4-social-login";
 import { SocialUser } from "angular4-social-login";
 import { Title, Meta } from '@angular/platform-browser';
 import { SeoService } from '../seo.service';
-import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
+
 
 @Component({
   selector: 'app-home',
@@ -18,13 +16,11 @@ import 'rxjs/add/operator/take';
 })
 export class HomeComponent implements OnInit {
 
-    ref: AngularFireObject<any>;
-    data$: Observable<any>;
-    
+   
 	currentUser: User; 
   log;log1;
   private user: SocialUser;data;result;
-  constructor( private seo: SeoService, private db: AngularFireDatabase ,private route: ActivatedRoute,
+  constructor( private seo: SeoService ,private route: ActivatedRoute,
         private router: Router,
         private authenticationService: UserService,private authService: AuthService,private titleService: Title,private newMeta: Meta) { 
 		this.titleService.setTitle('Work on Blockchain | A recruitment hiring platform for blockchain developers');
@@ -35,16 +31,12 @@ export class HomeComponent implements OnInit {
 	this.newMeta.updateTag({ name: 'description', content: 'Global blockchain agnostic recruitment hiring platform for blockchain developers, software developers, designers, product managers, CTOs, researchers and software engineer interns who are passionate about public and enterprise blockchain technology and cryptocurrencies. On workonblockchain.com, companies apply to active candidates looking for jobs.' });
 	this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developers work recruitment jobs' });
 	
-    const ref = this.db.object('workonblockchain')
-    this.data$ = ref.valueChanges()
-
-    this.data$.take(1).subscribe(data => {
+      
       this.seo.generateTags({
-        title: data.title, 
-        description: data.description, 
-        image: data.image, 
+        title: 'Work on Blockchain', 
+        description: 'Global blockchain agnostic recruitment hiring platform for blockchain developers, software developers, designers, product managers, CTOs, researchers and software engineer interns who are passionate about public and enterprise blockchain technology and cryptocurrencies. On workonblockchain.com, companies apply to active candidates looking for jobs.', 
+        image: 'https://workonblockchain.com/assets/images/WOB.jpeg',
         slug: 'workonblockchain'
-      })
     })
 	/*this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
    	if(!this.currentUser)
