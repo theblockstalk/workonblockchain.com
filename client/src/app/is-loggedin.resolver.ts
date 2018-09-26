@@ -17,7 +17,7 @@ export class LoginResolver  {
          if(this.currentUser.type === 'candidate')
              this.router.navigate(['/candidate_profile']);
          if(this.currentUser.type === 'company')
-             this.router.navigate(['/company_profile']);
+             this.router.navigate(['/candidate-search']);
      }
   }
 }
