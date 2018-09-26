@@ -69,7 +69,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
          window.scrollTo(0, 0);
         
         }
-   
+   url;
   ngOnInit() 
   {
      // //console.log(this.htmlContent);
@@ -106,11 +106,23 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                   else
                   {
                       this.first_name=data.first_name;
-                       this.email=data._creator.email;
+                      this.email=data._creator.email;
                       this.last_name=data.last_name;
                       this.company_name=data.company_name;
-                      this.job_title=data.job_title;
-                      this.company_website=data.company_website;
+                      this.job_title=data.job_title;   
+                      if(data.company_website)
+                      {    
+                            let loc= data.company_website;          
+                            let x = loc.split("/");
+                            if(x[0] === 'http:' || x[0] === 'https:')
+                            {
+                                this.company_website = data.company_website;
+                            }
+                            else
+                            {
+                                this.company_website = 'http://' + data.company_website;  
+                            }
+                      } 
                       this.company_phone =data.company_phone;
                       this.company_country =data.company_country;
                       this.company_city=data.company_city;
@@ -136,7 +148,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                 error => 
                 {
                    
-                   if(error.message == 500 || error.message == 401)
+                   if(error.message === 500 || error.message === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         localStorage.removeItem('currentUser');
@@ -147,7 +159,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                         window.location.href = '/login';
                     }
                     
-                    if(error.message == 403)
+                    if(error.message === 403)
                     {
                         this.router.navigate(['/not_found']);                        
                     }

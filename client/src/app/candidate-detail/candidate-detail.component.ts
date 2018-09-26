@@ -60,6 +60,9 @@ export class CandidateDetailComponent implements OnInit {
     rply;cand_data=[];
   ngOnInit() 
   {
+	  setInterval(() => {
+		  this.job_offer_msg = '';
+	  }, 7000);
       ////console.log(this.user_id);
       this.company_reply = 0;
 	  this.credentials.currency = -1;
@@ -97,7 +100,7 @@ export class CandidateDetailComponent implements OnInit {
                              },
                              error => 
                              {
-                                  if(error.message == 500)
+                                  if(error.message === 500)
                                   {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                                         localStorage.removeItem('currentUser');
@@ -108,7 +111,7 @@ export class CandidateDetailComponent implements OnInit {
                                                                 window.location.href = '/login';
                                                             }
                     
-                                                            if(error.message == 403)
+                                                            if(error.message === 403)
                                                             {
                                                                 this.router.navigate(['/not_found']);                        
                                                             }
@@ -137,7 +140,7 @@ export class CandidateDetailComponent implements OnInit {
 							 },
 							 error => 
 							 {
-								  if(error.message == 500)
+								  if(error.message === 500)
 								  {
 										localStorage.setItem('jwt_not_found', 'Jwt token not found');
 										localStorage.removeItem('currentUser');
@@ -147,7 +150,7 @@ export class CandidateDetailComponent implements OnInit {
 										localStorage.removeItem('admin_log');
 										window.location.href = '/login';
 								  }
-								  if(error.message == 403)
+								  if(error.message === 403)
 								  {
 										this.router.navigate(['/not_found']);                        
 								  }
@@ -178,7 +181,7 @@ export class CandidateDetailComponent implements OnInit {
                          },
                          error => 
                          {
-                              if(error.message == 500)
+                              if(error.message === 500)
                               {
                                     localStorage.setItem('jwt_not_found', 'Jwt token not found');
                                     localStorage.removeItem('currentUser');
@@ -188,7 +191,7 @@ export class CandidateDetailComponent implements OnInit {
                                     localStorage.removeItem('admin_log');
                                     window.location.href = '/login';
                               }
-                              if(error.message == 403)
+                              if(error.message === 403)
                               {
                                     this.router.navigate(['/not_found']);                        
                               }
@@ -212,13 +215,13 @@ export class CandidateDetailComponent implements OnInit {
                     this.company_name = data.company_name;
                 },
                 error => {
-                    if(error.message == 500 || error.message == 401  )
+                    if(error.message === 500 || error.message === 401  )
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         window.location.href = '/login';
                     }
                     
-                    if(error.message == 403)
+                    if(error.message === 403)
                     {
                         this.router.navigate(['/not_found']);                        
                     }
@@ -243,53 +246,58 @@ export class CandidateDetailComponent implements OnInit {
   send_job_offer(msgForm : NgForm){
 	    this.full_name = this.first_name;
         ////console.log(this.full_name);
-        if(this.credentials.job_title && this.credentials.salary && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
-            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
-			.subscribe(
-				data => {
-					////console.log(data['datas']);
-					if(data['datas'].length>0){
-						this.job_offer_msg = 'Message already sent';
+        if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
+            if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
+				this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+				this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
+				.subscribe(
+					data => {
+						////console.log(data['datas']);
+						if(data['datas'].length>0){
+							this.job_offer_msg = 'Message already sent';
+						}
+						else{
+							this.date_of_joining = '10-07-2018';
+							this.msg_tag = 'job_offer';
+							this.is_company_reply = 0;
+							this.msg_body = '';
+							this.job_description = this.credentials.job_desc;
+							this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.job_description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+								.subscribe(
+									data => {
+										////console.log(data);
+										this.job_offer_msg = 'Message has been successfully sent';
+									},
+									error => {
+										////console.log('error');
+										////console.log(error);
+										//this.log = error;
+									}
+								);
+						}
+					},
+					error => {
+						if(error.message === 500)
+						{
+							localStorage.setItem('jwt_not_found', 'Jwt token not found');
+							localStorage.removeItem('currentUser');
+							 localStorage.removeItem('googleUser');
+							 localStorage.removeItem('close_notify');
+							 localStorage.removeItem('linkedinUser');
+							 localStorage.removeItem('admin_log');
+							window.location.href = '/login';
+						}
+						
+						if(error.message === 403)
+						{
+							this.router.navigate(['/not_found']);                        
+						}
 					}
-					else{
-						this.date_of_joining = '10-07-2018';
-						this.msg_tag = 'job_offer';
-						this.is_company_reply = 0;
-						this.msg_body = '';
-						this.job_description = this.credentials.job_desc;
-						this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.job_description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
-							.subscribe(
-								data => {
-									////console.log(data);
-									this.job_offer_msg = 'Message has been successfully sent';
-								},
-								error => {
-									////console.log('error');
-									////console.log(error);
-									//this.log = error;
-								}
-							);
-					}
-				},
-				error => {
-					if(error.message == 500)
-                    {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                         localStorage.removeItem('googleUser');
-                         localStorage.removeItem('close_notify');
-                         localStorage.removeItem('linkedinUser');
-                         localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                    }
-                    
-                    if(error.message == 403)
-                    {
-                        this.router.navigate(['/not_found']);                        
-                    }
-				}
-			);
+				);
+			}
+			else{
+				this.job_offer_msg = 'Salary should be a number';
+			}
         }
         else{
             this.job_offer_msg = 'Please enter all info';

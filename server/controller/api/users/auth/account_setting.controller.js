@@ -23,20 +23,21 @@ module.exports = function (req,res){
             res.json(err);
         }
     })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
+    .catch(function (err)
+    {
+        res.json({error: err});
+    });
 }
 
 function set_disable_status(data){
     var deferred = Q.defer();
-    ////console.log(data.user_id);
+    let timestamp = new Date();
     var set =
-        {
-            disable_account: data.status,
+    {
+        disable_account: data.status,
+        dissable_account_timestamp : timestamp,
 
-        };
+    };
     users.update({ _id: data.user_id},{ $set: set }, function (err, doc)
     {
         if (err){

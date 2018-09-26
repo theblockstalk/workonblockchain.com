@@ -321,15 +321,15 @@
 														{{msg.description}}
 														<br/>
 													</span>
+													<span *ngIf="msg.date_of_joining && msg.file_name !== ''">
+														Employment contract:
+													</span>
 													<span *ngIf="msg.msg_tag == 'employment_offer'">
 														{{msg.message}}
 														<br/>
 													</span>
 													<span *ngIf="msg.job_title == ''">
 														{{msg.message}}
-													</span>
-													<span *ngIf="msg.date_of_joining">
-														Employment contract:
 													</span>
 													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
 												</p>
@@ -375,8 +375,8 @@
 									<ng-container *ngIf="currentUser.type == 'company';else no_offers">
 										<div class = "offers">
 											<span class = "offers_btn">
-												<button type = "button" data-toggle="modal" data-target="#myModal" class = "btn btn_descp">Offer to interview</button>
-												<button type = "button" data-toggle="modal" data-target="#Modal" class = "btn btn_descp">Offer to employ</button>
+												<button type = "button" data-toggle="modal" data-target="#myModal" (click)="reset_msgs()" class = "btn btn_descp">Offer to interview</button>
+												<button type = "button" data-toggle="modal" data-target="#Modal" (click)="reset_msgs()" class = "btn btn_descp">Offer to employ</button>
 											</span>
 										</div>
 									</ng-container>
@@ -435,7 +435,7 @@
 						
 					</div><!--end col here-->
 				</div>
-			<div *ngIf="file_msg!=''" class = "col-md-12" id="my-chat-design">
+			<div *ngIf="file_msg!=''" class = "col-md-12" id="my-chat-design" style="display: block;">
 				<h4 class="alert error-alert alert-danger pro_alert">
 					{{file_msg}}
 				</h4>
@@ -517,7 +517,10 @@
 		  </div>
 		  <div class="form-group col-md-8 padd_imp">
 		  	<p>Yearly base salary </p>
-		    <input type="number" class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" id="">
+		    <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" id="">
+			<div class = "form_error" >
+				<span class = "error" *ngIf="expect_salary.errors && credentials.base_salary"> Salary should be a number. </span>
+			</div>
 		  </div>
 
 		  <div class="form-group col-md-4 padd_imp">
@@ -554,7 +557,7 @@
 			</label>
 		  </div>
 		  <div class="modal-footer text-right">
-			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
+			<button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_description || !credentials.employment_type || !credentials.job_title" class="btn btn-primary model-btn submit">Submit</button>
 			<button type="reset" class="btn btn-danger model-btn">Reset</button>
 		  </div>
 		</form>

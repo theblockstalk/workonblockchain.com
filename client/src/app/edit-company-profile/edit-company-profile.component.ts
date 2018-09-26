@@ -96,7 +96,7 @@ export class EditCompanyProfileComponent implements OnInit  {
                 },
                 error => 
                 {
-                    if(error.message == 500 || error.message == 401)
+                    if(error.message === 500 || error.message === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         localStorage.removeItem('currentUser');
@@ -107,7 +107,7 @@ export class EditCompanyProfileComponent implements OnInit  {
                         window.location.href = '/login';
                     }
                     
-                    if(error.message == 403)
+                    if(error.message === 403)
                     {
                         this.router.navigate(['/not_found']);                        
                     }
@@ -131,7 +131,7 @@ export class EditCompanyProfileComponent implements OnInit  {
     company_phone_log;
     company_country_log;
     company_city_log;
-    
+    website;
   company_profile(profileForm: NgForm)
   {
       //console.log(profileForm.value);
@@ -212,6 +212,7 @@ export class EditCompanyProfileComponent implements OnInit  {
             this.des_log = 'Please fill Company Description';
             
         }
+      
       if(this.company_founded && this.no_of_employees && this.company_funded && this.company_description &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country!=-1 && this.company_city && this.company_postcode)
@@ -238,7 +239,7 @@ export class EditCompanyProfileComponent implements OnInit  {
                             this.router.navigate(['/company_profile']); 
                         },
                         (error) => {
-                        if(error.message == 500)
+                        if(error.message === 500)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             localStorage.removeItem('currentUser');
