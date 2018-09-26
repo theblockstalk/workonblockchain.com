@@ -375,8 +375,8 @@
 									<ng-container *ngIf="currentUser.type == 'company';else no_offers">
 										<div class = "offers">
 											<span class = "offers_btn">
-												<button type = "button" data-toggle="modal" data-target="#myModal" class = "btn btn_descp">Offer to interview</button>
-												<button type = "button" data-toggle="modal" data-target="#Modal" class = "btn btn_descp">Offer to employ</button>
+												<button type = "button" data-toggle="modal" data-target="#myModal" (click)="reset_msgs()" class = "btn btn_descp">Offer to interview</button>
+												<button type = "button" data-toggle="modal" data-target="#Modal" (click)="reset_msgs()" class = "btn btn_descp">Offer to employ</button>
 											</span>
 										</div>
 									</ng-container>
