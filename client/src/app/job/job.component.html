@@ -236,7 +236,7 @@
           <div class = "form-group text-right">
               <a routerLink="/about" class = "btn btn-prev">Prev Step</a>
               
-              <button type=submit class = "btn btn-self btn-pdg">Next Step</button>
+              <button type=submit class = "btn btn-self btn-pdg" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)">Next Step</button>
 
           </div>
 
