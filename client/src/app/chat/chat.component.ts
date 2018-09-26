@@ -106,7 +106,6 @@ export class ChatComponent implements OnInit {
 	  setInterval(() => {
 		  this.interview_log = '';
 		  this.job_offer_log = '';
-		  this.file_msg = '';
 	  }, 5000);
 	  
 	  this.loading = true;
@@ -1006,6 +1005,7 @@ export class ChatComponent implements OnInit {
         //console.log(this.currentUser);
 		//console.log(this.display_name);
 		this.file_uploaded = 0;
+		this.file_msg = '';
         let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
         let fileCount: number = inputEl.files.length;
         let formData = new FormData();

@@ -266,8 +266,11 @@
     </div>
     <div class="form-group col-md-6 padd_imp">
       <p class = "input_p">Salary</p>
-      <input type="number" name="salary" [(ngModel)]="credentials.salary" class="form-control" id="" placeholder="$2000">
-    </div>
+      <input type="number" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" id="" placeholder="$2000">
+      <div class = "form_error" >
+			<span class = "error" *ngIf="expect_salary.errors && credentials.salary ===null"> Salary should be a number. </span>
+		</div>
+	</div>
 	<div class="form-group col-md-6 padd_imp">
 		<p class = "input_p">Currency</p>
 		<select class="form-control" name="currency" [(ngModel)]="credentials.currency" id="sel1">
