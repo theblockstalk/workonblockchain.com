@@ -109,6 +109,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
            }
   }
     
+     image_log;file_size=1048576;
     about_company(companyForm: NgForm) 
     {
          ////console.log(companyForm.value);
@@ -148,39 +149,49 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
             if(data)
             {
               
-              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-              let fileCount: number = inputEl.files.length;
-              let formData = new FormData();
-              if (fileCount > 0 ) 
-              { 
-              ////console.log("data");
-                formData.append('photo', inputEl.files.item(0));
-                    
-                this.http.post(URL+'users/employer_image', formData , {
-                    headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                }).map((res) => res).subscribe(                
-                (success) => 
+                let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+                let fileCount: number = inputEl.files.length;
+                let formData = new FormData();
+                if (fileCount > 0 ) 
                 {
-                  ////console.log(success);
-                  this.router.navigate(['/company_profile']); 
-                },
-                (error) => {
-                   if(error.message === 500 || error.message === 401)
+
+                    ////console.log("data");
+                    if(inputEl.files.item(0).size < this.file_size)
+
                     {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        window.location.href = '/login';
-                    }
+                        formData.append('photo', inputEl.files.item(0));
+
+                        this.http.post(URL+'users/employer_image', formData , {
+                        headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
+                        }).map((res) => res).subscribe(                
+                        (success) => 
+                        {
+                            this.router.navigate(['/company_profile']); 
+                        },
+                        (error) => {
+                        if(error.message === 500 || error.message === 401)
+                        {
+                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            window.location.href = '/login';
+                        }
                     
-                    if(error.message === 403)
-                    {
+                        if(error.message === 403)
+                        {
+
                        // this.router.navigate(['/not_found']);                        
-                    }  
-                })
-              }
-               else
-              {
-                this.router.navigate(['/company_profile']);
-              }
+                        }  
+                        })
+                    }
+                    else
+                    {
+                        this.image_log = "Image size should be less than 1MB";
+                    }
+                 }
+                
+                else
+                {
+                    this.router.navigate(['/company_profile']);
+                }
               
               }
              

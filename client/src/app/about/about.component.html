@@ -82,13 +82,16 @@
 		</div>
 
             <div class="form-group col-md-6" >
-              <label><p class = "label-p">Image</p></label>
-                 <input id="aa" #Image type="file" onchange="pressed()" accept="image/*" name="image" [(ngModel)]="info.image"  class="form-control" />
+             	<label><p class = "label-p">Image</p></label>
+               	<input id="aa" #Image type="file" onchange="pressed()" accept="image/*" name="image" [(ngModel)]="info.image"  class="form-control" />
 
                 <label id="fileLabel" >
-								<span *ngIf="img_src" >{{img_src}}</span>
-								<span *ngIf="!img_src" >Upload Logo (optional)</span>
-								</label>
+					<span *ngIf="img_src" >{{img_src}}</span>
+					<span *ngIf="!img_src" >Upload Logo (optional)</span>
+				</label>
+			    <div class = "form_error image-log" *ngIf="image_log">
+					<span class = "error">{{image_log}}</span>
+				</div>
             </div>
 
 

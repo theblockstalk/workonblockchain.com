@@ -41,12 +41,6 @@ if (isLiveApplication()) {
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.host + ":"
         + config.mongo.port + "/" + config.mongo.databaseName;
 
-    settings.NODEMAILER = {
-        AUTH: config.nodemailer.auth,
-        HOST: config.nodemailer.host,
-        PORT: config.nodemailer.port
-    };
-
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
 }
 

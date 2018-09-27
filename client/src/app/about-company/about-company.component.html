@@ -49,8 +49,10 @@
 						    <label id="fileLabel" >
 								<span *ngIf="img_src" >{{img_src}}</span>
 								<span *ngIf="!img_src" >Upload Company Logo (optional)</span>
-								</label>
-						     
+							</label>
+						     <div class = "form_error image-log" *ngIf="image_log">
+									<span class = "error">{{image_log}}</span>
+							</div>
 						</div>
             
 

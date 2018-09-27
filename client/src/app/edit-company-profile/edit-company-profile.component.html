@@ -159,7 +159,9 @@
 								<span *ngIf="img_src" >{{img_src}}</span>
 								<span *ngIf="!img_src" >Upload Company Logo (optional)</span>
 								</label>
-							
+								<div class = "form_error image-log" *ngIf="image_log">
+									<span class = "error">{{image_log}}</span>
+								</div>
 						</div>
 
 						<div class="form-group col-md-12 mr-top-04">

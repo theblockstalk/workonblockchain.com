@@ -1292,7 +1292,7 @@ export class EditCandidateProfileComponent implements OnInit {
         
     }
 
-
+    file_size=1048576;image_log;
     updateProfileData(profileForm)
     {
         this.experiencearray=[];
@@ -1332,21 +1332,26 @@ export class EditCandidateProfileComponent implements OnInit {
                      let formData = new FormData();
                      if (fileCount > 0 ) 
                      { 
-                        formData.append('photo', inputEl.files.item(0));
+                     
+                         if(inputEl.files.item(0).size < this.file_size)
+                         {
+                            formData.append('photo', inputEl.files.item(0));
                     
-                        this.http.post(URL+'users/image', formData ,  {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-        }).map((res) => res).subscribe(                
-                        (success) => 
-                        {
-                             //console.log(success);
-                             //window.location.href = '/candidate_profile';
-
-                              this.router.navigate(['/candidate_profile']); 
-                        },
-                        (error) => console.log(error))
-                     }
-                     else
+                            this.http.post(URL+'users/image', formData ,  {
+                            headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
+                            }).map((res) => res).subscribe(                
+                            (success) => 
+                            {
+                                this.router.navigate(['/candidate_profile']); 
+                            },
+                            (error) => console.log(error))
+                          }
+                          else
+                          {
+                             this.image_log = "Image size should be less than 1MB";
+                          }
+                      }
+                      else
                           //window.location.href = '/candidate_profile';
 
                         this.router.navigate(['/candidate_profile']);
