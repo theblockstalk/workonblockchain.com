@@ -74,7 +74,7 @@ export class ChatComponent implements OnInit {
 	file_uploaded = 5;
 	file_msg = '';
 	img_name = '';
-	file_size = 5242880;
+	file_size = 1048576;
 	public myDatePickerOptions: IMyDpOptions;
 
   constructor(
@@ -413,6 +413,7 @@ export class ChatComponent implements OnInit {
 	  this.interview_log = '';
 	  this.job_offer_log = '';
 	  this.file_msg = '';
+	  this.img_name = '';
 	  if(this.credentials.msg_body && this.credentials.id){
           //console.log(this.credentials.email);
           this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
@@ -583,6 +584,8 @@ export class ChatComponent implements OnInit {
   send_interview_message(msgForm : NgForm){
 	  this.interview_log = '';
 	  this.job_offer_log = '';
+	  this.file_msg = '';
+	  this.img_name = '';
 	  if(this.credentials.date && this.credentials.time && this.credentials.location){
           //console.log('interview');
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -653,6 +656,8 @@ export class ChatComponent implements OnInit {
   send_job_message(msgForm : NgForm){
 	  this.interview_log = '';
 	  this.job_offer_log = '';
+	  this.file_msg = '';
+	  this.img_name = '';
 	  let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
       let fileCount: number = inputEl.files.length;
       let formData = new FormData();
@@ -685,7 +690,7 @@ export class ChatComponent implements OnInit {
 			)
 		}
 		else{
-		  this.job_offer_log = 'Only pdf,image & docx are allowed of size less than 5MB';
+		  this.job_offer_log = 'Only pdf,image & docx are allowed of size less than 1MB';
 		}
 	  }
 	  else{
@@ -1008,6 +1013,8 @@ export class ChatComponent implements OnInit {
         //console.log(this.currentUser);
 		//console.log(this.display_name);
 		this.file_uploaded = 0;
+		this.interview_log = '';
+		this.job_offer_log = '';
 		this.file_msg = '';
         let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
         let fileCount: number = inputEl.files.length;
@@ -1070,7 +1077,7 @@ export class ChatComponent implements OnInit {
         }
 		else{
 			this.file_uploaded = 1;
-			this.file_msg = 'File size should be less than 5MB';
+			this.file_msg = 'File size should be less than 1MB';
 		}
     }
 	
@@ -1183,5 +1190,6 @@ export class ChatComponent implements OnInit {
 	  this.interview_log = '';
 	  this.job_offer_log = '';
 	  this.file_msg = '';
+	  this.img_name = '';
 	}
 }
