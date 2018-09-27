@@ -32,12 +32,12 @@ export class HomeComponent implements OnInit {
 	this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developers work recruitment jobs' });
 	
       
-      this.seo.generateTags({
+    /*  this.seo.generateTags({
         title: 'Work on Blockchain', 
         description: 'Global blockchain agnostic recruitment hiring platform for blockchain developers, software developers, designers, product managers, CTOs, researchers and software engineer interns who are passionate about public and enterprise blockchain technology and cryptocurrencies. On workonblockchain.com, companies apply to active candidates looking for jobs.', 
         image: 'https://workonblockchain.com/assets/images/WOB.jpeg',
         slug: 'workonblockchain'
-    })
+    })*/
 	/*this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
    	if(!this.currentUser)
     {
