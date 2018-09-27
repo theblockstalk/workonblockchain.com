@@ -84,7 +84,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                 },
                 error => 
                 {
-                  if(error.message == 500 || error.message == 401)
+                  if(error.message === 500 || error.message === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                               localStorage.removeItem('currentUser');
@@ -95,7 +95,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                             window.location.href = '/login';
                         }
                     
-                        if(error.message == 403)
+                        if(error.message === 403)
                         {
                             // this.router.navigate(['/not_found']);                        
                         } 
@@ -154,11 +154,13 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                 let formData = new FormData();
                 if (fileCount > 0 ) 
                 {
+
                     ////console.log("data");
                     if(inputEl.files.item(0).size < this.file_size)
+
                     {
                         formData.append('photo', inputEl.files.item(0));
-                    
+
                         this.http.post(URL+'users/employer_image', formData , {
                         headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
                         }).map((res) => res).subscribe(                
@@ -167,14 +169,15 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                             this.router.navigate(['/company_profile']); 
                         },
                         (error) => {
-                        if(error.message == 500 || error.message == 401)
+                        if(error.message === 500 || error.message === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             window.location.href = '/login';
                         }
                     
-                        if(error.message == 403)
+                        if(error.message === 403)
                         {
+
                        // this.router.navigate(['/not_found']);                        
                         }  
                         })
@@ -201,13 +204,13 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
           },
           error => 
           {
-                    if(error.message == 500 || error.message == 401)
+                    if(error.message === 500 || error.message === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         window.location.href = '/login';
                     }
                     
-                    if(error.message == 403)
+                    if(error.message === 403)
                     {
                         this.router.navigate(['/not_found']);                        
                     }

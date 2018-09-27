@@ -169,7 +169,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                 },
                 error =>
                 {
-                   if(error.message == 500 || error.message == 401)
+                   if(error.message === 500 || error.message === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                          localStorage.removeItem('currentUser');
@@ -180,7 +180,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                         window.location.href = '/login';
                     }
                     
-                    if(error.message == 403)
+                    if(error.message === 403)
                     {
                        // this.router.navigate(['/not_found']);                        
                     } 
@@ -256,14 +256,16 @@ export class AboutComponent implements OnInit,AfterViewInit
                             this.router.navigate(['/job']);
                         },
                         (error) =>                
+
                         {
-                            if(error.message == 500 || error.message == 401)
+                            if(error.message === 500 || error.message === 401)
                             {
                                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                                 window.location.href = '/login';
                             }
                     
-                            if(error.message == 403)
+
+                            if(error.message === 403)
                             {
                                 // this.router.navigate(['/not_found']);                        
                             } 
@@ -273,6 +275,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                      {
                            this.image_log = "Image size should be less than 1MB";
                      }
+
               }
               else 
               {
@@ -297,13 +300,13 @@ export class AboutComponent implements OnInit,AfterViewInit
           },
           error =>
           {
-            if(error.message == 500 || error.message == 401)
+            if(error.message === 500 || error.message === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             window.location.href = '/login';
                         }
                     
-                        if(error.message == 403)
+                        if(error.message === 403)
                         {
                             // this.router.navigate(['/not_found']);                        
                         } 

@@ -73,6 +73,8 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { FeesComponent } from './fees/fees.component';
 //import {environment} from '../environments/environment';
 import { LoadingModule } from 'ngx-loading';
+import { LoginResolver } from './is-loggedin.resolver';
+import { SeoService } from './seo.service';
 
 const google_id = environment.google_id;
 //console.log(google_id);
@@ -93,10 +95,10 @@ export function provideConfig() {
 }
 
 const appRoutes: Routes = [
-    { path: 'signup', component: CandidateFormComponent},
+    { path: 'signup', component: CandidateFormComponent , resolve: {LoginResolver }},
     { path: 'about', component: AboutComponent},
     { path: 'job', component: JobComponent},
-    { path: 'login', component: LoginComponent},
+    { path: 'login', component: LoginComponent, resolve: {LoginResolver }},
     { path: 'home', component: HomeComponent},
     { path: '', component: HomeComponent},
     { path: 'terms-and-condition', component: CandidateTermsComponent},
@@ -223,7 +225,7 @@ const appRoutes: Routes = [
   ],
   providers: 
   [
-    UserService,DatePipe,DataService,CookieService,
+    UserService,DatePipe,DataService,CookieService,LoginResolver,SeoService,
   {
       provide: AuthServiceConfig,
       useFactory: provideConfig

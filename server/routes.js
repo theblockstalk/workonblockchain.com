@@ -119,7 +119,6 @@ router.post('/users/verified_candidate',auth.isValidCompany, companySearchVerifi
 router.post('/users/candidate_detail',auth.isValidCompany,candidateVerifiedCandidateDetail);
 
 // Chat
-
 router.post('/users/insert_message', auth.isValidUser, chatInsertMessage);
 router.post('/users/get_candidate', auth.isValidUser, chatGetCandidate);
 router.post('/users/get_messages',auth.isValidUser, chatGetMessages);
@@ -134,7 +133,6 @@ router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chat
 router.post('/users/get_employ_offer',auth.isValidUser, chatGetEmployOffer);
 
 // Admin
-
 router.put('/users/approve/:_id', auth.isAdmin  , adminApproveUser);
 router.post('/users/admin_candidate_filter', auth.isAdmin , adminCandidateFilter);
 router.post('/users/admin_company_filter', auth.isAdmin , adminComanyFilter);

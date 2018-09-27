@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
 const logger = require('../../../services/logger');
+const EmployerProfile = require('../../../../model/employer_profile');
 
 module.exports = function (req,res)
 {
@@ -42,7 +43,22 @@ function forgot_password(email)
 
         if(result)
         {
-            updateData(result);
+        	console.log(result.social_type);
+        	if(result.social_type === 'GOOGLE')
+        	{
+        		deferred.resolve({error:'Please login using gmail'});
+        	}
+        	
+        	if(result.social_type === 'LINKEDIN')
+        	{
+        		deferred.resolve({error:'Please login using linkedin'});
+        	}
+        	
+        	if(!result.social_type)
+        	{
+        		updateData(result);
+        	}
+      
         }
         else
         {
@@ -64,10 +80,10 @@ function forgot_password(email)
         var token = jwt_hash.encode(email_data, settings.EXPRESS_JWT_SECRET, 'HS256');
         email_data.token = token;
         var set =
-            {
+        {
         		forgot_password_key: token,
 
-            };
+        };
         users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc)
         {
             if (err){
@@ -76,6 +92,7 @@ function forgot_password(email)
             }
             else
             {
+            	
                 forgot_passwordEmail_send(email_data.token)
                 deferred.resolve({msg:'Email Send'});
             }
@@ -104,32 +121,61 @@ function forgot_passwordEmail_send(data)
 
         if(result)
         {
-            CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data)
-            {
-                if (err){
-                    logger.error(err.message, {stack: err.stack});
-                    deferred.reject(err.name + ': ' + err.message);
-                }
-                console.log(query_data);
-                logger.debug('query_data', query_data);
-                if(query_data)
-                {
-                  
-                	if(!query_data[0].first_name)
-                	{
-                		name = null;
-                		
-                	}
-                	else
-                	{
-                		name = query_data[0].first_name;
-                	}
-                    
-                    
-                    forgotPasswordEmail.sendEmail(hash,data , name);
-                }
-            });
-
+        	console.log(result.type);
+        	if(result.type === 'candidate')
+        	{
+        		CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data)
+        	            {
+        	                if (err){
+        	                    logger.error(err.message, {stack: err.stack});
+        	                    deferred.reject(err.name + ': ' + err.message);
+        	                }
+        	                if(query_data)
+        	                {
+        	                  
+        	                	if(!query_data[0].first_name)
+        	                	{
+        	                		name = null;
+        	                		
+        	                	}
+        	                	else
+        	                	{
+        	                		name = query_data[0].first_name;
+        	                	}
+        	                    
+        	                    
+        	                    forgotPasswordEmail.sendEmail(hash,data , name);
+        	                }
+        	            });
+        	}
+        	
+        	if(result.type === 'company')
+        	{
+        		EmployerProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data)
+        	            {
+        	                if (err){
+        	                    logger.error(err.message, {stack: err.stack});
+        	                    deferred.reject(err.name + ': ' + err.message);
+        	                }
+        	                if(query_data)
+        	                {
+        	                  
+        	                	if(!query_data[0].first_name)
+        	                	{
+        	                		name = null;
+        	                		
+        	                	}
+        	                	else
+        	                	{
+        	                		name = query_data[0].first_name;
+        	                	}
+        	                    
+        	                    
+        	                    forgotPasswordEmail.sendEmail(hash,data , name);
+        	                }
+        	            });
+        	}
+            
         }
         else
         {
