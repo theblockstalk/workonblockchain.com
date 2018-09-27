@@ -233,7 +233,6 @@ export class EditCompanyProfileComponent implements OnInit  {
                      { 
                         if(inputEl.files.item(0).size < this.file_size)
                         {
-<<<<<<< HEAD
                             formData.append('photo', inputEl.files.item(0));
                     
                             this.http.post(URL+'users/employer_image', formData, {
