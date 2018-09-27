@@ -74,7 +74,7 @@ export class ChatComponent implements OnInit {
 	file_uploaded = 5;
 	file_msg = '';
 	img_name = '';
-	file_size = 5242880;
+	file_size = 1048576;
 	public myDatePickerOptions: IMyDpOptions;
 
   constructor(
