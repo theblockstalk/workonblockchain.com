@@ -413,6 +413,7 @@ export class ChatComponent implements OnInit {
 	  this.interview_log = '';
 	  this.job_offer_log = '';
 	  this.file_msg = '';
+	  this.img_name = '';
 	  if(this.credentials.msg_body && this.credentials.id){
           //console.log(this.credentials.email);
           this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
@@ -583,6 +584,8 @@ export class ChatComponent implements OnInit {
   send_interview_message(msgForm : NgForm){
 	  this.interview_log = '';
 	  this.job_offer_log = '';
+	  this.file_msg = '';
+	  this.img_name = '';
 	  if(this.credentials.date && this.credentials.time && this.credentials.location){
           //console.log('interview');
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -653,6 +656,8 @@ export class ChatComponent implements OnInit {
   send_job_message(msgForm : NgForm){
 	  this.interview_log = '';
 	  this.job_offer_log = '';
+	  this.file_msg = '';
+	  this.img_name = '';
 	  let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
       let fileCount: number = inputEl.files.length;
       let formData = new FormData();
@@ -1185,5 +1190,6 @@ export class ChatComponent implements OnInit {
 	  this.interview_log = '';
 	  this.job_offer_log = '';
 	  this.file_msg = '';
+	  this.img_name = '';
 	}
 }
