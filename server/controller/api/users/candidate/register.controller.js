@@ -61,8 +61,6 @@ function create(userParam)
 
         let now = new Date();
 		let salt = crypto.randomBytes(16).toString('base64');
-		let random = crypto.randomBytes(16).toString('base64');
-		////console.log(salt);
 		let hash = crypto.createHmac('sha512', salt);
 		hash.update(userParam.password);
 		let hashedPasswordAndSalt = hash.digest('hex');

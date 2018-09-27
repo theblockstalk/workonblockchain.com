@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../server');
-const mongo = require('../mongo');
+const mongo = require('../helpers/mongo');
 
 const assert = chai.assert;
 const expect = chai.expect;
