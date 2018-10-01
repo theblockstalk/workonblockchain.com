@@ -10,11 +10,11 @@
                  <div class="alert alert-success error-alert" *ngIf="message && !error">{{message}}</div>
                  <div class="alert alert-success error-alert" *ngIf="password_message && !message ">{{password_message}}</div>
                  <div class="alert alert-danger error-alert" *ngIf="error && !message ">{{error}}</div>
-                
+
                 <h5 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h5>
                 <h5 class="alert alert-danger error-alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on <a (click)="reset_passsword()" class = "">here</a> to reset it.</h5>
                  <form class = "login_form" (submit)="login(loginForm)"  #loginForm = ngForm>
-               
+
                 <div class="form-group">
                   <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
                   <input type="email" class="form-control" placeholder="Email" email  name="name" required [(ngModel)]="credentials.email">
@@ -27,7 +27,7 @@
                 </div>
 
                <!-- <div class="checkbox">
-        <label class="check-label"> Remember Me 
+        <label class="check-label"> Remember Me
          <input type="checkbox" value="">
          <span class="checkmark">
           <div></div>
@@ -39,16 +39,11 @@
                 </div>
 
                 <div class="form-group">
-                  <span class="saperate-line"></span>
-                  <p class = "text-center">Or LogIn with your social Account</p>
-                </div>
-
-                <div class="form-group">
                   <a  class = "form-control btn btn-linkdIn" (click)="subscribeToLogin()" type = "submit">
                     <i class="fa fa-linkedin-square" aria-hidden="true"></i>
                       Login with LinkedIn
                   </a>
-                 
+
                 </div>
 
                 <div class="form-group">
@@ -56,7 +51,7 @@
                     <i class="fa fa-google-plus-square" aria-hidden="true"></i>
                       Login with Google
                   </a>
-                 
+
                 </div>
 
                 <div class="login_form_links">
