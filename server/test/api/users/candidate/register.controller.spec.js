@@ -6,6 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Candidates = require('../../../../model/candidate_profile');
 const docGenerator = require('../../../helpers/docGenerator');
+const candidateHepler = require('../../../helpers/candidateHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -16,7 +17,7 @@ describe('signup as candidate', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        await mongo.drop();
+        //await mongo.drop();
     })
 
     describe('POST /users/register', () => {
@@ -24,12 +25,12 @@ describe('signup as candidate', function () {
         it('it should signup a new candidate', async () => {
 
             const candidate = docGenerator.candidate();
-
-            const res = await chai.request(server)
+            const data = await candidateHepler.signupCandidate(candidate);
+            /*const res = await chai.request(server)
                 .post('/users/register')
                 .send(candidate);
-
-            res.should.have.status(200);
+            */
+            data.should.have.status(200);
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             userDoc.email.should.equal(candidate.email);

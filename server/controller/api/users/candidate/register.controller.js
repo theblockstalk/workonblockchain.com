@@ -30,7 +30,7 @@ module.exports = function register(req, res)
 
 function create(userParam)
 {
-	////console.log(userParam);
+	//console.log(userParam);
     var deferred = Q.defer();
     var count=0;
 
@@ -135,7 +135,7 @@ function create(userParam)
                         	else
                         	{
                         		if(newUser.social_type == "")
-                        		{	
+                        		{
                         			verify_send_email(user_info);
                         		}
                         		deferred.resolve
