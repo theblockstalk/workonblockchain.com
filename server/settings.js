@@ -34,10 +34,8 @@ if (isLiveApplication()) {
 
     settings.AWS = {
         REGION: config.aws.region,
-        BUCKETS: config.aws.buckets,
-        ACCESS_KEY: config.aws.accessKey,
-        SECRET_ACCESS_KEY: config.aws.secretAccessKey
-    }
+        BUCKETS: config.aws.buckets
+    };
 
     settings.MANDRILL = {
         FROM_ADDRESS: config.mandrill.fromAddress,

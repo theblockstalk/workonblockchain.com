@@ -17,9 +17,6 @@
       "files": "files.staging.workonblockchain.com",
       "logs": "logs.workonblockchain.com"
     },
-    "accessKey": "AKIAIEW3DBZWWCJ3CTJA",
-    "secretAccessKey": "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"
-  },
   "mandrill": {
     "fromAddress": "contact@workonblockchain.com",
     "fromName": "STAGING - Work on Blockchain"

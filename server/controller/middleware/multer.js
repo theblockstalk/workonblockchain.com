@@ -11,8 +11,6 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
     logger.info('Configuring multer with S3 bucket');
 
     aws.config.update({
-        // secretAccessKey: settings.AWS.SECRET_ACCESS_KEY,
-        // accessKeyId: settings.AWS.ACCESS_KEY,
         region: settings.AWS.REGION
     });
 
