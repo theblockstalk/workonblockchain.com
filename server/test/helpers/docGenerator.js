@@ -29,6 +29,18 @@ module.exports.company = function company() {
 
 module.exports.initialJobOffer = function initialJobOffer() {
     return {
+        sender_name: "My Company",
+        receiver_name: "Tayyab",
+        message: "",
+        description: "this is for test case",
+        job_title: "job title for test case",
+        salary: 1500,
+        currency: "€ EUR",
+        date_of_joining: "null",
+        job_type: "Part Time",
+        is_company_reply: 0,
+        interview_location: "",
+        interview_time: "",
         msg_tag: "job_offer"
     };
 };

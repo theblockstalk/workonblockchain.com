@@ -8,7 +8,7 @@ const Users = require('../../../model/users');
 const docGenerator = require('../../helpers/docGenerator');
 const companyHepler = require('../../helpers/companyHelpers');
 const candidateHepler = require('../../helpers/candidateHelpers');
-const getInitialJobOfferDetailHelper = require('../../helpers/getInitialJobOfferDetailHelpers');
+const chatHelper = require('../../helpers/chatHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -30,6 +30,7 @@ describe('send initial job offer to candidate', function () {
             const company = docGenerator.company();
             const companyRes = await companyHepler.signupcompany(company);
             companyRes.should.have.status(200);
+            //await companyHepler.signupAdmincompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
             companyDoc.email.should.equal(company.email);
             companyDoc.is_verify.should.equal(1);
@@ -49,35 +50,29 @@ describe('send initial job offer to candidate', function () {
 
             //checking if initial job offer is sent or not
             const initialJobOffer = docGenerator.initialJobOffer();
-            const initialJobOfferRes = await getInitialJobOfferDetailHelper.getInitialJobOfferDetail(companyDoc._id,userDoc._id,initialJobOffer.msg_tag,companyDoc.jwt_token);
+            const initialJobOfferRes = await chatHelper.getInitialJobOfferDetail(companyDoc._id,userDoc._id,initialJobOffer.msg_tag,companyDoc.jwt_token);
             initialJobOfferRes.should.have.status(200);
+            initialJobOfferRes.body.datas.should.equal(0);
 
-            //sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag
-            //headers: new HttpHeaders().set('Authorization', this.token)
-            /*const res = await chai.request(server)
-                .post('/users/get_job_desc_msgs')
-                .send(candidate);
-
-            res.should.have.status(200);
-
-
-            userDoc.email.should.equal(candidate.email);
-            userDoc.is_verify.should.equal(1);
-            userDoc.is_approved.should.equal(0);
-            userDoc.is_admin.should.equal(0);
-            userDoc.disable_account.should.equal(false);
-            userDoc.type.should.equal("candidate");
-            should.exist(userDoc.jwt_token)
-
-            const salt = userDoc.salt;
-            let hash = crypto.createHmac('sha512', salt);
-            hash.update(candidate.password);
-            const hashedPasswordAndSalt = hash.digest('hex');
-            userDoc.password_hash.should.equal(hashedPasswordAndSalt);
-
-            const candidateDoc = await Candidates.findOne({_creator: userDoc._id}).lean();
-            should.exist(candidateDoc);
-            candidateDoc.marketing_emails.should.equal(false);*/
+            //send job initial offer
+            const insertMessageRes = await chatHelper.insertMessage(companyDoc._id,userDoc._id,initialJobOffer,companyDoc.jwt_token);
+            insertMessageRes.should.have.status(200);
+            const chatDoc = await Chats.findOne({sender_id: companyDoc._id,receiver_id: userDoc._id}).lean();
+            //chatDoc.sender_id.should.equal(companyDoc._id);
+            //chatDoc.receiver_id.should.equal(userDoc._id);
+            chatDoc.is_company_reply.should.equal(initialJobOffer.is_company_reply);
+            chatDoc.sender_name.should.equal(initialJobOffer.sender_name);
+            chatDoc.receiver_name.should.equal(initialJobOffer.receiver_name);
+            chatDoc.message.should.equal(initialJobOffer.message);
+            chatDoc.description.should.equal(initialJobOffer.description);
+            chatDoc.job_title.should.equal(initialJobOffer.job_title);
+            chatDoc.salary.should.equal(initialJobOffer.salary);
+            chatDoc.salary_currency.should.equal(initialJobOffer.currency);
+            //chatDoc.date_of_joining.should.equal(initialJobOffer.date_of_joining);
+            chatDoc.msg_tag.should.equal(initialJobOffer.msg_tag);
+            chatDoc.job_type.should.equal(initialJobOffer.job_type);
+            chatDoc.interview_location.should.equal(initialJobOffer.interview_location);
+            //chatDoc.interview_date_time.should.equal(initialJobOffer.interview_date_time);
         })
     })
 });

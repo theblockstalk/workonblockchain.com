@@ -20,6 +20,6 @@ const signupcompany = module.exports.signupcompany = async function signupcompan
 }
 
 const signupAdmincompany = module.exports.signupAdmincompany = async function signupAdmincompany(company) {
-    await signupcompany(company);
+    //await signupcompany(company);
     await Users.update({email: company.email}, {$set: {is_admin: 1}});
 }
