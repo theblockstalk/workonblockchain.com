@@ -19,8 +19,6 @@ describe('healthCheck', function () {
 
         it('it should get a successful page', async () => {
 
-            throw new Error("Test to see that bitbucket will not deploy if tests fail");
-
             let res = await chai.request(server)
                 .get('/')
                 .send();
