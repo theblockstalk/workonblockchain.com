@@ -28,13 +28,6 @@ describe('signup as company', function () {
             const data = await companyHepler.signupcompany(company);
             data.should.have.status(200);
 
-            const userDocOld = await Users.findOne({email: company.email}).lean();
-
-            const res = await chai.request(server)
-                .put('/users/emailVerify/'+userDocOld.verify_email_key,'')
-                .send();
-            res.should.have.status(200);
-
             const userDoc = await Users.findOne({email: company.email}).lean();
             userDoc.email.should.equal(company.email);
             userDoc.is_verify.should.equal(1);
