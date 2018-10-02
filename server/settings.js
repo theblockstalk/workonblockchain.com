@@ -22,6 +22,10 @@ settings.isLiveApplication = isLiveApplication;
 if (isLiveApplication()) {
     config.mongo.username = process.env.MONGO_DATABASE_USERNAME;
     config.mongo.password = process.env.MONGO_DATABASE_PASSWORD;
+    config.expressJwt = {
+        secret: process.env.EXPRESS_JWT_SECRET
+    };
+    config.mandrill.apiKey = process.env.MANDRILL_API_KEY;
 
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.username + ":"
         + config.mongo.password + "@" + config.mongo.host + ":"

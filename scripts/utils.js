@@ -8,18 +8,11 @@ const { exec } = require('child_process');
 const del = require('del');
 const mkdirp = require('mkdirp');
 
-const accessKey = {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-};
-
-console.log(accessKey);
-
 ncp.limit = 16;
 
 aws.config.update({
-    secretAccessKey: accessKey.secretAccessKey,
-    accessKeyId: accessKey.accessKeyId,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     region: "eu-west-1"
 });
 
