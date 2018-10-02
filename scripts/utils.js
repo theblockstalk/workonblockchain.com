@@ -69,7 +69,7 @@ module.exports.checkGitBranch = function checkGitBranch(branch, deployment) {
             throw new Error("Deployment" + deployment + " is not valid");
     }
     if (branch !== expectedBranch) {
-        throw new Error('You can only deploy to the ' + deployment + ' environment on the ' + expectedBranch + ' branch');
+        // throw new Error('You can only deploy to the ' + deployment + ' environment on the ' + expectedBranch + ' branch');
     }
 };
 

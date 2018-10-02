@@ -20,6 +20,9 @@ function isLiveApplication() {
 settings.isLiveApplication = isLiveApplication;
 
 if (isLiveApplication()) {
+    config.mongo.username = process.env.MONGO_DATABASE_USERNAME;
+    config.mongo.password = process.env.MONGO_DATABASE_PASSWORD;
+    
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.username + ":"
         + config.mongo.password + "@" + config.mongo.host + ":"
         + config.mongo.port + "/" + config.mongo.databaseName
