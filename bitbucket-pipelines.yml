@@ -16,6 +16,16 @@ pipelines:
           - npm test
         services:
           - mongo
+  branches:
+    T340-bitbucket-continuous-integration:
+      - step:
+        caches:
+          - node
+        script: # Modify the commands below to build your repository.
+          - cd scripts
+          - npm install
+          - cd ../
+          - node scripts/server.js staging
 
 definitions:
   services:
