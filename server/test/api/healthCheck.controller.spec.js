@@ -12,12 +12,14 @@ describe('healthCheck', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        //await mongo.drop();
+        await mongo.drop();
     })
 
     describe('GET /', () => {
 
         it('it should get a successful page', async () => {
+
+            throw new Error("Test to see that bitbucket will not deploy if tests fail");
 
             let res = await chai.request(server)
                 .get('/')
