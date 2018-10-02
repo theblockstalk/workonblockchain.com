@@ -4,10 +4,16 @@ const fs = require('fs');
 const archiver = require('archiver');
 const aws = require('aws-sdk');
 const s3 = require('s3');
-const accessKey = require('./access/accessKey');
 const { exec } = require('child_process');
 const del = require('del');
 const mkdirp = require('mkdirp');
+
+const accessKey = {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+};
+
+console.log(accessKey);
 
 ncp.limit = 16;
 
