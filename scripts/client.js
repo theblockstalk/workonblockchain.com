@@ -32,7 +32,7 @@ async function deployFrontend(environmentName) {
     console.log('This script will deploy the latest in the /client directory to the frontend application');
     console.log('Please make sure there is no files in the working directory (responsibly do a `git stash` if you are unsure)');
 
-    await scriptUtils.pressEnterToContinue();
+    // await scriptUtils.pressEnterToContinue();
 
     console.log();
     console.log('(1/4) getting Git branch and commit info');
@@ -43,7 +43,7 @@ async function deployFrontend(environmentName) {
 
     console.log();
     console.log('(2/4) building distribution in client/dist/');
-    await scriptUtils.pressEnterToContinue();
+    // await scriptUtils.pressEnterToContinue();
     // TODO: add in some tags for application to serve the version commit
     await scriptUtils.buildAngularDistribution(buildCommand);
 
@@ -53,6 +53,6 @@ async function deployFrontend(environmentName) {
 
     console.log();
     console.log('(4/4) syncing to S3 bucket');
-    await scriptUtils.pressEnterToContinue();
+    // await scriptUtils.pressEnterToContinue();
     await scriptUtils.syncDirwithS3(s3bucket, tempClientDirName);
 }
