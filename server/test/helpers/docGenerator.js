@@ -27,8 +27,8 @@ module.exports.company = function company() {
     };
 };
 
-module.exports.chat = function chat() {
+module.exports.initialJobOffer = function initialJobOffer() {
     return {
-        first_name: "Jack"
+        msg_tag: "job_offer"
     };
 };
