@@ -3859,6 +3859,10 @@ input:checked + .slider:before {
 	background: url('../profile/Loading_icon.gif') center no-repeat #fff;
 }
 
+.hidden-class{
+  overflow: hidden;
+}
+
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 
