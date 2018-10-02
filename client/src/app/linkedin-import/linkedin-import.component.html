@@ -1,0 +1,40 @@
+
+
+
+      <!--candidate step completing-->
+
+<section class = "wizard_page">
+  
+  <div class="container">
+    <div class="row">
+      <div class = "text-center steps-name">
+
+         <ul class = "step-progress">
+         <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Terms & Conditions</a></li>        
+          <li class = "step"><i class="{{about_active_class}}"></i><a routerLink="/about"> About</a></li>
+          <li class = "step step-active"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
+          <li class = "step"><i class="{{resume_active_class}}"></i><a routerLink="{{resume_class}}" class="btn {{resume_disable}}">Blockchain</a></li>
+          <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn {{exp_disable}}" >Experience</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-md-12 wizard-form">
+
+        <div>
+        <p id="filedrag">
+          Drop a LinkedIn archive zip file or <button class="button" id="select-file" (click) = "linkedincv()" >select a file</button>.
+        </p>
+        <input type="file" id="fileselect" name="fileselect[]" />
+      </div>
+        
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!--candidate step completing End-->
+
+<div class = "gap">
+</div>
