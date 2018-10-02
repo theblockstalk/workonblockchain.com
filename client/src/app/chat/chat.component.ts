@@ -313,7 +313,7 @@ export class ChatComponent implements OnInit {
                             }
                         }
 						else{
-                            this.msg='';
+                            this.msg='You have not chatted yet';
 							//this.msg='You have not chatted yet';
 						}
                     },
