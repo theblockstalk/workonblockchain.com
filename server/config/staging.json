@@ -16,7 +16,8 @@
     "buckets": {
       "files": "files.staging.workonblockchain.com",
       "logs": "logs.workonblockchain.com"
-    },
+    }
+  },
   "mandrill": {
     "fromAddress": "contact@workonblockchain.com",
     "fromName": "STAGING - Work on Blockchain"
