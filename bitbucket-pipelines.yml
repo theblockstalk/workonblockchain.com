@@ -18,18 +18,18 @@ pipelines:
           - mongo
   branches:
       T340-bitbucket-continuous-integration:
-        -step:
-          caches:
-            - node
-          script:
-            - cd server
-            - npm install
-            - npm test
-          services:
-            - mongo
+        - step:
+            caches:
+              - node
+            script:
+              - cd server
+              - npm install
+              - npm test
+            services:
+              - mongo
         - step:
             script:
-              - echo "This script runs only on commit to the T340-bitbucket-continuous-integration branch."
+            - echo "This script runs only on commit to the T340-bitbucket-continuous-integration branch."
 
 definitions:
   services:
