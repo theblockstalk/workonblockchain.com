@@ -18,6 +18,9 @@ let buildCommand;
         } else {
             throw new Error("Need to provide argument for the environment: staging or production");
         }
+
+        process.env.NODE_ENV = environmentName;
+        
         await deployFrontend(environmentName);
         console.log("finished");
         console.log("you may have to wait up to an hour for the Cloudfront Distribution CDN caches to clear before you see the new application frontend");

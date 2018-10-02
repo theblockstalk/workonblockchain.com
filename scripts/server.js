@@ -11,6 +11,9 @@ let envName, appName;
         const environmentName = process.argv[2];
         if (environmentName !== 'production' && environmentName !== 'staging') throw new Error("Need to provide argument for the environment: staging or production");
         console.log('deploying the backend to elastic beanstalk');
+
+        process.env.NODE_ENV = environmentName;
+
         if (environmentName === 'production') {
             envName = config.eb.envName.production;
             appName = config.eb.appName.production;
