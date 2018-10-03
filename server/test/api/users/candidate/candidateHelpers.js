@@ -12,6 +12,7 @@ const signupCandidate = module.exports.signupCandidate = async function signupCa
         .post('/users/register')
         .send(candidate);
     res.should.have.status(200);
+    return res;
 }
 
 const signupAdminCandidate = module.exports.signupAdminCandidate = async function signupAdminCandidate(candidate) {

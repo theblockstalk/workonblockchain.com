@@ -25,9 +25,7 @@ describe('signup as company', function () {
         it('it should signup a new company', async () => {
 
             const company = docGenerator.company();
-            const res = await chai.request(server)
-                .post('/users/create_employer')
-                .send(company);
+            const res = await companyHepler.signupCompany(company);
             res.should.have.status(200);
 
             const userDoc = await Users.findOne({email: company.email}).lean();

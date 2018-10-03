@@ -17,6 +17,8 @@ const getInitialJobOfferDetail = module.exports.getInitialJobOfferDetail = async
         .set('Authorization', jwtToken)
         .send(data);
     res.should.have.status(200);
+    return res;
+
 }
 
 const insertMessage = module.exports.insertMessage = async function insertMessage(senderId,receverId,msgData,jwtToken) {
@@ -41,6 +43,7 @@ const insertMessage = module.exports.insertMessage = async function insertMessag
         .post('/users/insert_message')
         .set('Authorization', jwtToken)
         .send(data);
+    res.should.have.status(200);
     return res;
 }
 
@@ -55,6 +58,7 @@ const getUserInfo = module.exports.getUserInfo = async function getUserInfo(send
         .post('/users/get_candidate')
         .set('Authorization', jwtToken)
         .send(data);
+    res.should.have.status(200);
     return res;
 }
 
@@ -68,7 +72,9 @@ const getEmploymentOfferDetail = module.exports.getEmploymentOfferDetail = async
         .post('/users/get_employ_offer')
         .set('Authorization', jwtToken)
         .send(data);
+    res.should.have.status(200);
     return res;
+
 }
 
 const getMessages = module.exports.getMessages = async function getMessages(senderId,receverId,jwtToken) {
@@ -80,6 +86,7 @@ const getMessages = module.exports.getMessages = async function getMessages(send
         .post('/users/get_messages')
         .set('Authorization', jwtToken)
         .send(data);
+    res.should.have.status(200);
     return res;
 }
 
@@ -92,6 +99,7 @@ const getUnreadMessages = module.exports.getUnreadMessages = async function getU
         .post('/users/get_unread_msgs_of_user')
         .set('Authorization', jwtToken)
         .send(data);
+    res.should.have.status(200);
     return res;
 }
 
@@ -103,5 +111,6 @@ const getUserMessages = module.exports.getUserMessages = async function getUserM
         .post('/users/get_user_messages')
         .set('Authorization', jwtToken)
         .send(data);
+    res.should.have.status(200);
     return res;
 }

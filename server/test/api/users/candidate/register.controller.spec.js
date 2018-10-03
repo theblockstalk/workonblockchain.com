@@ -25,15 +25,14 @@ describe('signup as candidate', function () {
         it('it should signup a new candidate', async () => {
 
             const candidate = docGenerator.candidate();
-            const res = await chai.request(server)
-                .post('/users/register')
-                .send(candidate);
+
+            const res = await candidateHepler.signupCandidate(candidate);
 
             res.should.have.status(200);
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             userDoc.email.should.equal(candidate.email);
-            userDoc.is_verify.should.equal(1);
+            userDoc.is_verify.should.equal(0);
             userDoc.is_approved.should.equal(0);
             userDoc.is_admin.should.equal(0);
             userDoc.disable_account.should.equal(false);

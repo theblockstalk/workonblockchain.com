@@ -13,6 +13,7 @@ const signupCompany = module.exports.signupCompany = async function signupCompan
         .post('/users/create_employer')
         .send(company);
     res.should.have.status(200);
+    return res;
 }
 
 module.exports.signupVerfiedCompany = async function signupVerfiedCompany(company) {

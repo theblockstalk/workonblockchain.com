@@ -19,7 +19,7 @@ describe('get user messages', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        //await mongo.drop();
+        await mongo.drop();
     })
 
     describe('POST /users/get_user_messages', () => {
@@ -28,36 +28,34 @@ describe('get user messages', function () {
 
             //creating a company
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
-            companyRes.should.have.status(200);
-            await companyHepler.signupAdmincompany(company);
-            await companyHepler.approveUser(company.email);
+            await companyHepler.signupVerifiedApprovedCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
-            companyDoc.email.should.equal(company.email);
-            companyDoc.is_verify.should.equal(1);
-            companyDoc.type.should.equal(company.type);
+            // companyDoc.email.should.equal(company.email);
+            // companyDoc.is_verify.should.equal(1);
+            // companyDoc.type.should.equal(company.type);
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHepler.signupCandidate(candidate);
-            candidateRes.should.have.status(200);
+            await candidateHepler.signupVerifiedApprovedCandidate(candidate);
             const candidateDoc = await Users.findOne({email: candidate.email}).lean();
-            candidateDoc.email.should.equal(candidate.email);
-            candidateDoc.is_verify.should.equal(1);
-            candidateDoc.type.should.equal(candidate.type);
+            // candidateDoc.email.should.equal(candidate.email);
+            // candidateDoc.is_verify.should.equal(1);
+            // candidateDoc.type.should.equal(candidate.type);
 
             //sending a message
             const message = docGenerator.message();
-            const insertMessageRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
-            insertMessageRes.should.have.status(200);
+            await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
 
             const res = await chatHelper.getUserMessages(candidateDoc._id,companyDoc.jwt_token);
-            res.should.have.status(200);
-            let flag=0;
-            if(res.body.datas){
-                flag=1;
-            }
-            flag.should.equal(1);
+            // let flag=0;
+            // if(res.body.datas){
+            //     flag=1;
+            // }
+            // flag.should.equal(1);
+
+            const responseMessage = res.body.datas[0];
+            responseMessage.is_company_reply.should.equal(1);
+            // TODO: finish tests of response
         })
     })
 });
