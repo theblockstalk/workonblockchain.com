@@ -154,7 +154,8 @@ function create_employer(userParam)
                 			}
                 			else
                 			{
-                				verify_send_email(company_info);
+                				//for test cases comment it
+                                // verify_send_email(company_info);
                 				deferred.resolve
                 				({
                 					_id:user.id,

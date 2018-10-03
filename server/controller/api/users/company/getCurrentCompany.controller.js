@@ -49,8 +49,13 @@ function get_company_byId(_id)
                 }
                 else
                 {
-                	var query_result = result[0].toObject();      
-                    deferred.resolve(filterReturnData.removeSensativeData(query_result));
+                    if(result.length>0) {
+                        var query_result = result[0].toObject();
+                        deferred.resolve(filterReturnData.removeSensativeData(query_result));
+                    }
+                    else{
+                        deferred.resolve(0);
+                    }
                 }
             });
         }

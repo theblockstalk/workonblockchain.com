@@ -49,7 +49,6 @@ module.exports = function insert_message(req, res)
 }
 
 function insert_message_new(data){
-	console.log(data.msg_tag);
 	interview_date = '';
 	if(data.msg_tag == 'interview_offer'){
 		interview_date = data.date_of_joining+' '+data.interview_time+':00';
