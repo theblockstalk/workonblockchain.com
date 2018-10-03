@@ -25,8 +25,7 @@ describe('signup as company', function () {
         it('it should signup a new company', async () => {
 
             const company = docGenerator.company();
-            const data = await companyHepler.signupVerfiedCompany(company);
-            data.should.have.status(200);
+            await companyHepler.signupVerfiedCompany(company);
 
             const userDoc = await Users.findOne({email: company.email}).lean();
             userDoc.email.should.equal(company.email);

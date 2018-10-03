@@ -20,7 +20,7 @@ describe('get employment offer detail', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        //await mongo.drop();
+        await mongo.drop();
     })
 
     describe('POST /users/insert_message', () => {
@@ -29,8 +29,7 @@ describe('get employment offer detail', function () {
 
             //creating a company
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupAdmincompany(company);
-            companyRes.should.have.status(200);
+            await companyHepler.signupAdminCompany(company);
             await userHepler.approve(company.email);
             const companyDoc = await Users.findOne({email: company.email}).lean();
             // companyDoc.email.should.equal(company.email);

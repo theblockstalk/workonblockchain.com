@@ -30,7 +30,7 @@ describe('signup as candidate', function () {
                 .post('/users/register')
                 .send(candidate);
 
-            data.should.have.status(200);
+            res.should.have.status(200);
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             userDoc.email.should.equal(candidate.email);
