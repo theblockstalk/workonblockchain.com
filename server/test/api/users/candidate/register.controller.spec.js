@@ -25,7 +25,6 @@ describe('signup as candidate', function () {
         it('it should signup a new candidate', async () => {
 
             const candidate = docGenerator.candidate();
-            const data = await candidateHepler.signupCandidate(candidate);
             const res = await chai.request(server)
                 .post('/users/register')
                 .send(candidate);

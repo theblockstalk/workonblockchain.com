@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../server');
 const Users = require('../../../model/users');
+const should = chai.should();
 
 chai.use(chaiHttp);
 
@@ -15,7 +16,7 @@ const getInitialJobOfferDetail = module.exports.getInitialJobOfferDetail = async
         .post('/users/get_job_desc_msgs')
         .set('Authorization', jwtToken)
         .send(data);
-    return res;
+    res.should.have.status(200);
 }
 
 const insertMessage = module.exports.insertMessage = async function insertMessage(senderId,receverId,msgData,jwtToken) {

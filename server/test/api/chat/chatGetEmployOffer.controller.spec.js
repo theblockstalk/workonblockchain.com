@@ -29,26 +29,27 @@ describe('get employment offer detail', function () {
 
             //creating a company
             const company = docGenerator.company();
-            await companyHepler.signupAdminCompany(company);
+            await companyHepler.signupVerfiedCompany(company);
             await userHepler.approve(company.email);
-            const companyDoc = await Users.findOne({email: company.email}).lean();
-            // companyDoc.email.should.equal(company.email);
-            // companyDoc.is_verify.should.equal(1);
-            // companyDoc.type.should.equal(company.type);
+
+            const companyUserDoc = await Users.findOne({email: company.email}).lean();
+            // companyUserDoc.email.should.equal(company.email);
+            // companyUserDoc.is_verify.should.equal(1);
+            // companyUserDoc.type.should.equal(company.type);
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHepler.signupVerfiedCandidate(candidate);
-            // candidateRes.should.have.status(200);
-            const candidateDoc = await Users.findOne({email: candidate.email}).lean();
-            // candidateDoc.email.should.equal(candidate.email);
-            // candidateDoc.is_verify.should.equal(1);
-            // candidateDoc.type.should.equal(candidate.type);
+            await candidateHepler.signupVerfiedCandidate(candidate);
+
+            const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
+            // candidateUserDoc.email.should.equal(candidate.email);
+            // candidateUserDoc.is_verify.should.equal(1);
+            // candidateUserDoc.type.should.equal(candidate.type);
             const msgTag = 'employment_offer';
 
-            const res = await chatHelper.getEmploymentOfferDetail(companyDoc._id,candidateDoc._id,msgTag,companyDoc.jwt_token);
-            res.should.have.status(200);
-            res.body.datas.should.equal(0);
+            await chatHelper.getEmploymentOfferDetail(companyUserDoc._id, candidateUserDoc._id, msgTag, companyUserDoc.jwt_token);
+
+            // TODO: query the mongodb chat collection and check that the document(s) were inserted correctly with the correct values
         })
     })
 });

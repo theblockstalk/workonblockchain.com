@@ -25,11 +25,14 @@ describe('signup as company', function () {
         it('it should signup a new company', async () => {
 
             const company = docGenerator.company();
-            await companyHepler.signupVerfiedCompany(company);
+            const res = await chai.request(server)
+                .post('/users/create_employer')
+                .send(company);
+            res.should.have.status(200);
 
             const userDoc = await Users.findOne({email: company.email}).lean();
             userDoc.email.should.equal(company.email);
-            userDoc.is_verify.should.equal(1);
+            userDoc.is_verify.should.equal(0);
             userDoc.is_approved.should.equal(0);
             userDoc.is_admin.should.equal(0);
             userDoc.disable_account.should.equal(false);
