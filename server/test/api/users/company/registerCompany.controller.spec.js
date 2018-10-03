@@ -6,7 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Companies = require('../../../../model/employer_profile');
 const docGenerator = require('../../../helpers/docGenerator');
-const companyHepler = require('../../../helpers/companyHelpers');
+const companyHepler = require('./companyHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -17,7 +17,7 @@ describe('signup as company', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        //await mongo.drop();
+        await mongo.drop();
     })
 
     describe('POST /users/create_employer', () => {
@@ -25,7 +25,7 @@ describe('signup as company', function () {
         it('it should signup a new company', async () => {
 
             const company = docGenerator.company();
-            const data = await companyHepler.signupcompany(company);
+            const data = await companyHepler.signupVerfiedCompany(company);
             data.should.have.status(200);
 
             const userDoc = await Users.findOne({email: company.email}).lean();

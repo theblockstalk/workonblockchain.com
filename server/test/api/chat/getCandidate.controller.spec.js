@@ -6,9 +6,9 @@ const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHepler = require('../../helpers/companyHelpers');
-const candidateHepler = require('../../helpers/candidateHelpers');
-const chatHelper = require('../../helpers/chatHelpers');
+const companyHepler = require('../users/company/companyHelpers');
+const candidateHepler = require('../users/candidate/candidateHelpers');
+const chatHelper = require('./chatHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -28,7 +28,7 @@ describe('get a candidate or company info', function () {
 
             //creating a company
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupcompany(company);
+            const companyRes = await companyHepler.signupCompany(company);
             companyRes.should.have.status(200);
             await companyHepler.signupAdmincompany(company);
             await companyHepler.approveUser(company.email);

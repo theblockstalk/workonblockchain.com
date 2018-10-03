@@ -6,7 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Candidates = require('../../../../model/candidate_profile');
 const docGenerator = require('../../../helpers/docGenerator');
-const candidateHepler = require('../../../helpers/candidateHelpers');
+const candidateHepler = require('./candidateHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;

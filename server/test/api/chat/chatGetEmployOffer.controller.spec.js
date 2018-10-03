@@ -6,9 +6,10 @@ const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHepler = require('../../helpers/companyHelpers');
-const candidateHepler = require('../../helpers/candidateHelpers');
-const chatHelper = require('../../helpers/chatHelpers');
+const userHepler = require('../users/usersHelpers');
+const companyHepler = require('../users/company/companyHelpers');
+const candidateHepler = require('../users/candidate/candidateHelpers');
+const chatHelper = require('./chatHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -28,23 +29,22 @@ describe('get employment offer detail', function () {
 
             //creating a company
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupcompany(company);
+            const companyRes = await companyHepler.signupAdmincompany(company);
             companyRes.should.have.status(200);
-            await companyHepler.signupAdmincompany(company);
-            await companyHepler.approveUser(company.email);
+            await userHepler.approve(company.email);
             const companyDoc = await Users.findOne({email: company.email}).lean();
-            companyDoc.email.should.equal(company.email);
-            companyDoc.is_verify.should.equal(1);
-            companyDoc.type.should.equal(company.type);
+            // companyDoc.email.should.equal(company.email);
+            // companyDoc.is_verify.should.equal(1);
+            // companyDoc.type.should.equal(company.type);
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHepler.signupCandidate(candidate);
-            candidateRes.should.have.status(200);
+            const candidateRes = await candidateHepler.signupVerfiedCandidate(candidate);
+            // candidateRes.should.have.status(200);
             const candidateDoc = await Users.findOne({email: candidate.email}).lean();
-            candidateDoc.email.should.equal(candidate.email);
-            candidateDoc.is_verify.should.equal(1);
-            candidateDoc.type.should.equal(candidate.type);
+            // candidateDoc.email.should.equal(candidate.email);
+            // candidateDoc.is_verify.should.equal(1);
+            // candidateDoc.type.should.equal(candidate.type);
             const msgTag = 'employment_offer';
 
             const res = await chatHelper.getEmploymentOfferDetail(companyDoc._id,candidateDoc._id,msgTag,companyDoc.jwt_token);
