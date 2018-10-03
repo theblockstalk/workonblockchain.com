@@ -1,7 +1,5 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const crypto = require('crypto');
-const server = require('../../../../server');
 const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
@@ -19,7 +17,7 @@ describe('send a message', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        //await mongo.drop();
+        await mongo.drop();
     })
 
     describe('POST /users/insert_message', () => {
@@ -28,28 +26,22 @@ describe('send a message', function () {
 
             //creating a company
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
-            companyRes.should.have.status(200);
-            await companyHepler.signupAdmincompany(company);
-            await companyHepler.approveUser(company.email);
+            await companyHepler.signupVerifiedApprovedCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
-            companyDoc.email.should.equal(company.email);
-            companyDoc.is_verify.should.equal(1);
-            companyDoc.is_admin.should.equal(1);
-            companyDoc.is_approved.should.equal(1);
-            should.exist(companyDoc.jwt_token)
+            // companyDoc.email.should.equal(company.email);
+            // companyDoc.is_verify.should.equal(1);
+            // companyDoc.is_admin.should.equal(1);
+            // companyDoc.is_approved.should.equal(1);
+            // should.exist(companyDoc.jwt_token)
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHepler.signupCandidate(candidate);
-            candidateRes.should.have.status(200);
-
-            await companyHepler.approveUser(candidate.email);
+            await candidateHepler.signupVerifiedApprovedCandidate(candidate);
             const userDoc = await Users.findOne({email: candidate.email}).lean();
-            userDoc.email.should.equal(candidate.email);
-            userDoc.is_verify.should.equal(1);
-            userDoc.is_approved.should.equal(1);
-            should.exist(userDoc.jwt_token)
+            // userDoc.email.should.equal(candidate.email);
+            // userDoc.is_verify.should.equal(1);
+            // userDoc.is_approved.should.equal(1);
+            // should.exist(userDoc.jwt_token)
 
             //checking if initial job offer is sent or not
             /*const initialJobOfferRes = await chatHelper.getInitialJobOfferDetail(companyDoc._id,userDoc._id,initialJobOffer.msg_tag,companyDoc.jwt_token);
@@ -58,8 +50,8 @@ describe('send a message', function () {
 
             //sending a message
             const initialJobOffer = docGenerator.initialJobOffer();
-            const insertMessageRes = await chatHelper.insertMessage(companyDoc._id,userDoc._id,initialJobOffer,companyDoc.jwt_token);
-            insertMessageRes.should.have.status(200);
+            await chatHelper.insertMessage(companyDoc._id,userDoc._id,initialJobOffer,companyDoc.jwt_token);
+
             const chatDoc = await Chats.findOne({sender_id: companyDoc._id,receiver_id: userDoc._id}).lean();
             //chatDoc.sender_id.should.equal(companyDoc._id);
             //chatDoc.receiver_id.should.equal(userDoc._id);
