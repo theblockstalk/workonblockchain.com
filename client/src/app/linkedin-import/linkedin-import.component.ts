@@ -493,8 +493,6 @@ export class LinkedinImportComponent implements OnInit {
 
   onSubmit(f: NgForm)
   {
-
-
     if(f.value.skip_value === 0 && !f.value.fileselect)
     {
       console.log("please choose file or click on skip button");
@@ -512,6 +510,7 @@ export class LinkedinImportComponent implements OnInit {
       if(f.value.fileselect)
       {
         this.fileselected(this.fileevent);
+        this.router.navigate(['/about']);
       }
 
     }
