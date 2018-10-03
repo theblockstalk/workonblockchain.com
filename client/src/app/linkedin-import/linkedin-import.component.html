@@ -7,23 +7,43 @@
       <div class = "text-center steps-name">
 
          <ul class = "step-progress">
-         <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Terms & Conditions</a></li>        
-          <li class = "step"><i class="{{about_active_class}}"></i><a routerLink="/about"> About</a></li>
-          <li class = "step step-active"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
-          <li class = "step"><i class="{{resume_active_class}}"></i><a routerLink="{{resume_class}}" class="btn {{resume_disable}}">Blockchain</a></li>
-          <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn {{exp_disable}}" >Experience</a></li>
-          
-        </ul>
+            <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Terms & Conditions</a></li>
+            <li class = "step step-active"><i class="{{term_active_class}}"></i><a routerLink="/prefill-profile"> Prefill Profile</a></li>
+            <li class = "step"><i class="{{about_active_class}}"></i><a routerLink="/about"> About</a></li>
+            <li class = "step"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
+            <li class = "step"><i class="{{resume_active_class}}"></i><a routerLink="{{resume_class}}" class="btn {{resume_disable}}">Blockchain</a></li>
+            <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn {{exp_disable}}" >Experience</a></li>
+         </ul>
       </div>
       <div class="col-md-12 wizard-form">
-
-        <div>
+        <form class = "login_form"  #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <!--<div>
         <p id="filedrag">
           Drop a LinkedIn archive zip file or <button class="button" id="select-file" (click) = "linkedincv()" >select a file</button>.
         </p>
         <input type="file" id="fileselect" name="fileselect[]" />
-      </div>
-        
+        </div>-->
+        <br/><br/><br/>
+        <ul>
+          <li>go to linkedin export page</li>
+
+          <li>download profile data from email (with screenshot from linkedin)</li>
+
+          <li>upload that file to WOB</li>
+
+      </ul>
+        <br/>
+        <input (change)="filechoosen($event)" type="file" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control" />
+        <br/>
+          <input type="text"  [style.display]="none" class="form-control" id=""  name="skip_value" [(ngModel)]="skip_value">
+
+          <a class = "btn btn-prev" (click) = "skipbutton()" >Skip Button</a>
+
+        <div class = "form-group text-right">
+          <a routerLink="/terms-and-condition" class = "btn btn-prev">Prev Step</a>
+          <button type="submit" class = "btn btn-self btn-pdg"  >Done</button>
+        </div>
+        </form>
       </div>
     </div>
   </div>

@@ -102,7 +102,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent, resolve: {LoginResolver }},
     { path: 'home', component: HomeComponent},
     { path: '', component: HomeComponent},
-    { path: 'linkedin-import', component: LinkedinImportComponent},
+    { path: 'prefill-profile', component: LinkedinImportComponent},
     { path: 'terms-and-condition', component: CandidateTermsComponent},
     { path: 'resume', component: ResumeComponent},
     { path: 'experience', component: ExperienceComponent},

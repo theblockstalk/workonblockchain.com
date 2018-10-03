@@ -33,7 +33,7 @@ const candidateWizardExperience = require('./controller/api/users/candidate/wiza
 const candidateWizardJob = require('./controller/api/users/candidate/wizard/job.controller');
 const candidateWizardResume = require('./controller/api/users/candidate/wizard/resume.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
-
+const candidateWizardPrefilledProfile = require('./controller/api/users/candidate/wizard/prefilledProfile.controller');
 
 // Companies
 const companyRegister = require('./controller/api/users/company/createCompany.controller');
@@ -98,6 +98,7 @@ router.post('/users/register', candidateRegister);
 router.get('/users/',auth.isLoggedIn, candidateGetAll); // Auth: ???
 router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
+router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , candidateWizardPrefilledProfile);
 router.put('/users/welcome/about', auth.isLoggedIn, candidateWizardAbout);
 router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
 router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
