@@ -17,7 +17,7 @@ describe('signup as candidate', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        //await mongo.drop();
+        await mongo.drop();
     })
 
     describe('POST /users/register', () => {
@@ -26,10 +26,10 @@ describe('signup as candidate', function () {
 
             const candidate = docGenerator.candidate();
             const data = await candidateHepler.signupCandidate(candidate);
-            /*const res = await chai.request(server)
+            const res = await chai.request(server)
                 .post('/users/register')
                 .send(candidate);
-            */
+
             data.should.have.status(200);
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
