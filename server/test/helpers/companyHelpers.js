@@ -23,3 +23,8 @@ const signupAdmincompany = module.exports.signupAdmincompany = async function si
     //await signupcompany(company);
     await Users.update({email: company.email}, {$set: {is_admin: 1}});
 }
+
+const approveUser = module.exports.approveUser = async function approveUser(userEmail) {
+    //await signupcompany(company);
+    await Users.update({email: userEmail}, {$set: {is_approved: 1}});
+}

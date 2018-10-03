@@ -15,25 +15,27 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('send initial job offer to candidate', function () {
+describe('send a message', function () {
 
     afterEach(async () => {
         console.log('dropping database');
         //await mongo.drop();
     })
 
-    describe('POST /users/get_job_desc_msgs', () => {
+    describe('POST /users/insert_message', () => {
 
-        it('it should send a job offer to candidate', async () => {
+        it('it should send a message', async () => {
 
             //creating a company
             const company = docGenerator.company();
             const companyRes = await companyHepler.signupcompany(company);
             companyRes.should.have.status(200);
-            //await companyHepler.signupAdmincompany(company);
+            await companyHepler.signupAdmincompany(company);
+            await companyHepler.approveUser(company.email);
             const companyDoc = await Users.findOne({email: company.email}).lean();
             companyDoc.email.should.equal(company.email);
             companyDoc.is_verify.should.equal(1);
+            companyDoc.is_admin.should.equal(1);
             companyDoc.is_approved.should.equal(1);
             should.exist(companyDoc.jwt_token)
 
@@ -42,6 +44,7 @@ describe('send initial job offer to candidate', function () {
             const candidateRes = await candidateHepler.signupCandidate(candidate);
             candidateRes.should.have.status(200);
 
+            await companyHepler.approveUser(candidate.email);
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             userDoc.email.should.equal(candidate.email);
             userDoc.is_verify.should.equal(1);
@@ -49,12 +52,12 @@ describe('send initial job offer to candidate', function () {
             should.exist(userDoc.jwt_token)
 
             //checking if initial job offer is sent or not
-            const initialJobOffer = docGenerator.initialJobOffer();
-            const initialJobOfferRes = await chatHelper.getInitialJobOfferDetail(companyDoc._id,userDoc._id,initialJobOffer.msg_tag,companyDoc.jwt_token);
+            /*const initialJobOfferRes = await chatHelper.getInitialJobOfferDetail(companyDoc._id,userDoc._id,initialJobOffer.msg_tag,companyDoc.jwt_token);
             initialJobOfferRes.should.have.status(200);
-            initialJobOfferRes.body.datas.should.equal(0);
+            initialJobOfferRes.body.datas.should.equal(0);*/
 
-            //send job initial offer
+            //sending a message
+            const initialJobOffer = docGenerator.initialJobOffer();
             const insertMessageRes = await chatHelper.insertMessage(companyDoc._id,userDoc._id,initialJobOffer,companyDoc.jwt_token);
             insertMessageRes.should.have.status(200);
             const chatDoc = await Chats.findOne({sender_id: companyDoc._id,receiver_id: userDoc._id}).lean();

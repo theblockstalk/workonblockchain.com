@@ -44,3 +44,21 @@ module.exports.initialJobOffer = function initialJobOffer() {
         msg_tag: "job_offer"
     };
 };
+
+module.exports.message = function message() {
+    return {
+        sender_name: "My Company",
+        receiver_name: "Tayyab",
+        message: "this is a test msg",
+        description: "",
+        job_title: "",
+        salary: "",
+        currency: "",
+        date_of_joining: "null",
+        job_type: "",
+        is_company_reply: 1,
+        interview_location: "",
+        interview_time: "",
+        msg_tag: "normal"
+    };
+};
