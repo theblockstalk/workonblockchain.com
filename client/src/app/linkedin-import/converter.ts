@@ -16,6 +16,7 @@ interface Output {
 interface Position {
   company: string,
   position: string,
+  location:string,
   website: string,
   startDate: string,
   summary: string,
@@ -30,7 +31,8 @@ interface Education {
   startDate: string,
   gpa: string,
   courses: Array<string>,
-  endDate?: string
+  endDate?: string,
+  notes:string
 }
 
 class LinkedInToJsonResume {
@@ -123,6 +125,7 @@ class LinkedInToJsonResume {
         position: position.title || '',
         website: '',
         startDate: `${position.startDate}`,
+        location : position.location,
         summary: position.description,
         highlights: []
       };
@@ -145,11 +148,12 @@ class LinkedInToJsonResume {
         studyType: education.degree,
         startDate: `${education.startDate}`,
         gpa: '',
+        notes : education.notes,
         courses: []
       };
 
       if (education.endDate) {
-        object.endDate = `${education.endDate}`;
+        object.endDate = education.endDate;
       }
 
       return object;

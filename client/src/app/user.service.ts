@@ -304,7 +304,7 @@ export class UserService {
 
     }
 
-    about(user_id: string, detail: CandidateProfile) 
+    about(user_id: string, detail: any)
     {
         
         return this.http.put<any>(URL+'users/welcome/about' , detail , {
@@ -376,7 +376,7 @@ export class UserService {
 
     }
 
-    experience(user_id: string,detail : CandidateProfile ,  exp : any , history : any,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
+    experience(user_id: string,detail : any ,  exp : any , history : any,language_roles :any , platform_exp : any )
     {
         
         return this.http.put<any>(URL+'users/welcome/exp' , { detail :detail , education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp } , {

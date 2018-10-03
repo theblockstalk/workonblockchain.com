@@ -218,10 +218,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
                     
@@ -622,6 +622,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     educationjson; education_json_array=[];
     submit_info(searchForm )
     {
+      console.log(searchForm.value);
       this.experiencearray=[];
       this.education_json_array=[];
              this.log='';
