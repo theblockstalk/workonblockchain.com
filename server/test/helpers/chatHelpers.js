@@ -81,3 +81,26 @@ const getMessages = module.exports.getMessages = async function getMessages(send
         .send(data);
     return res;
 }
+
+const getUnreadMessages = module.exports.getUnreadMessages = async function getUnreadMessages(senderId,receverId,jwtToken) {
+    const data = {
+        'sender_id': senderId,
+        'receiver_id': receverId
+    };
+    const res = await chai.request(server)
+        .post('/users/get_unread_msgs_of_user')
+        .set('Authorization', jwtToken)
+        .send(data);
+    return res;
+}
+
+const getUserMessages = module.exports.getUserMessages = async function getUserMessages(userId,jwtToken) {
+    const data = {
+        'id': userId
+    };
+    const res = await chai.request(server)
+        .post('/users/get_user_messages')
+        .set('Authorization', jwtToken)
+        .send(data);
+    return res;
+}

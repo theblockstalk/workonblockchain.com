@@ -15,16 +15,16 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('get chat messages of a user', function () {
+describe('get unread messages of a user', function () {
 
     afterEach(async () => {
         console.log('dropping database');
         //await mongo.drop();
     })
 
-    describe('POST /users/get_messages', () => {
+    describe('POST /users/get_unread_msgs_of_user', () => {
 
-        it('it should chat messages of a user', async () => {
+        it('it should get unread messages of a user', async () => {
 
             //creating a company
             const company = docGenerator.company();
@@ -51,12 +51,14 @@ describe('get chat messages of a user', function () {
             const insertMessageRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
             insertMessageRes.should.have.status(200);
 
-            const res = await chatHelper.getMessages(companyDoc._id,candidateDoc._id,companyDoc.jwt_token);
+            const res = await chatHelper.getUnreadMessages(companyDoc._id,candidateDoc._id,companyDoc.jwt_token);
             res.should.have.status(200);
-            res.body.datas[0].sender_name.should.equal(message.sender_name);
-            res.body.datas[0].receiver_name.should.equal(message.receiver_name);
-            res.body.datas[0].message.should.equal(message.message);
-            res.body.datas[0].msg_tag.should.equal(message.msg_tag);
+            console.log(res.body.number_of_unread_msgs);
+            let flag=1;
+            if(res.body.number_of_unread_msgs === 0){
+                flag=0;
+            }
+            flag.should.equal(1);
         })
     })
 });
