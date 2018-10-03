@@ -19,5 +19,7 @@ module.exports = async function (req, res) {
 
     await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
 
-    res.send();
+    res.send({
+        success: true
+    });
 };

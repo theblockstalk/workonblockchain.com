@@ -75,7 +75,7 @@ const pagesGetContent = require('./controller/api/pages/getContent.controller');
 const pagesGetAllContent = require('./controller/api/pages/getAllContent.controller');
 
 
-router.get('/', healthCheck);
+router.get('/', asyncMiddleware(healthCheck));
 
 // User authorization
 router.post('/users/authenticate', authAthenticate);
