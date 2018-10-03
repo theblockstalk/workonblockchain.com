@@ -15,12 +15,103 @@ export class LinkedinImportComponent implements OnInit {
   info: any = {};
   currentUser: User;
   skip_value;
+  resume_disable;
+  job_disable;
+  exp_disable;
+  active_class;
+  term_active_class;
+  term_link;
+  about_active_class;
+  job_active_class;
+  resume_class;
+  link;
+  exp_class;
+  resume_active_class;
+  exp_active_class;
+
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
   }
 
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.skip_value = 0;
+    this.job_disable = "disabled";
+    this.resume_disable = "disabled";
+    this.exp_disable = "disabled";
+    this.active_class='fa fa-check-circle text-success';
+    if(!this.currentUser)
+    {
+      this.router.navigate(['/signup']);
+    }
+
+    if(this.currentUser && this.currentUser.type=='candidate')
+    {
+      this.authenticationService.getById(this.currentUser._id)
+        .subscribe(
+          data =>
+          {
+
+            if(data.terms)
+            {
+              this.term_active_class='fa fa-check-circle text-success';
+              this.term_link = '/terms-and-condition';
+            }
+
+            if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+            {
+              this.about_active_class = 'fa fa-check-circle text-success';
+              this.job_disable = '';
+              this.link= "/job";
+            }
+
+            if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day&& data.current_salary )
+            {
+              this.resume_disable = '';
+              this.job_active_class = 'fa fa-check-circle text-success';
+              this.resume_class="/resume";
+            }
+
+            if(data.why_work )
+            {
+              this.exp_disable = '';
+              this.resume_class="/resume";
+              this.exp_class = "/experience";
+              this.resume_active_class='fa fa-check-circle text-success';
+            }
+
+            if( data.programming_languages.length>0  &&data.description)
+            {
+              this.exp_class = "/experience";
+              this.exp_active_class = 'fa fa-check-circle text-success';
+            }
+
+
+
+          },
+          error =>
+          {
+            if(error.message === 500 || error.message === 401)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+
+            if(error.message === 403)
+            {
+              // this.router.navigate(['/not_found']);
+            }
+          });
+
+    }
+    else
+    {
+      this.router.navigate(['/not_found']);
+    }
   }
 
   public fileselected(e) {
