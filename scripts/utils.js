@@ -4,7 +4,6 @@ const fs = require('fs');
 const archiver = require('archiver');
 const aws = require('aws-sdk');
 const s3 = require('s3');
-const accessKey = require('./access/accessKey');
 const { exec } = require('child_process');
 const del = require('del');
 const mkdirp = require('mkdirp');
@@ -12,8 +11,8 @@ const mkdirp = require('mkdirp');
 ncp.limit = 16;
 
 aws.config.update({
-    secretAccessKey: accessKey.secretAccessKey,
-    accessKeyId: accessKey.accessKeyId,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     region: "eu-west-1"
 });
 
@@ -74,12 +73,6 @@ module.exports.createTempServerDir = async function createTempServerDir(tempServ
     };
 
     await copyDir('./server', tempServerDirName, options);
-
-    if (environmentName === 'production') {
-        fs.unlinkSync(tempServerDirName + 'config/staging.json');
-    } else {
-        fs.unlinkSync(tempServerDirName + 'config/production.json');
-    }
 
 };
 
@@ -237,8 +230,8 @@ module.exports.syncDirwithS3 = async function syncDirwithS3(s3bucket, tempClient
         // multipartUploadThreshold: 20971520, // this is the default (20 MB)
         // multipartUploadSize: 15728640, // this is the default (15 MB)
         s3Options: {
-            secretAccessKey: accessKey.secretAccessKey,
-            accessKeyId: accessKey.accessKeyId,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
             region: "eu-west-1",
             // endpoint: s3bucket,
             // sslEnabled: true

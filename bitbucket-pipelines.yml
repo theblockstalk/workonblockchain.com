@@ -3,13 +3,64 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:6.9.4
+image: node:8.11.4
 
 pipelines:
-  default:
-    - step:
-        caches:
-          - node
-        script: # Modify the commands below to build your repository.
-          - npm install
-          - npm test
+#  default:
+#    - step:
+#        caches:
+#          - node
+#        script: # Modify the commands below to build your repository.
+#          - cd server
+#          - npm install
+#          - npm test
+#        services:
+#          - mongo
+  branches:
+      staging:
+#        - step:
+#            name: Run server unit tests
+#            caches:
+#              - node
+#            script:
+#              - cd server
+#              - npm install
+#              - npm test
+#            services:
+#              - mongo
+        - step:
+            name: Deploy server and client to staging
+            deployment: staging
+            trigger: automatic
+            script:
+              - cd scripts
+              - npm install
+              - cd ../
+              - node scripts/server.js staging
+              - node scripts/client.js staging
+      master:
+        - step:
+            name: Run server unit tests
+            caches:
+              - node
+            script:
+              - cd server
+              - npm install
+              - npm test
+            services:
+              - mongo
+        - step:
+            name: Deploy server and client to production
+            deployment: production
+            trigger: manual
+            script:
+              - cd scripts
+              - npm install
+              - cd ../
+              - node scripts/server.js production
+              - node scripts/client.js production
+
+definitions:
+  services:
+    mongo:
+      image: mongo:3.6.8
