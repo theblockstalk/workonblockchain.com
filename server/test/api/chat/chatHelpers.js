@@ -195,13 +195,14 @@ const updateJobStatus = module.exports.updateJobStatus = async function updateJo
 }
 
 const uploadFile = module.exports.uploadFile = async function uploadFile(canddiateId,fileName,jwtToken) {
-    const file = {
+    /*const file = {
         'filename': fileName
-    };
+    };*/
+    console.log(fileName);
     const res = await chai.request(server)
-        .post('/users/upload_chat_file/'+canddiateId,file)
+        .post('/users/upload_chat_file/'+canddiateId,fileName)
         .set('Authorization', jwtToken)
-        .send(file);
+        .send(fileName);
     res.should.have.status(200);
     return res;
 }
