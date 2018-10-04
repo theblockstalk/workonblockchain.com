@@ -28,8 +28,7 @@ module.exports = function (req, res) {
 }
 
 function authenticate(email, password,type)
-{	
-	////console.log(email);
+{
     var deferred = Q.defer();
 
     users.findOne({ email: email }, function (err, user)
@@ -88,14 +87,7 @@ function authenticate(email, password,type)
                             		
                             });
                             
-                            
-                            /*
-                            TODO: need to send the token to the client in the response header (I think).
-                            The client needs to store the token as a cookie or in browser storage and use it again for next endpoint call
 
-                            This is my rough estimate
-                            res.header.someFieldToBeStoredInClientCookies = token
-                            */
         				}
 
         				else
@@ -147,14 +139,7 @@ function authenticate(email, password,type)
                             	}
                             		
                             });
-                            
-                            /*
-                            TODO: need to send the token to the client in the response header (I think).
-                            The client needs to store the token as a cookie or in browser storage and use it again for next endpoint call
 
-                            This is my rough estimate
-                            res.header.someFieldToBeStoredInClientCookies = token
-                            */
         				}
         				
         				else
