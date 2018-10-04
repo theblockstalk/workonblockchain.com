@@ -510,7 +510,6 @@ export class LinkedinImportComponent implements OnInit {
       if(f.value.fileselect)
       {
         this.fileselected(this.fileevent);
-        this.router.navigate(['/about']);
       }
 
     }
