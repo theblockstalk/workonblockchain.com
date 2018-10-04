@@ -75,6 +75,7 @@ export class ChatComponent implements OnInit {
 	file_msg = '';
 	img_name = '';
 	file_size = 1048576;
+	msg = '';
 	public myDatePickerOptions: IMyDpOptions;
 
   constructor(
@@ -98,7 +99,7 @@ export class ChatComponent implements OnInit {
         });
     }
 
-  is_approved;disabled;msg;
+  is_approved;disabled;
   ngOnInit() {
     if(this.start_day == 1){}
     else{
