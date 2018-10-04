@@ -114,3 +114,82 @@ const getUserMessages = module.exports.getUserMessages = async function getUserM
     res.should.have.status(200);
     return res;
 }
+
+const insertChatFile= module.exports.insertChatFile = async function insertChatFile(senderId,receverId,msgData,chatFileData,jwtToken) {
+    const data = {
+        'sender_id': senderId,
+        'receiver_id': receverId,
+        'sender_name': msgData.sender_name,
+        'receiver_name': msgData.receiver_name,
+        'message': chatFileData.message,
+        'description': msgData.description,
+        'job_title': msgData.job_title,
+        'salary': msgData.salary,
+        'currency': msgData.currency,
+        'date_of_joining': msgData.date_of_joining,
+        'job_type': msgData.job_type,
+        'msg_tag': msgData.msg_tag,
+        'is_company_reply': msgData.is_company_reply,
+        'interview_location': msgData.interview_location,
+        'interview_time': msgData.interview_time,
+        'file_name': chatFileData.file_name
+    };
+    const res = await chai.request(server)
+        .post('/users/insert_chat_file')
+        .set('Authorization', jwtToken)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
+
+const sendEmploymentOffer = module.exports.sendEmploymentOffer = async function sendEmploymentOffer(senderId,receverId,msgData,offerData,jwtToken) {
+    const data = {
+        'sender_id': senderId,
+        'receiver_id': receverId,
+        'sender_name': msgData.sender_name,
+        'receiver_name': msgData.receiver_name,
+        'message': offerData.message,
+        'description': offerData.description,
+        'job_title': offerData.job_title,
+        'salary': offerData.salary,
+        'currency': offerData.currency,
+        'date_of_joining': offerData.date_of_joining,
+        'job_type': offerData.job_type,
+        'msg_tag': offerData.msg_tag,
+        'is_company_reply': msgData.is_company_reply,
+        'interview_location': msgData.interview_location,
+        'interview_time': msgData.interview_time
+    };
+    const res = await chai.request(server)
+        .post('/users/insert_message_job')
+        .set('Authorization', jwtToken)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
+
+const updateStatus = module.exports.updateStatus = async function updateStatus(candidateId,status,jwtToken) {
+    const data = {
+        'id': candidateId,
+        'status': status
+    };
+    const res = await chai.request(server)
+        .post('/users/update_is_company_reply_status')
+        .set('Authorization', jwtToken)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
+
+const updateJobStatus = module.exports.updateJobStatus = async function updateJobStatus(chatId,status,jwtToken) {
+    const data = {
+        'id': chatId,
+        'status': status
+    };
+    const res = await chai.request(server)
+        .post('/users/update_job_message')
+        .set('Authorization', jwtToken)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}

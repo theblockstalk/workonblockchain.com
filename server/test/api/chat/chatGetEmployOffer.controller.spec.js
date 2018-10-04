@@ -33,23 +33,18 @@ describe('get employment offer detail', function () {
             await userHepler.approve(company.email);
 
             const companyUserDoc = await Users.findOne({email: company.email}).lean();
-            // companyUserDoc.email.should.equal(company.email);
-            // companyUserDoc.is_verify.should.equal(1);
-            // companyUserDoc.type.should.equal(company.type);
 
             //creating a candidate
             const candidate = docGenerator.candidate();
             await candidateHepler.signupVerfiedCandidate(candidate);
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            // candidateUserDoc.email.should.equal(candidate.email);
-            // candidateUserDoc.is_verify.should.equal(1);
-            // candidateUserDoc.type.should.equal(candidate.type);
             const msgTag = 'employment_offer';
 
-            await chatHelper.getEmploymentOfferDetail(companyUserDoc._id, candidateUserDoc._id, msgTag, companyUserDoc.jwt_token);
-
-            // TODO: query the mongodb chat collection and check that the document(s) were inserted correctly with the correct values
+            const employmentOfferDetails = await chatHelper.getEmploymentOfferDetail(companyUserDoc._id, candidateUserDoc._id, msgTag, companyUserDoc.jwt_token);
+            employmentOfferDetails.should.have.status(200);
+            const response = employmentOfferDetails.body;
+            response.datas.should.equal(0);
         })
     })
 });

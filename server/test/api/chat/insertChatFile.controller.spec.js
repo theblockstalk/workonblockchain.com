@@ -1,7 +1,5 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const crypto = require('crypto');
-const server = require('../../../../server');
 const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
@@ -15,16 +13,16 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('get user messages', function () {
+describe('send a file in chat', function () {
 
     afterEach(async () => {
         console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('POST /users/get_user_messages', () => {
+    describe('POST /users/insert_chat_file', () => {
 
-        it('it should get user messages', async () => {
+        it('it should send a file in chat', async () => {
 
             //creating a company
             const company = docGenerator.company();
@@ -34,17 +32,23 @@ describe('get user messages', function () {
             //creating a candidate
             const candidate = docGenerator.candidate();
             await candidateHepler.signupVerifiedApprovedCandidate(candidate);
-            const candidateDoc = await Users.findOne({email: candidate.email}).lean();
+            const userDoc = await Users.findOne({email: candidate.email}).lean();
 
             //sending a message
-            const message = docGenerator.message();
-            const insertRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
-            insertRes.should.have.status(200);
-
-            const res = await chatHelper.getUserMessages(candidateDoc._id,companyDoc.jwt_token);
+            const messageData = docGenerator.message();
+            const chatFileData = docGenerator.chatFile();
+            const res = await chatHelper.insertChatFile(companyDoc._id,userDoc._id,messageData,chatFileData,companyDoc.jwt_token);
             res.should.have.status(200);
-            const responseMessage = res.body.datas[0];
-            responseMessage.is_company_reply.should.equal(1);
+
+            const chatDoc = await Chats.findOne({sender_id: companyDoc._id,receiver_id: userDoc._id}).lean();
+            chatDoc.is_company_reply.should.equal(messageData.is_company_reply);
+            chatDoc.sender_name.should.equal(messageData.sender_name);
+            chatDoc.receiver_name.should.equal(messageData.receiver_name);
+            chatDoc.message.should.equal(chatFileData.message);
+            chatDoc.job_title.should.equal(messageData.job_title);
+            chatDoc.msg_tag.should.equal(messageData.msg_tag);
+            chatDoc.job_type.should.equal(messageData.job_type);
+            chatDoc.file_name.should.equal(chatFileData.file_name);
         })
     })
 });

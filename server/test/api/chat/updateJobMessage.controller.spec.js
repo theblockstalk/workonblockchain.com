@@ -1,7 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const crypto = require('crypto');
-const server = require('../../../../server');
+const date = require('date-and-time');
 const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
@@ -15,16 +14,16 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('get user messages', function () {
+describe('updat job message status', function () {
 
     afterEach(async () => {
         console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('POST /users/get_user_messages', () => {
+    describe('POST /users/update_job_message', () => {
 
-        it('it should get user messages', async () => {
+        it('it should updat job message status', async () => {
 
             //creating a company
             const company = docGenerator.company();
@@ -34,17 +33,21 @@ describe('get user messages', function () {
             //creating a candidate
             const candidate = docGenerator.candidate();
             await candidateHepler.signupVerifiedApprovedCandidate(candidate);
-            const candidateDoc = await Users.findOne({email: candidate.email}).lean();
+            const userDoc = await Users.findOne({email: candidate.email}).lean();
 
-            //sending a message
-            const message = docGenerator.message();
-            const insertRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
-            insertRes.should.have.status(200);
-
-            const res = await chatHelper.getUserMessages(candidateDoc._id,companyDoc.jwt_token);
+            //sending job offer message
+            const messageData = docGenerator.message();
+            const offerData = docGenerator.employmentOffer();
+            const res = await chatHelper.sendEmploymentOffer(companyDoc._id,userDoc._id,messageData,offerData,companyDoc.jwt_token);
             res.should.have.status(200);
-            const responseMessage = res.body.datas[0];
-            responseMessage.is_company_reply.should.equal(1);
+
+            const messagesRes = await chatHelper.getMessages(companyDoc._id,userDoc._id,companyDoc.jwt_token);
+            messagesRes.should.have.status(200);
+
+            const status = 1;
+            const updateRes = await chatHelper.updateJobStatus(messagesRes.body.datas[0]._id,status,userDoc.jwt_token);
+            updateRes.should.have.status(200);
+            updateRes.body.is_job_offered.should.equal(1);
         })
     })
 });

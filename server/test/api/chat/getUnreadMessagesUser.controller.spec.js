@@ -30,29 +30,19 @@ describe('get unread messages of a user', function () {
             const company = docGenerator.company();
             await companyHepler.signupVerifiedApprovedCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
-            // companyDoc.email.should.equal(company.email);
-            // companyDoc.is_verify.should.equal(1);
-            // companyDoc.type.should.equal(company.type);
 
             //creating a candidate
             const candidate = docGenerator.candidate();
             await candidateHepler.signupVerifiedApprovedCandidate(candidate);
             const candidateDoc = await Users.findOne({email: candidate.email}).lean();
-            // candidateDoc.email.should.equal(candidate.email);
-            // candidateDoc.is_verify.should.equal(1);
-            // candidateDoc.type.should.equal(candidate.type);
 
             //sending a message
             const message = docGenerator.message();
-            await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
+            const insertRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
+            insertRes.should.have.status(200);
 
             const res = await chatHelper.getUnreadMessages(companyDoc._id,candidateDoc._id,companyDoc.jwt_token);
-            // console.log(res.body.number_of_unread_msgs);
-            // let flag=1;
-            // if(res.body.number_of_unread_msgs === 0){
-            //     flag=0;
-            // }
-            // flag.should.equal(1);
+            res.should.have.status(200);
             res.body.number_of_unread_msgs.should.equal(1);
         })
     })

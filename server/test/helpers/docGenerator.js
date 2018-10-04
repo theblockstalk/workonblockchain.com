@@ -36,7 +36,7 @@ module.exports.initialJobOffer = function initialJobOffer() {
         job_title: "job title for test case",
         salary: 1500,
         currency: "€ EUR",
-        date_of_joining: "null",
+        date_of_joining: "",
         job_type: "Part Time",
         is_company_reply: 0,
         interview_location: "",
@@ -54,11 +54,31 @@ module.exports.message = function message() {
         job_title: "",
         salary: "",
         currency: "",
-        date_of_joining: "null",
+        date_of_joining: "",
         job_type: "",
         is_company_reply: 1,
         interview_location: "",
         interview_time: "",
         msg_tag: "normal"
+    };
+};
+
+module.exports.chatFile = function chatFile() {
+    return {
+        message: "file",
+        file_name: "my-test-file.jpg"
+    };
+};
+
+module.exports.employmentOffer = function employmentOffer() {
+    return {
+        message: "You have been send an employment offer!",
+        description: "this is a test description",
+        job_title: "Test job title",
+        salary: 2000,
+        currency: "€ EUR",
+        date_of_joining: "10-25-2018",
+        job_type: "Full Time",
+        msg_tag: "employment_offer"
     };
 };

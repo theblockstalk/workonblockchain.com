@@ -30,22 +30,17 @@ describe('get a candidate or company info', function () {
             const company = docGenerator.company();
             await companyHepler.signupVerifiedApprovedCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
-            // companyDoc.email.should.equal(company.email);
-            // companyDoc.is_verify.should.equal(1);
-            // companyDoc.type.should.equal(company.type);
-
             //creating a candidate
             const candidate = docGenerator.candidate();
             await candidateHepler.signupVerifiedApprovedCandidate(candidate);
             const candidateDoc = await Users.findOne({email: candidate.email}).lean();
-            // candidateDoc.email.should.equal(candidate.email);
-            // candidateDoc.is_verify.should.equal(1);
-            // candidateDoc.type.should.equal(candidate.type);
             const isCompanyReply = 1;
 
-            await chatHelper.getUserInfo(companyDoc._id,candidateDoc._id,isCompanyReply,candidate.type,companyDoc.jwt_token);
-
-            // TODO: query the mongodb chat collection and check that the document(s) were inserted correctly with the correct values
+            const userDetails = await chatHelper.getUserInfo(companyDoc._id,candidateDoc._id,isCompanyReply,candidate.type,companyDoc.jwt_token);
+            userDetails.should.have.status(200);
+            const response = userDetails.body;
+            response.users._creator.email.should.equal(candidate.email);
+            response.users._creator.type.should.equal(candidate.type);
         })
     })
 });
