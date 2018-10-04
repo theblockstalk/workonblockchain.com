@@ -37,7 +37,6 @@ describe('send a message', function () {
             //sending a message
             const initialJobOffer = docGenerator.initialJobOffer();
             const res = await chatHelper.insertMessage(companyDoc._id,userDoc._id,initialJobOffer,companyDoc.jwt_token);
-            res.should.have.status(200);
 
             const chatDoc = await Chats.findOne({sender_id: companyDoc._id,receiver_id: userDoc._id}).lean();
             chatDoc.is_company_reply.should.equal(initialJobOffer.is_company_reply);

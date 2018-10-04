@@ -32,7 +32,7 @@ describe('signup as candidate', function () {
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             userDoc.email.should.equal(candidate.email);
-            userDoc.is_verify.should.equal(0);
+            userDoc.is_verify.should.equal(1);
             userDoc.is_approved.should.equal(0);
             userDoc.is_admin.should.equal(0);
             userDoc.disable_account.should.equal(false);

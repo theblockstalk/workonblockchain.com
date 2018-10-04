@@ -39,10 +39,8 @@ describe('get chat messages of a user', function () {
             //sending a message
             const message = docGenerator.message();
             const insertRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
-            insertRes.should.have.status(200);
 
             const res = await chatHelper.getMessages(companyDoc._id,candidateDoc._id,companyDoc.jwt_token);
-            res.should.have.status(200);
             res.body.datas[0].sender_name.should.equal(message.sender_name);
             res.body.datas[0].receiver_name.should.equal(message.receiver_name);
             res.body.datas[0].message.should.equal(message.message);

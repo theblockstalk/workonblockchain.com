@@ -44,7 +44,6 @@ describe('get employment offer detail', function () {
             const employmentOfferDetails = await chatHelper.getEmploymentOfferDetail(companyUserDoc._id, candidateUserDoc._id, msgTag, companyUserDoc.jwt_token);
             employmentOfferDetails.should.have.status(200);
             const response = employmentOfferDetails.body;
-            response.datas.should.equal(0);
         })
     })
 });

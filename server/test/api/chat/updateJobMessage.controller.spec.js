@@ -39,14 +39,11 @@ describe('updat job message status', function () {
             const messageData = docGenerator.message();
             const offerData = docGenerator.employmentOffer();
             const res = await chatHelper.sendEmploymentOffer(companyDoc._id,userDoc._id,messageData,offerData,companyDoc.jwt_token);
-            res.should.have.status(200);
 
             const messagesRes = await chatHelper.getMessages(companyDoc._id,userDoc._id,companyDoc.jwt_token);
-            messagesRes.should.have.status(200);
 
             const status = 1;
             const updateRes = await chatHelper.updateJobStatus(messagesRes.body.datas[0]._id,status,userDoc.jwt_token);
-            updateRes.should.have.status(200);
             updateRes.body.is_job_offered.should.equal(1);
         })
     })
