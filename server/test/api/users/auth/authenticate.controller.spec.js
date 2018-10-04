@@ -28,42 +28,23 @@ describe('login as company or candidate', function () {
     {
         it('it should login candidate or company' , async () =>
         {
-            //candidate
             const candidate = docGenerator.candidate();
             const candidateRes = await candidateHepler.signupCandidate(candidate);
             candidateRes.should.have.status(200);
 
             const authenticateCandidate = await authenticateHepler.authenticateUser(candidate.email, candidate.password);
-            authenticateCandidate.should.have.status(200);
+            should.exist(authenticateCandidate.body.jwt_token);
 
-            const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            candidateUserDoc.email.should.equal(candidate.email);
+        })
 
-            const salt = candidateUserDoc.salt;
-            let hash = crypto.createHmac('sha512', salt);
-            hash.update(candidate.password);
-            const hashedPasswordAndSalt = hash.digest('hex');
-            candidateUserDoc.password_hash.should.equal(hashedPasswordAndSalt);
-
-            //company
+        it('it should login company' , async () =>
+        {
             const company = docGenerator.company();
             const companyRes = await companyHepler.signupCompany(company);
             companyRes.should.have.status(200);
 
             const authenticateCompany = await authenticateHepler.authenticateUser(company.email, company.password);
-            authenticateCompany.should.have.status(200);
-
-            const companyUserDoc = await Users.findOne({email: company.email}).lean();
-            companyUserDoc.email.should.equal(company.email);
-
-            const passwordSalt  = companyUserDoc.salt;
-            let passwordHash  = crypto.createHmac('sha512', passwordSalt );
-            passwordHash .update(company.password);
-            const passwordHashedAndSalt  = passwordHash.digest('hex');
-            companyUserDoc.password_hash.should.equal(passwordHashedAndSalt );
-
-
-
+            should.exist(authenticateCompany.body.jwt_token);
         })
     })
 
