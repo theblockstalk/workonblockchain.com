@@ -90,3 +90,9 @@ module.exports.changePassword = function changePassword(){
         password : "myPassword1"
     }
 }
+
+module.exports.accountSetting = function accountSetting(){
+    return {
+        disable_account : true
+    }
+}

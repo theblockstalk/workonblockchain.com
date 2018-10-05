@@ -63,3 +63,15 @@ const verifyClient = module.exports.verifyClient = async function (email){
     return res;
 }
 
+const accountSetting = module.exports.accountSetting = async function (profileStatus,jwtToken){
+    const data = {
+        'status': profileStatus
+    }
+    const res = await chai.request(server)
+        .post('/users/set_disable_status')
+        .set('Authorization', jwtToken)
+        .send(data)
+    res.should.have.status(200);
+    return res;
+}
+
