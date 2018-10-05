@@ -14,29 +14,32 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
+describe('reset password of candidate or company', function () {
 
-describe('change password of candidate or company' , function() {
-
-    afterEach(async()=>{
-        console.log("dropping database");
+    afterEach(async () => {
+        console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('PUT /users/change_password' , () => {
-
-        it('it should change password of candidate' , async() => {
-
+    describe('PUT /users/reset_password/:hash' , () =>
+    {
+        it('it should reset candidate password' , async () =>
+        {
             const candidate = docGenerator.candidate();
             const candidateRes = await candidateHepler.signupCandidate(candidate);
 
-            const changePassword = docGenerator.changePassword();
-            const newPassword = await authenticateHepler.changeUserPassword(changePassword, candidateRes.body.jwt_token);
+            const forgotPassword = await authenticateHepler.forgotPassworsEmail(candidate.email);
 
-            const userDoc = await Users.findOne({email: candidate.email}).lean();
+            let userDoc = await Users.findOne({email: candidate.email}).lean();
+
+            const resetPassword = await authenticateHepler.resetPassword(userDoc.forgot_password_key, candidate.password);
+
+            userDoc = await Users.findOne({email: candidate.email}).lean();
             const salt = userDoc.salt;
             let hash = crypto.createHmac('sha512', salt);
-            hash.update(changePassword.password);
+            hash.update(candidate.password);
             const hashedPasswordAndSalt = hash.digest('hex');
+
             userDoc.password_hash.should.equal(hashedPasswordAndSalt);
 
         })

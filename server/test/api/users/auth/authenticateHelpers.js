@@ -45,3 +45,14 @@ const changeUserPassword = module.exports.changeUserPassword = async function(in
     return res;
 }
 
+const resetPassword = module.exports.resetPassword = async function(forgot_password_key , password){
+    const data = {
+        'password' : password
+    }
+    const res = await chai.request(server)
+        .put('/users/reset_password/' + forgot_password_key)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
+

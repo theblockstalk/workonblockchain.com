@@ -61,7 +61,7 @@ function forgot_password(email)
         }
         else
         {
-            deferred.resolve({error:'Email Not Found'});
+            deferred.resolve({success: false, error:'Email Not Found'});
         }
 
     });
@@ -180,7 +180,7 @@ function forgot_passwordEmail_send(data)
         }
         else
         {
-            deferred.resolve({error:'Email Not Found'});
+            deferred.resolve({success: false, error:'Email Not Found'});
         }
 
     });

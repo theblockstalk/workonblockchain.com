@@ -27,32 +27,16 @@ describe('verify email of candidate or company', function () {
         {
             const candidate = docGenerator.candidate();
             const candidateRes = await candidateHepler.signupCandidate(candidate);
-            // candidateRes.should.have.status(200); this is already done in candidateHepler.signupCandidate(candidate);
 
             let candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             candidateUserDoc.is_verify.should.equal(0);
 
-            const verifyCandidate = await authenticateHepler.verifyEmail(candidateRes.body.verifyEmailKey);
+            const verifyCandidate = await authenticateHepler.verifyEmail(candidateUserDoc.verify_email_key);
 
-            verifyCandidate.body.msg.should.equal('Email Verified');
             candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             candidateUserDoc.is_verify.should.equal(1);
         })
 
-        it('it should verify company email' , async () =>
-        {
-            const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
-
-            let companyUserDoc = await Users.findOne({email: company.email}).lean();
-            companyUserDoc.is_verify.should.equal(0);
-
-            const verifyCompany = await authenticateHepler.verifyEmail(companyRes.body.verifyEmailKey);
-
-            verifyCompany.body.msg.should.equal('Email Verified');
-            companyUserDoc = await Users.findOne({email: company.email}).lean();
-            companyUserDoc.is_verify.should.equal(1);
-        })
 
     })
 

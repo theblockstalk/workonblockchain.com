@@ -29,8 +29,7 @@ describe('forgot password email of candidate or company', function () {
             const candidateRes = await candidateHepler.signupCandidate(candidate);
 
             const forgotPasswordEmail = await authenticateHepler.forgotPassworsEmail(candidate.email);
-            forgotPasswordEmail.body.msg.should.equal('Email Sent');
-            // above line is not testing much. if the endpoint fails then this test will fail, so this is probably not needed. but ok to keep
+            forgotPasswordEmail.body.success.should.equal(true);
 
         })
     })
