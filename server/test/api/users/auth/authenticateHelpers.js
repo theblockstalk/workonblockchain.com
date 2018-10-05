@@ -19,9 +19,15 @@ const authenticateUser = module.exports.authenticateUser = async function authen
 }
 
 const verifyEmail = module.exports.verifyEmail = async function verifyEmail(verify_email_key) {
-
     const res = await chai.request(server)
         .put('/users/emailVerify/' + verify_email_key);
+    res.should.have.status(200);
+    return res;
+}
+
+const forgotPasswordEmail = module.exports.forgotPassworsEmail = async function(email){
+    const res = await chai.request(server)
+        .put('/users/forgot_password/' + email);
     res.should.have.status(200);
     return res;
 }

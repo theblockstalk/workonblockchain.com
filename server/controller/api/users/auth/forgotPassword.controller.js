@@ -43,7 +43,6 @@ function forgot_password(email)
 
         if(result)
         {
-        	console.log(result.social_type);
         	if(result.social_type === 'GOOGLE')
         	{
         		deferred.resolve({error:'Please login using gmail'});
@@ -94,7 +93,7 @@ function forgot_password(email)
             {
             	
                 forgot_passwordEmail_send(email_data.token)
-                deferred.resolve({msg:'Email Send'});
+                deferred.resolve({msg:'Email Sent'});
             }
         });
     }
@@ -121,7 +120,6 @@ function forgot_passwordEmail_send(data)
 
         if(result)
         {
-        	console.log(result.type);
         	if(result.type === 'candidate')
         	{
         		CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data)

@@ -29,8 +29,8 @@ describe('verify email of candidate or company', function () {
             const companyRes = await companyHepler.signupCompany(company);
             companyRes.should.have.status(200);
 
-            const authenticateCompany = await authenticateHepler.verifyEmail(companyRes.body.verifyEmailKey);
-            authenticateCompany.body.msg.should.equal('Email Verified');
+            const verifyCompany = await authenticateHepler.verifyEmail(companyRes.body.verifyEmailKey);
+            verifyCompany.body.msg.should.equal('Email Verified');
         })
 
         it('it should verify candidate email' , async () =>
@@ -39,8 +39,8 @@ describe('verify email of candidate or company', function () {
             const candidateRes = await candidateHepler.signupCandidate(candidate);
             candidateRes.should.have.status(200);
 
-            const authenticateCandidate = await authenticateHepler.verifyEmail(candidateRes.body.email_hash);
-            authenticateCandidate.body.msg.should.equal('Email Verified');
+            const verifyCandidate = await authenticateHepler.verifyEmail(candidateRes.body.email_hash);
+            verifyCandidate.body.msg.should.equal('Email Verified');
         })
     })
 
