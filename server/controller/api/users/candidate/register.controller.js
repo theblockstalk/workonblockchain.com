@@ -54,7 +54,7 @@ function create(userParam)
 
     function createUser()
     {
-        var is_verify;
+        let is_verify=0;
         if(userParam.social_type!="")
         {
             is_verify =1;
