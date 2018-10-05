@@ -93,7 +93,10 @@ function forgot_password(email)
             {
             	
                 forgot_passwordEmail_send(email_data.token)
-                deferred.resolve({msg:'Email Sent'});
+                deferred.resolve({
+                    success: true,
+                    msg:'Email Sent'
+                });
             }
         });
     }

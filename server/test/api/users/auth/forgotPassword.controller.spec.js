@@ -27,21 +27,11 @@ describe('forgot password email of candidate or company', function () {
         {
             const candidate = docGenerator.candidate();
             const candidateRes = await candidateHepler.signupCandidate(candidate);
-            candidateRes.should.have.status(200);
 
             const forgotPasswordEmail = await authenticateHepler.forgotPassworsEmail(candidate.email);
             forgotPasswordEmail.body.msg.should.equal('Email Sent');
+            // above line is not testing much. if the endpoint fails then this test will fail, so this is probably not needed. but ok to keep
 
-        })
-
-        it('it should sent forgot password email to company' , async() =>
-        {
-            const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
-            companyRes.should.have.status(200);
-
-            const forgotPasswordEmail = await authenticateHepler.forgotPassworsEmail(company.email);
-            forgotPasswordEmail.body.msg.should.equal('Email Sent');
         })
     })
 
