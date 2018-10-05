@@ -32,3 +32,16 @@ const forgotPasswordEmail = module.exports.forgotPassworsEmail = async function(
     return res;
 }
 
+const changeUserPassword = module.exports.changeUserPassword = async function(inputData,jwtToken){
+    const data = {
+        'current_password' : inputData.current_password,
+        'password' : inputData.password
+    }
+    const res = await chai.request(server)
+        .put('/users/change_password')
+        .set('Authorization', jwtToken)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
+

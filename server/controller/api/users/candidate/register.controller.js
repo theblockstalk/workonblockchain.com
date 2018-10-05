@@ -31,7 +31,6 @@ module.exports = function register(req, res)
 
 function create(userParam)
 {
-	//console.log(userParam);
     var deferred = Q.defer();
     var count=0;
 
@@ -146,7 +145,7 @@ function create(userParam)
                         		({
                                     _id:user.id,
                                     _creator: userData._creator._id,
-                                    email_hash:userData._creator.verify_email_key,
+                                    verifyEmailKey:userData._creator.verify_email_key,
                                     type:userData._creator.type,
                                     email: userData._creator.email,
                                     ref_link: userData._creator.ref_link,

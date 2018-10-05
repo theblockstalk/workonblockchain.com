@@ -23,7 +23,7 @@ module.exports.company = function company() {
         conuntry: "Pakistan",
         postal_code: "25000",
         city: "RWP",
-        password: "myPassword1",
+        password: "Password1",
         type: "company"
     };
 };
@@ -83,3 +83,10 @@ module.exports.employmentOffer = function employmentOffer() {
         msg_tag: "employment_offer"
     };
 };
+
+module.exports.changePassword = function changePassword(){
+    return {
+        current_password : "Password1",
+        password : "myPassword1"
+    }
+}

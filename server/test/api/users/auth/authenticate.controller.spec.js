@@ -11,7 +11,6 @@ const candidateHepler = require('../candidate/candidateHelpers');
 const authenticateHepler = require('./authenticateHelpers');
 const docGenerator = require('../../../helpers/docGenerator');
 
-
 const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();

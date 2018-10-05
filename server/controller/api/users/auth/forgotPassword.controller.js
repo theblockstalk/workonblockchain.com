@@ -105,7 +105,7 @@ function forgot_password(email)
 
 function forgot_passwordEmail_send(data)
 {
-
+    var deferred = Q.defer();
     var hash = jwt_hash.decode(data, settings.EXPRESS_JWT_SECRET, 'HS256');
 
     var name;

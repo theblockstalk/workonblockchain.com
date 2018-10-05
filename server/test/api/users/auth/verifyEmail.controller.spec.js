@@ -23,6 +23,16 @@ describe('verify email of candidate or company', function () {
 
     describe('PUT /users/emailVerify/:email_hash' , () =>
     {
+        it('it should verify candidate email' , async () =>
+        {
+            const candidate = docGenerator.candidate();
+            const candidateRes = await candidateHepler.signupCandidate(candidate);
+            candidateRes.should.have.status(200);
+
+            const verifyCandidate = await authenticateHepler.verifyEmail(candidateRes.body.verifyEmailKey);
+            verifyCandidate.body.msg.should.equal('Email Verified');
+        })
+
         it('it should verify company email' , async () =>
         {
             const company = docGenerator.company();
@@ -33,15 +43,6 @@ describe('verify email of candidate or company', function () {
             verifyCompany.body.msg.should.equal('Email Verified');
         })
 
-        it('it should verify candidate email' , async () =>
-        {
-            const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHepler.signupCandidate(candidate);
-            candidateRes.should.have.status(200);
-
-            const verifyCandidate = await authenticateHepler.verifyEmail(candidateRes.body.email_hash);
-            verifyCandidate.body.msg.should.equal('Email Verified');
-        })
     })
 
 });

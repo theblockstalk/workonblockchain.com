@@ -14,34 +14,38 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('forgot password email of candidate or company', function () {
 
-    afterEach(async () => {
-        console.log('dropping database');
+describe('change password of candidate or company' , function() {
+
+    afterEach(async()=>{
+        console.log("dropping database");
         await mongo.drop();
     })
 
-    describe('PUT /users/forgot_password/:email' ,() =>
-    {
-        it('it should sent forgot password email to candidate', async () =>
-        {
+    describe('PUT /users/change_password' , () => {
+
+        it('it should change password of candidate' , async() => {
+
             const candidate = docGenerator.candidate();
             const candidateRes = await candidateHepler.signupCandidate(candidate);
             candidateRes.should.have.status(200);
 
-            const forgotPasswordEmail = await authenticateHepler.forgotPassworsEmail(candidate.email);
-            forgotPasswordEmail.body.msg.should.equal('Email Sent');
+            const changePassword = docGenerator.changePassword();
+            const newPassword = await authenticateHepler.changeUserPassword(changePassword, candidateRes.body.jwt_token);
+            newPassword.body.msg.should.equal('Password changed successfully');
 
         })
 
-        it('it should sent forgot password email to company' , async() =>
-        {
+        it('it should change password of company' , async() => {
+
             const company = docGenerator.company();
             const companyRes = await companyHepler.signupCompany(company);
             companyRes.should.have.status(200);
 
-            const forgotPasswordEmail = await authenticateHepler.forgotPassworsEmail(company.email);
-            forgotPasswordEmail.body.msg.should.equal('Email Sent');
+            const changePassword = docGenerator.changePassword();
+            const newPassword = await authenticateHepler.changeUserPassword(changePassword, companyRes.body.jwt_token);
+            newPassword.body.msg.should.equal('Password changed successfully');
+
         })
     })
 
