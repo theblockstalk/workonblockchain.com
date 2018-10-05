@@ -6,7 +6,8 @@ module.exports.candidate = function candidate() {
         last_name: "Hussain",
         email: "tayyab@mail.com",
         password: "Password1",
-        type: "candidate"
+        type: "candidate",
+        social_type : ""
     };
 };
 

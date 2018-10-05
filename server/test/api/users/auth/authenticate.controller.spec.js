@@ -26,7 +26,7 @@ describe('login as company or candidate', function () {
 
     describe('POST /users/authenticate' , () =>
     {
-        it('it should login candidate or company' , async () =>
+        it('it should login candidate' , async () =>
         {
             const candidate = docGenerator.candidate();
             const candidateRes = await candidateHepler.signupCandidate(candidate);
