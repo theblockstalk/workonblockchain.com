@@ -89,5 +89,13 @@ const approvalEmail = module.exports.approvalEmail = async function (type,email,
     return res;
 }
 
+const destroyToken = module.exports.destroyToken  = async function(jwtToken){
+    const res = await chai.request(server)
+        .post('/users/destroy_token')
+        .set('Authorization', jwtToken)
+    res.should.have.status(200);
+    return res;
+}
+
 
 
