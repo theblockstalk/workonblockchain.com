@@ -1,29 +1,29 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const crypto = require('crypto');
-const server = require('../../../../server');
-const mongo = require('../../helpers/mongo');
-const Users = require('../../../model/users');
-const docGenerator = require('../../helpers/docGenerator');
-const companyHelper = require('../users/company/companyHelpers');
-const candidateHelper = require('../users/candidate/candidateHelpers');
-const chatHelper = require('./chatHelpers');
+const mongo = require('../../../../helpers/mongo');
+const Chats = require('../../../../../model/chat');
+const Users = require('../../../../../model/users');
+const docGenerator = require('../../../../helpers/docGenerator');
+const companyHelper = require('../../../users/company/companyHelpers');
+const candidateHelper = require('../../../users/candidate/candidateHelpers');
+const adminChatHelper = require('./adminChatHelpers');
+const chatHelper = require('../../../chat/chatHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('get unread messages of a user', function () {
+describe('update chat message status to read', function () {
 
     afterEach(async () => {
         console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('POST /users/get_unread_msgs_of_user', () => {
+    describe('POST /users/update_chat_msg_status', () => {
 
-        it('it should get unread messages of a user', async () => {
+        it('it should update chat message status to read', async () => {
 
             //creating a company
             const company = docGenerator.company();
@@ -39,8 +39,10 @@ describe('get unread messages of a user', function () {
             const message = docGenerator.message();
             const insertRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
 
-            const res = await chatHelper.getUnreadMessages(companyDoc._id,candidateDoc._id,companyDoc.jwt_token);
-            res.body.number_of_unread_msgs.should.equal(1);
+            const status = 0;
+            const res = await adminChatHelper.setUnreadMessageStatus(companyDoc._id,candidateDoc._id,status,candidateDoc.jwt_token);
+            const chatDoc = await Chats.findOne({receiver_id: candidateDoc._id}).lean();
+            chatDoc.is_read.should.equal(1);
         })
     })
 });

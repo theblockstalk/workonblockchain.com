@@ -30,4 +30,5 @@ module.exports.signupVerifiedApprovedCompany = async function signupVerifiedAppr
     await signupCompany(company);
     await userHelpers.verifyEmail(company.email);
     await userHelpers.approve(company.email);
+    await userHelpers.makeAdmin(company.email);
 }

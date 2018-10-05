@@ -6,21 +6,6 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-const getInitialJobOfferDetail = module.exports.getInitialJobOfferDetail = async function getInitialJobOfferDetail(senderId,receverId,msgTag,jwtToken) {
-   const data = {
-        'sender_id': senderId,
-        'receiver_id': receverId,
-        'msg_tag': msgTag
-    };
-    const res = await chai.request(server)
-        .post('/users/get_job_desc_msgs')
-        .set('Authorization', jwtToken)
-        .send(data);
-    res.should.have.status(200);
-    return res;
-
-}
-
 const insertMessage = module.exports.insertMessage = async function insertMessage(senderId,receverId,msgData,jwtToken) {
      const data = {
         'sender_id': senderId,

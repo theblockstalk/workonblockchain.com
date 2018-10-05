@@ -5,8 +5,8 @@ const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHepler = require('../users/company/companyHelpers');
-const candidateHepler = require('../users/candidate/candidateHelpers');
+const companyHelper = require('../users/company/companyHelpers');
+const candidateHelper = require('../users/candidate/candidateHelpers');
 const chatHelper = require('./chatHelpers');
 
 const assert = chai.assert;
@@ -27,12 +27,12 @@ describe('update company reply status', function () {
 
             //creating a company
             const company = docGenerator.company();
-            await companyHepler.signupVerifiedApprovedCompany(company);
+            await companyHelper.signupVerifiedApprovedCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            await candidateHepler.signupVerifiedApprovedCandidate(candidate);
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const userDoc = await Users.findOne({email: candidate.email}).lean();
 
             //sending a message
@@ -41,7 +41,8 @@ describe('update company reply status', function () {
 
             const status = 1;
             const statusRes = await chatHelper.updateStatus(userDoc._id,status,userDoc.jwt_token);
-            statusRes.body.is_company_reply.should.equal(status);
+            const chatDoc = await Chats.findOne({receiver_id: userDoc._id}).lean();
+            chatDoc.is_company_reply.should.equal(1);
         })
     })
 });

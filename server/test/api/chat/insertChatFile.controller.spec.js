@@ -4,8 +4,8 @@ const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHepler = require('../users/company/companyHelpers');
-const candidateHepler = require('../users/candidate/candidateHelpers');
+const companyHelper = require('../users/company/companyHelpers');
+const candidateHelper = require('../users/candidate/candidateHelpers');
 const chatHelper = require('./chatHelpers');
 
 const assert = chai.assert;
@@ -26,12 +26,12 @@ describe('send a file in chat', function () {
 
             //creating a company
             const company = docGenerator.company();
-            await companyHepler.signupVerifiedApprovedCompany(company);
+            await companyHelper.signupVerifiedApprovedCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            await candidateHepler.signupVerifiedApprovedCandidate(candidate);
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const userDoc = await Users.findOne({email: candidate.email}).lean();
 
             //sending a message
