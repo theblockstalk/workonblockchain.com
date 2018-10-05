@@ -56,3 +56,10 @@ const resetPassword = module.exports.resetPassword = async function(forgot_passw
     return res;
 }
 
+const verifyClient = module.exports.verifyClient = async function (email){
+    const res = await chai.request(server)
+        .put('/users/verify_client/'+ email);
+    res.should.have.status(200);
+    return res;
+}
+
