@@ -2,9 +2,7 @@ const emails = require('../emails');
 const settings = require('../../../../settings');
 
 module.exports.sendEmail = function sendEmail(email,name) {
-	console.log("candidate approved email");
-	console.log(email);
-	console.log(name);
+
     const sendTo = {
         email:email
     };
