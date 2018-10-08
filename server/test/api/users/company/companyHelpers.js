@@ -34,7 +34,15 @@ module.exports.signupVerifiedApprovedCompany = async function signupVerifiedAppr
 
 const getCompanies = module.exports.getCompanies = async function getCompanies(jwtToken){
     const res = await chai.request(server)
-        .post('/users/company')
+        .get('/users/company')
+        .set('Authorization', jwtToken)
+    res.should.have.status(200);
+    return res;
+}
+
+const getCurrentCompany = module.exports.getCurrentCompany = async function getCurrentCompany(companyId,jwtToken){
+    const res = await chai.request(server)
+        .get('/users/current_company/' + companyId)
         .set('Authorization', jwtToken)
     res.should.have.status(200);
     return res;
