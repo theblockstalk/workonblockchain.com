@@ -77,15 +77,39 @@ const companyAboutWizard = module.exports.companyAboutWizard = async function co
     return res;
 }
 
-const companyProfile = module.exports.companyProfile = async function companyProfile(profileImage , jwtToken){
+const companyProfileImg = module.exports.companyProfileImg = async function companyProfileImg(profileImage , jwtToken){
     const data = {
         'filename' : profileImage
     }
     const res = await chai.request(server)
         .post('/users/employer_image')
         .set('Authorization', jwtToken)
-        .attach('file', profileImage)
+        .send(data)
     res.should.have.status(200);
     return res;
 }
 
+const UpdateCompanyProfile = module.exports.UpdateCompanyProfile = async function UpdateCompanyProfile(profileData,jwtToken){
+    const data = {
+        'first_name': profileData.first_name,
+        'last_name': profileData.last_name,
+        'job_title': profileData.job_title,
+        'company_name': profileData.company_name,
+        'company_website': profileData.company_website,
+        'phone_number': profileData.phone_number,
+        'country': profileData.country,
+        'postal_code': profileData.postal_code,
+        'city': profileData.city,
+        'company_founded':profileData.company_founded,
+        'no_of_employees':profileData.no_of_employees,
+        'company_funded':profileData.company_funded,
+        'company_description':profileData.company_description
+    }
+    const res = await chai.request(server)
+        .put('/users/update_company_profile')
+        .set('Authorization', jwtToken)
+        .send(data)
+    res.should.have.status(200);
+    return res;
+
+}

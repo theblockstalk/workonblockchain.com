@@ -29,7 +29,7 @@ describe('company profile image', function () {
 
             const companyProfileImage = docGenerator.companyProfileImage();
             console.log(companyProfileImage);
-            const companyProfile = await companyHepler.companyProfile(companyProfileImage.image_name ,companyRes.body.jwt_token);
+            const companyProfile = await companyHepler.companyProfileImg(companyProfileImage.image_name ,companyRes.body.jwt_token);
 
             const userDoc = await Users.findOne({email: company.email}).lean();
 

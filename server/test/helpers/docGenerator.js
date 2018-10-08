@@ -20,7 +20,7 @@ module.exports.company = function company() {
         company_name: "My Company",
         company_website: "my-web.com",
         phone_number: "926546456",
-        conuntry: "Pakistan",
+        country: "Pakistan",
         postal_code: "25000",
         city: "RWP",
         password: "Password1",
@@ -117,5 +117,24 @@ module.exports.companyAbout = function companyAbout(){
 module.exports.companyProfileImage = function companyProfileImage() {
     return {
         image_name: "1535782403315Koala.jpg"
-    };
-};
+    }
+}
+
+module.exports.companyUpdateProfile = function companyUpdateProfile(){
+    return {
+        first_name: "Sara",
+        last_name: "khan",
+        job_title: "Developer",
+        company_name: "Mwan Mobile",
+        company_website: "www.mwanmobile.com",
+        phone_number: "090078601",
+        country: "Pakistan",
+        postal_code: "44000",
+        city: "rawalpindi",
+        company_founded:2013,
+        no_of_employees:8,
+        company_funded:"i have no idea",
+        company_description:"Global blockchain agnostic hiring platform for developers."
+
+    }
+}
