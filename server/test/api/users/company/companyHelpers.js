@@ -50,86 +50,61 @@ const getCurrentCompany = module.exports.getCurrentCompany = async function getC
 }
 
 const SummaryTnC = module.exports.SummaryTnC = async function SummaryTnC(companyTnCWizard,jwtToken){
-    const data = {
-        'terms' :   companyTnCWizard.terms,
-        'marketing' : companyTnCWizard.marketing_emails
-    }
+
     const res = await chai.request(server)
         .put('/users/company_wizard')
         .set('Authorization', jwtToken)
-        .send(data)
+        .send(companyTnCWizard)
     res.should.have.status(200);
     return res;
 }
 
 const companyAboutWizard = module.exports.companyAboutWizard = async function companyAboutWizard(aboutData , jwtToken){
-    const data = {
-        'company_founded' :   aboutData.company_founded,
-        'no_of_employees' : aboutData.no_of_employees,
-        'company_funded' : aboutData.company_funded,
-        'company_description' : aboutData.company_description
-    }
+
     const res = await chai.request(server)
         .put('/users/about_company')
         .set('Authorization', jwtToken)
-        .send(data)
+        .send(aboutData)
     res.should.have.status(200);
     return res;
 }
 
 const companyProfileImg = module.exports.companyProfileImg = async function companyProfileImg(profileImage , jwtToken){
-    const data = {
-        'filename' : profileImage
-    }
+
     const res = await chai.request(server)
         .post('/users/employer_image')
         .set('Authorization', jwtToken)
-        .send(data)
+        .send(profileImage)
     res.should.have.status(200);
     return res;
 }
 
 const UpdateCompanyProfile = module.exports.UpdateCompanyProfile = async function UpdateCompanyProfile(profileData,jwtToken){
-    const data = {
-        'first_name': profileData.first_name,
-        'last_name': profileData.last_name,
-        'job_title': profileData.job_title,
-        'company_name': profileData.company_name,
-        'company_website': profileData.company_website,
-        'phone_number': profileData.phone_number,
-        'country': profileData.country,
-        'postal_code': profileData.postal_code,
-        'city': profileData.city,
-        'company_founded':profileData.company_founded,
-        'no_of_employees':profileData.no_of_employees,
-        'company_funded':profileData.company_funded,
-        'company_description':profileData.company_description
-    }
+
     const res = await chai.request(server)
         .put('/users/update_company_profile')
         .set('Authorization', jwtToken)
-        .send(data)
+        .send(profileData)
     res.should.have.status(200);
     return res;
 
 }
 
 const companyFilter = module.exports.companyFilter = async function companyFilter(filterData,jwtToken){
-    const data = {
-        'currency' : filterData.currency,
-        'salary' : filterData.salary,
-        'roles' : filterData.roles,
-        'skill' : filterData.skill,
-        'location' : filterData.location,
-        'blockchain' : filterData.blockchain,
-        'availability' : filterData.availability,
-        'word' : filterData.word
-    }
 
     const res = await chai.request(server)
         .post('/users/filter')
         .set('Authorization', jwtToken)
-        .send(data)
+        .send(filterData)
+    res.should.have.status(200);
+    return res;
+}
+
+const verifiedCandidate = module.exports.verifiedCandidate = async function verifiedCandidate(jwtToken){
+
+    const res = await chai.request(server)
+        .post('/users/verified_candidate')
+        .set('Authorization', jwtToken)
     res.should.have.status(200);
     return res;
 }

@@ -100,7 +100,7 @@ module.exports.accountSetting = function accountSetting(){
 module.exports.companyTnCWizard = function companyTnCWizard(){
     return {
         terms:true,
-        marketing_emails: true
+        marketing: true
     }
 }
 

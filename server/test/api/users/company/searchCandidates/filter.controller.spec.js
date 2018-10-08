@@ -33,21 +33,21 @@ describe('search candidates as company', function () {
 
             const userDoc = await Users.findOne({email: company.email}).lean();
             const companyFilterData = docGenerator.companyFilterData();
+
             const filterRes = await companyHepler.companyFilter(companyFilterData , userDoc.jwt_token);
 
-            filterRes.body.expected_salary_currency.should.equal(companyFilterData.currency);
-            filterRes.body.expected_salary.should.equal(companyFilterData.salary);
-            filterRes.body.roles.should.equal(companyFilterData.roles);
-            filterRes.body.programming_languages.language.should.equal(companyFilterData.skill);
-            filterRes.body.locations.should.equal(companyFilterData.location);
-            filterRes.body.commercial_platform.platform_name.should.equal(companyFilterData.blockchain);
-            filterRes.body.platforms.platform_name.should.equal(companyFilterData.blockchain);
-            filterRes.body.availability_day.should.equal(companyFilterData.availability);
-            filterRes.body.why_work.should.equal(companyFilterData.word);
-            filterRes.body.description.should.equal(companyFilterData.word);
+            const foundCandidate = filterRes.body[0];
 
-
-
+            foundCandidate.expected_salary_currency.should.equal(companyFilterData.currency);
+            foundCandidate.expected_salary.should.equal(companyFilterData.salary);
+            foundCandidate.roles.should.equal(companyFilterData.roles);
+            foundCandidate.programming_languages.language.should.equal(companyFilterData.skill);
+            foundCandidate.locations.should.equal(companyFilterData.location);
+            foundCandidate.commercial_platform.platform_name.should.equal(companyFilterData.blockchain);
+            foundCandidate.platforms.platform_name.should.equal(companyFilterData.blockchain);
+            foundCandidate.availability_day.should.equal(companyFilterData.availability);
+            foundCandidate.why_work.should.equal(companyFilterData.word);
+            foundCandidate.description.should.equal(companyFilterData.word);
 
         })
     })

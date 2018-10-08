@@ -35,7 +35,7 @@ describe('company terms and conditions', function () {
             const companyDoc = await Companies.findOne({_creator: userDoc._id}).lean();
             should.exist(companyDoc);
             companyDoc.terms.should.equal(companyTnCWizard.terms);
-            companyDoc.marketing_emails.should.equal(companyTnCWizard.marketing_emails);
+            companyDoc.marketing_emails.should.equal(companyTnCWizard.marketing);
 
         })
     })
