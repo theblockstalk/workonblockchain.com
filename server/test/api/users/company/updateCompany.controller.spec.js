@@ -13,23 +13,21 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('get all companies detail', function () {
+describe('update profile as company', function () {
 
     afterEach(async () => {
         console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('GET /users/company', () => {
+    describe('PUT /users/update_company_profile', () => {
 
-        it('it should get all companies profile', async () => {
+        it('it should update company profile', async () => {
+
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
+            const res = await companyHepler.signupCompany(company);
 
-            const getAllCompanies = await companyHepler.getCompanies(candidateRes.body.jwt_token);
-            getAllCompanies.body._creator.email.should.equal(company.email);
-            getAllCompanies.body.first_name.should.equal(company.first_name);
-            getAllCompanies.body.last_name.should.equal(company.last_name);
+
         })
     })
 });

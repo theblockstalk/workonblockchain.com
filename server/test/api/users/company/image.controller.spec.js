@@ -20,7 +20,7 @@ describe('company profile image', function () {
         await mongo.drop();
     })
 
-    describe('PUT /users/company_wizard', () => {
+    describe('POST /users/employer_image', () => {
 
         it('it should insert the company profile image', async () => {
 
@@ -28,14 +28,14 @@ describe('company profile image', function () {
             const companyRes = await companyHepler.signupCompany(company);
 
             const companyProfileImage = docGenerator.companyProfileImage();
-            const companyProfile = await companyHepler.companyProfileImage(companyProfileImage.image_name ,companyRes.body.jwt_token);
+            console.log(companyProfileImage);
+            const companyProfile = await companyHepler.companyProfile(companyProfileImage.image_name ,companyRes.body.jwt_token);
 
             const userDoc = await Users.findOne({email: company.email}).lean();
 
             const companyDoc = await Companies.findOne({_creator: userDoc._id}).lean();
             should.exist(companyDoc);
             companyDoc.company_logo.should.equal(companyProfileImage.image_name);
-
 
         })
     })

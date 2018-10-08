@@ -31,6 +31,8 @@ describe('get current company detail', function () {
 
             const getCurrentCompany = await companyHepler.getCurrentCompany(userDoc._id , userDoc.jwt_token);
             getCurrentCompany.body._creator.email.should.equal(company.email);
+            getCurrentCompany.body.first_name.should.equal(company.first_name);
+            getCurrentCompany.body.last_name.should.equal(company.last_name);
 
         })
     })

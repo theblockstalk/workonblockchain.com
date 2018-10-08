@@ -2,7 +2,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../../server');
 const Users = require('../../../../model/users');
-const Companies = require('../../../../model/employer_profile');
 const userHelpers = require('../usersHelpers')
 const should = chai.should();
 
@@ -78,11 +77,14 @@ const companyAboutWizard = module.exports.companyAboutWizard = async function co
     return res;
 }
 
-const companyProfileImage = module.exports.companyProfileImage = async function companyProfileImage(profileImage , jwtToken){
+const companyProfile = module.exports.companyProfile = async function companyProfile(profileImage , jwtToken){
+    const data = {
+        'filename' : profileImage
+    }
     const res = await chai.request(server)
-        .put('/users/employer_image')
+        .post('/users/employer_image')
         .set('Authorization', jwtToken)
-        .send(profileImage)
+        .attach('file', profileImage)
     res.should.have.status(200);
     return res;
 }

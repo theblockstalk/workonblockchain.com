@@ -116,6 +116,6 @@ module.exports.companyAbout = function companyAbout(){
 
 module.exports.companyProfileImage = function companyProfileImage() {
     return {
-        image_name: "my-test-image.jpg"
+        image_name: "1535782403315Koala.jpg"
     };
 };

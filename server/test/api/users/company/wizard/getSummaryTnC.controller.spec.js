@@ -26,14 +26,13 @@ describe('company terms and conditions', function () {
 
             const company = docGenerator.company();
             const companyRes = await companyHepler.signupCompany(company);
-            console.log(companyRes.body._creator);
+
             const companyTnCWizard = docGenerator.companyTnCWizard();
             const SummaryTnC = await companyHepler.SummaryTnC(companyTnCWizard ,companyRes.body.jwt_token);
 
             const userDoc = await Users.findOne({email: company.email}).lean();
 
             const companyDoc = await Companies.findOne({_creator: userDoc._id}).lean();
-            console.log(companyDoc);
             should.exist(companyDoc);
             companyDoc.terms.should.equal(companyTnCWizard.terms);
             companyDoc.marketing_emails.should.equal(companyTnCWizard.marketing_emails);
