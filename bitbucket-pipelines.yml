@@ -40,25 +40,26 @@ pipelines:
               - node scripts/client.js staging
 #      master:
       hotfix-master:
-        - step:
-            name: Run server unit tests
-            caches:
-              - node
-            script:
-              - cd server
-              - npm install
-              - npm test
-            services:
-              - mongo
+#        - step:
+#            name: Run server unit tests
+#            caches:
+#              - node
+#            script:
+#              - cd server
+#              - npm install
+#              - npm test
+#            services:
+#              - mongo
         - step:
             name: Deploy server and client to production
             deployment: production
-            trigger: manual
+#            trigger: manual
             script:
               - cd scripts
               - npm version
               - npm root -g
               - node -v
+              - npm install -g @angular/cli
               - npm install
               - ls /usr/local/lib/node_modules/
               - alias ng="/usr/local/lib/node_modules/angular-cli/bin/ng"
