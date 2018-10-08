@@ -3,7 +3,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:8.11.4
+image: node:8
 
 pipelines:
 #  default:
@@ -55,9 +55,7 @@ pipelines:
             deployment: production
 #            trigger: manual
             script:
-              - cd scripts
-              - npm install
-              - cd ../client
+              - cd client
               - npm version
               - npm root -g
               - node -v
@@ -65,11 +63,13 @@ pipelines:
 #              - ls /usr/local/lib/node_modules/@angular
 #              - ls /usr/local/lib/node_modules/@angular/cli
 #              - ls /usr/local/lib/node_modules/@angular/cli/bin
-              - alias ng="/usr/local/lib/node_modules/@angular/cli/bin/ng"
+#              - alias ng="/usr/local/lib/node_modules/@angular/cli/bin/ng"
 #              - ng -v
 #              - npm link @angular/cli
-              - npm install -g @angular/cli
-              - ng update @angular/cli --migrate-only --from=1.7.4
+#              - npm install -g @angular/cli
+#              - ng update @angular/cli --migrate-only --from=1.7.4
+              - cd ../scripts
+              - npm install
               - cd ../
               - node scripts/client.js production
               - node scripts/server.js production
