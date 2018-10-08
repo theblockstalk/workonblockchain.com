@@ -38,7 +38,8 @@ pipelines:
               - cd ../
               - node scripts/server.js staging
               - node scripts/client.js staging
-      master:
+#      master:
+      hotfix-master:
         - step:
             name: Run server unit tests
             caches:
@@ -55,11 +56,15 @@ pipelines:
             trigger: manual
             script:
               - cd scripts
+              - npm version
+              - npm root -g
+              - node -v
+              - ng -v
               - npm install
               - npm link @angular/cli
               - cd ../
-              - node scripts/server.js production
               - node scripts/client.js production
+              - node scripts/server.js production
 
 definitions:
   services:
