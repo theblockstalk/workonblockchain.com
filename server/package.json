@@ -23,8 +23,6 @@
     "file-saver": "^1.3.8",
     "helmet": "^3.13.0",
     "jwt-simple": "^0.5.1",
-    "linkedin-public-profile": "^4.0.1",
-    "linkedin-public-profile-parser": "^3.0.2",
     "mandrill-api": "^1.0.45",
     "mocha": "^5.2.0",
     "mongo-sanitize": "^1.0.0",
@@ -40,6 +38,7 @@
     "s3-streamlogger": "^1.3.1",
     "sanitize-html": "^1.18.5",
     "sanitizer": "^0.1.3",
+    "uuid": "^3.3.2",
     "winston": "^3.0.0"
   }
 }
