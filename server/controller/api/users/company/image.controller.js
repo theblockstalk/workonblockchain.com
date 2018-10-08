@@ -8,7 +8,6 @@ const logger = require('../../../services/logger');
 module.exports = function (req, res)
 {
 
-    
     res.json(req.file.filename);
     let path;
     if (settings.isLiveApplication()) {

@@ -96,3 +96,26 @@ module.exports.accountSetting = function accountSetting(){
         disable_account : true
     }
 }
+
+module.exports.companyTnCWizard = function companyTnCWizard(){
+    return {
+        terms:true,
+        marketing_emails: true
+    }
+}
+
+module.exports.companyAbout = function companyAbout(){
+    return {
+        company_founded:2015,
+        no_of_employees:10,
+        company_funded:"i don't know",
+        company_description:"Global blockchain agnostic hiring platform for developers, designers, product managers, CTO's and interns who are passionate about public and enterprise blockchain technology and cryptocurrencies."
+    }
+}
+
+
+module.exports.companyProfileImage = function companyProfileImage() {
+    return {
+        image_name: "my-test-image.jpg"
+    };
+};
