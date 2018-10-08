@@ -7,7 +7,6 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-
 const signupCompany = module.exports.signupCompany = async function signupCompany(company) {
     const res = await chai.request(server)
         .post('/users/create_employer')

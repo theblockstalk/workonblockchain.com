@@ -96,3 +96,32 @@ module.exports.accountSetting = function accountSetting(){
         disable_account : true
     }
 }
+
+module.exports.referredEmailDocs = function referredEmailDocs(){
+    return {
+        firstnameOfReferee : 'Tayyab',
+        referred_fname : 'Salman',
+        referred_lname : 'Safdar'
+    }
+}
+
+module.exports.profileData = function profileData(){
+    return {
+        first_name : 'Tayyab',
+        last_name : 'Hussain',
+        github_account : 'fb.com',
+        stackexchange_account : 'fb.com',
+        contact_number : '65464655',
+        nationality : 'Pakistani',
+        image_src : 'dffdfd.jpg'
+    }
+}
+
+module.exports.experience = function experience(){
+    return {
+        language_exp : 'Tayyab',
+        education : 'Hussain',
+        work : 'fb.com',
+        detail : 'fb.com'
+    }
+}
