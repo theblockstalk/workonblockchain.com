@@ -59,9 +59,11 @@ pipelines:
               - npm version
               - npm root -g
               - node -v
-              - ng -v
               - npm install
-              - npm link @angular/cli
+              - ls /usr/local/lib/node_modules/
+              - alias ng="/usr/local/lib/node_modules/angular-cli/bin/ng"
+              - ng -v
+#              - npm link @angular/cli
               - cd ../
               - node scripts/client.js production
               - node scripts/server.js production
