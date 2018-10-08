@@ -16,7 +16,7 @@ describe('add experience of candidate', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        //await mongo.drop();
+        await mongo.drop();
     })
 
     describe('PUT /users/welcome/exp', () => {
