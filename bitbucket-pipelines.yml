@@ -59,7 +59,7 @@ pipelines:
 #              - npm version
 #              - npm root -g
 #              - node -v
-              - npm install -g @angular/cli@5.2.0
+              - npm install -g @angular/cli
               - npm install
 #              - ls /usr/local/lib/node_modules/
 #              - ls /usr/local/lib/node_modules/@angular
@@ -68,6 +68,7 @@ pipelines:
               - alias ng="/usr/local/lib/node_modules/@angular/cli/bin/ng"
 #              - ng -v
 #              - npm link @angular/cli
+              - ng update @angular/cli --migrate-only --from=1.7.4
               - cd ../
               - node scripts/client.js production
               - node scripts/server.js production
