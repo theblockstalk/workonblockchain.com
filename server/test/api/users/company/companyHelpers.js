@@ -31,3 +31,11 @@ module.exports.signupVerifiedApprovedCompany = async function signupVerifiedAppr
     await userHelpers.verifyEmail(company.email);
     await userHelpers.approve(company.email);
 }
+
+const getCompanies = module.exports.getCompanies = async function getCompanies(jwtToken){
+    const res = await chai.request(server)
+        .post('/users/company')
+        .set('Authorization', jwtToken)
+    res.should.have.status(200);
+    return res;
+}
