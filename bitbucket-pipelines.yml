@@ -64,7 +64,7 @@ pipelines:
 #              - ls /usr/local/lib/node_modules/@angular/cli
 #              - ls /usr/local/lib/node_modules/@angular/cli/bin
               - npm install -g @angular/cli
-#              - alias ng="/usr/local/lib/node_modules/@angular/cli/bin/ng"
+              - alias ng="/usr/local/lib/node_modules/@angular/cli/bin/ng"
               - ng -v
 #              - npm link @angular/cli
 #              - ng update @angular/cli --migrate-only --from=1.7.4
