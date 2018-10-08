@@ -59,7 +59,7 @@ pipelines:
 #              - npm version
 #              - npm root -g
 #              - node -v
-              - npm install -g @angular/cli
+              - npm install -g @angular/cli@5.2.0
               - npm install
 #              - ls /usr/local/lib/node_modules/
 #              - ls /usr/local/lib/node_modules/@angular
