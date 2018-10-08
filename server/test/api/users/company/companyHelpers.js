@@ -113,3 +113,23 @@ const UpdateCompanyProfile = module.exports.UpdateCompanyProfile = async functio
     return res;
 
 }
+
+const companyFilter = module.exports.companyFilter = async function companyFilter(filterData,jwtToken){
+    const data = {
+        'currency' : filterData.currency,
+        'salary' : filterData.salary,
+        'roles' : filterData.roles,
+        'skill' : filterData.skill,
+        'location' : filterData.location,
+        'blockchain' : filterData.blockchain,
+        'availability' : filterData.availability,
+        'word' : filterData.word
+    }
+
+    const res = await chai.request(server)
+        .post('/users/filter')
+        .set('Authorization', jwtToken)
+        .send(data)
+    res.should.have.status(200);
+    return res;
+}

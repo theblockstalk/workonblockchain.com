@@ -138,3 +138,16 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
 
     }
 }
+
+module.exports.companyFilterData = function companyFilterData(){
+    return {
+        currency : "$ USD",
+        salary : 1200,
+        roles : "Ripple",
+        skill : "Java",
+        location : "Andorra",
+        blockchain : "Stellar",
+        availability : "3 months",
+        word : "Blockchain"
+    }
+}
