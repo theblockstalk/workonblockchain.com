@@ -27,20 +27,24 @@ module.exports = function (req, res) {
 }
 
 function approval_email(info)
-{	
-	////console.log(email);
+{
     var deferred = Q.defer();
 
     if(info.type === 'candidate')
     {
-    	//console.log("candidate");
     	candidateApprovedEmail.sendEmail(info.email, info.name);
+        deferred.resolve({success:true});
     }
     
-    if(info.type === 'company')
+    else if(info.type === 'company')
     {
-    	//console.log("comapny");
     	companyApprovedEmail.sendEmail(info.email, info.name);
+        deferred.resolve({success:true});
+    }
+
+    else
+    {
+        deferred.resolve({success:false});
     }
     
     return deferred.promise;

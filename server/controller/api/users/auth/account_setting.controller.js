@@ -12,7 +12,8 @@ var jwt_hash = require('jwt-simple');
 const logger = require('../../../services/logger');
 
 module.exports = function (req,res){
-    set_disable_status(req.body).then(function (err, about)
+    let userId = req.auth.user._id;
+    set_disable_status(req.body,userId).then(function (err, about)
     {
         if (about)
         {
@@ -29,7 +30,7 @@ module.exports = function (req,res){
     });
 }
 
-function set_disable_status(data){
+function set_disable_status(data,userId){
     var deferred = Q.defer();
     let timestamp = new Date();
     var set =
@@ -38,8 +39,10 @@ function set_disable_status(data){
         dissable_account_timestamp : timestamp,
 
     };
-    users.update({ _id: data.user_id},{ $set: set }, function (err, doc)
+
+    users.update({ _id:userId },{ $set: set }, function (err, doc)
     {
+        console.log(doc);
         if (err){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);

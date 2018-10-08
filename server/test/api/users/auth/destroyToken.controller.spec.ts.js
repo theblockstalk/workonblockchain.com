@@ -16,35 +16,26 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('login as company or candidate', function () {
+describe('destroy token' , function () {
 
     afterEach(async () => {
         console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('POST /users/authenticate' , () =>
-    {
-        it('it should login candidate' , async () =>
-        {
-            const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHepler.signupCandidate(candidate);
-            candidateRes.should.have.status(200);
+    describe('POST /users/destroy_token' , () => {
 
-            const authenticateCandidate = await authenticateHepler.authenticateUser(candidate.email, candidate.password);
-            should.exist(authenticateCandidate.body.jwt_token);
+        it('it should destroy token on logout' , async() => {
 
-        })
-
-        it('it should login company' , async () =>
-        {
             const company = docGenerator.company();
             const companyRes = await companyHepler.signupCompany(company);
-            companyRes.should.have.status(200);
 
-            const authenticateCompany = await authenticateHepler.authenticateUser(company.email, company.password);
-            should.exist(authenticateCompany.body.jwt_token);
+            let userDoc = await Users.findOne({email: company.email}).lean();
+
+            const accountSetting = await authenticateHepler.destroyToken(userDoc.jwt_token);
+
+            userDoc = await Users.findOne({email: company.email}).lean();
+            should.equal(userDoc.jwt_token, null);
         })
     })
-
-});
+})

@@ -11,6 +11,7 @@ var jwt_hash = require('jwt-simple');
 const verify_send_email = require('../auth/verify_send_email');
 const mongoose = require('mongoose');
 const jwtToken = require('../../../services/jwtToken');
+const filterReturnData = require('../filterReturnData');
 
 const logger = require('../../../services/logger');
 
@@ -30,7 +31,6 @@ module.exports = function register(req, res)
 
 function create(userParam)
 {
-	//console.log(userParam);
     var deferred = Q.defer();
     var count=0;
 
@@ -53,7 +53,7 @@ function create(userParam)
 
     function createUser()
     {
-        var is_verify;
+        let is_verify=0;
         if(userParam.social_type!="")
         {
             is_verify =1;
@@ -64,7 +64,7 @@ function create(userParam)
 		let hash = crypto.createHmac('sha512', salt);
 		hash.update(userParam.password);
 		let hashedPasswordAndSalt = hash.digest('hex');
-		////console.log(hashedPasswordAndSalt);
+
         createdDate= now;
         var hashStr = crypto.createHash('sha256').update(userParam.email).digest('base64');
         var user_info = {};
@@ -74,6 +74,7 @@ function create(userParam)
         user_info.expiry = new Date(new Date().getTime() +  4800 *1000);
         var token = jwt_hash.encode(user_info, settings.EXPRESS_JWT_SECRET, 'HS256');
         user_info.token = token;
+        //let verifyEmailKey = jwtToken.createJwtToken(user_info);
 
 		let new_salt = crypto.randomBytes(16).toString('base64');
 		let new_hash = crypto.createHmac('sha512', new_salt);
@@ -102,10 +103,9 @@ function create(userParam)
             }
             else
                 {
-            	
+
             	let tokenn = jwtToken.createJwtToken(user);
-                
-                
+
                 var set =
                 {
                 	    jwt_token: tokenn,
@@ -124,7 +124,9 @@ function create(userParam)
                         ({
                             _creator : newUser._id
                         });
-
+                        let userData = filterReturnData.removeSensativeData({_creator : user.toObject()} , {
+                            verify_email_key: true
+                        } )
                         info.save((err,user)=>
                         {
                         	if(err)
@@ -138,17 +140,18 @@ function create(userParam)
                         		{
                         			verify_send_email(user_info);
                         		}
+
                         		deferred.resolve
                         		({
-                        			_id:user.id,
-                        			_creator: newUser._id,
-                        			email_hash:newUser.email_hash,
-                        			type:newUser.type,
-                        			email: newUser.email,
-                        			ref_link: newUser.ref_link,
-                        			type: newUser.type,
-                        			is_approved : user.is_approved,
-                        			jwt_token: tokenn
+                                    _id:user.id,
+                                    _creator: userData._creator._id,
+                                    verifyEmailKey:userData._creator.verify_email_key,
+                                    type:userData._creator.type,
+                                    email: userData._creator.email,
+                                    ref_link: userData._creator.ref_link,
+                                    type: userData._creator.type,
+                                    is_approved : userData._creator.is_approved,
+                                    jwt_token: tokenn
                         		});
                         	}
                         });

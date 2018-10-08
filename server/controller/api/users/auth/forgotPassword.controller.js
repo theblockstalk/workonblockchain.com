@@ -43,7 +43,6 @@ function forgot_password(email)
 
         if(result)
         {
-        	console.log(result.social_type);
         	if(result.social_type === 'GOOGLE')
         	{
         		deferred.resolve({error:'Please login using gmail'});
@@ -62,7 +61,7 @@ function forgot_password(email)
         }
         else
         {
-            deferred.resolve({error:'Email Not Found'});
+            deferred.resolve({success: false, error:'Email Not Found'});
         }
 
     });
@@ -94,7 +93,10 @@ function forgot_password(email)
             {
             	
                 forgot_passwordEmail_send(email_data.token)
-                deferred.resolve({msg:'Email Send'});
+                deferred.resolve({
+                    success: true,
+                    msg:'Email Sent'
+                });
             }
         });
     }
@@ -106,7 +108,7 @@ function forgot_password(email)
 
 function forgot_passwordEmail_send(data)
 {
-
+    var deferred = Q.defer();
     var hash = jwt_hash.decode(data, settings.EXPRESS_JWT_SECRET, 'HS256');
 
     var name;
@@ -121,7 +123,6 @@ function forgot_passwordEmail_send(data)
 
         if(result)
         {
-        	console.log(result.type);
         	if(result.type === 'candidate')
         	{
         		CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data)
@@ -179,7 +180,7 @@ function forgot_passwordEmail_send(data)
         }
         else
         {
-            deferred.resolve({error:'Email Not Found'});
+            deferred.resolve({success: false, error:'Email Not Found'});
         }
 
     });
