@@ -62,7 +62,7 @@ pipelines:
               - npm install -g @angular/cli
               - npm install
               - ls /usr/local/lib/node_modules/
-              - alias ng="/usr/local/lib/node_modules/angular-cli/bin/ng"
+              - alias ng="/usr/local/lib/node_modules/@angular-cli/bin/ng"
               - ng -v
 #              - npm link @angular/cli
               - cd ../
