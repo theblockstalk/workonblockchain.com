@@ -62,12 +62,15 @@ pipelines:
               - npm install -g @angular/cli
               - npm install
               - ls /usr/local/lib/node_modules/
-              - alias ng="/usr/local/lib/node_modules/@angular/bin/ng"
+              - ls /usr/local/lib/node_modules/@angular
+              - ls /usr/local/lib/node_modules/@angular/cli
+              - ls /usr/local/lib/node_modules/@angular/cli/bin
+              - alias ng="/usr/local/lib/node_modules/@angular/cli/bin/ng"
               - ng -v
 #              - npm link @angular/cli
               - cd ../
-              - node scripts/client.js production
-              - node scripts/server.js production
+#              - node scripts/client.js production
+#              - node scripts/server.js production
 
 definitions:
   services:
