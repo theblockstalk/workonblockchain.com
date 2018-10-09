@@ -112,3 +112,53 @@ const resume = module.exports.resume = async function resume(data,jwtToken) {
         .send(detail);
     return res;
 }
+
+const candidateTerms = module.exports.candidateTerms = async function candidateTerms(data,jwtToken) {
+    const detail = {
+        'terms' : data.terms,
+        'marketing' : data.marketing
+    };
+    const res = await chai.request(server)
+        .put('/users/welcome/terms')
+        .set('Authorization', jwtToken)
+        .send(detail);
+    return res;
+}
+
+const editProfile = module.exports.editProfile = async function editProfile(data,edu,work1,jwtToken) {
+    const detail = {
+        'detail' : {
+            'first_name': data.first_name,
+            'last_name': data.last_name,
+            'github_account': data.github_account,
+            'exchange_account': data.exchange_account,
+            'contact_number': data.contact_number,
+            'nationality': data.nationality,
+            'country': data.country,
+            'roles': data.roles,
+            'interest_area': data.interest_area,
+            'expected_salary' : data.expected_salary,
+            'base_currency': data.base_currency,
+            'availability_day': data.availability_day,
+            'why_work': data.why_work,
+            'commercial_experience_year': data.commercial_experience_year,
+            'experimented_platform': data.experimented_platform,
+            'platforms': data.platforms,
+            'salary': data.salary,
+            'current_currency': data.current_currency,
+            'language_experience_year': data.language_experience_year,
+            'intro': data.intro
+        }
+    };
+    const education = {
+        'education': edu
+    };
+    const work = {
+        'work': work1
+    };
+    const res = await chai.request(server)
+        .put('/users/update_profile')
+        .set('Authorization', jwtToken)
+        .send(detail,education,work);
+    return res;
+}

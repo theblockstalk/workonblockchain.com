@@ -263,3 +263,85 @@ module.exports.resume = function resume(){
         ]
     }
 }
+module.exports.termsAndConditions = function termsAndConditions(){
+    return {
+        terms: true,
+        marketing: true
+    }
+}
+
+module.exports.editCandidateProfile = function editCandidateProfile(){
+    return {
+            first_name: 'Tayyab',
+            last_name: 'Chohan',
+            contact_number: '+92654654654',
+            exchange_account: 'test.com',
+            github_account: 'fb.com',
+            nationality: 'Pakistani',
+            expected_salary: 20000,
+            base_currency: '€ EUR ',
+            salary: 8000,
+            current_currency: '£ GBP',
+            availability_day: '1 month',
+            why_work: 'I want to work. I want to work. I want to work. I want to work.I want to work. I want to work. I want to work.',
+            intro: 'I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. ',
+            country: [ 'remote', 'Amsterdam' ],
+            roles: [ 'Backend Developer', 'Fullstack Developer' ],
+            interest_area: [ 'Enterprise blockchain', 'Smart contract development' ],
+            commercially_worked: [],
+            platforms_designed: [
+                { value: 'Bitcoin' },
+                { value: 'Hyperledger Sawtooth' }
+            ],
+            experimented_platform:[
+                {
+                    _id: '5bbc37432997bf00408501b9',
+                    name: 'Bitcoin',
+                    value: 'Bitcoin',
+                    checked: true
+                },
+                {
+                    _id: '5bbc37432997bf00408501b8',
+                    name: 'Hyperledger Fabric',
+                    value: 'Hyperledger Fabric',
+                    checked: true
+                }
+            ],
+            //language: [ [Object], [Object] ],
+            commercial_experience_year: [],
+            platforms:[
+                {
+                    _id: '5bbc37432997bf00408501b7',
+                    platform_name: 'Bitcoin',
+                    exp_year: '0-1'
+                },
+                {
+                    _id: '5bbc37432997bf00408501b6',
+                    platform_name: 'Hyperledger Sawtooth',
+                    exp_year: '1-2'
+                }
+            ]
+            //language_experience_year: [ [Object], [Object] ]
+    }
+}
+
+module.exports.editEducation = function editEducation() {
+    return {
+        uniname: 'CUST',
+        degreename: 'BSCS',
+        fieldname: 'CS',
+        eduyear: 2016
+    }
+}
+
+module.exports.editWork = function editWork() {
+    return {
+        companyname: 'MWAN',
+        positionname: 'Team Lead',
+        locationname: 'Tokyo Japan',
+        description: 'I am in this org. I am in this org. I am in this org. I am this org. I am in this org. I am in this org. I am in this org. I am in this orgg. ',
+        startdate: '2016-02-29T19:00:00.000Z',
+        enddate: '2018-10-09T07:32:38.732Z',
+        currentwork: true
+    }
+}
