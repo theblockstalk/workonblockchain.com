@@ -175,9 +175,91 @@ module.exports.profileData = function profileData(){
 
 module.exports.experience = function experience(){
     return {
-        language_exp : 'Tayyab',
-        education : 'Hussain',
-        work : 'fb.com',
-        detail : 'fb.com'
+        detail:{
+            intro: 'I am a chief. I am a chief. I am a chief. I am a chief. I am a chief. I am a chief. I am a chief. I am a chief. I am a chief. I am a chief. I am a chief. '
+        },
+        education:[
+            {
+                uniname: 'CUST',
+                degreename: 'BSCS',
+                fieldname: 'CS',
+                eduyear: 2016
+            }
+        ],
+        work:[
+            {
+                companyname: 'MWAN',
+                positionname: 'Developer',
+                locationname: 'Tokyo Japan',
+                description: 'i am in it. i am in it. i am in it. i am in it. i am in it. i am in it. i am in it. ',
+                startdate: '2019-01-31T19:00:00.000Z',
+                enddate: null,
+                currentwork: true
+            }
+        ],
+        language_exp: [
+            {
+                language: 'Java', exp_year: '0-1'
+            },
+            {
+                language: 'C#', exp_year: '1-2'
+            }
+        ]
+    }
+}
+
+module.exports.job = function job(){
+    return {
+        expected_salary: 50000,
+        base_currency: '€ EUR',
+        current_salary: 20000,
+        current_currency: '£ GBP',
+        availability_day: '1 month',
+        country: [
+            'remote', 'Amsterdam', 'Berlin'
+        ],
+        roles: [
+            'Backend Developer', 'Fullstack Developer'
+        ],
+        interest_area: [
+            'Enterprise blockchain', 'Smart contract development'
+        ]
+    }
+}
+
+module.exports.resume = function resume(){
+    return {
+        why_work: 'I want to work. I want to work. I want to work. I want to work. I want to work. I want to work. I want to work.',
+        commercially_worked: [],
+        platforms_designed: [
+            { value: 'Bitcoin' },
+            { value: 'Hyperledger Sawtooth' }
+         ],
+        experimented_platform:[
+            {
+                _id: '5bbc37432997bf00408501b9',
+                name: 'Bitcoin',
+                value: 'Bitcoin',
+                checked: true
+            },
+            {
+                _id: '5bbc37432997bf00408501b8',
+                name: 'Hyperledger Fabric',
+                value: 'Hyperledger Fabric',
+                checked: true
+            }
+        ],
+        platforms:[
+            {
+                _id: '5bbc37432997bf00408501b7',
+                platform_name: 'Bitcoin',
+                exp_year: '0-1'
+            },
+            {
+                _id: '5bbc37432997bf00408501b6',
+                platform_name: 'Hyperledger Sawtooth',
+                exp_year: '1-2'
+            }
+        ]
     }
 }

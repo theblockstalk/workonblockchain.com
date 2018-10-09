@@ -12,28 +12,25 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('add experience of candidate', function () {
+describe('add resume of candidate', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        await mongo.drop();
+        //await mongo.drop();
     })
 
-    describe('PUT /users/welcome/exp', () => {
+    describe('PUT /users/welcome/resume', () => {
 
-        it('it should add experience of candidate', async () => {
+        it('it should add resume of candidate', async () => {
 
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
-            const candidateExperience = docGenerator.experience();
-            const res = await candidateHelper.experience(candidateExperience,userDoc.jwt_token);
+            const candidateExperience = docGenerator.resume();
+            const res = await candidateHelper.resume(candidateExperience,userDoc.jwt_token);
             const newCandidateInfo = await candidateProfile.findOne({_creator: userDoc._id}).lean();
-            newCandidateInfo.description.should.equal(candidateExperience.detail.intro);
-            newCandidateInfo.education_history[0].uniname.should.equal(candidateExperience.education[0].uniname);
-            newCandidateInfo.work_history[0].companyname.should.equal(candidateExperience.work[0].companyname);
-            newCandidateInfo.programming_languages[0].language.should.equal(candidateExperience.language_exp[0].language);
+            console.log(newCandidateInfo);
         })
     })
 });
