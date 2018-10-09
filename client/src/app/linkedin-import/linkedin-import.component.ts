@@ -426,47 +426,55 @@ export class LinkedinImportComponent implements OnInit {
 
 
             }
-            if (obj.work.length > 0) {
 
-              let end_date_format;
-              for (var key in obj.work) {
-                let start_date_format = new Date(obj.work[key].startDate);
-                if (obj.work[key].endDate) {
-                  end_date_format = new Date(obj.work[key].endDate);
-                  obj.work[key].currentwork = false;
-                }
-                else {
-                  end_date_format = null;
-                  obj.work[key].currentwork = true;
-                }
-                let experiencejson = {
-                  companyname: obj.work[key].company,
-                  positionname: obj.work[key].position,
-                  locationname: obj.work[key].location,
-                  description: obj.work[key].summary,
-                  startdate: start_date_format,
-                  enddate: end_date_format,
-                  currentwork: obj.work[key].currentwork
-                };
-                experiencearray.push(experiencejson);
+            if(obj.work){
+              if (obj.work.length > 0) {
 
+                let end_date_format;
+                for (var key in obj.work) {
+                  let start_date_format = new Date(obj.work[key].startDate);
+                  if (obj.work[key].endDate) {
+                    end_date_format = new Date(obj.work[key].endDate);
+                    obj.work[key].currentwork = false;
+                  }
+                  else {
+                    end_date_format = null;
+                    obj.work[key].currentwork = true;
+                  }
+                  let experiencejson = {
+                    companyname: obj.work[key].company,
+                    positionname: obj.work[key].position,
+                    locationname: obj.work[key].location,
+                    description: obj.work[key].summary,
+                    startdate: start_date_format,
+                    enddate: end_date_format,
+                    currentwork: obj.work[key].currentwork
+                  };
+                  experiencearray.push(experiencejson);
+
+                }
               }
             }
 
-            if (obj.education.length > 0) {
 
-              for (var key in obj.education) {
-                let eduyear = parseInt(obj.education[key].endDate);
-                let educationjson = {
-                  uniname: obj.education[key].institution, degreename: obj.education[key].studyType
-                  , fieldname: obj.education[key].fieldname, eduyear: eduyear
-                };
-                education_json_array.push(educationjson);
+            if(obj.education)
+            {
+              if (obj.education.length > 0) {
 
+                for (var key in obj.education) {
+                  let eduyear = parseInt(obj.education[key].endDate);
+                  let educationjson = {
+                    uniname: obj.education[key].institution, degreename: obj.education[key].studyType
+                    , fieldname: obj.education[key].fieldname, eduyear: eduyear
+                  };
+                  education_json_array.push(educationjson);
+
+                }
               }
             }
 
-            if (obj.work.length > 0 || obj.education.length > 0 || obj.basics ) {
+
+            if (obj.work || obj.education|| obj.basics ) {
               backendService.prefilled_profile(info , experiencearray,  education_json_array )
                 .subscribe(
                   data => {
