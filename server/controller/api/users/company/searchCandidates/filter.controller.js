@@ -10,7 +10,6 @@ const logger = require('../../../../services/logger');
 const filterReturnData = require('../../filterReturnData');
 const chat = require('../../../../../model/chat');
 
-console.log("filterrrrrrrrrrrr");
 module.exports = function (req,res)
 {
 	let userId = req.auth.user._id;

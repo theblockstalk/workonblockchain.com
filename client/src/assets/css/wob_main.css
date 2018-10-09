@@ -133,7 +133,7 @@ body{
     height: 100%;
     overflow: hidden;
     -webkit-transform: skewY(-4deg);
-     transform: skewY(-4deg); 
+     transform: skewY(-4deg);
     -webkit-transform-origin: 0;
     transform-origin: 0;
     background: linear-gradient(150deg,#53f 15%,#05d5ff 70%,#a6ffcb 94%);
@@ -390,7 +390,7 @@ body{
     font-family: 'Open Sans', sans-serif;
 }
 .company-slider{
-    
+
     background: #fcfcfc;
     position:relative;
     top:20px;
@@ -404,13 +404,13 @@ body{
 .slider-img, .slider-text{
     width: 50%;
     float: left;
-    
+
 }
 
 .slider-img{
     height: 100%;
     width: 47%;
-    
+
 }
 
 .common-BodyText {
@@ -505,7 +505,7 @@ body{
 */
 
 @media only screen and (max-width: 1199px){
-    
+
     .common-BodyText, .common-Bodylink{
         margin: 10px 10px;
         font-size: 15px;
@@ -519,7 +519,7 @@ body{
         margin: 10px;
         margin-bottom: 30px;
     }
-    
+
     .common-BodyText, .common-Bodylink{
         margin: 5px 5px;
         font-size: 13px;
@@ -533,21 +533,21 @@ body{
         width: 100%;
         position:relative;
     }
-    
+
     .slider-text{
         width: 100%;
         height: 250px;
     }
-    
+
     .slider-img{
         display: none;
     }
-    
+
     .common-BodyText, .common-Bodylink{
         margin-left: 10px;
         font-size: 15px;
     }
-    
+
 }
 
 
@@ -639,7 +639,7 @@ body{
     display: inline-block;
 }
 .slider-inner{
-    
+
 }
 
 .slider-inner::after{
@@ -973,7 +973,7 @@ body{
 .login_form{
     padding: 30px 20px;
 	overflow: hidden;
-	
+
 }
 
 .select_error
@@ -982,7 +982,7 @@ body{
 }
 
 .form_error{
-	
+
     margin-top: 1px;
 	position: absolute;
     font-size: 12px;
@@ -1196,14 +1196,14 @@ fieldset.scheduler-border {
 .step-progress li .btn{
 	font-size: 18px;
     padding: 0px;
-    border:none; 
+    border:none;
     border: 0px;
    vertical-align: baseline;
 }
 
 .step-progress li .btn:hover
 {
-	border:none !important; 
+	border:none !important;
     border: 0px;
     vertical-align: baseline;
 }
@@ -1215,7 +1215,7 @@ fieldset.scheduler-border {
 	color: #23527c;
 }
 
-.step-progress li a:hover, 
+.step-progress li a:hover,
 .step-progress li a:focus{
     text-decoration: none !important;
 }
@@ -1274,7 +1274,7 @@ fieldset.scheduler-border {
 }
 
 .exp_p{
-    position: relative;  
+    position: relative;
     font-weight: bold;
 }
 
@@ -1299,7 +1299,7 @@ fieldset.scheduler-border {
 }
 
 .btn-success {
-  
+
 }
 
 .d-flex {
@@ -1331,7 +1331,7 @@ fieldset.scheduler-border {
 
 .checkbox-inline+.checkbox-inline,
 .radio-inline+.radio-inline {
-    margin-left: 0px; 
+    margin-left: 0px;
 }
 
 .btnn {
@@ -2135,8 +2135,8 @@ input[type=checkbox] {
 }
 
 .arrow-up {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 5px solid black;
@@ -2146,8 +2146,8 @@ input[type=checkbox] {
 }
 
 .arrow-up-b {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 5px solid black;
@@ -2175,7 +2175,7 @@ input[type=checkbox] {
 
 
 #frame .content .messages ul li:before{
-	
+
 }
 
 .offers{
@@ -2291,7 +2291,7 @@ input[type=checkbox] {
 }
 
 .dec_model b{
-	
+
 }
 
 .dec_model span{
@@ -2484,7 +2484,7 @@ input[type=checkbox] {
 .panel-body ul li{
     list-style: none;
     margin-bottom: 15px;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 .panel-body .lang_name{
@@ -2746,44 +2746,44 @@ input[type=checkbox] {
 		margin-bottom: 15px;
 		float: left;
 	}
-	
+
 	.user-pic, .user-detail{
 		width: 100%;
 	}
-	
+
 	.input_main{
 		width: 100%;
 		margin: auto;
 	}
-	
+
 	.btn_main-srh{
 		float: left;
 	}
-	
+
 	.search-form{
 		padding: 15px 20px;
 	}
-	
+
 	.btn-div{
 		max-width: 95%;
 	}
-	
+
 	.custom_form .form-group {
 	    position: relative;
-	    margin-bottom: 5px; 
+	    margin-bottom: 5px;
 	}
-	
+
 	.form_error
 	{
 	    position: relative;
 	}
-	
+
 	.select_error
 	{
 		bottom:0px;
 	}
-	
-	
+
+
 }
 
 @media only screen and (max-width: 400px){
@@ -3122,7 +3122,7 @@ input:checked + .slider:before {
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
+    from {top:-300px; opacity:0}
     to {top:15%; opacity:1}
 }
 
@@ -3309,7 +3309,7 @@ input:checked + .slider:before {
 }
 
 .footer-bottom .copy_icon{
-	
+
 	top:0px;
 	font-size: 17px;
     position: relative;
@@ -3615,11 +3615,11 @@ input:checked + .slider:before {
         margin-left: 0px;
         float: none;
     }
-    
+
     #frame .content .message-input .wrap textarea {
         width: 75%;
     }
-    
+
     .cand_info-ul {
         font-size: 12px;
         width: 100%;
@@ -3628,11 +3628,11 @@ input:checked + .slider:before {
     #cookie-btn{
         margin: auto;
     }
-    
+
     .p_img{
         top: -130px;
     }
-    
+
     .side-info{
         float: left;
     }
@@ -3646,7 +3646,7 @@ input:checked + .slider:before {
      .sm-6 {
         width: 47%;
     }
-    
+
 }
 
 
@@ -3696,7 +3696,7 @@ input:checked + .slider:before {
         top: 1px !important;
         left: 13px !important;
     }
-    
+
     .spec-group span i {
         top: 20px !important;
         left: 13px !important;
@@ -3780,38 +3780,38 @@ input:checked + .slider:before {
      .items.danger label {
         width: 100%;
     }
-    
+
     .mr-top {
         margin-top: 20px !important;
     }
-    
+
     .collection_mob{
         margin-top: 20px;
     }
-    
+
     .footer-bottom .powered_text, .footer-bottom .copyright_text{
         text-align: center;
     }
-    
+
     .custom_form .form-group {
         position: relative;
-        margin-bottom: 5px; 
+        margin-bottom: 5px;
     }
-    
+
     .form_error
     {
         position: relative;
     }
-    
+
     .select_error
     {
         bottom:0px;
     }
-    
+
     .candidate-slider h2, .newsletter_signup h2{
 		font-size: 22px;
 	}
-	
+
 	.large_sec{
 		display:none;
 	}
@@ -3820,7 +3820,7 @@ input:checked + .slider:before {
 		display:block;
 		float: left;
 	}
-	
+
 	.form-login form p {
 		font-size: 12px;
 		top: -13px;
@@ -3845,18 +3845,18 @@ input:checked + .slider:before {
         /*width: calc(100% - 58px);
         min-width: 300px !important;*/
     }
-    
+
     #frame #sidepanel {
         /*width: 58px;
         min-width: 58px;*/
     }
-    
+
     #frame #sidepanel #profile {
         width: 100%;
         margin: 0 auto;
         padding: 15px 0 0 5px;
     }
-    
+
     #frame #sidepanel #profile .wrap {
         height: auto;
     }
@@ -3865,15 +3865,15 @@ input:checked + .slider:before {
         overflow-y: scroll;
         overflow-x: hidden;
     }
-    
+
     #frame #sidepanel #contacts ul li.contact .wrap {
         width: 100%;
     }
-    
+
     #frame #sidepanel #contacts ul li.contact .wrap .meta {
         display: none;
     }
-    
+
     #frame #sidepanel #contacts ul li.contact .wrap img {
         margin-right: 0px;
     }
@@ -3886,13 +3886,13 @@ input:checked + .slider:before {
         width: 125px;
         text-align: center;
     }
-    
+
     .btn-relative2 {
         font-size: 10px;
         width: 125px;
         text-align: center;
     }
-    
+
     .cand_info-ul{
         padding-left:0px;
     }
@@ -3935,7 +3935,7 @@ input:checked + .slider:before {
     .btn_rgt {
         display: none;
     }
-    
+
     .btn_descp{
         margin-bottom: 10px;
     }
@@ -4009,11 +4009,11 @@ input:checked + .slider:before {
     .edu_date {
        float: left;
     }
-    
+
     #frame #sidepanel #profile .wrap img{
         width: 100%;
     }
-    
+
     #frame #sidepanel #profile .wrap{
         height: 60px;
     }
@@ -4037,8 +4037,8 @@ input:checked + .slider:before {
 .ref_msg{
 	color: green;
 	margin-bottom: 2%;
-	margin-left: 16%;
 	font-weight: bold;
+  text-align: center;
 }
 
 .no-js #loader { display: none;  }
@@ -4051,6 +4051,10 @@ input:checked + .slider:before {
 	height: 100%;
 	z-index: 9999;
 	background: url('../profile/Loading_icon.gif') center no-repeat #fff;
+}
+
+.hidden-class{
+  overflow: hidden;
 }
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/

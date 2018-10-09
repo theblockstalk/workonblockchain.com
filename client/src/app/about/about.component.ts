@@ -22,6 +22,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   link=''; class=''; resume_class;exp_class;final_class;googleUser;linkedinUser;active_class;
   job_active_class;
   exp_active_class;resume_active_class;
+  image_log;file_size=1048576;
   gender =
   [
     "Male",
@@ -250,31 +251,39 @@ export class AboutComponent implements OnInit,AfterViewInit
               let formData = new FormData();
               if (fileCount > 0 )
               {
-                formData.append('photo', inputEl.files.item(0));
+                  if(inputEl.files.item(0).size < this.file_size)
+                  {
+                        formData.append('photo', inputEl.files.item(0));
                  
-                this.http.post(URL+'users/image', formData ,  {
-            headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-        }).map((res) => res).subscribe(
-                (success) =>
-                {
-                  
-                  ////console.log(success);
-                  this.referred_email();
-                  this.router.navigate(['/job']);
-                },
-                (error) =>                
-                    {
-                        if(error.message === 500 || error.message === 401)
+                        this.http.post(URL+'users/image', formData ,  {
+                        headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
+                        }).map((res) => res).subscribe(
+                        (success) =>
+                        {            
+                            this.referred_email();
+                            this.router.navigate(['/job']);
+                        },
+                        (error) =>                
+
                         {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            window.location.href = '/login';
-                        }
+                            if(error.message === 500 || error.message === 401)
+                            {
+                                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                                window.location.href = '/login';
+                            }
                     
-                        if(error.message === 403)
-                        {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
-                    })
+
+                            if(error.message === 403)
+                            {
+                                // this.router.navigate(['/not_found']);                        
+                            } 
+                        })
+                     }
+                     else
+                     {
+                           this.image_log = "Image size should be less than 1MB";
+                     }
+
               }
               else 
               {

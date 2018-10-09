@@ -17,7 +17,7 @@ declare var $: any;
 })
 export class CandidateFormComponent implements OnInit {
     loading = false;
-    returnUrl: string;   
+    returnUrl: string;
      data;result;
      user;googleUser;email;linkedinUser;message;
     terms;company_terms;
@@ -34,9 +34,9 @@ export class CandidateFormComponent implements OnInit {
        ) {
 		this.titleService.setTitle('Work on Blockchain | Signup developer or company');
 		this.route.queryParams.subscribe(params => {
-			this.code = params['code'];   
+			this.code = params['code'];
 		});
-		
+
         if(this.code){
             ////console.log('in if');
             this.authenticationService.getByRefrenceCode(this.code)
@@ -44,16 +44,20 @@ export class CandidateFormComponent implements OnInit {
                     data => {
                         ////console.log(data);
                         ////console.log('data');
-                        
-                        this.ref_msg = data._creator.email+' thinks you should join workonblockchain.com';
-                        this.credentials.refer_by = data._creator._id;
-                        
+                        if(data) {
+                          this.ref_msg = data + ' thinks you should join workonblockchain.com';
+                        }
+                        else{
+                          this.ref_msg = 'Your refer code is invalid. Please contact our support';
+                        }
+                        //this.credentials.refer_by = data._creator._id;
+
                         /*console.log(this.credentials.refer_by);
-                        
+
                         this.authenticationService.getById(this.credentials.refer_by)
                         .subscribe(
                         data => {
-                    
+
                                 console.log(data);
                             });*/
                     },
@@ -63,13 +67,13 @@ export class CandidateFormComponent implements OnInit {
                         this.log = error;
                     }
                 );
-        } 
+        }
 	}
  ngOnDestroy() {
    ////console.log("ngOndesctroy");
     }
- 
-    ngOnInit() 
+
+    ngOnInit()
     {
 		$(function(){
 			var hash = window.location.hash;
@@ -81,25 +85,25 @@ export class CandidateFormComponent implements OnInit {
 				$('html,body').scrollTop(scrollmem);
 			});
 		});
-		
+
 		this.newMeta.updateTag({ name: 'description', content: 'Signup for companies to apply to you! workonblockchain.com is a global blockchain agnostic hiring recruitment platform for blockchain developers, software developers, designers, product managers, CTOs and software engineer interns who are passionate about working on public and enterprise blockchain technology and cryptocurrencies.' });
 	    this.newMeta.updateTag({ name: 'keywords', content: 'blockchain developer signup workonblockchain.com' });
-		
+
         this.credentials.email='';
-        
+
         this.credentials.country=-1;
         this.dataservice.currentMessage.subscribe(message => this.message = message);
-         setInterval(() => {  
+         setInterval(() => {
                                 this.message = "" ;
                                 this.log='';
                         }, 13000);
     }
     log = '';
     email_log='';
-    password_log=''; 
+    password_log='';
     pass_log='';
-   
-    signup_candidate(loginForm: NgForm) 
+
+    signup_candidate(loginForm: NgForm)
     {
 
           this.credentials.type="candidate";
@@ -135,9 +139,9 @@ export class CandidateFormComponent implements OnInit {
         {
             this.authenticationService.create(this.credentials)
             .subscribe(
-                data => 
+                data =>
                 {
-                   
+
                     //////console.log(data);
                     if(data.error)
                     {
@@ -147,32 +151,32 @@ export class CandidateFormComponent implements OnInit {
                     else
                     {
                        localStorage.setItem('currentUser', JSON.stringify(data));
-                      
+
                         window.location.href = '/terms-and-condition';
-                        
+
                     }
                 },
-                error => 
+                error =>
                 {
                     this.log = 'Something getting wrong';
                     this.loading = false;
                 });
-      
+
 
         }
 
     }
-    
+
     signInWithGoogle()
     {
         this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-        this.authService.authState.subscribe((user) => 
+        this.authService.authState.subscribe((user) =>
         {
-       
-            this.user = user; 
-            this.data = JSON.stringify(this.user);      
+
+            this.user = user;
+            this.data = JSON.stringify(this.user);
             this.result = JSON.parse(this.data);
-            localStorage.setItem('googleUser', JSON.stringify(this.result));      
+            localStorage.setItem('googleUser', JSON.stringify(this.result));
             if(this.result)
             {
                  ////console.log(this.result);
@@ -207,17 +211,15 @@ export class CandidateFormComponent implements OnInit {
             {
                 this.router.navigate(['/signup']);
             }
-      
+
         });
-        console.log(this.result);
-        
-        
+
     }
 
     public subscribeToLogin()
     {
         this._linkedInService.login().subscribe({
-        next: (state) => 
+        next: (state) =>
         {
             const url = '/people/~:(id,picture-url,location,industry,positions,specialties,summary,email-address )?format=json';
             this._linkedInService.raw(url).asObservable().subscribe({
@@ -226,7 +228,7 @@ export class CandidateFormComponent implements OnInit {
                     localStorage.setItem('linkedinUser', JSON.stringify(data));
                     if(data)
                     {
-                        this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));                      
+                        this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
                         this.credentials.email= this.linkedinUser.emailAddress;
                         this.credentials.password= '';
                         this.credentials.type="candidate";
@@ -253,7 +255,7 @@ export class CandidateFormComponent implements OnInit {
                             error => {
                             this.log = 'Something getting wrong';
                             this.loading = false;
-                        });  
+                        });
                             }
                         else
                             {
@@ -276,7 +278,7 @@ export class CandidateFormComponent implements OnInit {
     }
 
 
-    company_signup(signupForm: NgForm) 
+    company_signup(signupForm: NgForm)
     {
             ////console.log("comapny signup form");
             this.credentials.type="company";
@@ -287,12 +289,14 @@ export class CandidateFormComponent implements OnInit {
                 this.credentials.confirm_password = '';
                 this.password_log = "Password do not match";
             }
-            else
+            else if( this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
+            && this.credentials.company_website && this.credentials.phone_number && this.credentials.country && this.credentials.postal_code &&
+            this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
             {
 				////console.log('else');
                 this.authenticationService.create_employer(this.credentials)
                 .subscribe(
-                data => 
+                data =>
                 {
                     ////console.log(data);
                     if(data.error)
@@ -310,12 +314,16 @@ export class CandidateFormComponent implements OnInit {
                         window.location.href = '/company_wizard';
                     }
                 },
-                error => 
+                error =>
                 {
                     //////console.log(error);
                     this.log = 'Something getting wrong';
                     this.loading = false;
                 });
+            }
+            else
+            {
+                this.message = "Please fill all the fields";
             }
     }
 }
