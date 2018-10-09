@@ -510,6 +510,11 @@ export class LinkedinImportComponent implements OnInit {
 
             }
 
+            else
+            {
+              this.error_log = "Please upload linkedin zip file";
+            }
+
           }
         });
       });
@@ -520,7 +525,7 @@ export class LinkedinImportComponent implements OnInit {
   {
     if(f.value.skip_value === 0 && !f.value.fileselect)
     {
-      this.error_log= "please choose file or click on skip button";
+      this.error_log= "Please choose file or click on skip button";
     }
 
     if(f.value.skip_value === 1)
