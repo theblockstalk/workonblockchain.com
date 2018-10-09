@@ -4,8 +4,8 @@ const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHepler = require('../users/company/companyHelpers');
-const candidateHepler = require('../users/candidate/candidateHelpers');
+const companyHelper = require('../users/company/companyHelpers');
+const candidateHelper = require('../users/candidate/candidateHelpers');
 const chatHelper = require('./chatHelpers');
 
 const assert = chai.assert;
@@ -26,19 +26,18 @@ describe('send a file in chat', function () {
 
             //creating a company
             const company = docGenerator.company();
-            await companyHepler.signupVerifiedApprovedCompany(company);
+            await companyHelper.signupVerifiedApprovedCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            await candidateHepler.signupVerifiedApprovedCandidate(candidate);
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const userDoc = await Users.findOne({email: candidate.email}).lean();
 
             //sending a message
             const messageData = docGenerator.message();
             const chatFileData = docGenerator.chatFile();
             const res = await chatHelper.insertChatFile(companyDoc._id,userDoc._id,messageData,chatFileData,companyDoc.jwt_token);
-            res.should.have.status(200);
 
             const chatDoc = await Chats.findOne({sender_id: companyDoc._id,receiver_id: userDoc._id}).lean();
             chatDoc.is_company_reply.should.equal(messageData.is_company_reply);

@@ -6,21 +6,6 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-const getInitialJobOfferDetail = module.exports.getInitialJobOfferDetail = async function getInitialJobOfferDetail(senderId,receverId,msgTag,jwtToken) {
-   const data = {
-        'sender_id': senderId,
-        'receiver_id': receverId,
-        'msg_tag': msgTag
-    };
-    const res = await chai.request(server)
-        .post('/users/get_job_desc_msgs')
-        .set('Authorization', jwtToken)
-        .send(data);
-    res.should.have.status(200);
-    return res;
-
-}
-
 const insertMessage = module.exports.insertMessage = async function insertMessage(senderId,receverId,msgData,jwtToken) {
      const data = {
         'sender_id': senderId,
@@ -190,6 +175,19 @@ const updateJobStatus = module.exports.updateJobStatus = async function updateJo
         .post('/users/update_job_message')
         .set('Authorization', jwtToken)
         .send(data);
+    res.should.have.status(200);
+    return res;
+}
+
+const uploadFile = module.exports.uploadFile = async function uploadFile(canddiateId,fileName,jwtToken) {
+    /*const file = {
+        'filename': fileName
+    };*/
+    console.log(fileName);
+    const res = await chai.request(server)
+        .post('/users/upload_chat_file/'+canddiateId,fileName)
+        .set('Authorization', jwtToken)
+        .send(fileName);
     res.should.have.status(200);
     return res;
 }

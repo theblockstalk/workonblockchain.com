@@ -6,9 +6,9 @@ const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
 const docGenerator = require('../../helpers/docGenerator');
-const userHepler = require('../users/usersHelpers');
-const companyHepler = require('../users/company/companyHelpers');
-const candidateHepler = require('../users/candidate/candidateHelpers');
+const userHelper = require('../users/usersHelpers');
+const companyHelper = require('../users/company/companyHelpers');
+const candidateHelper = require('../users/candidate/candidateHelpers');
 const chatHelper = require('./chatHelpers');
 
 const assert = chai.assert;
@@ -29,20 +29,19 @@ describe('get employment offer detail', function () {
 
             //creating a company
             const company = docGenerator.company();
-            await companyHepler.signupVerfiedCompany(company);
-            await userHepler.approve(company.email);
+            await companyHelper.signupVerfiedCompany(company);
+            await userHelper.approve(company.email);
 
             const companyUserDoc = await Users.findOne({email: company.email}).lean();
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            await candidateHepler.signupVerfiedCandidate(candidate);
+            await candidateHelper.signupVerfiedCandidate(candidate);
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             const msgTag = 'employment_offer';
 
             const employmentOfferDetails = await chatHelper.getEmploymentOfferDetail(companyUserDoc._id, candidateUserDoc._id, msgTag, companyUserDoc.jwt_token);
-            employmentOfferDetails.should.have.status(200);
             const response = employmentOfferDetails.body;
             response.datas.should.equal(0);
         })

@@ -97,6 +97,7 @@ module.exports.accountSetting = function accountSetting(){
     }
 }
 
+
 module.exports.companyTnCWizard = function companyTnCWizard(){
     return {
         terms:true,
@@ -139,15 +140,44 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
     }
 }
 
-module.exports.companyFilterData = function companyFilterData(){
+module.exports.companyFilterData = function companyFilterData() {
     return {
-        currency : "$ USD",
-        salary : 1200,
-        roles : "Ripple",
-        skill : "Java",
-        location : "Andorra",
-        blockchain : "Stellar",
-        availability : "3 months",
-        word : "Blockchain"
+        currency: "$ USD",
+        salary: 1200,
+        roles: "Ripple",
+        skill: "Java",
+        location: "Andorra",
+        blockchain: "Stellar",
+        availability: "3 months",
+        word: "Blockchain"
+    }
+}
+
+module.exports.referredEmailDocs = function referredEmailDocs(){
+    return {
+        firstnameOfReferee : 'Tayyab',
+        referred_fname : 'Salman',
+        referred_lname : 'Safdar'
+    }
+}
+
+module.exports.profileData = function profileData(){
+    return {
+        first_name : 'Tayyab',
+        last_name : 'Hussain',
+        github_account : 'fb.com',
+        stackexchange_account : 'fb.com',
+        contact_number : '65464655',
+        nationality : 'Pakistani',
+        image_src : 'dffdfd.jpg'
+    }
+}
+
+module.exports.experience = function experience(){
+    return {
+        language_exp : 'Tayyab',
+        education : 'Hussain',
+        work : 'fb.com',
+        detail : 'fb.com'
     }
 }

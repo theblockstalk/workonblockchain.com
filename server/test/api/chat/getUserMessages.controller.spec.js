@@ -3,11 +3,10 @@ const chaiHttp = require('chai-http');
 const crypto = require('crypto');
 const server = require('../../../../server');
 const mongo = require('../../helpers/mongo');
-const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
 const docGenerator = require('../../helpers/docGenerator');
-const companyHepler = require('../users/company/companyHelpers');
-const candidateHepler = require('../users/candidate/candidateHelpers');
+const companyHelper = require('../users/company/companyHelpers');
+const candidateHelper = require('../users/candidate/candidateHelpers');
 const chatHelper = require('./chatHelpers');
 
 const assert = chai.assert;
@@ -28,21 +27,19 @@ describe('get user messages', function () {
 
             //creating a company
             const company = docGenerator.company();
-            await companyHepler.signupVerifiedApprovedCompany(company);
+            await companyHelper.signupVerifiedApprovedCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            await candidateHepler.signupVerifiedApprovedCandidate(candidate);
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidateDoc = await Users.findOne({email: candidate.email}).lean();
 
             //sending a message
             const message = docGenerator.message();
             const insertRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
-            insertRes.should.have.status(200);
 
             const res = await chatHelper.getUserMessages(candidateDoc._id,companyDoc.jwt_token);
-            res.should.have.status(200);
             const responseMessage = res.body.datas[0];
             responseMessage.is_company_reply.should.equal(1);
         })
