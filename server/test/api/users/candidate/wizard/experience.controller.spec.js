@@ -6,6 +6,7 @@ const Users = require('../../../../../model/users');
 const candidateProfile = require('../../../../../model/candidate_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
 const candidateHelper = require('../candidateHelpers');
+const candidateWizardHelper = require('./candidateWizardHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -28,7 +29,7 @@ describe('add experience of candidate', function () {
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             const candidateExperience = docGenerator.experience();
-            const res = await candidateHelper.experience(candidateExperience,userDoc.jwt_token);
+            const res = await candidateWizardHelper.experience(candidateExperience,userDoc.jwt_token);
             const newCandidateInfo = await candidateProfile.findOne({_creator: userDoc._id}).lean();
             newCandidateInfo.description.should.equal(candidateExperience.detail.intro);
             newCandidateInfo.education_history[0].uniname.should.equal(candidateExperience.education[0].uniname);
