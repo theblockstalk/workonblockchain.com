@@ -6,16 +6,6 @@
 image: node:8.11.4
 
 pipelines:
-#  default:
-#    - step:
-#        caches:
-#          - node
-#        script: # Modify the commands below to build your repository.
-#          - cd server
-#          - npm install
-#          - npm test
-#        services:
-#          - mongo
   branches:
       staging:
 #        - step:
@@ -54,11 +44,14 @@ pipelines:
             deployment: production
             trigger: manual
             script:
-              - cd scripts
+              - cd client
+              - npm install
+              - npm install -g @angular/cli
+              - cd ../scripts
               - npm install
               - cd ../
-              - node scripts/server.js production
               - node scripts/client.js production
+              - node scripts/server.js production
 
 definitions:
   services:
