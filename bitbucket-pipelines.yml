@@ -56,23 +56,23 @@ pipelines:
 #            trigger: manual
             script:
               - cd client
-              - pwd
-              - ls -la
-              - npm version
-              - npm root -g
-              - node -v
+#              - pwd
+#              - ls -la
+#              - npm version
+#              - npm root -g
+#              - node -v
               - npm install
 #              - npm uninstall -g @angular/cli
 #              - npm cache clean
               - npm install -g @angular/cli
-              - ls /usr/local/lib/node_modules/
-              - ls /usr/local/lib/node_modules/@angular
-              - ls /usr/local/lib/node_modules/@angular/cli
-              - ls /usr/local/lib/node_modules/@angular/cli/bin
+#              - ls /usr/local/lib/node_modules/
+#              - ls /usr/local/lib/node_modules/@angular
+#              - ls /usr/local/lib/node_modules/@angular/cli
+#              - ls /usr/local/lib/node_modules/@angular/cli/bin
 #              - alias ng="/usr/local/lib/node_modules/@angular/cli/bin/ng"
-              - ng -v
-              - npm run-script build-prod
-              - ng build --env=prod
+#              - ng -v
+#              - npm run-script build-prod
+#              - ng build --env=prod
 #              - npm link @angular/cli
 #              - ng update @angular/cli --migrate-only --from=1.7.4
               - cd ../scripts
