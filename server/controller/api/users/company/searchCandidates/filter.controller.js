@@ -155,7 +155,6 @@ function filter(params, userId)
 
                 if (err){
                     logger.error(err.message, {stack: err.stack});
-                    ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
                 }
                 if(result)
                 {
