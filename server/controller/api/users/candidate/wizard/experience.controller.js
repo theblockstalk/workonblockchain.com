@@ -8,7 +8,6 @@ const logger = require('../../../../services/logger');
 
 module.exports = function (req,res)
 {
-    ////console.log(req.body);
 	let userId = req.auth.user._id;
     experience_data(userId,req.body).then(function (err, data)
     {
@@ -30,7 +29,6 @@ module.exports = function (req,res)
 
 function experience_data(_id, userParam)
 {
-
     var deferred = Q.defer();
     CandidateProfile.findOne({ _creator: _id }, function (err, data)
     {
@@ -51,7 +49,6 @@ function experience_data(_id, userParam)
 
         var set =
             {
-                
                 programming_languages: userParam.language_exp,
                 education_history :  userParam.education,
                 work_history: userParam.work,

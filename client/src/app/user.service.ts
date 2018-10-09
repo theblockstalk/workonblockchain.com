@@ -378,7 +378,7 @@ export class UserService {
 
     experience(user_id: string,detail : CandidateProfile ,  exp : any , history : any,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
     {
-        
+
         return this.http.put<any>(URL+'users/welcome/exp' , { detail :detail , education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp } , {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
