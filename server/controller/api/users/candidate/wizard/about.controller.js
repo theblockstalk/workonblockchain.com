@@ -31,7 +31,7 @@ function about_data(_id, userParam)
 {
     var deferred = Q.defer();
     var _id = _id;
-
+console.log(userParam);
     CandidateProfile.findOne({ _creator: _id }, function (err, data)
     {
         if (err){

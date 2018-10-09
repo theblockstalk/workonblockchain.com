@@ -75,6 +75,7 @@ import { FeesComponent } from './fees/fees.component';
 import { LoadingModule } from 'ngx-loading';
 import { LoginResolver } from './is-loggedin.resolver';
 import { SeoService } from './seo.service';
+import { LinkedinImportComponent } from './linkedin-import/linkedin-import.component';
 
 const google_id = environment.google_id;
 //console.log(google_id);
@@ -101,6 +102,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent, resolve: {LoginResolver }},
     { path: 'home', component: HomeComponent},
     { path: '', component: HomeComponent},
+    { path: 'prefill-profile', component: LinkedinImportComponent},
     { path: 'terms-and-condition', component: CandidateTermsComponent},
     { path: 'resume', component: ResumeComponent},
     { path: 'experience', component: ExperienceComponent},
@@ -202,6 +204,7 @@ const appRoutes: Routes = [
     LegalNoticeComponent,
     ChangePasswordComponent,
     FeesComponent,
+    LinkedinImportComponent,
     	
 
   ],
