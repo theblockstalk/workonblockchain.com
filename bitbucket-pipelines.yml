@@ -62,7 +62,7 @@ pipelines:
               - npm root -g
               - node -v
               - npm uninstall -g @angular/cli
-              - npm cache clean verify
+              - npm cache clean
               - npm install -g @angular/cli
               - ls /usr/local/lib/node_modules/
               - ls /usr/local/lib/node_modules/@angular
