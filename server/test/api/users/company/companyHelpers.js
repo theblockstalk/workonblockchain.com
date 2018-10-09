@@ -108,3 +108,16 @@ const verifiedCandidate = module.exports.verifiedCandidate = async function veri
     return res;
 }
 
+const getVerifiedCandidateDetail = module.exports.getVerifiedCandidateDetail = async function getVerifiedCandidateDetail(userId,companyReply,jwtToken){
+    const data = {
+        '_id' : userId,
+        'company_reply' : companyReply
+    }
+    const res = await chai.request(server)
+        .post('/users/candidate_detail')
+        .set('Authorization', jwtToken)
+        .send(data)
+    res.should.have.status(200);
+    return res;
+}
+
