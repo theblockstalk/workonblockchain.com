@@ -6,16 +6,6 @@
 image: node:8.11.4
 
 pipelines:
-#  default:
-#    - step:
-#        caches:
-#          - node
-#        script: # Modify the commands below to build your repository.
-#          - cd server
-#          - npm install
-#          - npm test
-#        services:
-#          - mongo
   branches:
       staging:
 #        - step:
@@ -38,43 +28,25 @@ pipelines:
               - cd ../
               - node scripts/server.js staging
               - node scripts/client.js staging
-#      master:
-      hotfix-master:
-#        - step:
-#            name: Run server unit tests
-#            caches:
-#              - node
-#            script:
-#              - cd server
-#              - npm install
-#              - npm test
-#            services:
-#              - mongo
+      master:
+        - step:
+            name: Run server unit tests
+            caches:
+              - node
+            script:
+              - cd server
+              - npm install
+              - npm test
+            services:
+              - mongo
         - step:
             name: Deploy server and client to production
             deployment: production
-#            trigger: manual
+            trigger: manual
             script:
               - cd client
-#              - pwd
-#              - ls -la
-#              - npm version
-#              - npm root -g
-#              - node -v
               - npm install
-#              - npm uninstall -g @angular/cli
-#              - npm cache clean
               - npm install -g @angular/cli
-#              - ls /usr/local/lib/node_modules/
-#              - ls /usr/local/lib/node_modules/@angular
-#              - ls /usr/local/lib/node_modules/@angular/cli
-#              - ls /usr/local/lib/node_modules/@angular/cli/bin
-#              - alias ng="/usr/local/lib/node_modules/@angular/cli/bin/ng"
-#              - ng -v
-#              - npm run-script build-prod
-#              - ng build --env=prod
-#              - npm link @angular/cli
-#              - ng update @angular/cli --migrate-only --from=1.7.4
               - cd ../scripts
               - npm install
               - cd ../
