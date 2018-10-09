@@ -5,6 +5,8 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import {environment} from '../../environments/environment';
 import {NgForm} from '@angular/forms';
+declare var $: any;
+
 const URL = environment.backend_url;
 @Component({
   selector: 'app-linkedin-import',
@@ -28,6 +30,7 @@ export class LinkedinImportComponent implements OnInit {
   exp_class;
   resume_active_class;
   exp_active_class;
+  error_log;
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private authenticationService: UserService) {
   }
@@ -112,6 +115,18 @@ export class LinkedinImportComponent implements OnInit {
     {
       this.router.navigate(['/not_found']);
     }
+
+    $('#fileselect').bind('change', function () {
+      var filename = $("#fileselect").val();
+      if (/^\s*$/.test(filename)) {
+        $(".file-uploadd").removeClass('active');
+        $("#noFile").text("No file chosen...");
+      }
+      else {
+        $(".file-uploadd").addClass('active');
+        $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
+      }
+    });
   }
 
   public fileselected(e) {
@@ -400,7 +415,8 @@ export class LinkedinImportComponent implements OnInit {
           let info;
           let name;
           if (!obj.basics && !obj.work && !obj.education) {
-            alert("not found any data");
+            //alert("not found any data");
+            this.error_log = "This is and error message. Your file formate is not supported.";
           }
 
           else {
@@ -420,6 +436,7 @@ export class LinkedinImportComponent implements OnInit {
                   obj.work[key].currentwork = false;
                 }
                 else {
+                  end_date_format = null;
                   obj.work[key].currentwork = true;
                 }
                 let experiencejson = {
@@ -495,7 +512,7 @@ export class LinkedinImportComponent implements OnInit {
   {
     if(f.value.skip_value === 0 && !f.value.fileselect)
     {
-      console.log("please choose file or click on skip button");
+      this.error_log= "please choose file or click on skip button";
     }
 
     if(f.value.skip_value === 1)

@@ -15,34 +15,86 @@
            <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn  {{exp_disable}}">Experience</a></li>
          </ul>
       </div>
-      <div class="col-md-12 wizard-form">
+      <div class="col-md-12 wizard-form comp-cand_terms">
         <form class = "login_form"  #f="ngForm" (ngSubmit)="onSubmit(f)">
-        <!--<div>
-        <p id="filedrag">
-          Drop a LinkedIn archive zip file or <button class="button" id="select-file" (click) = "linkedincv()" >select a file</button>.
-        </p>
-        <input type="file" id="fileselect" name="fileselect[]" />
-        </div>-->
-        <br/><br/><br/>
-        <ul>
-          <li>go to linkedin export page</li>
 
-          <li>download profile data from email (with screenshot from linkedin)</li>
 
-          <li>upload that file to WOB</li>
+            <div class = "linkein_info">
+              <h2 class = "text-center">Pre-fill your profile with LinkedIn import?</h2>
+            </div>
+            <p class = "link_p text-center">
+              If you would like your profile data such as work history to be pre-filled please follow the steps below.
+            </p>
 
-      </ul>
-        <br/>
-        <input (change)="filechoosen($event)" type="file" accept=".zip" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control" />
-        <br/>
-          <input type="text" style="display:none;" class="form-control" id=""  name="skip_value" [(ngModel)]="skip_value">
+            <p class = "link_p text-center">
+              <input type="text" style="display:none;" class="form-control" id=""  name="skip_value" [(ngModel)]="skip_value">
+              <a class = "btn submit_btn btn_wth btn_brd btn-pdg" (click) = "skipbutton()">Skip</a>
+            </p>
 
-          <a class = "btn btn-prev" (click) = "skipbutton()" >Skip Button</a>
+            <div class = "col-md-6">
 
-        <div class = "form-group text-right">
-          <a routerLink="/terms-and-condition" class = "btn btn-prev">Prev Step</a>
-          <button type="submit" class = "btn btn-self btn-pdg"  >Done</button>
-        </div>
+              <p class = "link_p">
+                <span class = "step-num">Step 1-</span>   Go to your LinkedIn data export page
+              </p>
+
+              <p class = "link_p">
+                <a href = "https://www.linkedin.com/psettings/member-data" target="_blank" class = "btn btn-self btn_wth btn-pdg"><b>Open LinkedIn</b></a>
+              </p>
+
+              <p class = "link_p">
+                <span class = "step-num">Step 2- </span>   Download your profile data
+              </p>
+
+              <p class = "steps-pra link_p">
+                <span class = "step-num">a-</span> Select: <span class = "choose_opt">Pick and Choose</span>
+                <br>
+                <span class = "step-num">b-</span> Select: <span class = "choose_opt">Profile</span>
+                <br>
+                <span class = "step-num">c-</span> Select: <span class = "choose_opt">Request archive</span>
+              </p>
+
+
+              <p class = "link_p">
+                The archive may take a while to become available. Refresh the page or check your email to access the download link.
+              </p>
+
+
+              <p class = "link_p">
+                <span class = "step-num">Step 3-</span> Upload the zip file you just download
+              </p>
+
+
+              <div class="file-uploadd">
+                <div class="file-select">
+
+                  <div class="file-select-button" id="fileName">Choose File</div>
+                  <div class="file-select-name" id="noFile">No file chosen...</div>
+                  <input (change)="filechoosen($event)" type="file" accept=".zip" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control" />
+
+                </div>
+              </div>
+
+              <div class = "file_error">
+                {{error_log}}
+              </div>
+
+            </div>
+
+            <div class = "col-md-6 img-col-set">
+              <div class = "info_image">
+                <img src = "/assets/images/image-2.png" alt = "linkeIn-info image" class = "img-responsive"/>
+              </div>
+            </div>
+
+
+
+          <div class = "col-md-12 nxt_btne text-right">
+            <a routerLink="/terms-and-condition" class = "btn btn-prev">Prev Step</a>
+            <button type="submit" class = "btn btn-self btn-pdg"  >Done</button>
+          </div>
+
+
+
         </form>
       </div>
     </div>
