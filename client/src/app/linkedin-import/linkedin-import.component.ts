@@ -415,8 +415,7 @@ export class LinkedinImportComponent implements OnInit {
           let info;
           let name;
           if (!obj.basics && !obj.work && !obj.education) {
-            //alert("not found any data");
-            this.error_log = "This is and error message. Your file formate is not supported.";
+            this.error_log = "There is an error message. Your file formate is not supported.";
           }
 
           else {
@@ -438,7 +437,7 @@ export class LinkedinImportComponent implements OnInit {
                     obj.work[key].currentwork = false;
                   }
                   else {
-                    end_date_format = null;
+                    end_date_format = new Date();
                     obj.work[key].currentwork = true;
                   }
                   let experiencejson = {
@@ -474,7 +473,7 @@ export class LinkedinImportComponent implements OnInit {
             }
 
 
-            if (obj.work || obj.education|| obj.basics ) {
+            if (obj.work || obj.education || obj.basics ) {
               backendService.prefilled_profile(info , experiencearray,  education_json_array )
                 .subscribe(
                   data => {
@@ -512,7 +511,7 @@ export class LinkedinImportComponent implements OnInit {
 
             else
             {
-              this.error_log = "Please upload linkedin zip file";
+              this.error_log = "Please upload only linkedin zip file";
             }
 
           }
@@ -523,21 +522,15 @@ export class LinkedinImportComponent implements OnInit {
 
   onSubmit(f: NgForm)
   {
-    if(f.value.skip_value === 0 && !f.value.fileselect)
+
+    if(!f.value.fileselect)
     {
-      this.error_log= "Please choose file or click on skip button";
+      this.error_log= "Please choose file";
     }
 
-    if(f.value.skip_value === 1)
-    {
-      this.skip_value=0;
-      this.router.navigate(['/about']);
-    }
     else
     {
-      console.log("else");
-
-      if(f.value.fileselect)
+       if(f.value.fileselect)
       {
         this.fileselected(this.fileevent);
       }
@@ -553,6 +546,7 @@ export class LinkedinImportComponent implements OnInit {
 
   skipbutton()
   {
-    this.skip_value = 1;
+    this.router.navigate(['/about']);
+    //this.skip_value = 1;
   }
 }
