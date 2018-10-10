@@ -16,3 +16,12 @@ const approveUser = module.exports.approveUser = async function approveUser(id,s
     res.should.have.status(200);
     return res;
 }
+
+const companyFilter = module.exports.companyFilter = async function companyFilter(filterData,jwtToken) {
+    const res = await chai.request(server)
+        .post('/users/admin_company_filter')
+        .set('Authorization', jwtToken)
+        .send(filterData);
+    res.should.have.status(200);
+    return res;
+}

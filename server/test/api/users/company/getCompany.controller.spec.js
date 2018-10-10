@@ -6,7 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Companies = require('../../../../model/employer_profile');
 const docGenerator = require('../../../helpers/docGenerator');
-const companyHepler = require('./companyHelpers');
+const companyHelper = require('./companyHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -24,9 +24,9 @@ describe('get all companies detail', function () {
 
         it('it should get all companies profile', async () => {
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
+            const companyRes = await companyHelper.signupCompany(company);
 
-            const getAllCompanies = await companyHepler.getCompanies(companyRes.body.jwt_token);
+            const getAllCompanies = await companyHelper.getCompanies(companyRes.body.jwt_token);
 
             getAllCompanies.body[0]._creator.email.should.equal(company.email);
             getAllCompanies.body[0].first_name.should.equal(company.first_name);

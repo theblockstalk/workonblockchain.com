@@ -7,8 +7,8 @@ const Users = require('../../../../../model/users');
 const Companies = require('../../../../../model/employer_profile');
 const Candidates = require('../../../../../model/candidate_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
-const companyHepler = require('../companyHelpers');
-const candidateHepler = require('../../candidate/candidateHelpers');
+const companyHelper = require('../companyHelpers');
+const candidateHelper = require('../../candidate/candidateHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -27,7 +27,7 @@ describe('search candidates as company', function () {
         it('it should the candidate with filters', async () => {
 
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupVerifiedApprovedCompany(company);
+            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
 
             const candidate = docGenerator.candidate();
             const profileData = docGenerator.profileData();
@@ -35,7 +35,7 @@ describe('search candidates as company', function () {
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
 
-            const candidateRes = await candidateHepler.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             let candidateData = await Candidates.findOne({_creator: candidateUserDoc._id}).lean();
@@ -51,7 +51,7 @@ describe('search candidates as company', function () {
             }
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
-            const filterRes = await companyHepler.companyFilter(params , comapnyUserDoc.jwt_token);
+            const filterRes = await companyHelper.companyFilter(params , comapnyUserDoc.jwt_token);
 
             candidateData.expected_salary_currency.should.equal(params.currency);
             candidateData.expected_salary.should.equal(params.salary);

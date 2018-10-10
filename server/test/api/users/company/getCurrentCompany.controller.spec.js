@@ -6,7 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Companies = require('../../../../model/employer_profile');
 const docGenerator = require('../../../helpers/docGenerator');
-const companyHepler = require('./companyHelpers');
+const companyHelper = require('./companyHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -25,11 +25,11 @@ describe('get current company detail', function () {
         it('it should get only current company profile detail', async () => {
 
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
+            const companyRes = await companyHelper.signupCompany(company);
 
             const userDoc = await Users.findOne({email: company.email}).lean();
 
-            const getCurrentCompany = await companyHepler.getCurrentCompany(userDoc._id , userDoc.jwt_token);
+            const getCurrentCompany = await companyHelper.getCurrentCompany(userDoc._id , userDoc.jwt_token);
             getCurrentCompany.body._creator.email.should.equal(company.email);
             getCurrentCompany.body.first_name.should.equal(company.first_name);
             getCurrentCompany.body.last_name.should.equal(company.last_name);

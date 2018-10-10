@@ -6,7 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Companies = require('../../../../model/employer_profile');
 const docGenerator = require('../../../helpers/docGenerator');
-const companyHepler = require('./companyHelpers');
+const companyHelper = require('./companyHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -25,7 +25,7 @@ describe('signup as company', function () {
         it('it should signup a new company', async () => {
 
             const company = docGenerator.company();
-            const res = await companyHepler.signupCompany(company);
+            const res = await companyHelper.signupCompany(company);
             res.should.have.status(200);
 
             const userDoc = await Users.findOne({email: company.email}).lean();
