@@ -5,6 +5,7 @@ const userHelpers = require('../usersHelpers')
 const candidateWizardHelpers = require('./wizard/candidateWizardHelpers')
 
 const should = chai.should();
+const fs = require('fs');
 
 chai.use(chaiHttp);
 
@@ -176,12 +177,14 @@ const editProfile = module.exports.editProfile = async function editProfile(data
     return res;
 }
 
-const candidateProfileImg = module.exports.candidateProfileImg = async function candidateProfileImg(profileImage , jwtToken){
+module.exports.image = async function image(file, jwtToken) {
+
+    const image = fs.readFileSync(file.path);
     const res = await chai.request(server)
         .post('/users/image')
         .set('Authorization', jwtToken)
-        .send(profileImage)
-    res.should.have.status(200);
+        .attach('photo', image, file.name);
+    res.status.should.equal(200);
     return res;
-}
 
+}

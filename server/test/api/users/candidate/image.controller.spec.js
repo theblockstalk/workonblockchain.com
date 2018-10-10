@@ -6,14 +6,14 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Candidates = require('../../../../model/candidate_profile');
 const docGenerator = require('../../../helpers/docGenerator');
-const candidateHelper = require('./candidateHelpers');
+const candidateHepler = require('./candidateHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('candidate profile image', function () {
+describe('upload profile image', function () {
 
     afterEach(async () => {
         console.log('dropping database');
@@ -22,20 +22,18 @@ describe('candidate profile image', function () {
 
     describe('POST /users/image', () => {
 
-        it('it should insert the candidate profile image', async () => {
+        it('it add an image to the candidate', async () => {
 
             const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHelper.signupCandidate(candidate);
+            const signupRes = await candidateHepler.signupCandidate(candidate);
 
-            const candidateProfileImage = docGenerator.candidateProfileImage();
-            const candidateProfile = await candidateHelper.candidateProfileImg(candidateProfileImage.image_name ,candidateRes.body.jwt_token);
+            const file = docGenerator.image();
 
-            const userDoc = await Users.findOne({email: candidate.email}).lean();
+            await candidateHepler.image(file, signupRes.body.jwt_token);
 
-            const candidateDoc = await Candidates.findOne({_creator: userDoc._id}).lean();
-            should.exist(candidateDoc);
-            candidateDoc.image.should.equal(candidateProfileImage.image_name);
+            const candidateDoc = await Candidates.findOne({_id: signupRes.body._id}).lean();
 
+            assert(candidateDoc.image.includes(file.name));
         })
     })
 });
