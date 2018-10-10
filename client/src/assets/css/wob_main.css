@@ -3567,8 +3567,6 @@ input:checked + .slider:before {
   background: #f6f9fc;
   overflow: hidden;
   padding: 5px;
-  position: absolute;
-  transform: translate(0%, 30%);
 }
 
 .info_image img{
