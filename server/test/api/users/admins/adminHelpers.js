@@ -25,3 +25,12 @@ const companyFilter = module.exports.companyFilter = async function companyFilte
     res.should.have.status(200);
     return res;
 }
+
+const candidateFilter = module.exports.candidateFilter = async function candidateFilter(filterData,jwtToken) {
+    const res = await chai.request(server)
+        .post('/users/admin_candidate_filter')
+        .set('Authorization', jwtToken)
+        .send(filterData);
+    res.should.have.status(200);
+    return res;
+}
