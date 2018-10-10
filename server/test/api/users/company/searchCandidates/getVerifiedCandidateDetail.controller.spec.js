@@ -34,7 +34,7 @@ describe('get verified candidate detail as company', function () {
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
 
-            const candidateRes = await candidateHepler.signupAndCompleteProfile(candidate, profileData,job,resume,experience );
+            const candidateRes = await candidateHepler.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             const companyUserDoc = await Users.findOne({email: company.email}).lean();
@@ -62,7 +62,7 @@ describe('get verified candidate detail as company', function () {
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
 
-            const candidateRes = await candidateHepler.signupAndCompleteProfile(candidate, profileData,job,resume,experience );
+            const candidateRes = await candidateHepler.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             const companyUserDoc = await Users.findOne({email: company.email}).lean();

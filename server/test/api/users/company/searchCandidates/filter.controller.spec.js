@@ -35,7 +35,7 @@ describe('search candidates as company', function () {
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
 
-            const candidateRes = await candidateHepler.signupAndCompleteProfile(candidate, profileData,job,resume,experience );
+            const candidateRes = await candidateHepler.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             let candidateData = await Candidates.findOne({_creator: candidateUserDoc._id}).lean();

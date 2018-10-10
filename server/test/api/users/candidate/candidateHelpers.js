@@ -34,7 +34,7 @@ module.exports.signupVerifiedApprovedCandidate = async function signupVerifiedAp
     await userHelpers.makeAdmin(candidate.email);
 }
 
-module.exports.signupAndCompleteProfile = async function signupAndCompleteProfile(candidate, about, job,resume,experience) {
+module.exports.signupCandidateAndCompleteProfile = async function signupCandidateAndCompleteProfile(candidate, about, job,resume,experience) {
     const res = await signupCandidate(candidate);
     await userHelpers.verifyEmail(candidate.email);
     await userHelpers.approve(candidate.email);

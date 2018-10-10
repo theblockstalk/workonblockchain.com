@@ -7,6 +7,7 @@ const Users = require('../../../../../model/users');
 const Companies = require('../../../../../model/employer_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
 const companyHepler = require('../companyHelpers');
+const companyWizardHepler = require('./companyWizardHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -28,7 +29,7 @@ describe('company about wizard', function () {
             const companyRes = await companyHepler.signupCompany(company);
 
             const companyAbout = docGenerator.companyAbout();
-            const companyAboutWizard = await companyHepler.companyAboutWizard(companyAbout , companyRes.body.jwt_token);
+            const companyAboutWizard = await companyWizardHepler.companyAboutWizard(companyAbout , companyRes.body.jwt_token);
 
             const userDoc = await Users.findOne({email: company.email}).lean();
 
