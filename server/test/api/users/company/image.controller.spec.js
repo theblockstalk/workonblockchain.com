@@ -13,29 +13,26 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('company profile image', function () {
+describe('upload profile image', function () {
 
     afterEach(async () => {
         console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('POST /users/employer_image', () => {
+    describe('POST /users/image', () => {
 
-        it('it should insert the company profile image', async () => {
+        it('it add an image to the candidate', async () => {
 
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
+            const signupRes = await companyHepler.signupCompany(company);
 
-            const companyProfileImage = docGenerator.companyProfileImage();
-            const companyProfile = await companyHepler.companyProfileImg(companyProfileImage.image_name ,companyRes.body.jwt_token);
+            const file = docGenerator.image();
 
-            const userDoc = await Users.findOne({email: company.email}).lean();
+            await companyHepler.image(file, signupRes.body.jwt_token);
 
-            const companyDoc = await Companies.findOne({_creator: userDoc._id}).lean();
-            should.exist(companyDoc);
-            companyDoc.company_logo.should.equal(companyProfileImage.image_name);
-
+            const companyDoc = await Companies.findOne({_id: signupRes.body._id}).lean();
+            assert(companyDoc.company_logo.includes(file.name));
         })
     })
 });

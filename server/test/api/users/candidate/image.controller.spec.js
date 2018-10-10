@@ -32,7 +32,7 @@ describe('upload profile image', function () {
             await candidateHepler.image(file, signupRes.body.jwt_token);
 
             const candidateDoc = await Candidates.findOne({_id: signupRes.body._id}).lean();
-
+console.log(candidateDoc);
             assert(candidateDoc.image.includes(file.name));
         })
     })

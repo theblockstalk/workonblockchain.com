@@ -31,13 +31,14 @@ module.exports = function verify_send_email(info) {
                     if(query_data)
                     {
 
-                        if(query_data[0].first_name)
+                        if(!query_data[0].first_name)
                         {
-                            name = query_data[0].first_name;
+                            name = info.email;
+
                         }
                         else
                         {
-                            name = info.email;
+                            name = query_data[0].first_name;
 
                         }
                         verifyEmailEmail.sendEmail(info, name);

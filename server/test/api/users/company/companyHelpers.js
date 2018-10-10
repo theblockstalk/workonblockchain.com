@@ -4,8 +4,10 @@ const server = require('../../../../server');
 const Users = require('../../../../model/users');
 const userHelpers = require('../usersHelpers');
 const companyWizardHelpers = require('./wizard/companyWizardHelpers');
-
 const should = chai.should();
+const fs = require('fs');
+
+chai.use(chaiHttp);
 
 const signupCompany = module.exports.signupCompany = async function signupCompany(company) {
     const res = await chai.request(server)
@@ -57,14 +59,16 @@ const getCurrentCompany = module.exports.getCurrentCompany = async function getC
 
 
 
-const companyProfileImg = module.exports.companyProfileImg = async function companyProfileImg(profileImage , jwtToken){
+module.exports.image = async function image(file, jwtToken) {
 
+    const company_logo = fs.readFileSync(file.path);
     const res = await chai.request(server)
         .post('/users/employer_image')
         .set('Authorization', jwtToken)
-        .send(profileImage)
-    res.should.have.status(200);
+        .attach('photo', company_logo, file.name);
+    res.status.should.equal(200);
     return res;
+
 }
 
 const UpdateCompanyProfile = module.exports.UpdateCompanyProfile = async function UpdateCompanyProfile(profileData,jwtToken){

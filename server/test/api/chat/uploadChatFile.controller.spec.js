@@ -33,9 +33,11 @@ describe('upload chat file', function () {
             const formData = new FormData();
             const messageData = docGenerator.message();
             const chatFileData = docGenerator.chatFile();
-            const fileName = 'my-test.jpg';
-            formData.append('photo', fileName);
-            const res = await chatHelper.uploadFile(userDoc._id,formData,userDoc.jwt_token);
+
+            const file = docGenerator.image();
+
+            const res = await chatHelper.uploadFile(userDoc._id,file,userDoc.jwt_token);
+            const chatRes = await Chats.findOne({sender_id : userDoc._id}).lean();
         })
     })
 });

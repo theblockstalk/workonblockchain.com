@@ -34,7 +34,6 @@ describe('reset password of candidate or company', function () {
 
             const resetPassword = await authenticateHepler.resetPassword(userDoc.forgot_password_key, candidate.password);
 
-            userDoc = await Users.findOne({email: candidate.email}).lean();
             const salt = userDoc.salt;
             let hash = crypto.createHmac('sha512', salt);
             hash.update(candidate.password);
