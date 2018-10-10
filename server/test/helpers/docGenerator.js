@@ -345,3 +345,10 @@ module.exports.editWork = function editWork() {
         currentwork: true
     }
 }
+
+module.exports.image = function image(){
+    return {
+        name: 'image.jpg',
+        path: __dirname + '/image.jpg'
+    };
+}

@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 const server = require('../../../../server');
 const userHelpers = require('../usersHelpers')
 const should = chai.should();
+const fs = require('fs');
 
 chai.use(chaiHttp);
 
@@ -161,4 +162,17 @@ const editProfile = module.exports.editProfile = async function editProfile(data
         .set('Authorization', jwtToken)
         .send(detail,education,work);
     return res;
+}
+
+module.exports.image = async function image(file, jwtToken) {
+    console.log(file);
+    const image = fs.readFileSync(file.path);
+
+    const res = await chai.request(server)
+        .post('/users/image')
+        .set('Authorization', jwtToken)
+        .attach('photo', image, file.name);
+    res.status.should.equal(200);
+    return res;
+
 }
