@@ -42,7 +42,7 @@ function set_disable_status(data,userId){
 
     users.update({ _id:userId },{ $set: set }, function (err, doc)
     {
-        console.log(doc);
+
         if (err){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);

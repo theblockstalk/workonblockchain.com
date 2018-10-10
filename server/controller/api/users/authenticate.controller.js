@@ -27,14 +27,13 @@ module.exports = function (req, res) {
 }
 
 function authenticate(email, password,type)
-{	console.log(email);
+{
     var deferred = Q.defer();
 
     users.findOne({ email: email }, function (err, user)
     {
 
         if (err) deferred.reject(err.name + ': ' + err.message);
-        // console.log(user);
 
         if (user && bcrypt.compareSync(password, user.password))
         {

@@ -44,29 +44,22 @@ describe('search candidates as company', function () {
                 currency: candidateData.expected_salary_currency,
                 salary: candidateData.expected_salary,
                 position: candidateData.roles,
-                skill: ['Java' , 'C#'],
+                skill: [],
                 location: candidateData.locations,
-                blockchain: ['Bitcoin'],
+                blockchain: [],
                 availability: candidateData.availability_day,
             }
 
-            const companyFilterData = params
+            const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
+            const filterRes = await companyHepler.companyFilter(params , comapnyUserDoc.jwt_token);
 
-            const userDoc = await Users.findOne({email: company.email}).lean();
-            const filterRes = await companyHepler.companyFilter(companyFilterData , userDoc.jwt_token);
-
-            const foundCandidate  = filterRes.body[0].ids[0];
-
-            candidateData = await Candidates.findOne({_creator: foundCandidate}).lean();
-
-            candidateData.expected_salary_currency.should.equal(companyFilterData.currency);
-            candidateData.expected_salary.should.equal(companyFilterData.salary);
-            candidateData.roles.should.valueOf(companyFilterData.roles);
-            //will look after the linkedin FE integration
-            //candidateData.programming_languages.language.should.valueOf(companyFilterData.skill);
-            candidateData.locations.should.valueOf(companyFilterData.location);
-            //candidateData.platforms.platform_name.should.valueOf(companyFilterData.blockchain);
-            candidateData.availability_day.should.equal(companyFilterData.availability);
+            candidateData.expected_salary_currency.should.equal(params.currency);
+            candidateData.expected_salary.should.equal(params.salary);
+            candidateData.roles.should.valueOf(params.roles);
+            candidateData.programming_languages[0].language.should.valueOf(params.skill);
+            candidateData.locations.should.valueOf(params.location);
+            candidateData.platforms[0].should.valueOf(params.blockchain);
+            candidateData.availability_day.should.equal(params.availability);
 
         })
     })

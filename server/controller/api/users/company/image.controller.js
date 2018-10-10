@@ -7,8 +7,7 @@ const logger = require('../../../services/logger');
 
 module.exports = function (req, res)
 {
-console.log("image file");
-console.log(req.file.filename);
+
     res.json(req.file.filename);
     let path;
     if (settings.isLiveApplication()) {
