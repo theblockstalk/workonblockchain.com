@@ -34,3 +34,12 @@ const candidateFilter = module.exports.candidateFilter = async function candidat
     res.should.have.status(200);
     return res;
 }
+
+const addCmsContent = module.exports.addCmsContent = async function addCmsContent(cmsData,jwtToken) {
+    const res = await chai.request(server)
+        .put('/users/add_privacy_content')
+        .set('Authorization', jwtToken)
+        .send(cmsData);
+    res.should.have.status(200);
+    return res;
+}
