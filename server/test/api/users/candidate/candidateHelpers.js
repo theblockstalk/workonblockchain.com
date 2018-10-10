@@ -176,3 +176,12 @@ const editProfile = module.exports.editProfile = async function editProfile(data
     return res;
 }
 
+const candidateProfileImg = module.exports.candidateProfileImg = async function candidateProfileImg(profileImage , jwtToken){
+    const res = await chai.request(server)
+        .post('/users/image')
+        .set('Authorization', jwtToken)
+        .send(profileImage)
+    res.should.have.status(200);
+    return res;
+}
+

@@ -72,8 +72,6 @@ const adminComanyFilter = require('./controller/api/users/admins/companyFilter.c
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
-const pagesGetAllContent = require('./controller/api/pages/getAllContent.controller');
-
 
 router.get('/', healthCheck);
 

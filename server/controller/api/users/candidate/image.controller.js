@@ -7,6 +7,7 @@ const logger = require('../../../services/logger');
 ///// for save candidate "image(sign-up)"  in db///////////////////
 
 module.exports = function (req, res) {
+    console.log(req.file);
     logger.debug('req.file', {file: req.file});
     let path;
     if (settings.isLiveApplication()) {
