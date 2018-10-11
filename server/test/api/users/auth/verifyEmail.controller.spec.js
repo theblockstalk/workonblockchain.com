@@ -26,16 +26,10 @@ describe('verify email of candidate or company', function () {
         it('it should verify candidate email' , async () =>
         {
             const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
-
-            const candidateRes = await candidateHepler.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
-
+            const candidateRes = await candidateHepler.signupCandidate(candidate);
 
             let candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            candidateUserDoc.is_verify.should.equal(1);
+            candidateUserDoc.is_verify.should.equal(0);
 
             const verifyCandidate = await authenticateHepler.verifyEmail(candidateUserDoc.verify_email_key);
 
