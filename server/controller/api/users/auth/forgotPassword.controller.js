@@ -133,11 +133,10 @@ function forgot_passwordEmail_send(data)
         	                }
         	                if(query_data)
         	                {
-        	                  
-        	                	if(!query_data[0].first_name)
-        	                	{
+
+                                if(!query_data[0].first_name )        	                	{
         	                		name = null;
-        	                		
+
         	                	}
         	                	else
         	                	{
@@ -160,11 +159,10 @@ function forgot_passwordEmail_send(data)
         	                }
         	                if(query_data)
         	                {
-        	                  
-        	                	if(!query_data[0].first_name)
-        	                	{
+
+                                if(!query_data[0].first_name )        	                	{
         	                		name = null;
-        	                		
+
         	                	}
         	                	else
         	                	{

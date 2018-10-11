@@ -10,6 +10,7 @@ const logger = require('../../../services/logger');
 module.exports = function verify_send_email(info) {
     var deferred = Q.defer()
     var name;
+
     users.findOne({ email :info.email  }, function (err, result)
     {
         if (err){
@@ -31,14 +32,14 @@ module.exports = function verify_send_email(info) {
                     if(query_data)
                     {
 
-                        if(!query_data[0].first_name)
+                        if(!query_data[0].first_name )
                         {
                             name = info.email;
-
                         }
                         else
                         {
                             name = query_data[0].first_name;
+
 
                         }
                         verifyEmailEmail.sendEmail(info, name);
@@ -65,13 +66,14 @@ module.exports = function verify_send_email(info) {
                     if(query_data)
                     {
 
-                        if(query_data[0].first_name)
+                        if(!query_data[0].first_name )
                         {
-                            name = query_data[0].first_name;
+                            name = info.email;
                         }
                         else
                         {
-                            name = info.email;
+                            name = query_data[0].first_name;
+
 
                         }
                         verifyEmailEmail.sendEmail(info, name);

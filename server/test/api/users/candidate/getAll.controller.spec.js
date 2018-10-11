@@ -23,7 +23,7 @@ describe('get all users', function () {
         it('it should get all users', async () => {
             
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            await candidateHelper.signupCandidate(candidate);
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             await candidateHelper.getAll(userDoc.jwt_token);
