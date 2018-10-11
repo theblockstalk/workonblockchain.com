@@ -6,8 +6,8 @@ const mongo = require('../../../../helpers/mongo');
 const Users = require('../../../../../model/users');
 const Companies = require('../../../../../model/employer_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
-const companyHepler = require('../companyHelpers');
-const candidateHepler = require('../../candidate/candidateHelpers');
+const companyHelper = require('../companyHelpers');
+const candidateHelper = require('../../candidate/candidateHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -26,14 +26,14 @@ describe('verified candidates as company', function () {
         it('it should return verified candidate', async () => {
 
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupVerifiedApprovedCompany(company);
+            const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
 
             const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHepler.signupVerifiedApprovedCandidate(candidate);
+            const candidateRes = await candidateHelper.signupVerifiedApprovedCandidate(candidate);
 
             let userDoc = await Users.findOne({email: company.email}).lean();
 
-            const filterRes = await companyHepler.verifiedCandidate(userDoc.jwt_token);
+            const filterRes = await companyHelper.verifiedCandidate(userDoc.jwt_token);
 
             let id = filterRes.body[0].ids[0];
             userDoc = await Users.findOne({_id: id}).lean();

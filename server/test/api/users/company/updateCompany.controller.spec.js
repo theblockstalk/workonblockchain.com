@@ -6,7 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Companies = require('../../../../model/employer_profile');
 const docGenerator = require('../../../helpers/docGenerator');
-const companyHepler = require('./companyHelpers');
+const companyHelper = require('./companyHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -25,10 +25,10 @@ describe('update profile as company', function () {
         it('it should update company profile', async () => {
 
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
+            const companyRes = await companyHelper.signupCompany(company);
 
             const updatedData = await docGenerator.companyUpdateProfile();
-            const updateRes = await companyHepler.UpdateCompanyProfile(updatedData , companyRes.body.jwt_token);
+            const updateRes = await companyHelper.UpdateCompanyProfile(updatedData , companyRes.body.jwt_token);
 
             updateRes.body.first_name.should.equal(updatedData.first_name);
             updateRes.body.last_name.should.equal(updatedData.last_name);

@@ -23,7 +23,7 @@ describe('get current candidate info', function () {
         it('it should get current candidate info', async () => {
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            await candidateHelper.signupCandidate(candidate);
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             const candidateInfo = await candidateHelper.getCurrentCandidateInfo(userDoc._id,userDoc.jwt_token);

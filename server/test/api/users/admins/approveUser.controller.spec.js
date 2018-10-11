@@ -26,7 +26,7 @@ describe('admin approve a candidate/company', function () {
 
             //creating a company
             const company = docGenerator.company();
-            await companyHelper.signupVerifiedApprovedCompany(company);
+            await companyHelper.signupAdminCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
 
             //creating a candidate

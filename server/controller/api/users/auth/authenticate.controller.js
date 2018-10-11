@@ -35,7 +35,6 @@ function authenticate(email, password,type)
     {
 
         if (err) deferred.reject(err.name + ': ' + err.message);
-        // //console.log(user);
 
         if (user)
         {
@@ -45,7 +44,6 @@ function authenticate(email, password,type)
         	
         	if (hashedPasswordAndSalt === user.password_hash)
         	{
-        		//console.log(user.type);
         		if(user.type=='candidate')
         		{
         			CandidateProfile.findOne({ _creator:  user._id }, function (err, data)
@@ -100,10 +98,8 @@ function authenticate(email, password,type)
         		}
         		if(user.type=='company')
         		{
-        			////console.log("company");
         			EmployerProfile.findOne({ _creator:  user._id }, function (err, data)
         		    {
-        				////console.log(data);
         				if (err) deferred.reject(err.name + ': ' + err.message);
 
         				if(data)

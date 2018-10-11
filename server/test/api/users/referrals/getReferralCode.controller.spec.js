@@ -27,7 +27,8 @@ describe('get info of user who refereed a person', function () {
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const userDoc = await Users.findOne({email: candidate.email}).lean();
 
-            await referralsHelper.getRefreeInfo(userDoc.ref_link);
+            const referralInfo = await referralsHelper.getRefreeInfo(userDoc.ref_link);
+            referralInfo.body._creator.ref_link.should.equal(userDoc.ref_link);
         })
     })
 });

@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 const server = require('../../../server');
 const Users = require('../../../model/users');
 const should = chai.should();
+const fs = require('fs');
 
 chai.use(chaiHttp);
 
@@ -179,15 +180,13 @@ const updateJobStatus = module.exports.updateJobStatus = async function updateJo
     return res;
 }
 
-const uploadFile = module.exports.uploadFile = async function uploadFile(canddiateId,fileName,jwtToken) {
-    /*const file = {
-        'filename': fileName
-    };*/
-    console.log(fileName);
+const uploadFile = module.exports.uploadFile = async function uploadFile(canddiateId,file,jwtToken) {
+    const chatFile = fs.readFileSync(file.path);
     const res = await chai.request(server)
-        .post('/users/upload_chat_file/'+canddiateId,fileName)
+        .post('/users/upload_chat_file/'+canddiateId,file.name)
         .set('Authorization', jwtToken)
-        .send(fileName);
-    res.should.have.status(200);
+        .attach('photo', chatFile, file.name);
+    res.status.should.equal(200);
     return res;
+
 }

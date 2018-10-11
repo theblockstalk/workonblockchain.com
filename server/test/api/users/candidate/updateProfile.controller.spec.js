@@ -24,7 +24,7 @@ describe('update candidate profile', function () {
         it('it should update candidate profile', async () => {
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            await candidateHelper.signupCandidate(candidate);
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             const candTerms = docGenerator.termsAndConditions();

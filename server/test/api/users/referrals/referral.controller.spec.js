@@ -31,7 +31,8 @@ describe('send referral email to a person', function () {
             const email = 'tayyab4793@gmail.com';
             const subject = 'Come join WOB';
             const body = 'This email is for test case';
-            await referralsHelper.sendReferralEmail(email,subject,body,userDoc.jwt_token);
+            const referralEmailRes = await referralsHelper.sendReferralEmail(email,subject,body,userDoc.jwt_token);
+            referralEmailRes.body.should.equal("Email has been sent successfully.");
         })
     })
 });

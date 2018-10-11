@@ -24,7 +24,6 @@ module.exports = function (req,res)
         {
             res.json({error: err});
         });
-    ////console.log(req.body.experience);
 }
 
 function experience_data(_id, userParam)
@@ -40,10 +39,7 @@ function experience_data(_id, userParam)
             updateExp(_id);
 
     });
-    //console.log(userParam.work);
-   
-   
-    
+
     function updateExp(_id)
     {
 

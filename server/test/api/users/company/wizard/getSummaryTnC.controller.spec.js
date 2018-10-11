@@ -6,7 +6,8 @@ const mongo = require('../../../../helpers/mongo');
 const Users = require('../../../../../model/users');
 const Companies = require('../../../../../model/employer_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
-const companyHepler = require('../companyHelpers');
+const companyHelper = require('../companyHelpers');
+const companyWizardHelper = require('./companyWizardHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -25,10 +26,10 @@ describe('company terms and conditions', function () {
         it('it should insert the TnC and marketing email', async () => {
 
             const company = docGenerator.company();
-            const companyRes = await companyHepler.signupCompany(company);
+            const companyRes = await companyHelper.signupCompany(company);
 
             const companyTnCWizard = docGenerator.companyTnCWizard();
-            const SummaryTnC = await companyHepler.SummaryTnC(companyTnCWizard ,companyRes.body.jwt_token);
+            const SummaryTnC = await companyWizardHelper.SummaryTnC(companyTnCWizard ,companyRes.body.jwt_token);
 
             const userDoc = await Users.findOne({email: company.email}).lean();
 

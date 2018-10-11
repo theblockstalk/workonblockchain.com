@@ -16,3 +16,30 @@ const approveUser = module.exports.approveUser = async function approveUser(id,s
     res.should.have.status(200);
     return res;
 }
+
+const companyFilter = module.exports.companyFilter = async function companyFilter(filterData,jwtToken) {
+    const res = await chai.request(server)
+        .post('/users/admin_company_filter')
+        .set('Authorization', jwtToken)
+        .send(filterData);
+    res.should.have.status(200);
+    return res;
+}
+
+const candidateFilter = module.exports.candidateFilter = async function candidateFilter(filterData,jwtToken) {
+    const res = await chai.request(server)
+        .post('/users/admin_candidate_filter')
+        .set('Authorization', jwtToken)
+        .send(filterData);
+    res.should.have.status(200);
+    return res;
+}
+
+const addCmsContent = module.exports.addCmsContent = async function addCmsContent(cmsData,jwtToken) {
+    const res = await chai.request(server)
+        .put('/users/add_privacy_content')
+        .set('Authorization', jwtToken)
+        .send(cmsData);
+    res.should.have.status(200);
+    return res;
+}

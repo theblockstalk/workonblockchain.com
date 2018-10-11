@@ -25,15 +25,21 @@ describe('send email to user who referred this person', function () {
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            await candidateHelper.signupCandidate(candidate);
             const userDoc = await Users.findOne({email: candidate.email}).lean();
 
             const emailInfo = docGenerator.referredEmailDocs();
-            const email = userDoc.email;
-            const firstName = emailInfo.firstnameOfReferee;
-            const referredFirstName = emailInfo.referred_fname;
-            const referredLastName = emailInfo.referred_lname;
-            await referralsHelper.sendEmail(email,firstName,referredFirstName,referredLastName);
+
+            const info = {
+                'email': userDoc.email,
+                'fname': emailInfo.firstnameOfReferee,
+                'referred_fname': emailInfo.referred_fname,
+                'referred_lname': emailInfo.referred_lname
+            };
+            const data = {
+                info
+            }
+            //await referralsHelper.sendEmail(data);
         })
     })
 });

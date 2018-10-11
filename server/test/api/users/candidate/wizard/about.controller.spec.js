@@ -6,6 +6,7 @@ const Users = require('../../../../../model/users');
 const candidateProfile = require('../../../../../model/candidate_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
 const candidateHelper = require('../candidateHelpers');
+const candidateWizardHelper = require('./candidateWizardHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -28,7 +29,7 @@ describe('add initial info of candidate', function () {
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             const candidateProfileInfo = docGenerator.profileData();
-            const res = await candidateHelper.about(candidateProfileInfo,userDoc.jwt_token);
+            const res = await candidateWizardHelper.about(candidateProfileInfo,userDoc.jwt_token);
             const newCandidateInfo = await candidateProfile.findOne({_creator: userDoc._id}).lean();
             newCandidateInfo.first_name.should.equal(candidateProfileInfo.first_name);
             newCandidateInfo.last_name.should.equal(candidateProfileInfo.last_name);

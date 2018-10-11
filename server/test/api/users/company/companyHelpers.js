@@ -2,9 +2,10 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../../../server');
 const Users = require('../../../../model/users');
-const userHelpers = require('../usersHelpers')
+const userHelpers = require('../usersHelpers');
+const companyWizardHelpers = require('./wizard/companyWizardHelpers');
 const should = chai.should();
-
+const fs = require('fs');
 
 chai.use(chaiHttp);
 
@@ -31,6 +32,14 @@ module.exports.signupVerifiedApprovedCompany = async function signupVerifiedAppr
     await userHelpers.verifyEmail(company.email);
     await userHelpers.approve(company.email);
 }
+module.exports.signupCompanyAndCompleteProfile = async function signupCompanyAndCompleteProfile(company, companyTnCWizard , aboutData) {
+    const res = await signupCompany(company);
+    await userHelpers.verifyEmail(company.email);
+    await userHelpers.approve(company.email);
+    await userHelpers.makeAdmin(company.email);
+    await companyWizardHelpers.SummaryTnC(companyTnCWizard, res.body.jwt_token);
+    await companyWizardHelpers.companyAboutWizard(aboutData, res.body.jwt_token);
+}
 
 const getCompanies = module.exports.getCompanies = async function getCompanies(jwtToken){
     const res = await chai.request(server)
@@ -48,34 +57,18 @@ const getCurrentCompany = module.exports.getCurrentCompany = async function getC
     return res;
 }
 
-const SummaryTnC = module.exports.SummaryTnC = async function SummaryTnC(companyTnCWizard,jwtToken){
 
-    const res = await chai.request(server)
-        .put('/users/company_wizard')
-        .set('Authorization', jwtToken)
-        .send(companyTnCWizard)
-    res.should.have.status(200);
-    return res;
-}
 
-const companyAboutWizard = module.exports.companyAboutWizard = async function companyAboutWizard(aboutData , jwtToken){
+module.exports.image = async function image(file, jwtToken) {
 
-    const res = await chai.request(server)
-        .put('/users/about_company')
-        .set('Authorization', jwtToken)
-        .send(aboutData)
-    res.should.have.status(200);
-    return res;
-}
-
-const companyProfileImg = module.exports.companyProfileImg = async function companyProfileImg(profileImage , jwtToken){
-
+    const company_logo = fs.readFileSync(file.path);
     const res = await chai.request(server)
         .post('/users/employer_image')
         .set('Authorization', jwtToken)
-        .send(profileImage)
-    res.should.have.status(200);
+        .attach('photo', company_logo, file.name);
+    res.status.should.equal(200);
     return res;
+
 }
 
 const UpdateCompanyProfile = module.exports.UpdateCompanyProfile = async function UpdateCompanyProfile(profileData,jwtToken){

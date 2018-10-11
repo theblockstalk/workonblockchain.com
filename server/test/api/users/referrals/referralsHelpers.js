@@ -32,19 +32,11 @@ const sendReferralEmail = module.exports.sendReferralEmail = async function send
     return res;
 }
 
-const sendEmail = module.exports.sendEmail = async function sendEmail(email,firstName,referredFirstName,referredLastName) {
-    const data = {
-        'email': email,
-        'fname': firstName,
-        'referred_fname': referredFirstName,
-        'referred_lname': referredLastName
-    };
-    const info = {
-        'info': data
-    }
+const sendEmail = module.exports.sendEmail = async function sendEmail(data) {
+
     const res = await chai.request(server)
         .post('/users/refered_user_email')
-        .send(info);
+        .send(data);
     res.should.have.status(200);
     return res;
 }

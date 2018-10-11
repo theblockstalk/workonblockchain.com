@@ -7,7 +7,6 @@ const Users = require('../../../../model/users');
 const Candidates = require('../../../../model/candidate_profile');
 const docGenerator = require('../../../helpers/docGenerator');
 const candidateHepler = require('./candidateHelpers');
-const imageInitialize = require('../../../helpers/imageInitialize');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -18,7 +17,6 @@ describe('upload profile image', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        await imageInitialize.initialize();
         await mongo.drop();
     })
 
@@ -34,7 +32,6 @@ describe('upload profile image', function () {
             await candidateHepler.image(file, signupRes.body.jwt_token);
 
             const candidateDoc = await Candidates.findOne({_id: signupRes.body._id}).lean();
-
             assert(candidateDoc.image.includes(file.name));
         })
     })
