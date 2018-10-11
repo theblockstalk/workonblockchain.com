@@ -25,6 +25,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     companyname;positionname;locationname;description;startdate;startyear;enddate;endyear;currentwork;currentenddate;currentendyear; uniname;degreename;fieldname;edudate;eduyear; eduData; jobData;datatata=[];exp_data=[];Intro;db_valye=[];
     exp_active_class;active_class;current_currency;
     term_active_class;term_link;
+    candidateMsgTitle;
+    candidateMsgBody;
 
     inputArray=[];
 
@@ -231,6 +233,16 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                     }   
                 
            });
+
+         this.authenticationService.get_page_content('Candidate popup message')
+           .subscribe(
+             data => {
+               if(data)
+               {
+                 this.candidateMsgTitle= data[0].page_title;
+                 this.candidateMsgBody = data[0].page_content;
+               }
+             });
        }
        else
        {
