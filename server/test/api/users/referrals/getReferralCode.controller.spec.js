@@ -16,6 +16,7 @@ describe('get info of user who refereed a person', function () {
 
     afterEach(async () => {
         console.log('dropping database');
+        await mongo.drop();
     })
 
     describe('POST /users/get_refrence_code', () => {
@@ -28,7 +29,7 @@ describe('get info of user who refereed a person', function () {
             const userDoc = await Users.findOne({email: candidate.email}).lean();
 
             const referralInfo = await referralsHelper.getRefreeInfo(userDoc.ref_link);
-            referralInfo.body._creator.ref_link.should.equal(userDoc.ref_link);
+            referralInfo.body.should.equal(userDoc.email);
         })
     })
 });
