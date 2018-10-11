@@ -25,6 +25,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     img_data;
    img_src;
     text;
+  companyMsgTitle;
+  companyMsgBody;
   constructor(private route: ActivatedRoute,
         private router: Router,private http: HttpClient,
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
@@ -100,6 +102,15 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                             // this.router.navigate(['/not_found']);                        
                         } 
                 });
+         this.authenticationService.get_page_content('Company popup message')
+           .subscribe(
+             data => {
+               if(data)
+               {
+                 this.companyMsgTitle= data[0].page_title;
+                 this.companyMsgBody = data[0].page_content;
+               }
+             });
        }
       else
        {
@@ -190,7 +201,11 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                 
                 else
                 {
-                  $('#popModal').modal('show');
+                  $("#popModal").modal({
+                    backdrop: 'static',
+                    keyboard: true,
+                    show: true
+                  });
                   //this.router.navigate(['/company_profile']);
                 }
               
