@@ -237,6 +237,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
            this.router.navigate(['/not_found']);
        }
 
+
+
     }
 
     currency=
@@ -616,7 +618,13 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                 data => {
                 if(data)
                 {
-                  $('#popModal').modal('show');
+
+                    $("#popModal").modal({
+                      backdrop: 'static',
+                      keyboard: true,
+                      show: true
+                    });
+
                   //this.router.navigate(['/candidate_profile']);
                 }
 

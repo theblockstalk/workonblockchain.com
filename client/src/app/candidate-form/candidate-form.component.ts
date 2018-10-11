@@ -179,7 +179,7 @@ export class CandidateFormComponent implements OnInit {
             localStorage.setItem('googleUser', JSON.stringify(this.result));
             if(this.result)
             {
-                 ////console.log(this.result);
+                 console.log(this.result);
                  this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
                  this.credentials.email= this.googleUser.email;
                  this.credentials.password= '';
@@ -199,7 +199,7 @@ export class CandidateFormComponent implements OnInit {
                         localStorage.setItem('currentUser', JSON.stringify(data));
                         //localStorage.removeItem('userInfo');
                         //this.router.navigate(['/about']);
-                        window.location.href = '/terms-and-condition';
+                        //window.location.href = '/terms-and-condition';
                     }
                 },
                 error => {
