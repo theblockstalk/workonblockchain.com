@@ -5,11 +5,11 @@ import { HttpClient , HttpHeaders} from '@angular/common/http';
 import { DataService } from "../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-//const URL = 'http://workonblockchain.mwancloud.com:4000/';
-//const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
+declare var $:any;
+
 const URL = environment.backend_url;
-//////console.log(URL);
+
 
 
 @Component({
@@ -155,7 +155,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                 if (fileCount > 0 ) 
                 {
 
-                    ////console.log("data");
                     if(inputEl.files.item(0).size < this.file_size)
 
                     {
@@ -166,7 +165,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                         }).map((res) => res).subscribe(                
                         (success) => 
                         {
-                            this.router.navigate(['/company_profile']); 
+                          $('#popModal').modal('show');
+                          //this.router.navigate(['/company_profile']);
                         },
                         (error) => {
                         if(error.message === 500 || error.message === 401)
@@ -190,7 +190,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                 
                 else
                 {
-                    this.router.navigate(['/company_profile']);
+                  $('#popModal').modal('show');
+                  //this.router.navigate(['/company_profile']);
                 }
               
               }
@@ -217,6 +218,11 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
           });
             }
           }
-       
+
+  redirectToCompany()
+  {
+    $('#popModal').modal('hide');
+    this.router.navigate(['/company_profile']);
+  }
  
 }

@@ -7,7 +7,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../data.service";
-
+declare var $:any;
 
 @Component({
   selector: 'app-experience',
@@ -615,8 +615,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
             .subscribe(
                 data => {
                 if(data)
-                {   
-                    this.router.navigate(['/candidate_profile']);
+                {
+                  $('#popModal').modal('show');
+                  //this.router.navigate(['/candidate_profile']);
                 }
 
                 
@@ -638,6 +639,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
              
    
     }
+
+  redirectToCandidate()
+  {
+    $('#popModal').modal('hide');
+    this.router.navigate(['/candidate_profile']);
+  }
     selectedValue;langValue;
     onExpYearOptions(e, value)
     {

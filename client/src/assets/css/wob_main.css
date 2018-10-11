@@ -2123,6 +2123,19 @@ input[type=checkbox] {
      width: 175px;
      border-radius: 0px;
 }
+.btn_popup{
+  background: #ffc000;
+  border-color: #ffc000;
+  color: #fff;
+  max-width: 200px;
+  border-radius: 0px;
+  padding: 5px 10px;
+  outline: 0px;
+  border: 0px;
+  position: absolute;
+  right: 15px;
+  top: 40px;
+}
 
 .btn-relative{
     position: relative;
@@ -3584,6 +3597,57 @@ input:checked + .slider:before {
   padding: 5px 20px;
 }
 
+/*==welcome model style start==*/
+
+.mo-head {
+  background: #253245;
+  color: #fff;
+}
+
+.mo_content{
+  background: #f6f9fc;
+  padding: 10px;
+  border: 1px solid #253245;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 2px 3px rgba(0,0,0,.2);
+  transition: box-shadow 83ms;
+}
+
+.mo_content h2{
+  margin-bottom: 25px;
+  color: #253245;
+}
+
+.mo span{
+  color: #ffc000;
+}
+
+.mo-head .close {
+  margin-top: -2px;
+  color: #fff;
+  background: #d9534f;
+  padding: 5px;
+  border-radius: 100%;
+  text-align: center;
+  opacity: 1;
+  font-size: 15px;
+  height: 25px;
+  width: 25px;
+}
+
+.mo_body{
+  padding: 30px 40px;
+}
+
+.mo_footer{
+  border-bottom: 10px solid #253245;
+}
+
+.btn-mo{
+  background: #253245;
+  color: #fff;
+}
+
+/*==welcome model style end==*/
 
 /*=======TABLETS STYLES 768px to 992px========*/
 
@@ -3834,6 +3898,13 @@ input:checked + .slider:before {
 
   .img-col-set{
     margin-top: 50px;
+  }
+  .mo_body{
+    padding: 15px;
+  }
+
+  .btn_popup{
+    top: 5px;
   }
 
 }

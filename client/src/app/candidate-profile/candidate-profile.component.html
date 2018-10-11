@@ -13,8 +13,9 @@
 	<div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12">
-			
-				 <section class = "profile personal_info" *ngIf="!public_data">
+        <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn_popup">What Happened Next ?</button>
+
+        <section class = "profile personal_info" *ngIf="!public_data">
 
 				 	<div class="col-md-6" >
 				 		<span class = "p_img" *ngIf="!imgPath">
@@ -45,20 +46,7 @@
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-				 			<!-- <li>
-				 				
-					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-					 				<span class = "li_txt" >{{companyname}}</span>
-				 				
-				 			</li>
 
-				 			<li>
-				 				
-					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-					 				<span class = "li_txt">{{degreename}}</span>
-				 				
-				 			</li>
-				 			-->
 
 				 			<li>
 				 			
@@ -166,17 +154,6 @@
 
 				 	</div>
 
-				 	<!--<div class="info-area pro_br-btm">
-				 		<div class = "col-md-3" >
-							<strong>Position Type : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li>Full Time</li>
-								<li>Part Time</li>
-							</ul>
-						</div>
-				 	</div>-->
 
 				 	<div class="info-area pro_br-btm">
 
@@ -463,6 +440,37 @@
 	</div>
 
 </section>
+
+  <!-- Modal -->
+  <div id="popModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content costom_model">
+        <div class="modal-header mo-head">
+          <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+          <h3 class="modal-title text-center mo">Welcome to<br>
+            <span>Workonblockchian</span>
+          </h3>
+        </div>
+        <div class="modal-body mo_body">
+          <div class = "mo_content">
+            <h2 class = "text-center">Heading</h2>
+
+            <p>
+              Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+            </p>
+          </div>
+
+        </div>
+        <div class="modal-footer mo_footer">
+          <button type="reset" class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- end model -->
 </ng-template> 
 
 <!--Profile-inner end-->
