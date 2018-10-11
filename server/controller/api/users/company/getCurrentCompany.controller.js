@@ -48,7 +48,9 @@ function get_company_byId(_id)
                 }
                 else
                 {
-                    if(result.length>0) {
+
+                    if(result.length > 0) {
+
                         var query_result = result[0].toObject();
                         deferred.resolve(filterReturnData.removeSensativeData(query_result));
                     }

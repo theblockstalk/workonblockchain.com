@@ -75,6 +75,7 @@ export class ChatComponent implements OnInit {
 	file_msg = '';
 	img_name = '';
 	file_size = 1048576;
+	msg = '';
 	public myDatePickerOptions: IMyDpOptions;
 
   constructor(
@@ -98,10 +99,14 @@ export class ChatComponent implements OnInit {
         });
     }
 
-  is_approved;disabled;msg;
+  is_approved;disabled;
   ngOnInit() {
+    if(this.start_day == 1){}
+    else{
+      this.start_day = this.start_day-1;
+    }
 	  this.myDatePickerOptions = {
-		 disableUntil: {year: this.start_year, month: this.start_month, day: this.start_day-1}
+		 disableUntil: {year: this.start_year, month: this.start_month, day: this.start_day}
 	  };
 
 	  this.loading = true;
@@ -717,7 +722,7 @@ export class ChatComponent implements OnInit {
       this.cand_job_offer = 0;
       this.is_job_offer = 2;//2 for accepted
       this.msg_tag = 'employment_offer_accepted';
-      this.credentials.msg_body = 'I am interested';
+      this.credentials.msg_body = 'I accept the employment offer';
       let file_to_send = '';
 	  console.log(this.credentials.job_offer_id);
 	  this.authenticationService.update_job_message(this.credentials.job_offer_id,this.is_job_offer)
@@ -786,7 +791,7 @@ export class ChatComponent implements OnInit {
       this.cand_job_offer = 0;
       this.is_job_offer = 3;//3 for rejected
       this.msg_tag = 'employment_offer_rejected';
-      this.credentials.msg_body = 'I am not interested';
+      this.credentials.msg_body = 'I do not accept the employment offer';
       let file_to_send = '';
 	  console.log(this.credentials.job_offer_id);
 	  this.authenticationService.update_job_message(this.credentials.job_offer_id,this.is_job_offer)

@@ -304,7 +304,30 @@ export class UserService {
 
     }
 
-    about(user_id: string, detail: CandidateProfile) 
+    prefilled_profile(basics: any , work:any , education : any)
+    {
+
+      return this.http.put<any>(URL+'users/welcome/prefilled_profile' , {basics : basics , workHistory : work , educationHistory : education} , {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      })
+      .map((res: Response) =>
+      {
+        if (res)
+        {
+          return res;
+        }
+      }).catch((error: any) =>
+      {
+        if (error.status )
+        {
+          return Observable.throw(new Error(error.status));
+        }
+
+      });
+
+    }
+
+    about(user_id: string, detail: any)
     {
         
         return this.http.put<any>(URL+'users/welcome/about' , detail , {
@@ -376,7 +399,7 @@ export class UserService {
 
     }
 
-    experience(user_id: string,detail : CandidateProfile ,  exp : any , history : any,language_roles :CandidateProfile , platform_exp : CandidateProfile ) 
+    experience(user_id: string,detail : any ,  exp : any , history : any,language_roles :any , platform_exp : any )
     {
 
         return this.http.put<any>(URL+'users/welcome/exp' , { detail :detail , education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp } , {

@@ -2,6 +2,7 @@ var Q = require('q');
 const users = require('../../../../model/users');
 const logger = require('../../../services/logger');
 const filterReturnData = require('../filterReturnData');
+const CandidateProfile = require('../../../../model/candidate_profile');
 
 //use to get referral code of a user
 
@@ -30,11 +31,32 @@ function get_refr_code(data){
 		{
             if(user)
         	{
-             	var query_result = user.toObject();  
-             	var data = {_creator : query_result};
-                 deferred.resolve(filterReturnData.removeSensativeData(data));                
+                CandidateProfile.findOne({ "_creator": user._id }, function (err, user_profile)
+                {
+                    if (err){
+                        logger.error(err.message, {stack: err.stack});
+                        deferred.reject(err.name + ': ' + err.message);
+                    }
+                    else
+                    {
+                        if(user_profile) {
+                            if (user_profile.first_name && user_profile.first_name !== '') {
+                                deferred.resolve(user_profile.first_name);
+                            }
+                            else {
+                                deferred.resolve(user.email);
+                            }
+                        }
+                        else {
+                            deferred.resolve(user.email);
+                        }
+                    }
+                });
         	}
-           
+        	else{
+                deferred.resolve(0);
+            }
+
         }
     });
     return deferred.promise;
