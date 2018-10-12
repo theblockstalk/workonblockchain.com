@@ -259,6 +259,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
     {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
     {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
+    {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
     {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
     {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
     {country_code: '002' ,name:'New York', value:'New York', checked:false},
@@ -272,6 +273,8 @@ export class JobComponent implements OnInit,AfterViewInit {
     {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
     {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
     {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
+    {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
+    {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
     
   ]
 

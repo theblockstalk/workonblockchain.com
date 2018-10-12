@@ -13,6 +13,7 @@ var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../model/employer_profile');
 const chat = require('../../../model/chat');
 const mongoose = require('mongoose');
+const sanitize = require('../../services/sanitize');
 
 const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../../services/email/emails/verifyEmail');
@@ -30,7 +31,9 @@ const logger = require('../../services/logger');
 
 module.exports = function insert_message(req, res)
 {
-    insert_message_new(req.body).then(function (data)
+    let sanitizeddescription = sanitize.sanitizeHtml(req.unsanitizedBody.description);
+    let sanitizedmessage = sanitize.sanitizeHtml(req.unsanitizedBody.message);
+    insert_message_new(req.body,sanitizeddescription,sanitizedmessage).then(function (data)
     {
         if (data)
         {
@@ -48,8 +51,19 @@ module.exports = function insert_message(req, res)
         });
 }
 
-function insert_message_new(data){
-	console.log(data.msg_tag);
+function insert_message_new(data,description,msg){
+	let new_description = '';
+	let new_msg = '';
+	if(description){
+		new_description = description.replace(/\n/g, "<br>");
+        new_description = new_description.replace(/<(?!br\s*\/?)[^>]+>/g, '');
+        new_description = new_description.replace(/<br[^>]*>/, '');
+    }
+    if(msg){
+        new_msg = msg.replace(/\n/g, "<br>");
+        new_msg = new_msg.replace(/<(?!br\s*\/?)[^>]+>/g, '');
+        new_msg = new_msg.replace(/<br[^>]*>/, '');
+    }
 	interview_date = '';
 	if(data.msg_tag == 'interview_offer'){
 		interview_date = data.date_of_joining+' '+data.interview_time+':00';
@@ -62,8 +76,8 @@ function insert_message_new(data){
 		receiver_id : mongoose.Types.ObjectId(data.receiver_id),
         sender_name: data.sender_name,
         receiver_name: data.receiver_name,
-        message: data.message,
-		description: data.description,
+        message: new_msg,
+		description: new_description,
         job_title: data.job_title,
         salary: data.salary,
 		salary_currency: data.currency,

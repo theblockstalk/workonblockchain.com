@@ -25,19 +25,19 @@ export class AdminFaqEditorComponent implements OnInit {
     page_name;
     admin_log;
     message;
-    
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService) { 
-    
+
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService) {
+
   }
 
   ngOnInit() {
-      
-       setInterval(() => {  
+
+       setInterval(() => {
                                 this.error = "" ;
                                 this.success = "" ;
                         }, 5000);
-      
-      
+
+
        this.dataservice.currentMessage.subscribe(message => this.message = message);
        this.ckeConfig = {
             allowedContent: false,
@@ -45,17 +45,18 @@ export class AdminFaqEditorComponent implements OnInit {
             forcePasteAsPlainText: true,
             height: '35rem',
             minHeight: '10rem',
+            //removePlugins: 'resize,elementspath',
             //removeButtons:'Underline,Subscript,Superscript'
         };
-      
+
      // config.removeButtons = 'Underline,Subscript,Superscript';
 
-      
+
       this.page_name = 'FAQ';
-      
+
      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
-      
+
        if(this.currentUser && this.admin_log )
         {
            if(this.admin_log.is_admin == 1)
@@ -69,10 +70,10 @@ export class AdminFaqEditorComponent implements OnInit {
                         this.page_title = data[0].page_title;
                        this.editor_content = data[0].page_content;
                        ////console.log(this.editor_content);
-                       
+
                    }
                  },
-                   
+
                  error =>
                  {
                      if(error.message === 500 || error.message === 401)
@@ -84,11 +85,11 @@ export class AdminFaqEditorComponent implements OnInit {
                                         localStorage.removeItem('linkedinUser');
                                         localStorage.removeItem('admin_log');
                             window.location.href = '/login';
-                         
+
                      }
                      else
                      {
-                         
+
                     }
                 });
            }
@@ -98,7 +99,7 @@ export class AdminFaqEditorComponent implements OnInit {
         else
         {
            this.router.navigate(['/not_found']);
-          
+
         }
   }
 
@@ -107,10 +108,10 @@ export class AdminFaqEditorComponent implements OnInit {
    {
        //console.log(editorForm.value);
 	   if(editorForm.value.page_title && editorForm.value.html_text){
-		   this.editor_text = this.editor_content;  
+		   this.editor_text = this.editor_content;
 		   this.authenticationService.pages_content(editorForm.value)
 		   .subscribe(
-		   data => 
+		   data =>
 		   {
 			   if(data)
 			   {
@@ -120,12 +121,12 @@ export class AdminFaqEditorComponent implements OnInit {
 			   else
 			   {
 				   this.error="Something went wrong";
-				   
+
 			   }
 		   },
 		   error =>
 		   {
-			   
+
 		   });
 	   }
 	   else{

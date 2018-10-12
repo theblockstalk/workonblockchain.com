@@ -32,10 +32,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     interview_time = '';
     select_value='';selecteddd='';
     disabled;
-    
+    ckeConfig: any;
+    @ViewChild("myckeditor") ckeditor: any;
 
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
-    
+
   language_opt=
     [
       {name:'Java', value:'Java', checked:false},{name:'C', value:'C', checked:false},
@@ -54,10 +55,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
 
     ]
-    
-     
+
+
   commercially=
-  [ 
+  [
     {name:'Bitcoin', value:'Bitcoin', checked:false},
     {name:'Ethereum', value:'Ethereum', checked:false},
     {name:'Ripple', value:'Ripple', checked:false},
@@ -80,15 +81,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     {name:'IOTA', value:'IOTA', checked:false},
     {name:'NEM', value:'NEM', checked:false},
     {name:'NXT', value:'NXT', checked:false},
-    
+
   ]
-    
-  
-  cities = 
+
+
+  cities =
   [
     {country_code:'000' , name:'Remote', value:'remote', checked:false},
     {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-    {country_code:'001' ,name:'London', value:'London', checked:false}, 
+    {country_code:'001' ,name:'London', value:'London', checked:false},
     {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
     {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
     {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
@@ -105,28 +106,37 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
     {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
     {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-    
+
   ]
 
-    
+
   currency=
   [
       "£ GBP" ,"€ EUR" , "$ USD"
   ]
-    
-  month= 
+
+  month=
   [
        "Now","1 month","2 months","3 months","Longer than 3 months"
   ]
-  
+
   job_type = ["Part Time", "Full Time"];
 
-   ngAfterViewInit(): void 
+   ngAfterViewInit(): void
      {
-           window.scrollTo(0, 0);   
+           window.scrollTo(0, 0);
        }
-  ngOnInit() 
+  ngOnInit()
   {
+      this.ckeConfig = {
+        allowedContent: false,
+        extraPlugins: 'divarea',
+        forcePasteAsPlainText: true,
+        height: '10rem',
+        width: '56rem',
+        removePlugins: 'resize,elementspath',
+        removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
+      };
       //$('.selectpicker').selectpicker();
       setInterval(() => {
           this.job_offer_log = '';
@@ -134,13 +144,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.length='';
       this.log='';
       this.selectedObj=-1;
-      this.countryChange=-1;   
+      this.countryChange=-1;
       this.currencyChange= -1;
       this.availabilityChange=-1;
       this.info = [];
       this.msg='';
       this.credentials.currency = -1;
-       this.rolesData = 
+       this.rolesData =
        [
             {id:'Backend Developer', text:'Backend Developer'},
             {id:'Frontend Developer', text:'Frontend Developer'},
@@ -158,7 +168,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             {id:'Intern Developer', text:'Intern Developer'},
             {id:'Researcher ', text:'Researcher '},
       ];
-      
+
     this.blockchainData =
     [
             {id:'Bitcoin', text:'Bitcoin'},
@@ -192,16 +202,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       placeholder: 'Position',
       allowClear :true
     }
-      
+
       this.options2 = {
       multiple: true,
       placeholder: 'Blockchain experience',
       allowClear :true
-    } 
-    
+    }
+
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log(this.currentUser);
-     
+
       if(!this.currentUser)
       {
           this.router.navigate(['/login']);
@@ -212,38 +222,38 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           this.authenticationService.getCurrentCompany(this.currentUser._id)
             .subscribe(
 
-                data => 
+                data =>
                 {
                     //console.log(data.terms);
                   if(data.terms == false)
                   {
                       this.router.navigate(['/company_wizard']);
                   }
-                    
+
                   else if(!data.company_founded && !data.no_of_employees && !data.company_funded && !data.company_description )
                   {
                       this.router.navigate(['/about_comp']);
                   }
                   else
                   {
-                        this.is_approved = data._creator.is_approved;      
+                        this.is_approved = data._creator.is_approved;
                         this.display_name = data.company_name;
 
                         //console.log(this.is_approved);
                         if(this.is_approved === 0 )
                         {
                             this.disabled = true;
-                            this.msg = "You can access this page when your account has been approved by an admin."; 
-                            this.log='';  
+                            this.msg = "You can access this page when your account has been approved by an admin.";
+                            this.log='';
                         }
                         else if(data._creator.disable_account == true)
                         {
                             this.disabled = true;
-                            this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile"; 
-                            this.log=''; 
+                            this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
+                            this.log='';
 
                         }
-                        else 
+                        else
                         {
                             this.disabled = false;
                             this.first_name=data.first_name;
@@ -260,22 +270,22 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                             this.company_funded=data.company_funded;
                             this.no_of_employees=data.no_of_employees;
                             if(data.company_logo != null )
-                            {                        
-                                ////console.log(data[0].image);                     
+                            {
+                                ////console.log(data[0].image);
                                 this.imgPath =  data.company_logo;
                                 //console.log(this.imgPath);
                             }
-                   
-                            this.getVerrifiedCandidate();          
-                        }
-                        
-                      
 
-                  
+                            this.getVerrifiedCandidate();
+                        }
+
+
+
+
                   }
-                  
+
                 },
-                error => 
+                error =>
                 {
                     if(error.message === 500)
                     {
@@ -287,15 +297,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
+                        this.router.navigate(['/not_found']);
                     }
-                  
+
                 });
-           
-            
+
+
       }
       else
       {
@@ -305,30 +315,30 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   rolesItems;
 
-  positionchanged(data) 
+  positionchanged(data)
   {
       //console.log( data);
       if(this.select_value  !== data.value)
       {
-        this.select_value = data.value;             
-        this.searchdata('roles' , this.select_value); 
-        }  
-       
+        this.select_value = data.value;
+        this.searchdata('roles' , this.select_value);
+        }
+
   }
 
   blockchainItems;
   blockchainchanged(data)
   {
-    //console.log("blockchain"); 
+    //console.log("blockchain");
       if(this.selecteddd  !== data.value)
       {
-        this.selecteddd = data.value; 
+        this.selecteddd = data.value;
        this.searchdata('blockchain' , this.selecteddd);
       }
-  
+
    }
-    
-    filter_array(arr) 
+
+    filter_array(arr)
     {
         var hashTable = {};
 
@@ -339,53 +349,53 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             return (match ? false : hashTable[key] = true);
         });
     }
-    
+
     selectedObj;countryChange;positionChange;availabilityChange;blockchainChange;salary;currencyChange;
     search_result=[];information;
     not_found;
     salarysearchdata(key , value)
     {
-        
+
         if(this.salary)
         {
             if(this.currencyChange !== -1)
             {
                 this.searchdata(key , value);
             }
-            
+
         }
-            
-         
+
+
     }
     searchdata(key , value)
-    {   
-    
+    {
+
         this.not_found='';
-        this.length =0; 
+        this.length =0;
         this.cand_data=[];
        this.log='';
         this.response='';
         this.count=0;
 
-        if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1 
+        if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1
         &&  this.currencyChange === -1 &&  this.availabilityChange === -1 )
-        {             
-           
+        {
+
              this.getVerrifiedCandidate();
         }
-        
-       
+
+
         else
-        { 
-       
+        {
+
           this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
             .subscribe(
-                data => 
+                data =>
                 {
-  
+
                     if(data.error)
                     {
-                       
+
                         this.length='';
                         this.log = data.error;
                         this.cand_data=[];
@@ -401,7 +411,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         this.lengthmsgg='not initial';
                         for(let res of this.information)
                         {
-                            
+
                             if(res['ids'].length<=0)
                             {
                                this.response = "data";
@@ -422,16 +432,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                             //console.log("iffffffffffff");
                                             this.authenticationService.candidate_detail(ids, data['datas'][1].is_company_reply  )
                                             .subscribe(
-                                            dataa => 
+                                            dataa =>
                                             {
                                                 if(dataa)
                                                 {
-                                                    dataa.company_reply =data['datas'][1].is_company_reply;                                                        
+                                                    dataa.company_reply =data['datas'][1].is_company_reply;
                                                     this.cand_data.push(dataa);
                                                     //console.log(this.cand_data);
                                                 }
                                             },
-                                            error => 
+                                            error =>
                                             {
                                                 if(error.message === 500)
                                                 {
@@ -443,15 +453,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                                      localStorage.removeItem('admin_log');
                                                      window.location.href = '/login';
                                                  }
-                    
+
                                                   if(error.message === 403)
                                                   {
-                                                       this.router.navigate(['/not_found']);                        
+                                                       this.router.navigate(['/not_found']);
                                                    }
-                  
+
                                                });
                                             }
-                                           
+
                                         //console.log(this.company_reply);
                                     }
                                     else
@@ -460,7 +470,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                         this.rply =0;
                                         this.authenticationService.candidate_detail(ids,  this.rply )
                                         .subscribe(
-                                        result => 
+                                        result =>
                                         {
                                             if(result)
                                             {
@@ -470,7 +480,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                                     //console.log(this.cand_data);
                                                 }
                                          },
-                                        error => 
+                                        error =>
                                         {
                                             if(error.message === 500)
                                             {
@@ -484,23 +494,23 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                             }
                                             if(error.message === 403)
                                             {
-                                                this.router.navigate(['/not_found']);                        
+                                                this.router.navigate(['/not_found']);
                                             }
-                  
+
                                         });
                                     }
                                     if(res['ids'].length !== this.count)
                                     {
                                         this.count++;
-                                                                 
+
                                     }
-                                     
+
                                      if(res['ids'].length === this.count)
                                     {
                                          this.response = "data";
-                                         
+
                                     }
-                      
+
                                 },
                                 error => {
                                     //console.log('error');
@@ -508,19 +518,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                     //this.log = error;
                                 }
                                 );
-                                           
+
                               }
                                 }
 
-                                
+
                         }
-                            
-                         
+
+
 
                     }
-                            
+
                 },
-                error => 
+                error =>
                 {
                     if(error.message === 500)
                     {
@@ -532,19 +542,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
+                        this.router.navigate(['/not_found']);
                     }
-                  
+
                 });
-            
+
         }
-        
-        
+
+
     }
-    
+
     actionType;
 
 
@@ -557,16 +567,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.salary='';
         this.currencyChange= -1;
         this.availabilityChange=-1;
-        this.blockchainItems='';       
+        this.blockchainItems='';
         this.select_value ='';
         this.selecteddd = '';
         this.info = [];
         this.searchWord='';
-       
+
         this.getVerrifiedCandidate();
-       
+
     }
-    
+
     company_reply;
     //verify_candidate=[];
     cand_data=[];
@@ -576,7 +586,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     response;
     count;
     getVerrifiedCandidate()
-    {     
+    {
         this.length=0;
         this.info = [];
         this.cand_data=[];
@@ -587,16 +597,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
         .subscribe(
             dataa => {
-                
+
                 //console.log(dataa);
                 for(let res of dataa)
-                { 
+                {
                     //console.log("ids");
                     if(res['ids'].length<=0)
                     {
                         this.response = "data";
                         this.not_found = "No candidates matched this search criteria";
-                        
+
                     }
                     else
                     {
@@ -618,7 +628,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                                 if(dataa)
                                                 {
                                                     //console.log("1");
-                                                    dataa.company_reply =data['datas'][0].is_company_reply;                                                        
+                                                    dataa.company_reply =data['datas'][0].is_company_reply;
                                                     this.cand_data.push(dataa);
                                                     //console.log(this.cand_data);
                                                 }
@@ -637,7 +647,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                                 }
                                                 if(error.message === 403)
                                                 {
-                                                    this.router.navigate(['/not_found']);                        
+                                                    this.router.navigate(['/not_found']);
                                                 }
                                             }
                                         );
@@ -674,7 +684,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                                 }
                                                 if(error.message === 403)
                                                 {
-                                                    this.router.navigate(['/not_found']);                        
+                                                    this.router.navigate(['/not_found']);
                                                 }
                                             }
                                         );
@@ -687,7 +697,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                     this.rply =0;
                                     this.authenticationService.candidate_detail(ids,  this.rply )
                                     .subscribe(
-                                        result => 
+                                        result =>
                                         {
                                             //console.log(result);
                                             if(result)
@@ -713,35 +723,35 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                             }
                                             if(error.message === 403)
                                             {
-                                                this.router.navigate(['/not_found']);                        
+                                                this.router.navigate(['/not_found']);
                                             }
                                         }
                                     );
                                 }
-                                
+
                                 if(res['ids'].length !== this.count)
                                 {
                                     this.count++;
-                               
+
                                 }
                                 if(res['ids'].length === this.count)
                                     {
                                          this.response = "data";
-                                         
+
                                     }
-                                
+
                             },
                             error => {
                                 //console.log('error');
                                 //console.log(error);
                                 //this.log = error;
                             });
-                        
+
                        }
-                        
+
                         }
-                    
-                } 
+
+                }
             },
             error => {
                 if(error.message === 500)
@@ -756,11 +766,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 }
                 if(error.message === 403)
                 {
-                    this.router.navigate(['/not_found']);                        
+                    this.router.navigate(['/not_found']);
                 }
-                    
+
             });
-        
+
         this.authenticationService.getCurrentCompany(this.currentUser._creator)
                         .subscribe(
                             data => {
@@ -774,7 +784,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                                 }
                                 if(error.message === 403)
                                 {
-                                    this.router.navigate(['/not_found']);                        
+                                    this.router.navigate(['/not_found']);
                                 }
                             }
                         );
@@ -785,12 +795,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.log='';
         }else
         {
-            this.log= 'No candidates matched this search criteria';                           
+            this.log= 'No candidates matched this search criteria';
         }
         this.length = '';
     }
     informations;
- 
+
     user_id;user_name;
     onSubmit(val) {
         //console.log(val)
@@ -854,10 +864,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 											localStorage.removeItem('admin_log');
 							window.location.href = '/login';
 						}
-						
+
 						if(error.message === 403)
 						{
-							this.router.navigate(['/not_found']);                        
+							this.router.navigate(['/not_found']);
 						}
 					}
 				);
