@@ -24,9 +24,11 @@ describe('get all companies detail', function () {
 
         it('it should get all companies profile', async () => {
             const company = docGenerator.company();
-            const companyRes = await companyHelper.signupCompany(company);
+            const companyRes = await companyHelper.signupAdminCompany(company);
 
-            const getAllCompanies = await companyHelper.getCompanies(companyRes.body.jwt_token);
+            const userDoc = await Users.findOne({email: company.email}).lean();
+
+            const getAllCompanies = await companyHelper.getCompanies(userDoc.jwt_token);
 
             getAllCompanies.body[0]._creator.email.should.equal(company.email);
             getAllCompanies.body[0].first_name.should.equal(company.first_name);

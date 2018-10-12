@@ -106,7 +106,7 @@ router.put('/users/update_profile', auth.isLoggedIn, candidateUpdate);
 
 // Companies
 router.post('/users/create_employer', companyRegister);
-router.get('/users/company',auth.isLoggedIn, companyGet);
+router.get('/users/company',auth.isAdmin, companyGet);
 router.get('/users/current_company/:_id',auth.isLoggedIn, companyGetCurrent);
 router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
 router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
