@@ -44,6 +44,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     email;
     currentwork;
     message;
+    candidateMsgTitle;
+    candidateMsgBody;
 	public loading = false;
  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
         private authenticationService: UserService,private dataservice: DataService,location: Location) 
@@ -114,29 +116,19 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!"; 
       if(this.user_id)
       {
-          //////console.log("ifffffff");
-         
-          /*this.share_url = location.href + '?user=' + this.user_id;
-          this.authenticationService.public_profile(this.user_id)
-            .subscribe(
-            data => {
-                this.public_data = data;
-                ////console.log(data);
-                });*/
-          
+
       }
      
       else
        {
-          //////console.log("elseeeee");
-          //this.share_url = location.href + '?user=' + this.currentUser._creator;
+
           if(!this.currentUser)
-       {
-          this.router.navigate(['/login']);
-       }
-       if(this.currentUser && this.currentUser.type == 'candidate')
-       {
-           this.cand_id= this.currentUser._creator;
+          {
+            this.router.navigate(['/login']);
+          }
+          if(this.currentUser && this.currentUser.type == 'candidate')
+          {
+            this.cand_id= this.currentUser._creator;
            
           
           this.authenticationService.getProfileById(this.currentUser._id)
@@ -216,6 +208,16 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                         window.location.href = '/login';
                     }
             });
+
+            this.authenticationService.get_page_content('Candidate popup message')
+              .subscribe(
+                data => {
+                  if(data)
+                  {
+                    this.candidateMsgTitle= data[0].page_title;
+                    this.candidateMsgBody = data[0].page_content;
+                  }
+                });
        }
        else
        {

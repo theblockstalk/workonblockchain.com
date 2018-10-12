@@ -6,7 +6,7 @@ const PagesSchema = new Schema({
 	page_name: 
 	{
 		type:String,
-		enum: ['Privacy Policy', 'Terms and Condition for candidate', 'Terms and Condition for company', 'FAQ'],
+		enum: ['Privacy Policy', 'Terms and Condition for candidate', 'Terms and Condition for company', 'FAQ','Candidate popup message', 'Company popup message'],
 		required:true,
 	},
 	page_title: 

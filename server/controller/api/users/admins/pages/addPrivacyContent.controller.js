@@ -8,6 +8,7 @@ const sanitize = require('../../../../services/sanitize');
 
 module.exports = function (req,res)
 {
+    console.log(req.body);
 	logger.info(req.body);
 	const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
     add_privacy_content(req.body, sanitizedHtml).then(function (err, data)

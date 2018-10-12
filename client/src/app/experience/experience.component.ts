@@ -7,7 +7,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../data.service";
-
+declare var $:any;
 
 @Component({
   selector: 'app-experience',
@@ -25,6 +25,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     companyname;positionname;locationname;description;startdate;startyear;enddate;endyear;currentwork;currentenddate;currentendyear; uniname;degreename;fieldname;edudate;eduyear; eduData; jobData;datatata=[];exp_data=[];Intro;db_valye=[];
     exp_active_class;active_class;current_currency;
     term_active_class;term_link;
+    candidateMsgTitle;
+    candidateMsgBody;
 
     inputArray=[];
 
@@ -231,11 +233,23 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                     }   
                 
            });
+
+         this.authenticationService.get_page_content('Candidate popup message')
+           .subscribe(
+             data => {
+               if(data)
+               {
+                 this.candidateMsgTitle= data[0].page_title;
+                 this.candidateMsgBody = data[0].page_content;
+               }
+             });
        }
        else
        {
            this.router.navigate(['/not_found']);
        }
+
+
 
     }
 
@@ -611,8 +625,15 @@ export class ExperienceComponent implements OnInit , AfterViewInit
             .subscribe(
                 data => {
                 if(data)
-                {   
-                    this.router.navigate(['/candidate_profile']);
+                {
+
+                    $("#popModal").modal({
+                      backdrop: 'static',
+                      keyboard: true,
+                      show: true
+                    });
+
+                  //this.router.navigate(['/candidate_profile']);
                 }
 
                 
@@ -634,6 +655,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
              
    
     }
+
+  redirectToCandidate()
+  {
+    $('#popModal').modal('hide');
+    this.router.navigate(['/candidate_profile']);
+  }
     selectedValue;langValue;
     onExpYearOptions(e, value)
     {

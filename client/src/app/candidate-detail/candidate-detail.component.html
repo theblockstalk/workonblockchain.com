@@ -1,6 +1,6 @@
 <!--Profile-inner-->
 
-<section class = "wizard_page">	
+<section class = "wizard_page">
 
 	<div class="container">
 		<div class="row">
@@ -17,11 +17,11 @@
 				 		<span class = "p_img" *ngIf="data.image && data.company_reply === 1">
 				 			<img src = "{{data.image}}" class = "img-responsive" alt = "profile-image"/>
 				 		</span>
-				 		
+
 						<span class = "name" *ngIf='data.company_reply === 1'>
 				 			<h3 class="text-capitalize">{{data.first_name}} {{data.last_name}}</h3>
 				 		</span>
-				 		
+
 				 		<span class = "name" *ngIf='data.company_reply !== 1'>
 				 			<h3>{{data.initials}} </h3>
 				 		</span>
@@ -29,40 +29,40 @@
 				 			<p>{{data.description}}</p>
 				 		</span>
 
-				 		
+
 
 				 	</div>
 
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-				 		
+
 
 				 			<li>
-				 				
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt">Nationality : {{data.nationality}}</span>
-				 				
+
 				 			</li>
 
 				 			<li *ngIf='data.company_reply === 1'>
-				 				
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt"> Contact Number : {{data.contact_number}}</span>
-				 			
+
 				 			</li>
 				 			<li>
-				 				
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt">Expected Salary : {{data.expected_salary_currency}} {{data.expected_salary}}</span>
-				 				
+
 				 			</li>
 				 		</ul>
-				 		
+
 				 	</div>
-				 	
+
 				 </section>
-				 
+
 				  <section class = "profile job_info" *ngIf='data.company_reply === 1'>
 					<h3>About</h3>
 					<div class="info-area pro_br-btm" *ngIf="data._creator.email" >
@@ -72,13 +72,13 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data._creator.email}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-					
-					
+
+
 					<div class="info-area pro_br-btm" *ngIf="data.contact_number">
 						<div class = "col-md-3">
 							<strong>Contact Number :  </strong>
@@ -86,12 +86,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data.contact_number}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="data.github_account">
 						<div class = "col-md-3">
 							<strong>Github account URL : </strong>
@@ -99,7 +99,7 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data.github_account}}</li>
-								
+
 							</ul>
 						</div>
 
@@ -114,12 +114,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data.stackexchange_account}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 </section>
 
 				 <section class = "profile job_info">
@@ -131,13 +131,13 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li *ngFor='let country of data.locations'>{{country}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	
+
 
 				 	<div class="info-area pro_br-btm">
 
@@ -147,12 +147,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li *ngFor='let interest_area of data.interest_area;'>{{interest_area}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="data.roles">
 
 						<div class = "col-md-3" >
@@ -161,12 +161,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li *ngFor='let roles_data of data.roles'>{{roles_data}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="data.expected_salary">
 
 						<div class = "col-md-3" >
@@ -179,7 +179,7 @@
 						</div>
 
 				 	</div>
-					
+
 					<div class="info-area pro_br-btm">
 
 						<div class = "col-md-3" >
@@ -206,8 +206,8 @@
 
 				 	</div>
 
-				 	
-				 	
+
+
 				 </section>
 
 				 <section class = "profile job_info">
@@ -219,7 +219,7 @@
 							{{data.why_work}}
 						</p>
 					</div>
-					
+
 
 				 	<div class="info-area pro_br-btm" *ngIf="data.commercial_platform">
 
@@ -229,12 +229,12 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let data of data.commercial_platform;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="data.platforms">
 
 						<div class = "col-md-4" >
@@ -256,7 +256,7 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let data of data.experimented_platform;'>{{data.value}} </li>
-								
+
 							</ul>
 						</div>
 
@@ -276,15 +276,15 @@
 
 				 	</div>-->
 
-				 	
 
-				 
-				 	
+
+
+
 				 </section>
 
 				 <section class = "profile job_info">
-					<h3>Experience</h3>	
-					
+					<h3>Experience</h3>
+
 				 	<div class="info-area pro_br-btm">
 
 						<div class = "col-md-4" >
@@ -293,12 +293,12 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let lang of data.programming_languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-	 	
+
 				 </section>
 
 				  <section class = "profile job_info" *ngIf="data.work_history!=''" >
@@ -311,7 +311,7 @@
 							<div class = "col-md-8">
 								<ul class = "pro_list">
 									<li>{{work.companyname}}</li>
-									
+
 								</ul>
 							</div>
 
@@ -324,7 +324,7 @@
 							<div class = "col-md-8">
 								<ul class = "pro_list">
 									<li>{{work.positionname}}</li>
-									
+
 								</ul>
 							</div>
 					 	</div>
@@ -371,13 +371,13 @@
 
 					</div>
 
-				 
-				 	
+
+
 				 </section>
 
 				 <section class = "profile job_info" *ngIf="data.education_history!=''" >
 					<h3>Education</h3>
-					
+
 				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>
 				 		<div class = "edu_feild">
 							<p>
@@ -396,8 +396,8 @@
 
 				 	</div>
 
-				 		
-				 	
+
+
 				 </section>
 
 			</div> <!--End col-md-9--->
@@ -434,15 +434,17 @@
 					    <p class = "input_p">Full/Part Time</p>
 					    <div class="radio radio_custom" *ngFor="let options of job_type">
 							<label>
-								<input type="radio" id = "new-radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options"> 
+								<input type="radio" id = "new-radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
 								{{options}}
 							</label>
 						</div>
 					  </div>
-						
+
 					  <div class="form-group">
-					    <textarea class="form-control" rows="5" name="job_desc" [(ngModel)]="credentials.job_desc" id="comment" placeholder="Description of job"></textarea>
-					  </div>
+              <p class = "input_p">Job description</p>
+              <ckeditor [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+              </ckeditor>
+            </div>
 					  <p style="color: green;font-size: 18px;">{{job_offer_msg}}</p>
 					  <div class = "form-group text-center">
 					  		<button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_desc || !credentials.job_type || !credentials.job_title || !credentials.location" class="btn btn-primary model-btn submit">Submit Job Offer</button>
