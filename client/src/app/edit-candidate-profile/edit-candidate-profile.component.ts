@@ -425,7 +425,7 @@ export class EditCandidateProfileComponent implements OnInit {
   ]
   /*currency=
     [
-      "£ GBP" ,"€ EUR" , "$ USD"
+      "ï¿½ GBP" ,"ï¿½ EUR" , "$ USD"
     ]*/
     currency=
     [
@@ -529,7 +529,7 @@ export class EditCandidateProfileComponent implements OnInit {
     {name:'EOS', value:'EOS', checked:false},
     {name:'NEO', value:'NEO', checked:false},
     {name:'Waves', value:'Waves', checked:false},
-    {name:'Steem', value:'Steem', checked:false},
+    {name:'Steemit', value:'Steemit', checked:false},
     {name:'Lisk', value:'Lisk', checked:false},
     {name:'Quantum', value:'Quantum', checked:false},
     {name:'Tezos', value:'Tezos', checked:false},
@@ -570,7 +570,7 @@ export class EditCandidateProfileComponent implements OnInit {
       {name:'Corda', value:'Corda', checked:false},
       {name:'EOS', value:'EOS', checked:false},
       {name:'Waves', value:'Waves', checked:false},
-      {name:'Steem', value:'Steem', checked:false},
+      {name:'Steemit', value:'Steemit', checked:false},
       {name:'Lisk', value:'Lisk', checked:false},
       {name:'Quantum', value:'Quantum', checked:false},
       {name:'Tezos', value:'Tezos', checked:false},
