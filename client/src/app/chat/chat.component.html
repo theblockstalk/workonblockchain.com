@@ -619,6 +619,44 @@
   </div>
 </div>
 
+<!--Modal to display on page laod-->
+<!-- Modal -->
+<div id="popModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content costom_model">
+      <div class="modal-header mo-head">
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <h3 class="modal-title text-center mo">
+          This is a heading
+        </h3>
+      </div>
+      <div class="modal-body mo_body">
+        <div class = "mo_content" id = "style-6">
+          <p>
+            The chat page is where you will receive job offers and chat with companies.
+          </p>
+          <p>
+            Your account is anonymous until you accept the job offer sent by the company. This is the first message that is in each chat message.
+          </p>
+          <p>
+            After you accept the job offer you are able to chat with the company. At this point you can schedule interviews and if you're lucky, receive a final job offer.
+          </p>
+          <p>
+            Don't worry, accepting the first job offer is not a commitment, only a registration of interest in the job.
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer mo_footer">
+        <button type="reset" (click)="update_status()" class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- end model -->
+
 <!--Profile-inner end-->
 
 <div class = "gap">

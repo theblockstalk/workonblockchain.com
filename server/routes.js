@@ -15,6 +15,7 @@ const authVerifyClient = require('./controller/api/users/auth/verifyClient.contr
 const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
 const authApprovalEmail = require('./controller/api/users/auth/approval_email.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
+const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
 
 // Referrals
 const refReferredEmail = require('./controller/api/users/referrals/referredEmail.controller');
@@ -87,6 +88,7 @@ router.put('/users/verify_client/:email', authVerifyClient);
 router.post('/users/set_disable_status' , auth.isLoggedIn , authAccountDisableSetting);
 router.post('/users/approval_email',auth.isLoggedIn ,authApprovalEmail);
 router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
+router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
 // Referrals
 router.post('/users/refered_user_email', refReferredEmail)
