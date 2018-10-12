@@ -113,11 +113,15 @@ export class AboutComponent implements OnInit,AfterViewInit
 
                   if(data.contact_number  || data.nationality || data.first_name || data.last_name)
                   {
-                    this.active_class='fa fa-check-circle text-success';
+
                     this.info.contact_number = data.contact_number;
                     this.info.github_account = data.github_account;
                     this.info.exchange_account = data.stackexchange_account;
-                    this.info.nationality = data.nationality;
+                    if(data.nationality)
+                    {
+                      this.info.nationality = data.nationality;
+                    }
+
                     //this.info.gender = data.gender;
                     this.info.first_name =data.first_name;
                     this.info.last_name =data.last_name;
@@ -135,10 +139,14 @@ export class AboutComponent implements OnInit,AfterViewInit
                            this.img_src = last;
                         
                     }
-                   
+
+                  }
+
+                  if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+                  {
+                    this.active_class='fa fa-check-circle text-success';
                     this.job_disable = '';
                     this.link= "/job";
-
                   }
 
                   if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day&& data.current_salary )

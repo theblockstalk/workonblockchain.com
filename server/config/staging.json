@@ -1,0 +1,43 @@
+{
+  "mongo": {
+    "host": "workonblockchain-staging-shard-00-00-mfxhx.mongodb.net:27017,workonblockchain-staging-shard-00-01-mfxhx.mongodb.net:27017,workonblockchain-staging-shard-00-02-mfxhx.mongodb.net",
+    "port": 27017,
+    "databaseName": "wob-staging",
+    "options": "ssl=true&replicaSet=workonblockchain-staging-shard-0&authSource=admin&retryWrites=true"
+  },
+  "server": {
+    "port": 4000
+  },
+  "client": {
+    "url": "https://staging.workonblockchain.com/"
+  },
+  "aws": {
+    "region": "eu-west-1",
+    "buckets": {
+      "files": "files.staging.workonblockchain.com",
+      "logs": "logs.workonblockchain.com"
+    }
+  },
+  "mandrill": {
+    "fromAddress": "contact@workonblockchain.com",
+    "fromName": "STAGING - Work on Blockchain"
+  },
+  "currencyRates": {
+    "USD": {
+      "GBP": 1.33,
+      "Euro": 1.17
+    },
+    "GBP": {
+      "USD": 0.75,
+      "Euro": 0.88
+    },
+    "Euro": {
+      "USD": 0.85,
+      "GBP": 1.13
+    }
+  },
+  "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
+  "cron": {
+    "unreadMessagesTick": "00 12 * * *"
+  }
+}

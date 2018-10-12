@@ -81,7 +81,7 @@ router.get('/', healthCheck);
 router.post('/users/authenticate', authAthenticate);
 router.put('/users/emailVerify/:email_hash', authVerifyEmail);
 router.put('/users/forgot_password/:email', authForgotPassword);
-router.put('/users/change_password/:id',auth.isLoggedIn, authChangePassword);
+router.put('/users/change_password',auth.isLoggedIn, authChangePassword);
 router.put('/users/reset_password/:hash', authResetPassword);
 router.put('/users/verify_client/:email', authVerifyClient);
 router.post('/users/set_disable_status' , auth.isLoggedIn , authAccountDisableSetting);
@@ -95,7 +95,7 @@ router.post('/users/get_refrence_code', refGetReferralCode);
 
 // Candidates
 router.post('/users/register', candidateRegister);
-router.get('/users/',auth.isLoggedIn, candidateGetAll); // Auth: ???
+router.get('/users/',auth.isLoggedIn, candidateGetAll);
 router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
 router.put('/users/welcome/about', auth.isLoggedIn, candidateWizardAbout);

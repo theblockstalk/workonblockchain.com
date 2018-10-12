@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
@@ -24,15 +24,18 @@ export class CandidateDetailComponent implements OnInit {
      expected_currency;
     expected_salary;
     email;
-  constructor(private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
+    ckeConfig: any;
+    @ViewChild("myckeditor") ckeditor: any;
+
+  constructor(private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
- 
+
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
-       ////console.log(this.user_id); 
+       ////console.log(this.user_id);
     });
-            
-  
+
+
   }
   company_reply; currentUser: User;
   credentials: any = {};
@@ -40,26 +43,35 @@ export class CandidateDetailComponent implements OnInit {
   company_name;
   interview_location = '';
   interview_time = '';
-    
-    date_sort_desc = function (date1, date2) 
+
+    date_sort_desc = function (date1, date2)
     {
         // DESCENDING order.
         if (date1.enddate > date2.enddate) return -1;
         if (date1.enddate < date2.enddate) return 1;
         return 0;
     };
-    
-    education_sort_desc = function (year1, year2) 
+
+    education_sort_desc = function (year1, year2)
     {
         // DESCENDING order.
         if (year1.eduyear > year2.eduyear) return -1;
         if (year1.eduyear < year2.eduyear) return 1;
         return 0;
    };
-    
+
     rply;cand_data=[];
-  ngOnInit() 
+  ngOnInit()
   {
+    this.ckeConfig = {
+      allowedContent: false,
+      extraPlugins: 'divarea',
+      forcePasteAsPlainText: true,
+      height: '15rem',
+      width: '23.2rem',
+      removePlugins: 'resize,elementspath',
+      removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
+    };
 	  setInterval(() => {
 		  this.job_offer_msg = '';
 	  }, 7000);
@@ -71,10 +83,10 @@ export class CandidateDetailComponent implements OnInit {
       //////console.log(this.user_id)
 	  this.credentials.user_id = this.user_id;
 
-      
+
       if(this.user_id)
       {
-          
+
           this.authenticationService.get_user_messages(this.user_id,this.currentUser._creator)
             .subscribe(
                 data => {
@@ -85,20 +97,20 @@ export class CandidateDetailComponent implements OnInit {
                             ////console.log("iffffffffffff");
                              this.authenticationService.candidate_detail(this.user_id, data['datas'][0].is_company_reply  )
                              .subscribe(
-                             dataa => 
+                             dataa =>
                              {
                                   if(dataa)
                                   {
-                                        dataa.company_reply =data['datas'][0].is_company_reply;   
+                                        dataa.company_reply =data['datas'][0].is_company_reply;
                                         this.history =dataa.work_history;
                                         this.history.sort(this.date_sort_desc);
                                         this.education = dataa.education_history;
-                                        this.education.sort(this.education_sort_desc);                                                     
+                                        this.education.sort(this.education_sort_desc);
                                         this.cand_data.push(dataa);
                                         ////console.log(this.cand_data);
                                    }
                              },
-                             error => 
+                             error =>
                              {
                                   if(error.message === 500)
                                   {
@@ -110,12 +122,12 @@ export class CandidateDetailComponent implements OnInit {
                                                                 localStorage.removeItem('admin_log');
                                                                 window.location.href = '/login';
                                                             }
-                    
+
                                                             if(error.message === 403)
                                                             {
-                                                                this.router.navigate(['/not_found']);                        
+                                                                this.router.navigate(['/not_found']);
                                                             }
-                  
+
                                                         });
                         }
                         else
@@ -124,7 +136,7 @@ export class CandidateDetailComponent implements OnInit {
 							 this.rply =0;
 							 this.authenticationService.candidate_detail(this.user_id,  this.rply )
 							 .subscribe(
-							 dataa => 
+							 dataa =>
 							 {
 								 if(dataa)
 								 {
@@ -132,13 +144,13 @@ export class CandidateDetailComponent implements OnInit {
 									   this.history =dataa.work_history;
 									   this.history.sort(this.date_sort_desc);
 									   this.education = dataa.education_history;
-									   this.education.sort(this.education_sort_desc); 
+									   this.education.sort(this.education_sort_desc);
 									   this.cand_data.push(dataa);
 									   this.first_name = dataa.initials;
 									   ////console.log(this.cand_data);
 								  }
 							 },
-							 error => 
+							 error =>
 							 {
 								  if(error.message === 500)
 								  {
@@ -152,9 +164,9 @@ export class CandidateDetailComponent implements OnInit {
 								  }
 								  if(error.message === 403)
 								  {
-										this.router.navigate(['/not_found']);                        
+										this.router.navigate(['/not_found']);
 								  }
-					  
+
 							});
 						}
                         ////console.log(this.company_reply);
@@ -165,7 +177,7 @@ export class CandidateDetailComponent implements OnInit {
                          this.rply =0;
                          this.authenticationService.candidate_detail(this.user_id,  this.rply )
                          .subscribe(
-                         dataa => 
+                         dataa =>
                          {
                              if(dataa)
                              {
@@ -173,13 +185,13 @@ export class CandidateDetailComponent implements OnInit {
                                    this.history =dataa.work_history;
                                    this.history.sort(this.date_sort_desc);
                                    this.education = dataa.education_history;
-                                   this.education.sort(this.education_sort_desc); 
+                                   this.education.sort(this.education_sort_desc);
                                    this.cand_data.push(dataa);
                                    this.first_name = dataa.initials;
                                    ////console.log(this.cand_data);
                               }
                          },
-                         error => 
+                         error =>
                          {
                               if(error.message === 500)
                               {
@@ -193,9 +205,9 @@ export class CandidateDetailComponent implements OnInit {
                               }
                               if(error.message === 403)
                               {
-                                    this.router.navigate(['/not_found']);                        
+                                    this.router.navigate(['/not_found']);
                               }
-                  
+
                         });
                    }
                 },
@@ -206,9 +218,9 @@ export class CandidateDetailComponent implements OnInit {
                 }
             );
 
-          
-          
-          
+
+
+
 			this.authenticationService.getCurrentCompany(this.currentUser._creator)
             .subscribe(
                 data => {
@@ -220,10 +232,10 @@ export class CandidateDetailComponent implements OnInit {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
+                        this.router.navigate(['/not_found']);
                     }
                 }
             );
@@ -231,15 +243,15 @@ export class CandidateDetailComponent implements OnInit {
       else
       {
           this.router.navigate(['/not_found']);
-          
-      }  
+
+      }
   }
-  
+
   date_of_joining;
   msg_tag;
   is_company_reply = 0;
   msg_body;
-  job_offer_log;   
+  job_offer_log;
   job_offer_msg;
   full_name;
   job_description;
@@ -254,7 +266,7 @@ export class CandidateDetailComponent implements OnInit {
 					data => {
 						////console.log(data['datas']);
 						if(data['datas'].length>0){
-							this.job_offer_msg = 'Message already sent';
+							this.job_offer_msg = 'You have already sent a job description to this candidate';
 						}
 						else{
 							this.date_of_joining = '10-07-2018';
@@ -287,10 +299,10 @@ export class CandidateDetailComponent implements OnInit {
 							 localStorage.removeItem('admin_log');
 							window.location.href = '/login';
 						}
-						
+
 						if(error.message === 403)
 						{
-							this.router.navigate(['/not_found']);                        
+							this.router.navigate(['/not_found']);
 						}
 					}
 				);
