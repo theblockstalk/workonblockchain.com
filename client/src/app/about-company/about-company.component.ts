@@ -5,11 +5,11 @@ import { HttpClient , HttpHeaders} from '@angular/common/http';
 import { DataService } from "../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-//const URL = 'http://workonblockchain.mwancloud.com:4000/';
-//const URL = 'http://localhost:4000/';
 import {environment} from '../../environments/environment';
+declare var $:any;
+
 const URL = environment.backend_url;
-//////console.log(URL);
+
 
 
 @Component({
@@ -25,6 +25,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     img_data;
    img_src;
     text;
+  companyMsgTitle;
+  companyMsgBody;
   constructor(private route: ActivatedRoute,
         private router: Router,private http: HttpClient,
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
@@ -100,6 +102,15 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                             // this.router.navigate(['/not_found']);                        
                         } 
                 });
+         this.authenticationService.get_page_content('Company popup message')
+           .subscribe(
+             data => {
+               if(data)
+               {
+                 this.companyMsgTitle= data[0].page_title;
+                 this.companyMsgBody = data[0].page_content;
+               }
+             });
        }
       else
        {
@@ -155,7 +166,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                 if (fileCount > 0 ) 
                 {
 
-                    ////console.log("data");
                     if(inputEl.files.item(0).size < this.file_size)
 
                     {
@@ -166,7 +176,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                         }).map((res) => res).subscribe(                
                         (success) => 
                         {
-                            this.router.navigate(['/company_profile']); 
+                          $('#popModal').modal('show');
+                          //this.router.navigate(['/company_profile']);
                         },
                         (error) => {
                         if(error.message === 500 || error.message === 401)
@@ -190,7 +201,12 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                 
                 else
                 {
-                    this.router.navigate(['/company_profile']);
+                  $("#popModal").modal({
+                    backdrop: 'static',
+                    keyboard: true,
+                    show: true
+                  });
+                  //this.router.navigate(['/company_profile']);
                 }
               
               }
@@ -217,6 +233,11 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
           });
             }
           }
-       
+
+  redirectToCompany()
+  {
+    $('#popModal').modal('hide');
+    this.router.navigate(['/company_profile']);
+  }
  
 }
