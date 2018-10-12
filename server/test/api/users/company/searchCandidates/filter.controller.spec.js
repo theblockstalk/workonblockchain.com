@@ -44,14 +44,16 @@ describe('search candidates as company', function () {
                 currency: candidateData.expected_salary_currency,
                 salary: candidateData.expected_salary,
                 position: candidateData.roles,
-                skill: [],
                 location: candidateData.locations,
-                blockchain: [],
                 availability: candidateData.availability_day,
+                skill : -1,
             }
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
             const filterRes = await companyHelper.companyFilter(params , comapnyUserDoc.jwt_token);
+
+            const res = filterRes.body[0].ids[0];
+            candidateData = await Candidates.findOne({_creator: res}).lean();
 
             candidateData.expected_salary_currency.should.equal(params.currency);
             candidateData.expected_salary.should.equal(params.salary);
