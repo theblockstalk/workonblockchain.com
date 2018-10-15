@@ -108,9 +108,16 @@ export class ChatComponent implements OnInit {
       allowedContent: false,
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
+      /*breakBeforeOpen : false,
+      breakAfterOpen: false,
+      breakBeforeClose: false,
+      breakAfterClose: false,
+      enterMode: 'ENTER_BR',
+      autoParagraph: false,*/
+      insert_final_newline: false,
       height: '5rem',
       width: '52rem',
-      removePlugins: 'resize,elementspath',
+      removePlugins: 'resize,elementspath,magicline',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
     };
 
@@ -121,7 +128,11 @@ export class ChatComponent implements OnInit {
       forcePasteAsPlainText: true,
       height: '8rem',
       width: '56rem',
-      removePlugins: 'resize,elementspath',
+      /*breakBeforeOpen : false,
+      breakAfterOpen: false,
+      breakBeforeClose: false,
+      breakAfterClose: false,*/
+      removePlugins: 'resize,elementspath,magicline',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
     };
 
@@ -447,6 +458,7 @@ export class ChatComponent implements OnInit {
           //console.log(this.credentials.email);
           this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
           //console.log(this.msgs);
+          //console.log(this.credentials.msg_body);//.replace(/\n/g, "<br />"));
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
           //sender_id,receiver_id,sender_name,receiver_name,msg
           this.msg_tag = 'normal';
