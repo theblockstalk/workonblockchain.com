@@ -121,7 +121,6 @@ function filter(params, userId)
 
             if(result_array.length !== 0 && params.currency!== -1 && params.salary)
             {
-                ////console.log("result array");
                 const searchFilter = {
                     $or : [
                         { $and : [ { expected_salary_currency : "$ USD" }, { expected_salary : {$lte: result_array.USD} } ] },
@@ -169,8 +168,8 @@ function filter(params, userId)
                   	var datata= {ids : result_array };
                   	ids_arrayy.push(datata);
 
-                  	deferred.resolve(ids_arrayy);
-                   
+                    getCompanyReply(result_array, userId)
+
                 }
 
             });
@@ -198,5 +197,61 @@ function expected_salary_converter(salary_value, currency1, currency2)
     array.push(value2);
 
     return array;
+
+}
+
+function getCompanyReply(candidateIds , userId){
+    var deferred = Q.defer();
+    console.log(candidateIds);
+
+        chat.find(
+        { "receiver_id": {$in:candidateIds} }
+
+        ).sort({_id: 'ascending'}).exec(function(err, data)
+        {
+            if (err){
+                logger.error(err.message, {stack: err.stack});
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            else{
+
+                candidateDetail(candidateIds,data);
+
+            }
+        });
+
+
+}
+
+function candidateDetail(candidateIds, chatData){
+    CandidateProfile.find({_creator : id}).populate('_creator' ).exec(function(err, result)
+    {
+        if (err)
+        {
+            logger.error(err.message, {stack: err.stack});
+        }
+        if(result)
+        {
+            var query_result = result[0].toObject();
+
+            let anonymous = filterReturnData.removeSensativeData(query_result);
+
+            if(company_reply == 1 )
+            {
+                console.log(anonymous._creator._id);
+            }
+
+            if(company_reply == 0 )
+            {
+                logger.debug("anonymous candidate : " + anonymous);
+                anonymous = filterReturnData.anonymousSearchCandidateData(anonymous);
+
+            }
+            console.log(anonymous._creator._id);
+            //deferred.resolve(anonymous);
+
+
+        }
+    });
 
 }
