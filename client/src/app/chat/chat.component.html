@@ -415,7 +415,7 @@
 											<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
 											<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 											<input type="hidden" name="first_message" id="first_message" [(ngModel)]="first_message"/>
-                      <ckeditor [(ngModel)]="credentials.msg_body" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                      <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.msg_body" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
                       </ckeditor>
                       <span>
 												<button class = "btn btn-send" type="submit" id = "btnClick">
@@ -483,7 +483,7 @@
 		  </div>
 		  <div class="form-group col-md-12 padd_imp">
 		    <p>Other details (optional)</p>
-        <ckeditor [(ngModel)]="credentials.description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
+        <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
         </ckeditor>
       </div>
 
@@ -552,7 +552,7 @@
 		  </div>
 		  <div class="form-group">
 		    <p>Job description</p>
-        <ckeditor [(ngModel)]="credentials.job_description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
+        <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
         </ckeditor>
 		  </div>
 		  <div class="form-group">

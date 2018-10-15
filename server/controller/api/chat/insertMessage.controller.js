@@ -55,14 +55,16 @@ function insert_message_new(data,description,msg){
 	let new_description = '';
 	let new_msg = '';
 	if(description){
-		new_description = description.replace(/\n/g, "<br>");
+        new_description = description.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '\n').replace(/\n/g, '<br />');
+		//new_description = description.replace(/\n/g, "<br>");
         new_description = new_description.replace(/<(?!br\s*\/?)[^>]+>/g, '');
-        new_description = new_description.replace(/<br[^>]*>/, '');
+        //new_description = new_description.replace(/<br[^>]*>/, '');
     }
     if(msg){
-        new_msg = msg.replace(/\n/g, "<br>");
+        new_msg = msg.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '\n').replace(/\n/g, '<br />');
+        //new_msg = msg.replace(/\n/g, "<br>");
         new_msg = new_msg.replace(/<(?!br\s*\/?)[^>]+>/g, '');
-        new_msg = new_msg.replace(/<br[^>]*>/, '');
+        //new_msg = new_msg.replace(/<br[^>]*>/, '');
     }
 	interview_date = '';
 	if(data.msg_tag == 'interview_offer'){
