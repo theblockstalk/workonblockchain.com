@@ -296,6 +296,7 @@ export class ChatComponent implements OnInit {
                                     //console.log('my');
                                 }
                                 else{
+                                  console.log(this.new_messges[key_messages].receiver_id);
                                     this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].is_company_reply,'candidate')
                                     .subscribe(
                                         data => {
