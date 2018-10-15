@@ -13,6 +13,7 @@ var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../model/employer_profile');
 const chat = require('../../../model/chat');
 const mongoose = require('mongoose');
+const sanitize = require('../../services/sanitize');
 
 const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../../services/email/emails/verifyEmail');
@@ -27,7 +28,9 @@ const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
 module.exports = function insert_message_job(req,res){
-    insert_message_job_new(req.body).then(function (err, about)
+    let sanitizeddescription = sanitize.sanitizeHtml(req.unsanitizedBody.description);
+    let sanitizedmessage = sanitize.sanitizeHtml(req.unsanitizedBody.message);
+	insert_message_job_new(req.body,sanitizeddescription,sanitizedmessage).then(function (err, about)
     {
         if (about)
         {
@@ -44,7 +47,21 @@ module.exports = function insert_message_job(req,res){
         });
 }
 
-function insert_message_job_new(data){
+function insert_message_job_new(data,description,msg){
+	let new_description = '';
+	let new_msg = '';
+    if(description){
+        new_description = description.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '\n').replace(/\n/g, '<br />');
+        //new_description = description.replace(/\n/g, "<br>");
+        new_description = new_description.replace(/<(?!br\s*\/?)[^>]+>/g, '');
+        //new_description = new_description.replace(/<br[^>]*>/, '');
+    }
+    if(msg){
+        new_msg = msg.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '\n').replace(/\n/g, '<br />');
+        //new_msg = msg.replace(/\n/g, "<br>");
+        new_msg = new_msg.replace(/<(?!br\s*\/?)[^>]+>/g, '');
+        //new_msg = new_msg.replace(/<br[^>]*>/, '');
+    }
 	var current_date = new Date();
 	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
@@ -54,8 +71,8 @@ function insert_message_job_new(data){
 			receiver_id : mongoose.Types.ObjectId(data.receiver_id),
 			sender_name: data.sender_name,
 			receiver_name: data.receiver_name,
-			message: data.message,
-			description: data.description,
+			message: new_msg,
+			description: new_description,
 			job_title: data.job_title,
 			salary: data.salary,
 			salary_currency: data.currency,
@@ -87,8 +104,8 @@ function insert_message_job_new(data){
 			receiver_id : mongoose.Types.ObjectId(data.receiver_id),
 			sender_name: data.sender_name,
 			receiver_name: data.receiver_name,
-			message: data.message,
-			description: data.description,
+			message: new_msg,
+			description: new_description,
 			job_title: data.job_title,
 			salary: data.salary,
 			salary_currency: data.currency,

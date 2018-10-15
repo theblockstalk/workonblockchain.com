@@ -1,7 +1,7 @@
 <!--company side candidate listing search page code start here-->
 
 <ng-container *ngIf="!display_name ;else profile_section" >
-	
+
 </ng-container>
 
 <ng-template #profile_section>
@@ -24,32 +24,32 @@
 	</div>
 
 	<div class="container" >
-	
+
 		<div class="row">
 
 			<div class="col-md-3">
 			<form id="myForm" action = "">
 				<div class = "wizard-form mr-top-form filter_bar" id = "side_bar">
 					<ul>
-					
-						<li> 
+
+						<li>
 							<div class = "form-group">
 
                 				<select class="form-control" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" name="skill" [(ngModel)]="selectedObj" (ngModelChange)="searchdata('skill' , $event)" id="required" name="required">
-									
+
 									<option value="-1" disabled selected hidden>Skills</option>
                   					<option class='option' *ngFor='let option of language_opt'  [value]="option.value" >{{option.name}}</option>
 
 
 								</select>
 							</div>
-	
+
 						</li>
 
 						<li>
 							<div class = "form-group">
 								<select class="form-control" name="location" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="countryChange" (ngModelChange)="searchdata('location' , $event)" id="required" name="required">
-									
+
 									<option value="-1" disabled selected hidden>Desired Location</option>
                   					<option class='option' *ngFor='let option of cities'  [value]="option.value" >{{option.name}}</option>
 
@@ -58,47 +58,47 @@
 							</div>
 						</li>
 
-						<li> 
+						<li>
 							<div class = "form-group">
-								
-								
+
+
 								<select2  [data]="rolesData" allowClear="true" [attr.disabled]="disabled?'':null"  [disabled]="msg !== '' ? true : false" [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="positionchanged($event)">
-								
-								
+
+
 								</select2>
 								<input type="text" class="form-control" [(ngModel)]='rolesItems' name="roles" style="display: none;">
-								
+
 							</div>
 
 						 </li>
-						<li > 
+						<li >
 							<div class = "form-group">
-									
+
 								<select2  [data]="blockchainData" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [options]="options2" [width]="500" [value]="selecteddd"  (valueChanged)="blockchainchanged($event)" id="required" ></select2>
 								<input type="text" class="form-control" [(ngModel)]='blockchainItems' name="blockchain" style="display: none;">
 							</div>
 						 </li>
-						 
-						<li> 
-							<div class="form-group filter_grp"> 
-								
+
+						<li>
+							<div class="form-group filter_grp">
+
 							   	 <input type="text" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" class="form-control currncy_input filter-input" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
-							   
-							    
-							    
+
+
+
 								    <select [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)"  name="required">
 									     	<!-- <option [ngValue]="undefined" hidden selected>$ USD</option>-->
 									     	 <option value="-1" disabled selected hidden >$ USD</option>
 									     	 <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
-	              
+
 									</select>
-								
+
 							  </div>
 						 </li>
 						 <li>
 							<div class = "form-group">
 								<select class="form-control" id="sel1" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)"  name="required">
-									 
+
 									  <option value="-1" disabled selected hidden >Availability</option>
 									  <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
 							    </select>
@@ -107,41 +107,41 @@
 					</ul>
 				</div>
 				<div class = "text-right btn-div">
-					<!-- <button type = "button" class = "btn btn-filter"> Filter </button> 
+					<!-- <button type = "button" class = "btn btn-filter"> Filter </button>
 					<button type = "reset" class = "btn reset-bttn"> Reset </button>-->
 					<a  (click)="reset()" id="reset" class = "btn reset-bttn"> Reset</a>
-					
+
 				</div>
 				</form>
-				
+
 			</div>
 			<ng-container *ngIf="response === '';else no_section" >
 			<div class="col-md-9 text-center" >
 				<img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
 				</div>
-				
+
 			</ng-container>
 			<ng-template #no_section >
 				<!--end-col-md-3-->
 				<div class="col-md-9" >
-					
+
 					<h4 *ngIf="msg!=''&& lengthmsgg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
-					
+
 					<div class = "result-status mr-top-form" *ngIf="msg === '' && lengthmsgg != '' && response === 'data'">
 							<div *ngIf="cand_data.length > 0 ">
 								<span>{{cand_data.length}}</span> candidates match your search
 								<i class="fa fa-check tickk" aria-hidden="true"></i>
 							</div>
 							<div *ngIf="not_found != '' && cand_data.length <=0 ">
-								<span>{{not_found}}</span> 
+								<span>{{not_found}}</span>
 							<i class="fa fa-check tickk" aria-hidden="true"></i>
 							</div>
 					</div>
-					
-					
+
+
 					<!--candidate 1st-->
 					<div *ngIf="info && msg === '' " >
-					
+
 					<div class="panel-group mr-top-form" *ngFor= "let data of cand_data | paginate: { itemsPerPage:10, currentPage: p }">
 
 					   <div class="panel panel-default" >
@@ -150,7 +150,7 @@
 
 								<ng-container *ngIf="data.image && data.company_reply == 1;else company_logo_top">
 									<div class = "user-pic">
-									
+
 										<img src="{{data.image}}" alt="">
 										<a class = "mobile_name" [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 0"><h2>{{data.initials}}</h2><br/></a>
 										<a class = "mobile_name" [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}}</h2></a><br/>
@@ -164,17 +164,17 @@
 										</div>
 									</ng-template>
 
-							
-							
+
+
 
 							<div class = "user-detail ">
 								<a [routerLink]="['/candidate-detail']" class = "large_sec" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 0"><h2>{{data.initials}}</h2><br/></a>
 								<a [routerLink]="['/candidate-detail']" class = "large_sec" [queryParams]="{user: data._creator._id }" *ngIf="data.company_reply === 1"><h2>{{data.first_name}}</h2></a><br/>
-								
-								
+
+
 								<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>
-								
-								
+
+
 							</div>
 
 							<div class = "ofr_btn">
@@ -190,7 +190,7 @@
 						  </div>
 
 						  <div class="panel-body">
-							
+
 							<span class = "why_join col-md-12"><i>{{data.why_work}}</i> </span>
 
 								<div class="col-sm-8">
@@ -206,8 +206,8 @@
 										<span class = "lang_name">
 
 										 {{lang.language}}
-										 </span>   
-										 <span class = "exp_time"> 
+										 </span>
+										 <span class = "exp_time">
 										 {{lang.exp_year}} years
 										 </span>
 										  </li>
@@ -221,7 +221,7 @@
 					</div>
 					<!--end candidate-->
 
-					
+
 					<pagination-controls (pageChange)="p = $event" *ngIf="cand_data.length > 10"></pagination-controls>
 						<!-- <ul class="pagination">
 						  <li class="active"><a href="#">1</a></li>
@@ -237,7 +237,7 @@
 			</ng-template>
 		</div> <!--row end-->
 	</div> <!--container end-->
-	
+
 </section>
 </ng-template>
 
@@ -252,7 +252,7 @@
         <h4 class="modal-title text-center">Send Job Description</h4>
       </div>
       <div class="modal-body">
-        <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
+        <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm style="overflow: hidden;">
           <ng-container *ngIf="job_offer_log;else no_modal">
 			<div class = "model_notif text-center">
 				{{job_offer_log}}
@@ -286,16 +286,17 @@
       <p class = "input_p">Employment type</p>
       <div class="radio radio_custom" *ngFor="let options of job_type">
 		<label>
-			<input type="radio" id = "new-radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options"> 
+			<input type="radio" id = "new-radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
   			{{options}}
 		</label>
 	  </div>
-	 
+
     </div>
-   
-    <p style="margin-left: -3%;" class="form-group col-md-12">Job Description</p>
-    <div class="form-group">
-      <textarea class="form-control" name="job_desc" [(ngModel)]="credentials.job_desc" rows="5" id="comment" placeholder="Description of job"></textarea>
+
+    <div class="form-group col-md-12 padd_imp">
+      <p class="input_p">Job Description</p>
+      <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+      </ckeditor>
     </div>
     <!--<div class="checkbox">
    <label class = "check-label"> Accept <a href = "">Workonblockchain.com  Term and Conditions </a>
@@ -305,7 +306,7 @@
     </span>
    </label>
     </div>-->
-		  <div class="modal-footer">
+		  <div class="modal-footer col-md-12">
 				<button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_desc || !credentials.job_type || !credentials.job_title || !credentials.location" class="btn btn-primary model-btn submit">Submit Job Offer</button>
 				<button type="reset" class="btn btn-danger model-btn">Reset</button>
 		  </div>

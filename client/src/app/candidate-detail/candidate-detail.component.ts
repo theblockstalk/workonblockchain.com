@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
@@ -24,6 +24,9 @@ export class CandidateDetailComponent implements OnInit {
      expected_currency;
     expected_salary;
     email;
+    ckeConfig: any;
+    @ViewChild("myckeditor") ckeditor: any;
+
   constructor(private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
 
@@ -60,6 +63,15 @@ export class CandidateDetailComponent implements OnInit {
     rply;cand_data=[];
   ngOnInit()
   {
+    this.ckeConfig = {
+      allowedContent: false,
+      extraPlugins: 'divarea',
+      forcePasteAsPlainText: true,
+      height: '15rem',
+      width: '23.2rem',
+      removePlugins: 'resize,elementspath',
+      removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
+    };
 	  setInterval(() => {
 		  this.job_offer_msg = '';
 	  }, 7000);

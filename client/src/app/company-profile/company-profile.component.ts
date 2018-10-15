@@ -19,6 +19,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
     imgPath;
     email;
+  companyMsgTitle;
+  companyMsgBody;
   constructor( private route: ActivatedRoute,
         private router: Router,
         private authenticationService: UserService) { }
@@ -166,6 +168,15 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                     
                     
                 });
+        this.authenticationService.get_page_content('Company popup message')
+          .subscribe(
+            data => {
+              if(data)
+              {
+                this.companyMsgTitle= data[0].page_title;
+                this.companyMsgBody = data[0].page_content;
+              }
+            });
       }
       else
        {

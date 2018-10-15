@@ -1184,7 +1184,7 @@ fieldset.scheduler-border {
     list-style-type: none;
     display: inline-block;
     margin-right:  25px;
-    margin-left: 25px;
+    margin-left: 20px;
     font-size: 18px;
 }
 
@@ -2122,6 +2122,19 @@ input[type=checkbox] {
 	 color: #fff;
      width: 175px;
      border-radius: 0px;
+}
+.btn_popup{
+  background: #ffc000;
+  border-color: #ffc000;
+  color: #fff;
+  max-width: 200px;
+  border-radius: 0px;
+  padding: 5px 10px;
+  outline: 0px;
+  border: 0px;
+  position: absolute;
+  right: 15px;
+  top: 40px;
 }
 
 .btn-relative{
@@ -3403,6 +3416,265 @@ input:checked + .slider:before {
   width:95px;
 }
 
+.file-uploadd{
+  display:block;
+  text-align:center;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+.file-uploadd .file-select{
+  display:block;
+  border: none;
+  color: #34495e;
+  cursor:pointer;
+  height:40px;
+  line-height:40px;
+  text-align:left;
+  background:#FFFFFF;
+  overflow:hidden;
+  position:relative;
+}
+.file-uploadd .file-select .file-select-button{
+  background:#ffd52d;
+  padding:0 10px;
+  display:inline-block;
+  height:40px;
+  line-height:40px;
+  color: #fff;
+  text-align: center;
+  width: 130px;
+  font-weight: bold;
+}
+.file-uploadd .file-select .file-select-name{
+  line-height:40px;
+  display:inline-block;
+  padding:0 10px;
+}
+.file-uploadd .file-select:hover{
+  border-color:#34495e;
+  transition:all .2s ease-in-out;
+  -moz-transition:all .2s ease-in-out;
+  -webkit-transition:all .2s ease-in-out;
+  -o-transition:all .2s ease-in-out;
+}
+.file-uploadd .file-select:hover .file-select-button{
+  background:#34495e;
+  color:#FFFFFF;
+  transition:all .2s ease-in-out;
+  -moz-transition:all .2s ease-in-out;
+  -webkit-transition:all .2s ease-in-out;
+  -o-transition:all .2s ease-in-out;
+}
+.file-uploadd.active .file-select{
+  border-color:#3fa46a;
+  transition:all .2s ease-in-out;
+  -moz-transition:all .2s ease-in-out;
+  -webkit-transition:all .2s ease-in-out;
+  -o-transition:all .2s ease-in-out;
+}
+.file-uploadd.active .file-select .file-select-button{
+  background:#3fa46a;
+  color:#FFFFFF;
+  transition:all .2s ease-in-out;
+  -moz-transition:all .2s ease-in-out;
+  -webkit-transition:all .2s ease-in-out;
+  -o-transition:all .2s ease-in-out;
+}
+.file-uploadd .file-select input[type=file]{
+  z-index:100;
+  cursor:pointer;
+  position:absolute;
+  height:100%;
+  width:100%;
+  top:0;
+  left:0;
+  opacity:0;
+  filter:alpha(opacity=0);
+}
+.file-uploadd .file-select.file-select-disabled{
+  opacity:0.65;
+}
+.file-uploadd .file-select.file-select-disabled:hover{
+  cursor:default;
+  display:block;
+  border: 2px solid #dce4ec;
+  color: #34495e;cursor:pointer;
+  height:40px;
+  line-height:40px;
+  margin-top:5px;
+  text-align:left;
+  background:#FFFFFF;
+  overflow:hidden;
+  position:relative;
+}
+.file-uploadd .file-select.file-select-disabled:hover .file-select-button{
+  background:#dce4ec;
+  color:#666666;
+  padding:0 10px;
+  display:inline-block;
+  height:40px;
+  line-height:40px;
+}
+.file-uploadd .file-select.file-select-disabled:hover .file-select-name{
+  line-height:40px;
+  display:inline-block;
+  padding:0 10px;
+}
+
+/*===LINKEDIN PAGE DESIGN HERE===*/
+
+.linkein_info{
+  position: relative;
+}
+
+.linkein_info h2{
+  font-weight: bold;
+  color: #537284;
+  margin-bottom: 20px;
+}
+
+.link_p{
+  margin-bottom: 20px !important;
+  position:relative;
+}
+.step-num{
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.steps-pra{
+  position: relative;
+  left: 30px;
+  line-height: 30px !important;
+}
+
+.choose_opt{
+  color: #537284;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.btn_brd{
+  border-radius: 0px;
+}
+
+.btn_wth{
+  width: 130px;
+  font-weight: bold;
+}
+
+.linkin-file{
+  position: absolute;
+  text-align:center;
+  padding: 6px 6px;
+  width: 95px;
+  background-color: #ffd736;
+  border-color: #ffd632;
+  border: 0px solid;
+  color: #fff;
+  border-radius: 0px;
+  cursor: pointer;
+}
+
+.info_image{
+  background: #f6f9fc;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.info_image img{
+  width: 100%;
+}
+
+.nxt_btne{
+  margin-top: 30px;
+}
+
+.file_error{
+  color: #fb1515;
+  position: relative;
+  top: 10px;
+  padding: 5px 20px;
+}
+
+/*==welcome model style start==*/
+
+.mo-head {
+  background: #253245;
+  color: #fff;
+}
+
+.mo_content{
+  background: #f6f9fc;
+  padding: 10px;
+  border: 1px solid #253245;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 2px 3px rgba(0,0,0,.2);
+  transition: box-shadow 83ms;
+  height: 350px;
+  overflow-y: scroll;
+}
+
+#style-6::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+}
+
+#style-6::-webkit-scrollbar
+{
+  width: 6px;
+  background-color: #F5F5F5;
+}
+
+#style-6::-webkit-scrollbar-thumb
+{
+  background-color: #F90;
+  background-image: -webkit-linear-gradient(45deg,
+  rgba(255, 255, 255, .2) 25%,
+  transparent 25%,
+  transparent 50%,
+  rgba(255, 255, 255, .2) 50%,
+  rgba(255, 255, 255, .2) 75%,
+  transparent 75%,
+  transparent)
+}
+
+.mo_content h2{
+  margin-bottom: 25px;
+  color: #253245;
+}
+
+.mo span{
+  color: #ffc000;
+}
+
+.mo-head .close {
+  margin-top: -2px;
+  color: #fff;
+  background: #d9534f;
+  padding: 5px;
+  border-radius: 100%;
+  text-align: center;
+  opacity: 1;
+  font-size: 15px;
+  height: 25px;
+  width: 25px;
+}
+
+.mo_body{
+  padding: 10px 15px;
+}
+
+.mo_footer{
+  border-bottom: 10px solid #253245;
+}
+
+.btn-mo{
+  background: #253245;
+  color: #fff;
+}
+
+/*==welcome model style end==*/
 
 /*=======TABLETS STYLES 768px to 992px========*/
 
@@ -3643,6 +3915,24 @@ input:checked + .slider:before {
 		top: -13px;
 		width: 43%;
 	}
+  .info_image{
+    position: relative;
+  }
+
+  .nxt_btne {
+    margin-top: 70px;
+  }
+
+  .img-col-set{
+    margin-top: 50px;
+  }
+  .mo_body{
+    padding: 6px;
+  }
+
+  .btn_popup{
+    top: 5px;
+  }
 
 }
 
@@ -3861,6 +4151,14 @@ input:checked + .slider:before {
 
 .hidden-class{
   overflow: hidden;
+}
+
+.ckeditor_tab >.cke>.cke_inner> .cke_top{
+  display: none !Important;
+}
+
+.ckeditor_tab >.cke>.cke_inner> .cke_contents > .cke_reset >p {
+  margin: 0px;
 }
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/

@@ -8,13 +8,14 @@
 </ng-container>
 
 <ng-template #profile_section >
-<section class = "wizard_page">	
+<section class = "wizard_page">
    <div class="alert alert-info error-alert" *ngIf="message">{{message}}</div>
 	<div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12">
-			
-				 <section class = "profile personal_info" *ngIf="!public_data">
+        <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn_popup">What happens next?</button>
+
+        <section class = "profile personal_info" *ngIf="!public_data">
 
 				 	<div class="col-md-6" >
 				 		<span class = "p_img" *ngIf="!imgPath">
@@ -25,58 +26,45 @@
 				 		</span>
 				 		<span class = "name">
 				 			<h3 class="text-capitalize">{{first_name}} {{last_name}}</h3>
-				 				
+
 				 		</span>
 				 		<span class = "short_intro">
 				 			<p>{{description}}</p>
 				 		</span>
 
 					<!-- <div class = "short_intro">
-					
+
 						 <div #element style="display: inline-block;position: relative;"></div>
 						 <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="tweet_text" [attr.data-url]="share_url" class="twitter-share-button"></a>
-						 
+
 							</div>-->
-						
-						
+
+
 
 				 	</div>
 
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-				 			<!-- <li>
-				 				
-					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-					 				<span class = "li_txt" >{{companyname}}</span>
-				 				
-				 			</li>
+
 
 				 			<li>
-				 				
-					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-					 				<span class = "li_txt">{{degreename}}</span>
-				 				
-				 			</li>
-				 			-->
 
-				 			<li>
-				 			
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt">Nationality : {{nationality}}</span>
-				 		
+
 				 			</li>
 
 				 			<li>
-				 			
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt"> Contact Number : {{contact_number}}</span>
-				 				
+
 				 			</li>
-				 			
-				 			
+
+
 				 		</ul>
-				 		
+
 				 	</div>
 				 	<span class = "edit_profile_link">
 				 		<a  (click)="internalRoute('edit_profile','about_you')">
@@ -84,7 +72,7 @@
 				 		</a>
 				 	</span>
 				 </section>
-				 
+
 				 <section class = "profile job_info" *ngIf="!public_data ">
 					<h3>About you</h3>
 					<div class="info-area pro_br-btm" >
@@ -94,13 +82,13 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{email}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-					
-					
+
+
 					<div class="info-area pro_br-btm" *ngIf="contact_number">
 						<div class = "col-md-3">
 							<strong>Contact Number :  </strong>
@@ -108,12 +96,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{contact_number}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-					
+
 				 	<div class="info-area pro_br-btm" *ngIf="github">
 						<div class = "col-md-3">
 							<strong>Github account URL : </strong>
@@ -121,7 +109,7 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{github}}</li>
-								
+
 							</ul>
 						</div>
 
@@ -136,19 +124,19 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{stack}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	
+
 				 	<span class = "edit_profile_link">
 				 		<a  (click)="internalRoute('edit_profile','about_you')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-				 	
+
 				 </section>
 
 				 <section class = "profile job_info" *ngIf="!public_data">
@@ -160,23 +148,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li *ngFor='let country of countries'>{{country}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	<!--<div class="info-area pro_br-btm">
-				 		<div class = "col-md-3" >
-							<strong>Position Type : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li>Full Time</li>
-								<li>Part Time</li>
-							</ul>
-						</div>
-				 	</div>-->
 
 				 	<div class="info-area pro_br-btm">
 
@@ -186,12 +163,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li *ngFor='let interest_area of interest_area;'>{{interest_area}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="roles">
 
 						<div class = "col-md-3" >
@@ -200,12 +177,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li *ngFor='let roles_data of roles'>{{roles_data}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="expected_salary">
 
 						<div class = "col-md-3" >
@@ -218,7 +195,7 @@
 						</div>
 
 				 	</div>
-				 	
+
 					<div class="info-area pro_br-btm" *ngIf="current_salary">
 
 						<div class = "col-md-3" >
@@ -250,7 +227,7 @@
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-				 	
+
 				 </section>
 
 				 <section class = "profile job_info" *ngIf="!public_data">
@@ -262,7 +239,7 @@
 							{{why_work}}
 						</p>
 					</div>
-					
+
 
 				 	<div class="info-area pro_br-btm" *ngIf = "commercial">
 
@@ -272,12 +249,12 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let data of commercial;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf = "platforms">
 
 						<div class = "col-md-4" >
@@ -299,25 +276,25 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let data of experimented;'>{{data.value}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
 
 
-				 	
+
 
 				 	<span class = "edit_profile_link">
 				 		<a  (click)="internalRoute('edit_profile','resume_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-				 	
+
 				 </section>
 
 				 <section class = "profile job_info" *ngIf="!public_data">
-					<h3>Experience</h3>				
+					<h3>Experience</h3>
 
 				 	<div class="info-area pro_br-btm" *ngIf="languages">
 
@@ -327,7 +304,7 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
-								
+
 							</ul>
 						</div>
 
@@ -340,14 +317,14 @@
 				 		</a>
 				 	</span>
 
-				 
 
-				 	
-				 	
+
+
+
 				 </section>
 
 				  <section class = "profile job_info" *ngIf="!public_data && history.length>0 ">
-				  
+
 					<h3>Work History</h3>
 					<div class = "company_area" *ngFor='let work of history'>
 					 	<div class="info-area pro_br-btm">
@@ -357,7 +334,7 @@
 							<div class = "col-md-8">
 								<ul class = "pro_list">
 									<li>{{work.companyname}}</li>
-									
+
 								</ul>
 							</div>
 
@@ -370,7 +347,7 @@
 							<div class = "col-md-8">
 								<ul class = "pro_list">
 									<li>{{work.positionname}}</li>
-									
+
 								</ul>
 							</div>
 					 	</div>
@@ -416,20 +393,20 @@
 						</div>
 
 					</div>
-					
+
 
 				 	<span class = "edit_profile_link">
 				 		<a (click)="internalRoute('edit_profile','work_candidate')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-				 
+
 				 </section>
 
 				 <section class = "profile job_info" *ngIf="!public_data && education.length>0 ">
-				 
+
 					<h3>Education</h3>
-					
+
 				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>
 				 		<div class = "edu_feild">
 							<p>
@@ -453,16 +430,39 @@
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-				
+
 				 </section>
-				 
-				
+
+
 			</div> <!--End col-md-9--->
 
 		</div>
 	</div>
 
 </section>
-</ng-template> 
+
+  <!-- Modal -->
+  <div id="popModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content costom_model">
+        <div class="modal-header mo-head">
+          <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+          <h3 class="modal-title text-center mo">{{candidateMsgTitle}}
+          </h3>
+        </div>
+        <div class="modal-body mo_body">
+            <div class = "mo_content" id = "style-6" [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
+        </div>
+        <div class="modal-footer mo_footer">
+          <button type="reset" class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- end model -->
+</ng-template>
 
 <!--Profile-inner end-->

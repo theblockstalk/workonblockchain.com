@@ -7,6 +7,7 @@
       <div class = "text-center steps-name">
         <ul class = "step-progress">
            <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}">Terms & Conditions</a></li>
+          <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="/prefill-profile"> Prefill Profile</a></li>
           <li class = "step "><i class="{{active_class}}"></i><a routerLink="/about"> About</a></li>
           <li class = "step"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
           <li class = "step "><i class="{{active_class}}"></i><a routerLink="/resume" >Blockchain</a></li>
@@ -265,7 +266,7 @@
 
           <div class = "form-group text-right">
               <a routerLink="/resume" class = "btn btn-prev">Prev Step</a>
-              <button type="submit" class = "btn btn-self btn-pdg"  >Done</button>
+              <button type="submit" class = "btn btn-self btn-pdg" >Done</button>
           </div>
        <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
         </form>
@@ -278,6 +279,28 @@
 
 </section>
 
+<!-- Modal -->
+<div id="popModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content costom_model">
+      <div class="modal-header mo-head">
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <h3 class="modal-title text-center mo">{{candidateMsgTitle}}
+        </h3>
+      </div>
+      <div class="modal-body mo_body">
+        <div class = "mo_content" id = "style-6" [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
+      </div>
+      <div class="modal-footer mo_footer">
+        <a  class="btn btn-mo model-btn" data-dismiss="modal" (click) = redirectToCandidate()>Got it</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- end model -->
 
 <!--candidate step completing End-->
 

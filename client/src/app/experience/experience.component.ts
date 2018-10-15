@@ -7,7 +7,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from "../data.service";
-
+declare var $:any;
 
 @Component({
   selector: 'app-experience',
@@ -25,6 +25,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     companyname;positionname;locationname;description;startdate;startyear;enddate;endyear;currentwork;currentenddate;currentendyear; uniname;degreename;fieldname;edudate;eduyear; eduData; jobData;datatata=[];exp_data=[];Intro;db_valye=[];
     exp_active_class;active_class;current_currency;
     term_active_class;term_link;
+    candidateMsgTitle;
+    candidateMsgBody;
 
     inputArray=[];
 
@@ -218,10 +220,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
                     
@@ -231,11 +233,23 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                     }   
                 
            });
+
+         this.authenticationService.get_page_content('Candidate popup message')
+           .subscribe(
+             data => {
+               if(data)
+               {
+                 this.candidateMsgTitle= data[0].page_title;
+                 this.candidateMsgBody = data[0].page_content;
+               }
+             });
        }
        else
        {
            this.router.navigate(['/not_found']);
        }
+
+
 
     }
 
@@ -331,27 +345,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         return obj.value === this;
     }
 
-    /*onRolesOptions(obj)
-    {
-      
-      let updateItem = this.roles.find(this.findIndexToUpdate, obj.value);
-      let index = this.roles.indexOf(updateItem);
-      if(index > -1)
-      {
-        this.roles.splice(index, 1);
-      }
-      else
-      {
-        obj.checked=true
-        this.roles.push(obj);
-      }
 
-      ////console.log(this.roles);
-    
-    }
-*/
     onJobSelected(event)
-  {
+    {
       this.yearselected= event.target.value;
       //this.position = event.target.value;
     }
@@ -364,7 +360,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         fieldname:[''],
         eduyear:[]
       });
-     
     }
 
     initItemRows_db() 
@@ -382,7 +377,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     initExpRows() 
     {
-      ////console.log(this.currentdate);
       return this._fb.group({
         companyname:[''],
         positionname:[''],
@@ -393,7 +387,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         end_date:[],
         endyear:[],
         start_date:[],
-        enddate:[],       
+        enddate:[],
         currentwork:[false],
        
       });
@@ -401,63 +395,39 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     addNewExpRow()
     {
-     
-      // control refers to your formarray
+
       const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
-      // add new formgroup
       control.push(this.initExpRows());
     }
 
     deleteExpRow(index: number) 
     {
-      // control refers to your formarray
       const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
-      // remove the chosen row
       control.removeAt(index);
     }
     
-  get DynamicWorkFormControls() {
+    get DynamicWorkFormControls() {
 
-    return <FormArray>this.ExperienceForm.get('ExpItems');
-  }
+      return <FormArray>this.ExperienceForm.get('ExpItems');
+    }
     addNewRow() 
     {
-      // control refers to your formarray
-      //this.EducationForm.value.itemRows = "";
       const control = <FormArray>this.EducationForm.controls['itemRows'];
-      // add new formgroup
       control.push(this.initItemRows());
     }
 
     deleteRow(index: number) 
     {
-   
-      // control refers to your formarray
+
       const control = <FormArray>this.EducationForm.controls['itemRows'];
-      // remove the chosen row
       control.removeAt(index);
     }
     
-   get DynamicEduFormControls() {
+    get DynamicEduFormControls() {
 
-    return <FormArray>this.EducationForm.get('itemRows');
-  }
+      return <FormArray>this.EducationForm.get('itemRows');
+    }
 
-   /* onCurrentlyWork(e)
-    {
-        ////console.log(e);
-        /*if(e.target.checked==true)
-        {
-         
-          this.shown= false;
-          ////console.log(this.today);
-
-        }
-        else
-        {
-          this.shown= true;
-        }
-    }*/
     log;month_number;start_monthh;
     experiencearray=[];
     experiencejson;
@@ -522,7 +492,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                 {
                                        
                     this.edu_count = parseInt(key) + 1;
-                    //console.log(this.edu_count);
                 }
                 
             }
@@ -565,7 +534,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date && 
                this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
                {
-                   //console.log("false"); 
                   this.exp_count = parseInt(key) + 1;
                     
                }
@@ -575,7 +543,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                 this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].start_date && 
                 this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
                {
-                    //console.log("true");
                   this.exp_count = parseInt(key) + 1;
                     
                } 
@@ -601,12 +568,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
            this.submit_info(searchForm);
             
         }
-        
-      
-        
-        
-        
-        
+
         else
         {
             
@@ -622,6 +584,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     educationjson; education_json_array=[];
     submit_info(searchForm )
     {
+      console.log(searchForm.value);
       this.experiencearray=[];
       this.education_json_array=[];
              this.log='';
@@ -633,11 +596,16 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                     {
                         this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
                         this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);              
-                        //this.ExperienceForm.value.ExpItems[key].startdate = "01/"+this.startmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].startyear;
-                        //this.ExperienceForm.value.ExpItems[key].enddate ="01/"+ this.endmonthIndex + "/" + this.ExperienceForm.value.ExpItems[key].endyear;
                         this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
-                        this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);    
-                        this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork}; 
+                        if(this.ExperienceForm.value.ExpItems[key].currentwork == true)
+                        {
+                          this.end_date_format = this.today;
+                        }
+                        else
+                        {
+                          this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+                        }
+                        this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
                         this.experiencearray.push(this.experiencejson);
                         console.log(this.experiencearray);
 
@@ -661,8 +629,15 @@ export class ExperienceComponent implements OnInit , AfterViewInit
             .subscribe(
                 data => {
                 if(data)
-                {   
-                    this.router.navigate(['/candidate_profile']);
+                {
+
+                    $("#popModal").modal({
+                      backdrop: 'static',
+                      keyboard: true,
+                      show: true
+                    });
+
+                  //this.router.navigate(['/candidate_profile']);
                 }
 
                 
@@ -684,6 +659,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
              
    
     }
+
+  redirectToCandidate()
+  {
+    $('#popModal').modal('hide');
+    this.router.navigate(['/candidate_profile']);
+  }
     selectedValue;langValue;
     onExpYearOptions(e, value)
     {
@@ -739,7 +720,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.value=value;
       this.referringData = { platform_name:this.value, exp_year: e.target.value}; 
       this.expYearRole.push(this.referringData); 
-      ////console.log(this.expYearRole); 
+
    }
 
    work_start_data(e)
