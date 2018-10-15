@@ -274,7 +274,7 @@ export class CandidateDetailComponent implements OnInit {
 							this.is_company_reply = 0;
 							this.msg_body = '';
 							this.job_description = this.credentials.job_desc;
-							this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.job_description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+							this.authenticationService.insertMessage(this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.job_description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
 								.subscribe(
 									data => {
 										////console.log(data);

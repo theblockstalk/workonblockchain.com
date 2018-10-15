@@ -35,7 +35,7 @@ module.exports = function insert_message(req, res)
     let sanitizedmessage = sanitize.sanitizeHtml(req.unsanitizedBody.message);
 
     let userId = req.auth.user._id;
-    
+
     insert_message_new(req.body,sanitizeddescription,sanitizedmessage,userId).then(function (data)
     {
         if (data)
