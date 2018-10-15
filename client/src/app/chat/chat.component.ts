@@ -80,6 +80,10 @@ export class ChatComponent implements OnInit {
   ckeConfig: any;
   ckeConfigInterview: any;
   @ViewChild("myckeditor") ckeditor: any;
+  companyMsgTitle = '';
+  companyMsgContent = '';
+  candidateMsgTitle = '';
+  candidateMsgContent = '';
 
   constructor(
     private authenticationService: UserService,
@@ -174,10 +178,20 @@ export class ChatComponent implements OnInit {
                     }
                     else
                     {
-                      if(data._creator.viewed_explanation_popup === false){
+                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
                         $("#popModal").modal("show");
                       }
                       this.msg='';
+                      this.authenticationService.get_page_content('Candidate chat popup message')
+                      .subscribe(
+                        data => {
+                          if(data)
+                          {
+                            this.candidateMsgTitle = data[0].page_title;
+                            this.candidateMsgContent = data[0].page_content;
+                          }
+                        }
+                      );
                       this.display_msgs();
                     }
                 },
@@ -229,11 +243,20 @@ export class ChatComponent implements OnInit {
                     }
                     else
                     {
-                      if(data._creator.viewed_explanation_popup === false){
+                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
                         $("#popModal").modal("show");
                       }
                       //console.log("else");
                       this.msg='';
+                      this.authenticationService.get_page_content('Company chat popup message')
+                      .subscribe(
+                        data => {
+                          if (data) {
+                            this.companyMsgTitle = data[0].page_title;
+                            this.companyMsgContent = data[0].page_content;
+                          }
+                        }
+                      );
                       this.display_msgs();
                     }
                 },
@@ -1225,13 +1248,11 @@ export class ChatComponent implements OnInit {
 	}
 
   update_status(){
-	  console.log('clicked baby');
-	  console.log(this.currentUser._creator);
     const status = true;
-    this.authenticationService.updateExplanationPopupStatus(this.currentUser._creator,status)
+    this.authenticationService.updateExplanationPopupStatus(status)
       .subscribe(
         data => {
-          console.log(data);
+          //console.log(data);
         },
         error => {
           if(error.message == 500 || error.message == 401)

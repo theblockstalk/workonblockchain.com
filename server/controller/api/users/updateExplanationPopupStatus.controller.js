@@ -2,7 +2,8 @@ var Q = require('q');
 const users = require('../../../model/users');
 
 module.exports = function (req,res){
-    updatePopupStatus(req.body).then(function (err, about)
+    let userId = req.auth.user._id;
+    updatePopupStatus(req.body,userId).then(function (err, about)
     {
         if (about)
         {
@@ -19,14 +20,14 @@ module.exports = function (req,res){
         });
 }
 
-function updatePopupStatus(data){
+function updatePopupStatus(data,id){
     var deferred = Q.defer();
     var set =
     {
         viewed_explanation_popup: data.status,
 
     };
-    users.update({ _id: data.userId},{ $set: set }, function (err, doc)
+    users.update({ _id: id},{ $set: set }, function (err, doc)
     {
         if (err){
             logger.error(err.message, {stack: err.stack});

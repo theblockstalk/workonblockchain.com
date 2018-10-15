@@ -131,7 +131,6 @@ export class ChatPopupEditorComponent implements OnInit {
 
   companyMsg(companyeditor: NgForm)
   {
-    console.log(companyeditor);
     if(companyeditor.value.page_title && companyeditor.value.html_text){
       this.authenticationService.pages_content(companyeditor.value)
         .subscribe(

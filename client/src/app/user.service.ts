@@ -1179,8 +1179,8 @@ export class UserService {
             });
 	}
 
-  updateExplanationPopupStatus(userId:string,status:any){
-    return this.http.post<any>(URL+'users/updatePopupStatus', {userId:userId,status:status}, {
+  updateExplanationPopupStatus(status:any){
+    return this.http.post<any>(URL+'users/updatePopupStatus', {status:status}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     })
       .map((res: Response) =>

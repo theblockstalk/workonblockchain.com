@@ -628,24 +628,19 @@
     <div class="modal-content costom_model">
       <div class="modal-header mo-head">
         <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
-        <h3 class="modal-title text-center mo">
-          This is a heading
+        <h3 *ngIf="this.currentUser.type === 'company'" class="modal-title text-center mo">
+          {{companyMsgTitle}}
+        </h3>
+        <h3 *ngIf="this.currentUser.type === 'candidate'" class="modal-title text-center mo">
+          {{candidateMsgTitle}}
         </h3>
       </div>
       <div class="modal-body mo_body">
-        <div class = "mo_content" id = "style-6">
-          <p>
-            The chat page is where you will receive job offers and chat with companies.
-          </p>
-          <p>
-            Your account is anonymous until you accept the job offer sent by the company. This is the first message that is in each chat message.
-          </p>
-          <p>
-            After you accept the job offer you are able to chat with the company. At this point you can schedule interviews and if you're lucky, receive a final job offer.
-          </p>
-          <p>
-            Don't worry, accepting the first job offer is not a commitment, only a registration of interest in the job.
-          </p>
+        <div [innerHTML]="companyMsgContent | safeHtml" *ngIf="this.currentUser.type === 'company'" class = "mo_content" id = "style-6">
+          {{companyMsgContent}}
+        </div>
+        <div [innerHTML]="candidateMsgContent | safeHtml" *ngIf="this.currentUser.type === 'candidate'" class = "mo_content" id = "style-6">
+          {{candidateMsgContent}}
         </div>
       </div>
       <div class="modal-footer mo_footer">
