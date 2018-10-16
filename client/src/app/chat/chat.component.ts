@@ -76,6 +76,10 @@ export class ChatComponent implements OnInit {
   ckeConfig: any;
   ckeConfigInterview: any;
   @ViewChild("myckeditor") ckeditor: any;
+  companyMsgTitle = '';
+  companyMsgContent = '';
+  candidateMsgTitle = '';
+  candidateMsgContent = '';
 
   constructor(
     private authenticationService: UserService,
@@ -170,8 +174,21 @@ export class ChatComponent implements OnInit {
                     }
                     else
                     {
-                        this.msg='';
-                        this.display_msgs();
+                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
+                        this.authenticationService.get_page_content('Candidate chat popup message')
+                          .subscribe(
+                            data => {
+                              if(data)
+                              {
+                                this.candidateMsgTitle = data[0].page_title;
+                                this.candidateMsgContent = data[0].page_content;
+                                $("#popModal").modal("show");
+                              }
+                            }
+                          );
+                      }
+                      this.msg='';
+                      this.display_msgs();
                     }
                 },
                 error => {
@@ -196,7 +213,7 @@ export class ChatComponent implements OnInit {
                     //data[0].disable_account == false;
                     this.profile_pic = data.company_logo;
                     this.display_name = data.company_name;
-					//console.log(data);
+					          //console.log(data);
                     /*if(data._creator.is_approved == 0 || data._creator.disable_account == true){
                         this.approved_user = 0;
                     }
@@ -207,14 +224,14 @@ export class ChatComponent implements OnInit {
                     this.approved_user = data._creator.is_approved;
                     if(data._creator.is_approved === 0 )
                     {
-                        console.log("if");
-                          this.disabled = true;
-                          this.msg = "You can access this page when your account has been approved by an admin.";
-                          this.log='';
+                        //console.log("if");
+                        this.disabled = true;
+                        this.msg = "You can access this page when your account has been approved by an admin.";
+                        this.log='';
                     }
                     else if(data._creator.disable_account == true)
                     {
-                        console.log("if else");
+                        //console.log("if else");
                         this.disabled = true;
                         this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
                         this.log='';
@@ -222,9 +239,21 @@ export class ChatComponent implements OnInit {
                     }
                     else
                     {
-                        //console.log("else");
-                        this.msg='';
-                        this.display_msgs();
+                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
+                        this.authenticationService.get_page_content('Company chat popup message')
+                          .subscribe(
+                            data => {
+                              if (data) {
+                                this.companyMsgTitle = data[0].page_title;
+                                this.companyMsgContent = data[0].page_content;
+                                $("#popModal").modal("show");
+                              }
+                            }
+                          );
+                      }
+                      //console.log("else");
+                      this.msg='';
+                      this.display_msgs();
                     }
                 },
                 error => {
@@ -1228,4 +1257,25 @@ export class ChatComponent implements OnInit {
     this.img_name = '';
     this.job_offer_log = '';
 	}
+
+  update_status(){
+    const status = true;
+    this.authenticationService.updateExplanationPopupStatus(status)
+      .subscribe(
+        data => {
+          //console.log(data);
+        },
+        error => {
+          if(error.message == 500 || error.message == 401)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            window.location.href = '/login';
+          }
+          if(error.message == 403)
+          {
+            // this.router.navigate(['/not_found']);
+          }
+        }
+      );
+  }
 }

@@ -262,30 +262,13 @@
 
 				 	</div>
 
-				 	<!--<div class="info-area pro_br-btm">
-
-						<div class = "col-md-4" >
-							<strong>Year of Experience each platform:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li>BitCoin : 4-5 Year</li>
-								<li>Ethereum : 3-4 Year</li>
-							</ul>
-						</div>
-
-				 	</div>-->
-
-
-
-
 
 				 </section>
 
-				 <section class = "profile job_info">
+				 <section class = "profile job_info" *ngIf="data.programming_languages &&data.programming_languages.length>0">
 					<h3>Experience</h3>
 
-				 	<div class="info-area pro_br-btm">
+				 	<div class="info-area pro_br-btm" >
 
 						<div class = "col-md-4" >
 							<strong>Languages:</strong>

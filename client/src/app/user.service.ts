@@ -6,14 +6,12 @@ import { Observable } from 'rxjs/Observable';
 import { DataService } from "./data.service";
 import { Router, ActivatedRoute,NavigationExtras } from '@angular/router';
 import 'rxjs/Rx';
+import 'rxjs/add/operator/map';
 
-import 'rxjs/add/operator/map'
-//const URL = 'http://workonblockchain.mwancloud.com:4000/';
 import {environment} from '../environments/environment';
 
-
 const URL = environment.backend_url;
-////console.log(URL);
+
 
 @Injectable()
 export class UserService {
@@ -119,7 +117,7 @@ export class UserService {
                {
                         this.router.navigate(['/about']);
                }
-               else if(res['locations'].length < 1  || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary'])
+               else if(res['locations'].length < 1  || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary'] || !res['current_salary'] )
                {
 
                     this.router.navigate(['/job']);
@@ -137,7 +135,6 @@ export class UserService {
                 {
                         this.router.navigate(['/experience']);
                 }
-
                  else if(!res['description'])
                 {
                     this.router.navigate(['/experience']);
@@ -955,7 +952,6 @@ export class UserService {
             });
     }
 
-
 	update_chat_msg_status(receiver_id: string,status:number){
 		return this.http.post<any>(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
             headers: new HttpHeaders().set('Authorization', this.token)
@@ -1178,5 +1174,25 @@ export class UserService {
 
             });
 	}
+
+  updateExplanationPopupStatus(status:any){
+    return this.http.post<any>(URL+'users/updatePopupStatus', {status:status}, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
+      .map((res: Response) =>
+      {
+        if (res)
+        {
+          return res;
+        }
+      }).catch((error: any) =>
+      {
+        if (error.status )
+        {
+          return Observable.throw(new Error(error.status));
+        }
+
+      });
+  }
 
 }
