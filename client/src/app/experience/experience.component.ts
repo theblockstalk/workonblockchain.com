@@ -93,9 +93,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                         this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
-                if(data.programming_languages &&data.description)
+                if(data.description)
                  {
-                    if(data.programming_languages.length>0)
+
                       this.exp_active_class = 'fa fa-check-circle text-success';
                 }
                  if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day &&data.current_salary && data.current_currency )
@@ -447,12 +447,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     {    
        this.edu_count=0;
        this.exp_count =0;
-       if(this.language.length<=0)
-       {
-           
-           this.lang_log="Please select min 1 language";
-       }
-        
+              
         if(this.expYear.length !== this.language.length)
         {
            

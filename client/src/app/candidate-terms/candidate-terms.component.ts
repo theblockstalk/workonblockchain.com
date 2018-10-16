@@ -116,7 +116,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                     // this.router.navigate(['/resume']);
                     }
      
-                    if(data.programming_languages.length>0 &&data.description)
+                    if(data.description)
                     {
                         this.exp_class = "/experience";
                         this.exp_active_class = 'fa fa-check-circle text-success';

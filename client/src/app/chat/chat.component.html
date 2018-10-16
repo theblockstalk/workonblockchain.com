@@ -287,7 +287,7 @@
 										<ng-template #second>
 											<li class="sent">
 												<p  class = "job-description">
-													<span *ngIf="msg.job_title === '' && (msg.interview_date_time === '' || msg.interview_date_time === null)" class="text-capitalize"> {{msg.sender_name}}:</span>
+													<!--<span *ngIf="msg.job_title === '' && (msg.interview_date_time === '' || msg.interview_date_time === null)" class="text-capitalize"> {{msg.sender_name}}:</span>-->
 													<span *ngIf="msg.job_title !== ''">
 														Job title:
 														{{msg.job_title}}
@@ -328,15 +328,16 @@
 													<span *ngIf="msg.date_of_joining && msg.file_name !== ''">
 														Employment contract:
 													</span>
-													<span [innerHTML]="msg.message | safeHtml" *ngIf="msg.msg_tag == 'employment_offer'">
+													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                          <br *ngIf="msg.file_name"/>
+                          <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.msg_tag == 'employment_offer'">
 														{{msg.message}}
 														<br/>
 													</span>
-													<span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
+                          <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
-													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
-												</p>
+                        </p>
 											</li>
 											<div class="chat_company">
 												{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
@@ -415,7 +416,7 @@
 											<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
 											<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 											<input type="hidden" name="first_message" id="first_message" [(ngModel)]="first_message"/>
-                      <ckeditor [(ngModel)]="credentials.msg_body" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                      <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.msg_body" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
                       </ckeditor>
                       <span>
 												<button class = "btn btn-send" type="submit" id = "btnClick">
@@ -483,7 +484,7 @@
 		  </div>
 		  <div class="form-group col-md-12 padd_imp">
 		    <p>Other details (optional)</p>
-        <ckeditor [(ngModel)]="credentials.description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
+        <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
         </ckeditor>
       </div>
 
@@ -552,7 +553,7 @@
 		  </div>
 		  <div class="form-group">
 		    <p>Job description</p>
-        <ckeditor [(ngModel)]="credentials.job_description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
+        <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
         </ckeditor>
 		  </div>
 		  <div class="form-group">
@@ -618,6 +619,39 @@
 
   </div>
 </div>
+
+<!--Modal to display on page laod-->
+<!-- Modal -->
+<div id="popModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content costom_model">
+      <div class="modal-header mo-head">
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <h3 *ngIf="this.currentUser.type === 'company'" class="modal-title text-center mo">
+          {{companyMsgTitle}}
+        </h3>
+        <h3 *ngIf="this.currentUser.type === 'candidate'" class="modal-title text-center mo">
+          {{candidateMsgTitle}}
+        </h3>
+      </div>
+      <div class="modal-body mo_body">
+        <div [innerHTML]="companyMsgContent | safeHtml" *ngIf="this.currentUser.type === 'company'" class = "mo_content" id = "style-6">
+          {{companyMsgContent}}
+        </div>
+        <div [innerHTML]="candidateMsgContent | safeHtml" *ngIf="this.currentUser.type === 'candidate'" class = "mo_content" id = "style-6">
+          {{candidateMsgContent}}
+        </div>
+      </div>
+      <div class="modal-footer mo_footer">
+        <button type="reset" (click)="update_status()" class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- end model -->
 
 <!--Profile-inner end-->
 

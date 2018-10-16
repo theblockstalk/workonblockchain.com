@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('./controller/middleware/multer');
 const auth = require('./controller/middleware/auth');
+const asyncMiddleware = require('./controller/middleware/asyncMiddleware');
 
 const healthCheck = require('./controller/api/healthCheck.controller');
 
@@ -15,6 +16,7 @@ const authVerifyClient = require('./controller/api/users/auth/verifyClient.contr
 const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
 const authApprovalEmail = require('./controller/api/users/auth/approval_email.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
+const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
 
 // Referrals
 const refReferredEmail = require('./controller/api/users/referrals/referredEmail.controller');
@@ -33,7 +35,7 @@ const candidateWizardExperience = require('./controller/api/users/candidate/wiza
 const candidateWizardJob = require('./controller/api/users/candidate/wizard/job.controller');
 const candidateWizardResume = require('./controller/api/users/candidate/wizard/resume.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
-
+const candidateWizardPrefilledProfile = require('./controller/api/users/candidate/wizard/prefilledProfile.controller');
 
 // Companies
 const companyRegister = require('./controller/api/users/company/createCompany.controller');
@@ -85,6 +87,7 @@ router.put('/users/verify_client/:email', authVerifyClient);
 router.post('/users/set_disable_status' , auth.isLoggedIn , authAccountDisableSetting);
 router.post('/users/approval_email',auth.isLoggedIn ,authApprovalEmail);
 router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
+router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
 // Referrals
 router.post('/users/refered_user_email', refReferredEmail)
@@ -96,6 +99,7 @@ router.post('/users/register', candidateRegister);
 router.get('/users/',auth.isLoggedIn, candidateGetAll);
 router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
+router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
 router.put('/users/welcome/about', auth.isLoggedIn, candidateWizardAbout);
 router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
 router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);

@@ -295,7 +295,7 @@
 
     <div class="form-group col-md-12 padd_imp">
       <p class="input_p">Job Description</p>
-      <ckeditor [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+      <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
       </ckeditor>
     </div>
     <!--<div class="checkbox">
