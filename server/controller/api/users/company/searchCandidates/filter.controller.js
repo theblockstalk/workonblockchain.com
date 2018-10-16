@@ -168,7 +168,7 @@ function filter(params, userId)
                   	var datata= {ids : result_array };
                   	ids_arrayy.push(datata);
 
-                    getCompanyReply(result_array, userId)
+                    getCompanyReply(result_array)
 
                 }
 
@@ -200,22 +200,23 @@ function expected_salary_converter(salary_value, currency1, currency2)
 
 }
 
-function getCompanyReply(candidateIds , userId){
+function getCompanyReply(candidateIds){
     var deferred = Q.defer();
     console.log(candidateIds);
-
-        chat.find(
-        { "receiver_id": {$in:candidateIds} }
-
-        ).sort({_id: 'ascending'}).exec(function(err, data)
+        chat.aggregate(
+        [
+            {"$match" : {receiver_id: {$in:candidateIds}}},
+            {"$group": { "_id": { receiver_id: "$receiver_id" , is_company_reply : "$is_company_reply"} } }
+        ]
+        ).exec(function(err, chatData)
         {
             if (err){
                 logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
             }
-            else{
+            else {
 
-                candidateDetail(candidateIds,data);
+                candidateDetail(candidateIds, chatData)
 
             }
         });
@@ -224,34 +225,33 @@ function getCompanyReply(candidateIds , userId){
 }
 
 function candidateDetail(candidateIds, chatData){
-    CandidateProfile.find({_creator : id}).populate('_creator' ).exec(function(err, result)
+    CandidateProfile.find({_creator : {$in:candidateIds}}).populate('_creator' ).exec(function(err, candidateData)
     {
         if (err)
         {
             logger.error(err.message, {stack: err.stack});
         }
-        if(result)
+        if(candidateData)
         {
-            var query_result = result[0].toObject();
+            let candidateArray=[];
 
-            let anonymous = filterReturnData.removeSensativeData(query_result);
+            candidateData.forEach(function(item){
 
-            if(company_reply == 1 )
-            {
-                console.log(anonymous._creator._id);
-            }
-
-            if(company_reply == 0 )
-            {
-                logger.debug("anonymous candidate : " + anonymous);
-                anonymous = filterReturnData.anonymousSearchCandidateData(anonymous);
-
-            }
-            console.log(anonymous._creator._id);
-            //deferred.resolve(anonymous);
-
+                let anonymous = filterReturnData.removeSensativeData(item.toObject());
+                chatData.forEach(function(chatItem){
+                    if(parseInt(chatItem._id.receiver_id) === parseInt(item._creator._id) && chatItem._id.is_company_reply === 1){
+                        let anonymous = filterReturnData.removeSensativeData(item.toObject());
+                        candidateArray.push(anonymous);
+                    }
+                    else{
+                        anonymous = filterReturnData.anonymousSearchCandidateData(anonymous);
+                        candidateArray.push(anonymous);
+                    }
+                });
+            })
 
         }
     });
 
 }
+
