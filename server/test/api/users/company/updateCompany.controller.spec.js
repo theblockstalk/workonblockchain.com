@@ -25,10 +25,14 @@ describe('update profile as company', function () {
         it('it should update company profile', async () => {
 
             const company = docGenerator.company();
-            const companyRes = await companyHelper.signupCompany(company);
+            const companyTnCWizard = docGenerator.companyTnCWizard();
+            const companyAbout = docGenerator.companyAbout();
+            await companyHelper.signupCompanyAndCompleteProfile(company,companyTnCWizard,companyAbout);
+            const companyUserDoc = await Users.findOne({email: company.email}).lean();
+
 
             const updatedData = await docGenerator.companyUpdateProfile();
-            const updateRes = await companyHelper.UpdateCompanyProfile(updatedData , companyRes.body.jwt_token);
+            const updateRes = await companyHelper.UpdateCompanyProfile(updatedData , companyUserDoc.jwt_token);
 
             updateRes.body.first_name.should.equal(updatedData.first_name);
             updateRes.body.last_name.should.equal(updatedData.last_name);

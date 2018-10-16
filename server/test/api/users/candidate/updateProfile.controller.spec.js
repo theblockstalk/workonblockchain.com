@@ -6,6 +6,7 @@ const Users = require('../../../../model/users');
 const candidateProfileModel = require('../../../../model/candidate_profile');
 const docGenerator = require('../../../helpers/docGenerator');
 const candidateHelper = require('./candidateHelpers');
+const Candidates = require('../../../../model/candidate_profile');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -24,36 +25,41 @@ describe('update candidate profile', function () {
         it('it should update candidate profile', async () => {
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupCandidate(candidate);
+            const profileData = docGenerator.profileData();
+            const job = docGenerator.job();
+            const resume = docGenerator.resume();
+            const experience = docGenerator.experience();
 
-            const userDoc = await Users.findOne({email: candidate.email}).lean();
-            const candTerms = docGenerator.termsAndConditions();
-            await candidateHelper.candidateTerms(candTerms,userDoc.jwt_token);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
-            const candidateProfile = docGenerator.profileData();
-            await candidateHelper.about(candidateProfile,userDoc.jwt_token);
+            const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
-            const candidateJob = docGenerator.job();
-            await candidateHelper.job(candidateJob,userDoc.jwt_token);
+            const candidateEditProfileData = docGenerator.editCandidateProfile();
 
-            const candidateResume = docGenerator.resume();
-            await candidateHelper.resume(candidateResume,userDoc.jwt_token);
+            const res = await candidateHelper.editProfile(candidateEditProfileData,candidateUserDoc.jwt_token);
 
-            const candidateExperience = docGenerator.experience();
-            await candidateHelper.experience(candidateExperience,userDoc.jwt_token);
+            res.body.first_name.should.equal(candidateEditProfileData.detail.first_name);
+            res.body.last_name.should.equal(candidateEditProfileData.detail.last_name);
+            res.body.github_account.should.equal(candidateEditProfileData.detail.github_account);
+            res.body.stackexchange_account.should.equal(candidateEditProfileData.detail.exchange_account);
+            res.body.contact_number.should.equal(candidateEditProfileData.detail.contact_number);
+            res.body.nationality.should.equal(candidateEditProfileData.detail.nationality);
+            res.body.locations.should.valueOf(candidateEditProfileData.detail.country);
+            res.body.roles.should.valueOf(candidateEditProfileData.detail.roles);
+            res.body.interest_area.should.valueOf(candidateEditProfileData.detail.interest_area);
+            res.body.expected_salary_currency.should.equal(candidateEditProfileData.detail.base_currency);
+            res.body.expected_salary.should.equal(candidateEditProfileData.detail.expected_salary);
+            res.body.availability_day.should.equal(candidateEditProfileData.detail.availability_day);
+            res.body.why_work.should.equal(candidateEditProfileData.detail.why_work);
+            res.body.experimented_platform.should.valueOf(candidateEditProfileData.detail.experimented_platform);
+            res.body.platforms.should.valueOf(candidateEditProfileData.detail.platforms);
+            res.body.current_salary.should.equal(candidateEditProfileData.detail.salary);
+            res.body.current_currency.should.equal(candidateEditProfileData.detail.current_currency);
+            res.body.programming_languages.should.valueOf(candidateEditProfileData.detail.language_experience_year);
+            res.body.education_history.should.valueOf(candidateEditProfileData.education);
+            res.body.work_history.should.valueOf(candidateEditProfileData.work);
+            res.body.description.should.equal(candidateEditProfileData.detail.intro);
 
-            const candidateNewProfileData = docGenerator.editCandidateProfile();
-            const candidateNewEducationData = docGenerator.editEducation();
-            const candidateNewWorkData = docGenerator.editWork();
-            const res = await candidateHelper.editProfile(candidateNewProfileData,candidateNewEducationData,candidateNewWorkData,userDoc.jwt_token);
-            const newCandidateInfo = await candidateProfileModel.findOne({_creator: userDoc._id}).lean();
-            newCandidateInfo.first_name.should.equal(candidateNewProfileData.first_name);
-            newCandidateInfo.last_name.should.equal(candidateNewProfileData.last_name);
-            newCandidateInfo.last_name.should.equal(candidateNewProfileData.last_name);
-            newCandidateInfo.expected_salary.should.equal(candidateNewProfileData.expected_salary);
-            newCandidateInfo.expected_salary_currency.should.equal(candidateNewProfileData.base_currency);
-            newCandidateInfo.current_salary.should.equal(candidateNewProfileData.salary);
-            newCandidateInfo.current_currency.should.equal(candidateNewProfileData.current_currency);
         })
     })
 });

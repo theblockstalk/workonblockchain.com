@@ -42,6 +42,8 @@ describe('get user messages', function () {
             const res = await chatHelper.getUserMessages(candidateDoc._id,companyDoc.jwt_token);
             const responseMessage = res.body.datas[0];
             responseMessage.is_company_reply.should.equal(1);
+            responseMessage.receiver_id.should.equal(candidateDoc._id.toString());
+            responseMessage.sender_id.should.equal(companyDoc._id.toString());
         })
     })
 });

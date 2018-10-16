@@ -133,12 +133,11 @@ function forgot_passwordEmail_send(data)
         	                }
         	                if(query_data)
         	                {
-                                if(query_data[0] && query_data[0].toObject().hasOwnProperty('first_name'))
+                                if(query_data[0] && query_data[0].first_name)
                                 {
-                                    if(!query_data[0].first_name)
+
                                         name = query_data[0].first_name;
-                                    else
-                                        name=null;
+
                                 }
 
         	                	else
@@ -163,12 +162,10 @@ function forgot_passwordEmail_send(data)
         	                if(query_data)
         	                {
 
-                                if(query_data[0] && query_data[0].toObject().hasOwnProperty('first_name'))
+                                if(query_data[0] && query_data[0].first_name)
                                 {
-                                    if(!query_data[0].first_name)
                                         name = query_data[0].first_name;
-                                    else
-                                        name=null;
+
                                 }
 
                                 else
