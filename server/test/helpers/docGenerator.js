@@ -328,28 +328,6 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
     }
 }
 
-module.exports.editEducation = function editEducation() {
-    return {
-        uniname: 'CUST',
-        degreename: 'BSCS',
-        fieldname: 'CS',
-        eduyear: 2016
-    }
-}
-
-module.exports.editWork = function editWork() {
-    return {
-        companyname: 'MWAN',
-        positionname: 'Team Lead',
-        locationname: 'Tokyo Japan',
-        description: 'I am in this org. I am in this org. I am in this org. I am this org. I am in this org. I am in this org. I am in this org. I am in this orgg. ',
-        startdate: '2016-02-29T19:00:00.000Z',
-        enddate: '2018-10-09T07:32:38.732Z',
-        currentwork: true
-    }
-}
-
-
 
 module.exports.cmsContent = function cmsContent() {
     return {

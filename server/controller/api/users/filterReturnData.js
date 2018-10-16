@@ -4,9 +4,10 @@ module.exports.removeSensativeData = function removeSensativeData(userDoc, sendO
 	{
 		delete userDoc._creator.password_hash;
 	    delete userDoc._creator.salt;
-        if (sendOptions && !sendOptions.jwt_token) delete userDoc._creator.jwt_token;
-        if (sendOptions && !sendOptions.verify_email_key )delete userDoc._creator.verify_email_key;
-        if (sendOptions && !sendOptions.forgot_password_key) delete userDoc._creator.forgot_password_key;
+        if(!sendOptions) sendOptions={};
+        if (!sendOptions.jwt_token) delete userDoc._creator.jwt_token;
+        if (!sendOptions.verify_email_key )delete userDoc._creator.verify_email_key;
+        if (!sendOptions.forgot_password_key) delete userDoc._creator.forgot_password_key;
 	}
 
     return userDoc;

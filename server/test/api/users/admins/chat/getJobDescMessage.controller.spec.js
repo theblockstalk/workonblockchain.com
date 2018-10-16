@@ -35,6 +35,7 @@ describe('get initial job offer msgs', function () {
 
             const msgTag = 'job_offer';
             const messagesRes = await adminChatHelper.getInitialJobOfferDetail(companyDoc._id,userDoc._id,msgTag,companyDoc.jwt_token);
+
             const returnData = messagesRes.body;
             returnData.datas.should.equal(0);
         })
