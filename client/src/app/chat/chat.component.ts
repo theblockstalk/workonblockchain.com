@@ -292,7 +292,6 @@ export class ChatComponent implements OnInit {
                                     //console.log('my');
                                 }
                                 else{
-                                  console.log(this.new_messges[key_messages].receiver_id);
                                     this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].is_company_reply,'candidate')
                                     .subscribe(
                                         data => {
@@ -311,7 +310,7 @@ export class ChatComponent implements OnInit {
                                                 }
                                                 this.count = this.count + 1;
                                                 //this.currentUser._creator //receiver
-                                                this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+                                                this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
                                                 .subscribe(
                                                     data => {
                                                         //console.log(data);
@@ -382,7 +381,7 @@ export class ChatComponent implements OnInit {
                                                 }
                                                 this.count = this.count + 1;
                                                 //this.currentUser._creator //receiver
-                                                this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+                                                this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
                                                 .subscribe(
                                                     data => {
                                                         //console.log(data);
@@ -461,7 +460,7 @@ export class ChatComponent implements OnInit {
                 data => {
                     //console.log(data);
                     this.credentials.msg_body = '';
-                    this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+                    this.authenticationService.get_user_messages(this.credentials.id)
                     .subscribe(
                         data => {
                             //console.log(data['datas']);
@@ -514,7 +513,7 @@ export class ChatComponent implements OnInit {
             data => {
                 //console.log(data);
                 this.credentials.msg_body = '';
-				this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+				this.authenticationService.get_user_messages(this.credentials.id)
 				.subscribe(
 					data => {
 						this.new_msgss = data['datas'];
@@ -571,7 +570,7 @@ export class ChatComponent implements OnInit {
 						}
 					}
 				);
-				this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+				this.authenticationService.get_user_messages(this.credentials.id)
 				.subscribe(
 					data => {
 						this.new_msgss = data['datas'];
@@ -640,7 +639,7 @@ export class ChatComponent implements OnInit {
                     this.credentials.location = '';
                     this.credentials.description = '';
 					$("#myModal").modal("hide");
-					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+					this.authenticationService.get_user_messages(this.credentials.id)
                     .subscribe(
                         data => {
                             this.new_msgss = data['datas'];
@@ -755,7 +754,7 @@ export class ChatComponent implements OnInit {
                         data => {
                             //console.log(data);
                             this.credentials.msg_body = '';
-							this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+							this.authenticationService.get_user_messages(this.credentials.id)
 							.subscribe(
 								data => {
 									this.new_msgss = data['datas'];
@@ -824,7 +823,7 @@ export class ChatComponent implements OnInit {
                         data => {
                             //console.log(data);
                             this.credentials.msg_body = '';
-							this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+							this.authenticationService.get_user_messages(this.credentials.id)
 							.subscribe(
 								data => {
 									this.new_msgss = data['datas'];
@@ -909,14 +908,14 @@ export class ChatComponent implements OnInit {
       setInterval(() => {
         //receiver,sender
         //console.log("ID: " + this.credentials.id);
-        this.authenticationService.get_user_messages(this.credentials.id, this.currentUser._creator)
+        this.authenticationService.get_user_messages(this.credentials.id)
           .subscribe(
             data => {
               //console.log('data');
               this.new_msgss = data['datas'];
               //console.log(this.new_msgss);
               this.job_desc = data['datas'][0];
-              this.authenticationService.update_chat_msg_status(id, this.currentUser._creator, 0)
+              this.authenticationService.update_chat_msg_status(id,0)
                 .subscribe(
                   data => {
                     this.loading = false;
@@ -997,7 +996,7 @@ export class ChatComponent implements OnInit {
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver
-			this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id,this.currentUser._creator)
+			this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
 			.subscribe(
 				data => {
 					this.unread_msgs_info.push(data);
@@ -1053,7 +1052,7 @@ export class ChatComponent implements OnInit {
               //console.log(success);
               this.file_name = success;
               this.msg_tag = 'normal';
-              this.credentials.msg_body = 'file ';
+              this.credentials.msg_body = '';
 			  this.is_company_reply = 1;
               this.authenticationService.send_file(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.file_name)
                 .subscribe(
@@ -1061,7 +1060,7 @@ export class ChatComponent implements OnInit {
                         //console.log(data);
                         this.credentials.msg_body = '';
 						this.file_uploaded = 1;
-						this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+						this.authenticationService.get_user_messages(this.credentials.id)
 						.subscribe(
 							data => {
 								this.new_msgss = data['datas'];
@@ -1159,7 +1158,7 @@ export class ChatComponent implements OnInit {
 								this.credentials.job_description = '';
 								this.img_name = '';
 								$("#Modal").modal("hide");
-								this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
+								this.authenticationService.get_user_messages(this.credentials.id)
 								.subscribe(
 									data => {
 										this.new_msgss = data['datas'];
@@ -1209,9 +1208,24 @@ export class ChatComponent implements OnInit {
 	}
 
 	reset_msgs(){
-	  this.interview_log = '';
-	  this.job_offer_log = '';
-	  this.file_msg = '';
-	  this.img_name = '';
+    this.date_of_joining = '';
+    this.interview_location  = '';
+    this.interview_time = '';
+    this.credentials.date = '';
+    this.credentials.time = '';
+    this.credentials.location = '';
+    this.credentials.description = '';
+    this.interview_log = '';
+
+    //for employ
+    this.credentials.msg_body = '';
+    this.credentials.job_title = '';
+    this.credentials.base_salary = '';
+    this.credentials.currency = '';
+    this.credentials.employment_type = '';
+    this.credentials.start_date = '';
+    this.credentials.job_description = '';
+    this.img_name = '';
+    this.job_offer_log = '';
 	}
 }

@@ -87,7 +87,7 @@ export class CandidateDetailComponent implements OnInit {
       if(this.user_id)
       {
 
-          this.authenticationService.get_user_messages(this.user_id,this.currentUser._creator)
+          this.authenticationService.get_user_messages(this.user_id)
             .subscribe(
                 data => {
 

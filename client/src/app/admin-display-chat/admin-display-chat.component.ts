@@ -268,7 +268,7 @@ export class AdminDisplayChatComponent implements OnInit {
       ////console.log("show_msg_area: " + this.show_msg_area);
         //Observable.interval(10000).subscribe(x => {
          //receiver,sender
-         this.authenticationService.get_user_messages(id,this.user_id)
+         this.authenticationService.get_user_messages_admin(id,this.user_id)
             .subscribe(
                 data => {
                     ////console.log('data');

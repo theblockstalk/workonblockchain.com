@@ -630,9 +630,9 @@ export class UserService {
             });
     }
 
-    get_user_messages(receiver_id: string,sender_id: string)
+    get_user_messages(receiver_id: string)
     {
-        return this.http.post<any>(URL+'users/get_messages', {receiver_id:receiver_id,sender_id:sender_id}, {
+        return this.http.post<any>(URL+'users/get_messages', {receiver_id:receiver_id}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -956,8 +956,8 @@ export class UserService {
     }
 
 
-	update_chat_msg_status(receiver_id: string,sender_id: string,status:number){
-		return this.http.post<any>(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,sender_id:sender_id,status:status}, {
+	update_chat_msg_status(receiver_id: string,status:number){
+		return this.http.post<any>(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1044,8 +1044,8 @@ export class UserService {
             });
     }
 
-	get_unread_msgs_of_user(sender_id:string,receiver_id:string){
-		return this.http.post<any>(URL+'users/get_unread_msgs_of_user', {sender_id:sender_id,receiver_id:receiver_id}, {
+	get_unread_msgs_of_user(sender_id:string){
+		return this.http.post<any>(URL+'users/get_unread_msgs_of_user', {sender_id:sender_id}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1186,6 +1186,28 @@ export class UserService {
     })
       .map((res: Response) =>
       {
+        if (res)
+        {
+          return res;
+        }
+      }).catch((error: any) =>
+      {
+        if (error.status )
+        {
+          return Observable.throw(new Error(error.status));
+        }
+
+      });
+  }
+
+  get_user_messages_admin(receiver_id: string,sender_id: string)
+  {
+    return this.http.post<any>(URL+'users/get_messages_for_admin', {receiver_id:receiver_id,sender_id:sender_id}, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
+      .map((res: Response) =>
+      {
+
         if (res)
         {
           return res;

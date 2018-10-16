@@ -421,7 +421,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                             {
                             for(let ids of res['ids'])
                             {
-                                 this.authenticationService.get_user_messages(ids,this.currentUser._creator)
+                                 this.authenticationService.get_user_messages(ids)
                                 .subscribe(
                                  data => {
 
@@ -612,7 +612,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     {
                     for(let ids of res['ids'])
                     {
-                        this.authenticationService.get_user_messages(ids,this.currentUser._creator)
+                        this.authenticationService.get_user_messages(ids)
                         .subscribe(
                             data => {
                                 if(data['datas'][0]){

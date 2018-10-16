@@ -25,45 +25,47 @@ const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
-module.exports = function (req,res){
-	let userId = req.auth.user._id;
-    get_unread_msgs_of_user(req.body,userId).then(function (err, about)
+module.exports = function (req, res)
+{
+    get_messages(req.body.receiver_id,req.body.sender_id).then(function (data)
     {
-        if (about)
+        if (data)
         {
-            res.json(about);
+            res.send(data);
         }
         else
         {
-            res.json(err);
+            res.sendStatus(404);
         }
     })
         .catch(function (err)
         {
-            res.json({error: err});
+            res.status(400).send(err);
         });
 }
 
-function get_unread_msgs_of_user(data,receiverId){
+function get_messages(receiver_id,sender_id){
+    ////console.log(receiver_id)
     var deferred = Q.defer();
-    chat.count({ $and : [
-            {
-                $and:[{receiver_id:receiverId},{sender_id: data.sender_id}]
-            },
-            {
-                is_read:0
-            }
-        ] }, function (err, result){
+    /*$or : [
+        { $and : [ { receiver_id : {$regex: receiver_id} }, { sender_id : {$regex: sender_id} } ] },
+        { $and : [ { receiver_id : {$regex: sender_id} } }, { sender_id : {$regex: receiver_id} } ] }
+    ]*/
+    chat.find({
+        $or : [
+            { $and : [ { receiver_id : receiver_id }, { sender_id : sender_id } ] },
+            { $and : [ { receiver_id : sender_id }, { sender_id : receiver_id } ] }
+        ]
+    }).sort({_id: 'ascending'}).exec(function(err, data)
+    {
         if (err){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            ////console.log(result);
+            ////console.log(data);
             deferred.resolve({
-                receiver_id: receiverId,
-                sender_id: data.sender_id,
-                number_of_unread_msgs:result
+                datas:data
             });
         }
     });
