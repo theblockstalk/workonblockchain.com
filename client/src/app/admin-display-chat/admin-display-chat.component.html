@@ -7,7 +7,7 @@
 				<div class = "col-sm-4 col-xs-3" id="sidepanel">
 					<div id="profile" class = "padding_top-btm">
 						<div class="wrap">
-						
+
 								<ng-container *ngIf="profile_pic;else company_logo_top">
 									<img id="profile-img" src="{{profile_pic}}" alt="">
 								</ng-container>
@@ -36,7 +36,7 @@
 											<ng-template #company_image>
 												<img src="/assets/profile/profile-image.png" alt="">
 											</ng-template>
-											
+
 										</ng-template>
 										<div class="meta">
 											<p class="name" class="text-capitalize" *ngIf="user_type == 'company' && person.first_name">{{ person.first_name }} {{ person.last_name }}</p>
@@ -73,7 +73,7 @@
 								<button class = "btn btn_descp">View Job Discription</button>
 							</span>-->
 						</div>
-						
+
 						<div class="messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
 							<ul>
 								<div *ngFor="let msg of new_msgss">
@@ -113,16 +113,21 @@
 													{{msg.interview_location}}
 													<br/>
 												</span>
-												<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'interview_offer'">
+                        <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													Description:
+												</span>
+												<span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													{{msg.description}}
 													<br/>
 												</span>
-												<span *ngIf="msg.job_title == ''">
+												<span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
 													{{msg.message}}
 												</span>
-												<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name | slice:70:103}}</a> <!-- for local you can use 53 instead of 70 -->
-											</p>
+                        <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
+														Employment contract:
+													</span>
+                        <a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                      </p>
 										</li>
 										<div class="chat_company">
 											{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
@@ -164,15 +169,20 @@
 													{{msg.interview_location}}
 													<br/>
 												</span>
-												<span *ngIf="msg.msg_tag == 'job_offered' || msg.msg_tag == 'interview_offer'">
+                        <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													Description:
+                        </span>
+												<span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													{{msg.description}}
 													<br/>
 												</span>
-												<span *ngIf="msg.job_title == ''">
+												<span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
 													{{msg.message}}
 												</span>
-												<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name | slice:70:103}}</a> <!-- for local you can use 53 instead of 70 -->
+                        <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
+														Employment contract:
+													</span>
+												<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
 											</p>
 										</li>
 										<div class="chat_user">
@@ -183,21 +193,21 @@
 								<li class = "offers_b"></li>
 							</ul>
 						</div>
-						
-						
-						
+
+
+
 					</div>
 
 
 				</div><!--end col here-->
-				
+
 				<div *ngIf = "length === 0">
-				
+
 					Didn't chat with any one yet
 				</div>
-				
+
 			</div>
-			
+
 		</div>
 
 </section>

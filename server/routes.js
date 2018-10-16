@@ -54,6 +54,7 @@ const chatGetChat = require('./controller/api/chat/getChat.controller');
 const chatGetMessages = require('./controller/api/chat/getMessages.controller');
 const chatGetUnreadUser = require('./controller/api/chat/getUnreadMessagesUser.controller');
 const chatGetUserMsgs = require('./controller/api/chat/getUserMessages.controller');
+const chatGetUserMsgsByAdmin = require('./controller/api/chat/getUserMessagesAdmin.controller');
 const chatInsertMessage = require('./controller/api/chat/insertMessage.controller');
 const chatInsertMessageJob = require('./controller/api/chat/insertMessageJob.controller');
 const chatInsertFile = require('./controller/api/chat/insertChatFile.controller');
@@ -142,6 +143,7 @@ router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent)
 router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
 router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
 router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
+router.post('/users/get_user_messages_for_admin',auth.isAdmin, chatGetUserMsgsByAdmin);
 
 // Pages
 router.get('/users/get_pages_content/:title', pagesGetContent);

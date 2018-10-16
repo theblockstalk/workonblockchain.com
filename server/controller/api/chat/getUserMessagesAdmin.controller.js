@@ -27,10 +27,7 @@ const logger = require('../../services/logger');
 
 module.exports = function (req, res)
 {
-	//console.log("idddddddddddd");
-	//console.log(req.body.id);
-	let userId = req.auth.user._id;
-    get_user_messages(userId).then(function (data)
+    get_user_messages_for_admin(req.body.id).then(function (data)
     {
         if (data)
         {
@@ -47,7 +44,7 @@ module.exports = function (req, res)
         });
 }
 
-function get_user_messages(id){
+function get_user_messages_for_admin(id){
     var deferred = Q.defer();
     chat.find({
         $or:[{receiver_id:id},{sender_id: id}]

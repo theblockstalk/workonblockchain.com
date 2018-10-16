@@ -3,9 +3,7 @@ import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs/Rx';
-import { NgxAutoScrollModule } from 'ngx-auto-scroll';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import {IMyDpOptions} from 'mydatepicker';
 //const URL = 'http://workonblockchain.mwancloud.com:4000/';
 //const URL = 'http://localhost:4000/';
@@ -35,7 +33,6 @@ export class ChatComponent implements OnInit {
     credentials: any = {};
     users = [];
     msgs = '';
-    new_msgs = '';
     new_msgss = '';
     show_msg_area = 1;
     display_list = 0;
@@ -60,7 +57,6 @@ export class ChatComponent implements OnInit {
     file_url;
     profile_pic;
     display_name;
-	unread_msgs : any;
 	unread_msgs_info = [];
 	new_messges = [];
 	interview_location = '';
@@ -284,7 +280,7 @@ export class ChatComponent implements OnInit {
               //console.log('company');
               this.display_list = 1;
               this.loading = true;
-              this.authenticationService.get_user_messages_only(this.currentUser._creator)
+              this.authenticationService.get_user_messages_only()
                 .subscribe(
                     msg_data => {
                         if(msg_data['datas'].length>0){
@@ -358,7 +354,7 @@ export class ChatComponent implements OnInit {
                 );
             }
             else{
-                this.authenticationService.get_user_messages_only(this.currentUser._creator)
+                this.authenticationService.get_user_messages_only()
                 .subscribe(
                     msg_data => {
                         this.loading = false;
@@ -754,7 +750,7 @@ export class ChatComponent implements OnInit {
         .subscribe(
             data => {
                 //console.log(data);
-                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.description,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file_to_send,this.credentials.job_offer_id)
+                this.authenticationService.insert_job_message(this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.description,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file_to_send,this.credentials.job_offer_id)
                     .subscribe(
                         data => {
                             //console.log(data);
@@ -823,7 +819,7 @@ export class ChatComponent implements OnInit {
         .subscribe(
             data => {
                 //console.log(data);
-                this.authenticationService.insert_job_message(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.description,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file_to_send,this.credentials.job_offer_id)
+                this.authenticationService.insert_job_message(this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.description,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file_to_send,this.credentials.job_offer_id)
                     .subscribe(
                         data => {
                             //console.log(data);
@@ -1149,7 +1145,7 @@ export class ChatComponent implements OnInit {
 						this.credentials.msg_body = 'You have been send an employment offer!';
 						this.description = my_credentials.job_description;
 						//console.log(this.credentials.msg_body);
-						this.authenticationService.insert_job_message(this.currentUser._creator,my_credentials.id,this.display_name,my_credentials.email,this.credentials.msg_body,this.description,my_credentials.job_title,my_credentials.base_salary,my_credentials.currency,my_credentials.start_date.formatted,my_credentials.employment_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file,'0')
+						this.authenticationService.insert_job_message(my_credentials.id,this.display_name,my_credentials.email,this.credentials.msg_body,this.description,my_credentials.job_title,my_credentials.base_salary,my_credentials.currency,my_credentials.start_date.formatted,my_credentials.employment_type,this.msg_tag,this.is_company_reply,this.is_job_offer,file,'0')
 						.subscribe(
 							data => {
 								//console.log(data);

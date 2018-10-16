@@ -30,7 +30,8 @@ const logger = require('../../services/logger');
 module.exports = function insert_message_job(req,res){
     let sanitizeddescription = sanitize.sanitizeHtml(req.unsanitizedBody.description);
     let sanitizedmessage = sanitize.sanitizeHtml(req.unsanitizedBody.message);
-	insert_message_job_new(req.body,sanitizeddescription,sanitizedmessage).then(function (err, about)
+    let userId = req.auth.user._id;
+	insert_message_job_new(req.body,sanitizeddescription,sanitizedmessage,userId).then(function (err, about)
     {
         if (about)
         {
@@ -47,7 +48,7 @@ module.exports = function insert_message_job(req,res){
         });
 }
 
-function insert_message_job_new(data,description,msg){
+function insert_message_job_new(data,description,msg,senderId){
 	let new_description = '';
 	let new_msg = '';
     if(description){
@@ -67,7 +68,7 @@ function insert_message_job_new(data,description,msg){
     var deferred = Q.defer();
 	if(data.employment_reference_id == 0){
 		let newChat = new chat({
-			sender_id : mongoose.Types.ObjectId(data.sender_id),
+			sender_id : mongoose.Types.ObjectId(senderId),
 			receiver_id : mongoose.Types.ObjectId(data.receiver_id),
 			sender_name: data.sender_name,
 			receiver_name: data.receiver_name,

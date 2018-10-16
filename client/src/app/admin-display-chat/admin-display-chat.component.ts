@@ -49,16 +49,16 @@ export class AdminDisplayChatComponent implements OnInit {
     profile_pic;
     display_name;
 	new_messges = [];
- constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
+ constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
- 
+
         this.route.queryParams.subscribe(params => {
         this.user_id = params['user'];
         this.user_type = params['type'];
-        ////console.log(this.user_id); 
+        ////console.log(this.user_id);
             ////console.log(this.user_type);
     });
-        
+
    }
   ngOnInit() {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -71,7 +71,7 @@ export class AdminDisplayChatComponent implements OnInit {
          this.get_user_type();
       //this.user_type = 'company';
       //////console.log(this.user_type);
-         
+
        this.count=0;
        if(this.user_type=="company"){
           //////console.log('company');
@@ -91,7 +91,7 @@ export class AdminDisplayChatComponent implements OnInit {
           //below code for only contacted candidates
          // ////console.log('company');
           this.display_list = 1;
-          this.authenticationService.get_user_messages_only(this.user_id)
+          this.authenticationService.get_user_messages_for_admin(this.user_id)
             .subscribe(
                 msg_data => {
 					if(msg_data['datas'].length>0)
@@ -147,7 +147,7 @@ export class AdminDisplayChatComponent implements OnInit {
                     {
                         this.length = 0;
                         ////console.log("elseee");
-                        
+
                      }
                 },
                 error => {
@@ -156,16 +156,16 @@ export class AdminDisplayChatComponent implements OnInit {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                                         window.location.href = '/login';
                                     }
-                    
+
                                      if(error.message === 403)
                                     {
-                                            // this.router.navigate(['/not_found']);                        
-                                    } 
+                                            // this.router.navigate(['/not_found']);
+                                    }
                 }
             );
         }
         else{
-            this.authenticationService.get_user_messages_only(this.user_id)
+            this.authenticationService.get_user_messages_for_admin(this.user_id)
             .subscribe(
                 msg_data => {
 					if(msg_data['datas'].length>0){
@@ -208,23 +208,23 @@ export class AdminDisplayChatComponent implements OnInit {
 											localStorage.setItem('jwt_not_found', 'Jwt token not found');
 											window.location.href = '/login';
 										}
-						
+
 										if(error.message === 403)
 										{
-											// this.router.navigate(['/not_found']);                        
-										} 
+											// this.router.navigate(['/not_found']);
+										}
 										this.log = error;
 									}
 								);
 							}
 						}
                     }
-                    
+
                      else
                     {
                         this.length = 0;
                         ////console.log("elseee   22");
-                        
+
                      }
                 },
                 error => {
@@ -233,33 +233,33 @@ export class AdminDisplayChatComponent implements OnInit {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                                         window.location.href = '/login';
                                     }
-                    
+
                                      if(error.message === 403)
                                     {
-                                            // this.router.navigate(['/not_found']);                        
-                                    } 
+                                            // this.router.navigate(['/not_found']);
+                                    }
                 }
             );
-            
+
             this.display_list = 0;
             //////console.log('candidate');
         }
        }
        else
-          this.router.navigate(['/not_found']);  
-          
+          this.router.navigate(['/not_found']);
+
      }
-      
+
      else
      {
            this.router.navigate(['/not_found']);
-          
+
       }
-      
+
   }
-    
+
     openDialog(email: string, id:string,current_compnay_name:string){
-      
+
       //this.msgs = 'hi baby';
       this.msgs = '';
       this.new_msgss = '';
@@ -317,11 +317,11 @@ export class AdminDisplayChatComponent implements OnInit {
                                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                                         window.location.href = '/login';
                                     }
-                    
+
                                      if(error.message === 403)
                                     {
-                                            // this.router.navigate(['/not_found']);                        
-                                    } 
+                                            // this.router.navigate(['/not_found']);
+                                    }
                 }
             );
             this.candidate = email;
@@ -333,8 +333,8 @@ export class AdminDisplayChatComponent implements OnInit {
             this.credentials.description = '';*/
         //});
     }
-    
-   
+
+
     get_user_type()
     {
 		////console.log(this.user_type);
@@ -353,7 +353,7 @@ export class AdminDisplayChatComponent implements OnInit {
 					//localStorage.removeItem('type');
 					this.email  = data._creator.email;
 				},
-				error => 
+				error =>
 				{
 					if(error.message === 500 || error.message === 401)
 					{
@@ -362,9 +362,9 @@ export class AdminDisplayChatComponent implements OnInit {
 					}
 					if(error.message === 403)
 					{
-							// this.router.navigate(['/not_found']);                        
-					} 
-		  
+							// this.router.navigate(['/not_found']);
+					}
+
 				 }
 			);
 		}
@@ -374,7 +374,7 @@ export class AdminDisplayChatComponent implements OnInit {
 				data => {
 					if(data.error)
 					{
-						this.log= "Something Went Wrong"; 
+						this.log= "Something Went Wrong";
 						localStorage.removeItem('company_type');
 					}
 					else
@@ -388,13 +388,13 @@ export class AdminDisplayChatComponent implements OnInit {
 						//localStorage.removeItem('company_type');
 						this.email  = data._creator.email;
 					}
-						
+
 				}
 			);
 		}
     }
-	
-	filter_array(arr) 
+
+	filter_array(arr)
     {
         var hashTable = {};
 
