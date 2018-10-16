@@ -127,12 +127,12 @@
 
 					<h4 *ngIf="msg!=''&& lengthmsgg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
 
-					<div class = "result-status mr-top-form" *ngIf="msg === '' && lengthmsgg != '' && response === 'data'">
-							<div *ngIf="cand_data.length > 0 ">
-								<span>{{cand_data.length}}</span> candidates match your search
+					<div class = "result-status mr-top-form" *ngIf="msg === ''">
+							<div *ngIf="length > 0 ">
+								<span>{{length}}</span> candidates match your search
 								<i class="fa fa-check tickk" aria-hidden="true"></i>
 							</div>
-							<div *ngIf="not_found != '' && cand_data.length <=0 ">
+							<div *ngIf="not_found != '' && length <=0 ">
 								<span>{{not_found}}</span>
 							<i class="fa fa-check tickk" aria-hidden="true"></i>
 							</div>
@@ -140,7 +140,7 @@
 
 
 					<!--candidate 1st-->
-					<div *ngIf="info && msg === '' " >
+					<div>
 
 					<div class="panel-group mr-top-form" *ngFor= "let data of cand_data | paginate: { itemsPerPage:10, currentPage: p }">
 

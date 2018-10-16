@@ -1,6 +1,9 @@
-module.exports.removeSensativeData = function removeSensativeData(userDoc) {
+const Chat = require('../../../model/chat');
 
-	if(userDoc._creator)
+const removeSensativeData = module.exports.removeSensativeData = function removeSensativeData(userDoc)
+{
+    console.log("remove data");
+    if(userDoc._creator)
 	{
 		delete userDoc._creator.password_hash;
 	    delete userDoc._creator.salt;
@@ -61,3 +64,10 @@ function filterWhiteListFields(obj, whitelist) {
 function createInitials(first_name, last_name) {
     return first_name.charAt(0).toUpperCase() + last_name.charAt(0).toUpperCase();
 }
+
+
+module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
+    const acceptedJobOffer = await Chat.find({sender_id: candidateDoc._creator._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
+    if (acceptedJobOffer) return removeSensativeData(candidateDoc)
+    else return anonymousSearchCandidateData(candidateDoc)
+};

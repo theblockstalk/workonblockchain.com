@@ -154,22 +154,21 @@ function filter(params, userId)
 
                 if (err){
                     logger.error(err.message, {stack: err.stack});
-                    ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
+                    deferred.reject(err.name + ': ' + err.message);
                 }
                 if(result)
                 {
                 	var result_array = [];
                	 	result.forEach(function(item)
                     {
-               	 		result_array.push(item._creator._id);
+               	 		result_array.push(filterReturnData.candidateAsCompany(item, userId));
                     });
                	 	
-                	var ids_arrayy=[];
+                	/*var ids_arrayy=[];
                   	var datata= {ids : result_array };
-                  	ids_arrayy.push(datata);
+                  	ids_arrayy.push(datata);*/
 
-                    getCompanyReply(result_array)
-
+                    deferred.resolve(result_array);
                 }
 
             });
@@ -200,7 +199,7 @@ function expected_salary_converter(salary_value, currency1, currency2)
 
 }
 
-function getCompanyReply(candidateIds){
+/*function getCompanyReply(candidateIds){
     var deferred = Q.defer();
     console.log(candidateIds);
         chat.aggregate(
@@ -253,5 +252,5 @@ function candidateDetail(candidateIds, chatData){
         }
     });
 
-}
+}*/
 
