@@ -13,7 +13,7 @@ import { DataService } from "../data.service";
   styleUrls: ['./admin-account-settings.component.css']
 })
 export class AdminAccountSettingsComponent implements OnInit {
-        
+
    disable_account;
     marketing =true;
     currentUser: User;
@@ -22,10 +22,10 @@ export class AdminAccountSettingsComponent implements OnInit {
     message;
     unread_msgs_emails = true;
 
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService) 
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService)
    { }
 
-  ngOnInit() 
+  ngOnInit()
   {
        this.inform='';
      // this.dataservice.currentMessage.subscribe(message => this.message = message);
@@ -33,10 +33,10 @@ export class AdminAccountSettingsComponent implements OnInit {
       ////console.log(this.currentUser.type);
        if(this.currentUser && this.currentUser.type=='candidate')
        {
-         
+
            this.authenticationService.getById(this.currentUser._id)
             .subscribe(
-                data => 
+                data =>
                 {
                     ////console.log(data);
                     if(data._creator.is_unread_msgs_to_send){
@@ -49,12 +49,12 @@ export class AdminAccountSettingsComponent implements OnInit {
                     }
                 });
      }
-      
+
       else if(this.currentUser && this.currentUser.type=='company')
        {
             this.authenticationService.getCurrentCompany(this.currentUser._id)
             .subscribe(
-                data => 
+                data =>
                 {
                     ////console.log(data);
                    if(data._creator.is_unread_msgs_to_send){
@@ -65,9 +65,9 @@ export class AdminAccountSettingsComponent implements OnInit {
                         this.info.marketing = data.marketing_emails;
                         this.info.disable_account= data._creator.disable_account;
                     }
-                  
+
                 },
-                error => 
+                error =>
                 {
                   if(error.message === 500 || error.message === 401)
                         {
@@ -79,21 +79,21 @@ export class AdminAccountSettingsComponent implements OnInit {
                         localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
-                    
+
                         if(error.message === 403)
                         {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
+                            // this.router.navigate(['/not_found']);
+                        }
                 });
        }
-      
+
       else
        {
           this.router.navigate(['/not_found']);
-          
+
        }
   }
-    
+
     disable_msg;enable_msg;
     inform;
   account_setting()
@@ -105,7 +105,7 @@ export class AdminAccountSettingsComponent implements OnInit {
     //////console.log(this.marketing);
      this.authenticationService.terms(this.currentUser._creator,this.info)
         .subscribe(
-          data => 
+          data =>
           {
              if(data.error )
                 {
@@ -114,7 +114,7 @@ export class AdminAccountSettingsComponent implements OnInit {
                else
                {
                     this.inform = data;
-                    
+
                     if(this.info.marketing){
                         this.message = 'Your profile is currently enabled for marketing emails.';
                     }
@@ -123,9 +123,9 @@ export class AdminAccountSettingsComponent implements OnInit {
                     }
                   //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
-              
+
           },
-            
+
           error =>
           {
             if(error.message === 500 || error.message === 401)
@@ -138,30 +138,30 @@ export class AdminAccountSettingsComponent implements OnInit {
                         localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
-                    
+
                         if(error.message === 403)
                         {
-                            // this.router.navigate(['/not_found']);                        
-                        }    
+                            // this.router.navigate(['/not_found']);
+                        }
           });
       }
-      
+
       if(this.currentUser && this.currentUser.type=='company')
       {
        this.authenticationService.company_terms(this.currentUser._creator,this.info)
             .subscribe(
                 data => {
 
-                    
+
                 if(data.error )
                 {
                     this.log=data.error;
                 }
-                
+
                else
                {
                     this.inform=data;
-                    
+
                     if(this.info.marketing){
                         this.message = 'Your profile is currently enabled for marketing emails.';
                     }
@@ -170,7 +170,7 @@ export class AdminAccountSettingsComponent implements OnInit {
                     }
                   //this.dataservice.changeMessage("Settings Updated Successfully");
                 }
-                    
+
                 },
                 error => {
                   if(error.message === 500 || error.message === 401)
@@ -183,26 +183,26 @@ export class AdminAccountSettingsComponent implements OnInit {
                         localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
-                    
+
                         if(error.message === 403)
                         {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
-                   
+                            // this.router.navigate(['/not_found']);
+                        }
+
                 });
        }
   }
-    
+
   disbale_setting()
   {
-      
+
        this.inform='';
       ////console.log('set here');
       if(this.currentUser)
       {
         this.authenticationService.set_disable_status(this.currentUser._creator,this.info.disable_account)
         .subscribe(
-            data => 
+            data =>
             {
                 if(data.error )
                 {
@@ -216,7 +216,7 @@ export class AdminAccountSettingsComponent implements OnInit {
                     }
                     else{
                         this.message = 'Your profile is currently enabled';
-                        
+
                     }
                     ////console.log(data);
                 }
@@ -229,28 +229,28 @@ export class AdminAccountSettingsComponent implements OnInit {
                             localStorage.removeItem('googleUser');
                             localStorage.removeItem('close_notify');
                             localStorage.removeItem('linkedinUser');
-                            localStorage.removeItem('admin_log');   
+                            localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
-                    
+
                         if(error.message === 403)
                         {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
-               
+                            // this.router.navigate(['/not_found']);
+                        }
+
             }
         );
       }
-      
+
   }
   unread_msgs_emails_send(){
        this.inform='';
       ////console.log('set here');
       if(this.currentUser)
       {
-        this.authenticationService.set_unread_msgs_emails_status(this.currentUser._creator,this.info.unread_msgs_emails)
+        this.authenticationService.set_unread_msgs_emails_status(this.info.unread_msgs_emails)
         .subscribe(
-            data => 
+            data =>
             {
                 if(data.error )
                 {
@@ -276,19 +276,19 @@ export class AdminAccountSettingsComponent implements OnInit {
                             localStorage.removeItem('googleUser');
                             localStorage.removeItem('close_notify');
                             localStorage.removeItem('linkedinUser');
-                            localStorage.removeItem('admin_log'); 
+                            localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
-                    
+
                         if(error.message === 403)
                         {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
-               
+                            // this.router.navigate(['/not_found']);
+                        }
+
             }
         );
-      }   
-      
+      }
+
   }
 
 }

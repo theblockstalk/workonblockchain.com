@@ -421,7 +421,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                             {
                             for(let ids of res['ids'])
                             {
-                                 this.authenticationService.get_user_messages(ids)
+                                 this.authenticationService.get_user_messages(ids,0)
                                 .subscribe(
                                  data => {
 
@@ -612,7 +612,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     {
                     for(let ids of res['ids'])
                     {
-                        this.authenticationService.get_user_messages(ids)
+                        this.authenticationService.get_user_messages(ids,0)
                         .subscribe(
                             data => {
                                 if(data['datas'][0]){
@@ -820,7 +820,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
             if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
-				this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
+				this.authenticationService.get_job_desc_msgs(this.user_id.id,'job_offer')
 				.subscribe(
 					data => {
 						//console.log(data['datas']);

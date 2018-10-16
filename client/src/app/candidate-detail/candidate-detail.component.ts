@@ -87,7 +87,7 @@ export class CandidateDetailComponent implements OnInit {
       if(this.user_id)
       {
 
-          this.authenticationService.get_user_messages(this.user_id)
+          this.authenticationService.get_user_messages(this.user_id,0)
             .subscribe(
                 data => {
 
@@ -261,7 +261,7 @@ export class CandidateDetailComponent implements OnInit {
         if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
             if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
 				this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-				this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
+				this.authenticationService.get_job_desc_msgs(this.credentials.user_id,'job_offer')
 				.subscribe(
 					data => {
 						////console.log(data['datas']);

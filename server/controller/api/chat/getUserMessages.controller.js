@@ -28,23 +28,28 @@ const logger = require('../../services/logger');
 module.exports = function (req, res)
 {
 	//console.log("idddddddddddd");
-	//console.log(req.body.id);
-	let userId = req.auth.user._id;
-    get_user_messages(userId).then(function (data)
-    {
-        if (data)
-        {
-            res.send(data);
-        }
-        else
-        {
-            res.sendStatus(404);
-        }
-    })
-        .catch(function (err)
-        {
-            res.status(400).send(err);
-        });
+	let userId;
+	if(req.body.id && req.auth.user.is_admin){
+		userId = req.body.id;
+	}
+	else{
+		userId = req.auth.user._id;
+	}
+	get_user_messages(userId).then(function (data)
+	{
+		if (data)
+		{
+			res.send(data);
+		}
+		else
+		{
+			res.sendStatus(404);
+		}
+	})
+		.catch(function (err)
+		{
+			res.status(400).send(err);
+		});
 }
 
 function get_user_messages(id){

@@ -630,9 +630,9 @@ export class UserService {
             });
     }
 
-    get_user_messages(receiver_id: string)
+    get_user_messages(receiver_id: string, sender_id: any)
     {
-        return this.http.post<any>(URL+'users/get_messages', {receiver_id:receiver_id}, {
+        return this.http.post<any>(URL+'users/get_messages', {receiver_id:receiver_id,sender_id:sender_id}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -652,9 +652,9 @@ export class UserService {
             });
     }
 
-    get_user_messages_only()
+    get_user_messages_only(id:any)
     {
-        return this.http.post<any>(URL+'users/get_user_messages', {}, {
+        return this.http.post<any>(URL+'users/get_user_messages', {id:id}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -786,9 +786,9 @@ export class UserService {
 
     }
 
-	send_file(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,file_name:string)
+	send_file(receiver_id:string,sender_name:string,receiver_name:string,message:string,job_title:string,salary:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,file_name:string)
     {
-        return this.http.post<any>(URL+'users/insert_chat_file', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,file_name:file_name}, {
+        return this.http.post<any>(URL+'users/insert_chat_file', {receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,job_title:job_title,salary:salary,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,file_name:file_name}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1003,8 +1003,8 @@ export class UserService {
 
     }
 
-	get_job_desc_msgs(sender_id:string,receiver_id:string,msg_tag:string){
-		return this.http.post<any>(URL+'users/get_job_desc_msgs', {sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag}, {
+	get_job_desc_msgs(receiver_id:string,msg_tag:string){
+		return this.http.post<any>(URL+'users/get_job_desc_msgs', {receiver_id:receiver_id,msg_tag:msg_tag}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1023,9 +1023,9 @@ export class UserService {
             });
 	}
 
-	set_unread_msgs_emails_status(user_id: string, status: any)
+	set_unread_msgs_emails_status(status: any)
     {
-		return this.http.post<any>(URL+'users/set_unread_msgs_emails_status', {user_id:user_id,status:status}, {
+		return this.http.post<any>(URL+'users/set_unread_msgs_emails_status', {status:status}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1159,8 +1159,8 @@ export class UserService {
             });
     }
 
-	get_employment_offer_info(sender_id:string,receiver_id:string,msg_tag:string){
-		return this.http.post<any>(URL+'users/get_employ_offer', {sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag}, {
+	get_employment_offer_info(receiver_id:string,msg_tag:string){
+		return this.http.post<any>(URL+'users/get_employ_offer', {receiver_id:receiver_id,msg_tag:msg_tag}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1178,48 +1178,5 @@ export class UserService {
 
             });
 	}
-
-  get_user_messages_for_admin(id: string)
-  {
-    return this.http.post<any>(URL+'users/get_user_messages_for_admin', {id:id}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    })
-      .map((res: Response) =>
-      {
-        if (res)
-        {
-          return res;
-        }
-      }).catch((error: any) =>
-      {
-        if (error.status )
-        {
-          return Observable.throw(new Error(error.status));
-        }
-
-      });
-  }
-
-  get_user_messages_admin(receiver_id: string,sender_id: string)
-  {
-    return this.http.post<any>(URL+'users/get_messages_for_admin', {receiver_id:receiver_id,sender_id:sender_id}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    })
-      .map((res: Response) =>
-      {
-
-        if (res)
-        {
-          return res;
-        }
-      }).catch((error: any) =>
-      {
-        if (error.status )
-        {
-          return Observable.throw(new Error(error.status));
-        }
-
-      });
-  }
 
 }

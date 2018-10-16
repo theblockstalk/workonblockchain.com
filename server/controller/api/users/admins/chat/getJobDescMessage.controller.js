@@ -26,7 +26,8 @@ const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../../services/logger');
 
 module.exports = function (req,res){
-    get_job_desc_msgs(req.body).then(function (err, about)
+	let userId = req.auth.user._id;
+    get_job_desc_msgs(req.body,userId).then(function (err, about)
     {
         if (about)
         {
@@ -43,12 +44,12 @@ module.exports = function (req,res){
         });
 }
 
-function get_job_desc_msgs(data){
+function get_job_desc_msgs(data,senderId){
     var deferred = Q.defer();
     chat.find({
         $and : [
             {
-                $and:[{receiver_id:data.receiver_id},{sender_id: data.sender_id}]
+                $and:[{receiver_id:data.receiver_id},{sender_id: senderId}]
             },
             {
                 msg_tag:data.msg_tag

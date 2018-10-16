@@ -91,7 +91,7 @@ export class AdminDisplayChatComponent implements OnInit {
           //below code for only contacted candidates
          // ////console.log('company');
           this.display_list = 1;
-          this.authenticationService.get_user_messages_for_admin(this.user_id)
+          this.authenticationService.get_user_messages_only(this.user_id)
             .subscribe(
                 msg_data => {
 					if(msg_data['datas'].length>0)
@@ -165,7 +165,7 @@ export class AdminDisplayChatComponent implements OnInit {
             );
         }
         else{
-            this.authenticationService.get_user_messages_for_admin(this.user_id)
+            this.authenticationService.get_user_messages_only(this.user_id)
             .subscribe(
                 msg_data => {
 					if(msg_data['datas'].length>0){
@@ -268,11 +268,10 @@ export class AdminDisplayChatComponent implements OnInit {
       ////console.log("show_msg_area: " + this.show_msg_area);
         //Observable.interval(10000).subscribe(x => {
          //receiver,sender
-         this.authenticationService.get_user_messages_admin(id,this.user_id)
+         this.authenticationService.get_user_messages(id,this.user_id)
             .subscribe(
                 data => {
                     ////console.log('data');
-                    ////console.log(data['datas']);
                     this.new_msgss = data['datas'];
                     this.job_desc = data['datas'][0];
                     if(data['datas'][1]){

@@ -27,7 +27,8 @@ const logger = require('../../services/logger');
 
 module.exports = function (req, res)
 {
-    get_employment_offer(req.body.sender_id,req.body.receiver_id,req.body.msg_tag).then(function (data)
+	let userId = req.auth.user._id;
+    get_employment_offer(userId,req.body.receiver_id,req.body.msg_tag).then(function (data)
     {
         if (data)
         {
