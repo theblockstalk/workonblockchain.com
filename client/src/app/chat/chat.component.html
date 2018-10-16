@@ -329,7 +329,7 @@
 														Employment contract:
 													</span>
 													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
-                          <br/>
+                          <br *ngIf="msg.file_name"/>
                           <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.msg_tag == 'employment_offer'">
 														{{msg.message}}
 														<br/>

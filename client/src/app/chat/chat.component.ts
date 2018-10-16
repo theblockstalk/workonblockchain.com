@@ -179,19 +179,19 @@ export class ChatComponent implements OnInit {
                     else
                     {
                       if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
-                        $("#popModal").modal("show");
+                        this.authenticationService.get_page_content('Candidate chat popup message')
+                          .subscribe(
+                            data => {
+                              if(data)
+                              {
+                                this.candidateMsgTitle = data[0].page_title;
+                                this.candidateMsgContent = data[0].page_content;
+                                $("#popModal").modal("show");
+                              }
+                            }
+                          );
                       }
                       this.msg='';
-                      this.authenticationService.get_page_content('Candidate chat popup message')
-                      .subscribe(
-                        data => {
-                          if(data)
-                          {
-                            this.candidateMsgTitle = data[0].page_title;
-                            this.candidateMsgContent = data[0].page_content;
-                          }
-                        }
-                      );
                       this.display_msgs();
                     }
                 },
@@ -244,19 +244,19 @@ export class ChatComponent implements OnInit {
                     else
                     {
                       if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
-                        $("#popModal").modal("show");
+                        this.authenticationService.get_page_content('Company chat popup message')
+                          .subscribe(
+                            data => {
+                              if (data) {
+                                this.companyMsgTitle = data[0].page_title;
+                                this.companyMsgContent = data[0].page_content;
+                                $("#popModal").modal("show");
+                              }
+                            }
+                          );
                       }
                       //console.log("else");
                       this.msg='';
-                      this.authenticationService.get_page_content('Company chat popup message')
-                      .subscribe(
-                        data => {
-                          if (data) {
-                            this.companyMsgTitle = data[0].page_title;
-                            this.companyMsgContent = data[0].page_content;
-                          }
-                        }
-                      );
                       this.display_msgs();
                     }
                 },
@@ -1085,7 +1085,7 @@ export class ChatComponent implements OnInit {
               //console.log(success);
               this.file_name = success;
               this.msg_tag = 'normal';
-              this.credentials.msg_body = 'file ';
+              this.credentials.msg_body = '';
 			  this.is_company_reply = 1;
               this.authenticationService.send_file(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.file_name)
                 .subscribe(
