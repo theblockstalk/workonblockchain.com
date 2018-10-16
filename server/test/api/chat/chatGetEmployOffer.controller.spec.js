@@ -36,14 +36,24 @@ describe('get employment offer detail', function () {
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerfiedCandidate(candidate);
-
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
+
+            //sending a message
+            const messageData = docGenerator.message();
+            const offerData = docGenerator.employmentOffer();
+            const res = await chatHelper.sendEmploymentOffer(companyUserDoc._id,candidateUserDoc._id,messageData,offerData,companyUserDoc.jwt_token);
+
             const msgTag = 'employment_offer';
 
             const employmentOfferDetails = await chatHelper.getEmploymentOfferDetail(companyUserDoc._id, candidateUserDoc._id, msgTag, companyUserDoc.jwt_token);
+
+            const chatDoc = await Chats.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
             const response = employmentOfferDetails.body;
-            response.datas.should.equal(0);
+
+            response.datas.should.equal(chatDoc.is_job_offered);
+            chatDoc.sender_name.should.equal(messageData.sender_name);
+            chatDoc.receiver_name.should.equal(messageData.receiver_name);
         })
     })
 });

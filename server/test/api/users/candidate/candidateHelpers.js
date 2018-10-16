@@ -38,7 +38,6 @@ module.exports.signupCandidateAndCompleteProfile = async function signupCandidat
     const res = await signupCandidate(candidate);
     await userHelpers.verifyEmail(candidate.email);
     await userHelpers.approve(candidate.email);
-    await userHelpers.makeAdmin(candidate.email);
     await candidateWizardHelpers.about(about, res.body.jwt_token);
     await candidateWizardHelpers.job(job, res.body.jwt_token);
     await candidateWizardHelpers.resume(resume, res.body.jwt_token);

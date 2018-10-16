@@ -9,6 +9,7 @@ const companyHelper = require('../../users/company/companyHelpers');
 const candidateHelper = require('../../users/candidate/candidateHelpers');
 const chatHelper = require('../../chat/chatHelpers');
 const adminHelper = require('./adminHelpers');
+const userHelper = require('../../users/usersHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -30,6 +31,7 @@ describe('admin search company by filter', function () {
             const companyTnCWizard = docGenerator.companyTnCWizard();
             const companyAbout = docGenerator.companyAbout();
             const companyRes = await companyHelper.signupCompanyAndCompleteProfile(company,companyTnCWizard,companyAbout);
+            await userHelper.makeAdmin(company.email);
             const companyUserDoc = await Users.findOne({email: company.email}).lean();
 
             const candidate = docGenerator.candidate();
@@ -38,6 +40,7 @@ describe('admin search company by filter', function () {
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            await userHelper.makeAdmin(candidate.email);
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
             const initialJobOffer = docGenerator.initialJobOffer();
