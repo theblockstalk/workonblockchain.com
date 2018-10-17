@@ -543,11 +543,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                } 
                 
             }
-            
-               
-            
-          
-            
+
         }
         
      

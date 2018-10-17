@@ -37,7 +37,7 @@ function getVerifiedCandidateDetail(params)
                     logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
                 }
-                if(result)
+                if(result.length>0)
                 {	
                 	var query_result = result[0].toObject();
                 	
@@ -57,6 +57,10 @@ function getVerifiedCandidateDetail(params)
                 	deferred.resolve(anonymous);
                 	
                 	
+                }
+                else
+                {
+                    deferred.reject("Not found");
                 }
             });
 

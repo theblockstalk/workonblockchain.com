@@ -55,7 +55,6 @@ function removeDups(names) {
 
 function admin_company_filter_new(data)
 {
-
 	var query_result = [];
     var company_rply = [];
     var deferred = Q.defer();
@@ -68,7 +67,6 @@ function admin_company_filter_new(data)
         if(employ_offer)
         {
             var offered = ['employment_offer_accepted', 'employment_offer_rejected'];
-            //data.msg_tags = ['job_offer_rejected', 'job_offer_accepted'];
             offered.forEach(function(item)
             {
                 data.msg_tags.push(item );

@@ -30,12 +30,8 @@ function refered_id(idd , data)
 {
     var deferred = Q.defer();
 
-    ////console.log(idd);
-
-    ////console.log(data.info);
     CandidateProfile.findOne({ _creator: data.info }, function (err, data)
     {
-        ////console.log(data);
         if (err){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
@@ -53,7 +49,6 @@ function refered_id(idd , data)
 
         users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
         {
-            ////console.log(doc);
             if (err){
                 logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);

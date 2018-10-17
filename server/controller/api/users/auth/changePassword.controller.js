@@ -9,7 +9,8 @@ var crypto = require('crypto');
 
 module.exports = function (req,res)
 {
-    change_password(req.params.id , req.body).then(function (err, data)
+    let userId = req.auth.user._id;
+    change_password(userId , req.body).then(function (err, data)
     {
         if (data)
         {
@@ -30,13 +31,10 @@ module.exports = function (req,res)
 function change_password(id , param)
 {
     var deferred = Q.defer();
-////console.log(param.password);
-    ////console.log(id);
-    ////console.log(token);
+
     users.findOne({_id :id }, function (err, user)
     {
 
-        ////console.log(user);
         if (err){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
@@ -46,7 +44,7 @@ function change_password(id , param)
         	let hash = crypto.createHmac('sha512', user.salt);
         	hash.update(param.current_password);
         	let hashedPasswordAndSalt = hash.digest('hex');
-        	////console.log(hashedPasswordAndSalt);
+
         	if (hashedPasswordAndSalt === user.password_hash)
         	{
         		updatePassword(user._id);
@@ -66,20 +64,10 @@ function change_password(id , param)
 
     function updatePassword(_id )
     {
-        ////console.log(_id);
-
-        ////console.log(user.password);
-        /*var user = _.omit(param, 'password');
-        var salt = bcrypt.genSaltSync(10);
-
-        // add hashed password to user object
-        user.password = bcrypt.hashSync(param.password, salt);*/
-        
         let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.createHmac('sha512', salt);
 		hash.update(param.password);
 		let hashedPasswordAndSalt = hash.digest('hex');
-		////console.log(hashedPasswordAndSalt);
 
         var set =
             {
