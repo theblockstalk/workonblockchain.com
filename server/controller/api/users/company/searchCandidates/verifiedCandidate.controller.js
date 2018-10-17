@@ -60,20 +60,25 @@ function verified_candidate(params,userId)
                     deferred.reject(err.name + ': ' + err.message);
                 if(candidateData)
                 {
-                    var result_array = [];
-
-                    candidateData.forEach(function(item)
+                    if(candidateData.length <= 0){
+                        deferred.resolve(candidateData);
+                    }
+                    else
                     {
-                        filterReturnData.candidateAsCompany(item, userId).then(function(data) {
-                            result_array.push(data);
-                            
-                            if(candidateData.length === result_array.length){
-                                console.log(result_array);
-                                deferred.resolve(result_array);
-                            }
+                        var result_array = [];
+                        candidateData.forEach(function(item)
+                        {
+                            filterReturnData.candidateAsCompany(item, userId).then(function(data) {
+                                result_array.push(data);
+
+                                if(candidateData.length === result_array.length){
+                                    deferred.resolve(result_array);
+                                }
+                            })
+
                         })
 
-                    })
+                    }
 
                 }
 

@@ -210,7 +210,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      //console.log(this.currentUser);
 
       if(!this.currentUser)
       {
@@ -224,7 +223,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
                 data =>
                 {
-                    //console.log(data.terms);
                   if(data.terms == false)
                   {
                       this.router.navigate(['/company_wizard']);
@@ -239,7 +237,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                         this.is_approved = data._creator.is_approved;
                         this.display_name = data.company_name;
 
-                        //console.log(this.is_approved);
                         if(this.is_approved === 0 )
                         {
                             this.disabled = true;
@@ -271,9 +268,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                             this.no_of_employees=data.no_of_employees;
                             if(data.company_logo != null )
                             {
-                                ////console.log(data[0].image);
                                 this.imgPath =  data.company_logo;
-                                //console.log(this.imgPath);
                             }
 
                             this.getVerrifiedCandidate();
@@ -317,7 +312,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   positionchanged(data)
   {
-      //console.log( data);
       if(this.select_value  !== data.value)
       {
         this.select_value = data.value;
@@ -329,7 +323,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   blockchainItems;
   blockchainchanged(data)
   {
-    //console.log("blockchain");
       if(this.selecteddd  !== data.value)
       {
         this.selecteddd = data.value;
@@ -369,74 +362,50 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
     searchdata(key , value)
     {
+      this.log='';
+      this.candidate_data='';
+      this.verify_msg = "";
+      this.responseMsg = "";
+      this.not_found='';
+      if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1 &&  this.currencyChange === -1 &&  this.availabilityChange === -1 )
+      {
+        this.getVerrifiedCandidate();
+      }
 
-        this.not_found='';
-        this.length =0;
-        this.cand_data=[];
-       this.log='';
-        this.response='';
-        this.count=0;
-
-        if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1
-        &&  this.currencyChange === -1 &&  this.availabilityChange === -1 )
-        {
-
-             this.getVerrifiedCandidate();
-        }
-
-
-        else
-        {
-
-          this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
-            .subscribe(
-                data =>
-                {
-
-                    if(data)
-                    {
-
-                        this.length='';
-                        this.log = data.error;
-                        this.cand_data=[];
-                        this.page='';
-                         this.response = "data";
-                    }
-                    else
-                    {
-                        this.length=0;
-                        this.cand_data=[];
-                        this.log='';
-                        this.information = this. filter_array(data);
-                        this.lengthmsgg='not initial';
-                        this.cand_data.push(data);
-                        this.length = this.cand_data.length;
-                    }
-
-                },
-                error =>
-                {
-                    if(error.message === 500)
-                    {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('googleUser');
-                        localStorage.removeItem('close_notify');
-                        localStorage.removeItem('linkedinUser');
-                        localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                    }
-
-                    if(error.message === 403)
-                    {
-                        this.router.navigate(['/not_found']);
-                    }
-
-                });
-
-        }
+      else {
+        this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
+          .subscribe(
+            data =>
+            {
+              this.candidate_data = data;
+              this.responseMsg = "response";
+              if(this.candidate_data.length <= 0)
+              {
+                this.not_found = 'No candidates matched this search criteria';
+              }
 
 
+              },
+            error =>
+            {
+              if(error.message === 500)
+              {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+
+              if(error.message === 403)
+              {
+                this.router.navigate(['/not_found']);
+              }
+
+            });
+      }
     }
 
     actionType;
@@ -470,74 +439,67 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     response;
     count;
     candidate_data;
+  verify_msg;
+  responseMsg;
     getVerrifiedCandidate()
     {
-        this.length=0;
-        this.info = [];
-        this.cand_data=[];
-        this.lengthmsgg='';
-        this.response='';
-        this.msg='';
-        this.count=0;
+        this.log='';
+        this.candidate_data='';
+        this.verify_msg = "verified candidate";
+        this.responseMsg='';
+        this.not_found='';
         this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
         .subscribe(
             dataa => {
-              console.log(dataa);
               this.candidate_data = dataa;
-              this.cand_data.push(dataa);
+              this.responseMsg = "response";
+              if(this.candidate_data.length <= 0)
+                this.not_found = 'No candidates matched this search criteria';
             },
 
-                            error => {
-                              if(error.message === 500)
-                              {
-                                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                localStorage.removeItem('currentUser');
-                                localStorage.removeItem('googleUser');
-                                localStorage.removeItem('close_notify');
-                                localStorage.removeItem('linkedinUser');
-                                localStorage.removeItem('admin_log');
-                                window.location.href = '/login';
-                              }
-                              if(error.message === 403)
-                              {
-                                this.router.navigate(['/not_found']);
-                              }
-                            });
+          error => {
+              if(error.message === 500)
+              {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+              if(error.message === 403)
+              {
+                this.router.navigate(['/not_found']);
+              }
+            });
 
 
-        this.authenticationService.getCurrentCompany(this.currentUser._creator)
-                        .subscribe(
-                            data => {
-                                this.company_name = data.company_name;
-                            },
-                            error => {
-                                if(error.message === 500 || error.message === 401  )
-                                {
-                                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                    window.location.href = '/login';
-                                }
-                                if(error.message === 403)
-                                {
-                                    this.router.navigate(['/not_found']);
-                                }
-                            }
-                        );
-        this.length++;
-        if(this.length> 0 )
-        {
-            this.page =this.length;
-            this.log='';
-        }else
-        {
-            this.log= 'No candidates matched this search criteria';
-        }
-        this.length = '';
+            this.authenticationService.getCurrentCompany(this.currentUser._creator)
+              .subscribe(
+                data => {
+                  this.company_name = data.company_name;
+                  },
+                error => {
+                  if(error.message === 500 || error.message === 401  )
+                  {
+                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                    window.location.href = '/login';
+                  }
+                  if(error.message === 403)
+                  {
+                    this.router.navigate(['/not_found']);
+                  }
+                }
+                );
+
+
+
     }
     informations;
 
     user_id;user_name;
     onSubmit(val) {
-        //console.log(val)
         this.user_id =val;
         this.user_name = val;
     }
@@ -549,15 +511,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     job_offer_log;
     description;
     send_job_offer(msgForm : NgForm){
-        //console.log("Used ID: " + this.user_id.id);
-        //console.log("Name: " + this.user_id.name);
+
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
             if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
 				this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.user_id.id,'job_offer')
 				.subscribe(
 					data => {
-						//console.log(data['datas']);
 						if(data['datas'].length>0){
 							this.job_offer_log = 'You have already sent a job description to this candidate';
 						}
@@ -570,7 +530,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 							this.authenticationService.insertMessage(this.currentUser._creator,this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
 								.subscribe(
 									data => {
-										//console.log(data);
 										this.job_offer_log = 'Message successfully sent';
 										this.credentials.job_title = '';
 										this.credentials.salary = '';
@@ -580,9 +539,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 										this.credentials.job_desc = '';
 									},
 									error => {
-										//console.log('error');
-										//console.log(error);
-										//this.log = error;
+
 									}
 								);
 						}

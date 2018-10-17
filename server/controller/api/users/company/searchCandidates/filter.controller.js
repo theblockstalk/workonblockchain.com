@@ -149,26 +149,35 @@ function filter(params, userId)
 
             const searchQuery = { $and: queryString };
 
-            CandidateProfile.find(searchQuery).populate('_creator').exec(function(err, result)
+            CandidateProfile.find(searchQuery).populate('_creator').exec(function(err, candidateData)
             {            	 
 
                 if (err){
                     logger.error(err.message, {stack: err.stack});
                     deferred.reject(err.name + ': ' + err.message);
                 }
-                if(result)
+                if(candidateData)
                 {
-                	var result_array = [];
-               	 	result.forEach(function(item)
+                    if(candidateData.length <= 0){
+                        deferred.resolve(candidateData);
+                    }
+                    else
                     {
-               	 		result_array.push(filterReturnData.candidateAsCompany(item, userId));
-                    });
-               	 	
-                	/*var ids_arrayy=[];
-                  	var datata= {ids : result_array };
-                  	ids_arrayy.push(datata);*/
+                        var result_array = [];
+                        candidateData.forEach(function(item)
+                        {
+                            filterReturnData.candidateAsCompany(item, userId).then(function(data) {
+                                result_array.push(data);
 
-                    deferred.resolve(result_array);
+                                if(candidateData.length === result_array.length){
+                                    deferred.resolve(result_array);
+                                }
+                            })
+
+                        })
+
+                    }
+
                 }
 
             });
@@ -198,59 +207,4 @@ function expected_salary_converter(salary_value, currency1, currency2)
     return array;
 
 }
-
-/*function getCompanyReply(candidateIds){
-    var deferred = Q.defer();
-    console.log(candidateIds);
-        chat.aggregate(
-        [
-            {"$match" : {receiver_id: {$in:candidateIds}}},
-            {"$group": { "_id": { receiver_id: "$receiver_id" , is_company_reply : "$is_company_reply"} } }
-        ]
-        ).exec(function(err, chatData)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else {
-
-                candidateDetail(candidateIds, chatData)
-
-            }
-        });
-
-
-}
-
-function candidateDetail(candidateIds, chatData){
-    CandidateProfile.find({_creator : {$in:candidateIds}}).populate('_creator' ).exec(function(err, candidateData)
-    {
-        if (err)
-        {
-            logger.error(err.message, {stack: err.stack});
-        }
-        if(candidateData)
-        {
-            let candidateArray=[];
-
-            candidateData.forEach(function(item){
-
-                let anonymous = filterReturnData.removeSensativeData(item.toObject());
-                chatData.forEach(function(chatItem){
-                    if(parseInt(chatItem._id.receiver_id) === parseInt(item._creator._id) && chatItem._id.is_company_reply === 1){
-                        let anonymous = filterReturnData.removeSensativeData(item.toObject());
-                        candidateArray.push(anonymous);
-                    }
-                    else{
-                        anonymous = filterReturnData.anonymousSearchCandidateData(anonymous);
-                        candidateArray.push(anonymous);
-                    }
-                });
-            })
-
-        }
-    });
-
-}*/
 
