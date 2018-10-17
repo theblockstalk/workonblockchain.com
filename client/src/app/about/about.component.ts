@@ -101,9 +101,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                        
                     if(data._creator.refered_id && !data.first_name && !data.last_name)
                     {
-                        ////console.log("ifffffffffff");
                         this.referred_id = data._creator.refered_id;
-                        
                     }
                   if(data.terms)
                   {
@@ -122,13 +120,11 @@ export class AboutComponent implements OnInit,AfterViewInit
                       this.info.nationality = data.nationality;
                     }
 
-                    //this.info.gender = data.gender;
                     this.info.first_name =data.first_name;
                     this.info.last_name =data.last_name;
 
                     if(data.image != null )
                     {
-                      //////////console.log(data.image);
                      this.info.image_src = data.image ;
                        
 
@@ -162,14 +158,12 @@ export class AboutComponent implements OnInit,AfterViewInit
                     this.resume_class="/resume";
                      this.exp_class = "/experience";
                     this.resume_active_class='fa fa-check-circle text-success';
-                // this.router.navigate(['/resume']);
                 }
 
                 if( data.description)
                 {
                     this.exp_class = "/experience";
                     this.exp_active_class = 'fa fa-check-circle text-success';
-                    //this.router.navigate(['/experience']);
                 }
 
 
@@ -205,7 +199,6 @@ export class AboutComponent implements OnInit,AfterViewInit
   onGenderSelected(event)
   {
     this.info.gender= event.target.value;
-    ////////console.log(this.info.gender);
   }
 
 
@@ -233,7 +226,6 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
     if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1)
     {
-        //console.log("jdsbj");
       this.authenticationService.about(this.currentUser._creator,this.info)
         .subscribe(
           data =>
@@ -241,30 +233,28 @@ export class AboutComponent implements OnInit,AfterViewInit
             if(data)
             {
 
-                ////console.log(data);               
-                ////console.log(this.info.image);
               if(this.info.image)
               {
-              ////console.log("image");
-              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-              let fileCount: number = inputEl.files.length;
-              let formData = new FormData();
-              if (fileCount > 0 )
-              {
-                  if(inputEl.files.item(0).size < this.file_size)
-                  {
+
+                let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+                let fileCount: number = inputEl.files.length;
+                let formData = new FormData();
+                if (fileCount > 0 )
+                {
+                    if(inputEl.files.item(0).size < this.file_size)
+                    {
                         formData.append('photo', inputEl.files.item(0));
                  
                         this.http.post(URL+'users/image', formData ,  {
                         headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
                         }).map((res) => res).subscribe(
                         (success) =>
-                        {            
+                        {
+                            this.verify_email();
                             this.referred_email();
                             this.router.navigate(['/job']);
                         },
                         (error) =>                
-
                         {
                             if(error.message === 500 || error.message === 401)
                             {
@@ -275,8 +265,8 @@ export class AboutComponent implements OnInit,AfterViewInit
 
                             if(error.message === 403)
                             {
-                                // this.router.navigate(['/not_found']);                        
-                            } 
+                                // this.router.navigate(['/not_found']);
+                            }
                         })
                      }
                      else
@@ -287,7 +277,6 @@ export class AboutComponent implements OnInit,AfterViewInit
               }
               else 
               {
-              ////console.log("else");
                 this.referred_email();
                 this.router.navigate(['/job']);
               }
@@ -296,7 +285,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
                else 
               {
-              ////console.log("else");
+                this.verify_email();
                 this.referred_email();
                 this.router.navigate(['/job']);
               }
@@ -316,8 +305,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                     
                         if(error.message === 403)
                         {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
+                        }
           });
           
     }      
@@ -326,18 +314,13 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   referred_email()
   {
-      //console.log(this.referred_id);
-      //console.log("referred_email");
       if(this.referred_id)
                {
-                   //////console.log("ifffffffff refrred _id");
-                        ////////console.log(data.refered_id);
                          this.authenticationService.getById(this.referred_id)
                          .subscribe(
                          data => {
                             if(data)
                             {
-                                //console.log(data);
                                 if(data._creator.email)
                                 {
                                     this.email_data.fname = data.first_name;
@@ -348,8 +331,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                                     this.authenticationService.email_referred_user(this.email_data).subscribe(
                                     data =>
                                     {
-                                        //this.router.navigate(['/job']);
-                                        ////////console.log(data);
+
                                     });
                                }
                                else
@@ -357,16 +339,36 @@ export class AboutComponent implements OnInit,AfterViewInit
                                     
                                }
                             }
-                             
+
                             else
                             {
-                                
-                                
+
+
                             }
                     
                         });
                
               }
   }
-        
+  verifyStatus;
+  verify_email()
+  {
+
+    if(this.currentUser.email)
+    {
+
+        this.authenticationService.verify_client(this.currentUser.email)
+          .subscribe(
+            data => {
+            },
+            error => {
+
+            });
+
+    }
+
+  }
+
+
 }
+

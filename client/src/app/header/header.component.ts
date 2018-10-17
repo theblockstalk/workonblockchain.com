@@ -33,14 +33,12 @@ export class HeaderComponent implements OnInit {
       router.events.subscribe((val) => {
       if(location.path() != ''){
         this.route = location.path();
-          ////console.log(this.route);
           let loc= this.route;
-             // //console.log(this.loc);
          let x = loc.split("-");
           this.admin_route = x[0];
        
-      } else {
-        //this.route = 'Home'
+      }
+      else {
       }
     });
      
@@ -65,7 +63,7 @@ export class HeaderComponent implements OnInit {
                     if(data)
                     {
                         this.is_verify = data._creator.is_verify;
-                        if(this.is_verify == 0)
+                        if(this.is_verify === 0 )
                         {
                             this.success_msg = "not verify";
                         }
@@ -73,9 +71,9 @@ export class HeaderComponent implements OnInit {
                         {
                             this.success_msg='';
                         }
-						this.is_admin = data._creator.is_admin;
+                        this.is_admin = data._creator.is_admin;
                         this.user_name = data.first_name+' '+data.last_name;
-						if(this.is_admin === 1)
+						            if(this.is_admin === 1)
                         {
                           //this.admin_route = '/admin';   
                         }
@@ -88,12 +86,10 @@ export class HeaderComponent implements OnInit {
          }
          else if(this.user_type === 'company')
          {
-              //console.log("else if");
               this.authenticationService.getCurrentCompany(this.currentUser._creator)
             .subscribe(
                 data => 
                 {
-                    //console.log(data);
                     if(data)
                     {
                         this.is_verify = data._creator.is_verify;
@@ -106,10 +102,9 @@ export class HeaderComponent implements OnInit {
                             this.success_msg='';
                         }
                         this.is_admin = data._creator.is_admin;
-						this.user_name = data.first_name+' '+data.last_name;
+						            this.user_name = data.first_name+' '+data.last_name;
                         if(this.is_admin === 1)
                         {
-                          //this.admin_route = '/admin';   
                         }
                         else
                         { 
@@ -144,11 +139,7 @@ export class HeaderComponent implements OnInit {
                         }, 30000);
           this.close = JSON.parse(localStorage.getItem('close_notify')); 
        }
-      
-      //this.dataservice.verifycurrentMessage.subscribe(message => this.verifysuccessmsg = message);
-      // this.dataservice.verifyerrorMessage.subscribe(message => this.verifyerrormsg = message);
-      
-      
+
       
   }
   
@@ -157,9 +148,7 @@ export class HeaderComponent implements OnInit {
   {
       this.success_msg='';
       this.msg='';
-      //this.close = "close"; 
-      localStorage.setItem('close_notify', JSON.stringify(this.close)); 
-      //localStorage.setItem('close_notify', JSON.stringify(this.close));
+      localStorage.setItem('close_notify', JSON.stringify(this.close));
       if(this.currentUser.email)
       {
           console.log(this.currentUser.email);
@@ -229,14 +218,12 @@ export class HeaderComponent implements OnInit {
                     }
                     
                     });
-        
 
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('googleUser');
-                        localStorage.removeItem('close_notify');
-                        localStorage.removeItem('linkedinUser');
-                        localStorage.removeItem('admin_log');
-
+         localStorage.removeItem('currentUser');
+         localStorage.removeItem('googleUser');
+         localStorage.removeItem('close_notify');
+         localStorage.removeItem('linkedinUser');
+         localStorage.removeItem('admin_log');
        
     }
     

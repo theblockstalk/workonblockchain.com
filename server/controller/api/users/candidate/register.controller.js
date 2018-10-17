@@ -66,20 +66,11 @@ function create(userParam)
 		let hashedPasswordAndSalt = hash.digest('hex');
 
         createdDate= now;
-        var hashStr = crypto.createHash('sha256').update(userParam.email).digest('base64');
-        var user_info = {};
-        user_info.hash = hashStr;
-        user_info.email = userParam.email;
-        user_info.name = userParam.first_name;
-        user_info.expiry = new Date(new Date().getTime() +  4800 *1000);
-        var token = jwt_hash.encode(user_info, settings.EXPRESS_JWT_SECRET, 'HS256');
-        user_info.token = token;
-        //let verifyEmailKey = jwtToken.createJwtToken(user_info);
 
 		let new_salt = crypto.randomBytes(16).toString('base64');
 		let new_hash = crypto.createHmac('sha512', new_salt);
 		let email = new_hash.digest('hex');
-		let refered_id= 0;
+
         let newUser = new users
         ({
             email: userParam.email,
@@ -88,7 +79,6 @@ function create(userParam)
             type: userParam.type,
             ref_link: email,
             social_type: userParam.social_type,
-            verify_email_key: token,
             is_verify:is_verify,
             created_date: createdDate,
             refered_id : mongoose.Types.ObjectId(userParam.refer_by),
@@ -124,9 +114,7 @@ function create(userParam)
                         ({
                             _creator : newUser._id
                         });
-                        let userData = filterReturnData.removeSensativeData({_creator : user.toObject()} , {
-                            verify_email_key: true
-                        } )
+                        let userData = filterReturnData.removeSensativeData({_creator : user.toObject()})
                         info.save((err,user)=>
                         {
                         	if(err)
@@ -136,20 +124,14 @@ function create(userParam)
                         	}
                         	else
                         	{
-                        		if(newUser.social_type == "")
-                        		{
-                        			verify_send_email(user_info);
-                        		}
 
                         		deferred.resolve
                         		({
                                     _id:user.id,
                                     _creator: userData._creator._id,
-                                    verifyEmailKey:userData._creator.verify_email_key,
                                     type:userData._creator.type,
                                     email: userData._creator.email,
                                     ref_link: userData._creator.ref_link,
-                                    type: userData._creator.type,
                                     is_approved : userData._creator.is_approved,
                                     jwt_token: tokenn
                         		});
@@ -158,7 +140,7 @@ function create(userParam)
                 	}
                 		
                 });
-                    
+
                 }
         });
     }

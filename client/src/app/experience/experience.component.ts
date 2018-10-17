@@ -64,11 +64,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
             this.current_currency =-1;
          this.jobData = [];
             this.eduData=[];
-      // this.dataservice.currentMessage.subscribe(message => this.message = message);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.shown=true;
-      //this.currentdate = this.datePipe.transform(this.today, 'MMM');
-      //this.currentyear = this.datePipe.transform(this.today, 'yyyy');
+
       this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()]) 
       });
@@ -86,8 +84,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.authenticationService.getById(this.currentUser._id)
             .subscribe(
             data => {
-                //console.log(data.education_history_history);
-               
+
                  if(data.terms==true)
                   {
                         this.term_active_class='fa fa-check-circle text-success';
