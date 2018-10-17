@@ -4,7 +4,7 @@ const regexes = require('./regexes');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-	email: 
+	email:
 	{
 		type:String,
 		validate: regexes.email,
@@ -39,7 +39,7 @@ const UserSchema = new Schema({
 		enum: ['GOOGLE', 'LINKEDIN', '']
 	},
 	is_approved:
-	{	
+	{
 		type:Number, // 0 = false, 1 = true
         enum: [0, 1],
 		required:true,
@@ -73,7 +73,7 @@ const UserSchema = new Schema({
         enum: [0, 1],
 		required:true,
 		default:0
-	},	
+	},
 	is_unread_msgs_to_send:
 	{
 		type:Boolean,
@@ -84,11 +84,16 @@ const UserSchema = new Schema({
     	type:Boolean,
     	default:false
     },
-    dissable_account_timestamp: 
-    {	
+    dissable_account_timestamp:
+    {
     	type:Date
 	},
-	created_date:
+    viewed_explanation_popup:
+	{
+        type:Boolean,
+        default:false
+	},
+        created_date:
 	{
 		type: Date
 	}

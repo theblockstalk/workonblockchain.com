@@ -47,7 +47,7 @@ import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-ch
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
 import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
 import { BuildingCustomPageComponent } from './building-custom-page/building-custom-page.component';
-import { CandidateTermsComponent } from './candidate-terms/candidate-terms.component'; 
+import { CandidateTermsComponent } from './candidate-terms/candidate-terms.component';
 import { NgxEditorModule } from 'ngx-editor';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -77,6 +77,7 @@ import { LoginResolver } from './is-loggedin.resolver';
 import { SeoService } from './seo.service';
 import { LinkedinImportComponent } from './linkedin-import/linkedin-import.component';
 import { WelcomePopupEditorComponent } from './welcome-popup-editor/welcome-popup-editor.component';
+import { ChatPopupEditorComponent } from './chat-popup-editor/chat-popup-editor.component';
 
 const google_id = environment.google_id;
 //console.log(google_id);
@@ -147,6 +148,7 @@ const appRoutes: Routes = [
     {path : 'legal-notice' , component: LegalNoticeComponent},
     {path : 'fees' , component: FeesComponent},
     {path : 'change-password' , component: ChangePasswordComponent},
+    {path: 'admin-chat-popup-editor', component: ChatPopupEditorComponent},
     //import { SettingsComponent } from './settings/settings.component';
 
     { path: '**', redirectTo: '' }
@@ -208,6 +210,7 @@ const appRoutes: Routes = [
     FeesComponent,
     LinkedinImportComponent,
     WelcomePopupEditorComponent,
+    ChatPopupEditorComponent,
 
   ],
   imports: [
@@ -228,7 +231,7 @@ const appRoutes: Routes = [
 	ScrollToModule.forRoot(),
 	LoadingModule
   ],
-  providers: 
+  providers:
   [
     UserService,DatePipe,DataService,CookieService,LoginResolver,SeoService,
   {

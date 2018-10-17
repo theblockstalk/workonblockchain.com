@@ -1171,12 +1171,7 @@ export class EditCandidateProfileComponent implements OnInit {
         {
             this.platform_log = "Please fill year of experience";
         }
-            
-       if(this.language.length<=0)
-       {
-           console.log(this.language.length);
-           this.lang_log="Please select min 1 language";
-       }
+
         
         if(this.LangexpYear.length !==  this.language.length)
         {
