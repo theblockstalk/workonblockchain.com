@@ -33,7 +33,6 @@ module.exports = function (req,res)
 
 function filter(params, userId)
 {
-	
     var result_array = [];
     var query_result=[];
     var query;
@@ -151,7 +150,6 @@ function filter(params, userId)
 
                 if (err){
                     logger.error(err.message, {stack: err.stack});
-                    deferred.reject(err.name + ': ' + err.message);
                 }
                 if(candidateData)
                 {

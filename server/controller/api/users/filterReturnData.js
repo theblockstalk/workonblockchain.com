@@ -6,9 +6,10 @@ const removeSensativeData = module.exports.removeSensativeData = function remove
 	{
 		delete userDoc._creator.password_hash;
 	    delete userDoc._creator.salt;
-	    delete userDoc._creator.jwt_token;
-	    delete userDoc._creator.verify_email_key;
-	    delete userDoc._creator.forgot_password_key;
+        if(!sendOptions) sendOptions={};
+        if (!sendOptions.jwt_token) delete userDoc._creator.jwt_token;
+        if (!sendOptions.verify_email_key )delete userDoc._creator.verify_email_key;
+        if (!sendOptions.forgot_password_key) delete userDoc._creator.forgot_password_key;
 	}
 
     return userDoc;

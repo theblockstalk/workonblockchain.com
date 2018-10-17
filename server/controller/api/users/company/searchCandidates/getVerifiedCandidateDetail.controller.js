@@ -49,6 +49,7 @@ function getVerifiedCandidateDetail(params,userId)
     });
 
 
+
     return deferred.promise;
 
 }

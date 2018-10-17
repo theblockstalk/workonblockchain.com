@@ -8,7 +8,6 @@ async function getUserFromToken(req) {
     let token = req.headers.authorization;
     let payload = jwtToken.verifyJwtToken(token);
 
-
 	const user = await mongooseUsers.findOne({_id : payload.id});
 
     if (user.jwt_token !== token) errors.throwError("Jwt token not found", 401);
@@ -41,6 +40,7 @@ module.exports.isValidUser = asyncMiddleware(async function isValidUser(req, res
 module.exports.isValidCompany = asyncMiddleware(async function isValidCompany(req, res, next) {
     await getUserFromToken(req);
     let user = req.auth.user;
+    console.log(user);
     if (user.type !== 'company') errors.throwError("User is not a company", 403);
     if (user.is_verify !== 1) errors.throwError("User is not verified", 403);
     if (user.is_approved !== 1) errors.throwError("User is not a approved", 403);

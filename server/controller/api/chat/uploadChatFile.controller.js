@@ -27,8 +27,6 @@ const logger = require('../../services/logger');
 
 module.exports = function (req, res)
 {
-    //console.log(req.file);
-    //console.log('done new');
     let path;
     if (settings.isLiveApplication()) {
         path = req.file.location; // for S3 bucket
