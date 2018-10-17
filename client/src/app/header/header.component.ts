@@ -47,84 +47,11 @@ export class HeaderComponent implements OnInit {
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser')); 
      // //console.log(this.currentUser);
-     
-      if(this.currentUser )
-      {
-           this.user_type = this.currentUser.type;
-          
-          if(this.user_type === 'candidate')
-          {
-          
-           this.authenticationService.getById(this.currentUser._id)
-            .subscribe(
-                data => 
-                {
-                   
-                    if(data)
-                    {
-                        this.is_verify = data._creator.is_verify;
-                        if(this.is_verify === 0 )
-                        {
-                            this.success_msg = "not verify";
-                        }
-                        else
-                        {
-                            this.success_msg='';
-                        }
-                        this.is_admin = data._creator.is_admin;
-                        this.user_name = data.first_name+' '+data.last_name;
-						            if(this.is_admin === 1)
-                        {
-                          //this.admin_route = '/admin';   
-                        }
-                        else
-                        { 
-                            this.admin_route = '';
-                        }
-                    }
-                });
-         }
-         else if(this.user_type === 'company')
-         {
-              this.authenticationService.getCurrentCompany(this.currentUser._creator)
-            .subscribe(
-                data => 
-                {
-                    if(data)
-                    {
-                        this.is_verify = data._creator.is_verify;
-                        if(this.is_verify == 0)
-                        {
-                            this.success_msg = "not verify";
-                        }
-                        else
-                        {
-                            this.success_msg='';
-                        }
-                        this.is_admin = data._creator.is_admin;
-						            this.user_name = data.first_name+' '+data.last_name;
-                        if(this.is_admin === 1)
-                        {
-                        }
-                        else
-                        { 
-                            this.admin_route = '';
-                        }
-                    }
-                });
-		 }
-        }
-      else
-      {
-          this.currentUser=null;
-           this.user_type='';
-          
-      }   
-      
+     this.verifyEmailBar();
+
   }
 
-    verifysuccessmsg;
-    verifyerrormsg;
+
   ngOnInit() 
   {
       this.success='';
@@ -142,8 +69,87 @@ export class HeaderComponent implements OnInit {
 
       
   }
-  
-  
+
+  verifyEmailBar()
+  {
+    if(this.currentUser )
+    {
+      this.user_type = this.currentUser.type;
+
+      if(this.user_type === 'candidate')
+      {
+
+        this.authenticationService.getById(this.currentUser._id)
+          .subscribe(
+            data =>
+            {
+
+              if(data)
+              {
+                this.is_verify = data._creator.is_verify;
+                if(this.is_verify === 0 && data.terms === true && data.description && data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day &&data.current_salary && data.current_currency &&data.current_salary && data.current_currency && data.why_work)
+                {
+                  this.success_msg = "not verify";
+                }
+                else
+                {
+                  this.success_msg='';
+                }
+                this.is_admin = data._creator.is_admin;
+                this.user_name = data.first_name+' '+data.last_name;
+                if(this.is_admin === 1)
+                {
+                  //this.admin_route = '/admin';
+                }
+                else
+                {
+                  this.admin_route = '';
+                }
+              }
+            });
+      }
+      else if(this.user_type === 'company')
+      {
+        this.authenticationService.getCurrentCompany(this.currentUser._creator)
+          .subscribe(
+            data =>
+            {
+              if(data)
+              {
+                this.is_verify = data._creator.is_verify;
+                if(this.is_verify == 0)
+                {
+                  this.success_msg = "not verify";
+                }
+                else
+                {
+                  this.success_msg='';
+                }
+                this.is_admin = data._creator.is_admin;
+                this.user_name = data.first_name+' '+data.last_name;
+                if(this.is_admin === 1)
+                {
+                }
+                else
+                {
+                  this.admin_route = '';
+                }
+              }
+            });
+      }
+    }
+    else
+    {
+      this.currentUser=null;
+      this.user_type='';
+
+    }
+
+
+  }
+
+
+
   verify_client()
   {
       this.success_msg='';
