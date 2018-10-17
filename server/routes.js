@@ -65,9 +65,9 @@ const chatGetEmployOffer = require('./controller/api/chat/chatGetEmployOffer.con
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
-const adminChatGetJobDescMsg = require('./controller/api/users/admins/chat/getJobDescMessage.controller');
-const adminChatSetUnreadMsgStatus = require('./controller/api/users/admins/chat/setUnreadMessageStatus.controller');
-const adminChatUpdateMsgStatus = require('./controller/api/users/admins/chat/updateChatMessageStatus.controller');
+const adminChatGetJobDescMsg = require('./controller/api/chat/getJobDescMessage.controller');
+const adminChatSetUnreadMsgStatus = require('./controller/api/chat/setUnreadMessageStatus.controller');
+const adminChatUpdateMsgStatus = require('./controller/api/chat/updateChatMessageStatus.controller');
 const adminApproveUser = require('./controller/api/users/admins/approveUser.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
