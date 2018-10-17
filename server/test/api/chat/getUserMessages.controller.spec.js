@@ -8,6 +8,7 @@ const docGenerator = require('../../helpers/docGenerator');
 const companyHelper = require('../users/company/companyHelpers');
 const candidateHelper = require('../users/candidate/candidateHelpers');
 const chatHelper = require('./chatHelpers');
+const Chats = require('../../../model/chat');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -40,10 +41,16 @@ describe('get user messages', function () {
             const insertRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
 
             const res = await chatHelper.getUserMessages(candidateDoc._id,companyDoc.jwt_token);
+            const chatRes = await Chats.findOne({sender_id : companyDoc._id}).lean();
+
             const responseMessage = res.body.datas[0];
+
             responseMessage.is_company_reply.should.equal(1);
             responseMessage.receiver_id.should.equal(candidateDoc._id.toString());
             responseMessage.sender_id.should.equal(companyDoc._id.toString());
+            chatRes.sender_name.should.equal(message.sender_name);
+            chatRes.message.should.equal(message.message);
+
         })
     })
 });

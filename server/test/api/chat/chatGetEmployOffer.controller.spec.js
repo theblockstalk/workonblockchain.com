@@ -10,6 +10,7 @@ const userHelper = require('../users/usersHelpers');
 const companyHelper = require('../users/company/companyHelpers');
 const candidateHelper = require('../users/candidate/candidateHelpers');
 const chatHelper = require('./chatHelpers');
+const mongoose = require('mongoose');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -44,16 +45,27 @@ describe('get employment offer detail', function () {
             const offerData = docGenerator.employmentOffer();
             const res = await chatHelper.sendEmploymentOffer(companyUserDoc._id,candidateUserDoc._id,messageData,offerData,companyUserDoc.jwt_token);
 
+            const messagesRes = await chatHelper.getMessages(companyUserDoc._id,candidateUserDoc._id,companyUserDoc.jwt_token);
+
+            const status = 1;
+            const updateRes = await chatHelper.updateJobStatus(messagesRes.body.datas[0]._id,status,candidateUserDoc.jwt_token);
+
             const msgTag = 'employment_offer';
 
             const employmentOfferDetails = await chatHelper.getEmploymentOfferDetail(companyUserDoc._id, candidateUserDoc._id, msgTag, companyUserDoc.jwt_token);
-
-            const chatDoc = await Chats.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
             const response = employmentOfferDetails.body;
 
-            response.datas.should.equal(chatDoc.is_job_offered);
-            chatDoc.sender_name.should.equal(messageData.sender_name);
-            chatDoc.receiver_name.should.equal(messageData.receiver_name);
+            const chatDoc = await Chats.findOne({_id: response.datas}).lean();
+
+            chatDoc.message.should.equal(offerData.message);
+            chatDoc.description.should.equal(offerData.description);
+            chatDoc.job_title.should.equal(offerData.job_title);
+            chatDoc.salary.should.equal(offerData.salary);
+            chatDoc.salary_currency.should.equal(offerData.currency);
+            chatDoc.job_type.should.equal(offerData.job_type);
+            chatDoc.msg_tag.should.equal(offerData.msg_tag);
+            chatDoc.is_job_offered.should.equal(1);
+
         })
     })
 });

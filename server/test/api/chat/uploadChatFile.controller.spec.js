@@ -38,6 +38,7 @@ describe('upload chat file', function () {
 
             const res = await chatHelper.uploadFile(userDoc._id,file,userDoc.jwt_token);
             const chatRes = await Chats.findOne({sender_id : userDoc._id}).lean();
+            assert(chatRes.file_name.includes(file.name))
         })
     })
 });
