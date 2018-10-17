@@ -199,7 +199,7 @@
 									{{data.description}}
 									</p>
 								</div>
-								<div class="col-sm-4">
+								<div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
 									<h4>Languages</h4>
 									<ul>
 										<li *ngFor = 'let lang of data.programming_languages'>
