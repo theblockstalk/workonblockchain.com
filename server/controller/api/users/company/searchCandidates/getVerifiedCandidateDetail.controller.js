@@ -6,9 +6,8 @@ const filterReturnData = require('../../filterReturnData');
 
 module.exports = function (req, res)
     {
-	    let userId = req.auth.user._id;
-	
-        getVerifiedCandidateDetail(req.body).then(function (user)
+        let userId = req.auth.user._id;
+        getVerifiedCandidateDetail(req.body,userId).then(function (user)
         {
             if (user)
             {
@@ -41,8 +40,7 @@ function getVerifiedCandidateDetail(params,userId)
                 var result_array = [];
 
                 filterReturnData.candidateAsCompany(candidateData[0].toObject(),userId).then(function(data) {
-                    console.log(data);
-                    deferred.resolve(data);
+                   deferred.resolve(data);
 
                 })
 
@@ -51,36 +49,6 @@ function getVerifiedCandidateDetail(params,userId)
     });
 
 
-    /*CandidateProfile.find({_creator : params._id}).populate('_creator' ).exec(function(err, result)
-            {
-                if (err)
-                {
-                    logger.error(err.message, {stack: err.stack});
-                    deferred.reject(err.name + ': ' + err.message);
-                }
-                if(result)
-                {	
-                	var query_result = result[0].toObject();
-                	
-            		let anonymous = filterReturnData.removeSensativeData(query_result);
-            		
-                	if(params.company_reply == 1 )
-                    {               		
-        				 deferred.resolve(anonymous);
-                    }
-                	
-                	if(params.company_reply == 0 )
-                    {    
-                		logger.debug("anonymous candidate : " + anonymous);
-                        anonymous = filterReturnData.anonymousSearchCandidateData(anonymous);
-                                              
-                    }
-                	deferred.resolve(anonymous);
-                	
-                	
-                }
-            });
-*/
     return deferred.promise;
 
 }

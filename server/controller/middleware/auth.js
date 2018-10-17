@@ -41,7 +41,6 @@ module.exports.isValidUser = asyncMiddleware(async function isValidUser(req, res
 module.exports.isValidCompany = asyncMiddleware(async function isValidCompany(req, res, next) {
     await getUserFromToken(req);
     let user = req.auth.user;
-    console.log(user);
     if (user.type !== 'company') errors.throwError("User is not a company", 403);
     if (user.is_verify !== 1) errors.throwError("User is not verified", 403);
     if (user.is_approved !== 1) errors.throwError("User is not a approved", 403);

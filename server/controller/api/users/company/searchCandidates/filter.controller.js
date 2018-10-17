@@ -142,10 +142,7 @@ function filter(params, userId)
                 queryString.push(wordSearch);
 
             }
-
-            console.log("length");
-            
-            
+                       
 
             const searchQuery = { $and: queryString };
 

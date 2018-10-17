@@ -8,7 +8,6 @@ const chat = require('../../../../../model/chat');
 module.exports = function (req,res)
 {
     let userId = req.auth.user._id;
-
     verified_candidate(req.body, userId).then(function (err, data)
     {
     	
@@ -66,6 +65,7 @@ function verified_candidate(params,userId)
                     else
                     {
                         var result_array = [];
+
                         candidateData.forEach(function(item)
                         {
                             filterReturnData.candidateAsCompany(item, userId).then(function(data) {
