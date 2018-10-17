@@ -52,7 +52,7 @@ function verified_candidate(params,userId)
             {
                 ids.push(item._id);
             });
-            console.log(ids);
+
             CandidateProfile.find({_creator : {$in : ids }}).populate('_creator').exec(function(err, candidateData)
             {
 
