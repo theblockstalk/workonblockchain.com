@@ -64,12 +64,17 @@ function verified_candidate(params,userId)
 
                     candidateData.forEach(function(item)
                     {
-                        result_array.push(filterReturnData.candidateAsCompany(item, userId));
-                    });
+                        filterReturnData.candidateAsCompany(item, userId).then(function(data) {
+                            result_array.push(data);
+                            
+                            if(candidateData.length === result_array.length){
+                                console.log(result_array);
+                                deferred.resolve(result_array);
+                            }
+                        })
 
-                    console.log(result_array);
+                    })
 
-                    deferred.resolve(result_array);
                 }
 
             });
@@ -87,5 +92,3 @@ function verified_candidate(params,userId)
 
     return deferred.promise;
 }
-
-

@@ -469,6 +469,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     filter_data;
     response;
     count;
+    candidate_data;
     getVerrifiedCandidate()
     {
         this.length=0;
@@ -482,6 +483,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         .subscribe(
             dataa => {
               console.log(dataa);
+              this.candidate_data = dataa;
               this.cand_data.push(dataa);
             },
 

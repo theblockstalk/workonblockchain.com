@@ -2,7 +2,6 @@ const Chat = require('../../../model/chat');
 
 const removeSensativeData = module.exports.removeSensativeData = function removeSensativeData(userDoc)
 {
-    console.log("remove data");
     if(userDoc._creator)
 	{
 		delete userDoc._creator.password_hash;
@@ -20,7 +19,7 @@ const anonymosCandidateFields = ['image', 'locations', 'roles', 'expected_salary
     'availability_day', 'why_work', 'commercial_platform', 'experimented_platform', 'platforms', 'current_currency',
     'current_salary', 'programming_languages', 'education_history', 'work_history', 'description', '_creator','nationality'];
 
-module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
+const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
     
 	if(candidateDoc.first_name && candidateDoc.last_name && candidateDoc.work_history)
 	{
@@ -66,8 +65,14 @@ function createInitials(first_name, last_name) {
 }
 
 
+
 module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
     const acceptedJobOffer = await Chat.find({sender_id: candidateDoc._creator._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
-    if (acceptedJobOffer) return removeSensativeData(candidateDoc)
-    else return anonymousSearchCandidateData(candidateDoc)
+
+    if (acceptedJobOffer && acceptedJobOffer.length>0)
+        return removeSensativeData(candidateDoc);
+
+    else
+        return anonymousSearchCandidateData(candidateDoc);
+
 };
