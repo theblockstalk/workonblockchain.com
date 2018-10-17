@@ -156,7 +156,8 @@
                   </ng-container>
                   <ng-template #company_logo_top>
                     <div class = "user-pic">
-                      <img src="{{data.image}}" alt="">
+                      <img *ngIf="data.image" src="{{data.image}}" alt="">
+                      <img *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
                       <a class = "mobile_name" [routerLink]="['/candidate-detail']" [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2>{{data.first_name}}</h2></a><br/>
                     </div>
                   </ng-template>
