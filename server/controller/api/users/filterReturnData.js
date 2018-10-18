@@ -1,6 +1,6 @@
 const Chat = require('../../../model/chat');
 
-const removeSensativeData = module.exports.removeSensativeData = function removeSensativeData(userDoc)
+const removeSensativeData = module.exports.removeSensativeData = function removeSensativeData(userDoc,sendOptions)
 {
     if(userDoc._creator)
 	{
