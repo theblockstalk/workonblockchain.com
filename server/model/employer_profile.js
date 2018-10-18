@@ -86,10 +86,6 @@ const CompanyProfileSchema = new Schema({
 
 });
 
-function validator (character) {
-    return character.length <= 10;
-};
-
 module.exports = mongoose.model('CompanyProfile',CompanyProfileSchema);
 
 
