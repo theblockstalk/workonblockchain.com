@@ -182,7 +182,10 @@ const CandidateProfileSchema = new Schema({
                 type: String,
                 required: true
             },
-            description: String,
+            description: {
+                type: String,
+                maxlength: 3000
+            },
             startdate: Date,
             enddate: Date,
             currentwork: {
@@ -194,6 +197,7 @@ const CandidateProfileSchema = new Schema({
     description:
     {
         type:String,
+        maxlength: 3000
     },
     _creator : 
     { 
