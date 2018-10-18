@@ -66,8 +66,9 @@ module.exports.message = function message() {
 
 module.exports.chatFile = function chatFile() {
     return {
-        message: "file ",
-        file_name: ""
+        message: 'file ',
+        name: 'image.jpg',
+        path: __dirname + '/image.jpg'
     };
 };
 

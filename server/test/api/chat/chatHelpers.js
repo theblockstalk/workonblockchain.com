@@ -101,7 +101,8 @@ const getUserMessages = module.exports.getUserMessages = async function getUserM
     return res;
 }
 
-const insertChatFile= module.exports.insertChatFile = async function insertChatFile(receverId,msgData,formData,chatFile,jwtToken) {
+const insertChatFile= module.exports.insertChatFile = async function insertChatFile(receverId,msgData,chatFile,jwtToken) {
+    const myFile = fs.readFileSync(chatFile.path);
     const data = {
         'receiver_id': receverId,
         'sender_name': msgData.sender_name,
@@ -117,12 +118,27 @@ const insertChatFile= module.exports.insertChatFile = async function insertChatF
         'is_company_reply': msgData.is_company_reply,
         'interview_location': msgData.interview_location,
         'interview_time': msgData.interview_time,
-        'file_name': chatFile.file_name
+        'file_name': chatFile.name
     };
     const res = await chai.request(server)
-        .post('/users/insert_chat_file',formData)
+        .post('/users/insert_chat_file')
         .set('Authorization', jwtToken)
-        .send(data);
+        .field('receiver_id',receverId.toString())
+        .field('sender_name',msgData.sender_name)
+        .field('receiver_name',msgData.receiver_name)
+        .field('message',chatFile.message)
+        .field('description',msgData.description)
+        .field('job_title',msgData.job_title)
+        .field('salary',msgData.salary)
+        .field('currency',msgData.currency)
+        .field('date_of_joining',msgData.date_of_joining)
+        .field('job_type',msgData.job_type)
+        .field('msg_tag',msgData.msg_tag)
+        .field('is_company_reply',msgData.is_company_reply)
+        .field('interview_location',msgData.interview_location)
+        .field('interview_time',msgData.interview_time)
+        .field('file_name',chatFile.name)
+        .attach('photo', myFile, chatFile.name);
     res.should.have.status(200);
     return res;
 }
