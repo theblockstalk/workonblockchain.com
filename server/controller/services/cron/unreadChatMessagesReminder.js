@@ -34,9 +34,9 @@ function get_unread_msgs(){
             else{
                 for(var i=0;i<result.length;i++){
                     //console.log(result[i]);
-                    users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1,"type":1}, function (err, newResult){
+                    users.findOne({ _id: result[i],is_unread_msgs_to_send: true,disable_account: false},{"email":1,"type":1}, function (err, newResult){
                         if(newResult){
-                            if(newResult.type === 'candidate'){
+							if(newResult.type === 'candidate'){
                                 CandidateProfile.find({ _creator: newResult._id},{"first_name":1}, function (err, query_data){
                                     if (err){
                                         logger.error(err.message, {stack: err.stack});
@@ -59,6 +59,9 @@ function get_unread_msgs(){
                                 });
                             }
                         }
+						else{
+							logger.debug("nothing to do");
+						}
                     });
                 }
                 deferred.resolve(result);

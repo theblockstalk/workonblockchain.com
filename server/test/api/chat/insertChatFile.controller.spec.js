@@ -39,7 +39,6 @@ describe('send a file in chat', function () {
             //sending a message
             const messageData = docGenerator.message();
             const chatFileData = docGenerator.chatFile();
-
             const res = await chatHelper.insertChatFile(userDoc._id,messageData,chatFileData,companyDoc.jwt_token);
 
             const chatDoc = await Chats.findOne({sender_id: companyDoc._id,receiver_id: userDoc._id}).lean();
