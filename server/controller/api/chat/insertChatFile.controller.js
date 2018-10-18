@@ -27,7 +27,14 @@ const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
 module.exports = function (req,res){
-    save_chat_file(req.body).then(function (err, about)
+	let path;
+    if (settings.isLiveApplication()) {
+        path = req.file.location; // for S3 bucket
+    } else {
+        path = settings.FILE_URL+req.file.filename;
+    }
+	let userId = req.auth.user._id;
+    save_chat_file(req.body,userId,path).then(function (err, about)
     {
         if (about)
         {
@@ -44,13 +51,13 @@ module.exports = function (req,res){
         });
 }
 
-function save_chat_file(data){
+function save_chat_file(data,senderId,fileName){
 	console.log(data.is_company_reply);
     var current_date = new Date();
 	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
     let newChat = new chat({
-		sender_id : mongoose.Types.ObjectId(data.sender_id),
+		sender_id : mongoose.Types.ObjectId(senderId),
 		receiver_id : mongoose.Types.ObjectId(data.receiver_id),
         sender_name: data.sender_name,
         receiver_name: data.receiver_name,
@@ -61,7 +68,7 @@ function save_chat_file(data){
         msg_tag: data.msg_tag,
         is_company_reply: data.is_company_reply,
         job_type: data.job_type,
-        file_name: data.file_name,
+        file_name: fileName,
         is_read: 0,
         date_created: my_date
     });

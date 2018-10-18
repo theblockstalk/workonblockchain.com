@@ -657,6 +657,7 @@ export class ChatComponent implements OnInit {
 	  this.file_msg = '';
 	  this.img_name = '';
 	  if(this.credentials.date && this.credentials.time && this.credentials.location){
+          $("#myModal").modal("hide");
           //console.log('interview');
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
           this.is_company_reply = 1;
@@ -683,7 +684,7 @@ export class ChatComponent implements OnInit {
                     this.credentials.time = '';
                     this.credentials.location = '';
                     this.credentials.description = '';
-					$("#myModal").modal("hide");
+
 					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
                     .subscribe(
                         data => {
@@ -950,7 +951,7 @@ export class ChatComponent implements OnInit {
 	  this.credentials.id = id;
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log("show_msg_area: " + this.show_msg_area);
-      setInterval(() => {
+      //setInterval(() => {
         //receiver,sender
         //console.log("ID: " + this.credentials.id);
         this.authenticationService.get_user_messages(this.credentials.id, this.currentUser._creator)
@@ -1037,7 +1038,7 @@ export class ChatComponent implements OnInit {
               }
             }
           );
-      }, 2000);
+      //}, 2000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver
@@ -1087,27 +1088,34 @@ export class ChatComponent implements OnInit {
         let formData = new FormData();
         if (fileCount > 0 && inputEl.files.item(0).size < this.file_size)
         {
+            this.msg_tag = 'normal';
+            this.credentials.msg_body = '';
             formData.append('photo', inputEl.files.item(0));
+            formData.append('receiver_id', this.credentials.id);
+            formData.append('sender_name', this.display_name);
+            formData.append('receiver_name', this.credentials.email);
+            formData.append('message', this.credentials.msg_body);
+            formData.append('job_title', this.job_title);
+            formData.append('salary', this.salary);
+            formData.append('date_of_joining', this.date_of_joining);
+            formData.append('job_type', this.job_type);
+            formData.append('msg_tag', this.msg_tag);
+            formData.append('is_company_reply','1');
             //console.log(inputEl.files.item(0).size);
-            this.http.post(back_url+'users/upload_chat_file/'+this.currentUser._creator,formData, {
+            /*this.http.post(back_url+'users/upload_chat_file',formData, {
             headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
         }).map((res) => res).subscribe(
             (success) =>
-            {
+            {*/
               //console.log(success);
-              this.file_name = success;
-              this.msg_tag = 'normal';
-              this.credentials.msg_body = '';
-			  this.is_company_reply = 1;
-              this.authenticationService.send_file(this.currentUser._creator,this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.job_title,this.salary,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.file_name)
+              this.authenticationService.send_file(formData)
                 .subscribe(
                     data => {
-                        //console.log(data);
-                        this.credentials.msg_body = '';
 						this.file_uploaded = 1;
 						this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
 						.subscribe(
 							data => {
+							  console.log(data['datas']);
 								this.new_msgss = data['datas'];
 								this.job_desc = data['datas'][0];
 							},
@@ -1138,8 +1146,8 @@ export class ChatComponent implements OnInit {
                                     }
                     }
                 );
-            },
-            (error) => console.log(error))
+            /*},
+            (error) => console.log(error))*/
         }
 		else{
 			this.file_uploaded = 1;
