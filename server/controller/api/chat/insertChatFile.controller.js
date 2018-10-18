@@ -27,8 +27,16 @@ const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
 module.exports = function (req,res){
+	let path = '';
+	if(req.file){
+		if (settings.isLiveApplication()) {
+			path = req.file.location; // for S3 bucket
+		} else {
+			path = settings.FILE_URL+req.file.filename;
+		}
+	}
 	let userId = req.auth.user._id;
-    save_chat_file(req.body,userId).then(function (err, about)
+    save_chat_file(req.body,userId,path).then(function (err, about)
     {
         if (about)
         {
@@ -45,7 +53,7 @@ module.exports = function (req,res){
         });
 }
 
-function save_chat_file(data,senderId){
+function save_chat_file(data,senderId,fileName){
 	console.log(data.is_company_reply);
     var current_date = new Date();
 	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
@@ -62,7 +70,7 @@ function save_chat_file(data,senderId){
         msg_tag: data.msg_tag,
         is_company_reply: data.is_company_reply,
         job_type: data.job_type,
-        file_name: data.file_name,
+        file_name: fileName,
         is_read: 0,
         date_created: my_date
     });
