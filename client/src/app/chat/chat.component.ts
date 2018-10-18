@@ -684,7 +684,6 @@ export class ChatComponent implements OnInit {
             this.credentials.time = '';
             this.credentials.location = '';
             this.credentials.description = '';
-
             this.authenticationService.get_user_messages(this.credentials.id, this.currentUser._creator)
               .subscribe(
                 data => {

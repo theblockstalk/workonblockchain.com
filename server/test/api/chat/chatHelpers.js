@@ -8,7 +8,7 @@ const fs = require('fs');
 chai.use(chaiHttp);
 
 const insertMessage = module.exports.insertMessage = async function insertMessage(senderId,receverId,msgData,jwtToken) {
-     const data = {
+    const data = {
         'sender_id': senderId,
         'receiver_id': receverId,
         'sender_name': msgData.sender_name,
