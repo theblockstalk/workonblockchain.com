@@ -50,6 +50,7 @@ function approve_users(_id , data)
 
     function admin_approval(userDoc)
     {
+        console.log(userDoc);
         var set =
             {
                 is_approved: data.is_approve,
