@@ -65,7 +65,6 @@ function update_candidate_profile(_id,userParam)
                 current_salary: userParam.detail.salary,
                 current_currency : userParam.detail.current_currency,                
                 programming_languages: userParam.detail.language_experience_year,
-                // work_experience_year : userParam.detail.platform_exp,
                 education_history :  userParam.education,
                 work_history: userParam.work,
                 description :userParam.detail.intro

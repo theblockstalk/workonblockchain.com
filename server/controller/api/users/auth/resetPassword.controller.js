@@ -10,7 +10,6 @@ var crypto = require('crypto');
 
 module.exports = function (req,res)
 {
-    // //console.log(req.params.hash);
     reset_password(req.params.hash,req.body).then(function (err, data)
     {
         if (data)
@@ -32,18 +31,15 @@ module.exports = function (req,res)
 function reset_password(hash,data)
 {
     var deferred = Q.defer();
-    ////console.log(hash);
-    ////console.log(data);
+
     var token = jwt_hash.decode(hash, settings.EXPRESS_JWT_SECRET, 'HS256');
-    ////console.log("data");
-    ////console.log(data);
+
     if(new Date(token.expiry) > new Date())
     {
-        ////console.log(token);
+
         users.findOne({ forgot_password_key :hash  }, function (err, result)
         {
 
-            console.log(result);
             if (err){
                 logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
@@ -66,7 +62,6 @@ function reset_password(hash,data)
              let hash = crypto.createHmac('sha512', salt);
      		hash.update(data.password);
      		let hashedPasswordAndSalt = hash.digest('hex');
-     		////console.log(hashedPasswordAndSalt);
 
              var set =
                  {

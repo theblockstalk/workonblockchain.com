@@ -518,11 +518,11 @@ export class UserService {
             });
 
     }
-
-    change_password(id: string, params : any)
+    
+    change_password(params : any)
     {
-
-        return this.http.put<any>(URL+'users/change_password/' + id, params, {
+        
+        return this.http.put<any>(URL+'users/change_password' , params, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
