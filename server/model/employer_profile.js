@@ -73,7 +73,8 @@ const CompanyProfileSchema = new Schema({
     },
     company_description:
     {
-    	type:String
+    	type: String,
+        maxlength: 3000
     },       
 
     _creator : 
@@ -84,6 +85,10 @@ const CompanyProfileSchema = new Schema({
 
 
 });
+
+function validator (character) {
+    return character.length <= 10;
+};
 
 module.exports = mongoose.model('CompanyProfile',CompanyProfileSchema);
 
