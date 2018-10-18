@@ -27,7 +27,6 @@ module.exports = function (req,res)
 function emailVerify(token)
 {
     var deferred = Q.defer()
-    console.log(token);
     var data = jwt_hash.decode(token, settings.EXPRESS_JWT_SECRET, 'HS256');
 
     if(new Date(data.expiry) > new Date())
