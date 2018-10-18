@@ -6,6 +6,7 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Candidates = require('../../../../model/candidate_profile');
 const docGenerator = require('../../../helpers/docGenerator');
+const imageInitialize = require('../../../helpers/imageInitialize');
 const candidateHepler = require('./candidateHelpers');
 
 const assert = chai.assert;
@@ -14,6 +15,10 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('upload profile image', function () {
+
+    beforeEach(async () => {
+        await imageInitialize.initialize();
+    })
 
     afterEach(async () => {
         console.log('dropping database');
