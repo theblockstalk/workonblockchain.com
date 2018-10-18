@@ -27,12 +27,14 @@ const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
 module.exports = function (req,res){
-	let path;
-    if (settings.isLiveApplication()) {
-        path = req.file.location; // for S3 bucket
-    } else {
-        path = settings.FILE_URL+req.file.filename;
-    }
+	let path = '';
+	if(req.file){
+		if (settings.isLiveApplication()) {
+			path = req.file.location; // for S3 bucket
+		} else {
+			path = settings.FILE_URL+req.file.filename;
+		}
+	}
 	let userId = req.auth.user._id;
     save_chat_file(req.body,userId,path).then(function (err, about)
     {

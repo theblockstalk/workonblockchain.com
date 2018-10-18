@@ -1,5 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const FormData = require('form-data');
+const fs = require('fs');
 const mongo = require('../../helpers/mongo');
 const Chats = require('../../../model/chat');
 const Users = require('../../../model/users');
@@ -37,7 +39,10 @@ describe('send a file in chat', function () {
             //sending a message
             const messageData = docGenerator.message();
             const chatFileData = docGenerator.chatFile();
-            const res = await chatHelper.insertChatFile(companyDoc._id,userDoc._id,messageData,chatFileData,companyDoc.jwt_token);
+            let formData = new FormData();
+            formData.append('photo', '');
+            
+            const res = await chatHelper.insertChatFile(userDoc._id,messageData,formData,chatFileData,companyDoc.jwt_token);
 
             const chatDoc = await Chats.findOne({sender_id: companyDoc._id,receiver_id: userDoc._id}).lean();
             chatDoc.is_company_reply.should.equal(messageData.is_company_reply);
