@@ -61,10 +61,16 @@ function get_job_desc_msgs(data){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            ////console.log(data);
-            deferred.resolve({
-                datas:data
-            });
+            if(data.length > 0) {
+                deferred.resolve({
+                    datas: data
+                });
+            }
+            else{
+                deferred.resolve({
+                    datas: 0
+                });
+            }
         }
     });
     return deferred.promise;

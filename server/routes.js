@@ -74,8 +74,6 @@ const adminComanyFilter = require('./controller/api/users/admins/companyFilter.c
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
-const pagesGetAllContent = require('./controller/api/pages/getAllContent.controller');
-
 
 router.get('/', healthCheck);
 
@@ -112,7 +110,7 @@ router.put('/users/update_profile', auth.isLoggedIn, candidateUpdate);
 
 // Companies
 router.post('/users/create_employer', companyRegister);
-router.get('/users/company',auth.isLoggedIn, companyGet);
+router.get('/users/company',auth.isAdmin, companyGet);
 router.get('/users/current_company/:_id',auth.isLoggedIn, companyGetCurrent);
 router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
 router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
