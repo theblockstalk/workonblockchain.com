@@ -28,9 +28,19 @@ const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
 module.exports = function insert_message_job(req,res){
-    let sanitizeddescription = sanitize.sanitizeHtml(req.unsanitizedBody.description);
-    let sanitizedmessage = sanitize.sanitizeHtml(req.unsanitizedBody.message);
-	insert_message_job_new(req.body,sanitizeddescription,sanitizedmessage).then(function (err, about)
+	let sanitizeddescription = sanitize.sanitizeHtml(req.body.description);
+    let sanitizedmessage = sanitize.sanitizeHtml(req.body.message);
+	let path = '';
+	if(req.body.file_to_send == 1){
+		if (settings.isLiveApplication()) {
+			path = req.file.location; // for S3 bucket
+		} else {
+			path = settings.FILE_URL+req.file.filename;
+		}
+	}
+	let userId = req.auth.user._id;
+	
+	insert_message_job_new(req.body,sanitizeddescription,sanitizedmessage,userId,path).then(function (err, about)
     {
         if (about)
         {
@@ -47,7 +57,7 @@ module.exports = function insert_message_job(req,res){
         });
 }
 
-function insert_message_job_new(data,description,msg){
+function insert_message_job_new(data,description,msg,senderId,fileName){
 	let new_description = '';
 	let new_msg = '';
     if(description){
@@ -67,7 +77,7 @@ function insert_message_job_new(data,description,msg){
     var deferred = Q.defer();
 	if(data.employment_reference_id == 0){
 		let newChat = new chat({
-			sender_id : mongoose.Types.ObjectId(data.sender_id),
+			sender_id : mongoose.Types.ObjectId(senderId),
 			receiver_id : mongoose.Types.ObjectId(data.receiver_id),
 			sender_name: data.sender_name,
 			receiver_name: data.receiver_name,
@@ -80,7 +90,7 @@ function insert_message_job_new(data,description,msg){
 			msg_tag: data.msg_tag,
 			is_company_reply: data.is_company_reply,
 			job_type: data.job_type,
-			file_name: data.file_to_send,
+			file_name: fileName,
 			is_job_offered: data.job_offered,
 			is_read: 0,
 			date_created: my_date
@@ -100,7 +110,7 @@ function insert_message_job_new(data,description,msg){
 	}
 	else{
 		let newChat = new chat({
-			sender_id : mongoose.Types.ObjectId(data.sender_id),
+			sender_id : mongoose.Types.ObjectId(senderId),
 			receiver_id : mongoose.Types.ObjectId(data.receiver_id),
 			sender_name: data.sender_name,
 			receiver_name: data.receiver_name,
@@ -113,7 +123,7 @@ function insert_message_job_new(data,description,msg){
 			msg_tag: data.msg_tag,
 			is_company_reply: data.is_company_reply,
 			job_type: data.job_type,
-			file_name: data.file_to_send,
+			file_name: fileName,
 			is_job_offered: data.job_offered,
 			is_read: 0,
 			employment_offer_reference: mongoose.Types.ObjectId(data.employment_reference_id),

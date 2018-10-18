@@ -796,9 +796,9 @@ export class UserService {
             });
     }
 
-	insert_job_message(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,description:string,job_title:string,salary:string,currency:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,job_offered:number,file_to_send:any,employment_reference_id:any)
+	insert_job_message(formData: any)
     {
-        return this.http.post<any>(URL+'users/insert_message_job', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,job_offered:job_offered,file_to_send:file_to_send,employment_reference_id:employment_reference_id}, {
+        return this.http.post<any>(URL+'users/insert_message_job',formData,{
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>

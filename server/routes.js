@@ -59,7 +59,6 @@ const chatInsertMessage = require('./controller/api/chat/insertMessage.controlle
 const chatInsertMessageJob = require('./controller/api/chat/insertMessageJob.controller');
 const chatInsertFile = require('./controller/api/chat/insertChatFile.controller');
 const chatUpdateJobMessage = require('./controller/api/chat/updateJobMessage.controller');
-const chatUploadFile = require('./controller/api/chat/uploadChatFile.controller');
 const chatUpdateIsCompanyReplyStatus = require('./controller/api/chat/updateIsCompanyReplyStatus.controller');
 const chatGetEmployOffer = require('./controller/api/chat/chatGetEmployOffer.controller');
 
@@ -126,9 +125,8 @@ router.post('/users/get_candidate', auth.isValidUser, chatGetCandidate);
 router.post('/users/get_messages',auth.isValidUser, chatGetMessages);
 router.post('/users/get_user_messages',auth.isValidUser, chatGetUserMsgs);
 router.get('/users/all_chat',auth.isValidUser, chatGetChat);
-router.post('/users/upload_chat_file',auth.isValidUser, multer.single('photo'), chatUploadFile);
 router.post('/users/insert_chat_file',auth.isValidUser, multer.single('photo'), chatInsertFile);
-router.post('/users/insert_message_job',auth.isValidUser, chatInsertMessageJob);
+router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'), chatInsertMessageJob);
 router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
 router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);
