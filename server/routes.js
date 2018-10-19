@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('./controller/middleware/multer');
 const auth = require('./controller/middleware/auth');
+const asyncMiddleware = require('./controller/middleware/asyncMiddleware');
 
 const healthCheck = require('./controller/api/healthCheck.controller');
 
@@ -15,6 +16,7 @@ const authVerifyClient = require('./controller/api/users/auth/verifyClient.contr
 const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
 const authApprovalEmail = require('./controller/api/users/auth/approval_email.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
+const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
 
 // Referrals
 const refReferredEmail = require('./controller/api/users/referrals/referredEmail.controller');
@@ -33,7 +35,7 @@ const candidateWizardExperience = require('./controller/api/users/candidate/wiza
 const candidateWizardJob = require('./controller/api/users/candidate/wizard/job.controller');
 const candidateWizardResume = require('./controller/api/users/candidate/wizard/resume.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
-
+const candidateWizardPrefilledProfile = require('./controller/api/users/candidate/wizard/prefilledProfile.controller');
 
 // Companies
 const companyRegister = require('./controller/api/users/company/createCompany.controller');
@@ -63,17 +65,15 @@ const chatGetEmployOffer = require('./controller/api/chat/chatGetEmployOffer.con
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
-const adminChatGetJobDescMsg = require('./controller/api/users/admins/chat/getJobDescMessage.controller');
-const adminChatSetUnreadMsgStatus = require('./controller/api/users/admins/chat/setUnreadMessageStatus.controller');
-const adminChatUpdateMsgStatus = require('./controller/api/users/admins/chat/updateChatMessageStatus.controller');
+const adminChatGetJobDescMsg = require('./controller/api/chat/getJobDescMessage.controller');
+const adminChatSetUnreadMsgStatus = require('./controller/api/chat/setUnreadMessageStatus.controller');
+const adminChatUpdateMsgStatus = require('./controller/api/chat/updateChatMessageStatus.controller');
 const adminApproveUser = require('./controller/api/users/admins/approveUser.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
-const pagesGetAllContent = require('./controller/api/pages/getAllContent.controller');
-
 
 router.get('/', healthCheck);
 
@@ -87,6 +87,7 @@ router.put('/users/verify_client/:email', authVerifyClient);
 router.post('/users/set_disable_status' , auth.isLoggedIn , authAccountDisableSetting);
 router.post('/users/approval_email',auth.isLoggedIn ,authApprovalEmail);
 router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
+router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
 // Referrals
 router.post('/users/refered_user_email', refReferredEmail)
@@ -98,6 +99,7 @@ router.post('/users/register', candidateRegister);
 router.get('/users/',auth.isLoggedIn, candidateGetAll);
 router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
+router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
 router.put('/users/welcome/about', auth.isLoggedIn, candidateWizardAbout);
 router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
 router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
@@ -108,7 +110,7 @@ router.put('/users/update_profile', auth.isLoggedIn, candidateUpdate);
 
 // Companies
 router.post('/users/create_employer', companyRegister);
-router.get('/users/company',auth.isLoggedIn, companyGet);
+router.get('/users/company',auth.isAdmin, companyGet);
 router.get('/users/current_company/:_id',auth.isLoggedIn, companyGetCurrent);
 router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
 router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
@@ -125,7 +127,7 @@ router.post('/users/get_messages',auth.isValidUser, chatGetMessages);
 router.post('/users/get_user_messages',auth.isValidUser, chatGetUserMsgs);
 router.get('/users/all_chat',auth.isValidUser, chatGetChat);
 router.post('/users/upload_chat_file/:_id',auth.isValidUser, multer.single('photo'), chatUploadFile);
-router.post('/users/insert_chat_file',auth.isValidUser, chatInsertFile);
+router.post('/users/insert_chat_file',auth.isValidUser,multer.single('photo'), chatInsertFile);
 router.post('/users/insert_message_job',auth.isValidUser, chatInsertMessageJob);
 router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);

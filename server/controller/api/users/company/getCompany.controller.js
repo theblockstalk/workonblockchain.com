@@ -40,10 +40,7 @@ function getCompany()
        	 		}
                    
             });
-
-           
             deferred.resolve(array);
-           //deferred.resolve(result);
         	
         }
                

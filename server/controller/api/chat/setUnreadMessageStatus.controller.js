@@ -25,40 +25,40 @@ const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
-module.exports = function (req,res)
-{
-    get_all_content().then(function (err, data)
+module.exports = function (req,res){
+    set_unread_msgs_emails_status(req.body).then(function (err, about)
     {
-        if (data)
+        if (about)
         {
-            res.json(data);
+            res.json(about);
         }
         else
         {
-            res.send(err);
+            res.json(err);
         }
     })
         .catch(function (err)
         {
             res.json({error: err});
         });
-
 }
 
-function get_all_content()
-{
+function set_unread_msgs_emails_status(data){
     var deferred = Q.defer();
-    Pages.find().exec(function(err, result)
-    {
+    ////console.log(data.user_id);
+    var set =
+        {
+            is_unread_msgs_to_send: data.status,
 
+        };
+    users.update({ _id: data.user_id},{ $set: set }, function (err, doc)
+    {
         if (err){
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }
-        else{
-            ////console.log(user);
-            deferred.resolve(result);
-        }
+        else
+            deferred.resolve(set);
     });
     return deferred.promise;
 }

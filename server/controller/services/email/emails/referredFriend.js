@@ -2,7 +2,7 @@ const emails = require('../emails');
 const logger = require('../../logger');
 
 module.exports.sendEmail = function sendEmail(data) {
-
+console.log(data);
     const sendTo = {
         email: data.info.email
     };

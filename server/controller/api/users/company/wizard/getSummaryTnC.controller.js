@@ -7,8 +7,8 @@ const logger = require('../../../../services/logger');
 
 module.exports = function (req,res)
 {
-
 	let userId = req.auth.user._id;
+
     company_summary(userId,req.body).then(function (err, data)
     {
         if (data)

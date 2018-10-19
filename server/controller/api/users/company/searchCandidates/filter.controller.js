@@ -33,7 +33,6 @@ module.exports = function (req,res)
 
 function filter(params, userId)
 {
-	
     var result_array = [];
     var query_result=[];
     var query;
@@ -121,7 +120,6 @@ function filter(params, userId)
 
             if(result_array.length !== 0 && params.currency!== -1 && params.salary)
             {
-                ////console.log("result array");
                 const searchFilter = {
                     $or : [
                         { $and : [ { expected_salary_currency : "$ USD" }, { expected_salary : {$lte: result_array.USD} } ] },
@@ -144,9 +142,6 @@ function filter(params, userId)
 
             }
 
-            console.log("length");
-            
-            
 
             const searchQuery = { $and: queryString };
 
@@ -155,7 +150,6 @@ function filter(params, userId)
 
                 if (err){
                     logger.error(err.message, {stack: err.stack});
-                    ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
                 }
                 if(result)
                 {
