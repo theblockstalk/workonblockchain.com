@@ -1,7 +1,6 @@
 const emails = require('../emails');
 
 module.exports.sendEmail = function sendEmail(email,name) {
-
     const sendTo = {
         email:email
     };

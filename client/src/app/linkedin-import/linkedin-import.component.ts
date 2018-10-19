@@ -481,12 +481,6 @@ export class LinkedinImportComponent implements OnInit {
                     {
                       this.router.navigate(['/about']);
                     }
-
-                    if(data.error )
-                    {
-                      //this.log= data.error;
-                    }
-
                   },
                   error => {
                     if(error.message === 500 || error.message === 401)

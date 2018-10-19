@@ -14,7 +14,6 @@ const authChangePassword = require('./controller/api/users/auth/changePassword.c
 const authResetPassword = require('./controller/api/users/auth/resetPassword.controller');
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
 const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
-const authApprovalEmail = require('./controller/api/users/auth/approval_email.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
 const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
 
@@ -59,7 +58,6 @@ const chatInsertMessage = require('./controller/api/chat/insertMessage.controlle
 const chatInsertMessageJob = require('./controller/api/chat/insertMessageJob.controller');
 const chatInsertFile = require('./controller/api/chat/insertChatFile.controller');
 const chatUpdateJobMessage = require('./controller/api/chat/updateJobMessage.controller');
-const chatUploadFile = require('./controller/api/chat/uploadChatFile.controller');
 const chatUpdateIsCompanyReplyStatus = require('./controller/api/chat/updateIsCompanyReplyStatus.controller');
 const chatGetEmployOffer = require('./controller/api/chat/chatGetEmployOffer.controller');
 
@@ -85,7 +83,6 @@ router.put('/users/change_password',auth.isLoggedIn, authChangePassword);
 router.put('/users/reset_password/:hash', authResetPassword);
 router.put('/users/verify_client/:email', authVerifyClient);
 router.post('/users/set_disable_status' , auth.isLoggedIn , authAccountDisableSetting);
-router.post('/users/approval_email',auth.isLoggedIn ,authApprovalEmail);
 router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
 router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
@@ -126,9 +123,8 @@ router.post('/users/get_candidate', auth.isValidUser, chatGetCandidate);
 router.post('/users/get_messages',auth.isValidUser, chatGetMessages);
 router.post('/users/get_user_messages',auth.isValidUser, chatGetUserMsgs);
 router.get('/users/all_chat',auth.isValidUser, chatGetChat);
-router.post('/users/upload_chat_file/:_id',auth.isValidUser, multer.single('photo'), chatUploadFile);
 router.post('/users/insert_chat_file',auth.isValidUser, multer.single('photo'), chatInsertFile);
-router.post('/users/insert_message_job',auth.isValidUser, chatInsertMessageJob);
+router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'), chatInsertMessageJob);
 router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
 router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);

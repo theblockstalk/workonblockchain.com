@@ -1,4 +1,4 @@
-import { Component,OnInit, ElementRef, AfterViewInit, Input, ViewChild } from '@angular/core';
+import {Component, Output, OnInit, ElementRef, AfterViewInit, ViewChild, EventEmitter} from '@angular/core';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
 import {NgForm} from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -17,6 +17,8 @@ declare var $: any;
   styleUrls: ['./candidate-profile.component.css']
 })
 export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
+  @Output()
+  emitFunctionOfParent: EventEmitter<any> = new EventEmitter<any>();
     
     @ViewChild('element') element: ElementRef;
  
@@ -47,8 +49,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     candidateMsgTitle;
     candidateMsgBody;
 	public loading = false;
- constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router,
-        private authenticationService: UserService,private dataservice: DataService,location: Location) 
+ constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,location: Location)
  { 
    
      
@@ -100,7 +101,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
    };
     infoo;
   ngOnInit() 
-  {    
+  {
+      this.emitFunctionOfParent.emit();
        this.infoo=''; 
        this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {

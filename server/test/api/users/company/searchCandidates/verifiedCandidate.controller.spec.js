@@ -29,19 +29,21 @@ describe('verified candidates as company', function () {
             const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
 
             const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const profileData = docGenerator.profileData();
+            const job = docGenerator.job();
+            const resume = docGenerator.resume();
+            const experience = docGenerator.experience();
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             let userDoc = await Users.findOne({email: company.email}).lean();
 
             const filterRes = await companyHelper.verifiedCandidate(userDoc.jwt_token);
 
-            let id = filterRes.body[0].ids[0];
-            userDoc = await Users.findOne({_id: id}).lean();
-            userDoc.is_verify.should.equal(1);
-            userDoc.is_approved.should.equal(1);
-            userDoc.disable_account.should.equal(false);
-            userDoc.type.should.equal("candidate");
-
+            filterRes.body[0]._creator.is_verify.should.equal(1);
+            filterRes.body[0]._creator.is_approved.should.equal(1);
+            filterRes.body[0]._creator.disable_account.should.equal(false);
+            filterRes.body[0]._creator.type.should.equal("candidate");
         })
     })
 });
