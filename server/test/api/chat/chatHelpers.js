@@ -117,7 +117,7 @@ const insertChatFile= module.exports.insertChatFile = async function insertChatF
         'is_company_reply': msgData.is_company_reply,
         'interview_location': msgData.interview_location,
         'interview_time': msgData.interview_time,
-        'file_name': chatFile.file_name
+        'file_name': chatFile.name
     };
     const res = await chai.request(server)
         .post('/users/insert_chat_file',formData)

@@ -113,7 +113,7 @@ function forgot_passwordEmail_send(data)
 
     var name;
 
-    users.findOne({ email :hash.email  }, function (err, result)
+    users.findOne({ email :hash.email  }, function (err, userDoc)
     {
         if (err)
         {
@@ -121,11 +121,11 @@ function forgot_passwordEmail_send(data)
             deferred.reject(err.name + ': ' + err.message);
         }
 
-        if(result)
+        if(userDoc)
         {
-        	if(result.type === 'candidate')
+        	if(userDoc.type === 'candidate')
         	{
-        		CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data)
+        		CandidateProfile.find({_creator : userDoc._id}).populate('_creator').exec(function(err, query_data)
         	            {
         	                if (err){
         	                    logger.error(err.message, {stack: err.stack});
@@ -146,14 +146,14 @@ function forgot_passwordEmail_send(data)
         	                	}
         	                    
         	                    
-        	                    forgotPasswordEmail.sendEmail(hash,data , name);
+        	                    forgotPasswordEmail.sendEmail(hash, userDoc.disable_account, data , name);
         	                }
         	            });
         	}
         	
-        	if(result.type === 'company')
+        	if(userDoc.type === 'company')
         	{
-        		EmployerProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data)
+        		EmployerProfile.find({_creator : userDoc._id}).populate('_creator').exec(function(err, query_data)
         	            {
         	                if (err){
         	                    logger.error(err.message, {stack: err.stack});
