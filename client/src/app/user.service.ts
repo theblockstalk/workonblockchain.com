@@ -53,9 +53,9 @@ export class UserService {
             });
     }
 
-    candidate_detail(_id :any , company_reply :any)
+    candidate_detail(_id :any )
     {
-         return this.http.post<any>(URL+'users/candidate_detail', {_id:_id , company_reply :company_reply}, {
+         return this.http.post<any>(URL+'users/candidate_detail', {_id:_id}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
