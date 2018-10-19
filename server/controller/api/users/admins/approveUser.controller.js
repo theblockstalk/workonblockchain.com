@@ -4,6 +4,7 @@ var Q = require('q');
 var mongo = require('mongoskin');
 const users = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
+const EmployerProfile = require('../../../../model/employer_profile');
 
 const candidateApprovedEmail = require('../../../services/email/emails/candidateApproved');
 const companyApprovedEmail = require('../../../services/email/emails/companyApproved');
@@ -31,7 +32,6 @@ module.exports = function (req, res)
 
 function approve_users(_id , data)
 {
-	
     var deferred = Q.defer();
     users.findOne({ _id: _id}, function (err, result)
     {
@@ -44,13 +44,10 @@ function approve_users(_id , data)
 
         else
             deferred.reject('Email Not Found');
-
-
     });
 
     function admin_approval(userDoc)
     {
-        console.log(userDoc);
         var set =
             {
                 is_approved: data.is_approve,
@@ -64,40 +61,50 @@ function approve_users(_id , data)
             }
             if (set.is_approved === 1)
             {
-                CandidateProfile.findOne({ _creator: userDoc._id}, function (err, candidateDoc)
+                if(userDoc.type === 'candidate')
                 {
-                    if (err){
-                        logger.error(err.message, {stack: err.stack});
-                        deferred.reject(err.name + ': ' + err.message);
-                    }
-                    if(candidateDoc)
+                    CandidateProfile.findOne({ _creator: userDoc._id}, function (err, candidateDoc)
                     {
-                        if(userDoc.type === 'candidate')
+                        if (err){
+                            logger.error(err.message, {stack: err.stack});
+                            deferred.reject(err.name + ': ' + err.message);
+                        }
+                        if(candidateDoc)
                         {
-                            console.log("if");
                             candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name);
                             deferred.resolve({success:true});
+
                         }
 
-                        else if(userDoc.type === 'company')
+                        else
+                            deferred.reject('Candidate not exists');
+
+
+                    });
+                }
+
+                if(userDoc.type === 'company')
+                {
+                    EmployerProfile.findOne({ _creator: userDoc._id}, function (err, companyDoc)
+                    {
+                        if (err){
+                            logger.error(err.message, {stack: err.stack});
+                            deferred.reject(err.name + ': ' + err.message);
+                        }
+                        if(companyDoc)
                         {
-                            console.log("else if");
-                            companyApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name);
+                            companyApprovedEmail.sendEmail(userDoc.email, companyDoc.first_name);
                             deferred.resolve({success:true});
                         }
 
                         else
-                        {
-                            console.log("else");
-                            deferred.resolve({success:false});
-                        }
-                    }
-
-                    else
-                        deferred.reject('Candidate not exists');
+                            deferred.reject('Candidate not exists');
 
 
-                });
+                    });
+
+                }
+
 
             }
             else

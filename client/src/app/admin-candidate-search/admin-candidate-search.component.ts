@@ -14,16 +14,20 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   p: number = 1;
   currentUser: User;
-  log;info=[];roleChange;options2;length;page;searchWord;
-  credentials: any = {};job_title;
+  log;
+  info=[];
+  length;
+  page;
+  searchWord;
+  credentials: any = {};
+  job_title;
   public rolesData: Array<Select2OptionData>;
-  public blockchainData : Array<Select2OptionData>;
   public options: Select2Options;
   public value;
   public current: string;
-
-  active;inactive;approve;
-  search_result = [];
+  active;
+  inactive;
+  approve;
   admin_check = [{name:1 , value:"Active"}, {name:0 , value:"Inactive"}];
   information;
   admin_log;
@@ -48,8 +52,6 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
         {id:'Employment offer accepted / reject', text:'Employment offer accepted / reject'},
 
       ];
-
-
 
     this.options = {
       multiple: true,
@@ -89,10 +91,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         data =>
         {
-          //console.log(data);
           if(data.error)
           {
-            // ////console.log(this.info);
             this.response = "data";
             this.length='';
             this.log = data.error;
@@ -108,9 +108,6 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
             this.information = this.filter_array(data);
             this.info=[];
             this.length='';
-            //////console.log(this.log);
-
-            // this.info = this.information;
 
             for(let res of this.information)
             {
@@ -155,11 +152,9 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
           if(error.message === 403)
           {
-            // this.router.navigate(['/not_found']);
           }
 
         });
-    ////console.log(this.info);
   }
 
   is_approve;
@@ -181,40 +176,13 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
           if(data.success === true )
           {
-            this.authenticationService.approval_email(approveForm.value)
-              .subscribe(
-                data =>
-                {
-
-
-                },
-                error =>
-                {
-                  if(error.message === 500 || error.message === 401)
-                  {
-                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                    localStorage.removeItem('currentUser');
-                    localStorage.removeItem('googleUser');
-                    localStorage.removeItem('close_notify');
-                    localStorage.removeItem('linkedinUser');
-                    localStorage.removeItem('admin_log');
-                    window.location.href = '/login';
-                  }
-
-                  if(error.message === 403)
-                  {
-                    this.router.navigate(['/not_found']);
-                  }
-                });
 
             if(event.srcElement.innerHTML ==='Active' )
             {
-              //// perform add action
               event.srcElement.innerHTML="Inactive";
             }
             else if(event.srcElement.innerHTML ==='Inactive')
             {
-              //// perform remove action
               event.srcElement.innerHTML="Active";
             }
           }
@@ -222,12 +190,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           {
             if(event.srcElement.innerHTML ==='Active' )
             {
-              //// perform add action
               event.srcElement.innerHTML="Inactive";
             }
             else if(event.srcElement.innerHTML ==='Inactive')
             {
-              //// perform remove action
               event.srcElement.innerHTML="Active";
             }
           }
