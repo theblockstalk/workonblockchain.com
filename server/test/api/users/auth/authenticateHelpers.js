@@ -75,19 +75,6 @@ const accountSetting = module.exports.accountSetting = async function (profileSt
     return res;
 }
 
-const approvalEmail = module.exports.approvalEmail = async function (type,email,name,jwtToken){
-    const data = {
-        'type' : type,
-        'email' : email,
-        'name' : name
-    }
-    const res = await chai.request(server)
-        .post('/users/approval_email')
-        .set('Authorization', jwtToken)
-        .send(data)
-    res.should.have.status(200);
-    return res;
-}
 
 const destroyToken = module.exports.destroyToken  = async function(jwtToken){
     const res = await chai.request(server)
