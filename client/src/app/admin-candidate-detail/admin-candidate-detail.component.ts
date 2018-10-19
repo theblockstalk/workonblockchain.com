@@ -16,239 +16,199 @@ import {environment} from '../../environments/environment';
 export class AdminCandidateDetailComponent implements OnInit {
 
   id;user_id;
-   first_name;last_name;description;companyname;degreename;
-        interest_area;why_work;availability_day;
-        countries;commercial;history;education;
-        experimented;languages;current_currency;current_salary;image_src;
-        imgPath;nationality;contact_number;
-    credentials: any = {};
-    admin_log;
-  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) 
+  first_name;last_name;description;companyname;degreename;
+  interest_area;why_work;availability_day;
+  countries;history;education;
+  experimented;languages;current_currency;current_salary;image_src;
+  imgPath;nationality;contact_number;
+  credentials: any = {};
+  admin_log;
+  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
- 
-        this.route.queryParams.subscribe(params => {
-        this.user_id = params['user'];
-       // ////console.log(this.user_id); 
+
+    this.route.queryParams.subscribe(params => {
+      this.user_id = params['user'];
     });
-            
-  
+
+
   }
-    currentUser: User;
-    info=[];createdDate;
-    approve;verify;is_verify;information;refeered;
-    work_history;education_history;
-    date_sort_desc = function (date1, date2) 
-    {
-        if (date1.enddate > date2.enddate) return -1;
-        if (date1.enddate < date2.enddate) return 1;
-        return 0;
-    };
-    
-    education_sort_desc = function (year1, year2) 
-    {
-        if (year1.eduyear > year2.eduyear) return -1;
-        if (year1.eduyear < year2.eduyear) return 1;
-        return 0;
-    };
-  ngOnInit() 
+  currentUser: User;
+  info=[];
+  approve;verify;is_verify;information;refeered;
+  work_history;education_history;
+  date_sort_desc = function (date1, date2)
   {
-      ////console.log(this.user_id);
+    if (date1.enddate > date2.enddate) return -1;
+    if (date1.enddate < date2.enddate) return 1;
+    return 0;
+  };
 
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
-      //////console.log('ftn')
-      //////console.log(this.user_id)
-      this.credentials.user_id = this.user_id;
+  education_sort_desc = function (year1, year2)
+  {
+    if (year1.eduyear > year2.eduyear) return -1;
+    if (year1.eduyear < year2.eduyear) return 1;
+    return 0;
+  };
+  ngOnInit()
+  {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+    this.credentials.user_id = this.user_id;
 
-      
-      if(this.user_id && this.admin_log)
+
+    if(this.user_id && this.admin_log)
+    {
+      if(this.admin_log.is_admin == 1)
       {
-          if(this.admin_log.is_admin == 1)
-          {
-          this.authenticationService.getById(this.user_id)
-            .subscribe(
+        this.authenticationService.getById(this.user_id)
+          .subscribe(
             data => {
-                ////console.log(data);
-                this.info.push(data);
-                this.approve = data._creator.is_approved;
-                this.verify =data._creator.is_verify;
-                this.work_history = data.work_history; 
-                this.work_history.sort(this.date_sort_desc);
-                this.education_history = data.education_history;
-                this.education_history.sort(this.education_sort_desc);
-                if(data.image != null )
-                    {
-                       
-                        this.imgPath =  data.image;
-                        
-                        
-                    }
-                
-                if(this.approve === 1)
-                {
-                    this.is_approved = "Aprroved";
-                }
-                
-                else
-                {
-                    this.is_approved = "";
-                 }
-               
-                if(data._creator.refered_id)
-                {
-                     this.authenticationService.getById(data._creator.refered_id)
-                    .subscribe(
+              this.info.push(data);
+              this.approve = data._creator.is_approved;
+              this.verify =data._creator.is_verify;
+              this.work_history = data.work_history;
+              this.work_history.sort(this.date_sort_desc);
+              this.education_history = data.education_history;
+              this.education_history.sort(this.education_sort_desc);
+              if(data.image != null )
+              {
+
+                this.imgPath =  data.image;
+
+              }
+
+              if(this.approve === 1)
+              {
+                this.is_approved = "Aprroved";
+              }
+
+              else
+              {
+                this.is_approved = "";
+              }
+
+              if(data._creator.refered_id)
+              {
+                this.authenticationService.getById(data._creator.refered_id)
+                  .subscribe(
                     data => {
-                        
-                        if(data!='')
-                        {
-                            this.first_name = data.first_name;
-                            this.last_name =data.last_name;
-                            
-                        }
-                        else
-                        {                            
-                            this.refeered="null";
-                        }
-                        });
-                
-            
-                }
+
+                      if(data!='')
+                      {
+                        this.first_name = data.first_name;
+                        this.last_name =data.last_name;
+
+                      }
+                      else
+                      {
+                        this.refeered="null";
+                      }
+                    });
+
+
+              }
 
             },
-                
+
             error =>
             {
-                if(error.message === 500 || error.message === 401 || error.message === 401)
-                        {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            localStorage.removeItem('currentUser');
-                            localStorage.removeItem('googleUser');
-                            localStorage.removeItem('close_notify');
-                            localStorage.removeItem('linkedinUser');
-                            localStorage.removeItem('admin_log'); 
-                            window.location.href = '/login';
-                        }
-                    
-                        if(error.message === 403)
-                        {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
-                
+              if(error.message === 500 || error.message === 401 || error.message === 401)
+              {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+
+              if(error.message === 403)
+              {
+                // this.router.navigate(['/not_found']);
+              }
+
             });
-          }
-           else
-            {
-                this.router.navigate(['/not_found']);
-          
-            }           
       }
       else
       {
-          this.router.navigate(['/not_found']);
-          
-      }      
-      //////console.log(this.currentUser._id); 
-  }
-    
-  is_approve;is_approved;
-    approveClick(event , approveForm: NgForm)
-    {
-        //////console.log(approveForm.value.id);
-         if(event.srcElement.innerHTML ==='Active' )
-         {
-             this.is_approve = 1;
-         }
-         else if(event.srcElement.innerHTML ==='Inactive')
-         {
-             this.is_approve =0;                       
-         }
-          
-             this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
-            .subscribe(
-                data => 
-                {
-                    //////console.log(data.is_approved);
-                     
-                    if(data.is_approved === 1 )
-                    {
-                         this.authenticationService.approval_email(approveForm.value)
-                        .subscribe(
-                        data =>
-                        {
-                            
-                            
-                        },
-                        error =>
-                        {
-                            if(error.message === 500 || error.message === 401)
-                            {
-                                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                    localStorage.removeItem('currentUser');
-                                    localStorage.removeItem('googleUser');
-                                    localStorage.removeItem('close_notify');
-                                    localStorage.removeItem('linkedinUser');
-                                    localStorage.removeItem('admin_log'); 
-                                    window.location.href = '/login';
-                            }
-                    
-                            if(error.message === 403)
-                            {
-                                this.router.navigate(['/not_found']);                        
-                             }   
-                        });
-                        
-                        
-                        if(event.srcElement.innerHTML ==='Active' )
-                        {
-                                //// perform add action
-                                event.srcElement.innerHTML="Inactive";
-                            this.is_approved = "Aprroved";
-                        }
-                        else if(event.srcElement.innerHTML ==='Inactive')
-                        {
-                             //// perform remove action
-                             event.srcElement.innerHTML="Active"; 
-                            this.is_approved = "";                          
-                        }
-                    } 
-                    else if(data.is_approved ===0)
-                    {
-                        if(event.srcElement.innerHTML ==='Active' )
-                        {
-                                //// perform add action
-                                event.srcElement.innerHTML="Inactive";
-                             this.is_approved = "Aprroved";
-                        }
-                        else if(event.srcElement.innerHTML ==='Inactive')
-                        {
-                             //// perform remove action
-                             event.srcElement.innerHTML="Active"; 
-                            this.is_approved = "";                            
-                        }
-                   }
-                    
-                },
-                error =>
-                {
-                    if(error.message === 500 || error.message === 401)
-                        {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                                    localStorage.removeItem('googleUser');
-                                    localStorage.removeItem('close_notify');
-                                    localStorage.removeItem('linkedinUser');
-                                    localStorage.removeItem('admin_log'); 
-                            window.location.href = '/login';
-                        }
-                    
-                        if(error.message === 403)
-                        {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
-                
-                });
+        this.router.navigate(['/not_found']);
+
+      }
     }
-    
-    
+    else
+    {
+      this.router.navigate(['/not_found']);
+
+    }
+  }
+
+  is_approve;is_approved;
+  approveClick(event , approveForm: NgForm)
+  {
+    if(event.srcElement.innerHTML ==='Active' )
+    {
+      this.is_approve = 1;
+    }
+    else if(event.srcElement.innerHTML ==='Inactive')
+    {
+      this.is_approve =0;
+    }
+
+    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
+      .subscribe(
+        data =>
+        {
+
+          if(data.success === true)
+          {
+
+            if(event.srcElement.innerHTML ==='Active' )
+            {
+              event.srcElement.innerHTML="Inactive";
+              this.is_approved = "Aprroved";
+            }
+            else if(event.srcElement.innerHTML ==='Inactive')
+            {
+              event.srcElement.innerHTML="Active";
+              this.is_approved = "";
+            }
+          }
+          else if(data.is_approved ===0)
+          {
+            if(event.srcElement.innerHTML ==='Active' )
+            {
+              event.srcElement.innerHTML="Inactive";
+              this.is_approved = "Aprroved";
+            }
+            else if(event.srcElement.innerHTML ==='Inactive')
+            {
+              event.srcElement.innerHTML="Active";
+              this.is_approved = "";
+            }
+          }
+
+        },
+        error =>
+        {
+          if(error.message === 500 || error.message === 401)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+
+          if(error.message === 403)
+          {
+            // this.router.navigate(['/not_found']);
+          }
+
+        });
+  }
+
+
 }
