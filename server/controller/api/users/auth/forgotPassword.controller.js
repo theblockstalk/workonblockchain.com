@@ -174,7 +174,7 @@ function forgot_passwordEmail_send(data)
                                 }
         	                    
         	                    
-        	                    forgotPasswordEmail.sendEmail(hash,data , name);
+        	                    forgotPasswordEmail.sendEmail(hash,userDoc.disable_account,data , name);
         	                }
         	            });
         	}
