@@ -185,7 +185,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             {id:'EOS', text:'EOS'},
             {id:'NEO', text:'NEO'},
             {id:'Waves', text:'Waves'},
-            {id:'Steem', text:'Steem'},
+            {id:'Steemit', text:'Steemit'},
             {id:'Lisk', text:'Lisk'},
             {id:'Quantum', text:'Quantum'},
             {id:'Tezos', text:'Tezos'},
