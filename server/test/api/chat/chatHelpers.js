@@ -8,7 +8,7 @@ const fs = require('fs');
 chai.use(chaiHttp);
 
 const insertMessage = module.exports.insertMessage = async function insertMessage(senderId,receverId,msgData,jwtToken) {
-     const data = {
+    const data = {
         'sender_id': senderId,
         'receiver_id': receverId,
         'sender_name': msgData.sender_name,
@@ -101,13 +101,12 @@ const getUserMessages = module.exports.getUserMessages = async function getUserM
     return res;
 }
 
-const insertChatFile= module.exports.insertChatFile = async function insertChatFile(senderId,receverId,msgData,chatFileData,jwtToken) {
+const insertChatFile= module.exports.insertChatFile = async function insertChatFile(receverId,msgData,formData,chatFile,jwtToken) {
     const data = {
-        'sender_id': senderId,
         'receiver_id': receverId,
         'sender_name': msgData.sender_name,
         'receiver_name': msgData.receiver_name,
-        'message': chatFileData.message,
+        'message': chatFile.message,
         'description': msgData.description,
         'job_title': msgData.job_title,
         'salary': msgData.salary,
@@ -118,10 +117,10 @@ const insertChatFile= module.exports.insertChatFile = async function insertChatF
         'is_company_reply': msgData.is_company_reply,
         'interview_location': msgData.interview_location,
         'interview_time': msgData.interview_time,
-        'file_name': chatFileData.file_name
+        'file_name': chatFile.file_name
     };
     const res = await chai.request(server)
-        .post('/users/insert_chat_file')
+        .post('/users/insert_chat_file',formData)
         .set('Authorization', jwtToken)
         .send(data);
     res.should.have.status(200);
