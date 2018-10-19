@@ -657,6 +657,7 @@ export class ChatComponent implements OnInit {
 	  this.file_msg = '';
 	  this.img_name = '';
 	  if(this.credentials.date && this.credentials.time && this.credentials.location){
+          $("#myModal").modal("hide");
           //console.log('interview');
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
           this.is_company_reply = 1;
@@ -683,7 +684,6 @@ export class ChatComponent implements OnInit {
                     this.credentials.time = '';
                     this.credentials.location = '';
                     this.credentials.description = '';
-					$("#myModal").modal("hide");
 					this.authenticationService.get_user_messages(this.credentials.id,this.currentUser._creator)
                     .subscribe(
                         data => {
