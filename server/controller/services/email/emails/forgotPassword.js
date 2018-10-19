@@ -46,5 +46,5 @@ module.exports.sendEmail = function sendEmail(data, isAccountDisabed, hash,name)
     	
     logger.debug('mandril options: ' , mandrillOptions);
 
-    emails.sendEmail(mandrillOptions, isAccountDisabed);
+    emails.sendEmail(mandrillOptions, false);
 }

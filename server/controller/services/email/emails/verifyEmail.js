@@ -25,5 +25,5 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed,first_name) 
         }
     };
 
-	emails.sendEmail(mandrillOptions,isAccountDisabed);
+	emails.sendEmail(mandrillOptions, false);
 }
