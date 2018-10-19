@@ -69,8 +69,7 @@ module.exports.chatFile = function chatFile() {
     return {
         message: "file ",
         name: file.name,
-        path: __dirname + file.path
-
+        path: __dirname + '/image.jpg'
     };
 };
 
@@ -342,7 +341,7 @@ module.exports.cmsContent = function cmsContent() {
 
 module.exports.image = function image(){
     return {
-        name: 'image.jpg',
-        path: __dirname + '/image.jpg'
+            name: 'image.jpg',
+            path: __dirname + '/image.jpg'
     };
 }
