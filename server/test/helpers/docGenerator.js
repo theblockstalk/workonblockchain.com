@@ -69,7 +69,7 @@ module.exports.chatFile = function chatFile() {
     return {
         message: "file ",
         name: file.name,
-        path: __dirname + '/image.jpg'
+        path: file.path
     };
 };
 

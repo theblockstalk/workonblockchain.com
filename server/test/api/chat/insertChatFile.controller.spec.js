@@ -9,6 +9,7 @@ const docGenerator = require('../../helpers/docGenerator');
 const companyHelper = require('../users/company/companyHelpers');
 const candidateHelper = require('../users/candidate/candidateHelpers');
 const chatHelper = require('./chatHelpers');
+const imageInitialize = require('../../helpers/imageInitialize');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -16,6 +17,11 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('send a file in chat', function () {
+
+    beforeEach(async () => {
+        await imageInitialize.initialize();
+    })
+
 
     afterEach(async () => {
         console.log('dropping database');
