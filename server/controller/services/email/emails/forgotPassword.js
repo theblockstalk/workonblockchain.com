@@ -2,7 +2,7 @@ const emails = require('../emails');
 const settings = require('../../../../settings');
 const logger = require('../../logger');
 
-module.exports.sendEmail = function sendEmail(data,hash,name) {
+module.exports.sendEmail = function sendEmail(data, isAccountDisabed, hash,name) {
     const sendTo = {
         email:data.email
     };
@@ -46,5 +46,5 @@ module.exports.sendEmail = function sendEmail(data,hash,name) {
     	
     logger.debug('mandril options: ' , mandrillOptions);
 
-    emails.sendEmail(mandrillOptions);  
+    emails.sendEmail(mandrillOptions, isAccountDisabed);
 }

@@ -26,8 +26,19 @@ module.exports = function referred_email(req,res)
 function referred_email_user(data)
 {
     var deferred = Q.defer();
-    referedUserEmail.sendEmail(data);
-    return deferred.promise;
+    users.findOne({ email : data.info.email }, function (err, userDoc) {
+        if (err) {
+            logger.error(err.message, {stack: err.stack});
+            deferred.reject(err.name + ': ' + err.message);
+        }
+
+        if (userDoc) {
+            referedUserEmail.sendEmail(data, userDoc.disable_account);
+            return deferred.promise;
+        }
+
+    })
+
 
 }
 

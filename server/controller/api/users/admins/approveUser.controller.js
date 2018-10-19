@@ -71,7 +71,7 @@ function approve_users(_id , data)
                         }
                         if(candidateDoc)
                         {
-                            candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name);
+                            candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name,userDoc.disable_account);
                             deferred.resolve({success:true});
 
                         }
@@ -93,7 +93,7 @@ function approve_users(_id , data)
                         }
                         if(companyDoc)
                         {
-                            companyApprovedEmail.sendEmail(userDoc.email, companyDoc.first_name);
+                            companyApprovedEmail.sendEmail(userDoc.email, companyDoc.first_name, userDoc.disable_account);
                             deferred.resolve({success:true});
                         }
 
