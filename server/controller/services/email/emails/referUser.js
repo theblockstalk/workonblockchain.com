@@ -19,5 +19,5 @@ module.exports.sendEmail = function sendEmail(email, subject, htmlBody) {
         }
     };
 
-	emails.sendEmail(mandrillOptions);
-}
+	emails.sendEmail(mandrillOptions, false);
+};
