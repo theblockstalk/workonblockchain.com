@@ -12,6 +12,7 @@ const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
 const verify_send_email = require('../auth/verify_send_email');
 const jwtToken = require('../../../services/jwtToken');
+const filterReturnData = require('../filterReturnData');
 
 module.exports = function (req,res)
 {
@@ -145,6 +146,10 @@ function create_employer(userParam)
                 			company_postcode:userParam.postal_code,
                 		});
 
+                        let userData = filterReturnData.removeSensativeData({_creator : user.toObject()} , {
+                            verify_email_key: true
+                        } )
+
                 		info.save((err,user)=>
                 		{
                 			if(err)
@@ -154,14 +159,16 @@ function create_employer(userParam)
                 			}
                 			else
                 			{
-                				verify_send_email(company_info);
+                				//for test cases comment it
+                                // verify_send_email(company_info);
                 				deferred.resolve
                 				({
                 					_id:user.id,
-                					_creator: newUser._id,
-                					type:newUser.type,
-                					email: newUser.email,
-                					is_approved : user.is_approved,
+                					_creator: userData._creator._id,
+                					type:userData._creator.type,
+                					email: userData._creator.email,
+                					is_approved : userData._creator.is_approved,
+                                    verifyEmailKey: userData._creator.verify_email_key,
                 					jwt_token: tokenn
                 				});
                 			}

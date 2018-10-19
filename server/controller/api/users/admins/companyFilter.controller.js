@@ -1,24 +1,8 @@
 const settings = require('../../../../settings');
 var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var date = require('date-and-time');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
-var mongo = require('mongoskin');
-const users = require('../../../../model/users');
-const CandidateProfile = require('../../../../model/candidate_profile');
-const Pages = require('../../../../model/pages_content');
-var crypto = require('crypto');
-var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../model/employer_profile');
 const chat = require('../../../../model/chat');
-
-const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
-const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');
-const referUserEmail = require('../../../services/email/emails/referUser');
-const chatReminderEmail = require('../../../services/email/emails/chatReminder');
-const referedUserEmail = require('../../../services/email/emails/referredFriend');
-
 
 const logger = require('../../../services/logger');
 const filterReturnData = require('../filterReturnData');
@@ -55,7 +39,6 @@ function removeDups(names) {
 
 function admin_company_filter_new(data)
 {
-
 	var query_result = [];
     var company_rply = [];
     var deferred = Q.defer();
@@ -68,7 +51,6 @@ function admin_company_filter_new(data)
         if(employ_offer)
         {
             var offered = ['employment_offer_accepted', 'employment_offer_rejected'];
-            //data.msg_tags = ['job_offer_rejected', 'job_offer_accepted'];
             offered.forEach(function(item)
             {
                 data.msg_tags.push(item );

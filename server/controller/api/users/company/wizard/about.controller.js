@@ -48,7 +48,6 @@ function about_company(_id, companyParam)
                 company_founded:companyParam.company_founded,
                 no_of_employees:companyParam.no_of_employees,
                 company_funded: companyParam.company_funded,
-                company_logo: companyParam.company_logo,
                 company_description:companyParam.company_description,
 
             };

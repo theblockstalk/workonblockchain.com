@@ -67,7 +67,7 @@ export class ChangePasswordComponent implements OnInit {
             this.confirm_password='';
             //console.log("else");
             
-            this.authenticationService.change_password(this.id ,  this.credentials)
+            this.authenticationService.change_password(this.credentials)
             .subscribe(
                 data => 
                 {

@@ -1,29 +1,29 @@
-const settings = require('../../../../../settings');
+const settings = require('../../../settings');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var date = require('date-and-time');
 var bcrypt = require('bcryptjs');
 var Q = require('q');
 var mongo = require('mongoskin');
-const users = require('../../../../../model/users');
-const CandidateProfile = require('../../../../../model/candidate_profile');
-const Pages = require('../../../../../model/pages_content');
+const users = require('../../../model/users');
+const CandidateProfile = require('../../../model/candidate_profile');
+const Pages = require('../../../model/pages_content');
 var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
-const EmployerProfile = require('../../../../../model/employer_profile');
-const chat = require('../../../../../model/chat');
+const EmployerProfile = require('../../../model/employer_profile');
+const chat = require('../../../model/chat');
 
-const forgotPasswordEmail = require('../../../../services/email/emails/forgotPassword');
-const verifyEmailEmail = require('../../../../services/email/emails/verifyEmail');
-const referUserEmail = require('../../../../services/email/emails/referUser');
-const chatReminderEmail = require('../../../../services/email/emails/chatReminder');
-const referedUserEmail = require('../../../../services/email/emails/referredFriend');
+const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
+const verifyEmailEmail = require('../../services/email/emails/verifyEmail');
+const referUserEmail = require('../../services/email/emails/referUser');
+const chatReminderEmail = require('../../services/email/emails/chatReminder');
+const referedUserEmail = require('../../services/email/emails/referredFriend');
 
 const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
-const logger = require('../../../../services/logger');
+const logger = require('../../services/logger');
 
 module.exports = function (req,res){
     get_job_desc_msgs(req.body).then(function (err, about)
@@ -61,10 +61,16 @@ function get_job_desc_msgs(data){
             deferred.reject(err.name + ': ' + err.message);
         }
         else{
-            ////console.log(data);
-            deferred.resolve({
-                datas:data
-            });
+            if(data.length > 0) {
+                deferred.resolve({
+                    datas: data
+                });
+            }
+            else{
+                deferred.resolve({
+                    datas: 0
+                });
+            }
         }
     });
     return deferred.promise;

@@ -1,0 +1,68 @@
+<section class = "wizard_page">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-12">
+
+        <form class = "login_form"  (submit)="candidateMsg(candidateEditor)" #candidateEditor = ngForm >
+          <h3>Chat Popup Message for Candidate</h3>
+          <label><p class = "label-p">Message Title</p></label>
+          <input type="text" class="form-control" id="" placeholder="Enter page title" name="page_title" [(ngModel)]="candidateMsgTitle" >
+
+          <br/>
+          <div>
+            <label><p class = "label-p">Message Content </p></label>
+            <ckeditor [(ngModel)]="candidateMsgContent"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+            </ckeditor>
+          </div><br/>
+          <input type="text" class="form-control" style="display:none;" name="page_name" [(ngModel)]="candidateMsgName" >
+
+          <button type="submit" class = "btn btn-self btn-pdg" >Save</button>
+          <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success">
+            {{success}}
+          </div>
+
+          <div class="alert alert-danger alert-error pro_alert alert-dismissible" *ngIf = "error">
+            {{error}}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-12">
+
+        <form class = "login_form"  (submit)="companyMsg(companyEditor)" #companyEditor = ngForm >
+
+
+          <h3>Chat Popup Message for Company</h3>
+          <label><p class = "label-p">Message Title</p></label>
+          <input type="text" class="form-control" id="" placeholder="Enter page title" name="page_title" [(ngModel)]="companyMsgTitle" >
+
+          <br/>
+          <div>
+            <label><p class = "label-p">Message Content </p></label>
+            <ckeditor [(ngModel)]="companyMsgContent"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+            </ckeditor>
+          </div><br/>
+          <input type="text" class="form-control" style="display:none;" name="page_name" [(ngModel)]="companyMsgName" >
+
+          <button type="submit" class = "btn btn-self btn-pdg" >Save</button>
+          <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "company_success">
+            {{company_success}}
+          </div>
+
+          <div class="alert alert-danger alert-error pro_alert alert-dismissible" *ngIf = "company_error">
+            {{company_error}}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>
+

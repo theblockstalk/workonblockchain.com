@@ -532,7 +532,7 @@ export class EditCandidateProfileComponent implements OnInit {
     {name:'EOS', value:'EOS', checked:false},
     {name:'NEO', value:'NEO', checked:false},
     {name:'Waves', value:'Waves', checked:false},
-    {name:'Steem', value:'Steem', checked:false},
+    {name:'Steemit', value:'Steemit', checked:false},
     {name:'Lisk', value:'Lisk', checked:false},
     {name:'Quantum', value:'Quantum', checked:false},
     {name:'Tezos', value:'Tezos', checked:false},
@@ -573,7 +573,7 @@ export class EditCandidateProfileComponent implements OnInit {
       {name:'Corda', value:'Corda', checked:false},
       {name:'EOS', value:'EOS', checked:false},
       {name:'Waves', value:'Waves', checked:false},
-      {name:'Steem', value:'Steem', checked:false},
+      {name:'Steemit', value:'Steemit', checked:false},
       {name:'Lisk', value:'Lisk', checked:false},
       {name:'Quantum', value:'Quantum', checked:false},
       {name:'Tezos', value:'Tezos', checked:false},
@@ -1171,12 +1171,7 @@ export class EditCandidateProfileComponent implements OnInit {
         {
             this.platform_log = "Please fill year of experience";
         }
-            
-       if(this.language.length<=0)
-       {
-           console.log(this.language.length);
-           this.lang_log="Please select min 1 language";
-       }
+
         
         if(this.LangexpYear.length !==  this.language.length)
         {
