@@ -104,7 +104,7 @@ const getUserMessages = module.exports.getUserMessages = async function getUserM
 const insertChatFile= module.exports.insertChatFile = async function insertChatFile(receverId,msgData,chatFile,jwtToken) {
     const myFile = fs.readFileSync(chatFile.path);
     const res = await chai.request(server)
-        .post('/users/insert_chat_file',formData)
+        .post('/users/insert_chat_file')
         .set('Authorization', jwtToken)
         .field('receiver_id',receverId.toString())
         .field('sender_name',msgData.sender_name)
