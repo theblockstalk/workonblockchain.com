@@ -52,16 +52,13 @@ describe('search candidates as company', function () {
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
             const filterRes = await companyHelper.companyFilter(params , comapnyUserDoc.jwt_token);
 
-            const res = filterRes.body[0].ids[0];
-            candidateData = await Candidates.findOne({_creator: res}).lean();
-
-            candidateData.expected_salary_currency.should.equal(params.currency);
-            candidateData.expected_salary.should.equal(params.salary);
-            candidateData.roles.should.valueOf(params.roles);
-            candidateData.programming_languages[0].language.should.valueOf(params.skill);
-            candidateData.locations.should.valueOf(params.location);
-            candidateData.platforms[0].should.valueOf(params.blockchain);
-            candidateData.availability_day.should.equal(params.availability);
+            filterRes.body[0].expected_salary_currency.should.equal(params.currency);
+            filterRes.body[0].expected_salary.should.equal(params.salary);
+            filterRes.body[0].roles.should.valueOf(params.roles);
+            filterRes.body[0].programming_languages[0].language.should.valueOf(params.skill);
+            filterRes.body[0].locations.should.valueOf(params.location);
+            filterRes.body[0].platforms[0].should.valueOf(params.blockchain);
+            filterRes.body[0].availability_day.should.equal(params.availability);
 
         })
     })

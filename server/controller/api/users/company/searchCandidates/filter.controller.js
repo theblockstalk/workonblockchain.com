@@ -145,26 +145,34 @@ function filter(params, userId)
 
             const searchQuery = { $and: queryString };
 
-            CandidateProfile.find(searchQuery).populate('_creator').exec(function(err, result)
+            CandidateProfile.find(searchQuery).populate('_creator').exec(function(err, candidateData)
             {            	 
 
                 if (err){
                     logger.error(err.message, {stack: err.stack});
                 }
-                if(result)
+                if(candidateData)
                 {
-                	var result_array = [];
-               	 	result.forEach(function(item)
+                    if(candidateData.length <= 0){
+                        deferred.resolve(candidateData);
+                    }
+                    else
                     {
-               	 		result_array.push(item._creator._id);
-                    });
-               	 	
-                	var ids_arrayy=[];
-                  	var datata= {ids : result_array };
-                  	ids_arrayy.push(datata);
+                        var result_array = [];
+                        candidateData.forEach(function(item)
+                        {
+                            filterReturnData.candidateAsCompany(item, userId).then(function(data) {
+                                result_array.push(data);
 
-                  	deferred.resolve(ids_arrayy);
-                   
+                                if(candidateData.length === result_array.length){
+                                    deferred.resolve(result_array);
+                                }
+                            })
+
+                        })
+
+                    }
+
                 }
 
             });
@@ -194,3 +202,4 @@ function expected_salary_converter(salary_value, currency1, currency2)
     return array;
 
 }
+

@@ -8,21 +8,19 @@
 				 <section class = "profile personal_info">
 
 				 	<div class="col-md-6" >
-				 		<span class = "p_img" *ngIf="!imgPath ">
+
+				 		<span class = "p_img" *ngIf="data.initials || !data.image">
 				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
-				 		<span class = "p_img" *ngIf="data.company_reply === 0 ">
-				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
-				 		</span>
-				 		<span class = "p_img" *ngIf="data.image && data.company_reply === 1">
+				 		<span class = "p_img" *ngIf="data.image && data.first_name">
 				 			<img src = "{{data.image}}" class = "img-responsive" alt = "profile-image"/>
 				 		</span>
 
-						<span class = "name" *ngIf='data.company_reply === 1'>
+						<span class = "name" *ngIf='data.first_name'>
 				 			<h3 class="text-capitalize">{{data.first_name}} {{data.last_name}}</h3>
 				 		</span>
 
-				 		<span class = "name" *ngIf='data.company_reply !== 1'>
+				 		<span class = "name" *ngIf='data.initials'>
 				 			<h3>{{data.initials}} </h3>
 				 		</span>
 				 		<span class = "short_intro">
@@ -45,7 +43,7 @@
 
 				 			</li>
 
-				 			<li *ngIf='data.company_reply === 1'>
+				 			<li *ngIf='data.first_name'>
 
 				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt"> Contact Number : {{data.contact_number}}</span>
@@ -63,7 +61,7 @@
 
 				 </section>
 
-				  <section class = "profile job_info" *ngIf='data.company_reply === 1'>
+				  <section class = "profile job_info" *ngIf='data.first_name'>
 					<h3>About</h3>
 					<div class="info-area pro_br-btm" *ngIf="data._creator.email" >
 						<div class = "col-md-3">
@@ -287,7 +285,7 @@
 				  <section class = "profile job_info" *ngIf="data.work_history!=''" >
 					<h3>Work History</h3>
 					<div class = "company_area" *ngFor='let work of history'>
-					 	<div class="info-area pro_br-btm" *ngIf='data.company_reply === 1'>
+					 	<div class="info-area pro_br-btm" *ngIf='data.first_name'>
 							<div class = "col-md-4">
 								<strong>Company name: </strong>
 							</div>
