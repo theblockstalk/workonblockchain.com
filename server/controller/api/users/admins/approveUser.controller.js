@@ -98,7 +98,7 @@ function approve_users(_id , data)
                         }
 
                         else
-                            deferred.reject('Candidate not exists');
+                            deferred.reject('Company not exists');
 
 
                     });
