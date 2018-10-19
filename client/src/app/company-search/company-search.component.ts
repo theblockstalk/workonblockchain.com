@@ -70,7 +70,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     {name:'EOS', value:'EOS', checked:false},
     {name:'NEO', value:'NEO', checked:false},
     {name:'Waves', value:'Waves', checked:false},
-    {name:'Steem', value:'Steem', checked:false},
+    {name:'Steemit', value:'Steemit', checked:false},
     {name:'Lisk', value:'Lisk', checked:false},
     {name:'Quantum', value:'Quantum', checked:false},
     {name:'Tezos', value:'Tezos', checked:false},
