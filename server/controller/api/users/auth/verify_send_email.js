@@ -38,8 +38,7 @@ module.exports = function verify_send_email(info) {
                         }
                         else
                         {
-                            name = info.email;
-
+                            name = null;
                         }
                         verifyEmailEmail.sendEmail(info, name);
 
@@ -71,7 +70,7 @@ module.exports = function verify_send_email(info) {
                         }
                         else
                         {
-                            name = info.email;
+                            name = null;
 
                         }
                         verifyEmailEmail.sendEmail(info, name);
