@@ -69,7 +69,6 @@ function emailVerify(token)
     {
     	
         deferred.resolve({error:'Link Expired'});
-        //deferred.reject('Link expired');
     }
     return deferred.promise;
 
