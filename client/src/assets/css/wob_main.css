@@ -1913,7 +1913,7 @@ input[type=checkbox] {
 #frame .content .contact-profile {
     width: 100%;
     /*height: 60px;*/
-    line-height: 60px;
+    line-height: 37px;
     background: #fff;
     padding: 10px 10px;
     overflow: hidden;
@@ -2113,7 +2113,8 @@ input[type=checkbox] {
 .btn_rgt{
 	position: absolute;
     right: 10px;
-    top: 16px;
+    top: 8px;
+	width: 28%;
 }
 
 .btn_descp{
