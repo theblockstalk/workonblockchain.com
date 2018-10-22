@@ -83,6 +83,11 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     }
     if(this.currentUser && this.currentUser.type == 'candidate')
     {
+      this.language_opt.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
@@ -334,9 +339,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.language.push(obj);
     }
 
-    // //console.log(this.language);
-    ////console.log(this.expYear);
-
   }
 
 
@@ -349,7 +351,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   onJobSelected(event)
   {
     this.yearselected= event.target.value;
-    //this.position = event.target.value;
   }
 
   initItemRows()
@@ -428,7 +429,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     return <FormArray>this.EducationForm.get('itemRows');
   }
 
-  log;month_number;start_monthh;
+  log;start_monthh;
   experiencearray=[];
   experiencejson;
   monthNameToNum(monthname) {
@@ -438,10 +439,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   }
   startmonthIndex;endmonthIndex;
 
-  current_sal_log;current_currency_log;lang_log;
+  lang_log;
   exp_lang_log;intro_log;uni_name_log;degree_log;
   field_log;eduYear_log;company_log;position_log;
-  location_log;start_date_log;start_year_log;end_date_log;
+  location_log;start_date_log;end_date_log;
   exp_count=0;edu_count=0;
   experience_submit(searchForm: NgForm)
   {
