@@ -3673,6 +3673,10 @@ input:checked + .slider:before {
   background: #253245;
   color: #fff;
 }
+.res_feild{
+  background: #f6f9fc;
+  padding: 10px 0px;
+}
 
 /*==welcome model style end==*/
 

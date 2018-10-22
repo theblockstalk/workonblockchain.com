@@ -52,6 +52,8 @@ function update_candidate_profile(_id,userParam)
                 stackexchange_account: userParam.detail.exchange_account,
                 contact_number: userParam.detail.contact_number,
                 nationality: userParam.detail.nationality,
+                base_country:userParam.detail.base_country,
+                base_city:userParam.detail.city,
                 locations: userParam.detail.country,
                 roles: userParam.detail.roles,
                 interest_area: userParam.detail.interest_area,

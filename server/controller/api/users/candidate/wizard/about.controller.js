@@ -53,6 +53,8 @@ function about_data(_id, userParam)
                 stackexchange_account: userParam.exchange_account,
                 contact_number: userParam.contact_number,
                 nationality: userParam.nationality,
+                base_country:userParam.country,
+                base_city:userParam.city,
                 image:userParam.image_src
             };
 
