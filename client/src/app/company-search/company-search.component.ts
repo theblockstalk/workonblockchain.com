@@ -22,7 +22,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   public current: string;
   msg;
   is_approved;
-//@ViewChild('chosenuser') public blockchainData : Array<Select2OptionData>;
   first_name;last_name;company_name;company_website;company_phone;company_country;
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
   imgPath;
@@ -140,7 +139,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
     };
-    //$('.selectpicker').selectpicker();
     setInterval(() => {
       this.job_offer_log = '';
     }, 5000);
@@ -220,6 +218,30 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
     else if(this.currentUser && this.currentUser.type == 'company')
     {
+        this.language_opt.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+      this.cities.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.rolesData.sort(function(a, b){
+        if(a.text < b.text) { return -1; }
+        if(a.text > b.text) { return 1; }
+        return 0;
+      })
+
+      this.blockchainData.sort(function(a, b){
+        if(a.text < b.text) { return -1; }
+        if(a.text > b.text) { return 1; }
+        return 0;
+      })
+
+
 
       this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
@@ -346,8 +368,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     });
   }
 
-  selectedObj;countryChange;positionChange;availabilityChange;blockchainChange;salary;currencyChange;
-  search_result=[];information;
+  selectedObj;countryChange;availabilityChange;salary;currencyChange;
+  information;
   not_found;
   salarysearchdata(key , value)
   {
@@ -433,12 +455,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  company_reply;
-  //verify_candidate=[];
   cand_data=[];
-  rply;
-  lengthmsgg;
-  filter_data;
   response;
   count;
   candidate_data;
@@ -590,5 +607,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.credentials.job_desc = '';
   }
 
+  sorting(languages){
+
+    return languages.sort(function(a, b){
+      if(a.language < b.language) { return -1; }
+      if(a.language > b.language) { return 1; }
+      return 0;
+    })
+  }
 
 }

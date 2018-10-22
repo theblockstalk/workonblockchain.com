@@ -198,7 +198,7 @@
                     <div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
                       <h4>Languages</h4>
                       <ul>
-                        <li *ngFor = 'let lang of data.programming_languages'>
+                        <li *ngFor = 'let lang of sorting(data.programming_languages)'>
 										<span class = "lang_name">
 
 										 {{lang.language}}
