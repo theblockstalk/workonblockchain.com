@@ -1,7 +1,7 @@
 const version = require('../../config/version.json').version;
 
 module.exports = function healthCheck(req, res) {
-    if (res.body && res.body.error) {
+    if (req.query && req.query.error) {
         throw new Error("I am an error!");
     }
     res.json({
