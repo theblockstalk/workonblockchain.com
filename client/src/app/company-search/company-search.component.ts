@@ -523,7 +523,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 					data => {
 						if(data['datas'].length>0){
 							this.job_offer_log = 'You have already sent a job description to this candidate';
-						}
+            }
 						else{
 							this.date_of_joining = '10-07-2018';
 							this.msg_tag = 'job_offer';
@@ -540,6 +540,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 										this.credentials.location = '';
 										this.credentials.job_type = '';
 										this.credentials.job_desc = '';
+                    $("#myModal").modal("hide");
+                    this.router.navigate(['/chat']);
 									},
 									error => {
 
@@ -574,6 +576,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.job_offer_log = 'Please enter all info';
         }
     }
+
+  reset_msgs(){
+      this.job_offer_log = '';
+      this.credentials.job_title = '';
+      this.credentials.salary = '';
+      this.credentials.currency = '';
+      this.credentials.location = '';
+      this.credentials.job_type = '';
+      this.credentials.job_desc = '';
+  }
 
 
 }

@@ -178,7 +178,7 @@
                       <input type="hidden" name="id" [ngModel]="data._creator._id">
                       <input type="hidden" name="name" [ngModel]="data.initials">
                       <div class="submit-button">
-                        <button type="submit" class = "btn btn_descp" data-toggle="modal" data-target="#myModal" >Send job description</button>
+                        <button type="submit" class = "btn btn_descp" data-toggle="modal" (click)="reset_msgs()" data-target="#myModal" >Send job description</button>
                       </div>
                     </form>
                   </div>
