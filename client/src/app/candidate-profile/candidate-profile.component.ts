@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute,NavigationEnd  } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { DataService } from "../data.service";
 import {environment} from '../../environments/environment';
 import { Location } from '@angular/common';
@@ -49,11 +49,14 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   candidateMsgTitle;
   candidateMsgBody;
   public loading = false;
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,location: Location)
+  information: any = {};
+  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
   {
 
 
   }
+
+
   sectionScroll;
   internalRoute(page,dst){
     this.sectionScroll=dst;
@@ -79,7 +82,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-
   }
   tweet_text;
   dateA;dateB;
@@ -105,7 +107,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   base_city;
   ngOnInit()
   {
-    this.emitFunctionOfParent.emit();
     this.infoo='';
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
@@ -126,12 +127,15 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     else
     {
 
+
       if(!this.currentUser)
       {
         this.router.navigate(['/login']);
       }
-      if(this.currentUser && this.currentUser.type == 'candidate')
+      if(this.currentUser && this.currentUser.type === 'candidate')
       {
+        this.information.country = -1;
+
         this.cand_id= this.currentUser._creator;
 
 
@@ -140,6 +144,29 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
+                if(data.first_name && data.last_name && data.contact_number && data.nationality &&
+                  data.locations  && data.roles && data.interest_area &&
+                  data.expected_salary && data.current_salary && data.why_work && data.description && !data.base_city
+                  && !data.base_country){
+
+                  this.information.first_name = data.first_name;
+                  this.information.last_name = data.last_name;
+                  this.information.contact_number = data.contact_number;
+                  this.information.nationality = data.nationality;
+                  if(data.github_account)
+                  {
+                    this.information.github=data.github_account;
+                  }
+                  if(data.stackexchange_account)
+                  {
+                    this.information.stack=data.stackexchange_account;
+                  }
+                  $("#popModal_b").modal({
+                    show: true
+                  });
+
+                }
+
                 this.id = data._creator._id;
                 this.email =data._creator.email;
 
@@ -200,6 +227,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 }
 
                 this.infoo= data;
+
+
               }
 
 
@@ -238,5 +267,56 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
 
   }
+
+  base_countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+
+  country_log;
+  city_log;
+
+  about()
+  {
+
+    if(this.information.country === -1)
+    {
+      this.country_log ="Please choose base country";
+    }
+    if(!this.information.city)
+    {
+      this.city_log ="Please enter base city";
+    }
+    if(this.information.country !== -1 && this.information.city  )
+    {
+      this.authenticationService.about(this.currentUser._creator,this.information)
+        .subscribe(
+          data =>
+          {
+            if(data)
+            {
+
+                this.base_country = this.information.country;
+                this.base_city = this.information.city;
+
+              $('#popModal_b').modal('hide');
+
+            }
+
+          },
+          error =>
+          {
+            if(error.message === 500 || error.message === 401)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              window.location.href = '/login';
+            }
+
+            if(error.message === 403)
+            {
+            }
+          });
+
+    }
+
+  }
+
 
 }

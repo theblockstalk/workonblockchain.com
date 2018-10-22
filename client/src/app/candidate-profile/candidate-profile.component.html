@@ -13,7 +13,8 @@
 	<div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12">
-        <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn_popup">What happens next?</button>
+        <button type = "button" #popModal id="popModal" data-toggle="modal" data-target="#popModal" class = "btn_popup">What happens next?</button>
+
 
         <section class = "profile personal_info" *ngIf="!public_data">
 
@@ -497,6 +498,84 @@
     </div>
   </div>
   <!-- end model -->
+
+
+
 </ng-template>
+
+
+<!-- Modal-b -->
+
+
+<div id="popModal_b" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content contant_inner">
+      <div class="modal-header update_header">
+        <h3 class="modal-title text-center mo">Update your profile<br>
+        </h3>
+
+        <div class = "user_pic">
+          <img src = "assets/profile/profile-image.png" *ngIf="!imgPath" class = "img-responsive" alt = "profile-img"/>
+
+				 			<img *ngIf="imgPath" src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
+
+        </div>
+      </div>
+      <h2 class = "text-center">{{first_name}} {{last_name}}</h2>
+      <div class="modal-body update_inner">
+        <div class = "">
+
+
+          <div class = "model_form">
+            <div class="form-group">
+              <p><b>Where do you currently live, or where are you most frequently based?</b></p>
+            </div>
+
+            <form class = "login_form custom_form"  (submit)="about()" #aboutForm = ngForm novalidate>
+
+            <div class="form-group">
+              <label><p class = "label-p">Country</p></label>
+              <select class="form-control"  required name="country" [(ngModel)]="information.country"  required="">
+                <option value="-1" disabled selected hidden >Please choose country</option>
+
+                <option class='option' *ngFor='let options of base_countries'  [value]="options" selected>{{options}}</option>
+              </select>
+              <div class = "form_error" *ngIf="information.country === -1">
+                <span class = "error">{{country_log}}</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label><p class = "label-p">City</p></label>
+              <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="information.city" >
+
+
+              <div class = "form_error" *ngIf="!information.city">
+                <span class = "error">{{city_log}}</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class = "form-control btn btn-mo model-btn"  >Update your profile</button>
+            </div>
+            </form>
+
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
 
 <!--Profile-inner end-->

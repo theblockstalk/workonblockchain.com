@@ -29,6 +29,7 @@ module.exports = function (req,res)
 
 function about_data(_id, userParam)
 {
+    console.log(userParam);
     var deferred = Q.defer();
     var _id = _id;
     CandidateProfile.findOne({ _creator: _id }, function (err, data)

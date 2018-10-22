@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef, Input } from '@angular/core';
+import { Component, OnInit ,ElementRef, Input,AfterViewInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
@@ -16,7 +16,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './edit-candidate-profile.component.html',
   styleUrls: ['./edit-candidate-profile.component.css']
 })
-export class EditCandidateProfileComponent implements OnInit {
+export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   currentUser: User;
   info: any = {}; log;
@@ -455,6 +455,11 @@ export class EditCandidateProfileComponent implements OnInit {
             }
           });
     }
+  }
+
+  ngAfterViewInit(): void
+  {
+    window.scrollTo(0, 0);
   }
 
   currency=

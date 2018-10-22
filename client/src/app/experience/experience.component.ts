@@ -53,6 +53,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   ngAfterViewInit(): void
   {
+
     window.scrollTo(0, 0);
 
   }
