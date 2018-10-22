@@ -191,7 +191,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.current_currency = data.current_currency;
                 this.current_salary = data.current_salary;
 
-                this.platforms=data.platforms;
+                this.platforms = data.platforms;
+               
                 if(data.image != null )
                 {
 
