@@ -95,7 +95,8 @@ export class CandidateDetailComponent implements OnInit {
                 this.education = dataa.education_history;
                 this.education.sort(this.education_sort_desc);
                 this.cand_data.push(dataa);
-                console.log(this.cand_data);
+                this.first_name = dataa.initials;
+                //console.log(this.cand_data);
               }
             },
             error => {
@@ -174,6 +175,7 @@ export class CandidateDetailComponent implements OnInit {
 									data => {
 										////console.log(data);
 										this.job_offer_msg = 'Message has been successfully sent';
+                    this.router.navigate(['/chat']);
 									},
 									error => {
 										////console.log('error');
