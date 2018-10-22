@@ -28,15 +28,14 @@ function mandrillSendTemplate(templateName, message) {
                 recipients: message.to,
                 status: result[0].status,
                 template: templateName,
-                mandrillId: result[0]._id
+                mandrillId: result[0]._id,
                 reason: result[0].reject_reason
-
             });
         } else {
             logger.debug('Email was sent', {recipients: message.to})
         }
     }, function(error) {
-        logger.debug('A mandrill error occurred', {
+        logger.error('A mandrill error occurred', {
             recipients: message.to,
             template: templateName,
             name: error.name,

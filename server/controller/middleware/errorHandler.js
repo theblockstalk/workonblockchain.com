@@ -1,6 +1,5 @@
 const logger = require('../services/logger');
 const uuidv1 = require('uuid/v1');
-const slack = require('../services/slack');
 
 module.exports = function middleware(err, req, res, next) {
     const requestID = uuidv1();
@@ -13,8 +12,6 @@ module.exports = function middleware(err, req, res, next) {
     };
 
     logger.error(err.message, bug);
-
-    slack.reportBug(bug);
 
     const responseData = {
         message: err.message,
