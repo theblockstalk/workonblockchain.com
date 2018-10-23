@@ -35,9 +35,8 @@ function get_company_byId(_id)
         if (err)
         {
             logger.error(err.message, {stack: err.stack});
-           
             deferred.resolve({error:"Not found"});
-        }// deferred.reject(err.name + ': ' + err.message);
+        }
         if(!result)
         {
             EmployerProfile.find({_creator : _id}).populate('_creator').exec(function(err, result)
@@ -49,7 +48,9 @@ function get_company_byId(_id)
                 }
                 else
                 {
+
                     if(result.length > 0) {
+
                         var query_result = result[0].toObject();
                         deferred.resolve(filterReturnData.removeSensativeData(query_result));
                     }

@@ -14,8 +14,6 @@ import { HttpClient } from '@angular/common/http';
 export class JobComponent implements OnInit,AfterViewInit {
 
  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) { }
-
-  
   info: any = {};
   country ='';
   roles='';

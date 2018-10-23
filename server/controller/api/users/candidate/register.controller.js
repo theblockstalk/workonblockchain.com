@@ -11,6 +11,7 @@ var jwt_hash = require('jwt-simple');
 const verify_send_email = require('../auth/verify_send_email');
 const mongoose = require('mongoose');
 const jwtToken = require('../../../services/jwtToken');
+const filterReturnData = require('../filterReturnData');
 
 const logger = require('../../../services/logger');
 
@@ -30,7 +31,6 @@ module.exports = function register(req, res)
 
 function create(userParam)
 {
-	////console.log(userParam);
     var deferred = Q.defer();
     var count=0;
 
@@ -53,7 +53,7 @@ function create(userParam)
 
     function createUser()
     {
-        var is_verify;
+        let is_verify=0;
         if(userParam.social_type!="")
         {
             is_verify =1;
@@ -61,26 +61,16 @@ function create(userParam)
 
         let now = new Date();
 		let salt = crypto.randomBytes(16).toString('base64');
-		let random = crypto.randomBytes(16).toString('base64');
-		////console.log(salt);
 		let hash = crypto.createHmac('sha512', salt);
 		hash.update(userParam.password);
 		let hashedPasswordAndSalt = hash.digest('hex');
-		////console.log(hashedPasswordAndSalt);
+
         createdDate= now;
-        var hashStr = crypto.createHash('sha256').update(userParam.email).digest('base64');
-        var user_info = {};
-        user_info.hash = hashStr;
-        user_info.email = userParam.email;
-        user_info.name = userParam.first_name;
-        user_info.expiry = new Date(new Date().getTime() +  4800 *1000);
-        var token = jwt_hash.encode(user_info, settings.EXPRESS_JWT_SECRET, 'HS256');
-        user_info.token = token;
 
 		let new_salt = crypto.randomBytes(16).toString('base64');
 		let new_hash = crypto.createHmac('sha512', new_salt);
 		let email = new_hash.digest('hex');
-		let refered_id= 0;
+
         let newUser = new users
         ({
             email: userParam.email,
@@ -89,7 +79,6 @@ function create(userParam)
             type: userParam.type,
             ref_link: email,
             social_type: userParam.social_type,
-            verify_email_key: token,
             is_verify:is_verify,
             created_date: createdDate,
             refered_id : mongoose.Types.ObjectId(userParam.refer_by),
@@ -104,10 +93,9 @@ function create(userParam)
             }
             else
                 {
-            	
+
             	let tokenn = jwtToken.createJwtToken(user);
-                
-                
+
                 var set =
                 {
                 	    jwt_token: tokenn,
@@ -126,7 +114,7 @@ function create(userParam)
                         ({
                             _creator : newUser._id
                         });
-
+                        let userData = filterReturnData.removeSensativeData({_creator : user.toObject()})
                         info.save((err,user)=>
                         {
                         	if(err)
@@ -136,28 +124,23 @@ function create(userParam)
                         	}
                         	else
                         	{
-                        		if(newUser.social_type == "")
-                        		{	
-                        			verify_send_email(user_info);
-                        		}
+
                         		deferred.resolve
                         		({
-                        			_id:user.id,
-                        			_creator: newUser._id,
-                        			email_hash:newUser.email_hash,
-                        			type:newUser.type,
-                        			email: newUser.email,
-                        			ref_link: newUser.ref_link,
-                        			type: newUser.type,
-                        			is_approved : user.is_approved,
-                        			jwt_token: tokenn
+                                    _id:user.id,
+                                    _creator: userData._creator._id,
+                                    type:userData._creator.type,
+                                    email: userData._creator.email,
+                                    ref_link: userData._creator.ref_link,
+                                    is_approved : userData._creator.is_approved,
+                                    jwt_token: tokenn
                         		});
                         	}
                         });
                 	}
                 		
                 });
-                    
+
                 }
         });
     }
