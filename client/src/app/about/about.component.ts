@@ -236,8 +236,7 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-            console.log(data);
-            if(data)
+            if(data.success)
             {
 
               if(this.info.image)

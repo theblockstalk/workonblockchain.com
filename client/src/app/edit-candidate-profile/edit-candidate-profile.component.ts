@@ -1334,7 +1334,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
       .subscribe(
         data => {
-          if(data && this.currentUser)
+          if(data.success && this.currentUser)
           {
             let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
             let fileCount: number = inputEl.files.length;
