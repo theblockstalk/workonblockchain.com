@@ -8,7 +8,7 @@ module.exports.sendEmail = function sendEmail(mandrillOptions) {
     mandrillOptions.message.merge_language = "mailchimp";
 
     mandrillSendTemplate(mandrillOptions.templateName, mandrillOptions.message)
-}
+};
 
 function mandrillSendTemplate(templateName, message) {
     let mandrill_client = new mandrill.Mandrill(settings.MANDRILL.API_KEY);
@@ -21,18 +21,25 @@ function mandrillSendTemplate(templateName, message) {
         "ip_pool": "Main Pool"
     };
 
-    console.log('Sending email with mandrill: ', JSON.stringify(templateDetails, null, 2));
-    logger.debug('Sending email with mandrill: ' + JSON.stringify(templateDetails, null, 2));
+    logger.debug('Sending email with mandrill', {templateDetails: templateDetails});
     mandrill_client.messages.sendTemplate(templateDetails, function(result) {
         if(result[0].status !== 'sent') {
-            console.log('Status is not sent for email to : \nEmail: ' + JSON.stringify(message.to))
-            console.log("Status: " + result[0].status + "\nTemplate : " + templateName + '\nMandrill ID : ' + result[0]._id + '\nReason : ' + result[0].reject_reason);
+            logger.error('Status is not sent for email', {
+                recipients: message.to,
+                status: result[0].status,
+                template: templateName,
+                mandrillId: result[0]._id,
+                reason: result[0].reject_reason
+            });
         } else {
-            console.log('Email was sent to ', message.to)
+            logger.debug('Email was sent', {recipients: message.to})
         }
     }, function(error) {
-        console.log('A mandrill error occurred: ' + error.name + ' - ' + error.message);
-        console.log('Unable to send email to \nEmail: ' + message.to + "\nTemplate : " + templateName);
-
+        logger.error('A mandrill error occurred', {
+            recipients: message.to,
+            template: templateName,
+            name: error.name,
+            message: error.message
+        });
     });
 }
