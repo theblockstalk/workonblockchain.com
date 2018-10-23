@@ -62,6 +62,23 @@ export class JobComponent implements OnInit,AfterViewInit {
        }
        if(this.currentUser && this.currentUser.type=='candidate')
        {
+         this.options.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
+
+         this.dropdown_options.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
+
+         this.area_interested.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
           this.class="btn disabled";
           this.exp_class="btn disabled";
            this.authenticationService.getById(this.currentUser._id)

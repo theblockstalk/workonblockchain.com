@@ -84,6 +84,11 @@ export class ExperienceComponent implements OnInit , AfterViewInit
        }
        if(this.currentUser && this.currentUser.type == 'candidate')
        {
+         this.language_opt.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
           this.authenticationService.getById(this.currentUser._id)
             .subscribe(
             data => {

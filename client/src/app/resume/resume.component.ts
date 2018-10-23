@@ -50,7 +50,21 @@ export class ResumeComponent implements OnInit,AfterViewInit {
        }
        if(this.currentUser && this.currentUser.type=='candidate')
        {
-          // new synapseThrow();
+         this.commercially.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
+         this.designed.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
+         this.experimented.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
           this.exp_class="";
            this.active_class="fa fa-check-circle text-success";
            this.authenticationService.getById(this.currentUser._id)
