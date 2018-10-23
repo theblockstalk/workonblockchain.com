@@ -63,6 +63,34 @@ export class CandidateDetailComponent implements OnInit {
     rply;cand_data=[];
   ngOnInit()
   {
+    this.authenticationService.getLastJobDesc()
+    .subscribe(
+      data => {
+        let prev_job_desc = data['datas'];
+        this.credentials.job_title = prev_job_desc.job_title;
+        this.credentials.salary = prev_job_desc.salary;
+        this.credentials.currency = prev_job_desc.salary_currency;
+        this.credentials.location = prev_job_desc.interview_location;
+        this.credentials.job_type = prev_job_desc.job_type;
+        this.credentials.job_desc = prev_job_desc.description;
+      },
+      error => {
+        if (error.message === 500 || error.message === 401) {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+
+        if (error.message === 403) {
+          this.router.navigate(['/not_found']);
+        }
+      }
+    );
+
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
@@ -170,6 +198,7 @@ export class CandidateDetailComponent implements OnInit {
 							this.is_company_reply = 0;
 							this.msg_body = '';
 							this.job_description = this.credentials.job_desc;
+              this.interview_location = this.credentials.location;
 							this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.job_description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
 								.subscribe(
 									data => {
