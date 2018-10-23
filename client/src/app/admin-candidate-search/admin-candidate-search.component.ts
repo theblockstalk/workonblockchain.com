@@ -355,4 +355,12 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.getAllCandidate();
   }
 
+  sort(languages){
+    return languages.sort(function(a, b){
+      if(a.language < b.language) { return -1; }
+      if(a.language > b.language) { return 1; }
+      return 0;
+    })
+  }
+
 }

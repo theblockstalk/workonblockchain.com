@@ -44,12 +44,13 @@ async function deployFrontend(environmentName) {
 
     console.log();
     console.log('(2/4) building distribution in client/dist/');
-    // TODO: add in some tags for application to serve the version commit
     await scriptHelpers.buildAngularDistribution(buildCommand);
 
     console.log();
     console.log('(3/4) moving to temporary directory temp/client/dist');
-    await scriptHelpers.createTempClientDir(tempClientDirName);
+    await scriptHelpers.createTempClientDir(tempClientDirName, environmentName === 'production');
+    const versonName = 'client_' + gitInfo.commit + '_' + environmentName;
+    await scriptHelpers.addVersionFile(tempClientDirName + 'version', versonName);
 
     console.log();
     console.log('(4/4) syncing to S3 bucket');

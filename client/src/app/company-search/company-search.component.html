@@ -198,7 +198,7 @@
                     <div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
                       <h4>Languages</h4>
                       <ul>
-                        <li *ngFor = 'let lang of data.programming_languages'>
+                        <li *ngFor = 'let lang of sorting(data.programming_languages)'>
 										<span class = "lang_name">
 
 										 {{lang.language}}
@@ -219,14 +219,7 @@
 
 
             <pagination-controls (pageChange)="p = $event" *ngIf="cand_data.length > 10"></pagination-controls>
-            <!-- <ul class="pagination">
-                          <li class="active"><a href="#">1</a></li>
-                          <li><a href="#">2</a></li>
-                          <li><a href="#">3</a></li>
-                          <li><a href="#">4</a></li>
-                          <li><a href="#">5</a></li>
-                          <li><a href="#">Next</a></li>
-                        </ul> -->
+
 
           </div>
           <!--end-md-9-col-->

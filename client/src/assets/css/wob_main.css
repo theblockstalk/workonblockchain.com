@@ -4162,6 +4162,9 @@ input:checked + .slider:before {
   margin: 0px;
 }
 
+.checkbox_height {
+  min-height:42px;
+}
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 
