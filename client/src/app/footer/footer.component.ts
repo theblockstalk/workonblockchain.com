@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+declare var $:any;
 
 @Component({
   selector: 'app-footer',
@@ -14,10 +15,14 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
 	  this.is_cookie = this.cookieService.check('wob_cookie');
-	  //console.log(this.is_cookie);
 	  if(this.is_cookie){
 		  this.display_cookie = 1;
 	  }
+    document.write('<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119052122-1"></script>');
+    document.write('<script type="text/javascript">\twindow.dataLayer = window.dataLayer || [];\n' +
+      '\tfunction gtag(){dataLayer.push(arguments);}\n' +
+      '\tgtag(\'js\', new Date());\n' +
+      '\tgtag(\'config\', \'UA-119052122-1\');</script>');
   }
   
   accept_cookie(){
