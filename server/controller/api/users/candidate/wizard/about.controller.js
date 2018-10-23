@@ -19,13 +19,9 @@ module.exports = async function (req, res) {
 
     await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
 
-    const userDoc = await User.findOne({ _id: userId }).lean();
-
-    let userUpdate={};
-    if (userParam.country && userParam.city)
-        userUpdate.candidate = {base_city : userParam.city , base_country : userParam.country };
-
-    await User.update({ _id: userDoc._id },{ $set: userUpdate });
+    if (userParam.country && userParam.city) {
+        await User.update({ _id: userId },{ $set: {'candidate.base_city' : userParam.city , 'candidate.base_country' : userParam.country } });
+    }
 
     res.send({
         success: true

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const regexes = require('./regexes');
+const enumerations = require('./enumerations');
 
 const Schema = mongoose.Schema;
 
@@ -96,7 +97,10 @@ const UserSchema = new Schema({
     candidate: {
         type: {
             base_city: String,
-            base_country: String
+            base_country: {
+                type: String,
+                enum: enumerations.countries
+            }
         }
     },
     created_date:
