@@ -4160,6 +4160,11 @@ input:checked + .slider:before {
 .ckeditor_tab >.cke>.cke_inner> .cke_contents > .cke_reset >p {
   margin: 0px;
 }
+.error-log{
+  margin-top: 2px !important;
+  float: right ;
+  position:relative !important;
+}
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 

@@ -27,6 +27,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     text;
   companyMsgTitle;
   companyMsgBody;
+  error_msg;
   constructor(private route: ActivatedRoute,
         private router: Router,private http: HttpClient,
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
@@ -123,6 +124,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
      image_log;file_size=1048576;
     about_company(companyForm: NgForm) 
     {
+      this.error_msg="";
          ////console.log(companyForm.value);
         if(!this.company_founded)
         {
@@ -232,6 +234,9 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                     }
           });
             }
+            else {
+              this.error_msg = "There is a field that still needs completion. Please scroll up.";
+        }
           }
 
   redirectToCompany()

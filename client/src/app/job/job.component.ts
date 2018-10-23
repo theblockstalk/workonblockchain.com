@@ -43,6 +43,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     exp_disable;
     current_currency;
     current_salary;
+  error_msg;
      ngAfterViewInit(): void 
      {
          window.scrollTo(0, 0);   
@@ -400,6 +401,8 @@ export class JobComponent implements OnInit,AfterViewInit {
     current_sal_log; current_currency_log;
       onSubmit(f: NgForm) 
       {
+        this.error_msg="";
+
         //console.log(f.value);
       
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -477,6 +480,9 @@ export class JobComponent implements OnInit,AfterViewInit {
                    
                 });
         
+        }
+        else{
+          this.error_msg = "There is a field that still needs completion. Please scroll up.";
         }
       }
 

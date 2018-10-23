@@ -27,6 +27,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     term_active_class;term_link;
     candidateMsgTitle;
     candidateMsgBody;
+  error_msg;
 
     inputArray=[];
 
@@ -444,7 +445,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     location_log;start_date_log;start_year_log;end_date_log;
     exp_count=0;edu_count=0;
     experience_submit(searchForm: NgForm)
-    {    
+    {
+      this.error_msg="";
        this.edu_count=0;
        this.exp_count =0;
               
@@ -566,8 +568,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
         else
         {
-            
-          console.log("else");  
+            this.error_msg = "There is a field that still needs completion. Please scroll up.";
          }
      
               

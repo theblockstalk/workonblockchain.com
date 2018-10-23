@@ -23,6 +23,7 @@ export class AboutComponent implements OnInit,AfterViewInit
   job_active_class;
   exp_active_class;resume_active_class;
   image_log;file_size=1048576;
+  error_msg;
   gender =
   [
     "Male",
@@ -211,7 +212,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   about()
   {
-
+    this.error_msg = "";
     if(!this.info.first_name)
     {
         this.first_name_log="Please enter first name";
@@ -320,7 +321,11 @@ export class AboutComponent implements OnInit,AfterViewInit
                         } 
           });
           
-    }      
+    }
+
+    else {
+      this.error_msg = "There is a field that still needs completion. Please scroll up.";
+    }
     
   }
 

@@ -28,6 +28,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   platformreferringData;designed_expYear_db=[];
   term_active_class;term_link;
     exp_disable;
+  error_msg;
 
    constructor(private route: ActivatedRoute, private http: HttpClient,
         private router: Router,
@@ -408,7 +409,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     why_work_log;commercial_log;platform_log;
    blockchain_exp(expForm: NgForm) 
    {
-      ////console.log(expForm.value);
+     this.error_msg="";
+
+     ////console.log(expForm.value);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
        
         if(this.commercially_worked.length !== this.commercial_expYear.length )
@@ -457,6 +460,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                    
                 });
       }
+      else{
+         this.error_msg = "There is a field that still needs completion. Please scroll up.";
+
+       }
    }
 
    oncommerciallyOptions(obj)

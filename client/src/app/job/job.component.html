@@ -240,6 +240,9 @@
               <button type=submit class = "btn btn-self btn-pdg" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)">Next Step</button>
 
           </div>
+          <div class = "form_error error-log" *ngIf="error_msg">
+            <span class = "error">{{error_msg}}</span>
+          </div>
 
         </form>
         
