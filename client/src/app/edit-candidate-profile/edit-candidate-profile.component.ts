@@ -191,7 +191,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           {
             if(data)
               this.info.email = data._creator.email;
-            if(data.contact_number  || data.nationality || data.first_name || data.last_name || data.base_country || data.base_city)
+            if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
             {
 
               this.info.contact_number = data.contact_number;
@@ -211,12 +211,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 this.img_src = last;
               }
 
-              if(data.base_country)
+              if(data._creator.candidate && data._creator.candidate.base_country)
               {
-                this.info.base_country = data.base_country;
+                this.info.base_country = data._creator.candidate.base_country;
               }
-              if(data.base_city){
-                this.info.city = data.base_city;
+              if(data._creator.candidate && data._creator.candidate.base_city){
+                this.info.city = data._creator.candidate.base_city;
               }
 
 

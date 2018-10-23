@@ -106,7 +106,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.term_link = '/terms-and-condition';
             }
 
-            if(data.contact_number  || data.nationality || data.first_name || data.last_name || data.base_country || data.base_city)
+            if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
             {
 
               this.info.contact_number = data.contact_number;
@@ -116,12 +116,12 @@ export class AboutComponent implements OnInit,AfterViewInit
               {
                 this.info.nationality = data.nationality;
               }
-              if(data.base_country)
+              if(data._creator.candidate.base_country)
               {
-                this.info.country = data.base_country;
+                this.info.country = data._creator.candidate.base_country;
               }
-              if(data.base_city){
-                this.info.city = data.base_city;
+              if(data._creator.candidate.base_city){
+                this.info.city = data._creator.candidate.base_city;
               }
 
               this.info.first_name =data.first_name;
@@ -236,6 +236,7 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
+            console.log(data);
             if(data)
             {
 
@@ -302,6 +303,7 @@ export class AboutComponent implements OnInit,AfterViewInit
           },
           error =>
           {
+            console.log(error);
             if(error.message === 500 || error.message === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');

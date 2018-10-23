@@ -199,7 +199,7 @@
 				 	
 				 </section>
 
-        <section class = "profile job_info">
+        <section class = "profile job_info" >
           <h3>Residence</h3>
 
           <div class="info-area pro_br-btm" >
@@ -208,7 +208,7 @@
             </div>
             <div class = "col-md-9">
               <ul class = "pro_list">
-                <li >{{data.base_country}}</li>
+                <li *ngIf = "data._creator.candidate">{{data._creator.candidate.base_country}}</li>
 
               </ul>
             </div>
@@ -222,7 +222,7 @@
             </div>
             <div class = "col-md-9">
               <ul class = "pro_list">
-                <li >{{data.base_city}}</li>
+                <li *ngIf = "data._creator.candidate" >{{data._creator.candidate.base_city}}</li>
 
               </ul>
             </div>

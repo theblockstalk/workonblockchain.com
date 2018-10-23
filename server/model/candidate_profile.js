@@ -46,15 +46,6 @@ const CandidateProfileSchema = new Schema({
             type: String,
             validate: regexes.url
         },
-    base_country:
-        {
-            type: String,
-            enum: enumerations.countries
-        },
-    base_city:
-        {
-            type:String
-        },
     locations:
         {
             type: [{

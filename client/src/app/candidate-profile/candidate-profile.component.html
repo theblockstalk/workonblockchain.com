@@ -276,7 +276,7 @@
 					</div>
 
 
-				 	<div class="info-area pro_br-btm" *ngIf = "commercial">
+				 	<div class="info-area pro_br-btm" *ngIf = "commercial && commercial.length > 0">
 
 						<div class = "col-md-4" >
 							<strong>Platform commercially worked with:</strong>
@@ -290,7 +290,7 @@
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm" *ngIf = "platforms">
+				 	<div class="info-area pro_br-btm" *ngIf = "platforms && platforms.length > 0">
 
 						<div class = "col-md-4" >
 							<strong>Platforms designed/developed smart contracts:</strong>
@@ -303,7 +303,7 @@
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm" *ngIf = "experimented!=''">
+				 	<div class="info-area pro_br-btm" *ngIf = "experimented && experimented.length > 0 ">
 
 						<div class = "col-md-4" >
 							<strong>Platform experimented with:</strong>

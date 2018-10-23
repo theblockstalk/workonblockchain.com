@@ -115,7 +115,6 @@ function filter(params, userId)
             {
                 const availabilityFilter = { availability_day: params.availability };
                 queryString.push(availabilityFilter);
-
             }
 
             if(result_array.length !== 0 && params.currency!== -1 && params.salary)

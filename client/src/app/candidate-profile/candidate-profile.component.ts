@@ -145,8 +145,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
               {
                 if(data.first_name && data.last_name && data.contact_number && data.nationality &&
                   data.locations  && data.roles && data.interest_area &&
-                  data.expected_salary && data.current_salary && data.why_work && data.description && !data.base_city
-                  && !data.base_country){
+                  data.expected_salary && data.current_salary && data.why_work && data.description
+                  && !data._creator.candidate){
 
                   this.information.first_name = data.first_name;
                   this.information.last_name = data.last_name;
@@ -177,11 +177,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 {
                   this.stack=data.stackexchange_account;
                 }
-                if(data.base_country){
-                  this.base_country = data.base_country;
+                if(data._creator.candidate && data._creator.candidate.base_country){
+                  this.base_country = data._creator.candidate.base_country;
                 }
-                if(data.base_city){
-                  this.base_city = data.base_city;
+                if(data._creator.candidate && data._creator.candidate.base_city){
+                  this.base_city = data._creator.candidate.base_city;
                  }
 
 
