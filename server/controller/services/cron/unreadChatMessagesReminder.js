@@ -34,31 +34,34 @@ function get_unread_msgs(){
             else{
                 for(var i=0;i<result.length;i++){
                     //console.log(result[i]);
-                    users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1,"type":1}, function (err, newResult){
-                        if(newResult){
-                            if(newResult.type === 'candidate'){
-                                CandidateProfile.find({ _creator: newResult._id},{"first_name":1}, function (err, query_data){
+                    users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1,"type":1}, function (err, userDoc){
+                        if(userDoc){
+							if(userDoc.type === 'candidate'){
+                                CandidateProfile.find({ _creator: userDoc._id},{"first_name":1}, function (err, query_data){
                                     if (err){
                                         logger.error(err.message, {stack: err.stack});
                                         deferred.reject(err.name + ': ' + err.message);
                                     }
                                     if(query_data){
-                                        chatReminderEmail.sendEmail(newResult.email,query_data[0].first_name);
+                                        chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, query_data[0].first_name);
                                     }
                                 });
                             }
                             else{
-                                EmployerProfile.find({ _creator: newResult._id},{"first_name":1}, function (err, query_data){
+                                EmployerProfile.find({ _creator: userDoc._id},{"first_name":1}, function (err, query_data){
                                     if (err){
                                         logger.error(err.message, {stack: err.stack});
                                         deferred.reject(err.name + ': ' + err.message);
                                     }
                                     if(query_data){
-                                        chatReminderEmail.sendEmail(newResult.email,query_data[0].first_name);
+                                        chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, query_data[0].first_name);
                                     }
                                 });
                             }
                         }
+						else{
+							logger.debug("nothing to do");
+						}
                     });
                 }
                 deferred.resolve(result);

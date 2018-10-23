@@ -34,6 +34,7 @@ function add_privacy_content(info, html_text)
     var createdDate;
     let now = new Date();
     createdDate= now;
+
     Pages.findOne({ page_name: info.page_name}, function (err, data)
     {
         

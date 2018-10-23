@@ -1,8 +1,9 @@
 const settings = require('../../settings');
 const winston = require('winston');
 const S3StreamLogger = require('s3-streamlogger').S3StreamLogger;
+const slackHook = require('winston-slack-hook');
 
-let s3Transport;
+let s3Transport, slackWebhook;
 
 if (settings.isLiveApplication()) {
     const s3_stream = new S3StreamLogger({
@@ -15,6 +16,13 @@ if (settings.isLiveApplication()) {
     s3Transport = new (winston.transports.File)({
         stream: s3_stream
     });
+
+    slackWebhook = new slackHook({
+        level: 'error',
+        hookUrl: settings.SLACK.WEBHOOK,
+        username: settings.SLACK.USERNAME,
+        channel: settings.SLACK.CHANNEL
+    })
 }
 
 
@@ -31,6 +39,7 @@ if (settings.ENVIRONMENT === 'production') {
                 // prettyPrint: true,
                 json: true
             }),
+            slackWebhook,
             s3Transport
         ]
     })
@@ -45,6 +54,7 @@ if (settings.ENVIRONMENT === 'production') {
                 // prettyPrint: true,
                 json: true
             }),
+            slackWebhook,
             s3Transport
         ]
     })

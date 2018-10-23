@@ -1,12 +1,15 @@
-module.exports.removeSensativeData = function removeSensativeData(userDoc) {
+const Chat = require('../../../model/chat');
 
-	if(userDoc._creator)
+const removeSensativeData = module.exports.removeSensativeData = function removeSensativeData(userDoc,sendOptions)
+{
+    if(userDoc._creator)
 	{
 		delete userDoc._creator.password_hash;
 	    delete userDoc._creator.salt;
-	    delete userDoc._creator.jwt_token;
-	    delete userDoc._creator.verify_email_key;
-	    delete userDoc._creator.forgot_password_key;
+        if(!sendOptions) sendOptions={};
+        if (!sendOptions.jwt_token) delete userDoc._creator.jwt_token;
+        if (!sendOptions.verify_email_key )delete userDoc._creator.verify_email_key;
+        if (!sendOptions.forgot_password_key) delete userDoc._creator.forgot_password_key;
 	}
 
     return userDoc;
@@ -17,7 +20,7 @@ const anonymosCandidateFields = ['image', 'locations', 'roles', 'expected_salary
     'availability_day', 'why_work', 'commercial_platform', 'experimented_platform', 'platforms', 'current_currency',
     'current_salary', 'programming_languages', 'education_history', 'work_history', 'description', '_creator','nationality'];
 
-module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
+const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
     
 	if(candidateDoc.first_name && candidateDoc.last_name && candidateDoc.work_history)
 	{
@@ -61,3 +64,16 @@ function filterWhiteListFields(obj, whitelist) {
 function createInitials(first_name, last_name) {
     return first_name.charAt(0).toUpperCase() + last_name.charAt(0).toUpperCase();
 }
+
+
+
+module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
+    const acceptedJobOffer = await Chat.find({sender_id: candidateDoc._creator._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
+
+    if (acceptedJobOffer && acceptedJobOffer.length>0)
+        return removeSensativeData(candidateDoc);
+
+    else
+        return anonymousSearchCandidateData(candidateDoc);
+
+};
