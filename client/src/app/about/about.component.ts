@@ -315,6 +315,7 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.error_msg = "There is a field that still needs completion. Please scroll up.";
     }
 
+
   }
 
   referred_email()
