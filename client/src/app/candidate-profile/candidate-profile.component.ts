@@ -48,14 +48,12 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   message;
   candidateMsgTitle;
   candidateMsgBody;
-  public loading = false;
-  information: any = {};
+  public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
   {
 
 
   }
-
 
   sectionScroll;
   internalRoute(page,dst){
@@ -82,6 +80,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
+
   }
   tweet_text;
   dateA;dateB;
@@ -118,6 +117,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
     this.dataservice.eemailMessage.subscribe(message => this.message = message);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
     this.tweet_text = "@work_blockchain I am looking to work on blockchain projects now!";
     if(this.user_id)
     {
@@ -126,7 +126,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
     else
     {
-
 
       if(!this.currentUser)
       {
@@ -203,32 +202,66 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   this.currentwork = data1.currentwork;
 
                 }
+
                 for(let edu of data.education_history)
                 {
                   this.degreename = edu.degreename;
                 }
                 this.countries = data.locations;
+                this.countries.sort();
                 this.interest_area =data.interest_area;
+                this.interest_area.sort();
                 this.roles  = data.roles;
+                this.roles.sort();
                 this.availability_day =data.availability_day;
                 this.why_work = data.why_work;
                 this.commercial = data.commercial_platform;
+                if(this.commercial && this.commercial.length>0){
+                  this.commercial.sort(function(a, b){
+                    if(a.platform_name < b.platform_name) { return -1; }
+                    if(a.platform_name > b.platform_name) { return 1; }
+                    return 0;
+                  })
+                }
+
                 this.experimented = data.experimented_platform;
+                if(this.experimented && this.experimented.length>0){
+                  this.experimented.sort(function(a, b){
+                    if(a.name < b.name) { return -1; }
+                    if(a.name > b.name) { return 1; }
+                    return 0;
+                  })
+                }
+
                 this.languages= data.programming_languages;
+                if(this.languages && this.languages.length>0){
+                  this.languages.sort(function(a, b){
+                    if(a.language < b.language) { return -1; }
+                    if(a.language > b.language) { return 1; }
+                    return 0;
+                  })
+                }
+
                 this.current_currency = data.current_currency;
                 this.current_salary = data.current_salary;
 
-                this.platforms = data.platforms;
-               
+                this.platforms=data.platforms;
+                if(this.platforms && this.platforms.length>0){
+                  this.platforms.sort(function(a, b){
+                    if(a.platform_name < b.platform_name) { return -1; }
+                    if(a.platform_name > b.platform_name) { return 1; }
+                    return 0;
+                  })
+                }
+
                 if(data.image != null )
                 {
 
                   this.imgPath = data.image;
+
                 }
 
                 this.infoo= data;
-
-
               }
 
 
@@ -245,6 +278,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 localStorage.removeItem('admin_log');
                 window.location.href = '/login';
               }
+
             });
 
         this.authenticationService.get_page_content('Candidate popup message')
@@ -263,7 +297,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       }
 
     }
-
 
 
   }

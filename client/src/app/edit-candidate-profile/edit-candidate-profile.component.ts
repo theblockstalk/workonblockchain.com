@@ -109,7 +109,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     ]
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
-
   constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
   }
@@ -133,7 +132,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   ngOnInit()
   {
-
     this.info.base_country = -1
     this.info.nationality = -1;
     this.current_currency = -1;
@@ -148,6 +146,46 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     });
     if(this.currentUser && this.currentUser.type=='candidate')
     {
+
+      this.options.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.dropdown_options.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.area_interested.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.commercially.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+      this.designed.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+      this.experimented.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.language_opt.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(data =>
           {
@@ -186,6 +224,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
             if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
             {
+
               for (let country1 of data.locations)
               {
 
@@ -361,7 +400,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
             }
 
-            /////////////////experience////////////////////////
             if(data.work_history && data.education_history|| data.programming_languages&&data.current_salary && data.current_currency)
             {
 
@@ -421,6 +459,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                       {
                         option.checked=true;
                         this.lang_expYear_db.push(key[i]);
+
                       }
 
                     }
@@ -461,6 +500,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   {
     window.scrollTo(0, 0);
   }
+
 
   currency=
     [
@@ -693,6 +733,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
 
+
   onComExpYearOptions(e, value)
   {
 
@@ -735,6 +776,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.value=value;
       this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
+
     }
     else
     {
@@ -779,7 +821,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     ]
 
 
-
   roles_opt =
     [
       {name:'Backend Developer', value:'Backend Developer', checked:false},
@@ -792,7 +833,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       {name:'Frontend Developer', value:'Frontend Developer', checked:false},
     ]
 
-
   onLangExpOptions(obj)
   {
     let updateItem = this.language.find(this.findIndexToUpdate_funct, obj.value);
@@ -801,7 +841,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
       this.language.splice(index, 1);
       let updateItem2 = this.findObjectByKey(this.LangexpYear, 'language', obj.value);
-      ////console.log(updateItem);
       let index2 = this.LangexpYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -955,11 +994,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     return <FormArray>this.EducationForm.get('itemRows');
   }
 
-  onCurrentlyWork(e)
-  {
-
-  }
-
   onLangExpYearOptions(e, value)
   {
 
@@ -1045,8 +1079,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
       this.selectedcountry.splice(index, 1);
     }
-
-    //console.log(this.selectedcountry);
 
   }
   ////////////////////////save edit profile data//////////////////////////////////
@@ -1170,6 +1202,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     if(this.EducationForm.value.itemRows.length >= 1)
     {
+
       for (var key in this.EducationForm.value.itemRows)
       {
         if(!this.EducationForm.value.itemRows[key].uniname)
@@ -1260,18 +1293,18 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 &&
       this.info.city && this.info.base_country != -1 && this.expected_salaryyy && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day &&
+
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length   )
     {
       this.updateProfileData(profileForm.value);
     }
 
-    //
-
   }
 
   file_size=1048576;
   image_log;
+
   updateProfileData(profileForm)
   {
     this.experiencearray=[];

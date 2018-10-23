@@ -13,11 +13,9 @@ if (process.env.NODE_ENV === 'production') {
     config = require('./config/default.json');
 }
 
-function isLiveApplication() {
+const isLiveApplication = settings.isLiveApplication = function isLiveApplication() {
     return settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging'
 }
-
-settings.isLiveApplication = isLiveApplication;
 
 if (isLiveApplication()) {
     config.mongo.username = process.env.MONGO_DATABASE_USERNAME;
@@ -42,6 +40,12 @@ if (isLiveApplication()) {
         FROM_NAME: config.mandrill.fromName,
         API_KEY: config.mandrill.apiKey
     };
+
+    settings.SLACK = {
+        WEBHOOK: process.env.SLACK_WEBHOOK,
+        USERNAME: config.slack.username,
+        CHANNEL: config.slack.channel
+    }
 } else {
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.host + ":"
         + config.mongo.port + "/" + config.mongo.databaseName;
