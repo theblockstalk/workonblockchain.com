@@ -1,7 +1,7 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const User = require('../../../../../model/users');
 
-///// for prefill the candidate profile data ///////////////////
+///// for candidate about wizard ///////////////////
 
 module.exports = async function (req, res) {
     const userId = req.auth.user._id;
