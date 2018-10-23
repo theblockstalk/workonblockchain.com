@@ -92,11 +92,6 @@
                   </div>
                 </div>
 
-                <!-- <div class="form-group col-md-6" *ngIf = 'info.image_src'>
-                                  <label><p class = "label-p">Image</p></label>
-                                  <img src = {{info.image_src}} >
-
-                            </div>-->
 
               </fieldset>
             </div>
@@ -241,7 +236,7 @@
 
                           <div class="col-md-4 collection-checkbox" *ngFor='let position_option of area_interested'>
 
-                            <div class="checkbox">
+                            <div class="checkbox checkbox_height">
                               <label class = "check-label lable"> {{position_option.name}}
                                 <input type="checkbox" name="options" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
                                 <span class="checkmark">

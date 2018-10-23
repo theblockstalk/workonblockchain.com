@@ -18,17 +18,26 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 {
   EducationForm: FormGroup;
   ExperienceForm: FormGroup;
-  language=[]; roles=[];yearselected;shown; work_experience_year;
+  language=[];
+  roles=[];
+  yearselected;shown;
   today = Date.now();
-  currentdate;currentyear;currentUser: User;language_checked;language_exp=[];expYear_db=[];expYearRole_db=[];
-  value;referringData;expYear=[];expYearRole=[];start_month;start_year;salary;db_lang;
-  companyname;positionname;locationname;description;startdate;startyear;enddate;endyear;currentwork;currentenddate;currentendyear; uniname;degreename;fieldname;edudate;eduyear; eduData; jobData;datatata=[];exp_data=[];Intro;db_valye=[];
+  currentUser: User;
+  expYear_db=[];
+  value;
+  referringData;
+  expYear=[];
+  expYearRole=[];
+  start_month;
+  start_year;
+  salary;
+  db_lang;
+  companyname;positionname;locationname;description;startdate;startyear;enddate;endyear;currentwork;
+  uniname;degreename;fieldname;eduyear; eduData; jobData;Intro;db_valye=[];
   exp_active_class;active_class;current_currency;
   term_active_class;term_link;
   candidateMsgTitle;
   candidateMsgBody;
-
-  inputArray=[];
 
   constructor(private _fb: FormBuilder,private datePipe: DatePipe,private route: ActivatedRoute, private http: HttpClient,
               private router: Router,private dataservice: DataService,
@@ -64,11 +73,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     this.current_currency =-1;
     this.jobData = [];
     this.eduData=[];
-    // this.dataservice.currentMessage.subscribe(message => this.message = message);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.shown=true;
-    //this.currentdate = this.datePipe.transform(this.today, 'MMM');
-    //this.currentyear = this.datePipe.transform(this.today, 'yyyy');
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
     });
@@ -83,10 +89,14 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     }
     if(this.currentUser && this.currentUser.type == 'candidate')
     {
+      this.language_opt.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
-            //console.log(data.education_history_history);
 
             if(data.terms==true)
             {
@@ -334,9 +344,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.language.push(obj);
     }
 
-    // //console.log(this.language);
-    ////console.log(this.expYear);
-
   }
 
 
@@ -349,7 +356,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   onJobSelected(event)
   {
     this.yearselected= event.target.value;
-    //this.position = event.target.value;
   }
 
   initItemRows()
@@ -428,7 +434,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     return <FormArray>this.EducationForm.get('itemRows');
   }
 
-  log;month_number;start_monthh;
+  log;start_monthh;
   experiencearray=[];
   experiencejson;
   monthNameToNum(monthname) {
@@ -438,10 +444,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   }
   startmonthIndex;endmonthIndex;
 
-  current_sal_log;current_currency_log;lang_log;
+  lang_log;
   exp_lang_log;intro_log;uni_name_log;degree_log;
   field_log;eduYear_log;company_log;position_log;
-  location_log;start_date_log;start_year_log;end_date_log;
+  location_log;start_date_log;end_date_log;
   exp_count=0;edu_count=0;
   experience_submit(searchForm: NgForm)
   {

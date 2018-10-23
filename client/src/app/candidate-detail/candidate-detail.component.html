@@ -128,7 +128,7 @@
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
-								<li *ngFor='let country of data.locations'>{{country}}</li>
+								<li *ngFor='let country of countries'>{{country}}</li>
 
 							</ul>
 						</div>
@@ -144,21 +144,21 @@
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
-								<li *ngFor='let interest_area of data.interest_area;'>{{interest_area}}</li>
+								<li *ngFor='let interest_area of interest_area;'>{{interest_area}}</li>
 
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm" *ngIf="data.roles">
+				 	<div class="info-area pro_br-btm" *ngIf="roles">
 
 						<div class = "col-md-3" >
 							<strong>Roles : </strong>
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
-								<li *ngFor='let roles_data of data.roles'>{{roles_data}}</li>
+								<li *ngFor='let roles_data of roles'>{{roles_data}}</li>
 
 							</ul>
 						</div>
@@ -219,34 +219,34 @@
 					</div>
 
 
-				 	<div class="info-area pro_br-btm" *ngIf="data.commercial_platform">
+				 	<div class="info-area pro_br-btm" *ngIf="commercial">
 
 						<div class = "col-md-4" >
 							<strong>Platform commercially worked with:</strong>
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let data of data.commercial_platform;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
+								<li *ngFor='let data of commercial;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
 
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm" *ngIf="data.platforms">
+				 	<div class="info-area pro_br-btm" *ngIf="platforms">
 
 						<div class = "col-md-4" >
 							<strong>Platforms designed/developed smart contracts:</strong>
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let data of data.platforms;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
+								<li *ngFor='let data of platforms;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm" *ngIf="data.experimented_platform!=''">
+				 	<div class="info-area pro_br-btm" *ngIf="experimented">
 
 						<div class = "col-md-4" >
 							<strong>Platform experimented with:</strong>
@@ -263,7 +263,7 @@
 
 				 </section>
 
-				 <section class = "profile job_info" *ngIf="data.programming_languages &&data.programming_languages.length>0">
+				 <section class = "profile job_info" *ngIf="languages && languages.length>0">
 					<h3>Experience</h3>
 
 				 	<div class="info-area pro_br-btm" >
@@ -273,7 +273,7 @@
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let lang of data.programming_languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
+								<li *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
 
 							</ul>
 						</div>
