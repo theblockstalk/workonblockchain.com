@@ -4225,6 +4225,11 @@ input:checked + .slider:before {
 .ckeditor_tab >.cke>.cke_inner> .cke_contents > .cke_reset >p {
   margin: 0px;
 }
+.error-log{
+  margin-top: 2px !important;
+  float: right ;
+  position:relative !important;
+}
 
 .checkbox_height {
   min-height:42px;

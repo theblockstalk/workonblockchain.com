@@ -132,7 +132,7 @@ const appRoutes: Routes = [
     {path : 'admin-company-search' , component: AdminCompanySearchComponent},
     {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
     {path : 'admin-build-page' , component: BuildingCustomPageComponent},
-	  {path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
+	  {path : 'admin-privacy-notice-editor' , component: PrivacyEditorComponent},
     {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
     {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
     {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
