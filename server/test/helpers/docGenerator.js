@@ -152,7 +152,6 @@ module.exports.profileData = function profileData(){
         exchange_account : 'fb.com',
         contact_number : '65464655',
         nationality : 'Pakistani',
-        image_src : 'dffdfd.jpg',
         country : 'Pakistan',
         city : 'Islamabad'
     }
