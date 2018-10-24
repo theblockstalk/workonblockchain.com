@@ -27,15 +27,6 @@ module.exports = function admin_company_filter(req,res)
             res.json({error: err});
         });
 }
-function removeDups(names) {
-	  let unique = {};
-	  names.forEach(function(i) {
-	    if(!unique[i]) {
-	      unique[i] = true;
-	    }
-	  });
-	  return Object.keys(unique);
-	}
 
 function admin_company_filter_new(data)
 {

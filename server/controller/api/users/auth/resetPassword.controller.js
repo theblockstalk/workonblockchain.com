@@ -1,10 +1,8 @@
 const settings = require('../../../../settings');
 var _ = require('lodash');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
 var mongo = require('mongoskin');
 const users = require('../../../../model/users');
-var jwt_hash = require('jwt-simple');
 const logger = require('../../../services/logger');
 var crypto = require('crypto');
 
@@ -28,16 +26,16 @@ module.exports = function (req,res)
 
 }
 
-function reset_password(hash,data)
+function reset_password(forgotPasswordToken , newPassword)
 {
     var deferred = Q.defer();
 
-    var token = jwt_hash.decode(hash, settings.EXPRESS_JWT_SECRET, 'HS256');
+    //var token = jwt_hash.decode(hash, settings.EXPRESS_JWT_SECRET, 'HS256');
 
-    if(new Date(token.expiry) > new Date())
-    {
+    //if(new Date(token.expiry) > new Date())
+    //{
 
-        users.findOne({ forgot_password_key :hash  }, function (err, result)
+        users.findOne({ forgot_password_key : forgotPasswordToken}, function (err, result)
         {
 
             if (err){
@@ -60,7 +58,7 @@ function reset_password(hash,data)
         {
         	 let salt = crypto.randomBytes(16).toString('base64');
              let hash = crypto.createHmac('sha512', salt);
-     		hash.update(data.password);
+     		hash.update(newPassword.password);
      		let hashedPasswordAndSalt = hash.digest('hex');
 
              var set =
@@ -80,11 +78,11 @@ function reset_password(hash,data)
                 }
             });
         }
-    }
-    else
-    {
-        deferred.reject('Link expired');
-    }
+    //}
+    //else
+    //{
+        //deferred.reject('Link expired');
+    //}
 
     return deferred.promise;
 }

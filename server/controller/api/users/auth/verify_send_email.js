@@ -7,11 +7,12 @@ const EmployerProfile = require('../../../../model/employer_profile');
 const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');
 const logger = require('../../../services/logger');
 
-module.exports = function verify_send_email(info) {
+module.exports = function verify_send_email(emailAdress, verifyEmailToken) {
     var deferred = Q.defer()
-    ////console.log(info.email);
+    console.log(emailAdress);
+    console.log(verifyEmailToken);
     var name;
-    users.findOne({ email :info.email  }, function (err, userDoc)
+    users.findOne({ email :emailAdress  }, function (err, userDoc)
     {
         if (err){
             logger.error(err.message, {stack: err.stack});
@@ -40,13 +41,13 @@ module.exports = function verify_send_email(info) {
                         {
                             name = null;
                         }
-                        verifyEmailEmail.sendEmail(info, userDoc.disable_account , name);
+                        verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
 
                     }
                     else
                     {
                         name = null;
-                        verifyEmailEmail.sendEmail(info, userDoc.disable_account , name);
+                        verifyEmailEmail.sendEmail(verifyEmailToken, userDoc.disable_account , name);
                     }
 
                 });
@@ -73,13 +74,13 @@ module.exports = function verify_send_email(info) {
                             name = null;
 
                         }
-                        verifyEmailEmail.sendEmail(info,userDoc.disable_account, name);
+                        verifyEmailEmail.sendEmail(verifyEmailToken,userDoc.disable_account, name);
 
                     }
                     else
                     {
                         name = null;
-                        verifyEmailEmail.sendEmail(info,userDoc.disable_account, name);
+                        verifyEmailEmail.sendEmail(verifyEmailToken,userDoc.disable_account, name);
                     }
 
                 });

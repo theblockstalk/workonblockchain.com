@@ -1,10 +1,11 @@
 const emails = require('../emails');
 const settings = require('../../../../settings');
 
-module.exports.sendEmail = function sendEmail(data,isAccountDisabed,first_name) {
-    const verifyEmailUrl = settings.CLIENT.URL + 'verify_email?email_hash='+data.token;
+module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmailToken) {
+    const verifyEmailUrl = settings.CLIENT.URL + 'verify_email?email_hash='+verifyEmailToken;
+    console.log(verifyEmailUrl);
     const sendTo = {
-        email: data.email
+        email: emailAddress
     };
     const subject = "Please verify your email on Work on Blockchain";
 
@@ -15,7 +16,7 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed,first_name) 
         message: {
         	 global_merge_vars: [{
         	     "name": "FNAME",
-                 "content": first_name
+                 "content": firstName
              }, {
         	     "name": "VERIFY_EMAIL_URL",
                  "content": verifyEmailUrl
