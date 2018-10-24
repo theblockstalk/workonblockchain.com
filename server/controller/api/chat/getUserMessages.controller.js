@@ -12,6 +12,7 @@ var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../model/employer_profile');
 const chat = require('../../../model/chat');
+const helper = require('./chatHelpers');
 
 const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../../services/email/emails/verifyEmail');
@@ -27,10 +28,11 @@ const logger = require('../../services/logger');
 
 module.exports = function (req, res)
 {
-	//console.log("idddddddddddd");
+	//console.log(req.body);
 	let userId;
-	if(req.body.id && req.auth.user.is_admin){
+	if(req.body.id){
 		userId = req.body.id;
+        helper.isAuthorizedForConversation(req.auth.user, req.body.id, req.body.id)
 	}
 	else{
 		userId = req.auth.user._id;

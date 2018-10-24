@@ -12,6 +12,7 @@ var crypto = require('crypto');
 var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../model/employer_profile');
 const chat = require('../../../model/chat');
+const helper = require('./chatHelpers');
 
 const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
 const verifyEmailEmail = require('../../services/email/emails/verifyEmail');
@@ -29,8 +30,7 @@ const filterReturnData = require('../users/filterReturnData');
 module.exports = function (req, res)
 {
 
-    let userId = req.auth.user._id;
-    //TODO
+    helper.isAuthorizedForConversation(req.auth.user, req.body.sender_id, req.body.receiver_id)
     get_candidate(req.body.sender_id, req.body.receiver_id,req.body.is_company_reply,req.body.type).then(function (user)
     {
         if (user)
