@@ -97,13 +97,13 @@ router.get('/users/',auth.isLoggedIn, candidateGetAll);
 router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
-router.put('/users/welcome/about', auth.isLoggedIn, candidateWizardAbout);
+router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
 router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
 router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
 router.put('/users/welcome/exp', auth.isLoggedIn, candidateWizardExperience);
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), candidateImage);
 router.put('/users/refered_id', auth.isLoggedIn, candidateReferred);
-router.put('/users/update_profile', auth.isLoggedIn, candidateUpdate);
+router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
 
 // Companies
 router.post('/users/create_employer', companyRegister);
