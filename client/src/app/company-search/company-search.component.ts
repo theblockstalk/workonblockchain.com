@@ -608,6 +608,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 							this.is_company_reply = 0;
 							this.msg_body = '';
 							this.description = this.credentials.job_desc;
+              this.interview_location = this.credentials.location;
 							this.authenticationService.insertMessage(this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
 								.subscribe(
 									data => {
@@ -618,6 +619,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 										this.credentials.location = '';
 										this.credentials.job_type = '';
 										this.credentials.job_desc = '';
+                    $("#myModal").modal("hide");
+                    this.router.navigate(['/chat']);
 									},
 									error => {
 
