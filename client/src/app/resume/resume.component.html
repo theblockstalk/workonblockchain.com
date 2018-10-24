@@ -170,6 +170,9 @@
               <a routerLink="/job" class = "btn btn-prev">Prev Step</a>
               <button type=submit  class = "btn btn-self btn-pdg">Next Step</button>
           </div>
+          <div class = "form_error error-log" *ngIf="error_msg">
+            <span class = "error">{{error_msg}}</span>
+          </div>
 
         </form>
         
