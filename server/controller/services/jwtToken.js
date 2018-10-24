@@ -8,17 +8,8 @@ module.exports.createJwtToken = function createJwtToken(user, options) {
         created_date: user.created_date
     };
 
-    let signOptions = {
-        expiresIn:  "1h",
-    };
-    console.log(jwt.sign(payload, settings.EXPRESS_JWT_SECRET, ));
-    console.log(jwt.sign(payload, settings.EXPRESS_JWT_SECRET));
-
-
-    if (options) {
-        console.log("if");
+    if (options)
         return jwt.sign(payload, settings.EXPRESS_JWT_SECRET, options);
-    }
 
     else
         return jwt.sign(payload, settings.EXPRESS_JWT_SECRET);
