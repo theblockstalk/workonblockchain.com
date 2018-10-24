@@ -77,7 +77,7 @@ export class CandidateDetailComponent implements OnInit {
     this.authenticationService.getLastJobDesc()
     .subscribe(
       data => {
-        let prev_job_desc = data['datas'];
+        let prev_job_desc = data;
         this.credentials.job_title = prev_job_desc.job_title;
         this.credentials.salary = prev_job_desc.salary;
         this.credentials.currency = prev_job_desc.salary_currency;
