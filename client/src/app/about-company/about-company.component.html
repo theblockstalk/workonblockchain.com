@@ -72,11 +72,17 @@
             <button type="submit" class = "btn btn-self btn-pdg"  >Done</button>
           </div>
 
+
+          <div class = "form_error error-log" *ngIf="error_msg">
+            <span class = "error">{{error_msg}}</span>
+          </div>
+
         </form>
 
       </div>
     </div>
   </div>
+
 
 </section>
 
