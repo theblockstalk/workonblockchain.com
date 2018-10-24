@@ -19,10 +19,19 @@ export class AboutComponent implements OnInit,AfterViewInit
   log='';
   info: any = {};
   email_data : any ={};
-  link=''; class=''; resume_class;exp_class;final_class;googleUser;linkedinUser;active_class;
+  link='';
+  class='';
+  resume_class;
+  exp_class;
+  googleUser;
+  linkedinUser;
+  active_class;
   job_active_class;
-  exp_active_class;resume_active_class;
-  image_log;file_size=1048576;
+  exp_active_class;
+  resume_active_class;
+  image_log;
+  file_size=1048576;
+  error_msg;
   gender =
     [
       "Male",
@@ -54,21 +63,15 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   ngOnInit()
   {
-    /*this.info.first_name ='';
-    this.info.last_name='';
-    this.info.contact_number='';
-    this.info.nationality='';*/
+
     this.job_disable = "disabled";
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
     this.info.nationality=-1;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    ////////console.log(this.currentUser);
     this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-    ////////console.log(this.googleUser);
 
     this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-    //////////console.log(this.linkedinUser);
 
     if(this.googleUser)
     {
@@ -204,7 +207,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   about()
   {
-
+    this.error_msg = "";
     if(!this.info.first_name)
     {
       this.first_name_log="Please enter first name";
@@ -306,8 +309,12 @@ export class AboutComponent implements OnInit,AfterViewInit
             {
             }
           });
-
     }
+
+    else {
+      this.error_msg = "There is a field that still needs completion. Please scroll up.";
+    }
+
 
   }
 
