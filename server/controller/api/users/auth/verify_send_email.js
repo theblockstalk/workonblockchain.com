@@ -9,8 +9,7 @@ const logger = require('../../../services/logger');
 
 module.exports = function verify_send_email(emailAdress, verifyEmailToken) {
     var deferred = Q.defer()
-    console.log(emailAdress);
-    console.log(verifyEmailToken);
+
     var name;
     users.findOne({ email :emailAdress  }, function (err, userDoc)
     {
@@ -47,7 +46,7 @@ module.exports = function verify_send_email(emailAdress, verifyEmailToken) {
                     else
                     {
                         name = null;
-                        verifyEmailEmail.sendEmail(verifyEmailToken, userDoc.disable_account , name);
+                        verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
                     }
 
                 });
@@ -74,13 +73,13 @@ module.exports = function verify_send_email(emailAdress, verifyEmailToken) {
                             name = null;
 
                         }
-                        verifyEmailEmail.sendEmail(verifyEmailToken,userDoc.disable_account, name);
+                        verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
 
                     }
                     else
                     {
                         name = null;
-                        verifyEmailEmail.sendEmail(verifyEmailToken,userDoc.disable_account, name);
+                        verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
                     }
 
                 });

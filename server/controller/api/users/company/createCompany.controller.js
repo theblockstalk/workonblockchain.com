@@ -1,18 +1,16 @@
 const settings = require('../../../../settings');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
-var date = require('date-and-time');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
+var mongo = require('mongoskin');
 const users = require('../../../../model/users');
 const crypto = require('crypto');
-var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../model/employer_profile');
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
-const verify_send_email = require('../auth/verify_send_email');
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
+const verify_send_email = require('../auth/verify_send_email');
 
 module.exports = function (req,res)
 {
@@ -79,7 +77,7 @@ function create_employer(userParam)
     {
         let now = new Date();
         createdDate= now;
-        var hashStr = crypto.createHash('sha256').update(userParam.email).digest('base64');
+        /*var hashStr = crypto.createHash('sha256').update(userParam.email).digest('base64');
         var company_info = {};
         company_info.hash = hashStr;
         company_info.email = userParam.email;
@@ -87,20 +85,19 @@ function create_employer(userParam)
         company_info.expiry = new Date(new Date().getTime() +  4800 *1000);
         var token = jwt_hash.encode(company_info, settings.EXPRESS_JWT_SECRET, 'HS256');
         company_info.token = token;
-       
+       */
         let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.createHmac('sha512', salt);
-		hash.update(userParam.password);
-		let hashedPasswordAndSalt = hash.digest('hex');
-		
-		 let random = crypto.randomBytes(16).toString('base64');
+        hash.update(userParam.password);
+        let hashedPasswordAndSalt = hash.digest('hex');
+
+        let random = crypto.randomBytes(16).toString('base64');
         let newUser = new users
         ({
             email: userParam.email,
             password_hash: hashedPasswordAndSalt,
             salt : salt,
             type: userParam.type,
-            verify_email_key: token,
             jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
             created_date: createdDate,
 
@@ -115,69 +112,111 @@ function create_employer(userParam)
             }
             else
             {
-            	let tokenn = jwtToken.createJwtToken(user);
-                
-                
-                var set =
-                {
-                	    jwt_token: tokenn,
+                let tokenn = jwtToken.createJwtToken(user);
 
-                };
+
+                var set =
+                    {
+                        jwt_token: tokenn,
+
+                    };
                 users.update({ _id: user._id},{ $set: set }, function (err, doc)
                 {
-                	if (err)
-                	{
-                		logger.error(err.message, {stack: err.stack});
-                		deferred.reject(err.name + ': ' + err.message);
-                	}
-                	else
-                	{
-                		let info = new EmployerProfile
-                		({
-                			_creator : newUser._id,
-                			first_name : userParam.first_name,
-                			last_name: userParam.last_name,
-                			job_title:userParam.job_title,
-                			company_name: userParam.company_name,
-                			company_website:userParam.company_website,
-                			company_phone:userParam.phone_number,
-                			company_country:userParam.country,
-                			company_city:userParam.city,
-                			company_postcode:userParam.postal_code,
-                		});
+                    if (err)
+                    {
+                        logger.error(err.message, {stack: err.stack});
+                        deferred.reject(err.name + ': ' + err.message);
+                    }
+                    else
+                    {
+                        let info = new EmployerProfile
+                        ({
+                            _creator : newUser._id,
+                            first_name : userParam.first_name,
+                            last_name: userParam.last_name,
+                            job_title:userParam.job_title,
+                            company_name: userParam.company_name,
+                            company_website:userParam.company_website,
+                            company_phone:userParam.phone_number,
+                            company_country:userParam.country,
+                            company_city:userParam.city,
+                            company_postcode:userParam.postal_code,
+                        });
 
-                        let userData = filterReturnData.removeSensativeData({_creator : user.toObject()} , {
-                            verify_email_key: true
-                        } )
+                        let userData = filterReturnData.removeSensativeData({_creator : user.toObject()})
 
-                		info.save((err,user)=>
-                		{
-                			if(err)
-                			{
-                				logger.error(err.message, {stack: err.stack});
-                				deferred.reject(err.name + ': ' + err.message);
-                			}
-                			else
-                			{
-                				//for test cases comment it
+                        info.save((err,user)=>
+                        {
+                            if(err)
+                            {
+                                logger.error(err.message, {stack: err.stack});
+                                deferred.reject(err.name + ': ' + err.message);
+                            }
+                            else
+                            {
+                                //for test cases comment it
                                 // verify_send_email(company_info);
-                				deferred.resolve
-                				({
-                					_id:user.id,
-                					_creator: userData._creator._id,
-                					type:userData._creator.type,
-                					email: userData._creator.email,
-                					is_approved : userData._creator.is_approved,
+                                verifyEmail(userParam.email);
+                                deferred.resolve
+                                ({
+                                    _id:user.id,
+                                    _creator: userData._creator._id,
+                                    type:userData._creator.type,
+                                    email: userData._creator.email,
+                                    is_approved : userData._creator.is_approved,
                                     verifyEmailKey: userData._creator.verify_email_key,
-                					jwt_token: tokenn
-                				});
-                			}
-                		});
-                	}
+                                    jwt_token: tokenn
+                                });
+                            }
+                        });
+                    }
                 });
             }
         });
     }
 
+    function verifyEmail(email){
+        users.findOne({ email :email  }, function (err, result)
+        {
+            if (err){
+                logger.error(err.message, {stack: err.stack});
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            if(result)
+            {
+                updateData(result);
+            }
+            else
+            {
+                deferred.resolve({success : false , error:'Email Not Found'});
+            }
+
+        });
+
+        function updateData(data)
+        {
+            let verifyEmailToken = jwtToken.createJwtToken(data);
+            var set =
+                {
+                    verify_email_key: verifyEmailToken,
+
+                };
+            users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc)
+            {
+                if (err){
+                    logger.error(err.message, {stack: err.stack});
+                    deferred.reject(err.name + ': ' + err.message);
+                }
+                else
+                {
+                    verify_send_email(data.email , verifyEmailToken);
+                    deferred.resolve({success : true , msg:'Email Send'});
+                }
+            });
+        }
+    }
+
+
     return deferred.promise;
 }
+
