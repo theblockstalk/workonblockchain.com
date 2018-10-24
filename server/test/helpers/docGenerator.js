@@ -149,10 +149,12 @@ module.exports.profileData = function profileData(){
         first_name : 'Tayyab',
         last_name : 'Hussain',
         github_account : 'fb.com',
-        stackexchange_account : 'fb.com',
+        exchange_account : 'fb.com',
         contact_number : '65464655',
         nationality : 'Pakistani',
-        image_src : 'dffdfd.jpg'
+        image_src : 'dffdfd.jpg',
+        country : 'Pakistan',
+        city : 'Islamabad'
     }
 }
 
@@ -262,6 +264,8 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
                exchange_account: 'sadia_exchange.com',
                github_account: 'fb.com',
                nationality: 'Pakistani',
+               base_country : 'Pakistan',
+               city : 'Islamabad',
                expected_salary: 1400,
                base_currency: '$ USD ',
                salary: 23000,

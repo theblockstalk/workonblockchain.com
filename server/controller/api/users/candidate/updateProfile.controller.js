@@ -11,6 +11,7 @@ module.exports = async function (req, res) {
     const userParam = req.body.detail;
     const historyParam = req.body;
     let candidateUpdate = {}
+
     if (userParam.first_name) candidateUpdate.first_name = userParam.first_name;
     if (userParam.last_name) candidateUpdate.last_name = userParam.last_name;
     if (userParam.github_account) candidateUpdate.github_account = userParam.github_account;
@@ -34,11 +35,11 @@ module.exports = async function (req, res) {
 
     await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
 
-    if (userParam.country && userParam.city) {
+    if (userParam.base_country && userParam.city) {
         await User.update({ _id: userId },{ $set: {'candidate.base_city' : userParam.city , 'candidate.base_country' : userParam.base_country } });
     }
 
     res.send({
-        success: true
+        success: true,
     });
 };
