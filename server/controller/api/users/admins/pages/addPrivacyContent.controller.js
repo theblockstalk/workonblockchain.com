@@ -8,6 +8,7 @@ const sanitize = require('../../../../services/sanitize');
 
 module.exports = function (req,res)
 {
+    console.log(req.body);
 	logger.info(req.body);
 	const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
     add_privacy_content(req.body, sanitizedHtml).then(function (err, data)
@@ -33,7 +34,7 @@ function add_privacy_content(info, html_text)
     var createdDate;
     let now = new Date();
     createdDate= now;
-    ////console.log(info.page_title);
+
     Pages.findOne({ page_name: info.page_name}, function (err, data)
     {
         

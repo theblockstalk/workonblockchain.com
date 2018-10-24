@@ -8,7 +8,6 @@ async function getUserFromToken(req) {
     let token = req.headers.authorization;
     let payload = jwtToken.verifyJwtToken(token);
 
-
 	const user = await mongooseUsers.findOne({_id : payload.id});
 
     if (user.jwt_token !== token) errors.throwError("Jwt token not found", 401);

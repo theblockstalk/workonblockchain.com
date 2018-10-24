@@ -35,16 +35,14 @@ module.exports = function (req,res){
 
 function destroy_token(id){
     var deferred = Q.defer();
-    ////console.log(data.user_id);
     let token=null;
-    var set =
-        {
-            jwt_token: token,
-
-        };
+    var set = {
+        jwt_token: token,
+    };
     users.update({ _id: id},{ $set: set }, function (err, doc)
     {
-        if (err){
+        if (err)
+        {
             logger.error(err.message, {stack: err.stack});
             deferred.reject(err.name + ': ' + err.message);
         }

@@ -1,6 +1,6 @@
 <!--Profile-inner-->
 
-<section class = "wizard_page">	
+<section class = "wizard_page">
 
 	<div class="container">
 		<div class="row">
@@ -8,62 +8,60 @@
 				 <section class = "profile personal_info">
 
 				 	<div class="col-md-6" >
-				 		<span class = "p_img" *ngIf="!imgPath ">
+
+				 		<span class = "p_img" *ngIf="data.initials || !data.image">
 				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
-				 		<span class = "p_img" *ngIf="data.company_reply === 0 ">
-				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
-				 		</span>
-				 		<span class = "p_img" *ngIf="data.image && data.company_reply === 1">
+				 		<span class = "p_img" *ngIf="data.image && data.first_name">
 				 			<img src = "{{data.image}}" class = "img-responsive" alt = "profile-image"/>
 				 		</span>
-				 		
-						<span class = "name" *ngIf='data.company_reply === 1'>
+
+						<span class = "name" *ngIf='data.first_name'>
 				 			<h3 class="text-capitalize">{{data.first_name}} {{data.last_name}}</h3>
 				 		</span>
-				 		
-				 		<span class = "name" *ngIf='data.company_reply !== 1'>
+
+				 		<span class = "name" *ngIf='data.initials'>
 				 			<h3>{{data.initials}} </h3>
 				 		</span>
 				 		<span class = "short_intro">
 				 			<p>{{data.description}}</p>
 				 		</span>
 
-				 		
+
 
 				 	</div>
 
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-				 		
+
 
 				 			<li>
-				 				
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt">Nationality : {{data.nationality}}</span>
-				 				
+
 				 			</li>
 
-				 			<li *ngIf='data.company_reply === 1'>
-				 				
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+				 			<li *ngIf='data.first_name'>
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt"> Contact Number : {{data.contact_number}}</span>
-				 			
+
 				 			</li>
 				 			<li>
-				 				
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt">Expected Salary : {{data.expected_salary_currency}} {{data.expected_salary}}</span>
-				 				
+
 				 			</li>
 				 		</ul>
-				 		
+
 				 	</div>
-				 	
+
 				 </section>
-				 
-				  <section class = "profile job_info" *ngIf='data.company_reply === 1'>
+
+				  <section class = "profile job_info" *ngIf='data.first_name'>
 					<h3>About</h3>
 					<div class="info-area pro_br-btm" *ngIf="data._creator.email" >
 						<div class = "col-md-3">
@@ -72,13 +70,13 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data._creator.email}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-					
-					
+
+
 					<div class="info-area pro_br-btm" *ngIf="data.contact_number">
 						<div class = "col-md-3">
 							<strong>Contact Number :  </strong>
@@ -86,12 +84,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data.contact_number}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="data.github_account">
 						<div class = "col-md-3">
 							<strong>Github account URL : </strong>
@@ -99,7 +97,7 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data.github_account}}</li>
-								
+
 							</ul>
 						</div>
 
@@ -114,13 +112,46 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data.stackexchange_account}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 </section>
+
+        <section class = "profile job_info" *ngIf="data.first_name && data._creator.candidate">
+          <h3>Residence</h3>
+
+          <div class="info-area pro_br-btm"  *ngIf="data._creator.candidate.base_country">
+            <div class = "col-md-3">
+              <strong>Country :</strong>
+            </div>
+            <div class = "col-md-9">
+              <ul class = "pro_list">
+                <li >{{data._creator.candidate.base_country}}</li>
+
+              </ul>
+            </div>
+
+          </div>
+
+
+          <div class="info-area pro_br-btm" *ngIf="data._creator.candidate.base_city">
+            <div class = "col-md-3">
+              <strong>City :  </strong>
+            </div>
+            <div class = "col-md-9">
+              <ul class = "pro_list">
+                <li >{{data._creator.candidate.base_city}}</li>
+
+              </ul>
+            </div>
+
+          </div>
+
+
+        </section>
 
 				 <section class = "profile job_info">
 					<h3>Desired Job</h3>
@@ -130,14 +161,14 @@
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
-								<li *ngFor='let country of data.locations'>{{country}}</li>
-								
+								<li *ngFor='let country of countries'>{{country}}</li>
+
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	
+
 
 				 	<div class="info-area pro_br-btm">
 
@@ -146,27 +177,27 @@
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
-								<li *ngFor='let interest_area of data.interest_area;'>{{interest_area}}</li>
-								
+								<li *ngFor='let interest_area of interest_area;'>{{interest_area}}</li>
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
-				 	<div class="info-area pro_br-btm" *ngIf="data.roles">
+
+				 	<div class="info-area pro_br-btm" *ngIf="roles">
 
 						<div class = "col-md-3" >
 							<strong>Roles : </strong>
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
-								<li *ngFor='let roles_data of data.roles'>{{roles_data}}</li>
-								
+								<li *ngFor='let roles_data of roles'>{{roles_data}}</li>
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="data.expected_salary">
 
 						<div class = "col-md-3" >
@@ -179,7 +210,7 @@
 						</div>
 
 				 	</div>
-					
+
 					<div class="info-area pro_br-btm">
 
 						<div class = "col-md-3" >
@@ -206,8 +237,8 @@
 
 				 	</div>
 
-				 	
-				 	
+
+
 				 </section>
 
 				 <section class = "profile job_info">
@@ -219,36 +250,36 @@
 							{{data.why_work}}
 						</p>
 					</div>
-					
 
-				 	<div class="info-area pro_br-btm" *ngIf="data.commercial_platform">
+
+				 	<div class="info-area pro_br-btm" *ngIf="commercial && commercial.length > 0 ">
 
 						<div class = "col-md-4" >
 							<strong>Platform commercially worked with:</strong>
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let data of data.commercial_platform;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
-								
+								<li *ngFor='let data of commercial;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
-				 	<div class="info-area pro_br-btm" *ngIf="data.platforms">
+
+				 	<div class="info-area pro_br-btm" *ngIf="platforms && platforms.length > 0">
 
 						<div class = "col-md-4" >
 							<strong>Platforms designed/developed smart contracts:</strong>
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let data of data.platforms;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
+								<li *ngFor='let data of platforms;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm" *ngIf="data.experimented_platform!=''">
+				 	<div class="info-area pro_br-btm" *ngIf="experimented && experimented.length>0">
 
 						<div class = "col-md-4" >
 							<strong>Platform experimented with:</strong>
@@ -256,62 +287,45 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let data of data.experimented_platform;'>{{data.value}} </li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	<!--<div class="info-area pro_br-btm">
 
-						<div class = "col-md-4" >
-							<strong>Year of Experience each platform:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li>BitCoin : 4-5 Year</li>
-								<li>Ethereum : 3-4 Year</li>
-							</ul>
-						</div>
-
-				 	</div>-->
-
-				 	
-
-				 
-				 	
 				 </section>
 
-				 <section class = "profile job_info">
-					<h3>Experience</h3>	
-					
-				 	<div class="info-area pro_br-btm">
+				 <section class = "profile job_info" *ngIf="languages && languages.length>0">
+					<h3>Experience</h3>
+
+				 	<div class="info-area pro_br-btm" >
 
 						<div class = "col-md-4" >
 							<strong>Languages:</strong>
 						</div>
 						<div class = "col-md-8">
 							<ul class = "pro_list">
-								<li *ngFor='let lang of data.programming_languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
-								
+								<li *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
+
 							</ul>
 						</div>
 
 				 	</div>
-	 	
+
 				 </section>
 
 				  <section class = "profile job_info" *ngIf="data.work_history!=''" >
 					<h3>Work History</h3>
 					<div class = "company_area" *ngFor='let work of history'>
-					 	<div class="info-area pro_br-btm" *ngIf='data.company_reply === 1'>
+					 	<div class="info-area pro_br-btm" *ngIf='data.first_name'>
 							<div class = "col-md-4">
 								<strong>Company name: </strong>
 							</div>
 							<div class = "col-md-8">
 								<ul class = "pro_list">
 									<li>{{work.companyname}}</li>
-									
+
 								</ul>
 							</div>
 
@@ -324,7 +338,7 @@
 							<div class = "col-md-8">
 								<ul class = "pro_list">
 									<li>{{work.positionname}}</li>
-									
+
 								</ul>
 							</div>
 					 	</div>
@@ -371,13 +385,13 @@
 
 					</div>
 
-				 
-				 	
+
+
 				 </section>
 
 				 <section class = "profile job_info" *ngIf="data.education_history!=''" >
 					<h3>Education</h3>
-					
+
 				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>
 				 		<div class = "edu_feild">
 							<p>
@@ -396,8 +410,8 @@
 
 				 	</div>
 
-				 		
-				 	
+
+
 				 </section>
 
 			</div> <!--End col-md-9--->
@@ -434,15 +448,17 @@
 					    <p class = "input_p">Full/Part Time</p>
 					    <div class="radio radio_custom" *ngFor="let options of job_type">
 							<label>
-								<input type="radio" id = "new-radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options"> 
+								<input type="radio" id = "new-radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
 								{{options}}
 							</label>
 						</div>
 					  </div>
-						
+
 					  <div class="form-group">
-					    <textarea class="form-control" rows="5" name="job_desc" [(ngModel)]="credentials.job_desc" id="comment" placeholder="Description of job"></textarea>
-					  </div>
+              <p class = "input_p">Job description</p>
+              <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+              </ckeditor>
+            </div>
 					  <p style="color: green;font-size: 18px;">{{job_offer_msg}}</p>
 					  <div class = "form-group text-center">
 					  		<button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_desc || !credentials.job_type || !credentials.job_title || !credentials.location" class="btn btn-primary model-btn submit">Submit Job Offer</button>

@@ -12,11 +12,11 @@
 </table>
 <h5>Earn £500 by inviting others to our system</h5>
 <p>
-	If someone you refer us gets hired for a full 
-	time position, we will give you an Amazon gift 
-	card worth £500. 
+	If someone you refer us gets hired for a full
+	time position, we will give you an Amazon gift
+	card worth £500.
 </p>
-<h5> Your invite link </h5> 
+<h5> Your invite link </h5>
 <p> {{ref_link}} </p>
 <body data-scribe="section:share" class=" regular ltr ready">
 	<div id="widget">
@@ -126,12 +126,12 @@
 				<!-- </div> -->
 			<!-- </ng-template> -->
 		<!-- </div> -->
-		
+
 		<!-- <div class = "gap"> -->
 		<!-- </div> -->
 
 	<!-- </section> -->
-	
+
 	<!--Profile-inner-->
 	<!-- uncomment for use -->
 	<!--<div class="my-container">
@@ -224,10 +224,11 @@
 									</ng-template>
 								</ul>
 								<span class = "btn_rgt">
-									<button data-toggle="modal" data-target="#myModalNew" class = "btn btn_descp">View Job Description</button>
+									<button data-toggle="modal" data-target="#myModalNew" class = "btn btn_descp">View job description</button>
+								  <a *ngIf="(currentUser.type === 'company')" [routerLink]="['/candidate-detail']" [queryParams]="{user: credentials.id }" class = "btn btn_descp">View candidate</a>
 								</span>
 							</div>
-							
+
 							<div class="messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
 								<ul>
 									<div *ngFor="let msg of new_msgss">
@@ -259,17 +260,24 @@
 														{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 														<br/>
 													</span>
-													<span *ngIf="msg.interview_location">
+													<span *ngIf="msg.interview_location && msg.msg_tag == 'interview_offer'">
 														Interview location:
 														{{msg.interview_location}}
 														<br/>
 													</span>
-													<span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+                          <span *ngIf="msg.interview_location && msg.msg_tag == 'job_offer'">
+														Location:
+														{{msg.interview_location}}
+														<br/>
+													</span>
+                          <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														Description:
+													</span>
+													<span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														{{msg.description}}
 														<br/>
 													</span>
-													<span *ngIf="msg.job_title == ''">
+													<span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
 													<span *ngIf="msg.date_of_joining && msg.file_name !== ''">
@@ -285,7 +293,7 @@
 										<ng-template #second>
 											<li class="sent">
 												<p  class = "job-description">
-													<span *ngIf="msg.job_title === '' && (msg.interview_date_time === '' || msg.interview_date_time === null)" class="text-capitalize"> {{msg.sender_name}}:</span>
+													<!--<span *ngIf="msg.job_title === '' && (msg.interview_date_time === '' || msg.interview_date_time === null)" class="text-capitalize"> {{msg.sender_name}}:</span>-->
 													<span *ngIf="msg.job_title !== ''">
 														Job title:
 														{{msg.job_title}}
@@ -316,23 +324,26 @@
 														{{msg.interview_location}}
 														<br/>
 													</span>
-													<span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+                          <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														Description:
+													</span>
+                          <span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														{{msg.description}}
 														<br/>
 													</span>
 													<span *ngIf="msg.date_of_joining && msg.file_name !== ''">
 														Employment contract:
 													</span>
-													<span *ngIf="msg.msg_tag == 'employment_offer'">
+													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                          <br *ngIf="msg.file_name"/>
+                          <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.msg_tag == 'employment_offer'">
 														{{msg.message}}
 														<br/>
 													</span>
-													<span *ngIf="msg.job_title == ''">
+                          <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
-													<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
-												</p>
+                        </p>
 											</li>
 											<div class="chat_company">
 												{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
@@ -344,7 +355,7 @@
 							</div>
 							<ng-container *ngIf="cand_offer == 1;else no_offer">
 								<ng-container *ngIf="show_accpet_reject == 0;else no_show">
-									<div class="message-input">	
+									<div class="message-input">
 										<div class = "offers">
 											<form (submit)="accept_offer(msgForm)" #msgForm = ngForm style="display:inline;">
 												<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
@@ -411,8 +422,9 @@
 											<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
 											<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 											<input type="hidden" name="first_message" id="first_message" [(ngModel)]="first_message"/>
-											<textarea rows="4" cols="80" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"></textarea>
-											<span>
+                      <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.msg_body" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                      </ckeditor>
+                      <span>
 												<button class = "btn btn-send" type="submit" id = "btnClick">
 													<i class="fa fa-paper-plane" aria-hidden="true"></i>
 													Send
@@ -432,7 +444,7 @@
 							</ng-template>
 						</div>
 
-						
+
 					</div><!--end col here-->
 				</div>
 			<div *ngIf="file_msg!=''" class = "col-md-12" id="my-chat-design" style="display: block;">
@@ -478,11 +490,12 @@
 		  </div>
 		  <div class="form-group col-md-12 padd_imp">
 		    <p>Other details (optional)</p>
-		    <input type="text" name="description" [(ngModel)]="credentials.description" class="form-control" id="">
-		  </div>
-		
+        <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
+        </ckeditor>
+      </div>
+
 		<div class="form-group col-md-12 padd_imp text-right">
-			<button type="submit" class="btn btn-primary model-btn submit">Submit</button>
+			<button type="submit" [disabled]="!credentials.date || !credentials.time || !credentials.location" class="btn btn-primary model-btn submit">Submit</button>
 			<button type="reset" class="btn btn-danger model-btn">Reset</button>
 		</div>
 		</form>
@@ -546,7 +559,8 @@
 		  </div>
 		  <div class="form-group">
 		    <p>Job description</p>
-		    <input type="text" class="form-control" name="job_description" [(ngModel)]="credentials.job_description" id="">
+        <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
+        </ckeditor>
 		  </div>
 		  <div class="form-group">
 		    <p>Employment contract</p>
@@ -595,7 +609,7 @@
 				</p>
 				<div>
 					<b>Job description:</b><br>
-					<p class="job_decs">
+					<p class="job_decs" [innerHTML]="new_msgss[0].description | safeHtml">
 						{{new_msgss[0].description}}
 					</p>
 				</div>
@@ -611,6 +625,39 @@
 
   </div>
 </div>
+
+<!--Modal to display on page laod-->
+<!-- Modal -->
+<div id="popModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content costom_model">
+      <div class="modal-header mo-head">
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <h3 *ngIf="this.currentUser.type === 'company'" class="modal-title text-center mo">
+          {{companyMsgTitle}}
+        </h3>
+        <h3 *ngIf="this.currentUser.type === 'candidate'" class="modal-title text-center mo">
+          {{candidateMsgTitle}}
+        </h3>
+      </div>
+      <div class="modal-body mo_body">
+        <div [innerHTML]="companyMsgContent | safeHtml" *ngIf="this.currentUser.type === 'company'" class = "mo_content" id = "style-6">
+          {{companyMsgContent}}
+        </div>
+        <div [innerHTML]="candidateMsgContent | safeHtml" *ngIf="this.currentUser.type === 'candidate'" class = "mo_content" id = "style-6">
+          {{candidateMsgContent}}
+        </div>
+      </div>
+      <div class="modal-footer mo_footer">
+        <button type="reset" (click)="update_status()" class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- end model -->
 
 <!--Profile-inner end-->
 

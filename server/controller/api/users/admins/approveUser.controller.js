@@ -1,28 +1,14 @@
 const settings = require('../../../../settings');
 var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var date = require('date-and-time');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
 var mongo = require('mongoskin');
 const users = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
-const Pages = require('../../../../model/pages_content');
-var crypto = require('crypto');
-var jwt_hash = require('jwt-simple');
 const EmployerProfile = require('../../../../model/employer_profile');
-const chat = require('../../../../model/chat');
 
-const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
-const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');
-const referUserEmail = require('../../../services/email/emails/referUser');
-const chatReminderEmail = require('../../../services/email/emails/chatReminder');
-const referedUserEmail = require('../../../services/email/emails/referredFriend');
+const candidateApprovedEmail = require('../../../services/email/emails/candidateApproved');
+const companyApprovedEmail = require('../../../services/email/emails/companyApproved');
 
-const USD = settings.CURRENCY_RATES.USD;
-const GBP = settings.CURRENCY_RATES.GBP;
-const Euro = settings.CURRENCY_RATES.Euro;
-const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
 
 module.exports = function (req, res)
@@ -46,9 +32,7 @@ module.exports = function (req, res)
 
 function approve_users(_id , data)
 {
-	
     var deferred = Q.defer();
-    ////console.log(data.is_approve);
     users.findOne({ _id: _id}, function (err, result)
     {
         if (err){
@@ -56,30 +40,77 @@ function approve_users(_id , data)
             deferred.reject(err.name + ': ' + err.message);
         }
         if(result)
-            admin_approval(result._id);
+            admin_approval(result);
 
         else
             deferred.reject('Email Not Found');
-
-
     });
 
-    function admin_approval(_id)
+    function admin_approval(userDoc)
     {
-        ////console.log(_id);
         var set =
             {
                 is_approved: data.is_approve,
 
             };
-        users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
+        users.update({ _id: mongo.helper.toObjectID(userDoc._id) },{ $set: set }, function (err, doc)
         {
             if (err){
                 logger.error(err.message, {stack: err.stack});
                 deferred.reject(err.name + ': ' + err.message);
             }
+            if (set.is_approved === 1)
+            {
+                if(userDoc.type === 'candidate')
+                {
+                    CandidateProfile.findOne({ _creator: userDoc._id}, function (err, candidateDoc)
+                    {
+                        if (err){
+                            logger.error(err.message, {stack: err.stack});
+                            deferred.reject(err.name + ': ' + err.message);
+                        }
+                        if(candidateDoc)
+                        {
+                            candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name,userDoc.disable_account);
+                            deferred.resolve({success:true});
+
+                        }
+
+                        else
+                            deferred.reject('Candidate not exists');
+
+
+                    });
+                }
+
+                if(userDoc.type === 'company')
+                {
+                    EmployerProfile.findOne({ _creator: userDoc._id}, function (err, companyDoc)
+                    {
+                        if (err){
+                            logger.error(err.message, {stack: err.stack});
+                            deferred.reject(err.name + ': ' + err.message);
+                        }
+                        if(companyDoc)
+                        {
+                            companyApprovedEmail.sendEmail(userDoc.email, companyDoc.first_name, userDoc.disable_account);
+                            deferred.resolve({success:true});
+                        }
+
+                        else
+                            deferred.reject('Company not exists');
+
+
+                    });
+
+                }
+
+
+            }
             else
+            {
                 deferred.resolve(set);
+            }
         });
     }
 

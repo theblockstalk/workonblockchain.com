@@ -29,6 +29,9 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
     about_active_class;
     about_link;
     marketing_emails;
+    prefill_link;
+    prefill_disable;
+    term_active_class;
     
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) 
     {
@@ -51,6 +54,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
       this.job_disable = "disabled";
       this.resume_disable = "disabled";
       this.exp_disable = "disabled";
+      this.prefill_disable = "disabled";
       //console.log(this.termscondition);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
        //console.log(this.currentUser);
@@ -74,7 +78,10 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                   if(data.terms == true)
                   {
                       this.about_disable = "";
+                      this.prefill_disable = "";
                       this.active_class='fa fa-check-circle text-success';
+                      this.term_active_class = 'fa fa-check-circle text-success';
+                      this.prefill_link = '/prefill-profile';
                       this.about_link="/about";
                   }
                   if(!data.terms)
@@ -109,7 +116,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                     // this.router.navigate(['/resume']);
                     }
      
-                    if(data.programming_languages.length>0 &&data.description)
+                    if(data.description)
                     {
                         this.exp_class = "/experience";
                         this.exp_active_class = 'fa fa-check-circle text-success';
@@ -166,7 +173,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
           {
               if(data)
               {
-                  this.router.navigate(['/about']);
+                  this.router.navigate(['/prefill-profile']);
               }
               
           },

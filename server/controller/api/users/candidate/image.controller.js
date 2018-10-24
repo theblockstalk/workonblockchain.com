@@ -23,7 +23,6 @@ module.exports = function (req, res) {
     
     let userId = req.auth.user._id;
     save_image(path, userId).then(function (err, about) {
-        //console.log('userService.save_image')
         if (about) {
             res.json(about);
         }

@@ -47,7 +47,7 @@ import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-ch
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
 import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
 import { BuildingCustomPageComponent } from './building-custom-page/building-custom-page.component';
-import { CandidateTermsComponent } from './candidate-terms/candidate-terms.component'; 
+import { CandidateTermsComponent } from './candidate-terms/candidate-terms.component';
 import { NgxEditorModule } from 'ngx-editor';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -75,6 +75,9 @@ import { FeesComponent } from './fees/fees.component';
 import { LoadingModule } from 'ngx-loading';
 import { LoginResolver } from './is-loggedin.resolver';
 import { SeoService } from './seo.service';
+import { LinkedinImportComponent } from './linkedin-import/linkedin-import.component';
+import { WelcomePopupEditorComponent } from './welcome-popup-editor/welcome-popup-editor.component';
+import { ChatPopupEditorComponent } from './chat-popup-editor/chat-popup-editor.component';
 
 const google_id = environment.google_id;
 //console.log(google_id);
@@ -101,6 +104,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent, resolve: {LoginResolver }},
     { path: 'home', component: HomeComponent},
     { path: '', component: HomeComponent},
+    { path: 'prefill-profile', component: LinkedinImportComponent},
     { path: 'terms-and-condition', component: CandidateTermsComponent},
     { path: 'resume', component: ResumeComponent},
     { path: 'experience', component: ExperienceComponent},
@@ -128,11 +132,12 @@ const appRoutes: Routes = [
     {path : 'admin-company-search' , component: AdminCompanySearchComponent},
     {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
     {path : 'admin-build-page' , component: BuildingCustomPageComponent},
-	{path : 'admin-privacy-policy-editor' , component: PrivacyEditorComponent},
+	  {path : 'admin-privacy-notice-editor' , component: PrivacyEditorComponent},
     {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
     {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
     {path : 'admin-faq-editor' , component: AdminFaqEditorComponent},
     {path : 'admin-terms-and-condition-editor' , component: AdminTermsConditionEditorComponent},
+    {path : 'admin-welcome-msg-editor' , component: WelcomePopupEditorComponent},
     {path : 'privacy-notice' , component: PrivacyPolicyComponent},
     {path : 'terms-for-candidate' , component: TermsAndConditionComponent},
     {path : 'account-settings' , component: AccountSettingsComponent},
@@ -143,6 +148,7 @@ const appRoutes: Routes = [
     {path : 'legal-notice' , component: LegalNoticeComponent},
     {path : 'fees' , component: FeesComponent},
     {path : 'change-password' , component: ChangePasswordComponent},
+    {path: 'admin-chat-popup-editor', component: ChatPopupEditorComponent},
     //import { SettingsComponent } from './settings/settings.component';
 
     { path: '**', redirectTo: '' }
@@ -202,7 +208,9 @@ const appRoutes: Routes = [
     LegalNoticeComponent,
     ChangePasswordComponent,
     FeesComponent,
-    	
+    LinkedinImportComponent,
+    WelcomePopupEditorComponent,
+    ChatPopupEditorComponent,
 
   ],
   imports: [
@@ -223,7 +231,7 @@ const appRoutes: Routes = [
 	ScrollToModule.forRoot(),
 	LoadingModule
   ],
-  providers: 
+  providers:
   [
     UserService,DatePipe,DataService,CookieService,LoginResolver,SeoService,
   {

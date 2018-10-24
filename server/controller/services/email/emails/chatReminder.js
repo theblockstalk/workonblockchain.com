@@ -1,6 +1,6 @@
 const emails = require('../emails');
 
-module.exports.sendEmail = function sendEmail(email,first_name) {
+module.exports.sendEmail = function sendEmail(email, isAccountDisabed, first_name) {
     const sendTo = {
         email: email
     };
@@ -20,5 +20,5 @@ module.exports.sendEmail = function sendEmail(email,first_name) {
         }
     };
 
-    emails.sendEmail(mandrillOptions);
+    emails.sendEmail(mandrillOptions, isAccountDisabed);
 }

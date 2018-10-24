@@ -1,5 +1,5 @@
 const config = require('./config');
-const scriptUtils = require('./utils');
+const scriptHelpers = require('./helpers');
 
 const tempClientDirName = './temp/client/dist/';
 let s3bucket;
@@ -37,21 +37,22 @@ async function deployFrontend(environmentName) {
 
     console.log();
     console.log('(1/4) getting Git branch and commit info');
-    const gitInfo = await scriptUtils.getGitCommit();
+    const gitInfo = await scriptHelpers.getGitCommit();
     console.log(gitInfo);
 
-    scriptUtils.checkGitBranch(gitInfo.branch, environmentName);
+    scriptHelpers.checkGitBranch(gitInfo.branch, environmentName);
 
     console.log();
     console.log('(2/4) building distribution in client/dist/');
-    // TODO: add in some tags for application to serve the version commit
-    await scriptUtils.buildAngularDistribution(buildCommand);
+    await scriptHelpers.buildAngularDistribution(buildCommand);
 
     console.log();
     console.log('(3/4) moving to temporary directory temp/client/dist');
-    await scriptUtils.createTempClientDir(tempClientDirName);
+    await scriptHelpers.createTempClientDir(tempClientDirName, environmentName === 'production');
+    const versonName = 'client_' + gitInfo.commit + '_' + environmentName;
+    await scriptHelpers.addVersionFile(tempClientDirName + 'version', versonName);
 
     console.log();
     console.log('(4/4) syncing to S3 bucket');
-    await scriptUtils.syncDirwithS3(s3bucket, tempClientDirName);
+    await scriptHelpers.syncDirwithS3(s3bucket, tempClientDirName);
 }

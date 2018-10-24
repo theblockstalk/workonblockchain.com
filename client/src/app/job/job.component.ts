@@ -14,8 +14,6 @@ import { HttpClient } from '@angular/common/http';
 export class JobComponent implements OnInit,AfterViewInit {
 
  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) { }
-
-  
   info: any = {};
   country ='';
   roles='';
@@ -43,6 +41,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     exp_disable;
     current_currency;
     current_salary;
+  error_msg;
      ngAfterViewInit(): void 
      {
          window.scrollTo(0, 0);   
@@ -63,6 +62,23 @@ export class JobComponent implements OnInit,AfterViewInit {
        }
        if(this.currentUser && this.currentUser.type=='candidate')
        {
+         this.options.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
+
+         this.dropdown_options.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
+
+         this.area_interested.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
           this.class="btn disabled";
           this.exp_class="btn disabled";
            this.authenticationService.getById(this.currentUser._id)
@@ -182,7 +198,7 @@ export class JobComponent implements OnInit,AfterViewInit {
                     
                     
      
-              if( data.programming_languages.length>0 &&data.description )
+              if(data.description )
               {
                   this.exp_class = "/experience";
                   this.exp_active_class = 'fa fa-check-circle text-success';
@@ -259,6 +275,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
     {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
     {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
+    {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
     {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
     {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
     {country_code: '002' ,name:'New York', value:'New York', checked:false},
@@ -272,6 +289,8 @@ export class JobComponent implements OnInit,AfterViewInit {
     {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
     {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
     {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
+    {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
+    {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
     
   ]
 
@@ -397,6 +416,8 @@ export class JobComponent implements OnInit,AfterViewInit {
     current_sal_log; current_currency_log;
       onSubmit(f: NgForm) 
       {
+        this.error_msg="";
+
         //console.log(f.value);
       
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -474,6 +495,9 @@ export class JobComponent implements OnInit,AfterViewInit {
                    
                 });
         
+        }
+        else{
+          this.error_msg = "There is a field that still needs completion. Please scroll up.";
         }
       }
 

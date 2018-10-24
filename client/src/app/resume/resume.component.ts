@@ -13,7 +13,7 @@ import {NgForm} from '@angular/forms';
   styleUrls: ['./resume.component.css']
 })
 export class ResumeComponent implements OnInit,AfterViewInit {
-  
+
   experimented_platform = [];
   commercially_worked = [];
   expYear=[];
@@ -28,28 +28,43 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   platformreferringData;designed_expYear_db=[];
   term_active_class;term_link;
     exp_disable;
+  error_msg;
 
    constructor(private route: ActivatedRoute, private http: HttpClient,
         private router: Router,
         private authenticationService: UserService) { }
 
-     ngAfterViewInit(): void 
+     ngAfterViewInit(): void
      {
-         window.scrollTo(0, 0);   
-         
+         window.scrollTo(0, 0);
+
     }
   ngOnInit()
   {
-     this.exp_disable = "disabled";       
+     this.exp_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-   
+
        if(!this.currentUser)
        {
           this.router.navigate(['/login']);
        }
        if(this.currentUser && this.currentUser.type=='candidate')
        {
-          // new synapseThrow();
+         this.commercially.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
+         this.designed.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
+         this.experimented.sort(function(a, b){
+           if(a.name < b.name) { return -1; }
+           if(a.name > b.name) { return 1; }
+           return 0;
+         })
           this.exp_class="";
            this.active_class="fa fa-check-circle text-success";
            this.authenticationService.getById(this.currentUser._id)
@@ -69,7 +84,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                     if(data.commercial_platform)
                     {
                         this.commercial_expYear =data.commercial_platform;
-                     for (let key of data.commercial_platform) 
+                     for (let key of data.commercial_platform)
                       {
                         for(var i in key)
                         {
@@ -77,20 +92,20 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
                           for(let option of this.commercially)
                           {
-                            
+
                             if(option.value == key[i])
                             {
                               option.checked=true;
                               this.db_valye.push(key[i]);
                               this.db_lang= ({value: key[i]});
                               this.commercially_worked.push(this.db_lang);
-                              
+
                             }
                             else
                             {
 
                             }
-                       
+
                           }
 
                           for(let option of this.exp_year)
@@ -99,15 +114,15 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                             if(option.value == key[i])
                             {
                                 option.checked=true;
-                              
+
                                 //this.commercial_expYear.push(option);
                                 this.expYear_db.push(key[i]);
-                                //////console.log(this.expYear_db); 
-                                 
+                                //////console.log(this.expYear_db);
+
                             }
-                       
+
                           }
-                          
+
                         }
                       }
                      }
@@ -115,7 +130,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                       if(data.platforms)
                       {
                           this.platforms = data.platforms;
-                       for (let key of data.platforms) 
+                       for (let key of data.platforms)
                       {
                         for(var i in key)
                         {
@@ -123,20 +138,20 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
                           for(let option of this.designed)
                           {
-                            
+
                             if(option.value == key[i])
                             {
                               option.checked=true;
                               this.plat_db_valye.push(key[i]);
                               this.db_lang= ({value: key[i]});
                               this.platforms_designed.push(this.db_lang);
-                              
+
                             }
                             else
                             {
 
                             }
-                       
+
                           }
 
                           for(let option of this.exp_year)
@@ -145,25 +160,25 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                             if(option.value == key[i])
                             {
                                 option.checked=true;
-                                   
-                                
+
+
                                 this.designed_expYear_db.push(key[i]);
-                                
-                                 
+
+
                             }
-                       
+
                           }
-                          
+
                         }
                       }
                      }
 
-                     
+
                       if(data.experimented_platform)
                       {
-                          for (let plat of data.experimented_platform) 
+                          for (let plat of data.experimented_platform)
                      {
-                      
+
                       for(let option of this.experimented)
                       {
 
@@ -171,52 +186,52 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                         {
                           option.checked=true;
                           this.experimented_platform.push(plat);
-                          
+
                         }
-                       
+
                       }
-                      
+
                     }
-                    // this.expYear = data.experimented_platform;                        
-                    /* for (let key of data.experimented_platform) 
+                    // this.expYear = data.experimented_platform;
+                    /* for (let key of data.experimented_platform)
                       {
                         for(var i in key)
                         {
 
 
                           for(let option of this.experimented)
-                          { 
-                            
+                          {
+
                             if(option.value == key[i])
                             {
                               option.checked=true;
                               this.exp_db_valye.push(key[i]);
                               this.exp_db_lang= ({value: key[i]});
                               this.experimented_platform.push(this.exp_db_lang);
-                              
+
                             }
                             else
                             {
 
                             }
-                       
+
                           }
 
-                          
+
                           for(let option of this.exp_year)
                           {
 
                             if(option.value == key[i])
                             {
                                 option.checked=true;
-                                   
+
                                 //this.expYear.push(option);
                                 this.exp_expYear.push(key[i]);
-                                                           
+
                             }
-                       
+
                           }
-                          
+
                         }
                       }*/
                     }
@@ -227,26 +242,26 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day && data.current_salary )
                   {
                       this.job_active_class = 'fa fa-check-circle text-success';
-                       
+
                   }
-               
+
               if(data.why_work  )
               {
                 this.exp_class = "/experience";
-                 this.exp_disable = "";   
+                 this.exp_disable = "";
                 this.resume_active_class='fa fa-check-circle text-success';
                // this.router.navigate(['/resume']);
               }
-     
-              if( data.programming_languages.length>0 &&data.description )
+
+              if( data.description )
               {
-                  
+
                   this.exp_active_class = 'fa fa-check-circle text-success';
                   //this.router.navigate(['/experience']);
               }
 
-                            
-              
+
+
                 },
                 error => {
                    if(error.message === 500 || error.message === 401)
@@ -259,27 +274,27 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
-                    }   
-                   
+                        this.router.navigate(['/not_found']);
+                    }
+
                 });
           //this.router.navigate(['/about']);
        }
        else
        {
-              this.router.navigate(['/not_found']);         
+              this.router.navigate(['/not_found']);
        }
-       
+
 
   }
 
- 
-    
+
+
   commercially=
-  [ 
+  [
     {name:'Bitcoin', value:'Bitcoin', checked:false},
     {name:'Ethereum', value:'Ethereum', checked:false},
     {name:'Ripple', value:'Ripple', checked:false},
@@ -302,7 +317,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     {name:'IOTA', value:'IOTA', checked:false},
     {name:'NEM', value:'NEM', checked:false},
     {name:'NXT', value:'NXT', checked:false},
-    
+
   ]
 
   designed=
@@ -357,7 +372,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     {name:'6+', value:'6+', checked:false}
   ]
 
- 
+
 
   onExpOptions(obj)
   {
@@ -367,7 +382,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       if(index > -1)
       {
         this.experimented_platform.splice(index, 1);
-        
+
       }
       else
       {
@@ -375,7 +390,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.experimented_platform.push(obj);
       }
 
-      
+
       /* let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
       let index = this.experimented_platform.indexOf(updateItem);
       if(index > -1)
@@ -387,7 +402,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       if(index2 > -1)
       {
-          
+
         this.expYear.splice(index2, 1);
           }
       }
@@ -399,18 +414,20 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       */
   }
 
-  
-    findIndexToUpdate(obj) 
-    { 
+
+    findIndexToUpdate(obj)
+    {
         return obj.value === this;
     }
 
     why_work_log;commercial_log;platform_log;
-   blockchain_exp(expForm: NgForm) 
+   blockchain_exp(expForm: NgForm)
    {
-      ////console.log(expForm.value);
+     this.error_msg="";
+
+     ////console.log(expForm.value);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-       
+
         if(this.commercially_worked.length !== this.commercial_expYear.length )
         {
             this.commercial_log = "Please fill year of experience";
@@ -419,10 +436,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         {
             this.platform_log = "Please fill year of experience";
         }
-    
+
         if(!this.why_work)
         {
-          this.why_work_log = "Please fill why do you want to work on blockchain?"; 
+          this.why_work_log = "Please fill why do you want to work on blockchain?";
          }
        if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length)
        {
@@ -435,10 +452,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                     //window.location.href = '/experience';
                 }
 
-               
+
                 },
                 error => {
-                   
+
                      if(error.message === 500 || error.message === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
@@ -449,19 +466,23 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
-                    }   
-                   
+                        this.router.navigate(['/not_found']);
+                    }
+
                 });
       }
+      else{
+         this.error_msg = "There is a field that still needs completion. Please scroll up.";
+
+       }
    }
 
    oncommerciallyOptions(obj)
    {
-    
+
    let updateItem = this.commercially_worked.find(this.findIndexToUpdate, obj.value);
       let index = this.commercially_worked.indexOf(updateItem);
       if(index > -1)
@@ -473,7 +494,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       if(index2 > -1)
       {
-          
+
         this.commercial_expYear.splice(index2, 1);
           }
       }
@@ -483,12 +504,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.commercially_worked.push(obj);
       }
     ////console.log(this.commercial_expYear);
-      
+
    }
 
    onPlatformOptions(obj)
    {
-    
+
       let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
       let index = this.platforms_designed.indexOf(updateItem);
       if(index > -1)
@@ -500,7 +521,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       if(index2 > -1)
       {
-          
+
         this.platforms.splice(index2, 1);
           }
       }
@@ -510,16 +531,16 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.platforms_designed.push(obj);
       }
 
-      
+
    }
 
    onExpYearOptions(e , value)
    {
-      
+
        /*this.value=value;
-      this.referringData = { experimented_platform:this.value, exp_year: e.target.value}; 
-      this.expYear.push(this.referringData);*/ 
-     
+      this.referringData = { experimented_platform:this.value, exp_year: e.target.value};
+      this.expYear.push(this.referringData);*/
+
        this.selectedValue = e.target.value;
        ////console.log(value);
        this.langValue = value;
@@ -530,32 +551,32 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       if(index > -1)
       {
-          
+
         this.expYear.splice(index, 1);
         this.value=value;
-        this.referringData = { experimented_platform:this.value, exp_year: e.target.value}; 
+        this.referringData = { experimented_platform:this.value, exp_year: e.target.value};
       this.expYear.push(this.referringData);
-        ////console.log(this.expYear); 
-        
+        ////console.log(this.expYear);
+
       }
       else
-      {   
+      {
       //////console.log("not exists");
         this.value=value;
-       this.referringData = { experimented_platform :this.value, exp_year: e.target.value}; 
+       this.referringData = { experimented_platform :this.value, exp_year: e.target.value};
       this.expYear.push(this.referringData);
-        ////console.log(this.expYear); 
-        
+        ////console.log(this.expYear);
+
       }
-       
+
    }
 
    selectedValue;langValue;
    onComExpYearOptions(e, value)
    {
-      
+
       /*this.value=value;
-     this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
+     this.referringData = { platform_name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData); */
      this.selectedValue = e.target.value;
        this.langValue = value;
@@ -565,60 +586,60 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       if(index > -1)
       {
-          
+
         this.commercial_expYear.splice(index, 1);
         this.value=value;
-        this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
+        this.referringData = { platform_name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
-        //////console.log(this.LangexpYear); 
-        
+        //////console.log(this.LangexpYear);
+
       }
       else
-      {   
+      {
       //////console.log("not exists");
         this.value=value;
-       this.referringData = { platform_name :this.value, exp_year: e.target.value}; 
+       this.referringData = { platform_name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
-        //////console.log(this.LangexpYear); 
-        
+        //////console.log(this.LangexpYear);
+
       }
-       
+
    }
-  
+
 
    onPlatformYearOptions(e, value)
    {
       this.selectedValue = e.target.value;
        this.langValue = value;
       /*this.value=value;
-      this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
-      this.platforms.push(this.platformreferringData); 
+      this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
+      this.platforms.push(this.platformreferringData);
       ////console.log(this.platforms);*/
-       
+
          let updateItem = this.findObjectByKey(this.platforms, 'platform_name', value);
        //////console.log(updateItem);
       let index = this.platforms.indexOf(updateItem);
 
       if(index > -1)
       {
-          
+
         this.platforms.splice(index, 1);
         this.value=value;
-        this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
-      this.platforms.push(this.platformreferringData);  
-        ////console.log(this.platforms); 
-        
+        this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
+      this.platforms.push(this.platformreferringData);
+        ////console.log(this.platforms);
+
       }
       else
-      {   
+      {
       //////console.log("not exists");
         this.value=value;
-        this.platformreferringData = { platform_name:this.value, exp_year: e.target.value}; 
-      this.platforms.push(this.platformreferringData); 
-        ////console.log(this.platforms); 
-        
+        this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
+      this.platforms.push(this.platformreferringData);
+        ////console.log(this.platforms);
+
       }
-      
+
    }
 
    /*onPlatformOptions(e)
@@ -637,20 +658,20 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     //////console.log(this.platform);
    }*/
 
-   findObjectByKey(array, key, value) 
+   findObjectByKey(array, key, value)
     {
       // ////console.log(array.length);
-        for (var i = 0; i < array.length; i++) 
+        for (var i = 0; i < array.length; i++)
         {
         // ////console.log(array[i][key]);
-            if (array[i][key] === value) 
+            if (array[i][key] === value)
             {
                 // ////console.log( array[i]);
                 return array[i];
             }
-       
+
           }
         return null;
     }
-  
+
 }

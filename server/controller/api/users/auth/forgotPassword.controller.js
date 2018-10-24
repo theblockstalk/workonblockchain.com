@@ -43,7 +43,6 @@ function forgot_password(email)
 
         if(result)
         {
-        	console.log(result.social_type);
         	if(result.social_type === 'GOOGLE')
         	{
         		deferred.resolve({error:'Please login using gmail'});
@@ -62,7 +61,7 @@ function forgot_password(email)
         }
         else
         {
-            deferred.resolve({error:'Email Not Found'});
+            deferred.resolve({success: false, error:'Email Not Found'});
         }
 
     });
@@ -94,7 +93,10 @@ function forgot_password(email)
             {
             	
                 forgot_passwordEmail_send(email_data.token)
-                deferred.resolve({msg:'Email Send'});
+                deferred.resolve({
+                    success: true,
+                    msg:'Email Sent'
+                });
             }
         });
     }
@@ -106,12 +108,12 @@ function forgot_password(email)
 
 function forgot_passwordEmail_send(data)
 {
-
+    var deferred = Q.defer();
     var hash = jwt_hash.decode(data, settings.EXPRESS_JWT_SECRET, 'HS256');
 
     var name;
 
-    users.findOne({ email :hash.email  }, function (err, result)
+    users.findOne({ email :hash.email  }, function (err, userDoc)
     {
         if (err)
         {
@@ -119,12 +121,11 @@ function forgot_passwordEmail_send(data)
             deferred.reject(err.name + ': ' + err.message);
         }
 
-        if(result)
+        if(userDoc)
         {
-        	console.log(result.type);
-        	if(result.type === 'candidate')
+        	if(userDoc.type === 'candidate')
         	{
-        		CandidateProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data)
+        		CandidateProfile.find({_creator : userDoc._id}).populate('_creator').exec(function(err, query_data)
         	            {
         	                if (err){
         	                    logger.error(err.message, {stack: err.stack});
@@ -132,26 +133,27 @@ function forgot_passwordEmail_send(data)
         	                }
         	                if(query_data)
         	                {
-        	                  
-        	                	if(!query_data[0].first_name)
-        	                	{
-        	                		name = null;
-        	                		
-        	                	}
+                                if(query_data[0] && query_data[0].first_name)
+                                {
+
+                                        name = query_data[0].first_name;
+
+                                }
+
         	                	else
         	                	{
-        	                		name = query_data[0].first_name;
+        	                		name = null;
         	                	}
         	                    
         	                    
-        	                    forgotPasswordEmail.sendEmail(hash,data , name);
+        	                    forgotPasswordEmail.sendEmail(hash, userDoc.disable_account, data , name);
         	                }
         	            });
         	}
         	
-        	if(result.type === 'company')
+        	if(userDoc.type === 'company')
         	{
-        		EmployerProfile.find({_creator : result._id}).populate('_creator').exec(function(err, query_data)
+        		EmployerProfile.find({_creator : userDoc._id}).populate('_creator').exec(function(err, query_data)
         	            {
         	                if (err){
         	                    logger.error(err.message, {stack: err.stack});
@@ -159,19 +161,20 @@ function forgot_passwordEmail_send(data)
         	                }
         	                if(query_data)
         	                {
-        	                  
-        	                	if(!query_data[0].first_name)
-        	                	{
-        	                		name = null;
-        	                		
-        	                	}
-        	                	else
-        	                	{
-        	                		name = query_data[0].first_name;
-        	                	}
+
+                                if(query_data[0] && query_data[0].first_name)
+                                {
+                                        name = query_data[0].first_name;
+
+                                }
+
+                                else
+                                {
+                                    name = null;
+                                }
         	                    
         	                    
-        	                    forgotPasswordEmail.sendEmail(hash,data , name);
+        	                    forgotPasswordEmail.sendEmail(hash,userDoc.disable_account,data , name);
         	                }
         	            });
         	}
@@ -179,7 +182,7 @@ function forgot_passwordEmail_send(data)
         }
         else
         {
-            deferred.resolve({error:'Email Not Found'});
+            deferred.resolve({success: false, error:'Email Not Found'});
         }
 
     });
