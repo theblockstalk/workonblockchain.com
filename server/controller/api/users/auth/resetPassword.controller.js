@@ -5,6 +5,7 @@ var mongo = require('mongoskin');
 const users = require('../../../../model/users');
 const logger = require('../../../services/logger');
 var crypto = require('crypto');
+const jwtToken = require('../../../services/jwtToken');
 
 module.exports = function (req,res)
 {
@@ -30,10 +31,10 @@ function reset_password(forgotPasswordToken , newPassword)
 {
     var deferred = Q.defer();
 
-    //var token = jwt_hash.decode(hash, settings.EXPRESS_JWT_SECRET, 'HS256');
+    let payloaddata = jwtToken.verifyJwtToken(forgotPasswordToken);
 
-    //if(new Date(token.expiry) > new Date())
-    //{
+    if((payloaddata.exp - payloaddata.iat) === 3600)
+    {
 
         users.findOne({ forgot_password_key : forgotPasswordToken}, function (err, result)
         {
@@ -78,11 +79,11 @@ function reset_password(forgotPasswordToken , newPassword)
                 }
             });
         }
-    //}
-    //else
-    //{
-        //deferred.reject('Link expired');
-    //}
+    }
+    else
+    {
+        deferred.reject('Link expired');
+    }
 
     return deferred.promise;
 }

@@ -77,15 +77,7 @@ function create_employer(userParam)
     {
         let now = new Date();
         createdDate= now;
-        /*var hashStr = crypto.createHash('sha256').update(userParam.email).digest('base64');
-        var company_info = {};
-        company_info.hash = hashStr;
-        company_info.email = userParam.email;
-        company_info.name = userParam.first_name;
-        company_info.expiry = new Date(new Date().getTime() +  4800 *1000);
-        var token = jwt_hash.encode(company_info, settings.EXPRESS_JWT_SECRET, 'HS256');
-        company_info.token = token;
-       */
+
         let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.createHmac('sha512', salt);
         hash.update(userParam.password);
@@ -154,8 +146,7 @@ function create_employer(userParam)
                             }
                             else
                             {
-                                //for test cases comment it
-                                // verify_send_email(company_info);
+
                                 verifyEmail(userParam.email);
                                 deferred.resolve
                                 ({
@@ -195,7 +186,10 @@ function create_employer(userParam)
 
         function updateData(data)
         {
-            let verifyEmailToken = jwtToken.createJwtToken(data);
+            let signOptions = {
+                expiresIn:  "1h",
+            };
+            let verifyEmailToken = jwtToken.createJwtToken(data,signOptions);
             var set =
                 {
                     verify_email_key: verifyEmailToken,

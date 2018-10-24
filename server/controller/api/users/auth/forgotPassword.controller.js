@@ -67,17 +67,10 @@ function forgot_password(email)
 
     function updateData(data)
     {
-		/*var hashStr = crypto.createHash('sha256').update(email).digest('base64');
-
-        var email_data = {};
-        email_data.password_key = hashStr;
-        email_data.email = data.email;
-        email_data.name = data.first_name;
-        
-        email_data.expiry = new Date(new Date().getTime() +  1800 *1000);
-        var tokenn = jwt_hash.encode(email_data, settings.EXPRESS_JWT_SECRET, 'HS256');
-        email_data.token = tokenn;*/
-        let forgotPasswordToken = jwtToken.createJwtToken(data);
+        let signOptions = {
+            expiresIn:  "1h",
+        };
+        let forgotPasswordToken = jwtToken.createJwtToken(data,signOptions);
         var set =
         {
         		forgot_password_key: forgotPasswordToken,
@@ -109,9 +102,6 @@ function forgot_password(email)
 function forgot_passwordEmail_send(emailAddress , token)
 {
     var deferred = Q.defer();
-   // var hash = jwt_hash.decode(data, settings.EXPRESS_JWT_SECRET, 'HS256');
-
-   // var name;
 
     users.findOne({ email : emailAddress  }, function (err, userDoc)
     {
