@@ -38,7 +38,7 @@ describe('get last job desc sent to a candidate', function () {
             const res = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,initialJobOffer,companyDoc.jwt_token);
 
             const jobDescRes = await chatHelper.getLastJobDescSent(companyDoc.jwt_token);
-            const oldJobDesc = jobDescRes.body['datas'];
+            const oldJobDesc = jobDescRes.body;
             oldJobDesc.description.should.equal(initialJobOffer.description);
             oldJobDesc.job_type.should.equal(initialJobOffer.job_type);
             oldJobDesc.job_title.should.equal(initialJobOffer.job_title);
