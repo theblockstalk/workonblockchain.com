@@ -58,7 +58,7 @@
 
             <div class="form-group col-md-12 mr-top-04">
               <label><p>Company Description</p></label>
-              <textarea class="form-control" required rows="5" id="comment" maxlength="300" placeholder="" name="company_description" [(ngModel)]="company_description"></textarea>
+              <textarea class="form-control" required rows="5" id="comment" maxlength="2000" placeholder="" name="company_description" [(ngModel)]="company_description"></textarea>
 
               <div class = "form_error" *ngIf="!company_description">
                 <span class = "error">{{des_log}}</span>
