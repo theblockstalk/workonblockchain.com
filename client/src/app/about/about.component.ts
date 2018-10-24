@@ -50,6 +50,10 @@ export class AboutComponent implements OnInit,AfterViewInit
   last_name_log;
   contact_name_log;
   nationality_log;
+  country_log;
+  city_log;
+  countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
   {
@@ -63,7 +67,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   ngOnInit()
   {
-
+    this.info.country=-1;
     this.job_disable = "disabled";
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
@@ -75,7 +79,6 @@ export class AboutComponent implements OnInit,AfterViewInit
 
     if(this.googleUser)
     {
-      ////////console.log("jhcskjsdhkk");
       this.info.image_src = this.googleUser.photoUrl;
       if( this.info.image_src)
       {
@@ -112,7 +115,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.term_link = '/terms-and-condition';
             }
 
-            if(data.contact_number  || data.nationality || data.first_name || data.last_name)
+            if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
             {
 
               this.info.contact_number = data.contact_number;
@@ -121,6 +124,13 @@ export class AboutComponent implements OnInit,AfterViewInit
               if(data.nationality)
               {
                 this.info.nationality = data.nationality;
+              }
+              if(data._creator.candidate.base_country)
+              {
+                this.info.country = data._creator.candidate.base_country;
+              }
+              if(data._creator.candidate.base_city){
+                this.info.city = data._creator.candidate.base_city;
               }
 
               this.info.first_name =data.first_name;
@@ -199,12 +209,6 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   }
 
-  onGenderSelected(event)
-  {
-    this.info.gender= event.target.value;
-  }
-
-
   about()
   {
     this.error_msg = "";
@@ -223,17 +227,25 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.contact_name_log ="Please enter contact number";
     }
 
-    if(this.info.nationality==-1)
+    if(this.info.nationality === -1)
     {
       this.nationality_log ="Please choose nationality";
     }
-    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1)
+    if(this.info.country === -1)
+    {
+      this.country_log ="Please choose base country";
+    }
+    if(!this.info.city)
+    {
+      this.city_log ="Please enter base city";
+    }
+    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 && this.info.city && this.info.country != -1 )
     {
       this.authenticationService.about(this.currentUser._creator,this.info)
         .subscribe(
           data =>
           {
-            if(data)
+            if(data.success)
             {
 
               if(this.info.image)
@@ -299,6 +311,7 @@ export class AboutComponent implements OnInit,AfterViewInit
           },
           error =>
           {
+            console.log(error);
             if(error.message === 500 || error.message === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');

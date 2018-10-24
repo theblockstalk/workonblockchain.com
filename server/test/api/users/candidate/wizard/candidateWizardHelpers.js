@@ -7,19 +7,10 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 const about = module.exports.about = async function about(data,jwtToken) {
-    const detail = {
-        'first_name' : data.first_name,
-        'last_name' : data.last_name,
-        'github_account' : data.github_account,
-        'exchange_account' : data.stackexchange_account,
-        'contact_number' : data.contact_number,
-        'nationality' : data.nationality,
-        'image_src' : data.image_src
-    };
     const res = await chai.request(server)
         .put('/users/welcome/about')
         .set('Authorization', jwtToken)
-        .send(detail);
+        .send(data);
     return res;
 }
 

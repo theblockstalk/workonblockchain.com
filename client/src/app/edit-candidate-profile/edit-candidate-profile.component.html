@@ -39,7 +39,7 @@
 
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">Contact Number</p></label>
-                  <input type="tel" class="form-control" id="" placeholder="Phone number" name="contact_number" [(ngModel)]="info.contact_number">
+                  <input type="tel" class="form-control" placeholder="Phone number" name="contact_number" [(ngModel)]="info.contact_number">
                   <div class = "form_error" *ngIf="!info.contact_number">
                     <span class = "error">{{contact_name_log}}</span>
                   </div>
@@ -77,9 +77,35 @@
                   </div>
                 </div>
 
+                <div class = "form-group col-md-12 res_feild">
+
+                  <div class="form-group col-md-12">
+                    <p>where do you currently live, or where are you most frequently based?</p>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label><p class = "label-p">Country</p></label>
+                    <select class="form-control"  required name="base_country" [(ngModel)]="info.base_country"  required="">
+                      <option value="-1" disabled selected hidden >Please choose base country</option>
+
+                      <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
+                    </select>
+                    <div class = "form_error" *ngIf="info.base_country === -1">
+                      <span class = "error">{{base_country_log}}</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label><p class = "label-p">City</p></label>
+                    <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="info.city" >
 
 
+                    <div class = "form_error" *ngIf="!info.city">
+                      <span class = "error">{{city_log}}</span>
+                    </div>
+                  </div>
 
+                </div>
 
                 <div class="form-group col-md-6" ><br/><br/>
                   <input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="info.image">
@@ -91,7 +117,6 @@
                     <span class = "error">{{image_log}}</span>
                   </div>
                 </div>
-
 
               </fieldset>
             </div>

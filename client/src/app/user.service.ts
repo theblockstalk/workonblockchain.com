@@ -127,7 +127,7 @@ export class UserService {
                     this.router.navigate(['/resume']);
                 }
 
-                 else if(!res['description'])
+                else if(!res['description'])
                 {
                     this.router.navigate(['/experience']);
 

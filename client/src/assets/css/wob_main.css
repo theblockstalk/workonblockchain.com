@@ -2138,6 +2138,66 @@ input[type=checkbox] {
   top: 40px;
 }
 
+.btn_popup-b{
+  right: 16px;
+  position: absolute;
+  top: 5px;
+  background: #ffc000;
+  border: #ffc000;
+  color: #fff;
+  padding: 5px 5px;
+}
+
+.update_inner{
+  overflow: hidden;
+  background: #f6f9fc;
+  padding: 15px 20px;
+}
+
+.update_header{
+  background: #253245;
+  color: #fff;
+  height: 120px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #ffc000;
+}
+
+.update_header .close{
+  color: #fff;
+  opacity: 1;
+}
+
+.contant_inner{
+  background: #f6f9fc;
+}
+
+.model_form{
+  margin: 30px 20px;
+}
+
+.model_form .form-group .form-control{
+  border-radius: 0px;
+}
+
+.user_pic{
+  width: 80px;
+  height: 80px;
+  background: grey;
+  border: 1px solid #ffc000;
+  margin: auto;
+  border-radius: 50%;
+  position: relative;
+  top: 23px;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.user_pic img{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
 .btn-relative{
     position: relative;
     top: -20px;
@@ -3673,6 +3733,10 @@ input:checked + .slider:before {
 .btn-mo{
   background: #253245;
   color: #fff;
+}
+.res_feild{
+  background: #f6f9fc;
+  padding: 10px 0px;
 }
 
 /*==welcome model style end==*/
