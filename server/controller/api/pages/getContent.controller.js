@@ -47,17 +47,31 @@ module.exports = function (req,res)
 function get_content(name)
 {
     var deferred = Q.defer();
-    Pages.find({page_name : name}).exec(function(err, result)
-    {
+    if(name === 'Privacy Notice' || name === 'Terms and Condition for candidate' || name === 'Terms and Condition for company'){
+        Pages.findOne({page_name: name}).sort({updated_date: 'descending'}).exec(function (err, result) {
+            if (err) {
+                logger.error(err.message, {stack: err.stack});
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            else {
+                ////console.log(user);
+                deferred.resolve(result);
+            }
+        });
+        return deferred.promise;
+    }
+    else {
+        Pages.find({page_name: name}).exec(function (err, result) {
 
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else{
-            ////console.log(user);
-            deferred.resolve(result);
-        }
-    });
-    return deferred.promise;
+            if (err) {
+                logger.error(err.message, {stack: err.stack});
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            else {
+                ////console.log(user);
+                deferred.resolve(result);
+            }
+        });
+        return deferred.promise;
+    }
 }

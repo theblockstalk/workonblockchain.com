@@ -7,7 +7,8 @@ const Schema = mongoose.Schema;
 const CandidateProfileSchema = new Schema({
     terms:
     {
-    	type:Boolean
+        type: Schema.Types.ObjectId,
+        ref: 'pages_content'
     },
     marketing_emails:
     {

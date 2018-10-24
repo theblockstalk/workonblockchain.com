@@ -1103,7 +1103,7 @@ export class UserService {
             });
 
     }
-    
+
 
 	update_is_company_reply_status(id:string,status:number)
     {
@@ -1164,6 +1164,21 @@ export class UserService {
         }
 
       });
+  }
+
+  add_new_pages_content(info:any ) {
+    return this.http.put<any>(URL + 'users/add_new_pages_content/', info, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).map((res: Response) => {
+      if (res) {
+        return res;
+      }
+    }).catch((error: any) => {
+      //console.log(error.status);
+      if (error.status) {
+        return Observable.throw(new Error(error.status));
+      }
+    });
   }
 
 }

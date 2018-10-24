@@ -8,10 +8,11 @@ const sanitize = require('../../../../services/sanitize');
 
 module.exports = function (req,res)
 {
+    let userId = req.auth.user._id;
     console.log(req.body);
 	logger.info(req.body);
 	const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
-    add_privacy_content(req.body, sanitizedHtml).then(function (err, data)
+    add_privacy_content(req.body, sanitizedHtml,userId).then(function (err, data)
     {
         if (data)
         {
@@ -28,7 +29,7 @@ module.exports = function (req,res)
         });
 }
 
-function add_privacy_content(info, html_text)
+function add_privacy_content(info, html_text, userId)
 {
     var deferred = Q.defer();
     var createdDate;
@@ -66,6 +67,7 @@ function add_privacy_content(info, html_text)
             {
                 page_content : html_text,
                 page_title : info.page_title,
+                updated_by : userId,
                 updated_date:createdDate,
             };
 
@@ -88,6 +90,7 @@ function add_privacy_content(info, html_text)
             page_title : info.page_title,
             page_content : html_text,
             page_name : info.page_name,
+            updated_by : userId,
             updated_date:createdDate,
 
         });
