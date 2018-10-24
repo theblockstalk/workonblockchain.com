@@ -76,8 +76,13 @@ module.exports.createTempServerDir = async function createTempServerDir(tempServ
 
 };
 
-module.exports.createTempClientDir = async function createTempClientDir(tempClientDirName) {
+module.exports.createTempClientDir = async function createTempClientDir(tempClientDirName, createSeoFiles) {
     await copyDir('./client/dist', tempClientDirName);
+
+    if (createSeoFiles) {
+        await copyFile('./scripts/seo/robots.txt', tempClientDirName + 'robots.txt');
+        await copyFile('./scripts/seo/sitemap.xml', tempClientDirName + 'sitemap.xml');
+    }
 };
 
 async function copyDir(from, to, options) {
@@ -101,11 +106,28 @@ async function copyDir(from, to, options) {
     });
 }
 
-module.exports.addServerVersion = async function addServerVersion(tempServerDirName, versonName) {
+function copyFile(source, target) {
+    let readStream = fs.createReadStream(source);
+
+    return new Promise((resolve, reject) => {
+        readStream.on("error", function(err) {
+            reject(err);
+        });
+
+        let writeStream = fs.createWriteStream(target);
+        writeStream.on("error", function(err) {
+            reject(err);
+        });
+        writeStream.on("close", resolve);
+        readStream.pipe(writeStream);
+    });
+}
+
+module.exports.addVersionFile = async function addVersionFile(tempFileName, versonName) {
     const versionObj = {
         version: versonName
     };
-    fs.writeFileSync(tempServerDirName + 'config/version.json', JSON.stringify(versionObj));
+    fs.writeFileSync(tempFileName, JSON.stringify(versionObj));
 };
 
 module.exports.zipServerDir = async function zipServerDir(tempDirName, directoryToZip, zipName) {

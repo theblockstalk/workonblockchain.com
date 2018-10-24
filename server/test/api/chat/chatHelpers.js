@@ -188,3 +188,13 @@ const uploadFile = module.exports.uploadFile = async function uploadFile(canddia
     return res;
 
 }
+
+const getLastJobDescSent = module.exports.getLastJobDescSent = async function getLastJobDescSent(jwtToken) {
+    const res = await chai.request(server)
+        .post('/users/get_last_job_desc_msg')
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+
+}

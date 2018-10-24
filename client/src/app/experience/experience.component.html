@@ -268,7 +268,12 @@
             <a routerLink="/resume" class = "btn btn-prev">Prev Step</a>
             <button type="submit" class = "btn btn-self btn-pdg" >Done</button>
           </div>
-          <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
+
+          <div class = "form_error error-log" *ngIf="error_msg">
+            <span class = "error">{{error_msg}}</span>
+          </div>
+       <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
+
         </form>
 
       </div>

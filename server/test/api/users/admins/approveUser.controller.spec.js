@@ -36,9 +36,10 @@ describe('admin approve a candidate/company', function () {
 
             //approve candidate
             const status = 1;
-            await adminHelper.approveUser(candidateDoc._id,status,companyDoc.jwt_token);
+            const approveUser = await adminHelper.approveUser(candidateDoc._id,status,companyDoc.jwt_token);
             const approvedCandidateDoc = await Users.findOne({_id: candidateDoc._id}).lean();
             approvedCandidateDoc.is_approved.should.equal(status);
+            approveUser.body.success.should.equal(true);
         })
     })
 });

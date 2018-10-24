@@ -224,7 +224,8 @@
 									</ng-template>
 								</ul>
 								<span class = "btn_rgt">
-									<button data-toggle="modal" data-target="#myModalNew" class = "btn btn_descp">View Job Description</button>
+									<button data-toggle="modal" data-target="#myModalNew" class = "btn btn_descp">View job description</button>
+								  <a *ngIf="(currentUser.type === 'company')" [routerLink]="['/candidate-detail']" [queryParams]="{user: credentials.id }" class = "btn btn_descp">View candidate</a>
 								</span>
 							</div>
 
@@ -259,8 +260,13 @@
 														{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 														<br/>
 													</span>
-													<span *ngIf="msg.interview_location">
+													<span *ngIf="msg.interview_location && msg.msg_tag == 'interview_offer'">
 														Interview location:
+														{{msg.interview_location}}
+														<br/>
+													</span>
+                          <span *ngIf="msg.interview_location && msg.msg_tag == 'job_offer'">
+														Location:
 														{{msg.interview_location}}
 														<br/>
 													</span>

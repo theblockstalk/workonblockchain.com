@@ -14,7 +14,6 @@ const authChangePassword = require('./controller/api/users/auth/changePassword.c
 const authResetPassword = require('./controller/api/users/auth/resetPassword.controller');
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
 const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
-const authApprovalEmail = require('./controller/api/users/auth/approval_email.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
 const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
 
@@ -61,6 +60,7 @@ const chatInsertFile = require('./controller/api/chat/insertChatFile.controller'
 const chatUpdateJobMessage = require('./controller/api/chat/updateJobMessage.controller');
 const chatUpdateIsCompanyReplyStatus = require('./controller/api/chat/updateIsCompanyReplyStatus.controller');
 const chatGetEmployOffer = require('./controller/api/chat/chatGetEmployOffer.controller');
+const chatGetLastJobDescription = require('./controller/api/chat/getLastJobDescription.controller');
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
@@ -84,7 +84,6 @@ router.put('/users/change_password',auth.isLoggedIn, authChangePassword);
 router.put('/users/reset_password/:hash', authResetPassword);
 router.put('/users/verify_client/:email', authVerifyClient);
 router.post('/users/set_disable_status' , auth.isLoggedIn , authAccountDisableSetting);
-router.post('/users/approval_email',auth.isLoggedIn ,authApprovalEmail);
 router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
 router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
@@ -131,6 +130,7 @@ router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMes
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
 router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);
 router.post('/users/get_employ_offer',auth.isValidUser, chatGetEmployOffer);
+router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(chatGetLastJobDescription));
 
 // Admin
 router.put('/users/approve/:_id', auth.isAdmin  , adminApproveUser);

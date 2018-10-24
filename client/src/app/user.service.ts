@@ -1112,28 +1112,6 @@ export class UserService {
     }
 
 
-    approval_email(detail: string)
-    {
-
-        return this.http.post(URL+'users/approval_email' , detail, {
-            headers: new HttpHeaders().set('Authorization', this.token)
-        })
-            .map((res: Response) =>
-            {
-                if (res)
-                {
-                        return res;
-                }
-            }).catch((error: any) =>
-            {
-                if (error.status )
-                {
-                    return Observable.throw(new Error(error.status));
-                }
-
-            });
-    }
-
 	update_is_company_reply_status(id:string,status:number)
     {
         return this.http.post<any>(URL+'users/update_is_company_reply_status', {id:id,status:status}, {
@@ -1192,6 +1170,21 @@ export class UserService {
           return Observable.throw(new Error(error.status));
         }
 
+      });
+  }
+
+  getLastJobDesc() {
+    return this.http.post<any>(URL + 'users/get_last_job_desc_msg', {}, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
+      .map((res: Response) => {
+        if (res) {
+          return res;
+        }
+      }).catch((error: any) => {
+        if (error.status) {
+          return Observable.throw(new Error(error.status));
+        }
       });
   }
 

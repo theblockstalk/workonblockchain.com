@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+  <loc>https://workonblockchain.com/</loc>
+  <changefreq>weekly</changefreq>
+  <priority>1.0</priority>
+</url>
+<url>
+  <loc>https://workonblockchain.com/login</loc>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>https://workonblockchain.com/signup</loc>
+  <priority>1.0</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>https://workonblockchain.com/faq</loc>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>https://workonblockchain.com/fees</loc>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>https://workonblockchain.com/privacy-notice</loc>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>https://workonblockchain.com/contact-us</loc>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>https://workonblockchain.com/terms-for-candidate</loc>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>https://workonblockchain.com/terms-for-company</loc>
+  <changefreq>weekly</changefreq>
+</url>
+</urlset>

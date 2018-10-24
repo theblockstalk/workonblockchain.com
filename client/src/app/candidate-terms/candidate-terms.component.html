@@ -12,19 +12,19 @@
           <li class = "step"><i class="{{job_active_class}}"></i><a routerLink="{{link}}" class="btn {{job_disable}}">Jobs</a></li>
           <li class = "step"><i class="{{resume_active_class}}"></i><a routerLink="{{resume_class}}" class="btn {{resume_disable}}">Blockchain</a></li>
           <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn {{exp_disable}}">Experience</a></li>
-          
+
 				</ul>
 			</div>
 			<div class="col-md-12 wizard-form comp-cand_terms">
-			
+
 				 <form class = "login_form"  (submit)="terms_and_condition(termForm)" #termForm = ngForm>
-					
-				<div class = "scroll_div">		
+
+				<div class = "scroll_div">
 				<p>
-					We want to keep things easy and transparent! That's why we've created this short summary of the important parts of the Terms and Conditions and the Privacy Policy. Please ensure that you understand what you are agreeing to when you create an account.
+					We want to keep things easy and transparent! That's why we've created this short summary of the important parts of the Terms and Conditions and the Privacy Notice. Please ensure that you understand what you are agreeing to when you create an account.
 
 				</p>
-				
+
 				<h2>Who are we</h2>
 				<p>
 					We are BIOTS Limited. Our company regsitered address is Broad House, The Broadway, Old Hatfield, Herts, United Kingdom, AL9 5BG.
@@ -38,12 +38,12 @@
 				<h2>What happens when you create an account</h2>
 				<p>
 					After creating an account we will commence our services and assist you to find a position on the basis set out in these Terms as soon as you complete the process of setting up your account on our platform by giving us all the core information about you that we need. We do not accept all applications to join our platform.
-					
+
 				</p>
-				
+
 				<p>
 					If we ask, you will provide us with evidence of your right to work in the countries in which you have indicated you can work.				</p>
-				
+
 				<p>
 					You accept that just because you complete a profile, you will not necessarily find employment or customers for your services via our platform.</p>
 				<p>
@@ -61,14 +61,14 @@
 					At any time, you have the right to request the information that we have on your account, or request that we delete your account permanently by emailing us at privacy@workonblockchain.com. We may ask for additional identification to complete this.
 
 				</p>
-				
+
 				<p>Please read the Terms and Conditions for Candidates and Privacy Notice for full details.</p>
 			</div>
 
 				<div class = "form-group col-md-8">
 					<div class="checkbox">
 
-						<label class = "check-label"> I have read the <a  routerLink="/terms-for-candidate" target="_blank" >Terms and Conditions </a> and <a  routerLink="/privacy-notice" target="_blank" >Privacy Policy</a>.
+						<label class = "check-label"> I have read the <a  routerLink="/terms-for-candidate" target="_blank" >Terms and Conditions </a> and <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.
 
 							<input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
 							<span class="checkmark">
@@ -82,20 +82,21 @@
 							</span>
 						</label>
 				  </div>
-				  
+
 				  <div class = "form_error" *ngIf="termscondition == false">
 								<span class = "error">{{terms_log}}</span>
 							</div>
 				</div>
-				
+
 
 					<div class = "form-group col-md-4 text-right">
 							<button type="submit" class = "btn btn-self btn-pdg"  >Next Step</button>
 
 					</div>
 
+
 				</form>
-				
+
 			</div>
 		</div>
 	</div>
