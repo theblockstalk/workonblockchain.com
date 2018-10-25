@@ -30,9 +30,8 @@ module.exports = function (req, res)
 {
 	//console.log(req.body);
 	let userId;
-	if(req.body.id){
+	if(req.body.id && req.auth.user.is_admin){
 		userId = req.body.id;
-        helper.isAuthorizedForConversation(req.auth.user, req.body.id, req.body.id)
 	}
 	else{
 		userId = req.auth.user._id;
