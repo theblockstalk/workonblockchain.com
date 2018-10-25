@@ -45,11 +45,12 @@ export class ReferralComponent implements OnInit {
 	}
 	
 	ngAfterViewInit(): void {
-		window['twttr'] && window['twttr'].widgets.load();
+    window['twttr'] && window['twttr'].widgets.load();
     }
 
 	ngOnInit(){
-		(function(d, s, id) {
+
+    (function(d, s, id) {
 			var js, fjs = d.getElementsByTagName(s)[0];
 			if (d.getElementById(id)) return;
 			js = d.createElement(s); js.id = id;
