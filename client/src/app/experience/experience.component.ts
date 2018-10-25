@@ -493,7 +493,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                 if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename && this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
                 {
                                        
-                    this.edu_count = parseInt(key) + 1;
+                    this.edu_count = this.edu_count + 1;
                 }
                 
             }
@@ -521,40 +521,38 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                     
                 }
             
-                if(!this.ExperienceForm.value.ExpItems[key].start_date || !this.ExperienceForm.value.ExpItems[key].startyear)
+                if(!this.ExperienceForm.value.ExpItems[key].startdate || this.ExperienceForm.value.ExpItems[key].startdate === "" || !this.ExperienceForm.value.ExpItems[key].startyear)
                 {
                     this.start_date_log = "Please fill start date ";
                 }
                 
-                if(!this.ExperienceForm.value.ExpItems[key].end_date || !this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].companyname==false)
+                if(!this.ExperienceForm.value.ExpItems[key].end_date || !this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].companyname===false)
                 {
                     this.end_date_log = "Please fill end date ";
                 }
-            
-                if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname &&
-               this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].start_date && 
+                console.log(this.ExperienceForm.value.ExpItems[key].locationname);
+              console.log(this.ExperienceForm.value.ExpItems[key].positionname);
+
+              if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
+               this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
                this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date && 
                this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
                {
-                  this.exp_count = parseInt(key) + 1;
+                  this.exp_count = this.exp_count + 1;
                     
                }
                 
                 
-                if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname &&
-                this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].start_date && 
+                if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&
+                this.ExperienceForm.value.ExpItems[key].locationname &&this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
                 this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
                {
-                  this.exp_count = parseInt(key) + 1;
+                  this.exp_count = this.exp_count + 1;
                     
-               } 
-                
+               }
+
             }
-            
-               
-            
-          
-            
+
         }
         
      
@@ -566,7 +564,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         console.log("work history form count " + this.ExperienceForm.value.ExpItems.length);
         if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
         {
-           //console.log("else if 3");
            this.submit_info(searchForm);
             
         }
@@ -608,8 +605,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                         }
                         this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
                         this.experiencearray.push(this.experiencejson);
-                        console.log(this.experiencearray);
-
                     }
                 
             }
