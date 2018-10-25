@@ -76,7 +76,7 @@
 						<div class="messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
 							<ul>
 								<div *ngFor="let msg of new_msgss">
-									<ng-container *ngIf="msg.sender_name == display_name;else second">
+									<ng-container *ngIf="msg.sender_id == user_id;else second">
 										<li class="sent">
 											<p class = "job-description">
 												<span class="text-capitalize">{{msg.sender_name}}:</span>
