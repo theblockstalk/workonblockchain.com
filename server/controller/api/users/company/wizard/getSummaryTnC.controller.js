@@ -1,6 +1,7 @@
 var Q = require('q');
 var mongo = require('mongoskin');
 const EmployerProfile = require('../../../../../model/employer_profile');
+const Pages = require('../../../../../model/pages_content');
 const logger = require('../../../../services/logger');
 
 ///////////add company summary or Terms& conditions in db////////////////////////////
@@ -48,31 +49,49 @@ function company_summary(_id, companyParam)
     {
         if(companyParam.terms)
         {
-            var set =
-                {
-                    terms:companyParam.terms,
-                    marketing_emails: companyParam.marketing,
-
-                };
+			Pages.findOne({page_name: 'Terms and Condition for company'}).sort({updated_date: 'descending'}).exec(function (err, result) {
+				if (err) {
+					logger.error(err.message, {stack: err.stack});
+					deferred.reject(err.name + ': ' + err.message);
+				}
+				else {
+					var set =
+					{
+						terms:companyParam.terms,
+						terms_id: result._id,
+						marketing_emails: companyParam.marketing,
+					};
+					EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
+					{
+						if (err){
+							logger.error(err.message, {stack: err.stack});
+							deferred.reject(err.name + ': ' + err.message);
+						}
+						else
+							deferred.resolve(set);
+					});
+				}
+			});
+            
         }
         else
         {
-            var set =
-                {                  
-                    marketing_emails: companyParam.marketing,
-
-                };
+			var set =
+			{                  
+				marketing_emails: companyParam.marketing,
+			};
+			EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
+			{
+				if (err){
+					logger.error(err.message, {stack: err.stack});
+					deferred.reject(err.name + ': ' + err.message);
+				}
+				else
+					deferred.resolve(set);
+			});
         }
 
-        EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+        
     }
 
     return deferred.promise;
