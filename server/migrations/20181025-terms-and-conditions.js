@@ -94,9 +94,6 @@ module.exports.up = async function() {
 
 // This function will undo the migration
 module.exports.down = async function() {
-    const latestCandidateTermsPage = await Pages.findOne({page_name: 'Terms and Condition for candidate'}).lean();
-    const candidateTermsPageId = latestCandidateTermsPage._id;
-
     let candidateCursor = await Candidate.find({}).cursor();
     totalDocsToProcess = await Candidate.find({}).count();
     let candidateDoc = await candidateCursor.next();
