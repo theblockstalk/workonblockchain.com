@@ -13,7 +13,7 @@ const settings = require('../settings');
 
         await connectToMongo();
 
-        console.log('Running ' + upDown + 'migration ' + migrationFileName);
+        console.log('Running migration ' + upDown + ' file: ' + migrationFileName);
 
         if (upDown === 'up') {
             await migration.up();
