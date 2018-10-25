@@ -135,7 +135,7 @@
 
 
         <section class = "profile job_info" *ngIf="base_country || base_city ">
-          <h3>Residence</h3>
+          <h3>Residence/base location</h3>
 
           <div class="info-area pro_br-btm"  *ngIf="base_country">
             <div class = "col-md-3">
@@ -516,11 +516,8 @@
         <h3 class="modal-title text-center mo">Update your profile<br>
         </h3>
 
-        <div class = "user_pic">
-          <img src = "assets/profile/profile-image.png" *ngIf="!imgPath" class = "img-responsive" alt = "profile-img"/>
-
-				 			<img *ngIf="imgPath" src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
-
+        <div class = "user_pic" *ngIf="imgPath">
+				 			<img  src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
         </div>
       </div>
       <h2 class = "text-center">{{first_name}} {{last_name}}</h2>
