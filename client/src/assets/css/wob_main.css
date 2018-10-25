@@ -687,6 +687,10 @@ body{
     .slider-indicator {
         bottom: -35px !important;
     }
+
+  .select_error {
+    position: relative !important;
+  }
 }
 
 .newsletter_signup {
@@ -976,10 +980,10 @@ body{
 
 }
 
-.select_error
-{
-	bottom : -18px;
-}
+  .select_error
+  {
+   /* bottom : -18px;*/
+  }
 
 .form_error{
 
@@ -3960,6 +3964,7 @@ input:checked + .slider:before {
     .select_error
     {
         bottom:0px;
+        position: absolute;
     }
 
     .candidate-slider h2, .newsletter_signup h2{
@@ -3997,6 +4002,10 @@ input:checked + .slider:before {
 
   .btn_popup{
     top: 5px;
+  }
+
+  .xs_input{
+    margin-bottom: 20px;
   }
 
 }
