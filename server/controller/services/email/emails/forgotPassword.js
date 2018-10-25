@@ -2,9 +2,9 @@ const emails = require('../emails');
 const settings = require('../../../../settings');
 const logger = require('../../logger');
 
-module.exports.sendEmail = function sendEmail(data, isAccountDisabed, hash,name) {
+module.exports.sendEmail = function sendEmail(emailAddress,name,hash) {
     const sendTo = {
-        email:data.email
+        email:emailAddress
     };
     const subject = "Forgot password on Work on Blockchain";
 

@@ -126,16 +126,7 @@ export class UserService {
                 {
                     this.router.navigate(['/resume']);
                 }
-               /* else if(data.commercial_platform.length < 1 || data.experimented_platform.length < 1  || data.platforms.length < 1)
-                {
-                    this.router.navigate(['/resume']);
-                }*/
-                ////////console.log(data.programming_languages.length);
-                else if(!res['programming_languages'] ||  !res['current_salary']  || res['programming_languages'].length <1 )
-                {
-                        this.router.navigate(['/experience']);
-                }
-                 else if(!res['description'])
+                else if(!res['description'])
                 {
                     this.router.navigate(['/experience']);
 

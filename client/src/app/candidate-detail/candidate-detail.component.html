@@ -120,6 +120,39 @@
 
 				 </section>
 
+        <section class = "profile job_info" *ngIf="data.first_name && data._creator.candidate">
+          <h3>Residence</h3>
+
+          <div class="info-area pro_br-btm"  *ngIf="data._creator.candidate.base_country">
+            <div class = "col-md-3">
+              <strong>Country :</strong>
+            </div>
+            <div class = "col-md-9">
+              <ul class = "pro_list">
+                <li >{{data._creator.candidate.base_country}}</li>
+
+              </ul>
+            </div>
+
+          </div>
+
+
+          <div class="info-area pro_br-btm" *ngIf="data._creator.candidate.base_city">
+            <div class = "col-md-3">
+              <strong>City :  </strong>
+            </div>
+            <div class = "col-md-9">
+              <ul class = "pro_list">
+                <li >{{data._creator.candidate.base_city}}</li>
+
+              </ul>
+            </div>
+
+          </div>
+
+
+        </section>
+
 				 <section class = "profile job_info">
 					<h3>Desired Job</h3>
 				 	<div class="info-area pro_br-btm">
@@ -219,7 +252,7 @@
 					</div>
 
 
-				 	<div class="info-area pro_br-btm" *ngIf="commercial">
+				 	<div class="info-area pro_br-btm" *ngIf="commercial && commercial.length > 0 ">
 
 						<div class = "col-md-4" >
 							<strong>Platform commercially worked with:</strong>
@@ -233,7 +266,7 @@
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm" *ngIf="platforms">
+				 	<div class="info-area pro_br-btm" *ngIf="platforms && platforms.length > 0">
 
 						<div class = "col-md-4" >
 							<strong>Platforms designed/developed smart contracts:</strong>
@@ -246,7 +279,7 @@
 
 				 	</div>
 
-				 	<div class="info-area pro_br-btm" *ngIf="experimented">
+				 	<div class="info-area pro_br-btm" *ngIf="experimented && experimented.length>0">
 
 						<div class = "col-md-4" >
 							<strong>Platform experimented with:</strong>
