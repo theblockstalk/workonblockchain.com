@@ -3,8 +3,8 @@ var _ = require('lodash');
 var Q = require('q');
 var mongo = require('mongoskin');
 const users = require('../../../../model/users');
-var jwt_hash = require('jwt-simple');
 const logger = require('../../../services/logger');
+const jwtToken = require('../../../services/jwtToken');
 
 module.exports = function (req,res)
 {
@@ -24,14 +24,15 @@ module.exports = function (req,res)
 
 }
 
-function emailVerify(token)
+function emailVerify(verifyEmailToken)
 {
-    var deferred = Q.defer()
-    var data = jwt_hash.decode(token, settings.EXPRESS_JWT_SECRET, 'HS256');
+    var deferred = Q.defer();
 
-    if(new Date(data.expiry) > new Date())
-    {   	    	
-        users.findOne(  { verify_email_key:token  }, function (err, result)
+    let payloaddata = jwtToken.verifyJwtToken(verifyEmailToken);
+
+    if((payloaddata.exp - payloaddata.iat) === 3600)
+    {
+        users.findOne(  { verify_email_key: verifyEmailToken  }, function (err, result)
         {
             if (err){
                 logger.error(err.message, {stack: err.stack});
@@ -64,10 +65,8 @@ function emailVerify(token)
             });
         }
     }
-
     else
     {
-    	
         deferred.resolve({error:'Link Expired'});
     }
     return deferred.promise;

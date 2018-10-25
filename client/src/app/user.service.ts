@@ -127,7 +127,7 @@ export class UserService {
                     this.router.navigate(['/resume']);
                 }
 
-                 else if(!res['description'])
+                else if(!res['description'])
                 {
                     this.router.navigate(['/experience']);
 
@@ -1179,6 +1179,21 @@ export class UserService {
         return Observable.throw(new Error(error.status));
       }
     });
+  }
+
+  getLastJobDesc() {
+    return this.http.post<any>(URL + 'users/get_last_job_desc_msg', {}, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
+      .map((res: Response) => {
+        if (res) {
+          return res;
+        }
+      }).catch((error: any) => {
+        if (error.status) {
+          return Observable.throw(new Error(error.status));
+        }
+      });
   }
 
 }

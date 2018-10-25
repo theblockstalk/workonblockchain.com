@@ -60,6 +60,7 @@ const chatInsertFile = require('./controller/api/chat/insertChatFile.controller'
 const chatUpdateJobMessage = require('./controller/api/chat/updateJobMessage.controller');
 const chatUpdateIsCompanyReplyStatus = require('./controller/api/chat/updateIsCompanyReplyStatus.controller');
 const chatGetEmployOffer = require('./controller/api/chat/chatGetEmployOffer.controller');
+const chatGetLastJobDescription = require('./controller/api/chat/getLastJobDescription.controller');
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
@@ -98,13 +99,13 @@ router.get('/users/',auth.isLoggedIn, candidateGetAll);
 router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
-router.put('/users/welcome/about', auth.isLoggedIn, candidateWizardAbout);
+router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
 router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
 router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
 router.put('/users/welcome/exp', auth.isLoggedIn, candidateWizardExperience);
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), candidateImage);
 router.put('/users/refered_id', auth.isLoggedIn, candidateReferred);
-router.put('/users/update_profile', auth.isLoggedIn, candidateUpdate);
+router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
 
 // Companies
 router.post('/users/create_employer', companyRegister);
@@ -130,6 +131,7 @@ router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMes
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
 router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);
 router.post('/users/get_employ_offer',auth.isValidUser, chatGetEmployOffer);
+router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(chatGetLastJobDescription));
 
 // Admin
 router.put('/users/approve/:_id', auth.isAdmin  , adminApproveUser);

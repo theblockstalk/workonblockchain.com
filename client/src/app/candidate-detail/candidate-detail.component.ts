@@ -74,6 +74,34 @@ export class CandidateDetailComponent implements OnInit {
   commercial;
   ngOnInit()
   {
+    this.authenticationService.getLastJobDesc()
+    .subscribe(
+      data => {
+        let prev_job_desc = data;
+        this.credentials.job_title = prev_job_desc.job_title;
+        this.credentials.salary = prev_job_desc.salary;
+        this.credentials.currency = prev_job_desc.salary_currency;
+        this.credentials.location = prev_job_desc.interview_location;
+        this.credentials.job_type = prev_job_desc.job_type;
+        this.credentials.job_desc = prev_job_desc.description;
+      },
+      error => {
+        if (error.message === 500 || error.message === 401) {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+
+        if (error.message === 403) {
+          this.router.navigate(['/not_found']);
+        }
+      }
+    );
+
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
@@ -197,39 +225,43 @@ export class CandidateDetailComponent implements OnInit {
   job_offer_msg;
   full_name;
   job_description;
-  send_job_offer(msgForm : NgForm){
+  send_job_offer(msgForm : NgForm) {
     this.full_name = this.first_name;
-    if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
-      if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
+    ////console.log(this.full_name);
+    if (this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
+      if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.authenticationService.get_job_desc_msgs(this.currentUser._creator,this.credentials.user_id,'job_offer')
+        this.authenticationService.get_job_desc_msgs(this.currentUser._creator, this.credentials.user_id, 'job_offer')
           .subscribe(
             data => {
-              if(data['datas'].length>0){
+              ////console.log(data['datas']);
+              if (data['datas'].length > 0) {
                 this.job_offer_msg = 'You have already sent a job description to this candidate';
               }
-              else{
+              else {
                 this.date_of_joining = '10-07-2018';
                 this.msg_tag = 'job_offer';
                 this.is_company_reply = 0;
                 this.msg_body = '';
                 this.job_description = this.credentials.job_desc;
-                this.authenticationService.insertMessage(this.currentUser._creator,this.credentials.user_id,this.company_name,this.full_name,this.msg_body,this.job_description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+                this.interview_location = this.credentials.location;
+                this.authenticationService.insertMessage(this.currentUser._creator, this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
                   .subscribe(
                     data => {
+                      ////console.log(data);
                       this.job_offer_msg = 'Message has been successfully sent';
                       this.router.navigate(['/chat']);
                     },
                     error => {
-
+                      ////console.log('error');
+                      ////console.log(error);
                       //this.log = error;
                     }
                   );
               }
             },
             error => {
-              if(error.message === 500)
-              {
+              if (error.message === 500) {
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('googleUser');
@@ -239,18 +271,17 @@ export class CandidateDetailComponent implements OnInit {
                 window.location.href = '/login';
               }
 
-              if(error.message === 403)
-              {
+              if (error.message === 403) {
                 this.router.navigate(['/not_found']);
               }
             }
           );
       }
-      else{
+      else {
         this.job_offer_msg = 'Salary should be a number';
       }
     }
-    else{
+    else {
       this.job_offer_msg = 'Please enter all info';
     }
   }
