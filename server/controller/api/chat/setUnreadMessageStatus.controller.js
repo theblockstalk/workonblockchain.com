@@ -5,7 +5,8 @@ const users = require('../../../model/users');
 const logger = require('../../services/logger');
 
 module.exports = function (req,res){
-    set_unread_msgs_emails_status(req.body).then(function (err, about)
+	let userId = req.auth.user._id;
+    set_unread_msgs_emails_status(req.body,userId).then(function (err, about)
     {
         if (about)
         {
@@ -22,7 +23,7 @@ module.exports = function (req,res){
         });
 }
 
-function set_unread_msgs_emails_status(data){
+function set_unread_msgs_emails_status(data,userId){
     var deferred = Q.defer();
     ////console.log(data.user_id);
     var set =
@@ -30,7 +31,7 @@ function set_unread_msgs_emails_status(data){
             is_unread_msgs_to_send: data.status,
 
         };
-    users.update({ _id: data.user_id},{ $set: set }, function (err, doc)
+    users.update({ _id: userId},{ $set: set }, function (err, doc)
     {
         if (err){
             logger.error(err.message, {stack: err.stack});

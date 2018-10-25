@@ -119,7 +119,6 @@ export class CandidateDetailComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.credentials.user_id = this.user_id;
 
-
     if(this.user_id) {
 
       this.authenticationService.candidate_detail(this.user_id)
@@ -172,7 +171,6 @@ export class CandidateDetailComponent implements OnInit {
                   return 0;
                 })
               }
-
             }
           },
           error => {
@@ -189,7 +187,6 @@ export class CandidateDetailComponent implements OnInit {
             if (error.message === 403) {
               this.router.navigate(['/not_found']);
             }
-
           });
       this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
@@ -231,7 +228,7 @@ export class CandidateDetailComponent implements OnInit {
     if (this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
       if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.authenticationService.get_job_desc_msgs(this.currentUser._creator, this.credentials.user_id, 'job_offer')
+        this.authenticationService.get_job_desc_msgs(this.credentials.user_id, 'job_offer')
           .subscribe(
             data => {
               ////console.log(data['datas']);
@@ -245,7 +242,7 @@ export class CandidateDetailComponent implements OnInit {
                 this.msg_body = '';
                 this.job_description = this.credentials.job_desc;
                 this.interview_location = this.credentials.location;
-                this.authenticationService.insertMessage(this.currentUser._creator, this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
+                this.authenticationService.insertMessage(this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
                   .subscribe(
                     data => {
                       ////console.log(data);

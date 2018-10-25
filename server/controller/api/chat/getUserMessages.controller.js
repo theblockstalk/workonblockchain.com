@@ -1,30 +1,33 @@
-const settings = require('../../../settings');
-var _ = require('lodash');
 var Q = require('q');
-
 const chat = require('../../../model/chat');
 
 const logger = require('../../services/logger');
 
 module.exports = function (req, res)
 {
-	//console.log("idddddddddddd");
-	//console.log(req.body.id);
-    get_user_messages(req.body.id).then(function (data)
-    {
-        if (data)
-        {
-            res.send(data);
-        }
-        else
-        {
-            res.sendStatus(404);
-        }
-    })
-        .catch(function (err)
-        {
-            res.status(400).send(err);
-        });
+	//console.log(req.body);
+	let userId;
+	if(req.body.id && req.auth.user.is_admin){
+		userId = req.body.id;
+	}
+	else{
+		userId = req.auth.user._id;
+	}
+	get_user_messages(userId).then(function (data)
+	{
+		if (data)
+		{
+			res.send(data);
+		}
+		else
+		{
+			res.sendStatus(404);
+		}
+	})
+		.catch(function (err)
+		{
+			res.status(400).send(err);
+		});
 }
 
 function get_user_messages(id){
