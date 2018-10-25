@@ -1,13 +1,8 @@
 const settings = require('../../../../settings');
 var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var date = require('date-and-time');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
-var mongo = require('mongoskin');
 const users = require('../../../../model/users');
-var crypto = require('crypto');
-var jwt_hash = require('jwt-simple');
+
 
 const logger = require('../../../services/logger');
 
