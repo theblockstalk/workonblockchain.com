@@ -530,8 +530,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                 {
                     this.end_date_log = "Please fill end date ";
                 }
-                console.log(this.ExperienceForm.value.ExpItems[key].locationname);
-              console.log(this.ExperienceForm.value.ExpItems[key].positionname);
+
 
               if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
                this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
