@@ -10,7 +10,7 @@
   "mongo": {
     "host": "localhost",
     "port": 27017,
-    "databaseName": "hgdhsd-db"
+    "databaseName": "wob"
 
   },
   "expressJwt": {
@@ -41,3 +41,4 @@
     "unreadMessagesTick": "60 * * * * *"
   }
 }
+
