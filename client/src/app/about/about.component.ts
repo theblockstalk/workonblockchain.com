@@ -125,11 +125,11 @@ export class AboutComponent implements OnInit,AfterViewInit
               {
                 this.info.nationality = data.nationality;
               }
-              if(data._creator.candidate.base_country)
+              if(data._creator.candidate && data._creator.candidate.base_country)
               {
                 this.info.country = data._creator.candidate.base_country;
               }
-              if(data._creator.candidate.base_city){
+              if(data._creator.candidate && data._creator.candidate.base_city){
                 this.info.city = data._creator.candidate.base_city;
               }
 
