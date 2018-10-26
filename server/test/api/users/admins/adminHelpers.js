@@ -43,3 +43,12 @@ const addCmsContent = module.exports.addCmsContent = async function addCmsConten
     res.should.have.status(200);
     return res;
 }
+
+const getMetrics = module.exports.getMetrics = async function getMetrics(jwtToken) {
+    const res = await chai.request(server)
+        .get('/users/get_metrics')
+        .set('Authorization', jwtToken)
+        .send();
+    res.should.have.status(200);
+    return res;
+}
