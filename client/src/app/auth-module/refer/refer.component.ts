@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationCancel,ActivatedRoute,NavigationExtras } from '@angular/router';
-import { URLSearchParams, } from '@angular/http';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-refer',

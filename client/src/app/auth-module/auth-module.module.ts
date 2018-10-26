@@ -11,6 +11,7 @@ import { CandidateFormComponent } from './candidate-form/candidate-form.componen
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ReferComponent } from './refer/refer.component';
 
 import {LoginResolver} from '../is-loggedin.resolver';
 
@@ -40,7 +41,13 @@ export function provideConfig() {
     SocialLoginModule,
     LinkedInSdkModule
   ],
-  declarations: [CandidateFormComponent, LoginComponent , ForgotPasswordComponent, ResetPasswordComponent],
+  declarations: [
+    CandidateFormComponent,
+    LoginComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    ReferComponent
+  ],
   providers:
     [
       LoginResolver,

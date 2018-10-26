@@ -7,7 +7,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent},
   { path: '', component: HomeComponent},
   { path: '', loadChildren: './auth-module/auth-module.module#AuthModuleModule'},
-
+  { path: '', loadChildren: './pages-module/pages-module.module#PagesModuleModule'},
+  { path: '', loadChildren: './referral-module/referral-module.module#ReferralModuleModule'},
 ];
 
 

@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent , resolve: {LoginResolver }},
   { path: 'forgot_password', component: ForgotPasswordComponent},
   { path: 'reset_password', component: ResetPasswordComponent},
+  { path: 'refer', component: CandidateFormComponent},
 ];
 
 @NgModule({
