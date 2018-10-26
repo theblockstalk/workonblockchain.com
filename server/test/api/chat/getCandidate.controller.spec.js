@@ -9,6 +9,8 @@ const docGenerator = require('../../helpers/docGenerator');
 const companyHelper = require('../users/company/companyHelpers');
 const candidateHelper = require('../users/candidate/candidateHelpers');
 const chatHelper = require('./chatHelpers');
+const userHelper = require('../users/usersHelpers');
+
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -30,6 +32,7 @@ describe('get a candidate or company info', function () {
             const company = docGenerator.company();
             await companyHelper.signupVerifiedApprovedCompany(company);
             const companyDoc = await Users.findOne({email: company.email}).lean();
+            await userHelper.makeAdmin(company.email);
             //creating a candidate
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
