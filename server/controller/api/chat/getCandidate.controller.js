@@ -9,8 +9,8 @@ const filterReturnData = require('../users/filterReturnData');
 
 module.exports = function (req, res)
 {
-
-    helper.isAuthorizedForConversation(req.auth.user, req.body.sender_id, req.body.receiver_id)
+	//console.log("get candidate");
+   // helper.isAuthorizedForConversation(req.auth.user, req.body.sender_id, req.body.receiver_id)
     get_candidate(req.body.sender_id, req.body.receiver_id,req.body.is_company_reply,req.body.type).then(function (user)
     {
         if (user)
