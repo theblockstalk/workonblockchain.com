@@ -1,10 +1,7 @@
-const EmployerProfile = require('../../../../model/employer_profile');
 const Candidate = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
 const enumerations = require('../../../../model/enumerations');
-
-const logger = require('../../../services/logger');
-
+const settings = require('../../../../settings');
 
 module.exports = async function (req, res) {
     let totalCandidates, emailVerified = 0, approved = 0, dissabled = 0, agreedTerms = 0;
@@ -16,6 +13,8 @@ module.exports = async function (req, res) {
     let aggregatedData = {
         nationality: {},
         availabilityDay: {},
+        baseCountry: {},
+        expectedSalaryUSD: {},
         locations: {},
         roles: {},
         interestAreas: {},
@@ -24,8 +23,10 @@ module.exports = async function (req, res) {
             smartContract: {},
             experimented: {}
         },
-        programmingLanguages: {},
+        programmingLanguages: {}
     };
+
+    let salaryArray = [];
 
     for ( null ; candidateDoc !== null; candidateDoc = await candidateCursor.next()) {
         let userDoc = await User.findOne({_id: candidateDoc._creator});
@@ -34,9 +35,10 @@ module.exports = async function (req, res) {
         if (userDoc.is_approved) {
             approved++;
             // TODO: base country...
-            // TODO: expected salary (multicurrency)
+            if (candidateDoc.expected_salary && candidateDoc.expected_salary_currency) salaryList(salaryArray, candidateDoc.expected_salary, candidateDoc.expected_salary_currency)
             aggregateCount(aggregatedData.nationality, candidateDoc.nationality, enumerations.nationalities);
             aggregateCount(aggregatedData.availabilityDay, candidateDoc.availability_day, enumerations.workAvailability);
+            if (userDoc.candidate) aggregateCount(aggregatedData.baseCountry, userDoc.candidate.base_country, enumerations.countries);
             aggregateCount2(aggregatedData.locations, candidateDoc.locations, enumerations.workLocations);
             aggregateCount2(aggregatedData.roles, candidateDoc.roles, enumerations.workRoles);
             aggregateCount2(aggregatedData.interestAreas, candidateDoc.interest_area, enumerations.workBlockchainInterests);
@@ -50,6 +52,13 @@ module.exports = async function (req, res) {
 
     }
 
+    aggregatedData.expectedSalaryUSD = {
+        min: Math.min.apply(null, salaryArray),
+        max: Math.max.apply(null, salaryArray),
+        average: average(salaryArray),
+        median: median(salaryArray)
+    };
+
     res.json({
         candidates: totalCandidates,
         emailVerified: emailVerified,
@@ -57,7 +66,7 @@ module.exports = async function (req, res) {
         agreedTerms: agreedTerms,
         approved: {
             count: approved,
-            aggregated: aggregatedData,
+            aggregated: aggregatedData
         }
     })
 
@@ -93,4 +102,33 @@ function aggregateCount3(aggregateObj, values, fieldValues, fieldName) {
             }
         }
     }
+}
+
+function salaryList(salaryArray, expectedSalary, currency) {
+    let salaryUSD = expectedSalary;
+    if (currency === "€ EUR") {
+        salaryUSD = expectedSalary * settings.CURRENCY_RATES.USD.Euro;
+    } else if (currency === "£ GBP") {
+        salaryUSD = expectedSalary * settings.CURRENCY_RATES.USD.GBP;
+    }
+    salaryArray.push(salaryUSD);
+}
+
+function average(arr) {
+    return arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+}
+
+function median(numbers) {
+    let median = 0, numsLen = numbers.length;
+    numbers.sort(function(a,b){
+        return a-b;
+    });
+
+    if (numsLen % 2 === 0) {
+        median = (numbers[numsLen / 2 - 1] + numbers[numsLen / 2]) / 2;
+    } else {
+        median = numbers[(numsLen - 1) / 2];
+    }
+
+    return median;
 }
