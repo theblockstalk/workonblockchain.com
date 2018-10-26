@@ -32,7 +32,6 @@ export class PrivacyPolicyComponent implements OnInit {
                       this.page_title= data[0].page_title;
                        this.editor_content = data[0].page_content;
 
-
                    }
 
 

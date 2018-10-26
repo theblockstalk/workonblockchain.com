@@ -10,6 +10,8 @@ import { AboutComponent } from './about/about.component';
 import { JobComponent } from './job/job.component';
 import { ResumeComponent } from './resume/resume.component';
 import { ExperienceComponent } from './experience/experience.component';
+import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
+import { EditCandidateProfileComponent } from './edit-candidate-profile/edit-candidate-profile.component';
 
 @NgModule({
   imports: [
@@ -24,7 +26,9 @@ import { ExperienceComponent } from './experience/experience.component';
     AboutComponent,
     JobComponent,
     ResumeComponent,
-    ExperienceComponent
+    ExperienceComponent,
+    CandidateProfileComponent,
+    EditCandidateProfileComponent
   ]
 })
 export class CandidateModuleModule { }

@@ -7,6 +7,8 @@ import { AboutComponent } from './about/about.component';
 import { JobComponent } from './job/job.component';
 import { ResumeComponent } from './resume/resume.component';
 import { ExperienceComponent } from './experience/experience.component';
+import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
+import { EditCandidateProfileComponent } from './edit-candidate-profile/edit-candidate-profile.component';
 
 const routes: Routes = [
   { path: 'terms-and-condition', component: CandidateTermsComponent},
@@ -15,7 +17,8 @@ const routes: Routes = [
   { path: 'job', component: JobComponent},
   { path: 'resume', component: ResumeComponent},
   { path: 'experience', component: ExperienceComponent},
-
+  { path: 'candidate_profile', component: CandidateProfileComponent},
+  {path : 'edit_profile' , component: EditCandidateProfileComponent},
 ];
 
 @NgModule({
