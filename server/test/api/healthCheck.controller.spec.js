@@ -41,7 +41,20 @@ describe('healthCheck', function () {
 
             // Three ways of running tests using chai
             res.body.success.should.equal(false);
-            res.body.message.should.equal("I am an error");
+            res.body.message.should.equal("I am an application error");
+        })
+
+        it('it should throw a normal error', async () => {
+
+            let res = await chai.request(server)
+                .get('/?error=true&raw=true')
+                .send();
+
+            res.should.have.status(500);
+
+            // Three ways of running tests using chai
+            res.body.success.should.equal(false);
+            res.body.message.should.equal("I am a normal error");
         })
     })
 });
