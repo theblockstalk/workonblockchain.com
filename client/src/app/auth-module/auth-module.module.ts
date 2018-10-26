@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule }    from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SocialLoginModule, AuthServiceConfig } from 'angular4-social-login';
 import { GoogleLoginProvider } from 'angular4-social-login';
 import { LinkedInSdkModule } from 'angular-linkedin-sdk';
@@ -8,6 +8,10 @@ import { LinkedInSdkModule } from 'angular-linkedin-sdk';
 import {AuthModuleRoutingModule} from './auth-module-routing.module';
 
 import { CandidateFormComponent } from './candidate-form/candidate-form.component';
+import { LoginComponent } from './login/login.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+
 import {LoginResolver} from '../is-loggedin.resolver';
 
 import { environment } from '../../environments/environment';
@@ -36,7 +40,7 @@ export function provideConfig() {
     SocialLoginModule,
     LinkedInSdkModule
   ],
-  declarations: [CandidateFormComponent],
+  declarations: [CandidateFormComponent, LoginComponent , ForgotPasswordComponent, ResetPasswordComponent],
   providers:
     [
       LoginResolver,

@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute,NavigationExtras } from '@angular/router';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
+import { Router, ActivatedRoute } from '@angular/router';
+import {UserService} from '../../user.service';
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from '@angular/forms';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DataService } from "../data.service";
+import { DataService } from '../../data.service';
 
 
 @Component({

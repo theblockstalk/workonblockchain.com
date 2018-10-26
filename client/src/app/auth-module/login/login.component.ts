@@ -1,14 +1,14 @@
 import { Component, OnInit,OnDestroy,Directive } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {UserService} from '../user.service';
+import {UserService} from '../../user.service';
 //import {AlertService} from '../alert.service';
-import {User} from '../Model/user';
+import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from "angular4-social-login";
-import { GoogleLoginProvider } from "angular4-social-login";
+import { AuthService } from 'angular4-social-login';
+import { GoogleLoginProvider } from 'angular4-social-login';
 import { LinkedInService } from 'angular-linkedin-sdk';
 //import { Subscription } from 'rxjs/Subscription';
-import { DataService } from "../data.service";
+import { DataService } from '../../data.service';
 import {NgForm} from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
 

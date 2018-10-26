@@ -15,7 +15,6 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +27,7 @@ import { FooterComponent } from './footer/footer.component';
     HttpClientModule,
     AppRoutingModule,
   ],
-  providers: [UserService,DataService,DatePipe,CookieService,SeoService],
+  providers: [UserService, DataService, DatePipe, CookieService, SeoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
