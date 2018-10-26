@@ -39,7 +39,8 @@ describe('get unread messages of a user', function () {
             const message = docGenerator.message();
             const insertRes = await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
 
-            const res = await chatHelper.getUnreadMessages(companyDoc._id,candidateDoc._id,companyDoc.jwt_token);
+            const res = await chatHelper.getUnreadMessages(companyDoc._id,candidateDoc._id,candidateDoc.jwt_token);
+
             res.body.number_of_unread_msgs.should.equal(1);
             res.body.sender_id.should.equal(companyDoc._id.toString());
             res.body.receiver_id.should.equal(candidateDoc._id.toString())

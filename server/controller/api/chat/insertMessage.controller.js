@@ -1,30 +1,11 @@
 const settings = require('../../../settings');
 var _ = require('lodash');
-var jwt = require('jsonwebtoken');
 var date = require('date-and-time');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
-var mongo = require('mongoskin');
-const users = require('../../../model/users');
-const CandidateProfile = require('../../../model/candidate_profile');
-const Pages = require('../../../model/pages_content');
-var crypto = require('crypto');
-var jwt_hash = require('jwt-simple');
-const EmployerProfile = require('../../../model/employer_profile');
 const chat = require('../../../model/chat');
 const mongoose = require('mongoose');
 const sanitize = require('../../services/sanitize');
 
-const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
-const verifyEmailEmail = require('../../services/email/emails/verifyEmail');
-const referUserEmail = require('../../services/email/emails/referUser');
-const chatReminderEmail = require('../../services/email/emails/chatReminder');
-const referedUserEmail = require('../../services/email/emails/referredFriend');
-
-const USD = settings.CURRENCY_RATES.USD;
-const GBP = settings.CURRENCY_RATES.GBP;
-const Euro = settings.CURRENCY_RATES.Euro;
-const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
 //////////inserting message in DB ////////////
@@ -33,7 +14,10 @@ module.exports = function insert_message(req, res)
 {
     let sanitizeddescription = sanitize.sanitizeHtml(req.unsanitizedBody.description);
     let sanitizedmessage = sanitize.sanitizeHtml(req.unsanitizedBody.message);
-    insert_message_new(req.body,sanitizeddescription,sanitizedmessage).then(function (data)
+
+    let userId = req.auth.user._id;
+
+    insert_message_new(req.body,sanitizeddescription,sanitizedmessage,userId).then(function (data)
     {
         if (data)
         {
@@ -51,7 +35,7 @@ module.exports = function insert_message(req, res)
         });
 }
 
-function insert_message_new(data,description,msg){
+function insert_message_new(data,description,msg,sender_id){
 	let new_description = '';
 	let new_msg = '';
 	if(description){
@@ -74,7 +58,7 @@ function insert_message_new(data,description,msg){
 	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
     let newChat = new chat({
-        sender_id : mongoose.Types.ObjectId(data.sender_id),
+        sender_id : mongoose.Types.ObjectId(sender_id),
 		receiver_id : mongoose.Types.ObjectId(data.receiver_id),
         sender_name: data.sender_name,
         receiver_name: data.receiver_name,

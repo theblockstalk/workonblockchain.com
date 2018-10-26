@@ -3,11 +3,10 @@ var Q = require('q');
 var mongo = require('mongoskin');
 const users = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
-var crypto = require('crypto');
-var jwt_hash = require('jwt-simple');
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
 const logger = require('../../../services/logger');
 const EmployerProfile = require('../../../../model/employer_profile');
+const jwtToken = require('../../../services/jwtToken');
 
 module.exports = function (req,res)
 {
@@ -68,19 +67,13 @@ function forgot_password(email)
 
     function updateData(data)
     {
-		var hashStr = crypto.createHash('sha256').update(email).digest('base64');
-
-        var email_data = {};
-        email_data.password_key = hashStr;
-        email_data.email = data.email;
-        email_data.name = data.first_name;
-        
-        email_data.expiry = new Date(new Date().getTime() +  1800 *1000);
-        var token = jwt_hash.encode(email_data, settings.EXPRESS_JWT_SECRET, 'HS256');
-        email_data.token = token;
+        let signOptions = {
+            expiresIn:  "1h",
+        };
+        let forgotPasswordToken = jwtToken.createJwtToken(data,signOptions);
         var set =
         {
-        		forgot_password_key: token,
+        		forgot_password_key: forgotPasswordToken,
 
         };
         users.update({ _id: mongo.helper.toObjectID(data._id) },{ $set: set }, function (err, doc)
@@ -91,8 +84,8 @@ function forgot_password(email)
             }
             else
             {
-            	
-                forgot_passwordEmail_send(email_data.token)
+            	console.log(data.email);
+                forgot_passwordEmail_send(data.email , forgotPasswordToken)
                 deferred.resolve({
                     success: true,
                     msg:'Email Sent'
@@ -106,14 +99,11 @@ function forgot_password(email)
 
 }
 
-function forgot_passwordEmail_send(data)
+function forgot_passwordEmail_send(emailAddress , token)
 {
     var deferred = Q.defer();
-    var hash = jwt_hash.decode(data, settings.EXPRESS_JWT_SECRET, 'HS256');
 
-    var name;
-
-    users.findOne({ email :hash.email  }, function (err, userDoc)
+    users.findOne({ email : emailAddress  }, function (err, userDoc)
     {
         if (err)
         {
@@ -146,7 +136,7 @@ function forgot_passwordEmail_send(data)
         	                	}
         	                    
         	                    
-        	                    forgotPasswordEmail.sendEmail(hash, userDoc.disable_account, data , name);
+        	                    forgotPasswordEmail.sendEmail(emailAddress,name,token);
         	                }
         	            });
         	}
@@ -174,7 +164,7 @@ function forgot_passwordEmail_send(data)
                                 }
         	                    
         	                    
-        	                    forgotPasswordEmail.sendEmail(hash,userDoc.disable_account,data , name);
+        	                    forgotPasswordEmail.sendEmail(emailAddress,name,token);
         	                }
         	            });
         	}

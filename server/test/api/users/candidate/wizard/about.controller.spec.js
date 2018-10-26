@@ -27,17 +27,23 @@ describe('add initial info of candidate', function () {
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
 
-            const userDoc = await Users.findOne({email: candidate.email}).lean();
+            let userDoc = await Users.findOne({email: candidate.email}).lean();
             const candidateProfileInfo = docGenerator.profileData();
+
             const res = await candidateWizardHelper.about(candidateProfileInfo,userDoc.jwt_token);
+            res.body.success.should.equal(true);
+
             const newCandidateInfo = await candidateProfile.findOne({_creator: userDoc._id}).lean();
             newCandidateInfo.first_name.should.equal(candidateProfileInfo.first_name);
             newCandidateInfo.last_name.should.equal(candidateProfileInfo.last_name);
             newCandidateInfo.github_account.should.equal(candidateProfileInfo.github_account);
-            newCandidateInfo.stackexchange_account.should.equal(candidateProfileInfo.stackexchange_account);
+            newCandidateInfo.stackexchange_account.should.equal(candidateProfileInfo.exchange_account);
             newCandidateInfo.contact_number.should.equal(candidateProfileInfo.contact_number);
             newCandidateInfo.nationality.should.equal(candidateProfileInfo.nationality);
-            newCandidateInfo.image.should.equal(candidateProfileInfo.image_src);
+
+            userDoc = await Users.findOne({email: candidate.email}).lean();
+            userDoc.candidate.base_city.should.equal(candidateProfileInfo.city);
+            userDoc.candidate.base_country.should.equal(candidateProfileInfo.country);
         })
     })
 });

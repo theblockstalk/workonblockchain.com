@@ -49,6 +49,10 @@ export class AdminCandidateDetailComponent implements OnInit {
     if (year1.eduyear < year2.eduyear) return 1;
     return 0;
   };
+
+  commercial;
+  roles;
+  platforms;
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -70,6 +74,46 @@ export class AdminCandidateDetailComponent implements OnInit {
               this.work_history.sort(this.date_sort_desc);
               this.education_history = data.education_history;
               this.education_history.sort(this.education_sort_desc);
+              this.countries = data.locations;
+              this.countries.sort();
+              this.interest_area =data.interest_area;
+              this.interest_area.sort();
+              this.roles  = data.roles;
+              this.roles.sort();
+              this.commercial = data.commercial_platform;
+              if(this.commercial && this.commercial.length>0){
+                this.commercial.sort(function(a, b){
+                  if(a.platform_name < b.platform_name) { return -1; }
+                  if(a.platform_name > b.platform_name) { return 1; }
+                  return 0;
+                })
+              }
+              this.experimented = data.experimented_platform;
+              if(this.experimented && this.experimented.length>0){
+                this.experimented.sort(function(a, b){
+                  if(a.name < b.name) { return -1; }
+                  if(a.name > b.name) { return 1; }
+                  return 0;
+                })
+              }
+
+              this.languages= data.programming_languages;
+              if(this.languages && this.languages.length>0){
+                this.languages.sort(function(a, b){
+                  if(a.language < b.language) { return -1; }
+                  if(a.language > b.language) { return 1; }
+                  return 0;
+                })
+              }
+
+              this.platforms=data.platforms;
+              if(this.platforms && this.platforms.length>0){
+                this.platforms.sort(function(a, b){
+                  if(a.platform_name < b.platform_name) { return -1; }
+                  if(a.platform_name > b.platform_name) { return 1; }
+                  return 0;
+                })
+              }
               if(data.image != null )
               {
 

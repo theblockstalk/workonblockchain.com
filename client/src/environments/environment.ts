@@ -8,7 +8,7 @@ export const environment = {
   backend_url: 'http://localhost:4000/',
   frontend_url: 'http://localhost:4200/',
   google_id : '507151802069-rbqn1iqupcbr7t7ge50nup74fu0td5g0.apps.googleusercontent.com',
-  linkedin_id: '78lfupn2m88e4u'
+  linkedin_id: '78lfupn2m88e4u',
 };
 
 //console.log(environment);

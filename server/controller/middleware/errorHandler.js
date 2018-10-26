@@ -1,17 +1,23 @@
 const logger = require('../services/logger');
 const uuidv1 = require('uuid/v1');
+const { ApplicationError } = require('../services/errors');
 
 module.exports = function middleware(err, req, res, next) {
     const requestID = uuidv1();
-    logger.debug('code: ' + err.code);
+
     let bug = {
         stack: err.stack,
         url: req.url,
         method: req.method,
+        code: err.code,
         requestID: requestID
     };
 
-    logger.error(err.message, bug);
+    if(err instanceof ApplicationError) {
+        logger.warn(err.message, bug);
+    } else {
+        logger.error(err.message, bug);
+    }
 
     const responseData = {
         message: err.message,
@@ -24,7 +30,5 @@ module.exports = function middleware(err, req, res, next) {
     } else {
         res.status(500);
     }
-    console.log("response data");
-console.log(responseData);
     res.send(responseData);
 };

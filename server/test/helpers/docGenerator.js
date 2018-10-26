@@ -67,9 +67,9 @@ module.exports.message = function message() {
 module.exports.chatFile = function chatFile() {
     const file = this.image();
     return {
-        message: "file ",
-        name: file.name,
-        path: file.path
+        message: 'file ',
+        name: 'image.jpg',
+        path: __dirname + '/image.jpg'
     };
 };
 
@@ -149,10 +149,11 @@ module.exports.profileData = function profileData(){
         first_name : 'Tayyab',
         last_name : 'Hussain',
         github_account : 'fb.com',
-        stackexchange_account : 'fb.com',
+        exchange_account : 'fb.com',
         contact_number : '65464655',
         nationality : 'Pakistani',
-        image_src : 'dffdfd.jpg'
+        country : 'Pakistan',
+        city : 'Islamabad'
     }
 }
 
@@ -262,6 +263,8 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
                exchange_account: 'sadia_exchange.com',
                github_account: 'fb.com',
                nationality: 'Pakistani',
+               base_country : 'Pakistan',
+               city : 'Islamabad',
                expected_salary: 1400,
                base_currency: '$ USD ',
                salary: 23000,
@@ -333,9 +336,9 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
 
 module.exports.cmsContent = function cmsContent() {
     return {
-        page_title: "Privacy Policy",
+        page_title: "Privacy Notice",
         html_text: "<p>This notice sets out the basis on which any personal data we collect from you, or that you provide to us, will be processed by us. Please read the following carefully to understand our views and practices regarding your sensitive information and how we will deal with it. For the purposes of the Data Protection Act 2018 (‘the DPA’) and the EU General Data Protection Regulation (‘the GDPR’), sensitive information includes what is defined as your ‘personal data’.</p>\n",
-        page_name: "Privacy Policy"
+        page_name: "Privacy Notice"
     }
 }
 

@@ -687,6 +687,10 @@ body{
     .slider-indicator {
         bottom: -35px !important;
     }
+
+  .select_error {
+    position: relative !important;
+  }
 }
 
 .newsletter_signup {
@@ -976,10 +980,10 @@ body{
 
 }
 
-.select_error
-{
-	bottom : -18px;
-}
+  .select_error
+  {
+   /* bottom : -18px;*/
+  }
 
 .form_error{
 
@@ -1913,7 +1917,7 @@ input[type=checkbox] {
 #frame .content .contact-profile {
     width: 100%;
     /*height: 60px;*/
-    line-height: 60px;
+    line-height: 37px;
     background: #fff;
     padding: 10px 10px;
     overflow: hidden;
@@ -2113,7 +2117,8 @@ input[type=checkbox] {
 .btn_rgt{
 	position: absolute;
     right: 10px;
-    top: 16px;
+    top: 8px;
+	width: 28%;
 }
 
 .btn_descp{
@@ -2135,6 +2140,66 @@ input[type=checkbox] {
   position: absolute;
   right: 15px;
   top: 40px;
+}
+
+.btn_popup-b{
+  right: 16px;
+  position: absolute;
+  top: 5px;
+  background: #ffc000;
+  border: #ffc000;
+  color: #fff;
+  padding: 5px 5px;
+}
+
+.update_inner{
+  overflow: hidden;
+  background: #f6f9fc;
+  padding: 15px 20px;
+}
+
+.update_header{
+  background: #253245;
+  color: #fff;
+  height: 120px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #ffc000;
+}
+
+.update_header .close{
+  color: #fff;
+  opacity: 1;
+}
+
+.contant_inner{
+  background: #f6f9fc;
+}
+
+.model_form{
+  margin: 30px 20px;
+}
+
+.model_form .form-group .form-control{
+  border-radius: 0px;
+}
+
+.user_pic{
+  width: 80px;
+  height: 80px;
+  background: grey;
+  border: 1px solid #ffc000;
+  margin: auto;
+  border-radius: 50%;
+  position: relative;
+  top: 23px;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.user_pic img{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
 }
 
 .btn-relative{
@@ -3673,6 +3738,21 @@ input:checked + .slider:before {
   background: #253245;
   color: #fff;
 }
+.res_feild{
+  background: #f6f9fc;
+  padding: 10px 0px;
+}
+.wlcm_btn{
+  overflow: hidden;
+  margin-top: 20px;
+  position: relative;
+  right: 85px;
+}
+
+.wlcm_btn .btn{
+  top: 0px !important;
+  float: right !important;
+}
 
 /*==welcome model style end==*/
 
@@ -3683,6 +3763,12 @@ input:checked + .slider:before {
     .navbar {
         border-radius: 0px !important;
     }
+}
+
+@media (max-width: 1200px){
+  .wlcm_btn{
+    right: 0px;
+  }
 }
 
 @media (max-width: 992px){
@@ -3895,6 +3981,7 @@ input:checked + .slider:before {
     .select_error
     {
         bottom:0px;
+        position: absolute;
     }
 
     .candidate-slider h2, .newsletter_signup h2{
@@ -3932,6 +4019,10 @@ input:checked + .slider:before {
 
   .btn_popup{
     top: 5px;
+  }
+
+  .xs_input{
+    margin-bottom: 20px;
   }
 
 }
@@ -4160,7 +4251,15 @@ input:checked + .slider:before {
 .ckeditor_tab >.cke>.cke_inner> .cke_contents > .cke_reset >p {
   margin: 0px;
 }
+.error-log{
+  margin-top: 2px !important;
+  float: right ;
+  position:relative !important;
+}
 
+.checkbox_height {
+  min-height:42px;
+}
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 

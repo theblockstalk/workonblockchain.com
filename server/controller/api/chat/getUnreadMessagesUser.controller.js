@@ -1,32 +1,12 @@
 const settings = require('../../../settings');
 var _ = require('lodash');
-var jwt = require('jsonwebtoken');
-var date = require('date-and-time');
-var bcrypt = require('bcryptjs');
 var Q = require('q');
-var mongo = require('mongoskin');
-const users = require('../../../model/users');
-const CandidateProfile = require('../../../model/candidate_profile');
-const Pages = require('../../../model/pages_content');
-var crypto = require('crypto');
-var jwt_hash = require('jwt-simple');
-const EmployerProfile = require('../../../model/employer_profile');
 const chat = require('../../../model/chat');
-
-const forgotPasswordEmail = require('../../services/email/emails/forgotPassword');
-const verifyEmailEmail = require('../../services/email/emails/verifyEmail');
-const referUserEmail = require('../../services/email/emails/referUser');
-const chatReminderEmail = require('../../services/email/emails/chatReminder');
-const referedUserEmail = require('../../services/email/emails/referredFriend');
-
-const USD = settings.CURRENCY_RATES.USD;
-const GBP = settings.CURRENCY_RATES.GBP;
-const Euro = settings.CURRENCY_RATES.Euro;
-const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../services/logger');
 
 module.exports = function (req,res){
-    get_unread_msgs_of_user(req.body).then(function (err, about)
+	let userId = req.auth.user._id;
+    get_unread_msgs_of_user(req.body,userId).then(function (err, about)
     {
         if (about)
         {
@@ -43,11 +23,11 @@ module.exports = function (req,res){
         });
 }
 
-function get_unread_msgs_of_user(data){
+function get_unread_msgs_of_user(data,receiverId){
     var deferred = Q.defer();
     chat.count({ $and : [
             {
-                $and:[{receiver_id:data.receiver_id},{sender_id: data.sender_id}]
+                $and:[{receiver_id:receiverId},{sender_id: data.sender_id}]
             },
             {
                 is_read:0
@@ -60,7 +40,7 @@ function get_unread_msgs_of_user(data){
         else{
             ////console.log(result);
             deferred.resolve({
-                receiver_id: data.receiver_id,
+                receiver_id: receiverId,
                 sender_id: data.sender_id,
                 number_of_unread_msgs:result
             });

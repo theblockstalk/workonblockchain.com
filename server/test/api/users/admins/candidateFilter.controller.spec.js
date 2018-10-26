@@ -45,9 +45,8 @@ describe('admin search candidate by filter', function () {
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
             const initialJobOffer = docGenerator.initialJobOffer();
-            const res = await chatHelper.insertMessage(companyUserDoc._id,candidateUserDoc._id,initialJobOffer,candidateUserDoc.jwt_token);
+            const res = await chatHelper.insertMessage(companyUserDoc._id,candidateUserDoc._id,initialJobOffer,companyUserDoc.jwt_token);
             const chatDoc = await Chats.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
-
             const data = {
                 msg_tags : [chatDoc.msg_tag],
                 is_approve : candidateUserDoc.is_approved,

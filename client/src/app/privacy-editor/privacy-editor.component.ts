@@ -25,9 +25,9 @@ export class PrivacyEditorComponent implements OnInit {
     page_name;
     admin_log;
     message;
-    
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService) { 
-	
+
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService,private dataservice: DataService) {
+
   }
 
   ngOnInit() {
@@ -39,17 +39,17 @@ export class PrivacyEditorComponent implements OnInit {
       height: '35rem',
     minHeight: '10rem',
     };
-      
-       setInterval(() => {  
+
+       setInterval(() => {
                                 this.error = "" ;
                                 this.success = "" ;
                         }, 5000);
-      
-      this.page_name = 'Privacy Policy';
-      
+
+      this.page_name = 'Privacy Notice';
+
      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
-      
+
        if(this.currentUser && this.admin_log )
         {
            if(this.admin_log.is_admin == 1)
@@ -63,7 +63,7 @@ export class PrivacyEditorComponent implements OnInit {
                         this.page_title = data[0].page_title;
                        this.editor_content = data[0].page_content;
                        ////console.log(this.editor_content);
-                       
+
                    }
                  });
            }
@@ -73,7 +73,7 @@ export class PrivacyEditorComponent implements OnInit {
         else
         {
            this.router.navigate(['/not_found']);
-          
+
         }
   }
 
@@ -81,10 +81,10 @@ export class PrivacyEditorComponent implements OnInit {
    editor(editorForm: NgForm)
    {
        if(editorForm.value.page_title && editorForm.value.html_text){
-		   this.editor_text = this.editor_content;  
+		   this.editor_text = this.editor_content;
 		   this.authenticationService.pages_content(editorForm.value)
 		   .subscribe(
-		   data => 
+		   data =>
 		   {
 			   if(data)
 			   {
@@ -94,7 +94,7 @@ export class PrivacyEditorComponent implements OnInit {
 			   else
 			   {
 				   this.error="Something went wrong";
-				   
+
 			   }
 		   },
 		   error =>
@@ -109,11 +109,11 @@ export class PrivacyEditorComponent implements OnInit {
 											localStorage.removeItem('admin_log');
 							window.location.href = '/login';
 						}
-						
+
 						if(error.message === 403)
 						{
-							this.router.navigate(['/not_found']);                        
-						}      
+							this.router.navigate(['/not_found']);
+						}
 		   });
 	   }
 	   else{
