@@ -6,7 +6,7 @@ import { HttpClientModule} from '@angular/common/http';
 import { DataService } from './data.service';
 import { DatePipe } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
-import { SeoService } from './seo.service';
+import { SafeHtmlPipe } from './pipe.safehtml';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -20,14 +20,15 @@ import { FooterComponent } from './footer/footer.component';
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
+    AppRoutingModule
   ],
-  providers: [UserService, DataService, DatePipe, CookieService, SeoService],
+  providers: [UserService, DataService, DatePipe, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

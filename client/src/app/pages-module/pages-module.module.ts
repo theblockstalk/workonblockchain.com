@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SafeHtmlPipe } from '../pipe.safehtml';
 
 import { PagesModuleRoutingModule } from './pages-module-routing.module';
 
@@ -21,11 +20,10 @@ import { CompanyTermsAndConditionsComponent } from './company-terms-and-conditio
     PrivacyPolicyComponent,
     ContactUsComponent,
     LegalNoticeComponent,
-    SafeHtmlPipe,
     FeesComponent,
     FaqComponent,
     TermsAndConditionComponent,
-    CompanyTermsAndConditionsComponent
+    CompanyTermsAndConditionsComponent,
   ]
 })
 export class PagesModuleModule { }

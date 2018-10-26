@@ -3,8 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { Title, Meta } from '@angular/platform-browser';
-import { SeoService } from '../seo.service';
-
 
 @Component({
   selector: 'app-home',
@@ -12,12 +10,10 @@ import { SeoService } from '../seo.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-   
 	currentUser: User; 
   log;
   data;result;
-  constructor( private seo: SeoService ,private route: ActivatedRoute,
+  constructor( private route: ActivatedRoute,
         private router: Router,
         private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
 		this.titleService.setTitle('Work on Blockchain | A recruitment hiring platform for blockchain developers');

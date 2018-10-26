@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CandidateModuleRoutingModule } from './candidate-module-routing.module';
 
@@ -10,11 +11,12 @@ import { JobComponent } from './job/job.component';
 import { ResumeComponent } from './resume/resume.component';
 import { ExperienceComponent } from './experience/experience.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
-    CandidateModuleRoutingModule
+    CandidateModuleRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     CandidateTermsComponent,
