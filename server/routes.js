@@ -70,6 +70,7 @@ const adminChatUpdateMsgStatus = require('./controller/api/chat/updateChatMessag
 const adminApproveUser = require('./controller/api/users/admins/approveUser.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
+const adminGetMetrics = require('./controller/api/users/admins/getMetrics.controller');
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
@@ -140,6 +141,7 @@ router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent)
 router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
 router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
 router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
+router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
 
 // Pages
 router.get('/users/get_pages_content/:title', pagesGetContent);
