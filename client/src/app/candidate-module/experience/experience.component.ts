@@ -3,10 +3,10 @@ import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angu
 import {NgForm} from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
+import {UserService} from '../../user.service';
+import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from "../data.service";
+import { DataService } from "../../data.service";
 declare var $:any;
 
 @Component({

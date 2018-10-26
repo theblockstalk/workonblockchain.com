@@ -9,6 +9,8 @@ const routes: Routes = [
   { path: '', loadChildren: './auth-module/auth-module.module#AuthModuleModule'},
   { path: '', loadChildren: './pages-module/pages-module.module#PagesModuleModule'},
   { path: '', loadChildren: './referral-module/referral-module.module#ReferralModuleModule'},
+  { path: '', loadChildren: './candidate-module/candidate-module.module#CandidateModuleModule'},
+
 ];
 
 

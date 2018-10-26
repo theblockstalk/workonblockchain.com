@@ -3,11 +3,11 @@ import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angu
 import {NgForm} from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute,NavigationEnd  } from '@angular/router';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
+import {UserService} from '../../user.service';
+import {User} from '../../Model/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { DataService } from "../data.service";
-import {environment} from '../../environments/environment';
+import { DataService } from "../../data.service";
+import {environment} from '../../../environments/environment';
 import { Location } from '@angular/common';
 declare var $: any;
 

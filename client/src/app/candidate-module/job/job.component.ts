@@ -1,8 +1,8 @@
 import { Component, OnInit,AfterViewInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
+import {UserService} from '../../user.service';
+import {User} from '../../Model/user';
 
 import { HttpClient } from '@angular/common/http';
 

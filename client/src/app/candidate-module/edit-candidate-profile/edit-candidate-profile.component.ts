@@ -2,12 +2,12 @@ import { Component, OnInit ,ElementRef, Input,AfterViewInit } from '@angular/cor
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
+import {UserService} from '../../user.service';
+import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
-import { DataService } from "../data.service";
-import {environment} from '../../environments/environment';
+import { DataService } from "../../data.service";
+import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import { DatePipe } from '@angular/common';
 

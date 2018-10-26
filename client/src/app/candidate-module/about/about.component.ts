@@ -2,9 +2,9 @@ import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
-import {environment} from '../../environments/environment';
+import {UserService} from '../../user.service';
+import {User} from '../../Model/user';
+import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 ////////console.log(URL);
 
