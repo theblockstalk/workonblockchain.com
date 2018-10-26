@@ -240,17 +240,17 @@ export class ChatComponent implements OnInit {
                     }
                     else
                     {
-                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
-                        this.authenticationService.get_page_content('Company chat popup message')
-                          .subscribe(
-                            data => {
-                              if (data) {
-                                this.companyMsgTitle = data[0].page_title;
-                                this.companyMsgContent = data[0].page_content;
-                                $("#popModal").modal("show");
-                              }
+                      this.authenticationService.get_page_content('Company chat popup message')
+                        .subscribe(
+                          data => {
+                            if (data) {
+                              this.companyMsgTitle = data[0].page_title;
+                              this.companyMsgContent = data[0].page_content;
                             }
-                          );
+                          }
+                        );
+                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
+                        $("#popModal").modal("show");
                       }
                       //console.log("else");
                       this.msg='';
