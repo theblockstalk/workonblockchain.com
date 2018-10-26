@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
-import { AuthService } from "angular4-social-login";
-import { GoogleLoginProvider } from "angular4-social-login";
+import { AuthService } from 'angular4-social-login';
+import { GoogleLoginProvider } from 'angular4-social-login';
 import { LinkedInService } from 'angular-linkedin-sdk';
 import {NgForm} from '@angular/forms';
-import { DataService } from "../../data.service";
+import { DataService } from '../../data.service';
 import { Title, Meta } from '@angular/platform-browser';
 declare var $: any;
 
