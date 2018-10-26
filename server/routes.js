@@ -141,7 +141,7 @@ router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent)
 router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
 router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
 router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
-router.get('/users/get_metrics', asyncMiddleware(adminGetMetrics));
+router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
 
 // Pages
 router.get('/users/get_pages_content/:title', pagesGetContent);

@@ -26,6 +26,8 @@ module.exports = async function (req, res) {
         programmingLanguages: {}
     };
 
+    let locationList = enumerations.workLocations;
+    locationList.push("remote");
     let salaryArray = [];
 
     for ( null ; candidateDoc !== null; candidateDoc = await candidateCursor.next()) {
@@ -39,7 +41,7 @@ module.exports = async function (req, res) {
             aggregateCount(aggregatedData.nationality, candidateDoc.nationality, enumerations.nationalities);
             aggregateCount(aggregatedData.availabilityDay, candidateDoc.availability_day, enumerations.workAvailability);
             if (userDoc.candidate) aggregateCount(aggregatedData.baseCountry, userDoc.candidate.base_country, enumerations.countries);
-            aggregateCount2(aggregatedData.locations, candidateDoc.locations, enumerations.workLocations);
+            aggregateCount2(aggregatedData.locations, candidateDoc.locations, locationList);
             aggregateCount2(aggregatedData.roles, candidateDoc.roles, enumerations.workRoles);
             aggregateCount2(aggregatedData.interestAreas, candidateDoc.interest_area, enumerations.workBlockchainInterests);
             aggregateCount3(aggregatedData.blockchain.commercial, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name");
