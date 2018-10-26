@@ -3765,6 +3765,12 @@ input:checked + .slider:before {
     }
 }
 
+@media (max-width: 1200px){
+  .wlcm_btn{
+    right: 0px;
+  }
+}
+
 @media (max-width: 992px){
     .mr-top{
         margin-top: 60px !important;

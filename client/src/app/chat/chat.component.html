@@ -146,10 +146,12 @@
 <section class = "wizard_page">
 	<div class="container">
 
-			<div class="row chat-row">
-        <div class = "wlcm_btn">
-          <button class = "btn btn_descp btn-relative" style = "float: left;">What happend next</button>
+			<div class="row">
+        <div class = "wlcm_btn" *ngIf="msg ===''">
+          <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn_descp btn-relative">What happens next?</button>
         </div>
+        <div class="chat-row">
+
 				<div *ngIf="msg!=''" class = "col-md-12" id="my-chat-design">
 					<h4 class="alert error-alert alert-danger pro_alert">
 						{{msg}}
@@ -451,6 +453,7 @@
 
 					</div><!--end col here-->
 				</div>
+  </div>
 			<div *ngIf="file_msg!=''" class = "col-md-12" id="my-chat-design" style="display: block;">
 				<h4 class="alert error-alert alert-danger pro_alert">
 					{{file_msg}}
