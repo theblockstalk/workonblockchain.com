@@ -145,7 +145,11 @@
 	<ng-template #no_section >
 <section class = "wizard_page">
 	<div class="container">
+
 			<div class="row chat-row">
+        <div class = "wlcm_btn">
+          <button class = "btn btn_descp btn-relative" style = "float: left;">What happend next</button>
+        </div>
 				<div *ngIf="msg!=''" class = "col-md-12" id="my-chat-design">
 					<h4 class="alert error-alert alert-danger pro_alert">
 						{{msg}}
