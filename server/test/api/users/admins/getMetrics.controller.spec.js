@@ -44,9 +44,9 @@ describe('admin get metrics', function () {
             metrics.candidates.should.equal(1);
             metrics.emailVerified.should.equal(1);
             metrics.dissabled.should.equal(0);
-            metrics.approved.count.should.equal(1);
+            metrics.approvedEnabled.count.should.equal(1);
 
-            const aggregrated = metrics.approved.aggregated;
+            const aggregrated = metrics.approvedEnabled.aggregated;
             aggregrated.nationality[profileData.nationality].should.equal(1);
             should.not.exist(aggregrated.nationality.Australian);
             aggregrated.availabilityDay[job.availability_day].should.equal(1);

@@ -23,7 +23,8 @@ module.exports = async function (req, res) {
             smartContract: {},
             experimented: {}
         },
-        programmingLanguages: {}
+        programmingLanguages: {},
+        aggregatedprogrammingLanguages: {}
     };
 
     let locationList = enumerations.workLocations;
@@ -34,9 +35,9 @@ module.exports = async function (req, res) {
         let userDoc = await User.findOne({_id: candidateDoc._creator});
         if (userDoc.is_verify) emailVerified++;
         if (userDoc.disable_account) dissabled++;
-        if (userDoc.is_approved) {
+        if (userDoc.is_approved && !userDoc.disable_account) {
             approved++;
-            // TODO: base country...
+
             if (candidateDoc.expected_salary && candidateDoc.expected_salary_currency) salaryList(salaryArray, candidateDoc.expected_salary, candidateDoc.expected_salary_currency)
             aggregateCount(aggregatedData.nationality, candidateDoc.nationality, enumerations.nationalities);
             aggregateCount(aggregatedData.availabilityDay, candidateDoc.availability_day, enumerations.workAvailability);
@@ -48,6 +49,7 @@ module.exports = async function (req, res) {
             aggregateCount3(aggregatedData.blockchain.smartContract, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name");
             aggregateCount3(aggregatedData.blockchain.experimented, candidateDoc.experimented_platform, enumerations.blockchainPlatforms, "name");
             aggregateCount3(aggregatedData.programmingLanguages, candidateDoc.programming_languages, enumerations.programmingLanguages, "language");
+            aggregateCount4(aggregatedData.aggregatedprogrammingLanguages, candidateDoc.programming_languages, enumerations.programmingLanguages, "language", enumerations.experienceYears, "exp_year");
 
         }
         if (candidateDoc.terms) agreedTerms++;
@@ -66,7 +68,7 @@ module.exports = async function (req, res) {
         emailVerified: emailVerified,
         dissabled: dissabled,
         agreedTerms: agreedTerms,
-        approved: {
+        approvedEnabled: {
             count: approved,
             aggregated: aggregatedData
         }
@@ -99,6 +101,26 @@ function aggregateCount3(aggregateObj, values, fieldValues, fieldName) {
                 if (value[fieldName] === field) {
                     if (!aggregateObj[field]) aggregateObj[field] = 1;
                     else aggregateObj[field]++;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+function aggregateCount4(aggregateObj, values, fieldValues1, fieldName1, fieldValues2, fieldName2) {
+    console.log(values);
+    for (const field of fieldValues1) {
+        if (values && values.length) {
+            for (const value of values) {
+                if (value[fieldName1] === field) {
+                    console.log('field: ', field);
+                    console.log('value[fieldName2]: ', value[fieldName2]);
+                    console.log('aggregateObj[field]: ', aggregateObj[field]);
+                    if (!aggregateObj[field]) aggregateObj[field] = {};
+                    let x = aggregateObj[field];
+                    if (!x[value[fieldName2]]) x[value[fieldName2]] = 1;
+                    else x[value[fieldName2]]++;
                     break;
                 }
             }
