@@ -23,36 +23,49 @@ module.exports = async function (req, res) {
             smartContract: {},
             experimented: {}
         },
-        programmingLanguages: {}
+        programmingLanguages: {},
     };
 
     let locationList = enumerations.workLocations;
     locationList.push("remote");
     let salaryArray = [];
 
+    let programmingLanguagesCount = {}, programmingLanguagesAggregate = {};
+    let blockchainCommercialCount = {}, blockchainCommercialAggregate = {};
+    let blockchainSmartCount = {}, blockchainSmartAggregate = {};
+
     for ( null ; candidateDoc !== null; candidateDoc = await candidateCursor.next()) {
         let userDoc = await User.findOne({_id: candidateDoc._creator});
         if (userDoc.is_verify) emailVerified++;
         if (userDoc.disable_account) dissabled++;
-        if (userDoc.is_approved) {
+        if (userDoc.is_approved && !userDoc.disable_account) {
             approved++;
-            // TODO: base country...
+
             if (candidateDoc.expected_salary && candidateDoc.expected_salary_currency) salaryList(salaryArray, candidateDoc.expected_salary, candidateDoc.expected_salary_currency)
-            aggregateCount(aggregatedData.nationality, candidateDoc.nationality, enumerations.nationalities);
-            aggregateCount(aggregatedData.availabilityDay, candidateDoc.availability_day, enumerations.workAvailability);
-            if (userDoc.candidate) aggregateCount(aggregatedData.baseCountry, userDoc.candidate.base_country, enumerations.countries);
-            aggregateCount2(aggregatedData.locations, candidateDoc.locations, locationList);
-            aggregateCount2(aggregatedData.roles, candidateDoc.roles, enumerations.workRoles);
-            aggregateCount2(aggregatedData.interestAreas, candidateDoc.interest_area, enumerations.workBlockchainInterests);
-            aggregateCount3(aggregatedData.blockchain.commercial, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name");
-            aggregateCount3(aggregatedData.blockchain.smartContract, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name");
-            aggregateCount3(aggregatedData.blockchain.experimented, candidateDoc.experimented_platform, enumerations.blockchainPlatforms, "name");
-            aggregateCount3(aggregatedData.programmingLanguages, candidateDoc.programming_languages, enumerations.programmingLanguages, "language");
+            aggregateField(aggregatedData.nationality, candidateDoc.nationality, enumerations.nationalities);
+            aggregateField(aggregatedData.availabilityDay, candidateDoc.availability_day, enumerations.workAvailability);
+            if (userDoc.candidate) aggregateField(aggregatedData.baseCountry, userDoc.candidate.base_country, enumerations.countries);
+            aggregateArray(aggregatedData.locations, candidateDoc.locations, locationList);
+            aggregateArray(aggregatedData.roles, candidateDoc.roles, enumerations.workRoles);
+            aggregateArray(aggregatedData.interestAreas, candidateDoc.interest_area, enumerations.workBlockchainInterests);
+            // aggregateObjArray(aggregatedData.blockchain.commercial, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name");
+            // aggregateObjArray(aggregatedData.blockchain.smartContract, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name");
+            aggregateObjArray(aggregatedData.blockchain.experimented, candidateDoc.experimented_platform, enumerations.blockchainPlatforms, "name");
+            aggregateObjArray(programmingLanguagesCount, candidateDoc.programming_languages, enumerations.programmingLanguages, "language");
+            aggregateObjArrayAggregate(programmingLanguagesAggregate, candidateDoc.programming_languages, enumerations.programmingLanguages, "language", "exp_year");
+            aggregateObjArray(blockchainCommercialCount, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name");
+            aggregateObjArrayAggregate(blockchainCommercialAggregate, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name", "exp_year");
+            aggregateObjArray(blockchainSmartCount, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name");
+            aggregateObjArrayAggregate(blockchainSmartAggregate, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name", "exp_year");
 
         }
         if (candidateDoc.terms) agreedTerms++;
 
     }
+    
+    countAndAggregate(aggregatedData.programmingLanguages, programmingLanguagesCount, programmingLanguagesAggregate);
+    countAndAggregate(aggregatedData.blockchain.commercial, blockchainCommercialCount, blockchainCommercialAggregate);
+    countAndAggregate(aggregatedData.blockchain.smartContract, blockchainSmartCount, blockchainSmartAggregate);
 
     aggregatedData.expectedSalaryUSD = {
         min: Math.min.apply(null, salaryArray),
@@ -66,7 +79,7 @@ module.exports = async function (req, res) {
         emailVerified: emailVerified,
         dissabled: dissabled,
         agreedTerms: agreedTerms,
-        approved: {
+        approvedEnabled: {
             count: approved,
             aggregated: aggregatedData
         }
@@ -74,33 +87,60 @@ module.exports = async function (req, res) {
 
 }
 
-function aggregateCount(aggregateObj, value, fieldValues) {
-    for (const field of fieldValues) {
-        if (value === field) {
-            if (!aggregateObj[field]) aggregateObj[field] = 1;
-            else aggregateObj[field]++;
+function aggregateField(aggregateObj, field, aggregateOver) {
+    for (const aggFild of aggregateOver) {
+        if (field === aggFild) {
+            if (!aggregateObj[aggFild]) aggregateObj[aggFild] = 1;
+            else aggregateObj[aggFild]++;
         }
     }
 }
 
-function aggregateCount2(aggregateObj, value, fieldValues) {
-    for (const field of fieldValues) {
-        if (value.includes && value.includes(field)) {
-            if (!aggregateObj[field]) aggregateObj[field] = 1;
-            else aggregateObj[field]++;
+function aggregateArray(aggregateObj, array, aggregateOver) {
+    for (const aggField of aggregateOver) {
+        if (array.includes && array.includes(aggField)) {
+            if (!aggregateObj[aggField]) aggregateObj[aggField] = 1;
+            else aggregateObj[aggField]++;
         }
     }
 }
 
-function aggregateCount3(aggregateObj, values, fieldValues, fieldName) {
-    for (const field of fieldValues) {
-        if (values && values.length) {
-            for (const value of values) {
-                if (value[fieldName] === field) {
-                    if (!aggregateObj[field]) aggregateObj[field] = 1;
-                    else aggregateObj[field]++;
+function aggregateObjArray(aggregateObj, objArray, aggregateOver, objFieldName) {
+    for (const aggField of aggregateOver) {
+        if (objArray && objArray.length) {
+            for (const obj of objArray) {
+                if (obj[objFieldName] === aggField) {
+                    if (!aggregateObj[aggField]) aggregateObj[aggField] = 1;
+                    else aggregateObj[aggField]++;
                     break;
                 }
+            }
+        }
+    }
+}
+
+function aggregateObjArrayAggregate(aggregateObj, objArray, aggregateOver, objFieldName1, objFieldName2) {
+    for (const aggField of aggregateOver) {
+        if (objArray && objArray.length) {
+            for (const obj of objArray) {
+                if (obj[objFieldName1] === aggField) {
+                    if (!aggregateObj[aggField]) aggregateObj[aggField] = {};
+                    let aggregateObj2 = aggregateObj[aggField];
+                    if (!aggregateObj2[obj[objFieldName2]]) aggregateObj2[obj[objFieldName2]] = 1;
+                    else aggregateObj2[obj[objFieldName2]]++;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+function countAndAggregate(final, count, aggregate) {
+    for (let property in count) {
+        if (count.hasOwnProperty(property)) {
+            final[property] = {
+                count: count[property],
+                aggregate: aggregate[property]
             }
         }
     }
