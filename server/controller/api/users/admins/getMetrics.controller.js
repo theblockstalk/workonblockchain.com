@@ -24,12 +24,15 @@ module.exports = async function (req, res) {
             experimented: {}
         },
         programmingLanguages: {},
-        aggregatedprogrammingLanguages: {}
     };
 
     let locationList = enumerations.workLocations;
     locationList.push("remote");
     let salaryArray = [];
+
+    let programmingLanguagesCount = {}, programmingLanguagesAggregate = {};
+    let blockchainCommercialCount = {}, blockchainCommercialAggregate = {};
+    let blockchainSmartCount = {}, blockchainSmartAggregate = {};
 
     for ( null ; candidateDoc !== null; candidateDoc = await candidateCursor.next()) {
         let userDoc = await User.findOne({_id: candidateDoc._creator});
@@ -45,16 +48,24 @@ module.exports = async function (req, res) {
             aggregateArray(aggregatedData.locations, candidateDoc.locations, locationList);
             aggregateArray(aggregatedData.roles, candidateDoc.roles, enumerations.workRoles);
             aggregateArray(aggregatedData.interestAreas, candidateDoc.interest_area, enumerations.workBlockchainInterests);
-            aggregateObjArray(aggregatedData.blockchain.commercial, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name");
-            aggregateObjArray(aggregatedData.blockchain.smartContract, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name");
+            // aggregateObjArray(aggregatedData.blockchain.commercial, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name");
+            // aggregateObjArray(aggregatedData.blockchain.smartContract, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name");
             aggregateObjArray(aggregatedData.blockchain.experimented, candidateDoc.experimented_platform, enumerations.blockchainPlatforms, "name");
-            aggregateObjArray(aggregatedData.programmingLanguages, candidateDoc.programming_languages, enumerations.programmingLanguages, "language");
-            aggregateObjArrayAggregate(aggregatedData.aggregatedprogrammingLanguages, candidateDoc.programming_languages, enumerations.programmingLanguages, "language", enumerations.experienceYears, "exp_year");
+            aggregateObjArray(programmingLanguagesCount, candidateDoc.programming_languages, enumerations.programmingLanguages, "language");
+            aggregateObjArrayAggregate(programmingLanguagesAggregate, candidateDoc.programming_languages, enumerations.programmingLanguages, "language", "exp_year");
+            aggregateObjArray(blockchainCommercialCount, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name");
+            aggregateObjArrayAggregate(blockchainCommercialAggregate, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name", "exp_year");
+            aggregateObjArray(blockchainSmartCount, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name");
+            aggregateObjArrayAggregate(blockchainSmartAggregate, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name", "exp_year");
 
         }
         if (candidateDoc.terms) agreedTerms++;
 
     }
+    
+    countAndAggregate(aggregatedData.programmingLanguages, programmingLanguagesCount, programmingLanguagesAggregate);
+    countAndAggregate(aggregatedData.blockchain.commercial, blockchainCommercialCount, blockchainCommercialAggregate);
+    countAndAggregate(aggregatedData.blockchain.smartContract, blockchainSmartCount, blockchainSmartAggregate);
 
     aggregatedData.expectedSalaryUSD = {
         min: Math.min.apply(null, salaryArray),
@@ -108,18 +119,28 @@ function aggregateObjArray(aggregateObj, objArray, aggregateOver, objFieldName) 
     }
 }
 
-function aggregateObjArrayAggregate(aggregateObj, objArray, aggregateOver, objFieldName1, aggregateOver2, objFieldName2) {
-    console.log(objArray);
+function aggregateObjArrayAggregate(aggregateObj, objArray, aggregateOver, objFieldName1, objFieldName2) {
     for (const aggField of aggregateOver) {
         if (objArray && objArray.length) {
             for (const obj of objArray) {
                 if (obj[objFieldName1] === aggField) {
                     if (!aggregateObj[aggField]) aggregateObj[aggField] = {};
-                    let x = aggregateObj[aggField];
-                    if (!x[obj[objFieldName2]]) x[obj[objFieldName2]] = 1;
-                    else x[obj[objFieldName2]]++;
+                    let aggregateObj2 = aggregateObj[aggField];
+                    if (!aggregateObj2[obj[objFieldName2]]) aggregateObj2[obj[objFieldName2]] = 1;
+                    else aggregateObj2[obj[objFieldName2]]++;
                     break;
                 }
+            }
+        }
+    }
+}
+
+function countAndAggregate(final, count, aggregate) {
+    for (let property in count) {
+        if (count.hasOwnProperty(property)) {
+            final[property] = {
+                count: count[property],
+                aggregate: aggregate[property]
             }
         }
     }
