@@ -56,8 +56,10 @@ describe('admin get metrics', function () {
             aggregrated.locations[job.country[0]].should.equal(1);
             aggregrated.locations[job.country[1]].should.equal(1);
             aggregrated.roles[job.roles[0]].should.equal(1);
-            aggregrated.programmingLanguages[experience.language_exp[0].language].should.equal(1);
-            aggregrated.programmingLanguages[experience.language_exp[1].language].should.equal(1);
+            aggregrated.programmingLanguages[experience.language_exp[0].language].count.should.equal(1);
+            aggregrated.programmingLanguages[experience.language_exp[0].language].aggregate[experience.language_exp[0].exp_year].should.equal(1);
+            aggregrated.programmingLanguages[experience.language_exp[1].language].count.should.equal(1);
+            aggregrated.programmingLanguages[experience.language_exp[1].language].aggregate[experience.language_exp[1].exp_year].should.equal(1);
             aggregrated.blockchain.experimented[resume.experimented_platform[0].name].should.equal(1);
             aggregrated.blockchain.experimented[resume.experimented_platform[1].name].should.equal(1);
             should.not.exist(aggregrated.blockchain.experimented["EOS"]);
