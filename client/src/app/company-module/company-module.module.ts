@@ -11,6 +11,7 @@ import { TermsWizardComponent } from './terms-wizard/terms-wizard.component';
 import { CompanySearchComponent } from './company-search/company-search.component';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
+import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { EditCompanyProfileComponent } from './edit-company-profile/edit-company
     TermsWizardComponent,
     CompanySearchComponent,
     CompanyProfileComponent,
-    EditCompanyProfileComponent
+    EditCompanyProfileComponent,
+    CandidateDetailComponent
   ]
 })
 export class CompanyModuleModule { }

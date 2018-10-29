@@ -12,6 +12,8 @@ const routes: Routes = [
   { path: '', loadChildren: './candidate-module/candidate-module.module#CandidateModuleModule'},
   { path: '', loadChildren: './chat-module/chat-module.module#ChatModuleModule'},
   { path: '', loadChildren: './company-module/company-module.module#CompanyModuleModule'},
+  { path: '', loadChildren: './admin-module/admin-module.module#AdminModuleModule'},
+  { path: '', loadChildren: './admin-editor-module/admin-editor-module.module#AdminEditorModuleModule'},
 
 ];
 
