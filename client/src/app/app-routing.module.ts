@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: '', loadChildren: './pages-module/pages-module.module#PagesModuleModule'},
   { path: '', loadChildren: './referral-module/referral-module.module#ReferralModuleModule'},
   { path: '', loadChildren: './candidate-module/candidate-module.module#CandidateModuleModule'},
+  { path: '', loadChildren: './chat-module/chat-module.module#ChatModuleModule'},
 
 ];
 

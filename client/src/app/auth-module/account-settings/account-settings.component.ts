@@ -13,7 +13,7 @@ import { DataService } from '../../data.service';
 export class AccountSettingsComponent implements OnInit {
 
   disable_account;
-  marketing =true;
+  marketing = true;
   currentUser: User;
   info: any = {};
   log;
@@ -25,7 +25,7 @@ export class AccountSettingsComponent implements OnInit {
 
   ngOnInit()
   {
-    this.inform='';
+    this.inform = '';
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser && this.currentUser.type === 'candidate')
     {
