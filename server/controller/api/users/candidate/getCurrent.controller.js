@@ -8,6 +8,7 @@ const filterReturnData = require('../filterReturnData');
 module.exports = function (req, res)
     {
 	    //let userId = req.auth.user._id;
+        console.log(req.params._id);
         getById(req.params._id).then(function (user)
         {
             if (user)

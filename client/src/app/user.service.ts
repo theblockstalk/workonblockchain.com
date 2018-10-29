@@ -107,35 +107,7 @@ export class UserService {
 
                 if (res)
                 {
-                    if(!res['terms'] || res['terms'] == false)
-                {
-                     this.router.navigate(['/terms-and-condition']);
-
-                }
-
-               else if(!res['contact_number'] || !res['nationality'] || !res['first_name'] || !res['last_name'])
-               {
-                        this.router.navigate(['/about']);
-               }
-               else if(res['locations'].length < 1  || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary'] || !res['current_salary'] )
-               {
-
-                    this.router.navigate(['/job']);
-                }
-                else if(!res['why_work'] )
-                {
-                    this.router.navigate(['/resume']);
-                }
-                else if(!res['description'])
-                {
-                    this.router.navigate(['/experience']);
-
-                }
-
-                else
-                {
-                        return res;
-                 }
+                  return res;
                        // return res;
                 }
             }).catch((error: any) =>
