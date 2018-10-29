@@ -1,9 +1,9 @@
 import { Component, OnInit,AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
-import {NgForm,FormsModule} from '@angular/forms';
-import {environment} from '../../environments/environment';
+import {UserService} from '../../user.service';
+import {User} from '../../Model/user';
+import {NgForm} from '@angular/forms';
+import {environment} from '../../../environments/environment';
 
 
 @Component({
@@ -11,10 +11,10 @@ import {environment} from '../../environments/environment';
   templateUrl: './company-profile.component.html',
   styleUrls: ['./company-profile.component.css']
 })
-export class CompanyProfileComponent implements OnInit ,  AfterViewInit 
+export class CompanyProfileComponent implements OnInit ,  AfterViewInit
 {
-    
-  currentUser: User; 
+
+  currentUser: User;
   first_name;last_name;company_name;job_title;company_website;company_phone;company_country;
   company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
     imgPath;
@@ -43,14 +43,14 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
       {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
 
     ]
-    
-    
+
+
     sectionScroll;
     internalRoute(page,dst){
     this.sectionScroll=dst;
     this.router.navigate([page], {fragment: dst});
 }
-    
+
     doScroll() {
 
     if (!this.sectionScroll) {
@@ -64,15 +64,15 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
     finally{
       this.sectionScroll = null;
     }
-  } 
-    
-    ngAfterViewInit(): void 
+  }
+
+    ngAfterViewInit(): void
      {
          window.scrollTo(0, 0);
-        
+
         }
    url;
-  ngOnInit() 
+  ngOnInit()
   {
      // //console.log(this.htmlContent);
        this.router.events.subscribe((evt) => {
@@ -82,7 +82,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
       this.doScroll();
       this.sectionScroll= null;
     });
-  
+
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       if(!this.currentUser)
       {
@@ -92,29 +92,29 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
       {
            this.authenticationService.getCurrentCompany(this.currentUser._id)
             .subscribe(
-                data => 
+                data =>
                 {
-                  //console.log(data); 
+                  //console.log(data);
                   if(!data.terms)
                   {
                       this.router.navigate(['/company_wizard']);
                   }
-                    
+
                   else if(!data.company_founded || !data.no_of_employees || !data.company_funded || !data.company_description )
                   {
                       this.router.navigate(['/about_comp']);
                   }
-                  
+
                   else
                   {
                       this.first_name=data.first_name;
                       this.email=data._creator.email;
                       this.last_name=data.last_name;
                       this.company_name=data.company_name;
-                      this.job_title=data.job_title;   
+                      this.job_title=data.job_title;
                       if(data.company_website)
-                      {    
-                            let loc= data.company_website;          
+                      {
+                            let loc= data.company_website;
                             let x = loc.split("/");
                             if(x[0] === 'http:' || x[0] === 'https:')
                             {
@@ -122,9 +122,9 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                             }
                             else
                             {
-                                this.company_website = 'http://' + data.company_website;  
+                                this.company_website = 'http://' + data.company_website;
                             }
-                      } 
+                      }
                       this.company_phone =data.company_phone;
                       this.company_country =data.company_country;
                       this.company_city=data.company_city;
@@ -134,22 +134,22 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                       this.company_funded=data.company_funded;
                       this.no_of_employees=data.no_of_employees;
                       if(data.company_logo != null )
-                      {                        
-                      ////console.log(data[0].image);                     
+                      {
+                      ////console.log(data[0].image);
 
                         this.imgPath =  data.company_logo;
 
                         //console.log(this.imgPath);
-                        
+
                       }
 
-                  
+
                   }
-                  
+
                 },
-                error => 
+                error =>
                 {
-                   
+
                    if(error.message === 500 || error.message === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
@@ -160,13 +160,13 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
+                        this.router.navigate(['/not_found']);
                     }
-                    
-                    
+
+
                 });
         this.authenticationService.get_page_content('Company popup message')
           .subscribe(
@@ -183,14 +183,14 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
            this.router.navigate(['/not_found']);
        }
   }
-      
+
   search(searchForm: NgForm)
       {
-          
+
           //console.log(searchForm.value);
-          
+
           }
-      
+
       onlanguageChange(e)
       {
           //console.log(e.value);

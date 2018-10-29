@@ -1,11 +1,11 @@
-import { Component, OnInit,ElementRef, Input,AfterViewInit } from '@angular/core';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
+import { Component, OnInit,ElementRef, AfterViewInit } from '@angular/core';
+import {UserService} from '../../user.service';
+import {User} from '../../Model/user';
 import { HttpClient , HttpHeaders} from '@angular/common/http';
-import { DataService } from "../data.service";
+import { DataService } from "../../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import {environment} from '../../environments/environment';
+import {environment} from '../../../environments/environment';
 declare var $:any;
 
 const URL = environment.backend_url;
@@ -32,17 +32,17 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
         private router: Router,private http: HttpClient,
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
        }
-    
-     ngAfterViewInit(): void 
+
+     ngAfterViewInit(): void
      {
-         window.scrollTo(0, 0);   
-         
+         window.scrollTo(0, 0);
+
     }
 
   ngOnInit() {
-     
+
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      
+
        if(!this.currentUser)
        {
           this.router.navigate(['/login']);
@@ -51,9 +51,9 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
        {
             this.authenticationService.getCurrentCompany(this.currentUser._id)
             .subscribe(
-                data => 
+                data =>
                 {
- 
+
                   ////console.log(data);
                    if(data.company_founded || data.no_of_employees || data.company_funded || data.company_description ||data.company_logo)
                   {
@@ -65,13 +65,13 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                        this.img_data  =  data.company_logo;
 
                         let x = this.img_data.split("/");
-     
+
                         let last:any = x[x.length-1];
-                           
+
                            this.img_src = last;
 
                            }
-                       
+
                       //this.router.navigate(['/login']);
                   }
                  if(data.terms === true)
@@ -83,9 +83,9 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                   {
                      this.about_active_class = 'fa fa-check-circle text-success';
                   }
-                  
+
                 },
-                error => 
+                error =>
                 {
                   if(error.message === 500 || error.message === 401)
                         {
@@ -97,11 +97,11 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                         localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                         }
-                    
+
                         if(error.message === 403)
                         {
-                            // this.router.navigate(['/not_found']);                        
-                        } 
+                            // this.router.navigate(['/not_found']);
+                        }
                 });
          this.authenticationService.get_page_content('Company popup message')
            .subscribe(
@@ -115,14 +115,14 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
        }
       else
        {
-           
+
            this.router.navigate(['/not_found']);
-           
+
            }
   }
-    
+
      image_log;file_size=1048576;
-    about_company(companyForm: NgForm) 
+    about_company(companyForm: NgForm)
     {
       this.error_msg="";
          ////console.log(companyForm.value);
@@ -131,41 +131,41 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
             this.founded_log = 'Please fill when was the company founded';
             ////console.log(this.founded_log);
         }
-       
+
         if(!this.no_of_employees)
         {
             this.employee_log = 'Please fill no. of employees';
-           
+
         }
-       
-        
+
+
         if(!this.company_funded)
         {
             this.funded_log = 'Please fill how is the company funded';
-            
+
         }
-       
-        
+
+
         if(!this.company_description)
         {
             this.des_log = 'Please fill Company Description';
-            
+
         }
         if(this.company_founded && this.no_of_employees && this.company_funded && this.company_description)
-        {   
-        
-      
+        {
+
+
        this.authenticationService.about_company(this.currentUser._creator,companyForm.value)
         .subscribe(
-          data => 
+          data =>
           {
             if(data)
             {
-              
+
                 let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
                 let fileCount: number = inputEl.files.length;
                 let formData = new FormData();
-                if (fileCount > 0 ) 
+                if (fileCount > 0 )
                 {
 
                     if(inputEl.files.item(0).size < this.file_size)
@@ -175,8 +175,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
                         this.http.post(URL+'users/employer_image', formData , {
                         headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                        }).map((res) => res).subscribe(                
-                        (success) => 
+                        }).map((res) => res).subscribe(
+                        (success) =>
                         {
                           $('#popModal').modal('show');
                           //this.router.navigate(['/company_profile']);
@@ -187,12 +187,12 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             window.location.href = '/login';
                         }
-                    
+
                         if(error.message === 403)
                         {
 
-                       // this.router.navigate(['/not_found']);                        
-                        }  
+                       // this.router.navigate(['/not_found']);
+                        }
                         })
                     }
                     else
@@ -200,7 +200,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                         this.image_log = "Image size should be less than 1MB";
                     }
                  }
-                
+
                 else
                 {
                   $("#popModal").modal({
@@ -210,27 +210,27 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                   });
                   //this.router.navigate(['/company_profile']);
                 }
-              
+
               }
-             
+
               if(data.error )
             {
               this.log=data.error;
             }
-            
-            
+
+
           },
-          error => 
+          error =>
           {
                     if(error.message === 500 || error.message === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
+                        this.router.navigate(['/not_found']);
                     }
           });
             }
@@ -244,5 +244,5 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
     $('#popModal').modal('hide');
     this.router.navigate(['/company_profile']);
   }
- 
+
 }

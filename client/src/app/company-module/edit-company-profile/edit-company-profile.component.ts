@@ -1,12 +1,12 @@
 import { Component, OnInit,ElementRef, Input  , AfterViewInit} from '@angular/core';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
+import {UserService} from '../../user.service';
+import {User} from '../../Model/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DataService } from "../data.service";
+import { DataService } from "../../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import {environment} from '../../environments/environment';
+import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 
 

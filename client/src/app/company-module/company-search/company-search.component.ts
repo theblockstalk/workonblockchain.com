@@ -1,8 +1,8 @@
 import { Component, OnInit,ViewChild ,ElementRef,AfterViewInit } from '@angular/core';
-import {UserService} from '../user.service';
+import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import { Select2OptionData } from 'ng2-select2';
-import {User} from '../Model/user';
+import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 declare var $:any;
 

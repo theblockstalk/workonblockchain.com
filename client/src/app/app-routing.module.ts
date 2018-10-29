@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: '', loadChildren: './referral-module/referral-module.module#ReferralModuleModule'},
   { path: '', loadChildren: './candidate-module/candidate-module.module#CandidateModuleModule'},
   { path: '', loadChildren: './chat-module/chat-module.module#ChatModuleModule'},
+  { path: '', loadChildren: './company-module/company-module.module#CompanyModuleModule'},
 
 ];
 
