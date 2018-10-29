@@ -9,22 +9,47 @@ const filterReturnData = require('../users/filterReturnData');
 
 module.exports = function (req, res)
 {
-    helper.isAuthorizedForConversationNew(req.auth.user, req.body.sender_id, req.body.receiver_id)
-	get_candidate(req.body.sender_id, req.body.receiver_id,req.body.is_company_reply,req.body.type).then(function (user)
-    {
-        if (user)
-        {
-            res.send(user);
-        }
-        else
-        {
-            res.sendStatus(404);
-        }
-    })
-        .catch(function (err)
-        {
-            res.status(400).send(err);
-        });
+	if (req.body.sender_id === '0') { // company is calling endpoint
+		get_candidate(req.auth.user._id, req.body.receiver_id, req.body.is_company_reply, req.body.type).then(function (user) {
+            if (user) {
+                res.send(user);
+            }
+            else {
+                res.sendStatus(404);
+            }
+        })
+            .catch(function (err) {
+                res.status(400).send(err);
+            });
+    }
+    else if (req.body.receiver_id === '0') { // candidate is calling endpoint
+        get_candidate(req.body.sender_id, req.auth.user._id, req.body.is_company_reply, req.body.type).then(function (user) {
+            if (user) {
+                res.send(user);
+            }
+            else {
+                res.sendStatus(404);
+            }
+        })
+            .catch(function (err) {
+                res.status(400).send(err);
+            });
+    }
+    else { // admin is calling endpoint
+        if (req.auth.user.is_admin){
+            get_candidate(req.body.sender_id, req.body.receiver_id, req.body.is_company_reply, req.body.type).then(function (user) {
+                if (user) {
+                    res.send(user);
+                }
+                else {
+                    res.sendStatus(404);
+                }
+            })
+                .catch(function (err) {
+                    res.status(400).send(err);
+                });
+		}
+	}
 }
 
 function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
