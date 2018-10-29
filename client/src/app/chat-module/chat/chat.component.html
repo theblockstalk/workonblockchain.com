@@ -145,7 +145,13 @@
 	<ng-template #no_section >
 <section class = "wizard_page">
 	<div class="container">
-			<div class="row chat-row">
+
+			<div class="row">
+        <div class = "wlcm_btn" *ngIf="msg ===''">
+          <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn_descp btn-relative">What happens next?</button>
+        </div>
+        <div class="chat-row">
+
 				<div *ngIf="msg!=''" class = "col-md-12" id="my-chat-design">
 					<h4 class="alert error-alert alert-danger pro_alert">
 						{{msg}}
@@ -277,7 +283,7 @@
 														{{msg.description}}
 														<br/>
 													</span>
-													<span [innerHTML]="msg.message | safeHtml " *ngIf="msg.job_title == ''">
+													<span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
 													<span *ngIf="msg.date_of_joining && msg.file_name !== ''">
@@ -327,7 +333,7 @@
                           <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														Description:
 													</span>
-                          <span [innerHTML]="msg.description | safeHtml " *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+                          <span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														{{msg.description}}
 														<br/>
 													</span>
@@ -447,6 +453,7 @@
 
 					</div><!--end col here-->
 				</div>
+  </div>
 			<div *ngIf="file_msg!=''" class = "col-md-12" id="my-chat-design" style="display: block;">
 				<h4 class="alert error-alert alert-danger pro_alert">
 					{{file_msg}}

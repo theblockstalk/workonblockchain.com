@@ -5,8 +5,6 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import {IMyDpOptions} from 'mydatepicker';
-//const URL = 'http://workonblockchain.mwancloud.com:4000/';
-//const URL = 'http://localhost:4000/';
 import {environment} from '../../../environments/environment';
 declare var $: any;
 
@@ -174,18 +172,19 @@ export class ChatComponent implements OnInit {
                     }
                     else
                     {
-                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
-                        this.authenticationService.get_page_content('Candidate chat popup message')
-                          .subscribe(
-                            data => {
-                              if(data)
-                              {
-                                this.candidateMsgTitle = data[0].page_title;
-                                this.candidateMsgContent = data[0].page_content;
-                                $("#popModal").modal("show");
-                              }
+                      this.authenticationService.get_page_content('Candidate chat popup message')
+                        .subscribe(
+                          data => {
+                            if(data)
+                            {
+                              this.candidateMsgTitle = data[0].page_title;
+                              this.candidateMsgContent = data[0].page_content;
+
                             }
-                          );
+                          }
+                        );
+                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
+                        $("#popModal").modal("show");
                       }
                       this.msg='';
                       this.display_msgs();
@@ -239,17 +238,17 @@ export class ChatComponent implements OnInit {
                     }
                     else
                     {
-                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
-                        this.authenticationService.get_page_content('Company chat popup message')
-                          .subscribe(
-                            data => {
-                              if (data) {
-                                this.companyMsgTitle = data[0].page_title;
-                                this.companyMsgContent = data[0].page_content;
-                                $("#popModal").modal("show");
-                              }
+                      this.authenticationService.get_page_content('Company chat popup message')
+                        .subscribe(
+                          data => {
+                            if (data) {
+                              this.companyMsgTitle = data[0].page_title;
+                              this.companyMsgContent = data[0].page_content;
                             }
-                          );
+                          }
+                        );
+                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
+                        $("#popModal").modal("show");
                       }
                       //console.log("else");
                       this.msg='';
