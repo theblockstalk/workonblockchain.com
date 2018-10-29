@@ -70,7 +70,7 @@ const adminChatUpdateMsgStatus = require('./controller/api/chat/updateChatMessag
 const adminApproveUser = require('./controller/api/users/admins/approveUser.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
-const adminAddNewPagesContent = require('./controller/api/users/admins/pages/createNewPagesContent.controller');
+const adminAddNewPagesContent = require('./controller/api/users/admins/pages/addTermsAndConditionsContent.controller');
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
@@ -138,7 +138,7 @@ router.put('/users/approve/:_id', auth.isAdmin  , adminApproveUser);
 router.post('/users/admin_candidate_filter', auth.isAdmin , adminCandidateFilter);
 router.post('/users/admin_company_filter', auth.isAdmin , adminComanyFilter);
 router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent);
-router.put('/users/add_new_pages_content' , auth.isAdmin , adminAddNewPagesContent);
+router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , adminAddNewPagesContent);
 router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
 router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
 router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);

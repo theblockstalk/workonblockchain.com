@@ -232,7 +232,7 @@
 							<div class="messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
 								<ul>
 									<div *ngFor="let msg of new_msgss">
-										<ng-container *ngIf="msg.sender_name == display_name;else second">
+										<ng-container *ngIf="msg.sender_id == currentUser._creator;else second">
 											<li class="replies">
 												<p>
 													<span *ngIf="msg.job_title !== ''">

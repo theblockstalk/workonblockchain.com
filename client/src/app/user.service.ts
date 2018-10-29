@@ -1167,7 +1167,7 @@ export class UserService {
   }
 
   add_new_pages_content(info:any ) {
-    return this.http.put<any>(URL + 'users/add_new_pages_content/', info, {
+    return this.http.put<any>(URL + 'users/add_terms_and_conditions_content/', info, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).map((res: Response) => {
       if (res) {

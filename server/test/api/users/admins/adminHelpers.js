@@ -43,3 +43,12 @@ const addCmsContent = module.exports.addCmsContent = async function addCmsConten
     res.should.have.status(200);
     return res;
 }
+
+const addTermsContent = module.exports.addTermsContent = async function addTermsContent(cmsData,jwtToken) {
+    const res = await chai.request(server)
+        .put('/users/add_terms_and_conditions_content')
+        .set('Authorization', jwtToken)
+        .send(cmsData);
+    res.should.have.status(200);
+    return res;
+}
