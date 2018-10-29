@@ -273,11 +273,11 @@
                           <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														Description:
 													</span>
-													<span [innerHTML]="msg.description" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+													<span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														{{msg.description}}
 														<br/>
 													</span>
-													<span [innerHTML]="msg.message " *ngIf="msg.job_title == ''">
+													<span [innerHTML]="msg.message | safeHtml " *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
 													<span *ngIf="msg.date_of_joining && msg.file_name !== ''">
@@ -327,7 +327,7 @@
                           <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														Description:
 													</span>
-                          <span [innerHTML]="msg.description " *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+                          <span [innerHTML]="msg.description | safeHtml " *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 														{{msg.description}}
 														<br/>
 													</span>
@@ -336,11 +336,11 @@
 													</span>
                           <a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
                           <br *ngIf="msg.file_name"/>
-                          <span [innerHTML]="msg.message " *ngIf="msg.msg_tag == 'employment_offer'">
+                          <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.msg_tag == 'employment_offer'">
 														{{msg.message}}
 														<br/>
 													</span>
-                          <span [innerHTML]="msg.message " *ngIf="msg.job_title == ''">
+                          <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
 														{{msg.message}}
 													</span>
                         </p>
@@ -609,7 +609,7 @@
 				</p>
 				<div>
 					<b>Job description:</b><br>
-					<p class="job_decs" [innerHTML]="new_msgss[0].description">
+					<p class="job_decs" [innerHTML]="new_msgss[0].description | safeHtml">
 						{{new_msgss[0].description}}
 					</p>
 				</div>
@@ -643,10 +643,10 @@
         </h3>
       </div>
       <div class="modal-body mo_body">
-        <div [innerHTML]="companyMsgContent" *ngIf="this.currentUser.type === 'company'" class = "mo_content" id = "style-6">
+        <div [innerHTML]="companyMsgContent | safeHtml" *ngIf="this.currentUser.type === 'company'" class = "mo_content" id = "style-6">
           {{companyMsgContent}}
         </div>
-        <div [innerHTML]="candidateMsgContent" *ngIf="this.currentUser.type === 'candidate'" class = "mo_content" id = "style-6">
+        <div [innerHTML]="candidateMsgContent | safeHtml" *ngIf="this.currentUser.type === 'candidate'" class = "mo_content" id = "style-6">
           {{candidateMsgContent}}
         </div>
       </div>

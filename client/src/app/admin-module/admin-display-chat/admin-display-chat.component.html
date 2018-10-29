@@ -115,11 +115,11 @@
                         <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													Description:
 												</span>
-												<span [innerHTML]="msg.description" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+												<span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													{{msg.description}}
 													<br/>
 												</span>
-												<span [innerHTML]="msg.message " *ngIf="msg.job_title == ''">
+												<span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
 													{{msg.message}}
 												</span>
                         <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
@@ -171,11 +171,11 @@
                         <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													Description:
                         </span>
-												<span [innerHTML]="msg.description " *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+												<span [innerHTML]="msg.description | safeHtml " *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													{{msg.description}}
 													<br/>
 												</span>
-												<span [innerHTML]="msg.message " *ngIf="msg.job_title == ''">
+												<span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
 													{{msg.message}}
 												</span>
                         <span *ngIf="msg.date_of_joining && msg.file_name !== ''">

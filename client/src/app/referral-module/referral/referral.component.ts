@@ -1,10 +1,6 @@
 import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild } from '@angular/core';
-import {NgForm} from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-import {ProfileDetail} from '../../Model/ProfileDetail';
-import { HttpClient } from '@angular/common/http';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
 const URL = environment.frontend_url;

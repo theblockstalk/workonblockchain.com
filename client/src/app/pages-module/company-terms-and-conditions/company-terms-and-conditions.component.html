@@ -6,14 +6,14 @@
 			<div class = "A_heading" >
 				<h1>{{company_page_title}}</h1>
 			</div>
-			
+
 		<div class="col-md-12 terms-col">
-			<div [innerHTML]="company_editor_content  " *ngIf="company_editor_content"></div>
-			
+			<div [innerHTML] = " company_editor_content | safeHtml " *ngIf="company_editor_content"></div>
+
 		</div>
 	</div>
-	
-  </div>	
+
+  </div>
   <br/><br/>
 </section>
 

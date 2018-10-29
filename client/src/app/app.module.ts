@@ -6,7 +6,6 @@ import { HttpClientModule} from '@angular/common/http';
 import { DataService } from './data.service';
 import { DatePipe } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
-import { SafeHtmlPipe } from './pipe.safehtml';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -21,7 +20,6 @@ import { FooterComponent } from './footer/footer.component';
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,

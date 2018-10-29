@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Select2Module } from 'ng2-select2';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { AdminModuleRoutingModule } from './admin-module-routing.module';
+import { SharedModule } from '../app-shared.module';
 
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-candidate-search.component';
@@ -19,7 +20,8 @@ import { AdminAccountSettingsComponent } from './admin-account-settings/admin-ac
     AdminModuleRoutingModule,
     FormsModule,
     Select2Module,
-    NgxPaginationModule
+    NgxPaginationModule,
+    SharedModule
   ],
   declarations: [
     AdminDashboardComponent,

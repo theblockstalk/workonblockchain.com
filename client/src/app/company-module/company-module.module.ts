@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Select2Module } from 'ng2-select2';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { SharedModule } from '../app-shared.module';
 
 import { CompanyModuleRoutingModule } from './company-module-routing.module';
 import { AboutCompanyComponent } from './about-company/about-company.component';
@@ -21,7 +22,8 @@ import { CandidateDetailComponent } from './candidate-detail/candidate-detail.co
     FormsModule,
     Select2Module,
     NgxPaginationModule,
-    CKEditorModule
+    CKEditorModule,
+    SharedModule,
   ],
   declarations: [
     AboutCompanyComponent,

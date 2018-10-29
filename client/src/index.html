@@ -5,7 +5,7 @@
   <link rel="shortcut icon" type="image/png" href="https://workonblockchain.com/assets/images/icon.ico"/>
   <title>Work on Blockchain</title>
   <base href="./">
-  <meta charset="utf-8"> 
+  <meta charset="utf-8">
   <meta name="description" content="Global blockchain agnostic recruitment hiring platform for blockchain developers, software developers, designers, product managers, CTOs, researchers and software engineer interns who are passionate about public and enterprise blockchain technology and cryptocurrencies. On workonblockchain.com, companies apply to active candidates looking for jobs.">
 	<meta property="og:type" content="website">
 	<meta property="og:site_name" content="Work on Blockchain">
@@ -55,12 +55,11 @@
 <script src="./assets/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="./assets/js/custom.js"></script>
-<script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
+<!--<script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
 
-<script> CKEDITOR.config.forcePasteAsPlainText = true; </script>
+<script> CKEDITOR.config.forcePasteAsPlainText = true; </script>-->
 <!-- Load Facebook SDK for JavaScript -->
  <div id="fb-root"></div>
  <script>
@@ -74,32 +73,32 @@
 <script type="text/javascript">
 (function() {
     'use strict';
-    
+
     var deps = [];
-    
+
     angular.module('sandbox', deps)
-        .controller('SandboxController', SandboxController) 
+        .controller('SandboxController', SandboxController)
     ;
-    
+
     function SandboxController($element) {
         /* jshint validthis : true */
         var vm = this;
         vm.activate   = toggle;
         vm.deactivate = toggle;
         vm.isActive   = isActive;
-        
+
         function toggle() {
             var active   = vm.isActive();
             var oldClass = active ? 'active' : 'inactive';
             var newClass = active ? 'inactive' : 'active';
             $element.removeClass(oldClass).addClass(newClass);
         }
-        
+
         function isActive() {
             return $element.hasClass('active');
         }
     }
-    
+
 })();
 
 window.addEventListener('load', function() {

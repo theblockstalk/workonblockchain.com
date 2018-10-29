@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { FormsModule } from '@angular/forms';
+import {ScriptService} from '../scripts/script.service';
 
 import { AdminEditorModuleRoutingModule } from './admin-editor-module-routing.module';
 
@@ -24,6 +25,13 @@ import { AdminTermsConditionEditorComponent } from './admin-terms-condition-edit
     PrivacyEditorComponent,
     AdminFaqEditorComponent,
     AdminTermsConditionEditorComponent
-  ]
+  ],
+  providers : [ScriptService]
 })
-export class AdminEditorModuleModule { }
+export class AdminEditorModuleModule {
+  constructor(private scriptService : ScriptService) {
+    this.scriptService.load('ckeditor').then(data => {
+      //console.log('script loaded ', data);
+    }).catch(error => console.log(error));
+  }
+}

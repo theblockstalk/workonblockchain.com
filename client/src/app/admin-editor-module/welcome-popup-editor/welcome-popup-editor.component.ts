@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
 import {User} from '../../Model/user';
-import { DataService } from "../../data.service";
+import { DataService } from '../../data.service';
 
 @Component({
   selector: 'app-welcome-popup-editor',

@@ -11,7 +11,6 @@ import { CandidateFormComponent } from './candidate-form/candidate-form.componen
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { ReferComponent } from './refer/refer.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
@@ -50,7 +49,6 @@ export function provideConfig() {
     LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    ReferComponent,
     AccountSettingsComponent,
     ChangePasswordComponent,
     VerifyEmailComponent,

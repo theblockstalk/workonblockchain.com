@@ -5,14 +5,14 @@
 			<div class = "A_heading" >
 				<h1>{{page_title}}</h1>
 			</div>
-			
+
 		<div class="col-md-12 terms-col">
-			<div [innerHTML]="editor_content  " *ngIf="editor_content"></div>
-			
+			<div [innerHTML]="editor_content | safeHtml  " *ngIf="editor_content"></div>
+
 		</div>
 	</div>
-	
-  </div>	
+
+  </div>
   <br/><br/>
 </section>
 

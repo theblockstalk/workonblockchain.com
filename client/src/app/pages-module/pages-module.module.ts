@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { NgModule } from '@angular/core';
+import { SharedModule } from '../app-shared.module';
 import { PagesModuleRoutingModule } from './pages-module-routing.module';
 
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
@@ -15,6 +15,7 @@ import { CompanyTermsAndConditionsComponent } from './company-terms-and-conditio
   imports: [
     CommonModule,
     PagesModuleRoutingModule,
+    SharedModule
   ],
   declarations: [
     PrivacyPolicyComponent,
