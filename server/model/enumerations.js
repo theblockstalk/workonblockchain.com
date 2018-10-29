@@ -18,7 +18,7 @@ module.exports.countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Ang
 module.exports.workLocations = ['Remote', 'Paris', 'London', 'Dublin', 'Amsterdam','Berlin','Barcelona', 'Munich','San Francisco', 'New York', 'Los Angeles','Boston', 'Chicago','Austin','Zug','Zurich','Edinburgh','Copenhagen','Stockholm','Madrid', 'Toronto', 'Sydney']
 
 // TODO: complete this
-module.exports.workRoles = ['Backend Developer', 'Frontend Developer', 'UI Developer', 'UX Designer', 'Fullstack Developer','Blockchain Developer' , 'Smart Contract Developer' , 'Architect', 'DevOps' , 'Software Tester' , 'CTO' , 'Technical Lead', 'Product Manager', 'Intern Developer', 'Researcher'];
+module.exports.workRoles = ['Backend Developer', 'Frontend Developer', 'UI Developer', 'UX Designer', 'Fullstack Developer','Blockchain Developer' , 'Smart Contract Developer' , 'Architect', 'DevOps' , 'Software Tester' , 'CTO' , 'Technical Lead', 'Product Manager', 'Intern Developer', 'Researcher' , 'Mobile app developer' , 'Data scientist' , 'Security specialist'];
 
 // TODO: complete this
 module.exports.workBlockchainInterests = ['Enterprise blockchain', 'Public blockchain', 'Blockchain infrastructure', 'Smart contract development','Decentralized applications (dapps)','I donâ€™t know'];
