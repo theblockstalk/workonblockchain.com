@@ -9,6 +9,7 @@ import { ResumeComponent } from './resume/resume.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import { EditCandidateProfileComponent } from './edit-candidate-profile/edit-candidate-profile.component';
+import {ProfileResolver} from '../incomplete-profile.resolver';
 
 const routes: Routes = [
   { path: 'terms-and-condition', component: CandidateTermsComponent},
@@ -17,8 +18,8 @@ const routes: Routes = [
   { path: 'job', component: JobComponent},
   { path: 'resume', component: ResumeComponent},
   { path: 'experience', component: ExperienceComponent},
-  { path: 'candidate_profile', component: CandidateProfileComponent},
-  {path : 'edit_profile' , component: EditCandidateProfileComponent},
+  { path: 'candidate_profile', component: CandidateProfileComponent , resolve: {ProfileResolver}},
+  {path : 'edit_profile' , component: EditCandidateProfileComponent },
 ];
 
 @NgModule({

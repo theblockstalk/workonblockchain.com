@@ -12,6 +12,7 @@ import { ResumeComponent } from './resume/resume.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import { EditCandidateProfileComponent } from './edit-candidate-profile/edit-candidate-profile.component';
+import {ProfileResolver} from '../incomplete-profile.resolver';
 
 @NgModule({
   imports: [
@@ -29,6 +30,10 @@ import { EditCandidateProfileComponent } from './edit-candidate-profile/edit-can
     ExperienceComponent,
     CandidateProfileComponent,
     EditCandidateProfileComponent
-  ]
+  ],
+  providers:
+    [
+      ProfileResolver
+    ]
 })
 export class CandidateModuleModule { }

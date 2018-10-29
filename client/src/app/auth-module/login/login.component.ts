@@ -87,8 +87,6 @@ forgetMessage;
 
                  //this.router.navigateByUrl('/candidate_profile');
                     window.location.href = '/candidate_profile';
-
-
                 }
 
                 if(user.error )

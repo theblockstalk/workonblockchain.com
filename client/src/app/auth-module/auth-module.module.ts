@@ -12,6 +12,8 @@ import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ReferComponent } from './refer/refer.component';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 import {LoginResolver} from '../is-loggedin.resolver';
 
@@ -46,7 +48,9 @@ export function provideConfig() {
     LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    ReferComponent
+    ReferComponent,
+    AccountSettingsComponent,
+    ChangePasswordComponent
   ],
   providers:
     [
