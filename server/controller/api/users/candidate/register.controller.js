@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
+const referral = require('../../../../model/referrals');
 
 const logger = require('../../../services/logger');
 
@@ -65,6 +66,7 @@ function create(userParam)
 		let new_salt = crypto.randomBytes(16).toString('base64');
 		let new_hash = crypto.createHmac('sha512', new_salt);
 		let email = new_hash.digest('hex');
+        email = email.substr(email.length - 10); //getting last 10 characters
 
         let newUser = new users
         ({

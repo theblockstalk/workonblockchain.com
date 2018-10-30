@@ -1151,4 +1151,22 @@ export class UserService {
       });
   }
 
+  getRefCode(email:any) {
+    return this.http.post<any>(URL+'users/get_ref_code', {email:email} )
+      .map((res: Response) =>
+      {
+        if (res)
+        {
+          return res;
+        }
+      }).catch((error: any) =>
+      {
+        if (error.status )
+        {
+          return Observable.throw(new Error(error.status));
+        }
+
+      });
+  }
+
 }

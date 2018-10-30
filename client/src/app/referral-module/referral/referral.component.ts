@@ -1,12 +1,12 @@
 import { Component, OnInit,ElementRef, AfterViewInit, Input, ViewChild } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import {UserService} from '../user.service';
-import {User} from '../Model/user';
-import {ProfileDetail} from '../Model/ProfileDetail';
+import {UserService} from '../../user.service';
+import {User} from '../../Model/user';
+import {ProfileDetail} from '../../Model/ProfileDetail';
 import { HttpClient } from '@angular/common/http';
 import { Title, Meta } from '@angular/platform-browser';
-import {environment} from '../../environments/environment';
+import {environment} from '../../../environments/environment';
 const URL = environment.frontend_url;
 declare var $: any;
 
@@ -31,6 +31,7 @@ export class ReferralComponent implements OnInit {
   text;
   first_name;
   last_name;
+  ref_link_for_not_logged_user = '';
 
   constructor(
     private authenticationService: UserService,private titleService: Title,private newMeta: Meta
@@ -110,5 +111,23 @@ export class ReferralComponent implements OnInit {
     inputElement.select();
     document.execCommand('copy');
     inputElement.setSelectionRange(0, 0);
+  }
+
+  get_ref_link(refrealForm : NgForm){
+    if(refrealForm.value.email) {
+      this.authenticationService.getRefCode(refrealForm.value.email)
+      .subscribe(
+        data => {
+          this.ref_link_for_not_logged_user = this.email_ref_link+data.code;
+          this.share_url = this.ref_link_for_not_logged_user;
+          this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
+        },
+        error => {
+          //console.log(error);
+          ////console.log(error);
+          //this.log = error;
+        }
+      );
+    }
   }
 }
