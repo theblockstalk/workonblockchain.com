@@ -6,12 +6,17 @@ var mongo = require('mongoskin');
 const users = require('../../../../model/users');
 const crypto = require('crypto');
 const EmployerProfile = require('../../../../model/employer_profile');
+const CandidateProfile  = require('../../../../model/candidate_profile');
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
 const verify_send_email = require('../auth/verify_send_email');
 const mongoose = require('mongoose');
+const referral = require('../../../../model/referrals');
+
+const referedUserEmail = require('../../../services/email/emails/referredFriend');
+
 
 module.exports = function (req,res)
 {
@@ -149,6 +154,11 @@ function create_employer(userParam)
                             {
 
                                 verifyEmail(userParam.email);
+                                if(userParam.referred_id){
+                                    referredFriendEmail(userParam.referred_id,  userParam.first_name , userParam.last_name);
+
+                                }
+                                insertRefCode(userData._creator.email);
                                 deferred.resolve
                                 ({
                                     _id:user.id,
@@ -213,5 +223,107 @@ function create_employer(userParam)
 
 
     return deferred.promise;
+}
+
+function referredFriendEmail(referredId,first_name,last_name){
+    console.log("referred email");
+    referral.findOne({  _id : referredId  }, function (err, refDoc)
+    {
+        if (err){
+            logger.error(err.message, {stack: err.stack});
+
+        }
+        if(refDoc)
+        {
+            users.findOne({  email : refDoc.email  }, function (err, userDoc)
+            {
+                if (err){
+                    logger.error(err.message, {stack: err.stack});
+                }
+                if(userDoc && userDoc.type === 'company')
+                {
+                    EmployerProfile.findOne({  _creator : userDoc._id  }, function (err, employerDoc)
+                    {
+                        if (err){
+                            logger.error(err.message, {stack: err.stack});
+                        }
+                        if(employerDoc)
+                        {
+                            let data = {fname : employerDoc.first_name , email : refDoc.email , referred_fname : first_name , referred_lname: last_name }
+                            referedUserEmail.sendEmail(data, userDoc.disable_account);
+                        }
+                        else
+                        {
+                        }
+
+                    });
+                }
+                if(userDoc && userDoc.type === 'candidate')
+                {
+                    CandidateProfile.findOne({  _creator : userDoc._id  }, function (err, candidateDoc)
+                    {
+                        if (err){
+                            logger.error(err.message, {stack: err.stack});
+                        }
+                        if(candidateDoc)
+                        {
+                            let data = {fname : candidateDoc.first_name , email : refDoc.email , referred_fname : first_name , referred_lname: last_name }
+                            referedUserEmail.sendEmail(data, userDoc.disable_account);
+                        }
+                        else
+                        {
+                        }
+
+                    });
+                }
+                else
+                {
+                    let data = {email : refDoc.email , referred_fname : first_name , referred_lname: last_name }
+                    referedUserEmail.sendEmail(data, false);
+
+                }
+
+            });        }
+        else
+        {
+        }
+
+    });
+
+}
+
+function insertRefCode(emailAddress){
+    referral.findOne({ email: emailAddress }, function (err, refDoc)
+    {
+        if (err){
+            logger.error(err.message, {stack: err.stack});
+        }
+        if (refDoc)
+        {
+            refToken = refDoc.url_token;
+        }
+        else
+        {
+            let new_salt = crypto.randomBytes(16).toString('base64');
+            let new_hash = crypto.createHmac('sha512', new_salt);
+            refToken = new_hash.digest('hex');
+            refToken = refToken.substr(refToken.length - 10); //getting last 10 characters
+            let newRefCode = new referral
+            ({
+                email: emailAddress,
+                url_token: refToken,
+                date_created: new Date()
+            });
+
+            newRefCode.save( (err,user) => {
+                if (err) {
+                    logger.error(err.message, {stack: err.stack});
+                }
+                else {
+
+                }
+            });
+        }
+    });
 }
 

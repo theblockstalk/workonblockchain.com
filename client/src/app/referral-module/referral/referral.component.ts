@@ -62,7 +62,7 @@ export class ReferralComponent implements OnInit {
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.show_refreal = 1;
-    if(this.currentUser){
+    if(this.currentUser && this.currentUser.type === 'candidate'){
       this.show_refreal = 10;
       this.authenticationService.getById(this.currentUser._creator)
         .subscribe(
@@ -81,6 +81,38 @@ export class ReferralComponent implements OnInit {
       this.share_url = this.ref_link;
       this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
     }
+
+    if(this.currentUser && this.currentUser.type === 'company'){
+      console.log(this.currentUser);
+      this.show_refreal = 10;
+      this.authenticationService.getCurrentCompany(this.currentUser._creator)
+        .subscribe(
+          data => {
+            this.first_name = data.first_name;
+            this.last_name = data.last_name;
+            this.display_name = data.first_name+' '+data.last_name;
+            this.mail_body = 'Hi, \n\nYou have been invited by '+this.display_name+' to join Work on Blockchain. \n\nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \n\nGive us a try! \n\nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
+            this.email_subject = data.first_name+this.email_subject;
+            this.authenticationService.getRefCode(data._creator.email)
+              .subscribe(
+                data => {
+                  console.log(data);
+                  this.ref_link = this.email_ref_link + data.code
+                  this.share_url = this.ref_link;
+                  this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
+                },
+                error => {
+                  //console.log(error);
+                  ////console.log(error);
+                  //this.log = error;
+                }
+              );
+          },
+          error => {
+            ////console.log('error');
+          }
+        );
+        }
     ////console.log(this.show_refreal);
   }
 

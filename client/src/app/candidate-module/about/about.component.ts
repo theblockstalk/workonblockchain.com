@@ -104,7 +104,7 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-            if(data._creator.refered_id && !data.first_name && !data.last_name)
+            if(data._creator.refered_id) //&& !data.first_name && !data.last_name)
             {
               this.referred_id = data._creator.refered_id;
               console.log(this.referred_id);
@@ -212,6 +212,10 @@ export class AboutComponent implements OnInit,AfterViewInit
   about()
   {
     this.error_msg = "";
+    if(this.referred_id)
+    {
+      this.info.referred_id= this.referred_id;
+    }
     if(!this.info.first_name)
     {
       this.first_name_log="Please enter first name";
@@ -266,7 +270,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                       (success) =>
                       {
                         this.verify_email();
-                        this.referred_email();
+                        //this.referred_email();
                         this.router.navigate(['/job']);
                       },
                       (error) =>
@@ -293,7 +297,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                 else
                 {
                   this.verify_email();
-                  this.referred_email();
+                  //this.referred_email();
                   this.router.navigate(['/job']);
                 }
 
@@ -302,7 +306,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               else
               {
                 this.verify_email();
-                this.referred_email();
+                //this.referred_email();
                 this.router.navigate(['/job']);
               }
 
@@ -331,7 +335,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   }
 
-  referred_email()
+  /*referred_email()
   {
     if(this.referred_id)
     {
@@ -357,7 +361,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     else {
 
     }
-  }
+  }*/
   verify_email()
   {
 
