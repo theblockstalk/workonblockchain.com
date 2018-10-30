@@ -104,7 +104,6 @@ function create(userParam)
             password_hash: hashedPasswordAndSalt,
 			salt : salt,
             type: userParam.type,
-            ref_link: email,
             social_type: userParam.social_type,
             is_verify:is_verify,
             created_date: createdDate,
