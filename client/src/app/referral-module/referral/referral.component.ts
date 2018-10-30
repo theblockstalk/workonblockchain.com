@@ -129,5 +129,8 @@ export class ReferralComponent implements OnInit {
         }
       );
     }
+    else{
+      this.ref_link_for_not_logged_user = '';
+    }
   }
 }
