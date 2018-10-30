@@ -1,63 +1,39 @@
-var Q = require('q');
-const users = require('../../../../model/users');
-const logger = require('../../../services/logger');
-const filterReturnData = require('../filterReturnData');
-const CandidateProfile = require('../../../../model/candidate_profile');
+const crypto = require('crypto');
 
-//use to get referral code of a user
+const referral = require('../../../../model/referrals');
+const user = require('../../../../model/users');
+const employerProfile = require('../../../../model/employer_profile');
+const candidateProfile = require('../../../../model/candidate_profile');
 
-module.exports = function (req, res) {
-
-    get_refr_code(req.body).then(function (data){
-       
-        res.json(data);
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
-
-function get_refr_code(data){
-    var deferred = Q.defer();
-
-    users.findOne({ ref_link: data.code }, function (err, user)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
+module.exports = async function (req, res) {
+    const refDoc = await referral.findOne({
+        url_token:req.body.code
+    }).lean();
+    if(refDoc){
+        const userDoc = await user.findOne({email : refDoc.email}).lean();
+        if(userDoc){
+            if(userDoc.type === 'candidate'){
+                const candidateDoc = await candidateProfile.findOne({_creator : userDoc._id}).lean();
+                if(candidateDoc){
+                    res.send({
+                        name : candidateDoc.first_name
+                    })
+                }
+            }
+            if(userDoc.type === 'company'){
+                const employerDoc = await employerProfile.findOne({_creator : userDoc._id}).lean();
+                if(employerDoc){
+                    res.send({
+                        name : employerDoc.first_name
+                    })
+                }
+            }
         }
         else
-		{
-            if(user)
-        	{
-                CandidateProfile.findOne({ "_creator": user._id }, function (err, user_profile)
-                {
-                    if (err){
-                        logger.error(err.message, {stack: err.stack});
-                        deferred.reject(err.name + ': ' + err.message);
-                    }
-                    else
-                    {
-                        if(user_profile) {
-                            if (user_profile.first_name && user_profile.first_name !== '') {
-                                deferred.resolve(user_profile.first_name);
-                            }
-                            else {
-                                deferred.resolve(user.email);
-                            }
-                        }
-                        else {
-                            deferred.resolve(user.email);
-                        }
-                    }
-                });
-        	}
-        	else{
-                deferred.resolve(0);
-            }
-
+        {
+            res.send({
+                name: refDoc.email
+            });
         }
-    });
-    return deferred.promise;
-}
+    }
+};

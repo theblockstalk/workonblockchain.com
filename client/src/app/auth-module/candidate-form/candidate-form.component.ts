@@ -36,12 +36,13 @@ export class CandidateFormComponent implements OnInit {
 		});
 
         if(this.code){
+          console.log(this.code);
             this.authenticationService.getByRefrenceCode(this.code)
                 .subscribe(
                     data => {
-
+console.log(data);
                         if(data) {
-                          this.ref_msg = data + ' thinks you should join workonblockchain.com';
+                          this.ref_msg = data.name + ' thinks you should join workonblockchain.com';
                         }
                         else{
                           this.ref_msg = 'Your refer code is invalid. Please contact our support';
