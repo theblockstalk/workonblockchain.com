@@ -78,14 +78,14 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                         }
                       }
                     );
-                  if(data.terms ||data.marketing_emails)
+                  if(data.terms_id ||data.marketing_emails)
                   {
 
-                    this.termscondition = data.terms;
+                    this.termscondition = true;
                     this.marketing_emails = data.marketing_emails;
 
                   }
-                  if(data.terms == true)
+                  if(data.terms_id)
                   {
                       this.about_disable = "";
                       this.prefill_disable = "";
@@ -94,7 +94,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.prefill_link = '/prefill-profile';
                       this.about_link="/about";
                   }
-                  if(!data.terms)
+                  if(!data.terms_id)
                   {
                     this.termscondition = false;
                   }

@@ -54,16 +54,16 @@ export class TermsWizardComponent implements OnInit {
                       }
                     }
                   );
-                 if(data.terms)
+                 if(data.terms_id)
                   {
-                      this.termscondition = data.terms;
+                      this.termscondition = true;
                       this.marketing_emails = data.marketing_emails;
 
                       this.about_company = '/about_comp';
 
                   }
 
-                  if(data.terms == true)
+                  if(data.terms_id == true)
                   {
                        this.about_disable='';
                         this.terms_active_class = 'fa fa-check-circle text-success';

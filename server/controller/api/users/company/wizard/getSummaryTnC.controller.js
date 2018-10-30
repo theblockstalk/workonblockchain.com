@@ -47,9 +47,9 @@ function company_summary(_id, companyParam)
 
     function updateEmployer(_id)
     {
-        if(companyParam.terms)
+        if(companyParam.termsID)
         {
-			Pages.findOne({_id: companyParam.termsID}).sort({updated_date: 'descending'}).exec(function (err, result) {
+			Pages.findOne({_id: companyParam.termsID}).exec(function (err, result) {
 				if (err) {
 					logger.error(err.message, {stack: err.stack});
 					deferred.reject(err.name + ': ' + err.message);
@@ -58,7 +58,6 @@ function company_summary(_id, companyParam)
 					if(result){
 						var set =
 						{
-							terms:companyParam.terms,
 							terms_id: result._id,
 							marketing_emails: companyParam.marketing,
 						};

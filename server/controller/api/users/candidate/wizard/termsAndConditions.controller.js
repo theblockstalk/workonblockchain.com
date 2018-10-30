@@ -46,9 +46,9 @@ function terms_and_condition(_id , userParam)
 
     function updateUser(_id)
     {
-        if(userParam.terms)
+        if(userParam.termsID)
         {
-			Pages.findOne({_id: userParam.termsID}).sort({updated_date: 'descending'}).exec(function (err, result) {
+			Pages.findOne({_id: userParam.termsID}).exec(function (err, result) {
 				if (err) {
 					logger.error(err.message, {stack: err.stack});
 					deferred.reject(err.name + ': ' + err.message);
@@ -57,7 +57,6 @@ function terms_and_condition(_id , userParam)
 					if(result){
 						var set =
 						{
-							terms:userParam.terms,
 							terms_id: result._id,
 							marketing_emails: userParam.marketing,
 						};
