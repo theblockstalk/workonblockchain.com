@@ -1,7 +1,6 @@
 var Q = require('q');
 const users = require('../../../model/users');
 const CandidateProfile = require('../../../model/candidate_profile');
-const helper = require('./chatHelpers');
 const EmployerProfile = require('../../../model/employer_profile');
 
 const logger = require('../../services/logger');
