@@ -90,7 +90,7 @@ router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
 router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
 // Referrals
-router.post('/users/refered_user_email', refReferredEmail)
+router.post('/users/refered_user_email', asyncMiddleware(refReferredEmail))
 router.post('/users/send_refreal',auth.isLoggedIn, refReferral);
 router.post('/users/get_refrence_code', asyncMiddleware(refGetReferralCode));
 router.post('/users/get_ref_code' , asyncMiddleware(getReferralCodeForUsers));
