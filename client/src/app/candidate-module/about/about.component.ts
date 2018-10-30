@@ -104,10 +104,11 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-
-            if(data._creator.refered_id && !data.first_name && !data.last_name)
+            console.log(data);
+            if(data._creator.refered_id) //&& !data.first_name && !data.last_name)
             {
               this.referred_id = data._creator.refered_id;
+              console.log(this.referred_id);
             }
             if(data.terms)
             {
@@ -333,9 +334,38 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   referred_email()
   {
+    console.log(this.referred_id);
     if(this.referred_id)
     {
-      this.authenticationService.getById(this.referred_id)
+      console.log("if");
+      this.authenticationService.getByRefrenceCode(this.referred_id)
+        .subscribe(
+          data => {
+            console.log(data);
+            if(data) {
+              this.email_data.fname = data.name;
+              this.email_data.email = data.email;
+              this.email_data.referred_fname = this.info.first_name;
+              this.email_data.referred_lname = this.info.last_name;
+              console.log(this.email_data);
+              this.authenticationService.email_referred_user(this.email_data).subscribe(
+                data =>
+                {
+
+                });
+
+            }
+            else{
+              //this.ref_msg = 'Your refer code is invalid. Please contact our support';
+            }
+
+          },
+          error => {
+            ////console.log(error);
+            this.log = error;
+          }
+        );
+     /* this.authenticationService.getById(this.referred_id)
         .subscribe(
           data => {
             if(data)
@@ -365,7 +395,10 @@ export class AboutComponent implements OnInit,AfterViewInit
 
             }
 
-          });
+          });*/
+
+    }
+    else {
 
     }
   }

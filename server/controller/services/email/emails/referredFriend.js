@@ -2,6 +2,7 @@ const emails = require('../emails');
 const logger = require('../../logger');
 
 module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
+    console.log(data);
     const sendTo = {
         email: data.info.email
     };
