@@ -13,25 +13,23 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('get info of user who refereed a person', function () {
+describe('create ref code for a user', function () {
 
     afterEach(async () => {
         console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('POST /users/get_refrence_code', () => {
+    describe('POST /users/get_ref_code', () => {
 
-        it('it should get info of user who refereed a person', async () => {
+        it('it should create ref code for a user', async () => {
 
             //creating a candidate
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
-            const refDoc = await Refrreal.findOne({email: candidate.email}).lean();
 
-            const referralInfo = await referralsHelper.getRefreeInfo(refDoc.url_token);
+            const referralInfo = await referralsHelper.getRefCode(candidate.email);
             const res = referralInfo.body;
-            res.name.should.equal(refDoc.email);
+            res.email.should.equal(candidate.email);
         })
     })
 });
