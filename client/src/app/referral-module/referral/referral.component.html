@@ -106,8 +106,10 @@
           <div class = "link_area">
             <h3 class = "invite_link">Your Invite link</h3>
             <div class = "form-group">
-              <span>{{ref_link_for_not_logged_user}}</span>
-              <button class = "btn btn-default copy_btn">Copy Link</button>
+              <span>
+								<input type="text" style="font-size: 16px;width:88%;border: none;" value="{{ref_link_for_not_logged_user}}" readonly #newRefLink />
+							</span>
+              <button class = "btn btn-default copy_btn" (click)="copyInputMessage(newRefLink)">Copy Link</button>
             </div>
             <div class = "twitter-share-button">
               <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
