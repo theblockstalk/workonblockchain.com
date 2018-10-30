@@ -48,27 +48,32 @@ function terms_and_condition(_id , userParam)
     {
         if(userParam.terms)
         {
-			Pages.findOne({page_name: 'Terms and Condition for candidate'}).sort({updated_date: 'descending'}).exec(function (err, result) {
+			Pages.findOne({_id: userParam.termsID}).sort({updated_date: 'descending'}).exec(function (err, result) {
 				if (err) {
 					logger.error(err.message, {stack: err.stack});
 					deferred.reject(err.name + ': ' + err.message);
 				}
 				else {
-					var set =
-					{
-						terms:userParam.terms,
-						terms_id: result._id,
-						marketing_emails: userParam.marketing,
-					};
-					CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-					{
-						if (err){
-							logger.error(err.message, {stack: err.stack});
-							deferred.reject(err.name + ': ' + err.message);
-						}
-						else
-							deferred.resolve(set);
-					});
+					if(result){
+						var set =
+						{
+							terms:userParam.terms,
+							terms_id: result._id,
+							marketing_emails: userParam.marketing,
+						};
+						CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
+						{
+							if (err){
+								logger.error(err.message, {stack: err.stack});
+								deferred.reject(err.name + ': ' + err.message);
+							}
+							else
+								deferred.resolve(set);
+						});
+					}
+					else{
+						deferred.reject('Error: Not a valid doc');
+					}
 				}
 			});
         }

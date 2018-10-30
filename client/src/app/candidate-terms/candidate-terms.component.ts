@@ -32,24 +32,25 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
     prefill_link;
     prefill_disable;
     term_active_class;
-    
-  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) 
+
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService)
     {
-      
+
       }
-    
+
     about_disable;
     job_disable;
     resume_disable;
     exp_disable;
-     ngAfterViewInit(): void 
+     ngAfterViewInit(): void
      {
-         window.scrollTo(0, 0);   
-         
+         window.scrollTo(0, 0);
+
     }
-  ngOnInit() 
+  terms_id = '';
+  ngOnInit()
   {
-     
+
       this.about_disable = "disabled";
       this.job_disable = "disabled";
       this.resume_disable = "disabled";
@@ -58,22 +59,31 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
       //console.log(this.termscondition);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
        //console.log(this.currentUser);
-      
+
       if(this.currentUser && this.currentUser.type=='candidate')
        {
-         
+
            this.authenticationService.getById(this.currentUser._id)
             .subscribe(
-                data => 
+                data =>
                 {
-                  //console.log(data); 
-                  
+                  //console.log(data);
+                  this.authenticationService.get_page_content('Terms and Condition for candidate')
+                    .subscribe(
+                      data => {
+                        if(data)
+                        {
+                          this.terms_id = data._id;
+                          //console.log(this.editor_content);
+                        }
+                      }
+                    );
                   if(data.terms ||data.marketing_emails)
                   {
-                    
+
                     this.termscondition = data.terms;
-                    this.marketing_emails = data.marketing_emails;  
-                              
+                    this.marketing_emails = data.marketing_emails;
+
                   }
                   if(data.terms == true)
                   {
@@ -88,7 +98,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                   {
                     this.termscondition = false;
                   }
-                    
+
                   if(data.contact_number  && data.nationality && data.first_name && data.last_name)
                   {
                       this.job_disable = "";
@@ -96,17 +106,17 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.about_link="/about";
                       this.link="/job";
                   }
-                    
+
                   if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day  && data.current_salary )
                   {
                        this.resume_disable = "";
                       this.link="/job";
                       this.resume_class="/resume";
                       this.job_active_class = 'fa fa-check-circle text-success';
-                       
+
                   }
-                    
-               
+
+
                     if(data.why_work )
                     {
                         this.exp_disable = "";
@@ -115,22 +125,22 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                         this.resume_active_class='fa fa-check-circle text-success';
                     // this.router.navigate(['/resume']);
                     }
-     
+
                     if(data.description)
                     {
                         this.exp_class = "/experience";
                         this.exp_active_class = 'fa fa-check-circle text-success';
                         //this.router.navigate(['/experience']);
                     }
-                 
-                  
 
-              
-                  
+
+
+
+
                 },
-                error => 
+                error =>
                 {
-                  
+
                      if(error.message === 500 || error.message === 401)
                      {
                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
@@ -140,27 +150,27 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                          localStorage.removeItem('linkedinUser');
                          localStorage.removeItem('admin_log');
                             window.location.href = '/login';
-                         
+
                      }
                      else
                      {
-                         
+
                     }
                 });
-              
+
        }
        else
        {
             this.router.navigate(['/not_found']);
        }
   }
-    
+
 
   terms_log;
   terms_and_condition(termsForm: NgForm)
-  {   
+  {
     //console.log(termsForm.value);
-      
+
       if(this.termscondition == false)
       {
           this.terms_log = "Please accept terms and conditions";
@@ -169,26 +179,26 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
       {
         this.authenticationService.terms(this.currentUser._creator,termsForm.value)
         .subscribe(
-          data => 
+          data =>
           {
               if(data)
               {
                   this.router.navigate(['/prefill-profile']);
               }
-              
+
           },
           error=>
-          {            
+          {
                      if(error.message === 500 || error.message === 401)
                      {
                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             window.location.href = '/login';
-                         
+
                      }
                      else
                      {
-                         
-                    }   
+
+                    }
           });
        }
   }

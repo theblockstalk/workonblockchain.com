@@ -20,17 +20,18 @@ export class TermsWizardComponent implements OnInit {
     marketing_emails;
     agree;
     about_disable;
+    terms_id = '';
 
    constructor(private route: ActivatedRoute,
         private router: Router,
         private authenticationService: UserService,private dataservice: DataService) {
        }
-  
+
 
   ngOnInit() {
       this.about_disable= "disabled";
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      
+
        if(!this.currentUser)
        {
           this.router.navigate(['/login']);
@@ -39,33 +40,43 @@ export class TermsWizardComponent implements OnInit {
        {
             this.authenticationService.getCurrentCompany(this.currentUser._id)
             .subscribe(
-                data => 
+                data =>
                 {
                   ////console.log(data);
                     this.marketing_emails = data.marketing_emails;
+                  this.authenticationService.get_page_content('Terms and Condition for company')
+                  .subscribe(
+                    data => {
+                      if(data)
+                      {
+                        this.terms_id = data._id;
+                        //console.log(this.editor_content);
+                      }
+                    }
+                  );
                  if(data.terms)
                   {
                       this.termscondition = data.terms;
                       this.marketing_emails = data.marketing_emails;
-                    
+
                       this.about_company = '/about_comp';
-                     
+
                   }
-                    
+
                   if(data.terms == true)
                   {
                        this.about_disable='';
                         this.terms_active_class = 'fa fa-check-circle text-success';
                        this.about_company = '/about_comp';
                         }
-                    
+
                      if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
                   {
                      this.about_active_class = 'fa fa-check-circle text-success';
                    }
-                  
+
                 },
-                error => 
+                error =>
                 {
                    if(error.message === 500 || error.message === 401)
                     {
@@ -77,11 +88,11 @@ export class TermsWizardComponent implements OnInit {
                                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
-                    }   
+                        this.router.navigate(['/not_found']);
+                    }
                 });
        }
       else
@@ -90,13 +101,13 @@ export class TermsWizardComponent implements OnInit {
            }
   }
     terms_log;
-    terms_wizard(termsForm: NgForm) 
+    terms_wizard(termsForm: NgForm)
     {
-         ////console.log(termsForm.value);
+       //console.log(termsForm.value);
        if(this.termscondition!=true)
        {
            //console.log("if");
-        this.terms_log = "Please accept terms and condition";   
+        this.terms_log = "Please accept terms and condition";
        }
         else
         {
@@ -112,7 +123,7 @@ export class TermsWizardComponent implements OnInit {
                 {
                     this.log=data.error;
                 }
-               
+
                 },
                 error => {
                  if(error.message === 500 || error.message === 401)
@@ -125,12 +136,12 @@ export class TermsWizardComponent implements OnInit {
                                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
+                        this.router.navigate(['/not_found']);
                     }
-                   
+
                 });
           }
     }

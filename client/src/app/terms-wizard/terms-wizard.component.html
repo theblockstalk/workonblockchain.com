@@ -1,7 +1,7 @@
 <!--candidate step completing-->
 
 <section class = "wizard_page">
-	
+
 	<div class="container">
 		<div class="row">
 			<div class = "text-center steps-name hidden-xs">
@@ -11,15 +11,15 @@
 				</ul>
 			</div>
 			<div class="col-md-12 wizard-form comp-cand_terms">
-			
+
 				 <form class = "login_form"  (submit)="terms_wizard(termsForm)"  #termsForm = ngForm>
-					
-				<div class = "scroll_div">		
+
+				<div class = "scroll_div">
 				<p>
 					We want to keep things easy and transparent! That's why we've created this short summary of the important parts of the Terms and Conditions and the Privacy Policy. Please ensure that you understand what you are agreeing to when you create an account.
 
 				</p>
-				
+
 				<h2>Who are we</h2>
 				<p>
 					We are BIOTS Limited. Our company registered address is Broad House, The Broadway, Old Hatfield, Herts, United Kingdom, AL9 5BG.
@@ -36,11 +36,11 @@
 					We will review your account as soon as we can after you submit it to us.  We do not accept all applications to join our platform.
 
 				</p>
-				
+
 				<p>
 					With an approved account, you will be able to search through our Candidate database, Approach candidates and send them Engagement offers. Until a Candidate approves the first Approach their identity will not be visible. If a Engagement with a candidate is accepted, then you will be subject to paying our<a routerLink="/fees"> Fees</a>.
 				</p>
-				
+
 				<p>
 					You will inform us as soon as practicable and in any event within seven days of the acceptance by a Candidate of your offer of an Engagement and in doing so, shall provide us with such information as we may reasonably require in respect of the Engagement in question.
 				</p>
@@ -56,19 +56,19 @@
 					At any time, you have the right to request the information that we have on your account, or request that we delete your account permanently by emailing us at privacy@workonblockchain.com. We may ask for additional identification to complete this.
 
 				</p>
-				
+
 				<p>Please read the Terms of Business for Companies and Privacy Notice for full details.</p>
 			</div>
 
 				<div class = "form-group col-md-8">
 					<div class="checkbox">
-						<label class = "check-label"> I have read and accepted the <a routerLink="/terms-for-company" target="_blank"> Terms and Conditions</a> and the <a routerLink="/privacy-notice" target="_blank">Privacy Policy</a>. 
+						<label class = "check-label"> I have read and accepted the <a routerLink="/terms-for-company" target="_blank"> Terms and Conditions</a> and the <a routerLink="/privacy-notice" target="_blank">Privacy Policy</a>.
 							<input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
 							<span class="checkmark">
 								<div></div>
 							</span>
 						</label>
-						<label class = "check-label"> I consent to receive marketing and promotional emails related to the workonblockchain.com platform. 
+						<label class = "check-label"> I consent to receive marketing and promotional emails related to the workonblockchain.com platform.
 							<input type = "checkbox" value = ""  name="marketing" [(ngModel)]="marketing_emails">
 							<span class="checkmark">
 								<div></div>
@@ -79,7 +79,7 @@
 								<span class = "error">{{this.terms_log}}</span>
 							</div>
 				</div>
-				
+           <input type="hidden" name="termsID" id="termsID" [(ngModel)]="terms_id"/>
 
 					<div class = "form-group col-md-4 text-right">
 							<button type="submit" class = "btn btn-self btn-pdg" >Next Step</button>
@@ -87,7 +87,7 @@
 					</div>
 
 				</form>
-				
+
 			</div>
 		</div>
 	</div>

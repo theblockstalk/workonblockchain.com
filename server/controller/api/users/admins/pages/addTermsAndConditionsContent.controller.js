@@ -7,9 +7,6 @@ const mongoose = require('mongoose');
 
 module.exports = async function (req, res) {
     const userId = req.auth.user._id;
-    let createdDate;
-    let now = new Date();
-    createdDate = now;
     let info = req.body;
     const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
     let document = new Pages
@@ -18,7 +15,7 @@ module.exports = async function (req, res) {
         page_content : sanitizedHtml,
         page_name : info.page_name,
         updated_by : userId,
-        updated_date: createdDate,
+        updated_date: new Date(),
     });
     const result = await document.save();
     res.send(document);
