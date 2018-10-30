@@ -16,7 +16,8 @@ module.exports = async function (req, res) {
                 const candidateDoc = await candidateProfile.findOne({_creator : userDoc._id}).lean();
                 if(candidateDoc){
                     res.send({
-                        name : candidateDoc.first_name
+                        name : candidateDoc.first_name,
+                        referred_id : refDoc._id
                     })
                 }
             }
@@ -24,7 +25,8 @@ module.exports = async function (req, res) {
                 const employerDoc = await employerProfile.findOne({_creator : userDoc._id}).lean();
                 if(employerDoc){
                     res.send({
-                        name : employerDoc.first_name
+                        name : employerDoc.first_name,
+                        referred_id : refDoc._id
                     })
                 }
             }
@@ -32,7 +34,8 @@ module.exports = async function (req, res) {
         else
         {
             res.send({
-                name: refDoc.email
+                name: refDoc.email,
+                referred_id : refDoc._id
             });
         }
     }

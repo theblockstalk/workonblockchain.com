@@ -66,7 +66,7 @@ const UserSchema = new Schema({
     refered_id:
         {
             type: Schema.Types.ObjectId,
-            //required:false,
+            ref : 'Referrals'
         },
     is_admin:
         {
