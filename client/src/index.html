@@ -5,7 +5,7 @@
   <link rel="shortcut icon" type="image/png" href="https://workonblockchain.com/assets/images/icon.ico"/>
   <title>Work on Blockchain</title>
   <base href="./">
-  <meta charset="utf-8"> 
+  <meta charset="utf-8">
   <meta name="description" content="Global blockchain agnostic recruitment hiring platform for blockchain developers, software developers, designers, product managers, CTOs, researchers and software engineer interns who are passionate about public and enterprise blockchain technology and cryptocurrencies. On workonblockchain.com, companies apply to active candidates looking for jobs.">
 	<meta property="og:type" content="website">
 	<meta property="og:site_name" content="Work on Blockchain">
@@ -31,11 +31,9 @@
   <link rel="stylesheet" type='text/css' href="./assets/css/bootstrap.min.css">
   <link rel="stylesheet" type='text/css' href="./assets/css/wob_main.css">
   <link rel="stylesheet" type='text/css' href="./assets/css/middle.css">
-  <link rel="stylesheet" type='text/css' href="./assets/css/intlTelInput.css">
   <link rel="stylesheet" type='text/css' href="./assets/css/select2.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="./assets/css/textAngular.css" type="text/css">
- 
+
   <!--using fonts link-->
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Quicksand" rel="stylesheet">
@@ -44,7 +42,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-	<div class="se-pre-con"></div>
+	<!--<div class="se-pre-con"></div>-->
   <app-root></app-root>
 
 
@@ -54,16 +52,13 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <script src="./assets/js/custom.js"></script>
-<script src="./assets/js/intlTelInput.js"></script>
 <script src="./assets/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<script src="./assets/js/custom.js"></script>
-<script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
+<!--<script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
 
-<script> CKEDITOR.config.forcePasteAsPlainText = true; </script>
+<script> CKEDITOR.config.forcePasteAsPlainText = true; </script>-->
 <!-- Load Facebook SDK for JavaScript -->
  <div id="fb-root"></div>
  <script>
@@ -77,32 +72,32 @@
 <script type="text/javascript">
 (function() {
     'use strict';
-    
+
     var deps = [];
-    
+
     angular.module('sandbox', deps)
-        .controller('SandboxController', SandboxController) 
+        .controller('SandboxController', SandboxController)
     ;
-    
+
     function SandboxController($element) {
         /* jshint validthis : true */
         var vm = this;
         vm.activate   = toggle;
         vm.deactivate = toggle;
         vm.isActive   = isActive;
-        
+
         function toggle() {
             var active   = vm.isActive();
             var oldClass = active ? 'active' : 'inactive';
             var newClass = active ? 'inactive' : 'active';
             $element.removeClass(oldClass).addClass(newClass);
         }
-        
+
         function isActive() {
             return $element.hasClass('active');
         }
     }
-    
+
 })();
 
 window.addEventListener('load', function() {
@@ -119,8 +114,9 @@ window.addEventListener('load', function() {
 });
 
 </script>
+
 <script>
-$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+/*$(".messages").animate({ scrollTop: $(document).height() }, "fast");
 
 function newMessage() {
 	message = $(".message-input input").val();
@@ -139,21 +135,7 @@ $(window).on('keydown', function(e) {
     newMessage();
     return false;
   }
-});
-
-
-
-//Mobile number code or phone number code jquery ....
-$("#mobile-number").intlTelInput({
-     utilsScript: "lib/libphonenumber/build/utils.js"
-      });
-
-
-	
-
-
-//===== WYSIWYG editor =====//
-
+});*/
 </script>
 
 
