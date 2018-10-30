@@ -104,8 +104,7 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-            console.log(data);
-            if(data._creator.refered_id) //&& !data.first_name && !data.last_name)
+            if(data._creator.refered_id && !data.first_name && !data.last_name)
             {
               this.referred_id = data._creator.refered_id;
               console.log(this.referred_id);
@@ -334,68 +333,25 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   referred_email()
   {
-    console.log(this.referred_id);
     if(this.referred_id)
     {
-      console.log("if");
-      this.authenticationService.getByRefrenceCode(this.referred_id)
-        .subscribe(
-          data => {
-            console.log(data);
-            if(data) {
-              this.email_data.fname = data.name;
-              this.email_data.email = data.email;
-              this.email_data.referred_fname = this.info.first_name;
-              this.email_data.referred_lname = this.info.last_name;
-              console.log(this.email_data);
-              this.authenticationService.email_referred_user(this.email_data).subscribe(
-                data =>
-                {
+      this.email_data.referred_id = this.referred_id;
+      this.email_data.referred_fname = this.info.first_name;
+      this.email_data.referred_lname = this.info.last_name;
 
-                });
+      this.authenticationService.email_referred_user(this.email_data).subscribe(
+        data =>
+        {
+          if(data.success === true)
+          {
 
-            }
-            else{
-              //this.ref_msg = 'Your refer code is invalid. Please contact our support';
-            }
-
-          },
-          error => {
-            ////console.log(error);
-            this.log = error;
           }
-        );
-     /* this.authenticationService.getById(this.referred_id)
-        .subscribe(
-          data => {
-            if(data)
-            {
-              if(data._creator.email)
-              {
-                this.email_data.fname = data.first_name;
-                this.email_data.email = data._creator.email;
-                this.email_data.referred_fname = this.info.first_name;
-                this.email_data.referred_lname = this.info.last_name;
-                console.log(this.email_data);
-                this.authenticationService.email_referred_user(this.email_data).subscribe(
-                  data =>
-                  {
+          else
+          {
 
-                  });
-              }
-              else
-              {
+          }
 
-              }
-            }
-
-            else
-            {
-
-
-            }
-
-          });*/
+        });
 
     }
     else {

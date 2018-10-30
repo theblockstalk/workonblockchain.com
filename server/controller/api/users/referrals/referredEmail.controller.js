@@ -1,45 +1,56 @@
-var Q = require('q');
-const referedUserEmail = require('../../../services/email/emails/referredFriend');
-const logger = require('../../../services/logger');
+const referral = require('../../../../model/referrals');
+const user = require('../../../../model/users');
+const employerProfile = require('../../../../model/employer_profile');
+const candidateProfile = require('../../../../model/candidate_profile');
 
-module.exports = function referred_email(req,res)
-{
-  
-    referred_email_user(req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
+const referedUserEmail = require('../../../services/email/emails/referredFriend');
+
+module.exports = async function (req, res) {
+    const refDoc = await referral.findOne({
+        _id : req.body.info.referred_id
+    }).lean();
+    if(refDoc){
+
+        const userDoc = await user.findOne({email : refDoc.email}).lean();
+        if(userDoc && userDoc.type){
+            if(userDoc.type === 'candidate'){
+                const candidateDoc = await candidateProfile.findOne({_creator : userDoc._id}).lean();
+                let data = {fname : candidateDoc.first_name , email : refDoc.email , referred_fname : req.body.info. referred_fname , referred_lname: req.body.info.referred_lname }
+                referedUserEmail.sendEmail(data, userDoc.disable_account);
+
+                res.send({
+                    success : true
+                });
+
+            }
+            if(userDoc.type === 'company'){
+                const companyDoc = await employerProfile.findOne({_creator : userDoc._id}).lean();
+                let data = {fname : companyDoc.first_name , email : refDoc.email , referred_fname : req.body.info. referred_fname , referred_lname: req.body.info.referred_lname }
+                referedUserEmail.sendEmail(data, userDoc.disable_account);
+
+                res.send({
+                    success : true
+                });
+
+            }
         }
         else
         {
-            res.send(err);
+            let data = {email : refDoc.email , referred_fname : req.body.info. referred_fname , referred_lname: req.body.info.referred_lname }
+            referedUserEmail.sendEmail(data, false);
+
+            res.send({
+                success: false
+            });
         }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
+
+    }
+    else
+    {
+        res.send({
+            success: false
         });
-
-}
-
-function referred_email_user(data)
-{
-    var deferred = Q.defer();
-    users.findOne({ email : data.info.email }, function (err, userDoc) {
-        if (err) {
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-
-        if (userDoc) {
-            referedUserEmail.sendEmail(data, userDoc.disable_account);
-            return deferred.promise;
-        }
-
-    })
+    }
 
 
-}
-
-
+};
