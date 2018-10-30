@@ -1023,11 +1023,6 @@ export class UserService {
             });
 	}
 
-    email_referred_user(data: any){
-        return this.http.post<any>(URL+'users/refered_user_email', {info : data}) .map(ref_code => {
-            return ref_code
-        });
-    }
 
     set_disable_status(user_id: string, status: any)
     {

@@ -29,7 +29,6 @@ module.exports = async function (req, res) {
         const refDoc = await referral.findOne({
             _id : userParam.referred_id
         }).lean();
-    console.log(refDoc);
         if(refDoc){
 
             const userDoc = await User.findOne({email : refDoc.email}).lean();

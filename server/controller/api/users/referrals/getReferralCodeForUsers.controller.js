@@ -9,7 +9,8 @@ module.exports = async function (req, res) {
     if(refDoc){
         res.send({
             code: refDoc.url_token,
-            email:refDoc.email
+            email:refDoc.email,
+            referred_id : refDoc._id
         });
     }
     else{
@@ -27,6 +28,7 @@ module.exports = async function (req, res) {
         res.send({
             code: token,
             email : req.body.email,
+            referred_id : refDoc._id
         });
     }
 };

@@ -52,6 +52,7 @@ export class AdminCandidateDetailComponent implements OnInit {
   commercial;
   roles;
   platforms;
+  email;
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -132,7 +133,38 @@ export class AdminCandidateDetailComponent implements OnInit {
 
               if(data._creator.refered_id)
               {
-                this.authenticationService.getById(data._creator.refered_id)
+                this.authenticationService.getRefCode(data._creator.email)
+                  .subscribe(
+                    refData => {
+                      console.log(data._creator);
+                      console.log(refData.referred_id);
+                      if(refData.referred_id === data._creator.referred_id){
+                        console.log("ture");
+                        this.authenticationService.getById(this.currentUser._creator)
+                          .subscribe(
+                            userData => {
+console.log(userData);
+                              if(userData!='')
+                              {
+                                console.log("if")
+                                this.first_name = userData.first_name;
+                                this.last_name =userData.last_name;
+
+                              }
+                              else
+                              {
+                                console.log("else")
+                                this.email = userData._creator.email;
+                              }
+                            });
+                      }
+
+                          },
+                    error => {
+
+                    }
+                  );
+                /*this.authenticationService.getById(data._creator.refered_id)
                   .subscribe(
                     data => {
 
@@ -146,7 +178,8 @@ export class AdminCandidateDetailComponent implements OnInit {
                       {
                         this.refeered="null";
                       }
-                    });
+                    });*/
+
 
 
               }

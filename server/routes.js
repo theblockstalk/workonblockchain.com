@@ -18,7 +18,6 @@ const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTok
 const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
 
 // Referrals
-const refReferredEmail = require('./controller/api/users/referrals/referredEmail.controller');
 const refGetReferralCode = require('./controller/api/users/referrals/getReferralCode.controller');
 const refReferral = require('./controller/api/users/referrals/referral.controller');
 const getReferralCodeForUsers = require('./controller/api/users/referrals/getReferralCodeForUsers.controller');
@@ -90,7 +89,6 @@ router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
 router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
 // Referrals
-router.post('/users/refered_user_email', asyncMiddleware(refReferredEmail))
 router.post('/users/send_refreal',auth.isLoggedIn, refReferral);
 router.post('/users/get_refrence_code', asyncMiddleware(refGetReferralCode));
 router.post('/users/get_ref_code' , asyncMiddleware(getReferralCodeForUsers));

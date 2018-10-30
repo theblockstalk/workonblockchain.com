@@ -1,6 +1,6 @@
 <!--Profile-inner-->
 
-<section class = "wizard_page">	
+<section class = "wizard_page">
 
 	<div class="container">
 		<div class="row profile_group">
@@ -21,12 +21,12 @@
 				 		<span class = "short_intro">
 				 			<p>{{data.description}}</p>
 				 		</span>
-				 		
-						
+
+
 						<span class = "short_intro">
 						<p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Companies</a></p>
 				 		</span>
-				 		
+
 				 		<span class = "short_intro">
 				 			<strong>Date created : </strong><span>{{data._creator.created_date | date : 'dd-MMMM-yyyy'}}</span>
 				 		</span>
@@ -39,12 +39,12 @@
 								<input type="hidden" name="id" [ngModel]="data._creator._id">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
-								
-								<div class="submit-button">						
+
+								<div class="submit-button">
 									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Active</button>
 									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Inactive</button>
 									<button type="submit" class = "btn btn_descp" *ngIf = "data._creator.is_verify ===0" disabled>Active</button>
-									
+
 								</div>
 							</form>
 						</span>
@@ -55,35 +55,38 @@
 
 				 		<ul>
 						<li *ngIf="first_name && last_name">
-				 			
-					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
-					 				<span class = "li_txt" >Refered By: <a [routerLink]="['/admin-candidate-detail']" target="_blank" [queryParams]="{user: data._creator.refered_id }">{{first_name}} {{last_name}}</a>
+
+					 				<span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
+					 				<span *ngIf="first_name && last_name" class = "li_txt" >Refered By: <a [routerLink]="['/admin-candidate-detail']" target="_blank" [queryParams]="{user: data._creator.refered_id }">{{first_name}} {{last_name}}</a>
 					 				</span>
-				 				
+
+              <span *ngIf="email" class = "li_txt" >Refered By: {{email}}
+					 				</span>
+
 				 			</li>
 
 
 				 			<li>
-				 				
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt">Nationality : {{data.nationality}}</span>
-				 				
+
 				 			</li>
 
 				 			<li >
-				 			
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt"> Contact Number : {{data.contact_number}}</span>
-				 				
+
 				 			</li>
 				 		</ul>
-				 		
+
 				 	</div>
-				 	
+
 				 </section>
-				 
+
 				 <section class = "profile job_info">
-				
+
 				<div class="col-md-6 info-area">
 				 <ng-container *ngIf="verify === 1;else no_verify">
 				 	<p>
@@ -112,7 +115,7 @@
 				 	</p>
 				 </ng-template>
 				</div>
-				 	
+
 				 <div class="col-md-6 info-area">
 				  <ng-container *ngIf="data._creator.disable_account === false;else no_enable">
 				 	<p>
@@ -134,12 +137,12 @@
 				 	<span>{{data._creator.dissable_account_timestamp | date:'short'}}</span>
 				 	</p>
 				  </ng-container>
-				
+
 				 </div>
-				 
-      				
+
+
 				 </section>
-				
+
 				 <section class = "profile job_info" >
 					<h3>About</h3>
 					<div class="info-area pro_br-btm" >
@@ -149,13 +152,13 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data._creator.email}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-					
-					
+
+
 					<div class="info-area pro_br-btm" *ngIf="data.contact_number">
 						<div class = "col-md-3">
 							<strong>Contact Number :  </strong>
@@ -163,12 +166,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data.contact_number}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-					
+
 				 	<div class="info-area pro_br-btm" *ngIf="data.github_account">
 						<div class = "col-md-3">
 							<strong>Github account URL : </strong>
@@ -176,7 +179,7 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data.github_account}}</li>
-								
+
 							</ul>
 						</div>
 
@@ -191,12 +194,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li >{{data.stackexchange_account}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 </section>
 
         <section class = "profile job_info" >
@@ -231,7 +234,7 @@
 
 
         </section>
-				 
+
 				 <section class = "profile job_info">
 					<h3>Desired Job </h3>
 				 	<div class="info-area pro_br-btm">
@@ -241,13 +244,13 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li *ngFor='let country of countries'>{{country}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-					
-					
+
+
 				 	<div class="info-area pro_br-btm">
 
 						<div class = "col-md-3" >
@@ -256,12 +259,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li *ngFor='let interest_area of interest_area;'>{{interest_area}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 		<div class="info-area pro_br-btm" *ngIf="roles">
 
 						<div class = "col-md-3" >
@@ -270,12 +273,12 @@
 						<div class = "col-md-9">
 							<ul class = "pro_list">
 								<li *ngFor='let roles_data of roles'>{{roles_data}}</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="data.expected_salary">
 
 						<div class = "col-md-3" >
@@ -288,7 +291,7 @@
 						</div>
 
 				 	</div>
-					
+
 					<div class="info-area pro_br-btm">
 
 						<div class = "col-md-3" >
@@ -315,8 +318,8 @@
 
 				 	</div>
 
-				 
-				 	
+
+
 				 </section>
 
 				 <section class = "profile job_info">
@@ -328,7 +331,7 @@
 							{{data.why_work}}
 						</p>
 					</div>
-					
+
 
 				 	<div class="info-area pro_br-btm" *ngIf="commercial">
 
@@ -338,12 +341,12 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let commercial_platform of commercial;'>{{commercial_platform.platform_name}}  : {{commercial_platform.exp_year}} years</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
+
 				 	<div class="info-area pro_br-btm" *ngIf="platforms">
 
 						<div class = "col-md-4" >
@@ -365,19 +368,19 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let data of experimented;'>{{data.value}}  </li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
-				 	
 
-				 	
-				 	
+
+
+
 				 </section>
 
 				 <section class = "profile job_info">
-					<h3>Experience</h3>				
+					<h3>Experience</h3>
 
 				 	<div class="info-area pro_br-btm">
 
@@ -400,14 +403,14 @@
 						<div class = "col-md-8">
 							<ul class = "pro_list">
 								<li *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
-								
+
 							</ul>
 						</div>
 
 				 	</div>
 
-				 	
-				 	
+
+
 				 </section>
 
 				  <section class = "profile job_info">
@@ -420,7 +423,7 @@
 							<div class = "col-md-8">
 								<ul class = "pro_list">
 									<li>{{work.companyname}}</li>
-									
+
 								</ul>
 							</div>
 
@@ -433,7 +436,7 @@
 							<div class = "col-md-8">
 								<ul class = "pro_list">
 									<li>{{work.positionname}}</li>
-									
+
 								</ul>
 							</div>
 					 	</div>
@@ -476,13 +479,13 @@
 
 					</div>
 
-				 
-				 	
+
+
 				 </section>
 
 				 <section class = "profile job_info">
 					<h3>Education</h3>
-					
+
 				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education_history'>
 				 		<div class = "edu_feild">
 							<p>
@@ -501,8 +504,8 @@
 
 				 	</div>
 
-				 		
-				 	
+
+
 				 </section>
 
 			</div> <!--End col-md-9--->
