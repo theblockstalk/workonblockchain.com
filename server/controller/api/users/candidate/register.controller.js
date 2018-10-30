@@ -63,18 +63,17 @@ function create(userParam)
 
         createdDate= now;
 
-		let new_salt = crypto.randomBytes(16).toString('base64');
+		/*let new_salt = crypto.randomBytes(16).toString('base64');
 		let new_hash = crypto.createHmac('sha512', new_salt);
 		let email = new_hash.digest('hex');
         email = email.substr(email.length - 10); //getting last 10 characters
-
+*/
         let newUser = new users
         ({
             email: userParam.email,
             password_hash: hashedPasswordAndSalt,
 			salt : salt,
             type: userParam.type,
-            ref_link: email,
             social_type: userParam.social_type,
             is_verify:is_verify,
             created_date: createdDate,
@@ -128,7 +127,6 @@ function create(userParam)
                                     _creator: userData._creator._id,
                                     type:userData._creator.type,
                                     email: userData._creator.email,
-                                    ref_link: userData._creator.ref_link,
                                     is_approved : userData._creator.is_approved,
                                     jwt_token: tokenn
                         		});

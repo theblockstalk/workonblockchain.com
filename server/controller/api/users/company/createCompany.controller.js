@@ -11,6 +11,7 @@ const logger = require('../../../services/logger');
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
 const verify_send_email = require('../auth/verify_send_email');
+const mongoose = require('mongoose');
 
 module.exports = function (req,res)
 {
@@ -92,7 +93,7 @@ function create_employer(userParam)
             type: userParam.type,
             jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
             created_date: createdDate,
-
+            refered_id : mongoose.Types.ObjectId(userParam.referred_id),
         });
 
         newUser.save((err,user)=>
