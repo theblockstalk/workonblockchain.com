@@ -687,6 +687,10 @@ body{
     .slider-indicator {
         bottom: -35px !important;
     }
+
+  .select_error {
+    position: relative !important;
+  }
 }
 
 .newsletter_signup {
@@ -976,10 +980,10 @@ body{
 
 }
 
-.select_error
-{
-	bottom : -18px;
-}
+  .select_error
+  {
+   /* bottom : -18px;*/
+  }
 
 .form_error{
 
@@ -3738,6 +3742,17 @@ input:checked + .slider:before {
   background: #f6f9fc;
   padding: 10px 0px;
 }
+.wlcm_btn{
+  overflow: hidden;
+  margin-top: 20px;
+  position: relative;
+  right: 85px;
+}
+
+.wlcm_btn .btn{
+  top: 0px !important;
+  float: right !important;
+}
 
 /*==welcome model style end==*/
 
@@ -3748,6 +3763,12 @@ input:checked + .slider:before {
     .navbar {
         border-radius: 0px !important;
     }
+}
+
+@media (max-width: 1200px){
+  .wlcm_btn{
+    right: 0px;
+  }
 }
 
 @media (max-width: 992px){
@@ -3960,6 +3981,7 @@ input:checked + .slider:before {
     .select_error
     {
         bottom:0px;
+        position: absolute;
     }
 
     .candidate-slider h2, .newsletter_signup h2{
@@ -3997,6 +4019,10 @@ input:checked + .slider:before {
 
   .btn_popup{
     top: 5px;
+  }
+
+  .xs_input{
+    margin-bottom: 20px;
   }
 
 }

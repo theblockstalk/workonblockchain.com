@@ -1,9 +1,7 @@
-const settings = require('../../../settings');
-var _ = require('lodash');
 var Q = require('q');
 const users = require('../../../model/users');
 const CandidateProfile = require('../../../model/candidate_profile');
-
+const helper = require('./chatHelpers');
 const EmployerProfile = require('../../../model/employer_profile');
 
 const logger = require('../../services/logger');
@@ -11,7 +9,7 @@ const filterReturnData = require('../users/filterReturnData');
 
 module.exports = function (req, res)
 {
-    get_candidate(req.body.sender_id, req.body.receiver_id,req.body.is_company_reply,req.body.type).then(function (user)
+	 get_candidate(req.body.sender_id, req.body.receiver_id,req.body.is_company_reply,req.body.type).then(function (user)
     {
         if (user)
         {

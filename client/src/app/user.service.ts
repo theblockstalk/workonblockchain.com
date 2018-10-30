@@ -598,9 +598,9 @@ export class UserService {
             });
     }
 
-    insertMessage(sender_id: string,receiver_id:string,sender_name:string,receiver_name:string,message:string,description:string,job_title:string,salary:string,currency:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,interview_location:string,interview_time:string)
+    insertMessage(receiver_id:string,sender_name:string,receiver_name:string,message:string,description:string,job_title:string,salary:string,currency:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,interview_location:string,interview_time:string)
     {
-        return this.http.post<any>(URL+'users/insert_message', {sender_id:sender_id,receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,interview_location:interview_location,interview_time:interview_time}, {
+        return this.http.post<any>(URL+'users/insert_message', {receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,interview_location:interview_location,interview_time:interview_time}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -619,7 +619,7 @@ export class UserService {
             });
     }
 
-    get_user_messages(receiver_id: string,sender_id: string)
+    get_user_messages(receiver_id: string, sender_id: any)
     {
         return this.http.post<any>(URL+'users/get_messages', {receiver_id:receiver_id,sender_id:sender_id}, {
             headers: new HttpHeaders().set('Authorization', this.token)
@@ -641,7 +641,7 @@ export class UserService {
             });
     }
 
-    get_user_messages_only(id: string)
+    get_user_messages_only(id:any)
     {
         return this.http.post<any>(URL+'users/get_user_messages', {id:id}, {
             headers: new HttpHeaders().set('Authorization', this.token)
@@ -944,9 +944,8 @@ export class UserService {
             });
     }
 
-
-	update_chat_msg_status(receiver_id: string,sender_id: string,status:number){
-		return this.http.post<any>(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,sender_id:sender_id,status:status}, {
+	update_chat_msg_status(receiver_id: string,status:number){
+		return this.http.post<any>(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -992,8 +991,8 @@ export class UserService {
 
     }
 
-	get_job_desc_msgs(sender_id:string,receiver_id:string,msg_tag:string){
-		return this.http.post<any>(URL+'users/get_job_desc_msgs', {sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag}, {
+	get_job_desc_msgs(receiver_id:string,msg_tag:string){
+		return this.http.post<any>(URL+'users/get_job_desc_msgs', {receiver_id:receiver_id,msg_tag:msg_tag}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1012,9 +1011,9 @@ export class UserService {
             });
 	}
 
-	set_unread_msgs_emails_status(user_id: string, status: any)
+	set_unread_msgs_emails_status(status: any)
     {
-		return this.http.post<any>(URL+'users/set_unread_msgs_emails_status', {user_id:user_id,status:status}, {
+		return this.http.post<any>(URL+'users/set_unread_msgs_emails_status', {status:status}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1033,8 +1032,8 @@ export class UserService {
             });
     }
 
-	get_unread_msgs_of_user(sender_id:string,receiver_id:string){
-		return this.http.post<any>(URL+'users/get_unread_msgs_of_user', {sender_id:sender_id,receiver_id:receiver_id}, {
+	get_unread_msgs_of_user(sender_id:string){
+		return this.http.post<any>(URL+'users/get_unread_msgs_of_user', {sender_id:sender_id}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1126,8 +1125,8 @@ export class UserService {
             });
     }
 
-	get_employment_offer_info(sender_id:string,receiver_id:string,msg_tag:string){
-		return this.http.post<any>(URL+'users/get_employ_offer', {sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag}, {
+	get_employment_offer_info(receiver_id:string,msg_tag:string){
+		return this.http.post<any>(URL+'users/get_employ_offer', {receiver_id:receiver_id,msg_tag:msg_tag}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>

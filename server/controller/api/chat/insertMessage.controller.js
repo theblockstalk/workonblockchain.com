@@ -14,7 +14,10 @@ module.exports = function insert_message(req, res)
 {
     let sanitizeddescription = sanitize.sanitizeHtml(req.unsanitizedBody.description);
     let sanitizedmessage = sanitize.sanitizeHtml(req.unsanitizedBody.message);
-    insert_message_new(req.body,sanitizeddescription,sanitizedmessage).then(function (data)
+
+    let userId = req.auth.user._id;
+
+    insert_message_new(req.body,sanitizeddescription,sanitizedmessage,userId).then(function (data)
     {
         if (data)
         {
@@ -32,7 +35,7 @@ module.exports = function insert_message(req, res)
         });
 }
 
-function insert_message_new(data,description,msg){
+function insert_message_new(data,description,msg,sender_id){
 	let new_description = '';
 	let new_msg = '';
 	if(description){
@@ -55,7 +58,7 @@ function insert_message_new(data,description,msg){
 	my_date = date.format(current_date, 'MM/DD/YYYY HH:mm:ss');
     var deferred = Q.defer();
     let newChat = new chat({
-        sender_id : mongoose.Types.ObjectId(data.sender_id),
+        sender_id : mongoose.Types.ObjectId(sender_id),
 		receiver_id : mongoose.Types.ObjectId(data.receiver_id),
         sender_name: data.sender_name,
         receiver_name: data.receiver_name,

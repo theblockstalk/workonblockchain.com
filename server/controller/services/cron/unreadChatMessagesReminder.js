@@ -34,7 +34,7 @@ function get_unread_msgs(){
             else{
                 for(var i=0;i<result.length;i++){
                     //console.log(result[i]);
-                    users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1,"type":1}, function (err, userDoc){
+                    users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1,"type":1,"disable_account":1}, function (err, userDoc){
                         if(userDoc){
 							if(userDoc.type === 'candidate'){
                                 CandidateProfile.find({ _creator: userDoc._id},{"first_name":1}, function (err, query_data){

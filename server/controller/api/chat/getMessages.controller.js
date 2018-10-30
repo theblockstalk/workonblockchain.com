@@ -7,7 +7,14 @@ const logger = require('../../services/logger');
 
 module.exports = function (req, res)
 {
-    get_messages(req.body.receiver_id,req.body.sender_id).then(function (data)
+	let userId;
+	if(req.body.sender_id && req.auth.user.is_admin){
+		userId = req.body.sender_id;
+	}
+	else{
+		userId = req.auth.user._id;
+	}
+    get_messages(req.body.receiver_id,userId).then(function (data)
     {
         if (data)
         {
