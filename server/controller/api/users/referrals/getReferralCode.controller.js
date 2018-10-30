@@ -5,18 +5,18 @@ const employerProfile = require('../../../../model/employer_profile');
 const candidateProfile = require('../../../../model/candidate_profile');
 
 module.exports = async function (req, res) {
-    console.log(req.body)
+    //console.log(req.body)
     const refDoc = await referral.findOne({
         url_token:req.body.code
     }).lean();
-    console.log("refDoc");
-    console.log(refDoc);
+    //console.log("refDoc");
+    //console.log(refDoc);
     if(refDoc){
         const userDoc = await user.findOne({email : refDoc.email}).lean();
-        console.log("userDoc");
-        console.log(userDoc);
+        //console.log("userDoc");
+        //console.log(userDoc);
         if(userDoc){
-            console.log("if");
+            //console.log("if");
             if(userDoc.type === 'candidate'){
                 const candidateDoc = await candidateProfile.findOne({_creator : userDoc._id}).lean();
                 if(candidateDoc.first_name){
@@ -52,7 +52,7 @@ module.exports = async function (req, res) {
         }
         else
         {
-            console.log("else");
+            //console.log("else");
             res.send({
                 email: refDoc.email,
                 referred_id : refDoc._id

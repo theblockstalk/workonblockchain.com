@@ -8,7 +8,8 @@ module.exports = async function (req, res) {
     }).lean();
     if(refDoc){
         res.send({
-            code: refDoc.url_token
+            code: refDoc.url_token,
+            email:refDoc.email
         });
     }
     else{
@@ -24,7 +25,8 @@ module.exports = async function (req, res) {
         });
         const result = await document.save();
         res.send({
-            code: token
+            code: token,
+            email : req.body.email,
         });
     }
 };
