@@ -30,5 +30,31 @@ describe('healthCheck', function () {
             expect(res.body.version).to.equal("localhost");
             assert(res.body.message === "this is a health check for the API");
         })
+
+        it('it should throw an Application error', async () => {
+
+            let res = await chai.request(server)
+                .get('/?error=true')
+                .send();
+
+            res.should.have.status(400);
+
+            // Three ways of running tests using chai
+            res.body.success.should.equal(false);
+            res.body.message.should.equal("I am an application error");
+        })
+
+        it('it should throw a normal error', async () => {
+
+            let res = await chai.request(server)
+                .get('/?error=true&raw=true')
+                .send();
+
+            res.should.have.status(500);
+
+            // Three ways of running tests using chai
+            res.body.success.should.equal(false);
+            res.body.message.should.equal("I am a normal error");
+        })
     })
 });

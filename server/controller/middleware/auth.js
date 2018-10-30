@@ -44,8 +44,7 @@ module.exports.isValidCompany = asyncMiddleware(async function isValidCompany(re
     if (user.type !== 'company') errors.throwError("User is not a company", 403);
     if (user.is_verify !== 1) errors.throwError("User is not verified", 403);
     if (user.is_approved !== 1) errors.throwError("User is not a approved", 403);
-    if (user.disable_account !== false) errors.throwError("User account was dissabled", 403); // TODO: disable_account should be in the user collection
-    // if (user.disable_account !== false) errors.throwError("User account was dissabled", 403); // TODO: disable_account should be in the user collection
+    if (user.disable_account !== false) errors.throwError("User account was dissabled", 403);
     next();
 });
 
@@ -55,6 +54,6 @@ module.exports.isValidCandidate = asyncMiddleware(async function isValidCandidat
     if (user.type !== 'candidate') errors.throwError("User is not a candidate", 403);
     if (user.is_verify !== 1) errors.throwError("User is not verified", 403);
     if (user.is_approved !== 1) errors.throwError("User is not a approved", 403);
-    if (user.disable_account !== false) errors.throwError("User account was dissabled", 403); // TODO: disable_account should be in the user collection
+    if (user.disable_account !== false) errors.throwError("User account was dissabled", 403);
     next();
 });

@@ -3742,6 +3742,17 @@ input:checked + .slider:before {
   background: #f6f9fc;
   padding: 10px 0px;
 }
+.wlcm_btn{
+  overflow: hidden;
+  margin-top: 20px;
+  position: relative;
+  right: 85px;
+}
+
+.wlcm_btn .btn{
+  top: 0px !important;
+  float: right !important;
+}
 
 /*==welcome model style end==*/
 
@@ -3752,6 +3763,12 @@ input:checked + .slider:before {
     .navbar {
         border-radius: 0px !important;
     }
+}
+
+@media (max-width: 1200px){
+  .wlcm_btn{
+    right: 0px;
+  }
 }
 
 @media (max-width: 992px){
