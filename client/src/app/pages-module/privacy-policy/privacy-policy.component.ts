@@ -24,18 +24,15 @@ export class PrivacyPolicyComponent implements OnInit {
       this.page_name = 'Privacy Notice';
 
       this.authenticationService.get_page_content(this.page_name)
-            .subscribe(
-                data => {
-                   if(data)
-                   {
-
-                      this.page_title= data.page_title;
-                       this.editor_content = data.page_content;
-
-                   }
-
-
-                 });
+      .subscribe(
+          data => {
+             if(data)
+             {
+               this.page_title= data.page_title;
+               this.editor_content = data.page_content;
+             }
+          }
+      );
 
   }
 

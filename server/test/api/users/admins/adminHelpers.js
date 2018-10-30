@@ -50,6 +50,7 @@ const addTermsContent = module.exports.addTermsContent = async function addTerms
         .set('Authorization', jwtToken)
         .send(cmsData);
 }
+
 const getMetrics = module.exports.getMetrics = async function getMetrics(jwtToken) {
     const res = await chai.request(server)
         .get('/users/get_metrics')
