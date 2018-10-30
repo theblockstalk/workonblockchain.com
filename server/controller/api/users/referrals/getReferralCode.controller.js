@@ -14,21 +14,33 @@ module.exports = async function (req, res) {
         if(userDoc){
             if(userDoc.type === 'candidate'){
                 const candidateDoc = await candidateProfile.findOne({_creator : userDoc._id}).lean();
-                if(candidateDoc){
+                if(candidateDoc.first_name){
                     res.send({
                         name : candidateDoc.first_name,
                         referred_id : refDoc._id
-                    })
+                    });
                 }
+				else{
+					res.send({
+                        name : refDoc.email,
+                        referred_id : refDoc._id
+                    });
+				}
             }
             if(userDoc.type === 'company'){
                 const employerDoc = await employerProfile.findOne({_creator : userDoc._id}).lean();
-                if(employerDoc){
+                if(employerDoc.first_name){
                     res.send({
                         name : employerDoc.first_name,
                         referred_id : refDoc._id
-                    })
+                    });
                 }
+				else{
+					res.send({
+                        name : refDoc.email,
+                        referred_id : refDoc._id
+                    });
+				}
             }
         }
         else

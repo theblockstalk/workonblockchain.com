@@ -6,6 +6,7 @@ const Q = require('q');
 const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
 const logger = require('../../../services/logger');
+const referral = require('../../../../model/referrals');
 
 module.exports = function (req, res) {
     authenticate(req.body.email, req.body.password).then(function (user)
@@ -70,17 +71,27 @@ function authenticate(email, password,type)
                             	}
                             	else
                             	{
-                            		deferred.resolve({
-                                        _id:data._id,
-                                        _creator: data._creator,
-                                        email: user.email,
-                                        email_hash: user.email_hash,
-                                        ref_link: user.ref_link,
-                                        is_admin:user.is_admin,
-                                        type:user.type,
-                                        is_approved : user.is_approved,
-                                        jwt_token: token
-                    					});
+									referral.findOne({ email: email }, function (err, refResult)
+									{
+										if (err){
+											logger.error(err.message, {stack: err.stack});
+											deferred.reject(err.name + ': ' + err.message);
+										}
+										if (refResult)
+										{
+											deferred.resolve({
+												_id:data._id,
+												_creator: data._creator,
+												email: user.email,
+												email_hash: user.email_hash,
+												ref_link: refResult.url_token,
+												is_admin:user.is_admin,
+												type:user.type,
+												is_approved : user.is_approved,
+												jwt_token: token
+											});
+										}
+									});
                             	}
                             		
                             });
@@ -121,17 +132,27 @@ function authenticate(email, password,type)
                             	}
                             	else
                             	{
-                            		deferred.resolve({
-                                        _id:data._id,
-                                        _creator: data._creator,
-                                        email: user.email,
-                                        email_hash: user.email_hash,
-                                        ref_link: user.ref_link,
-                                        is_admin:user.is_admin,
-                                        type:user.type,
-                                        is_approved : user.is_approved,
-                                        jwt_token: token
-                    					});
+									referral.findOne({ email: email }, function (err, refResult)
+									{
+										if (err){
+											logger.error(err.message, {stack: err.stack});
+											deferred.reject(err.name + ': ' + err.message);
+										}
+										if (refResult)
+										{
+											deferred.resolve({
+												_id:data._id,
+												_creator: data._creator,
+												email: user.email,
+												email_hash: user.email_hash,
+												ref_link: refResult.url_token,
+												is_admin:user.is_admin,
+												type:user.type,
+												is_approved : user.is_approved,
+												jwt_token: token
+											});
+										}
+									});
                             	}
                             		
                             });

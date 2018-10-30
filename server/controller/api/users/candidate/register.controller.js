@@ -50,11 +50,46 @@ function create(userParam)
     function createUser()
     {
         let is_verify=0;
+        let email;
         if(userParam.social_type!="")
         {
             is_verify =1;
         }
 
+        referral.findOne({ email: userParam.email }, function (err, user)
+        {
+            if (err){
+                logger.error(err.message, {stack: err.stack});
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            if (user)
+            {
+                email = user.url_token;
+            }
+            else
+            {
+                let new_salt = crypto.randomBytes(16).toString('base64');
+                let new_hash = crypto.createHmac('sha512', new_salt);
+                email = new_hash.digest('hex');
+                email = email.substr(email.length - 10); //getting last 10 characters
+                let newRefCode = new referral
+                ({
+                    email: userParam.email,
+                    url_token: email,
+                    date_created: new Date()
+                });
+
+                newRefCode.save( (err,user) => {
+                    if (err) {
+                        logger.error(err.message, {stack: err.stack});
+                        deferred.reject(err.name + ': ' + err.message);
+                    }
+                    else {
+
+                    }
+                });
+            }
+        });
         let now = new Date();
 		let salt = crypto.randomBytes(16).toString('base64');
 		let hash = crypto.createHmac('sha512', salt);
@@ -62,11 +97,6 @@ function create(userParam)
 		let hashedPasswordAndSalt = hash.digest('hex');
 
         createdDate= now;
-
-		let new_salt = crypto.randomBytes(16).toString('base64');
-		let new_hash = crypto.createHmac('sha512', new_salt);
-		let email = new_hash.digest('hex');
-        email = email.substr(email.length - 10); //getting last 10 characters
 
         let newUser = new users
         ({
@@ -128,14 +158,14 @@ function create(userParam)
                                     _creator: userData._creator._id,
                                     type:userData._creator.type,
                                     email: userData._creator.email,
-                                    ref_link: userData._creator.ref_link,
+                                    ref_link: email,
                                     is_approved : userData._creator.is_approved,
                                     jwt_token: tokenn
                         		});
                         	}
                         });
                 	}
-                		
+
                 });
 
                 }
