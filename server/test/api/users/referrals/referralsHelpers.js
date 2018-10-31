@@ -51,3 +51,13 @@ const getRefCode = module.exports.getRefCode = async function getRefCode(email) 
     res.should.have.status(200);
     return res;
 }
+
+const getRefDetail = module.exports.getRefDetail = async function getRefDetail(data, jwtToken) {
+
+    const res = await chai.request(server)
+        .post('/users/get_refrence_detail')
+        .set('Authorization', jwtToken)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
