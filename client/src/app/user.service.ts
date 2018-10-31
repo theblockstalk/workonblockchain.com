@@ -168,8 +168,9 @@ export class UserService {
 
   getReferenceDetail(id: string){
 
-    return this.http.post<any>(URL+'users/get_refrence_detail', {id:id} )
-      .map((res: Response) =>
+    return this.http.post<any>(URL + 'users/get_refrence_detail',  {id:id},{
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).map((res: Response) =>
       {
         if (res)
         {

@@ -93,7 +93,7 @@ router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupS
 router.post('/users/send_refreal',auth.isLoggedIn, refReferral);
 router.post('/users/get_refrence_code', asyncMiddleware(refGetReferralCode));
 router.post('/users/get_ref_code' , asyncMiddleware(getReferralCodeForUsers));
-router.post('/users/get_refrence_detail', asyncMiddleware(getReferralDetailForAdmin));
+router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getReferralDetailForAdmin));
 
 
 // Candidates
