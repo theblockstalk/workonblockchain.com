@@ -166,7 +166,27 @@ export class UserService {
             });
     }
 
-    create(user: User)
+  getReferenceDetail(id: string){
+
+    return this.http.post<any>(URL+'users/get_refrence_detail', {id:id} )
+      .map((res: Response) =>
+      {
+        if (res)
+        {
+          return res;
+        }
+      }).catch((error: any) =>
+      {
+        if (error.status )
+        {
+          return Observable.throw(new Error(error.status));
+        }
+
+      });
+  }
+
+
+  create(user: User)
     {
         return this.http.post<any>(URL+'users/register', user) .map(user => {
             return user

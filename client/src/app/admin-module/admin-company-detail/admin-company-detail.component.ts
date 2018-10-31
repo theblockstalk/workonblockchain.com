@@ -63,7 +63,7 @@ export class AdminCompanyDetailComponent implements OnInit {
               this.verify =data._creator.is_verify;
               if(data._creator.refered_id) {
                 console.log(data._creator.email);
-                this.authenticationService.getByRefrenceCode(data._creator.refered_id)
+                this.authenticationService.getReferenceDetail(data._creator.refered_id)
                   .subscribe(
                     refData => {
 
@@ -83,7 +83,7 @@ export class AdminCompanyDetailComponent implements OnInit {
                         console.log(this.referred_link);
                       }
                       else {
-                        this.referred_name = refData.email;
+                        this.referred_name = refData.refDoc.email;
                       }
 
                     },

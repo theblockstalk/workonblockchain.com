@@ -140,7 +140,7 @@ export class AdminCandidateDetailComponent implements OnInit {
               if(data._creator.refered_id)
               {
                 console.log(data._creator.email);
-                this.authenticationService.getByRefrenceCode(data._creator.refered_id)
+                this.authenticationService.getReferenceDetail(data._creator.refered_id)
                   .subscribe(
                     refData => {
 
@@ -161,7 +161,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                       }
                       else
                       {
-                        this.referred_name = refData.email;
+                        this.referred_name = refData.refDoc.email;
                       }
 
                           },

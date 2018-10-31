@@ -21,6 +21,7 @@ const updateExplanationPopupStatus = require('./controller/api/users/updateExpla
 const refGetReferralCode = require('./controller/api/users/referrals/getReferralCode.controller');
 const refReferral = require('./controller/api/users/referrals/referral.controller');
 const getReferralCodeForUsers = require('./controller/api/users/referrals/getReferralCodeForUsers.controller');
+const getReferralDetailForAdmin  = require('./controller/api/users/referrals/getReferralDetailForAdmin.controller');
 
 // Candidates
 const candidateRegister = require('./controller/api/users/candidate/register.controller');
@@ -92,6 +93,8 @@ router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupS
 router.post('/users/send_refreal',auth.isLoggedIn, refReferral);
 router.post('/users/get_refrence_code', asyncMiddleware(refGetReferralCode));
 router.post('/users/get_ref_code' , asyncMiddleware(getReferralCodeForUsers));
+router.post('/users/get_refrence_detail', asyncMiddleware(getReferralDetailForAdmin));
+
 
 // Candidates
 router.post('/users/register', candidateRegister);

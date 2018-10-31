@@ -96,6 +96,7 @@ export class ReferralComponent implements OnInit {
             this.authenticationService.getRefCode(data._creator.email)
               .subscribe(
                 data => {
+console.log("data");
                   console.log(data);
                   this.ref_link = this.email_ref_link + data.code
                   this.share_url = this.ref_link;
