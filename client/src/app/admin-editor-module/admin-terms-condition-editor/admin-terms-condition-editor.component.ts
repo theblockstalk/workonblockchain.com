@@ -66,8 +66,8 @@ export class AdminTermsConditionEditorComponent implements OnInit {
                    if(data)
                    {
                        //////console.log(data);
-                        this.page_title = data[0].page_title;
-                       this.editor_content = data[0].page_content;
+                        this.page_title = data.page_title;
+                       this.editor_content = data.page_content;
                        ////console.log(this.editor_content);
 
                    }
@@ -78,8 +78,8 @@ export class AdminTermsConditionEditorComponent implements OnInit {
                    if(data)
                    {
                       // ////console.log(data);
-                        this.company_page_title = data[0].page_title;
-                       this.company_editor_content = data[0].page_content;
+                        this.company_page_title = data.page_title;
+                       this.company_editor_content = data.page_content;
                        ////console.log(this.editor_content);
 
                    }
@@ -121,7 +121,7 @@ export class AdminTermsConditionEditorComponent implements OnInit {
        //console.log(editorForm.value);
        if(editorForm.value.page_title && editorForm.value.html_text){
 		   this.editor_text = this.editor_content;
-		   this.authenticationService.pages_content(editorForm.value)
+		   this.authenticationService.add_new_pages_content(editorForm.value)
 		   .subscribe(
 		   data =>
 		   {
@@ -147,7 +147,7 @@ export class AdminTermsConditionEditorComponent implements OnInit {
        this.company_page_name = 'Terms and Condition for company';
        //console.log(companyeditor.value);
        if(companyeditor.value.page_title && companyeditor.value.html_text){
-		   this.authenticationService.pages_content(companyeditor.value)
+		   this.authenticationService.add_new_pages_content(companyeditor.value)
 		   .subscribe(
 		   data =>
 		   {
