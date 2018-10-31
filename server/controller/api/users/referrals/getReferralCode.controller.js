@@ -5,12 +5,13 @@ const employerProfile = require('../../../../model/employer_profile');
 const candidateProfile = require('../../../../model/candidate_profile');
 
 module.exports = async function (req, res) {
-    //console.log(req.body)
+    console.log("data");
+    console.log(req.body)
     const refDoc = await referral.findOne({
-        url_token:req.body.code
+        _id:req.body.code
     }).lean();
     //console.log("refDoc");
-    //console.log(refDoc);
+    console.log(refDoc);
     if(refDoc){
         const userDoc = await user.findOne({email : refDoc.email}).lean();
         //console.log("userDoc");
@@ -22,13 +23,13 @@ module.exports = async function (req, res) {
                 if(candidateDoc.first_name){
                     res.send({
                         email : userDoc.email,
-                        name : candidateDoc.first_name,
-                        referred_id : refDoc._id
+                        referred_id : refDoc._id,
+                        candidateDoc :  candidateDoc
                     });
                 }
 				else{
 					res.send({
-                        name : refDoc.email,
+                        email : refDoc.email,
                         referred_id : refDoc._id
                     });
 				}
@@ -38,13 +39,14 @@ module.exports = async function (req, res) {
                 if(employerDoc.first_name){
                     res.send({
                         email : userDoc.email,
-                        name : employerDoc.first_name,
+                        first_name : employerDoc.first_name,
+                        last_name  : employerDoc.last_name,
                         referred_id : refDoc._id
                     });
                 }
 				else{
 					res.send({
-                        name : refDoc.email,
+                        email : refDoc.email,
                         referred_id : refDoc._id
                     });
 				}

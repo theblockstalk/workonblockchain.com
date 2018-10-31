@@ -53,12 +53,14 @@ export class AdminCandidateDetailComponent implements OnInit {
   roles;
   platforms;
   email;
+  response;
+  referred_name;
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
     this.credentials.user_id = this.user_id;
-
+    this.response = "";
 
     if(this.user_id && this.admin_log)
     {
@@ -67,6 +69,7 @@ export class AdminCandidateDetailComponent implements OnInit {
         this.authenticationService.getById(this.user_id)
           .subscribe(
             data => {
+              console.log(data._creator.refered_id);
               this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
@@ -133,30 +136,18 @@ export class AdminCandidateDetailComponent implements OnInit {
 
               if(data._creator.refered_id)
               {
-                this.authenticationService.getRefCode(data._creator.email)
+                console.log(data._creator.email);
+                this.authenticationService.getByRefrenceCode(data._creator.refered_id)
                   .subscribe(
                     refData => {
-                      console.log(data._creator);
-                      console.log(refData.referred_id);
-                      if(refData.referred_id === data._creator.referred_id){
-                        console.log("ture");
-                        this.authenticationService.getById(this.currentUser._creator)
-                          .subscribe(
-                            userData => {
-console.log(userData);
-                              if(userData!='')
-                              {
-                                console.log("if")
-                                this.first_name = userData.first_name;
-                                this.last_name =userData.last_name;
 
-                              }
-                              else
-                              {
-                                console.log("else")
-                                this.email = userData._creator.email;
-                              }
-                            });
+                      console.log(refData);
+                      if(refData.first_name && refData.last_name){
+                        this.referred_name = refData.first_name + " " + refData.last_name;
+                      }
+                      else
+                      {
+                        this.referred_name = refData.email;
                       }
 
                           },
