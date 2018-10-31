@@ -43,7 +43,7 @@ export class CandidateFormComponent implements OnInit {
 
                           if(data && data.name)
                             this.ref_msg = data.name + ' thinks you should join workonblockchain.com';
-                          if(data && data.email)
+                          else
                             this.ref_msg = data.email + ' thinks you should join workonblockchain.com';
 
                           if(this.ref_msg){
