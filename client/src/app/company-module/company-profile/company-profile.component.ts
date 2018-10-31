@@ -95,7 +95,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                 data =>
                 {
                   //console.log(data);
-                  if(!data.terms)
+                  if(!data.terms_id)
                   {
                       this.router.navigate(['/company_wizard']);
                   }
