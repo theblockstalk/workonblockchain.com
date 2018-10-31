@@ -31,7 +31,7 @@ describe('get info of user who refereed a person', function () {
 
             const referralInfo = await referralsHelper.getRefreeInfo(refDoc.url_token);
             const res = referralInfo.body;
-            res.name.should.equal(refDoc.email);
+            res.email.should.equal(refDoc.email);
         })
     })
 });
