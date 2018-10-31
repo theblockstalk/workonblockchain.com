@@ -104,10 +104,9 @@ export class UserService {
             headers: new HttpHeaders().set('Authorization', this.token)
         }).map((res: Response) =>
             {
-
                 if (res)
                 {
-                    if(!res['terms_id'] || res['terms_id'] == false)
+                    if(!res['terms_id'])
                 {
                      this.router.navigate(['/terms-and-condition']);
 

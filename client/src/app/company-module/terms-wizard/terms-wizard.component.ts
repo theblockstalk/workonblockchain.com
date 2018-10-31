@@ -20,6 +20,7 @@ export class TermsWizardComponent implements OnInit {
   marketing_emails;
   agree;
   about_disable;
+  terms_id;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -37,22 +38,31 @@ export class TermsWizardComponent implements OnInit {
     }
     else if(this.currentUser && this.currentUser.type=='company')
     {
+      this.authenticationService.get_page_content('Terms and Condition for company')
+      .subscribe(
+        data => {
+          if(data)
+          {
+            this.terms_id = data._id;
+          }
+        }
+      );
       this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
           {
             ////console.log(data);
             this.marketing_emails = data.marketing_emails;
-            if(data.terms)
+            if(data.terms_id)
             {
-              this.termscondition = data.terms;
+              this.termscondition = true;
               this.marketing_emails = data.marketing_emails;
 
               this.about_company = '/about_comp';
 
             }
 
-            if(data.terms == true)
+            if(data.terms_id == true)
             {
               this.about_disable='';
               this.terms_active_class = 'fa fa-check-circle text-success';

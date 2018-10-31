@@ -67,7 +67,6 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
             .subscribe(
                 data =>
                 {
-                  //console.log(data);
                   this.authenticationService.get_page_content('Terms and Condition for candidate')
                     .subscribe(
                       data => {
