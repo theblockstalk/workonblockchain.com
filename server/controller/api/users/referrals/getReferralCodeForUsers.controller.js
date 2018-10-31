@@ -7,11 +7,7 @@ module.exports = async function (req, res) {
         email:req.body.email
     }).lean();
     if(refDoc){
-        res.send({
-            code: refDoc.url_token,
-            email:refDoc.email,
-            referred_id : refDoc._id
-        });
+        res.send(refDoc);
     }
     else{
         let new_salt = crypto.randomBytes(16).toString('base64');
@@ -25,10 +21,11 @@ module.exports = async function (req, res) {
             date_created: new Date(),
         });
         const result = await document.save();
-		res.send({
-            code: token,
-            email : req.body.email,
-            referred_id : result._id
-        });
+        const refData = {
+            url_token: token,
+            email:req.body.email,
+            _id :result._id
+        }
+		res.send(refData);
     }
 };

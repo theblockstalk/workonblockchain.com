@@ -77,7 +77,7 @@ export class ReferralComponent implements OnInit {
                 data => {
                   console.log("data");
                   console.log(data);
-                  this.ref_link = this.email_ref_link + data.code
+                  this.ref_link = this.email_ref_link + data.url_token
                   this.share_url = this.ref_link;
                   this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
                 },
@@ -106,7 +106,7 @@ export class ReferralComponent implements OnInit {
                 data => {
 console.log("data");
                   console.log(data);
-                  this.ref_link = this.email_ref_link + data.code
+                  this.ref_link = this.email_ref_link + data.url_token
                   this.share_url = this.ref_link;
                   this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
                 },
@@ -155,7 +155,7 @@ console.log("data");
       this.authenticationService.getRefCode(refrealForm.value.email)
       .subscribe(
         data => {
-          this.ref_link_for_not_logged_user = this.email_ref_link+data.code;
+          this.ref_link_for_not_logged_user = this.email_ref_link + data.url_token;
           this.share_url = this.ref_link_for_not_logged_user;
           this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
         },
