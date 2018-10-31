@@ -21,11 +21,6 @@ module.exports = async function (req, res) {
             date_created: new Date(),
         });
         const result = await document.save();
-        const refData = {
-            url_token: token,
-            email:req.body.email,
-            _id :result._id
-        }
-		res.send(refData);
+		res.send(result);
     }
 };
