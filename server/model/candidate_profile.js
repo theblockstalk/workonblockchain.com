@@ -5,7 +5,10 @@ const enumerations = require('./enumerations');
 const Schema = mongoose.Schema;
 
 const CandidateProfileSchema = new Schema({
-	terms_id:
+	terms: {
+	    type: Boolean
+    },
+    terms_id:
     {
         type: Schema.Types.ObjectId,
         ref: 'pages_content'
