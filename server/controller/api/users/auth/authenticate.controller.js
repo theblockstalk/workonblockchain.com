@@ -6,7 +6,6 @@ const Q = require('q');
 const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
 const logger = require('../../../services/logger');
-const referral = require('../../../../model/referrals');
 
 module.exports = function (req, res) {
     authenticate(req.body.email, req.body.password).then(function (user)
