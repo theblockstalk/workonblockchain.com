@@ -50,7 +50,7 @@ function create(userParam)
     function createUser()
     {
         let is_verify=0;
-        let email;
+        let url_token;
         if(userParam.social_type!="")
         {
             is_verify =1;
@@ -64,18 +64,18 @@ function create(userParam)
             }
             if (user)
             {
-                email = user.url_token;
+                url_token = user.url_token;
             }
             else
             {
                 let new_salt = crypto.randomBytes(16).toString('base64');
                 let new_hash = crypto.createHmac('sha512', new_salt);
-                email = new_hash.digest('hex');
-                email = email.substr(email.length - 10); //getting last 10 characters
+                url_token = new_hash.digest('hex');
+                url_token = url_token.substr(url_token.length - 10); //getting last 10 characters
                 let newRefCode = new referral
                 ({
                     email: userParam.email,
-                    url_token: email,
+                    url_token: url_token,
                     date_created: new Date()
                 });
 
@@ -157,7 +157,7 @@ function create(userParam)
                                     _creator: userData._creator._id,
                                     type:userData._creator.type,
                                     email: userData._creator.email,
-                                    ref_link: email,
+                                    ref_link: url_token,
                                     is_approved : userData._creator.is_approved,
                                     jwt_token: tokenn
                         		});
