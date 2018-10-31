@@ -24,7 +24,7 @@ module.exports = async function (req, res) {
                 }
 				else{
 					res.send({
-                        name : refDoc.email,
+                        email : refDoc.email,
                         referred_id : refDoc._id
                     });
 				}
@@ -40,7 +40,7 @@ module.exports = async function (req, res) {
                 }
 				else{
 					res.send({
-                        name : refDoc.email,
+                        email : refDoc.email,
                         referred_id : refDoc._id
                     });
 				}
