@@ -25,10 +25,10 @@ module.exports = async function (req, res) {
             date_created: new Date(),
         });
         const result = await document.save();
-        res.send({
+		res.send({
             code: token,
             email : req.body.email,
-            referred_id : refDoc._id
+            referred_id : result._id
         });
     }
 };
