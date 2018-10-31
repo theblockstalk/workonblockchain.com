@@ -35,6 +35,10 @@ export class AdminCompanyDetailComponent implements OnInit {
   }
 
   company_website;
+  response;
+  referred_name;
+  referred_link;
+  detail_link;
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -57,6 +61,37 @@ export class AdminCompanyDetailComponent implements OnInit {
               this.info.push(data);;
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
+              if(data._creator.refered_id) {
+                console.log(data._creator.email);
+                this.authenticationService.getByRefrenceCode(data._creator.refered_id)
+                  .subscribe(
+                    refData => {
+
+                      console.log(refData);
+                      if (refData.candidateDoc) {
+                        console.log("candidate");
+                        this.referred_name = refData.candidateDoc.first_name + " " + refData.candidateDoc.last_name;
+                        this.detail_link = '/admin-candidate-detail';
+                        this.referred_link = refData.candidateDoc._creator;
+                      }
+                      else if (refData.companyDoc) {
+                        console.log("company");
+                        this.referred_name = refData.companyDoc.first_name + " " + refData.companyDoc.last_name;
+                        console.log(this.referred_name);
+                        this.detail_link = '/admin-company-detail';
+                        this.referred_link = refData.companyDoc._creator;
+                        console.log(this.referred_link);
+                      }
+                      else {
+                        this.referred_name = refData.email;
+                      }
+
+                    },
+                    error => {
+
+                    }
+                  );
+              }
               if(data.company_logo != null )
               {
                 this.imgPath = data.company_logo;

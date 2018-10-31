@@ -58,7 +58,6 @@ module.exports = async function (req, res) {
             {
                 let data = {email : refDoc.email , referred_fname : req.body.info. referred_fname , referred_lname: req.body.info.referred_lname }
                 referedUserEmail.sendEmail(data, false);
-
                 res.send({
                     success: false
                 });

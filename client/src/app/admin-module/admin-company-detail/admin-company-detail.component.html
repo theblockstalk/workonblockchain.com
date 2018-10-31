@@ -16,7 +16,7 @@
 				 		<span class = "p_img" *ngIf="imgPath">
 				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
 				 		</span>
-				 		
+
 				 		<span class = "name">
 				 			<h3 class="text-capitalize">{{data.company_name}} </h3>
 				 		</span>
@@ -24,7 +24,7 @@
 				 		<span class = "short_intro">
 				 			<p>{{data.company_description}}</p>
 				 		</span>
-				 		
+
 				 		<span class = "short_intro">
 				 			<strong>Date created : </strong><span> {{data._creator.created_date | date:'dd-MMMM-yyyy'}}</span>
 				 		</span>
@@ -40,12 +40,12 @@
 								<input type="hidden" name="id" [ngModel]="data._creator._id">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
-								
-								<div class="submit-button">						
+
+								<div class="submit-button">
 									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Active</button>
 									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Inactive</button>
 									<button type="submit" class = "btn btn_descp" *ngIf = "data._creator.is_verify ===0" disabled>Active</button>
-									
+
 								</div>
 							</form>
 							</span>
@@ -59,48 +59,56 @@
 				 	<div class="col-md-6 side-info">
 
 				 		<ul>
-				 			
+
+              <li>
+                <span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
+
+                <ng-container *ngIf="referred_link ; else noLink">
+             <span  class = "li_txt" >Refered By: <a  [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
+					 				</span>
+                </ng-container>
+                <ng-template #noLink>
+                      <span  class = "li_txt" >Refered By: {{referred_name}}
+					 				</span>
+                </ng-template>
+
+              </li>
 
 				 			<li>
-				 				
-					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 					 				<span class = "li_txt"><a [href]="company_website" target="_blank">{{company_website}}</a></span>
-				 			
+
 				 			</li>
 
 				 			<li>
-				 			
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt">Country : {{data.company_country}}</span>
-				 		
+
 				 			</li>
 							<li>
-				 				
-					 				<span class = "list-icon span_bg"><img src="assets/profile/comp.png"> </span> 
+
+					 				<span class = "list-icon span_bg"><img src="assets/profile/comp.png"> </span>
 					 				<span class = "li_txt">City: {{data.company_city}}</span>
-				 				
+
 				 			</li>
-				 			
+
+
 				 			<li>
-				 				
-					 				<span class = "list-icon span_bg"><img src="assets/profile/comp.png"> </span> 
-					 				<span class = "li_txt">Postcode: {{data.company_postcode}}</span>
-				 				
-				 			</li>
-				 			<li>
-				 				
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span> 
+
+				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
 				 					<span class = "li_txt"> Phone : {{data.company_phone}}</span>
-				 			
+
 				 			</li>
 				 		</ul>
-				 		
+
 				 	</div>
-				 	
+
 				 </section>
-				 
+
 				 <section class = "profile job_info">
-				
+
 				<div class="col-md-6 info-area">
 				 <ng-container *ngIf="verify === 1;else no_verify">
 				 	<p>
@@ -150,18 +158,18 @@
 				 	<span>{{data._creator.dissable_account_timestamp | date:'short'}}</span>
 				 	</p>
 				  </ng-container>
-				
+
 				 </div>
-				 
-				 	
-      				
+
+
+
 				 </section>
-				 
-				
-				 
+
+
+
 				 <section class = "profile job_info">
 					<h3>Company Info</h3>
-				 	
+
 				 	<!--<div class="col-md-6 info-area">
 				 		<p>
 							<strong>Position Type : </strong>
@@ -169,7 +177,7 @@
 						</p>
 				 	</div>-->
 
-				 	
+
 				 	<div class="col-md-6 info-area">
 				 		<p>
 							<strong>When was the company founded: </strong>
@@ -189,39 +197,39 @@
 						</p>
 
       				</div>
-      				
-      				
-				 	
+
+
+
 				 </section>
 				  <section class = "profile job_info">
 					<h3>Company Administration</h3>
-				 	
+
 				 	<div class="col-md-6 info-area">
 				 		<p>
-							
+
 							<span class="alignment">{{data.first_name}} {{data.last_name}}</span>
 						</p>
 				 	</div>
-				 
-				 	
+
+
 				 	<div class="col-md-6 info-area">
 				 		<p>
 							<strong>Title: </strong>
 							<span>{{data.job_title}}</span>
 						</p>
 				 	</div>
-				 
+
 				 	<div class="col-md-6 info-area">
 				 		<p>
 							<strong>Email Address: </strong>
 							<span>{{data._creator.email}}</span>
 						</p>
 				 	</div>
-				 					 	
-				 				 	
+
+
 				 </section>
-				 
-				 
+
+
 				 </div>
 				 </div>
 				 </div>
