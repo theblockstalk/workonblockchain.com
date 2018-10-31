@@ -38,37 +38,23 @@ module.exports = async function (req, res) {
                     const candidateDoc = await CandidateProfile.findOne({_creator : userDoc._id}).lean();
                     let data = {fname : candidateDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
                     referedUserEmail.sendEmail(data, userDoc.disable_account);
-
-                    res.send({
-                        success : true
-                    });
                 }
                 if(userDoc.type === 'company'){
                     const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).lean();
                     let data = {fname : companyDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
                     referedUserEmail.sendEmail(data, userDoc.disable_account);
-
-                    res.send({
-                        success : true
-                    });
-
                 }
             }
             else
             {
-                let data = {email : refDoc.email , referred_fname : req.body.info. referred_fname , referred_lname: req.body.info.referred_lname }
+                let data = {email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
                 referedUserEmail.sendEmail(data, false);
-                res.send({
-                    success: false
-                });
             }
 
         }
-        else
-        {
-            res.send({
-                success: false
-            });
-        }
+
+    res.send({
+        success: true
+    });
 
 };
