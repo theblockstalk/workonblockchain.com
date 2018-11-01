@@ -58,7 +58,7 @@ const UserSchema = new Schema({
         {
             type:String, // This is a hash
         },
-    ref_link:
+    ref_link: // DELETE ME
         {
             type:String,
             // validate: regexes.url
@@ -66,7 +66,7 @@ const UserSchema = new Schema({
     refered_id:
         {
             type: Schema.Types.ObjectId,
-            ref : 'Referrals'
+            //ref : 'Referrals' // UNCOMMENT ME
         },
     is_admin:
         {
