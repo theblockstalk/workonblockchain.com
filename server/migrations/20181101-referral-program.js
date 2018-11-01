@@ -23,7 +23,8 @@ module.exports.up = async function() {
                 url_token : referralToken,
                 date_created: new Date(),
             });
-            const result = await document.save();
+            const refObj = await document.save();
+            console.log(refObj);
             unset.ref_link = 1;
             let updateObj = {$unset : unset}
 
@@ -43,27 +44,28 @@ module.exports.up = async function() {
 
 // This function will undo the migration
 module.exports.down = async function() {
-    let candidateCursor = await Candidate.find({}).cursor();
-    totalDocsToProcess = await Candidate.find({}).count();
-    let candidateDoc = await candidateCursor.next();
+    let referralCursor = await Referral.find({}).cursor();
+    totalDocsToProcess = await Referral.find({}).count();
+    let referralDoc = await referralCursor.next();
 
-    for ( null ; candidateDoc !== null; candidateDoc = await candidateCursor.next()) {
+    const userDoc = await Users.find().lean();
+
+
+    for ( null ; referralDoc !== null; referralDoc = await referralCursor.next()) {
         totalProcessed++;
 
-        console.log("Updating " + candidateDoc._id);
-        if (candidateDoc.terms_id) {
+        if (referralDoc.url_token && referralDoc.email === userDoc.email) {
             const updateObj = {
-                $unset: {terms_id: 1},
-                $set: {terms: true}
+                $set: {refered_id: referralDoc._id , ref_link : referralDoc.url_token}
             };
             console.log('  ', updateObj);
-            const update = await Candidate.update({_id: candidateDoc._id}, updateObj);
+            const update = await Users.update({_id: userDoc._id}, updateObj);
             if (update && update.nModified) totalModified++;
             else console.log('  UPDATE NOT SUCESSFUL');
         }
     }
 
-    console.log('Total candidates docs to process: ', totalDocsToProcess);
+    console.log('Total users docs to process: ', totalDocsToProcess);
     console.log('Total processed: ', totalProcessed);
     console.log('Total modified: ', totalModified);
 
