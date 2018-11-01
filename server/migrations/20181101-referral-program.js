@@ -18,6 +18,7 @@ module.exports.up = async function() {
             let referralToken = userDoc.ref_link.substr(userDoc.ref_link.length - 10);
             let document = new Referral
             ({
+                _id :  userDoc.referred_id,
                 email : userDoc.email,
                 url_token : referralToken,
                 date_created: new Date(),
