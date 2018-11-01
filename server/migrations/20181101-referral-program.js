@@ -43,7 +43,7 @@ module.exports.up = async function() {
 
         if (updateObj) {
             console.log('  ', updateObj);
-            const update = await Referral.update(updateObj);
+            const update = await Referral.update({url_token: userDoc.refered_id, email : userDoc.email}, updateObj);
             if (update && update.nModified) totalModified++;
             else console.log('  UPDATE NOT SUCESSFUL');
         }
