@@ -40,7 +40,14 @@ describe('admin search candidate by filter', function () {
             const job = docGenerator.job();
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
-            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+
+            const info = docGenerator.cmsContentForTCCandidate();
+            const cmsRes = await adminHelper.addTermsContent(info , companyUserDoc.jwt_token);
+            const cmsDoc = await Pages.findOne({page_name: info.page_name}).lean();
+console.log(cmsDoc._id);
+            const candTerms = docGenerator.termsAndConditions();
+
+            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(cmsDoc._id,candTerms,candidate, profileData,job,resume,experience );
             await userHelper.makeAdmin(candidate.email);
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 

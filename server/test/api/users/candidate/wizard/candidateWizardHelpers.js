@@ -59,3 +59,15 @@ const resume = module.exports.resume = async function resume(data,jwtToken) {
         .send(detail);
     return res;
 }
+
+const candidateTerms = module.exports.candidateTerms = async function candidateTerms(termsID,data,jwtToken) {
+    const detail = {
+        'termsID' : termsID,
+        'marketing' : data.marketing
+    };
+    const res = await chai.request(server)
+        .put('/users/welcome/terms')
+        .set('Authorization', jwtToken)
+        .send(detail);
+    return res;
+}
