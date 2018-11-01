@@ -44,6 +44,13 @@ const addCmsContent = module.exports.addCmsContent = async function addCmsConten
     return res;
 }
 
+const addTermsContent = module.exports.addTermsContent = async function addTermsContent(cmsData,jwtToken) {
+    const res = await chai.request(server)
+        .put('/users/add_terms_and_conditions_content')
+        .set('Authorization', jwtToken)
+        .send(cmsData);
+}
+
 const getMetrics = module.exports.getMetrics = async function getMetrics(jwtToken) {
     const res = await chai.request(server)
         .get('/users/get_metrics')

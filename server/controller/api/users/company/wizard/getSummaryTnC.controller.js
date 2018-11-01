@@ -1,6 +1,7 @@
 var Q = require('q');
 var mongo = require('mongoskin');
 const EmployerProfile = require('../../../../../model/employer_profile');
+const Pages = require('../../../../../model/pages_content');
 const logger = require('../../../../services/logger');
 
 ///////////add company summary or Terms& conditions in db////////////////////////////
@@ -46,33 +47,55 @@ function company_summary(_id, companyParam)
 
     function updateEmployer(_id)
     {
-        if(companyParam.terms)
+        if(companyParam.termsID)
         {
-            var set =
-                {
-                    terms:companyParam.terms,
-                    marketing_emails: companyParam.marketing,
-
-                };
+			Pages.findOne({_id: companyParam.termsID}).exec(function (err, result) {
+				if (err) {
+					logger.error(err.message, {stack: err.stack});
+					deferred.reject(err.name + ': ' + err.message);
+				}
+				else {
+					if(result){
+						var set =
+						{
+							terms_id: result._id,
+							marketing_emails: companyParam.marketing,
+						};
+						EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
+						{
+							if (err){
+								logger.error(err.message, {stack: err.stack});
+								deferred.reject(err.name + ': ' + err.message);
+							}
+							else
+								deferred.resolve(set);
+						});
+					}
+					else{
+						deferred.reject('Error: Not a valid doc');
+					}
+				}
+			});
+            
         }
         else
         {
-            var set =
-                {                  
-                    marketing_emails: companyParam.marketing,
-
-                };
+			var set =
+			{                  
+				marketing_emails: companyParam.marketing,
+			};
+			EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
+			{
+				if (err){
+					logger.error(err.message, {stack: err.stack});
+					deferred.reject(err.name + ': ' + err.message);
+				}
+				else
+					deferred.resolve(set);
+			});
         }
 
-        EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+        
     }
 
     return deferred.promise;

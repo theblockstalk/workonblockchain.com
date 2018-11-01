@@ -4,6 +4,7 @@ const date = require('date-and-time');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const Chats = require('../../../../model/chat');
+const Pages = require('../../../../model/pages_content');
 const docGenerator = require('../../../helpers/docGenerator');
 const companyHelper = require('../../users/company/companyHelpers');
 const candidateHelper = require('../../users/candidate/candidateHelpers');
@@ -27,7 +28,6 @@ describe('admin search candidate by filter', function () {
     describe('POST /users/admin_candidate_filter', () => {
 
         it('it should search candidate by filter', async () => {
-
             const company = docGenerator.company();
             const companyTnCWizard = docGenerator.companyTnCWizard();
             const companyAbout = docGenerator.companyAbout();
@@ -35,11 +35,11 @@ describe('admin search candidate by filter', function () {
             await userHelper.makeAdmin(company.email);
             const companyUserDoc = await Users.findOne({email: company.email}).lean();
 
-            const candidate = docGenerator.candidate();
             const profileData = docGenerator.profileData();
             const job = docGenerator.job();
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
+            const candidate = docGenerator.candidate();
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
             await userHelper.makeAdmin(candidate.email);
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();

@@ -5,9 +5,11 @@ const server = require('../../../../../../server');
 const mongo = require('../../../../helpers/mongo');
 const Users = require('../../../../../model/users');
 const Companies = require('../../../../../model/employer_profile');
+const Pages = require('../../../../../model/pages_content');
 const docGenerator = require('../../../../helpers/docGenerator');
 const companyHelper = require('../companyHelpers');
 const companyWizardHelper = require('./companyWizardHelpers');
+const adminHelper = require('../../admins/adminHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -26,17 +28,20 @@ describe('company terms and conditions', function () {
         it('it should insert the TnC and marketing email', async () => {
 
             const company = docGenerator.company();
-            const companyRes = await companyHelper.signupCompany(company);
+            const companyRes = await companyHelper.signupAdminCompany(company);
+            const companyDoc = await Users.findOne({email: company.email}).lean();
+
+            const info = docGenerator.cmsContentFroTC();
+            const cmsRes = await adminHelper.addTermsContent(info , companyDoc.jwt_token);
+            const cmsDoc = await Pages.findOne({page_name: info.page_name}).lean();
 
             const companyTnCWizard = docGenerator.companyTnCWizard();
-            const SummaryTnC = await companyWizardHelper.SummaryTnC(companyTnCWizard ,companyRes.body.jwt_token);
+            const SummaryTnC = await companyWizardHelper.SummaryTnC(cmsDoc._id,companyTnCWizard ,companyDoc.jwt_token);
 
-            const userDoc = await Users.findOne({email: company.email}).lean();
-
-            const companyDoc = await Companies.findOne({_creator: userDoc._id}).lean();
-            should.exist(companyDoc);
-            companyDoc.terms.should.equal(companyTnCWizard.terms);
-            companyDoc.marketing_emails.should.equal(companyTnCWizard.marketing);
+            const newCompanyDoc = await Companies.findOne({_creator: companyDoc._id}).lean();
+            const cmsID = newCompanyDoc.terms_id.toString();
+            cmsID.should.equal(cmsDoc._id.toString());
+            newCompanyDoc.marketing_emails.should.equal(companyTnCWizard.marketing);
 
         })
     })

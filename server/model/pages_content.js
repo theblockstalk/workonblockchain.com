@@ -18,7 +18,12 @@ const PagesSchema = new Schema({
 	{
 		type:String,
 		required:true,
-	},	
+	},
+    updated_by: {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+        required:true
+    },
 	updated_date:
 	{
 		type:Date,
