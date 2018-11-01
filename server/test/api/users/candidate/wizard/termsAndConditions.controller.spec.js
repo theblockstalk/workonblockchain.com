@@ -9,7 +9,6 @@ const docGenerator = require('../../../../helpers/docGenerator');
 const candidateHelper = require('../candidateHelpers');
 const adminHelper = require('../../admins/adminHelpers');
 const companyHelper = require('../../../users/company/companyHelpers');
-const candidateWizardHelper = require('./candidateWizardHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -39,7 +38,7 @@ describe('add terms of candidate', function () {
 
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             const candTerms = docGenerator.termsAndConditions();
-            const res = await candidateWizardHelper.candidateTerms(cmsDoc._id,candTerms,userDoc.jwt_token);
+            const res = await candidateHelper.candidateTerms(cmsDoc._id,candTerms,userDoc.jwt_token);
             const newCandidateInfo = await candidateProfile.findOne({_creator: userDoc._id}).lean();
             newCandidateInfo.marketing_emails.should.equal(candTerms.marketing);
             const cmsID = newCandidateInfo.terms_id.toString();
