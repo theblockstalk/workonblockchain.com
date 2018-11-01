@@ -33,7 +33,7 @@ describe('return referred user detail', function () {
                 password: "Password1",
                 type: "candidate",
                 social_type : "",
-                referred_id : refDoc.body.referred_id,
+                referred_id : refDoc.body._id,
             }
             const profileData = docGenerator.profileData();
             const job = docGenerator.job();
@@ -46,7 +46,7 @@ describe('return referred user detail', function () {
 
             const referralDoc = await referralsHelper.getRefDetail({id : candidateUserDoc.refered_id}, candidateUserDoc.jwt_token);
             referralDoc.body.refDoc.email.should.equal(candidate.email);
-            referralDoc.body.refDoc.url_token.should.equal(refDoc.body.code);
+            referralDoc.body.refDoc.url_token.should.equal(refDoc.body.url_token);
 
         })
     })

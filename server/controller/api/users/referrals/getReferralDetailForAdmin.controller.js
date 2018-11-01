@@ -14,7 +14,6 @@ module.exports = async function (req, res) {
         }).lean();
         if(refDoc){
             const userDoc = await user.findOne({email : refDoc.email}).lean();
-
             if(userDoc){
                 if(userDoc.type === 'candidate'){
                     const candidateDoc = await candidateProfile.findOne({_creator : userDoc._id}).lean();
@@ -38,6 +37,12 @@ module.exports = async function (req, res) {
                     refDoc : refDoc
                 });
             }
+        }
+        else
+        {
+            res.send({
+                success : false
+            });
         }
 
     }
