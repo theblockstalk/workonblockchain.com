@@ -5,6 +5,8 @@
 #To run up migration
             export MONGO_CONNECTION_STRING=...
             node migrations/migrate.js 20181025-terms-and-conditions.js up
+                        node migrations/migrate.js 20181101-referral-program.js up
+
 
 #To run down migration
             export MONGO_CONNECTION_STRING=...

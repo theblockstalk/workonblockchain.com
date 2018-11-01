@@ -58,6 +58,11 @@ const UserSchema = new Schema({
         {
             type:String, // This is a hash
         },
+    ref_link:
+        {
+            type:String,
+            // validate: regexes.url
+        },
     refered_id:
         {
             type: Schema.Types.ObjectId,
