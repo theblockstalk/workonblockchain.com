@@ -4,16 +4,6 @@ const Referral = require('../model/referrals');
 
 let totalDocsToProcess, totalProcessed = 0, totalModified = 0;
 
-
-function isEmptyObject(obj) {
-    for(let prop in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 // This function will perform the migration
 module.exports.up = async function() {
     const userCursor = await Users.find({}).lean();
@@ -42,14 +32,8 @@ module.exports.up = async function() {
                 if (update && update.nModified) totalModified++;
                 else console.log('  UPDATE NOT SUCESSFUL');
             }
-
-
         }
-
-
-
     }
-
     console.log('Total users docs to process: ', totalDocsToProcess);
     console.log('Total processed: ', totalProcessed);
     console.log('Total modified: ', totalModified);
