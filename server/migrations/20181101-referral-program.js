@@ -24,32 +24,33 @@ module.exports.up = async function() {
         totalProcessed++;
 
         let unset = {};
-        let set = {};
-        //console.log("Updating " + candidateDoc._id);
-        if (userDoc.refered_id && userDoc.email) {
-            set.url_token = userDoc.refered_id;
-            set.email = userDoc.email;
-            //unset.terms = 1;
+        if (userDoc.ref_link && userDoc.email) {
+            let referralToken = userDoc.ref_link.substr(userDoc.ref_link.length - 10);
+            let document = new Referral
+            ({
+                email : userDoc.email,
+                url_token : referralToken,
+                date_created: new Date(),
+            });
+            const result = await document.save();
+
+            let updateObj = {$unset : userDoc.ref_link}
+
+            if (updateObj) {
+                console.log('  ', updateObj);
+                const update = await Users.update({_id: userDoc._id}, updateObj);
+                if (update && update.nModified) totalModified++;
+                else console.log('  UPDATE NOT SUCESSFUL');
+            }
+
+
         }
 
-        let updateObj;
-        if (!isEmptyObject(set) && !isEmptyObject(unset)) {
-            updateObj = {$set: set, $unset: unset}
-        } else if (!isEmptyObject(set)) {
-            updateObj = {$set: set};
-        } else if (!isEmptyObject(unset)) {
-            updateObj = {$unset: unset};
-        }
 
-        if (updateObj) {
-            console.log('  ', updateObj);
-            const update = await Referral.update({url_token: userDoc.refered_id, email : userDoc.email}, updateObj);
-            if (update && update.nModified) totalModified++;
-            else console.log('  UPDATE NOT SUCESSFUL');
-        }
+
     }
 
-    console.log('Total candidates docs to process: ', totalDocsToProcess);
+    console.log('Total users docs to process: ', totalDocsToProcess);
     console.log('Total processed: ', totalProcessed);
     console.log('Total modified: ', totalModified);
 
