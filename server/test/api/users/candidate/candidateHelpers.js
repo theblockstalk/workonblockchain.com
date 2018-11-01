@@ -125,9 +125,9 @@ const resume = module.exports.resume = async function resume(data,jwtToken) {
     return res;
 }
 
-const candidateTerms = module.exports.candidateTerms = async function candidateTerms(data,jwtToken) {
+const candidateTerms = module.exports.candidateTerms = async function candidateTerms(termsID,data,jwtToken) {
     const detail = {
-        'terms' : data.terms,
+        'termsID' : termsID,
         'marketing' : data.marketing
     };
     const res = await chai.request(server)
