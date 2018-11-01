@@ -26,11 +26,13 @@ module.exports.up = async function() {
                 date_created: new Date(),
             });
             const refObj = await document.save();
+            console.log('  ', refObj);
+
             unset.ref_link = 1;
             let updateObj = {$unset : unset}
 
             if (updateObj) {
-                //console.log('  ', updateObj);
+                console.log('  ', updateObj);
                 const update = await Users.update({_id: userDoc._id}, updateObj);
                 if (update && update.nModified) totalModified++;
                 else console.log('  UPDATE NOT SUCESSFUL');
@@ -53,6 +55,9 @@ module.exports.down = async function() {
 
 
     for ( null ; referralDoc !== null; referralDoc = await referralCursor.next()) {
+
+        console.log('  ' , referralDoc._id);
+
 
         if (referralDoc.url_token && referralDoc.email === userDoc.email) {
             totalProcessed++;
