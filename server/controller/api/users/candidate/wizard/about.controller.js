@@ -1,10 +1,13 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const User = require('../../../../../model/users');
+const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
 
 ///// for candidate about wizard ///////////////////
 
 module.exports = async function (req, res) {
     const userId = req.auth.user._id;
+    //getting user info
+    const userDoc = await User.findOne({ _id: userId }).lean();
 
     const candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
 
@@ -21,6 +24,12 @@ module.exports = async function (req, res) {
 
     if (userParam.country && userParam.city) {
         await User.update({ _id: userId },{ $set: {'candidate.base_city' : userParam.city , 'candidate.base_country' : userParam.country } });
+    }
+
+    //sending email for social register
+    if(userDoc.social_type === 'GOOGLE' || userDoc.social_type === 'LINKEDIN'){
+        let data = {fname : userParam.first_name , email : userDoc.email}
+        welcomeEmail.sendEmail(data, userDoc.disable_account);
     }
 
     res.send({
