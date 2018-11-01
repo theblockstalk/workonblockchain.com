@@ -33,8 +33,8 @@ module.exports.up = async function() {
                 date_created: new Date(),
             });
             const result = await document.save();
-
-            let updateObj = {$unset : userDoc.ref_link}
+            unset.ref_link = 1;
+            let updateObj = {$unset : unset}
 
             if (updateObj) {
                 console.log('  ', updateObj);
