@@ -169,6 +169,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         {id:'Product Manager', text:'Product Manager'},
         {id:'Intern Developer', text:'Intern Developer'},
         {id:'Researcher ', text:'Researcher '},
+        {id:'Mobile app developer', text:'Mobile app developer'},
+        {id:'Data scientist', text:'Data scientist'},
+        {id:'Security specialist ', text:'Security specialist'},
       ];
 
     this.blockchainData =
