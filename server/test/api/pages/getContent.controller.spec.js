@@ -33,7 +33,7 @@ describe('get page content', function () {
             const cmsRes = await adminHelper.addCmsContent(info , companyDoc.jwt_token);
 
             const getContent = await pageHelper.getPageContent(info.page_name,companyDoc.jwt_token);
-            const res = getContent.body[0];
+            const res = getContent.body;
 
             res.page_name.should.equal(info.page_name);
             res.page_title.should.equal(info.page_title);

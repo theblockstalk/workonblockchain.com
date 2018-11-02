@@ -107,11 +107,16 @@
 													{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.interview_location">
-													Interview location:
-													{{msg.interview_location}}
-													<br/>
-												</span>
+                        <span *ngIf="msg.interview_location && msg.msg_tag === 'interview_offer'">
+														Interview location:
+														{{msg.interview_location}}
+														<br/>
+													</span>
+                        <span *ngIf="msg.interview_location && msg.msg_tag === 'job_offer'">
+														Location:
+														{{msg.interview_location}}
+														<br/>
+													</span>
                         <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													Description:
 												</span>
@@ -163,11 +168,16 @@
 													{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.interview_location">
-													Interview location:
-													{{msg.interview_location}}
-													<br/>
-												</span>
+                        <span *ngIf="msg.interview_location && msg.msg_tag === 'interview_offer'">
+														Interview location:
+														{{msg.interview_location}}
+														<br/>
+													</span>
+                        <span *ngIf="msg.interview_location && msg.msg_tag === 'job_offer'">
+														Location:
+														{{msg.interview_location}}
+														<br/>
+													</span>
                         <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													Description:
                         </span>

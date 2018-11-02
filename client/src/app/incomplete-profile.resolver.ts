@@ -24,7 +24,7 @@ export class ProfileResolver  {
         }).map((res) => res).subscribe(
           (res) => {
             if (res) {
-              if (!res['terms'] || res['terms'] === false) {
+              if (!res['terms_id'] || res['terms_id'] === false) {
                 this.router.navigate(['/terms-and-condition']);
 
               }
