@@ -1,6 +1,8 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const User = require('../../../../../model/users');
 const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
+const verify_send_email = require('../../auth/verify_send_email');
+const jwtToken = require('../../../../services/jwtToken');
 
 ///// for candidate about wizard ///////////////////
 
@@ -30,6 +32,21 @@ module.exports = async function (req, res) {
     if(userDoc.social_type === 'GOOGLE' || userDoc.social_type === 'LINKEDIN'){
         let data = {fname : userParam.first_name , email : userDoc.email}
         welcomeEmail.sendEmail(data, userDoc.disable_account);
+    }
+    else {
+        let signOptions = {
+            expiresIn:  "1h",
+        };
+        let verifyEmailToken = jwtToken.createJwtToken(userDoc, signOptions);
+        var set =
+            {
+                verify_email_key: verifyEmailToken,
+
+            };
+        await User.update({ _id: userId },{ $set: set });
+        verify_send_email(userDoc.email, verifyEmailToken);
+
+
     }
 
     res.send({

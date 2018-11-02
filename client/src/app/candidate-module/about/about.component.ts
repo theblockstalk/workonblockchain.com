@@ -265,7 +265,6 @@ export class AboutComponent implements OnInit,AfterViewInit
                     }).map((res) => res).subscribe(
                       (success) =>
                       {
-                        this.verify_email();
                         this.referred_email();
                         this.router.navigate(['/job']);
                       },
@@ -292,7 +291,6 @@ export class AboutComponent implements OnInit,AfterViewInit
                 }
                 else
                 {
-                  this.verify_email();
                   this.referred_email();
                   this.router.navigate(['/job']);
                 }
@@ -301,7 +299,6 @@ export class AboutComponent implements OnInit,AfterViewInit
 
               else
               {
-                this.verify_email();
                 this.referred_email();
                 this.router.navigate(['/job']);
               }
@@ -368,23 +365,6 @@ export class AboutComponent implements OnInit,AfterViewInit
           });
 
     }
-  }
-  verify_email()
-  {
-
-    if(this.currentUser.email)
-    {
-
-      this.authenticationService.verify_client(this.currentUser.email)
-        .subscribe(
-          data => {
-          },
-          error => {
-
-          });
-
-    }
-
   }
 
 
