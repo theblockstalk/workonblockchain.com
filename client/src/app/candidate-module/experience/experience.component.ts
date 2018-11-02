@@ -34,32 +34,32 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     constructor(private _fb: FormBuilder,private datePipe: DatePipe,private route: ActivatedRoute, private http: HttpClient,
         private router: Router,private dataservice: DataService,
         private authenticationService: UserService) { }
-      
- 
-      private education_data(): FormGroup[] 
+
+
+      private education_data(): FormGroup[]
       {
           return this.eduData
           .map(i => this._fb.group({ uniname: i.uniname , degreename : i.degreename,fieldname:i.fieldname,eduyear:i.eduyear} ));
       }
 
-      private history_data(): FormGroup[] 
+      private history_data(): FormGroup[]
       {
           return this.jobData
           .map(i => this._fb.group({ companyname: i.companyname , positionname : i.positionname, locationname:i.locationname, description:i.description,startdate:i.startdate, start_date:this.monthNumToName(this.datePipe.transform(i.startdate, 'MM') )/*this.datePipe.transform(i.startdate, 'MM') */, startyear: this.datePipe.transform(i.startdate, 'yyyy') , enddate :i.enddate , end_date:this.monthNumToName(this.datePipe.transform(i.enddate, 'MM')) , endyear:this.datePipe.transform(i.enddate, 'yyyy') , currentwork: i.currentwork} ));
       }
-   
-   monthNumToName(monthnum) {     
+
+   monthNumToName(monthnum) {
     return this.month[monthnum-1] || '';
 }
 
-     ngAfterViewInit(): void 
+     ngAfterViewInit(): void
      {
-         window.scrollTo(0, 0);   
-         
+         window.scrollTo(0, 0);
+
     }
     message;
     current_work_check=[];
-    ngOnInit() 
+    ngOnInit()
     {
             this.salary='';
             this.current_currency =-1;
@@ -71,11 +71,11 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       //this.currentdate = this.datePipe.transform(this.today, 'MMM');
       //this.currentyear = this.datePipe.transform(this.today, 'yyyy');
       this.EducationForm = this._fb.group({
-      itemRows: this._fb.array([this.initItemRows()]) 
+      itemRows: this._fb.array([this.initItemRows()])
       });
 
       this.ExperienceForm = this._fb.group({
-      ExpItems: this._fb.array([this.initExpRows()]) 
+      ExpItems: this._fb.array([this.initExpRows()])
       });
 
       if(!this.currentUser)
@@ -93,8 +93,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
             .subscribe(
             data => {
                 //console.log(data.education_history_history);
-               
-                 if(data.terms==true)
+
+                 if(data.terms_id)
                   {
                         this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
@@ -108,51 +108,51 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                   {
                     this.active_class='fa fa-check-circle text-success';
                      // this.job_active_class = 'fa fa-check-circle text-success';
-                       
+
                   }
                 if(data.work_history || data.education_history|| data.programming_languages ||data.current_salary || data.current_currency)
-                {               
-                    
+                {
+
                     if(data.work_history.length>0)
                     {
-                        this.jobData = data.work_history; 
+                        this.jobData = data.work_history;
                        // console.log(this.jobData);
                         //console.log(this.jobData.startdate);
                        // console.log(this.datePipe.transform(((this.jobData.startdate)+1), 'MMMM'));
-                        
-                       
+
+
                         for(let data1 of data.work_history)
                         {
                             //this.companyname = data1.companyname;
                             this.current_work_check.push(data1.currentwork);
-                            
-                       
+
+
                         }
-                       
-                        
+
+
                     this.ExperienceForm = this._fb.group({
                               ExpItems: this._fb.array(
                                     this.history_data()
-                          ) 
+                          )
                           });
                        }
                     if(data.education_history.length>0)
                     {
-                 
-                    this.eduData = data.education_history; 
+
+                    this.eduData = data.education_history;
                     this.EducationForm = this._fb.group({
                           itemRows: this._fb.array(
                                     this.education_data()
                           )
                         });
-                        
+
                         }
                         //this.exp_data.push(data.experience_roles) ;
                     ////console.log(data.experience_roles.length);
                       if(data.programming_languages)
                       {
                           this.expYear = data.programming_languages;
-                      for (let key of data.programming_languages) 
+                      for (let key of data.programming_languages)
                       {
                         for(var i in key)
                         {
@@ -160,7 +160,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
                           for(let option of this.language_opt)
                           {
-                            
+
                             if(option.value == key[i])
                             {
                               option.checked=true;
@@ -173,7 +173,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                             {
 
                             }
-                       
+
                           }
 
                           for(let option of this.exp_year)
@@ -182,19 +182,19 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                             if(option.value == key[i])
                             {
                                 option.checked=true;
-                                   
+
                                 //this.expYear.push(option);
                                 this.expYear_db.push(key[i]);
-                                ////console.log(this.expYear_db); 
-                                 
+                                ////console.log(this.expYear_db);
+
                             }
-                       
+
                           }
-                          
+
                         }
                       }
                     }
-                      
+
 
                     this.salary = data.current_salary;
                     this.Intro =data.description;
@@ -205,19 +205,19 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                    // this.current_currency =-1;
 
                 }
-                 
-              
+
+
               if(!data.why_work )
-              {              
+              {
                 this.router.navigate(['/resume']);
               }
-     
-             
+
+
 
                 else
                 {
                    //this.router.navigate(['/resume']);
-                }               
+                }
 
             },
             error=>
@@ -232,12 +232,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
-                    }   
-                
+                        this.router.navigate(['/not_found']);
+                    }
+
            });
 
          this.authenticationService.get_page_content('Candidate popup message')
@@ -263,8 +263,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     [
       "£ GBP" ,"€ EUR" , "$ USD"
     ]
-    
-    current_work= 
+
+    current_work=
     [
         {name:'I currently work there', value:'current', checked:false}
     ]
@@ -297,7 +297,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       {name:'6+', value:'6+', checked:false}
     ]
 
-    roles_opt =  
+    roles_opt =
     [
       {name:'Backend Developer', value:'Backend Developer', checked:false},
       {name:'BI Engineer', value:'BI Engineer', checked:false},
@@ -316,8 +316,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     month= ["January","Februray","March","April","May","June","July","August","September","October","November","December"]
 
     onExpOptions(obj)
-    {         
-        
+    {
+
       let updateItem = this.language.find(this.findIndexToUpdate, obj.value);
       let index = this.language.indexOf(updateItem);
       if(index > -1)
@@ -329,9 +329,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
       if(index2 > -1)
       {
-          
+
         this.expYear.splice(index2, 1);
-          
+
           }
       }
       else
@@ -342,12 +342,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
      // //console.log(this.language);
             ////console.log(this.expYear);
-    
+
     }
 
-    
-    findIndexToUpdate(obj) 
-    { 
+
+    findIndexToUpdate(obj)
+    {
         return obj.value === this;
     }
 
@@ -358,7 +358,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       //this.position = event.target.value;
     }
 
-    initItemRows() 
+    initItemRows()
     {
       return this._fb.group({
         uniname: [''],
@@ -368,12 +368,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       });
     }
 
-    initItemRows_db() 
+    initItemRows_db()
     {
       return this._fb.group({
         uniname: [this.uniname],
         degreename:[this.degreename],
-        fieldname:[this.fieldname],    
+        fieldname:[this.fieldname],
         eduyear:[]
       });
 
@@ -381,7 +381,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     }
 
 
-    initExpRows() 
+    initExpRows()
     {
       return this._fb.group({
         companyname:[''],
@@ -395,7 +395,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         start_date:[],
         enddate:[],
         currentwork:[false],
-       
+
       });
     }
 
@@ -406,29 +406,29 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       control.push(this.initExpRows());
     }
 
-    deleteExpRow(index: number) 
+    deleteExpRow(index: number)
     {
       const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
       control.removeAt(index);
     }
-    
+
     get DynamicWorkFormControls() {
 
       return <FormArray>this.ExperienceForm.get('ExpItems');
     }
-    addNewRow() 
+    addNewRow()
     {
       const control = <FormArray>this.EducationForm.controls['itemRows'];
       control.push(this.initItemRows());
     }
 
-    deleteRow(index: number) 
+    deleteRow(index: number)
     {
 
       const control = <FormArray>this.EducationForm.controls['itemRows'];
       control.removeAt(index);
     }
-    
+
     get DynamicEduFormControls() {
 
       return <FormArray>this.EducationForm.get('itemRows');
@@ -443,7 +443,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         return this.start_monthh ?  this.start_monthh : 0;
     }
     startmonthIndex;endmonthIndex;
-    
+
     current_sal_log;current_currency_log;lang_log;
     exp_lang_log;intro_log;uni_name_log;degree_log;
     field_log;eduYear_log;company_log;position_log;
@@ -454,78 +454,78 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.error_msg="";
        this.edu_count=0;
        this.exp_count =0;
-              
+
         if(this.expYear.length !== this.language.length)
         {
-           
+
             this.exp_lang_log="Please fill year of experience";
         }
         if(!this.Intro)
         {
-            
+
             this.intro_log="Please fill 2-5 sentence bio"
         }
-        
-      
+
+
         if(this.EducationForm.value.itemRows.length >= 1)
-        {     
-            for (var key in this.EducationForm.value.itemRows) 
+        {
+            for (var key in this.EducationForm.value.itemRows)
             {
                 if(!this.EducationForm.value.itemRows[key].uniname)
                 {
                     this.uni_name_log = "Please fill university";
                 }
-                
+
                 if(!this.EducationForm.value.itemRows[key].degreename)
                 {
                     this.degree_log = "Please fill degree";
                 }
-                
+
                 if(!this.EducationForm.value.itemRows[key].fieldname)
                 {
                     this.field_log = "Please fill field of study";
                 }
-                
+
                 if(!this.EducationForm.value.itemRows[key].eduyear)
                 {
                     this.eduYear_log = "Please fill graduation year";
                 }
                 if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename && this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
                 {
-                                       
+
                     this.edu_count = this.edu_count + 1;
                 }
-                
+
             }
-         
+
         }
         if(this.ExperienceForm.value.ExpItems.length >=1)
         {
-            
-            for (var key in this.ExperienceForm.value.ExpItems) 
+
+            for (var key in this.ExperienceForm.value.ExpItems)
             {
                 if(!this.ExperienceForm.value.ExpItems[key].companyname)
                 {
                     this.company_log = "Please fill company";
                 }
-                    
+
                 if(!this.ExperienceForm.value.ExpItems[key].positionname)
                 {
                     this.position_log = "Please fill position";
                 }
-                
-                    
+
+
                 if(!this.ExperienceForm.value.ExpItems[key].locationname)
                 {
                     this.location_log = "Please fill location";
-                    
+
                 }
-            
+
                 if(!this.ExperienceForm.value.ExpItems[key].startdate || this.ExperienceForm.value.ExpItems[key].startdate === "" || !this.ExperienceForm.value.ExpItems[key].startyear)
                 {
                     this.start_date_log = "Please fill start date ";
                 }
-                
+
                 if(!this.ExperienceForm.value.ExpItems[key].end_date || !this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].companyname===false)
                 {
                     this.end_date_log = "Please fill end date ";
@@ -534,27 +534,27 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
               if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
                this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
-               this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date && 
+               this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date &&
                this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
                {
                   this.exp_count = this.exp_count + 1;
-                    
+
                }
-                
-                
+
+
                 if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&
                 this.ExperienceForm.value.ExpItems[key].locationname &&this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
                 this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
                {
                   this.exp_count = this.exp_count + 1;
-                    
+
                }
 
             }
 
         }
-        
-     
+
+
         console.log("language length " + this.language.length);
         console.log("experience year length " + this.expYear.length);
         console.log("education count " + this.edu_count);
@@ -564,16 +564,16 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
         {
            this.submit_info(searchForm);
-            
+
         }
 
         else
         {
             this.error_msg = "There is a field that still needs completion. Please scroll up.";
          }
-     
-              
-         
+
+
+
     }
 
     start_date_format;
@@ -585,14 +585,14 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.experiencearray=[];
       this.education_json_array=[];
              this.log='';
-            
-        
+
+
             if(this.ExperienceForm.value.ExpItems)
             {
-                 for (var key in this.ExperienceForm.value.ExpItems) 
+                 for (var key in this.ExperienceForm.value.ExpItems)
                     {
                         this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
-                        this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);              
+                        this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
                         this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
                         if(this.ExperienceForm.value.ExpItems[key].currentwork == true)
                         {
@@ -605,9 +605,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                         this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
                         this.experiencearray.push(this.experiencejson);
                     }
-                
+
             }
-         
+
             if(this.EducationForm.value.itemRows)
             {
                  for ( var key in this.EducationForm.value.itemRows)
@@ -618,8 +618,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                         this.education_json_array.push(this.educationjson) ;
                     }
             }
-                
-         
+
+
             this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.education_json_array , this.experiencearray , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
             .subscribe(
                 data => {
@@ -635,8 +635,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                   //this.router.navigate(['/candidate_profile']);
                 }
 
-                
-               
+
+
                 },
                 error => {
                   if(error.message === 500)
@@ -649,10 +649,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                   
+
                 });
-             
-   
+
+
     }
 
   redirectToCandidate()
@@ -665,56 +665,56 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     {
        this.selectedValue = e.target.value;
        this.langValue = value;
-     
-        
+
+
         let updateItem = this.findObjectByKey(this.expYear, 'language', value);
        ////console.log(updateItem);
         let index = this.expYear.indexOf(updateItem);
 
       if(index > -1)
       {
-          
+
         this.expYear.splice(index, 1);
         this.value=value;
-        this.referringData = { language :this.value, exp_year: e.target.value};  
-        this.expYear.push(this.referringData); 
-        ////console.log(this.LangexpYear); 
-          
-        
+        this.referringData = { language :this.value, exp_year: e.target.value};
+        this.expYear.push(this.referringData);
+        ////console.log(this.LangexpYear);
+
+
       }
       else
-      {   
+      {
       ////console.log("not exists");
         this.value=value;
-        this.referringData = { language :this.value, exp_year: e.target.value};  
-        this.expYear.push(this.referringData); 
-        ////console.log(this.LangexpYear); 
-        
+        this.referringData = { language :this.value, exp_year: e.target.value};
+        this.expYear.push(this.referringData);
+        ////console.log(this.LangexpYear);
+
       }
         //console.log(this.expYear);
    }
-    
-    findObjectByKey(array, key, value) 
+
+    findObjectByKey(array, key, value)
     {
       // //console.log(array.length);
-        for (var i = 0; i < array.length; i++) 
+        for (var i = 0; i < array.length; i++)
         {
         // //console.log(array[i][key]);
-            if (array[i][key] === value) 
+            if (array[i][key] === value)
             {
                 // //console.log( array[i]);
                 return array[i];
             }
-       
+
           }
         return null;
     }
-    
+
    onRoleYearOptions(e, value)
    {
       this.value=value;
-      this.referringData = { platform_name:this.value, exp_year: e.target.value}; 
-      this.expYearRole.push(this.referringData); 
+      this.referringData = { platform_name:this.value, exp_year: e.target.value};
+      this.expYearRole.push(this.referringData);
 
    }
 
