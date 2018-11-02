@@ -3,6 +3,7 @@ var Q = require('q');
 var mongo = require('mongoskin');
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const logger = require('../../../../services/logger');
+const Pages = require('../../../../../model/pages_content');
 
 ///// for save candidate "terms & condition(sign-up)" data in db//////////////////
 
@@ -45,37 +46,53 @@ function terms_and_condition(_id , userParam)
 
     function updateUser(_id)
     {
-        if(userParam.terms)
+        if(userParam.termsID)
         {
-            var set =
-                {
-                    terms:userParam.terms,
-                    marketing_emails: userParam.marketing,
-
-
-                };
+			Pages.findOne({_id: userParam.termsID}).exec(function (err, result) {
+				if (err) {
+					logger.error(err.message, {stack: err.stack});
+					deferred.reject(err.name + ': ' + err.message);
+				}
+				else {
+					if(result){
+						var set =
+						{
+							terms_id: result._id,
+							marketing_emails: userParam.marketing,
+						};
+						CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
+						{
+							if (err){
+								logger.error(err.message, {stack: err.stack});
+								deferred.reject(err.name + ': ' + err.message);
+							}
+							else
+								deferred.resolve(set);
+						});
+					}
+					else{
+						deferred.reject('Error: Not a valid doc');
+					}
+				}
+			});
         }
         else
         {
-
-            var set =
-                {
-                    
-                    marketing_emails: userParam.marketing,
-
-
-                };
+			var set =
+			{
+				marketing_emails: userParam.marketing,
+			};
+			CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
+			{
+				if (err){
+					logger.error(err.message, {stack: err.stack});
+					deferred.reject(err.name + ': ' + err.message);
+				}
+				else
+					deferred.resolve(set);
+			});
         }
-
-        CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+        
     }
 
     return deferred.promise;

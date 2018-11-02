@@ -42,12 +42,12 @@ export class JobComponent implements OnInit,AfterViewInit {
     current_currency;
     current_salary;
   error_msg;
-     ngAfterViewInit(): void 
+     ngAfterViewInit(): void
      {
-         window.scrollTo(0, 0);   
-         
+         window.scrollTo(0, 0);
+
     }
-  ngOnInit() 
+  ngOnInit()
   {
   ////console.log(this.options.name);
     this.current_currency =-1;
@@ -55,7 +55,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      
+
        if(!this.currentUser)
        {
           this.router.navigate(['/signup']);
@@ -85,12 +85,12 @@ export class JobComponent implements OnInit,AfterViewInit {
             .subscribe(
                 data => {
 
-                   
+
                 if(data.experience_roles!="")
                   {
                     this.exp_class = "btn";
                   }
-                    
+
                   if(data.contact_number  && data.nationality && data.first_name && data.last_name)
                   {
                         this.about_active_class = 'fa fa-check-circle text-success';
@@ -103,13 +103,13 @@ export class JobComponent implements OnInit,AfterViewInit {
 
                 if(data.locations.length>0 || data.roles.length>0 || data.interest_area.length>0 ||  data.expected_salary || data.availability_day || data.expected_salary_currency)
                 {
-                    
-                   
+
+
                     if(data.locations)
                     {
-                     for (let country1 of data.locations) 
+                     for (let country1 of data.locations)
                      {
-                      
+
                       for(let option of this.options)
                       {
 
@@ -117,20 +117,20 @@ export class JobComponent implements OnInit,AfterViewInit {
                         {
                           option.checked=true;
                           this.selectedcountry.push(country1);
-                          
+
                         }
-                       
+
                       }
-                      
+
                     }
                     }
-                    
-                    
+
+
                     if(data.interest_area)
                     {
-                    for (let interest of data.interest_area) 
+                    for (let interest of data.interest_area)
                      {
-                      
+
                       for(let option of this.area_interested)
                       {
 
@@ -138,21 +138,21 @@ export class JobComponent implements OnInit,AfterViewInit {
                         {
                           option.checked=true;
                           this.selectedValue.push(interest);
-                          
+
                         }
-                       
+
                       }
-                      
+
                     }
                     }
                    // this.jobselected=data.roles;
-                    
+
                     //this.selectedValue = data.interest_area;
                     if(data.roles)
                     {
-                    for (let area of data.roles) 
+                    for (let area of data.roles)
                      {
-                      
+
                       for(let option of this.dropdown_options)
                       {
                        // //console.log(option);
@@ -160,22 +160,22 @@ export class JobComponent implements OnInit,AfterViewInit {
                         {
                           option.checked=true;
                           this.jobselected.push(area);
-                          
+
                         }
-                       
+
                       }
-                      
+
                     }
                     }
-          
+
                     this.salary = data.expected_salary;
                     this.availability_day = data.availability_day;
                     if(data.expected_salary_currency)
                         this.base_currency = data.expected_salary_currency;
                     this.current_salary = data.current_salary;
-                    if(data.current_currency)   
-                        this.current_currency =data.current_currency;                    
-                    
+                    if(data.current_currency)
+                        this.current_currency =data.current_currency;
+
                     //this.resume_class="/resume";
 
                     if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day&& data.current_salary )
@@ -185,9 +185,9 @@ export class JobComponent implements OnInit,AfterViewInit {
                       this.job_active_class = 'fa fa-check-circle text-success';
                         this.resume_disable ='';
                         this.resume_class="/resume";
-                       
+
                   }
-               
+
               if(data.why_work)
               {
                 this.exp_disable ='';
@@ -195,20 +195,20 @@ export class JobComponent implements OnInit,AfterViewInit {
                // this.router.navigate(['/resume']);
                    this.exp_class = "/experience";
               }
-                    
-                    
-     
+
+
+
               if(data.description )
               {
                   this.exp_class = "/experience";
                   this.exp_active_class = 'fa fa-check-circle text-success';
                   //this.router.navigate(['/experience']);
               }
-                   
+
                 }
 
-                            
-              
+
+
                 },
                 error => {
                    if(error.message === 500 || error.message === 401)
@@ -221,12 +221,12 @@ export class JobComponent implements OnInit,AfterViewInit {
                                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
-                    }   
-                   
+                        this.router.navigate(['/not_found']);
+                    }
+
                 });
           //this.router.navigate(['/about']);
        }
@@ -234,7 +234,7 @@ export class JobComponent implements OnInit,AfterViewInit {
        {
             this.router.navigate(['/not_found']);
        }
-       
+
 
   }
 
@@ -245,7 +245,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   experience=
   [
-    
+
     {name:'0-1', value:'0-1', checked:false},
      {name:'1-2', value:'1-2', checked:false},
      {name:'2-4', value:'2-4', checked:false},
@@ -253,7 +253,7 @@ export class JobComponent implements OnInit,AfterViewInit {
      {name:'6+', value:'6+', checked:false}
   ]
 
-  countries = 
+  countries =
   [
     {id:'000' , value:''},
     {id:'001' , value:'France'},
@@ -263,15 +263,15 @@ export class JobComponent implements OnInit,AfterViewInit {
     {id:'005' , value:'Germany'},
     {id:'006' , value:'Israel'},
     {id:'007' , value:'Spain'},
-    
+
   ]
- 
-    
-  options = 
+
+
+  options =
   [
     {country_code:'000' , name:'Remote', value:'remote', checked:false},
     {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-    {country_code:'001' ,name:'London', value:'London', checked:false}, 
+    {country_code:'001' ,name:'London', value:'London', checked:false},
     {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
     {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
     {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
@@ -291,10 +291,10 @@ export class JobComponent implements OnInit,AfterViewInit {
     {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
     {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
     {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-    
+
   ]
 
-  dropdown_options = 
+  dropdown_options =
   [
     {name:'Backend Developer', value:'Backend Developer', checked:false},
     {name:'Frontend Developer', value:'Frontend Developer', checked:false},
@@ -310,7 +310,10 @@ export class JobComponent implements OnInit,AfterViewInit {
     {name:'Technical Lead', value:'Technical Lead', checked:false},
     {name:'Product Manager', value:'Product Manager', checked:false},
     {name:'Intern Developer', value:'Intern Developer', checked:false},
-    {name:'Researcher ', value:'Researcher ', checked:false},
+    {name:'Researcher', value:'Researcher ', checked:false},
+    {name:'Mobile app developer', value:'Mobile app developer', checked:false},
+    {name:'Data scientist', value:'Data scientist', checked:false},
+    {name:'Security specialist ', value:'Security specialist', checked:false},
   ]
 
   area_interested=
@@ -323,7 +326,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     {name:'I don’t know', value:'I don’t know', checked:false},
   ]
 
-  
+
 
   year=
     [
@@ -332,13 +335,13 @@ export class JobComponent implements OnInit,AfterViewInit {
     month= ["Now","1 month","2 months","3 months","Longer than 3 months"]
 
 
- 
 
-  
-  updateCheckedOptions(e) 
+
+
+  updateCheckedOptions(e)
   {
     //this.interest = e.target.value;
-   
+
      if(e.target.checked)
      {
       this.selectedcountry.push(e.target.value);
@@ -360,7 +363,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   onAreaSelected(e)
   {
     //this.jobselected= e.target.value;
-  
+
      if(e.target.checked)
      {
       this.selectedValue.push(e.target.value);
@@ -376,11 +379,11 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
   }
-  
+
   onJobSelected(e)
   {
     //this.jobselected= e.target.value;
-  
+
      if(e.target.checked)
      {
       this.jobselected.push(e.target.value);
@@ -398,8 +401,8 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
 
-  
-   findIndexToUpdate(type) { 
+
+   findIndexToUpdate(type) {
    ////console.log("funct");
         return type == this;
     }
@@ -411,41 +414,41 @@ export class JobComponent implements OnInit,AfterViewInit {
       ////console.log(event.target.value);
     }
 
-     
+
     country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
     current_sal_log; current_currency_log;
-      onSubmit(f: NgForm) 
+      onSubmit(f: NgForm)
       {
         this.error_msg="";
 
         //console.log(f.value);
-      
+
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if(this.selectedcountry.length <=0)
         {
             this.country_log = "Please select at least one location";
         }
-          
+
         if(this.jobselected.length<=0)
         {
             this.roles_log = "Please select at least one role";
         }
-        
+
         if(this.base_currency==-1)
         {
             this.currency_log = "Please choose currency";
         }
-          
+
         if(!this.salary)
         {
             this.salary_log = "Please enter expected yearly salary";
         }
-          
+
         if(this.selectedValue.length<=0)
         {
             this.interest_log = "Please select at least one area of interest";
         }
-          
+
         if(!this.availability_day)
         {
             this.avail_log = "Please select employment availability";
@@ -453,13 +456,13 @@ export class JobComponent implements OnInit,AfterViewInit {
         if(!this.current_salary)
        {
            this.current_sal_log = "Please enter current base salary";
-          
+
        }
        if(this.current_currency ==-1)
        {
            this.current_currency_log = "Please choose currency";
        }
-          
+
         if(this.current_salary && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
         {
         this.authenticationService.job(this.currentUser._creator,f.value)
@@ -474,7 +477,7 @@ export class JobComponent implements OnInit,AfterViewInit {
                 {
                     this.log=data.error;
                 }
-               
+
                 },
                 error => {
                     if(error.message === 500 || error.message === 401)
@@ -487,14 +490,14 @@ export class JobComponent implements OnInit,AfterViewInit {
                                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                     }
-                    
+
                     if(error.message === 403)
                     {
-                        this.router.navigate(['/not_found']);                        
-                    }   
-                   
+                        this.router.navigate(['/not_found']);
+                    }
+
                 });
-        
+
         }
         else{
           this.error_msg = "There is a field that still needs completion. Please scroll up.";

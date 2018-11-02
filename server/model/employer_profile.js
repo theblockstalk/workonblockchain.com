@@ -7,7 +7,12 @@ const Schema = mongoose.Schema;
 const CompanyProfileSchema = new Schema({
 	terms:
     {
-    	type:Boolean  	
+        type:Boolean
+    },
+    terms_id:
+    {
+        type: Schema.Types.ObjectId,
+        ref: 'pages_content'
     },
     marketing_emails:
     {

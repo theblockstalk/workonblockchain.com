@@ -6,12 +6,15 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-const SummaryTnC = module.exports.SummaryTnC = async function SummaryTnC(companyTnCWizard,jwtToken){
-
+const SummaryTnC = module.exports.SummaryTnC = async function SummaryTnC(termsID,companyTnCWizard,jwtToken){
+    const detail = {
+        'termsID' : termsID,
+        'marketing' : companyTnCWizard.marketing
+    };
     const res = await chai.request(server)
         .put('/users/company_wizard')
         .set('Authorization', jwtToken)
-        .send(companyTnCWizard)
+        .send(detail)
     res.should.have.status(200);
     return res;
 }

@@ -1,7 +1,6 @@
 var Q = require('q');
 const users = require('../../../model/users');
 const CandidateProfile = require('../../../model/candidate_profile');
-const helper = require('./chatHelpers');
 const EmployerProfile = require('../../../model/employer_profile');
 
 const logger = require('../../services/logger');
@@ -9,19 +8,27 @@ const filterReturnData = require('../users/filterReturnData');
 
 module.exports = function (req, res)
 {
-	 get_candidate(req.body.sender_id, req.body.receiver_id,req.body.is_company_reply,req.body.type).then(function (user)
-    {
-        if (user)
-        {
+    let getCandidatePromise;
+	if (req.body.sender_id === '0') { // company is calling endpoint
+        getCandidatePromise = get_candidate(req.auth.user._id, req.body.receiver_id, req.body.is_company_reply, req.body.type);
+    }
+    else if (req.body.receiver_id === '0') { // candidate is calling endpoint
+        getCandidatePromise = get_candidate(req.body.sender_id, req.auth.user._id, req.body.is_company_reply, req.body.type);
+    }
+    else { // admin is calling endpoint
+        if (req.auth.user.is_admin){
+            getCandidatePromise = get_candidate(req.body.sender_id, req.body.receiver_id, req.body.is_company_reply, req.body.type);
+		}
+	}
+    getCandidatePromise.then(function (user) {
+        if (user) {
             res.send(user);
         }
-        else
-        {
+        else {
             res.sendStatus(404);
         }
     })
-        .catch(function (err)
-        {
+        .catch(function (err) {
             res.status(400).send(err);
         });
 }

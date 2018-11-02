@@ -7,6 +7,9 @@ if (process.env.NODE_ENV === 'production') {
 } else if (process.env.NODE_ENV === 'staging') {
     settings.ENVIRONMENT = 'staging';
     config = require('./config/staging.json');
+} else if (process.env.NODE_ENV === 'migrate') {
+    settings.ENVIRONMENT = 'migrate';
+    config = require('./config/default.json');
 } else {
     process.env.NODE_ENV = 'test';
     settings.ENVIRONMENT = 'test';
@@ -46,6 +49,10 @@ if (isLiveApplication()) {
         USERNAME: config.slack.username,
         CHANNEL: config.slack.channel
     }
+} else if (settings.ENVIRONMENT === 'migrate') {
+    settings.MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
+
+    settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
 } else {
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.host + ":"
         + config.mongo.port + "/" + config.mongo.databaseName;
