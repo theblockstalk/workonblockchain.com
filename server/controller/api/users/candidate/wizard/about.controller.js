@@ -7,7 +7,7 @@ const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
 module.exports = async function (req, res) {
     const userId = req.auth.user._id;
     //getting user info
-    const userDoc = await User.findOne({ _id: userId }).lean();
+    const userDoc = req.auth.user;
 
     const candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
 
