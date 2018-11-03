@@ -98,7 +98,7 @@ function create_employer(userParam)
             type: userParam.type,
             jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
             created_date: createdDate,
-            refered_id : mongoose.Types.ObjectId(userParam.referred_id),
+            referred_email : userParam.referred_email,
         });
 
         newUser.save((err,user)=>
@@ -154,7 +154,7 @@ function create_employer(userParam)
                             {
 
                                 verifyEmail(userParam.email);
-                                if(userParam.referred_id){
+                                if(userParam.referred_email){
                                     referredFriendEmail(userParam.referred_email,  userParam.first_name , userParam.last_name);
 
                                 }
