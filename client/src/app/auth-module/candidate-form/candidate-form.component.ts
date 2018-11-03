@@ -263,9 +263,10 @@ export class CandidateFormComponent implements OnInit {
         });
     }
 
-
+  company_log;
     company_signup(signupForm: NgForm)
     {
+      this.company_log = '';
             this.credentials.type="company";
             this.credentials.social_type='';
             this.password_log = '';
@@ -283,10 +284,11 @@ export class CandidateFormComponent implements OnInit {
                 .subscribe(
                 data =>
                 {
+                  console.log(data);
                     if(data.error)
                     {
-                        this.dataservice.changeMessage(data.error);
-                        this.log = data.error;
+                        //this.dataservice.changeMessage(data.error);
+                        this.company_log = data.error;
                     }
 
                     else

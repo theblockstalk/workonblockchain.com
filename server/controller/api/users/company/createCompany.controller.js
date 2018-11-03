@@ -103,9 +103,5 @@ module.exports = async function (req, res) {
             }
         }
     }
-
-    res.send({
-        success : true
-    })
     
 };
