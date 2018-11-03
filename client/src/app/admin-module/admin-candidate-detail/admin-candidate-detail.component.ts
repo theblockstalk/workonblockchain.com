@@ -59,7 +59,7 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.credentials.user_id = this.user_id;
 
 
-    if(this.user_id && this.admin_log)
+    if(this.user_id && this.admin_log && this.currentUser)
     {
       if(this.admin_log.is_admin == 1)
       {
