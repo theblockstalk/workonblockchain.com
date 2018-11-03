@@ -2,6 +2,7 @@ const emails = require('../emails');
 const settings = require('../../../../settings');
 
 module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmailToken) {
+
     const verifyEmailUrl = settings.CLIENT.URL + 'verify_email?email_hash='+verifyEmailToken;
 
     const sendTo = {
