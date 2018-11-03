@@ -90,6 +90,7 @@ function create_employer(userParam)
         let hashedPasswordAndSalt = hash.digest('hex');
 
         let random = crypto.randomBytes(16).toString('base64');
+
         let newUser = new users
         ({
             email: userParam.email,

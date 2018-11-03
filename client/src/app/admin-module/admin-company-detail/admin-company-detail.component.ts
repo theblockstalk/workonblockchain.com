@@ -41,6 +41,8 @@ export class AdminCompanyDetailComponent implements OnInit {
   detail_link;
   ngOnInit()
   {
+    this.referred_link = "";
+    this.referred_name = "";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
     this.credentials.user_id = this.user_id;

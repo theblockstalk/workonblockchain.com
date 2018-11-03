@@ -70,10 +70,7 @@ const UserSchema = new Schema({
         },
     referred_email :
         {
-            type:String,
-            validate: regexes.email,
-            lowercase: true,
-            required:true
+            type:String
         },
     is_admin:
         {
