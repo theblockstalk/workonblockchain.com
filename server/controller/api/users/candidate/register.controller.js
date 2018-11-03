@@ -107,7 +107,7 @@ function create(userParam)
             social_type: userParam.social_type,
             is_verify:is_verify,
             created_date: createdDate,
-            refered_id : mongoose.Types.ObjectId(userParam.referred_id),
+            referred_email : userParam.referred_email
         });
 
         newUser.save( (err,user) =>

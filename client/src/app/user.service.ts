@@ -194,9 +194,9 @@ export class UserService {
             });
     }
 
-  getReferenceDetail(id: string){
+  getReferenceDetail(email: string){
 
-    return this.http.post<any>(URL + 'users/get_refrence_detail',  {id:id},{
+    return this.http.post<any>(URL + 'users/get_refrence_detail',  {email:email},{
       headers: new HttpHeaders().set('Authorization', this.token)
     }).map((res: Response) =>
       {

@@ -47,7 +47,7 @@ export class CandidateFormComponent implements OnInit {
                             this.ref_msg = data.email + ' thinks you should join workonblockchain.com';
 
                           if(this.ref_msg){
-                            this.credentials.referred_id  = data.referred_id;
+                            this.credentials.referred_email  = data.email;
                           }
 
 

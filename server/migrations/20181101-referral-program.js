@@ -3,6 +3,7 @@ const Users = require('../model/users');
 const Referral = require('../model/referrals');
 
 let totalDocsToProcess, totalProcessed = 0, totalModified = 0;
+let totalreferred = 0;
 
 // This function will perform the migration
 module.exports.up = async function() {
@@ -14,22 +15,44 @@ module.exports.up = async function() {
     for ( null ; userDoc !== null; userDoc = await userCursor.next()) {
 
         let unset = {};
+        let set = {};
+
         if (userDoc.ref_link && userDoc.email && userDoc.type === 'candidate') {
             totalProcessed++;
 
             let referralToken = userDoc.ref_link.substr(userDoc.ref_link.length - 10);
             let document = new Referral
             ({
-                _id :  userDoc.refered_id,
                 email : userDoc.email,
                 url_token : referralToken,
                 date_created: new Date(),
             });
             const refObj = await document.save();
             console.log('  ', refObj);
+            console.log("Migrating user: ", userDoc._id);
 
-            unset.ref_link = 1;
-            let updateObj = {$unset : unset}
+            let updateObj ;
+
+            let referedUser = await Users.find({_id : userDoc.refered_id}).lean();
+            console.log('  ', referedUser);
+            console.log('Referred user length : ' +referedUser.length);
+
+            if(referedUser.length > 0)
+            {
+                updateObj = {
+                    $set: {referred_email : referedUser[0].email},
+                    $unset: {ref_link: 1 , refered_id : 1}
+                };
+                totalreferred++;
+
+            }
+            else
+            {
+                updateObj = {
+                    $unset: {ref_link: 1 , refered_id : 1}
+                };
+
+            }
 
             if (updateObj) {
                 console.log('  ', updateObj);
@@ -42,6 +65,7 @@ module.exports.up = async function() {
     console.log('Total users docs to process: ', totalDocsToProcess);
     console.log('Total processed: ', totalProcessed);
     console.log('Total modified: ', totalModified);
+    console.log('Total referred: ', totalreferred);
 
 }
 

@@ -7,9 +7,9 @@ const referedUserEmail = require('../../../../services/email/emails/referredFrie
 ///// for candidate about wizard ///////////////////
 
 module.exports = async function (req, res) {
-    const userId = req.auth.user._id;
+    const userId = req.auth.user;
 
-    const candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
+    const candidateDoc = await CandidateProfile.findOne({ _creator: userId._id }).lean();
 
     const userParam = req.body;
     let candidateUpdate = {}
@@ -23,11 +23,11 @@ module.exports = async function (req, res) {
     await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
 
     if (userParam.country && userParam.city) {
-        await User.update({ _id: userId },{ $set: {'candidate.base_city' : userParam.city , 'candidate.base_country' : userParam.country } });
+        await User.update({ _id: userId._id },{ $set: {'candidate.base_city' : userParam.city , 'candidate.base_country' : userParam.country } });
     }
 
         const refDoc = await referral.findOne({
-            _id : userParam.referred_id
+            email : userId.referred_email
         }).lean();
         if(refDoc){
 

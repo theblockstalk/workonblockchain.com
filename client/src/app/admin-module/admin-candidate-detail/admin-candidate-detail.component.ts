@@ -72,7 +72,6 @@ export class AdminCandidateDetailComponent implements OnInit {
         this.authenticationService.getById(this.user_id)
           .subscribe(
             data => {
-              console.log(data._creator.refered_id);
               this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
@@ -137,10 +136,9 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.is_approved = "";
               }
 
-              if(data._creator.refered_id)
+              if(data._creator.referred_email)
               {
-                console.log(data._creator.email);
-                this.authenticationService.getReferenceDetail(data._creator.refered_id)
+                this.authenticationService.getReferenceDetail(data._creator.referred_email)
                   .subscribe(
                     refData => {
 

@@ -10,7 +10,7 @@ module.exports = async function (req, res) {
 
     if(userId.is_admin === 1){
         const refDoc = await referral.findOne({
-            _id:req.body.id
+            email:req.body.email
         }).lean();
         if(refDoc){
             const userDoc = await user.findOne({email : refDoc.email}).lean();

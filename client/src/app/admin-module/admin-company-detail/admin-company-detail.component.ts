@@ -61,9 +61,9 @@ export class AdminCompanyDetailComponent implements OnInit {
               this.info.push(data);;
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
-              if(data._creator.refered_id) {
+              if(data._creator.referred_email) {
                 console.log(data._creator.email);
-                this.authenticationService.getReferenceDetail(data._creator.refered_id)
+                this.authenticationService.getReferenceDetail(data._creator.referred_email)
                   .subscribe(
                     refData => {
 

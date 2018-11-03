@@ -155,7 +155,7 @@ function create_employer(userParam)
 
                                 verifyEmail(userParam.email);
                                 if(userParam.referred_id){
-                                    referredFriendEmail(userParam.referred_id,  userParam.first_name , userParam.last_name);
+                                    referredFriendEmail(userParam.referred_email,  userParam.first_name , userParam.last_name);
 
                                 }
                                 insertRefCode(userData._creator.email);
@@ -225,9 +225,9 @@ function create_employer(userParam)
     return deferred.promise;
 }
 
-function referredFriendEmail(referredId,first_name,last_name){
+function referredFriendEmail(referredEmail,first_name,last_name){
     console.log("referred email");
-    referral.findOne({  _id : referredId  }, function (err, refDoc)
+    referral.findOne({  email : referredEmail  }, function (err, refDoc)
     {
         if (err){
             logger.error(err.message, {stack: err.stack});

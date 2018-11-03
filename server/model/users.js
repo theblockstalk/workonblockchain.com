@@ -63,10 +63,17 @@ const UserSchema = new Schema({
             type:String,
             // validate: regexes.url
         },
-    refered_id:
+    refered_id: // DELETE ME
         {
             type: Schema.Types.ObjectId,
             //ref : 'Referrals' // UNCOMMENT ME
+        },
+    referred_email :
+        {
+            type:String,
+            validate: regexes.email,
+            lowercase: true,
+            required:true
         },
     is_admin:
         {
