@@ -266,9 +266,9 @@ export class CandidateFormComponent implements OnInit {
 
     company_signup(signupForm: NgForm)
     {
-            ////console.log("comapny signup form");
             this.credentials.type="company";
             this.credentials.social_type='';
+            this.password_log = '';
             if(this.credentials.password != this.credentials.confirm_password )
             {
                 this.credentials.password = '';
@@ -279,12 +279,10 @@ export class CandidateFormComponent implements OnInit {
             && this.credentials.company_website && this.credentials.phone_number && this.credentials.country && this.credentials.postal_code &&
             this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
             {
-				////console.log('else');
                 this.authenticationService.create_employer(this.credentials)
                 .subscribe(
                 data =>
                 {
-                    ////console.log(data);
                     if(data.error)
                     {
                         this.dataservice.changeMessage(data.error);
@@ -294,9 +292,6 @@ export class CandidateFormComponent implements OnInit {
                     else
                     {
                         localStorage.setItem('currentUser', JSON.stringify(data));
-                        //////console.log(localStorage.getItem('currentUser'));
-                        //localStorage.removeItem('userInfo');
-                        //this.router.navigate(['/company_wizard']);
                         window.location.href = '/company_wizard';
                     }
                 },

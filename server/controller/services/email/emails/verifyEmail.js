@@ -1,9 +1,12 @@
 const emails = require('../emails');
 const settings = require('../../../../settings');
+const logger = require('../../logger');
 
 module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmailToken) {
 
     const verifyEmailUrl = settings.CLIENT.URL + 'verify_email?email_hash='+verifyEmailToken;
+    console.log(verifyEmailUrl);
+    logger.debug('verify email url: ' , verifyEmailUrl);
 
     const sendTo = {
         email: emailAddress
@@ -26,6 +29,7 @@ module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmail
             to: sendToArray
         }
     };
+    logger.debug('mandril options: ' , mandrillOptions);
 
-	emails.sendEmail(mandrillOptions, false);
+    emails.sendEmail(mandrillOptions, false);
 }
