@@ -119,7 +119,7 @@ export class CandidateDetailComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.credentials.user_id = this.user_id;
 
-    if(this.user_id) {
+    if(this.user_id && this.currentUser) {
 
       this.authenticationService.candidate_detail(this.user_id)
         .subscribe(
