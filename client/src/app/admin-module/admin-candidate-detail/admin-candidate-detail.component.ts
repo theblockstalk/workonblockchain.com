@@ -62,10 +62,13 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
     this.credentials.user_id = this.user_id;
+
     this.response = "";
     this.referred_link = "";
     this.referred_name = "";
-    if(this.user_id && this.admin_log)
+
+
+    if(this.user_id && this.admin_log && this.currentUser)
     {
       if(this.admin_log.is_admin == 1)
       {

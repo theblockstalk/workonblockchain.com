@@ -48,7 +48,7 @@ export class AdminCompanyDetailComponent implements OnInit {
     this.credentials.user_id = this.user_id;
 
 
-    if(this.user_id && this.admin_log.is_admin == 1 )
+    if(this.user_id && this.admin_log.is_admin === 1 && this.currentUser)
     {
       this.authenticationService.getCurrentCompany(this.user_id)
         .subscribe(

@@ -109,7 +109,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.referred_id = data._creator.refered_id;
               console.log(this.referred_id);
             }
-            if(data.terms)
+            if(data.terms_id)
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
@@ -269,8 +269,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                     }).map((res) => res).subscribe(
                       (success) =>
                       {
-                        this.verify_email();
-                        //this.referred_email();
+
                         this.router.navigate(['/job']);
                       },
                       (error) =>
@@ -296,8 +295,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                 }
                 else
                 {
-                  this.verify_email();
-                  //this.referred_email();
+
                   this.router.navigate(['/job']);
                 }
 
@@ -305,8 +303,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
               else
               {
-                this.verify_email();
-                //this.referred_email();
+
                 this.router.navigate(['/job']);
               }
 
@@ -361,6 +358,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     else {
 
     }
+<<<<<<< HEAD
   }*/
   verify_email()
   {
