@@ -59,3 +59,12 @@ const resume = module.exports.resume = async function resume(data,jwtToken) {
         .send(detail);
     return res;
 }
+
+const prefilledProfile = module.exports.prefilledProfile = async function prefilledProfile(data,jwtToken) {
+
+    const res = await chai.request(server)
+        .put('/users/welcome/prefilled_profile')
+        .set('Authorization', jwtToken)
+        .send(data);
+    return res;
+}

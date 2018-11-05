@@ -28,7 +28,6 @@ const candidateRegister = require('./controller/api/users/candidate/register.con
 const candidateGetAll = require('./controller/api/users/candidate/getAll.controller');
 const candidateGetCurrent = require('./controller/api/users/candidate/getCurrent.controller');
 const candidateImage = require('./controller/api/users/candidate/image.controller');
-const candidateReferred = require('./controller/api/users/candidate/referred_id.controller');
 const candidateUpdate = require('./controller/api/users/candidate/updateProfile.controller');
 const candidateWizardAbout = require('./controller/api/users/candidate/wizard/about.controller');
 const candidateWizardExperience = require('./controller/api/users/candidate/wizard/experience.controller');
@@ -108,7 +107,6 @@ router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
 router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
 router.put('/users/welcome/exp', auth.isLoggedIn, candidateWizardExperience);
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), candidateImage);
-router.put('/users/refered_id', auth.isLoggedIn, candidateReferred);
 router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
 
 // Companies

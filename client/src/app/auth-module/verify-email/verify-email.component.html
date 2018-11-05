@@ -1,43 +1,24 @@
 <br/><br/>
 <section class = "terms" >
   <div class="container t-c_container">
-	<div class="row" >
-			<div class = "A_heading" *ngIf="succesMsg ==='' && errorMsg === ''">
-				<h1>we are verifying your account...</h1>
-			</div>
-    <div class="alert alert-danger pro_alert alert-dismissible msg_heading" *ngIf = "errorMsg !==''">
+    <div class="row" >
+      <div class = "A_heading" *ngIf="succesMsg ==='' && errorMsg === ''">
+        <h1>we are verifying your account...</h1>
+      </div>
 
-      {{errorMsg}}
+
+      <div class="alert alert-danger  verify_error alert-dismissible" *ngIf = "errorMsg !==''">
+        <span class="glyphicon glyphicon-exclamation-sign alert_icon"></span>
+        <span class = "error_text">
+          {{errorMsg}}
+      </span>
+      </div>
+
+
 
     </div>
-
-			<!-- <div class="alert alert-danger pro_alert alert-dismissible msg_heading" *ngIf = "errorMsg !==''">
-
-			<a href="#"  data-dismiss="alert" ></a>
-    			{{errorMsg}}
-
- 			</div>
-
- 			<div class="alert alert-success pro_alert alert-dismissible msg_heading" *ngIf = "succesMsg !==''">
-
-			<a href="#" data-dismiss="alert" ></a>
-    			{{succesMsg}}
-
- 			</div>
-			--->
-
-	</div>
 
   </div>
   <br/><br/>
 </section>
 
-<!-- <section class = "terms" *ngIf="!editor_content" style="padding:150px 10px;">
- <div class="container t-c_container">
- <div  row>
-	 <p> We will upload the content soon </p>
-	</div>
- </div>
-
-</section>
--->

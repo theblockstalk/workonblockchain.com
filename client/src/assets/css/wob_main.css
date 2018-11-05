@@ -3125,6 +3125,42 @@ input:checked + .slider:before {
     width: 70%;
     margin: auto;
 }
+.verify_error {
+  width: 70%;
+  margin: auto;
+  border-radius: 0px;
+  padding: 0px;
+  background: #fff;
+  border: 0px;
+  border-bottom: 3px solid  #eee;
+  color: #c60505;
+  position: relative;
+}
+
+.verify_error .close{
+  color: #c60505;
+  position: absolute;
+  right: 10px;
+  opacity: 1;
+  top: 10px;
+}
+
+.verify_error .alert_icon{
+  background: #c1485b;
+  color: #fff;
+  padding: 5px;
+  font-size: 22px;
+  height: 40px;
+  text-align: center;
+  width: 40px;
+  line-height: 1.42857143;
+  vertical-align: middle;
+}
+
+.verify_error .error_text{
+  position: relative;
+  left: 10px;
+}
 .group a{
     text-decoration: underline;
 }
