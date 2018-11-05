@@ -364,3 +364,29 @@ module.exports.cmsContentForTCCandidate = function cmsContentForTCCandidate() {
         page_name: "Terms and Condition for company"
     }
 }
+
+module.exports.prefilledProfileData = function prefilledProfileData() {
+    return {
+        basics : {
+            first_name: "Sadii",
+            last_name: "Abbasi",
+            summary : "I am developer. I am developer. I am developer. I am developer. I am developer. I am developer."
+        },
+
+        educationHistory: {
+            uniname: 'CUST',
+            degreename: 'BSCS',
+            fieldname: 'CS',
+            eduyear: 2016
+        },
+        workHistory : {
+            companyname: 'MWAN Mobile',
+            positionname: 'Team Lead',
+            locationname: 'PWD islamabad',
+            description: 'I am in this org. I am in this org. I am in this org. I am this org. I am in this org. I am in this org. I am in this org. I am in this orgg. ',
+            startdate: '2016-02-29T19:00:00.000Z',
+            enddate: '2018-10-09T07:32:38.732Z',
+            currentwork: true
+        }
+    }
+}
