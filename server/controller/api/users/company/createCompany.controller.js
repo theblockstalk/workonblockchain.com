@@ -79,7 +79,7 @@ module.exports = async function (req, res) {
                     company_city:userParam.city,
                     company_postcode:userParam.postal_code,
                 });
-                await employerDetail.save();
+                let employerDoc= await employerDetail.save();
                 let signOptions = {
                     expiresIn:  "1h",
                 };
@@ -93,7 +93,7 @@ module.exports = async function (req, res) {
                 verify_send_email(companyUserCreated.email, verifyEmailToken);
                 let userData = filterReturnData.removeSensativeData({_creator : companyUserCreated.toObject()})
                 res.send({
-                    _id:companyUserCreated.id,
+                    _id:employerDoc.id,
                     _creator: userData._creator._id,
                     type:userData._creator.type,
                     email: userData._creator.email,
