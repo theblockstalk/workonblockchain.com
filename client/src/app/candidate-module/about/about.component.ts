@@ -104,12 +104,12 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-
-            if(data._creator.refered_id && !data.first_name && !data.last_name)
+            if(data._creator.refered_id) //&& !data.first_name && !data.last_name)
             {
               this.referred_id = data._creator.refered_id;
+              console.log(this.referred_id);
             }
-            if(data.terms)
+            if(data.terms_id)
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
@@ -212,6 +212,10 @@ export class AboutComponent implements OnInit,AfterViewInit
   about()
   {
     this.error_msg = "";
+    if(this.referred_id)
+    {
+      this.info.referred_id= this.referred_id;
+    }
     if(!this.info.first_name)
     {
       this.first_name_log="Please enter first name";
@@ -265,8 +269,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                     }).map((res) => res).subscribe(
                       (success) =>
                       {
-                        this.verify_email();
-                        this.referred_email();
+
                         this.router.navigate(['/job']);
                       },
                       (error) =>
@@ -292,8 +295,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                 }
                 else
                 {
-                  this.verify_email();
-                  this.referred_email();
+
                   this.router.navigate(['/job']);
                 }
 
@@ -301,8 +303,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
               else
               {
-                this.verify_email();
-                this.referred_email();
+
                 this.router.navigate(['/job']);
               }
 
@@ -331,44 +332,34 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   }
 
-  referred_email()
+  /*referred_email()
   {
     if(this.referred_id)
     {
-      this.authenticationService.getById(this.referred_id)
-        .subscribe(
-          data => {
-            if(data)
-            {
-              if(data._creator.email)
-              {
-                this.email_data.fname = data.first_name;
-                this.email_data.email = data._creator.email;
-                this.email_data.referred_fname = this.info.first_name;
-                this.email_data.referred_lname = this.info.last_name;
-                console.log(this.email_data);
-                this.authenticationService.email_referred_user(this.email_data).subscribe(
-                  data =>
-                  {
+      this.email_data.referred_id = this.referred_id;
+      this.email_data.referred_fname = this.info.first_name;
+      this.email_data.referred_lname = this.info.last_name;
 
-                  });
-              }
-              else
-              {
+      this.authenticationService.email_referred_user(this.email_data).subscribe(
+        data =>
+        {
+          if(data.success === true)
+          {
 
-              }
-            }
+          }
+          else
+          {
 
-            else
-            {
+          }
 
-
-            }
-
-          });
+        });
 
     }
-  }
+    else {
+
+    }
+<<<<<<< HEAD
+  }*/
   verify_email()
   {
 

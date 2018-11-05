@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
+const referral = require('../../../../model/referrals');
 
 const logger = require('../../../services/logger');
 
@@ -49,11 +50,46 @@ function create(userParam)
     function createUser()
     {
         let is_verify=0;
+        let url_token;
         if(userParam.social_type!="")
         {
             is_verify =1;
         }
 
+        referral.findOne({ email: userParam.email }, function (err, user)
+        {
+            if (err){
+                logger.error(err.message, {stack: err.stack});
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            if (user)
+            {
+                url_token = user.url_token;
+            }
+            else
+            {
+                let new_salt = crypto.randomBytes(16).toString('base64');
+                let new_hash = crypto.createHmac('sha512', new_salt);
+                url_token = new_hash.digest('hex');
+                url_token = url_token.substr(url_token.length - 10); //getting last 10 characters
+                let newRefCode = new referral
+                ({
+                    email: userParam.email,
+                    url_token: url_token,
+                    date_created: new Date()
+                });
+
+                newRefCode.save( (err,user) => {
+                    if (err) {
+                        logger.error(err.message, {stack: err.stack});
+                        deferred.reject(err.name + ': ' + err.message);
+                    }
+                    else {
+
+                    }
+                });
+            }
+        });
         let now = new Date();
 		let salt = crypto.randomBytes(16).toString('base64');
 		let hash = crypto.createHmac('sha512', salt);
@@ -62,21 +98,16 @@ function create(userParam)
 
         createdDate= now;
 
-		let new_salt = crypto.randomBytes(16).toString('base64');
-		let new_hash = crypto.createHmac('sha512', new_salt);
-		let email = new_hash.digest('hex');
-
         let newUser = new users
         ({
             email: userParam.email,
             password_hash: hashedPasswordAndSalt,
 			salt : salt,
             type: userParam.type,
-            ref_link: email,
             social_type: userParam.social_type,
             is_verify:is_verify,
             created_date: createdDate,
-            refered_id : mongoose.Types.ObjectId(userParam.refer_by),
+            referred_email : userParam.referred_email
         });
 
         newUser.save( (err,user) =>
@@ -126,14 +157,14 @@ function create(userParam)
                                     _creator: userData._creator._id,
                                     type:userData._creator.type,
                                     email: userData._creator.email,
-                                    ref_link: userData._creator.ref_link,
+                                    ref_link: url_token,
                                     is_approved : userData._creator.is_approved,
                                     jwt_token: tokenn
                         		});
                         	}
                         });
                 	}
-                		
+
                 });
 
                 }

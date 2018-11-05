@@ -18,9 +18,10 @@ const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTok
 const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
 
 // Referrals
-const refReferredEmail = require('./controller/api/users/referrals/referredEmail.controller');
 const refGetReferralCode = require('./controller/api/users/referrals/getReferralCode.controller');
 const refReferral = require('./controller/api/users/referrals/referral.controller');
+const getReferralCodeForUsers = require('./controller/api/users/referrals/getReferralCodeForUsers.controller');
+const getReferralDetailForAdmin  = require('./controller/api/users/referrals/getReferralDetailForAdmin.controller');
 
 // Candidates
 const candidateRegister = require('./controller/api/users/candidate/register.controller');
@@ -79,7 +80,7 @@ router.get('/', healthCheck);
 
 // User authorization
 router.post('/users/authenticate', authAthenticate);
-router.put('/users/emailVerify/:email_hash', authVerifyEmail);
+router.put('/users/emailVerify/:email_hash', asyncMiddleware(authVerifyEmail));
 router.put('/users/forgot_password/:email', authForgotPassword);
 router.put('/users/change_password',auth.isLoggedIn, authChangePassword);
 router.put('/users/reset_password/:hash', authResetPassword);
@@ -89,9 +90,11 @@ router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
 router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
 // Referrals
-router.post('/users/refered_user_email', refReferredEmail)
 router.post('/users/send_refreal',auth.isLoggedIn, refReferral);
-router.post('/users/get_refrence_code', refGetReferralCode);
+router.post('/users/get_refrence_code', asyncMiddleware(refGetReferralCode));
+router.post('/users/get_ref_code' , asyncMiddleware(getReferralCodeForUsers));
+router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getReferralDetailForAdmin));
+
 
 // Candidates
 router.post('/users/register', candidateRegister);
@@ -107,7 +110,7 @@ router.post('/users/image', auth.isLoggedIn, multer.single('photo'), candidateIm
 router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
 
 // Companies
-router.post('/users/create_employer', companyRegister);
+router.post('/users/create_employer',  asyncMiddleware(companyRegister));
 router.get('/users/company',auth.isAdmin, companyGet);
 router.get('/users/current_company/:_id',auth.isLoggedIn, companyGetCurrent);
 router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);

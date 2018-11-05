@@ -1,15 +1,19 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const User = require('../../../../../model/users');
+const referral = require('../../../../../model/referrals');
+const EmployerProfile = require('../../../../../model/employer_profile');
 const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
+const verify_send_email = require('../../auth/verify_send_email');
+const jwtToken = require('../../../../services/jwtToken');
 
+const referedUserEmail = require('../../../../services/email/emails/referredFriend');
 ///// for candidate about wizard ///////////////////
 
 module.exports = async function (req, res) {
-    const userId = req.auth.user._id;
-    //getting user info
-    const userDoc = req.auth.user;
 
-    const candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
+    const myUserDoc = req.auth.user;
+
+    const candidateDoc = await CandidateProfile.findOne({ _creator: myUserDoc._id }).lean();
 
     const userParam = req.body;
     let candidateUpdate = {}
@@ -23,16 +27,57 @@ module.exports = async function (req, res) {
     await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
 
     if (userParam.country && userParam.city) {
-        await User.update({ _id: userId },{ $set: {'candidate.base_city' : userParam.city , 'candidate.base_country' : userParam.country } });
+        await User.update({ _id: myUserDoc._id },{ $set: {'candidate.base_city' : userParam.city , 'candidate.base_country' : userParam.country } });
     }
 
+    const refDoc = await referral.findOne({
+        email : myUserDoc.referred_email
+    }).lean();
+    if(refDoc){
+        const userDoc = await User.findOne({email : refDoc.email}).lean();
+
+        if(userDoc && userDoc.type){
+            if(userDoc.type === 'candidate'){
+                const candidateDoc = await CandidateProfile.findOne({_creator : userDoc._id}).lean();
+                let data = {fname : candidateDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
+                referedUserEmail.sendEmail(data, userDoc.disable_account);
+            }
+            if(userDoc.type === 'company'){
+                const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).lean();
+                let data = {fname : companyDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
+                referedUserEmail.sendEmail(data, userDoc.disable_account);
+            }
+        }
+        else
+        {
+            let data = {email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
+            referedUserEmail.sendEmail(data, false);
+        }
+
+    }
     //sending email for social register
-    if(userDoc.social_type === 'GOOGLE' || userDoc.social_type === 'LINKEDIN'){
-        let data = {fname : userParam.first_name , email : userDoc.email}
-        welcomeEmail.sendEmail(data, userDoc.disable_account);
+    if(myUserDoc.social_type === 'GOOGLE' || myUserDoc.social_type === 'LINKEDIN'){
+        let data = {fname : userParam.first_name , email : myUserDoc.email}
+        welcomeEmail.sendEmail(data, myUserDoc.disable_account);
+    }
+    else {
+        let signOptions = {
+            expiresIn:  "1h",
+        };
+        let verifyEmailToken = jwtToken.createJwtToken(myUserDoc, signOptions);
+        var set =
+            {
+                verify_email_key: verifyEmailToken,
+
+            };
+        await User.update({ _id: myUserDoc._id },{ $set: set });
+        verify_send_email(myUserDoc.email, verifyEmailToken);
+
+
     }
 
     res.send({
         success: true
     });
+
 };

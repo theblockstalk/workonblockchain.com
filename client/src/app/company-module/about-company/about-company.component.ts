@@ -74,7 +74,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
                       //this.router.navigate(['/login']);
                   }
-                 if(data.terms === true)
+                 if(data.terms_id)
                   {
                     this.terms_active_class = 'fa fa-check-circle text-success';
                       //this.router.navigate(['/login']);

@@ -40,3 +40,24 @@ const sendEmail = module.exports.sendEmail = async function sendEmail(data) {
     res.should.have.status(200);
     return res;
 }
+
+const getRefCode = module.exports.getRefCode = async function getRefCode(email) {
+    const data = {
+        'email': email
+    };
+    const res = await chai.request(server)
+        .post('/users/get_ref_code')
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
+
+const getRefDetail = module.exports.getRefDetail = async function getRefDetail(data, jwtToken) {
+
+    const res = await chai.request(server)
+        .post('/users/get_refrence_detail')
+        .set('Authorization', jwtToken)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
