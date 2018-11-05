@@ -74,6 +74,9 @@ export class CandidateDetailComponent implements OnInit {
   commercial;
   ngOnInit()
   {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    if(this.currentUser && this.user_id ) {
     this.authenticationService.getLastJobDesc()
     .subscribe(
       data => {
@@ -116,10 +119,9 @@ export class CandidateDetailComponent implements OnInit {
     }, 7000);
     this.company_reply = 0;
     this.credentials.currency = -1;
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.credentials.user_id = this.user_id;
 
-    if(this.user_id && this.currentUser) {
+
 
       this.authenticationService.candidate_detail(this.user_id)
         .subscribe(
