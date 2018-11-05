@@ -52,11 +52,20 @@ export class AdminCandidateDetailComponent implements OnInit {
   commercial;
   roles;
   platforms;
+  email;
+  response;
+  referred_name;
+  referred_link;
+  detail_link;
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
     this.credentials.user_id = this.user_id;
+
+    this.response = "";
+    this.referred_link = "";
+    this.referred_name = "";
 
 
     if(this.user_id && this.admin_log && this.currentUser)
@@ -130,9 +139,47 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.is_approved = "";
               }
 
-              if(data._creator.refered_id)
+              if(data._creator.referred_email)
               {
-                this.authenticationService.getById(data._creator.refered_id)
+                this.authenticationService.getReferenceDetail(data._creator.referred_email)
+                  .subscribe(
+                    refData => {
+
+                      console.log(refData);
+                      if(refData.candidateDoc){
+                        console.log("candidate");
+                        if(refData.candidateDoc.first_name && refData.candidateDoc.last_name)
+                          this.referred_name = refData.candidateDoc.first_name + " " + refData.candidateDoc.last_name;
+                        else
+                          this.referred_name = refData.candidateDoc._id ;
+
+
+                        this.detail_link = '/admin-candidate-detail';
+                        this.referred_link = refData.candidateDoc._creator;
+                      }
+                      else if(refData.companyDoc){
+                        console.log("company");
+                        if(refData.companyDoc.first_name && refData.companyDoc.last_name)
+                          this.referred_name = refData.companyDoc.first_name + " " + refData.companyDoc.last_name;
+                        else
+                          this.referred_name = refData.companyDoc._id ;
+
+                        console.log(this. referred_name);
+                        this.detail_link = '/admin-company-detail';
+                        this.referred_link = refData.companyDoc._creator;
+                        console.log(this.referred_link);
+                      }
+                      else
+                      {
+                        this.referred_name = refData.refDoc.email;
+                      }
+
+                          },
+                    error => {
+
+                    }
+                  );
+                /*this.authenticationService.getById(data._creator.refered_id)
                   .subscribe(
                     data => {
 
@@ -146,7 +193,8 @@ export class AdminCandidateDetailComponent implements OnInit {
                       {
                         this.refeered="null";
                       }
-                    });
+                    });*/
+
 
 
               }

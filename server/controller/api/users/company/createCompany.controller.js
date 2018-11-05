@@ -4,11 +4,17 @@ var jwt = require('jsonwebtoken');
 const Users = require('../../../../model/users');
 const crypto = require('crypto');
 const EmployerProfile = require('../../../../model/employer_profile');
+const CandidateProfile  = require('../../../../model/candidate_profile');
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const logger = require('../../../services/logger');
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
 const verify_send_email = require('../auth/verify_send_email');
+const mongoose = require('mongoose');
+const referral = require('../../../../model/referrals');
+
+const referedUserEmail = require('../../../services/email/emails/referredFriend');
+
 
 ///// for candidate about wizard ///////////////////
 
@@ -37,6 +43,7 @@ module.exports = async function (req, res) {
     }
     else
     {
+
         const companyDoc = await Users.findOne({ email: userParam.email }).lean();
         if(companyDoc){
             const responseMsg = 'Email "' + userParam.email + '" is already taken';
@@ -91,6 +98,7 @@ module.exports = async function (req, res) {
                         verify_email_key: verifyEmailToken,
 
                     };
+
                 const userDoc = await Users.update({ _id: companyUserCreated._id },{ $set: set });
                 verify_send_email(companyUserCreated.email, verifyEmailToken);
                 let userData = filterReturnData.removeSensativeData({_creator : companyUserCreated.toObject()})
@@ -105,5 +113,6 @@ module.exports = async function (req, res) {
             }
         }
     }
+
     
 };
