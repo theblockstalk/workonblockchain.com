@@ -79,7 +79,9 @@ module.exports = async function (req, res) {
                     company_city:userParam.city,
                     company_postcode:userParam.postal_code,
                 });
+
                 let employerDoc = await employerDetail.save();
+
                 let signOptions = {
                     expiresIn:  "1h",
                 };

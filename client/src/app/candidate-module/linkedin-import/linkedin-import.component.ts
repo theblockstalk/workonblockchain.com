@@ -54,7 +54,7 @@ export class LinkedinImportComponent implements OnInit {
           data =>
           {
 
-            if(data.terms)
+            if(data.terms_id)
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';

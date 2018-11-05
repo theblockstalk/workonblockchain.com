@@ -109,7 +109,7 @@ export class AboutComponent implements OnInit,AfterViewInit
             {
               this.referred_id = data._creator.refered_id;
             }
-            if(data.terms)
+            if(data.terms_id)
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';

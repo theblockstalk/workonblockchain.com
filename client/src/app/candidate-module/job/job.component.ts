@@ -95,7 +95,7 @@ export class JobComponent implements OnInit,AfterViewInit {
                   {
                         this.about_active_class = 'fa fa-check-circle text-success';
                   }
-                  if(data.terms==true)
+                  if(data.terms_id)
                   {
                         this.term_active_class='fa fa-check-circle text-success';
                       this.term_link = '/terms-and-condition';

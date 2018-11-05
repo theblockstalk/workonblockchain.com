@@ -1,74 +1,31 @@
-const settings = require('../../../../settings');
-var _ = require('lodash');
-var Q = require('q');
-var mongo = require('mongoskin');
-const users = require('../../../../model/users');
-const logger = require('../../../services/logger');
+const User = require('../../../../model/users');
 const jwtToken = require('../../../services/jwtToken');
 
-module.exports = function (req,res)
-{
-    emailVerify(req.params.email_hash).then(function (err, data)
-    {
+module.exports = async function (req, res) {
+    const verifyEmailHash = req.params.email_hash;
+    const userDoc = await User.findOne({ verify_email_key: verifyEmailHash }).lean();
 
-        if (data)
-        {
-            res.json(data);
+    if(userDoc) {
+        const payloaddata = jwtToken.verifyJwtToken(verifyEmailHash);
+        if((payloaddata.exp - payloaddata.iat) === 3600){
+            await User.update({ _id: userDoc._id },{ $set: {is_verify: 1 } });
+            res.send({
+                success : true,
+                msg : "Email Verifiesd"
+            })
+
         }
-        else
-        {
-            res.send(err);
-        }
-    })
-
-
-}
-
-function emailVerify(verifyEmailToken)
-{
-    var deferred = Q.defer();
-
-    let payloaddata = jwtToken.verifyJwtToken(verifyEmailToken);
-
-    if((payloaddata.exp - payloaddata.iat) === 3600)
-    {
-        users.findOne(  { verify_email_key: verifyEmailToken  }, function (err, result)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            if(result)
-            {
-      
-                updateData(result._id);
-            }
-            else
-           
-                deferred.resolve({error:'Email hash not found'});
-        });
-
-        function updateData(_id)
-        {
-            var set =
-                {
-                    is_verify: 1,
-                };
-            users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
-            {
-                if (err){
-                    logger.error(err.message, {stack: err.stack});
-                    deferred.reject(err.name + ': ' + err.message);
-                }
-                else
-                    deferred.resolve({msg:'Email Verified'});
-            });
+        else{
+            res.send({
+                success : false,
+                error : "Link expired"
+            })
         }
     }
-    else
-    {
-        deferred.resolve({error:'Link Expired'});
+    else {
+        res.send({
+            success : false,
+            error : "Invalid link"
+        })
     }
-    return deferred.promise;
-
-}
+};
