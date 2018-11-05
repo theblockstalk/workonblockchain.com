@@ -33,7 +33,7 @@ describe('return referred user detail', function () {
                 password: "Password1",
                 type: "candidate",
                 social_type : "",
-                referred_id : refDoc.body._id,
+                referred_email : refDoc.body.email,
             }
             const profileData = docGenerator.profileData();
             const job = docGenerator.job();
@@ -44,7 +44,7 @@ describe('return referred user detail', function () {
 
             const candidateUserDoc = await Users.findOne({email: candidateReferred.email}).lean();
 
-            const referralDoc = await referralsHelper.getRefDetail({id : candidateUserDoc.refered_id}, candidateUserDoc.jwt_token);
+            const referralDoc = await referralsHelper.getRefDetail({email : candidateUserDoc.referred_email}, candidateUserDoc.jwt_token);
             referralDoc.body.refDoc.email.should.equal(candidate.email);
             referralDoc.body.refDoc.url_token.should.equal(refDoc.body.url_token);
 
