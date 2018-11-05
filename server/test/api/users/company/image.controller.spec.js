@@ -31,7 +31,6 @@ describe('upload company profile image', function () {
 
             const company = docGenerator.company();
             const signupRes = await companyHepler.signupCompany(company);
-
             const file = docGenerator.image();
 
             await companyHepler.image(file, signupRes.body.jwt_token);
