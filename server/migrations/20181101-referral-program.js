@@ -1,6 +1,6 @@
-const Candidate = require('../model/candidate_profile');
 const Users = require('../model/users');
 const Referral = require('../model/referrals');
+const mongoose = require('mongoose');
 
 let totalDocsToProcess, totalProcessed = 0, totalModified = 0;
 let totalreferred = 0;
@@ -75,22 +75,42 @@ module.exports.down = async function() {
     totalDocsToProcess = await Referral.find({}).count();
     let referralDoc = await referralCursor.next();
 
-    const userDoc = await Users.find().lean();
-
-
+    let updateObj = {};
     for ( null ; referralDoc !== null; referralDoc = await referralCursor.next()) {
 
         console.log('  ' , referralDoc._id);
 
+        const userDoc = await Users.find({email : referralDoc.email}).lean();
 
-        if (referralDoc.url_token && referralDoc.email === userDoc.email) {
+        console.log("referred email : " + userDoc[0]._id);
+
+        if (referralDoc.url_token ) {
             totalProcessed++;
 
-            const updateObj = {
-                $set: {refered_id: referralDoc._id , ref_link : referralDoc.url_token}
-            };
+            let referedUser = await Users.find({email : userDoc[0].referred_email}).lean();
+            console.log('  ', referedUser);
+            console.log('Referred user length : ' +referedUser.length);
+
+            if(referedUser.length > 0)
+            {
+                updateObj = {
+                    $unset: {referred_email: 1},
+                    $set: {refered_id: referedUser[0]._id , ref_link : referralDoc.url_token}
+                };
+                totalreferred++;
+
+            }
+            else
+            {
+                updateObj = {
+                    $set: {ref_link : referralDoc.url_token}
+                };
+
+            }
+
+
             console.log('  ', updateObj);
-            const update = await Users.update({_id: userDoc._id}, updateObj);
+            const update = await Users.update({_id: userDoc[0]._id}, updateObj);
             if (update && update.nModified) totalModified++;
             else console.log('  UPDATE NOT SUCESSFUL');
         }
@@ -99,8 +119,11 @@ module.exports.down = async function() {
     console.log('Total users docs to process: ', totalDocsToProcess);
     console.log('Total processed: ', totalProcessed);
     console.log('Total modified: ', totalModified);
+    console.log('Total referred: ', totalreferred);
+
 
     totalProcessed = 0;
     totalModified = 0;
+    totalreferred= 0;
 
 }
