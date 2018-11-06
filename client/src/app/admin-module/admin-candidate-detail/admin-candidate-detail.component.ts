@@ -57,6 +57,8 @@ export class AdminCandidateDetailComponent implements OnInit {
   referred_name;
   referred_link;
   detail_link;
+  commercial_skills;
+  formal_skills;
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -119,6 +121,26 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.platforms.sort(function(a, b){
                   if(a.platform_name < b.platform_name) { return -1; }
                   if(a.platform_name > b.platform_name) { return 1; }
+                  return 0;
+                })
+              }
+
+              if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length > 0)
+              {
+                this.commercial_skills = data._creator.candidate.blockchain.commercial_skills;
+                this.commercial_skills.sort(function(a, b){
+                  if(a.skill < b.skill) { return -1; }
+                  if(a.skill > b.skill) { return 1; }
+                  return 0;
+                })
+              }
+
+              if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length > 0)
+              {
+                this.formal_skills = data._creator.candidate.blockchain.formal_skills;
+                this.formal_skills.sort(function(a, b){
+                  if(a.skill < b.skill) { return -1; }
+                  if(a.skill > b.skill) { return 1; }
                   return 0;
                 })
               }

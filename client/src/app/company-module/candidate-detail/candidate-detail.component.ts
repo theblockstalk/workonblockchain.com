@@ -72,6 +72,9 @@ export class CandidateDetailComponent implements OnInit {
 
   cand_data=[];
   commercial;
+  commercial_skills;
+  formal_skills;
+
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -170,6 +173,25 @@ export class CandidateDetailComponent implements OnInit {
                 this.platforms.sort(function(a, b){
                   if(a.platform_name < b.platform_name) { return -1; }
                   if(a.platform_name > b.platform_name) { return 1; }
+                  return 0;
+                })
+              }
+              if(dataa._creator.candidate && dataa._creator.candidate.blockchain && dataa._creator.candidate.blockchain.commercial_skills && dataa._creator.candidate.blockchain.commercial_skills.length > 0)
+              {
+                this.commercial_skills = dataa._creator.candidate.blockchain.commercial_skills;
+                this.commercial_skills.sort(function(a, b){
+                  if(a.skill < b.skill) { return -1; }
+                  if(a.skill > b.skill) { return 1; }
+                  return 0;
+                })
+              }
+
+              if(dataa._creator.candidate && dataa._creator.candidate.blockchain && dataa._creator.candidate.blockchain.formal_skills && dataa._creator.candidate.blockchain.formal_skills.length > 0)
+              {
+                this.formal_skills = dataa._creator.candidate.blockchain.formal_skills;
+                this.formal_skills.sort(function(a, b){
+                  if(a.skill < b.skill) { return -1; }
+                  if(a.skill > b.skill) { return 1; }
                   return 0;
                 })
               }

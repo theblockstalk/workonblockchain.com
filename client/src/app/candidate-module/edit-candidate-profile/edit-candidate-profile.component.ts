@@ -255,7 +255,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
             }
 
-            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills)
+            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length>0)
             {
               this.commercialSkillsExperienceYear = data._creator.candidate.blockchain.commercial_skills;
               for (let key of data._creator.candidate.blockchain.commercial_skills)
@@ -298,7 +298,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
             }
 
 
-            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills)
+            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length>0)
             {
               this.formal_skills = data._creator.candidate.blockchain.formal_skills;
               for (let key of data._creator.candidate.blockchain.formal_skills)
@@ -1530,12 +1530,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   oncommercialSkillsOptions(obj)
   {
 
-    let updateItem = this.commercialSkills.find(this.findIndexToUpdate, obj.value);
+    let updateItem = this.commercialSkills.find(this.findIndexToUpdate_funct, obj.value);
     let index = this.commercialSkills.indexOf(updateItem);
     if(index > -1)
     {
       this.commercialSkills.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.commercialSkillsExperienceYear, 'platform_name',  obj.value);
+      let updateItem2 = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill',  obj.value);
       let index2 = this.commercialSkillsExperienceYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -1585,12 +1585,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   onFormalOptions(obj)
   {
 
-    let updateItem = this.formal_skills_exp.find(this.findIndexToUpdate, obj.value);
+    let updateItem = this.formal_skills_exp.find(this.findIndexToUpdate_funct, obj.value);
     let index = this.formal_skills_exp.indexOf(updateItem);
     if(index > -1)
     {
       this.formal_skills_exp.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.formal_skills, 'platform_name',  obj.value);
+      let updateItem2 = this.findObjectByKey(this.formal_skills, 'skill',  obj.value);
       let index2 = this.formal_skills.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -1634,7 +1634,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
 
   }
-
 
 
 }

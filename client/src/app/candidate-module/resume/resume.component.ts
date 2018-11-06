@@ -204,7 +204,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
                 }
 
-                  if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills)
+                  if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length>0)
                   {
                     this.commercialSkillsExperienceYear = data._creator.candidate.blockchain.commercial_skills;
                     for (let key of data._creator.candidate.blockchain.commercial_skills)
@@ -247,7 +247,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                   }
 
 
-                  if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills)
+                  if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length>0)
                   {
                     this.formal_skills = data._creator.candidate.blockchain.formal_skills;
                     for (let key of data._creator.candidate.blockchain.formal_skills)
@@ -509,6 +509,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         {
           this.why_work_log = "Please fill why do you want to work on blockchain?";
          }
+         console.log(this.formal_skills_exp.length + " : " + this.formal_skills.length)
        if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
        && this.commercialSkills.length === this.commercialSkillsExperienceYear.length && this.formal_skills_exp.length === this.formal_skills.length)
        {
@@ -685,7 +686,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.platforms.push(this.platformreferringData);
       ////console.log(this.platforms);*/
 
-         let updateItem = this.findObjectByKey(this.platforms, 'platform_name', value);
+         let updateItem = this.findObjectByKey(this.platforms, 'skill', value);
        //////console.log(updateItem);
       let index = this.platforms.indexOf(updateItem);
 
@@ -740,7 +741,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     if(index > -1)
     {
       this.commercialSkills.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.commercialSkillsExperienceYear, 'platform_name',  obj.value);
+      let updateItem2 = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill',  obj.value);
       let index2 = this.commercialSkillsExperienceYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -794,7 +795,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     if(index > -1)
     {
       this.formal_skills_exp.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.formal_skills, 'platform_name',  obj.value);
+      let updateItem2 = this.findObjectByKey(this.formal_skills, 'skill',  obj.value);
       let index2 = this.formal_skills.indexOf(updateItem2);
 
       if(index2 > -1)
