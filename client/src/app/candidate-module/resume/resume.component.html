@@ -167,7 +167,7 @@
                           <p class="rd_label label-p">{{option.value}}</p>
                           <div class = "form-group radio-toolbar col-md-12 controls__group">
                             <div *ngFor="let exp of exp_year; let i_ind =index">
-                              <input type="radio" name="radiogroup- {{ option.value}}" id="skill{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value">
+                              <input type="radio" name="commercialradiogroup- {{ option.value}}" id="skill{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value">
                               <label class="radio-inline d-flex justify-content-center align-items-center" for="skill{{option.value}}{{i_ind}}">
                                 {{exp.name}}
                               </label>
@@ -184,40 +184,40 @@
                       <span class = "checkbox-header"> <strong>Formal (university) education in these areas </strong></span>
 
                       <div class="row">
-                        <div class="col-md-4 collection-checkbox" *ngFor="let option of commercially">
+                        <div class="col-md-4 collection-checkbox" *ngFor="let option of otherFormalSkills">
 
                           <div class="checkbox" >
                             <label class = "check-label lable"> {{option.name}}
-                              <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)"   />
+                              <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"   />
 
                               <span class="checkmark">
                           <div></div>
                           </span>
                             </label>
-                            <input type="text" class="form-control" [(ngModel)]='commercially_worked' name="commercially_worked" style="display: none;">
+                            <input type="text" class="form-control" [(ngModel)]='formal_skills_exp' name="formal_skills_exp" style="display: none;">
                           </div>
 
                         </div>
                       </div>
 
-                      <div *ngIf="commercially_worked?.length > 0">
+                      <div *ngIf="formal_skills_exp?.length > 0">
                         <p class = "exp_p">Years of experience</p>
-                        <div class = "row" *ngFor="let option of commercially_worked; let i = index ">
+                        <div class = "row" *ngFor="let option of formal_skills_exp; let i = index ">
 
                           <p class="rd_label label-p">{{option.value}}</p>
                           <div class = "form-group radio-toolbar col-md-12 controls__group">
                             <div *ngFor="let exp of exp_year; let i_ind =index">
-                              <input type="radio" name="radiogroup- {{ option.value}}" id="rg{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
-                              <label class="radio-inline d-flex justify-content-center align-items-center" for="rg{{option.value}}{{i_ind}}">
+                              <input type="radio" name="formalradiogroup- {{ option.value}}" id="formal{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onFormalExpYearOptions($event , option.value)" [checked]="formal_expYear_db[i] === exp.value && formalDbArray[i] === option.value" >
+                              <label class="radio-inline d-flex justify-content-center align-items-center" for="formal{{option.value}}{{i_ind}}">
                                 {{exp.name}}
                               </label>
                             </div>
-                            <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
+                            <input type="text" class="form-control" name="formal_skills" [(ngModel)]='formal_skills' style="display: none;">
                           </div>
 
                         </div>
-                        <div class = "form_error" *ngIf="commercially_worked.length !== commercial_expYear.length">
-                          <span class = "error">{{commercial_log}}</span>
+                        <div class = "form_error" *ngIf="formal_skills_exp.length !== formal_skills.length">
+                          <span class = "error">{{formal_skills_log}}</span>
                         </div>
                       </div>
 

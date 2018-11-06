@@ -32,6 +32,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   skill_expYear_db=[];
   skillDbArray=[];
   skillDb;
+  formalDbArray=[];
+  formal_expYear_db=[];
+  formalSkillDb;
 
    constructor(private route: ActivatedRoute, private http: HttpClient,
         private router: Router,
@@ -201,7 +204,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
                 }
 
-                  if(data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills)
+                  if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills)
                   {
                     this.commercialSkillsExperienceYear = data._creator.candidate.blockchain.commercial_skills;
                     for (let key of data._creator.candidate.blockchain.commercial_skills)
@@ -234,6 +237,49 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                           {
                             option.checked=true;
                             this.skill_expYear_db.push(key[i]);
+
+                          }
+
+                        }
+
+                      }
+                    }
+                  }
+
+
+                  if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills)
+                  {
+                    this.formal_skills = data._creator.candidate.blockchain.formal_skills;
+                    for (let key of data._creator.candidate.blockchain.formal_skills)
+                    {
+                      for(var i in key)
+                      {
+
+                        for(let option of this.otherFormalSkills)
+                        {
+
+                          if(option.value === key[i])
+                          {
+                            option.checked=true;
+                            this.formalDbArray.push(key[i]);
+                            this.formalSkillDb= ({value: key[i]});
+                            this.formal_skills_exp.push(this.formalSkillDb);
+
+                          }
+                          else
+                          {
+
+                          }
+
+                        }
+
+                        for(let option of this.exp_year)
+                        {
+
+                          if(option.value === key[i])
+                          {
+                            option.checked=true;
+                            this.formal_expYear_db.push(key[i]);
 
                           }
 
@@ -336,6 +382,18 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {name:'Smart contract audits', value:'Smart contract audits', checked:false},
       {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
     ]
+  otherFormalSkills =
+    [
+      {name:'P2P protocols', value:'P2P protocols', checked:false},
+      {name:'Distributed computing and networks', value:'Distributed computing and networks', checked:false},
+      {name:'Security', value:'Security', checked:false},
+      {name:'Formal verification', value:'Formal verification', checked:false},
+      {name:'Cryptography', value:'Cryptography', checked:false},
+      {name:'Game theory', value:'Game theory', checked:false},
+      {name:'Economics', value:'Economics', checked:false},
+      {name:'Smart contract audits', value:'Smart contract audits', checked:false},
+      {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
+    ]
 
   designed=
   [
@@ -418,6 +476,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     }
 
     why_work_log;commercial_log;platform_log;
+  formal_skills_log;
+  formal_skills_exp=[];
+  formal_skills=[];
   commercial_skill_log;
    blockchain_exp(expForm: NgForm)
    {
@@ -434,6 +495,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
      {
        this.commercial_skill_log = "Please fill year of experience";
      }
+
+     if(this.formal_skills_exp.length !== this.formal_skills.length)
+     {
+       this.formal_skills_log = "Please fill year of experience";
+     }
         if(this.platforms_designed.length !== this.platforms.length)
         {
             this.platform_log = "Please fill year of experience";
@@ -444,7 +510,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
           this.why_work_log = "Please fill why do you want to work on blockchain?";
          }
        if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
-       && this.platforms_designed.length === this.platforms.length)
+       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length && this.formal_skills_exp.length === this.formal_skills.length)
        {
         this.authenticationService.resume(this.currentUser._creator , expForm.value)
             .subscribe(
@@ -714,6 +780,60 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.referringData = { skill : this.value, exp_year: e.target.value};
       this.commercialSkillsExperienceYear.push(this.referringData);
       console.log(this.commercialSkillsExperienceYear);
+
+    }
+
+  }
+
+
+  onFormalOptions(obj)
+  {
+
+    let updateItem = this.formal_skills_exp.find(this.findIndexToUpdate, obj.value);
+    let index = this.formal_skills_exp.indexOf(updateItem);
+    if(index > -1)
+    {
+      this.formal_skills_exp.splice(index, 1);
+      let updateItem2 = this.findObjectByKey(this.formal_skills, 'platform_name',  obj.value);
+      let index2 = this.formal_skills.indexOf(updateItem2);
+
+      if(index2 > -1)
+      {
+
+        this.formal_skills.splice(index2, 1);
+      }
+    }
+    else
+    {
+      obj.checked =true;
+      this.formal_skills_exp.push(obj);
+    }
+    console.log(this.formal_skills_exp);
+
+  }
+
+  onFormalExpYearOptions(e, value)
+  {
+    this.selectedValue = e.target.value;
+    let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
+    let index = this.formal_skills.indexOf(updateItem);
+
+    if(index > -1)
+    {
+
+      this.formal_skills.splice(index, 1);
+      this.value = value;
+      this.referringData = { skill : this.value, exp_year: e.target.value};
+      this.formal_skills.push(this.referringData);
+      console.log(this.formal_skills);
+
+    }
+    else
+    {
+      this.value=value;
+      this.referringData = { skill : this.value, exp_year: e.target.value};
+      this.formal_skills.push(this.referringData);
+      console.log(this.formal_skills);
 
     }
 
