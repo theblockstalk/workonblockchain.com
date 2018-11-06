@@ -39,6 +39,17 @@ module.exports = async function (req, res) {
         await User.update({ _id: userId },{ $set: {'candidate.base_city' : userParam.city , 'candidate.base_country' : userParam.base_country } });
     }
 
+    let updateCandidateUser = {}
+
+    if(userParam.commercial_skills) updateCandidateUser.candidate.blockchain.commercial_skills = userParam.commercial_skills;
+    if(userParam.formal_skills) updateCandidateUser.candidate.blockchain.formal_skills = userParam.formal_skills;
+    if(userParam.city) updateCandidateUser.candidate.base_city = userParam.city;
+    if(userParam.base_country) updateCandidateUser.candidate.base_country = userParam.base_country;
+    if (updateCandidateUser) {
+        await User.update({ _id: userId },{ $set: updateCandidateUser });
+    }
+
+
     res.send({
         success: true,
     });
