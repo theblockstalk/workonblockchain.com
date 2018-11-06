@@ -1,65 +1,30 @@
-const settings = require('../../../../../settings');
-var Q = require('q');
-var mongo = require('mongoskin');
 const CandidateProfile = require('../../../../../model/candidate_profile');
-const logger = require('../../../../services/logger');
+const User = require('../../../../../model/users');
 
-///// for save candidate "resume(blockchain experience)" data in db//////////////////
+///// for candidate resume(blockchain) wizard ///////////////////
 
-module.exports = function (req,res)
-{
-	let userId = req.auth.user._id;
-    resume_data(userId,req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
-        }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
+module.exports = async function (req, res) {
 
-function resume_data(_id, userParam)
-{
-    var deferred = Q.defer();
-    CandidateProfile.findOne({ _creator: _id }, function (err, data)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            updateResume(_id);
+    const myUserDoc = req.auth.user;
 
-    });
+    const candidateDoc = await CandidateProfile.findOne({ _creator: myUserDoc._id }).lean();
 
-    function updateResume(_id)
-    {
-        var set =
-            {
-                why_work: userParam.why_work,
-                commercial_platform: userParam.commercial_experience_year,
-                experimented_platform: userParam.experimented_platform,
-                platforms: userParam.platforms,
-                
-            };
-        CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+    const userParam = req.body;
+    let candidateUpdate = {}
+    if (userParam.why_work) candidateUpdate.why_work = userParam.why_work;
+    if (userParam.commercial_experience_year) candidateUpdate.commercial_platform = userParam.commercial_experience_year;
+    if (userParam.experimented_platform) candidateUpdate.experimented_platform = userParam.experimented_platform;
+    if (userParam.platforms) candidateUpdate.platforms = userParam.platforms;
+
+
+    await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
+
+    if (userParam.commercial_skills && userParam.formal_skills) {
+        await User.update({ _id: myUserDoc._id },{ $set: {'candidate.blockchain.commercial_skills' : userParam.commercial_skills , 'candidate.blockchain.formal_skills' : userParam.formal_skills } });
     }
 
-    return deferred.promise;
-}
+    res.send({
+        success: true
+    });
+
+};

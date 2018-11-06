@@ -110,7 +110,7 @@ const UserSchema = new Schema({
                     commercial_skills : [new Schema({
                         skill: {
                             type: String,
-                            enum: enumeration.otherSkills
+                            enum: enumerations.otherSkills
                         },
                         exp_year: {
                             type: String,
@@ -121,7 +121,7 @@ const UserSchema = new Schema({
                     formal_skills : [new Schema({
                         skill: {
                             type: String,
-                            enum: enumeration.otherSkills
+                            enum: enumerations.otherSkills
                         },
                         exp_year: {
                             type: String,
