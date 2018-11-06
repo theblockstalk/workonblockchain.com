@@ -87,7 +87,11 @@ export class VerifyEmailComponent implements OnInit {
                 },
                 error =>
                 {
-                       this.dataservice.verifyErrorMessage(error);
+                    if(error.error.message === 'jwt expired')
+                    {
+                      this.errorMsg = error.error.message;
+
+                    }
 
                 });
 
