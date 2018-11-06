@@ -19,8 +19,13 @@ module.exports = async function (req, res) {
 
     await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
 
-    if (userParam.commercial_skills && userParam.formal_skills) {
-        await User.update({ _id: myUserDoc._id },{ $set: {'candidate.blockchain.commercial_skills' : userParam.commercial_skills , 'candidate.blockchain.formal_skills' : userParam.formal_skills } });
+    let updateCandidateUser = {}
+
+    if(userParam.commercial_skills) updateCandidateUser.candidate.blockchain.commercial_skills = userParam.commercial_skills;
+    if(userParam.formal_skills) updateCandidateUser.candidate.blockchain.formal_skills = userParam.formal_skills;
+
+    if (userParam.commercial_skills || userParam.formal_skills) {
+        await User.update({ _id: myUserDoc._id },{ $set: updateCandidateUser });
     }
 
     res.send({
