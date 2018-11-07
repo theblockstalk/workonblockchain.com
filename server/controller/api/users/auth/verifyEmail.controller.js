@@ -11,21 +11,21 @@ module.exports = async function (req, res) {
             await User.update({ _id: userDoc._id },{ $set: {is_verify: 1 } });
             res.send({
                 success : true,
-                msg : "Email Verifiesd"
+                msg : "Email Verified"
             })
 
         }
         else{
             res.send({
                 success : false,
-                error : "Link expired"
+                error : "The verification link has expired or is invalid."
             })
         }
     }
     else {
         res.send({
             success : false,
-            error : "Invalid link"
+            error : "The verification link has expired or is invalid."
         })
     }
 };
