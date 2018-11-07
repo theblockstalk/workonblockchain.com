@@ -35,7 +35,6 @@ describe('update candidate profile', function () {
             const res = await candidateHelper.editProfile(candidateEditProfileData,candidateUserDoc.jwt_token);
             res.body.success.should.equal(true);
 
-            candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             const candidateInfo = await candidateProfile.findOne({_creator: candidateUserDoc._id}).lean();
 
             candidateInfo.first_name.should.equal(candidateEditProfileData.detail.first_name);
@@ -44,8 +43,6 @@ describe('update candidate profile', function () {
             candidateInfo.stackexchange_account.should.equal(candidateEditProfileData.detail.exchange_account);
             candidateInfo.contact_number.should.equal(candidateEditProfileData.detail.contact_number);
             candidateInfo.nationality.should.equal(candidateEditProfileData.detail.nationality);
-            candidateUserDoc.candidate.base_city.should.equal(candidateEditProfileData.detail.city);
-            candidateUserDoc.candidate.base_country.should.equal(candidateEditProfileData.detail.base_country);
             candidateInfo.locations.should.valueOf(candidateEditProfileData.detail.country);
             candidateInfo.roles.should.valueOf(candidateEditProfileData.detail.roles);
             candidateInfo.interest_area.should.valueOf(candidateEditProfileData.detail.interest_area);
@@ -61,6 +58,17 @@ describe('update candidate profile', function () {
             candidateInfo.education_history.should.valueOf(candidateEditProfileData.education);
             candidateInfo.work_history.should.valueOf(candidateEditProfileData.work);
             candidateInfo.description.should.equal(candidateEditProfileData.detail.intro);
+
+            candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
+            const blockchainSkills = candidateUserDoc.candidate.blockchain;
+
+            candidateUserDoc.candidate.base_city.should.equal(candidateEditProfileData.detail.city);
+            candidateUserDoc.candidate.base_country.should.equal(candidateEditProfileData.detail.base_country);
+            blockchainSkills.commercial_skills[0].skill.should.equal(candidateEditProfileData.detail.commercial_skills[0].skill);
+            blockchainSkills.commercial_skills[0].exp_year.should.equal(candidateEditProfileData.detail.commercial_skills[0].exp_year);
+            blockchainSkills.formal_skills[0].skill.should.equal(candidateEditProfileData.detail.formal_skills[0].skill);
+            blockchainSkills.formal_skills[0].exp_year.should.equal(candidateEditProfileData.detail.formal_skills[0].exp_year);
+
 
         })
     })
