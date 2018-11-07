@@ -30,39 +30,32 @@ export class CandidateFormComponent implements OnInit {
         private router: Router,private dataservice: DataService,
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private titleService: Title,private newMeta: Meta
        ) {
-		this.titleService.setTitle('Work on Blockchain | Signup developer or company');
-		this.route.queryParams.subscribe(params => {
-			this.code = params['code'];
-		});
+      this.titleService.setTitle('Work on Blockchain | Signup developer or company');
+      this.route.queryParams.subscribe(params => {
+        this.code = params['code'];
+      });
 
-        if(this.code){
-          console.log(this.code);
-            this.authenticationService.getByRefrenceCode(this.code)
-                .subscribe(
-                    data => {
-
-                          if(data && data.name)
-                            this.ref_msg = data.name + ' thinks you should join workonblockchain.com';
-                          else
-                            this.ref_msg = data.email + ' thinks you should join workonblockchain.com';
-
-                          if(this.ref_msg){
-                            this.credentials.referred_email  = data.email;
-                          }
-
-
-                        else{
-                          this.ref_msg = 'Your refer code is invalid. Please contact our support';
-                        }
-
-                    },
-                    error => {
-                        ////console.log(error);
-                        this.log = error;
-                    }
-                );
-        }
-	}
+      if (this.code) {
+        this.authenticationService.getByRefrenceCode(this.code)
+        .subscribe(
+          data => {
+            if (data) {
+              if (data && data.name) {
+                this.ref_msg = data.name + ' thinks you should join workonblockchain.com';
+              }
+              this.credentials.referred_email = data.email;
+            }
+            else {
+              this.ref_msg = 'Your refer code is invalid. Please contact our support';
+            }
+          },
+          error => {
+            ////console.log(error);
+            this.log = error;
+          }
+        );
+      }
+    }
 
     ngOnInit()
     {
