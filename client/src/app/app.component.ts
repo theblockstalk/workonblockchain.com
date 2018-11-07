@@ -1,7 +1,5 @@
 import { Component , AfterViewInit} from '@angular/core';
-import {
-  Router, NavigationStart, NavigationCancel, NavigationEnd
-} from '@angular/router';
+import {Router, NavigationStart, NavigationCancel, NavigationEnd} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +10,10 @@ import {
 export class AppComponent implements AfterViewInit {
   loading;
   title = 'app';
-     message: any;
+  message: any;
   constructor(private router: Router) {
     this.loading = true;
-   }
+  }
   ngAfterViewInit() {
     this.router.events
       .subscribe((event) => {
