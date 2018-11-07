@@ -10,7 +10,7 @@ module.exports = async function (req, res) {
     const candidateDoc = await CandidateProfile.findOne({ _creator: myUserDoc._id }).lean();
 
     const userParam = req.body;
-    console.log(userParam.commercial_skills);
+
     let candidateUpdate = {}
     if (userParam.why_work) candidateUpdate.why_work = userParam.why_work;
     if (userParam.commercial_experience_year) candidateUpdate.commercial_platform = userParam.commercial_experience_year;
@@ -22,15 +22,10 @@ module.exports = async function (req, res) {
 
     let updateCandidateUser = {}
 
-    if (userParam.commercial_skills || userParam.formal_skills) updateCandidateUser.candidate = { blockchain: {}}
+    if(userParam.commercial_skills) updateCandidateUser["candidate.blockchain.commercial_skills"] = userParam.commercial_skills;
+    if(userParam.formal_skills) updateCandidateUser["candidate.blockchain.formal_skills"] = userParam.formal_skills;
 
-    if(userParam.commercial_skills) updateCandidateUser.candidate.blockchain.commercial_skills = userParam.commercial_skills;
-    if(userParam.formal_skills) updateCandidateUser.candidate.blockchain.formal_skills = userParam.formal_skills;
-
-    console.log(updateCandidateUser);
-    if (updateCandidateUser) {
-        await User.update({ _id: myUserDoc._id },{ $set: updateCandidateUser });
-    }
+    await User.update({ _id: myUserDoc._id },{ $set: updateCandidateUser });
 
     res.send({
         success: true

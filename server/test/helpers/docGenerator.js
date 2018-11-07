@@ -244,6 +244,26 @@ module.exports.resume = function resume(){
                 platform_name: 'Hyperledger Sawtooth',
                 exp_year: '1-2'
             }
+        ],
+        commercial_skills : [
+            {
+                skill: 'Formal verification',
+                exp_year: '0-1'
+            },
+            {
+                skill: 'Distributed computing and networks',
+                exp_year: '2-4'
+            }
+        ],
+        formal_skills : [
+            {
+                skill: 'P2P protocols',
+                exp_year: '1-2'
+            },
+            {
+                skill: 'Economics',
+                exp_year: '0-1'
+            }
         ]
     }
 }
