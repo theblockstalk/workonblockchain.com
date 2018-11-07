@@ -153,12 +153,12 @@ export class AdminTermsConditionEditorComponent implements OnInit {
 		   {
 			   if(data.error)
 			   {
-				   this.company_error("Something went wrong");
+				   this.company_error = "Something went wrong";
 
 			   }
 			   else
 			   {
-				   this.company_success("Content Successfully Updated");
+				   this.company_success = "Content Successfully Updated";
 			   }
 		   });
 	   }
