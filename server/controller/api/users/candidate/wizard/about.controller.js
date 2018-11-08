@@ -46,7 +46,7 @@ module.exports = async function (req, res) {
                 }
                 else
                 {
-                     data = {fname : candidateDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
+                     data = {fname : null , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
                 }
                 referedCandidateEmail.sendEmail(data, userDoc.disable_account);
         }
