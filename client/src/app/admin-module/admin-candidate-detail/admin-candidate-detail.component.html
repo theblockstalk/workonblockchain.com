@@ -379,6 +379,34 @@
 
 				 	</div>
 
+           <div class="info-area pro_br-btm">
+
+             <div class = "col-md-4" >
+               <strong>Commercial experience in these areas</strong>
+             </div>
+             <div class = "col-md-8">
+               <ul class = "pro_list" *ngIf="commercial_skills">
+                 <li *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</li>
+               </ul>
+             </div>
+
+           </div>
+
+
+           <div class="info-area pro_br-btm" >
+
+             <div class = "col-md-4" >
+               <strong>Formal (university) education in these areas
+               </strong>
+             </div>
+             <div class = "col-md-8">
+               <ul class = "pro_list" *ngIf = "formal_skills">
+                 <li *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</li>
+               </ul>
+             </div>
+
+           </div>
+
 
 
 

@@ -104,6 +104,31 @@ const UserSchema = new Schema({
             base_country: {
                 type: String,
                 enum: enumerations.countries
+            },
+            blockchain: {
+                type: {
+                    commercial_skills : [new Schema({
+                        skill: {
+                            type: String,
+                            enum: enumerations.otherSkills
+                        },
+                        exp_year: {
+                            type: String,
+                            enum: enumerations.exp_years
+                        }
+                    })],
+
+                    formal_skills : [new Schema({
+                        skill: {
+                            type: String,
+                            enum: enumerations.otherSkills
+                        },
+                        exp_year: {
+                            type: String,
+                            enum: enumerations.exp_years
+                        }
+                    })],
+                }
             }
         }
     },

@@ -39,7 +39,6 @@ export class VerifyEmailComponent implements OnInit {
             .subscribe(
                 data =>
                 {
-                  console.log(data);
                      if (data['success'] === true && data['msg'])
                     {
                         if(!this.currentUser)
@@ -87,7 +86,11 @@ export class VerifyEmailComponent implements OnInit {
                 },
                 error =>
                 {
-                       this.dataservice.verifyErrorMessage(error);
+                    if(error.error.message === 'jwt expired')
+                    {
+                      this.errorMsg = 'The verification link has expired or is invalid.';
+
+                    }
 
                 });
 
