@@ -38,16 +38,9 @@ module.exports = async function (req, res) {
         const userDoc = await User.findOne({email : refDoc.email}).lean();
 
         if(userDoc && userDoc.type){
-            if(userDoc.type === 'candidate'){
                 const candidateDoc = await CandidateProfile.findOne({_creator : userDoc._id}).lean();
                 let data = {fname : candidateDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
                 referedCandidateEmail.sendEmail(data, userDoc.disable_account);
-            }
-            if(userDoc.type === 'company'){
-                const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).lean();
-                let data = {fname : companyDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
-                referedCompanyEmail.sendEmail(data, userDoc.disable_account);
-            }
         }
         else
         {
