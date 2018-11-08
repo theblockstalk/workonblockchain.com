@@ -83,7 +83,6 @@ export class ReferralComponent implements OnInit {
                 });
           },
           error => {
-            ////console.log('error');
           }
         );
     }
@@ -109,33 +108,30 @@ export class ReferralComponent implements OnInit {
                 });
           },
           error => {
-            ////console.log('error');
+
           }
         );
         }
-    ////console.log(this.show_refreal);
+
   }
 
   send_email() {
     this.log = 'Sending your Email';
-    ////console.log(this.share_url);
+
     if(this.credentials.email && this.email_subject && this.mail_body){
       this.authenticationService.send_refreal(this.credentials.email, this.email_subject, this.mail_body,this.share_url,this.first_name,this.last_name)
         .subscribe(
           data => {
-            ////console.log('data');
-            ////console.log(data);
+
             this.log = data;
           },
           error => {
-            ////console.log('error');
-            ////console.log(error);
+
             this.log = error;
           }
         );
     }
     else{
-      ////console.log('not good');
       this.log = 'Please fill all fields';
     }
   }
@@ -155,9 +151,7 @@ export class ReferralComponent implements OnInit {
           this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
         },
         error => {
-          //console.log(error);
-          ////console.log(error);
-          //this.log = error;
+
         }
       );
     }
