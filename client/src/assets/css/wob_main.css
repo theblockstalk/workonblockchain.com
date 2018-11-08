@@ -4398,6 +4398,10 @@ input:checked + .slider:before {
 .checkbox_height {
   min-height:42px;
 }
+
+.loader {
+  text-align : center;
+}
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 
