@@ -110,7 +110,7 @@ module.exports = async function (req, res) {
                     const userDoc = await Users.findOne({email : refDoc.email}).lean();
                     if(userDoc && userDoc.type){
                             const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).lean();
-                            let data = {};
+                            let data;
                             if(companyDoc && companyDoc.first_name)
                             {
                                 data = {fname : companyDoc.first_name , email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
