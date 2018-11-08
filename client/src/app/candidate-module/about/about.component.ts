@@ -6,7 +6,7 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
-////////console.log(URL);
+
 
 @Component({
   selector: 'app-about',
@@ -107,7 +107,7 @@ export class AboutComponent implements OnInit,AfterViewInit
             if(data._creator.refered_id) //&& !data.first_name && !data.last_name)
             {
               this.referred_id = data._creator.refered_id;
-              console.log(this.referred_id);
+
             }
             if(data.terms_id)
             {
@@ -312,7 +312,7 @@ export class AboutComponent implements OnInit,AfterViewInit
           },
           error =>
           {
-            console.log(error);
+
             if(error.message === 500 || error.message === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');

@@ -12,8 +12,8 @@ const filterReturnData = require('../filterReturnData');
 const verify_send_email = require('../auth/verify_send_email');
 const mongoose = require('mongoose');
 const referral = require('../../../../model/referrals');
-
-const referedUserEmail = require('../../../services/email/emails/referredFriend');
+const referedCandidateEmail = require('../../../services/email/emails/referredFriend');
+const referedCompanyEmail = require('../../../services/email/emails/referredFriendForCompany');
 
 
 ///// for candidate about wizard ///////////////////
@@ -66,6 +66,7 @@ module.exports = async function (req, res) {
                 type: userParam.type,
                 jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
                 created_date: new Date(),
+                referred_email : userParam.referred_email
 
             });
             const companyUserCreated  =  await newCompanyDoc.save();
@@ -101,6 +102,32 @@ module.exports = async function (req, res) {
 
                 const userDoc = await Users.update({ _id: companyUserCreated._id },{ $set: set });
                 verify_send_email(companyUserCreated.email, verifyEmailToken);
+
+                //sending email to referee
+                const refDoc = await referral.findOne({
+                    email : userParam.referred_email
+                }).lean();
+                if(refDoc){
+                    const userDoc = await Users.findOne({email : refDoc.email}).lean();
+                    if(userDoc && userDoc.type){
+                        if(userDoc.type === 'candidate'){
+                            const candidateDoc = await CandidateProfile.findOne({_creator : userDoc._id}).lean();
+                            let data = {fname : candidateDoc.first_name , email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
+                            referedCandidateEmail.sendEmail(data, userDoc.disable_account);
+                        }
+                        if(userDoc.type === 'company'){
+                            const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).lean();
+                            let data = {fname : companyDoc.first_name , email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
+                            referedCompanyEmail.sendEmail(data, userDoc.disable_account);
+                        }
+                    }
+                    else
+                    {
+                        let data = {email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
+                        referedCompanyEmail.sendEmail(data, false);
+                    }
+                }
+                //end
                 let userData = filterReturnData.removeSensativeData({_creator : companyUserCreated.toObject()})
                 res.send({
                     _id:employerDoc.id,

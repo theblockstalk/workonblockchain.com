@@ -130,6 +130,38 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
 
+  otherSkills =
+    [
+      {name:'P2P protocols', value:'P2P protocols', checked:false},
+      {name:'Distributed computing and networks', value:'Distributed computing and networks', checked:false},
+      {name:'Security', value:'Security', checked:false},
+      {name:'Formal verification', value:'Formal verification', checked:false},
+      {name:'Cryptography', value:'Cryptography', checked:false},
+      {name:'Game theory', value:'Game theory', checked:false},
+      {name:'Economics', value:'Economics', checked:false},
+      {name:'Smart contract audits', value:'Smart contract audits', checked:false},
+      {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
+    ]
+  otherFormalSkills =
+    [
+      {name:'P2P protocols', value:'P2P protocols', checked:false},
+      {name:'Distributed computing and networks', value:'Distributed computing and networks', checked:false},
+      {name:'Security', value:'Security', checked:false},
+      {name:'Formal verification', value:'Formal verification', checked:false},
+      {name:'Cryptography', value:'Cryptography', checked:false},
+      {name:'Game theory', value:'Game theory', checked:false},
+      {name:'Economics', value:'Economics', checked:false},
+      {name:'Smart contract audits', value:'Smart contract audits', checked:false},
+      {name:'Zero Knowlege Proofs', value:'Zero Knowlege Proofs', checked:false},
+    ]
+
+
+  skillDbArray=[];
+  skillDb;
+  skill_expYear_db=[];
+  formalDbArray=[];
+  formalSkillDb;
+  formal_expYear_db=[];
   ngOnInit()
   {
     this.info.base_country = -1
@@ -220,6 +252,91 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
 
 
+            }
+
+            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length>0)
+            {
+              this.commercialSkillsExperienceYear = data._creator.candidate.blockchain.commercial_skills;
+              for (let key of data._creator.candidate.blockchain.commercial_skills)
+              {
+                for(var i in key)
+                {
+
+                  for(let option of this.otherSkills)
+                  {
+
+                    if(option.value === key[i])
+                    {
+                      option.checked=true;
+                      this.skillDbArray.push(key[i]);
+                      this.skillDb= ({value: key[i]});
+                      this.commercialSkills.push(this.skillDb);
+
+                    }
+                    else
+                    {
+
+                    }
+
+                  }
+
+                  for(let option of this.exp_year)
+                  {
+
+                    if(option.value === key[i])
+                    {
+                      option.checked=true;
+                      this.skill_expYear_db.push(key[i]);
+
+                    }
+
+                  }
+
+                }
+              }
+            }
+
+
+            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length>0)
+            {
+              this.formal_skills = data._creator.candidate.blockchain.formal_skills;
+              for (let key of data._creator.candidate.blockchain.formal_skills)
+              {
+                for(var i in key)
+                {
+
+                  for(let option of this.otherFormalSkills)
+                  {
+
+                    if(option.value === key[i])
+                    {
+                      option.checked=true;
+                      this.formalDbArray.push(key[i]);
+                      this.formalSkillDb= ({value: key[i]});
+                      this.formal_skills_exp.push(this.formalSkillDb);
+
+                    }
+                    else
+                    {
+
+                    }
+
+                  }
+
+                  for(let option of this.exp_year)
+                  {
+
+                    if(option.value === key[i])
+                    {
+                      option.checked=true;
+                      this.formal_expYear_db.push(key[i]);
+
+                    }
+
+                  }
+
+                }
+              }
             }
 
             if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
@@ -410,7 +527,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               for(let data1 of data.work_history)
               {
                 this.current_work_check.push(data1.currentwork);
-                console.log(this.current_work_check);
 
               }
 
@@ -1103,6 +1219,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   platform_log;
   base_country_log;
   city_log;
+  commercial_skill_log;
+  formal_skills_log;
   candidate_profile(profileForm: NgForm)
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -1202,6 +1320,16 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.intro_log="Please fill 2-5 sentence bio"
     }
 
+    if(this.commercialSkills.length !== this.commercialSkillsExperienceYear.length)
+    {
+      this.commercial_skill_log = "Please fill year of experience";
+    }
+
+    if(this.formal_skills_exp.length !== this.formal_skills.length)
+    {
+      this.formal_skills_log = "Please fill year of experience";
+    }
+
 
     if(this.EducationForm.value.itemRows.length >= 1)
     {
@@ -1283,7 +1411,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
         {
           this.ExperienceForm.value.ExpItems[key].enddate = new Date();
-          console.log(this.ExperienceForm.value.ExpItems[key].enddate);
           this.exp_count = parseInt(key) + 1;
 
         }
@@ -1296,9 +1423,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 &&
       this.info.city && this.info.base_country != -1 && this.expected_salaryyy && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day &&
-
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
-      && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length   )
+      && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
+      && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
+    )
     {
       this.updateProfileData(profileForm.value);
     }
@@ -1390,6 +1518,111 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           }
 
         });
+
+  }
+
+  commercialSkills=[];
+  commercialSkillsExperienceYear=[];
+
+  oncommercialSkillsOptions(obj)
+  {
+
+    let updateItem = this.commercialSkills.find(this.findIndexToUpdate_funct, obj.value);
+    let index = this.commercialSkills.indexOf(updateItem);
+    if(index > -1)
+    {
+      this.commercialSkills.splice(index, 1);
+      let updateItem2 = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill',  obj.value);
+      let index2 = this.commercialSkillsExperienceYear.indexOf(updateItem2);
+
+      if(index2 > -1)
+      {
+
+        this.commercialSkillsExperienceYear.splice(index2, 1);
+      }
+    }
+    else
+    {
+      obj.checked =true;
+      this.commercialSkills.push(obj);
+    }
+
+  }
+
+  onComSkillExpYearOptions(e, value)
+  {
+    this.selectedValue = e.target.value;
+    let updateItem = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill', value);
+    let index = this.commercialSkillsExperienceYear.indexOf(updateItem);
+
+    if(index > -1)
+    {
+
+      this.commercialSkillsExperienceYear.splice(index, 1);
+      this.value = value;
+      this.referringData = { skill : this.value, exp_year: e.target.value};
+      this.commercialSkillsExperienceYear.push(this.referringData);
+
+    }
+    else
+    {
+      this.value=value;
+      this.referringData = { skill : this.value, exp_year: e.target.value};
+      this.commercialSkillsExperienceYear.push(this.referringData);
+
+    }
+
+  }
+
+  formal_skills_exp=[];
+  formal_skills=[];
+  onFormalOptions(obj)
+  {
+
+    let updateItem = this.formal_skills_exp.find(this.findIndexToUpdate_funct, obj.value);
+    let index = this.formal_skills_exp.indexOf(updateItem);
+    if(index > -1)
+    {
+      this.formal_skills_exp.splice(index, 1);
+      let updateItem2 = this.findObjectByKey(this.formal_skills, 'skill',  obj.value);
+      let index2 = this.formal_skills.indexOf(updateItem2);
+
+      if(index2 > -1)
+      {
+
+        this.formal_skills.splice(index2, 1);
+      }
+    }
+    else
+    {
+      obj.checked =true;
+      this.formal_skills_exp.push(obj);
+    }
+
+  }
+
+  onFormalExpYearOptions(e, value)
+  {
+    this.selectedValue = e.target.value;
+    let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
+    let index = this.formal_skills.indexOf(updateItem);
+
+    if(index > -1)
+    {
+
+      this.formal_skills.splice(index, 1);
+      this.value = value;
+      this.referringData = { skill : this.value, exp_year: e.target.value};
+      this.formal_skills.push(this.referringData);
+
+    }
+    else
+    {
+      this.value=value;
+      this.referringData = { skill : this.value, exp_year: e.target.value};
+      this.formal_skills.push(this.referringData);
+
+    }
 
   }
 

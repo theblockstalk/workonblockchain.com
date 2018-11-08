@@ -104,6 +104,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   infoo;
   base_country;
   base_city;
+  commercial_skills;
+  formal_skills;
   ngOnInit()
   {
     this.infoo='';
@@ -254,7 +256,27 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   })
                 }
 
-                if(data.image != null )
+                if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length > 0)
+                {
+                  this.commercial_skills = data._creator.candidate.blockchain.commercial_skills;
+                  this.commercial_skills.sort(function(a, b){
+                    if(a.skill < b.skill) { return -1; }
+                    if(a.skill > b.skill) { return 1; }
+                    return 0;
+                  })
+                }
+
+                if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length > 0)
+                {
+                  this.formal_skills = data._creator.candidate.blockchain.formal_skills;
+                  this.formal_skills.sort(function(a, b){
+                    if(a.skill < b.skill) { return -1; }
+                    if(a.skill > b.skill) { return 1; }
+                    return 0;
+                  })
+                }
+
+                  if(data.image != null )
                 {
 
                   this.imgPath = data.image;

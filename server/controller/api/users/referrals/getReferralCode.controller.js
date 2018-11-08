@@ -54,4 +54,7 @@ module.exports = async function (req, res) {
             });
         }
     }
+    else{
+        res.send(null);
+    }
 };

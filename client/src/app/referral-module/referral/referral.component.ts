@@ -70,14 +70,12 @@ export class ReferralComponent implements OnInit {
             this.first_name = data.first_name;
             this.last_name = data.last_name;
             this.display_name = data.first_name+' '+data.last_name;
-            this.mail_body = 'Hi, \n\nYou have been invited by '+this.display_name+' to join Work on Blockchain. \n\nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \n\nGive us a try! \n\nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
-            this.email_subject = data.first_name+this.email_subject;
             this.authenticationService.getRefCode(data._creator.email)
               .subscribe(
                 data => {
-                  console.log("data");
-                  console.log(data);
-                  this.ref_link = this.email_ref_link + data.url_token
+                  this.ref_link = this.email_ref_link + data.url_token;
+                  this.mail_body = 'Hi, \n\nYou have been invited by '+this.display_name+' to join Work on Blockchain. \n\nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \n\nGive us a try! \n\nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
+                  this.email_subject = this.first_name+this.email_subject;
                   this.share_url = this.ref_link;
                   this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
                 },
@@ -85,13 +83,11 @@ export class ReferralComponent implements OnInit {
                 });
           },
           error => {
-            ////console.log('error');
           }
         );
     }
 
     if(this.currentUser && this.currentUser.type === 'company'){
-      console.log(this.currentUser);
       this.show_refreal = 10;
       this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
@@ -99,14 +95,12 @@ export class ReferralComponent implements OnInit {
             this.first_name = data.first_name;
             this.last_name = data.last_name;
             this.display_name = data.first_name+' '+data.last_name;
-            this.mail_body = 'Hi, \n\nYou have been invited by '+this.display_name+' to join Work on Blockchain. \n\nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \n\nGive us a try! \n\nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
-            this.email_subject = data.first_name+this.email_subject;
             this.authenticationService.getRefCode(data._creator.email)
               .subscribe(
                 data => {
-console.log("data");
-                  console.log(data);
-                  this.ref_link = this.email_ref_link + data.url_token
+                  this.ref_link = this.email_ref_link + data.url_token;
+                  this.mail_body = 'Hi, \n\nYou have been invited by '+this.display_name+' to join Work on Blockchain. \n\nIt takes seconds to sign up. Work on Blockchain is the easiest way to secure a job in the blockchain space. \n\nGive us a try! \n\nCreate a profile and have blockchain companies apply to you by following this link '+this.ref_link+' \n \nThanks, \nWork on Blockchain team!';
+                  this.email_subject = this.first_name+this.email_subject;
                   this.share_url = this.ref_link;
                   this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
                 },
@@ -114,33 +108,30 @@ console.log("data");
                 });
           },
           error => {
-            ////console.log('error');
+
           }
         );
         }
-    ////console.log(this.show_refreal);
+
   }
 
   send_email() {
     this.log = 'Sending your Email';
-    ////console.log(this.share_url);
+
     if(this.credentials.email && this.email_subject && this.mail_body){
       this.authenticationService.send_refreal(this.credentials.email, this.email_subject, this.mail_body,this.share_url,this.first_name,this.last_name)
         .subscribe(
           data => {
-            ////console.log('data');
-            ////console.log(data);
+
             this.log = data;
           },
           error => {
-            ////console.log('error');
-            ////console.log(error);
+
             this.log = error;
           }
         );
     }
     else{
-      ////console.log('not good');
       this.log = 'Please fill all fields';
     }
   }
@@ -160,9 +151,7 @@ console.log("data");
           this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
         },
         error => {
-          //console.log(error);
-          ////console.log(error);
-          //this.log = error;
+
         }
       );
     }

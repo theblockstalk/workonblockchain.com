@@ -30,39 +30,31 @@ export class CandidateFormComponent implements OnInit {
         private router: Router,private dataservice: DataService,
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private titleService: Title,private newMeta: Meta
        ) {
-		this.titleService.setTitle('Work on Blockchain | Signup developer or company');
-		this.route.queryParams.subscribe(params => {
-			this.code = params['code'];
-		});
+      this.titleService.setTitle('Work on Blockchain | Signup developer or company');
+      this.route.queryParams.subscribe(params => {
+        this.code = params['code'];
+      });
 
-        if(this.code){
-          console.log(this.code);
-            this.authenticationService.getByRefrenceCode(this.code)
-                .subscribe(
-                    data => {
-
-                          if(data && data.name)
-                            this.ref_msg = data.name + ' thinks you should join workonblockchain.com';
-                          else
-                            this.ref_msg = data.email + ' thinks you should join workonblockchain.com';
-
-                          if(this.ref_msg){
-                            this.credentials.referred_email  = data.email;
-                          }
-
-
-                        else{
-                          this.ref_msg = 'Your refer code is invalid. Please contact our support';
-                        }
-
-                    },
-                    error => {
-                        ////console.log(error);
-                        this.log = error;
-                    }
-                );
-        }
-	}
+      if (this.code) {
+        this.authenticationService.getByRefrenceCode(this.code)
+        .subscribe(
+          data => {
+            if (data) {
+              if (data && data.name) {
+                this.ref_msg = data.name + ' thinks you should join workonblockchain.com';
+              }
+              this.credentials.referred_email = data.email;
+            }
+            else {
+              this.ref_msg = 'Your refer code is invalid. Please contact our support';
+            }
+          },
+          error => {
+            this.log = error;
+          }
+        );
+      }
+    }
 
     ngOnInit()
     {
@@ -99,7 +91,7 @@ export class CandidateFormComponent implements OnInit {
 
           this.credentials.type="candidate";
           this.credentials.social_type='';
-        ////console.log(this.refer_by);
+
         if(!this.credentials.email)
         {
             this.email_log="can't be blank";
@@ -133,7 +125,8 @@ export class CandidateFormComponent implements OnInit {
                 data =>
                 {
 
-                    //////console.log(data);
+
+
                     if(data.error)
                     {
                         this.log = data.error;
@@ -170,8 +163,7 @@ export class CandidateFormComponent implements OnInit {
             localStorage.setItem('googleUser', JSON.stringify(this.result));
             if(this.result)
             {
-                 ////console.log(this.result);
-                 this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
+              this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
                  this.credentials.email= this.googleUser.email;
                  this.credentials.password= '';
                  this.credentials.type="candidate";
@@ -179,7 +171,6 @@ export class CandidateFormComponent implements OnInit {
                  this.authenticationService.create(this.credentials)
                 .subscribe(
                     data => {
-                    ////console.log(data);
                     this.credentials.email= '';
                     if(data.error)
                     {
@@ -215,7 +206,6 @@ export class CandidateFormComponent implements OnInit {
             const url = '/people/~:(id,picture-url,location,industry,positions,specialties,summary,email-address )?format=json';
             this._linkedInService.raw(url).asObservable().subscribe({
                 next: (data) => {
-                    console.log(data);
                     localStorage.setItem('linkedinUser', JSON.stringify(data));
                     if(data)
                     {
@@ -229,7 +219,6 @@ export class CandidateFormComponent implements OnInit {
                         this.authenticationService.create(this.credentials)
                         .subscribe(
                             data => {
-                                ////console.log(data);
                                 this.credentials.email= '';
                             if(data.error)
                             {
@@ -255,10 +244,8 @@ export class CandidateFormComponent implements OnInit {
                     }
                 },
                 error: (err) => {
-                    ////console.log(err);
                 },
                 complete: () => {
-                    ////console.log('RAW API call completed');
                 }
             });
         },
@@ -289,7 +276,6 @@ export class CandidateFormComponent implements OnInit {
                 .subscribe(
                 data =>
                 {
-                  console.log(data);
                     if(data.error)
                     {
                         //this.dataservice.changeMessage(data.error);
@@ -304,7 +290,6 @@ export class CandidateFormComponent implements OnInit {
                 },
                 error =>
                 {
-                    //////console.log(error);
                     this.log = 'Something getting wrong';
                     this.loading = false;
                 });
