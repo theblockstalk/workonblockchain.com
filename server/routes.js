@@ -132,7 +132,7 @@ router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'),
 router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
 router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);
-router.post('/users/get_employ_offer',auth.isValidUser, chatGetEmployOffer);
+router.post('/users/get_employ_offer',auth.isValidUser, asyncMiddleware(chatGetEmployOffer));
 router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(chatGetLastJobDescription));
 
 // Admin

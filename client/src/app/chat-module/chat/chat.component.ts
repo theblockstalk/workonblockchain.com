@@ -1151,8 +1151,8 @@ export class ChatComponent implements OnInit {
     this.authenticationService.get_employment_offer_info(my_credentials.id, 'employment_offer')
     .subscribe(
       data => {
-        //console.log(data['datas']);
-        if (data['datas']) {
+        //console.log(data.datas);
+        if (data.datas) {
           this.job_offer_log = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
         }
         else {
