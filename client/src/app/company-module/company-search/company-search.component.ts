@@ -602,7 +602,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 				this.authenticationService.get_job_desc_msgs(this.user_id.id,'job_offer')
 				.subscribe(
 					data => {
-						if(data['datas'].length>0){
+						if(data.datas){
 							this.job_offer_log = 'You have already sent a job description to this candidate';
 						}
 						else{

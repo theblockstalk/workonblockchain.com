@@ -256,7 +256,7 @@ export class CandidateDetailComponent implements OnInit {
           .subscribe(
             data => {
               ////console.log(data['datas']);
-              if (data['datas'].length > 0) {
+              if (data.datas) {
                 this.job_offer_msg = 'You have already sent a job description to this candidate';
               }
               else {

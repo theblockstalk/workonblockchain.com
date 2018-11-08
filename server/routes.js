@@ -140,7 +140,7 @@ router.post('/users/admin_company_filter', auth.isAdmin , adminComanyFilter);
 router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent);
 router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , adminAddNewPagesContent);
 router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
-router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
+router.post('/users/get_job_desc_msgs' ,auth.isValidUser, asyncMiddleware(adminChatGetJobDescMsg));
 router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
 
