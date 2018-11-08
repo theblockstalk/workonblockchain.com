@@ -6,7 +6,8 @@ const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
 const verify_send_email = require('../../auth/verify_send_email');
 const jwtToken = require('../../../../services/jwtToken');
 
-const referedUserEmail = require('../../../../services/email/emails/referredFriend');
+const referedCandidateEmail = require('../../../../services/email/emails/referredFriend');
+const referedCompanyEmail = require('../../../../services/email/emails/referredFriendForCompany');
 ///// for candidate about wizard ///////////////////
 
 module.exports = async function (req, res) {
@@ -40,18 +41,18 @@ module.exports = async function (req, res) {
             if(userDoc.type === 'candidate'){
                 const candidateDoc = await CandidateProfile.findOne({_creator : userDoc._id}).lean();
                 let data = {fname : candidateDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
-                referedUserEmail.sendEmail(data, userDoc.disable_account);
+                referedCandidateEmail.sendEmail(data, userDoc.disable_account);
             }
             if(userDoc.type === 'company'){
                 const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).lean();
                 let data = {fname : companyDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
-                referedUserEmail.sendEmail(data, userDoc.disable_account);
+                referedCompanyEmail.sendEmail(data, userDoc.disable_account);
             }
         }
         else
         {
             let data = {email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
-            referedUserEmail.sendEmail(data, false);
+            referedCandidateEmail.sendEmail(data, false);
         }
 
     }
