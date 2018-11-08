@@ -47,15 +47,19 @@ const job = module.exports.job = async function job(data,jwtToken) {
 }
 
 const resume = module.exports.resume = async function resume(data,jwtToken) {
-    const detail = {
-        'why_work' : data.why_work,
-        'commercial_experience_year' : data.commercially_worked,
-        'experimented_platform' : data.experimented_platform,
-        'platforms' : data.platforms
-    };
+
     const res = await chai.request(server)
         .put('/users/welcome/resume')
         .set('Authorization', jwtToken)
-        .send(detail);
+        .send(data);
+    return res;
+}
+
+const prefilledProfile = module.exports.prefilledProfile = async function prefilledProfile(data,jwtToken) {
+
+    const res = await chai.request(server)
+        .put('/users/welcome/prefilled_profile')
+        .set('Authorization', jwtToken)
+        .send(data);
     return res;
 }

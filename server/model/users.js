@@ -58,15 +58,19 @@ const UserSchema = new Schema({
         {
             type:String, // This is a hash
         },
-    ref_link:
+    ref_link: // DELETE ME
         {
             type:String,
             // validate: regexes.url
         },
-    refered_id:
+    refered_id: // DELETE ME
         {
             type: Schema.Types.ObjectId,
-            //required:false,
+            //ref : 'Referrals' // UNCOMMENT ME
+        },
+    referred_email :
+        {
+            type:String
         },
     is_admin:
         {
@@ -100,6 +104,31 @@ const UserSchema = new Schema({
             base_country: {
                 type: String,
                 enum: enumerations.countries
+            },
+            blockchain: {
+                type: {
+                    commercial_skills : [new Schema({
+                        skill: {
+                            type: String,
+                            enum: enumerations.otherSkills
+                        },
+                        exp_year: {
+                            type: String,
+                            enum: enumerations.exp_years
+                        }
+                    })],
+
+                    formal_skills : [new Schema({
+                        skill: {
+                            type: String,
+                            enum: enumerations.otherSkills
+                        },
+                        exp_year: {
+                            type: String,
+                            enum: enumerations.exp_years
+                        }
+                    })],
+                }
             }
         }
     },

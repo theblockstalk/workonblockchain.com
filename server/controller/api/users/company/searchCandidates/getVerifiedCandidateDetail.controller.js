@@ -34,17 +34,11 @@ function getVerifiedCandidateDetail(params,userId)
 
         if (err)
             deferred.reject(err.name + ': ' + err.message);
-        if(candidateData)
+        if(candidateData && candidateData.length > 0)
         {
-
-                var result_array = [];
-
                 filterReturnData.candidateAsCompany(candidateData[0].toObject(),userId).then(function(data) {
                    deferred.resolve(data);
-
                 })
-
-
             }
     });
 

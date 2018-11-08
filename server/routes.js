@@ -18,16 +18,16 @@ const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTok
 const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
 
 // Referrals
-const refReferredEmail = require('./controller/api/users/referrals/referredEmail.controller');
 const refGetReferralCode = require('./controller/api/users/referrals/getReferralCode.controller');
 const refReferral = require('./controller/api/users/referrals/referral.controller');
+const getReferralCodeForUsers = require('./controller/api/users/referrals/getReferralCodeForUsers.controller');
+const getReferralDetailForAdmin  = require('./controller/api/users/referrals/getReferralDetailForAdmin.controller');
 
 // Candidates
 const candidateRegister = require('./controller/api/users/candidate/register.controller');
 const candidateGetAll = require('./controller/api/users/candidate/getAll.controller');
 const candidateGetCurrent = require('./controller/api/users/candidate/getCurrent.controller');
 const candidateImage = require('./controller/api/users/candidate/image.controller');
-const candidateReferred = require('./controller/api/users/candidate/referred_id.controller');
 const candidateUpdate = require('./controller/api/users/candidate/updateProfile.controller');
 const candidateWizardAbout = require('./controller/api/users/candidate/wizard/about.controller');
 const candidateWizardExperience = require('./controller/api/users/candidate/wizard/experience.controller');
@@ -50,7 +50,6 @@ const candidateVerifiedCandidateDetail = require('./controller/api/users/company
 
 // Chat
 const chatGetCandidate = require('./controller/api/chat/getCandidate.controller');
-const chatGetChat = require('./controller/api/chat/getChat.controller');
 const chatGetMessages = require('./controller/api/chat/getMessages.controller');
 const chatGetUnreadUser = require('./controller/api/chat/getUnreadMessagesUser.controller');
 const chatGetUserMsgs = require('./controller/api/chat/getUserMessages.controller');
@@ -80,7 +79,7 @@ router.get('/', healthCheck);
 
 // User authorization
 router.post('/users/authenticate', authAthenticate);
-router.put('/users/emailVerify/:email_hash', authVerifyEmail);
+router.put('/users/emailVerify/:email_hash', asyncMiddleware(authVerifyEmail));
 router.put('/users/forgot_password/:email', authForgotPassword);
 router.put('/users/change_password',auth.isLoggedIn, authChangePassword);
 router.put('/users/reset_password/:hash', authResetPassword);
@@ -90,9 +89,11 @@ router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
 router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
 // Referrals
-router.post('/users/refered_user_email', refReferredEmail)
 router.post('/users/send_refreal',auth.isLoggedIn, refReferral);
-router.post('/users/get_refrence_code', refGetReferralCode);
+router.post('/users/get_refrence_code', asyncMiddleware(refGetReferralCode));
+router.post('/users/get_ref_code' , asyncMiddleware(getReferralCodeForUsers));
+router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getReferralDetailForAdmin));
+
 
 // Candidates
 router.post('/users/register', candidateRegister);
@@ -105,11 +106,10 @@ router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
 router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
 router.put('/users/welcome/exp', auth.isLoggedIn, candidateWizardExperience);
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), candidateImage);
-router.put('/users/refered_id', auth.isLoggedIn, candidateReferred);
 router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
 
 // Companies
-router.post('/users/create_employer', companyRegister);
+router.post('/users/create_employer',  asyncMiddleware(companyRegister));
 router.get('/users/company',auth.isAdmin, companyGet);
 router.get('/users/current_company/:_id',auth.isLoggedIn, companyGetCurrent);
 router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
@@ -125,7 +125,6 @@ router.post('/users/insert_message', auth.isValidUser, chatInsertMessage);
 router.post('/users/get_candidate', auth.isValidUser, chatGetCandidate);
 router.post('/users/get_messages',auth.isValidUser, chatGetMessages);
 router.post('/users/get_user_messages',auth.isValidUser, chatGetUserMsgs);
-router.get('/users/all_chat',auth.isValidUser, chatGetChat);
 router.post('/users/insert_chat_file',auth.isValidUser, multer.single('photo'), chatInsertFile);
 router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'), chatInsertMessageJob);
 router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);

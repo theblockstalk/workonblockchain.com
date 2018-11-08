@@ -154,11 +154,9 @@ export class HeaderComponent implements OnInit {
     localStorage.setItem('close_notify', JSON.stringify(this.close));
     if(this.currentUser.email)
     {
-      console.log(this.currentUser.email);
       this.authenticationService.verify_client(this.currentUser.email)
         .subscribe(
           data => {
-            console.log(data);
             if(data['msg'])
             {
 

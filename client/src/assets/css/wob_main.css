@@ -3125,6 +3125,42 @@ input:checked + .slider:before {
     width: 70%;
     margin: auto;
 }
+.verify_error {
+  width: 70%;
+  margin: auto;
+  border-radius: 0px;
+  padding: 0px;
+  background: #fff;
+  border: 0px;
+  border-bottom: 3px solid  #eee;
+  color: #c60505;
+  position: relative;
+}
+
+.verify_error .close{
+  color: #c60505;
+  position: absolute;
+  right: 10px;
+  opacity: 1;
+  top: 10px;
+}
+
+.verify_error .alert_icon{
+  background: #c1485b;
+  color: #fff;
+  padding: 5px;
+  font-size: 22px;
+  height: 40px;
+  text-align: center;
+  width: 40px;
+  line-height: 1.42857143;
+  vertical-align: middle;
+}
+
+.verify_error .error_text{
+  position: relative;
+  left: 10px;
+}
 .group a{
     text-decoration: underline;
 }
@@ -3754,6 +3790,108 @@ input:checked + .slider:before {
   float: right !important;
 }
 
+/*====Referral page new design====*/
+.ref_cont{
+  max-width: 720px;
+  margin: auto;
+  background-color: #fff;
+  border: 1px solid #dadbdd;
+  border-top: none;
+  box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
+  -webkit-box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
+  padding: 0px;
+}
+
+.referral_new{
+  padding: 0px;
+}
+
+.referral_banner{
+  background-image: url('../images/blockchain-header.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+  padding: 20px 15px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.referral_banner .txt-left{
+  color: #fff;
+  background: #2ed4fb;
+  padding: 10px 5px;
+  position: relative;
+  left: -15px;
+  float: left;
+  margin-bottom: 20px;
+  width: 500px;
+  line-height: 35px;
+  font-size: 20px;
+  font-weight: 400;
+  float: left;
+}
+
+.referral_banner .txt-right{
+  color: #fff;
+  background-image: linear-gradient(-45deg, #fc0 0%, #ffdc4e 100%);
+  padding: 10px 10px;
+  position: relative;
+  left: 15px;
+  float: right;
+  margin-bottom: 20px;
+  width: 450px;
+  line-height: 35px;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: right;
+}
+
+.bnr_txt{
+  float: left;
+  text-align: left;
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+.ref_form{
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.ref_form input{
+  border-radius: 0px;
+  width: 60%;
+  margin: auto;
+  height: 45px;
+}
+
+.btn-ref {
+  border-radius: 0px !important;
+  color: #fff;
+  background-color: #537284;
+  border-color: #537284;
+  font-size: 15px;
+  font-weight: bold;
+  width: 250px;
+  height: 45px;
+}
+
+.hidden_link{
+  padding: 15px;
+  display: none;
+}
+
+.wlcm_btn{
+  overflow: hidden;
+  margin-top: 20px;
+  position: relative;
+  right: 85px;
+}
+
+.wlcm_btn .btn{
+  top: 0px !important;
+  float: right !important;
+}
 /*==welcome model style end==*/
 
 /*=======TABLETS STYLES 768px to 992px========*/
@@ -4259,6 +4397,10 @@ input:checked + .slider:before {
 
 .checkbox_height {
   min-height:42px;
+}
+
+.loader {
+  text-align : center;
 }
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 

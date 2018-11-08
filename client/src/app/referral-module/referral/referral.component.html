@@ -1,60 +1,33 @@
-<!--<table class="table">
-    <thead>
-		<tr>
-			<th> <a routerLink="/about"> About</a></th>
-			<th><a routerLink="/job" >Job</a></th>
-			<th><a routerLink="/resume" class="{{class}}">Resume</a></th>
-			<th><a routerLink="/experience" class = "{{exp_class}}">Experience</a></th>
-			<th><a routerLink="/final" class = "{{final_class}}">Final</a></th>
-			<th><a routerLink="/referral" class = "{{referral_class}}">Referral</a></th>
-		</tr>
-    </thead>
-</table>
-<h5>Earn £500 by inviting others to our system</h5>
-<p>
-	If someone you refer us gets hired for a full
-	time position, we will give you an Amazon gift
-	card worth £500.
-</p>
-<h5> Your invite link </h5>
-<p> {{ref_link}} </p>
-<body data-scribe="section:share" class=" regular ltr ready">
-	<div id="widget">
-		<div class="btn-o" data-scribe="component:button" style="width: 61px;">
-			<a target="_blank" href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fwww.talent.io%2Finvite&amp;ref_src=twsrc%5Etfw&amp;text=I%E2%80%99m%20inviting%20you%20to%20talent.io!%20Sign%20up%20now%20and%20let%20companies%20apply%20to%20you.%20Receive%205%20%20job%20offers%20in%20one%20week.%20Salaries%20from%20%E2%82%AC35k%20-%20%E2%82%AC100k&amp;tw_p=tweetbutton&amp;url={{ref_link}};via=talentio" class="btn" id="b">
-				<i></i><span class="label" id="l">Tweet</span>
-			</a>
-		</div>
-	</div>
-</body>-->
-
-
+<ng-container *ngIf="show_refreal == 10;else no_show">
 <section class = "referral-page">
 
 		<div class="container referral-container">
 			<div class="row col-md-12 referral-inner">
-				<h3>Refer your friends to workonblockchain.com and earn £500.00</h3>
-				<p>
-					This offer refers to anyone you recommend 
-					that join the platform who is subsequently 
-					hired successfully via the 
-					workonblockchain.com platform for a 
-					full-time position only.
-				</p>
+        <div class = "referral_banner">
 
-				<p>
-					<i>
-						You must be signed in to make a referral. 
-						If you have not yet signed up to our 
-						platform, you can do so here.
-					</i>
-				</p>
-				<ng-container *ngIf="show_refreal == 10;else no_show">
+          <div class = "txt-left">Earn £500 when you invite a candidate (a technical professional) who gets hired.</div>
+
+          <div class = "txt-right">Earn £1,000 when you invite a company that
+            makes a hire</div>
+
+          <div class = "bnr_txt">
+            <p>
+              Please provide your email address below to get your unique referral link. Share this link with your contacts, if anyone creates an account with this link and is successfully hired or hire someone, we will use this email to reward you.
+            </p>
+
+            <p>
+              *These offers do not apply to internships. A one-time referral reward is made when a candidate you introduce is hired full-time or a company you introduce make their first successful full-time hire.
+            </p>
+
+          </div>
+
+        </div>
+
 					<div class = "link_area">
 						<h3 class = "invite_link">Your Invite link</h3>
 						<div class = "form-group">
-							<span>  
-								<input type="text" style="font-size: 16px;width:88%;border: none;" value="{{ref_link}}" readonly #userinput /> 
+							<span>
+								<input type="text" style="font-size: 16px;width:88%;border: none;" value="{{ref_link}}" readonly #userinput />
 							</span>
 							<button class = "btn btn-default copy_btn" (click)="copyInputMessage(userinput)">Copy Link</button>
 						</div>
@@ -84,15 +57,71 @@
 							<button type="submit" class = "btn btn-lg btn-self">Send</button>
 						</div>
 					</form>
-				</ng-container>
-				<ng-template #no_show>
-					<a class="btn btn-default" routerLink="/signup"> Sign Up</a>
-					<a class="btn btn-default" routerLink="/login">Login</a>
-				</ng-template>
+
+
 			</div>
 		</div>
-		
+
 		<div class = "gap">
 		</div>
 
 	</section>
+</ng-container>
+<ng-template #no_show>
+  <section class = "referral-page">
+
+    <div class="container ref_cont">
+      <div class="col-md-12 referral_new">
+
+        <div class = "referral_banner">
+
+          <div class = "txt-left">Earn £500 when you invite a candidate (a technical professional) who gets hired.</div>
+
+          <div class = "txt-right">Earn £1,000 when you invite a company that
+            makes a hire</div>
+
+          <div class = "bnr_txt">
+            <p>
+              Please provide your email address below to get your unique referral link. Share this link with your contacts, if anyone creates an account with this link and is successfully hired or hire someone, we will use this email to reward you.
+            </p>
+
+            <p>
+              *These offers do not apply to internships. A one-time referral reward is made when a candidate you introduce is hired full-time or a company you introduce make their first successful full-time hire.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class = "ref_form">
+          <form (submit)="get_ref_link(refrealForm)" #refrealForm = ngForm>
+            <div class="form-group">
+              <input type="email" class="form-control" placeholder="Email" id="email" name="email" [(ngModel)]="email"/>
+            </div>
+            <div class="form-group text-center">
+              <button type="submit" class = "btn btn-ref" id = "sub_bttn">Submit</button>
+            </div>
+          </form>
+        </div>
+
+        <div *ngIf="ref_link_for_not_logged_user">
+          <hr>
+          <div class = "link_area">
+            <h3 class = "invite_link">Your invite link</h3>
+            <div class = "form-group">
+              <span>
+								<input type="text" style="font-size: 16px;width:88%;border: none;" value="{{ref_link_for_not_logged_user}}" readonly #newRefLink />
+							</span>
+              <button class = "btn btn-default copy_btn" (click)="copyInputMessage(newRefLink)">Copy Link</button>
+            </div>
+            <!--<div class = "twitter-share-button">
+              <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
+            </div>-->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+</ng-template>

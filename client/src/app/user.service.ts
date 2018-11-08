@@ -194,7 +194,28 @@ export class UserService {
             });
     }
 
-    create(user: User)
+  getReferenceDetail(email: string){
+
+    return this.http.post<any>(URL + 'users/get_refrence_detail',  {email:email},{
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).map((res: Response) =>
+      {
+        if (res)
+        {
+          return res;
+        }
+      }).catch((error: any) =>
+      {
+        if (error.status )
+        {
+          return Observable.throw(new Error(error.status));
+        }
+
+      });
+  }
+
+
+  create(user: User)
     {
         return this.http.post<any>(URL+'users/register', user) .map(user => {
             return user
@@ -1051,11 +1072,6 @@ export class UserService {
             });
 	}
 
-    email_referred_user(data: any){
-        return this.http.post<any>(URL+'users/refered_user_email', {info : data}) .map(ref_code => {
-            return ref_code
-        });
-    }
 
     set_disable_status(user_id: string, status: any)
     {
@@ -1191,6 +1207,24 @@ export class UserService {
         if (error.status) {
           return Observable.throw(new Error(error.status));
         }
+      });
+  }
+
+  getRefCode(email:any) {
+    return this.http.post<any>(URL+'users/get_ref_code', {email:email} )
+      .map((res: Response) =>
+      {
+        if (res)
+        {
+          return res;
+        }
+      }).catch((error: any) =>
+      {
+        if (error.status )
+        {
+          return Observable.throw(new Error(error.status));
+        }
+
       });
   }
 

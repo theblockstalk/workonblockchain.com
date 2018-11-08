@@ -39,85 +39,59 @@ export class VerifyEmailComponent implements OnInit {
             .subscribe(
                 data =>
                 {
-                     if (data['msg'])
+                     if (data['success'] === true && data['msg'])
                     {
                         if(!this.currentUser)
                         {
                             this.succesMsg= 'Email verified. Please login to continue.';
 
-                            window.location.href = '/login';
+                            //window.location.href = '/login';
 
                         }
 
                         else if(this.currentUser.type=="candidate")
                         {
                             this.succesMsg = data['msg'];
-
-                                window.location.href = '/candidate_profile';
-
-                            //this.router.navigate(['/login']);
-                           /// this.router.navigate(["/candidate_profile"]);
+                            window.location.href = '/candidate_profile';
                         }
 
                         else if(this.currentUser.type=="company")
                         {
                             this.succesMsg = data['msg'];
-                            //this.dataservice.verifySuccessMessage(data['msg']);
-
-                                window.location.href = '/company_profile';
-
-
-                            //this.router.navigate(['/login']);
-                            //this.router.navigate(["/company_profile"]);
+                            window.location.href = '/company_profile';
                         }
                    // return data;
                 }
-                if(data['error'])
+                if(data['success'] === false && data['error'])
                 {
                     if(!this.currentUser)
                         {
                             this.errorMsg = data['error'];
 
-                               window.location.href = '/login';
-
-
-
-                            //this.router.navigate(['/login']);
                         }
 
                         else if(this.currentUser.type=="candidate")
                         {
                             this.errorMsg = data['error'];
-                            //this.dataservice.verifyErrorMessage(data['error']);
 
-                                window.location.href = '/candidate_profile';
-
-
-
-                            //this.router.navigate(['/login']);
-                            //this.router.navigate(["/candidate_profile"]);
                         }
 
                         else if(this.currentUser.type=="company")
                         {
                             this.errorMsg = data['error'];
 
-                                window.location.href = '/company_profile';
-
-
-
-                            //this.router.navigate(['/login']);
-                            //this.router.navigate(["/company_profile"]);
                         }
                 }
 
                 },
                 error =>
                 {
-                       this.dataservice.verifyErrorMessage(error);
-                    ////console.log("error");
-                  //this.dataservice.changeMessage(error);
-                	// this.router.navigate(['/login']);
+                    if(error.error.message === 'jwt expired')
+                    {
+                      this.errorMsg = 'The verification link has expired or is invalid.';
+
+                    }
+
                 });
 
 

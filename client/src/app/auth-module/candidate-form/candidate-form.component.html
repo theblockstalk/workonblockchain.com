@@ -15,11 +15,11 @@
 
           <div class="tab-content form-contant">
               <div id="candidate" class="tab-pane fade in active">
-                
+
                 <div class="ref_msg">{{ref_msg}}</div>
                 <h4 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h4>
                  <form (submit)="signup_candidate(loginForm)"  #loginForm = ngForm>
-                
+
                 <div class="form-group">
                   <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
                   <input type="email" email class="form-control" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' placeholder="Email" name="name" required  [(ngModel)]="credentials.email">
@@ -27,11 +27,11 @@
                  <div *ngIf="emailname.errors && credentials.email!=''" class="alert alert-danger error-alert">
 						Enter email in correct format like myemail@gmail.com.
 				</div>
-                
+
                 <!-- <div *ngIf="cand_email.errors&& credentials.email!=''" class="alert alert-danger error-alert">
 						Enter email in correct format myemail@gmail.com
 				</div>-->
-                 
+
                 </div>
 
                 <div class="form-group">
@@ -41,8 +41,8 @@
                 	<p>{{pass_log}}</p>
                 	<div *ngIf="uname.errors" class="alert alert-danger error-alert">
 						Password must contain a minimum of 8 characters including a number and lower and upper case letter.
-					</div> 
-					
+					</div>
+
                 </div>
 
                 <div class="form-group">
@@ -56,7 +56,7 @@
                   <label><input type="checkbox" required  name="terms" [(ngModel)]="terms"> Accept <a href = ""> Term and Conditions </a></label>
                 </div>-->
                 <!-- <div class="checkbox">
-        <label class="check-label">Term and Conditions 
+        <label class="check-label">Term and Conditions
          <input type="checkbox" value="" name="terms" [(ngModel)]="terms">
          <span class="checkmark">
           <div></div>
@@ -89,9 +89,9 @@
               </div>
 
               <div id="company" class="tab-pane fade">
-                
+
                <form (submit)="company_signup(signupForm)"  #signupForm = ngForm>
-                   <div class="alert alert-danger error-alert" *ngIf = "message" >{{message}}</div>
+                   <div class="alert alert-danger error-alert" *ngIf = "company_log" >{{company_log}}</div>
 
                 <div class="form-group">
                   <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
@@ -133,13 +133,13 @@
                   <span><i class="fa fa-phone" aria-hidden="true"></i></span>
                   <input type="tel" class="form-control" placeholder="Phone Number" id="mobile-number" required name="phone_number" [(ngModel)]="credentials.phone_number">
                 </div>
-                
-                
+
+
                  <div class="form-group spec-group">
                   <!-- <input type="text" class="form-control left-input" placeholder="Country" id="country" required name="country" [(ngModel)]="credentials.country">
  -->			 <select class="form-control left-input"  required name="country" [(ngModel)]="credentials.country"  required="">
               <option value="-1" disabled selected hidden >Please choose country</option>
-        
+
                 <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
                 </select>
                   <span><i class="fa fa-address-card-o" aria-hidden="true"></i></span>
@@ -159,7 +159,7 @@
                    <p >{{pass_log}}</p>
                    <div *ngIf="upass.errors" class="alert alert-danger error-alert">
 						Password must contain a minimum of 8 characters including a number and lower and upper case letter.
-				</div> 
+				</div>
                 </div>
 
                 <div class="form-group">
@@ -172,9 +172,9 @@
                 <!-- <div class="checkbox">
                   <label><input type="checkbox" required name="company_terms" [(ngModel)]="company_terms"> Accept <a href = ""> Term and Conditions </a> </label>
                 </div> -->
-                
+
                 <!-- <div class="checkbox">
-        <label class="check-label">Term and Conditions 
+        <label class="check-label">Term and Conditions
          <input type="checkbox" value="" name="company_terms" [(ngModel)]="company_terms">
          <span class="checkmark">
           <div></div>
