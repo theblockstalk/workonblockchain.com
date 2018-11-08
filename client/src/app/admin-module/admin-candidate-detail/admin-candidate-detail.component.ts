@@ -167,9 +167,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                   .subscribe(
                     refData => {
 
-                      console.log(refData);
                       if(refData.candidateDoc){
-                        console.log("candidate");
                         if(refData.candidateDoc.first_name && refData.candidateDoc.last_name)
                           this.referred_name = refData.candidateDoc.first_name + " " + refData.candidateDoc.last_name;
                         else
@@ -180,16 +178,13 @@ export class AdminCandidateDetailComponent implements OnInit {
                         this.referred_link = refData.candidateDoc._creator;
                       }
                       else if(refData.companyDoc){
-                        console.log("company");
                         if(refData.companyDoc.first_name && refData.companyDoc.last_name)
                           this.referred_name = refData.companyDoc.first_name + " " + refData.companyDoc.last_name;
                         else
                           this.referred_name = refData.companyDoc._id ;
 
-                        console.log(this. referred_name);
                         this.detail_link = '/admin-company-detail';
                         this.referred_link = refData.companyDoc._creator;
-                        console.log(this.referred_link);
                       }
                       else
                       {

@@ -221,7 +221,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(data =>
           {
-            console.log(data);
             if(data)
               this.info.email = data._creator.email;
             if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
@@ -528,7 +527,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               for(let data1 of data.work_history)
               {
                 this.current_work_check.push(data1.currentwork);
-                console.log(this.current_work_check);
 
               }
 
@@ -1413,7 +1411,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
         {
           this.ExperienceForm.value.ExpItems[key].enddate = new Date();
-          console.log(this.ExperienceForm.value.ExpItems[key].enddate);
           this.exp_count = parseInt(key) + 1;
 
         }
@@ -1549,7 +1546,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       obj.checked =true;
       this.commercialSkills.push(obj);
     }
-    console.log(this.commercialSkills);
 
   }
 
@@ -1566,7 +1562,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.value = value;
       this.referringData = { skill : this.value, exp_year: e.target.value};
       this.commercialSkillsExperienceYear.push(this.referringData);
-      console.log(this.commercialSkillsExperienceYear);
 
     }
     else
@@ -1574,7 +1569,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.value=value;
       this.referringData = { skill : this.value, exp_year: e.target.value};
       this.commercialSkillsExperienceYear.push(this.referringData);
-      console.log(this.commercialSkillsExperienceYear);
 
     }
 
@@ -1604,7 +1598,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       obj.checked =true;
       this.formal_skills_exp.push(obj);
     }
-    console.log(this.formal_skills_exp);
 
   }
 
@@ -1621,7 +1614,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.value = value;
       this.referringData = { skill : this.value, exp_year: e.target.value};
       this.formal_skills.push(this.referringData);
-      console.log(this.formal_skills);
 
     }
     else
@@ -1629,7 +1621,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.value=value;
       this.referringData = { skill : this.value, exp_year: e.target.value};
       this.formal_skills.push(this.referringData);
-      console.log(this.formal_skills);
 
     }
 

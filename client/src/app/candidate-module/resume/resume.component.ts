@@ -82,7 +82,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                       this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
-               console.log(data);
                 if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
                 {
                   this.why_work=data.why_work;
@@ -509,7 +508,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         {
           this.why_work_log = "Please fill why do you want to work on blockchain?";
          }
-         console.log(this.formal_skills_exp.length + " : " + this.formal_skills.length)
+
        if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
        && this.commercialSkills.length === this.commercialSkillsExperienceYear.length && this.formal_skills_exp.length === this.formal_skills.length)
        {
@@ -559,7 +558,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {
         this.commercially_worked.splice(index, 1);
           let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'platform_name',  obj.value);
-       //////console.log(updateItem);
       let index2 = this.commercial_expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -573,7 +571,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         obj.checked =true;
         this.commercially_worked.push(obj);
       }
-    ////console.log(this.commercial_expYear);
 
    }
 
@@ -586,7 +583,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {
         this.platforms_designed.splice(index, 1);
           let updateItem2 = this.findObjectByKey(this.platforms, 'platform_name', obj.value);
-       //////console.log(updateItem);
       let index2 = this.platforms.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -612,11 +608,8 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.expYear.push(this.referringData);*/
 
        this.selectedValue = e.target.value;
-       ////console.log(value);
        this.langValue = value;
-       ////console.log(this.expYear);
          let updateItem = this.findObjectByKey(this.expYear, 'experimented_platform', value);
-       //////console.log(updateItem);
       let index = this.expYear.indexOf(updateItem);
 
       if(index > -1)
@@ -626,16 +619,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.value=value;
         this.referringData = { experimented_platform:this.value, exp_year: e.target.value};
       this.expYear.push(this.referringData);
-        ////console.log(this.expYear);
 
       }
       else
       {
-      //////console.log("not exists");
         this.value=value;
        this.referringData = { experimented_platform :this.value, exp_year: e.target.value};
       this.expYear.push(this.referringData);
-        ////console.log(this.expYear);
 
       }
 
@@ -651,7 +641,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
      this.selectedValue = e.target.value;
        this.langValue = value;
         let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
-       //////console.log(updateItem);
       let index = this.commercial_expYear.indexOf(updateItem);
 
       if(index > -1)
@@ -661,17 +650,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.value=value;
         this.referringData = { platform_name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
-        //////console.log(this.LangexpYear);
 
       }
       else
       {
-      //////console.log("not exists");
         this.value=value;
        this.referringData = { platform_name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
-        //////console.log(this.LangexpYear);
-
       }
 
    }
@@ -684,10 +669,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       /*this.value=value;
       this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
-      ////console.log(this.platforms);*/
+      */
 
          let updateItem = this.findObjectByKey(this.platforms, 'skill', value);
-       //////console.log(updateItem);
       let index = this.platforms.indexOf(updateItem);
 
       if(index > -1)
@@ -697,16 +681,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.value=value;
         this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
-        ////console.log(this.platforms);
 
       }
       else
       {
-      //////console.log("not exists");
         this.value=value;
         this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
-        ////console.log(this.platforms);
 
       }
 
@@ -755,7 +736,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       obj.checked =true;
       this.commercialSkills.push(obj);
     }
-    console.log(this.commercialSkills);
 
   }
 
@@ -772,7 +752,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.value = value;
       this.referringData = { skill : this.value, exp_year: e.target.value};
       this.commercialSkillsExperienceYear.push(this.referringData);
-      console.log(this.commercialSkillsExperienceYear);
 
     }
     else
@@ -780,7 +759,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.value=value;
       this.referringData = { skill : this.value, exp_year: e.target.value};
       this.commercialSkillsExperienceYear.push(this.referringData);
-      console.log(this.commercialSkillsExperienceYear);
 
     }
 
@@ -809,7 +787,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       obj.checked =true;
       this.formal_skills_exp.push(obj);
     }
-    console.log(this.formal_skills_exp);
 
   }
 
@@ -826,7 +803,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.value = value;
       this.referringData = { skill : this.value, exp_year: e.target.value};
       this.formal_skills.push(this.referringData);
-      console.log(this.formal_skills);
 
     }
     else
@@ -834,7 +810,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.value=value;
       this.referringData = { skill : this.value, exp_year: e.target.value};
       this.formal_skills.push(this.referringData);
-      console.log(this.formal_skills);
 
     }
 
