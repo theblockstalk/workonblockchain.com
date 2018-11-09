@@ -113,7 +113,7 @@ router.post('/users/create_employer',  asyncMiddleware(companyRegister));
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
 router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
 router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
-router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
+router.put('/users/about_company',auth.isLoggedIn, asyncMiddleware(companyWizardAbout));
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
 router.put('/users/update_company_profile',auth.isLoggedIn, asyncMiddleware(companyUpdate));
 router.post('/users/filter',auth.isValidCompany, companySearchFilter);
