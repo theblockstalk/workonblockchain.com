@@ -35,7 +35,6 @@ export class ResetPasswordComponent implements OnInit {
 
   reset_password(f: NgForm)
   {
-    console.log(f.value);
     this.reset_password_log = '';
     if(!f.value.password) {
       this.reset_password_log = 'Please enter the new password.';
