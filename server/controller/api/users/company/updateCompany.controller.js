@@ -1,76 +1,39 @@
-const settings = require('../../../../settings');
-var Q = require('q');
-var mongo = require('mongoskin');
 const EmployerProfile = require('../../../../model/employer_profile');
 const logger = require('../../../services/logger');
 
-module.exports = function (req,res)
-{
+module.exports = async function (req, res) {
+
 	let userId = req.auth.user._id;
-    update_company_profile(userId,req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
-        }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
+    const employerDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
 
-function update_company_profile(_id , companyParam)
-{
-    var deferred = Q.defer();
-    var _id = _id;
+    if(employerDoc){
+        const companyParam = req.body;
+        let employerUpdate = {}
 
-    EmployerProfile.findOne({ _creator: _id }, function (err, data)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            updateEmployer(_id);
+        if (companyParam.first_name) employerUpdate.first_name = companyParam.first_name;
+        if (companyParam.last_name) employerUpdate.last_name = companyParam.last_name;
+        if (companyParam.job_title) employerUpdate.job_title = companyParam.job_title;
+        if (companyParam.company_name) employerUpdate.company_name = companyParam.company_name;
+        if (companyParam.company_website) employerUpdate.company_website = companyParam.company_website;
+        if (companyParam.phone_number) employerUpdate.company_phone = companyParam.phone_number;
+        if (companyParam.country) employerUpdate.company_country = companyParam.country;
+        if (companyParam.city) employerUpdate.company_city = companyParam.city;
+        if (companyParam.postal_code) employerUpdate.company_postcode = companyParam.postal_code;
+        if (companyParam.company_founded) employerUpdate.company_founded = companyParam.company_founded;
+        if (companyParam.no_of_employees) employerUpdate.no_of_employees = companyParam.no_of_employees;
+        if (companyParam.company_funded) employerUpdate.company_funded = companyParam.company_funded;
+        if (companyParam.company_description) employerUpdate.company_description = companyParam.company_description;
 
-    });
+        await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
 
-    function updateEmployer(_id)
-    {
-
-        var set =
-        {
-                first_name : companyParam.first_name,
-                last_name: companyParam.last_name,
-                job_title:companyParam.job_title,
-                company_name: companyParam.company_name,
-                company_website:companyParam.company_website,
-                company_phone:companyParam.phone_number,
-                company_country:companyParam.country,
-                company_city:companyParam.city,
-                company_postcode:companyParam.postal_code,
-                company_founded:companyParam.company_founded,
-                no_of_employees:companyParam.no_of_employees,
-                company_funded: companyParam.company_funded,
-                company_description:companyParam.company_description,
-        };
-
-        EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+        res.send({
+            success : true
+        })
     }
 
-    return deferred.promise;
+    else {
+        res.sendStatus(404);
+    }
 
 }
+
