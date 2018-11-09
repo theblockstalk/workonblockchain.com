@@ -2,7 +2,7 @@ const EmployerProfile = require('../../../../../model/employer_profile');
 
 module.exports = async  function (req,res)
 {
-	let userId = req.auth.user._id;
+    let userId = req.auth.user._id;
     const employerDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
 
     if(employerDoc){
@@ -26,4 +26,3 @@ module.exports = async  function (req,res)
     }
 
 }
-
