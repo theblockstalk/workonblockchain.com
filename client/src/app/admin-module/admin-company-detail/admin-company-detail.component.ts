@@ -54,13 +54,14 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
+            console.log(data);
             if(data.error)
             {
               this.error= "Something Went Wrong";
             }
             else
             {
-              this.info.push(data);;
+              this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
               if(data._creator.referred_email) {
