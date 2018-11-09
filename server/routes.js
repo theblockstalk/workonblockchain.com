@@ -111,7 +111,7 @@ router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUp
 // Companies
 router.post('/users/create_employer',  asyncMiddleware(companyRegister));
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
-router.get('/users/current_company/:_id',auth.isLoggedIn, companyGetCurrent);
+router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
 router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
 router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), companyImage);

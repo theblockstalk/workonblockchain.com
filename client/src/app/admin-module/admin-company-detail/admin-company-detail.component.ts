@@ -54,7 +54,6 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
-            console.log(data);
             if(data.error)
             {
               this.error= "Something Went Wrong";
