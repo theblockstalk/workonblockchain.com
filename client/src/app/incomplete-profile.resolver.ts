@@ -15,6 +15,7 @@ export class ProfileResolver  {
 
   resolve() : void {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(this.currentUser);
     if (this.currentUser)
     {
       if(this.currentUser.type === 'candidate')

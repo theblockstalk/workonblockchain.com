@@ -204,7 +204,7 @@ forgetMessage;
                         this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, this.credentials.linkedin_id)
                         .subscribe(
                         user => {
-                          //console.log(user);
+                          console.log(user);
 
                           if(user.error)
                           {
@@ -245,7 +245,7 @@ forgetMessage;
 
                     },
                     error => {
-                    //console.log(error);
+                    console.log(error);
                     this.log = 'Something getting wrong';
 
                     });

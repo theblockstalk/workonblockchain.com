@@ -6,27 +6,34 @@ const Q = require('q');
 const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
 const logger = require('../../../services/logger');
+const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
 
     let userParam = req.body;
-
+    console.log(userParam);
     if(userParam.linkedin_id) {
-      let userDoc =  await User.findOne({linkedin_id : userParam.linkedin_id }).lean();
+        console.log("if")
+      const userDoc =  await User.findOne({linkedin_id : userParam.linkedin_id }).lean();
+        console.log(userDoc);
       if(userDoc) {
-          let jwtToken = jwtToken.createJwtToken(userDoc);
-          await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtToken}});
-          const candidateDoc = CandidateProfile.findOne({ _creator:  userDoc._id }
+          let jwtUserToken = jwtToken.createJwtToken(userDoc);
+          await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+          const candidateDoc = await  CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
+          console.log(candidateDoc);
           res.send({
               _id:candidateDoc._id,
-              _creator: candidateDoc._creator,
+              _creator: userDoc._id,
               email: userDoc.email,
               email_hash: userDoc.email_hash,
               is_admin:userDoc.is_admin,
               type:userDoc.type,
               is_approved : userDoc.is_approved,
-              jwt_token: jwtToken
+              jwt_token: jwtUserToken
           });
+      }
+      else {
+          errors.throwError("Incorrect Username or Password" , 400)
       }
     }
 
@@ -41,34 +48,34 @@ module.exports = async function (req, res) {
             if (hashedPasswordAndSalt === userDoc.password_hash)
             {
                 if(userDoc.type === 'candidate') {
-                    let jwtToken = jwtToken.createJwtToken(userDoc);
-                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtToken}});
-                    const candidateDoc = CandidateProfile.findOne({ _creator:  userDoc._id }
+                    let jwtUserToken = jwtToken.createJwtToken(userDoc);
+                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+                    const candidateDoc = await CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
                     res.send({
                         _id: candidateDoc._id,
-                        _creator: candidateDoc._creator,
+                        _creator: userDoc._id,
                         email: userDoc.email,
                         email_hash: userDoc.email_hash,
                         is_admin: userDoc.is_admin,
                         type: userDoc.type,
                         is_approved: userDoc.is_approved,
-                        jwt_token: jwtToken
+                        jwt_token: jwtUserToken
                     });
                 }
 
                 if(userDoc.type === 'company') {
-                    let jwtToken = jwtToken.createJwtToken(userDoc);
-                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtToken}});
-                    const companyDoc = EmployerProfile.findOne({ _creator:  userDoc._id }
+                    let jwtUserToken = jwtToken.createJwtToken(userDoc);
+                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+                    const companyDoc = await EmployerProfile.findOne({ _creator:  userDoc._id }).lean();
                     res.send({
                         _id: companyDoc._id,
-                        _creator: companyDoc._creator,
+                        _creator: userDoc._id,
                         email: userDoc.email,
                         email_hash: userDoc.email_hash,
                         is_admin: userDoc.is_admin,
                         type: userDoc.type,
                         is_approved: userDoc.is_approved,
-                        jwt_token: jwtToken
+                        jwt_token: jwtUserToken
                     });
                 }
 
@@ -78,6 +85,9 @@ module.exports = async function (req, res) {
                 errors.throwError("Incorrect Password" , 400)
             }
 
+        }
+        else {
+            errors.throwError("Incorrect Username or Password" , 400)
         }
 
     }
