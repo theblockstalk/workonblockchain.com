@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const users = require('../../../../model/users');
+const User = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 const Q = require('q');
@@ -7,157 +7,80 @@ const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
 const logger = require('../../../services/logger');
 
-module.exports = function (req, res) {
-    authenticate(req.body.email, req.body.password).then(function (user)
+module.exports = async function (req, res) {
+
+    let userParam = req.body;
+
+    if(userParam.linkedin_id) {
+      let userDoc =  await User.findOne({linkedin_id : userParam.linkedin_id }).lean();
+      if(userDoc) {
+          let jwtToken = jwtToken.createJwtToken(userDoc);
+          await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtToken}});
+          const candidateDoc = CandidateProfile.findOne({ _creator:  userDoc._id }
+          res.send({
+              _id:candidateDoc._id,
+              _creator: candidateDoc._creator,
+              email: userDoc.email,
+              email_hash: userDoc.email_hash,
+              is_admin:userDoc.is_admin,
+              type:userDoc.type,
+              is_approved : userDoc.is_approved,
+              jwt_token: jwtToken
+          });
+      }
+    }
+
+    else
     {
-        if (user)
-        {
-            // authentication successful
-            res.json(user);
-        }
-        else
-        {
-            // authentication failed
-            res.json({msg: 'Username or password is incorrect'});
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
-
-function authenticate(email, password,type)
-{
-    var deferred = Q.defer();
-
-    users.findOne({ email: email }, function (err, user)
-    {
-
-        if (err) deferred.reject(err.name + ': ' + err.message);
-
-        if (user)
-        {
-            let hash = crypto.createHmac('sha512', user.salt);
-            hash.update(password);
+        let userDoc =  await User.findOne({email : userParam.email }).lean();
+        if(userDoc) {
+            let hash = crypto.createHmac('sha512', userDoc.salt);
+            hash.update(userParam.password);
             let hashedPasswordAndSalt = hash.digest('hex');
 
-            if (hashedPasswordAndSalt === user.password_hash)
+            if (hashedPasswordAndSalt === userDoc.password_hash)
             {
-                if(user.type=='candidate')
-                {
-                    CandidateProfile.findOne({ _creator:  user._id }, function (err, data)
-                    {
-
-                        if (err) deferred.reject(err.name + ': ' + err.message);
-
-                        if(data)
-                        {
-                            let token = jwtToken.createJwtToken(user);
-                            logger.debug(logger);
-
-                            var set =
-                                {
-                                    jwt_token: token,
-
-                                };
-                            users.update({ _id: user._id},{ $set: set }, function (err, doc)
-                            {
-                                if (err)
-                                {
-                                    logger.error(err.message, {stack: err.stack});
-                                    deferred.reject(err.name + ': ' + err.message);
-                                }
-                                else
-                                {
-                                    deferred.resolve({
-                                        _id:data._id,
-                                        _creator: data._creator,
-                                        email: user.email,
-                                        email_hash: user.email_hash,
-                                        is_admin:user.is_admin,
-                                        type:user.type,
-                                        is_approved : user.is_approved,
-                                        jwt_token: token
-                                    });
-
-                                }
-
-                            });
-
-
-                        }
-
-                        else
-                        {
-                            deferred.reject("Email Not found");
-                        }
-
-
+                if(userDoc.type === 'candidate') {
+                    let jwtToken = jwtToken.createJwtToken(userDoc);
+                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtToken}});
+                    const candidateDoc = CandidateProfile.findOne({ _creator:  userDoc._id }
+                    res.send({
+                        _id: candidateDoc._id,
+                        _creator: candidateDoc._creator,
+                        email: userDoc.email,
+                        email_hash: userDoc.email_hash,
+                        is_admin: userDoc.is_admin,
+                        type: userDoc.type,
+                        is_approved: userDoc.is_approved,
+                        jwt_token: jwtToken
                     });
                 }
-                if(user.type=='company')
-                {
-                    EmployerProfile.findOne({ _creator:  user._id }, function (err, data)
-                    {
-                        if (err) deferred.reject(err.name + ': ' + err.message);
 
-                        if(data)
-                        {
-                            let token = jwtToken.createJwtToken(user);
-                            logger.debug(logger);
-
-                            var set =
-                                {
-                                    jwt_token: token,
-
-                                };
-                            users.update({ _id: user._id},{ $set: set }, function (err, doc)
-                            {
-                                if (err)
-                                {
-                                    logger.error(err.message, {stack: err.stack});
-                                    deferred.reject(err.name + ': ' + err.message);
-                                }
-                                else
-                                {
-
-                                    deferred.resolve({
-                                        _id:data._id,
-                                        _creator: data._creator,
-                                        email: user.email,
-                                        email_hash: user.email_hash,
-                                        is_admin:user.is_admin,
-                                        type:user.type,
-                                        is_approved : user.is_approved,
-                                        jwt_token: token
-                                    });
-
-                                }
-
-                            });
-
-                        }
-
-                        else
-                        {
-                            deferred.reject("Email Not found");
-                        }
-
+                if(userDoc.type === 'company') {
+                    let jwtToken = jwtToken.createJwtToken(userDoc);
+                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtToken}});
+                    const companyDoc = EmployerProfile.findOne({ _creator:  userDoc._id }
+                    res.send({
+                        _id: companyDoc._id,
+                        _creator: companyDoc._creator,
+                        email: userDoc.email,
+                        email_hash: userDoc.email_hash,
+                        is_admin: userDoc.is_admin,
+                        type: userDoc.type,
+                        is_approved: userDoc.is_approved,
+                        jwt_token: jwtToken
                     });
                 }
+
             }
             else
             {
-                deferred.reject("Incorrect Password");
+                errors.throwError("Incorrect Password" , 400)
             }
 
         }
-        else
-        {
-            deferred.reject("Incorrect Username or Password");
-        }
-    });
 
-    return deferred.promise;
+    }
+
 }
+

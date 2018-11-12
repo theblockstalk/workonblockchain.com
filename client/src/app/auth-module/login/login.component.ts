@@ -68,7 +68,7 @@ forgetMessage;
 
         if(this.credentials.email && this.credentials.password)
         {
-          this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
+          this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, null)
             .subscribe(
                 user => {
                 //console.log(user);
@@ -142,7 +142,7 @@ forgetMessage;
 
              this.credentials.social_type='GOOGLE';
 
-             this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
+             this.authenticationService.candidate_login(this.credentials.email, this.credentials.password , null)
             .subscribe(
                 user => {
                 //console.log(user);
@@ -192,14 +192,16 @@ forgetMessage;
                     {
                         this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
 
-                        this.credentials.email= this.linkedinUser.emailAddress;
+                        this.credentials.email = this.linkedinUser.emailAddress;
                         this.credentials.password= '';
                         this.credentials.type="candidate";
                         this.credentials.social_type='LINKEDIN';
+                        this.credentials.linkedin_id = this.linkedinUser.id;
 
-                        if(this.linkedinUser.emailAddress)
+
+                      if(this.linkedinUser.emailAddress)
                         {
-                        this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
+                        this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, this.credentials.linkedin_id)
                         .subscribe(
                         user => {
                           //console.log(user);

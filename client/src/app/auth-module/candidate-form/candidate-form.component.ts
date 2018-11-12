@@ -206,6 +206,7 @@ export class CandidateFormComponent implements OnInit {
             const url = '/people/~:(id,picture-url,location,industry,positions,specialties,summary,email-address )?format=json';
             this._linkedInService.raw(url).asObservable().subscribe({
                 next: (data) => {
+                  console.log(data);
                     localStorage.setItem('linkedinUser', JSON.stringify(data));
                     if(data)
                     {
@@ -214,6 +215,7 @@ export class CandidateFormComponent implements OnInit {
                         this.credentials.password= '';
                         this.credentials.type="candidate";
                         this.credentials.social_type='LINKEDIN';
+                        this.credentials.linkedin_id = this.linkedinUser.id;
                         if(this.linkedinUser.emailAddress)
                         {
                         this.authenticationService.create(this.credentials)
@@ -227,8 +229,6 @@ export class CandidateFormComponent implements OnInit {
                             else
                             {
                                 localStorage.setItem('currentUser', JSON.stringify(data));
-                                //localStorage.removeItem('userInfo');
-                                //this.router.navigate(['/about']);
                                 window.location.href = '/terms-and-condition';
                             }
                             },

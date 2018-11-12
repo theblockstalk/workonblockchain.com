@@ -267,9 +267,9 @@ export class UserService {
         return this.http.delete(URL+'users/' + _id);
     }
 
-    candidate_login(username: string, password: string)
+    candidate_login(username: string, password: string, linkedin_id : any)
     {
-      return this.http.post<any>(URL+'users/authenticate', { email: username, password: password })
+      return this.http.post<any>(URL+'users/authenticate', { email: username, password: password , linkedin_id  : linkedin_id })
             .map(user => {
                 if (user && user.jwt_token)
                 {
