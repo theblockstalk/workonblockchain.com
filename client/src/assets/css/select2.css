@@ -225,7 +225,11 @@
     margin-right: 5px;
     margin-top: 5px;
     padding: 0 5px;
-	color:#fff;
+	  color:#fff;
+    position: relative;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: initial;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
     color: #fd3d3d;
