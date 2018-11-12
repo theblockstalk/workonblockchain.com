@@ -43,8 +43,21 @@ module.exports.sendEmail = function sendEmail(emailAddress,name,hash) {
     	    to: sendToArray
     	  }
     };
-    	
-    logger.debug('mandril options: ' , mandrillOptions);
 
-    emails.sendEmail(mandrillOptions, false);
+    const sendGridOptions = {
+        templateId: "d-84d5a0028f1141e68433cd97d14a876d",
+        subject: subject,
+        personalizations: [{
+            to: {
+                email: emailAddress,
+                name: name
+            }
+        }],
+        templateData: {
+            firstName: name,
+            resetPasswordUrl: resetPassswordUrl
+        }
+    };
+
+    emails.sendEmail(mandrillOptions, sendGridOptions, false);
 }

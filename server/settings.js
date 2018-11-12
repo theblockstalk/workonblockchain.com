@@ -27,6 +27,7 @@ if (isLiveApplication()) {
         secret: process.env.EXPRESS_JWT_SECRET
     };
     config.mandrill.apiKey = process.env.MANDRILL_API_KEY;
+    config.sendGrid.apiKey = process.env.SENDGRID_API_KEY;
 
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.username + ":"
         + config.mongo.password + "@" + config.mongo.host + ":"
@@ -42,6 +43,12 @@ if (isLiveApplication()) {
         FROM_ADDRESS: config.mandrill.fromAddress,
         FROM_NAME: config.mandrill.fromName,
         API_KEY: config.mandrill.apiKey
+    };
+
+    settings.SENDGRID = {
+        FROM_ADDRESS: config.sendGrid.fromAddress,
+        FROM_NAME: config.sendGrid.fromName,
+        API_KEY: config.sendGrid.apiKey
     };
 
     settings.SLACK = {
