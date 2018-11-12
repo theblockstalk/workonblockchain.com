@@ -25,10 +25,8 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
         const errorLog = {
             message: error.message,
             code: error.code,
-            // response: error.response,
             errors: error.response.body.errors
         };
-        console.log('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, errorLog)
-        // logger.error('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, errorLog);
+        logger.error('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, errorLog);
     }
 }
