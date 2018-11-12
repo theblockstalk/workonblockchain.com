@@ -66,7 +66,7 @@ module.exports = async function (req, res) {
         });
         const candidateUserDoc = await info.save();
 
-        const referralDoc = referral.findOne({ email: userParam.email }).lean();
+        const referralDoc = await referral.findOne({ email: userParam.email }).lean();
         if(referralDoc) {
             url_token = referralDoc.url_token;
         }
