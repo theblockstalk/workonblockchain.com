@@ -17,42 +17,45 @@ let app = express();
 module.exports = app;
 
 try {
-    logger.debug('settings', settings);
+    const verifyEmail = require('./controller/services/email/emails/verifyEmail');
+    verifyEmail.sendEmail("jack@workonblockchain.com", "Jack Tanner", "1234");
 
-    rootpath();
-
-    app.use(cors());
-
-    app.use(helmet());
-    app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.json());
-
-    app.use(sanitizer.middleware);
-
-    app.use(routes);
-
-    app.use(errorHandler);
-
-    cron.startCron();
-
-    mongoose.connect(settings.MONGO_CONNECTION_STRING);
-
-    mongoose.connection.on('connected',() => {
-        logger.info('Connected to mongodb database');
-    });
-
-    mongoose.connection.on('error', (error) => {
-        if (error) {
-            logger.error(error.message, {stack: error.stack});
-            process.exit(1);
-        }
-    });
-
-    const port = settings.SERVER.PORT;
-
-    app.listen(port, function () {
-        logger.info('Server listening on port ' + port);
-    });
+    // logger.debug('settings', settings);
+    //
+    // rootpath();
+    //
+    // app.use(cors());
+    //
+    // app.use(helmet());
+    // app.use(bodyParser.urlencoded({ extended: false }));
+    // app.use(bodyParser.json());
+    //
+    // app.use(sanitizer.middleware);
+    //
+    // app.use(routes);
+    //
+    // app.use(errorHandler);
+    //
+    // cron.startCron();
+    //
+    // mongoose.connect(settings.MONGO_CONNECTION_STRING);
+    //
+    // mongoose.connection.on('connected',() => {
+    //     logger.info('Connected to mongodb database');
+    // });
+    //
+    // mongoose.connection.on('error', (error) => {
+    //     if (error) {
+    //         logger.error(error.message, {stack: error.stack});
+    //         process.exit(1);
+    //     }
+    // });
+    //
+    // const port = settings.SERVER.PORT;
+    //
+    // app.listen(port, function () {
+    //     logger.info('Server listening on port ' + port);
+    // });
 } catch(error) {
     logger.error(error.message, {stack: error.stack});
 }

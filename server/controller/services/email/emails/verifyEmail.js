@@ -31,5 +31,21 @@ module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmail
     };
     logger.debug('mandril options: ' , mandrillOptions);
 
-    emails.sendEmail(mandrillOptions, false);
+    const sendGridOptions = {
+        templateId: "d-1e975a9bf5524607a19b2b06f26a3e08",
+        subject: subject,
+        personalizations: [{
+            to: {
+                email: emailAddress,
+                name: firstName
+            }
+        }],
+        templateData: {
+            firstName: firstName
+        }
+    };
+
+    logger.debug('sendGid options: ' , sendGridOptions);
+
+    emails.sendEmail(mandrillOptions, sendGridOptions, false);
 }
