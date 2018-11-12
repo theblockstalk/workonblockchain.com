@@ -609,10 +609,9 @@ export class UserService {
                 }
             }).catch((error: any) =>
             {
-
                 if (error.status)
                 {
-                    return Observable.throw(new Error(error.status));
+                    return Observable.throw(new Error(error));
                 }
 
             });

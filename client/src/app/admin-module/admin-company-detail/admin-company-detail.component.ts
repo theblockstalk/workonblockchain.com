@@ -39,6 +39,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   referred_name;
   referred_link;
   detail_link;
+  error_message;
   ngOnInit()
   {
     this.referred_link = "";
@@ -126,8 +127,12 @@ export class AdminCompanyDetailComponent implements OnInit {
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
-            {
+            console.log(error);
+            if(error.requestID === 400 && error.success === false) {
+              console.log("iffiff");
+              this.error_message = error.message;
+            }
+            if(error.message === 500 || error.message === 401) {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
               localStorage.removeItem('googleUser');
@@ -136,9 +141,7 @@ export class AdminCompanyDetailComponent implements OnInit {
               localStorage.removeItem('admin_log');
               window.location.href = '/login';
             }
-
-            if(error.message === 403)
-            {
+            else {
               // this.router.navigate(['/not_found']);
             }
           });
