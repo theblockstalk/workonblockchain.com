@@ -34,5 +34,5 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
         }
     };
 
-    emails.sendEmail(mandrillOptions, sendGridOptions, false);
+    emails.sendEmail(mandrillOptions, sendGridOptions, isAccountDisabed);
 }
