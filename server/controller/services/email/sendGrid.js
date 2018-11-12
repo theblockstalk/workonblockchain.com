@@ -2,7 +2,9 @@ const settings = require('../../../settings');
 const logger = require('../logger');
 const sgMail = require('@sendgrid/mail');
 
-sgMail.setApiKey(settings.SENDGRID.API_KEY);
+if (settings.isLiveApplication()) {
+    sgMail.setApiKey(settings.SENDGRID.API_KEY);
+}
 
 module.exports.sendEmail = async function sendEmail(sendGridOptions) {
     const msg = {
