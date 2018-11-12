@@ -85,7 +85,6 @@ forgetMessage;
 
                 },
                 error => {
-                  console.log(error['error']);
                   if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                     this.password_message = '';
                     this.log = error['error']['message'];
@@ -106,7 +105,6 @@ forgetMessage;
     }
 
    ngOnDestroy() {
-   ////console.log("ngOndesctroy");
 
     }
 
@@ -125,7 +123,6 @@ forgetMessage;
 
             if(this.result)
             {
-                 ////console.log(this.result);
                  this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
                  this.credentials.email= this.googleUser.email;
              this.credentials.password= '';
@@ -142,7 +139,6 @@ forgetMessage;
 
                 },
                 error => {
-                  console.log(error['error']);
                   if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                     this.password_message = '';
                     this.log = error['error']['message'];
@@ -193,13 +189,11 @@ forgetMessage;
                         this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, this.credentials.linkedin_id)
                         .subscribe(
                         user => {
-                          console.log(user);
 
                             window.location.href = '/candidate_profile';
 
                     },
                     error => {
-                          console.log(error['error']);
                       if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                         this.password_message = '';
                         this.log = error['error']['message'];

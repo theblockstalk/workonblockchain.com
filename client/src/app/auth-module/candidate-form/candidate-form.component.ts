@@ -196,7 +196,6 @@ export class CandidateFormComponent implements OnInit {
             const url = '/people/~:(id,picture-url,location,industry,positions,specialties,summary,email-address )?format=json';
             this._linkedInService.raw(url).asObservable().subscribe({
                 next: (data) => {
-                  console.log(data);
                     localStorage.setItem('linkedinUser', JSON.stringify(data));
                     if(data)
                     {
@@ -218,7 +217,6 @@ export class CandidateFormComponent implements OnInit {
 
                             },
                             error => {
-                              console.log(error['error']['message']);
                               if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                                 this.log = error['error']['message'];
                               }
