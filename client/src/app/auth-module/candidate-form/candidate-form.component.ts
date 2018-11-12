@@ -124,26 +124,18 @@ export class CandidateFormComponent implements OnInit {
             .subscribe(
                 data =>
                 {
-
-
-
-                    if(data.error)
-                    {
-                        this.log = data.error;
-                    }
-
-                    else
-                    {
-                       localStorage.setItem('currentUser', JSON.stringify(data));
-
-                        window.location.href = '/terms-and-condition';
-
-                    }
+                  localStorage.setItem('currentUser', JSON.stringify(data));
+                  window.location.href = '/terms-and-condition';
                 },
                 error =>
                 {
+                  if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.log = error['error']['message'];
+                  }
+                  else {
                     this.log = 'Something getting wrong';
                     this.loading = false;
+                  }
                 });
 
 
@@ -172,21 +164,19 @@ export class CandidateFormComponent implements OnInit {
                 .subscribe(
                     data => {
                     this.credentials.email= '';
-                    if(data.error)
-                    {
-                        this.log = data.error;
-                    }
-                    else
-                    {
+
                         localStorage.setItem('currentUser', JSON.stringify(data));
-                        //localStorage.removeItem('userInfo');
-                        //this.router.navigate(['/about']);
                         window.location.href = '/terms-and-condition';
-                    }
+
                 },
                 error => {
+                  if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.log = error['error']['message'];
+                  }
+                  else {
                     this.log = 'Something getting wrong';
                     this.loading = false;
+                  }
                 });
             }
             else
@@ -221,20 +211,22 @@ export class CandidateFormComponent implements OnInit {
                         this.authenticationService.create(this.credentials)
                         .subscribe(
                             data => {
-                                this.credentials.email= '';
-                            if(data.error)
-                            {
-                                this.log = data.error;
-                            }
-                            else
-                            {
+                                this.credentials.email = '';
+
                                 localStorage.setItem('currentUser', JSON.stringify(data));
                                 window.location.href = '/terms-and-condition';
-                            }
+
                             },
                             error => {
-                            this.log = 'Something getting wrong';
-                            this.loading = false;
+                              console.log(error['error']['message']);
+                              if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                                this.log = error['error']['message'];
+                              }
+                              else {
+                                this.log = 'Something getting wrong';
+                                this.loading = false;
+                              }
+
                         });
                             }
                         else

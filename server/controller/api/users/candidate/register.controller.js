@@ -20,10 +20,6 @@ module.exports = async function (req, res) {
             let errorMsg = 'Email "' + userParam.email + '" is already taken';
             errors.throwError(errorMsg , 400)
         }
-        else {
-            createUser(userParam,userParam.linkedin_id);
-        }
-
     }
 
     const userDoc = await User.findOne({ email: userParam.email }).lean();
@@ -33,14 +29,7 @@ module.exports = async function (req, res) {
         let errorMsg = 'Email "' + userParam.email + '" is already taken';
         errors.throwError(errorMsg , 400)
     }
-    else {
-        createUser(userParam, null)
-    }
 
-
-}
-
-async function createUser(userParam , linkedin_id ) {
     let is_verify=0;
     if(userParam.social_type === 'GOOGLE' || userParam.social_type === 'LINKEDIN')
     {
@@ -62,7 +51,7 @@ async function createUser(userParam , linkedin_id ) {
         is_verify:is_verify,
         created_date: new Date(),
         referred_email : userParam.referred_email,
-        linkedin_id : linkedin_id
+        linkedin_id : userParam.linkedin_id
     });
 
     const candidateUserCreated = await newUser.save();
@@ -107,5 +96,8 @@ async function createUser(userParam , linkedin_id ) {
         });
 
     }
+
+
+
 }
 
