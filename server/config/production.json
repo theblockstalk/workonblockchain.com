@@ -18,6 +18,10 @@
       "logs": "logs.workonblockchain.com"
     }
   },
+  "sendGrid": {
+    "fromAddress": "contact@workonblockchain.com",
+    "fromName": "Work on Blockchain"
+  },
   "mandrill": {
     "fromAddress": "no-reply@workonblockchain.com",
     "fromName": "Work on Blockchain"

@@ -5,8 +5,6 @@ const logger = require('../../logger');
 module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmailToken) {
 
     const verifyEmailUrl = settings.CLIENT.URL + 'verify_email?email_hash='+verifyEmailToken;
-    console.log(verifyEmailUrl);
-    logger.debug('verify email url: ' , verifyEmailUrl);
 
     const sendTo = {
         email: emailAddress
@@ -29,10 +27,9 @@ module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmail
             to: sendToArray
         }
     };
-    logger.debug('mandril options: ' , mandrillOptions);
 
     const sendGridOptions = {
-        templateId: "d-1e975a9bf5524607a19b2b06f26a3e08",
+        templateId: "d-4564d4d9fec8469c8dfe0298511e8e17",
         subject: subject,
         personalizations: [{
             to: {
@@ -41,11 +38,10 @@ module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmail
             }
         }],
         templateData: {
-            firstName: firstName
+            firstName: firstName,
+            verifyEmailUrl: verifyEmailUrl
         }
     };
-
-    logger.debug('sendGid options: ' , sendGridOptions);
 
     emails.sendEmail(mandrillOptions, sendGridOptions, false);
 }

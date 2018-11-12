@@ -1,31 +1,34 @@
 const settings = require('../../../settings');
 const logger = require('../logger');
 const sgMail = require('@sendgrid/mail');
-// const sgClient = require('@sendgrid/client');
 
 sgMail.setApiKey(settings.SENDGRID.API_KEY);
 
 module.exports.sendEmail = async function sendEmail(sendGridOptions) {
-    // console.log(sendGridOptions.personalizations);
-    console.log(settings.SENDGRID.API_KEY);
     const msg = {
         personalizations: sendGridOptions.personalizations,
-        // to: sendGridOptions.personalizations.to.email,
-        from: settings.SENDGRID.FROM_NAME,
+        from: {
+            email: settings.SENDGRID.FROM_ADDRESS,
+            name: settings.SENDGRID.FROM_NAME
+        },
         subject: sendGridOptions.subject,
-        text: 'and easy to do anywhere, even with Node.js',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-        // templateId: sendGridOptions.templateId,
-        // dynamic_template_data: sendGridOptions.templateData
+        templateId: sendGridOptions.templateId,
+        dynamic_template_data: sendGridOptions.templateData
     };
 
+    logger.debug('Sending message with Sendgrid', msg);
+
     try {
-        const response = await sgMail.send(msg);
-        console.log('response: ', response);
-        // logger.debug(response);
+        await sgMail.send(msg);
+        logger.debug('Sucessfully sent to ' + sendGridOptions.personalizations[0].to.email);
     } catch (error) {
-        console.log('error:', error)
-        console.log('error.response.body: ', error.response.body)
-        // logger.error(error);
+        const errorLog = {
+            message: error.message,
+            code: error.code,
+            // response: error.response,
+            errors: error.response.body.errors
+        };
+        console.log('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, errorLog)
+        // logger.error('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, errorLog);
     }
 }
