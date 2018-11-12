@@ -300,7 +300,9 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Profile.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log(contents);
                 const elements = csvToArray(contents);
+                console.log(elements);
                 const profile = {
                   firstName: elements[1][0],
                   lastName: elements[1][1],
