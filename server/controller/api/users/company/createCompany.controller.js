@@ -113,19 +113,35 @@ module.exports = async function (req, res) {
                             let data;
                             if(companyDoc && companyDoc.first_name)
                             {
-                                data = {fname : companyDoc.first_name , email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
+                                data = {
+                                    fname: companyDoc.first_name,
+                                    email: refDoc.email,
+                                    fname_referred: userParam.first_name,
+                                    lname_referred: userParam.last_name,
+                                    company_name: userParam.company_name
+                                }
 
                             }
                             else
                             {
-                                data = {fname : null , email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
+                                data = {
+                                    email: refDoc.email,
+                                    fname_referred: userParam.first_name,
+                                    lname_referred: userParam.last_name,
+                                    company_name: userParam.company_name
+                                }
 
                             }
                             referedCompanyEmail.sendEmail(data, userDoc.disable_account);
                     }
                     else
                     {
-                        let data = {email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
+                        let data = {
+                            email: refDoc.email,
+                            fname_referred: userParam.first_name,
+                            lname_referred: userParam.last_name,
+                            company_name: userParam.company_name
+                        }
                         referedCompanyEmail.sendEmail(data, false);
                     }
                 }
