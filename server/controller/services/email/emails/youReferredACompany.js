@@ -9,25 +9,25 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
     const sendToArray = [sendTo];
     logger.debug('referred email: ' , data.email);
     let merge_tags, templateData, sendGridTo;
-    if(data.name !== null) {
+    if(data.fname) {
         merge_tags = [{
             "name": "FNAME",
             "content": data.fname
         }, {
             "name": "FNAME_REFERRED",
-            "content": data.FNAME_REFERRED
+            "content": data.fname_referred
         },	{
             "name": "LNAME_REFERRED",
-            "content": data.LNAME_REFERRED
+            "content": data.lname_referred
         },	{
             "name": "COMPANY_NAME",
-            "content": data.COMPANY_NAME
+            "content": data.company_name
         }];
         templateData = {
             firstName: data.fname,
-            firstNameReferred: data.FNAME_REFERRED,
-            lastNameReferred: data.LNAME_REFERRED,
-            companyName: data.COMPANY_NAME
+            firstNameReferred: data.fname_referred,
+            lastNameReferred: data.lname_referred,
+            companyName: data.company_name
         };
         sendGridTo = {
             email: data.email,
@@ -36,21 +36,21 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
     } else {
         merge_tags = [{
             "name": "FNAME_REFERRED",
-            "content": data.FNAME_REFERRED
+            "content": data.fname_referred
         },	{
             "name": "LNAME_REFERRED",
-            "content": data.LNAME_REFERRED
+            "content": data.lname_referred
         },	{
             "name": "COMPANY_NAME",
-            "content": data.COMPANY_NAME
+            "content": data.company_name
         }];
         templateData = {
-            firstNameReferred: data.FNAME_REFERRED,
-            lastNameReferred: data.LNAME_REFERRED,
-            companyName: data.COMPANY_NAME
+            firstNameReferred: data.fname_referred,
+            lastNameReferred: data.lname_referred,
+            companyName: data.company_name
         };
         sendGridTo = {
-            email: data.email,
+            email: data.email
         }
     }
 
