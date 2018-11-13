@@ -5,41 +5,43 @@ const Pages = require('../../../../../model/pages_content');
 
 module.exports = async   function (req,res)
 {
-	let userId = req.auth.user._id;
-	const employerDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
+    let userId = req.auth.user._id;
+    const employerDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
 
-	if(employerDoc) {
-		const companyParam = req.body;
+    if(employerDoc) {
+        const queryBody = req.body;
         let employerUpdate = {};
 
-        if(companyParam.termsID)
+        if(queryBody.termsID)
         {
-        	const pagesDoc =  await Pages.findOne({_id: companyParam.termsID}).lean();
-        	if(pagesDoc) {
-        		if(pagesDoc._id) employerUpdate.terms_id = pagesDoc._id;
-        		if(companyParam.marketing) employerUpdate.marketing_emails = companyParam.marketing;
+            const pagesDoc =  await Pages.findOne({_id: queryBody.termsID}).lean();
+            if(pagesDoc) {
+                if(pagesDoc._id) employerUpdate.terms_id = pagesDoc._id;
+                if(queryBody.marketing) employerUpdate.marketing_emails = queryBody.marketing;
                 await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
                 res.send({
                     success : true
                 })
             }
-			else
-			{
-				res.send({
-					error : 'Not a valid doc'
-				})
-			}
+            else
+            {
+                errors.throwErrors("Terms and Conditions document not found", 400);
+            }
         }
         else {
-            if(companyParam.marketing) employerUpdate.marketing_emails = companyParam.marketing;
-            await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
+            if(queryBody.marketing) {
+                employerUpdate.marketing_emails = queryBody.marketing;
+                await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
+            }
+
             res.send({
                 success : true
             })
-		}
+        }
 
     }
-	else {
-		res.sendStatus(404);
-	}
+    else {
+        error.throwError("Company account not found", 400)
+
+    }
 }

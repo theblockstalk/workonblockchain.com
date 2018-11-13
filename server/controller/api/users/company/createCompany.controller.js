@@ -4,16 +4,13 @@ var jwt = require('jsonwebtoken');
 const Users = require('../../../../model/users');
 const crypto = require('crypto');
 const EmployerProfile = require('../../../../model/employer_profile');
-const CandidateProfile  = require('../../../../model/candidate_profile');
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
-const logger = require('../../../services/logger');
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
 const verify_send_email = require('../auth/verify_send_email');
-const mongoose = require('mongoose');
 const referral = require('../../../../model/referrals');
 const referedCompanyEmail = require('../../../services/email/emails/youReferredACompany');
-
+const errors = require('../../../services/errors');
 
 ///// for candidate about wizard ///////////////////
 
@@ -36,9 +33,7 @@ module.exports = async function (req, res) {
     }
     if(count == 1)
     {
-        res.send({
-            error : "Please enter your company email"
-        })
+        errors.throwError("Please enter your company email", 400)
     }
     else
     {
@@ -46,9 +41,7 @@ module.exports = async function (req, res) {
         const companyDoc = await Users.findOne({ email: userParam.email }).lean();
         if(companyDoc){
             const responseMsg = 'Email "' + userParam.email + '" is already taken';
-            res.send({
-                error : responseMsg
-            })
+            errors.throwError(responseMsg, 400)
         }
         else{
             let salt = crypto.randomBytes(16).toString('base64');
@@ -142,6 +135,4 @@ module.exports = async function (req, res) {
             }
         }
     }
-
-    
 };

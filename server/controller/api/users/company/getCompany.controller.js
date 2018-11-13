@@ -5,15 +5,17 @@ module.exports = async function (req, res) {
 
     const employerDoc = await EmployerProfile.find().populate('_creator').lean();
 
-    let employerArray=[];
-    employerDoc.forEach(function(detail)
+
+
+    for (detail of employerDoc) {
+        await filterData(detail);
+    }
+    res.send(employerDoc);
+}
+
+let filterData = async function filterData(detail) {
+    if(detail._creator !== null)
     {
-        if(detail._creator !== null)
-        {
-            employerArray.push(filterReturnData.removeSensativeData(detail));
-        }
-
-    });
-
-    res.send(employerArray);
+        filterReturnData.removeSensativeData(detail);
+    }
 }

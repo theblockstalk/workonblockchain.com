@@ -55,12 +55,7 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data.error)
-            {
-              this.error= "Something Went Wrong";
-            }
-            else
-            {
+
               this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
@@ -122,24 +117,14 @@ export class AdminCompanyDetailComponent implements OnInit {
               {
                 this.is_approved = "";
               }
-            }
+
 
           },
           error =>
           {
             console.log(error);
-            if(error.requestID === 400 && error.success === false) {
-              console.log("iffiff");
-              this.error_message = error.message;
-            }
-            if(error.message === 500 || error.message === 401) {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.error = error['error']['message'];
             }
             else {
               // this.router.navigate(['/not_found']);

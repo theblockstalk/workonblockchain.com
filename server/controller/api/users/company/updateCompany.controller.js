@@ -1,5 +1,6 @@
 const EmployerProfile = require('../../../../model/employer_profile');
 const logger = require('../../../services/logger');
+const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
 
@@ -32,7 +33,7 @@ module.exports = async function (req, res) {
     }
 
     else {
-        res.sendStatus(404);
+        errors.throwErrors("Company account not found", 400);
     }
 
 }

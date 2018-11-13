@@ -114,7 +114,7 @@ module.exports = async  function (req,res)
 
     }
     else {
-        res.send("Not Found Any Data");
+        errors.throwErrors("No candidates matched this search criteria", 400);
     }
 
 }

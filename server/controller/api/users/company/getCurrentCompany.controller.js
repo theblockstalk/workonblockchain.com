@@ -8,12 +8,10 @@ module.exports = async function (req, res) {
     if(userId._id === req.params._id || userId.is_admin === 1 ) {
         let employerProfile = await EmployerProfile.findById(req.params._id).populate('_creator').lean();
         if(employerProfile){
-            console.log("if");
             const employerRes =  filterReturnData.removeSensativeData(employerProfile);
             res.send(employerRes);
         }
         else {
-            console.log("else");
             employerProfile =  await EmployerProfile.find({_creator : req.params._id}).populate('_creator').lean();
             if(employerProfile && employerProfile.length > 0){
                 const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile[0]);
@@ -21,7 +19,6 @@ module.exports = async function (req, res) {
             }
             else
             {
-                console.log("else");
                 errors.throwError("User not found", 400)
             }
         }
