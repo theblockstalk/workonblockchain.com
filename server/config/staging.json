@@ -22,6 +22,10 @@
     "fromAddress": "contact@workonblockchain.com",
     "fromName": "STAGING - Work on Blockchain"
   },
+  "sendGrid": {
+    "fromAddress": "staging.contact@workonblockchain.com",
+    "fromName": "STAGING - Work on Blockchain"
+  },
   "currencyRates": {
     "USD": {
       "GBP": 1.33,

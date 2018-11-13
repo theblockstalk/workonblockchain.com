@@ -12,6 +12,10 @@ const UserSchema = new Schema({
             lowercase: true,
             required:true
         },
+    linkedin_id :
+        {
+            type: String
+        },
     password_hash:
         {
             type:String,

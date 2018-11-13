@@ -20,5 +20,19 @@ module.exports.sendEmail = function sendEmail(email,name,isAccountDisabed) {
         }
     };
 
-	emails.sendEmail(mandrillOptions,isAccountDisabed);
+    const sendGridOptions = {
+        templateId: "d-02056a2f353b4493894597caeda49ba6",
+        subject: subject,
+        personalizations: [{
+            to: {
+                email: email,
+                name: name
+            }
+        }],
+        templateData: {
+            firstName: name
+        }
+    };
+
+    emails.sendEmail(mandrillOptions, sendGridOptions, isAccountDisabed);
 }

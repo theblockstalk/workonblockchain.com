@@ -1,7 +1,7 @@
 <!--candidate step completing-->
 
 <section class = "wizard_page">
-  
+
   <div class="container">
     <div class="row">
       <div class = "text-center steps-name">
@@ -69,7 +69,7 @@
 
                   <div class="file-select-button" id="fileName">Choose File</div>
                   <div class="file-select-name" id="noFile">No file chosen...</div>
-                  <input (change)="filechoosen($event)" type="file" accept=".zip" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control" />
+                  <input (change)="filechoosen($event)" type="file" accept=".zip , application/zip" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control" />
 
                 </div>
               </div>

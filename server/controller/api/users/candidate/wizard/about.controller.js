@@ -6,8 +6,7 @@ const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
 const verify_send_email = require('../../auth/verify_send_email');
 const jwtToken = require('../../../../services/jwtToken');
 
-const referedCandidateEmail = require('../../../../services/email/emails/referredFriend');
-const referedCompanyEmail = require('../../../../services/email/emails/referredFriendForCompany');
+const referedCandidateEmail = require('../../../../services/email/emails/youReferredACandidate');
 ///// for candidate about wizard ///////////////////
 
 module.exports = async function (req, res) {
@@ -42,17 +41,29 @@ module.exports = async function (req, res) {
                 let data;
                 if(candidateDoc && candidateDoc.first_name)
                 {
-                    data = {fname : candidateDoc.first_name , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
+                    data = {
+                        fname: candidateDoc.first_name,
+                        email : refDoc.email,
+                        referred_fname: userParam.first_name,
+                        referred_lname: userParam.last_name
+                    };
                 }
                 else
                 {
-                     data = {fname : null , email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
+                     data = {
+                         email : refDoc.email,
+                         referred_fname : userParam.first_name,
+                         referred_lname: userParam.last_name
+                     };
                 }
                 referedCandidateEmail.sendEmail(data, userDoc.disable_account);
         }
-        else
-        {
-            let data = {email : refDoc.email , referred_fname : userParam.first_name , referred_lname: userParam.last_name }
+        else {
+            let data = {
+                email: refDoc.email,
+                referred_fname: userParam.first_name,
+                referred_lname: userParam.last_name
+            };
             referedCandidateEmail.sendEmail(data, false);
         }
 
