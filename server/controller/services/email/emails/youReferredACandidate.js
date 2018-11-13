@@ -9,8 +9,7 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
     const sendToArray = [sendTo];
     logger.debug('referred email: ' , data.email);
     let merge_tags;
-    if(data.name !== null)
-    {
+    if(data.name !== null) {
         merge_tags = [{
             "name": "FNAME",
             "content": data.fname
@@ -21,12 +20,7 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
             "name": "LNAME_REFERRED",
             "content": data.referred_lname
         }]
-
-
-    }
-
-    else
-    {
+    } else {
         merge_tags = [{
             "name": "FNAME_REFERRED",
             "content": data.referred_fname
@@ -34,8 +28,8 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
             "name": "LNAME_REFERRED",
             "content": data.referred_lname
         }]
-
     }
+
     const mandrillOptions = {
         templateName: "wob-you-referred-a-user",
         message: {
@@ -45,5 +39,21 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
         }
     };
 
-	emails.sendEmail(mandrillOptions,isAccountDisabed);
+    const sendGridOptions = {
+        templateId: "d-5dda716352e64894800aea39a236ec81",
+        subject: subject,
+        personalizations: [{
+            to: {
+                email: data.email,
+                name: data.fname
+            }
+        }],
+        templateData: {
+            firstName: data.fname,
+            firstNameReferred: data.FNAME_REFERRED,
+            lastNameReferred: data.LNAME_REFERRED
+        }
+    };
+
+    emails.sendEmail(mandrillOptions, sendGridOptions, isAccountDisabed);
 }

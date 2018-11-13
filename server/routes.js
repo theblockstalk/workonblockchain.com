@@ -78,7 +78,7 @@ const pagesGetContent = require('./controller/api/pages/getContent.controller');
 router.get('/', healthCheck);
 
 // User authorization
-router.post('/users/authenticate', authAthenticate);
+router.post('/users/authenticate', asyncMiddleware(authAthenticate));
 router.put('/users/emailVerify/:email_hash', asyncMiddleware(authVerifyEmail));
 router.put('/users/forgot_password/:email', authForgotPassword);
 router.put('/users/change_password',auth.isLoggedIn, authChangePassword);
@@ -96,7 +96,7 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 
 
 // Candidates
-router.post('/users/register', candidateRegister);
+router.post('/users/register', asyncMiddleware(candidateRegister));
 router.get('/users/',auth.isLoggedIn, candidateGetAll);
 router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);

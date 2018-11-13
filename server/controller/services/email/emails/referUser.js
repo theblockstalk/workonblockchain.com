@@ -19,5 +19,18 @@ module.exports.sendEmail = function sendEmail(email, subject, htmlBody) {
         }
     };
 
-	emails.sendEmail(mandrillOptions, false);
+    const sendGridOptions = {
+        templateId: "d-39586637ba424da091b47dcb0e0bc8b5",
+        subject: subject,
+        personalizations: [{
+            to: {
+                email: email
+            }
+        }],
+        templateData: {
+            messageBody: new_message
+        }
+    };
+
+    emails.sendEmail(mandrillOptions, sendGridOptions, false);
 };

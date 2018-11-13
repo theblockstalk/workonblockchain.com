@@ -172,6 +172,7 @@ export class LinkedinImportComponent implements OnInit {
     ]).then(modules => {
       const [LinkedInToJsonResume, Moment, Unzip, CsvToArray] = modules;
       const csvToArray = CsvToArray.default;
+      console.log(csvToArray);
       const moment = Moment;
       linkedinToJsonResume = new LinkedInToJsonResume.default();
       // cancel event and hover styling
@@ -206,11 +207,14 @@ export class LinkedinImportComponent implements OnInit {
         });
       };
 
+
       getEntries(file, entries => {
         const promises = entries.map(entry => {
+          console.log(entry);
           switch (true) {
             case entry.filename.indexOf('Skills.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Skills.csv");
                 contents = contents.replace(/"/g, '');
                 let elements = contents.split('\n');
                 elements = elements.slice(1, elements.length - 1);
@@ -220,13 +224,14 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Education.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Education.csv");
                 const elements = csvToArray(contents);
                 const education = elements
                   .slice(1, elements.length - 1)
                   .map(elem => ({
                     schoolName: elem[0],
-                    startDate: moment(elem[1]).format('YYYY-MM-DD'),
-                    endDate: moment(elem[2]).format('YYYY-MM-DD'),
+                    startDate: moment(new Date(elem[1])).format('YYYY-MM-DD'),
+                    endDate: moment(new Date(elem[2])).format('YYYY-MM-DD'),
                     notes: elem[3],
                     degree: elem[4],
                     activities: elem[5]
@@ -241,6 +246,7 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Positions.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Positions.csv");
                 const elements = csvToArray(contents);
                 const positions = elements
                   .slice(1, elements.length - 1)
@@ -250,9 +256,9 @@ export class LinkedinImportComponent implements OnInit {
                       title: elem[1],
                       description: elem[2],
                       location: elem[3],
-                      startDate: moment(elem[4], 'MMM YYYY').format('YYYY-MM-DD'),
+                      startDate:  moment(new Date(elem[4])).format('YYYY-MM-DD'), // moment(elem[4], 'MMM YYYY').format('YYYY-MM-DD'),
                       endDate: elem[5]
-                        ? moment(elem[5], 'MMM YYYY').format('YYYY-MM-DD')
+                        ? moment(new Date(elem[5])).format('YYYY-MM-DD')
                         : null
                     };
                   });
@@ -266,6 +272,7 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Languages.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Languages.csv");
                 const elements = csvToArray(contents);
                 const languages = elements
                   .slice(1, elements.length - 1)
@@ -279,6 +286,7 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Recommendations Received.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Recommendations Received.csv");
                 const elements = csvToArray(contents);
                 const recommendations = elements
                   .slice(1, elements.length - 1)
@@ -300,7 +308,11 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Profile.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Profile csv");
+                console.log(entry);
+                console.log(contents);
                 const elements = csvToArray(contents);
+                console.log(elements);
                 const profile = {
                   firstName: elements[1][0],
                   lastName: elements[1][1],
@@ -324,6 +336,8 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Email Addresses.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Email Addresses.csv");
+
                 const elements = csvToArray(contents, '\t'); // yes, recommendations use tab-delimiter
                 const email = elements
                   .slice(1, elements.length - 1)
@@ -343,6 +357,8 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Interests.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Interests.csv");
+
                 const elements = csvToArray(contents);
                 let interests = [];
                 elements.slice(1, elements.length - 1).forEach(elem => {
@@ -354,6 +370,8 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Projects.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Projects.csv");
+
                 const elements = csvToArray(contents);
                 const projects = elements
                   .slice(1, elements.length - 1)
@@ -361,8 +379,8 @@ export class LinkedinImportComponent implements OnInit {
                     title: elem[0],
                     description: elem[1],
                     url: elem[2],
-                    startDate: moment(elem[3]).format('YYYY-MM-DD'),
-                    endDate: elem[4] ? moment(elem[4]).format('YYYY-MM-DD') : null
+                    startDate: moment(new Date(elem[3])).format('YYYY-MM-DD'),
+                    endDate: elem[4] ? moment(new Date(elem[4])).format('YYYY-MM-DD') : null
                   }));
                 linkedinToJsonResume.processProjects(
                   projects.sort(
@@ -374,12 +392,14 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Publications.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Publications.csv");
+
                 const elements = csvToArray(contents);
                 const publications = elements
                   .slice(1, elements.length - 1)
                   .map(elem => ({
                     name: elem[0],
-                    date: moment(elem[1]).format('YYYY-MM-DD'),
+                    date: moment(new Date(elem[1])).format('YYYY-MM-DD'),
                     description: elem[2],
                     publisher: elem[3],
                     url: elem[4]
