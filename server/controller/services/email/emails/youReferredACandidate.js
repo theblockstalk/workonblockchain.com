@@ -9,21 +9,21 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
     const sendToArray = [sendTo];
     logger.debug('referred email: ' , data.email);
     let merge_tags, templateData, sendGridTo;
-    if(data.name !== null) {
+    if(data.name) {
         merge_tags = [{
             "name": "FNAME",
             "content": data.fname
         }, {
             "name": "FNAME_REFERRED",
             "content": data.referred_fname
-        },	{
+        }, {
             "name": "LNAME_REFERRED",
             "content": data.referred_lname
         }];
         templateData = {
             firstName: data.fname,
-            firstNameReferred: data.FNAME_REFERRED,
-            lastNameReferred: data.LNAME_REFERRED
+            firstNameReferred: data.referred_fname,
+            lastNameReferred: data.referred_lname
         };
         sendGridTo = {
             email: data.email,
