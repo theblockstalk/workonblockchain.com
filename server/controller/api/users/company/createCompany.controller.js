@@ -12,7 +12,7 @@ const filterReturnData = require('../filterReturnData');
 const verify_send_email = require('../auth/verify_send_email');
 const mongoose = require('mongoose');
 const referral = require('../../../../model/referrals');
-const referedCompanyEmail = require('../../../services/email/emails/referredFriendForCompany');
+const referedCompanyEmail = require('../../../services/email/emails/youReferredACompany');
 
 
 ///// for candidate about wizard ///////////////////
