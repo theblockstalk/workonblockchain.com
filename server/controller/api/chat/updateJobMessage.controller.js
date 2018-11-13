@@ -1,44 +1,13 @@
-const settings = require('../../../settings');
-var _ = require('lodash');
-var Q = require('q');
 const chat = require('../../../model/chat');
 
-const logger = require('../../services/logger');
-
-module.exports = function (req,res){
-    update_job_message(req.body).then(function (err, about)
-    {
-        if (about)
-        {
-            res.json(about);
-        }
-        else
-        {
-            res.json(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
-
-function update_job_message(data){
-    var deferred = Q.defer();
-    ////console.log(data.id);
+module.exports = async function (req, res) {
+    const userId = req.auth.user._id;
     var set =
         {
-            is_job_offered: data.status,
+            is_job_offered: req.body.status,
 
         };
-    chat.update({ _id: data.id},{ $set: set }, function (err, doc)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            deferred.resolve(set);
-    });
-    return deferred.promise;
-}
+
+    await chat.update({ _id: req.body.id},{ $set: set });
+    res.send(set);
+};

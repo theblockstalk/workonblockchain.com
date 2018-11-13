@@ -127,9 +127,9 @@ router.post('/users/get_messages',auth.isValidUser, asyncMiddleware(chatGetMessa
 router.post('/users/get_user_messages',auth.isValidUser, asyncMiddleware(chatGetUserMsgs));
 router.post('/users/insert_chat_file',auth.isValidUser, multer.single('photo'), asyncMiddleware(chatInsertFile));
 router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'), asyncMiddleware(chatInsertMessageJob));
-router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
+router.post('/users/update_job_message', auth.isValidCandidate, asyncMiddleware(chatUpdateJobMessage));
 router.post('/users/get_unread_msgs_of_user',auth.isValidUser, asyncMiddleware(chatGetUnreadUser));
-router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);
+router.post('/users/update_is_company_reply_status', auth.isValidCandidate, asyncMiddleware(chatUpdateIsCompanyReplyStatus));
 router.post('/users/get_employ_offer',auth.isValidUser, asyncMiddleware(chatGetEmployOffer));
 router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(chatGetLastJobDescription));
 
@@ -139,7 +139,7 @@ router.post('/users/admin_candidate_filter', auth.isAdmin , adminCandidateFilter
 router.post('/users/admin_company_filter', auth.isAdmin , adminComanyFilter);
 router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent);
 router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , adminAddNewPagesContent);
-router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
+router.post('/users/update_chat_msg_status' , auth.isValidUser , asyncMiddleware(adminChatUpdateMsgStatus));
 router.post('/users/get_job_desc_msgs' ,auth.isValidUser, asyncMiddleware(adminChatGetJobDescMsg));
 router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, asyncMiddleware(adminChatSetUnreadMsgStatus));
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
