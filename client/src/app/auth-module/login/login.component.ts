@@ -68,40 +68,30 @@ forgetMessage;
 
         if(this.credentials.email && this.credentials.password)
         {
-          this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
+          this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, null)
             .subscribe(
                 user => {
                 //console.log(user);
 
                 if(user.type == 'company')
                 {
-
-                   //this.router.navigateByUrl('/company_profile');
-                    //window.location.href = '/company_profile';
-
                     window.location.href = '/candidate-search';
 
                 }
                 if(user.type == 'candidate')
                 {
-
-                 //this.router.navigateByUrl('/candidate_profile');
-                    window.location.href = '/candidate_profile';
-                }
-
-                if(user.error )
-                {
-                     this.log='';
-                    this.reset= "reset";
-                    this.password_message ='';
-                   // this.log  ="Your email or password is incorrect. If you don't remember your password, please click on here to reset it. ";
-                   // this.dataservice.changeMessage(user.error);
+                   window.location.href = '/candidate_profile';
                 }
 
                 },
                 error => {
-                //console.log(error);
+                  if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.password_message = '';
+                    this.log = error['error']['message'];
+                  }
+                  else {
                     this.log = 'Something getting wrong';
+                  }
 
                 });
         }
@@ -115,7 +105,6 @@ forgetMessage;
     }
 
    ngOnDestroy() {
-   ////console.log("ngOndesctroy");
 
     }
 
@@ -134,7 +123,6 @@ forgetMessage;
 
             if(this.result)
             {
-                 ////console.log(this.result);
                  this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
                  this.credentials.email= this.googleUser.email;
              this.credentials.password= '';
@@ -142,25 +130,22 @@ forgetMessage;
 
              this.credentials.social_type='GOOGLE';
 
-             this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
+             this.authenticationService.candidate_login(this.credentials.email, this.credentials.password , null)
             .subscribe(
                 user => {
-                //console.log(user);
 
-                if(user.error)
-                {
-                    this.password_message='';
-                    this.log = 'Credentials not match';
-                }
-                else
-                {
                     window.location.href = '/candidate_profile';
                   //this.router.navigate(['/login']);
-                }
+
                 },
                 error => {
-                //console.log(error);
-                  this.log = error;
+                  if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.password_message = '';
+                    this.log = error['error']['message'];
+                  }
+                  else {
+                    this.log = 'Something getting wrong';
+                  }
 
                 });
 
@@ -192,59 +177,30 @@ forgetMessage;
                     {
                         this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
 
-                        this.credentials.email= this.linkedinUser.emailAddress;
+                        this.credentials.email = this.linkedinUser.emailAddress;
                         this.credentials.password= '';
                         this.credentials.type="candidate";
                         this.credentials.social_type='LINKEDIN';
+                        this.credentials.linkedin_id = this.linkedinUser.id;
 
-                        if(this.linkedinUser.emailAddress)
+
+                      if(this.linkedinUser.emailAddress)
                         {
-                        this.authenticationService.candidate_login(this.credentials.email, this.credentials.password)
+                        this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, this.credentials.linkedin_id)
                         .subscribe(
                         user => {
-                          //console.log(user);
 
-                          if(user.error)
-                          {
-                            //this.router.navigate(['/candidate_profile']);
-                            this.password_message='';
-                            this.log = 'Credentials not match';
-                            /*this.authenticationService.create(this.credentials)
-                            .subscribe(
-                            data => {
-                                //console.log(data);
-                                this.credentials.email= '';
-                            if(data.error)
-                            {
-                                this.log = data.error;
-                            }
-                            else
-                            {
-                                localStorage.setItem('currentUser', JSON.stringify(data));
-                                //localStorage.removeItem('userInfo');
-                                //this.router.navigate(['/about']);
-                                window.location.href = '/terms-and-condition';
-                            }
-                            },
-                            error => {
-                            this.log = 'Something getting wrong';
-
-                        }); */
-
-
-                            //this.router.navigate(['/login']);
-
-                          }
-                          else
-                          {
                             window.location.href = '/candidate_profile';
-                        }
-
 
                     },
                     error => {
-                    //console.log(error);
-                    this.log = 'Something getting wrong';
+                      if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                        this.password_message = '';
+                        this.log = error['error']['message'];
+                      }
+                      else {
+                        this.log = 'Something getting wrong';
+                      }
 
                     });
                     }
