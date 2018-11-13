@@ -16,11 +16,11 @@ const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
 
-    const userParam = req.body;
+    const queryBody = req.body;
 
     let count=0;
 
-    let str = userParam.email;
+    let str = queryBody.email;
     let email_split = str.split('@');
 
     for (let i = 0; i < emails.length; i++)
@@ -38,27 +38,27 @@ module.exports = async function (req, res) {
     else
     {
 
-        const companyDoc = await Users.findOne({ email: userParam.email }).lean();
+        const companyDoc = await Users.findOne({ email: queryBody.email }).lean();
         if(companyDoc){
-            const responseMsg = 'Email "' + userParam.email + '" is already taken';
+            const responseMsg = 'Email "' + queryBody.email + '" is already taken';
             errors.throwError(responseMsg, 400)
         }
         else{
             let salt = crypto.randomBytes(16).toString('base64');
             let hash = crypto.createHmac('sha512', salt);
-            hash.update(userParam.password);
+            hash.update(queryBody.password);
             let hashedPasswordAndSalt = hash.digest('hex');
 
             let random = crypto.randomBytes(16).toString('base64');
             let newCompanyDoc = new Users
             ({
-                email: userParam.email,
+                email: queryBody.email,
                 password_hash: hashedPasswordAndSalt,
                 salt : salt,
-                type: userParam.type,
+                type: queryBody.type,
                 jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
                 created_date: new Date(),
-                referred_email : userParam.referred_email
+                referred_email : queryBody.referred_email
 
             });
             const companyUserCreated  =  await newCompanyDoc.save();
@@ -69,15 +69,15 @@ module.exports = async function (req, res) {
                 let employerDetail = new EmployerProfile
                 ({
                     _creator : companyUserCreated._id,
-                    first_name : userParam.first_name,
-                    last_name: userParam.last_name,
-                    job_title:userParam.job_title,
-                    company_name: userParam.company_name,
-                    company_website:userParam.company_website,
-                    company_phone:userParam.phone_number,
-                    company_country:userParam.country,
-                    company_city:userParam.city,
-                    company_postcode:userParam.postal_code,
+                    first_name : queryBody.first_name,
+                    last_name: queryBody.last_name,
+                    job_title:queryBody.job_title,
+                    company_name: queryBody.company_name,
+                    company_website:queryBody.company_website,
+                    company_phone:queryBody.phone_number,
+                    company_country:queryBody.country,
+                    company_city:queryBody.city,
+                    company_postcode:queryBody.postal_code,
                 });
 
                 let employerDoc = await employerDetail.save();
@@ -97,7 +97,7 @@ module.exports = async function (req, res) {
 
                 //sending email to referee
                 const refDoc = await referral.findOne({
-                    email : userParam.referred_email
+                    email : queryBody.referred_email
                 }).lean();
                 if(refDoc){
                     const userDoc = await Users.findOne({email : refDoc.email}).lean();
@@ -106,19 +106,19 @@ module.exports = async function (req, res) {
                             let data;
                             if(companyDoc && companyDoc.first_name)
                             {
-                                data = {fname : companyDoc.first_name , email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
+                                data = {fname : companyDoc.first_name , email : refDoc.email , FNAME_REFERRED : queryBody.first_name , LNAME_REFERRED: queryBody.last_name, COMPANY_NAME: queryBody.company_name}
 
                             }
                             else
                             {
-                                data = {fname : null , email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
+                                data = {fname : null , email : refDoc.email , FNAME_REFERRED : queryBody.first_name , LNAME_REFERRED: queryBody.last_name, COMPANY_NAME: queryBody.company_name}
 
                             }
                             referedCompanyEmail.sendEmail(data, userDoc.disable_account);
                     }
                     else
                     {
-                        let data = {email : refDoc.email , FNAME_REFERRED : userParam.first_name , LNAME_REFERRED: userParam.last_name, COMPANY_NAME: userParam.company_name}
+                        let data = {email : refDoc.email , FNAME_REFERRED : queryBody.first_name , LNAME_REFERRED: queryBody.last_name, COMPANY_NAME: queryBody.company_name}
                         referedCompanyEmail.sendEmail(data, false);
                     }
                 }

@@ -5,8 +5,6 @@ module.exports = async function (req, res) {
 
     const employerDoc = await EmployerProfile.find().populate('_creator').lean();
 
-
-
     for (detail of employerDoc) {
         await filterData(detail);
     }

@@ -8,22 +8,22 @@ module.exports = async function (req, res) {
     const employerDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
 
     if(employerDoc){
-        const companyParam = req.body;
+        const queryBody = req.body;
         let employerUpdate = {}
 
-        if (companyParam.first_name) employerUpdate.first_name = companyParam.first_name;
-        if (companyParam.last_name) employerUpdate.last_name = companyParam.last_name;
-        if (companyParam.job_title) employerUpdate.job_title = companyParam.job_title;
-        if (companyParam.company_name) employerUpdate.company_name = companyParam.company_name;
-        if (companyParam.company_website) employerUpdate.company_website = companyParam.company_website;
-        if (companyParam.phone_number) employerUpdate.company_phone = companyParam.phone_number;
-        if (companyParam.country) employerUpdate.company_country = companyParam.country;
-        if (companyParam.city) employerUpdate.company_city = companyParam.city;
-        if (companyParam.postal_code) employerUpdate.company_postcode = companyParam.postal_code;
-        if (companyParam.company_founded) employerUpdate.company_founded = companyParam.company_founded;
-        if (companyParam.no_of_employees) employerUpdate.no_of_employees = companyParam.no_of_employees;
-        if (companyParam.company_funded) employerUpdate.company_funded = companyParam.company_funded;
-        if (companyParam.company_description) employerUpdate.company_description = companyParam.company_description;
+        if (queryBody.first_name) employerUpdate.first_name = queryBody.first_name;
+        if (queryBody.last_name) employerUpdate.last_name = queryBody.last_name;
+        if (queryBody.job_title) employerUpdate.job_title = queryBody.job_title;
+        if (queryBody.company_name) employerUpdate.company_name = queryBody.company_name;
+        if (queryBody.company_website) employerUpdate.company_website = queryBody.company_website;
+        if (queryBody.phone_number) employerUpdate.company_phone = queryBody.phone_number;
+        if (queryBody.country) employerUpdate.company_country = queryBody.country;
+        if (queryBody.city) employerUpdate.company_city = queryBody.city;
+        if (queryBody.postal_code) employerUpdate.company_postcode = queryBody.postal_code;
+        if (queryBody.company_founded) employerUpdate.company_founded = queryBody.company_founded;
+        if (queryBody.no_of_employees) employerUpdate.no_of_employees = queryBody.no_of_employees;
+        if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
+        if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
 
         await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
 

@@ -7,13 +7,13 @@ module.exports = async  function (req,res)
     const employerDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
 
     if(employerDoc){
-        const companyParam = req.body;
+        const queryBody = req.body;
         let employerUpdate = {};
 
-        if (companyParam.company_founded) employerUpdate.company_founded = companyParam.company_founded;
-        if (companyParam.no_of_employees) employerUpdate.no_of_employees = companyParam.no_of_employees;
-        if (companyParam.company_funded) employerUpdate.company_funded = companyParam.company_funded;
-        if (companyParam.company_description) employerUpdate.company_description = companyParam.company_description;
+        if (queryBody.company_founded) employerUpdate.company_founded = queryBody.company_founded;
+        if (queryBody.no_of_employees) employerUpdate.no_of_employees = queryBody.no_of_employees;
+        if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
+        if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
 
         await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
 
