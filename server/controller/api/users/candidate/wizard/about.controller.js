@@ -6,8 +6,8 @@ const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
 const verify_send_email = require('../../auth/verify_send_email');
 const jwtToken = require('../../../../services/jwtToken');
 
-const referedCandidateEmail = require('../../../../services/email/emails/referredFriend');
-const referedCompanyEmail = require('../../../../services/email/emails/referredFriendForCompany');
+const referedCandidateEmail = require('../../../../services/email/emails/youReferredACandidate');
+const referedCompanyEmail = require('../../../../services/email/emails/youReferredACompany');
 ///// for candidate about wizard ///////////////////
 
 module.exports = async function (req, res) {

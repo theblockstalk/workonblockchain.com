@@ -40,7 +40,7 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
     };
 
     const sendGridOptions = {
-        templateId: "d-0379c08fa812415b82937e99aebe9991",
+        templateId: "d-5dda716352e64894800aea39a236ec81",
         subject: subject,
         personalizations: [{
             to: {
