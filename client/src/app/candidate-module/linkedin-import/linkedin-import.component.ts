@@ -172,6 +172,7 @@ export class LinkedinImportComponent implements OnInit {
     ]).then(modules => {
       const [LinkedInToJsonResume, Moment, Unzip, CsvToArray] = modules;
       const csvToArray = CsvToArray.default;
+      console.log(csvToArray);
       const moment = Moment;
       linkedinToJsonResume = new LinkedInToJsonResume.default();
       // cancel event and hover styling
@@ -206,11 +207,14 @@ export class LinkedinImportComponent implements OnInit {
         });
       };
 
+
       getEntries(file, entries => {
         const promises = entries.map(entry => {
+          console.log(entry);
           switch (true) {
             case entry.filename.indexOf('Skills.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Skills.csv");
                 contents = contents.replace(/"/g, '');
                 let elements = contents.split('\n');
                 elements = elements.slice(1, elements.length - 1);
@@ -220,6 +224,7 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Education.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Education.csv");
                 const elements = csvToArray(contents);
                 const education = elements
                   .slice(1, elements.length - 1)
@@ -241,6 +246,7 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Positions.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Positions.csv");
                 const elements = csvToArray(contents);
                 const positions = elements
                   .slice(1, elements.length - 1)
@@ -266,6 +272,7 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Languages.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Languages.csv");
                 const elements = csvToArray(contents);
                 const languages = elements
                   .slice(1, elements.length - 1)
@@ -279,6 +286,7 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Recommendations Received.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Recommendations Received.csv");
                 const elements = csvToArray(contents);
                 const recommendations = elements
                   .slice(1, elements.length - 1)
@@ -300,6 +308,8 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Profile.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Profile csv");
+                console.log(entry);
                 console.log(contents);
                 const elements = csvToArray(contents);
                 console.log(elements);
@@ -326,6 +336,8 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Email Addresses.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Email Addresses.csv");
+
                 const elements = csvToArray(contents, '\t'); // yes, recommendations use tab-delimiter
                 const email = elements
                   .slice(1, elements.length - 1)
@@ -345,6 +357,8 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Interests.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Interests.csv");
+
                 const elements = csvToArray(contents);
                 let interests = [];
                 elements.slice(1, elements.length - 1).forEach(elem => {
@@ -356,6 +370,8 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Projects.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Projects.csv");
+
                 const elements = csvToArray(contents);
                 const projects = elements
                   .slice(1, elements.length - 1)
@@ -376,6 +392,8 @@ export class LinkedinImportComponent implements OnInit {
 
             case entry.filename.indexOf('Publications.csv') !== -1:
               return readEntryContents(entry).then(contents => {
+                console.log("Publications.csv");
+
                 const elements = csvToArray(contents);
                 const publications = elements
                   .slice(1, elements.length - 1)
