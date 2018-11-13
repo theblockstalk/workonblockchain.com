@@ -230,8 +230,8 @@ export class LinkedinImportComponent implements OnInit {
                   .slice(1, elements.length - 1)
                   .map(elem => ({
                     schoolName: elem[0],
-                    startDate: moment(elem[1]).format('YYYY-MM-DD'),
-                    endDate: moment(elem[2]).format('YYYY-MM-DD'),
+                    startDate: moment(new Date(elem[1])).format('YYYY-MM-DD'),
+                    endDate: moment(new Date(elem[2])).format('YYYY-MM-DD'),
                     notes: elem[3],
                     degree: elem[4],
                     activities: elem[5]
@@ -256,9 +256,9 @@ export class LinkedinImportComponent implements OnInit {
                       title: elem[1],
                       description: elem[2],
                       location: elem[3],
-                      startDate: moment(elem[4], 'MMM YYYY').format('YYYY-MM-DD'),
+                      startDate:  moment(new Date(elem[4])).format('YYYY-MM-DD'), // moment(elem[4], 'MMM YYYY').format('YYYY-MM-DD'),
                       endDate: elem[5]
-                        ? moment(elem[5], 'MMM YYYY').format('YYYY-MM-DD')
+                        ? moment(new Date(elem[5])).format('YYYY-MM-DD')
                         : null
                     };
                   });
@@ -379,8 +379,8 @@ export class LinkedinImportComponent implements OnInit {
                     title: elem[0],
                     description: elem[1],
                     url: elem[2],
-                    startDate: moment(elem[3]).format('YYYY-MM-DD'),
-                    endDate: elem[4] ? moment(elem[4]).format('YYYY-MM-DD') : null
+                    startDate: moment(new Date(elem[3])).format('YYYY-MM-DD'),
+                    endDate: elem[4] ? moment(new Date(elem[4])).format('YYYY-MM-DD') : null
                   }));
                 linkedinToJsonResume.processProjects(
                   projects.sort(
@@ -399,7 +399,7 @@ export class LinkedinImportComponent implements OnInit {
                   .slice(1, elements.length - 1)
                   .map(elem => ({
                     name: elem[0],
-                    date: moment(elem[1]).format('YYYY-MM-DD'),
+                    date: moment(new Date(elem[1])).format('YYYY-MM-DD'),
                     description: elem[2],
                     publisher: elem[3],
                     url: elem[4]
