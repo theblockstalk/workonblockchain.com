@@ -91,36 +91,17 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         data =>
         {
-          if(data.error)
-          {
-            this.response = "data";
-            this.length='';
-            this.log = data.error;
-            this.info=[];
-            this.page='';
-
-
-
-          }
-          else
-          {
-
             this.information = this.filter_array(data);
             this.info=[];
             this.length='';
 
             for(let res of this.information)
             {
-
-
               this.length++;
               this.info.push(res);
-
-
             }
             if(this.length> 0 )
             {
-
               this.log='';
               this.page =this.length;
               this.response = "data";
@@ -134,24 +115,15 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
             this.length='';
 
-          }
-
         },
         error =>
         {
-          if(error.message === 500 || error.message === 401)
-          {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
-          }
-
-          if(error.message === 403)
-          {
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+            this.response = "data";
+            this.length='';
+            this.info=[];
+            this.page='';
           }
 
         });

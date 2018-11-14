@@ -2,52 +2,25 @@ var Q = require('q');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const logger = require('../../../services/logger');
 const filterReturnData = require('../filterReturnData');
+const errors = require('../../../services/errors');
 
-//////////get sign-up data from db of all candidate////////////
+module.exports = async function (req, res) {
 
-module.exports = function (req, res)
-    {
-        getAll().then(function (users)
-        {
-            res.send(users);
-        })
-            .catch(function (err)
-            {
-                res.status(400).send(err);
-            });
+    const candidateDoc = await CandidateProfile.find().populate('_creator').lean();
+    if(candidateDoc && candidateDoc.length > 0) {
+        for (detail of candidateDoc) {
+            await filterData(detail);
+        }
+        res.send(candidateDoc);
     }
-
-function getAll()
-{
-    var deferred = Q.defer();
-    CandidateProfile.find().populate('_creator').exec(function(err, result)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else {
-        	if(result)
-        	{
-
-        		var array=[];
-        		
-           	 	result.forEach(function(item)
-                {
-           	 		
-           	 		if(item._creator!= null)
-           	 		{
-           	 			array.push(filterReturnData.removeSensativeData(item.toObject()));
-           	 		}
-                    
-                });
-           	
-               deferred.resolve(array);
-        	}
-        	
-        }
-
-    });
-
-    return deferred.promise;
+    else {
+        errors.throwError("No candidate exists", 400)
+    }
 }
+
+let filterData = async function filterData(detail) {
+    if(detail._creator !== null) {
+        filterReturnData.removeSensativeData(detail);
+    }
+}
+

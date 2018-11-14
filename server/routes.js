@@ -97,7 +97,7 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 
 // Candidates
 router.post('/users/register', asyncMiddleware(candidateRegister));
-router.get('/users/',auth.isLoggedIn, candidateGetAll);
+router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
 router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
