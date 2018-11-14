@@ -12,6 +12,7 @@ module.exports = async function (req,res)
 
     if(candidateDoc) {
         const queryBody = req.body;
+        console.log(queryBody);
         let candidateUpdate = {}
         if (queryBody.country) candidateUpdate.locations = queryBody.country;
         if (queryBody.roles) candidateUpdate.roles = queryBody.roles;
@@ -22,7 +23,7 @@ module.exports = async function (req,res)
         if (queryBody.current_salary) candidateUpdate.current_salary = queryBody.current_salary;
         if (queryBody.current_currency) candidateUpdate.current_currency = queryBody.current_currency;
 
-        await CandidateProfile.update({ _id: userId },{ $set: candidateUpdate });
+        await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
         res.send({
             success : true
         })

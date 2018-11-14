@@ -17,7 +17,7 @@ module.exports = async function (req,res) {
         if (queryBody.work) candidateUpdate.work_history = queryBody.work;
         if (queryBody.detail.intro) candidateUpdate.description = queryBody.detail.intro;
 
-        await CandidateProfile.update({ _id: userId },{ $set: candidateUpdate });
+        await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
         res.send({
             success : true
         })

@@ -11,7 +11,7 @@ const errors = require('../../../../services/errors');
 module.exports = async function (req,res) {
 
 	let userId = req.auth.user._id;
-	let candidateDoc = await CandidateProfile.findOne({ _creator: _id }).lean();
+	let candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
 	if(candidateDoc) {
         const queryBody = req.body;
         let candidateUpdate = {}
