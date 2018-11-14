@@ -97,8 +97,8 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 
 // Candidates
 router.post('/users/register', asyncMiddleware(candidateRegister));
-router.get('/users/',auth.isLoggedIn, candidateGetAll);
-router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
+router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
+router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent)); // Admin or valid company can call this...
 router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
 router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
@@ -110,15 +110,15 @@ router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUp
 
 // Companies
 router.post('/users/create_employer',  asyncMiddleware(companyRegister));
-router.get('/users/company',auth.isAdmin, companyGet);
-router.get('/users/current_company/:_id',auth.isLoggedIn, companyGetCurrent);
-router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
-router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
-router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), companyImage);
-router.put('/users/update_company_profile',auth.isLoggedIn, companyUpdate);
-router.post('/users/filter',auth.isValidCompany, companySearchFilter);
-router.post('/users/verified_candidate',auth.isValidCompany, companySearchVerifiedCandidates);
-router.post('/users/candidate_detail',auth.isValidCompany,candidateVerifiedCandidateDetail);
+router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
+router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
+router.put('/users/company_wizard',auth.isLoggedIn, asyncMiddleware(companyWizardTnT));
+router.put('/users/about_company',auth.isLoggedIn, asyncMiddleware(companyWizardAbout));
+router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
+router.put('/users/update_company_profile',auth.isLoggedIn, asyncMiddleware(companyUpdate));
+router.post('/users/filter',auth.isValidCompany, asyncMiddleware(companySearchFilter));
+router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(companySearchVerifiedCandidates));
+router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail));
 
 // Chat
 router.post('/users/insert_message', auth.isValidUser, chatInsertMessage);

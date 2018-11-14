@@ -39,6 +39,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   referred_name;
   referred_link;
   detail_link;
+  error_message;
   ngOnInit()
   {
     this.referred_link = "";
@@ -54,13 +55,8 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data.error)
-            {
-              this.error= "Something Went Wrong";
-            }
-            else
-            {
-              this.info.push(data);;
+
+              this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
               if(data._creator.referred_email) {
@@ -121,24 +117,16 @@ export class AdminCompanyDetailComponent implements OnInit {
               {
                 this.is_approved = "";
               }
-            }
+
 
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
-            {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+            console.log(error);
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.error = error['error']['message'];
             }
-
-            if(error.message === 403)
-            {
+            else {
               // this.router.navigate(['/not_found']);
             }
           });

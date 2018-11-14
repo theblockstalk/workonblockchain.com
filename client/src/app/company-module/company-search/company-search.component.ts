@@ -434,29 +434,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           {
             this.candidate_data = data;
             this.responseMsg = "response";
-            if(this.candidate_data.length <= 0)
-            {
-              this.not_found = 'No candidates matched this search criteria';
-            }
-
-
           },
           error =>
           {
-            if(error.message === 500)
-            {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
 
-            if(error.message === 403)
-            {
-              this.router.navigate(['/not_found']);
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.responseMsg = "error";
+              this.not_found = error['error']['message'];
+            }
+            else {
+              this.log = 'Something getting wrong';
             }
 
           });
@@ -499,32 +486,23 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.verify_msg = "verified candidate";
     this.responseMsg='';
     this.not_found='';
+
     this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
-
-
           this.responseMsg = "response";
-          if(this.candidate_data.length <= 0)
-            this.not_found = 'No candidates matched this search criteria';
         },
 
         error => {
-          if(error.message === 500)
-          {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.responseMsg = "error";
+            this.not_found = error['error']['message'];
           }
-          if(error.message === 403)
-          {
-            this.router.navigate(['/not_found']);
+          else {
+            this.log = 'Something getting wrong';
           }
+
         });
 
 

@@ -253,7 +253,7 @@ export class EditCompanyProfileComponent implements OnInit  {
                       this.router.navigate(['/company_profile']);
                     },
                     (error) => {
-                      if(error.message == 500)
+                      if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
                       {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         localStorage.removeItem('currentUser');
@@ -276,15 +276,11 @@ export class EditCompanyProfileComponent implements OnInit  {
 
             }
 
-            if(data.error)
-            {
-              this.dataservice.changeMessage(data.error);
-            }
-
           },
           error => {
-            this.dataservice.changeMessage(error);
-            this.log = 'Something getting wrong';
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.dataservice.changeMessage(error['error']['message']);
+            }
 
           });
     }

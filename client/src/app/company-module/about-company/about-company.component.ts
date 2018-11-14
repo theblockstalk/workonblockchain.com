@@ -182,17 +182,16 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                           //this.router.navigate(['/company_profile']);
                         },
                         (error) => {
-                        if(error.message === 500 || error.message === 401)
-                        {
+                          if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+                          {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                            localStorage.removeItem('currentUser');
+                            localStorage.removeItem('googleUser');
+                            localStorage.removeItem('close_notify');
+                            localStorage.removeItem('linkedinUser');
+                            localStorage.removeItem('admin_log');
                             window.location.href = '/login';
-                        }
-
-                        if(error.message === 403)
-                        {
-
-                       // this.router.navigate(['/not_found']);
-                        }
+                          }
                         })
                     }
                     else
@@ -213,25 +212,14 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
               }
 
-              if(data.error )
-            {
-              this.log=data.error;
-            }
-
 
           },
           error =>
           {
-                    if(error.message === 500 || error.message === 401)
-                    {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        window.location.href = '/login';
-                    }
-
-                    if(error.message === 403)
-                    {
-                        this.router.navigate(['/not_found']);
-                    }
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+              this.router.navigate(['/not_found']);
+            }
           });
             }
             else {
