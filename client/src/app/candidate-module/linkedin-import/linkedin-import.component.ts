@@ -449,15 +449,16 @@ export class LinkedinImportComponent implements OnInit {
   {
 
     console.log(f);
-    console.log(f.value);
-    if(!f.value.fileselect)
+    console.log((f.value.fileselect));
+    console.log(this.fileevent);
+    if(!this.fileevent)
     {
       this.error_log = "Please choose file";
     }
 
     else
     {
-       if(f.value.fileselect)
+       if(this.fileevent)
       {
         this.fileselected(this.fileevent);
       }
