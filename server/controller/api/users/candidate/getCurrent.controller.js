@@ -20,7 +20,7 @@ module.exports = async function (req, res) {
                 res.send(candidateFilterData);
             }
             else {
-                errors.throwError("User not found", 400);
+                errors.throwError("User not found", 404);
             }
         }
     }

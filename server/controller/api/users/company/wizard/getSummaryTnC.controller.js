@@ -26,7 +26,7 @@ module.exports = async   function (req,res)
             }
             else
             {
-                errors.throwError("Terms and Conditions document not found", 400);
+                errors.throwError("Terms and Conditions document not found", 404);
             }
         }
         else {
@@ -42,7 +42,7 @@ module.exports = async   function (req,res)
 
     }
     else {
-        errors.throwError("Company account not found", 400)
+        errors.throwError("Company account not found", 404)
 
     }
 }

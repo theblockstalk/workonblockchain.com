@@ -14,7 +14,7 @@ module.exports = async function (req, res) {
         res.send(candidateDoc);
     }
     else {
-        errors.throwError("No candidate exists", 400)
+        errors.throwError("No candidate exists", 404)
     }
 }
 

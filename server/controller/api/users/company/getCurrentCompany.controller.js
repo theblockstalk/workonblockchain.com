@@ -19,7 +19,7 @@ module.exports = async function (req, res) {
             }
             else
             {
-                errors.throwError("User not found", 400)
+                errors.throwError("User not found", 404)
             }
         }
     }

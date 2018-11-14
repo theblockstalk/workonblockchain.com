@@ -14,7 +14,7 @@ module.exports = async  function (req, res) {
         res.send(filterData);
     }
     else {
-        errors.throwError("Candidate account not found", 400);
+        errors.throwError("Candidate account not found", 404);
     }
 
 }

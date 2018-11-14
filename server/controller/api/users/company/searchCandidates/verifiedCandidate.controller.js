@@ -17,7 +17,7 @@ module.exports = async function (req,res) {
     const candidateDoc = await CandidateProfile.find({_creator : {$in : userIds }}).populate('_creator').lean();
     if(candidateDoc) {
         if(candidateDoc.length <= 0) {
-            errors.throwError("No candidates matched this search criteria", 400);
+            errors.throwError("No candidates matched this search criteria", 404);
         }
         else
         {
