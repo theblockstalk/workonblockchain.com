@@ -342,10 +342,19 @@ export class UserService {
                 }
             }).catch((error: any) =>
             {
-                if (error.status )
+                if (error)
                 {
-                    return Observable.throw(new Error(error.status));
-                }
+                  if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+                  {
+                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('googleUser');
+                    localStorage.removeItem('close_notify');
+                    localStorage.removeItem('linkedinUser');
+                    localStorage.removeItem('admin_log');
+                    window.location.href = '/login';
+                  }
+                  else return Observable.throw(error);                }
 
             });
 
@@ -718,6 +727,11 @@ export class UserService {
                       localStorage.removeItem('admin_log');
                       window.location.href = '/login';
                     }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                  {
+                    this.router.navigate(['/not_found']);
+                  }
+
                    else return Observable.throw(new Error(error));
                 }
 

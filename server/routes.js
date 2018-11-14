@@ -99,11 +99,11 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 router.post('/users/register', asyncMiddleware(candidateRegister));
 router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
 router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent)); // Admin or valid company can call this...
-router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
+router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC));
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
 router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
 router.put('/users/welcome/job', auth.isLoggedIn, asyncMiddleware(candidateWizardJob));
-router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
+router.put('/users/welcome/resume', auth.isLoggedIn, asyncMiddleware(candidateWizardResume));
 router.put('/users/welcome/exp', auth.isLoggedIn, asyncMiddleware(candidateWizardExperience));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));

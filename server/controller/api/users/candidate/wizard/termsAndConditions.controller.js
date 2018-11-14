@@ -8,93 +8,44 @@ const errors = require('../../../../services/errors');
 
 ///// for save candidate "terms & condition(sign-up)" data in db//////////////////
 
-module.exports = function (req,res)
-{
+module.exports = async function (req,res) {
+
 	let userId = req.auth.user._id;
-    terms_and_condition(userId,req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
-        }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
+	let candidateDoc = await CandidateProfile.findOne({ _creator: _id }).lean();
+	if(candidateDoc) {
+        const queryBody = req.body;
+        let candidateUpdate = {}
 
-
-function terms_and_condition(_id , userParam)
-{
-    var deferred = Q.defer();
-    var _id = _id;
-
-    CandidateProfile.findOne({ _creator: _id }, function (err, data)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            updateUser(_id);
-
-    });
-
-    function updateUser(_id)
-    {
-        if(userParam.termsID)
+        if(queryBody.termsID)
         {
-			Pages.findOne({_id: userParam.termsID}).exec(function (err, result) {
-				if (err) {
-					logger.error(err.message, {stack: err.stack});
-					deferred.reject(err.name + ': ' + err.message);
-				}
-				else {
-					if(result){
-						var set =
-						{
-							terms_id: result._id,
-							marketing_emails: userParam.marketing,
-						};
-						CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-						{
-							if (err){
-								logger.error(err.message, {stack: err.stack});
-								deferred.reject(err.name + ': ' + err.message);
-							}
-							else
-								deferred.resolve(set);
-						});
-					}
-					else{
-						deferred.reject('Error: Not a valid doc');
-					}
-				}
-			});
+            const pagesDoc =  await Pages.findOne({_id: queryBody.termsID}).lean();
+            if(pagesDoc) {
+                if(pagesDoc._id) candidateUpdate.terms_id = pagesDoc._id;
+                if(queryBody.marketing) candidateUpdate.marketing_emails = queryBody.marketing;
+                await CandidateProfile.update({ _creator: userId },{ $set: candidateUpdate });
+                res.send({
+                    success : true
+                })
+            }
+            else
+            {
+                errors.throwError("Terms and Conditions document not found", 404);
+            }
         }
-        else
-        {
-			var set =
-			{
-				marketing_emails: userParam.marketing,
-			};
-			CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-			{
-				if (err){
-					logger.error(err.message, {stack: err.stack});
-					deferred.reject(err.name + ': ' + err.message);
-				}
-				else
-					deferred.resolve(set);
-			});
-        }
-        
+        else {
+            if(queryBody.marketing) {
+                candidateUpdate.marketing_emails = queryBody.marketing;
+                await CandidateProfile.update({ _creator: userId },{ $set: candidateUpdate });
+            }
+
+            res.send({
+                success : true
+            })
+
+		}
+	}
+	else {
+        errors.throwError("Candidate account not found", 404);
     }
 
-    return deferred.promise;
 }
