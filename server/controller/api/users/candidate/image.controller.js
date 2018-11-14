@@ -6,15 +6,9 @@ const logger = require('../../../services/logger');
 
 ///// for save candidate "image(sign-up)"  in db///////////////////
 
-module.exports = function (req, res) {
+module.exports = async function (req, res) {
     logger.debug('req.file', {file: req.file});
     let path;
-    if (settings.isLiveApplication()) {
-        path = req.file.location;
-    } else {
-        let pathUrl = settings.CLIENT.URL
-        path = pathUrl + req.file.location
-    }
     if (settings.isLiveApplication()) {
         path = req.file.location; // for S3 bucket
     } else {
@@ -22,51 +16,16 @@ module.exports = function (req, res) {
     }
     
     let userId = req.auth.user._id;
-    save_image(path, userId).then(function (err, about) {
-        if (about) {
-            res.json(about);
-        }
-        else {
-            res.json(err);
-        }
-    })
-        .catch(function (err) {
-            res.json({error: err});
-        });
 
-}
-
-function save_image(filename,_id)
-{
-    var deferred = Q.defer();
-    CandidateProfile.findOne({ _creator: _id }, function (err, data)
-    {
-        if (err)
-        {
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            updateImage(_id);
-    });
-
-    function updateImage(_id)
-    {
-        var set =
-            {
-                image:filename
-            };
-
-        CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+    const candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
+    if(candidateDoc) {
+        await CandidateProfile.update({ _creator: userId },{ $set: {'image' : path } });
+        res.send({
+            success : true
+        })
+    }
+    else {
+        errors.throwError("Candidate account not found", 404);
     }
 
-    return deferred.promise;
 }

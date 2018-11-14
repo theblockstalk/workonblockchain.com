@@ -105,7 +105,7 @@ router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWiz
 router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
 router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
 router.put('/users/welcome/exp', auth.isLoggedIn, candidateWizardExperience);
-router.post('/users/image', auth.isLoggedIn, multer.single('photo'), candidateImage);
+router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
 
 // Companies
