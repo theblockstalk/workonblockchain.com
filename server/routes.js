@@ -84,7 +84,7 @@ router.put('/users/forgot_password/:email', authForgotPassword);
 router.put('/users/change_password',auth.isLoggedIn, authChangePassword);
 router.put('/users/reset_password/:hash', authResetPassword);
 router.put('/users/verify_client/:email', authVerifyClient);
-router.post('/users/set_disable_status' , auth.isLoggedIn , authAccountDisableSetting);
+router.post('/users/set_disable_status' , auth.isLoggedIn , asyncMiddleware(authAccountDisableSetting));
 router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
 router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
