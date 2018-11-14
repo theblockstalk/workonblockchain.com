@@ -10,17 +10,13 @@ const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
 
-    let userParam = req.body;
-    console.log(userParam);
-    if(userParam.linkedin_id) {
-        console.log("if")
-      const userDoc =  await User.findOne({linkedin_id : userParam.linkedin_id }).lean();
-        console.log(userDoc);
+    let queryBody = req.body;
+    if(queryBody.linkedin_id) {
+      const userDoc =  await User.findOne({linkedin_id : queryBody.linkedin_id }).lean();
       if(userDoc) {
           let jwtUserToken = jwtToken.createJwtToken(userDoc);
           await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
           const candidateDoc = await  CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
-          console.log(candidateDoc);
           res.send({
               _id:candidateDoc._id,
               _creator: userDoc._id,
@@ -39,10 +35,10 @@ module.exports = async function (req, res) {
 
     else
     {
-        let userDoc =  await User.findOne({email : userParam.email }).lean();
+        let userDoc =  await User.findOne({email : queryBody.email }).lean();
         if(userDoc) {
             let hash = crypto.createHmac('sha512', userDoc.salt);
-            hash.update(userParam.password);
+            hash.update(queryBody.password);
             let hashedPasswordAndSalt = hash.digest('hex');
 
             if (hashedPasswordAndSalt === userDoc.password_hash)
