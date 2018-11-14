@@ -1,6 +1,7 @@
 const settings = require('../../../../../settings');
 const users = require('../../../../../model/users');
 const CandidateProfile = require('../../../../../model/candidate_profile');
+const errors = require('../../../../services/errors');
 
 const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
@@ -31,6 +32,7 @@ module.exports = async  function (req,res)
     }
 
     const userDoc = await users.find({type : 'candidate' , is_verify :1, is_approved :1, disable_account : false }).lean();
+    console.log(userDoc);
     if(userDoc){
         let userDocArray = [];
         userDoc.forEach(function(item)
@@ -92,7 +94,8 @@ module.exports = async  function (req,res)
         const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator').lean();
         if(candidateDoc) {
             if(candidateDoc.length <= 0){
-                res.send(candidateDoc);
+                console.log(candidateDoc.length);
+                errors.throwError("No candidates matched this search criteria", 400);
             }
             else
             {

@@ -1,5 +1,6 @@
 const EmployerProfile = require('../../../../../model/employer_profile');
 const Pages = require('../../../../../model/pages_content');
+const errors = require('../../../../services/errors');
 
 ///////////add company summary or Terms& conditions in db////////////////////////////
 
@@ -41,7 +42,7 @@ module.exports = async   function (req,res)
 
     }
     else {
-        error.throwError("Company account not found", 400)
+        errors.throwError("Company account not found", 400)
 
     }
 }

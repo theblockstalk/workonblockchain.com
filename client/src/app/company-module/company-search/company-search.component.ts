@@ -432,6 +432,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         .subscribe(
           data =>
           {
+            console.log(data);
             this.candidate_data = data;
             this.responseMsg = "response";
             if(this.candidate_data.length <= 0)
@@ -443,8 +444,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           },
           error =>
           {
+            console.log(error['error']);
             if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              this.log = error['error']['message'];
+              this.not_found = error['error']['message'];
             }
             else {
               this.log = 'Something getting wrong';

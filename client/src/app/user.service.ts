@@ -826,6 +826,7 @@ export class UserService {
             {
                 if (error )
                 {
+                  console.log(error);
                   if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
                   {
                     localStorage.setItem('jwt_not_found', 'Jwt token not found');
