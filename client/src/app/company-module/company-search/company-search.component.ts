@@ -435,17 +435,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             console.log(data);
             this.candidate_data = data;
             this.responseMsg = "response";
-            if(this.candidate_data.length <= 0)
-            {
-              this.not_found = 'No candidates matched this search criteria';
-            }
-
-
           },
           error =>
           {
-            console.log(error['error']);
+
             if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.responseMsg = "error";
               this.not_found = error['error']['message'];
             }
             else {
