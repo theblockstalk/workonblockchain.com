@@ -1,5 +1,6 @@
 const CandidateProfile = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
+const errors = require('../../../services/errors');
 
 ///// for candidate about wizard ///////////////////
 

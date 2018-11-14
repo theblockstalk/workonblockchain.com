@@ -4,6 +4,7 @@ var mongo = require('mongoskin');
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const logger = require('../../../../services/logger');
 const Pages = require('../../../../../model/pages_content');
+const errors = require('../../../../services/errors');
 
 ///// for save candidate "terms & condition(sign-up)" data in db//////////////////
 

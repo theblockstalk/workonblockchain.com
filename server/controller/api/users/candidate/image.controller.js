@@ -3,6 +3,7 @@ var Q = require('q');
 var mongo = require('mongoskin');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const logger = require('../../../services/logger');
+const errors = require('../../../services/errors');
 
 ///// for save candidate "image(sign-up)"  in db///////////////////
 

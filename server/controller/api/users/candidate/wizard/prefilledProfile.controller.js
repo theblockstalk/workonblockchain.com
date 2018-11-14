@@ -1,4 +1,5 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
+const errors = require('../../../../services/errors');
 
 ///// for prefill the candidate profile data ///////////////////
 
