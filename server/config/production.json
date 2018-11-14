@@ -19,7 +19,7 @@
     }
   },
   "sendGrid": {
-    "fromAddress": "contact@workonblockchain.com",
+    "fromAddress": "no-reply@workonblockchain.com",
     "fromName": "Work on Blockchain"
   },
   "mandrill": {
