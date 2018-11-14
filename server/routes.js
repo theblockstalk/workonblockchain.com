@@ -85,7 +85,7 @@ router.put('/users/change_password',auth.isLoggedIn, asyncMiddleware(authChangeP
 router.put('/users/reset_password/:hash', authResetPassword);
 router.put('/users/verify_client/:email', authVerifyClient);
 router.post('/users/set_disable_status' , auth.isLoggedIn , asyncMiddleware(authAccountDisableSetting));
-router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
+router.post('/users/destroy_token', auth.isLoggedIn, asyncMiddleware(authDestroyTokenOnLogout));
 router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
 // Referrals
