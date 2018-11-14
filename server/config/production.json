@@ -16,6 +16,10 @@
     "buckets": {
       "files": "files.production.workonblockchain.com",
       "logs": "logs.workonblockchain.com"
+    },
+    "cloudWatch": {
+      "group": "production-api-workonblockchain-com",
+      "stream": "nodejs"
     }
   },
   "sendGrid": {
