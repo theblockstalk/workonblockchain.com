@@ -4,63 +4,26 @@ var mongo = require('mongoskin');
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const logger = require('../../../../services/logger');
 
-///// for save candidate "experience(history)" data in db//////////////////
-
-module.exports = function (req,res)
-{
+module.exports = async function (req,res) {
 	let userId = req.auth.user._id;
-    experience_data(userId,req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
-        }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
+    const candidateDoc = await CandidateProfile.findOne({ _creator: userId}).lean();
 
-function experience_data(_id, userParam)
-{
-    var deferred = Q.defer();
-    CandidateProfile.findOne({ _creator: _id }, function (err, data)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            updateExp(_id);
+    if(candidateDoc) {
+        const queryBody = req.body;
+        let candidateUpdate = {}
+        if (queryBody.language_exp) candidateUpdate.programming_languages = queryBody.language_exp;
+        if (queryBody.education) candidateUpdate.education_history = queryBody.education;
+        if (queryBody.work) candidateUpdate.work_history = queryBody.work;
+        if (queryBody.detail.intro) candidateUpdate.description = queryBody.detail.intro;
 
-    });
-
-    function updateExp(_id)
-    {
-
-        var set =
-            {
-                programming_languages: userParam.language_exp,
-                education_history :  userParam.education,
-                work_history: userParam.work,
-                description :userParam.detail.intro,
-
-            };
-        CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+        await CandidateProfile.update({ _id: userId },{ $set: candidateUpdate });
+        res.send({
+            success : true
+        })
+    }
+    else {
+        errors.throwError("Candidate account not found", 404);
     }
 
-    return deferred.promise;
 }
+

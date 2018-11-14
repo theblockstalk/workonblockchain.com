@@ -1495,7 +1495,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                       localStorage.removeItem('admin_log');
                       window.location.href = '/login';
                     }
-                  }
+                  });
               }
               else
               {

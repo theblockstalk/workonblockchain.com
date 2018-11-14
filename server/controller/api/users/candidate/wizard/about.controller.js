@@ -15,19 +15,19 @@ module.exports = async function (req, res) {
 
     const candidateDoc = await CandidateProfile.findOne({ _creator: myUserDoc._id }).lean();
 
-    const userParam = req.body;
+    const queryBody = req.body;
     let candidateUpdate = {}
-    if (userParam.first_name) candidateUpdate.first_name = userParam.first_name;
-    if (userParam.last_name) candidateUpdate.last_name = userParam.last_name;
-    if (userParam.github_account) candidateUpdate.github_account = userParam.github_account;
-    if (userParam.exchange_account) candidateUpdate.stackexchange_account = userParam.exchange_account;
-    if (userParam.contact_number) candidateUpdate.contact_number = userParam.contact_number;
-    if (userParam.nationality) candidateUpdate.nationality = userParam.nationality;
+    if (queryBody.first_name) candidateUpdate.first_name = queryBody.first_name;
+    if (queryBody.last_name) candidateUpdate.last_name = queryBody.last_name;
+    if (queryBody.github_account) candidateUpdate.github_account = queryBody.github_account;
+    if (queryBody.exchange_account) candidateUpdate.stackexchange_account = queryBody.exchange_account;
+    if (queryBody.contact_number) candidateUpdate.contact_number = queryBody.contact_number;
+    if (queryBody.nationality) candidateUpdate.nationality = queryBody.nationality;
 
     await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
 
-    if (userParam.country && userParam.city) {
-        await User.update({ _id: myUserDoc._id },{ $set: {'candidate.base_city' : userParam.city , 'candidate.base_country' : userParam.country } });
+    if (queryBody.country && queryBody.city) {
+        await User.update({ _id: myUserDoc._id },{ $set: {'candidate.base_city' : queryBody.city , 'candidate.base_country' : queryBody.country } });
     }
 
     const refDoc = await referral.findOne({
@@ -44,16 +44,16 @@ module.exports = async function (req, res) {
                     data = {
                         fname: candidateDoc.first_name,
                         email : refDoc.email,
-                        referred_fname: userParam.first_name,
-                        referred_lname: userParam.last_name
+                        referred_fname: queryBody.first_name,
+                        referred_lname: queryBody.last_name
                     };
                 }
                 else
                 {
                      data = {
                          email : refDoc.email,
-                         referred_fname : userParam.first_name,
-                         referred_lname: userParam.last_name
+                         referred_fname : queryBody.first_name,
+                         referred_lname: queryBody.last_name
                      };
                 }
                 referedCandidateEmail.sendEmail(data, userDoc.disable_account);
@@ -61,8 +61,8 @@ module.exports = async function (req, res) {
         else {
             let data = {
                 email: refDoc.email,
-                referred_fname: userParam.first_name,
-                referred_lname: userParam.last_name
+                referred_fname: queryBody.first_name,
+                referred_lname: queryBody.last_name
             };
             referedCandidateEmail.sendEmail(data, false);
         }
@@ -70,7 +70,7 @@ module.exports = async function (req, res) {
     }
     //sending email for social register
     if(myUserDoc.social_type === 'GOOGLE' || myUserDoc.social_type === 'LINKEDIN'){
-        let data = {fname : userParam.first_name , email : myUserDoc.email}
+        let data = {fname : queryBody.first_name , email : myUserDoc.email}
         welcomeEmail.sendEmail(data, myUserDoc.disable_account);
     }
     else {
