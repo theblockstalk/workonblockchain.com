@@ -150,7 +150,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                 error =>
                 {
 
-                  if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                  if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                    console.log(error['error']['message']);
                   }
 

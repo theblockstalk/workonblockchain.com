@@ -119,7 +119,7 @@ export class TermsWizardComponent implements OnInit {
 
           },
           error => {
-            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.log = error['error']['message'];
             }
 
