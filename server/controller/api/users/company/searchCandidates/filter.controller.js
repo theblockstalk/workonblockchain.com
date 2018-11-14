@@ -98,17 +98,13 @@ module.exports = async  function (req,res)
             }
             else
             {
-                let resultArray = [];
-                candidateDoc.forEach(function(item)
-                {
-                    filterReturnData.candidateAsCompany(item, userId).then(function(data) {
-                        resultArray.push(data);
+                let filterArray = [];
+                for(candidateDetail of candidateDoc) {
+                    const filterDataRes = await filterData(candidateDetail , userId);
+                    filterArray.push(filterDataRes);
+                }
 
-                        if(candidateDoc.length === resultArray.length){
-                            res.send(resultArray);
-                        }
-                    })
-                })
+                res.send(filterArray);
 
             }
 
@@ -134,4 +130,8 @@ function expected_salary_converter(salary_value, currency1, currency2)
     return array;
 }
 
+
+let filterData = async function filterData(candidateDetail , userId) {
+    return filterReturnData.candidateAsCompany(candidateDetail,userId);
+}
 
