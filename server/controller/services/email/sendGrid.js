@@ -26,9 +26,14 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
     } catch (error) {
         const errorLog = {
             message: error.message,
-            code: error.code,
-            errors: error.response.body.errors
+            code: error.code
         };
+        if (error.response) {
+            errorLog.response = error.response;
+            if (error.response.body && error.response.body.errors) {
+                errorLog.errors = error.response.body.errors
+            }
+        }
         logger.error('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, errorLog);
     }
 }
