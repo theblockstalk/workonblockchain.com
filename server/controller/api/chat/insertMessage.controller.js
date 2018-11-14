@@ -2,6 +2,7 @@ var date = require('date-and-time');
 const chat = require('../../../model/chat');
 const mongoose = require('mongoose');
 const sanitize = require('../../services/sanitize');
+const chatHelper = require('./chatHelpers');
 
 //////////inserting message in DB ////////////
 
@@ -11,16 +12,10 @@ module.exports = async function (req, res) {
     let new_description = '';
     let new_msg = '';
     if(sanitizeddescription){
-        new_description = sanitizeddescription.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '\n').replace(/\n/g, '<br />');
-        //new_description = description.replace(/\n/g, "<br>");
-        new_description = new_description.replace(/<(?!br\s*\/?)[^>]+>/g, '');
-        //new_description = new_description.replace(/<br[^>]*>/, '');
+        new_description = chatHelper.replaceLineBreaksHtml(sanitizeddescription);
     }
     if(sanitizedmessage){
-        new_msg = sanitizedmessage.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '\n').replace(/\n/g, '<br />');
-        //new_msg = msg.replace(/\n/g, "<br>");
-        new_msg = new_msg.replace(/<(?!br\s*\/?)[^>]+>/g, '');
-        //new_msg = new_msg.replace(/<br[^>]*>/, '');
+        new_msg = chatHelper.replaceLineBreaksHtml(sanitizedmessage);
     }
 
     let userId = req.auth.user._id;
@@ -30,7 +25,6 @@ module.exports = async function (req, res) {
         interview_date = req.body.date_of_joining+' '+req.body.interview_time+':00';
     }
 
-    const current_date = new Date();
     let newChat = new chat({
         sender_id : mongoose.Types.ObjectId(userId),
         receiver_id : mongoose.Types.ObjectId(req.body.receiver_id),
@@ -48,7 +42,7 @@ module.exports = async function (req, res) {
         is_read: 0,
         interview_location: req.body.interview_location,
         interview_date_time: interview_date,
-        date_created: date.format(current_date, 'MM/DD/YYYY HH:mm:ss')
+        date_created: new Date()
     });
     await newChat.save();
     res.send({Success:'Msg sent'});

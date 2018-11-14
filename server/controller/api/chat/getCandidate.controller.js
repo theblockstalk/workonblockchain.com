@@ -5,31 +5,39 @@ const EmployerProfile = require('../../../model/employer_profile');
 const filterReturnData = require('../users/filterReturnData');
 
 module.exports = async function (req, res) {
-    let getCandidatePromise;
-    let data;
+    let sender_id,receiver_id,is_company_reply,user_type;
     if (req.body.sender_id === '0') { // company is calling endpoint
-        data = {sender_id : req.auth.user._id , receiver_id : req.body.receiver_id , is_company_reply: req.body.is_company_reply, user_type: req.body.type}
+        sender_id = req.auth.user._id;
+        receiver_id = req.body.receiver_id;
+        is_company_reply = req.body.is_company_reply;
+        user_type = req.body.type;
     }
     else if (req.body.receiver_id === '0') { // candidate is calling endpoint
-        data = {sender_id : req.body.sender_id , receiver_id : req.auth.user._id , is_company_reply: req.body.is_company_reply, user_type: req.body.type}
+        sender_id = req.body.sender_id;
+        receiver_id = req.auth.user._id;
+        is_company_reply = req.body.is_company_reply;
+        user_type = req.body.type;
     }
     else { // admin is calling endpoint
         if (req.auth.user.is_admin){
-            data = {sender_id : req.body.sender_id , receiver_id : req.body.receiver_id , is_company_reply: req.body.is_company_reply, user_type: req.body.type}
+            sender_id = req.body.sender_id;
+            receiver_id = req.body.receiver_id;
+            is_company_reply = req.body.is_company_reply;
+            user_type = req.body.type;
         }
     }
     if(req.body.type === 'candidate') {
-        const candidateDoc = await users.findOne({
-            $and: [{ _id : data.receiver_id }, { type : data.user_type }]
+        const userDoc = await users.findOne({
+            $and: [{ _id : receiver_id }, { type : user_type }]
         }).lean();
-        if(candidateDoc){
+        if(userDoc){
             const candidateProfile = await CandidateProfile.findOne({
-                "_creator": candidateDoc._id
+                "_creator": userDoc._id
             }).populate('_creator').lean();
             if (candidateProfile)
             {
                 let query_result = filterReturnData.removeSensativeData(candidateProfile);
-                if(data.is_company_reply == 1){
+                if(is_company_reply === 1){
                 }
                 else{
                     query_result = filterReturnData.anonymousSearchCandidateData(query_result);
@@ -40,24 +48,20 @@ module.exports = async function (req, res) {
             }
             else
             {
-                res.send({
-                    success:false
-                });
+                errors.throwError('Candidate not found', 404);
             }
         }
         else{
-            res.send({
-                success:false
-            });
+            errors.throwError('Candidate not found', 404);
 		}
     }
     else{
-        const companyDoc = await users.findOne({
-            $and: [{ _id : data.sender_id }, { type : data.user_type }]
+        const userDoc = await users.findOne({
+            $and: [{ _id : sender_id }, { type : user_type }]
         }).lean();
-        if(companyDoc) {
+        if(userDoc) {
             const companyProfile = await EmployerProfile.findOne({
-                "_creator": companyDoc._id
+                "_creator": userDoc._id
             }).populate('_creator').lean();
             if (companyProfile)
             {
@@ -69,15 +73,11 @@ module.exports = async function (req, res) {
             }
             else
             {
-                res.send({
-                    success:false
-                });
+                errors.throwError('Candidate not found', 404);
             }
         }
         else{
-            res.send({
-                success:false
-            });
+            errors.throwError('Candidate not found', 404);
         }
 	}
 };

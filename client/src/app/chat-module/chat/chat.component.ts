@@ -580,7 +580,7 @@ export class ChatComponent implements OnInit {
             data => {
                 //console.log(data);
                 this.credentials.msg_body = '';
-				this.authenticationService.update_is_company_reply_status(this.currentUser._creator,this.is_company_reply)
+				this.authenticationService.update_is_company_reply_status(this.is_company_reply)
 				.subscribe(
 					data => {
 						//console.log('good');

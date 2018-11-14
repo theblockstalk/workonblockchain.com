@@ -4,7 +4,7 @@ const chat = require('../../../model/chat');
 const mongoose = require('mongoose');
 
 module.exports = async function (req, res) {
-    let path = '';
+    let path;
     if(req.file){
         if (settings.isLiveApplication()) {
             path = req.file.location; // for S3 bucket
@@ -14,7 +14,6 @@ module.exports = async function (req, res) {
     }
     const userId = req.auth.user._id;
 
-    const current_date = new Date();
     let newChat = new chat({
         sender_id : mongoose.Types.ObjectId(userId),
         receiver_id : mongoose.Types.ObjectId(req.body.receiver_id),
@@ -29,7 +28,7 @@ module.exports = async function (req, res) {
         job_type: req.body.job_type,
         file_name: path,
         is_read: 0,
-        date_created: date.format(current_date, 'MM/DD/YYYY HH:mm:ss')
+        date_created: new Date()
     });
     await newChat.save();
     res.send({Success:'Msg sent'});

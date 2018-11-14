@@ -1,7 +1,13 @@
 const chat = require('../../../model/chat');
 
 module.exports = async function (req, res) {
-    const userId = req.auth.user._id;
+    let userId;
+    if(req.body.id && req.auth.user.is_admin){
+        userId = req.body.id;
+    }
+    else{
+        userId = req.auth.user._id;
+    }
 
     const chatDoc = await chat.find({
         $or:[{receiver_id:userId},{sender_id: userId}]

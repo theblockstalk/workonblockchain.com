@@ -3,6 +3,7 @@ var date = require('date-and-time');
 const chat = require('../../../model/chat');
 const mongoose = require('mongoose');
 const sanitize = require('../../services/sanitize');
+const chatHelper = require('./chatHelpers');
 
 module.exports = async function (req, res) {
     let sanitizeddescription = sanitize.sanitizeHtml(req.body.description);
@@ -18,19 +19,12 @@ module.exports = async function (req, res) {
     let new_description = '';
     let new_msg = '';
     if(sanitizeddescription){
-        new_description = sanitizeddescription.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '\n').replace(/\n/g, '<br />');
-        //new_description = description.replace(/\n/g, "<br>");
-        new_description = new_description.replace(/<(?!br\s*\/?)[^>]+>/g, '');
-        //new_description = new_description.replace(/<br[^>]*>/, '');
+        new_description = chatHelper.replaceLineBreaksHtml(sanitizeddescription);
     }
     if(sanitizedmessage){
-        new_msg = sanitizedmessage.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '\n').replace(/\n/g, '<br />');
-        //new_msg = msg.replace(/\n/g, "<br>");
-        new_msg = new_msg.replace(/<(?!br\s*\/?)[^>]+>/g, '');
-        //new_msg = new_msg.replace(/<br[^>]*>/, '');
+        new_msg = chatHelper.replaceLineBreaksHtml(sanitizedmessage);
     }
     let userId = req.auth.user._id;
-    const current_date = new Date();
     if(req.body.employment_reference_id == 0){
         let newChat = new chat({
             sender_id : mongoose.Types.ObjectId(userId),
@@ -49,7 +43,7 @@ module.exports = async function (req, res) {
             file_name: path,
             is_job_offered: req.body.job_offered,
             is_read: 0,
-            date_created: date.format(current_date, 'MM/DD/YYYY HH:mm:ss')
+            date_created: new Date()
         });
         await newChat.save();
         res.send({Success:'Msg sent'});
@@ -73,7 +67,7 @@ module.exports = async function (req, res) {
             is_job_offered: req.body.job_offered,
             is_read: 0,
             employment_offer_reference: mongoose.Types.ObjectId(req.body.employment_reference_id),
-            date_created: date.format(current_date, 'MM/DD/YYYY HH:mm:ss')
+            date_created: new Date()
         });
         await newChat.save();
         res.send({Success:'Msg sent'});
