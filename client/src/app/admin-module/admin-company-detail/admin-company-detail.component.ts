@@ -123,7 +123,7 @@ export class AdminCompanyDetailComponent implements OnInit {
           error =>
           {
             console.log(error);
-            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.error = error['error']['message'];
             }
             else {
