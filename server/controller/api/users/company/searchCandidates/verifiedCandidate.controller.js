@@ -1,99 +1,44 @@
 var Q = require('q');
-const users = require('../../../../../model/users');
+const User = require('../../../../../model/users');
 const CandidateProfile = require('../../../../../model/candidate_profile');
-const logger = require('../../../../services/logger');
 const filterReturnData = require('../../filterReturnData');
-const chat = require('../../../../../model/chat');
+const errors = require('../../../../services/errors');
 
-module.exports = function (req,res)
-{
+module.exports = async function (req,res) {
+
     let userId = req.auth.user._id;
-    verified_candidate(req.body, userId).then(function (err, data)
-    {
-    	
-        if (data)
-        {
-            res.json(data);
-        	
+
+    const userDoc = await User.find({type : 'candidate' , is_verify :1, is_approved :1 , disable_account : false }).lean();
+    let userIds = [];
+    for (detail of userDoc) {
+        const ids =  await getUsersIds(detail);
+        userIds.push(ids);
+    }
+    const candidateDoc = await CandidateProfile.find({_creator : {$in : userIds }}).populate('_creator').lean();
+    if(candidateDoc) {
+        if(candidateDoc.length <= 0) {
+            errors.throwError("No candidates matched this search criteria", 400);
         }
         else
         {
-            res.send(err);
+            let filterArray = [];
+            for(candidateDetail of candidateDoc) {
+                const filterDataRes = await filterData(candidateDetail , userId);
+                filterArray.push(filterDataRes);
+            }
+
+            res.send(filterArray);
+
         }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
+
+    }
 
 }
 
+let getUsersIds = async function getUsersIds(detail) {
+    return detail._id ;
+}
 
-
-function verified_candidate(params,userId)
-{
-	
-	var result_array = [];
-	var array2 = [];
-	var chat_data;
-	var query_result=[];
-    var deferred = Q.defer();
-   
-    users.find({type : 'candidate' , is_verify :1, is_approved :1 , disable_account : false }, function (err, userData)
-    {
-
-        if (err)
-            deferred.reject(err.name + ': ' + err.message);
-        if(userData)
-        {
-            let ids=[];
-            userData.forEach(function(item)
-            {
-                ids.push(item._id);
-            });
-
-            CandidateProfile.find({_creator : {$in : ids }}).populate('_creator').exec(function(err, candidateData)
-            {
-
-                if (err)
-                    deferred.reject(err.name + ': ' + err.message);
-                if(candidateData)
-                {
-                    if(candidateData.length <= 0){
-                        deferred.resolve(candidateData);
-                    }
-                    else
-                    {
-                        var result_array = [];
-
-                        candidateData.forEach(function(item)
-                        {
-                            filterReturnData.candidateAsCompany(item, userId).then(function(data) {
-                                result_array.push(data);
-
-                                if(candidateData.length === result_array.length){
-                                    deferred.resolve(result_array);
-                                }
-                            })
-
-                        })
-
-                    }
-
-                }
-
-            });
-                    	
-
-
-           
-        }
-        else
-        {
-            deferred.reject("Not Found");
-        }
-
-    });
-
-    return deferred.promise;
+let filterData = async function filterData(candidateDetail , userId) {
+    return filterReturnData.candidateAsCompany(candidateDetail,userId);
 }
