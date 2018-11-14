@@ -26,7 +26,7 @@ module.exports = async   function (req,res)
             }
             else
             {
-                errors.throwErrors("Terms and Conditions document not found", 400);
+                errors.throwError("Terms and Conditions document not found", 400);
             }
         }
         else {

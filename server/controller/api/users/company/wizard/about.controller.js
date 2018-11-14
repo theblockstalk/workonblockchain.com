@@ -23,7 +23,7 @@ module.exports = async  function (req,res)
     }
 
     else {
-        errors.throwErrors("Company account not found", 400);
+        errors.throwError("Company account not found", 400);
     }
 
 }

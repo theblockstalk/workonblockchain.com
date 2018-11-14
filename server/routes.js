@@ -118,7 +118,7 @@ router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asy
 router.put('/users/update_company_profile',auth.isLoggedIn, asyncMiddleware(companyUpdate));
 router.post('/users/filter',auth.isValidCompany, asyncMiddleware(companySearchFilter));
 router.post('/users/verified_candidate',auth.isValidCompany, companySearchVerifiedCandidates);
-router.post('/users/candidate_detail',auth.isValidCompany,candidateVerifiedCandidateDetail);
+router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail));
 
 // Chat
 router.post('/users/insert_message', auth.isValidUser, chatInsertMessage);
