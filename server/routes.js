@@ -81,7 +81,7 @@ router.get('/', healthCheck);
 router.post('/users/authenticate', asyncMiddleware(authAthenticate));
 router.put('/users/emailVerify/:email_hash', asyncMiddleware(authVerifyEmail));
 router.put('/users/forgot_password/:email', authForgotPassword);
-router.put('/users/change_password',auth.isLoggedIn, authChangePassword);
+router.put('/users/change_password',auth.isLoggedIn, asyncMiddleware(authChangePassword));
 router.put('/users/reset_password/:hash', authResetPassword);
 router.put('/users/verify_client/:email', authVerifyClient);
 router.post('/users/set_disable_status' , auth.isLoggedIn , asyncMiddleware(authAccountDisableSetting));

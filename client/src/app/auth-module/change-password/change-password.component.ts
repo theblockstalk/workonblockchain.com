@@ -67,12 +67,7 @@ export class ChangePasswordComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data.error)
-            {
-              this.log = data.error;
-            }
-            else
-            {
+
               this.log='';
 
               localStorage.setItem('password_change_msg', JSON.stringify("Your password has been successfully changed. Please log back in to continue!"));
@@ -82,26 +77,19 @@ export class ChangePasswordComponent implements OnInit {
               localStorage.removeItem('linkedinUser');
               localStorage.removeItem('admin_log');
               window.location.href = '/login';
-            }
+
 
 
           },
           error=>
           {
-            if(error.message === 500 || error.message === 401)
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-
+              this.log = error['error']['message'];
             }
-            else
+            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
-
+              this.log = error['error']['message'];
             }
 
           });
