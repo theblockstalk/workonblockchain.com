@@ -1,20 +1,18 @@
 const settings = require('../../settings');
 const winston = require('winston');
-const S3StreamLogger = require('s3-streamlogger').S3StreamLogger;
 const slackHook = require('winston-slack-hook');
+const WinstonCloudWatch = require('winston-cloudwatch')
 
-let s3Transport, slackWebhook;
+let slackWebhook, cloudWatch;
 
 if (settings.isLiveApplication()) {
-    const s3_stream = new S3StreamLogger({
-        bucket: settings.AWS.BUCKETS.logs,
-        folder: settings.ENVIRONMENT + "/application/nodejs",
-        access_key_id: settings.AWS.ACCESS_KEY,
-        secret_access_key: settings.AWS.SECRET_ACCESS_KEY
-    });
-
-    s3Transport = new (winston.transports.File)({
-        stream: s3_stream
+    cloudWatch = new WinstonCloudWatch({
+        level: 'debug',
+        awsRegion: settings.AWS.REGION,
+        jsonMessage: true,
+        retentionInDays: 30,
+        logGroupName: settings.AWS.CLOUDWATCH.GROUP,
+        logStreamName: settings.AWS.CLOUDWATCH.STREAM
     });
 
     slackWebhook = new slackHook({
@@ -32,50 +30,32 @@ if (settings.ENVIRONMENT === 'production') {
     winstonLogger = winston.createLogger({
         transports: [
             new winston.transports.Console({
-                level: 'info',
-                // stringify: true,
+                level: 'debug',
                 timestamp: true,
-                // colorize: true,
-                // prettyPrint: true,
                 json: true
             }),
-            slackWebhook,
-            s3Transport
+            cloudWatch,
+            slackWebhook
         ]
     })
 } else if (settings.ENVIRONMENT === 'staging') {
     winstonLogger = winston.createLogger({
         transports: [
             new winston.transports.Console({
-                level: 'debug',
-                // stringify: true,
+                level: 'silly',
                 timestamp: true,
-                // colorize: true,
-                // prettyPrint: true,
                 json: true
             }),
-            slackWebhook,
-            s3Transport
+            cloudWatch,
+            slackWebhook
         ]
     })
 } else {
     winstonLogger = winston.createLogger({
         transports: [
             new winston.transports.Console({
-                level: 'debug',
-                // stringify: true,
-                // timestamp: true,
-                // colorize: true,
-                // prettyPrint: true,
-                // prettyPrint: JSON.stringify,
-                // json: true,
-                // format: winston.format(genericFormatter)(),
-                // prettyPrint: function ( object ){
-                //     return JSON.stringify(object);
-                // },
-                // handleExceptions: true,
-                json: true,
-                // colorize: true
+                level: 'silly',
+                json: true
             })
         ]
     })
