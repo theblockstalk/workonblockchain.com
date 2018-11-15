@@ -145,6 +145,6 @@ router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSet
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
 
 // Pages
-router.get('/users/get_pages_content/:title', pagesGetContent);
+router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent));
 
 module.exports = router;

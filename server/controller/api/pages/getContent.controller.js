@@ -3,54 +3,26 @@ var _ = require('lodash');
 var Q = require('q');
 const Pages = require('../../../model/pages_content');
 const logger = require('../../services/logger');
+const errors = require('../../services/errors');
 
-module.exports = function (req,res)
-{
-    get_content(req.params.title).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
+module.exports = async function (req,res) {
+    let queryBody = req.params;
+    if(queryBody.title === 'Privacy Notice' || queryBody.title === 'Terms and Condition for candidate' || queryBody.title === 'Terms and Condition for company'){
+        const pagesDoc = await Pages.findOne({page_name: queryBody.title}).sort({updated_date: 'descending'}).lean();
+        if(pagesDoc) {
+            res.send(pagesDoc);
         }
-        else
-        {
-            res.send(err);
+        else {
+            errors.throwError("Pages doc not found", 404);
         }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
-
-function get_content(name)
-{
-    var deferred = Q.defer();
-    if(name === 'Privacy Notice' || name === 'Terms and Condition for candidate' || name === 'Terms and Condition for company'){
-        Pages.findOne({page_name: name}).sort({updated_date: 'descending'}).exec(function (err, result) {
-            if (err) {
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else {
-                ////console.log(user);
-                deferred.resolve(result);
-            }
-        });
-        return deferred.promise;
     }
     else {
-        Pages.find({page_name: name}).exec(function (err, result) {
-
-            if (err) {
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else {
-                ////console.log(user);
-                deferred.resolve(result);
-            }
-        });
-        return deferred.promise;
+        const pagesDoc = await Pages.find({page_name: queryBody.title}).lean();
+        if(pagesDoc) {
+            res.send(pagesDoc);
+        }
+        else {
+            errors.throwError("Pages doc not found", 404);
+        }
     }
 }
