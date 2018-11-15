@@ -22,15 +22,11 @@ module.exports = async function verify_send_email(emailAddress, verifyEmailToken
                     name = null;
                 }
                 verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
-                res.send({
-                    success : true
-                })
+                return true;
             }
             else {
                 verifyEmailEmail.sendEmail(userDoc.email, null ,verifyEmailToken);
-                res.send({
-                    success : true
-                })
+                return true;
             }
         }
         if(userDoc.type === 'company') {
@@ -44,15 +40,11 @@ module.exports = async function verify_send_email(emailAddress, verifyEmailToken
                     name = null;
                 }
                 verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
-                res.send({
-                    success : true
-                })
+                return true;
             }
             else {
                 verifyEmailEmail.sendEmail(userDoc.email, null ,verifyEmailToken);
-                res.send({
-                    success : true
-                })
+                return true;
             }
         }
     }
