@@ -15,7 +15,7 @@ const authResetPassword = require('./controller/api/users/auth/resetPassword.con
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
 const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
-const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
+const updateExplanationPopupStatus = require('./controller/api/chat/updateExplanationPopupStatus.controller');
 
 // Referrals
 const refGetReferralCode = require('./controller/api/users/referrals/getReferralCode.controller');
@@ -86,7 +86,6 @@ router.put('/users/reset_password/:hash', asyncMiddleware(authResetPassword));
 router.put('/users/verify_client/:email', asyncMiddleware(authVerifyClient));
 router.post('/users/set_disable_status' , auth.isLoggedIn , asyncMiddleware(authAccountDisableSetting));
 router.post('/users/destroy_token', auth.isLoggedIn, asyncMiddleware(authDestroyTokenOnLogout));
-router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
 
 // Referrals
 router.post('/users/send_refreal',auth.isLoggedIn, asyncMiddleware(refReferral));
@@ -135,6 +134,8 @@ router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(
 router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
 router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
 router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
+router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));
+
 
 
 // Admin
