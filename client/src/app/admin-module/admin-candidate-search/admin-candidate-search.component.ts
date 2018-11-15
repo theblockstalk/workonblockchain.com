@@ -245,20 +245,6 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
         .subscribe(
           data =>
           {
-
-            if(data.error)
-            {
-              this.response = "data";
-              this.length='';
-              this.log = data.error;
-              this.info=[];
-              this.page='';
-
-
-            }
-            else
-            {
-
               this.length =0;
               this.info=[];
               this.information = this.filter_array(data);
@@ -286,27 +272,28 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
               this.page =this.length;
               this.response = "data";
 
-            }
-
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
+            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.response = "data";
+              this.length = '';
+              this.info = [];
+              this.page = '';
+              this.log = error['error']['message'];
             }
-
-            if(error.message === 403)
+            else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
-              // this.router.navigate(['/not_found']);
+              this.response = "data";
+              this.length = '';
+              this.info = [];
+              this.page = '';
+              this.log = error['error']['message'];
             }
-
+            else {
+              this.log = "Something getting wrong";
+            }
           });
 
     }

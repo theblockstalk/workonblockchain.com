@@ -1,229 +1,117 @@
-const settings = require('../../../../settings');
 var _ = require('lodash');
-var Q = require('q');
 const CandidateProfile = require('../../../../model/candidate_profile');
-const chat = require('../../../../model/chat');
+const Chat = require('../../../../model/chat');
+const errors = require('../../../services/errors');
 
 const logger = require('../../../services/logger');
 const filterReturnData = require('../filterReturnData');
 
-module.exports = function (req,res)
-{
-    admin_candidate_filter(req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
-        }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
+module.exports = async function (req,res) {
+   let queryBody = req.body;
+   let msgTags = queryBody.msg_tags;
+
+   let companyReply;
+   let userIds= [];
+   let queryString = [];
+   if(queryBody.msg_tags) {
+	   let picked = msgTags.find(o => o === 'is_company_reply');
+       var employ_offer = msgTags.find(o => o === 'Employment offer accepted / reject');
+       if(employ_offer) {
+           var offered = ['employment_offer_accepted', 'employment_offer_rejected'];
+           offered.forEach(function(item) {
+               queryBody.msg_tags.push(item );
+           });
+       }
+       if(picked) {
+		   companyReply= [1,0];
+	   }
+
+       const chatDoc = await Chat.find({$or : [{msg_tag : {$in: queryBody.msg_tags}} , {is_company_reply: {$in: companyReply} }]}).lean();
+       if(chatDoc && chatDoc.length > 0) {
+           for (detail of chatDoc) {
+               userIds.push(detail.sender_id);
+               userIds.push(detail.receiver_id);
+           }
+           const msgTagFilter = {"_creator" : {$in : userIds}};
+           queryString.push(msgTagFilter);
+           if(queryBody.is_approve!== -1) {
+               const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approve)};
+               queryString.push(isApproveFilter);
+           }
+           if(queryBody.word) {
+               const nameFilter = { $or : [  { first_name : {'$regex' : queryBody.word, $options: 'i' } }, { last_name : {'$regex' : queryBody.word , $options: 'i'} }]};
+               queryString.push(nameFilter);
+           }
+           if(queryString.length > 0) {
+               var object = queryString.reduce((a, b) => Object.assign(a, b), {})
+               const searchQuery = {$match: object};
+               const candidateDoc = await CandidateProfile.aggregate([
+                   {
+                       $lookup:
+                           {
+                               from: "users",
+                               localField: "_creator",
+                               foreignField: "_id",
+                               as: "users"
+                           }
+                   }, searchQuery]);
+               if(candidateDoc && candidateDoc.length > 0) {
+                   for(candidateDetail of candidateDoc) {
+                       let query_result = candidateDetail.users[0];
+                       let data = {_creator : query_result};
+                       await filterData(data );
+                   }
+                   res.send(candidateDoc);
+			   }
+			   else {
+                   errors.throwError("No candidates matched this search criteria", 400)
+               }
+           }
+
+	   }
+	   else {
+           errors.throwError("No candidates matched this search criteria", 400)
+       }
+   }
+   else {
+       if(queryBody.is_approve!== -1) {
+           const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approve)};
+           queryString.push(isApproveFilter);
+       }
+       if(queryBody.word) {
+           const nameFilter = { $or : [  { first_name : {'$regex' : queryBody.word, $options: 'i' } }, { last_name : {'$regex' : queryBody.word , $options: 'i'} }]};
+           queryString.push(nameFilter);
+       }
+
+       if(queryString.length>0) {
+           var object = queryString.reduce((a, b) => Object.assign(a, b), {})
+
+           const searchQuery = {$match: object};
+
+           const candidateDoc = await CandidateProfile.aggregate([{
+               $lookup:
+                   {
+                       from: "users",
+                       localField: "_creator",
+                       foreignField: "_id",
+                       as: "users"
+                   }
+           }, searchQuery]);
+           if (candidateDoc && candidateDoc.length > 0) {
+               for (candidateDetail of candidateDoc) {
+                   let query_result = candidateDetail.users[0];
+                   let data = {_creator: query_result};
+                   await filterData(data);
+               }
+               res.send(candidateDoc);
+           }
+           else {
+               errors.throwError("No candidates matched this search criteria", 400)
+           }
+       }
+   }
 }
 
-function removeDups(names) {
-	  let unique = {};
-	  names.forEach(function(i) {
-	    if(!unique[i]) {
-	      unique[i] = true;
-	    }
-	  });
-	  return Object.keys(unique);
-	}
-
-function admin_candidate_filter(data)
-{
-
-    var query_result = [];
-    var company_rply = [];
-    var deferred = Q.defer();
-   
-    var arr = data.msg_tags;
-    if(arr)
-    {
-        var picked = arr.find(o => o === 'is_company_reply');
-        var employ_offer = arr.find(o => o === 'Employment offer accepted / reject');
-        if(employ_offer)
-        {
-            var offered = ['employment_offer_accepted', 'employment_offer_rejected'];
-            //data.msg_tags = ['job_offer_rejected', 'job_offer_accepted'];
-            offered.forEach(function(item)
-            {
-                data.msg_tags.push(item );
-            });
-        }
-
-    }
-    if(picked)
-    {
-        company_rply= [1,0];
-    }
-
-    if(data.msg_tags)
-    {
-    	
-    	let queryString = [];
-   		chat.find({$or : [{msg_tag : {$in: data.msg_tags}} , {is_company_reply: {$in:company_rply} }]}, function (err, query_data)
-   		{
-       
-   			  if(err)
-   			  {
-   			       logger.error(err.message, {stack: err.stack});
-   			       deferred.reject(err.name + ': ' + err.message);
-   			  }
-   			  if(query_data.length>0)
-   			  {
-   			       var array = [];
-   			       query_data.forEach(function(item)
-   			       {
-   			            array.push(item.receiver_id );
-                     array.push(item.sender_id );
-   			       });
-   			       
-   			       if(array.length>0)
-   			                 {
-   			                	 const msgTagFilter = {"_creator" : {$in : array}};
-   			                	queryString.push(msgTagFilter);
-   			                	 
-   			                 }
-   			                 if(data.is_approve!== -1)
-   			                 {
-   			                	 
-   			                	
-   			                	const isApproveFilter = {"users.is_approved" : parseInt(data.is_approve)};
-   			                	 queryString.push(isApproveFilter);
-   			                 }
-   			                 if(data.word)
-   			                 {
-   			                	 const nameFilter = { $or : [  { first_name : {'$regex' : data.word, $options: 'i' } }, { last_name : {'$regex' : data.word , $options: 'i'} }]};
-   			                	 queryString.push(nameFilter);
-   			                 }
-   			                   			                 
-   			                
-   			                 if(queryString.length>0)
-   			                 {
-   			                	 var object = queryString.reduce((a, b) => Object.assign(a, b), {})
-   			                	              
-   			                	 const searchQuery = { $match: object };
-   			                	 //console.log(searchQuery);
-   			                	 CandidateProfile.aggregate([    	
-   			                     {
-   			                    	 $lookup:
-   			                    	 {
-   			                    		 from: "users",
-   			                    		 localField: "_creator",
-   			                    		 foreignField: "_id",
-   			                    		 as: "users"
-   			                    	 }
-   			                     }, searchQuery]).exec(function(err, cand_result)
-   			                    {
-   			                    	 ////console.log(result);
-   			                    	 if (err) {
-   			                    		 logger.error(err.message, {stack: err.stack});
-   			                    		 ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
-   			                    	 }
-   			                    	 if (cand_result == '')
-   			                    	 {
-   			                    		 deferred.reject("No candidates matched this search criteria");
-
-   			                    	 }
-   			                    	 if(cand_result)
-   			                    	 {
-   			                    		   cand_result.forEach(function(item)
-   			                             	{
-   			                         			var query_result = item.users[0];          				
-   			                         			var data = {_creator : query_result};
-   			                        	 			filterReturnData.removeSensativeData(data);
-   			                             	});
-   			                        	 	deferred.resolve(cand_result);
-   			                           
-   			                    	 }
-   			                    });
-   			                 }
-   			                 else
-   			                 {
-   			                	deferred.reject("No candidates matched this search criteria");
-   			                 }
-   			                 
-   			                 
-   			            }
-   			            else
-		                 {
-		                	deferred.reject("No candidates matched this search criteria");
-		                 }
-   			});
-   		   
-    	
-    }
-    else
-    {
-    	let queryString=[];
-    	if(data.is_approve!== -1)
-           {
-          	
-          	
-          	const isApproveFilter = {"users.is_approved" : parseInt(data.is_approve)};
-          	 queryString.push(isApproveFilter);
-           }
-           if(data.word)
-           {
-          	 const nameFilter = { $or : [  { first_name : {'$regex' : data.word, $options: 'i' } }, { last_name : {'$regex' : data.word , $options: 'i'} }]};
-          	 queryString.push(nameFilter);
-           }
-           
-           if(queryString.length>0)
-           {
-             	 var object = queryString.reduce((a, b) => Object.assign(a, b), {})
-             	        
-             	 const searchQuery = { $match: object };
-             	 
-             	 CandidateProfile.aggregate([    	
-                  {
-                 	 $lookup:
-                 	 {
-                 		 from: "users",
-                 		 localField: "_creator",
-                 		 foreignField: "_id",
-                 		 as: "users"
-                 	 }
-                  }, searchQuery]).exec(function(err, cand_result)
-                 {
-                 	 
-                 	 if (err) {
-                 		 logger.error(err.message, {stack: err.stack});
-                 		 ////console.log(err);//deferred.reject(err.name + ': ' + err.message);
-                 	 }
-                 	 if (cand_result == '')
-                 	 {
-                 		 deferred.reject("Not Found Any Data");
-
-                 	 }
-                 	 if(cand_result)
-                 	 {
-                    		cand_result.forEach(function(item)
-                        	{
-                    			var query_result = item.users[0];          				
-                    			var data = {_creator : query_result};
-                   	 			filterReturnData.removeSensativeData(data);
-                        	});
-                   	 		deferred.resolve(cand_result);
-                        
-                 	 }
-                 });
-              }
-              else
-              {
-             	deferred.reject("Not Found Any Data");
-              }
-	
-    }
-    
-   
-    return deferred.promise;
+let filterData = async function filterData(candidateDetail) {
+    return filterReturnData.removeSensativeData(candidateDetail);
 }
-
