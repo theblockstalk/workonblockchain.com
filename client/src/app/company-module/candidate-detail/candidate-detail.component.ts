@@ -202,6 +202,7 @@ export class CandidateDetailComponent implements OnInit {
               console.log(error['error']['message']);
               this.router.navigate(['/not_found']);
             }
+
           });
       this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(

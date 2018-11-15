@@ -45,10 +45,14 @@ export class ForgotPasswordComponent implements OnInit {
             this.dataservice.changeMessage(error['error']['message']);
             this.log = error['error']['message'];
           }
-          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
             this.dataservice.changeMessage(error['error']['message']);
             this.log = error['error']['message'];
+          }
+          else {
+            this.dataservice.changeMessage('Something getting wrong');
+            this.log = "Something getting wrong";
           }
 
         });

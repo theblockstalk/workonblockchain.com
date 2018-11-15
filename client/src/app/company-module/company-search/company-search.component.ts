@@ -442,6 +442,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.responseMsg = "error";
               this.not_found = error['error']['message'];
             }
+            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.responseMsg = "error";
+              this.not_found = error['error']['message'];
+            }
             else {
               this.log = 'Something getting wrong';
             }
@@ -496,6 +500,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
         error => {
           if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.responseMsg = "error";
+            this.not_found = error['error']['message'];
+          }
+          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
             this.responseMsg = "error";
             this.not_found = error['error']['message'];
           }

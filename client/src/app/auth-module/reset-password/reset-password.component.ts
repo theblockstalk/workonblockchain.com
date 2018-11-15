@@ -51,11 +51,14 @@ export class ResetPasswordComponent implements OnInit {
             if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.log = error['error']['message'];
             }
-            if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            else if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.log = error['error']['message'];
             }
-            if (error['status'] === 500) {
+            else if (error['status'] === 500) {
               this.log = "Something getting wrong. Please check your link";
+            }
+            else {
+              this.log = "Something getting wrong";
             }
 
           });

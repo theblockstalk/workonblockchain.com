@@ -123,6 +123,13 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
             this.log = error['error']['message'];
             this.response = "data";
           }
+          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+            this.response = "data";
+          }
+          else {
+            this.log = "Something getting wrong";
+          }
         });
   }
 
@@ -176,7 +183,7 @@ error ;
           {
             this.error = error['error']['message'];
           }
-          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
             this.error = error['error']['message'];
           }
