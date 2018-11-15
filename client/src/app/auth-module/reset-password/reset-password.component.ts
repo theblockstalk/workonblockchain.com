@@ -38,25 +38,19 @@ export class ResetPasswordComponent implements OnInit {
       .subscribe(
         data => {
 
-
-
-          if(data.error)
-          {
-            this.log = data.error;
-            ////console.log("error");
-          }
-          else
-          {
             this.dataservice.forgertMessage("Password updated successfully");
-
             this.router.navigate(['/login']);
-          }
-
-
 
         },
         error => {
-          //this.log = 'Something getting wrong';
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.log = error['error']['message'];
+          }
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.log = error['error']['message'];
+          }
 
         });
   }

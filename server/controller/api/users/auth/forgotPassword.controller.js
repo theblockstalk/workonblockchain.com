@@ -1,13 +1,11 @@
-const settings = require('../../../../settings');
 var Q = require('q');
 var mongo = require('mongoskin');
 const User = require('../../../../model/users');
-const CandidateProfile = require('../../../../model/candidate_profile');
-const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
-const logger = require('../../../services/logger');
-const EmployerProfile = require('../../../../model/employer_profile');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
+const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
+const CandidateProfile = require('../../../../model/candidate_profile');
+const EmployerProfile = require('../../../../model/employer_profile');
 
 module.exports = async function (req,res) {
 
@@ -31,9 +29,36 @@ module.exports = async function (req,res) {
             };
             let forgotPasswordToken = jwtToken.createJwtToken(userDoc , signOptions);
             await User.update({ _id: mongo.helper.toObjectID(userDoc._id) },{ $set: {'forgot_password_key': forgotPasswordToken } });
-            res.send({
-                success : true
-            })
+            if(userDoc.type === 'candidate') {
+                let name;
+                const candidateDoc = await CandidateProfile.find({_creator : userDoc._id}).populate('_creator').lean();
+                if(candidateDoc && candidateDoc.length > 0 && candidateDoc[0].first) {
+                    name = candidateDoc[0].first_name;
+                }
+                else
+                {
+                    name = null;
+                }
+                forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);
+                res.send({
+                    success : true
+                })
+            }
+            if(userDoc.type === 'company') {
+                let name;
+                const companyDoc = await EmployerProfile.find({_creator : userDoc._id}).populate('_creator').lean();
+                if(companyDoc && companyDoc.length > 0 ) {
+                    name = companyDoc[0].first_name;
+                }
+                else {
+                    name = null;
+                }
+
+                forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);
+                res.send({
+                    success : true
+                })
+            }
         }
     }
     else {

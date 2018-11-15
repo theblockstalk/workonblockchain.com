@@ -639,22 +639,30 @@ export class UserService {
     {
 
         return this.http.put<any>(URL+'users/reset_password/' + hash, data)
-            .map(data => {
+          .map((res: Response) =>
+          {
+            if (res)
+            {
+              return res;
+            }
+          }).catch((error: any) =>
+          {
+            if (error)
+            {
+              if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+              {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+              else return Observable.throw(new Error(error));
+            }
 
-                if (data)
-                {
-                   // //console.log(data);
-                    return data;
-                }
-                else
-                {
-                    ////console.log(data);
-                    return data.msg;
-
-                }
-
-
-            });
+          });
 
     }
 
