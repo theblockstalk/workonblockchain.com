@@ -136,7 +136,7 @@ router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(
 // Admin
 router.put('/users/approve/:_id', auth.isAdmin  , asyncMiddleware(adminApproveUser));
 router.post('/users/admin_candidate_filter', auth.isAdmin , asyncMiddleware(adminCandidateFilter));
-router.post('/users/admin_company_filter', auth.isAdmin , adminComanyFilter);
+router.post('/users/admin_company_filter', auth.isAdmin , asyncMiddleware(adminComanyFilter));
 router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent);
 router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , adminAddNewPagesContent);
 router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
