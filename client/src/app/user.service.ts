@@ -188,31 +188,6 @@ export class UserService {
 
     }
 
-    getVerifiedCandidateDetail(_id:string)
-    {
-         return this.http.get<any>(URL+'users/verified_candidate_detail/'+_id,  {
-            headers: new HttpHeaders().set('Authorization', this.token)
-        }).map((res: Response) =>
-            {
-            //console.log(res);
-                if (res)
-                {
-                        return res;
-                }
-            }).catch((error: any) =>
-            {
-                //console.log(error.status);
-                if (error.status )
-                {
-                    return Observable.throw(new Error(error.status));
-                }
-
-            });
-    }
-
-
-
-
     getByRefrenceCode(code: string){
 
         return this.http.post<any>(URL+'users/get_refrence_code', {code:code} )
@@ -438,9 +413,19 @@ export class UserService {
                 }
             }).catch((error: any) =>
             {
-                if (error.status )
+                if (error )
                 {
-                    return Observable.throw(new Error(error.status));
+                  if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+                  {
+                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('googleUser');
+                    localStorage.removeItem('close_notify');
+                    localStorage.removeItem('linkedinUser');
+                    localStorage.removeItem('admin_log');
+                    window.location.href = '/login';
+                  }
+                  else return Observable.throw(error);
                 }
 
             });
@@ -889,9 +874,19 @@ export class UserService {
                 }
             }).catch((error: any) =>
             {
-                if (error.status )
+                if (error)
                 {
-                    return Observable.throw(new Error(error.status));
+                  if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+                  {
+                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('googleUser');
+                    localStorage.removeItem('close_notify');
+                    localStorage.removeItem('linkedinUser');
+                    localStorage.removeItem('admin_log');
+                    window.location.href = '/login';
+                  }
+                  else return Observable.throw(error);
                 }
 
             });
@@ -961,27 +956,6 @@ export class UserService {
 
     }
 
-
-    searchByWord(word:string)
-    {
-         return this.http.post<any>(URL+'users/search_word', { search: word}, {
-            headers: new HttpHeaders().set('Authorization', this.token)
-        })
-            .map((res: Response) =>
-            {
-                if (res)
-                {
-                        return res;
-                }
-            }).catch((error: any) =>
-            {
-                if (error.status )
-                {
-                    return Observable.throw(new Error(error.status));
-                }
-
-            });
-    }
 
     filterSearch(word :string , skill : string , location: string , position:any , blockchain:any , avail:string, salary :string ,currency :string)
     {
@@ -1520,9 +1494,9 @@ export class UserService {
         }
       }).catch((error: any) =>
       {
-        if (error.status )
+        if (error )
         {
-          return Observable.throw(new Error(error.status));
+          return Observable.throw(new Error(error));
         }
 
       });
