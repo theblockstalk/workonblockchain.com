@@ -40,9 +40,7 @@ module.exports = async function (req, res) {
         }
         else
         {
-            res.send({
-                success : false
-            });
+            errors.throwError("Referral doc not found", 404);
         }
 
     }

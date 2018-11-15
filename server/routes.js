@@ -15,7 +15,6 @@ const authResetPassword = require('./controller/api/users/auth/resetPassword.con
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
 const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
-const updateExplanationPopupStatus = require('./controller/api/chat/updateExplanationPopupStatus.controller');
 
 // Referrals
 const refGetReferralCode = require('./controller/api/users/referrals/getReferralCode.controller');
@@ -60,6 +59,8 @@ const chatUpdateJobMessage = require('./controller/api/chat/updateJobMessage.con
 const chatUpdateIsCompanyReplyStatus = require('./controller/api/chat/updateIsCompanyReplyStatus.controller');
 const chatGetEmployOffer = require('./controller/api/chat/chatGetEmployOffer.controller');
 const chatGetLastJobDescription = require('./controller/api/chat/getLastJobDescription.controller');
+const updateExplanationPopupStatus = require('./controller/api/chat/updateExplanationPopupStatus.controller');
+
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');

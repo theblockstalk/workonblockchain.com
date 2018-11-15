@@ -47,7 +47,7 @@ export class AdminCompanyDetailComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
     this.credentials.user_id = this.user_id;
-
+    this.error ='';
 
     if(this.user_id && this.admin_log.is_admin === 1 && this.currentUser)
     {
@@ -86,7 +86,17 @@ export class AdminCompanyDetailComponent implements OnInit {
 
                     },
                     error => {
-
+                      if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                      {
+                        this.error = error['error']['message'];
+                      }if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                      {
+                        this.error = error['error']['message'];
+                      }
+                      else
+                      {
+                        this.error = error['error']['message'];
+                      }
                     }
                   );
               }

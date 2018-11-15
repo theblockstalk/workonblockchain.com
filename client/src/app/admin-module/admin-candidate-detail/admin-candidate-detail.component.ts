@@ -68,6 +68,7 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.response = "";
     this.referred_link = "";
     this.referred_name = "";
+    this.error = "";
 
 
     if(this.user_id && this.admin_log && this.currentUser)
@@ -193,7 +194,17 @@ export class AdminCandidateDetailComponent implements OnInit {
 
                           },
                     error => {
-
+                      if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                      {
+                        this.error = error['error']['message'];
+                      }if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                      {
+                        this.error = error['error']['message'];
+                      }
+                      else
+                      {
+                        this.error = error['error']['message'];
+                      }
 
                     }
                   );

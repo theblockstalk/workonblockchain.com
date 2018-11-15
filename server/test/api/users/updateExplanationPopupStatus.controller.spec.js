@@ -29,7 +29,7 @@ describe('update explanation pop for chat', function () {
 
             const status = true;
             const result = await userHelpers.setStatus(status,userDoc.jwt_token);
-            result.body.viewed_explanation_popup.should.equal(status);
+            result.body.success.should.equal(true);
         })
     })
 });
