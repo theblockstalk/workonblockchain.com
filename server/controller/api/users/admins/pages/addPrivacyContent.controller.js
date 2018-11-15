@@ -6,115 +6,43 @@ const sanitize = require('../../../../services/sanitize');
 
 //////////inserting message in DB ////////////
 
-module.exports = function (req,res)
-{
+module.exports = async function (req,res) {
+    console.log("add content");
     let userId = req.auth.user._id;
-    console.log(req.body);
-	logger.info(req.body);
-	const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
-    add_privacy_content(req.body, sanitizedHtml,userId).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
-        }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
-
-function add_privacy_content(info, html_text, userId)
-{
-    var deferred = Q.defer();
-    var createdDate;
-    let now = new Date();
-    createdDate= now;
-
-    Pages.findOne({ page_name: info.page_name}, function (err, data)
-    {
-        
-        if (err)
-		{
-
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        if(data==null)
-        {
-            
-            insertContent();
-
-        }
-
-        else
-        {
-        
-            updateContent(data._id);
-        }
-
-    });
-
-    function updateContent(_id)
-    {
-      
-        var set =
+    let queryBody = req.body;
+    logger.info(req.body);
+    console.log(queryBody.page_name);
+    const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
+    const pagesDoc = await Pages.findOne({ page_name: queryBody.page_name}).lean();
+    if(pagesDoc) {
+        let updatePage =
             {
-                page_content : html_text,
-                page_title : info.page_title,
+                page_content : sanitizedHtml,
+                page_title : queryBody.page_title,
                 updated_by : userId,
-                updated_date:createdDate,
+                updated_date: new Date(),
             };
 
-        Pages.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+        await Pages.update({ _id: pagesDoc._id },{ $set: updatePage });
+        res.send({
+            success : true
+        })
     }
-
-    function insertContent()
-    {
-        
-        let add_content = new Pages
+    else {
+        let addNewPage = new Pages
         ({
-            page_title : info.page_title,
-            page_content : html_text,
-            page_name : info.page_name,
-            updated_by : userId,
-            updated_date:createdDate,
-
+            page_name : queryBody.page_name,
+            page_content: sanitizedHtml,
+            page_title: queryBody.page_title,
+            updated_by: userId,
+            updated_date: new Date(),
         });
-
-        add_content.save((err,data)=>
-        {
-            if(err)
-            {
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-
-            {
-
-                deferred.resolve
-                ({
-                    information :data
-                });
-			}
-		});
-
+        const newPageDoc = await addNewPage.save();
+        res.send({
+            success : true,
+            information : newPageDoc
+        })
     }
 
-    return deferred.promise;
 
 }
