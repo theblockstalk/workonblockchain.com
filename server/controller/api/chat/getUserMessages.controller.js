@@ -1,4 +1,5 @@
 const chat = require('../../../model/chat');
+const errors = require('../../services/errors');
 
 module.exports = async function (req, res) {
     let userId;
@@ -13,5 +14,10 @@ module.exports = async function (req, res) {
         $or:[{receiver_id:userId},{sender_id: userId}]
 	},{_id:0,sender_id:1,receiver_id:1,is_company_reply:1})
 	.sort({date_created: 'descending'}).lean();
-    res.send({datas:chatDoc});
+    if(chatDoc) {
+        res.send({datas: chatDoc});
+    }
+    else{
+        errors.throwError('Conversation not found', 404);
+    }
 };

@@ -1,4 +1,5 @@
 const chat = require('../../../model/chat');
+const errors = require('../../services/errors');
 
 module.exports = async function (req, res) {
     const userId = req.auth.user._id;
@@ -17,7 +18,7 @@ module.exports = async function (req, res) {
         }]
     }).lean();
     if(chatDoc) {
-        res.send({datas:chatDoc});
+        errors.throwError('Employment offer found', 404);
     }
     else{
         res.send({success:false})

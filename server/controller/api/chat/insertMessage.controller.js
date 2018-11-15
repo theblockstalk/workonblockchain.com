@@ -21,7 +21,7 @@ module.exports = async function (req, res) {
     let userId = req.auth.user._id;
 
     let interview_date = '';
-    if(req.body.msg_tag == 'interview_offer'){
+    if(req.body.msg_tag === 'interview_offer'){
         interview_date = req.body.date_of_joining+' '+req.body.interview_time+':00';
     }
 

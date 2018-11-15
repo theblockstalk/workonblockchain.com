@@ -1,4 +1,5 @@
 const chat = require('../../../model/chat');
+const errors = require('../../services/errors');
 
 module.exports = async function (req, res) {
     const userId = req.auth.user._id;
@@ -7,9 +8,7 @@ module.exports = async function (req, res) {
         $and:[{receiver_id:req.body.receiver_id},{sender_id: userId},{msg_tag:req.body.msg_tag}]
     }).lean();
     if(chatDoc){
-        res.send({
-            datas: chatDoc
-        });
+        errors.throwError('Conversation found', 404);
     }
     else{
         res.send({
