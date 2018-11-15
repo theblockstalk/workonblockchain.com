@@ -11,12 +11,9 @@ const errors = require('../../../services/errors');
 module.exports = async function (req,res) {
 
     let passwordHash = req.params.hash;
-    console.log(passwordHash);
     let queryBody = req.body;
-    console.log(queryBody);
 
     let payloaddata = jwtToken.verifyJwtToken(passwordHash);
-console.log(payloaddata)
     if((payloaddata.exp - payloaddata.iat) === 3600) {
         const userDoc = await User.findOne({ forgot_password_key : passwordHash}).lean();
         if(userDoc) {

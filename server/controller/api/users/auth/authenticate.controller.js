@@ -29,7 +29,7 @@ module.exports = async function (req, res) {
           });
       }
       else {
-          errors.throwError("Incorrect Username or Password" , 400)
+          errors.throwError("User not found" , 404)
       }
     }
 
@@ -83,7 +83,7 @@ module.exports = async function (req, res) {
 
         }
         else {
-            errors.throwError("Incorrect Username or Password" , 400)
+            errors.throwError("User not found" , 404)
         }
 
     }

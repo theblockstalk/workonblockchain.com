@@ -1,97 +1,64 @@
 const settings = require('../../../../settings');
 var _ = require('lodash');
 var Q = require('q');
-const users = require('../../../../model/users');
+const User = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');
 const logger = require('../../../services/logger');
+const errors = require('../../../services/errors');
 
-module.exports = function verify_send_email(emailAdress, verifyEmailToken) {
-    var deferred = Q.defer()
-
-    var name;
-    users.findOne({ email :emailAdress  }, function (err, userDoc)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        if(userDoc)
-        {
-            if(userDoc.type== 'candidate')
-            {
-
-                CandidateProfile.find({_creator : userDoc._id}).populate('_creator').exec(function(err, query_data)
-                {
-
-                    if (err){
-                        logger.error(err.message, {stack: err.stack});
-                        deferred.reject(err.name + ': ' + err.message);
-                    }
-                    if(query_data)
-                    {
-
-                        if(query_data[0] && query_data[0].first_name)
-                        {
-                            name = query_data[0].first_name;
-                        }
-                        else
-                        {
-                            name = null;
-                        }
-                        verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
-
-                    }
-                    else
-                    {
-                        name = null;
-                        verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
-                    }
-
-                });
+module.exports = async function verify_send_email(emailAddress, verifyEmailToken) {
+    const userDoc = await User.findOne({ email :emailAddress }).lean();
+    if(userDoc) {
+        if(userDoc.type === 'candidate') {
+            let name;
+            const candidateDoc = await CandidateProfile.find({_creator : userDoc._id}).populate('_creator').lean();
+            if(candidateDoc && candidateDoc.length > 0 ) {
+                if(candidateDoc[0].first_name) {
+                    name = candidateDoc[0].first_name;
+                }
+                else {
+                    name = null;
+                }
+                verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
+                res.send({
+                    success : true
+                })
             }
-            else
-            {
-
-                EmployerProfile.find({_creator : userDoc._id}).populate('_creator').exec(function(err, query_data)
-                {
-
-                    if (err){
-                        logger.error(err.message, {stack: err.stack});
-                        deferred.reject(err.name + ': ' + err.message);
-                    }
-                    if(query_data)
-                    {
-
-                        if(query_data[0] && query_data[0].first_name)
-                        {
-                            name = query_data[0].first_name;
-                        }
-                        else
-                        {
-                            name = null;
-
-                        }
-                        verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
-
-                    }
-                    else
-                    {
-                        name = null;
-                        verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
-                    }
-
-                });
+            else {
+                verifyEmailEmail.sendEmail(userDoc.email, null ,verifyEmailToken);
+                res.send({
+                    success : true
+                })
             }
-
         }
-        else
-        {
-            deferred.resolve({error:'Email Not Found'});
+        if(userDoc.type === 'company') {
+            let name;
+            const companyDoc = await EmployerProfile.find({_creator : userDoc._id}).populate('_creator').lean();
+            if(companyDoc && companyDoc.length > 0 ) {
+                if(companyDoc[0].first_name) {
+                    name = companyDoc[0].first_name;
+                }
+                else {
+                    name = null;
+                }
+                verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
+                res.send({
+                    success : true
+                })
+            }
+            else {
+                verifyEmailEmail.sendEmail(userDoc.email, null ,verifyEmailToken);
+                res.send({
+                    success : true
+                })
+            }
         }
-
-    });
+    }
+    else {
+        errors.throwError("User not found", 404);
+    }
 
 
 }
