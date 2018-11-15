@@ -134,7 +134,7 @@ router.post('/users/get_employ_offer',auth.isValidUser, chatGetEmployOffer);
 router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(chatGetLastJobDescription));
 
 // Admin
-router.put('/users/approve/:_id', auth.isAdmin  , adminApproveUser);
+router.put('/users/approve/:_id', auth.isAdmin  , asyncMiddleware(adminApproveUser));
 router.post('/users/admin_candidate_filter', auth.isAdmin , adminCandidateFilter);
 router.post('/users/admin_company_filter', auth.isAdmin , adminComanyFilter);
 router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent);

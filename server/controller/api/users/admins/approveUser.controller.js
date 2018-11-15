@@ -1,118 +1,59 @@
-const settings = require('../../../../settings');
 var _ = require('lodash');
-var Q = require('q');
-var mongo = require('mongoskin');
-const users = require('../../../../model/users');
+const User = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
+const errors = require('../../../services/errors');
 
 const candidateApprovedEmail = require('../../../services/email/emails/candidateApproved');
 const companyApprovedEmail = require('../../../services/email/emails/companyApproved');
 
-const logger = require('../../../services/logger');
+module.exports = async function (req, res) {
 
-module.exports = function (req, res)
-{
-    approve_users(req.params._id, req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
-        }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
+    const querybody = req.body;
+    const userId = req.params._id;
 
-function approve_users(_id , data)
-{
-    var deferred = Q.defer();
-    users.findOne({ _id: _id}, function (err, result)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        if(result)
-            admin_approval(result);
-
-        else
-            deferred.reject('Email Not Found');
-    });
-
-    function admin_approval(userDoc)
-    {
-        var set =
+    const userDoc = await User.findOne({ _id: userId}).lean();
+    if(userDoc) {
+        const userRes = await User.update({ _id:  userDoc._id },{ $set: {'is_approved': querybody.is_approve} });
+        if(userRes.is_approved === 1) {
+            if(userDoc.type === 'candidate')
             {
-                is_approved: data.is_approve,
-
-            };
-        users.update({ _id: mongo.helper.toObjectID(userDoc._id) },{ $set: set }, function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            if (set.is_approved === 1)
-            {
-                if(userDoc.type === 'candidate')
-                {
-                    CandidateProfile.findOne({ _creator: userDoc._id}, function (err, candidateDoc)
-                    {
-                        if (err){
-                            logger.error(err.message, {stack: err.stack});
-                            deferred.reject(err.name + ': ' + err.message);
-                        }
-                        if(candidateDoc)
-                        {
-                            candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name,userDoc.disable_account);
-                            deferred.resolve({success:true});
-
-                        }
-
-                        else
-                            deferred.reject('Candidate not exists');
-
-
-                    });
+                const candidateDoc = await CandidateProfile.findOne({ _creator: userDoc._id}).lean();
+                if(candidateDoc) {
+                    candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name,userDoc.disable_account);
+                    res.send({
+                        success : true
+                    })
                 }
-
-                if(userDoc.type === 'company')
-                {
-                    EmployerProfile.findOne({ _creator: userDoc._id}, function (err, companyDoc)
-                    {
-                        if (err){
-                            logger.error(err.message, {stack: err.stack});
-                            deferred.reject(err.name + ': ' + err.message);
-                        }
-                        if(companyDoc)
-                        {
-                            companyApprovedEmail.sendEmail(userDoc.email, companyDoc.first_name, userDoc.disable_account);
-                            deferred.resolve({success:true});
-                        }
-
-                        else
-                            deferred.reject('Company not exists');
-
-
-                    });
+                else {
+                    errors.throwError("Candidate account not found", 404)
 
                 }
 
+            }
+            if(userDoc.type === 'company') {
+                const companyDoc = await EmployerProfile.findOne({ _creator: userDoc._id}).lean();
+                if(companyDoc) {
+                    companyApprovedEmail.sendEmail(userDoc.email, companyDoc.first_name, userDoc.disable_account);
+                    res.send({
+                        success : true
+                    })
+                }
+                else {
+                    errors.throwError("Candidate account not found", 404)
 
+                }
             }
-            else
-            {
-                deferred.resolve(set);
-            }
-        });
+        }
+        else {
+            res.send({
+                success : true
+            })
+        }
+    }
+    else {
+        errors.throwError("User not found", 404)
     }
 
-    return deferred.promise;
+
 }

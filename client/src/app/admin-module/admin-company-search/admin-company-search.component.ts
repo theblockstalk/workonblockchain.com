@@ -126,9 +126,10 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
         });
   }
 
-
+error ;
   approveClick(event , approveForm: NgForm)
   {
+    this.error = '';
 
     if(event.srcElement.innerHTML ==='Active' )
     {
@@ -171,20 +172,16 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
 
         error =>
         {
-          if(error.message === 500 || error.message === 401)
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
+            this.error = error['error']['message'];
           }
-
-          if(error.message === 403)
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
-            // this.router.navigate(['/not_found']);
+            this.error = error['error']['message'];
+          }
+          else {
+            this.error = "Something getting wrong";
           }
         });
   }
