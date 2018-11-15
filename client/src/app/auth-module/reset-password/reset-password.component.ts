@@ -51,6 +51,9 @@ export class ResetPasswordComponent implements OnInit {
           {
             this.log = error['error']['message'];
           }
+          if(error['status'] === 500) {
+            this.log = "Something getting wrong. Please check your link";
+          }
 
         });
   }

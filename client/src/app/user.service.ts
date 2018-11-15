@@ -659,7 +659,7 @@ export class UserService {
                 localStorage.removeItem('admin_log');
                 window.location.href = '/login';
               }
-              else return Observable.throw(new Error(error));
+              else return Observable.throw(error);
             }
 
           });
