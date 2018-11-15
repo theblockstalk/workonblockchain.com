@@ -98,7 +98,7 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 // Candidates
 router.post('/users/register', asyncMiddleware(candidateRegister));
 router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
-router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent)); // Admin or valid company can call this...
+router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent));
 router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC));
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
 router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
@@ -132,16 +132,17 @@ router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser
 router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);
 router.post('/users/get_employ_offer',auth.isValidUser, chatGetEmployOffer);
 router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(chatGetLastJobDescription));
+router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
+router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
+router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
+
 
 // Admin
 router.put('/users/approve/:_id', auth.isAdmin  , asyncMiddleware(adminApproveUser));
 router.post('/users/admin_candidate_filter', auth.isAdmin , asyncMiddleware(adminCandidateFilter));
 router.post('/users/admin_company_filter', auth.isAdmin , asyncMiddleware(adminComanyFilter));
 router.put('/users/add_privacy_content' , auth.isAdmin , asyncMiddleware(adminAddPrivacyContent));
-router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , adminAddNewPagesContent);
-router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
-router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
-router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
+router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , asyncMiddleware(adminAddNewPagesContent));
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
 
 // Pages
