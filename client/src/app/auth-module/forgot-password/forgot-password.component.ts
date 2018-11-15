@@ -34,25 +34,22 @@ export class ForgotPasswordComponent implements OnInit {
     this.authenticationService.forgot_password(f.value.email)
       .subscribe(
         data => {
-          //console.log(data);
-          if(!data['error'])
-          {
+
             this.dataservice.forgertMessage("Please check your email to reset the password.");
             this.router.navigate(["/login"]);
 
-          }
-
-          else
-          {
-            this.dataservice.changeMessage(data['error']);
-            this.log= data['error'];
-
-
-          }
-
         },
         error => {
-          this.dataservice.changeMessage(error);
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.dataservice.changeMessage(error['error']['message']);
+            this.log = error['error']['message'];
+          }
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.dataservice.changeMessage(error['error']['message']);
+            this.log = error['error']['message'];
+          }
 
         });
   }
