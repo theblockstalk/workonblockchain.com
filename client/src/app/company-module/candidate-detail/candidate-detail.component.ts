@@ -258,7 +258,7 @@ export class CandidateDetailComponent implements OnInit {
               this.job_offer_msg = 'You have already sent a job description to this candidate';
             },
             error => {
-              if(error.status == 500 || error.status == 401)
+              if(error.status === 500 || error.status === 401)
               {
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                 localStorage.removeItem('currentUser');

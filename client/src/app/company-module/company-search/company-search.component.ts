@@ -605,7 +605,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.job_offer_log = 'You have already sent a job description to this candidate';
 					},
 					error => {
-            if(error.status == 500 || error.status == 401)
+            if(error.status === 500 || error.status === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');

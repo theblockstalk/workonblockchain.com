@@ -367,7 +367,7 @@ export class ChatComponent implements OnInit {
 						}
                     },
                     error => {
-                        if(error.status == 500 || error.status == 401)
+                        if(error.status === 500 || error.status === 401)
                         {
                           localStorage.setItem('jwt_not_found', 'Jwt token not found');
                           localStorage.removeItem('currentUser');
@@ -450,7 +450,7 @@ export class ChatComponent implements OnInit {
 						}
                     },
                     error => {
-                        if(error.status == 500 || error.status == 401)
+                        if(error.status === 500 || error.status === 401)
                         {
                           localStorage.setItem('jwt_not_found', 'Jwt token not found');
                           localStorage.removeItem('currentUser');
@@ -1165,7 +1165,7 @@ export class ChatComponent implements OnInit {
         this.job_offer_log = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
       },
       error => {
-        if (error.status == 500 || error.status == 401) {
+        if (error.status === 500 || error.status === 401) {
           localStorage.setItem('jwt_not_found', 'Jwt token not found');
           localStorage.removeItem('currentUser');
           localStorage.removeItem('googleUser');
