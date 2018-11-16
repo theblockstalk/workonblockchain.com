@@ -48,11 +48,11 @@ module.exports = async function (req, res) {
             }
             else
             {
-                errors.throwError('Candidate not found', 404);
+                errors.throwError('User not found', 404);
             }
         }
         else{
-            errors.throwError('Candidate not found', 404);
+            errors.throwError('User not found', 404);
 		}
     }
     else{
@@ -73,11 +73,11 @@ module.exports = async function (req, res) {
             }
             else
             {
-                errors.throwError('Candidate not found', 404);
+                errors.throwError('User not found', 404);
             }
         }
         else{
-            errors.throwError('Candidate not found', 404);
+            errors.throwError('User not found', 404);
         }
 	}
 };
