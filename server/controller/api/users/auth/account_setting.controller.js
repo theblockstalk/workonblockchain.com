@@ -1,4 +1,3 @@
-var _ = require('lodash');
 const User = require('../../../../model/users');
 const errors = require('../../../services/errors');
 

@@ -1,5 +1,4 @@
-var Q = require('q');
-var mongo = require('mongoskin');
+const mongo = require('mongoskin');
 const User = require('../../../../model/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
@@ -28,7 +27,7 @@ module.exports = async function (req,res) {
                 expiresIn:  "1h",
             };
             let forgotPasswordToken = jwtToken.createJwtToken(userDoc , signOptions);
-            await User.update({ _id: mongo.helper.toObjectID(userDoc._id) },{ $set: {'forgot_password_key': forgotPasswordToken } });
+            await User.update({ _id: userDoc._id },{ $set: {'forgot_password_key': forgotPasswordToken } });
             if(userDoc.type === 'candidate') {
                 let name;
                 const candidateDoc = await CandidateProfile.find({_creator : userDoc._id}).populate('_creator').lean();

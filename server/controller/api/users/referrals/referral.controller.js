@@ -1,6 +1,4 @@
-var Q = require('q');
 const referUserEmail = require('../../../services/email/emails/referUser');
-const logger = require('../../../services/logger');
 const sanitize = require('../../../services/sanitize');
 
 module.exports = async function (req, res) {

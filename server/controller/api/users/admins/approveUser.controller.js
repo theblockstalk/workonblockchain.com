@@ -1,4 +1,3 @@
-var _ = require('lodash');
 const User = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');

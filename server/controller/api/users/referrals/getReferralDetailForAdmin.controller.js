@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 const referral = require('../../../../model/referrals');
 const user = require('../../../../model/users');
 const employerProfile = require('../../../../model/employer_profile');

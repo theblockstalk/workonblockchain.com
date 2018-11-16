@@ -1,11 +1,7 @@
-const settings = require('../../../../settings');
-var _ = require('lodash');
-var Q = require('q');
 const User = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');
-const logger = require('../../../services/logger');
 const errors = require('../../../services/errors');
 
 module.exports = async function verify_send_email(emailAddress, verifyEmailToken) {

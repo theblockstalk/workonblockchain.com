@@ -1,10 +1,4 @@
-const settings = require('../../../../settings');
-var _ = require('lodash');
-var Q = require('q');
-var mongo = require('mongoskin');
 const User = require('../../../../model/users');
-const logger = require('../../../services/logger');
-var crypto = require('crypto');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
 

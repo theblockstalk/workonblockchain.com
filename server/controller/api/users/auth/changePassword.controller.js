@@ -1,11 +1,5 @@
-const settings = require('../../../../settings');
-var _ = require('lodash');
-var bcrypt = require('bcryptjs');
-var Q = require('q');
-var mongo = require('mongoskin');
 const User = require('../../../../model/users');
-const logger = require('../../../services/logger');
-var crypto = require('crypto');
+const crypto = require('crypto');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req,res)

@@ -1,4 +1,3 @@
-var Q = require('q');
 const User = require('../../../../../model/users');
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const filterReturnData = require('../../filterReturnData');

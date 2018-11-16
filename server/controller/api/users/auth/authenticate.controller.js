@@ -1,11 +1,8 @@
-const bcrypt = require('bcryptjs');
 const User = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
-const Q = require('q');
 const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
-const logger = require('../../../services/logger');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {

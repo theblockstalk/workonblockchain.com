@@ -1,8 +1,4 @@
-const settings = require('../../../../../settings');
-var Q = require('q');
-var mongo = require('mongoskin');
 const CandidateProfile = require('../../../../../model/candidate_profile');
-const logger = require('../../../../services/logger');
 const errors = require('../../../../services/errors');
 
 module.exports = async function (req,res) {

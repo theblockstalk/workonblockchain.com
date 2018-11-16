@@ -1,7 +1,6 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const User = require('../../../../../model/users');
 const referral = require('../../../../../model/referrals');
-const EmployerProfile = require('../../../../../model/employer_profile');
 const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
 const verify_send_email = require('../../auth/verify_send_email');
 const jwtToken = require('../../../../services/jwtToken');

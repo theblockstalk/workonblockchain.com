@@ -1,6 +1,4 @@
-var Q = require('q');
 const CandidateProfile = require('../../../../model/candidate_profile');
-const logger = require('../../../services/logger');
 const filterReturnData = require('../filterReturnData');
 const errors = require('../../../services/errors');
 

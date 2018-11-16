@@ -1,9 +1,7 @@
-var _ = require('lodash');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const Chat = require('../../../../model/chat');
 const errors = require('../../../services/errors');
 
-const logger = require('../../../services/logger');
 const filterReturnData = require('../filterReturnData');
 
 module.exports = async function (req,res) {

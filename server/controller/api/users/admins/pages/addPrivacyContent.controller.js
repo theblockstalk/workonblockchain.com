@@ -1,5 +1,3 @@
-const Q = require('q');
-const mongo = require('mongoskin');
 const Pages = require('../../../../../model/pages_content');
 const logger = require('../../../../services/logger');
 const sanitize = require('../../../../services/sanitize');

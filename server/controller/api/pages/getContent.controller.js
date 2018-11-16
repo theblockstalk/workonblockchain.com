@@ -1,8 +1,4 @@
-const settings = require('../../../settings');
-var _ = require('lodash');
-var Q = require('q');
 const Pages = require('../../../model/pages_content');
-const logger = require('../../services/logger');
 const errors = require('../../services/errors');
 
 module.exports = async function (req,res) {
