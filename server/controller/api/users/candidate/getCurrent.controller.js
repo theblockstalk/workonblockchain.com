@@ -6,7 +6,7 @@ const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
     const candidateDoc = await CandidateProfile.findById(req.params._id).populate('_creator').lean();
-    if(candidateDoc && candidateDoc.length > 0) {
+    if(candidateDoc) {
         const filterData = filterReturnData.removeSensativeData(candidateDoc);
         res.send(filterData);
     }

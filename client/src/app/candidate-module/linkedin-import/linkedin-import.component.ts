@@ -448,14 +448,7 @@ export class LinkedinImportComponent implements OnInit {
   file_name;
   onSubmit(f: NgForm)
   {
-    console.log("form object");
-    console.log(f);
-    console.log("getting file name from form object");
-    console.log((f.value.fileselect));
-    console.log("file name in onsubmit");
-    console.log(this.file_name);
-    console.log("file event in onsubmit");
-    console.log(this.fileevent);
+   
     if(!this.fileevent)
     {
       this.error_log = "Please choose file";
