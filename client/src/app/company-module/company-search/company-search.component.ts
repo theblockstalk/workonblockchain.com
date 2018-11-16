@@ -602,45 +602,45 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 				this.authenticationService.get_job_desc_msgs(this.user_id.id,'job_offer')
 				.subscribe(
 					data => {
-            this.date_of_joining = '10-07-2018';
-            this.msg_tag = 'job_offer';
-            this.is_company_reply = 0;
-            this.msg_body = '';
-            this.description = this.credentials.job_desc;
-            this.interview_location = this.credentials.location;
-            this.authenticationService.insertMessage(this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
-              .subscribe(
-                data => {
-                  this.job_offer_log = 'Message successfully sent';
-                  this.credentials.job_title = '';
-                  this.credentials.salary = '';
-                  this.credentials.currency = '';
-                  this.credentials.location = '';
-                  this.credentials.job_type = '';
-                  this.credentials.job_desc = '';
-                  $("#myModal").modal("hide");
-                  this.router.navigate(['/chat']);
-                },
-                error => {
-
-                }
-              );
+            this.job_offer_log = 'You have already sent a job description to this candidate';
 					},
 					error => {
-						 if(error.message === 500 || error.message === 401)
-						{
-							localStorage.setItem('jwt_not_found', 'Jwt token not found');
-							 localStorage.removeItem('currentUser');
-											localStorage.removeItem('googleUser');
-											localStorage.removeItem('close_notify');
-											localStorage.removeItem('linkedinUser');
-											localStorage.removeItem('admin_log');
-							window.location.href = '/login';
-						}
+            if(error.status == 500 || error.status == 401)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
             if(error.status === 404)
             {
-              this.job_offer_log = 'You have already sent a job description to this candidate';
+              this.date_of_joining = '10-07-2018';
+              this.msg_tag = 'job_offer';
+              this.is_company_reply = 0;
+              this.msg_body = '';
+              this.description = this.credentials.job_desc;
+              this.interview_location = this.credentials.location;
+              this.authenticationService.insertMessage(this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+                .subscribe(
+                  data => {
+                    this.job_offer_log = 'Message successfully sent';
+                    this.credentials.job_title = '';
+                    this.credentials.salary = '';
+                    this.credentials.currency = '';
+                    this.credentials.location = '';
+                    this.credentials.job_type = '';
+                    this.credentials.job_desc = '';
+                    $("#myModal").modal("hide");
+                    this.router.navigate(['/chat']);
+                  },
+                  error => {
+
+                  }
+                );
             }
 					}
 				);

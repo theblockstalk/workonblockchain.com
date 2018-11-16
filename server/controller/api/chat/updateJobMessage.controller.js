@@ -1,7 +1,7 @@
 const chat = require('../../../model/chat');
 
 module.exports = async function (req, res) {
-    var set =
+    let set =
         {
             is_job_offered: req.body.status,
 

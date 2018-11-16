@@ -2,7 +2,7 @@ const chat = require('../../../model/chat');
 
 module.exports = async function (req, res) {
     const userId = req.auth.user._id;
-    var set =
+    let set =
     {
         is_read: 1,
 

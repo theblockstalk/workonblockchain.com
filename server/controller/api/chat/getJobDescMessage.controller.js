@@ -7,12 +7,13 @@ module.exports = async function (req, res) {
     const chatDoc = await chat.findOne({
         $and:[{receiver_id:req.body.receiver_id},{sender_id: userId},{msg_tag:req.body.msg_tag}]
     }).lean();
-    if(chatDoc){
-        errors.throwError('Conversation found', 404);
+    if(chatDoc) {
+        res.send({
+            success:true,
+            message: "employment offer already sent"
+        });
     }
     else{
-        res.send({
-            datas: 0
-        });
+        errors.throwError("conversation not found" ,404);
     }
 };

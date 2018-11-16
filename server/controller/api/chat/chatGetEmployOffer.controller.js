@@ -18,9 +18,12 @@ module.exports = async function (req, res) {
         }]
     }).lean();
     if(chatDoc) {
-        errors.throwError('Employment offer found', 404);
+        res.send({
+            success:true,
+            message: "employment offer already sent"
+        });
     }
     else{
-        res.send({success:false})
+        errors.throwError("conversation not found" ,404);
     }
 };
