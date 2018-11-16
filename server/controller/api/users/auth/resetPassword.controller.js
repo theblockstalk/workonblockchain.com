@@ -1,6 +1,7 @@
 const User = require('../../../../model/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
+const crypto = require('crypto');
 
 module.exports = async function (req,res) {
 
