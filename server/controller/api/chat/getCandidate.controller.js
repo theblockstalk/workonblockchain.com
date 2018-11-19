@@ -1,154 +1,83 @@
-var Q = require('q');
 const users = require('../../../model/users');
 const CandidateProfile = require('../../../model/candidate_profile');
 const EmployerProfile = require('../../../model/employer_profile');
 
-const logger = require('../../services/logger');
 const filterReturnData = require('../users/filterReturnData');
 
-module.exports = function (req, res)
-{
-    let getCandidatePromise;
-	if (req.body.sender_id === '0') { // company is calling endpoint
-        getCandidatePromise = get_candidate(req.auth.user._id, req.body.receiver_id, req.body.is_company_reply, req.body.type);
+module.exports = async function (req, res) {
+    let sender_id,receiver_id,is_company_reply,user_type;
+    if (req.body.sender_id === '0') { // company is calling endpoint
+        sender_id = req.auth.user._id;
+        receiver_id = req.body.receiver_id;
+        is_company_reply = req.body.is_company_reply;
+        user_type = req.body.type;
     }
     else if (req.body.receiver_id === '0') { // candidate is calling endpoint
-        getCandidatePromise = get_candidate(req.body.sender_id, req.auth.user._id, req.body.is_company_reply, req.body.type);
+        sender_id = req.body.sender_id;
+        receiver_id = req.auth.user._id;
+        is_company_reply = req.body.is_company_reply;
+        user_type = req.body.type;
     }
     else { // admin is calling endpoint
         if (req.auth.user.is_admin){
-            getCandidatePromise = get_candidate(req.body.sender_id, req.body.receiver_id, req.body.is_company_reply, req.body.type);
+            sender_id = req.body.sender_id;
+            receiver_id = req.body.receiver_id;
+            is_company_reply = req.body.is_company_reply;
+            user_type = req.body.type;
+        }
+    }
+    if(req.body.type === 'candidate') {
+        const userDoc = await users.findOne({
+            $and: [{ _id : receiver_id }, { type : user_type }]
+        }).lean();
+        if(userDoc){
+            const candidateProfile = await CandidateProfile.findOne({
+                "_creator": userDoc._id
+            }).populate('_creator').lean();
+            if (candidateProfile)
+            {
+                let query_result = filterReturnData.removeSensativeData(candidateProfile);
+                if(is_company_reply === 1){
+                }
+                else{
+                    query_result = filterReturnData.anonymousSearchCandidateData(query_result);
+                }
+                res.send({
+                    users:query_result
+                });
+            }
+            else
+            {
+                errors.throwError('User not found', 404);
+            }
+        }
+        else{
+            errors.throwError('User not found', 404);
 		}
+    }
+    else{
+        const userDoc = await users.findOne({
+            $and: [{ _id : sender_id }, { type : user_type }]
+        }).lean();
+        if(userDoc) {
+            const companyProfile = await EmployerProfile.findOne({
+                "_creator": userDoc._id
+            }).populate('_creator').lean();
+            if (companyProfile)
+            {
+                let query_result = filterReturnData.removeSensativeData(companyProfile);
+                query_result = filterReturnData.anonymousCandidateData(query_result);
+                res.send({
+                    users:query_result
+                });
+            }
+            else
+            {
+                errors.throwError('User not found', 404);
+            }
+        }
+        else{
+            errors.throwError('User not found', 404);
+        }
 	}
-    getCandidatePromise.then(function (user) {
-        if (user) {
-            res.send(user);
-        }
-        else {
-            res.sendStatus(404);
-        }
-    })
-        .catch(function (err) {
-            res.status(400).send(err);
-        });
-}
-
-function get_candidate(sender_id,receiver_id,is_company_reply,user_type)
-{
-    /*var deferred = Q.defer();
-
-    users.find({ type: user_type }, function (err, user)
-    {
-       // //console.log(bcrypt.compareSync(password, user.password));
-        if (err) deferred.reject(err.name + ': ' + err.message);
-
-        if (user){
-            deferred.resolve({
-                users:user
-            });
-        }
-        else
-        {
-            deferred.reject("Password didn't match");
-            //deferred.resolve();
-        }
-    });
-
-    return deferred.promise;*/
-    var deferred = Q.defer();
-	//old one-> db.users.find(  { type: user_type }  )
-    query = '';
-	if(user_type == 'company'){
-		//console.log(sender_id);
-		users.find({$and : [{ _id : sender_id }, { type : user_type } ]}, function (err, data)
-		{
-
-			if (err)
-				deferred.reject(err.name + ': ' + err.message);
-			if(data)
-			{
-				//console.log(data);
-				var array = [];
-				data.forEach(function(item)
-				{
-					array.push(item._id);
-				});
-				EmployerProfile.find({"_creator" : {$in : array}} ).populate('_creator').exec(function(err, result)
-				{
-					if (err){
-						////console.log(err);//deferred.reject(err.name + ': ' + err.message);
-						logger.error(err.message, {stack: err.stack});
-					}
-					if (result)
-					{
-						var query_result = result[0].toObject();      
-						query_result = filterReturnData.removeSensativeData(query_result);
-						query_result = filterReturnData.anonymousCandidateData(query_result);
-						deferred.resolve({
-							users:query_result
-						});
-					}
-					else
-					{
-						deferred.reject("Not Found");
-					}
-				});
-			}
-			else
-			{
-				deferred.reject("Not Found");
-			}
-
-		});
-	}  
-	else{
-		//console.log(receiver_id);
-		//console.log(user_type);
-		users.find({$and : [{ _id : receiver_id }, { type : user_type } ]}, function (err, data)
-		{
-
-			if (err)
-				deferred.reject(err.name + ': ' + err.message);
-			if(data)
-			{
-				var array = [];
-				data.forEach(function(item)
-				{
-					array.push(item._id);
-				});
-				
-				CandidateProfile.find({ "_creator": {$in: array}}).populate('_creator').exec(function(err, result)
-				{
-					if (err){
-						logger.error(err.message, {stack: err.stack});
-						////console.log(err);//deferred.reject(err.name + ': ' + err.message);
-					}
-					if (result)
-					{
-						var query_result = result[0].toObject();      
-						query_result = filterReturnData.removeSensativeData(query_result);
-						if(is_company_reply == 1){
-							//console.log('matched');
-						}
-						else{
-							query_result = filterReturnData.anonymousSearchCandidateData(query_result);
-						}
-						deferred.resolve({
-							users:query_result
-						});
-					}
-					else
-					{
-						deferred.reject("Not Found");
-					}
-				});
-			}
-			else
-			{
-				deferred.reject("Not Found");
-			}
-
-		});
-	}
-    return deferred.promise;
-}
+};

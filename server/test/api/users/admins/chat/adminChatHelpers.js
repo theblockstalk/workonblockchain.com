@@ -16,7 +16,7 @@ const getInitialJobOfferDetail = module.exports.getInitialJobOfferDetail = async
         .post('/users/get_job_desc_msgs')
         .set('Authorization', jwtToken)
         .send(data);
-    res.should.have.status(200);
+    res.should.have.status(404);
     return res;
 }
 

@@ -2,8 +2,7 @@ const config = require('./config');
 const scriptHelpers = require('./helpers');
 
 const tempClientDirName = './temp/client/dist/';
-let s3bucket;
-let buildCommand;
+let s3bucket, buildCommand, cloudFrontId;
 
 (async function run() {
     try {
@@ -12,9 +11,11 @@ let buildCommand;
         if (environmentName === 'production') {
             s3bucket = config.s3.frontendBucket.production;
             buildCommand = 'npm run-script build-prod';
+            cloudFrontId = config.cloudFrontId.production;
         } else if (environmentName === 'staging') {
             s3bucket = config.s3.frontendBucket.staging;
             buildCommand = 'npm run-script build-staging';
+            cloudFrontId = config.cloudFrontId.staging;
         } else {
             throw new Error("Need to provide argument for the environment: staging or production");
         }
@@ -36,23 +37,29 @@ async function deployFrontend(environmentName) {
     console.log('Please make sure there is no files in the working directory (responsibly do a `git stash` if you are unsure)');
 
     console.log();
-    console.log('(1/4) getting Git branch and commit info');
+    console.log('(1/5) getting Git branch and commit info');
     const gitInfo = await scriptHelpers.getGitCommit();
     console.log(gitInfo);
 
     scriptHelpers.checkGitBranch(gitInfo.branch, environmentName);
 
     console.log();
-    console.log('(2/4) building distribution in client/dist/');
+    console.log('(2/5) building distribution in client/dist/');
     await scriptHelpers.buildAngularDistribution(buildCommand);
 
     console.log();
-    console.log('(3/4) moving to temporary directory temp/client/dist');
+    console.log('(3/5) moving to temporary directory temp/client/dist');
     await scriptHelpers.createTempClientDir(tempClientDirName, environmentName === 'production');
     const versonName = 'client_' + gitInfo.commit + '_' + environmentName;
     await scriptHelpers.addVersionFile(tempClientDirName + 'version', versonName);
 
     console.log();
-    console.log('(4/4) syncing to S3 bucket');
+    console.log('(4/5) syncing to S3 bucket');
     await scriptHelpers.syncDirwithS3(s3bucket, tempClientDirName);
+
+    console.log('(5/5) clearing CloudFront CDN cache (production only)');
+    if (environmentName === 'production') {
+        await scriptHelpers.invalidateCloudfronntCache(cloudFrontId);
+    }
+
 }

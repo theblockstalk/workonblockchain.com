@@ -414,18 +414,7 @@ export class LinkedinImportComponent implements OnInit {
                     }
                   },
                   error => {
-                    if(error.message === 500 || error.message === 401)
-                    {
-                      localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                      localStorage.removeItem('currentUser');
-                      localStorage.removeItem('googleUser');
-                      localStorage.removeItem('close_notify');
-                      localStorage.removeItem('linkedinUser');
-                      localStorage.removeItem('admin_log');
-                      window.location.href = '/login';
-                    }
-
-                    if(error.message === 403)
+                    if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
                     {
                       this.router.navigate(['/not_found']);
                     }
@@ -448,14 +437,6 @@ export class LinkedinImportComponent implements OnInit {
   file_name;
   onSubmit(f: NgForm)
   {
-    console.log("form object");
-    console.log(f);
-    console.log("getting file name from form object");
-    console.log((f.value.fileselect));
-    console.log("file name in onsubmit");
-    console.log(this.file_name);
-    console.log("file event in onsubmit");
-    console.log(this.fileevent);
     if(!this.fileevent)
     {
       this.error_log = "Please choose file";
@@ -474,7 +455,6 @@ export class LinkedinImportComponent implements OnInit {
   fileevent;
   filechoosen(e)
   {
-    console.log("file event");
     this.fileevent = e;
   }
 

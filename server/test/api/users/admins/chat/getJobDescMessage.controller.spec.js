@@ -48,7 +48,7 @@ describe('get initial job offer msgs', function () {
             const chatDoc = await Chats.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
 
             const returnData = messagesRes.body;
-            returnData.datas.should.equal(0);
+            returnData.success.should.equal(false);
             chatDoc.sender_name.should.equal(messageData.sender_name);
             chatDoc.receiver_name.should.equal(messageData.receiver_name);
         })

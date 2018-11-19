@@ -1,68 +1,31 @@
-const settings = require('../../../../../settings');
-var Q = require('q');
-var mongo = require('mongoskin');
 const CandidateProfile = require('../../../../../model/candidate_profile');
-const logger = require('../../../../services/logger');
+const errors = require('../../../../services/errors');
 
-///// for save  candidate "job(sign-up)" data in db//////////////////
-
-module.exports = function (req,res)
+module.exports = async function (req,res)
 {
 	let userId = req.auth.user._id;
-    job_data(userId,req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
-        }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
+    const candidateDoc = await CandidateProfile.findOne({ _creator: userId}).lean();
 
-function job_data(_id, userParam)
-{
-    var deferred = Q.defer();
-    CandidateProfile.findOne({ _creator: _id }, function (err, data)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            updateJob(_id);
+    if(candidateDoc) {
+        const queryBody = req.body;
+        console.log(queryBody);
+        let candidateUpdate = {}
+        if (queryBody.country) candidateUpdate.locations = queryBody.country;
+        if (queryBody.roles) candidateUpdate.roles = queryBody.roles;
+        if (queryBody.interest_area) candidateUpdate.interest_area = queryBody.interest_area;
+        if (queryBody.base_currency) candidateUpdate.expected_salary_currency = queryBody.base_currency;
+        if (queryBody.expected_salary) candidateUpdate.expected_salary = queryBody.expected_salary;
+        if (queryBody.availability_day) candidateUpdate.availability_day = queryBody.availability_day;
+        if (queryBody.current_salary) candidateUpdate.current_salary = queryBody.current_salary;
+        if (queryBody.current_currency) candidateUpdate.current_currency = queryBody.current_currency;
 
-    });
-
-    function updateJob(_id)
-    {
-        var set =
-            {
-        		locations: userParam.country,
-                roles: userParam.roles,
-                interest_area: userParam.interest_area,
-                expected_salary_currency: userParam.base_currency,
-                expected_salary: userParam.expected_salary,
-                availability_day: userParam.availability_day,
-                current_salary: userParam.current_salary,
-                current_currency : userParam.current_currency,
-            };
-        CandidateProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+        await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
+        res.send({
+            success : true
+        })
     }
-
-    return deferred.promise;
+    else {
+        errors.throwError("Candidate account not found", 404);
+    }
 }
+

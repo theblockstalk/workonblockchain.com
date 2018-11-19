@@ -1,5 +1,6 @@
 const User = require('../../../../model/users');
 const jwtToken = require('../../../services/jwtToken');
+const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
     const verifyEmailHash = req.params.email_hash;
@@ -16,16 +17,10 @@ module.exports = async function (req, res) {
 
         }
         else{
-            res.send({
-                success : false,
-                error : "The verification link has expired or is invalid."
-            })
+            errors.throwError("The verification link has expired or is invalid.", 400);
         }
     }
     else {
-        res.send({
-            success : false,
-            error : "The verification link has expired or is invalid."
-        })
+        errors.throwError("The verification link has expired or is invalid.", 400);
     }
 };
