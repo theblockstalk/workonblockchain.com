@@ -69,7 +69,6 @@ function createInitials(first_name, last_name) {
 
 module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
     const acceptedJobOffer = await Chat.find({sender_id: candidateDoc._creator._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
-
     if (acceptedJobOffer && acceptedJobOffer.length>0)
         return removeSensativeData(candidateDoc);
 

@@ -30,22 +30,23 @@ describe('update profile as company', function () {
             await companyHelper.signupCompanyAndCompleteProfile(company,companyTnCWizard,companyAbout);
             const companyUserDoc = await Users.findOne({email: company.email}).lean();
 
-
             const updatedData = await docGenerator.companyUpdateProfile();
             const updateRes = await companyHelper.UpdateCompanyProfile(updatedData , companyUserDoc.jwt_token);
 
-            updateRes.body.first_name.should.equal(updatedData.first_name);
-            updateRes.body.last_name.should.equal(updatedData.last_name);
-            updateRes.body.job_title.should.equal(updatedData.job_title);
-            updateRes.body.company_name.should.equal(updatedData.company_name);
-            updateRes.body.company_website.should.equal(updatedData.company_website);
-            updateRes.body.company_country.should.equal(updatedData.country);
-            updateRes.body.company_postcode.should.equal(updatedData.postal_code);
-            updateRes.body.company_city.should.equal(updatedData.city);
-            updateRes.body.company_founded.should.equal(updatedData.company_founded);
-            updateRes.body.no_of_employees.should.equal(updatedData.no_of_employees);
-            updateRes.body.company_funded.should.equal(updatedData.company_funded);
-            updateRes.body.company_description.should.equal(updatedData.company_description);
+            updateRes.body.success.should.equal(true);
+            const companyDoc = await Companies.findOne({_creator: companyUserDoc._id}).lean();
+            companyDoc.first_name.should.equal(updatedData.first_name);
+            companyDoc.last_name.should.equal(updatedData.last_name);
+            companyDoc.job_title.should.equal(updatedData.job_title);
+            companyDoc.company_name.should.equal(updatedData.company_name);
+            companyDoc.company_website.should.equal(updatedData.company_website);
+            companyDoc.company_country.should.equal(updatedData.country);
+            companyDoc.company_postcode.should.equal(updatedData.postal_code);
+            companyDoc.company_city.should.equal(updatedData.city);
+            companyDoc.company_founded.should.equal(updatedData.company_founded);
+            companyDoc.no_of_employees.should.equal(updatedData.no_of_employees);
+            companyDoc.company_funded.should.equal(updatedData.company_funded);
+            companyDoc.company_description.should.equal(updatedData.company_description);
 
         })
     })

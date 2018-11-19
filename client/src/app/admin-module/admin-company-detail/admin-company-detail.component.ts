@@ -39,6 +39,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   referred_name;
   referred_link;
   detail_link;
+  error_message;
   ngOnInit()
   {
     this.referred_link = "";
@@ -46,7 +47,7 @@ export class AdminCompanyDetailComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
     this.credentials.user_id = this.user_id;
-
+    this.error ='';
 
     if(this.user_id && this.admin_log.is_admin === 1 && this.currentUser)
     {
@@ -54,13 +55,8 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data.error)
-            {
-              this.error= "Something Went Wrong";
-            }
-            else
-            {
-              this.info.push(data);;
+
+              this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
               if(data._creator.referred_email) {
@@ -90,7 +86,18 @@ export class AdminCompanyDetailComponent implements OnInit {
 
                     },
                     error => {
-
+                      if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                      {
+                        this.error = error['error']['message'];
+                      }
+                      else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                      {
+                        this.error = error['error']['message'];
+                      }
+                      else
+                      {
+                        this.error = error['error']['message'];
+                      }
                     }
                   );
               }
@@ -121,25 +128,20 @@ export class AdminCompanyDetailComponent implements OnInit {
               {
                 this.is_approved = "";
               }
-            }
+
 
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
-            {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+            console.log(error);
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.error = error['error']['message'];
             }
-
-            if(error.message === 403)
-            {
-              // this.router.navigate(['/not_found']);
+            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.error = error['error']['message'];
+            }
+            else {
+              this.error = "Something getting wrong";
             }
           });
     }
@@ -152,6 +154,7 @@ export class AdminCompanyDetailComponent implements OnInit {
 
   approveClick(event , approveForm: NgForm)
   {
+    this.error = '';
     if(event.srcElement.innerHTML ==='Active' )
     {
       this.is_approve = 1;
@@ -198,21 +201,20 @@ export class AdminCompanyDetailComponent implements OnInit {
 
         error =>
         {
-          if(error.message === 500 || error.message === 401)
-          {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
-          }
 
-          if(error.message === 403)
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+            {
+              this.error = error['error']['message'];
+            }
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
-            // this.router.navigate(['/not_found']);
+            this.error = error['error']['message'];
           }
+          else {
+              this.error = "Something getting wrong";
+          }
+            // this.router.navigate(['/not_found']);
+
         });
   }
 }

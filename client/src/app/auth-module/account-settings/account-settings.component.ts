@@ -193,12 +193,7 @@ export class AccountSettingsComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data.error )
-            {
-              this.log=data.error;
-            }
-            else
-            {
+
               this.inform=data;
               if(this.info.disable_account){
                 this.message = 'Your profile is currently disabled';
@@ -207,23 +202,19 @@ export class AccountSettingsComponent implements OnInit {
                 this.message = 'Your profile is currently enabled';
 
               }
-            }
+
           },
           error => {
-            if(error.message === 500 || error.message === 401)
+            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.log = error['error']['message'];
             }
-
-            if(error.message === 403)
+            else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
-              // this.router.navigate(['/not_found']);
+              this.log = error['error']['message'];
+            }
+            else {
+              this.log = "Something getting wrong";
             }
 
           }

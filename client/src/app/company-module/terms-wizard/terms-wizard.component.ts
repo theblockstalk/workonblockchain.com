@@ -116,27 +116,17 @@ export class TermsWizardComponent implements OnInit {
               this.router.navigate(['/about_comp']);
             }
 
-            if(data.error )
-            {
-              this.log=data.error;
-            }
 
           },
           error => {
-            if(error.message === 500 || error.message === 401)
-            {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
             }
-
-            if(error.message === 403)
-            {
-              this.router.navigate(['/not_found']);
+            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+            }
+            else {
+              this.log = "Something getting wrong";
             }
 
           });

@@ -1,163 +1,89 @@
-const bcrypt = require('bcryptjs');
-const users = require('../../../../model/users');
+const User = require('../../../../model/users');
 const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
-const Q = require('q');
 const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
-const logger = require('../../../services/logger');
+const errors = require('../../../services/errors');
 
-module.exports = function (req, res) {
-    authenticate(req.body.email, req.body.password).then(function (user)
+module.exports = async function (req, res) {
+
+    let queryBody = req.body;
+    if(queryBody.linkedin_id) {
+      const userDoc =  await User.findOne({linkedin_id : queryBody.linkedin_id }).lean();
+      if(userDoc) {
+          let jwtUserToken = jwtToken.createJwtToken(userDoc);
+          await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+          const candidateDoc = await  CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
+          res.send({
+              _id:candidateDoc._id,
+              _creator: userDoc._id,
+              email: userDoc.email,
+              email_hash: userDoc.email_hash,
+              is_admin:userDoc.is_admin,
+              type:userDoc.type,
+              is_approved : userDoc.is_approved,
+              jwt_token: jwtUserToken
+          });
+      }
+      else {
+          errors.throwError("User not found" , 404)
+      }
+    }
+
+    else
     {
-        if (user)
-        {
-            // authentication successful
-            res.json(user);
-        }
-        else
-        {
-            // authentication failed
-            res.json({msg: 'Username or password is incorrect'});
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
-
-function authenticate(email, password,type)
-{
-    var deferred = Q.defer();
-
-    users.findOne({ email: email }, function (err, user)
-    {
-
-        if (err) deferred.reject(err.name + ': ' + err.message);
-
-        if (user)
-        {
-            let hash = crypto.createHmac('sha512', user.salt);
-            hash.update(password);
+        let userDoc =  await User.findOne({email : queryBody.email }).lean();
+        if(userDoc) {
+            let hash = crypto.createHmac('sha512', userDoc.salt);
+            hash.update(queryBody.password);
             let hashedPasswordAndSalt = hash.digest('hex');
 
-            if (hashedPasswordAndSalt === user.password_hash)
+            if (hashedPasswordAndSalt === userDoc.password_hash)
             {
-                if(user.type=='candidate')
-                {
-                    CandidateProfile.findOne({ _creator:  user._id }, function (err, data)
-                    {
-
-                        if (err) deferred.reject(err.name + ': ' + err.message);
-
-                        if(data)
-                        {
-                            let token = jwtToken.createJwtToken(user);
-                            logger.debug(logger);
-
-                            var set =
-                                {
-                                    jwt_token: token,
-
-                                };
-                            users.update({ _id: user._id},{ $set: set }, function (err, doc)
-                            {
-                                if (err)
-                                {
-                                    logger.error(err.message, {stack: err.stack});
-                                    deferred.reject(err.name + ': ' + err.message);
-                                }
-                                else
-                                {
-                                    deferred.resolve({
-                                        _id:data._id,
-                                        _creator: data._creator,
-                                        email: user.email,
-                                        email_hash: user.email_hash,
-                                        is_admin:user.is_admin,
-                                        type:user.type,
-                                        is_approved : user.is_approved,
-                                        jwt_token: token
-                                    });
-
-                                }
-
-                            });
-
-
-                        }
-
-                        else
-                        {
-                            deferred.reject("Email Not found");
-                        }
-
-
+                if(userDoc.type === 'candidate') {
+                    let jwtUserToken = jwtToken.createJwtToken(userDoc);
+                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+                    const candidateDoc = await CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
+                    res.send({
+                        _id: candidateDoc._id,
+                        _creator: userDoc._id,
+                        email: userDoc.email,
+                        email_hash: userDoc.email_hash,
+                        is_admin: userDoc.is_admin,
+                        type: userDoc.type,
+                        is_approved: userDoc.is_approved,
+                        jwt_token: jwtUserToken
                     });
                 }
-                if(user.type=='company')
-                {
-                    EmployerProfile.findOne({ _creator:  user._id }, function (err, data)
-                    {
-                        if (err) deferred.reject(err.name + ': ' + err.message);
 
-                        if(data)
-                        {
-                            let token = jwtToken.createJwtToken(user);
-                            logger.debug(logger);
-
-                            var set =
-                                {
-                                    jwt_token: token,
-
-                                };
-                            users.update({ _id: user._id},{ $set: set }, function (err, doc)
-                            {
-                                if (err)
-                                {
-                                    logger.error(err.message, {stack: err.stack});
-                                    deferred.reject(err.name + ': ' + err.message);
-                                }
-                                else
-                                {
-
-                                    deferred.resolve({
-                                        _id:data._id,
-                                        _creator: data._creator,
-                                        email: user.email,
-                                        email_hash: user.email_hash,
-                                        is_admin:user.is_admin,
-                                        type:user.type,
-                                        is_approved : user.is_approved,
-                                        jwt_token: token
-                                    });
-
-                                }
-
-                            });
-
-                        }
-
-                        else
-                        {
-                            deferred.reject("Email Not found");
-                        }
-
+                if(userDoc.type === 'company') {
+                    let jwtUserToken = jwtToken.createJwtToken(userDoc);
+                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+                    const companyDoc = await EmployerProfile.findOne({ _creator:  userDoc._id }).lean();
+                    res.send({
+                        _id: companyDoc._id,
+                        _creator: userDoc._id,
+                        email: userDoc.email,
+                        email_hash: userDoc.email_hash,
+                        is_admin: userDoc.is_admin,
+                        type: userDoc.type,
+                        is_approved: userDoc.is_approved,
+                        jwt_token: jwtUserToken
                     });
                 }
+
             }
             else
             {
-                deferred.reject("Incorrect Password");
+                errors.throwError("Incorrect Password" , 400)
             }
 
         }
-        else
-        {
-            deferred.reject("Incorrect Username or Password");
+        else {
+            errors.throwError("User not found" , 404)
         }
-    });
 
-    return deferred.promise;
+    }
+
 }
+

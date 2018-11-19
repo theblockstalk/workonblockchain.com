@@ -1,76 +1,40 @@
-const settings = require('../../../../settings');
-var Q = require('q');
-var mongo = require('mongoskin');
 const EmployerProfile = require('../../../../model/employer_profile');
 const logger = require('../../../services/logger');
+const errors = require('../../../services/errors');
 
-module.exports = function (req,res)
-{
+module.exports = async function (req, res) {
+
 	let userId = req.auth.user._id;
-    update_company_profile(userId,req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
-        }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
-}
+    const employerDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
 
-function update_company_profile(_id , companyParam)
-{
-    var deferred = Q.defer();
-    var _id = _id;
+    if(employerDoc){
+        const queryBody = req.body;
+        let employerUpdate = {}
 
-    EmployerProfile.findOne({ _creator: _id }, function (err, data)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            updateEmployer(_id);
+        if (queryBody.first_name) employerUpdate.first_name = queryBody.first_name;
+        if (queryBody.last_name) employerUpdate.last_name = queryBody.last_name;
+        if (queryBody.job_title) employerUpdate.job_title = queryBody.job_title;
+        if (queryBody.company_name) employerUpdate.company_name = queryBody.company_name;
+        if (queryBody.company_website) employerUpdate.company_website = queryBody.company_website;
+        if (queryBody.phone_number) employerUpdate.company_phone = queryBody.phone_number;
+        if (queryBody.country) employerUpdate.company_country = queryBody.country;
+        if (queryBody.city) employerUpdate.company_city = queryBody.city;
+        if (queryBody.postal_code) employerUpdate.company_postcode = queryBody.postal_code;
+        if (queryBody.company_founded) employerUpdate.company_founded = queryBody.company_founded;
+        if (queryBody.no_of_employees) employerUpdate.no_of_employees = queryBody.no_of_employees;
+        if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
+        if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
 
-    });
+        await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
 
-    function updateEmployer(_id)
-    {
-
-        var set =
-        {
-                first_name : companyParam.first_name,
-                last_name: companyParam.last_name,
-                job_title:companyParam.job_title,
-                company_name: companyParam.company_name,
-                company_website:companyParam.company_website,
-                company_phone:companyParam.phone_number,
-                company_country:companyParam.country,
-                company_city:companyParam.city,
-                company_postcode:companyParam.postal_code,
-                company_founded:companyParam.company_founded,
-                no_of_employees:companyParam.no_of_employees,
-                company_funded: companyParam.company_funded,
-                company_description:companyParam.company_description,
-        };
-
-        EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-        {
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            else
-                deferred.resolve(set);
-        });
+        res.send({
+            success : true
+        })
     }
 
-    return deferred.promise;
+    else {
+        errors.throwError("Company account not found", 404);
+    }
 
 }
+

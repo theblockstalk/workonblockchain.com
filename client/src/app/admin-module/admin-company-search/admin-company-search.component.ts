@@ -91,13 +91,6 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
         data =>
         {
 
-          if(data.error)
-          {
-            this.response = "data";
-            this.log="Something went wrong";
-          }
-          else
-          {
 
             for(let res of data)
             {
@@ -121,32 +114,29 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
 
             }
             this.length = '';
-          }
+
 
         },
         error =>
         {
-          if(error.message === 500 || error.message === 401)
-          {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+            this.response = "data";
           }
-
-          if(error.message === 403)
-          {
-            // this.router.navigate(['/not_found']);
+          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+            this.response = "data";
+          }
+          else {
+            this.log = "Something getting wrong";
           }
         });
   }
 
-
+error ;
   approveClick(event , approveForm: NgForm)
   {
+    this.error = '';
 
     if(event.srcElement.innerHTML ==='Active' )
     {
@@ -189,20 +179,16 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
 
         error =>
         {
-          if(error.message === 500 || error.message === 401)
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
+            this.error = error['error']['message'];
           }
-
-          if(error.message === 403)
+          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
-            // this.router.navigate(['/not_found']);
+            this.error = error['error']['message'];
+          }
+          else {
+            this.error = "Something getting wrong";
           }
         });
   }
@@ -262,16 +248,6 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
         .subscribe(
           data =>
           {
-            if(data.error)
-            {
-              this.response = "data";
-              this.length='';
-              this.log = data.error;
-              this.info=[];
-              this.page='';
-            }
-            else
-            {
               this.information = this.filter_array(data);
 
               for(let res of this.information)
@@ -296,26 +272,27 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
                 this.response = "data";
                 this.log= 'No companies matched this search criteria';
               }
-
-            }
-
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
+            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              this.response = "data";
+              this.length = '';
+              this.info = [];
+              this.page = '';
+              this.log = error['error']['message'];
             }
-
-            if(error.message === 403)
+            else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
-              // this.router.navigate(['/not_found']);
+              this.response = "data";
+              this.length = '';
+              this.info = [];
+              this.page = '';
+              this.log = error['error']['message'];
+            }
+            else {
+              this.log = "Something getting wrong";
             }
           });
     }

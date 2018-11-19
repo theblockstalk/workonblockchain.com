@@ -16,10 +16,18 @@
     "buckets": {
       "files": "files.staging.workonblockchain.com",
       "logs": "logs.workonblockchain.com"
+    },
+    "cloudWatch": {
+      "group": "staging-api-workonblockchain-com",
+      "stream": "nodejs"
     }
   },
   "mandrill": {
     "fromAddress": "contact@workonblockchain.com",
+    "fromName": "STAGING - Work on Blockchain"
+  },
+  "sendGrid": {
+    "fromAddress": "staging.contact@workonblockchain.com",
     "fromName": "STAGING - Work on Blockchain"
   },
   "currencyRates": {

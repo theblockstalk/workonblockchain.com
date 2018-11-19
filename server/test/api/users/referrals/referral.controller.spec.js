@@ -32,7 +32,7 @@ describe('send referral email to a person', function () {
             const subject = 'Come join WOB';
             const body = 'This email is for test case';
             const referralEmailRes = await referralsHelper.sendReferralEmail(email,subject,body,userDoc.jwt_token);
-            referralEmailRes.body.should.equal("Email has been sent successfully.");
+            referralEmailRes.body.msg.should.equal("Email has been sent successfully.");
         })
     })
 });

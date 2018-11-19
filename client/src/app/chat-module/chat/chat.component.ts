@@ -1272,15 +1272,11 @@ export class ChatComponent implements OnInit {
           //console.log(data);
         },
         error => {
-          if(error.message == 500 || error.message == 401)
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            window.location.href = '/login';
+            //this.router.navigate(['/not_found']);
           }
-          if(error.message == 403)
-          {
-            // this.router.navigate(['/not_found']);
-          }
+
         }
       );
   }

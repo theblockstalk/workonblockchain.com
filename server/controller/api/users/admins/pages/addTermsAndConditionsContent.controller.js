@@ -1,7 +1,5 @@
 const Pages = require('../../../../../model/pages_content');
-const logger = require('../../../../services/logger');
 const sanitize = require('../../../../services/sanitize');
-const mongoose = require('mongoose');
 
 //////////inserting message in DB ////////////
 

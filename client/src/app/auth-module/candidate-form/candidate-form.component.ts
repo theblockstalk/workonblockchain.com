@@ -50,7 +50,17 @@ export class CandidateFormComponent implements OnInit {
             }
           },
           error => {
-            this.log = error;
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+            {
+              this.log = error['error']['message'];
+            }
+            else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+            {
+              this.log = error['error']['message'];
+            }
+            else {
+              this.log = "Something getting wrong";
+            }
           }
         );
       }
@@ -124,26 +134,22 @@ export class CandidateFormComponent implements OnInit {
             .subscribe(
                 data =>
                 {
-
-
-
-                    if(data.error)
-                    {
-                        this.log = data.error;
-                    }
-
-                    else
-                    {
-                       localStorage.setItem('currentUser', JSON.stringify(data));
-
-                        window.location.href = '/terms-and-condition';
-
-                    }
+                  localStorage.setItem('currentUser', JSON.stringify(data));
+                  window.location.href = '/terms-and-condition';
                 },
                 error =>
                 {
+                  this.loading = false;
+
+                  if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.log = error['error']['message'];
+                  }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.log = error['error']['message'];
+                  }
+                  else {
                     this.log = 'Something getting wrong';
-                    this.loading = false;
+                  }
                 });
 
 
@@ -172,21 +178,22 @@ export class CandidateFormComponent implements OnInit {
                 .subscribe(
                     data => {
                     this.credentials.email= '';
-                    if(data.error)
-                    {
-                        this.log = data.error;
-                    }
-                    else
-                    {
+
                         localStorage.setItem('currentUser', JSON.stringify(data));
-                        //localStorage.removeItem('userInfo');
-                        //this.router.navigate(['/about']);
                         window.location.href = '/terms-and-condition';
-                    }
+
                 },
                 error => {
+                  this.loading = false;
+                  if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.log = error['error']['message'];
+                  }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.log = error['error']['message'];
+                  }
+                  else {
                     this.log = 'Something getting wrong';
-                    this.loading = false;
+                  }
                 });
             }
             else
@@ -214,27 +221,30 @@ export class CandidateFormComponent implements OnInit {
                         this.credentials.password= '';
                         this.credentials.type="candidate";
                         this.credentials.social_type='LINKEDIN';
+                        this.credentials.linkedin_id = this.linkedinUser.id;
                         if(this.linkedinUser.emailAddress)
                         {
                         this.authenticationService.create(this.credentials)
                         .subscribe(
                             data => {
-                                this.credentials.email= '';
-                            if(data.error)
-                            {
-                                this.log = data.error;
-                            }
-                            else
-                            {
+                                this.credentials.email = '';
+
                                 localStorage.setItem('currentUser', JSON.stringify(data));
-                                //localStorage.removeItem('userInfo');
-                                //this.router.navigate(['/about']);
                                 window.location.href = '/terms-and-condition';
-                            }
+
                             },
                             error => {
-                            this.log = 'Something getting wrong';
-                            this.loading = false;
+                              this.loading = false;
+                              if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                                this.log = error['error']['message'];
+                              }
+                              else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                                this.log = error['error']['message'];
+                              }
+                              else {
+                                this.log = 'Something getting wrong';
+                              }
+
                         });
                             }
                         else
@@ -276,22 +286,22 @@ export class CandidateFormComponent implements OnInit {
                 .subscribe(
                 data =>
                 {
-                    if(data.error)
-                    {
-                        //this.dataservice.changeMessage(data.error);
-                        this.company_log = data.error;
-                    }
-
-                    else
-                    {
                         localStorage.setItem('currentUser', JSON.stringify(data));
                         window.location.href = '/company_wizard';
-                    }
                 },
                 error =>
                 {
+                  this.loading = false;
+
+                  if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.company_log = error['error']['message'];
+                  }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.company_log = error['error']['message'];
+                  }
+                  else {
                     this.log = 'Something getting wrong';
-                    this.loading = false;
+                  }
                 });
             }
             else

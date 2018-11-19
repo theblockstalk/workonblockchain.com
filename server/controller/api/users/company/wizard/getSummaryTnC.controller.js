@@ -1,102 +1,48 @@
-var Q = require('q');
-var mongo = require('mongoskin');
 const EmployerProfile = require('../../../../../model/employer_profile');
 const Pages = require('../../../../../model/pages_content');
-const logger = require('../../../../services/logger');
+const errors = require('../../../../services/errors');
 
 ///////////add company summary or Terms& conditions in db////////////////////////////
 
-module.exports = function (req,res)
+module.exports = async   function (req,res)
 {
-	let userId = req.auth.user._id;
+    let userId = req.auth.user._id;
+    const employerDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
 
-    company_summary(userId,req.body).then(function (err, data)
-    {
-        if (data)
+    if(employerDoc) {
+        const queryBody = req.body;
+        let employerUpdate = {};
+
+        if(queryBody.termsID)
         {
-            res.json(data);
+            const pagesDoc =  await Pages.findOne({_id: queryBody.termsID}).lean();
+            if(pagesDoc) {
+                if(pagesDoc._id) employerUpdate.terms_id = pagesDoc._id;
+                if(queryBody.marketing) employerUpdate.marketing_emails = queryBody.marketing;
+                await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
+                res.send({
+                    success : true
+                })
+            }
+            else
+            {
+                errors.throwError("Terms and Conditions document not found", 404);
+            }
         }
-        else
-        {
-            res.send(err);
-        }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
+        else {
+            if(queryBody.marketing) {
+                employerUpdate.marketing_emails = queryBody.marketing;
+                await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
+            }
 
-}
-
-function company_summary(_id, companyParam)
-{
-
-    var deferred = Q.defer();
-    var _id = _id;
-
-    EmployerProfile.findOne({ _creator: _id }, function (err, data)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            updateEmployer(_id);
-
-    });
-
-    function updateEmployer(_id)
-    {
-        if(companyParam.termsID)
-        {
-			Pages.findOne({_id: companyParam.termsID}).exec(function (err, result) {
-				if (err) {
-					logger.error(err.message, {stack: err.stack});
-					deferred.reject(err.name + ': ' + err.message);
-				}
-				else {
-					if(result){
-						var set =
-						{
-							terms_id: result._id,
-							marketing_emails: companyParam.marketing,
-						};
-						EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-						{
-							if (err){
-								logger.error(err.message, {stack: err.stack});
-								deferred.reject(err.name + ': ' + err.message);
-							}
-							else
-								deferred.resolve(set);
-						});
-					}
-					else{
-						deferred.reject('Error: Not a valid doc');
-					}
-				}
-			});
-            
-        }
-        else
-        {
-			var set =
-			{                  
-				marketing_emails: companyParam.marketing,
-			};
-			EmployerProfile.update({ _creator: mongo.helper.toObjectID(_id) },{ $set: set },function (err, doc)
-			{
-				if (err){
-					logger.error(err.message, {stack: err.stack});
-					deferred.reject(err.name + ': ' + err.message);
-				}
-				else
-					deferred.resolve(set);
-			});
+            res.send({
+                success : true
+            })
         }
 
-        
     }
+    else {
+        errors.throwError("Company account not found", 404)
 
-    return deferred.promise;
+    }
 }
