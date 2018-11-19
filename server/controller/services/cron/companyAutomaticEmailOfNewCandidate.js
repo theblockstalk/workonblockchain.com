@@ -4,6 +4,7 @@ const User = require('../../../model/users');
 const CandidateProfile = require('../../../model/candidate_profile');
 const EmployerProfile = require('../../../model/employer_profile');
 const logger = require('../logger');
+const errors = require('../errors');
 
 module.exports = async function (req, res) {
 
@@ -57,25 +58,28 @@ module.exports = async function (req, res) {
                             && candidateDoc._creator.candidate.first_approved_date < new Date()
                             ) { //please confirm this if condition
                             //sendEmail
+                            res.send({
+                                success : true
+                            })
                         }
                         else {
-                            logger.debug("candidate is not approve");
+                            errors.throwError("No saved searches", 404);
                         }
                     }
                     else {
-                        logger.debug("nothing to do");
+                        errors.throwError("No filter applied", 404);
                     }
 
                 }
             }
             else {
-                logger.debug("nothing to do");
+                errors.throwError("Email sent already", 404);
             }
         }
 
     }
     else {
-        logger.debug("nothing to do");
+        errors.throwError("User not found", 404);
     }
 
 
