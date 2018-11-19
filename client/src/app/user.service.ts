@@ -852,7 +852,7 @@ export class UserService {
             {
                 if (error.status )
                 {
-                    return Observable.throw(new Error(error.status));
+                    return Observable.throw(error);
                 }
 
             });
@@ -1269,7 +1269,7 @@ export class UserService {
             {
                 if (error.status )
                 {
-                    return Observable.throw(new Error(error.status));
+                    return Observable.throw(error);
                 }
 
             });
@@ -1383,9 +1383,9 @@ export class UserService {
     }
 
 
-	update_is_company_reply_status(id:string,status:number)
+	update_is_company_reply_status(status:number)
     {
-        return this.http.post<any>(URL+'users/update_is_company_reply_status', {id:id,status:status}, {
+        return this.http.post<any>(URL+'users/update_is_company_reply_status', {status:status}, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>
@@ -1418,7 +1418,7 @@ export class UserService {
             {
                 if (error.status )
                 {
-                    return Observable.throw(new Error(error.status));
+                    return Observable.throw(error);
                 }
 
             });

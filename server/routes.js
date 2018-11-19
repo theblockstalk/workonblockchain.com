@@ -121,23 +121,21 @@ router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(com
 router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail));
 
 // Chat
-router.post('/users/insert_message', auth.isValidUser, chatInsertMessage);
-router.post('/users/get_candidate', auth.isValidUser, chatGetCandidate);
-router.post('/users/get_messages',auth.isValidUser, chatGetMessages);
-router.post('/users/get_user_messages',auth.isValidUser, chatGetUserMsgs);
-router.post('/users/insert_chat_file',auth.isValidUser, multer.single('photo'), chatInsertFile);
-router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'), chatInsertMessageJob);
-router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
-router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
-router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);
-router.post('/users/get_employ_offer',auth.isValidUser, chatGetEmployOffer);
+router.post('/users/insert_message', auth.isValidUser, asyncMiddleware(chatInsertMessage));
+router.post('/users/get_candidate', auth.isValidUser, asyncMiddleware(chatGetCandidate));
+router.post('/users/get_messages',auth.isValidUser, asyncMiddleware(chatGetMessages));
+router.post('/users/get_user_messages',auth.isValidUser, asyncMiddleware(chatGetUserMsgs));
+router.post('/users/insert_chat_file',auth.isValidUser, multer.single('photo'), asyncMiddleware(chatInsertFile));
+router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'), asyncMiddleware(chatInsertMessageJob));
+router.post('/users/update_job_message', auth.isValidCandidate, asyncMiddleware(chatUpdateJobMessage));
+router.post('/users/get_unread_msgs_of_user',auth.isValidUser, asyncMiddleware(chatGetUnreadUser));
+router.post('/users/update_is_company_reply_status', auth.isValidCandidate, asyncMiddleware(chatUpdateIsCompanyReplyStatus));
+router.post('/users/get_employ_offer',auth.isValidUser, asyncMiddleware(chatGetEmployOffer));
 router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(chatGetLastJobDescription));
-router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
-router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
-router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
+router.post('/users/update_chat_msg_status' , auth.isValidUser , asyncMiddleware(adminChatUpdateMsgStatus));
+router.post('/users/get_job_desc_msgs' ,auth.isValidUser, asyncMiddleware(adminChatGetJobDescMsg));
+router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, asyncMiddleware(adminChatSetUnreadMsgStatus));
 router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));
-
-
 
 // Admin
 router.put('/users/approve/:_id', auth.isAdmin  , asyncMiddleware(adminApproveUser));

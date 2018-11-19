@@ -241,34 +241,11 @@ export class CandidateDetailComponent implements OnInit {
         this.authenticationService.get_job_desc_msgs(this.credentials.user_id, 'job_offer')
           .subscribe(
             data => {
-              ////console.log(data['datas']);
-              if (data['datas'].length > 0) {
-                this.job_offer_msg = 'You have already sent a job description to this candidate';
-              }
-              else {
-                this.date_of_joining = '10-07-2018';
-                this.msg_tag = 'job_offer';
-                this.is_company_reply = 0;
-                this.msg_body = '';
-                this.job_description = this.credentials.job_desc;
-                this.interview_location = this.credentials.location;
-                this.authenticationService.insertMessage(this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-                  .subscribe(
-                    data => {
-                      ////console.log(data);
-                      this.job_offer_msg = 'Message has been successfully sent';
-                      this.router.navigate(['/chat']);
-                    },
-                    error => {
-                      ////console.log('error');
-                      ////console.log(error);
-                      //this.log = error;
-                    }
-                  );
-              }
+              this.job_offer_msg = 'You have already sent a job description to this candidate';
             },
             error => {
-              if (error.message === 500) {
+              if(error.status === 500 || error.status === 401)
+              {
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('googleUser');
@@ -278,8 +255,27 @@ export class CandidateDetailComponent implements OnInit {
                 window.location.href = '/login';
               }
 
-              if (error.message === 403) {
-                this.router.navigate(['/not_found']);
+              if(error.status === 404)
+              {
+                this.date_of_joining = '10-07-2018';
+                this.msg_tag = 'job_offer';
+                this.is_company_reply = 0;
+                this.msg_body = '';
+                this.job_description = this.credentials.job_desc;
+                this.interview_location = this.credentials.location;
+                this.authenticationService.insertMessage(this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
+                .subscribe(
+                  data => {
+                    ////console.log(data);
+                    this.job_offer_msg = 'Message has been successfully sent';
+                    this.router.navigate(['/chat']);
+                  },
+                  error => {
+                    ////console.log('error');
+                    ////console.log(error);
+                    //this.log = error;
+                  }
+                );
               }
             }
           );

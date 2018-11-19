@@ -367,15 +367,20 @@ export class ChatComponent implements OnInit {
 						}
                     },
                     error => {
-                        if(error.message == 500 || error.message == 401)
+                        if(error.status === 500 || error.status === 401)
                         {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            window.location.href = '/login';
+                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                          localStorage.removeItem('currentUser');
+                          localStorage.removeItem('googleUser');
+                          localStorage.removeItem('close_notify');
+                          localStorage.removeItem('linkedinUser');
+                          localStorage.removeItem('admin_log');
+                          window.location.href = '/login';
                         }
 
-                        if(error.message == 403)
+                        if(error.status === 404)
                         {
-                            // this.router.navigate(['/not_found']);
+                          this.log = error.error.message;
                         }
                     }
                 );
@@ -445,15 +450,20 @@ export class ChatComponent implements OnInit {
 						}
                     },
                     error => {
-                        if(error.message == 500 || error.message == 401)
+                        if(error.status === 500 || error.status === 401)
                         {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            window.location.href = '/login';
+                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                          localStorage.removeItem('currentUser');
+                          localStorage.removeItem('googleUser');
+                          localStorage.removeItem('close_notify');
+                          localStorage.removeItem('linkedinUser');
+                          localStorage.removeItem('admin_log');
+                          window.location.href = '/login';
                         }
 
-                        if(error.message == 403)
+                        if(error.status === 404)
                         {
-                            // this.router.navigate(['/not_found']);
+                          this.log = error.error.message;
                         }
                     }
                 );
@@ -580,7 +590,7 @@ export class ChatComponent implements OnInit {
             data => {
                 //console.log(data);
                 this.credentials.msg_body = '';
-				this.authenticationService.update_is_company_reply_status(this.currentUser._creator,this.is_company_reply)
+				this.authenticationService.update_is_company_reply_status(this.is_company_reply)
 				.subscribe(
 					data => {
 						//console.log('good');
@@ -934,6 +944,7 @@ export class ChatComponent implements OnInit {
       this.msgs = '';
 	  this.new_msgss = '';
 	  this.credentials.id = id;
+    this.credentials.msg_body = '';
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log("show_msg_area: " + this.show_msg_area);
       setInterval(() => {
@@ -1151,12 +1162,20 @@ export class ChatComponent implements OnInit {
     this.authenticationService.get_employment_offer_info(my_credentials.id, 'employment_offer')
     .subscribe(
       data => {
-        //console.log(data['datas']);
-        if (data['datas']) {
-          this.job_offer_log = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
+        this.job_offer_log = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
+      },
+      error => {
+        if (error.status === 500 || error.status === 401) {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
         }
-        else {
-          //console.log(file);
+        if(error.status === 404)
+        {
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
           this.is_company_reply = 1;
           this.msg_tag = 'employment_offer';
@@ -1220,16 +1239,6 @@ export class ChatComponent implements OnInit {
                 }
               }
             );
-        }
-      },
-      error => {
-        if (error.message == 500 || error.message == 401) {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          window.location.href = '/login';
-        }
-
-        if (error.message == 403) {
-          // this.router.navigate(['/not_found']);
         }
       }
     );
