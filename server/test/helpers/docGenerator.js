@@ -133,13 +133,13 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
         company_funded:"i have no idea",
         company_description:"Global blockchain agnostic hiring platform for developers.",
         saved_searches : [{
-            location: 'Amsterdam',
+            location: ['Amsterdam'],
             job_type : 'Full time',
             position : ['UI Developer', 'Fullstack Developer'],
             current_currency : '$ USD',
             current_salary : 2000,
             blockchain : ['Ripple' , 'Stellar'],
-            skills : 'C#',
+            skills : ['C#'],
             receive_email_notitfications : false,
             when_receive_email_notitfications : 'Never'
         }]
@@ -445,13 +445,13 @@ module.exports.prefilledProfileData = function prefilledProfileData() {
 module.exports.companySavedSearches = function companySavedSearches() {
     return {
         saved_searches : [{
-            location: 'remote',
+            location: ['remote'],
             job_type : 'Part time',
             position : ['Backend Developer', 'Fullstack Developer'],
             current_currency : '$ USD',
             current_salary : 1000,
             blockchain : ['Ethereum' , 'Stellar'],
-            skills : 'Java',
+            skills : ['Java'],
             receive_email_notitfications : true,
             when_receive_email_notitfications : 'Daily'
         }]

@@ -140,24 +140,36 @@ const UserSchema = new Schema({
         saved_searches: {
                 type:[new Schema({
                     location: {
-                        type: String,
-                        enum: enumerations.workLocations
+                        type: [{
+                            type: String,
+                            required : true,
+                            enum: enumerations.workLocations
+                        }]
                     },
                     job_type: {
                         type: String,
+                        required : true
                     },
                     position: {
                             type: [{
                                 type: String,
+                                required : true,
                                 enum: enumerations.workRoles
                             }]
                     },
+                    availability_day: {
+                            type:String,
+                            required : true,
+                            enum: enumerations.workAvailability
+                    },
                     current_currency: {
                         type: String,
+                        required : true,
                         enum: enumerations.currencies
                     },
                     current_salary: {
                             type:Number,
+                            required : true,
                             min: 0
                     },
                     blockchain: {
@@ -167,14 +179,18 @@ const UserSchema = new Schema({
                             }]
                     },
                     skills: {
-                        type: String,
-                        enum: enumerations.programmingLanguages
+                        type: [{
+                            type: String,
+                            enum: enumerations.programmingLanguages
+                        }]
                     },
                     receive_email_notitfications: {
-                        type: Boolean
+                        type: Boolean,
+                        required : true
                     },
                     when_receive_email_notitfications : {
                         type : String ,
+                        required : true,
                         enum : enumerations.email_notificaiton
                     },
                     last_email_sent: {
