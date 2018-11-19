@@ -51,7 +51,14 @@ module.exports = async function (req, res) {
         is_verify:is_verify,
         created_date: new Date(),
         referred_email : userParam.referred_email,
-        linkedin_id : userParam.linkedin_id
+        linkedin_id : userParam.linkedin_id,
+        candidate: [{
+            status: [{
+                status: 'created',
+                status_updated: new Date(),
+                timestamp: new Date()
+            }]
+        }]
     });
 
     const candidateUserCreated = await newUser.save();
