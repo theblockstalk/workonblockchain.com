@@ -1,49 +1,13 @@
-const settings = require('../../../../settings');
-var _ = require('lodash');
-var Q = require('q');
-const users = require('../../../../model/users');
+const User = require('../../../../model/users');
+const errors = require('../../../services/errors');
 
+module.exports = async function (req,res) {
 
-const logger = require('../../../services/logger');
-
-module.exports = function (req,res){
     let userId = req.auth.user._id;
-    set_disable_status(req.body,userId).then(function (err, about)
-    {
-        if (about)
-        {
-            res.json(about);
-        }
-        else
-        {
-            res.json(err);
-        }
+    const queryBody = req.body;
+    const timestamp = new Date();
+    await User.update({ _id:userId },{ $set: {'disable_account': queryBody.status, 'dissable_account_timestamp' : timestamp } });
+    res.send({
+        success : true
     })
-    .catch(function (err)
-    {
-        res.json({error: err});
-    });
-}
-
-function set_disable_status(data,userId){
-    var deferred = Q.defer();
-    let timestamp = new Date();
-    var set =
-    {
-        disable_account: data.status,
-        dissable_account_timestamp : timestamp,
-
-    };
-
-    users.update({ _id:userId },{ $set: set }, function (err, doc)
-    {
-
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else
-            deferred.resolve(set);
-    });
-    return deferred.promise;
 }

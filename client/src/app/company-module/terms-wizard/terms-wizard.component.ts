@@ -122,6 +122,12 @@ export class TermsWizardComponent implements OnInit {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.log = error['error']['message'];
             }
+            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+            }
+            else {
+              this.log = "Something getting wrong";
+            }
 
           });
     }

@@ -188,16 +188,11 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
           },
           error=>
           {
-                     if(error.message === 500 || error.message === 401)
-                     {
-                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            window.location.href = '/login';
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-                     }
-                     else
-                     {
-
-                    }
           });
        }
   }

@@ -50,7 +50,17 @@ export class CandidateFormComponent implements OnInit {
             }
           },
           error => {
-            this.log = error;
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+            {
+              this.log = error['error']['message'];
+            }
+            else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+            {
+              this.log = error['error']['message'];
+            }
+            else {
+              this.log = "Something getting wrong";
+            }
           }
         );
       }
@@ -129,12 +139,16 @@ export class CandidateFormComponent implements OnInit {
                 },
                 error =>
                 {
+                  this.loading = false;
+
                   if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.log = error['error']['message'];
+                  }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                     this.log = error['error']['message'];
                   }
                   else {
                     this.log = 'Something getting wrong';
-                    this.loading = false;
                   }
                 });
 
@@ -170,12 +184,15 @@ export class CandidateFormComponent implements OnInit {
 
                 },
                 error => {
+                  this.loading = false;
                   if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.log = error['error']['message'];
+                  }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                     this.log = error['error']['message'];
                   }
                   else {
                     this.log = 'Something getting wrong';
-                    this.loading = false;
                   }
                 });
             }
@@ -217,12 +234,15 @@ export class CandidateFormComponent implements OnInit {
 
                             },
                             error => {
+                              this.loading = false;
                               if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                                this.log = error['error']['message'];
+                              }
+                              else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                                 this.log = error['error']['message'];
                               }
                               else {
                                 this.log = 'Something getting wrong';
-                                this.loading = false;
                               }
 
                         });
@@ -271,12 +291,16 @@ export class CandidateFormComponent implements OnInit {
                 },
                 error =>
                 {
+                  this.loading = false;
+
                   if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.company_log = error['error']['message'];
+                  }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                     this.company_log = error['error']['message'];
                   }
                   else {
                     this.log = 'Something getting wrong';
-                    this.loading = false;
                   }
                 });
             }

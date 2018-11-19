@@ -39,58 +39,39 @@ export class VerifyEmailComponent implements OnInit {
             .subscribe(
                 data =>
                 {
-                     if (data['success'] === true && data['msg'])
-                    {
-                        if(!this.currentUser)
-                        {
-                            this.succesMsg= 'Email verified. Please login to continue.';
+                     if (data['success'] === true && data['msg']) {
+                       if (!this.currentUser) {
+                         this.succesMsg = 'Email verified. Please login to continue.';
 
-                            //window.location.href = '/login';
+                         //window.location.href = '/login';
 
-                        }
+                       }
 
-                        else if(this.currentUser.type=="candidate")
-                        {
-                            this.succesMsg = data['msg'];
-                            window.location.href = '/candidate_profile';
-                        }
+                       else if (this.currentUser.type == "candidate") {
+                         this.succesMsg = data['msg'];
+                         window.location.href = '/candidate_profile';
+                       }
 
-                        else if(this.currentUser.type=="company")
-                        {
-                            this.succesMsg = data['msg'];
-                            window.location.href = '/company_profile';
-                        }
-                   // return data;
-                }
-                if(data['success'] === false && data['error'])
-                {
-                    if(!this.currentUser)
-                        {
-                            this.errorMsg = data['error'];
-
-                        }
-
-                        else if(this.currentUser.type=="candidate")
-                        {
-                            this.errorMsg = data['error'];
-
-                        }
-
-                        else if(this.currentUser.type=="company")
-                        {
-                            this.errorMsg = data['error'];
-
-                        }
-                }
-
+                       else if (this.currentUser.type == "company") {
+                         this.succesMsg = data['msg'];
+                         window.location.href = '/company_profile';
+                       }
+                       // return data;
+                     }
                 },
                 error =>
                 {
-                    if(error.error.message === 'jwt expired')
-                    {
-                      this.errorMsg = 'The verification link has expired or is invalid.';
-
-                    }
+                  if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                  {
+                    this.errorMsg = error['error']['message'];
+                  }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                  {
+                    this.errorMsg = error['error']['message'];
+                  }
+                  else {
+                    this.errorMsg  = "Something getting wrong";
+                  }
 
                 });
 

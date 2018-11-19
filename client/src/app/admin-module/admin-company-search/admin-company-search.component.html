@@ -23,28 +23,28 @@
 
 			<div class="col-md-3">
 			<form #reset_form="ngForm">
-			
+
 				<div class = "wizard-form mr-top-form filter_bar" id = "side_bar">
 					<ul>
-						<li> 
+						<li>
 							<div class = "form-group">
 
 								<select2  [data]="rolesData" allowClear="true"   [options]="options" id="roles" [width]="500" [value]="select_value" (valueChanged)="messagetag_changed($event)">
-								
-								
+
+
 								</select2>
 								<input type="text" [(ngModel)]="msgtags" name="msg_tags" style="display: none;">
-					
+
 							</div>
-	
+
 						</li>
 
 						<li>
 							<div class = "form-group">
-							  
-	  							
+
+
 	  							<select class="form-control " name="approve" [(ngModel)]="approve" (ngModelChange)="search_approved( $event)" >
-									 
+
 									  <option value="-1" disabled selected hidden >Active/Inactive</option>
 									  <option class='option' *ngFor='let options of admin_check'  [value]="options.name" selected>{{options.value}}</option>
 							    </select>
@@ -54,21 +54,24 @@
 					</ul>
 				</div>
 				<div class = "text-right btn-div">
-					<!-- <button type = "button" class = "btn btn-filter"> Filter </button> 
+					<!-- <button type = "button" class = "btn btn-filter"> Filter </button>
 					<button type = "reset" class = "btn reset-bttn"> Reset </button>-->
 					<a  (click)="reset()" class = "btn reset-bttn"> Reset</a>
-					
+
 				</div>
 				</form>
 			</div>
+      <div *ngIf="error && error !== ''">
+        <h6 class="alert alert-danger error-alert" >{{error}}</h6>
+      </div>
 			<ng-container *ngIf="response === '';else no_section" >
 			<div class="col-md-9 text-center" >
 				<img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
 				</div>
-				
+
 			</ng-container>
 			<ng-template #no_section >
-			
+
 			<!--end-col-md-3-->
 			<div class="col-md-9">
 
@@ -77,40 +80,40 @@
 						<i class="fa fa-check tickk" aria-hidden="true"></i>
 				</div>
 				<div class = "result-status mr-top-form" *ngIf="log !== ''">
-						<span>{{log}}</span> 
+						<span>{{log}}</span>
 						<i class="fa fa-check tickk" aria-hidden="true"></i>
 				</div>
 
 				<!--candidate 1st-->
 				<div *ngIf="info" >
-				
+
 				<div class="panel-group mr-top-form" *ngFor= "let data of info | paginate: { itemsPerPage:10, currentPage: p }">
- 								      
+
 				   <div class="panel panel-default">
 <!-- 				    <div class="panel panel-default">
  -->				      <div class="panel-heading">
 				      	<div class = "user-pic" *ngIf="!data.company_logo">
 				      		<img src = "/assets/profile/profile-image.png" alt = "candidate_pic">
-				      		
+
 				      	</div>
-				      	
+
 				      	<div class = "user-pic" *ngIf="data.company_logo">
 				      		<img src = "{{data.company_logo}}" alt = "candidate_pic">
-				      		
+
 				      	</div>
 
 						<div class = "user-detail" *ngIf="data.users">
 					      	<a [routerLink]="['/admin-company-detail']" [queryParams]="{user: data.users[0]._id }"><h2>{{data.company_name}}</h2></a><br/>
-					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>	
+					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>
 					    </div>
-					    
+
 				      	<div class = "user-detail" *ngIf="!data.users">
 					      	<a [routerLink]="['/admin-company-detail']" [queryParams]="{user: data._creator._id }"><h2>{{data.company_name}}</h2></a><br/>
-					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>	
+					      	<span class="label label-war" *ngFor= "let roles of data.roles">{{roles}}</span>
 					    </div>
 
 						<div class = "ofr_btn">
-												
+
 						<form #approve_form="ngForm" *ngIf="data.users">
 								<input type="hidden" name="email"  [ngModel]="data.users[0].email">
 								<input type="hidden" name="name"  [ngModel]="data.first_name">
@@ -119,18 +122,18 @@
 								<input type="hidden" name="id" [ngModel]="data.users[0]._id">
 								<input type= "hidden" *ngIf='(data.users[0].is_verify ===1 && data.users[0].is_approved === 0)' name="is_approve" [ngModel]="1">
 								<input type= "hidden" *ngIf='(data.users[0].is_verify ===1 && data.users[0].is_approved === 1)' name="is_approve" [ngModel]="0">
-								
-								<div class="submit-button">						
+
+								<div class="submit-button">
 									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data.users[0].is_verify ===1 && data.users[0].is_approved === 0)" >Active</button>
 									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data.users[0].is_verify ===1 && data.users[0].is_approved === 1)" >Inactive</button>
 									<button type="submit" class = "btn btn_descp" *ngIf = "data.users[0].is_verify ===0" disabled>Active</button>
-									
+
 								</div>
 							</form>
 						</div>
-						
+
 						<div class = "ofr_btn" *ngIf="!data.users">
-												
+
 						<form #approve_form="ngForm" >
 								<input type="hidden" name="email"  [ngModel]="data._creator.email">
 								<input type="hidden" name="name"  [ngModel]="data.first_name">
@@ -139,19 +142,19 @@
 								<input type="hidden" name="id" [ngModel]="data._creator._id">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
-								
-								<div class="submit-button">						
+
+								<div class="submit-button">
 									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Active</button>
 									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Inactive</button>
 									<button type="submit" class = "btn btn_descp" *ngIf = "data._creator.is_verify ===0" disabled>Active</button>
-									
+
 								</div>
 							</form>
 						</div>
 				      </div>
 
 				      <div class="panel-body">
-						
+
 				      	<span class = "why_join col-md-12"><i>{{data.why_work}}</i> </span>
 
 				      		<div class="col-sm-8">
@@ -162,13 +165,13 @@
 				      		</div>
 				      		<div class="col-sm-4">
 				      			<h4>Detail</h4>
-				      			<ul> 				      			
-				      				
+				      			<ul>
+
 				      				<li > Website : {{data.company_website}}</li>
 				      				<li > Company Founded : {{data.company_founded}} </li>
 				      			</ul>
 				      		</div>
-				      		
+
 				      </div>
 
 				    </div>
@@ -177,9 +180,9 @@
 				</div>
 				<!--end candidate-->
 
-				
+
 				<pagination-controls (pageChange)="p = $event" *ngIf="page > 10"></pagination-controls>
-				
+
 					<!-- <ul class="pagination">
 					  <li class="active"><a href="#">1</a></li>
 					  <li><a href="#">2</a></li>
@@ -195,7 +198,7 @@
 
 		</div> <!--row end-->
 	</div> <!--container end-->
-	
+
 </section>
 
 <!--Code End here-->
