@@ -131,7 +131,18 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
         company_founded:2013,
         no_of_employees:8,
         company_funded:"i have no idea",
-        company_description:"Global blockchain agnostic hiring platform for developers."
+        company_description:"Global blockchain agnostic hiring platform for developers.",
+        saved_searches : [{
+            location: 'Amsterdam',
+            job_type : 'Full time',
+            position : ['UI Developer', 'Fullstack Developer'],
+            current_currency : '$ USD',
+            current_salary : 2000,
+            blockchain : ['Ripple' , 'Stellar'],
+            skills : 'C#',
+            receive_email_notitfications : false,
+            when_receive_email_notitfications : 'Never'
+        }]
 
     }
 }
@@ -429,5 +440,20 @@ module.exports.prefilledProfileData = function prefilledProfileData() {
             enddate: '2018-10-09T07:32:38.732Z',
             currentwork: true
         }
+    }
+}
+module.exports.companySavedSearches = function companySavedSearches() {
+    return {
+        saved_searches : [{
+            location: 'remote',
+            job_type : 'Part time',
+            position : ['Backend Developer', 'Fullstack Developer'],
+            current_currency : '$ USD',
+            current_salary : 1000,
+            blockchain : ['Ethereum' , 'Stellar'],
+            skills : 'Java',
+            receive_email_notitfications : true,
+            when_receive_email_notitfications : 'Daily'
+        }]
     }
 }

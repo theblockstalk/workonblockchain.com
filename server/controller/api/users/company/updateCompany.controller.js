@@ -1,4 +1,5 @@
 const EmployerProfile = require('../../../../model/employer_profile');
+const User = require('../../../../model/users');
 const logger = require('../../../services/logger');
 const errors = require('../../../services/errors');
 
@@ -26,6 +27,11 @@ module.exports = async function (req, res) {
         if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
 
         await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
+
+        let userUpdate = {};
+        if (queryBody.saved_searches && queryBody.saved_searches.length > 0) userUpdate["company.saved_searches"] = queryBody.saved_searches;
+
+        await User.update({ _id: userId },{ $set: userUpdate });
 
         res.send({
             success : true

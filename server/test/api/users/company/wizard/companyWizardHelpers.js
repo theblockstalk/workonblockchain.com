@@ -28,3 +28,13 @@ const companyAboutWizard = module.exports.companyAboutWizard = async function co
     res.should.have.status(200);
     return res;
 }
+
+const companySavedSearchesWizard = module.exports.companySavedSearchesWizard = async function companySavedSearchesWizard(preferences , jwtToken){
+
+    const res = await chai.request(server)
+        .put('/users/saved_searches')
+        .set('Authorization', jwtToken)
+        .send(preferences)
+    res.should.have.status(200);
+    return res;
+}

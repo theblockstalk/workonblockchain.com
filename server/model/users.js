@@ -136,6 +136,58 @@ const UserSchema = new Schema({
             }
         }
     },
+    company: {
+        saved_searches:
+            {
+                type:[new Schema({
+                    location: {
+                        type: String,
+                        enum: enumerations.workLocations
+                    },
+                    job_type: {
+                        type: String,
+                    },
+                    position:
+                        {
+                            type: [{
+                                type: String,
+                                enum: enumerations.workRoles
+                            }]
+                        },
+                    current_currency: {
+                        type: String,
+                        enum: enumerations.currencies
+                    },
+                    current_salary:
+                        {
+                            type:Number,
+                            min: 0
+                        },
+                    blockchain:
+                        {
+                            type: [{
+                                type: String,
+                                enum: enumerations.blockchainPlatforms
+                            }]
+                        },
+                    skills: {
+                        type: String,
+                        enum: enumerations.programmingLanguages
+                    },
+                    receive_email_notitfications: {
+                        type: Boolean
+                    },
+                    when_receive_email_notitfications : {
+                        type : String ,
+                        enum : enumerations.email_notificaiton
+                    },
+                    last_email_sent: {
+                        Type: Date
+                    }
+                })]
+            }
+
+    },
     created_date:
         {
             type: Date
