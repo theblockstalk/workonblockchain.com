@@ -137,8 +137,7 @@ const UserSchema = new Schema({
         }
     },
     company: {
-        saved_searches:
-            {
+        saved_searches: {
                 type:[new Schema({
                     location: {
                         type: String,
@@ -147,29 +146,26 @@ const UserSchema = new Schema({
                     job_type: {
                         type: String,
                     },
-                    position:
-                        {
+                    position: {
                             type: [{
                                 type: String,
                                 enum: enumerations.workRoles
                             }]
-                        },
+                    },
                     current_currency: {
                         type: String,
                         enum: enumerations.currencies
                     },
-                    current_salary:
-                        {
+                    current_salary: {
                             type:Number,
                             min: 0
-                        },
-                    blockchain:
-                        {
+                    },
+                    blockchain: {
                             type: [{
                                 type: String,
                                 enum: enumerations.blockchainPlatforms
                             }]
-                        },
+                    },
                     skills: {
                         type: String,
                         enum: enumerations.programmingLanguages
@@ -182,10 +178,10 @@ const UserSchema = new Schema({
                         enum : enumerations.email_notificaiton
                     },
                     last_email_sent: {
-                        Type: Date
+                        type: Date
                     }
                 })]
-            }
+        }
 
     },
     created_date:
