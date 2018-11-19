@@ -437,7 +437,6 @@ export class LinkedinImportComponent implements OnInit {
   file_name;
   onSubmit(f: NgForm)
   {
-
     if(!this.fileevent)
     {
       this.error_log = "Please choose file";

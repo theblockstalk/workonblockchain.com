@@ -17,8 +17,6 @@ let app = express();
 module.exports = app;
 
 try {
-    logger.debug('settings', settings);
-
     rootpath();
 
     app.use(cors());

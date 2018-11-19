@@ -16,10 +16,14 @@
     "buckets": {
       "files": "files.production.workonblockchain.com",
       "logs": "logs.workonblockchain.com"
+    },
+    "cloudWatch": {
+      "group": "production-api-workonblockchain-com",
+      "stream": "nodejs"
     }
   },
   "sendGrid": {
-    "fromAddress": "contact@workonblockchain.com",
+    "fromAddress": "no-reply@workonblockchain.com",
     "fromName": "Work on Blockchain"
   },
   "mandrill": {

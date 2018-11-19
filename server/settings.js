@@ -36,7 +36,11 @@ if (isLiveApplication()) {
 
     settings.AWS = {
         REGION: config.aws.region,
-        BUCKETS: config.aws.buckets
+        BUCKETS: config.aws.buckets,
+        CLOUDWATCH: {
+            GROUP: config.aws.cloudWatch.group,
+            STREAM: config.aws.cloudWatch.stream
+        }
     };
 
     settings.MANDRILL = {

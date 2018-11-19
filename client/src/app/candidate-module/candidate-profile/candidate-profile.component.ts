@@ -145,6 +145,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
+                console.log(data);
                 if(data.first_name && data.last_name && data.contact_number && data.nationality &&
                   data.locations  && data.roles && data.interest_area &&
                   data.expected_salary && data.current_salary && data.why_work && data.description

@@ -465,6 +465,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
         if(this.current_salary && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
         {
+          console.log(f.value);
         this.authenticationService.job(this.currentUser._creator,f.value)
             .subscribe(
                 data => {
