@@ -11,7 +11,7 @@ module.exports = async function (req, res) {
     if(userDoc && userDoc.length > 0) {
         for(let i=0; i < userDoc.length; i++) {
             let queryString = [];
-            if(userDoc[i].saved_searches[0].last_email_sent  < now - when_receive_email_notitfications) {
+            if(userDoc[i].saved_searches[0].last_email_sent  < now - when_receive_email_notitfications) { // not sure about this
                 if (userDoc[i].saved_searches[0] && userDoc[i].saved_searches[0].length > 0 && userDoc[i].saved_searches[0].receive_email_notitfications === true) {
                     if (userDoc[i].saved_searches[0].location) {
                         const locationFilter = {"locations": {$in: userDoc[i].saved_searches[0].location}};
@@ -55,7 +55,7 @@ module.exports = async function (req, res) {
                         if(candidateDoc._creator.is_approved === 1 &&
                             candidateDoc._creator.candidate.first_approved_date > userDoc[i].saved_searches[0].last_email_sent
                             && candidateDoc._creator.candidate.first_approved_date < new Date()
-                            ) {
+                            ) { //please confirm this if condition
                             //sendEmail
                         }
                         else {
