@@ -3,6 +3,7 @@ const referral = require('../../../../model/referrals');
 const user = require('../../../../model/users');
 const employerProfile = require('../../../../model/employer_profile');
 const candidateProfile = require('../../../../model/candidate_profile');
+const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
     const refDoc = await referral.findOne({
@@ -55,6 +56,6 @@ module.exports = async function (req, res) {
         }
     }
     else{
-        res.send(null);
+        errors.throwError("Referral doc not found", 404);
     }
 };

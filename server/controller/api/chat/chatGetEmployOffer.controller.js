@@ -1,62 +1,29 @@
-var Q = require('q');
 const chat = require('../../../model/chat');
-const logger = require('../../services/logger');
+const errors = require('../../services/errors');
 
-module.exports = function (req, res)
-{
-    let userId = req.auth.user._id;
-    get_employment_offer(userId,req.body.receiver_id,req.body.msg_tag).then(function (data)
-    {
-        if (data)
+module.exports = async function (req, res) {
+    const userId = req.auth.user._id;
+    const chatDoc = await chat.findOne({
+        $and:[{
+        is_job_offered: 1
+        },
         {
-            res.send(data);
-        }
-        else
+            sender_id: userId
+        },
         {
-            res.sendStatus(404);
-        }
-    })
-        .catch(function (err)
+            receiver_id:req.body.receiver_id
+        },
         {
-            res.status(400).send(err);
+            msg_tag:req.body.msg_tag
+        }]
+    }).lean();
+    if(chatDoc) {
+        res.send({
+            success:true,
+            message: "employment offer already sent"
         });
-}
-
-function get_employment_offer(sender_id,receiver_id,message_tag){
-    var deferred = Q.defer();
-    chat.findOne({
-        $and : [
-			{
-				is_job_offered: 1
-			},
-            {
-				sender_id: sender_id
-            },
-			{
-				receiver_id:receiver_id
-			},
-            {
-                msg_tag:message_tag
-            }
-        ]
-    }, function (err, data)
-    {
-        if (err){
-            logger.error(err.message, {stack: err.stack});
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        else{
-            if(data){
-				deferred.resolve({
-					datas:data._id
-				});
-			}
-			else{
-				deferred.resolve({
-					datas:0
-				});
-			}
-        }
-    });
-    return deferred.promise;
-}
+    }
+    else{
+        errors.throwError("conversation not found" ,404);
+    }
+};

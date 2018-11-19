@@ -1,89 +1,34 @@
-const settings = require('../../../../settings');
-var _ = require('lodash');
-var Q = require('q');
-var mongo = require('mongoskin');
-const users = require('../../../../model/users');
-const logger = require('../../../services/logger');
-var crypto = require('crypto');
+const User = require('../../../../model/users');
 const jwtToken = require('../../../services/jwtToken');
+const errors = require('../../../services/errors');
+const crypto = require('crypto');
 
-module.exports = function (req,res)
-{
-    reset_password(req.params.hash,req.body).then(function (err, data)
-    {
-        if (data)
-        {
-            res.json(data);
+module.exports = async function (req,res) {
+
+    let passwordHash = req.params.hash;
+    let queryBody = req.body;
+
+    let payloaddata = jwtToken.verifyJwtToken(passwordHash);
+    if((payloaddata.exp - payloaddata.iat) === 3600) {
+        const userDoc = await User.findOne({ forgot_password_key : passwordHash}).lean();
+        if(userDoc) {
+            let salt = crypto.randomBytes(16).toString('base64');
+            let hash = crypto.createHmac('sha512', salt);
+            hash.update(queryBody.password);
+            let hashedPasswordAndSalt = hash.digest('hex');
+            await User.update({ _id: userDoc._id },{ $set: {'password_hash': hashedPasswordAndSalt ,'salt' : salt } });
+            res.send({
+                success : true ,
+                msg : 'Password reset successfully'
+            })
         }
-        else
-        {
-            res.send(err);
+        else {
+            errors.throwError("User not found", 404);
         }
-    })
-        .catch(function (err)
-        {
-            res.json({error: err});
-        });
+    }
+    else {
+        errors.throwError("Link expired", 400);
+    }
 
 }
 
-function reset_password(forgotPasswordToken , newPassword)
-{
-    var deferred = Q.defer();
-
-    let payloaddata = jwtToken.verifyJwtToken(forgotPasswordToken);
-
-    if((payloaddata.exp - payloaddata.iat) === 3600)
-    {
-
-        users.findOne({ forgot_password_key : forgotPasswordToken}, function (err, result)
-        {
-
-            if (err){
-                logger.error(err.message, {stack: err.stack});
-                deferred.reject(err.name + ': ' + err.message);
-            }
-            if(result)
-            {
-                updateData(result._id);
-            }
-
-            else
-            {
-                deferred.reject("Result not found");
-            }
-
-        });
-
-        function updateData(_id)
-        {
-        	 let salt = crypto.randomBytes(16).toString('base64');
-             let hash = crypto.createHmac('sha512', salt);
-     		hash.update(newPassword.password);
-     		let hashedPasswordAndSalt = hash.digest('hex');
-
-             var set =
-                 {
-             		password_hash:hashedPasswordAndSalt,
-             		salt :salt
-                 };
-            users.update({ _id: mongo.helper.toObjectID(_id) },{ $set: set }, function (err, doc)
-            {
-                if (err){
-                    logger.error(err.message, {stack: err.stack});
-                    deferred.reject(err.name + ': ' + err.message);
-                }
-                else
-                {
-                    deferred.resolve({msg:'Password reset successfully'});
-                }
-            });
-        }
-    }
-    else
-    {
-        deferred.reject('Link expired');
-    }
-
-    return deferred.promise;
-}

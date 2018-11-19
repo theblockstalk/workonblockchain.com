@@ -31,34 +31,39 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
 
   }
+  reset_password_log;
 
   reset_password(f: NgForm)
   {
-    this.authenticationService.reset_password(this.hash,f.value)
-      .subscribe(
-        data => {
-
-
-
-          if(data.error)
-          {
-            this.log = data.error;
-            ////console.log("error");
-          }
-          else
-          {
+    this.reset_password_log = '';
+    if(!f.value.password) {
+      this.reset_password_log = 'Please enter the new password.';
+    }
+    else {
+      this.authenticationService.reset_password(this.hash, f.value)
+        .subscribe(
+          data => {
             this.dataservice.forgertMessage("Password updated successfully");
-
             this.router.navigate(['/login']);
-          }
 
+          },
+          error => {
+            if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+            }
+            else if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+            }
+            else if (error['status'] === 500) {
+              this.log = "Something getting wrong. Please check your link";
+            }
+            else {
+              this.log = "Something getting wrong";
+            }
 
+          });
+    }
 
-        },
-        error => {
-          //this.log = 'Something getting wrong';
-
-        });
   }
 
 }
