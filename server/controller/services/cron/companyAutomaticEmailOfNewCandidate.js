@@ -58,16 +58,22 @@ module.exports = async function (req, res) {
                           const searchQuery = {$and: queryString};
                           if (queryString && queryString > 0) {
                               const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator').lean();
-                              if(candidateDoc && candidateDoc._creator.is_approved === 1 && candidateDoc._creator.first_approved_date) { //please confirm this if condition
+                              if(candidateDoc) {
                                   let candidateList = [];
 
                                   for(let a=0 ; a < candidateDoc.length ; a++) {
-                                      let candidateInfo = {
-                                          profileLink : candidateDoc[i]._creator._id,
-                                          whyWork : candidateDoc[i].why_work,
-                                          initials : candidateDoc[i].first_name.charAt(0).toUpperCase() + candidateDoc[i].last_name.charAt(0).toUpperCase()
+                                      if(candidateDoc[i]._creator.is_approved === 1 && candidateDoc[i]._creator.first_approved_date) {
+                                          let candidateInfo = {
+                                              profileLink : candidateDoc[i]._creator._id,
+                                              whyWork : candidateDoc[i].why_work,
+                                              initials : candidateDoc[i].first_name.charAt(0).toUpperCase() + candidateDoc[i].last_name.charAt(0).toUpperCase()
+                                          }
+                                          candidateList.push(candidateInfo);
                                       }
-                                      candidateList.push(candidateInfo);
+                                      else {
+                                          logger.debug("do nothing");
+                                      }
+
                                   }
                                   if(candidateList.length > 0){
                                       //sendEmail
@@ -77,12 +83,12 @@ module.exports = async function (req, res) {
                                       })
                                   }
                                   else {
-                                      errors.throwError("Candidate doc not found", 404);
+                                      errors.throwError("Candidate list is empty", 404);
                                   }
 
                               }
                               else {
-                                  errors.throwError("User is not approved", 404);
+                                  errors.throwError("Candidate doc not found", 404);
                               }
                           }
                           else {
