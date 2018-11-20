@@ -17,7 +17,7 @@ module.exports = async function (req, res) {
           const userDoc = await User.find({is_verify : 1 , is_approved : 1 , disable_account : false , type : 'company', _id : companyDoc[i]._creator }).lean();
           if(userDoc) {
               let queryString = [];
-              if(companyDoc[i].saved_searches.when_receive_email_notitfications !== 'Never' && companyDoc[i].saved_searches[0].receive_email_notitfications === true) {
+              if(companyDoc[i].saved_searches.when_receive_email_notitfications !== 'Never') {
                   if(!companyDoc[i].last_email_sent || companyDoc[i].last_email_sent  <  new Date(Date.now() + candidateSearch.convertToDays(companyDoc[i].saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) { // not sure about this
                           if (companyDoc[i].saved_searches[0].location) {
                               const locationFilter = {"locations": {$in: companyDoc[i].saved_searches[0].location}};

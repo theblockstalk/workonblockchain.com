@@ -53,7 +53,6 @@ describe('update profile as company', function () {
             companyDoc.saved_searches[0].current_currency.should.equal(updatedData.saved_searches[0].current_currency);
             companyDoc.saved_searches[0].current_salary.should.equal(updatedData.saved_searches[0].current_salary);
             companyDoc.saved_searches[0].skills.should.valueOf(updatedData.saved_searches[0].skills);
-            companyDoc.saved_searches[0].receive_email_notitfications.should.equal(updatedData.saved_searches[0].receive_email_notitfications);
             companyDoc.saved_searches[0].when_receive_email_notitfications.should.equal(updatedData.saved_searches[0].when_receive_email_notitfications);
             companyDoc.saved_searches[0].position.should.valueOf(updatedData.saved_searches[0].position);
             companyDoc.saved_searches[0].blockchain.should.valueOf(updatedData.saved_searches[0].blockchain);

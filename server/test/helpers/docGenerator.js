@@ -141,7 +141,6 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
             blockchain : ['Ripple' , 'Stellar'],
             skills : ['C#'],
             availability_day : '1 month' ,
-            receive_email_notitfications : false,
             when_receive_email_notitfications : 'Never'
         }]
 
@@ -454,7 +453,6 @@ module.exports.companySavedSearches = function companySavedSearches() {
             blockchain : ['Ethereum' , 'Stellar'],
             skills : ['Java'],
             availability_day : '1 month' ,
-            receive_email_notitfications : true,
             when_receive_email_notitfications : 'Daily'
         }]
     }

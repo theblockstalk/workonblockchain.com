@@ -40,7 +40,6 @@ describe('company saved searches', function () {
             companyPrefernces.saved_searches[0].current_currency.should.equal(companyDoc.saved_searches[0].current_currency);
             companyPrefernces.saved_searches[0].current_salary.should.equal(companyDoc.saved_searches[0].current_salary);
             companyPrefernces.saved_searches[0].skills.should.valueOf(companyDoc.saved_searches[0].skills);
-            companyPrefernces.saved_searches[0].receive_email_notitfications.should.equal(companyDoc.saved_searches[0].receive_email_notitfications);
             companyPrefernces.saved_searches[0].when_receive_email_notitfications.should.equal(companyDoc.saved_searches[0].when_receive_email_notitfications);
             companyPrefernces.saved_searches[0].position.should.valueOf(companyDoc.saved_searches[0].position);
             companyPrefernces.saved_searches[0].blockchain.should.valueOf(companyDoc.saved_searches[0].blockchain);

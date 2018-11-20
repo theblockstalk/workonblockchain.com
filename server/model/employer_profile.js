@@ -112,10 +112,6 @@ const CompanyProfileSchema = new Schema({
                     enum: enumerations.programmingLanguages
                 }]
             },
-            receive_email_notitfications: {
-                type: Boolean,
-                required : true
-            },
             when_receive_email_notitfications : {
                 type : String ,
                 required : true,
