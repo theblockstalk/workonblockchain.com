@@ -688,9 +688,9 @@ body{
         bottom: -35px !important;
     }
 
-  .select_error {
+  /*.select_error {
     position: relative !important;
-  }
+  }*/
 }
 
 .newsletter_signup {
@@ -988,7 +988,7 @@ body{
 .form_error{
 
     margin-top: 1px;
-	position: absolute;
+	  /*position: absolute;*/
     font-size: 12px;
 }
 
