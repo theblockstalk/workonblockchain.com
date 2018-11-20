@@ -48,17 +48,15 @@ describe('update profile as company', function () {
             companyDoc.company_funded.should.equal(updatedData.company_funded);
             companyDoc.company_description.should.equal(updatedData.company_description);
 
-            const userDoc = await Users.findOne({email: company.email}).lean();
-            updatedData.saved_searches[0].location.should.valueOf(userDoc.company.saved_searches[0].location);
-            updatedData.saved_searches[0].job_type.should.equal(userDoc.company.saved_searches[0].job_type);
-            updatedData.saved_searches[0].current_currency.should.equal(userDoc.company.saved_searches[0].current_currency);
-            updatedData.saved_searches[0].current_salary.should.equal(userDoc.company.saved_searches[0].current_salary);
-            updatedData.saved_searches[0].skills.should.valueOf(userDoc.company.saved_searches[0].skills);
-            updatedData.saved_searches[0].receive_email_notitfications.should.equal(userDoc.company.saved_searches[0].receive_email_notitfications);
-            updatedData.saved_searches[0].when_receive_email_notitfications.should.equal(userDoc.company.saved_searches[0].when_receive_email_notitfications);
-            updatedData.saved_searches[0].position.should.valueOf(userDoc.company.saved_searches[0].position);
-            updatedData.saved_searches[0].blockchain.should.valueOf(userDoc.company.saved_searches[0].blockchain);
-
+            companyDoc.saved_searches[0].location.should.valueOf(updatedData.saved_searches[0].location);
+            companyDoc.saved_searches[0].job_type.should.equal(updatedData.saved_searches[0].job_type);
+            companyDoc.saved_searches[0].current_currency.should.equal(updatedData.saved_searches[0].current_currency);
+            companyDoc.saved_searches[0].current_salary.should.equal(updatedData.saved_searches[0].current_salary);
+            companyDoc.saved_searches[0].skills.should.valueOf(updatedData.saved_searches[0].skills);
+            companyDoc.saved_searches[0].receive_email_notitfications.should.equal(updatedData.saved_searches[0].receive_email_notitfications);
+            companyDoc.saved_searches[0].when_receive_email_notitfications.should.equal(updatedData.saved_searches[0].when_receive_email_notitfications);
+            companyDoc.saved_searches[0].position.should.valueOf(updatedData.saved_searches[0].position);
+            companyDoc.saved_searches[0].blockchain.should.valueOf(updatedData.saved_searches[0].blockchain);
 
         })
     })

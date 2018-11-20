@@ -136,70 +136,7 @@ const UserSchema = new Schema({
             }
         }
     },
-    company: {
-        saved_searches: {
-                type:[new Schema({
-                    location: {
-                        type: [{
-                            type: String,
-                            required : true,
-                            enum: enumerations.workLocations
-                        }]
-                    },
-                    job_type: {
-                        type: String,
-                        required : true
-                    },
-                    position: {
-                            type: [{
-                                type: String,
-                                required : true,
-                                enum: enumerations.workRoles
-                            }]
-                    },
-                    availability_day: {
-                            type:String,
-                            required : true,
-                            enum: enumerations.workAvailability
-                    },
-                    current_currency: {
-                        type: String,
-                        required : true,
-                        enum: enumerations.currencies
-                    },
-                    current_salary: {
-                            type:Number,
-                            required : true,
-                            min: 0
-                    },
-                    blockchain: {
-                            type: [{
-                                type: String,
-                                enum: enumerations.blockchainPlatforms
-                            }]
-                    },
-                    skills: {
-                        type: [{
-                            type: String,
-                            enum: enumerations.programmingLanguages
-                        }]
-                    },
-                    receive_email_notitfications: {
-                        type: Boolean,
-                        required : true
-                    },
-                    when_receive_email_notitfications : {
-                        type : String ,
-                        required : true,
-                        enum : enumerations.email_notificaiton
-                    },
-                    last_email_sent: {
-                        type: Date
-                    }
-                })]
-        }
 
-    },
     created_date:
         {
             type: Date

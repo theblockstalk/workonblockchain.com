@@ -32,15 +32,18 @@ describe('company saved searches', function () {
             const companyWizardRes = await companyWizardHelper.companySavedSearchesWizard(companyPrefernces , companyRes.body.jwt_token);
             companyWizardRes.body.success.should.equal(true);
             const userDoc = await Users.findOne({email: company.email}).lean();
-            companyPrefernces.saved_searches[0].location.should.valueOf(userDoc.company.saved_searches[0].location);
-            companyPrefernces.saved_searches[0].job_type.should.equal(userDoc.company.saved_searches[0].job_type);
-            companyPrefernces.saved_searches[0].current_currency.should.equal(userDoc.company.saved_searches[0].current_currency);
-            companyPrefernces.saved_searches[0].current_salary.should.equal(userDoc.company.saved_searches[0].current_salary);
-            companyPrefernces.saved_searches[0].skills.should.valueOf(userDoc.company.saved_searches[0].skills);
-            companyPrefernces.saved_searches[0].receive_email_notitfications.should.equal(userDoc.company.saved_searches[0].receive_email_notitfications);
-            companyPrefernces.saved_searches[0].when_receive_email_notitfications.should.equal(userDoc.company.saved_searches[0].when_receive_email_notitfications);
-            companyPrefernces.saved_searches[0].position.should.valueOf(userDoc.company.saved_searches[0].position);
-            companyPrefernces.saved_searches[0].blockchain.should.valueOf(userDoc.company.saved_searches[0].blockchain);
+
+            const companyDoc = await Companies.findOne({_creator: userDoc._id}).lean();
+
+            companyPrefernces.saved_searches[0].location.should.valueOf(companyDoc.saved_searches[0].location);
+            companyPrefernces.saved_searches[0].job_type.should.equal(companyDoc.saved_searches[0].job_type);
+            companyPrefernces.saved_searches[0].current_currency.should.equal(companyDoc.saved_searches[0].current_currency);
+            companyPrefernces.saved_searches[0].current_salary.should.equal(companyDoc.saved_searches[0].current_salary);
+            companyPrefernces.saved_searches[0].skills.should.valueOf(companyDoc.saved_searches[0].skills);
+            companyPrefernces.saved_searches[0].receive_email_notitfications.should.equal(companyDoc.saved_searches[0].receive_email_notitfications);
+            companyPrefernces.saved_searches[0].when_receive_email_notitfications.should.equal(companyDoc.saved_searches[0].when_receive_email_notitfications);
+            companyPrefernces.saved_searches[0].position.should.valueOf(companyDoc.saved_searches[0].position);
+            companyPrefernces.saved_searches[0].blockchain.should.valueOf(companyDoc.saved_searches[0].blockchain);
         })
     })
 });

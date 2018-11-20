@@ -25,13 +25,9 @@ module.exports = async function (req, res) {
         if (queryBody.no_of_employees) employerUpdate.no_of_employees = queryBody.no_of_employees;
         if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
         if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
+        if (queryBody.saved_searches && queryBody.saved_searches.length > 0) employerUpdate.saved_searches = queryBody.saved_searches;
 
         await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
-
-        let userUpdate = {};
-        if (queryBody.saved_searches && queryBody.saved_searches.length > 0) userUpdate["company.saved_searches"] = queryBody.saved_searches;
-
-        await User.update({ _id: userId },{ $set: userUpdate });
 
         res.send({
             success : true
