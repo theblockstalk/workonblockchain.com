@@ -5,82 +5,65 @@ const enumerations = require('./enumerations');
 const Schema = mongoose.Schema;
 
 const CompanyProfileSchema = new Schema({
-    terms:
-        {
+    terms: {
             type:Boolean
-        },
-    terms_id:
-        {
+    },
+    terms_id: {
             type: Schema.Types.ObjectId,
             ref: 'pages_content'
-        },
-    marketing_emails:
-        {
+    },
+    marketing_emails: {
             type:Boolean,
             default:false
-        },
-    first_name:
-        {
+    },
+    first_name: {
             type:String
-        },
-    last_name:
-        {
+    },
+    last_name: {
             type:String
-        },
-    job_title:
-        {
+    },
+    job_title: {
             type:String
-        },
-    company_name:
-        {
+    },
+    company_name: {
             type:String
-        },
-    company_website:
-        {
+    },
+    company_website: {
             type:String,
             validate: regexes.url
-        },
-    company_phone:
-        {
+    },
+    company_phone: {
             type:String
-        },
-    company_country:
-        {
+    },
+    company_country: {
             type: String,
             enum: enumerations.countries
-        },
-    company_city:
-        {
+    },
+    company_city: {
             type:String
-        },
-    company_postcode:
-        {
+    },
+    company_postcode: {
             type:String
-        },
-    company_founded:
-        {
+    },
+    company_founded: {
             type:Number,
             min: 1800
-        },
-    no_of_employees:
-        {
+    },
+    no_of_employees: {
             type:Number,
             min: 1
-        },
-    company_funded:
-        {
+    },
+    company_funded: {
             type:String
-        },
-    company_logo:
-        {
+    },
+    company_logo: {
             type: String,
             validate: regexes.url
-        },
-    company_description:
-        {
+    },
+    company_description: {
             type: String,
             maxlength: 3000
-        },
+    },
 
     saved_searches: {
         type:[new Schema({
@@ -145,11 +128,10 @@ const CompanyProfileSchema = new Schema({
         type: Date
     },
 
-    _creator :
-        {
+    _creator : {
             type: Schema.Types.ObjectId,
             ref: 'User'
-        },
+    },
 
 
 });
