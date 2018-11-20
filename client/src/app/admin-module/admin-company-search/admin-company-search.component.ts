@@ -195,7 +195,9 @@ error ;
 
   onSearchName(f: NgForm)
   {
-    this.search(f.value.word);
+    if(f.value.word) {
+      this.search(f.value.word);
+    }
 
   }
 

@@ -194,9 +194,12 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   onSearchName(f: NgForm)
   {
 
-    this.search(f.value.word);
+    if(f.value.word) {
+      this.search(f.value.word);
+    }
 
   }
+
 
   msgtags;
   messagetag_changed(data)
