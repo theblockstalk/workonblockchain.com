@@ -15,7 +15,6 @@ module.exports = async function (req, res) {
     if(userDoc.is_approved === 1) {
         if(userDoc.type === 'candidate')
         {
-            console.log("candidate");
             const candidateDoc = await CandidateProfile.findOne({ _creator: userDoc._id}).lean();
             if(candidateDoc) {
                 candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name,userDoc.disable_account);
