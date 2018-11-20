@@ -109,9 +109,9 @@ module.exports = async function (req, res) {
                                 data = {
                                     fname: companyDoc.first_name,
                                     email: refDoc.email,
-                                    fname_referred: userParam.first_name,
-                                    lname_referred: userParam.last_name,
-                                    company_name: userParam.company_name
+                                    fname_referred: queryBody.first_name,
+                                    lname_referred: queryBody.last_name,
+                                    company_name: queryBody.company_name
                                 }
 
                             }
@@ -119,9 +119,9 @@ module.exports = async function (req, res) {
                             {
                                 data = {
                                     email: refDoc.email,
-                                    fname_referred: userParam.first_name,
-                                    lname_referred: userParam.last_name,
-                                    company_name: userParam.company_name
+                                    fname_referred: queryBody.first_name,
+                                    lname_referred: queryBody.last_name,
+                                    company_name: queryBody.company_name
                                 }
 
                             }
@@ -132,9 +132,9 @@ module.exports = async function (req, res) {
 
                         let data = {
                             email: refDoc.email,
-                            fname_referred: userParam.first_name,
-                            lname_referred: userParam.last_name,
-                            company_name: userParam.company_name
+                            fname_referred: queryBody.first_name,
+                            lname_referred: queryBody.last_name,
+                            company_name: queryBody.company_name
                         }
                         referedCompanyEmail.sendEmail(data, false);
                     }
