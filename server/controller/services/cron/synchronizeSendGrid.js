@@ -1,7 +1,7 @@
 const sendGrid = require('../email/sendGrid');
 const logger = require('../logger');
 
-module.exports = function async () {
+module.exports = async function() {
     let customFields = await sendGrid.getAllLists();
 
     console.log(customFields);

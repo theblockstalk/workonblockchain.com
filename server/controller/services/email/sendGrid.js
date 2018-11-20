@@ -29,19 +29,41 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
     }
 }
 
+async function apiRequest(request) {
+    return new Promise((resolve, reject) => {
+        try {
+            sgClient.request(request).then(([response, body]) => {
+                console.log(response.statusCode);
+                console.log(response.body);
+                resolve(response.body);
+            })
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
 module.exports.getAllLists = async function getAllLists() {
-    let request = {
+    const request = {
         method: 'GET',
         url: '/v3/contactdb/lists'
     };
 
-    let response = await sgClient.request(request);
-    if (response.statusCode !== 200) {
-        logger.error("Sendgrid API request failed", {
-            request: request,
-            response: response
-        })
-    } else {
-        return response.body;
-    }
+    logger.debug('Sendgrid API request', request);
+
+    await apiRequest(request);
+    // client.request(request).then(([response, body]) => {
+    //     console.log(response.statusCode);
+    //     console.log(response.body);
+    // })
+    // const response = await sgClient.request(request);
+    // if (response.statusCode !== 200) {
+    //     logger.error("Sendgrid API request failed", {
+    //         request: request,
+    //         response: response
+    //     });
+    //     throw new Error();
+    // } else {
+    //     return response.body;
+    // }
 }
