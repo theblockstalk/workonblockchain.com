@@ -1,5 +1,6 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const errors = require('../../../../services/errors');
+const User = require('../../../../../model/users');
 
 module.exports = async function (req,res) {
 	let userId = req.auth.user._id;
@@ -14,9 +15,27 @@ module.exports = async function (req,res) {
         if (queryBody.detail.intro) candidateUpdate.description = queryBody.detail.intro;
 
         await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
+
+        const userDoc = await User.find({_id : userId}).lean();
+
+            await User.update(
+                { _id: userId },
+                {
+                    $push: {
+                        'candidate.status' : {
+                            $each: [{ status: 'completed',
+                status_updated: new Date(),
+                timestamp: new Date()}]
+                        }
+                    }
+                }
+            )
+
+
         res.send({
             success : true
         })
+
     }
     else {
         errors.throwError("Candidate account not found", 404);

@@ -49,13 +49,13 @@ module.exports = async function (req, res) {
         created_date: new Date(),
         referred_email : userParam.referred_email,
         linkedin_id : userParam.linkedin_id,
-        candidate: [{
+        candidate: {
             status: [{
                 status: 'created',
                 status_updated: new Date(),
                 timestamp: new Date()
             }]
-        }]
+        }
     });
 
     const candidateUserCreated = await newUser.save();
