@@ -1,5 +1,3 @@
-const settings = require('../../../settings');
-var Q = require('q');
 const users = require('../../../model/users');
 const CandidateProfile = require('../../../model/candidate_profile');
 const EmployerProfile = require('../../../model/employer_profile');
@@ -8,67 +6,31 @@ const chat = require('../../../model/chat');
 const chatReminderEmail = require('../email/emails/chatReminder');
 const logger = require('../logger');
 
-module.exports = function (){
-    try {
-        get_unread_msgs().then((res, error) => {
-            if (error) {
-                logger.error(error.message, {stack: error.stack});
-            }
-        });
-        
-    } catch(error) {
-        logger.error(error.message, {stack: error.stack});
-    }
-    logger.info('Unread chat messages email script was executed', {timestamp: Date.now()});
-}
+module.exports = function async () {
+    logger.debug('get all unread msgs');
+    const unreadReceiverIds = await chat.distinct("receiver_id", {is_read: 0});
 
-function get_unread_msgs(){
-    var deferred = Q.defer();
-    if (settings.isLiveApplication()) {
-        logger.debug('get all unread msgs');
-        //chat.aggregate({$group : {"receiver_id" : "$by_user", num_tutorial : {$sum : 1}}}, function (err, result){
-        chat.distinct("receiver_id", {is_read: 0}, function (err, result){
-            if (err){
-                deferred.reject(err.name + ': ' + err.message);
+    for(let i=0; i < unreadReceiverIds.length; i++){
+        let userDoc = await users.findOne({ _id: unreadReceiverIds[i], is_unread_msgs_to_send: true},{"email":1,"type":1,"disable_account":1});
+
+        if(userDoc){
+            if(userDoc.type === 'candidate'){
+                let candidateDoc = await CandidateProfile.find({ _creator: userDoc._id},{"first_name":1});
+
+                if(candidateDoc) {
+                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, candidateDoc[0].first_name);
+                }
             }
             else{
-                for(var i=0;i<result.length;i++){
-                    //console.log(result[i]);
-                    users.findOne({ _id: result[i],is_unread_msgs_to_send: true},{"email":1,"type":1,"disable_account":1}, function (err, userDoc){
-                        if(userDoc){
-							if(userDoc.type === 'candidate'){
-                                CandidateProfile.find({ _creator: userDoc._id},{"first_name":1}, function (err, query_data){
-                                    if (err){
-                                        logger.error(err.message, {stack: err.stack});
-                                        deferred.reject(err.name + ': ' + err.message);
-                                    }
-                                    if(query_data){
-                                        chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, query_data[0].first_name);
-                                    }
-                                });
-                            }
-                            else{
-                                EmployerProfile.find({ _creator: userDoc._id},{"first_name":1}, function (err, query_data){
-                                    if (err){
-                                        logger.error(err.message, {stack: err.stack});
-                                        deferred.reject(err.name + ': ' + err.message);
-                                    }
-                                    if(query_data){
-                                        chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, query_data[0].first_name);
-                                    }
-                                });
-                            }
-                        }
-						else{
-							logger.debug("nothing to do");
-						}
-                    });
+                let companyDoc = await EmployerProfile.find({ _creator: userDoc._id},{"first_name":1});
+                if(companyDoc){
+                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc[0].first_name);
                 }
-                deferred.resolve(result);
             }
-        });
-        return deferred.promise;
+        }
+        else{
+            logger.debug("nothing to do");
+        }
     }
-    logger.debug("I ran the script!");
-    return deferred.promise;
-}
+    logger.info('Unread chat messages email script was executed', {timestamp: Date.now()});
+};
