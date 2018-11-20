@@ -1,6 +1,5 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const mongo = require('../../helpers/mongo');
 const synchronizeSendGrid = require('../../../controller/services/cron/synchronizeSendGrid');
 
 const assert = chai.assert;
@@ -9,10 +8,11 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('cron Sendgrid contacts', function () {
+    this.timeout(10000);
 
     afterEach(async function() {
         console.log('dropping database');
-        // await mongo.drop();
+        await mongo.drop();
     })
 
     describe('synchronize database to sendgrid contacts', () => {

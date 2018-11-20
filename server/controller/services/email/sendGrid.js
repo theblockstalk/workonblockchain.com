@@ -4,7 +4,9 @@ const sgMail = require('@sendgrid/mail');
 const sgClient = require('@sendgrid/client');
 
 if (settings.isLiveApplication()) {
+    logger.debug("Setting Sendgrid API key");
     sgMail.setApiKey(settings.SENDGRID.API_KEY);
+    sgClient.setApiKey(settings.SENDGRID.API_KEY);
 }
 
 module.exports.sendEmail = async function sendEmail(sendGridOptions) {
@@ -30,17 +32,17 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
 }
 
 async function apiRequest(request) {
-    return new Promise((resolve, reject) => {
-        try {
-            sgClient.request(request).then(([response, body]) => {
-                console.log(response.statusCode);
-                console.log(response.body);
-                resolve(response.body);
-            })
-        } catch (error) {
-            reject(error);
-        }
-    })
+    let response;
+    logger.debug('Sendgrid API request', request);
+
+    [response, ] = await sgClient.request(request);
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+        logger.error("Sendgrid API request failed", response);
+        throw new Error();
+    }
+
+    return response.body;
 }
 
 module.exports.getAllLists = async function getAllLists() {
@@ -49,21 +51,18 @@ module.exports.getAllLists = async function getAllLists() {
         url: '/v3/contactdb/lists'
     };
 
-    logger.debug('Sendgrid API request', request);
+    return await apiRequest(request);
+}
 
-    await apiRequest(request);
-    // client.request(request).then(([response, body]) => {
-    //     console.log(response.statusCode);
-    //     console.log(response.body);
-    // })
-    // const response = await sgClient.request(request);
-    // if (response.statusCode !== 200) {
-    //     logger.error("Sendgrid API request failed", {
-    //         request: request,
-    //         response: response
-    //     });
-    //     throw new Error();
-    // } else {
-    //     return response.body;
-    // }
+module.exports.getListRecipients = async function getListRecipients(listId, page, pageSize) {
+    const request = {
+        method: 'GET',
+        url: '/v3/contactdb/lists/' + listId + '/recipients',
+        qs: {
+            page: page,
+            page_size: pageSize
+        }
+    };
+
+    return await apiRequest(request);
 }
