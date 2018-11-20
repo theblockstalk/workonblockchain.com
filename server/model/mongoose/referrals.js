@@ -1,39 +1,39 @@
-let User = require('../users');
+let Referral = require('../referrals');
 
 module.exports.insert = async function insert(data) {
-    let newDod = new User(data);
+    let newDoc = new Referral(data);
 
-    await newDod.save();
+    await newDoc.save();
 
-    return newDod._doc._id;
+    return newDoc._doc._id;
 }
 
 module.exports.findOne = async function findOne(selector) {
-    return await User.findOne(selector).lean();
+    return await Referral.findOne(selector).lean();
 }
 
 module.exports.findOneById = async function findOneById(id) {
-    return await User.findById(id).lean();
+    return await Referral.findById(id).lean();
 }
 
 module.exports.findOneByEmail = async function findOneByEmail(email) {
-    return await User.findOne({email: email}).lean();
+    return await Referral.findOne({email: email}).lean();
 }
 
 module.exports.update = async function update(selector, updateObj) {
-    await User.findOneAndUpdate(selector, updateObj);
+    await Referral.findOneAndUpdate(selector, updateObj);
 }
 
 module.exports.deleteOne = async function deleteOne(selector) {
-    await User.find(selector).remove();
+    await Referral.find(selector).remove();
 }
 
 module.exports.count = async function count(selector) {
-    await User.find(selector).count();
+    await Referral.find(selector).count();
 }
 
 module.exports.findWithCursor = async function findWithCursor(selector) {
-    return await User.find(selector).cursor();
+    return await Referral.find(selector).cursor();
 }
 
 module.exports.findAndIterate = async function findAndIterate(selector, fn) {

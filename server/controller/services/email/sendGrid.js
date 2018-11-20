@@ -2,6 +2,9 @@ const settings = require('../../../settings');
 const logger = require('../logger');
 const sgMail = require('@sendgrid/mail');
 const sgClient = require('@sendgrid/client');
+const time = require('../time');
+
+const THROTTLE_TIME_MS = 400; // milliseconds
 
 // if (settings.isLiveApplication()) {
     logger.debug("Setting Sendgrid API key");
@@ -79,3 +82,66 @@ module.exports.deleteRecipientFromList = async function deleteRecipientFromList(
 
     return await apiRequest(request);
 }
+
+module.exports.deleteRecipient = async function deleteRecipientFromList(recipientId) {
+    const request = {
+        method: 'DELETE',
+        url: '/v3/contactdb/lists/recipients/' + recipientId,
+        body: [recipientId]
+    };
+
+    return await apiRequest(request);
+}
+
+let lastRequest;
+module.exports.updateRecipient = async function updateRecipient(data) {
+    const request = {
+        method: 'PATCH',
+        url: '/v3/contactdb/recipients',
+        body: [data]
+    };
+
+    const msTillRequest = lastRequest + THROTTLE_TIME_MS - Date.now();
+    if (msTillRequest > 0) {
+        await time.sleep(msTillRequest);
+    } else {
+        const response = await apiRequest(request);
+        lastRequest = Date.now();
+        return response;
+    }
+}
+
+// module.exports.searchRecipient = async function searchRecipient(query) {
+//     const request = {
+//         method: 'GET',
+//         url: '/v3/contactdb/recipients/search',
+//         qs: query
+//     };
+//
+//     return await apiRequest(request);
+// }
+
+module.exports.insertRecipient = async function insertRecipient(data) {
+    const request = {
+        method: 'POST',
+        url: '/v3/contactdb/recipients',
+        body: [data]
+    };
+
+    return await apiRequest(request);
+}
+
+module.exports.addRecipientToList = async function addRecipientToList(listId, recipientId) {
+    const request = {
+        method: 'POST',
+        url: '/v3/contactdb/lists/' + listId + '/recipients/' + recipientId
+    };
+
+    return await apiRequest(request);
+}
+
+// module.exports.insertRecipientToList = async function insertRecipientToList(listId, data) {
+//     const recipient = await this.insertRecipient(data);
+//
+//     return await this.addRecipientToList(listId, recipient.id);
+// }
