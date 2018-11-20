@@ -11,6 +11,8 @@ module.exports = async function() {
     const recipientCount = list.recipient_count;
 
     await deleteRecipientsNotInDatabase(listId, recipientCount);
+
+    await synchDatabasetoList(listId);
     logger.info('Synchronized all users to Sendgrid', {timestamp: Date.now()});
 }
 
@@ -25,23 +27,25 @@ async function getList(listName) {
 }
 
 async function deleteRecipientsNotInDatabase(listId, recipientCount) {
-    const userDoc = await mongooseUsers.findOneByEmail("sarakhan10024@gmail.com");
-    // console.log(userDoc);
-    // let pageSize = 100, page = 1, i = 1;
-    //
-    // while((page - 1) * pageSize < recipientCount) {
-    //
-    //     let recipients = await sendGrid.getListRecipients(listId, page, pageSize);
-    //
-    //     for (const recipient of recipients.recipients) {
-    //         if (i < 10) console.log(i, recipient.email);
-    //         i++;
-    //         const userDoc = await mongooseUsers.findOneByEmail(recipient.email);
-    //         console.log(userDoc);
-    //         if (!userDoc) {
-    //             // await sendGrid.deleteRecipientFromList(listId, recipient.id)
-    //         }
-    //     }
-    //     page++;
-    // }
+    let pageSize = 100, page = 1, i = 1;
+
+    while((page - 1) * pageSize < recipientCount) {
+
+        let recipients = await sendGrid.getListRecipients(listId, page, pageSize);
+
+        for (const recipient of recipients.recipients) {
+            console.log(i, recipient.email);
+            i++;
+            const userDoc = await mongooseUsers.findOneByEmail(recipient.email);
+            if (!userDoc) {
+                logger.debug('Deleting contact ' + recipient.email + ' from Sendgrid')
+                // await sendGrid.deleteRecipientFromList(listId, recipient.id)
+            }
+        }
+        page++;
+    }
+}
+
+async function synchDatabasetoList(listId) {
+    
 }

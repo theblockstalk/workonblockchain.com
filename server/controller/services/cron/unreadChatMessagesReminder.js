@@ -6,12 +6,12 @@ const chat = require('../../../model/chat');
 const chatReminderEmail = require('../email/emails/chatReminder');
 const logger = require('../logger');
 
-module.exports = function async () {
+module.exports = async function () {
     logger.debug('get all unread msgs');
     const unreadReceiverIds = await chat.distinct("receiver_id", {is_read: 0});
 
     for(let i=0; i < unreadReceiverIds.length; i++){
-        let userDoc = await users.findOne({ _id: unreadReceiverIds[i], is_unread_msgs_to_send: true},{"email":1,"type":1,"disable_account":1});
+        let userDoc = await users.findOne({ _id: unreadReceiverIds[i], is_unread_msgs_to_send: true}, {"email":1,"type":1,"disable_account":1});
 
         if(userDoc){
             if(userDoc.type === 'candidate'){
@@ -33,4 +33,4 @@ module.exports = function async () {
         }
     }
     logger.info('Unread chat messages email script was executed', {timestamp: Date.now()});
-};
+}
