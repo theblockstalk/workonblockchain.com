@@ -1,4 +1,5 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
+const userDoc = require('../../../../../model/users');
 const errors = require('../../../../services/errors');
 
 module.exports = async function (req,res) {
@@ -14,6 +15,15 @@ module.exports = async function (req,res) {
         if (queryBody.detail.intro) candidateUpdate.description = queryBody.detail.intro;
 
         await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
+
+        let updateCandidateUser = {};
+        updateCandidateUser["candidate.candidate_status"] = [{
+            status: 'wizard completed',
+            status_updated: new Date(),
+            timestamp: new Date()
+        }];
+        await userDoc.update({_id: userId }, {$set: updateCandidateUser});
+
         res.send({
             success : true
         })

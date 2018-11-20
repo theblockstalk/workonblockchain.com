@@ -134,25 +134,26 @@ const UserSchema = new Schema({
                     })],
                 }
             },
-			status : [new Schema({
-				status: {
-					type: String,
-					enum: enumerations.candidateStatus,
-					required:true
-				},
-				status_updated: {
-					type: Date,
-					required:true
-				},
-				reason: {
-					type: String,
-					enum: enumerations.statusReasons
-				},
-				timestamp: {
-					type: Date,
-					required:true
-				}
-			})],
+			candidate_status:{
+				type:[{
+					status: {
+						type: String,
+						enum: enumerations.candidateStatus,
+						required:true,
+					},
+					status_updated: {
+						type: Date
+					},
+					reason: {
+						type: String,
+						enum: enumerations.statusReasons
+					},
+					timestamp: {
+						type: Date,
+						required:true,
+					}
+				}]
+			},
         },
     },
 	first_approved_date:{
