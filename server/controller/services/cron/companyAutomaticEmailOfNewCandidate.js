@@ -8,7 +8,7 @@ const candidateSearch = require('../../../controller/api/users/candidate/searchC
 const logger = require('../logger');
 const errors = require('../errors');
 
-module.exports = async function (req, res) {
+module.exports = async  function (req, res) {
 
     const companyDoc = await EmployerProfile.find({ saved_searches: { $exists: true, $ne : [] }}).lean();
     console.log(companyDoc);
@@ -62,6 +62,7 @@ module.exports = async function (req, res) {
                           const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator').lean();
                           if(candidateDoc._creator.is_approved === 1 && candidateDoc._creator.first_approved_date) { //please confirm this if condition
                               //sendEmail
+                              await EmployerProfile.update({_creator : userDoc._id} , {$set : {'last_email_sent' : new Date()}});
                               res.send({
                                   success : true
                               })

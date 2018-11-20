@@ -1,7 +1,7 @@
 const EmployerProfile = require('../../../../../model/employer_profile');
 const errors = require('../../../../services/errors');
 
-module.exports = async  function (req,res)
+module.exports = async function (req,res)
 {
     let userId = req.auth.user._id;
     const companyDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
