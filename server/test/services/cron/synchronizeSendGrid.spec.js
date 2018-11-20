@@ -1,26 +1,25 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
 const synchronizeSendGrid = require('../../../controller/services/cron/synchronizeSendGrid');
-
-const assert = chai.assert;
-const expect = chai.expect;
-const should = chai.should();
-chai.use(chaiHttp);
+const mongooseUsers = require('../../../model/mongoose/users');
+const User = require('../../../model/users');
+const settings = require('../../../settings');
+console.log(settings);
 
 describe('cron Sendgrid contacts', function () {
-    this.timeout(10000);
+    this.timeout(100000);
 
     afterEach(async function() {
         console.log('dropping database');
-        await mongo.drop();
+        // await mongo.drop();
     })
 
     describe('synchronize database to sendgrid contacts', () => {
 
         it('it should process one candidate', async () => {
-            let result = await synchronizeSendGrid();
-
-            console.log(result);
+            // let userDoc = await mongooseUsers.findOneByEmail("sarakhan10024@gmail.com");
+            // console.log(userDoc);
+            userDoc = await User.findOne({email: "sarakhan10024@gmail.com"});
+            console.log(userDoc);
+            // await synchronizeSendGrid();
         })
     })
 });

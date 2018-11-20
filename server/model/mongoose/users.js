@@ -1,11 +1,11 @@
-let User = require('./users');
+let User = require('../users');
 
 module.exports.insert = async function insert(userData) {
-    let user = new User(userData);
+    let mongooseUser = new User(userData);
 
-    await user.save();
+    await mongooseUser.save();
 
-    return user._doc._id;
+    return mongooseUser._doc._id;
 }
 
 module.exports.findOne = async function findOne(selector) {

@@ -3,11 +3,11 @@ const logger = require('../logger');
 const sgMail = require('@sendgrid/mail');
 const sgClient = require('@sendgrid/client');
 
-if (settings.isLiveApplication()) {
+// if (settings.isLiveApplication()) {
     logger.debug("Setting Sendgrid API key");
     sgMail.setApiKey(settings.SENDGRID.API_KEY);
     sgClient.setApiKey(settings.SENDGRID.API_KEY);
-}
+// }
 
 module.exports.sendEmail = async function sendEmail(sendGridOptions) {
     const msg = {
@@ -61,6 +61,19 @@ module.exports.getListRecipients = async function getListRecipients(listId, page
         qs: {
             page: page,
             page_size: pageSize
+        }
+    };
+
+    return await apiRequest(request);
+}
+
+module.exports.deleteRecipientFromList = async function deleteRecipientFromList(listId, recipientId) {
+    const request = {
+        method: 'DELETE',
+        url: '/v3/contactdb/lists/' + listId + '/recipients/' + recipientId,
+        qs: {
+            list_id: listId,
+            recipient_id: recipientId
         }
     };
 
