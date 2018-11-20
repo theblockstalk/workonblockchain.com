@@ -60,10 +60,7 @@ module.exports = async function (req, res) {
                       const searchQuery = {$and: queryString};
                       if (queryString && queryString > 0) {
                           const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator').lean();
-                          if(candidateDoc._creator.is_approved === 1 &&
-                              candidateDoc._creator.first_approved_date > companyDoc[i].last_email_sent
-                              && candidateDoc._creator.first_approved_date < new Date()
-                          ) { //please confirm this if condition
+                          if(candidateDoc._creator.is_approved === 1 && candidateDoc._creator.first_approved_date) { //please confirm this if condition
                               //sendEmail
                               res.send({
                                   success : true
