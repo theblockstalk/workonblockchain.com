@@ -83,7 +83,7 @@ module.exports = async function (req, res) {
                                       })
                                   }
                                   else {
-                                      errors.throwError("Candidate list is empty", 404);
+                                      errors.throwError("Candidate list is empty", 400);
                                   }
 
                               }
@@ -92,14 +92,14 @@ module.exports = async function (req, res) {
                               }
                           }
                           else {
-                              errors.throwError("Search query is empty", 404);
+                              errors.throwError("Search query is empty", 400);
                           }
 
                   }
               }
 
               else {
-                  errors.throwError("Receive email notification is false", 404);
+                  errors.throwError("Receive email notification is false", 400);
               }
           }
           else {
