@@ -137,11 +137,12 @@ const CompanyProfileSchema = new Schema({
                 type : String ,
                 required : true,
                 enum : enumerations.email_notificaiton
-            },
-            last_email_sent: {
-                type: Date
             }
+
         })]
+    },
+    last_email_sent: {
+        type: Date
     },
 
     _creator :
