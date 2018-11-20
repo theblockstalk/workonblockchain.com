@@ -1502,4 +1502,37 @@ export class UserService {
       });
   }
 
+  approve_candidate(user_id:string , status :string, reason: string)
+  {
+    ////console.log(user_id);
+    // //console.log(detail);
+    return this.http.put<any>(URL+'users/approve_candidate/' + user_id, {status : status,reason:reason}, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
+      .map((res: Response) =>
+      {
+        if (res)
+        {
+          return res;
+        }
+      }).catch((error: any) =>
+      {
+        if (error)
+        {
+          if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+          else return Observable.throw(error);
+        }
+
+      });
+  }
+
 }

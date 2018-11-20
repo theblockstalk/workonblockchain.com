@@ -1,7 +1,6 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
-const userDoc = require('../../../../../model/users');
-const errors = require('../../../../services/errors');
 const User = require('../../../../../model/users');
+const errors = require('../../../../services/errors');
 
 module.exports = async function (req,res) {
 	let userId = req.auth.user._id;
@@ -17,30 +16,17 @@ module.exports = async function (req,res) {
 
         await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
 
-        const userDoc = await User.find({_id : userId}).lean();
-
-            await User.update(
-                { _id: userId },
-                {
-                    $push: {
-                        'candidate.status' : {
-                            $each: [{ status: 'completed',
-                status_updated: new Date(),
-                timestamp: new Date()}]
-                        }
+        await User.update({ _id: userId },
+            {
+                $push: {
+                    'candidate.candidate_status' : {
+                        $each: [{ status: 'wizard completed',
+                        status_updated: new Date(),
+                        timestamp: new Date()}]
                     }
                 }
-            )
-
-
-        /*let updateCandidateUser = {};
-        updateCandidateUser["candidate.candidate_status"] = [{
-            status: 'wizard completed',
-            status_updated: new Date(),
-            timestamp: new Date()
-        }];
-        await userDoc.update({_id: userId }, {$set: updateCandidateUser});
-*/
+            }
+        );
         res.send({
             success : true
         })

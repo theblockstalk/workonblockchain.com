@@ -31,14 +31,16 @@ module.exports = async  function (req,res)
         salaryArray= {USD : salaryConverterResult[0] , GBP : salaryConverterResult[1]  , Euro : queryBody.salary};
     }
 
-    const userDoc = await users.find({type : 'candidate' , is_verify :1, is_approved :1, disable_account : false }).lean();
+    const userDoc = await users.find({type : 'candidate' , is_verify :1, disable_account : false,first_approved_date: {$exists : true} }).lean();
     console.log(userDoc);
     if(userDoc){
         let userDocArray = [];
-        userDoc.forEach(function(item)
-        {
-            userDocArray.push(item._id);
-        });
+        for (detail of userDoc) {
+            const ids =  await getUsersIds(detail);
+            if(ids){
+                userDocArray.push(ids);
+            }
+        }
 
         let queryString = [];
 
@@ -133,5 +135,25 @@ function expected_salary_converter(salary_value, currency1, currency2)
 
 let filterData = async function filterData(candidateDetail , userId) {
     return filterReturnData.candidateAsCompany(candidateDetail,userId);
+}
+
+let getUsersIds = async function getUsersIds(detail) {
+    let id;
+    for(let i = detail.candidate.candidate_status.length-1; i>=0;i--){
+        console.log(detail._id);
+        if (detail.candidate.candidate_status[i].status === 'Rejected' || detail.candidate.candidate_status[i].status === 'rejected'){
+            break;
+        }
+        if (detail.candidate.candidate_status[i].status === 'Approved' || detail.candidate.candidate_status[i].status === 'approved'){
+            id = detail._id ;
+            break;
+        }
+    }
+    if(id){
+        return id;
+    }
+    else{
+        return 0;
+    }
 }
 

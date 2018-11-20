@@ -44,12 +44,17 @@ module.exports = async function (req, res) {
     if(queryBody.city) updateCandidateUser["candidate.base_city"] = queryBody.city;
     if(queryBody.base_country) updateCandidateUser["candidate.base_country"] = queryBody.base_country;
 
-    updateCandidateUser["candidate.candidate_status"] = [{
-        status: 'updated',
-        status_updated: new Date(),
-        timestamp: new Date()
-    }];
-    await User.update({ _id: userId },{ $set: updateCandidateUser });
+    await User.update({ _id: userId },
+        {
+            $push: {
+                'candidate.candidate_status' : {
+                    $each: [{ status: 'updated',
+                        status_updated: new Date(),
+                        timestamp: new Date()}]
+                }
+            }
+        }
+    );
 
     res.send({
         success: true,

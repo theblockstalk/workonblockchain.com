@@ -146,7 +146,7 @@ const UserSchema = new Schema({
 					},
 					reason: {
 						type: String,
-						enum: enumerations.statusReasons
+						enum: enumerations.statusReasonsRejected
 					},
 					timestamp: {
 						type: Date,

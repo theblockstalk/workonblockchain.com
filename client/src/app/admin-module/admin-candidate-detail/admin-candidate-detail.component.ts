@@ -23,6 +23,19 @@ export class AdminCandidateDetailComponent implements OnInit {
   credentials: any = {};
   admin_log;
   candidate_status;
+  set_status;
+  set_candidate_status = [
+    "Approved" ,"Rejected" , "Deferred", "Other"
+  ];
+
+  set_candidate_status_rejected = [
+    "Garbage" ,"Recruiter" , "Not Technical", "other"
+  ];
+
+  set_candidate_status_deferred = [
+    "Profile Incomplete" ,"Not Looking for Job" , "Job Found","Not Responded" ,"other"
+  ];
+
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
 
@@ -81,7 +94,7 @@ export class AdminCandidateDetailComponent implements OnInit {
             data => {
               let last_index = data._creator.candidate.candidate_status.length-1;
               this.candidate_status = data._creator.candidate.candidate_status[last_index];
-              console.log(this.candidate_status.status);
+              this.set_status = data._creator.is_approved;
               this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
@@ -261,16 +274,16 @@ export class AdminCandidateDetailComponent implements OnInit {
   approveClick(event , approveForm: NgForm)
   {
     this.error = '';
-    if(event.srcElement.innerHTML ==='Active' )
+    let reason = '';
+    if(approveForm.value.set_status === "Approved")
     {
       this.is_approve = 1;
     }
-    else if(event.srcElement.innerHTML ==='Inactive')
-    {
-      this.is_approve =0;
+    else{
+      this.is_approve = 0;
     }
 
-    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
+    this.authenticationService.approve_candidate(approveForm.value.id ,approveForm.value.set_status, reason)
       .subscribe(
         data =>
         {

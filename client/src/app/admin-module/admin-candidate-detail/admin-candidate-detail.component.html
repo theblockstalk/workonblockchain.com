@@ -43,11 +43,14 @@
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
 
-								<div class="submit-button">
-									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Active</button>
-									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Inactive</button>
-									<button type="submit" class = "btn btn_descp" *ngIf = "data._creator.is_verify ===0" disabled>Active</button>
+							  <select class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="set_status" name="set_status">
+                  <option value="-1" disabled selected hidden >Please Select Status</option>
+                  <option class='option' *ngFor='let status of set_candidate_status'  [value]="status" selected>{{status}}</option>
 
+                </select>
+
+                <div class="submit-button">
+									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify === 1)" >Save</button>
 								</div>
 							</form>
 						</span>
@@ -90,7 +93,7 @@
               <li>
 
                 <span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
-                <span class = "li_txt">Candidate Status : {{candidate_status.status}}</span>
+                <span class = "li_txt text-capitalize">Candidate Status : {{candidate_status.status}}</span>
 
               </li>
 				 		</ul>

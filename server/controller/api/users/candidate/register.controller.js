@@ -50,7 +50,7 @@ module.exports = async function (req, res) {
         referred_email : userParam.referred_email,
         linkedin_id : userParam.linkedin_id,
         candidate: {
-            status: [{
+            candidate_status: [{
                 status: 'created',
                 status_updated: new Date(),
                 timestamp: new Date()
@@ -61,13 +61,13 @@ module.exports = async function (req, res) {
     const candidateUserCreated = await newUser.save();
     let url_token;
 
-    let updateCandidateUser = {};
+    /*let updateCandidateUser = {};
     updateCandidateUser["candidate.candidate_status"] = [{
         status: 'created',
         status_updated: new Date(),
         timestamp: new Date()
     }];
-    await User.update({_id: candidateUserCreated._id }, {$set: updateCandidateUser});
+    await User.update({_id: candidateUserCreated._id }, {$set: updateCandidateUser});*/
 
     if(candidateUserCreated) {
         let jwtUserToken = jwtToken.createJwtToken(candidateUserCreated);
