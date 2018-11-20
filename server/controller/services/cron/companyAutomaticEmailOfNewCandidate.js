@@ -58,12 +58,28 @@ module.exports = async function (req, res) {
                           const searchQuery = {$and: queryString};
                           if (queryString && queryString > 0) {
                               const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator').lean();
-                              if(candidateDoc._creator.is_approved === 1 && candidateDoc._creator.first_approved_date) { //please confirm this if condition
-                                  //sendEmail
-                                  await EmployerProfile.update({_creator : userDoc._id} , {$set : {'last_email_sent' : new Date()}});
-                                  res.send({
-                                      success : true
-                                  })
+                              if(candidateDoc && candidateDoc._creator.is_approved === 1 && candidateDoc._creator.first_approved_date) { //please confirm this if condition
+                                  let candidateList = [];
+
+                                  for(let a=0 ; a < candidateDoc.length ; a++) {
+                                      let candidateInfo = {
+                                          profileLink : candidateDoc[i]._creator._id,
+                                          whyWork : candidateDoc[i].why_work,
+                                          initials : candidateDoc[i].first_name.charAt(0).toUpperCase() + candidateDoc[i].last_name.charAt(0).toUpperCase()
+                                      }
+                                      candidateList.push(candidateInfo);
+                                  }
+                                  if(candidateList.length > 0){
+                                      //sendEmail
+                                      await EmployerProfile.update({_creator : userDoc._id} , {$set : {'last_email_sent' : new Date()}});
+                                      res.send({
+                                          success : true
+                                      })
+                                  }
+                                  else {
+                                      errors.throwError("Candidate doc not found", 404);
+                                  }
+
                               }
                               else {
                                   errors.throwError("User is not approved", 404);
