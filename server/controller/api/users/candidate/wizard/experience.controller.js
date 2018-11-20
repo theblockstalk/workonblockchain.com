@@ -1,4 +1,5 @@
 const CandidateProfile = require('../../../../../model/candidate_profile');
+const userDoc = require('../../../../../model/users');
 const errors = require('../../../../services/errors');
 const User = require('../../../../../model/users');
 
@@ -32,6 +33,14 @@ module.exports = async function (req,res) {
             )
 
 
+        /*let updateCandidateUser = {};
+        updateCandidateUser["candidate.candidate_status"] = [{
+            status: 'wizard completed',
+            status_updated: new Date(),
+            timestamp: new Date()
+        }];
+        await userDoc.update({_id: userId }, {$set: updateCandidateUser});
+*/
         res.send({
             success : true
         })
