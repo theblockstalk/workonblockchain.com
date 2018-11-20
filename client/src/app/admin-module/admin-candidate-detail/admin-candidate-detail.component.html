@@ -26,7 +26,6 @@
 				 			<p>{{data.description}}</p>
 				 		</span>
 
-
 						<span class = "short_intro">
 						<p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Companies</a></p>
 				 		</span>
@@ -88,6 +87,12 @@
 				 					<span class = "li_txt"> Contact Number : {{data.contact_number}}</span>
 
 				 			</li>
+              <li>
+
+                <span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
+                <span class = "li_txt">Candidate Status : {{candidate_status.status}}</span>
+
+              </li>
 				 		</ul>
 
 				 	</div>

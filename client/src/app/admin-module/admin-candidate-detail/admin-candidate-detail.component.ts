@@ -22,6 +22,7 @@ export class AdminCandidateDetailComponent implements OnInit {
   imgPath;nationality;contact_number;
   credentials: any = {};
   admin_log;
+  candidate_status;
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
 
@@ -78,6 +79,9 @@ export class AdminCandidateDetailComponent implements OnInit {
         this.authenticationService.getById(this.user_id)
           .subscribe(
             data => {
+              let last_index = data._creator.candidate.candidate_status.length-1;
+              this.candidate_status = data._creator.candidate.candidate_status[last_index];
+              console.log(this.candidate_status.status);
               this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
