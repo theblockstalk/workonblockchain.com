@@ -30,7 +30,8 @@
   },
   "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
-    "unreadMessagesTick": "60 * * * * *"
+    "unreadMessagesTick": "60 * * * * *",
+    "syncSendgrid": "60 * * * * *"
   }
 }
 

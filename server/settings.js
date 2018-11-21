@@ -72,7 +72,8 @@ if (isLiveApplication()) {
 }
 
 settings.CRON = {
-    UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick
+    UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick,
+    SYNC_SENDGRID: config.cron.syncSendgrid
 };
 
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;
