@@ -12,11 +12,14 @@ module.exports = async function() {
     const list = await getList(settings.ENVIRONMENT);
     const listId = list.id;
     const recipientCount = list.recipient_count;
-    logger.info('Synchronizing users to Sendgrid list ' + settings.ENVIRONMENT + ', listId: ' + listId);
+    logger.info('Synchronizing users to Sendgrid list ' + settings.ENVIRONMENT, {
+        listId: listId
+    });
 
     await syncListToDatabase(listId, recipientCount);
 
     let results = await synchDatabasetoList(listId);
+
     logger.info('Synchronized all users to Sendgrid', results);
 }
 
@@ -31,7 +34,8 @@ async function getList(listName) {
 }
 
 async function syncListToDatabase(listId, recipientCount) {
-    let pageSize = 100, page = 1, i = 1;
+    const pageSize = 100;
+    let page = 1, i = 1;
 
     while((page - 1) * pageSize < recipientCount) {
 
@@ -86,7 +90,8 @@ async function synchDatabasetoList(listId) {
 
         async function updateSendGridRecipient(listId, recipientUpdate) {
             try {
-                if (!userDoc.sendgrid_multipe_lists) {
+                // If the user is in staging and production only update with production data
+                if (!userDoc.sendgrid_multipe_lists || settings.ENVIRONMENT === 'production') {
                     logger.debug('Updating sendgrid recipient', recipientUpdate);
 
                     const updateResponse = await sendGrid.updateRecipient(recipientUpdate);
@@ -135,7 +140,8 @@ async function synchDatabasetoList(listId) {
 
                 await updateSendGridRecipient(listId, recipientUpdate);
             } else {
-                logger.error("Candidate doc for user " + userDoc._id + " not found during sendGrid sync")
+                logger.error("Candidate doc for user " + userDoc._id + " not found during sendGrid sync");
+                errors = errors + 1;
             }
         } else {
             let companyDoc = await mongooseCompany.findOneByUserId(userDoc._id);
@@ -152,13 +158,15 @@ async function synchDatabasetoList(listId) {
                     approved: userDoc.is_approved,
                     email_verified: userDoc.is_verify,
                     terms_id: companyDoc.terms_id,
-                    created_date: userDoc.created_date
+                    created_date: userDoc.created_date,
+                    company_name: companyDoc.company_name
                 };
                 recipientUpdate[settings.ENVIRONMENT + "_user_id"] = userDoc._id.toString();
 
                 await updateSendGridRecipient(listId, recipientUpdate);
             } else {
-                logger.error("Company doc for user " + userDoc._id + " not found during sendGrid sync")
+                logger.error("Company doc for user " + userDoc._id + " not found during sendGrid sync");
+                errors = errors + 1;
             }
         }
     })

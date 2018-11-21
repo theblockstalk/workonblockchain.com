@@ -4,13 +4,13 @@ const sgMail = require('@sendgrid/mail');
 const sgClient = require('@sendgrid/client');
 const time = require('../time');
 
-const THROTTLE_TIME_MS = 400; // milliseconds
+const throttleTimeMs = 400;
 
-// if (settings.isLiveApplication()) {
+if (settings.isLiveApplication()) {
     logger.debug("Setting Sendgrid API key");
     sgMail.setApiKey(settings.SENDGRID.API_KEY);
     sgClient.setApiKey(settings.SENDGRID.API_KEY);
-// }
+}
 
 module.exports.sendEmail = async function sendEmail(sendGridOptions) {
     const msg = {
@@ -40,7 +40,7 @@ async function apiRequest(request) {
 
     [response, body] = await sgClient.request(request);
 
-    if (response.statusCode < 200 || response.statusCode > 201) {
+    if (response.statusCode < 200 || response.statusCode >= 300) {
         logger.error("Sendgrid API request failed", response);
         throw new Error();
     }
@@ -85,8 +85,7 @@ module.exports.deleteRecipientFromList = async function deleteRecipientFromList(
 module.exports.deleteRecipient = async function deleteRecipientFromList(recipientId) {
     const request = {
         method: 'DELETE',
-        url: '/v3/contactdb/lists/recipients/' + recipientId,
-        body: [recipientId]
+        url: '/v3/contactdb/recipients/' + recipientId
     };
 
     return await apiRequest(request);
@@ -100,7 +99,7 @@ module.exports.updateRecipient = async function updateRecipient(data) {
         body: [data]
     };
 
-    const msTillRequest = lastRequest + THROTTLE_TIME_MS - Date.now().valueOf();
+    const msTillRequest = lastRequest + throttleTimeMs - Date.now().valueOf();
     if (msTillRequest > 0) {
         await time.sleep(msTillRequest);
     }
