@@ -35,16 +35,15 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
 }
 
 async function apiRequest(request) {
-    let response;
+    let response, body;
     logger.debug('Sendgrid API request', request);
 
-    [response, ] = await sgClient.request(request);
+    [response, body] = await sgClient.request(request);
 
-    if (response.statusCode < 200 || response.statusCode >= 300) {
+    if (response.statusCode < 200 || response.statusCode > 201) {
         logger.error("Sendgrid API request failed", response);
         throw new Error();
     }
-
     return response.body;
 }
 
@@ -101,25 +100,25 @@ module.exports.updateRecipient = async function updateRecipient(data) {
         body: [data]
     };
 
-    const msTillRequest = lastRequest + THROTTLE_TIME_MS - Date.now();
+    const msTillRequest = lastRequest + THROTTLE_TIME_MS - Date.now().valueOf();
     if (msTillRequest > 0) {
         await time.sleep(msTillRequest);
-    } else {
-        const response = await apiRequest(request);
-        lastRequest = Date.now();
-        return response;
     }
+    const response = await apiRequest(request);
+
+    lastRequest = Date.now().valueOf();
+    return response;
 }
 
-// module.exports.searchRecipient = async function searchRecipient(query) {
-//     const request = {
-//         method: 'GET',
-//         url: '/v3/contactdb/recipients/search',
-//         qs: query
-//     };
-//
-//     return await apiRequest(request);
-// }
+module.exports.searchRecipient = async function searchRecipient(query) {
+    const request = {
+        method: 'GET',
+        url: '/v3/contactdb/recipients/search',
+        qs: query
+    };
+
+    return await apiRequest(request);
+}
 
 module.exports.insertRecipient = async function insertRecipient(data) {
     const request = {
@@ -140,8 +139,9 @@ module.exports.addRecipientToList = async function addRecipientToList(listId, re
     return await apiRequest(request);
 }
 
-// module.exports.insertRecipientToList = async function insertRecipientToList(listId, data) {
-//     const recipient = await this.insertRecipient(data);
-//
-//     return await this.addRecipientToList(listId, recipient.id);
-// }
+module.exports.getCustomFieldFromRecipient = function getCustomFieldFromRecipient(recipient, fieldName) {
+    const array = recipient.custom_fields.filter(function (obj) {
+        return obj.name === fieldName;
+    });
+    return array[0];
+};

@@ -1,8 +1,10 @@
 const server = require('../../../../server');
 const synchronizeSendGrid = require('../../../controller/services/cron/synchronizeSendGrid');
+const settings = require('../../../settings');
+settings.ENVIRONMENT = "production"; // DELETE ME!
 
 describe('cron Sendgrid contacts', function () {
-    this.timeout(100000);
+    this.timeout(1000000000);
 
     describe('synchronize database to sendgrid contacts', () => {
 

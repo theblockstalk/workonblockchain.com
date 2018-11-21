@@ -5,7 +5,7 @@ module.exports.insert = async function insert(data) {
 
     await newDoc.save();
 
-    return newDoc._doc._id;
+    return newDoc._doc;
 }
 
 module.exports.findOne = async function findOne(selector) {
@@ -29,7 +29,16 @@ module.exports.deleteOne = async function deleteOne(selector) {
 }
 
 module.exports.count = async function count(selector) {
-    await Referral.find(selector).count();
+    return new Promise((resolve, reject) => {
+        try {
+            Referral.count(selector, (err1, result) => {
+                if (err1) reject(err1);
+                resolve(result);
+            })
+        } catch (err2) {
+            reject(err2);
+        }
+    })
 }
 
 module.exports.findWithCursor = async function findWithCursor(selector) {

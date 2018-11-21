@@ -1,7 +1,7 @@
-let Candidate = require('../candidate_profile');
+let Company = require('../employer_profile');
 
 module.exports.insert = async function insert(data) {
-    let newDoc = new Candidate(data);
+    let newDoc = new Company(data);
 
     await newDoc.save();
 
@@ -9,23 +9,23 @@ module.exports.insert = async function insert(data) {
 }
 
 module.exports.findOne = async function findOne(selector) {
-    return await Candidate.findOne(selector).lean();
+    return await Company.findOne(selector).lean();
 }
 
 module.exports.findOneById = async function findOneById(id) {
-    return await Candidate.findById(id).lean();
+    return await Company.findById(id).lean();
 }
 
 module.exports.findOneByUserId = async function findOneByUserId(id) {
-    return await Candidate.findOne({_creator: id}).lean();
+    return await Company.findOne({_creator: id}).lean();
 }
 
 module.exports.update = async function update(selector, updateObj) {
-    await Candidate.findOneAndUpdate(selector, updateObj);
+    await Company.findOneAndUpdate(selector, updateObj);
 }
 
 module.exports.deleteOne = async function deleteOne(selector) {
-    await Candidate.find(selector).remove();
+    await Company.find(selector).remove();
 }
 
 module.exports.count = async function count(selector) {
@@ -42,5 +42,5 @@ module.exports.count = async function count(selector) {
 }
 
 module.exports.findWithCursor = async function findWithCursor(selector) {
-    return await Candidate.find(selector).cursor();
+    return await Company.find(selector).cursor();
 }
