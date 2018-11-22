@@ -18,45 +18,8 @@ module.exports = async function (req, res) {
         if(userDoc) {
             let queryString = [];
             if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() + candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) { // not sure about this
-                if (companyDoc.saved_searches[0].location) {
-                    const locationFilter = {"locations": {$in: companyDoc.saved_searches[0].location}};
-                    queryString.push(locationFilter);
-                }
-                if (companyDoc.saved_searches[0].position) {
-                    const rolesFilter = {"roles": {$in: companyDoc.saved_searches[0].position}};
-                    queryString.push(rolesFilter);
-                }
-                if (companyDoc.saved_searches[0].current_currency && companyDoc.saved_searches[0].current_salary) {
-                    const currentSalaryFilter = {
-                        $and: {
-                            "current_currency": companyDoc.saved_searches[0].current_currency,
-                            "current_salary": companyDoc.saved_searches[0].current_salary
-                        }
-                    };
-                    queryString.push(currentSalaryFilter);
-                }
-
-                if (companyDoc.saved_searches[0].blockchain) {
-                    const platformFilter = {
-                        $or: [
-                            {"commercial_platform.platform_name": {$in: companyDoc.saved_searches[0].blockchain}},
-                            {"platforms.platform_name": {$in: companyDoc.saved_searches[0].blockchain}}
-                        ]
-                    };
-                    queryString.push(platformFilter);
-                }
-
-                if (companyDoc.saved_searches[0].skills) {
-                    const skillsFilter = {"programming_languages.language": companyDoc.saved_searches[0].skills};
-                    queryString.push(skillsFilter);
-                }
-                if (companyDoc.saved_searches[0].availability_day) {
-                    const availabilityFilter = {"availability_day": companyDoc.saved_searches[0].availability_day};
-                    queryString.push(availabilityFilter);
-                }
-                const searchQuery = {$and: queryString};
-                if (queryString && queryString > 0) {
-                    let candidateCursor = await CandidateProfile.find(searchQuery).populate('_creator').cursor();
+                let candidateCursor = candidateSearch.candidateSearchQuery(companyDoc.saved_searches);
+                if(candidateCursor) {
                     let candidateDoc = await candidateCursor.next();
                     let candidateList = [];
                     for ( null ; candidateDoc !== null; candidateDoc = await candidateCursor.next()) {
@@ -77,10 +40,11 @@ module.exports = async function (req, res) {
                     res.send({
                         success : true
                     })
-
-                    }
+                }
                 else {
-                    errors.throwError("Search query is empty", 400);
+                    console.log("Company Name : " + companyDoc.company_name);
+                    console.log("Company ID : " + companyDoc._id);
+                    logger.debug("No candidate match with search query");
                 }
 
             }
