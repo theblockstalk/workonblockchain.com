@@ -11,12 +11,21 @@ module.exports.startCron = function startCron() {
         cronTime: settings.CRON.UNREAD_MESSAGES_TICK,
         onTick: function() {
             unreadChatMessages();
-            autoNotification();
         },
         start: true,
         timeZone: 'CET'
     });
     logger.debug('unreadMessagesJob', {job: unreadMessagesJob});
-    
+
+    const autoNotification = new CronJob({
+        cronTime: settings.CRON.AUTO_NOTIFICATION,
+        onTick: function() {
+            autoNotification();
+        },
+        start: true,
+        timeZone: 'CET'
+    });
+
+
     logger.info('Cron jobs started');
 }
