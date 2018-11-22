@@ -18,7 +18,9 @@ module.exports.startCron = function startCron() {
     const syncSendgrid = new CronJob({
         cronTime: settings.CRON.SYNC_SENDGRID,
         onTick: function() {
-            synchronizeSendGrid();
+            Promise.resolve(synchronizeSendGrid()).catch(function (error) => {
+                logger.error("Error with synch sendgrid", error);
+            });
         },
         start: true,
         timeZone: 'CET'
