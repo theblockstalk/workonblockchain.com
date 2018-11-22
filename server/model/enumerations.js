@@ -23,6 +23,4 @@ module.exports.otherSkills = ['P2P protocols' , 'Distributed computing and netwo
 
 module.exports.candidateStatus = ['created','wizard completed','updated','approved','rejected','deferred', 'other'];
 
-module.exports.statusReasonsRejected = ['','garbage','recruiter','not technical','other'];
-
-module.exports.statusReasonsDeferred = ['','profile incomplete','not looking for job', 'job found','not responded','other'];
+module.exports.statusReasons = ['garbage','recruiter','not technical','other','profile incomplete','not looking for job', 'job found','not responded'];

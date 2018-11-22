@@ -146,8 +146,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
-                let last_index = data._creator.candidate.candidate_status.length-1;
-                this.candidate_status = data._creator.candidate.candidate_status[last_index];
+                this.candidate_status = data._creator.candidate.status[0];
                 if(data.first_name && data.last_name && data.contact_number && data.nationality &&
                   data.locations  && data.roles && data.interest_area &&
                   data.expected_salary && data.current_salary && data.why_work && data.description

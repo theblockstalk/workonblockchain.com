@@ -136,14 +136,14 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.error = '';
     if(event.srcElement.innerHTML ==='Active' )
     {
-      this.is_approve = 1;
+      this.is_approve = 'Approved';
     }
-    else if(event.srcElement.innerHTML ==='Inactive')
+    else if(event.srcElement.innerHTML === 'Inactive')
     {
-      this.is_approve =0;
+      this.is_approve = 'Rejected';
     }
 
-    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
+    this.authenticationService.approve_candidate(approveForm.value.id ,this.is_approve,'' )
       .subscribe(
         data =>
         {

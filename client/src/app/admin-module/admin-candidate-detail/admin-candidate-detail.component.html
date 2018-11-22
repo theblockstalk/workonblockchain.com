@@ -1,11 +1,6 @@
 <!--Profile-inner-->
 
 <section class = "wizard_page">
-  <div *ngIf="error && error !== ''">
-    <h6 class="alert alert-danger error-alert" >{{error}}</h6>
-  </div>
-
-
   <div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12" *ngFor = "let data of info">
@@ -43,16 +38,32 @@
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
 
-							  <select class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="set_status" name="set_status">
-                  <option value="-1" disabled selected hidden >Please Select Status</option>
+							  <select class="form-control filter-input currncy_select" id="sel1" [(ngModel)]="set_status" (ngModelChange) = "changeStatus($event)" name="set_status">
+                  <option class='option' value="-1" disabled selected hidden >Please Select Status</option>
                   <option class='option' *ngFor='let status of set_candidate_status'  [value]="status" selected>{{status}}</option>
+                </select>
 
+                <select class="form-control filter-input currncy_select" id="sel1-reason-rejected" [(ngModel)]="status_reason_rejected" name="status_reason_rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
+                  <option class='option' value="-1" disabled selected hidden >Please Select Reason</option>
+                  <option class='option' *ngFor='let status of set_candidate_status_rejected'  [value]="status" selected>{{status}}</option>
+                </select>
+
+               <select class="form-control filter-input currncy_select" id="sel1-reason-deferred" [(ngModel)]="status_reason_deferred" name="status_reason_deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
+                  <option class='option' value="-1" disabled selected hidden >Please Select Reason</option>
+                  <option class='option' *ngFor='let status of set_candidate_status_deferred'  [value]="status" selected>{{status}}</option>
                 </select>
 
                 <div class="submit-button">
 									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify === 1)" >Save</button>
 								</div>
-							</form>
+              <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success">
+                {{success}}
+              </div>
+
+              <div class="alert alert-danger alert-error pro_alert alert-dismissible" *ngIf = "error">
+                {{error}}
+              </div>
+              </form>
 						</span>
 
 				 	</div>
@@ -119,7 +130,7 @@
 				 </ng-template>
 				 </div>
 				 <div class="col-md-6 info-area">
-				 <ng-container *ngIf="is_approved !== '';else no_approve">
+				 <ng-container *ngIf="set_status === 'Approved' || set_status === 'approved';else no_approve">
 				 	<p>
 				 	<strong>Approved by admin :</strong>
 				 	<span>Yes</span>

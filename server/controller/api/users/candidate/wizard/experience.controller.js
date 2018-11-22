@@ -19,10 +19,11 @@ module.exports = async function (req,res) {
         await User.update({ _id: userId },
             {
                 $push: {
-                    'candidate.candidate_status' : {
+                    'candidate.status' : {
                         $each: [{ status: 'wizard completed',
                         status_updated: new Date(),
-                        timestamp: new Date()}]
+                        timestamp: new Date()}],
+                        $position: 0
                     }
                 }
             }

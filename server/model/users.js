@@ -134,7 +134,7 @@ const UserSchema = new Schema({
                     })],
                 }
             },
-			candidate_status:{
+			status:{
 				type:[{
 					status: {
 						type: String,
@@ -146,7 +146,7 @@ const UserSchema = new Schema({
 					},
 					reason: {
 						type: String,
-						enum: enumerations.statusReasonsRejected
+						enum: enumerations.statusReasons
 					},
 					timestamp: {
 						type: Date,

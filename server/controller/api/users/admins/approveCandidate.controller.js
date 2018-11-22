@@ -12,17 +12,18 @@ module.exports = async function (req, res) {
 
     const userDoc = await User.findOne({ _id: userId}).lean();
     if(userDoc) {
-        if(req.body.status === 'Approved') {
+        if(req.body.status === 'Approved' || req.body.status === 'approved' || req.body.status === 'Other' || req.body.status === 'other') {
             userRes = await
             User.update({_id: userDoc._id},
                 {
                     $push: {
-                        'candidate.candidate_status': {
+                        'candidate.status': {
                             $each: [{
                                 status: req.body.status,
                                 status_updated: new Date(),
                                 timestamp: new Date()
-                            }]
+                            }],
+                            $position: 0
                         }
                     }
                 }
@@ -38,12 +39,14 @@ module.exports = async function (req, res) {
             User.update({_id: userDoc._id},
                 {
                     $push: {
-                        'candidate.candidate_status': {
+                        'candidate.status': {
                             $each: [{
                                 status: req.body.status,
                                 status_updated: new Date(),
+                                reason: req.body.reason,
                                 timestamp: new Date()
-                            }]
+                            }],
+                            $position: 0
                         }
                     }
                 }
