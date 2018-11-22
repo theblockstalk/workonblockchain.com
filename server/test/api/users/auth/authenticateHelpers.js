@@ -68,7 +68,7 @@ const accountSetting = module.exports.accountSetting = async function (profileSt
         'status': profileStatus
     }
     const res = await chai.request(server)
-        .post('/users/set_disable_status')
+        .post('/users/account_settings')
         .set('Authorization', jwtToken)
         .send(data)
     res.should.have.status(200);
