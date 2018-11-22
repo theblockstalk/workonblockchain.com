@@ -2,6 +2,8 @@ module.exports.now = function now() {
     return Date.now();
 };
 
-exports.exports.createTimestamp = function createTimestamp() {
-    return Math.floor(Date.now() / 1000);
-};
+module.exports.sleep = function sleep(ms){
+    return new Promise(resolve => {
+        setTimeout(resolve, ms)
+    })
+}

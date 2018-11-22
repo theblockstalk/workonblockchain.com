@@ -1,5 +1,6 @@
 const settings = require('./settings');
 const unreadChatMessages = require('./controller/services/cron/unreadChatMessagesReminder');
+const synchronizeSendGrid = require('./controller/services/cron/synchronizeSendGrid');
 const logger = require('./controller/services/logger');
 const cron = require('cron');
 
@@ -14,7 +15,18 @@ module.exports.startCron = function startCron() {
         start: true,
         timeZone: 'CET'
     });
-    logger.debug('unreadMessagesJob', {job: unreadMessagesJob});
-    
+    const syncSendgrid = new CronJob({
+        cronTime: settings.CRON.SYNC_SENDGRID,
+        onTick: function() {
+            synchronizeSendGrid();
+        },
+        start: true,
+        timeZone: 'CET'
+    });
+    logger.debug('Cron jobs', {
+        unreadMessagesJob: unreadMessagesJob,
+        syncSendgridJob: syncSendgrid
+    });
+
     logger.info('Cron jobs started');
 }
