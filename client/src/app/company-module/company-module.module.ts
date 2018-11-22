@@ -13,6 +13,7 @@ import { CompanySearchComponent } from './company-search/company-search.componen
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
+import { PreferencesComponent } from './preferences/preferences.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { CandidateDetailComponent } from './candidate-detail/candidate-detail.co
     CompanySearchComponent,
     CompanyProfileComponent,
     EditCompanyProfileComponent,
-    CandidateDetailComponent
+    CandidateDetailComponent,
+    PreferencesComponent
   ]
 })
 export class CompanyModuleModule { }
