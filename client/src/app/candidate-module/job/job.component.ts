@@ -64,7 +64,6 @@ export class JobComponent implements OnInit,AfterViewInit {
        {
          this.options.sort(function(a, b){
            if(b.name === 'Remote' || a.name === 'Remote') {
-             console.log("if");
            }
            else {
              if(a.name < b.name) { return -1; }
