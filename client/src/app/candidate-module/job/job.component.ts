@@ -63,9 +63,14 @@ export class JobComponent implements OnInit,AfterViewInit {
        if(this.currentUser && this.currentUser.type=='candidate')
        {
          this.options.sort(function(a, b){
-           if(a.name < b.name) { return -1; }
-           if(a.name > b.name) { return 1; }
-           return 0;
+           if(b.name === 'Remote' || a.name === 'Remote') {
+             console.log("if");
+           }
+           else {
+             if(a.name < b.name) { return -1; }
+             if(a.name > b.name) { return 1; }
+             return 0;
+           }
          })
 
          this.dropdown_options.sort(function(a, b){
@@ -341,22 +346,23 @@ export class JobComponent implements OnInit,AfterViewInit {
   updateCheckedOptions(e)
   {
     //this.interest = e.target.value;
-
+    console.log(e.target.checked);
      if(e.target.checked)
      {
+       console.log("location if");
       this.selectedcountry.push(e.target.value);
       ////console.log("if");
     }
     else{
-    ////console.log("else");
-     let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value.maintenancetype);
+      console.log("location else");
+     let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value);
 
      let index = this.selectedcountry.indexOf(updateItem);
 
      this.selectedcountry.splice(index, 1);
     }
 
-    //console.log(this.selectedcountry);
+    console.log(this.selectedcountry);
 
   }
 
