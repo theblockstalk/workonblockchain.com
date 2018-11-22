@@ -345,23 +345,18 @@ export class JobComponent implements OnInit,AfterViewInit {
   updateCheckedOptions(e)
   {
     //this.interest = e.target.value;
-    console.log(e.target.checked);
      if(e.target.checked)
      {
-       console.log("location if");
       this.selectedcountry.push(e.target.value);
       ////console.log("if");
     }
     else{
-      console.log("location else");
      let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value);
 
      let index = this.selectedcountry.indexOf(updateItem);
 
      this.selectedcountry.splice(index, 1);
     }
-
-    console.log(this.selectedcountry);
 
   }
 
@@ -470,7 +465,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
         if(this.current_salary && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
         {
-          console.log(f.value);
         this.authenticationService.job(this.currentUser._creator,f.value)
             .subscribe(
                 data => {
