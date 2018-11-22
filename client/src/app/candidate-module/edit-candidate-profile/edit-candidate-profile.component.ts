@@ -180,9 +180,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
 
       this.options.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
+        if(b.name === 'Remote' || a.name === 'Remote') {
+        }
+        else {
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        }
       })
 
       this.dropdown_options.sort(function(a, b){
@@ -1452,7 +1456,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       }
       this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
       this.experiencearray.push(this.experiencejson);
-console.log(this.experiencearray);
     }
 
     for ( var key in this.EducationForm.value.itemRows)
