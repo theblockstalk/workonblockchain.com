@@ -141,12 +141,11 @@ async function synchDatabasetoList(listId) {
                     approved: userDoc.is_approved,
                     email_verified: userDoc.is_verify,
                     terms_id: candidateDoc.terms_id,
-                    created_date: userDoc.created_date,
-                    marketing_emails: candidateDoc.marketing_emails.toString()
+                    created_date: userDoc.created_date
                 };
-                // if (candidateDoc.marketing_emails) {
-                //     recipientUpdate.marketing_emails = candidateDoc.marketing_emails.toString();
-                // }
+                if (candidateDoc.marketing_emails) {
+                    recipientUpdate.marketing_emails = candidateDoc.marketing_emails.toString();
+                }
                 recipientUpdate[settings.ENVIRONMENT + "_user_id"] = userDoc._id.toString();
 
                 await updateSendGridRecipient(listId, recipientUpdate);
@@ -172,8 +171,8 @@ async function synchDatabasetoList(listId) {
                     created_date: userDoc.created_date,
                     company_name: companyDoc.company_name
                 };
-                if (candidateDoc.marketing_emails) {
-                    recipientUpdate.marketing_emails = candidateDoc.marketing_emails.toString();
+                if (companyDoc.marketing_emails) {
+                    recipientUpdate.marketing_emails = companyDoc.marketing_emails.toString();
                 }
                 recipientUpdate[settings.ENVIRONMENT + "_user_id"] = userDoc._id.toString();
 
