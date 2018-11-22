@@ -5,9 +5,6 @@ const enumerations = require('./enumerations');
 const Schema = mongoose.Schema;
 
 const CompanyProfileSchema = new Schema({
-    terms: {
-            type:Boolean
-    },
     terms_id: {
             type: Schema.Types.ObjectId,
             ref: 'pages_content'
