@@ -41,14 +41,17 @@ async function apiRequest(request) {
     logger.debug('Sendgrid API request', request);
 
     if (settings.isLiveApplication()) {
-        [response, body] = await sgClient.request(request);
-    }
+        [response, body] = await
+        sgClient.request(request);
 
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-        logger.error("Sendgrid API request failed", response);
-        throw new Error();
+        if (response.statusCode < 200 || response.statusCode >= 300) {
+            logger.error("Sendgrid API request failed", response);
+            throw new Error();
+        }
+        return response.body;
+    } else {
+        return;
     }
-    return response.body;
 }
 
 module.exports.getAllLists = async function getAllLists() {
