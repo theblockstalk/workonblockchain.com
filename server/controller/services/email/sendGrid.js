@@ -27,7 +27,9 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
     logger.debug('Sending message with Sendgrid', msg);
 
     try {
-        await sgMail.send(msg);
+        if (settings.isLiveApplication()) {
+            await sgMail.send(msg);
+        }
         logger.debug('Sucessfully sent to ' + sendGridOptions.personalizations[0].to.email);
     } catch (error) {
         logger.error('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, error);
@@ -38,7 +40,9 @@ async function apiRequest(request) {
     let response, body;
     logger.debug('Sendgrid API request', request);
 
-    [response, body] = await sgClient.request(request);
+    if (settings.isLiveApplication()) {
+        [response, body] = await sgClient.request(request);
+    }
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
         logger.error("Sendgrid API request failed", response);
