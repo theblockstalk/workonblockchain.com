@@ -40,7 +40,7 @@ export class AccountSettingsComponent implements OnInit {
             if(data._creator.disable_account || data.marketing_emails)
             {
               this.info.marketing = data.marketing_emails;
-              this.info.disable_account= data._creator.disable_account;
+              this.info.disable_account = data._creator.disable_account;
             }
           });
     }
@@ -89,119 +89,46 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   inform;
-  account_setting()
+  status;
+  account_setting(statusName , statusValue)
   {
-    this.inform='';
-    this.message = '';
-    if(this.currentUser && this.currentUser.type=='candidate')
-    {
-      this.authenticationService.terms(this.currentUser._creator,this.info)
-        .subscribe(
-          data =>
-          {
-            if(data.error )
-            {
-              this.log = data.error;
-            }
-            else
-            {
-              this.inform = data;
-
-              if(this.info.marketing){
-                this.message = 'Your profile is currently enabled for marketing emails.';
-              }
-              else{
-                this.message = 'Your profile is currently disabled for marketing emails.';
-              }
-            }
-
-          },
-
-          error =>
-          {
-            if(error.message === 500 || error.message === 401)
-            {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-
-            if(error.message === 403)
-            {
-              // this.router.navigate(['/not_found']);
-            }
-          });
+    console.log(statusValue);
+    this.inform = '';
+    if(statusName === 'marketingEmail') {
+      this.status = {statusName : statusName , statusValue : this.info.marketing};
+    }
+    if(statusName === 'disabledAccount') {
+      this.status = {statusName : statusName , statusValue : this.info.disable_account};
     }
 
-    if(this.currentUser && this.currentUser.type=='company')
-    {
-      this.authenticationService.company_terms(this.currentUser._creator,this.info)
-        .subscribe(
-          data => {
-
-
-            if(data.error )
-            {
-              this.log=data.error;
-            }
-
-            else
-            {
-              this.inform=data;
-
-              if(this.info.marketing){
-                this.message = 'Your profile is currently enabled for marketing emails.';
-              }
-              else{
-                this.message = 'Your profile is currently disabled for marketing emails.';
-              }
-            }
-
-          },
-          error => {
-            if(error.message === 500 || error.message === 401)
-            {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-
-            if(error.message === 403)
-            {
-              // this.router.navigate(['/not_found']);
-            }
-
-          });
-    }
-  }
-
-  disbale_setting()
-  {
-
-    this.inform='';
     if(this.currentUser)
     {
-      this.authenticationService.set_disable_status(this.currentUser._creator,this.info.disable_account)
+      this.authenticationService.account_settings(this.currentUser._creator, this.status)
         .subscribe(
           data =>
           {
+            this.inform = data;
+            console.log(this.info);
+            if(statusName === 'marketingEmail') {
+              if(this.info.marketing) {
+                this.message = 'Your profile is currently enabled for marketing emails.';
+              }
+              else if(!this.info.marketing) {
+                this.message = 'Your profile is currently disabled for marketing emails.';
+              }
+              else {
 
-              this.inform=data;
+              }
+            }
+            if(statusName === 'disabledAccount') {
               if(this.info.disable_account){
                 this.message = 'Your profile is currently disabled';
               }
-              else{
-                this.message = 'Your profile is currently enabled';
 
+              if(!this.info.disable_account) {
+                this.message = 'Your profile is currently enabled';
               }
+            }
 
           },
           error => {

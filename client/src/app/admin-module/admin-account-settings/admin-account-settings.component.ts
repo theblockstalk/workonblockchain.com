@@ -199,7 +199,7 @@ export class AdminAccountSettingsComponent implements OnInit {
       ////console.log('set here');
       if(this.currentUser)
       {
-        this.authenticationService.set_disable_status(this.currentUser._creator,this.info.disable_account)
+        this.authenticationService.account_settings(this.currentUser._creator,this.info.disable_account)
         .subscribe(
             data =>
             {
