@@ -27,9 +27,8 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
     logger.debug('Sending message with Sendgrid', msg);
 
     try {
-        if (settings.isLiveApplication()) {
-            await sgMail.send(msg);
-        }
+        await
+        sgMail.send(msg);
         logger.debug('Sucessfully sent to ' + sendGridOptions.personalizations[0].to.email);
     } catch (error) {
         logger.error('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, error);
