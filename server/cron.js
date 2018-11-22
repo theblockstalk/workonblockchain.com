@@ -10,7 +10,12 @@ module.exports.startCron = function startCron() {
     const unreadMessagesJob = new CronJob({
         cronTime: settings.CRON.UNREAD_MESSAGES_TICK,
         onTick: function() {
-            unreadChatMessages();
+            Promise.resolve(unreadChatMessages()).catch(function (error) {
+                logger.error(error.message, {
+                    stack: error.stack,
+                    name: error.name
+                });
+            });
         },
         start: true,
         timeZone: 'CET'
@@ -19,7 +24,10 @@ module.exports.startCron = function startCron() {
         cronTime: settings.CRON.SYNC_SENDGRID,
         onTick: function() {
             Promise.resolve(synchronizeSendGrid()).catch(function (error) {
-                logger.error("Error with synch sendgrid", error);
+                logger.error(error.message, {
+                    stack: error.stack,
+                    name: error.name
+                });
             });
         },
         start: true,

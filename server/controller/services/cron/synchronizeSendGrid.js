@@ -118,7 +118,10 @@ async function synchDatabasetoList(listId) {
                     logger.warn('User ' + recipientUpdate.email + ' was not updated to Sendgrid as this would overwrite the production recipient');
                 }
             } catch (error) {
-                logger.error("Error updating sendgrid recipient" + recipientUpdate.email, error);
+                logger.error(error.message, {
+                    stack: error.stack,
+                    name: error.name
+                });
                 errors = errors + 1;
             }
         }
