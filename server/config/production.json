@@ -47,7 +47,7 @@
   "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
     "unreadMessagesTick": "00 12 * * *",
-    "syncSendgrid": "00 08 * * * *"
+    "syncSendgrid": "00 9,12 * * * *"
   },
   "slack": {
     "username": "PRODUCTION bug reporter",
