@@ -134,7 +134,8 @@ async function synchDatabasetoList(listId) {
                     approved: userDoc.is_approved,
                     email_verified: userDoc.is_verify,
                     terms_id: candidateDoc.terms_id,
-                    created_date: userDoc.created_date
+                    created_date: userDoc.created_date,
+                    marketing_emails: candidateDoc.marketing_emails.toString()
                 };
                 recipientUpdate[settings.ENVIRONMENT + "_user_id"] = userDoc._id.toString();
 
@@ -159,7 +160,8 @@ async function synchDatabasetoList(listId) {
                     email_verified: userDoc.is_verify,
                     terms_id: companyDoc.terms_id,
                     created_date: userDoc.created_date,
-                    company_name: companyDoc.company_name
+                    company_name: companyDoc.company_name,
+                    marketing_emails: companyDoc.marketing_emails.toString()
                 };
                 recipientUpdate[settings.ENVIRONMENT + "_user_id"] = userDoc._id.toString();
 
