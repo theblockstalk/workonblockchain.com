@@ -35,10 +35,9 @@ module.exports = async  function (req,res)
     console.log(userDoc);
     if(userDoc){
         let userDocArray = [];
-        userDoc.forEach(function(item)
-        {
-            userDocArray.push(item._id);
-        });
+        for (detail of userDoc) {
+            userDocArray.push(detail._id);
+        }
 
         let queryString = [];
 
