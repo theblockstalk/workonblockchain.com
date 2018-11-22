@@ -2,92 +2,92 @@
 
 <section class = "setting">
 
-<div class="alert alert-info pro_alert alert-dismissible" *ngIf="inform">
-		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-	  	{{message}}
-</div>
+  <div class="alert alert-info pro_alert alert-dismissible" *ngIf="inform">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{message}}
+  </div>
 
-<!--<div class="alert alert-success pro_alert alert-dismissible" *ngIf="enable_msg">
-		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-	  	Your profile is currently enable.
-</div>-->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12 wizard-form sett_padd">
-				<h1 class = "text-center sett-mr-btm">Account Settings</h1>
-				   <div class="group">
-				   		<!--<h1>Required for platform use</h1>-->
-						
-						<div class="items">
-							<!--<label for="email">Email</label>-->
-							<span>Marketing emails</span>
-							<div class="btn-container">
-								<label class="switch">
-								  <input type="checkbox" checked [(ngModel)]="info.marketing" (change)="account_setting()" >
-								  <span class="slider round"></span>
-								</label>
-							</div>
-						</div>
-				   </div>
-				   
-				   <div class="group">
-				   		<!--<h1>Required for platform use</h1>-->
-						
-						<div class="items">
-							<!--<label for="email">Email</label>-->
-							<span>Unread Chat Messages Email</span>
-							<div class="btn-container">
-								<label class="switch">
-								  <input type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="unread_msgs_emails_send()" >
-								  <span class="slider round"></span>
-								</label>
-							</div>
-						</div>
-				   </div>
+  <!--<div class="alert alert-success pro_alert alert-dismissible" *ngIf="enable_msg">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            Your profile is currently enable.
+  </div>-->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 wizard-form sett_padd">
+        <h1 class = "text-center sett-mr-btm">Account Settings</h1>
+        <div class="group">
+          <!--<h1>Required for platform use</h1>-->
 
-				   <div class="group">
-						
-						<div class="items">
-							<span>Disable my account and stop receiving all communications (email, phone and post)</span>
-							<div class="btn-container">
-								<label class="switch">
-								  <input type="checkbox" id="myCheck"  [(ngModel)]="info.disable_account" (change)="disbale_setting()">
-								  <span class="slider round"></span>
-								</label>
-							</div>
-						</div>
+          <div class="items">
+            <!--<label for="email">Email</label>-->
+            <span>Marketing emails</span>
+            <div class="btn-container">
+              <label class="switch">
+                <input type="checkbox" checked [(ngModel)]="info.marketing" name="marketing_email" (change)="account_setting('marketingEmail' , $event)" >
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
 
-						
+        <div class="group">
+          <!--<h1>Required for platform use</h1>-->
 
-				   </div>
-				   
-				   
-				   <div class="group">	
-						<div class="items">
-							<a routerLink="/change-password" >Change Password</a>
-							
-						</div>
-				   </div>
+          <div class="items">
+            <!--<label for="email">Email</label>-->
+            <span>Unread Chat Messages Email</span>
+            <div class="btn-container">
+              <label class="switch">
+                <input type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="unread_msgs_emails_send()" >
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
 
-				   <div class = "group">
-				   		<div class="items no-line primary">
-				   			<label for="name"><a href="#" type = "button" data-toggle="modal" data-target="#myModal">Request</a> a copy of the personal data we have about your account.
-				   			</label>
-				   		</div>
-				   </div>
+        <div class="group">
 
-				   <div class = "group">
-				   		<div class="items no-line danger">
-				   			<label for="name"><a href="#" type = "button" data-toggle="modal" data-target="#Modal">Delete</a> your account forever.
-				   			</label>
-				   		</div>
-				   </div>
+          <div class="items">
+            <span>Disable my account and stop receiving all communications (email, phone and post)</span>
+            <div class="btn-container">
+              <label class="switch">
+                <input type="checkbox" id="myCheck"  [(ngModel)]="info.disable_account" name="disable_account" (change)="account_setting('disabledAccount' , $event)">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
 
-				
-			</div>
-		</div>
-	</div>
-	
+
+
+        </div>
+
+
+        <div class="group">
+          <div class="items">
+            <a routerLink="/change-password" >Change Password</a>
+
+          </div>
+        </div>
+
+        <div class = "group">
+          <div class="items no-line primary">
+            <label for="name"><a href="#" type = "button" data-toggle="modal" data-target="#myModal">Request</a> a copy of the personal data we have about your account.
+            </label>
+          </div>
+        </div>
+
+        <div class = "group">
+          <div class="items no-line danger">
+            <label for="name"><a href="#" type = "button" data-toggle="modal" data-target="#Modal">Delete</a> your account forever.
+            </label>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- Modal -->
@@ -102,9 +102,9 @@
       </div>
       <div class="modal-body">
         <p>
-			Please send an email to <a href = "mailto:privacy@workonblockchain.com"> privacy@workonblockchain.com </a> 
-			to request a copy of your personal data.
-		</p>
+          Please send an email to <a href = "mailto:privacy@workonblockchain.com"> privacy@workonblockchain.com </a>
+          to request a copy of your personal data.
+        </p>
       </div>
       <div class="modal-footer">
       </div>
@@ -126,9 +126,9 @@
       </div>
       <div class="modal-body">
         <p>
-			Please send an email to <a href = "mailto:privacy@workonblockchain.com"> privacy@workonblockchain.com </a> 
-			to delete your account forever!.
-		</p>
+          Please send an email to <a href = "mailto:privacy@workonblockchain.com"> privacy@workonblockchain.com </a>
+          to delete your account forever!.
+        </p>
       </div>
       <div class="modal-footer text-right">
       </div>

@@ -1317,9 +1317,9 @@ export class UserService {
 	}
 
 
-    set_disable_status(user_id: string, status: any)
+  account_settings(user_id: string, status: any)
     {
-        return this.http.post<any>(URL+'users/set_disable_status', {user_id:user_id,status:status} , {
+        return this.http.post<any>(URL+'users/account_settings', {user_id:user_id,status:status} , {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
         .map((res: Response) =>
