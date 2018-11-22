@@ -7,7 +7,6 @@ module.exports = async function (req,res) {
     let user = req.auth.user;
     const queryBody = req.body.status;
     const timestamp = new Date();
-    console.log(queryBody);
     if(queryBody.statusName === 'marketingEmail') {
         if(user.type === 'candidate') {
             await CandidateProfile.update({ _creator : user._id },{ $set: {marketing_emails : queryBody.statusValue} });

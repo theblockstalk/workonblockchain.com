@@ -88,17 +88,15 @@ module.exports.employmentOffer = function employmentOffer() {
 
 module.exports.changePassword = function changePassword(){
     return {
-        status : {
             current_password : "Password1",
             password : "myPassword1"
-        }
     }
 }
 
 module.exports.accountSetting = function accountSetting(){
     return {
-        statusName : 'disabledAccount',
-        statusValue : true
+            statusName : 'disabledAccount',
+            statusValue : true
     }
 }
 

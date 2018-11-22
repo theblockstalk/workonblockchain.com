@@ -34,7 +34,7 @@ describe('account setting' , function () {
             userDoc.disable_account.should.equal(false);
 
             const disbaleSetting = docGenerator.accountSetting();
-
+console.log(disbaleSetting);
             const accountSetting = await authenticateHepler.accountSetting(disbaleSetting, userDoc.jwt_token);
 
             userDoc = await Users.findOne({email: company.email}).lean();
