@@ -62,7 +62,7 @@ export class TermsWizardComponent implements OnInit {
 
             }
 
-            if(data.terms_id == true)
+            if(data.terms_id)
             {
               this.about_disable='';
               this.terms_active_class = 'fa fa-check-circle text-success';

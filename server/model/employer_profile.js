@@ -72,8 +72,12 @@ const CompanyProfileSchema = new Schema({
                 }]
             },
             job_type: {
-                type: String,
-                required : true
+                type: [{
+                    type: String,
+                    required : true,
+                    enum: enumerations.jobTypes
+                }]
+
             },
             position: {
                 type: [{
@@ -108,6 +112,9 @@ const CompanyProfileSchema = new Schema({
                     type: String,
                     enum: enumerations.programmingLanguages
                 }]
+            },
+            other_technologies : {
+                type : String
             },
             when_receive_email_notitfications : {
                 type : String ,

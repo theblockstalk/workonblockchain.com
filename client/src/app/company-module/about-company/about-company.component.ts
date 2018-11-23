@@ -36,7 +36,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
      ngAfterViewInit(): void
      {
          window.scrollTo(0, 0);
-
     }
 
   ngOnInit() {
@@ -103,15 +102,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                             // this.router.navigate(['/not_found']);
                         }
                 });
-         this.authenticationService.get_page_content('Company popup message')
-           .subscribe(
-             data => {
-               if(data)
-               {
-                 this.companyMsgTitle= data[0].page_title;
-                 this.companyMsgBody = data[0].page_content;
-               }
-             });
+
        }
       else
        {
@@ -178,7 +169,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                         }).map((res) => res).subscribe(
                         (success) =>
                         {
-                          $('#popModal').modal('show');
+                          this.router.navigate(['/preferences']);
                           //this.router.navigate(['/company_profile']);
                         },
                         (error) => {
@@ -202,11 +193,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
                 else
                 {
-                  $("#popModal").modal({
-                    backdrop: 'static',
-                    keyboard: true,
-                    show: true
-                  });
+                  this.router.navigate(['/preferences']);
                   //this.router.navigate(['/company_profile']);
                 }
 
@@ -234,10 +221,5 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
         }
           }
 
-  redirectToCompany()
-  {
-    $('#popModal').modal('hide');
-    this.router.navigate(['/company_profile']);
-  }
 
 }

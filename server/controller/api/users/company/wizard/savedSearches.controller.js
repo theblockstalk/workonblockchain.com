@@ -8,6 +8,7 @@ module.exports = async function (req,res)
 
     if(companyDoc){
         const queryBody = req.body;
+        console.log(queryBody);
         let companyUpdate = {};
         if (queryBody.saved_searches && queryBody.saved_searches.length > 0) companyUpdate.saved_searches = queryBody.saved_searches;
 
