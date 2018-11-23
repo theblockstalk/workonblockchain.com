@@ -15,7 +15,6 @@ const authResetPassword = require('./controller/api/users/auth/resetPassword.con
 const authVerifyClient = require('./controller/api/users/auth/verifyClient.controller');
 const authAccountDisableSetting = require('./controller/api/users/auth/account_setting.controller');
 const authDestroyTokenOnLogout = require('./controller/api/users/auth/destroyTokenOnLogout.controller');
-const updateExplanationPopupStatus = require('./controller/api/users/updateExplanationPopupStatus.controller');
 
 // Referrals
 const refGetReferralCode = require('./controller/api/users/referrals/getReferralCode.controller');
@@ -60,6 +59,8 @@ const chatUpdateJobMessage = require('./controller/api/chat/updateJobMessage.con
 const chatUpdateIsCompanyReplyStatus = require('./controller/api/chat/updateIsCompanyReplyStatus.controller');
 const chatGetEmployOffer = require('./controller/api/chat/chatGetEmployOffer.controller');
 const chatGetLastJobDescription = require('./controller/api/chat/getLastJobDescription.controller');
+const updateExplanationPopupStatus = require('./controller/api/chat/updateExplanationPopupStatus.controller');
+
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
@@ -80,16 +81,15 @@ router.get('/', healthCheck);
 // User authorization
 router.post('/users/authenticate', asyncMiddleware(authAthenticate));
 router.put('/users/emailVerify/:email_hash', asyncMiddleware(authVerifyEmail));
-router.put('/users/forgot_password/:email', authForgotPassword);
-router.put('/users/change_password',auth.isLoggedIn, authChangePassword);
-router.put('/users/reset_password/:hash', authResetPassword);
-router.put('/users/verify_client/:email', authVerifyClient);
-router.post('/users/set_disable_status' , auth.isLoggedIn , authAccountDisableSetting);
-router.post('/users/destroy_token', auth.isLoggedIn, authDestroyTokenOnLogout);
-router.post('/users/updatePopupStatus', auth.isLoggedIn, updateExplanationPopupStatus);
+router.put('/users/forgot_password/:email', asyncMiddleware(authForgotPassword));
+router.put('/users/change_password',auth.isLoggedIn, asyncMiddleware(authChangePassword));
+router.put('/users/reset_password/:hash', asyncMiddleware(authResetPassword));
+router.put('/users/verify_client/:email', asyncMiddleware(authVerifyClient));
+router.post('/users/account_settings' , auth.isLoggedIn , asyncMiddleware(authAccountDisableSetting));
+router.post('/users/destroy_token', auth.isLoggedIn, asyncMiddleware(authDestroyTokenOnLogout));
 
 // Referrals
-router.post('/users/send_refreal',auth.isLoggedIn, refReferral);
+router.post('/users/send_refreal',auth.isLoggedIn, asyncMiddleware(refReferral));
 router.post('/users/get_refrence_code', asyncMiddleware(refGetReferralCode));
 router.post('/users/get_ref_code' , asyncMiddleware(getReferralCodeForUsers));
 router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getReferralDetailForAdmin));
@@ -97,54 +97,55 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 
 // Candidates
 router.post('/users/register', asyncMiddleware(candidateRegister));
-router.get('/users/',auth.isLoggedIn, candidateGetAll);
-router.get('/users/current/:_id', auth.isLoggedIn, candidateGetCurrent); // Admin or valid company can call this...
-router.put('/users/welcome/terms', auth.isLoggedIn, candidateWizardTnC);
+router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
+router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent));
+router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC));
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
 router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
-router.put('/users/welcome/job', auth.isLoggedIn, candidateWizardJob);
-router.put('/users/welcome/resume', auth.isLoggedIn, candidateWizardResume);
-router.put('/users/welcome/exp', auth.isLoggedIn, candidateWizardExperience);
-router.post('/users/image', auth.isLoggedIn, multer.single('photo'), candidateImage);
+router.put('/users/welcome/job', auth.isLoggedIn, asyncMiddleware(candidateWizardJob));
+router.put('/users/welcome/resume', auth.isLoggedIn, asyncMiddleware(candidateWizardResume));
+router.put('/users/welcome/exp', auth.isLoggedIn, asyncMiddleware(candidateWizardExperience));
+router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
 
 // Companies
 router.post('/users/create_employer',  asyncMiddleware(companyRegister));
-router.get('/users/company',auth.isAdmin, companyGet);
-router.get('/users/current_company/:_id',auth.isLoggedIn, companyGetCurrent);
-router.put('/users/company_wizard',auth.isLoggedIn, companyWizardTnT);
-router.put('/users/about_company',auth.isLoggedIn, companyWizardAbout);
-router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), companyImage);
-router.put('/users/update_company_profile',auth.isLoggedIn, companyUpdate);
-router.post('/users/filter',auth.isValidCompany, companySearchFilter);
-router.post('/users/verified_candidate',auth.isValidCompany, companySearchVerifiedCandidates);
-router.post('/users/candidate_detail',auth.isValidCompany,candidateVerifiedCandidateDetail);
+router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
+router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
+router.put('/users/company_wizard',auth.isLoggedIn, asyncMiddleware(companyWizardTnT));
+router.put('/users/about_company',auth.isLoggedIn, asyncMiddleware(companyWizardAbout));
+router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
+router.put('/users/update_company_profile',auth.isLoggedIn, asyncMiddleware(companyUpdate));
+router.post('/users/filter',auth.isValidCompany, asyncMiddleware(companySearchFilter));
+router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(companySearchVerifiedCandidates));
+router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail));
 
 // Chat
-router.post('/users/insert_message', auth.isValidUser, chatInsertMessage);
-router.post('/users/get_candidate', auth.isValidUser, chatGetCandidate);
-router.post('/users/get_messages',auth.isValidUser, chatGetMessages);
-router.post('/users/get_user_messages',auth.isValidUser, chatGetUserMsgs);
-router.post('/users/insert_chat_file',auth.isValidUser, multer.single('photo'), chatInsertFile);
-router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'), chatInsertMessageJob);
-router.post('/users/update_job_message', auth.isValidCandidate, chatUpdateJobMessage);
-router.post('/users/get_unread_msgs_of_user',auth.isValidUser, chatGetUnreadUser);
-router.post('/users/update_is_company_reply_status', auth.isValidCandidate, chatUpdateIsCompanyReplyStatus);
-router.post('/users/get_employ_offer',auth.isValidUser, chatGetEmployOffer);
+router.post('/users/insert_message', auth.isValidUser, asyncMiddleware(chatInsertMessage));
+router.post('/users/get_candidate', auth.isValidUser, asyncMiddleware(chatGetCandidate));
+router.post('/users/get_messages',auth.isValidUser, asyncMiddleware(chatGetMessages));
+router.post('/users/get_user_messages',auth.isValidUser, asyncMiddleware(chatGetUserMsgs));
+router.post('/users/insert_chat_file',auth.isValidUser, multer.single('photo'), asyncMiddleware(chatInsertFile));
+router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'), asyncMiddleware(chatInsertMessageJob));
+router.post('/users/update_job_message', auth.isValidCandidate, asyncMiddleware(chatUpdateJobMessage));
+router.post('/users/get_unread_msgs_of_user',auth.isValidUser, asyncMiddleware(chatGetUnreadUser));
+router.post('/users/update_is_company_reply_status', auth.isValidCandidate, asyncMiddleware(chatUpdateIsCompanyReplyStatus));
+router.post('/users/get_employ_offer',auth.isValidUser, asyncMiddleware(chatGetEmployOffer));
 router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(chatGetLastJobDescription));
+router.post('/users/update_chat_msg_status' , auth.isValidUser , asyncMiddleware(adminChatUpdateMsgStatus));
+router.post('/users/get_job_desc_msgs' ,auth.isValidUser, asyncMiddleware(adminChatGetJobDescMsg));
+router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, asyncMiddleware(adminChatSetUnreadMsgStatus));
+router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));
 
 // Admin
-router.put('/users/approve/:_id', auth.isAdmin  , adminApproveUser);
-router.post('/users/admin_candidate_filter', auth.isAdmin , adminCandidateFilter);
-router.post('/users/admin_company_filter', auth.isAdmin , adminComanyFilter);
-router.put('/users/add_privacy_content' , auth.isAdmin , adminAddPrivacyContent);
-router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , adminAddNewPagesContent);
-router.post('/users/update_chat_msg_status' , auth.isValidUser , adminChatUpdateMsgStatus);
-router.post('/users/get_job_desc_msgs' ,auth.isValidUser, adminChatGetJobDescMsg);
-router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, adminChatSetUnreadMsgStatus);
+router.put('/users/approve/:_id', auth.isAdmin  , asyncMiddleware(adminApproveUser));
+router.post('/users/admin_candidate_filter', auth.isAdmin , asyncMiddleware(adminCandidateFilter));
+router.post('/users/admin_company_filter', auth.isAdmin , asyncMiddleware(adminComanyFilter));
+router.put('/users/add_privacy_content' , auth.isAdmin , asyncMiddleware(adminAddPrivacyContent));
+router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , asyncMiddleware(adminAddNewPagesContent));
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
 
 // Pages
-router.get('/users/get_pages_content/:title', pagesGetContent);
+router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent));
 
 module.exports = router;

@@ -88,14 +88,15 @@ module.exports.employmentOffer = function employmentOffer() {
 
 module.exports.changePassword = function changePassword(){
     return {
-        current_password : "Password1",
-        password : "myPassword1"
+            current_password : "Password1",
+            password : "myPassword1"
     }
 }
 
 module.exports.accountSetting = function accountSetting(){
     return {
-        disable_account : true
+            statusName : 'disabledAccount',
+            statusValue : true
     }
 }
 
@@ -431,3 +432,6 @@ module.exports.prefilledProfileData = function prefilledProfileData() {
         }
     }
 }
+
+
+

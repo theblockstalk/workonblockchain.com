@@ -1,75 +1,25 @@
-const settings = require('../../../../settings');
-var Q = require('q');
 const EmployerProfile = require('../../../../model/employer_profile');
-const logger = require('../../../services/logger');
 const filterReturnData = require('../filterReturnData');
+const errors = require('../../../services/errors');
 
-//////////get sign-up data from db of specific company////////////
+module.exports = async function (req, res) {
 
-module.exports = function (req, res)
-{
-	//let userId = req.auth.user._id;
-    get_company_byId(req.params._id).then(function (user)
-    {
-        if (user)
-        {
-            res.send(user);
+    let employerProfile = await EmployerProfile.findById(req.params._id).populate('_creator').lean();
+    if(employerProfile){
+        const employerRes =  filterReturnData.removeSensativeData(employerProfile);
+        res.send(employerRes);
+    }
+    else {
+        employerProfile =  await EmployerProfile.find({_creator : req.params._id}).populate('_creator').lean();
+        if(employerProfile && employerProfile.length > 0){
+            const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile[0]);
+            res.send(employerCreatorRes);
         }
         else
         {
-            res.sendStatus(404);
+            errors.throwError("User not found", 404)
         }
-    })
-        .catch(function (err)
-        {
-            res.status(400).send(err);
-        });
+    }
+
 }
 
-function get_company_byId(_id)
-{
-   
-    var deferred = Q.defer();
-    EmployerProfile.findById(_id).populate('_creator').exec(function(err, result)
-    {
-        if (err)
-        {
-            logger.error(err.message, {stack: err.stack});
-            deferred.resolve({error:"Not found"});
-        }
-        if(!result)
-        {
-            EmployerProfile.find({_creator : _id}).populate('_creator').exec(function(err, result)
-            {
-                if (err)
-                {
-                    logger.error(err.message, {stack: err.stack});
-                    deferred.reject(err.name + ': ' + err.message);
-                }
-                else
-                {
-
-                    if(result.length > 0) {
-
-                        var query_result = result[0].toObject();
-                        deferred.resolve(filterReturnData.removeSensativeData(query_result));
-                    }
-                    else{
-                        deferred.resolve(0);
-                    }
-                }
-            });
-        }
-        else
-        {
-        	var query_result = result.toObject();      
-            deferred.resolve(filterReturnData.removeSensativeData(query_result));
-        }
-           
-
-
-    });
-
-
-    return deferred.promise;
-}

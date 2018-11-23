@@ -68,6 +68,7 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.response = "";
     this.referred_link = "";
     this.referred_name = "";
+    this.error = "";
 
 
     if(this.user_id && this.admin_log && this.currentUser)
@@ -86,6 +87,10 @@ export class AdminCandidateDetailComponent implements OnInit {
               this.education_history.sort(this.education_sort_desc);
               this.countries = data.locations;
               this.countries.sort();
+              if(this.countries.indexOf("remote") > -1){
+                this.countries[0] = 'remote';
+                this.countries = this.filter_array(this.countries);
+              }
               this.interest_area =data.interest_area;
               this.interest_area.sort();
               this.roles  = data.roles;
@@ -193,6 +198,18 @@ export class AdminCandidateDetailComponent implements OnInit {
 
                           },
                     error => {
+                      if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                      {
+                        this.error = error['error']['message'];
+                      }
+                      else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+                      {
+                        this.error = error['error']['message'];
+                      }
+                      else
+                      {
+                        this.error = error['error']['message'];
+                      }
 
                     }
                   );
@@ -220,20 +237,8 @@ export class AdminCandidateDetailComponent implements OnInit {
 
             error =>
             {
-              if(error.message === 500 || error.message === 401 || error.message === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
-
-              if(error.message === 403)
-              {
-                // this.router.navigate(['/not_found']);
+              if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                this.router.navigate(['/not_found']);
               }
 
             });
@@ -252,8 +257,10 @@ export class AdminCandidateDetailComponent implements OnInit {
   }
 
   is_approve;is_approved;
+  error;
   approveClick(event , approveForm: NgForm)
   {
+    this.error = '';
     if(event.srcElement.innerHTML ==='Active' )
     {
       this.is_approve = 1;
@@ -299,23 +306,31 @@ export class AdminCandidateDetailComponent implements OnInit {
         },
         error =>
         {
-          if(error.message === 500 || error.message === 401)
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
+            this.error = error['error']['message'];
           }
-
-          if(error.message === 403)
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
           {
-            // this.router.navigate(['/not_found']);
+            this.error = error['error']['message'];
+          }
+          else {
+            this.error = "Something getting wrong";
           }
 
         });
+  }
+
+  filter_array(arr)
+  {
+    var hashTable = {};
+
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+
+      return (match ? false : hashTable[key] = true);
+    });
   }
 
 

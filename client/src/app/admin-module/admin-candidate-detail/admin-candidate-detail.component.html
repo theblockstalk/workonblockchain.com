@@ -1,8 +1,12 @@
 <!--Profile-inner-->
 
 <section class = "wizard_page">
+  <div *ngIf="error && error !== ''">
+    <h6 class="alert alert-danger error-alert" >{{error}}</h6>
+  </div>
 
-	<div class="container">
+
+  <div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12" *ngFor = "let data of info">
 				 <section class = "profile personal_info">
@@ -248,7 +252,7 @@
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
-								<li *ngFor='let country of countries'>{{country}}</li>
+								<li *ngFor='let country of countries'>{{country.charAt(0).toUpperCase()}}{{country.slice(1)}}</li>
 
 							</ul>
 						</div>

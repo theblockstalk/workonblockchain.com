@@ -40,7 +40,6 @@ describe('update chat message status to read', function () {
             await chatHelper.insertMessage(companyDoc._id,candidateDoc._id,message,companyDoc.jwt_token);
 
             const chatDoc = await Chats.findOne({receiver_id: candidateDoc._id}).lean();
-            chatDoc.is_read.should.equal(0);
 
             const res = await adminChatHelper.setUnreadMessageStatus(companyDoc._id,candidateDoc._id,chatDoc.is_read,candidateDoc.jwt_token);
 

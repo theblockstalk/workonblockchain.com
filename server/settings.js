@@ -36,7 +36,11 @@ if (isLiveApplication()) {
 
     settings.AWS = {
         REGION: config.aws.region,
-        BUCKETS: config.aws.buckets
+        BUCKETS: config.aws.buckets,
+        CLOUDWATCH: {
+            GROUP: config.aws.cloudWatch.group,
+            STREAM: config.aws.cloudWatch.stream
+        }
     };
 
     settings.MANDRILL = {
@@ -68,7 +72,8 @@ if (isLiveApplication()) {
 }
 
 settings.CRON = {
-    UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick
+    UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick,
+    SYNC_SENDGRID: config.cron.syncSendgrid
 };
 
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;

@@ -639,16 +639,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
                 },
                 error => {
-                  if(error.message === 500)
-                    {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                      localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                    }
+                  if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.router.navigate(['/not_found']);
+                  }
 
                 });
 

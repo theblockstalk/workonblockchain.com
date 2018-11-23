@@ -63,9 +63,13 @@ export class JobComponent implements OnInit,AfterViewInit {
        if(this.currentUser && this.currentUser.type=='candidate')
        {
          this.options.sort(function(a, b){
-           if(a.name < b.name) { return -1; }
-           if(a.name > b.name) { return 1; }
-           return 0;
+           if(b.name === 'Remote' || a.name === 'Remote') {
+           }
+           else {
+             if(a.name < b.name) { return -1; }
+             if(a.name > b.name) { return 1; }
+             return 0;
+           }
          })
 
          this.dropdown_options.sort(function(a, b){
@@ -341,22 +345,18 @@ export class JobComponent implements OnInit,AfterViewInit {
   updateCheckedOptions(e)
   {
     //this.interest = e.target.value;
-
      if(e.target.checked)
      {
       this.selectedcountry.push(e.target.value);
       ////console.log("if");
     }
     else{
-    ////console.log("else");
-     let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value.maintenancetype);
+     let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value);
 
      let index = this.selectedcountry.indexOf(updateItem);
 
      this.selectedcountry.splice(index, 1);
     }
-
-    //console.log(this.selectedcountry);
 
   }
 
@@ -480,21 +480,10 @@ export class JobComponent implements OnInit,AfterViewInit {
 
                 },
                 error => {
-                    if(error.message === 500 || error.message === 401)
-                    {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                                        localStorage.removeItem('googleUser');
-                                        localStorage.removeItem('close_notify');
-                                        localStorage.removeItem('linkedinUser');
-                                        localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                    }
+                  if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.router.navigate(['/not_found']);
+                  }
 
-                    if(error.message === 403)
-                    {
-                        this.router.navigate(['/not_found']);
-                    }
 
                 });
 

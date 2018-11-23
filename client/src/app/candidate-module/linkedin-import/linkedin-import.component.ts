@@ -172,7 +172,6 @@ export class LinkedinImportComponent implements OnInit {
     ]).then(modules => {
       const [LinkedInToJsonResume, Moment, Unzip, CsvToArray] = modules;
       const csvToArray = CsvToArray.default;
-      console.log(csvToArray);
       const moment = Moment;
       linkedinToJsonResume = new LinkedInToJsonResume.default();
       // cancel event and hover styling
@@ -207,212 +206,124 @@ export class LinkedinImportComponent implements OnInit {
         });
       };
 
-
       getEntries(file, entries => {
         const promises = entries.map(entry => {
-          console.log(entry);
-          switch (true) {
-            case entry.filename.indexOf('Skills.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Skills.csv");
-                contents = contents.replace(/"/g, '');
-                let elements = contents.split('\n');
-                elements = elements.slice(1, elements.length - 1);
-                linkedinToJsonResume.processSkills(elements);
-                return;
-              });
-
-            case entry.filename.indexOf('Education.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Education.csv");
-                const elements = csvToArray(contents);
-                const education = elements
-                  .slice(1, elements.length - 1)
-                  .map(elem => ({
-                    schoolName: elem[0],
-                    startDate: moment(new Date(elem[1])).format('YYYY-MM-DD'),
-                    endDate: moment(new Date(elem[2])).format('YYYY-MM-DD'),
-                    notes: elem[3],
-                    degree: elem[4],
-                    activities: elem[5]
-                  }));
-                linkedinToJsonResume.processEducation(
-                  education.sort(
-                    (e1, e2) => -e1.startDate.localeCompare(e2.startDate)
-                  )
-                );
-                return;
-              });
-
-            case entry.filename.indexOf('Positions.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Positions.csv");
-                const elements = csvToArray(contents);
-                const positions = elements
-                  .slice(1, elements.length - 1)
-                  .map(elem => {
-                    return {
-                      companyName: elem[0],
-                      title: elem[1],
-                      description: elem[2],
-                      location: elem[3],
-                      startDate:  moment(new Date(elem[4])).format('YYYY-MM-DD'), // moment(elem[4], 'MMM YYYY').format('YYYY-MM-DD'),
-                      endDate: elem[5]
-                        ? moment(new Date(elem[5])).format('YYYY-MM-DD')
-                        : null
-                    };
-                  });
-                linkedinToJsonResume.processPosition(
-                  positions.sort(
-                    (p1, p2) => -p1.startDate.localeCompare(p2.startDate)
-                  )
-                );
-                return;
-              });
-
-            case entry.filename.indexOf('Languages.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Languages.csv");
-                const elements = csvToArray(contents);
-                const languages = elements
-                  .slice(1, elements.length - 1)
-                  .map(elem => ({
-                    name: elem[0],
-                    proficiency: elem[1]
-                  }));
-                linkedinToJsonResume.processLanguages(languages);
-                return;
-              });
-
-            case entry.filename.indexOf('Recommendations Received.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Recommendations Received.csv");
-                const elements = csvToArray(contents);
-                const recommendations = elements
-                  .slice(1, elements.length - 1)
-                  .map(elem => ({
-                    recommenderFirstName: elem[0],
-                    recommenderLastName: elem[1],
-                    recommenderCompany: elem[2],
-                    recommenderTitle: elem[3],
-                    recommendationBody: elem[4],
-                    recommendationDate: elem[5],
-                    displayStatus: elem[6]
-                  }))
-                  .filter(
-                    recommendation => recommendation.displayStatus === 'VISIBLE'
-                  );
-                linkedinToJsonResume.processReferences(recommendations);
-                return;
-              });
-
-            case entry.filename.indexOf('Profile.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Profile csv");
-                console.log(entry);
-                console.log(contents);
-                const elements = csvToArray(contents);
-                console.log(elements);
-                const profile = {
-                  firstName: elements[1][0],
-                  lastName: elements[1][1],
-                  maidenName: elements[1][2],
-                  address: elements[1][3],
-                  birthDate: elements[1][4],
-                  contactInstructions: elements[1][5],
-                  headline: elements[1][6],
-                  summary: elements[1][7],
-                  industry: elements[1][8],
-                  country: elements[1][9],
-                  zipCode: elements[1][10],
-                  geoLocation: elements[1][11],
-                  twitterHandles: elements[1][12],
-                  websites: elements[1][13],
-                  instantMessengers: elements[1][14]
-                };
-                linkedinToJsonResume.processProfile(profile);
-                return;
-              });
-
-            case entry.filename.indexOf('Email Addresses.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Email Addresses.csv");
-
-                const elements = csvToArray(contents, '\t'); // yes, recommendations use tab-delimiter
-                const email = elements
-                  .slice(1, elements.length - 1)
-                  .map(elem => ({
-                    address: elem[0],
-                    status: elem[1],
-                    isPrimary: elem[2] === 'Yes',
-                    dateAdded: elem[3],
-                    dateRemoved: elem[4]
-                  }))
-                  .filter(email => email.isPrimary);
-                if (email.length) {
-                  linkedinToJsonResume.processEmail(email[0]);
-                }
-                return;
-              });
-
-            case entry.filename.indexOf('Interests.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Interests.csv");
-
-                const elements = csvToArray(contents);
-                let interests = [];
-                elements.slice(1, elements.length - 1).forEach(elem => {
-                  interests = interests.concat(elem[0].split(','));
+            const x = entry.filename.split("/");
+            switch (true) {
+              case x[x.length - 1] === 'Skills.csv' :
+                return readEntryContents(entry).then(contents => {
+                  contents = contents.replace(/"/g, '');
+                  let elements = contents.split('\n');
+                  elements = elements.slice(1, elements.length - 1);
+                  linkedinToJsonResume.processSkills(elements);
+                  return;
                 });
-                linkedinToJsonResume.processInterests(interests);
-                return;
-              });
 
-            case entry.filename.indexOf('Projects.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Projects.csv");
+              case x[x.length - 1] === 'Education.csv' :
+                return readEntryContents(entry).then(contents => {
+                  const elements = csvToArray(contents);
+                  const education = elements
+                    .slice(1, elements.length - 1)
+                    .map(elem => ({
+                      schoolName: elem[0],
+                      startDate: moment(new Date(elem[1])).format('YYYY-MM-DD'),
+                      endDate: moment(new Date(elem[2])).format('YYYY-MM-DD'),
+                      notes: elem[3],
+                      degree: elem[4],
+                      activities: elem[5]
+                    }));
+                  linkedinToJsonResume.processEducation(
+                    education.sort(
+                      (e1, e2) => -e1.startDate.localeCompare(e2.startDate)
+                    )
+                  );
+                  return;
+                });
 
-                const elements = csvToArray(contents);
-                const projects = elements
-                  .slice(1, elements.length - 1)
-                  .map(elem => ({
-                    title: elem[0],
-                    description: elem[1],
-                    url: elem[2],
-                    startDate: moment(new Date(elem[3])).format('YYYY-MM-DD'),
-                    endDate: elem[4] ? moment(new Date(elem[4])).format('YYYY-MM-DD') : null
-                  }));
-                linkedinToJsonResume.processProjects(
-                  projects.sort(
-                    (p1, p2) => -p1.startDate.localeCompare(p2.startDate)
-                  )
-                );
-                return;
-              });
+              case x[x.length - 1] === 'Positions.csv' :
+                return readEntryContents(entry).then(contents => {
+                  const elements = csvToArray(contents);
+                  const positions = elements
+                    .slice(1, elements.length - 1)
+                    .map(elem => {
+                      return {
+                        companyName: elem[0],
+                        title: elem[1],
+                        description: elem[2],
+                        location: elem[3],
+                        startDate: moment(new Date(elem[4])).format('YYYY-MM-DD'), // moment(elem[4], 'MMM YYYY').format('YYYY-MM-DD'),
+                        endDate: elem[5]
+                          ? moment(new Date(elem[5])).format('YYYY-MM-DD')
+                          : null
+                      };
+                    });
+                  linkedinToJsonResume.processPosition(
+                    positions.sort(
+                      (p1, p2) => -p1.startDate.localeCompare(p2.startDate)
+                    )
+                  );
+                  return;
+                });
 
-            case entry.filename.indexOf('Publications.csv') !== -1:
-              return readEntryContents(entry).then(contents => {
-                console.log("Publications.csv");
+              case x[x.length - 1] === 'Languages.csv' :
+                return readEntryContents(entry).then(contents => {
+                  const elements = csvToArray(contents);
+                  const languages = elements
+                    .slice(1, elements.length - 1)
+                    .map(elem => ({
+                      name: elem[0],
+                      proficiency: elem[1]
+                    }));
+                  linkedinToJsonResume.processLanguages(languages);
+                  return;
+                });
 
-                const elements = csvToArray(contents);
-                const publications = elements
-                  .slice(1, elements.length - 1)
-                  .map(elem => ({
-                    name: elem[0],
-                    date: moment(new Date(elem[1])).format('YYYY-MM-DD'),
-                    description: elem[2],
-                    publisher: elem[3],
-                    url: elem[4]
-                  }));
-                linkedinToJsonResume.processPublications(
-                  publications.sort((p1, p2) => -p1.date.localeCompare(p2.date))
-                );
-                return;
-              });
+              case x[x.length - 1] === 'Profile.csv' :
+                return readEntryContents(entry).then(contents => {
+                  const elements = csvToArray(contents);
+                  const profile = {
+                    firstName: elements[1][0],
+                    lastName: elements[1][1],
+                    maidenName: elements[1][2],
+                    address: elements[1][3],
+                    birthDate: elements[1][4],
+                    contactInstructions: elements[1][5],
+                    headline: elements[1][6],
+                    summary: elements[1][7],
+                    industry: elements[1][8],
+                    country: elements[1][9],
+                    zipCode: elements[1][10],
+                    geoLocation: elements[1][11],
+                    twitterHandles: elements[1][12],
+                    websites: elements[1][13],
+                    instantMessengers: elements[1][14]
+                  };
+                  linkedinToJsonResume.processProfile(profile);
+                  return;
+                });
 
-            default:
-              return Promise.resolve([]);
-          }
+              case x[x.length - 1] === 'Email Addresses.csv' :
+                return readEntryContents(entry).then(contents => {
+                  const elements = csvToArray(contents, '\t'); // yes, recommendations use tab-delimiter
+                  const email = elements
+                    .slice(1, elements.length - 1)
+                    .map(elem => ({
+                      address: elem[0],
+                      status: elem[1],
+                      isPrimary: elem[2] === 'Yes',
+                      dateAdded: elem[3],
+                      dateRemoved: elem[4]
+                    }))
+                    .filter(email => email.isPrimary);
+                  if (email.length) {
+                    linkedinToJsonResume.processEmail(email[0]);
+                  }
+                  return;
+                });
+
+              default:
+                return Promise.resolve([]);
+            }
         });
 
         Promise.all(promises).then(() => {
@@ -503,18 +414,7 @@ export class LinkedinImportComponent implements OnInit {
                     }
                   },
                   error => {
-                    if(error.message === 500 || error.message === 401)
-                    {
-                      localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                      localStorage.removeItem('currentUser');
-                      localStorage.removeItem('googleUser');
-                      localStorage.removeItem('close_notify');
-                      localStorage.removeItem('linkedinUser');
-                      localStorage.removeItem('admin_log');
-                      window.location.href = '/login';
-                    }
-
-                    if(error.message === 403)
+                    if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
                     {
                       this.router.navigate(['/not_found']);
                     }
@@ -534,17 +434,17 @@ export class LinkedinImportComponent implements OnInit {
     });
   }
 
+  file_name;
   onSubmit(f: NgForm)
   {
-
-    if(!f.value.fileselect)
+    if(!this.fileevent)
     {
-      this.error_log= "Please choose file";
+      this.error_log = "Please choose file";
     }
 
     else
     {
-       if(f.value.fileselect)
+       if(this.fileevent)
       {
         this.fileselected(this.fileevent);
       }
