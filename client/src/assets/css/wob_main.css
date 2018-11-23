@@ -982,7 +982,6 @@ body{
   }
 
 .form_error{
-
     margin-top: 1px;
     font-size: 12px;
 }
@@ -4396,6 +4395,10 @@ input:checked + .slider:before {
 
 .loader {
   text-align : center;
+}
+
+.reset_password_error .error{
+  color: #e80000;
 }
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 

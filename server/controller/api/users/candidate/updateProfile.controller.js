@@ -1,5 +1,6 @@
 const CandidateProfile = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
+const errors = require('../../../services/errors');
 
 ///// for candidate about wizard ///////////////////
 
@@ -8,28 +9,28 @@ module.exports = async function (req, res) {
 
     const candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
 
-    const userParam = req.body.detail;
+    const queryBody = req.body.detail;
     const historyParam = req.body;
     let candidateUpdate = {}
 
-    if (userParam.first_name) candidateUpdate.first_name = userParam.first_name;
-    if (userParam.last_name) candidateUpdate.last_name = userParam.last_name;
-    if (userParam.github_account) candidateUpdate.github_account = userParam.github_account;
-    if (userParam.exchange_account) candidateUpdate.stackexchange_account = userParam.exchange_account;
-    if (userParam.contact_number) candidateUpdate.contact_number = userParam.contact_number;
-    if (userParam.country) candidateUpdate.locations = userParam.country;
-    if (userParam.roles) candidateUpdate.roles = userParam.roles;
-    if (userParam.interest_area) candidateUpdate.interest_area = userParam.interest_area;
-    if (userParam.base_currency) candidateUpdate.expected_salary_currency = userParam.base_currency;
-    if (userParam.expected_salary) candidateUpdate.expected_salary = userParam.expected_salary;
-    if (userParam.availability_day) candidateUpdate.availability_day = userParam.availability_day;
-    if (userParam.why_work) candidateUpdate.why_work = userParam.why_work;
-    if (userParam.commercial_experience_year) candidateUpdate.commercial_platform = userParam.commercial_experience_year;
-    if (userParam.experimented_platform) candidateUpdate.experimented_platform = userParam.experimented_platform;
-    if (userParam.salary) candidateUpdate.current_salary = userParam.salary;
-    if (userParam.current_currency) candidateUpdate.current_currency = userParam.current_currency;
-    if (userParam.language_experience_year) candidateUpdate.programming_languages = userParam.language_experience_year;
-    if (userParam.intro) candidateUpdate.description = userParam.intro;
+    if (queryBody.first_name) candidateUpdate.first_name = queryBody.first_name;
+    if (queryBody.last_name) candidateUpdate.last_name = queryBody.last_name;
+    if (queryBody.github_account) candidateUpdate.github_account = queryBody.github_account;
+    if (queryBody.exchange_account) candidateUpdate.stackexchange_account = queryBody.exchange_account;
+    if (queryBody.contact_number) candidateUpdate.contact_number = queryBody.contact_number;
+    if (queryBody.country) candidateUpdate.locations = queryBody.country;
+    if (queryBody.roles) candidateUpdate.roles = queryBody.roles;
+    if (queryBody.interest_area) candidateUpdate.interest_area = queryBody.interest_area;
+    if (queryBody.base_currency) candidateUpdate.expected_salary_currency = queryBody.base_currency;
+    if (queryBody.expected_salary) candidateUpdate.expected_salary = queryBody.expected_salary;
+    if (queryBody.availability_day) candidateUpdate.availability_day = queryBody.availability_day;
+    if (queryBody.why_work) candidateUpdate.why_work = queryBody.why_work;
+    if (queryBody.commercial_experience_year) candidateUpdate.commercial_platform = queryBody.commercial_experience_year;
+    if (queryBody.experimented_platform) candidateUpdate.experimented_platform = queryBody.experimented_platform;
+    if (queryBody.salary) candidateUpdate.current_salary = queryBody.salary;
+    if (queryBody.current_currency) candidateUpdate.current_currency = queryBody.current_currency;
+    if (queryBody.language_experience_year) candidateUpdate.programming_languages = queryBody.language_experience_year;
+    if (queryBody.intro) candidateUpdate.description = queryBody.intro;
     if (historyParam.education) candidateUpdate.education_history = historyParam.education;
     if (historyParam.work) candidateUpdate.work_history = historyParam.work;
 
@@ -37,11 +38,11 @@ module.exports = async function (req, res) {
 
     let updateCandidateUser = {}
 
-    if(userParam.commercial_skills) updateCandidateUser["candidate.blockchain.commercial_skills"] = userParam.commercial_skills;
-    if(userParam.formal_skills) updateCandidateUser["candidate.blockchain.formal_skills"] = userParam.formal_skills;
+    if(queryBody.commercial_skills) updateCandidateUser["candidate.blockchain.commercial_skills"] = queryBody.commercial_skills;
+    if(queryBody.formal_skills) updateCandidateUser["candidate.blockchain.formal_skills"] = queryBody.formal_skills;
 
-    if(userParam.city) updateCandidateUser["candidate.base_city"] = userParam.city;
-    if(userParam.base_country) updateCandidateUser["candidate.base_country"] = userParam.base_country;
+    if(queryBody.city) updateCandidateUser["candidate.base_city"] = queryBody.city;
+    if(queryBody.base_country) updateCandidateUser["candidate.base_country"] = queryBody.base_country;
 
     await User.update({ _id: userId },{ $set: updateCandidateUser });
 

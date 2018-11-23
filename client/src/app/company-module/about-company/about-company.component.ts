@@ -220,6 +220,13 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
               this.log = error['error']['message'];
               this.router.navigate(['/not_found']);
             }
+            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.log = error['error']['message'];
+              this.router.navigate(['/not_found']);
+            }
+            else {
+              this.log = "Something getting wrong";
+            }
           });
             }
             else {

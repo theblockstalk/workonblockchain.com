@@ -18,6 +18,7 @@ aws.config.update({
 
 const awsS3 = new aws.S3();
 const awsEb = new aws.ElasticBeanstalk();
+const awsCf = new aws.CloudFront();
 
 module.exports.pressEnterToContinue = async function pressEnterToContinue(message) {
     if (!message) message = 'Press enter/return key to continue, or Ctr+C to exit.';
@@ -300,3 +301,28 @@ module.exports.syncDirwithS3 = async function syncDirwithS3(s3bucket, tempClient
     })
 
 };
+
+module.exports.invalidateCloudfronntCache = async function invalidateCloudfronntCache(cloudFrontId) {
+    const params = {
+        DistributionId: cloudFrontId,
+        InvalidationBatch: {
+            CallerReference: 'Bitbucket deployment pipeline ' + new Date(),
+            Paths: {
+                Quantity: 1,
+                Items: [
+                    '/*',
+                ]
+            }
+        }
+    };
+    let data = await new Promise((res, rej) => {
+        awsCf.createInvalidation(params, (err, data) => {
+            if (err) {
+                console.log(err, err.stack);
+                rej(err);
+            }
+            else res(data);
+        })
+    })
+    console.log(data);
+}

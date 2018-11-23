@@ -24,7 +24,7 @@ describe('get employment offer detail', function () {
         await mongo.drop();
     })
 
-    describe('POST /users/insert_message', () => {
+    describe('POST /users/get_employ_offer', () => {
 
         it('it should get employment offer detail', async () => {
 
@@ -55,7 +55,7 @@ describe('get employment offer detail', function () {
             const employmentOfferDetails = await chatHelper.getEmploymentOfferDetail(companyUserDoc._id, candidateUserDoc._id, msgTag, companyUserDoc.jwt_token);
             const response = employmentOfferDetails.body;
 
-            const chatDoc = await Chats.findOne({_id: response.datas}).lean();
+            const chatDoc = await Chats.findOne({sender_id: companyUserDoc._id}).lean();
 
             chatDoc.message.should.equal(offerData.message);
             chatDoc.description.should.equal(offerData.description);

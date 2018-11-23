@@ -89,6 +89,10 @@ forgetMessage;
                     this.password_message = '';
                     this.log = error['error']['message'];
                   }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.password_message = '';
+                    this.log = error['error']['message'];
+                  }
                   else {
                     this.log = 'Something getting wrong';
                   }
@@ -140,6 +144,10 @@ forgetMessage;
                 },
                 error => {
                   if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.password_message = '';
+                    this.log = error['error']['message'];
+                  }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                     this.password_message = '';
                     this.log = error['error']['message'];
                   }
@@ -198,6 +206,10 @@ forgetMessage;
                         this.password_message = '';
                         this.log = error['error']['message'];
                       }
+                      else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                        this.password_message = '';
+                        this.log = error['error']['message'];
+                      }
                       else {
                         this.log = 'Something getting wrong';
                       }
@@ -240,24 +252,24 @@ forgetMessage;
             .subscribe(
                 data => {
                     //console.log(data);
-                    if(!data['error'])
-                    {
+
                         this.dataservice.changeMessage("Please check your email to reset the password.");
                         this.router.navigate(["/login"]);
 
-                    }
-
-                    else
-                    {
-                        //this.dataservice.changeMessage(data['error']);
-                        this.log= data['error'];
-
-
-                    }
 
                 },
                 error => {
-                 this.dataservice.changeMessage(error);
+                  if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.password_message = '';
+                    this.log = error['error']['message'];
+                  }
+                  else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                    this.password_message = '';
+                    this.log = error['error']['message'];
+                  }
+                  else {
+                    this.log = 'Something getting wrong';
+                  }
 
                 });
         }

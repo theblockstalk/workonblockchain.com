@@ -123,11 +123,20 @@ export class ReferralComponent implements OnInit {
         .subscribe(
           data => {
 
-            this.log = data;
+            this.log = data.msg;
           },
           error => {
-
-            this.log = error;
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+            {
+              this.log = error['error']['message'];
+            }
+            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+            {
+              this.log = error['error']['message'];
+            }
+            else{
+              this.log = error['error']['message'];
+            }
           }
         );
     }
