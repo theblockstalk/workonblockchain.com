@@ -212,6 +212,11 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 }
                 this.countries = data.locations;
                 this.countries.sort();
+                if(this.countries.indexOf("remote") > -1){
+                  this.countries[0] = 'remote';
+                  this.countries = this.filter_array(this.countries);
+                }
+
                 this.interest_area =data.interest_area;
                 this.interest_area.sort();
                 this.roles  = data.roles;
@@ -373,6 +378,29 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
     }
 
   }
+  temp;
+  index;
+  countriesArray=[];
+  /*swapLocations(locations , index1 , value) {
+    this.temp = locations[index1];
+    this.countriesArray[0]="remote";
+    this.
+
+
+  }*/
+
+  filter_array(arr)
+  {
+    var hashTable = {};
+
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+
+      return (match ? false : hashTable[key] = true);
+    });
+  }
+
 
 
 }
