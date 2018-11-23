@@ -103,7 +103,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
 
   currency = ["£ GBP" ,"€ EUR" , "$ USD"];
 
-  availability= ["Now","1 month","2 months","3 months","Longer than 3 months"];
+  availability = [
+    {name : "Now" , value : "Now"},
+    {name : "1 month" , value : "1 month"},
+    {name : "2 months" , value : "2 months"},
+    {name : "3 months" , value : "3 months"},
+    {name : "Longer than 3 months" , value : "Longer than 3 months"},
+  ]
 
   blockchain = [
     {name:'Bitcoin', value:'Bitcoin', checked:false},
@@ -327,6 +333,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
       this.preferncesForm.value.blockchain && this.preferncesForm.value.skills && this.preferncesForm.value.when_receive_email_notitfications) {
 
       this.saved_searches.push(this.preferncesForm.value);
+      console.log(this.saved_searches);
       this.authenticationService.candidate_prefernece(this.saved_searches)
         .subscribe(
           data =>
@@ -393,17 +400,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     }
   }
 
-  currencySelected(currency) {
-    //console.log(currency);
-
-    /*if(this.preferncesForm.value.current_currency === currency) {
-      console.log("if");
-      return 'selected';
-    }
-    else {
-      return;
-    }*/
-  }
   blockchainSelectedOptions(blockchainName) {
     this.index = this.blockchainSelected.indexOf(blockchainName);
     if(this.index > -1) {
@@ -422,6 +418,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
       return;
     }
   }
+
 
 
 }

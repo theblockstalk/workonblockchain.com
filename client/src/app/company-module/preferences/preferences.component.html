@@ -61,7 +61,7 @@
 
             <div class="form-group col-md-3 pre_col">
               <label><p class="label-p">Available annual salary and currency?</p></label>
-              <input type="text" formControlName="current_salary"  [value] = "current_salary"  class="form-control" id="" placeholder="100000">
+              <input type="text" formControlName="current_salary"  [(ngModel)] = "current_salary"  class="form-control" id="" placeholder="100000">
               <div class = "form_error" *ngIf="!preferncesForm.value.current_salary">
                 <span class = "error">{{current_salary_log}}</span>
               </div>
@@ -69,8 +69,10 @@
 
             <div class="form-group col-md-3 pre_sle">
               <label><p class="label-p"></p></label>
-              <select title ="(select currency)" formControlName = "current_currency" class="selectpicker">
-                <option class='option' *ngFor='let base_currency of currency' >{{base_currency}}</option>
+              <select title ="(select currency)" [(ngModel)]="selected_currency" name="selected_currency " formControlName = "current_currency" class="form-control">
+                <option value="-1" hidden disabled="true" [selected]="!selected_currency">(select currency)</option>
+
+                <option class='option' *ngFor='let base_currency of currency' [selected] = "selected_currency === base_currency " >{{base_currency}}</option>
 
               </select>
               <div class = "form_error" *ngIf="!preferncesForm.value.current_currency">
@@ -82,11 +84,13 @@
             <div class="form-group col-md-6">
               <label><p class="label-p">When do you want hires to start working?</p></label>
 
-              <select title ="(select one)" formControlName = "availability_day" class="selectpicker">
-                  <option *ngFor='let avail of availability' [selected] = "avail === avail_day ? 'selected' : ''" >{{avail}}</option>
+              <select [(ngModel)]="avail_day" formControlName = "availability_day" name="availability_day" class="form-control">
+                <option value="-1" hidden disabled="true" [selected]="!avail_day">(select one)</option>
+                <option *ngFor='let avail of availability' [value]="avail.name" [selected] = "avail_day === avail.name " >{{avail.name}}</option>
+
               </select>
 
-              <div class = "form_error" *ngIf="!preferncesForm.value.availability_day">
+              <div class = "form_error" *ngIf="!avail_day">
                 <span class = "error">{{availability_day_log}}</span>
               </div>
             </div>
@@ -118,7 +122,7 @@
 
             <div class="form-group col-md-6 top_20">
               <label><p class="label-p">Other technologies or requirements? (optional)</p></label>
-              <input type="text" formControlName="other_technologies" [value] ="other_technologies"  class="form-control" id="" placeholder="(eg MongoDB, AWS)">
+              <input type="text" formControlName="other_technologies" [(ngModel)] ="other_technologies"  class="form-control" id="" placeholder="(eg MongoDB, AWS)">
             </div>
 
             <div class="form-group col-md-12">
