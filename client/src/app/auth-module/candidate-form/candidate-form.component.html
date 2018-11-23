@@ -36,7 +36,7 @@
 
                 <div class="form-group">
                   	<span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                  	<div class = "show_pass"><i toggle="#password-field" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
+                  	<div class = "show_pass"><i toggle="#password-field" class="" aria-hidden="true" ></i></div>
                   	<input type="password" #uname="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" placeholder="Password" id="password-field" name="password"  [(ngModel)]="credentials.password">
                 	<p>{{pass_log}}</p>
                 	<div *ngIf="uname.errors" class="alert alert-danger error-alert">
@@ -47,7 +47,7 @@
 
                 <div class="form-group">
                   <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                  <div class = "show_pass"><i toggle="#conf_pwd" class="fa fa-eye pas_i toggle-password" aria-hidden="true"></i></div>
+                  <div class = "show_pass"><i toggle="#conf_pwd" class="" aria-hidden="true"></i></div>
                   <input type="password" class="form-control" placeholder="Confirm password" id="conf_pwd" name="confirm_password"  [(ngModel)]="credentials.confirm_password">
                 <p>{{password_log}}</p>
                 </div>
@@ -154,7 +154,7 @@
 
                 <div class="form-group">
                   <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                  <div class = "show_pass"><i toggle="#password-field1" class="fa fa-eye pas_i toggle-password" aria-hidden="true" ></i></div>
+                  <div class = "show_pass"><i toggle="#password-field1" class="" aria-hidden="true" ></i></div>
                   <input type="password" #upass="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" placeholder="Password" id="password-field1" name="password" [(ngModel)]="credentials.password">
                    <p >{{pass_log}}</p>
                    <div *ngIf="upass.errors" class="alert alert-danger error-alert">
@@ -164,7 +164,7 @@
 
                 <div class="form-group">
                   <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                  <div class = "show_pass"><i toggle="#conff_pwd" class="fa fa-eye pas_i toggle-password" aria-hidden="true"></i></div>
+                  <div class = "show_pass"><i toggle="#conff_pwd" class="" aria-hidden="true"></i></div>
                   <input type="password" class="form-control" placeholder="Confirm password" id="conff_pwd" required name="confirm_password" [(ngModel)]="credentials.confirm_password">
                    <p>{{password_log}}</p>
                 </div>
