@@ -1,3 +1,130 @@
-<p>
-  preferences works!
-</p>
+<section class="wizard_page">
+
+  <div class="container">
+    <div class="row">
+      <div class="text-center steps-name hidden-xs">
+        <ul class="step-progress">
+          <li class = "step"><i class=""></i><a routerLink = "/company_wizard">Summary of T&Cs</a></li>
+          <li class = "step step-active"><i class=""></i><a routerLink = "/about_comp">About the company</a></li>
+
+          <li class="step step-active"><a routerLink = "/preferences">Candidate preferences</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-12 wizard-form">
+
+        <form class="login_form custom_form"  data-role="validator" novalidate="novalidate">
+
+          <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Candidate preferences</legend>
+
+            <div class="form-group col-md-6">
+              <label><p class="label-p">Where are you hiring?</p></label>
+
+              <select multiple [(ngModel)]="locations" name="location" title="(select multiple)" class="selectpicker">
+                <option class='option' *ngFor='let location of locations'  [value]="location.name">{{location.name}}</option>
+
+              </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><p class="label-p">What position types are you looking for?</p></label>
+              <select multiple title="(select multiple)" class="selectpicker">
+                <option class='option' *ngFor='let job_type of job_types'  [value]="job_type">{{job_type}}</option>
+
+              </select>
+            </div>
+
+
+
+            <div class="form-group col-md-6">
+              <label><p class="label-p">What roles are you looking for?</p></label>
+              <select multiple title="(select multiple)" class="selectpicker">
+                <option class='option' *ngFor='let role of roles'  [value]="role.value">{{role.name}}</option>
+
+              </select>
+            </div>
+
+
+
+            <div class="form-group col-md-3 pre_col">
+              <label><p class="label-p">Available salary and currency?</p></label>
+              <input type="text" class="form-control" id="" placeholder="100000">
+            </div>
+
+            <div class="form-group col-md-3 pre_sle">
+              <label><p class="label-p"></p></label>
+              <select title ="(Select Currency)" class="selectpicker">
+                <option class='option' *ngFor='let base_currency of currency'  [value]="base_currency" >{{base_currency}}</option>
+
+              </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><p class="label-p">When do you want hires to start working?</p></label>
+              <select title ="(select one)" class="selectpicker">
+                <option class='option' *ngFor='let avail of availability'  [value]="avail" >{{avail}}</option>
+
+              </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label><p class="label-p">What blockchain technology experience do they need? (optional)</p></label>
+              <select multiple title="(select multiple)" class="selectpicker">
+                <option class='option' *ngFor='let blockchain of blockchain'  [value]="blockchain.value" >{{blockchain.name}}</option>
+
+              </select>
+            </div>
+
+
+
+            <div class="form-group col-md-6">
+              <label><p class="label-p">What programming languages do you want them to have experience in?(optional)</p></label>
+              <select multiple title="(select multiple)" class="selectpicker">
+                <option class='option' *ngFor='let language of language_opt'  [value]="language.value" >{{language.name}}</option>
+
+              </select>
+
+            </div>
+
+            <div class="form-group col-md-6 top_20">
+              <label><p class="label-p">Other technologies or requirements? (optional)</p></label>
+              <input type="text" class="form-control" id="" placeholder="(eg MongoDB, AWS)">
+            </div>
+
+            <div class="form-group col-md-12">
+              <label><p class="label-p">When would you like to receive emails with candidates that match your search?</p></label>
+              <div class="radio-toolbar controls__group">
+
+                <input type="radio" id="radio1" name="radios" value="all" checked="">
+                <label class="radio-inline d-flex justify-content-center align-items-center" for="radio1">Daily</label>
+
+                <input type="radio" id="radio2" name="radios" value="false">
+                <label class="radio-inline d-flex justify-content-center align-items-center" for="radio2">3 days</label>
+
+                <input type="radio" id="radio3" name="radios" value="true">
+                <label class="radio-inline d-flex justify-content-center align-items-center" for="radio3">Weekly</label>
+
+                <input type="radio" id="radio4" name="radios" value="true">
+                <label class="radio-inline d-flex justify-content-center align-items-center" for="radio4">Never</label>
+              </div>
+            </div>
+
+
+
+
+
+          </fieldset>
+
+          <div class="form-group text-right">
+            <a href="about_comp.php" class="btn btn-prev">Prev Step</a>
+            <a href="#" class="btn btn-self btn-pdg">Done</a>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</section>

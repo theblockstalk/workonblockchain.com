@@ -1582,7 +1582,7 @@ input[type=checkbox] {
 
 
 .profile_group {
-    max-width: 950px;
+    max-width: 1150px;
     margin: auto;
 }
 
@@ -3891,6 +3891,86 @@ input:checked + .slider:before {
   top: 0px !important;
   float: right !important;
 }
+
+.pre_col{
+  padding-right: 0px;
+}
+
+.pre_sle{
+  padding-left: 5px;
+  top:16px;
+}
+
+.pre_sle_b {
+  padding-left: 5px;
+  top: 13px;
+}
+
+.pre_sle_c {
+  padding-left: 5px;
+  top: 34px;
+}
+
+.pre_form label{
+
+  font-weight: normal;
+}
+
+.top_20{
+  top: 20px;
+}
+
+.status_select{
+  width: 200px !important;
+  float: left;
+  position: relative;
+  top: 20px;
+  left:15px;
+}
+
+.btnn_group{
+  top: 20px;
+  position: relative;
+  left: 20px;
+}
+
+.save_status{
+  padding: 6px 12px;
+  min-width: 90px;
+  border-radius: 0px !important;
+  color: #fff;
+  background-color: #537284;
+  border-color: #537284;
+  font-size: 15px;
+}
+
+.badges{
+  position: relative;
+  top: 10px;
+  left: 20px;
+}
+
+.badges .label{
+  padding: 5px;
+}
+
+.status_title{
+  position: relative;
+  margin-right: 10px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.date_sec{
+  position: relative;
+  top: 15px;
+  left: 20px;
+  padding: 10px 0px;
+}
+
+.status-date{
+  font-size: 17px;
+}
 /*==welcome model style end==*/
 
 /*=======TABLETS STYLES 768px to 992px========*/
@@ -3958,6 +4038,18 @@ input:checked + .slider:before {
      .sm-6 {
         width: 47%;
     }
+  .pre_col{
+    padding-right: 15px;
+  }
+
+  .pre_sle, .pre_sle_b, .pre_sle_c{
+    padding-left: 15px;
+    top:-10px;
+  }
+
+  .top_20{
+    top:0px;
+  }
 
 }
 
@@ -4160,6 +4252,19 @@ input:checked + .slider:before {
 
   .xs_input{
     margin-bottom: 20px;
+  }
+
+  .pre_col{
+    padding-right: 15px;
+  }
+
+  .pre_sle, .pre_sle_b, .pre_sle_c{
+    padding-left: 15px;
+    top:-10px;
+  }
+
+  .top_20{
+    top:0px;
   }
 
 }
