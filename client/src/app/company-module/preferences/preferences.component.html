@@ -28,7 +28,7 @@
                 <option class='option' *ngFor='let location of locations;let i = index'  [selected] = "locationSelectedOptions(location.name)"  [value]="location.name">{{location.name}}</option>
 
               </select>
-              <div class = "form_error" *ngIf="!preferncesForm.value.location">
+              <div class = "form_error" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
                 <span class = "error">{{location_log}}</span>
               </div>
             </div>
@@ -39,7 +39,7 @@
                 <option class='option' *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
 
               </select>
-              <div class = "form_error" *ngIf="!preferncesForm.value.job_type">
+              <div class = "form_error" *ngIf="!preferncesForm.value.job_type || preferncesForm.value.job_type.length === 0 ">
                 <span class = "error">{{job_type_log}}</span>
               </div>
             </div>
@@ -52,7 +52,7 @@
                 <option class='option' *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
 
               </select>
-              <div class = "form_error" *ngIf="!preferncesForm.value.position">
+              <div class = "form_error" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
                 <span class = "error">{{position_log}}</span>
               </div>
             </div>
@@ -99,7 +99,7 @@
                 <option class='option' *ngFor='let blockchain of blockchain' [selected] = "blockchainSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
 
               </select>
-              <div class = "form_error" *ngIf="!preferncesForm.value.blockchain">
+              <div class = "form_error" *ngIf="!preferncesForm.value.blockchain || preferncesForm.value.blockchain.length === 0">
                 <span class = "error">{{blockchain_log}}</span>
               </div>
             </div>
@@ -112,7 +112,7 @@
                 <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
 
               </select>
-              <div class = "form_error" *ngIf="!preferncesForm.value.skills">
+              <div class = "form_error" *ngIf="!preferncesForm.value.skills || preferncesForm.value.skills.length === 0">
                 <span class = "error">{{skills_log}}</span>
               </div>
 

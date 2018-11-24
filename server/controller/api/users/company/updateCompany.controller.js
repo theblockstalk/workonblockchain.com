@@ -10,10 +10,6 @@ module.exports = async function (req, res) {
 
     if(employerDoc){
         const queryBody = req.body;
-        console.log("info");
-        console.log(queryBody.info);
-        console.log("saved searches");
-        console.log(queryBody.saved_searches);
         let employerUpdate = {}
 
         if (queryBody.info.first_name) employerUpdate.first_name = queryBody.info.first_name;

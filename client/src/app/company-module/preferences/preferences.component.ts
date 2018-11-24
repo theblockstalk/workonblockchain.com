@@ -299,13 +299,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
   candidate_prefernces() {
     this.error_msg = "";
 
-    if(!this.preferncesForm.value.location ) {
+    if(!this.preferncesForm.value.location || this.preferncesForm.value.location.length === 0 ) {
       this.location_log = "Please select where are you hiring";
     }
-    if(!this.preferncesForm.value.job_type) {
+    if(!this.preferncesForm.value.job_type || this.preferncesForm.value.job_type.length === 0) {
       this.job_type_log = "Please select position types";
     }
-    if(!this.preferncesForm.value.position) {
+    if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
       this.position_log = "Please select roles";
     }
     if(!this.preferncesForm.value.availability_day) {
@@ -317,18 +317,22 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     if(!this.preferncesForm.value.current_salary) {
       this.current_salary_log = "Please enter salary";
     }
-    if(!this.preferncesForm.value.blockchain) {
+    if(!this.preferncesForm.value.blockchain || this.preferncesForm.value.blockchain.length === 0) {
       this.blockchain_log = "Please select blockchain technologies";
     }
-    if(!this.preferncesForm.value.skills) {
+    if(!this.preferncesForm.value.skills || this.preferncesForm.value.skills.length === 0) {
       this.skills_log = "Please select programing languages";
     }
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
-    if(this.preferncesForm.value.location && this.preferncesForm.value.job_type &&  this.preferncesForm.value.position &&
+    if(this.preferncesForm.value.location && this.preferncesForm.value.location.length > 0 &&
+      this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
+      this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
       this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && this.preferncesForm.value.current_salary &&
-      this.preferncesForm.value.blockchain && this.preferncesForm.value.skills && this.preferncesForm.value.when_receive_email_notitfications) {
+      this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0 &&
+      this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0 &&
+      this.preferncesForm.value.when_receive_email_notitfications) {
 
       this.saved_searches.push(this.preferncesForm.value);
       console.log(this.saved_searches);

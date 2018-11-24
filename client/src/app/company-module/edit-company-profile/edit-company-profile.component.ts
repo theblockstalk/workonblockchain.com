@@ -369,6 +369,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   company_profile(profileForm: NgForm)
   {
     this.error_msg = "";
+    console.log(this.preferncesForm.value);
     if(!this.first_name) {
       this.first_name_log="Please enter first name";
     }
@@ -408,13 +409,13 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     if(!this.company_description) {
       this.des_log = 'Please fill Company Description';
     }
-    if(!this.preferncesForm.value.location ) {
+    if(!this.preferncesForm.value.location || this.preferncesForm.value.location.length === 0 ) {
       this.location_log = "Please select where are you hiring";
     }
-    if(!this.preferncesForm.value.job_type) {
+    if(!this.preferncesForm.value.job_type || this.preferncesForm.value.job_type.length === 0) {
       this.job_type_log = "Please select position types";
     }
-    if(!this.preferncesForm.value.position) {
+    if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
       this.position_log = "Please select roles";
     }
     if(!this.preferncesForm.value.availability_day) {
@@ -426,10 +427,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     if(!this.preferncesForm.value.current_salary) {
       this.current_salary_log = "Please enter salary";
     }
-    if(!this.preferncesForm.value.blockchain) {
+    if(!this.preferncesForm.value.blockchain || this.preferncesForm.value.blockchain.length === 0) {
       this.blockchain_log = "Please select blockchain technologies";
     }
-    if(!this.preferncesForm.value.skills) {
+    if(!this.preferncesForm.value.skills || this.preferncesForm.value.skills.length === 0) {
       this.skills_log = "Please select programing languages";
     }
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
@@ -439,13 +440,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     if(this.company_founded && this.no_of_employees && this.company_funded && this.company_description &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode &&
-      this.preferncesForm.value.location && this.preferncesForm.value.job_type &&  this.preferncesForm.value.position &&
+      this.preferncesForm.value.location && this.preferncesForm.value.location.length > 0 &&
+      this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
+      this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
       this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && this.preferncesForm.value.current_salary &&
-      this.preferncesForm.value.blockchain && this.preferncesForm.value.skills && this.preferncesForm.value.when_receive_email_notitfications)
-    {
+      this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0 &&
+      this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0 &&
+      this.preferncesForm.value.when_receive_email_notitfications)  {
       this.saved_searches.push(this.preferncesForm.value);
-      console.log(profileForm.value);
-      console.log(this.preferncesForm.value);
       this.authenticationService.edit_company_profile(profileForm.value , this.saved_searches)
         .subscribe(
           data => {
