@@ -42,15 +42,28 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
   other_technologies;
   email_notification;
   avail_day;
+  pref_active_class;
 
   constructor(private scriptService : ScriptService,private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
-
+    this.preferncesForm = new FormGroup({
+      location: new FormControl(),
+      job_type: new FormControl(),
+      position: new FormControl(),
+      availability_day: new FormControl(),
+      current_currency: new FormControl(),
+      current_salary: new FormControl(),
+      blockchain: new FormControl(),
+      skills: new FormControl(),
+      other_technologies: new FormControl(),
+      when_receive_email_notitfications: new FormControl(),
+    });
   }
 
   ngAfterViewInit(): void {
-    /*this.scriptService.load('bootstrapSelect').then(data => {
-      console.log('script loaded ', data);
-    }).catch(error => console.log(error));*/
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 50);
   }
 
   locations = [
@@ -179,18 +192,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     }
     else if(this.currentUser && this.currentUser.type === 'company') {
 
-      this.preferncesForm = new FormGroup({
-        location: new FormControl(),
-        job_type: new FormControl(),
-        position: new FormControl(),
-        availability_day: new FormControl(),
-        current_currency: new FormControl(),
-        current_salary: new FormControl(),
-        blockchain: new FormControl(),
-        skills: new FormControl(),
-        other_technologies: new FormControl(),
-        when_receive_email_notitfications: new FormControl(),
-      });
+
 
       this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
@@ -205,7 +207,20 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
               this.about_active_class = 'fa fa-check-circle text-success';
             }
             if(data.saved_searches && data.saved_searches.length > 0) {
-              this.preferncesForm.value.location = data.saved_searches[0].location;
+              this.pref_active_class = 'fa fa-check-circle text-success';
+              this.preferncesForm = this._fb.group({
+                location: [data.saved_searches[0].location],
+                job_type: [data.saved_searches[0].job_type],
+                position: [data.saved_searches[0].position],
+                availability_day: [data.saved_searches[0].availability_day],
+                current_currency: [data.saved_searches[0].current_currency],
+                current_salary: [data.saved_searches[0].current_salary],
+                blockchain: [data.saved_searches[0].blockchain],
+                skills: [data.saved_searches[0].skills],
+                other_technologies: [data.saved_searches[0].other_technologies],
+                when_receive_email_notitfications: [data.saved_searches[0].when_receive_email_notitfications],
+              });
+
               for (let locations of data.saved_searches[0].location) {
                 for(let option of this.locations) {
                   if(option.name === locations ) {
@@ -213,7 +228,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
                   }
                 }
               }
-              this.preferncesForm.value.job_type = data.saved_searches[0].job_type;
               for (let job_types of data.saved_searches[0].job_type) {
                 for(let option of this.job_types) {
                   if(option === job_types ) {
@@ -221,7 +235,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
                   }
                 }
               }
-              this.preferncesForm.value.position = data.saved_searches[0].position;
               for (let positions of data.saved_searches[0].position) {
                 for(let option of this.roles) {
                   if(option.name === positions ) {
@@ -229,7 +242,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
                   }
                 }
               }
-              this.preferncesForm.value.blockchain = data.saved_searches[0].blockchain;
               for(let blockchains of data.saved_searches[0].blockchain) {
                 for(let option of this.blockchain) {
                   if(option.name === blockchains) {
@@ -237,7 +249,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
                   }
                 }
               }
-              this.preferncesForm.value.blockchain = data.saved_searches[0].skills
               for(let skills of data.saved_searches[0].skills) {
                 for(let option of this.language_opt) {
                   if(option.name === skills) {
@@ -245,19 +256,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
                   }
                 }
               }
-              this.preferncesForm.value.current_salary = data.saved_searches[0].current_salary;
-              this.current_salary = data.saved_searches[0].current_salary;
-              this.preferncesForm.value.current_currency = data.saved_searches[0].current_currency;
-              this.selected_currency = data.saved_searches[0].current_currency;
-              if(data.saved_searches[0].other_technologies) {
-                this.preferncesForm.value.other_technologies = data.saved_searches[0].other_technologies;
-                this.other_technologies = data.saved_searches[0].other_technologies;
-              }
-              this.preferncesForm.value.when_receive_email_notitfications = data.saved_searches[0].when_receive_email_notitfications;
-              this.email_notification  = data.saved_searches[0].when_receive_email_notitfications;
-              this.preferncesForm.value.availability_day = data.saved_searches[0].availability_day;
-              this.avail_day = data.saved_searches[0].availability_day;
-              console.log(this.avail_day);
+
             }
 
           },
@@ -300,7 +299,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
 
   candidate_prefernces() {
     this.error_msg = "";
-    console.log(this.preferncesForm.value);
+
     if(!this.preferncesForm.value.location ) {
       this.location_log = "Please select where are you hiring";
     }

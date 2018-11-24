@@ -9,14 +9,14 @@
         <ul class="step-progress">
           <li class = "step"><i class="{{terms_active_class}}"></i><a routerLink = "/company_wizard">Summary of T&Cs</a></li>
           <li class = "step"><i class="{{about_active_class}}"></i><a routerLink = "/about_comp">About the company</a></li>
-          <li class="step step-active"><a routerLink = "/preferences">Candidate preferences</a></li>
+          <li class="step step-active"><i class = "{{pref_active_class}}" ></i> <a routerLink = "/preferences">Candidate preferences</a></li>
         </ul>
       </div>
 
       <div class="col-md-12 wizard-form">
 
         <form class="login_form custom_form" [formGroup]="preferncesForm" (ngSubmit)="candidate_prefernces()" novalidate>
-              <!--#prefForm = ngForm (submit)="candidate_prefernces(prefForm)">-->
+          <!--#prefForm = ngForm (submit)="candidate_prefernces(prefForm)">-->
 
           <fieldset class="scheduler-border">
             <legend class="scheduler-border">Candidate preferences</legend>
@@ -61,7 +61,7 @@
 
             <div class="form-group col-md-3 pre_col">
               <label><p class="label-p">Available annual salary and currency?</p></label>
-              <input type="text" formControlName="current_salary"  [(ngModel)] = "current_salary"  class="form-control" id="" placeholder="100000">
+              <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control" id="" placeholder="100000">
               <div class = "form_error" *ngIf="!preferncesForm.value.current_salary">
                 <span class = "error">{{current_salary_log}}</span>
               </div>
@@ -69,10 +69,9 @@
 
             <div class="form-group col-md-3 pre_sle">
               <label><p class="label-p"></p></label>
-              <select title ="(select currency)" [(ngModel)]="selected_currency" name="selected_currency " formControlName = "current_currency" class="form-control">
-                <option value="-1" hidden disabled="true" [selected]="!selected_currency">(select currency)</option>
+              <select title ="(select currency)" formControlName = "current_currency" id = "currencySelected" class="selectpicker">
 
-                <option class='option' *ngFor='let base_currency of currency' [selected] = "selected_currency === base_currency " >{{base_currency}}</option>
+                <option class='option' *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
 
               </select>
               <div class = "form_error" *ngIf="!preferncesForm.value.current_currency">
@@ -84,9 +83,8 @@
             <div class="form-group col-md-6">
               <label><p class="label-p">When do you want hires to start working?</p></label>
 
-              <select [(ngModel)]="avail_day" formControlName = "availability_day" name="availability_day" class="form-control">
-                <option value="-1" hidden disabled="true" [selected]="!avail_day">(select one)</option>
-                <option *ngFor='let avail of availability' [value]="avail.name" [selected] = "avail_day === avail.name " >{{avail.name}}</option>
+              <select title="(select one)" formControlName = "availability_day" class="selectpicker">
+                <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
 
               </select>
 
@@ -122,7 +120,7 @@
 
             <div class="form-group col-md-6 top_20">
               <label><p class="label-p">Other technologies or requirements? (optional)</p></label>
-              <input type="text" formControlName="other_technologies" [(ngModel)] ="other_technologies"  class="form-control" id="" placeholder="(eg MongoDB, AWS)">
+              <input type="text" formControlName="other_technologies" [value] ="preferncesForm.value.other_technologies"  class="form-control" id="" placeholder="(eg MongoDB, AWS)">
             </div>
 
             <div class="form-group col-md-12">
@@ -130,7 +128,7 @@
               <div class="radio-toolbar controls__group">
                 <div *ngFor="let receive of email_notificaiton; let i_ind =index">
 
-                  <input type="radio" formControlName="when_receive_email_notitfications" [checked] = "receive === email_notification" value = {{receive}} id="radio - {{receive}}" name="when_receive_email_notitfications" >
+                  <input type="radio" formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}" name="when_receive_email_notitfications" >
                   <label class="radio-inline d-flex justify-content-center align-items-center" for="radio - {{receive}}">{{receive}}</label>
 
                 </div>
