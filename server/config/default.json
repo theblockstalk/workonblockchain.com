@@ -39,7 +39,7 @@
   "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
     "unreadMessagesTick": "1 * * * * *",
-    "autoNotification" : "1 * * * * *"
+    "autoNotification" : "00 1 * * * *"
   }
 }
 

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
-import {NgForm, FormGroup,FormControl,FormBuilder,Validators } from '@angular/forms';
+import {NgForm,FormGroup,FormControl,FormBuilder } from '@angular/forms';
 declare var $:any;
 import {ScriptService} from '../../scripts/script.service';
 
@@ -45,18 +45,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
   pref_active_class;
 
   constructor(private scriptService : ScriptService,private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
-    this.preferncesForm = new FormGroup({
-      location: new FormControl(),
-      job_type: new FormControl(),
-      position: new FormControl(),
-      availability_day: new FormControl(),
-      current_currency: new FormControl(),
-      current_salary: new FormControl(),
-      blockchain: new FormControl(),
-      skills: new FormControl(),
-      other_technologies: new FormControl(),
-      when_receive_email_notitfications: new FormControl(),
-    });
   }
 
   ngAfterViewInit(): void {
@@ -192,7 +180,18 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     }
     else if(this.currentUser && this.currentUser.type === 'company') {
 
-
+      this.preferncesForm = new FormGroup({
+        location: new FormControl(),
+        job_type: new FormControl(),
+        position: new FormControl(),
+        availability_day: new FormControl(),
+        current_currency: new FormControl(),
+        current_salary: new FormControl(),
+        blockchain: new FormControl(),
+        skills: new FormControl(),
+        other_technologies: new FormControl(),
+        when_receive_email_notitfications: new FormControl(),
+      });
 
       this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
@@ -417,7 +416,5 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
       return;
     }
   }
-
-
 
 }

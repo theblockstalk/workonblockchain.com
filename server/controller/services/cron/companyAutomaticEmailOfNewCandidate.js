@@ -12,8 +12,8 @@ module.exports = async function (req, res) {
 
     let companyCursor = await EmployerProfile.find({ saved_searches: { $exists: true, $ne : [] } , "saved_searches.0.when_receive_email_notitfications" : {$ne: "Never"}}).cursor();
     let companyDoc = await companyCursor.next();
-    console.log("companyDoc");
-    console.log(companyDoc);
+   // console.log("companyDoc");
+   // console.log(companyDoc);
     for ( null ; companyDoc !== null; companyDoc = await companyCursor.next()) {
         const userDoc = await User.find({is_verify : 1 , is_approved : 1 , disable_account : false , type : 'company', _id : companyDoc._creator }).lean();
         if(userDoc) {
