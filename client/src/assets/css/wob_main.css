@@ -3906,11 +3906,6 @@ input:checked + .slider:before {
   top: 34px;
 }
 
-.pre_form label{
-
-  font-weight: normal;
-}
-
 .top_20{
   top: 20px;
 }
@@ -3965,6 +3960,10 @@ input:checked + .slider:before {
 
 .status-date{
   font-size: 17px;
+}
+
+.no_padding{
+  padding: 0px;
 }
 /*==welcome model style end==*/
 
