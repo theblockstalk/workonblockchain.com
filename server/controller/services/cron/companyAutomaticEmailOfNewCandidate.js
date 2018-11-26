@@ -39,15 +39,16 @@ module.exports = async function (req, res) {
                             logger.debug("do nothing");
                         }
                     }
-                    let candidateListCount;
-                    if(candidateList.length > 0) {
-                        if(candidateList.length <= 10) {
-                            candidateListCount = {"count" : candidateList.length , "list" : candidateList};
+                    const candidateListCount = candidateList.length;
+                    let candidates;
+                    if(candidateListCount > 0) {
+                        if(candidateListCount <= 10) {
+                            candidates = {"count" : candidateListCount , "list" : candidateList};
                         }
                         else {
-                            candidateListCount = {"count" : 'more than 10' , "list" : candidateList.slice(0, 10)};
+                            candidates = {"count" : 'more than 10' , "list" : candidateList.slice(0, 10)};
                         }
-                        autoNotificationEmail.sendEmail(userDoc[0].email , companyDoc.first_name , companyDoc.company_name,candidateListCount,userDoc[0].disable_account);
+                        autoNotificationEmail.sendEmail(userDoc[0].email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc[0].disable_account);
                         await EmployerProfile.update({_creator : companyDoc._creator} , {$set : {'last_email_sent' : new Date()}});
                     }
                     else {

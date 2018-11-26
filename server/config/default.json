@@ -32,7 +32,7 @@
   "cron": {
     "unreadMessagesTick": "0-59 * * * *",
     "syncSendgrid": "0-59 * * * *",
-    "autoNotification" : "1 * * * * *"
+    "autoNotification" : "0-59 * * * *"
   }
 }
 
