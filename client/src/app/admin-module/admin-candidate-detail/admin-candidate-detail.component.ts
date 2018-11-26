@@ -284,12 +284,7 @@ export class AdminCandidateDetailComponent implements OnInit {
     }, 200);
   }
 
-  changeStatusTest(event){
-    console.log(event);
-  }
-
   changeStatus(event){
-    console.log(event);
     if(event === 'Rejected' || event === 'rejected'){
       $("#sel1-reason-deferred").css('display', 'none');
       $("#sel1-reason-rejected").css('display', 'block');

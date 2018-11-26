@@ -40,17 +40,17 @@
                 <div class = "row status_row">
                   <div class="shown_col col-sm-6 form-group">
                      <select class="form-control" id="status_selector" [(ngModel)]="set_status" (ngModelChange) = "changeStatus($event)" name="set_status">
-                       <option *ngFor='let status of set_candidate_status'  [value]="status" selected>{{status}}</option>
+                       <option *ngFor='let status of set_candidate_status' [value]="status" selected>{{status}}</option>
                      </select>
                   </div>
-                  <div class="col-sm-6 form-group" id="sel1-reason-rejected"  *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
-                       <select class="form-control status_select" [(ngModel)]="status_reason_rejected" name="status_reason_rejected" (ngModelChange) = "changeStatusTest($event)">
-                         <option *ngFor='let status of set_candidate_status_rejected'  [value]="status" selected>{{status}}</option>
+                  <div class="col-sm-6 form-group" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
+                       <select class="form-control status_select" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
+                         <option *ngFor='let status of set_candidate_status_rejected' [value]="status" selected>{{status}}</option>
                        </select>
                   </div>
-                  <div class="col-sm-6 form-group" id="sel1-reason-deferred"  *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
-                       <select class="form-control status_select" [(ngModel)]="status_reason_deferred" name="status_reason_deferred" (ngModelChange) = "changeStatusTest($event)">
-                         <option *ngFor='let status of set_candidate_status_deferred'  [value]="status" selected>{{status}}</option>
+                  <div class="col-sm-6 form-group" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
+                       <select class="form-control status_select" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
+                         <option *ngFor='let status of set_candidate_status_deferred' [value]="status" selected>{{status}}</option>
                        </select>
                   </div>
                 </div>
@@ -60,11 +60,11 @@
 								</div>
 
                 <!--/New code for 23-Nov-2018-->
-                <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success">
+                <div class="alert alert-success alert-dismissible" *ngIf = "success">
                   {{success}}
                 </div>
 
-                <div class="alert alert-danger alert-error pro_alert alert-dismissible" *ngIf = "error">
+                <div class="alert alert-danger alert-error alert-dismissible" *ngIf = "error">
                   {{error}}
                 </div>
               </form>
