@@ -34,10 +34,9 @@ module.exports = async  function (req,res)
     const userDoc = await users.find({type : 'candidate' , is_verify :1, is_approved :1, disable_account : false }).lean();
     if(userDoc){
         let userDocArray = [];
-        userDoc.forEach(function(item)
-        {
-            userDocArray.push(item._id);
-        });
+        for (detail of userDoc) {
+            userDocArray.push(detail._id);
+        }
 
         let queryString = [];
 

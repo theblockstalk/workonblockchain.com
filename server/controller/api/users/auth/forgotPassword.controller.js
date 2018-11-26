@@ -31,7 +31,7 @@ module.exports = async function (req,res) {
             if(userDoc.type === 'candidate') {
                 let name;
                 const candidateDoc = await CandidateProfile.find({_creator : userDoc._id}).populate('_creator').lean();
-                if(candidateDoc && candidateDoc.length > 0 && candidateDoc[0].first) {
+                if(candidateDoc && candidateDoc.length > 0 && candidateDoc[0].first_name) {
                     name = candidateDoc[0].first_name;
                 }
                 else

@@ -1,12 +1,4 @@
 {
-  "nodemailer": {
-    "auth": {
-      "user": "workonblockchain@mwancloud.com",
-      "pass": "e71$AGVy"
-    },
-    "host": "mail.mwancloud.com",
-    "port": 25
-  },
   "mongo": {
     "host": "localhost",
     "port": 27017,
@@ -38,7 +30,8 @@
   },
   "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
-    "unreadMessagesTick": "1 * * * * *",
+    "unreadMessagesTick": "0-59 * * * *",
+    "syncSendgrid": "0-59 * * * *",
     "autoNotification" : "1 * * * * *"
   }
 }

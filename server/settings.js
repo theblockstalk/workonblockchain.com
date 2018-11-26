@@ -73,8 +73,8 @@ if (isLiveApplication()) {
 
 settings.CRON = {
     UNREAD_MESSAGES_TICK: config.cron.unreadMessagesTick,
-    AUTO_NOTIFICATION: config.cron.autoNotification
-
+    AUTO_NOTIFICATION: config.cron.autoNotification,
+    SYNC_SENDGRID: config.cron.syncSendgrid
 };
 
 

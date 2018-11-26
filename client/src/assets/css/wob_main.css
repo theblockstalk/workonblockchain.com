@@ -687,10 +687,6 @@ body{
     .slider-indicator {
         bottom: -35px !important;
     }
-
-  .select_error {
-    position: relative !important;
-  }
 }
 
 .newsletter_signup {
@@ -987,7 +983,6 @@ body{
 
 .form_error{
     margin-top: 1px;
-	position: absolute;
     font-size: 12px;
 }
 
