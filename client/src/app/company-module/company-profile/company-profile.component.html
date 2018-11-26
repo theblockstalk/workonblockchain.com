@@ -176,76 +176,136 @@
         <section class = "profile job_info" *ngIf = "saved_searche.length > 0">
           <h3>Candidate preferences</h3>
 
+          <div class="info-area pro_br-btm">
 
-          <div class="col-md-6 info-area">
-            <p>
-              <strong>Where are you hiring: </strong>
-              <span>{{saved_searche[0].location}}</span>
-            </p>
-          </div>
-          <div class="col-md-6 info-area">
-            <p>
-              <strong>What position types are you looking for:</strong>
-              <span>{{saved_searche[0].job_type}}</span>
-            </p>
-          </div>
-          <div class="col-md-6 info-area">
-            <p>
-              <strong>What roles are you looking for: </strong>
-              <span>{{saved_searche[0].position}}</span>
-            </p>
+            <div class = "col-md-4" >
+              <strong>Where are you hiring:</strong>
+            </div>
+            <div class = "col-md-8">
+              <ul class = "pro_list" >
+                <li *ngFor = "let location of saved_searche[0].location">{{location}}</li>
 
-          </div>
-          <div class="col-md-6 info-area">
-            <p>
-              <strong>Available annual salary and currency: </strong>
-              <span>{{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}</span>
-            </p>
-
-          </div>
-          <div class="col-md-6 info-area">
-            <p>
-              <strong>When do you want hires to start working: </strong>
-              <span>{{saved_searche[0].availability_day}}</span>
-            </p>
-
-          </div>
-          <div class="col-md-6 info-area" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
-            <p>
-              <strong>What blockchain technology experience do they need: </strong>
-              <span>{{saved_searche[0].blockchain}}</span>
-            </p>
-
-          </div>
-          <div class="col-md-6 info-area" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
-            <p>
-              <strong>What programming languages do you want them to have experience in: </strong>
-              <span>{{saved_searche[0].skills}}</span>
-            </p>
-
-          </div>
-          <div class="col-md-6 info-area" *ngIf="saved_searche[0].other_technologies">
-            <p>
-              <strong>Other technologies or requirements: </strong>
-              <span>{{saved_searche[0].other_technologies}}</span>
-            </p>
-
-          </div>
-          <div class="col-md-6 info-area">
-            <p>
-              <strong>When would you like to receive emails with candidates that match your search: </strong>
-              <span>{{saved_searche[0].when_receive_email_notitfications}}</span>
-            </p>
+              </ul>
+            </div>
 
           </div>
 
+          <div class="info-area pro_br-btm">
+
+            <div class = "col-md-4" >
+              <strong>What position type are you looking for:</strong>
+            </div>
+            <div class = "col-md-8">
+              <ul class = "pro_list">
+                <li  *ngFor = "let position of saved_searche[0].job_type">{{position}}</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="info-area pro_br-btm">
+
+            <div class = "col-md-4" >
+              <strong>What role are you looking for:</strong>
+            </div>
+            <div class = "col-md-8">
+              <ul class = "pro_list" >
+                <li *ngFor = "let position of saved_searche[0].position " >{{position}}</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="info-area pro_br-btm">
+
+            <div class = "col-md-4" >
+              <strong>Available annual salary and currency:</strong>
+            </div>
+            <div class = "col-md-8">
+              <ul class = "pro_list">
+                <li>{{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}</li>
+              </ul>
+            </div>
+
+          </div>
+
+
+
+          <div class="info-area pro_br-btm">
+
+            <div class = "col-md-4" >
+              <strong>When do you want to start hire working:</strong>
+            </div>
+            <div class = "col-md-8">
+              <ul class = "pro_list">
+                <li>{{saved_searche[0].availability_day}}</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="info-area pro_br-btm" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
+
+            <div class = "col-md-4" >
+              <strong>What blockchain technology experience do they need:</strong>
+            </div>
+            <div class = "col-md-8">
+              <ul class = "pro_list">
+                <li *ngFor = "let blockchain of saved_searche[0].blockchain">{{blockchain}}</li>
+
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="info-area pro_br-btm" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
+
+            <div class = "col-md-4" >
+              <strong>What programming languages do you want them to have experience in:</strong>
+            </div>
+            <div class = "col-md-8">
+              <ul class = "pro_list">
+                <li *ngFor = "let lang of saved_searche[0].skills">{{lang}}</li>
+                <li>Ethereum</li>
+                <li>Php</li>
+                <li>My SQL</li>
+                <li>Java</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="info-area pro_br-btm" *ngIf="saved_searche[0].other_technologies">
+
+            <div class = "col-md-4" >
+              <strong>Other technologies or requirements?</strong>
+            </div>
+            <div class = "col-md-8">
+              <ul class = "pro_list">
+                <li>{{saved_searche[0].other_technologies}}</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="info-area pro_br-btm">
+
+            <div class = "col-md-4" >
+              <strong>When would you like to receive emails with candidates that match your search?</strong>
+            </div>
+            <div class = "col-md-8">
+              <ul class = "pro_list">
+                <li>{{saved_searche[0].when_receive_email_notitfications}}</li>
+              </ul>
+            </div>
+
+          </div>
 
           <span class = "edit_profile_link">
-				 		<a (click)="internalRoute('edit_company_profile','about_you')">
+				 		<a (click)="internalRoute('edit_company_profile','prefrences')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
 				 		</a>
 				 	</span>
-
         </section>
 
 				 </div>

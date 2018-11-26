@@ -214,7 +214,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 50);
+    }, 100);
   }
 
   ngOnInit()
@@ -226,7 +226,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
     {
       this.router.navigate(['/login']);
     }
-    else if(this.currentUser && this.currentUser.type=='company')
+    else if(this.currentUser && this.currentUser.type === 'company')
     {
       this.preferncesForm = new FormGroup({
         location: new FormControl(),

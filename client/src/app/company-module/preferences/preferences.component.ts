@@ -46,7 +46,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
+    window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 50);
