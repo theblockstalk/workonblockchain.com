@@ -72,7 +72,7 @@ const adminCandidateFilter = require('./controller/api/users/admins/candidateFil
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
 const adminAddNewPagesContent = require('./controller/api/users/admins/pages/addTermsAndConditionsContent.controller');
 const adminGetMetrics = require('./controller/api/users/admins/getMetrics.controller');
-const adminApproveCandidate = require('./controller/api/users/admins/approveCandidate.controller');
+const adminChangeCandidateStatus = require('./controller/api/users/admins/changeCandidateStatus.controller');
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
@@ -145,7 +145,7 @@ router.post('/users/admin_company_filter', auth.isAdmin , asyncMiddleware(adminC
 router.put('/users/add_privacy_content' , auth.isAdmin , asyncMiddleware(adminAddPrivacyContent));
 router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , asyncMiddleware(adminAddNewPagesContent));
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
-router.put('/users/approve_candidate/:_id', auth.isAdmin  , asyncMiddleware(adminApproveCandidate));
+router.put('/users/change_candidate_status/:_id', auth.isAdmin  , asyncMiddleware(adminChangeCandidateStatus));
 
 // Pages
 router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent));
