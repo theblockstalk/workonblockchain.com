@@ -1104,7 +1104,7 @@ export class UserService {
 
 
 
-    admin_candidate_filter(is_approve : number , msg_tags : any,word:any)
+    admin_candidate_filter(is_approve : string , msg_tags : any,word:any)
     {
         return this.http.post<any>(URL+'users/admin_candidate_filter', { is_approve: is_approve , msg_tags : msg_tags, word : word}, {
             headers: new HttpHeaders().set('Authorization', this.token)

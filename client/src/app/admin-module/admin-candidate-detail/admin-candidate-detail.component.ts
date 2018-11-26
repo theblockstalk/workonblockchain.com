@@ -23,8 +23,8 @@ export class AdminCandidateDetailComponent implements OnInit {
   admin_log;
   candidate_status;
   set_status;
-  status_reason_rejected;
-  status_reason_deferred;
+  status_reason_rejected = '';
+  status_reason_deferred = '';
   set_candidate_status = [
     "Approved" ,"Rejected" , "Deferred", "Other"
   ];
@@ -95,12 +95,14 @@ export class AdminCandidateDetailComponent implements OnInit {
               this.candidate_status = data._creator.candidate.status[0];
               this.set_status = this.candidate_status.status;
               if(this.set_status === 'Rejected' || this.set_status === 'rejected'){
-                $("#sel1-reason-rejected").css("display", "block");
                 this.status_reason_rejected = this.candidate_status.reason;
+                console.log(this.status_reason_rejected);
+                $("#sel1-reason-rejected").css("display", "block");
               }
               if(this.set_status === 'Deferred' || this.set_status === 'deferred'){
-                $("#status_reason_deferred").css("display", "block");
                 this.status_reason_deferred = this.candidate_status.reason;
+                console.log(this.status_reason_deferred);
+                $("#status_reason_deferred").css("display", "block");
               }
               this.info.push(data);
               this.approve = data._creator.is_approved;
@@ -277,10 +279,17 @@ export class AdminCandidateDetailComponent implements OnInit {
   }
 
   ngAfterViewInit(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 200);
+  }
 
+  changeStatusTest(event){
+    console.log(event);
   }
 
   changeStatus(event){
+    console.log(event);
     if(event === 'Rejected' || event === 'rejected'){
       $("#sel1-reason-deferred").css('display', 'none');
       $("#sel1-reason-rejected").css('display', 'block');
@@ -298,6 +307,7 @@ export class AdminCandidateDetailComponent implements OnInit {
   {
     this.error = '';
     let reason = '';
+    console.log(approveForm.value);
     if(approveForm.value.set_status === "Rejected" || approveForm.value.set_status === "rejected")
     {
       if(approveForm.value.status_reason_rejected){

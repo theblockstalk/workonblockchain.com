@@ -33,7 +33,7 @@ module.exports = async function (req,res) {
            const msgTagFilter = {"_creator" : {$in : userIds}};
            queryString.push(msgTagFilter);
            if(queryBody.is_approve!== -1) {
-               const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approve)};
+               const isApproveFilter = {"users.candidate.status.0.status" : queryBody.is_approve};
                queryString.push(isApproveFilter);
            }
            if(queryBody.word) {
@@ -73,7 +73,7 @@ module.exports = async function (req,res) {
    }
    else {
        if(queryBody.is_approve!== -1) {
-           const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approve)};
+           const isApproveFilter = {"users.candidate.status.0.status" : queryBody.is_approve};
            queryString.push(isApproveFilter);
        }
        if(queryBody.word) {

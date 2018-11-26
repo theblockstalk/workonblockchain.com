@@ -28,7 +28,11 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   active;
   inactive;
   approve;
-  admin_check = [{name:1 , value:"Active"}, {name:0 , value:"Inactive"}];
+  admin_check = [
+    {name:"Approved" , value:"Approved"},
+    {name:"Rejected" , value:"Rejected"},
+    {name:"Deferred" , value:"Deferred"},
+  ];
   information;
   admin_log;
   response;
@@ -229,7 +233,6 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
   search(event)
   {
-
     this.length =0;
     this.info=[];
     this.response = "";
@@ -241,60 +244,59 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     else
     {
       this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord)
+      .subscribe(
+        data =>
+        {
+            this.length =0;
+            this.info=[];
+            this.information = this.filter_array(data);
 
-        .subscribe(
-          data =>
-          {
-              this.length =0;
-              this.info=[];
-              this.information = this.filter_array(data);
 
+            for(let res of this.information)
+            {
 
-              for(let res of this.information)
-              {
+              this.length++;
+              this.info.push(res);
 
-                this.length++;
-                this.info.push(res);
+            }
 
-              }
+            if(this.length> 0 )
+            {
 
-              if(this.length> 0 )
-              {
-
-                this.log='';
-              }
-              else
-              {
-                this.response = "data";
-                this.log= 'No candidates matched this search criteria';
-              }
-
-              this.page =this.length;
-              this.response = "data";
-
-          },
-          error =>
-          {
-            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+              this.log='';
+            }
+            else
             {
               this.response = "data";
-              this.length = '';
-              this.info = [];
-              this.page = '';
-              this.log = error['error']['message'];
+              this.log= 'No candidates matched this search criteria';
             }
-            else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-            {
-              this.response = "data";
-              this.length = '';
-              this.info = [];
-              this.page = '';
-              this.log = error['error']['message'];
-            }
-            else {
-              this.log = "Something getting wrong";
-            }
-          });
+
+            this.page =this.length;
+            this.response = "data";
+
+        },
+        error =>
+        {
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.response = "data";
+            this.length = '';
+            this.info = [];
+            this.page = '';
+            this.log = error['error']['message'];
+          }
+          else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.response = "data";
+            this.length = '';
+            this.info = [];
+            this.page = '';
+            this.log = error['error']['message'];
+          }
+          else {
+            this.log = "Something getting wrong";
+          }
+        });
 
     }
 

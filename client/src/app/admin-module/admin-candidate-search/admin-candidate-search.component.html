@@ -44,7 +44,7 @@
 
 	  							<select class="form-control " name="approve" [(ngModel)]="approve" (ngModelChange)="search_approved( $event)" >
 
-									  <option value="-1" disabled selected hidden >Active/Inactive</option>
+									  <option value="-1" disabled selected hidden >Approved/Rejected</option>
 									  <option class='option' *ngFor='let options of admin_check'  [value]="options.name" selected>{{options.value}}</option>
 							    </select>
 							</div>

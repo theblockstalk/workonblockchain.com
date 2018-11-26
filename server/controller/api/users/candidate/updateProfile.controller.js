@@ -48,7 +48,7 @@ module.exports = async function (req, res) {
         {
             $push: {
                 'candidate.status' : {
-                    $each: [{ status: 'updated',
+                    $each: [{ status: 'Updated',
                         status_updated: new Date(),
                         timestamp: new Date()}],
                         $position: 0

@@ -51,7 +51,7 @@ module.exports = async function (req, res) {
         linkedin_id : userParam.linkedin_id,
         candidate: {
             candidate_status: [{
-                status: 'created',
+                status: 'Created',
                 status_updated: new Date(),
                 timestamp: new Date()
             }]
