@@ -63,6 +63,10 @@ async function syncListToDatabase(listId, recipientCount) {
                 }
             } else {
                 logger.debug('Deleting contact ' + recipient.email + ' from Sendgrid list ' + listId);
+                const updateResponse = await sendGrid.updateRecipient({
+                    email: emailToSearch,
+                    user: "false"
+                });
                 await sendGrid.deleteRecipientFromList(listId, recipient.id);
             }
             i++;
