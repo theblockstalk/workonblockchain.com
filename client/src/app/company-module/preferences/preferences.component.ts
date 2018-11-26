@@ -36,11 +36,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
   locationSelected = [];
   jobTypesSelected = [];
   index;
-  selected_currency;
   blockchainSelected = [];
   languageSelected = [];
   other_technologies;
-  email_notification;
   avail_day;
   pref_active_class;
 
@@ -340,9 +338,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
         .subscribe(
           data =>
           {
-
             if(data.success === true) {
-              $('#popModal').modal('show');
+              $('#popModal_b').modal('hide');
             }
           },
           error => {
@@ -363,12 +360,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
       this.error_msg = "There is a field that still needs completion. Please scroll up.";
     }
 
-  }
-
-  redirectToCompany()
-  {
-    $('#popModal').modal('hide');
-    this.router.navigate(['/company_profile']);
   }
 
   locationSelectedOptions(name) {
