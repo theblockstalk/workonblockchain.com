@@ -15,12 +15,13 @@ module.exports = async function (req, res) {
         const candidateDoc = await CandidateProfile.findOne({ _creator: userId}).lean();
 
         if (candidateDoc) {
+            const now = new Date();
             let newStatus = {
                 status: status,
-                timestamp: new Date()
+                timestamp: now
             };
             if(status === 'approved' && !userDoc.first_approved_date) {
-                await User.update({_id: userId}, {$set: { 'first_approved_date': new Date()} });
+                await User.update({_id: userId}, {$set: { 'first_approved_date': now} });
             }
             else if (status === 'rejected' || status === 'deferred') {
                 const reason = req.body.reason;
