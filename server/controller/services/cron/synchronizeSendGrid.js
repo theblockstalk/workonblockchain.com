@@ -62,8 +62,8 @@ async function syncListToDatabase(listId, recipientCount) {
                     await mongooseUsers.update({_id: userDoc._id}, {$set: { sendgrid_id: recipient.id }});
                 }
             } else {
-                logger.debug('Deleting contact ' + recipient.email + ' from Sendgrid');
-                await sendGrid.deleteRecipient(recipient.id)
+                logger.debug('Deleting contact ' + recipient.email + ' from Sendgrid list ' + listId);
+                await sendGrid.deleteRecipientFromList(listId, recipient.id);
             }
             i++;
         }
