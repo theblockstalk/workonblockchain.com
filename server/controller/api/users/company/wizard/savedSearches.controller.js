@@ -1,7 +1,5 @@
 const EmployerProfile = require('../../../../../model/employer_profile');
 const errors = require('../../../../services/errors');
-const candidateSearch = require('../../candidate/searchCandidates');
-const User = require('../../../../../model/users');
 
 module.exports = async function (req,res)
 {
