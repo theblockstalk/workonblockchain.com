@@ -36,7 +36,7 @@ describe('company saved searches', function () {
             const companyDoc = await Companies.findOne({_creator: userDoc._id}).lean();
 
             companyPrefernces.saved_searches[0].location.should.valueOf(companyDoc.saved_searches[0].location);
-            companyPrefernces.saved_searches[0].job_type.should.equal(companyDoc.saved_searches[0].job_type);
+            companyPrefernces.saved_searches[0].job_type.should.valueOf(companyDoc.saved_searches[0].job_type);
             companyPrefernces.saved_searches[0].current_currency.should.equal(companyDoc.saved_searches[0].current_currency);
             companyPrefernces.saved_searches[0].current_salary.should.equal(companyDoc.saved_searches[0].current_salary);
             companyPrefernces.saved_searches[0].skills.should.valueOf(companyDoc.saved_searches[0].skills);

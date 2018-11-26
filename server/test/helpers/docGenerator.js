@@ -120,22 +120,25 @@ module.exports.companyAbout = function companyAbout(){
 
 module.exports.companyUpdateProfile = function companyUpdateProfile(){
     return {
-        first_name: "Sara",
-        last_name: "khan",
-        job_title: "Developer",
-        company_name: "Mwan Mobile",
-        company_website: "www.mwanmobile.com",
-        phone_number: "090078601",
-        country: "Pakistan",
-        postal_code: "44000",
-        city: "rawalpindi",
-        company_founded:2013,
-        no_of_employees:8,
-        company_funded:"i have no idea",
-        company_description:"Global blockchain agnostic hiring platform for developers.",
+        info : {
+            first_name: "Sara",
+            last_name: "khan",
+            job_title: "Developer",
+            company_name: "Mwan Mobile",
+            company_website: "www.mwanmobile.com",
+            phone_number: "090078601",
+            country: "Pakistan",
+            postal_code: "44000",
+            city: "rawalpindi",
+            company_founded:2013,
+            no_of_employees:8,
+            company_funded:"i have no idea",
+            company_description:"Global blockchain agnostic hiring platform for developers."
+        },
+
         saved_searches : [{
             location: ['Amsterdam'],
-            job_type : 'Full time',
+            job_type : ['Full time'],
             position : ['UI Developer', 'Fullstack Developer'],
             current_currency : '$ USD',
             current_salary : 2000,
@@ -448,7 +451,7 @@ module.exports.companySavedSearches = function companySavedSearches() {
     return {
         saved_searches : [{
             location: ['remote'],
-            job_type : 'Part time',
+            job_type : ['Part time'],
             position : ['Backend Developer', 'Fullstack Developer'],
             current_currency : '$ USD',
             current_salary : 1000,
