@@ -3,6 +3,7 @@ var Q = require('q');
 const User = require('../../../model/users');
 const EmployerProfile = require('../../../model/employer_profile');
 const candidateSearch = require('../../../controller/api/users/candidate/searchCandidates');
+const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
 const logger = require('../logger');
 const errors = require('../errors');
@@ -13,37 +14,45 @@ module.exports = async function (req, res) {
     let companyDoc = await companyCursor.next();
     console.log("companyDoc");
     for ( null ; companyDoc !== null; companyDoc = await companyCursor.next()) {
-        const userDoc = await User.find({is_verify : 1 , is_approved : 1 , disable_account : false , type : 'candidate' }).lean();
+        //console.log(companyDoc);
+        const userDoc = await User.find({is_verify : 1 , is_approved : 1 , disable_account : false , type : 'company' , _id : companyDoc._creator  }).lean();
+        console.log(userDoc);
         if(userDoc) {
-            console.log("userDoc");
-            let userDocArray = [];
-
-            for (userDetail of userDoc) {
-                userDocArray.push(userDetail._id);
-            }
-
             let queryString = [];
             if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() + candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) { // not sure about this
-                let candidateDoc = await candidateSearch.candidateSearchQuery(companyDoc.saved_searches , userDocArray);
+                let candidateDoc = await candidateSearch.candidateSearchQuery(companyDoc.saved_searches);
+                console.log(candidateDoc);
                 if(candidateDoc) {
-
                     let candidateList = [];
                     for ( let i = 0 ; i < candidateDoc.length; i++) {
                         if(candidateDoc[i]._creator.first_approved_date) {
                             let candidateInfo = {
-                                profileLink : candidateDoc[i]._creator._id,
-                                whyWork : candidateDoc[i].why_work,
-                                initials : candidateDoc[i].first_name.charAt(0).toUpperCase() + candidateDoc[i].last_name.charAt(0).toUpperCase()
+                                url : candidateDoc[i]._creator._id,
+                                why_work : candidateDoc[i].why_work,
+                                initials : candidateDoc[i].first_name.charAt(0).toUpperCase() + candidateDoc[i].last_name.charAt(0).toUpperCase(),
+                                programming_languages : candidateDoc[i].programming_languages
                             }
                             candidateList.push(candidateInfo);
-                            console.log("Candidate list : " +candidateList);
+                            console.log("Candidate list : " + candidateList);
                         }
                         else {
                             logger.debug("do nothing");
                         }
                     }
-                    //sendEmail
-                    await EmployerProfile.update({_creator : companyDoc._creator} , {$set : {'last_email_sent' : new Date()}});
+                    let candidateListCount;
+                    if(candidateList.length > 0) {
+                        if(candidateList.length <= 10) {
+                            candidateListCount = {"count" : candidateList.length , "list" : candidateList};
+                        }
+                        else {
+                            candidateListCount = {"count" : 'more than 10' , "list" : candidateList.slice(0, 10)};
+                        }
+                        autoNotificationEmail.sendEmail(userDoc[0].email , companyDoc.first_name , companyDoc.company_name,candidateListCount,userDoc[0].disable_account);
+                        await EmployerProfile.update({_creator : companyDoc._creator} , {$set : {'last_email_sent' : new Date()}});
+                    }
+                    else {
+                        logger.debug("Candidate list is empty");
+                    }
 
                 }
                 else {
@@ -64,6 +73,7 @@ module.exports = async function (req, res) {
     res.send({
         success : true
     })
+
 }
 
 

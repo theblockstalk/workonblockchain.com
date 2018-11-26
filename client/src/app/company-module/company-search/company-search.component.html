@@ -48,7 +48,7 @@
 
                 <li>
                   <div class = "form-group">
-                    <select class="form-control" name="location" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" [(ngModel)]="countryChange" (ngModelChange)="searchdata('location' , $event)">
+                    <select class="form-control" name="location" [(ngModel)]="countryChange" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  (ngModelChange)="searchdata('location' , $event)">
 
                       <option value="-1" disabled selected hidden>Desired Location</option>
                       <option class='option' *ngFor='let option of cities'  [value]="option.value" >{{option.name}}</option>

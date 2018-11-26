@@ -1,4 +1,5 @@
 const EmployerProfile = require('../../../../../model/employer_profile');
+
 const errors = require('../../../../services/errors');
 
 module.exports = async function (req,res)
@@ -21,5 +22,6 @@ module.exports = async function (req,res)
     else {
         errors.throwError("Company doc not found", 404);
     }
+
 
 }
