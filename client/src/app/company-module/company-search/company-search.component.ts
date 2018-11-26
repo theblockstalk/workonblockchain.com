@@ -34,6 +34,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
   job_offer_log;
+  saved_searches
 
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
@@ -299,6 +300,24 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 {
                   this.imgPath =  data.company_logo;
                 }
+                console.log(data.saved_searches);
+                if(data.saved_searches && data.saved_searches.length > 0) {
+                  console.log("if");
+
+                  this.saved_searches = data.saved_searches;
+                  this.countryChange = data.saved_searches[0].location[1];
+                  if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
+                    this.selectedObj = data.saved_searches[0].skills[0];
+                  }
+                  this.select_value = data.saved_searches[0].position;
+                  if(data.saved_searches[0].blockchain && data.saved_searches[0].blockchain.length > 0) {
+                    this.selecteddd = data.saved_searches[0].blockchain;
+
+                  }
+                  this.salary = data.saved_searches[0].current_salary;
+                  this.currencyChange = data.saved_searches[0].current_currency;
+                  this.availabilityChange = data.saved_searches[0].availability_day;
+                }
 
                 this.getVerrifiedCandidate();
               }
@@ -428,6 +447,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     else {
+      console.log("else");
       this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
         .subscribe(
           data =>
