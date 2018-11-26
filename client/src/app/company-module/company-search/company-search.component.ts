@@ -257,6 +257,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
           data =>
           {
+            if(data.terms_id && data.company_founded && data.no_of_employees && data.company_funded && data.company_description && !data.saved_searches ) {
+              this.router.navigate(['/company_profile']);
+
+            }
             if(data.terms == false)
             {
               this.router.navigate(['/company_wizard']);

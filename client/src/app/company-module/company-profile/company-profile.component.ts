@@ -285,14 +285,15 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
 
 
                   }
-                  if(!data.saved_searches || data.saved_searches.length < 0) {
+                  if(data.terms_id && data.company_founded && data.no_of_employees && data.company_funded && data.company_description && !data.saved_searches ) {
                     console.log("modal true");
+                    $('#popModal_b').modal('show');
                     $(window).load(function()
                     {
                       $('#popModal_b').modal('show');
                     });
                   }
-                  if(data.saved_searches.length > 0) {
+                  if(data.saved_searches && data.saved_searches.length > 0) {
                     this.saved_searche = data.saved_searches;
                   }
 
@@ -343,12 +344,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
     if(!this.preferncesForm.value.current_salary) {
       this.current_salary_log = "Please enter salary";
     }
-    if(!this.preferncesForm.value.blockchain || this.preferncesForm.value.blockchain.length === 0) {
-      this.blockchain_log = "Please select blockchain technologies";
-    }
-    if(!this.preferncesForm.value.skills || this.preferncesForm.value.skills.length === 0) {
-      this.skills_log = "Please select programing languages";
-    }
+
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
@@ -356,8 +352,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
       this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && this.preferncesForm.value.current_salary &&
-      this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0 &&
-      this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0 &&
       this.preferncesForm.value.when_receive_email_notitfications) {
 
       this.saved_searches.push(this.preferncesForm.value);
@@ -368,6 +362,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
           {
 
             if(data.success === true) {
+              this.saved_searche = this.saved_searches;
               $('#popModal_b').modal('hide');
 
             }
