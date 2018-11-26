@@ -1,5 +1,9 @@
 const CandidateProfile = require('../../../../model/candidate_profile');
+const settings = require('../../../../settings');
 
+const USD = settings.CURRENCY_RATES.USD;
+const GBP = settings.CURRENCY_RATES.GBP;
+const Euro = settings.CURRENCY_RATES.Euro;
 const convertToDays = module.exports.convertToDays = function convertToDays(when_receive_email_notitfications) {
     switch(when_receive_email_notitfications) {
         case "Weekly":
@@ -17,8 +21,12 @@ const convertToDays = module.exports.convertToDays = function convertToDays(when
     }
 };
 
-const candidateSearchQuery = module.exports.candidateSearchQuery = async function candidateSearchQuery(queryBody) {
+const candidateSearchQuery = module.exports.candidateSearchQuery = async function candidateSearchQuery(queryBody , userIds) {
     let queryString = [];
+    if(userIds && userIds.length > 0) {
+        const usersToSearch = { "_creator": {$in: userIds}};
+        queryString.push(usersToSearch);
+    }
     if (queryBody[0].location) {
         const locationFilter = {"locations": {$in: queryBody[0].location}};
         queryString.push(locationFilter);
@@ -78,10 +86,13 @@ const candidateSearchQuery = module.exports.candidateSearchQuery = async functio
         queryString.push(availabilityFilter);
     }
     const searchQuery = {$and: queryString};
-    if (queryString && queryString > 0) {
-        return await CandidateProfile.find(searchQuery).populate('_creator').cursor();
+    if (queryString && queryString.length > 0) {
+        console.log("if");
+        const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator')
+        return candidateDoc;
     }
     else {
+        console.log("else");
         return null;
     }
 
