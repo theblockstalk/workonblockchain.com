@@ -32,7 +32,6 @@ module.exports = async  function (req,res)
     }
 
     const userDoc = await users.find({type : 'candidate' , is_verify :1, is_approved :1, disable_account : false }).lean();
-    console.log(userDoc);
     if(userDoc){
         let userDocArray = [];
         userDoc.forEach(function(item)
@@ -90,7 +89,6 @@ module.exports = async  function (req,res)
         }
 
         const searchQuery = { $and: queryString };
-
         const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator').lean();
         if(candidateDoc) {
             if(candidateDoc.length <= 0){

@@ -300,10 +300,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 {
                   this.imgPath =  data.company_logo;
                 }
-                console.log(data.saved_searches);
                 if(data.saved_searches && data.saved_searches.length > 0) {
-                  console.log("if");
-
                   this.saved_searches = data.saved_searches;
                   this.countryChange = data.saved_searches[0].location[1];
                   if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
@@ -317,14 +314,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   this.salary = data.saved_searches[0].current_salary;
                   this.currencyChange = data.saved_searches[0].current_currency;
                   this.availabilityChange = data.saved_searches[0].availability_day;
+                  this.searchdata('filter' , data.saved_searches[0] );
+                }
+                else {
+                  this.getVerrifiedCandidate();
+
                 }
 
-                this.getVerrifiedCandidate();
               }
-
-
-
-
             }
 
           },
