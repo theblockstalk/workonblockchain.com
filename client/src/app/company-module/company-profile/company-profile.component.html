@@ -173,6 +173,81 @@
 
 				 </section>
 
+        <section class = "profile job_info" *ngIf = "saved_searche.length > 0">
+          <h3>Candidate preferences</h3>
+
+
+          <div class="col-md-6 info-area">
+            <p>
+              <strong>Where are you hiring: </strong>
+              <span>{{saved_searche[0].location}}</span>
+            </p>
+          </div>
+          <div class="col-md-6 info-area">
+            <p>
+              <strong>What position types are you looking for:</strong>
+              <span>{{saved_searche[0].job_type}}</span>
+            </p>
+          </div>
+          <div class="col-md-6 info-area">
+            <p>
+              <strong>What roles are you looking for: </strong>
+              <span>{{saved_searche[0].position}}</span>
+            </p>
+
+          </div>
+          <div class="col-md-6 info-area">
+            <p>
+              <strong>Available annual salary and currency: </strong>
+              <span>{{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}</span>
+            </p>
+
+          </div>
+          <div class="col-md-6 info-area">
+            <p>
+              <strong>When do you want hires to start working: </strong>
+              <span>{{saved_searche[0].availability_day}}</span>
+            </p>
+
+          </div>
+          <div class="col-md-6 info-area" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
+            <p>
+              <strong>What blockchain technology experience do they need: </strong>
+              <span>{{saved_searche[0].blockchain}}</span>
+            </p>
+
+          </div>
+          <div class="col-md-6 info-area" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
+            <p>
+              <strong>What programming languages do you want them to have experience in: </strong>
+              <span>{{saved_searche[0].skills}}</span>
+            </p>
+
+          </div>
+          <div class="col-md-6 info-area" *ngIf="saved_searche[0].other_technologies">
+            <p>
+              <strong>Other technologies or requirements: </strong>
+              <span>{{saved_searche[0].other_technologies}}</span>
+            </p>
+
+          </div>
+          <div class="col-md-6 info-area">
+            <p>
+              <strong>When would you like to receive emails with candidates that match your search: </strong>
+              <span>{{saved_searche[0].when_receive_email_notitfications}}</span>
+            </p>
+
+          </div>
+
+
+          <span class = "edit_profile_link">
+				 		<a (click)="internalRoute('edit_company_profile','about_you')">
+				 			<i class="fa fa-pencil" aria-hidden="true"></i>
+				 		</a>
+				 	</span>
+
+        </section>
+
 				 </div>
 				 </div>
 				 </div>

@@ -45,6 +45,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
   other_technologies;
   avail_day;
   pref_active_class;
+  saved_searche;
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
         private router: Router,
         private authenticationService: UserService) { }
@@ -290,6 +291,9 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                     {
                       $('#popModal_b').modal('show');
                     });
+                  }
+                  if(data.saved_searches.length > 0) {
+                    this.saved_searche = data.saved_searches;
                   }
 
                 },

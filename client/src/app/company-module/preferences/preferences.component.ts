@@ -239,20 +239,26 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
                   }
                 }
               }
-              for(let blockchains of data.saved_searches[0].blockchain) {
-                for(let option of this.blockchain) {
-                  if(option.name === blockchains) {
-                    this.blockchainSelected.push(option.name);
+              if(data.saved_searches[0].blockchain && data.saved_searches[0].blockchain.length > 0) {
+                for(let blockchains of data.saved_searches[0].blockchain) {
+                  for(let option of this.blockchain) {
+                    if(option.name === blockchains) {
+                      this.blockchainSelected.push(option.name);
+                    }
                   }
                 }
               }
-              for(let skills of data.saved_searches[0].skills) {
-                for(let option of this.language_opt) {
-                  if(option.name === skills) {
-                    this.languageSelected.push(option.name);
+
+              if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
+                for(let skills of data.saved_searches[0].skills) {
+                  for(let option of this.language_opt) {
+                    if(option.name === skills) {
+                      this.languageSelected.push(option.name);
+                    }
                   }
                 }
               }
+
 
             }
 
@@ -315,12 +321,12 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     if(!this.preferncesForm.value.current_salary) {
       this.current_salary_log = "Please enter salary";
     }
-    if(!this.preferncesForm.value.blockchain || this.preferncesForm.value.blockchain.length === 0) {
+    /*if(!this.preferncesForm.value.blockchain || this.preferncesForm.value.blockchain.length === 0) {
       this.blockchain_log = "Please select blockchain technologies";
     }
     if(!this.preferncesForm.value.skills || this.preferncesForm.value.skills.length === 0) {
       this.skills_log = "Please select programing languages";
-    }
+    }*/
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
@@ -328,8 +334,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
       this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && this.preferncesForm.value.current_salary &&
-      this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0 &&
-      this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0 &&
       this.preferncesForm.value.when_receive_email_notitfications) {
 
       this.saved_searches.push(this.preferncesForm.value);
