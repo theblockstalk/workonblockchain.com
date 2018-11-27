@@ -426,10 +426,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
       this.availability_day_log = "Please select your availability day";
     }
     if(!this.preferncesForm.value.current_currency) {
-      this.current_currency_log = "Please select available curreny";
+      this.current_currency_log = "Please select available annual salary and currency";
     }
     if(!this.preferncesForm.value.current_salary) {
-      this.current_salary_log = "Please enter salary";
+      this.current_currency_log = "Please select available annual salary and currency";
     }
 
     if(!this.preferncesForm.value.when_receive_email_notitfications) {

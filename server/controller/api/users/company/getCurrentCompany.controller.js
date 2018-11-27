@@ -12,6 +12,7 @@ module.exports = async function (req, res) {
     else {
         employerProfile =  await EmployerProfile.find({_creator : req.params._id}).populate('_creator').lean();
         if(employerProfile && employerProfile.length > 0){
+            console.log("iffff");
             const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile[0]);
             res.send(employerCreatorRes);
         }

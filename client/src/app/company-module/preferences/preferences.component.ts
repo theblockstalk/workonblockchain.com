@@ -316,10 +316,10 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
       this.availability_day_log = "Please select your availability day";
     }
     if(!this.preferncesForm.value.current_currency) {
-      this.current_currency_log = "Please select available curreny";
+      this.current_currency_log = "Please select available annual salary and currency";
     }
     if(!this.preferncesForm.value.current_salary) {
-      this.current_salary_log = "Please enter salary";
+      this.current_currency_log = "Please select available annual salary and currency";
     }
     /*if(!this.preferncesForm.value.blockchain || this.preferncesForm.value.blockchain.length === 0) {
       this.blockchain_log = "Please select blockchain technologies";
@@ -343,7 +343,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
           data =>
           {
             if(data.success === true) {
-              $('#popModal_b').modal('hide');
+              $('#popModal').modal('show');
             }
           },
           error => {
@@ -414,6 +414,12 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     else {
       return;
     }
+  }
+
+  redirectToCompany()
+  {
+    $('#popModal').modal('hide');
+    this.router.navigate(['/company_profile']);
   }
 
 }

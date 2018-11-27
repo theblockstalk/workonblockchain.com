@@ -28,13 +28,10 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
   availability_day_log;
   current_currency_log;
   current_salary_log;
-  blockchain_log;
-  skills_log;
   email_notification_log;
   error_msg;
   log;
   about_active_class;
-  terms_active_class;
   positionSelected = [];
   current_salary;
   locationSelected = [];
@@ -44,7 +41,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
   languageSelected = [];
   other_technologies;
   avail_day;
-  pref_active_class;
   saved_searche;
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
         private router: Router,
@@ -73,7 +69,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
 
     ngAfterViewInit(): void
      {
-         window.scrollTo(0, 0);
+       window.scrollTo(0, 0);
        setTimeout(() => {
          $('.selectpicker').selectpicker('refresh');
        }, 50);
@@ -245,6 +241,11 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                       this.router.navigate(['/about_comp']);
                   }
 
+                  else if(!data.saved_searches  && data._creator.created_date > new Date('2018/11/28')) {
+                    this.router.navigate(['/preferences']);
+
+                  }
+
                   else
                   {
                       this.first_name=data.first_name;
@@ -283,19 +284,16 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
 
                       }
 
-
+                    this.saved_searche = data.saved_searches;
                   }
                   if(data.terms_id && data.company_founded && data.no_of_employees && data.company_funded && data.company_description && !data.saved_searches ) {
-                    console.log("modal true");
-                    $('#popModal_b').modal('show');
+
                     $(window).load(function()
                     {
                       $('#popModal_b').modal('show');
                     });
                   }
-                  if(data.saved_searches && data.saved_searches.length > 0) {
-                    this.saved_searche = data.saved_searches;
-                  }
+
 
                 },
                 error =>
@@ -339,10 +337,11 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
       this.availability_day_log = "Please select your availability day";
     }
     if(!this.preferncesForm.value.current_currency) {
-      this.current_currency_log = "Please select available curreny";
+      this.current_currency_log = "Please select available annual salary and currency";
     }
     if(!this.preferncesForm.value.current_salary) {
-      this.current_salary_log = "Please enter salary";
+      this.current_currency_log = "Please select available annual salary and currency";
+
     }
 
     if(!this.preferncesForm.value.when_receive_email_notitfications) {

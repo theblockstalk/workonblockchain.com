@@ -257,11 +257,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
           data =>
           {
-            if(data.terms_id && data.company_founded && data.no_of_employees && data.company_funded && data.company_description && !data.saved_searches ) {
-              this.router.navigate(['/company_profile']);
 
-            }
-            if(data.terms == false)
+            if(data.terms === false)
             {
               this.router.navigate(['/company_wizard']);
             }
@@ -269,6 +266,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             else if(!data.company_founded && !data.no_of_employees && !data.company_funded && !data.company_description )
             {
               this.router.navigate(['/about_comp']);
+            }
+            else if(!data.saved_searches  && data._creator.created_date > new Date('2018/11/28')) {
+              this.router.navigate(['/preferences']);
+
             }
             else
             {
@@ -308,7 +309,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 {
                   this.imgPath =  data.company_logo;
                 }
-                if(data.saved_searches && data.saved_searches.length > 0) {
+                if(data.saved_searches) {
                   this.saved_searches = data.saved_searches;
                   this.countryChange = data.saved_searches[0].location[1];
                   if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
