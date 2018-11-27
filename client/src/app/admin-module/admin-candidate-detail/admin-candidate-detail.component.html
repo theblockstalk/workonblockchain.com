@@ -143,7 +143,7 @@
              </div>
              <div class = "col-md-9">
                <ul class = "pro_list">
-                 <li><span>{{data._creator.created_date | date : 'dd-MMMM-yyyy'}}</span></li>
+                 <li><span>{{data._creator.candidate.status[data._creator.candidate.status.length-1].timestamp | date : 'dd-MMMM-yyyy'}}</span></li>
                </ul>
              </div>
 
