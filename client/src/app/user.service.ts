@@ -1504,7 +1504,7 @@ export class UserService {
 
   approve_candidate(user_id:string , status :string, reason: string)
   {
-    return this.http.put<any>(URL+'users/approve_candidate/' + user_id, {status : status,reason:reason}, {
+    return this.http.put<any>(URL+'users/change_candidate_status/' + user_id, {status : status,reason:reason}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     })
       .map((res: Response) =>
