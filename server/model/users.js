@@ -43,7 +43,7 @@ const UserSchema = new Schema({
             type:String,
             enum: ['GOOGLE', 'LINKEDIN', '']
         },
-    is_approved:
+    is_approved: // DELETE ME
         {
             type:Number, // 0 = false, 1 = true
             enum: [0, 1],
@@ -141,9 +141,6 @@ const UserSchema = new Schema({
 						enum: enumerations.candidateStatus,
 						required:true,
 					},
-					status_updated: {
-						type: Date
-					},
 					reason: {
 						type: String,
 						enum: enumerations.statusReasons
@@ -153,13 +150,13 @@ const UserSchema = new Schema({
 						required:true,
 					}
 				}]
-			},
-        },
+			}
+        }
     },
 	first_approved_date:{
 		type: Date
 	},
-    created_date:
+    created_date: // DELETE ME
         {
             type: Date
         }

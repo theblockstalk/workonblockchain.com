@@ -10,7 +10,7 @@ module.exports = async function (req, res) {
     const status = req.body.status;
     if (userDoc) {
         const candidateDoc = await
-        CandidateProfile.findOne({_creator: userId}).lean();
+            CandidateProfile.findOne({_creator: userId}).lean();
         if (candidateDoc) {
             let newStatus = {
                 status: status,
@@ -19,7 +19,7 @@ module.exports = async function (req, res) {
             };
             if (status === 'approved' && !userDoc.first_approved_date) {
                 await
-                User.update({_id: userId}, {$set: {'first_approved_date': new Date()}});
+                    User.update({_id: userId}, {$set: {'first_approved_date': new Date()}});
             }
             else if (status === 'rejected' || status === 'deferred') {
                 const reason = req.body.reason;
@@ -33,15 +33,15 @@ module.exports = async function (req, res) {
                 errors.throwError("Status " + status + " now allowed", 400);
             }
             await
-            User.update({_id: userDoc._id}, {
-                    $push: {
-                        'candidate.status': {
-                            $each: [newStatus],
-                            $position: 0
+                User.update({_id: userDoc._id}, {
+                        $push: {
+                            'candidate.status': {
+                                $each: [newStatus],
+                                $position: 0
+                            }
                         }
                     }
-                }
-            );
+                );
             if (status === 'approved') {
                 candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name, userDoc.disable_account);
             }
