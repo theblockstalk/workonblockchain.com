@@ -31,7 +31,7 @@ module.exports = async  function (req,res)
         salaryArray= {USD : salaryConverterResult[0] , GBP : salaryConverterResult[1]  , Euro : queryBody.salary};
     }
 
-    const userDoc = await users.find({type : 'candidate' , is_verify :1,$or:[{'candidate.status.0.status': 'Approved'},{'candidate.status.0.status': 'approved'}] ,disable_account : false }).lean();
+    const userDoc = await users.find({type : 'candidate' , is_verify :1,'candidate.status.0.status': 'approved' ,disable_account : false }).lean();
     console.log(userDoc);
     if(userDoc){
         let userDocArray = [];

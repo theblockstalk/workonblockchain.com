@@ -40,17 +40,17 @@
                 <div class = "row status_row">
                   <div class="shown_col col-sm-6 form-group">
                      <select class="form-control" id="status_selector" [(ngModel)]="set_status" (ngModelChange) = "changeStatus($event)" name="set_status">
-                       <option *ngFor='let status of set_candidate_status' [value]="status" selected>{{status}}</option>
+                       <option *ngFor='let status of set_candidate_status' [value]="status.value" selected>{{status.name}}</option>
                      </select>
                   </div>
                   <div class="col-sm-6 form-group" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
                        <select class="form-control status_select" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
-                         <option *ngFor='let status of set_candidate_status_rejected' [value]="status" selected>{{status}}</option>
+                         <option *ngFor='let status of set_candidate_status_rejected' [value]="status.value" selected>{{status.name}}</option>
                        </select>
                   </div>
                   <div class="col-sm-6 form-group" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
                        <select class="form-control status_select" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
-                         <option *ngFor='let status of set_candidate_status_deferred' [value]="status" selected>{{status}}</option>
+                         <option *ngFor='let status of set_candidate_status_deferred' [value]="status.value" selected>{{status.name}}</option>
                        </select>
                   </div>
                 </div>
@@ -119,9 +119,9 @@
              </div>
              <div class = "col-md-9">
                <ul class = "status_list badges">
-                 <li *ngIf="candidate_status.status === 'Approved' || candidate_status.status === 'approved'"><span class="label label-success">{{candidate_status.status}}</span></li>
-                 <li *ngIf="candidate_status.status === 'Rejected' || candidate_status.status === 'rejected'"><span class="label label-danger">{{candidate_status.status}}</span></li>
-                 <li *ngIf="candidate_status.status === 'Deferred' || candidate_status.status === 'deferred' || candidate_status.status === 'Other' || candidate_status.status === 'other'"><span class="label label-warning">{{candidate_status.status}}</span></li>
+                 <li *ngIf="candidate_status.status === 'Approved' || candidate_status.status === 'approved'"><span class="label label-success text-capitalize">{{candidate_status.status}}</span></li>
+                 <li *ngIf="candidate_status.status === 'Rejected' || candidate_status.status === 'rejected'"><span class="label label-danger text-capitalize">{{candidate_status.status}}</span></li>
+                 <li *ngIf="candidate_status.status === 'Deferred' || candidate_status.status === 'deferred' || candidate_status.status === 'Other' || candidate_status.status === 'other'"><span class="label label-warning text-capitalize">{{candidate_status.status}}</span></li>
                </ul>
              </div>
            </div>
@@ -132,7 +132,7 @@
              </div>
              <div class = "col-md-9">
                <ul class = "pro_list">
-                 <li><span class = "status-date" style = "color:#d9534f;">{{candidate_status.reason}}</span></li>
+                 <li><span class = "status-date text-capitalize" style = "color:#d9534f;">{{candidate_status.reason}}</span></li>
                </ul>
              </div>
            </div>

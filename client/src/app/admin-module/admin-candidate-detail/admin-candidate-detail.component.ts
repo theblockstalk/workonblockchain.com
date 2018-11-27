@@ -26,15 +26,25 @@ export class AdminCandidateDetailComponent implements OnInit {
   status_reason_rejected = '';
   status_reason_deferred = '';
   set_candidate_status = [
-    "Approved" ,"Rejected" , "Deferred", "Other"
+    {value:'approved', name:'Approved'},
+    {value:'rejected', name:'Rejected'},
+    {value:'deferred', name:'Deferred'},
+    {value:'other', name:'Other'}
   ];
 
   set_candidate_status_rejected = [
-    "Garbage" ,"Recruiter" , "Not Technical", "other"
+    {value:'garbage', name:'Garbage'},
+    {value:'recruiter', name:'Recruiter'},
+    {value:'not technical', name:'Not Technical'},
+    {value:'other', name:'Other'}
   ];
 
   set_candidate_status_deferred = [
-    "Profile Incomplete" ,"Not Looking for Job" , "Job Found","Not Responded" ,"other"
+    {value:'profile incomplete', name:'Profile Incomplete'},
+    {value:'not looking for job', name:'Not Looking for Job'},
+    {value:'job found', name:'Job Found'},
+    {value:'not responded', name:'Not Responded'},
+    {value:'other', name:'Other'}
   ];
 
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)

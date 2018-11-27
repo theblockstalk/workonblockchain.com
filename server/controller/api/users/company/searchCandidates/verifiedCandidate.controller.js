@@ -7,7 +7,7 @@ module.exports = async function (req,res) {
 
     let userId = req.auth.user._id;
 
-    const userDoc = await User.find({type : 'candidate' , is_verify :1, $or:[{'candidate.status.0.status': 'Approved'},{'candidate.status.0.status': 'approved'}] ,disable_account : false }).lean();
+    const userDoc = await User.find({type : 'candidate' , is_verify :1, 'candidate.status.0.status': 'approved' ,disable_account : false }).lean();
     let userIds = [];
     for (detail of userDoc) {
         const ids =  await getUsersIds(detail);

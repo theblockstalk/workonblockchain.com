@@ -50,8 +50,8 @@ module.exports = async function (req, res) {
         referred_email : userParam.referred_email,
         linkedin_id : userParam.linkedin_id,
         candidate: {
-            candidate_status: [{
-                status: 'Created',
+            status: [{
+                status: 'created',
                 status_updated: new Date(),
                 timestamp: new Date()
             }]

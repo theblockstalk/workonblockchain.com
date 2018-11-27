@@ -72,7 +72,7 @@ const adminCandidateFilter = require('./controller/api/users/admins/candidateFil
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
 const adminAddNewPagesContent = require('./controller/api/users/admins/pages/addTermsAndConditionsContent.controller');
 const adminGetMetrics = require('./controller/api/users/admins/getMetrics.controller');
-const adminApproveCandidate = require('./controller/api/users/admins/approveCandidate.controller');
+const adminApproveCandidate = require('./controller/api/users/admins/changeCandidateStatus.controller');
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
