@@ -29,9 +29,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   inactive;
   approve;
   admin_check = [
-    {name:"Approved" , value:"Approved"},
-    {name:"Rejected" , value:"Rejected"},
-    {name:"Deferred" , value:"Deferred"},
+    {value:'approved', name:'Approved'},
+    {value:'rejected', name:'Rejected'},
+    {value:'deferred', name:'Deferred'},
+    {value:'other', name:'Other'}
   ];
   information;
   admin_log;
