@@ -241,7 +241,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                       this.router.navigate(['/about_comp']);
                   }
 
-                  else if(!data.saved_searches  || ((new Date(data._creator.created_date) > new Date('2018/11/26')) && data.saved_searches.length === 0)) {
+                  else if(((new Date(data._creator.created_date) > new Date('2018/11/27')) && data.saved_searches.length === 0)) {
                     this.router.navigate(['/preferences']);
                   }
 
@@ -353,7 +353,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
       this.preferncesForm.value.when_receive_email_notitfications) {
 
       this.saved_searches.push(this.preferncesForm.value);
-      console.log(this.saved_searches);
       this.authenticationService.candidate_prefernece(this.saved_searches)
         .subscribe(
           data =>

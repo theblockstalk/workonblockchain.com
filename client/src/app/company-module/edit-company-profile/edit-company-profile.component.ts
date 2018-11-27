@@ -373,7 +373,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
   company_profile(profileForm: NgForm)
   {
     this.error_msg = "";
-    console.log(this.preferncesForm.value);
     if(!this.first_name) {
       this.first_name_log="Please enter first name";
     }

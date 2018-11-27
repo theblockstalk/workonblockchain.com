@@ -71,22 +71,18 @@ forgetMessage;
           this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, null)
             .subscribe(
                 user => {
-                //console.log(user);
 
                 if(user.type === 'company') {
-                  console.log(new Date(user.created_date));
-                  console.log(new Date('2018/11/27'));
+
                   if (new Date(user.created_date) < new Date('2018/11/27')) {
                     this.http.get<any>(URL + 'users/current_company/' + user._id, {
                       headers: new HttpHeaders().set('Authorization', user.jwt_token)
                     }).map((res) => res).subscribe(
                       (res) => {
                         if (!res.saved_searches) {
-                          console.log("if");
                           window.location.href = '/company_profile';
                         }
                         else {
-                          console.log("else");
                           window.location.href = '/candidate-search';
 
                         }

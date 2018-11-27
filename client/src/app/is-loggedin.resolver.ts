@@ -26,13 +26,10 @@ export class LoginResolver  {
                headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
              }).map((res) => res).subscribe(
                (res) => {
-                 console.log(res);
                  if (!res.saved_searches) {
-                   console.log("if");
                    window.location.href = '/company_profile';
                  }
                  else {
-                   console.log("else");
                    this.router.navigate(['/candidate-search']);
 
                  }

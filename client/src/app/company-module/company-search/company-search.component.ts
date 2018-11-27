@@ -267,7 +267,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             {
               this.router.navigate(['/about_comp']);
             }
-            else if(!data.saved_searches  || ((new Date(data._creator.created_date) > new Date('2018/11/26')) && data.saved_searches.length === 0)) {
+            else if(!data.saved_searches  || ((new Date(data._creator.created_date) > new Date('2018/11/27')) && data.saved_searches.length === 0)) {
               this.router.navigate(['/preferences']);
 
             }
@@ -453,7 +453,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     else {
-      console.log("else");
       this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
         .subscribe(
           data =>

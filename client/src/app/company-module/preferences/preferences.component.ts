@@ -337,7 +337,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
       this.preferncesForm.value.when_receive_email_notitfications) {
 
       this.saved_searches.push(this.preferncesForm.value);
-      console.log(this.saved_searches);
       this.authenticationService.candidate_prefernece(this.saved_searches)
         .subscribe(
           data =>
