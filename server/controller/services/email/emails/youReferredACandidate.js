@@ -46,14 +46,6 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
         }
     }
 
-    const mandrillOptions = {
-        templateName: "wob-you-referred-a-user",
-        message: {
-            global_merge_vars: merge_tags,
-            subject: subject,
-            to: sendToArray
-        }
-    };
 
     const sendGridOptions = {
         templateId: "d-5dda716352e64894800aea39a236ec81",
@@ -64,5 +56,5 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
         templateData: templateData
     };
 
-    emails.sendEmail(mandrillOptions, sendGridOptions, isAccountDisabed);
+    emails.sendEmail(sendGridOptions, isAccountDisabed);
 }
