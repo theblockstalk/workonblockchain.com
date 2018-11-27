@@ -40,9 +40,9 @@ const companySavedSearchesWizard = module.exports.companySavedSearchesWizard = a
 }
 
 const sendNewNotification = module.exports.sendNewNotification = async function sendNewNotification(last_email_sent , when_receive_notification) {
-    console.log(last_email_sent);
-    console.log(last_email_sent + new Date(new Date('2018/11/5') + (when_receive_notification * 24*60*60*1000)));
-    if(last_email_sent  <  new Date(new Date('2018/11/9') - (when_receive_notification * 24*60*60*1000))) {
+    const now = new Date();
+    console.log(last_email_sent, now, when_receive_notification);
+    if(last_email_sent  <  new Date(now - (when_receive_notification * 24*60*60*1000))) {
         return true;
     }
     else {

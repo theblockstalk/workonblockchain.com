@@ -22,17 +22,22 @@ describe('check auto notication cron service', function () {
 
     describe('check last_email_sent', () => {
 
-        it('it should check last_email_sent', async () => {
-            const company = docGenerator.company();
-            const companyRes = await companyHelper.signupCompany(company);
-
-            const companyPrefernces = docGenerator.companySavedSearches();
-            await companyWizardHelper.companySavedSearchesWizard(companyPrefernces , companyRes.body.jwt_token);
-
-            const userDoc = await Users.findOne({email: company.email}).lean();
-            const companyDoc = await Companies.findOne({_creator: userDoc._id}).lean();
-            const cronRes = await companyWizardHelper.sendNewNotification(new Date('2018/11/2') , 3);
-            cronRes.should.equal(true);
+        it('it should send an email', async () => {
+            const lastEmailSent = addDays(new Date(), -4)
+            const sendNotification = await companyWizardHelper.sendNewNotification(lastEmailSent , 3);
+            sendNotification.should.equal(true);
         })
+
+        it('it should not send an email', async () => {
+            const lastEmailSent = addDays(new Date(), -2)
+            const sendNotification = await companyWizardHelper.sendNewNotification(lastEmailSent , 3);
+            sendNotification.should.equal(false);
+        })
+
+
     })
 });
+
+function addDays(theDate, days) {
+    return new Date(theDate.getTime() + days*24*60*60*1000);
+}
