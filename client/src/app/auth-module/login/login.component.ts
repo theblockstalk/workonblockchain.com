@@ -92,6 +92,10 @@ forgetMessage;
                         }
                       });
                   }
+                  else {
+                    window.location.href = '/candidate-search';
+
+                  }
                 }
                 if(user.type === 'candidate')
                 {

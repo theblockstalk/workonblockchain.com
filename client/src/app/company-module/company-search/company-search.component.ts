@@ -267,7 +267,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             {
               this.router.navigate(['/about_comp']);
             }
-            else if(!data.saved_searches  && data._creator.created_date > new Date('2018/11/28')) {
+            else if(!data.saved_searches  || ((new Date(data._creator.created_date) > new Date('2018/11/26')) && data.saved_searches.length === 0)) {
               this.router.navigate(['/preferences']);
 
             }
