@@ -98,20 +98,16 @@ const candidateSearchQuery = module.exports.candidateSearchQuery = async functio
             queryString.push(availabilityFilter);
         }
         const searchQuery = {$and: queryString};
-        console.log(searchQuery);
         if (queryString && queryString.length > 0) {
-            console.log("if");
             const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator');
             return candidateDoc;
         }
         else {
-            console.log("else");
             return null;
         }
     }
 
     else {
-        console.log("else");
         return null;
     }
 
