@@ -684,12 +684,11 @@ body{
 
 
 @media screen and (min-width: 768px){
-  .slider-indicator {
-    bottom: -35px !important;
-  }
-
   .select_error {
     position: relative !important;
+  }
+  .slider-indicator {
+      bottom: -35px !important;
   }
 }
 
@@ -987,8 +986,8 @@ body{
 
 .form_error{
   margin-top: 1px;
-  position: absolute;
   font-size: 12px;
+  position: absolute;
 }
 
 .custom_form .form-group{

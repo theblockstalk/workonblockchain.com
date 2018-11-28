@@ -141,11 +141,11 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.error = '';
     if(event.srcElement.innerHTML ==='Active' )
     {
-      this.is_approve = 'Approved';
+      this.is_approve = 'approved';
     }
     else if(event.srcElement.innerHTML === 'Inactive')
     {
-      this.is_approve = 'Rejected';
+      this.is_approve = 'rejected';
     }
 
     this.authenticationService.approve_candidate(approveForm.value.id ,this.is_approve,'' )
@@ -199,9 +199,12 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   onSearchName(f: NgForm)
   {
 
-    this.search(f.value.word);
+    if(f.value.word) {
+      this.search(f.value.word);
+    }
 
   }
+
 
   msgtags;
   messagetag_changed(data)

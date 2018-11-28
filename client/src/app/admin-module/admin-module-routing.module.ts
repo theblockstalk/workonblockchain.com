@@ -7,7 +7,6 @@ import { AdminCandidateDetailComponent } from './admin-candidate-detail/admin-ca
 import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-chat.component';
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
 import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
-import { AdminAccountSettingsComponent } from './admin-account-settings/admin-account-settings.component';
 
 const routes: Routes = [
   {path : 'admin-dashboard' , component: AdminDashboardComponent},
@@ -16,7 +15,6 @@ const routes: Routes = [
   {path : 'admin-display-chat' , component: AdminDisplayChatComponent},
   {path : 'admin-company-search' , component: AdminCompanySearchComponent},
   {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
-  {path : 'admin-account-settings' , component: AdminAccountSettingsComponent},
 
 ];
 

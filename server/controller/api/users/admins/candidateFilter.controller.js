@@ -16,9 +16,9 @@ module.exports = async function (req,res) {
        var employ_offer = msgTags.find(o => o === 'Employment offer accepted / reject');
        if(employ_offer) {
            var offered = ['employment_offer_accepted', 'employment_offer_rejected'];
-           offered.forEach(function(item) {
-               queryBody.msg_tags.push(item );
-           });
+           for (detail of offered) {
+               queryBody.msg_tags.push(detail);
+           }
        }
        if(picked) {
 		   companyReply= [1,0];

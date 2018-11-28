@@ -138,6 +138,11 @@ export class CandidateDetailComponent implements OnInit {
               this.first_name = dataa.initials;
               this.countries = dataa.locations;
               this.countries.sort();
+              if(this.countries.indexOf("remote") > -1){
+                this.countries[0] = 'remote';
+                this.countries = this.filter_array(this.countries);
+              }
+
               this.interest_area =dataa.interest_area;
               this.interest_area.sort();
               this.roles  = dataa.roles;
@@ -288,5 +293,15 @@ export class CandidateDetailComponent implements OnInit {
       this.job_offer_msg = 'Please enter all info';
     }
   }
+  filter_array(arr)
+  {
+    var hashTable = {};
 
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+
+      return (match ? false : hashTable[key] = true);
+    });
+  }
 }

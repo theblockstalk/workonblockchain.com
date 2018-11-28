@@ -35,11 +35,11 @@ try {
 
     mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
-    mongoose.connection.on('connected',() => {
+    mongoose.connection.on('connected',function () {
         logger.info('Connected to mongodb database');
     });
 
-    mongoose.connection.on('error', (error) => {
+    mongoose.connection.on('error', function (error) {
         if (error) {
             logger.error(error.message, {stack: error.stack});
             process.exit(1);
@@ -52,5 +52,8 @@ try {
         logger.info('Server listening on port ' + port);
     });
 } catch(error) {
-    logger.error(error.message, {stack: error.stack});
+    logger.error(error.message, {
+        stack: error.stack,
+        name: error.name
+    });
 }

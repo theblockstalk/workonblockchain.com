@@ -123,6 +123,10 @@ export class AdminCandidateDetailComponent implements OnInit {
               this.education_history.sort(this.education_sort_desc);
               this.countries = data.locations;
               this.countries.sort();
+              if(this.countries.indexOf("remote") > -1){
+                this.countries[0] = 'remote';
+                this.countries = this.filter_array(this.countries);
+              }
               this.interest_area =data.interest_area;
               this.interest_area.sort();
               this.roles  = data.roles;
@@ -336,32 +340,33 @@ export class AdminCandidateDetailComponent implements OnInit {
     }
   }
 
-  saveApproveData(id:any, set_status:string, reason:string){
-    this.authenticationService.approve_candidate(id ,set_status, reason)
+  saveApproveData(id:any, set_status:string, reason:string) {
+    this.authenticationService.approve_candidate(id, set_status, reason)
     .subscribe(
-      data =>
-      {
-
-        if(data.success === true)
-        {
+      data => {
+        if (data.success === true) {
           this.success = 'Candidate status changed successfully';
         }
-
       },
-      error =>
-      {
-        if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-        {
+      error => {
+        if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
           this.error = error['error']['message'];
         }
-        if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-        {
+        if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
           this.error = error['error']['message'];
         }
         else {
           this.error = "Something getting wrong";
         }
-
       });
+  }
+
+  filter_array(arr) {
+    var hashTable = {};
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+      return (match ? false : hashTable[key] = true);
+    });
   }
 }

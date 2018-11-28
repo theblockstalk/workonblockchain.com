@@ -13,21 +13,6 @@ module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmail
 
     const sendToArray = [sendTo];
 
-    const mandrillOptions = {
-        templateName: "wob-verify-email",
-        message: {
-        	 global_merge_vars: [{
-        	     "name": "FNAME",
-                 "content": firstName
-             }, {
-        	     "name": "VERIFY_EMAIL_URL",
-                 "content": verifyEmailUrl
-             }],
-            subject: subject,
-            to: sendToArray
-        }
-    };
-
     const sendGridOptions = {
         templateId: "d-4564d4d9fec8469c8dfe0298511e8e17",
         subject: subject,
@@ -43,5 +28,5 @@ module.exports.sendEmail = function sendEmail(emailAddress,firstName,verifyEmail
         }
     };
 
-    emails.sendEmail(mandrillOptions, sendGridOptions, false);
+    emails.sendEmail(sendGridOptions, false);
 }

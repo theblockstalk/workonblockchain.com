@@ -10,49 +10,43 @@ module.exports = async function (req, res) {
 
     const querybody = req.body;
     const userId = req.params._id;
-
+    await User.update({ _id:  userId },{ $set: {'is_approved': querybody.is_approve} });
     const userDoc = await User.findOne({ _id: userId}).lean();
-    if(userDoc) {
-        const userRes = await User.update({ _id:  userDoc._id },{ $set: {'is_approved': querybody.is_approve} });
-        if(userRes.is_approved === 1) {
-            if(userDoc.type === 'candidate')
-            {
-                const candidateDoc = await CandidateProfile.findOne({ _creator: userDoc._id}).lean();
-                if(candidateDoc) {
-                    candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name,userDoc.disable_account);
-                    res.send({
-                        success : true
-                    })
-                }
-                else {
-                    errors.throwError("Candidate account not found", 404)
-
-                }
+    if(userDoc.is_approved === 1) {
+        if(userDoc.type === 'candidate')
+        {
+            const candidateDoc = await CandidateProfile.findOne({ _creator: userDoc._id}).lean();
+            if(candidateDoc) {
+                candidateApprovedEmail.sendEmail(userDoc.email, candidateDoc.first_name,userDoc.disable_account);
+                res.send({
+                    success : true
+                })
+            }
+            else {
+                errors.throwError("Candidate account not found", 404)
 
             }
-            if(userDoc.type === 'company') {
-                const companyDoc = await EmployerProfile.findOne({ _creator: userDoc._id}).lean();
-                if(companyDoc) {
-                    companyApprovedEmail.sendEmail(userDoc.email, companyDoc.first_name, userDoc.disable_account);
-                    res.send({
-                        success : true
-                    })
-                }
-                else {
-                    errors.throwError("Candidate account not found", 404)
 
-                }
+        }
+        if(userDoc.type === 'company') {
+            const companyDoc = await EmployerProfile.findOne({ _creator: userDoc._id}).lean();
+            if(companyDoc) {
+                companyApprovedEmail.sendEmail(userDoc.email, companyDoc.first_name, userDoc.disable_account);
+                res.send({
+                    success : true
+                })
+            }
+            else {
+                errors.throwError("Company account not found", 404)
+
             }
         }
-        else {
-            res.send({
-                success : true
-            })
-        }
+
     }
     else {
-        errors.throwError("User not found", 404)
-    }
+        res.send({
+            success : true
+        })    }
 
 
 }
