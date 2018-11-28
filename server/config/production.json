@@ -26,10 +26,6 @@
     "fromAddress": "no-reply@workonblockchain.com",
     "fromName": "Work on Blockchain"
   },
-  "mandrill": {
-    "fromAddress": "no-reply@workonblockchain.com",
-    "fromName": "Work on Blockchain"
-  },
   "currencyRates": {
     "USD": {
       "GBP": 1.33,

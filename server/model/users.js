@@ -15,9 +15,6 @@ const UserSchema = new Schema({
     sendgrid_id: {
         type: String
     },
-    sendgrid_multipe_lists: {
-        type: Boolean
-    },
     linkedin_id :
         {
             type: String
