@@ -26,7 +26,6 @@ if (isLiveApplication()) {
     config.expressJwt = {
         secret: process.env.EXPRESS_JWT_SECRET
     };
-    config.mandrill.apiKey = process.env.MANDRILL_API_KEY;
     config.sendGrid.apiKey = process.env.SENDGRID_API_KEY;
 
     settings.MONGO_CONNECTION_STRING = "mongodb://" + config.mongo.username + ":"
@@ -41,12 +40,6 @@ if (isLiveApplication()) {
             GROUP: config.aws.cloudWatch.group,
             STREAM: config.aws.cloudWatch.stream
         }
-    };
-
-    settings.MANDRILL = {
-        FROM_ADDRESS: config.mandrill.fromAddress,
-        FROM_NAME: config.mandrill.fromName,
-        API_KEY: config.mandrill.apiKey
     };
 
     settings.SENDGRID = {

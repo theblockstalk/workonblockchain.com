@@ -8,18 +8,6 @@ module.exports.sendEmail = function sendEmail(email, isAccountDisabed, first_nam
 
     const sendToArray = [sendTo];
 
-    const mandrillOptions = {
-        templateName: "wob-chat-reminder",
-        message: {
-            global_merge_vars: [{
-                "name": "FNAME",
-                "content": first_name
-            }],
-            subject: subject,
-            to: sendToArray
-        }
-    };
-
     const sendGridOptions = {
         templateId: "d-145e76ac958041c792167113892f9cea",
         subject: subject,
@@ -34,5 +22,5 @@ module.exports.sendEmail = function sendEmail(email, isAccountDisabed, first_nam
         }
     };
 
-    emails.sendEmail(mandrillOptions, sendGridOptions, isAccountDisabed);
+    emails.sendEmail(sendGridOptions, isAccountDisabed);
 }

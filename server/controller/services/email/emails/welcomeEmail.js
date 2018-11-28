@@ -8,17 +8,6 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
     const subject = 'Welcome to Work on Blockchain!';
     const sendToArray = [sendTo];
     logger.debug('refeered email: ' , data.email);
-    const mandrillOptions = {
-        templateName: "wob-welcome",
-        message: {
-            global_merge_vars: [{
-                "name": "FNAME",
-                "content": data.fname
-            }],
-            subject: subject,
-            to: sendToArray
-        }
-    };
 
     const sendGridOptions = {
         templateId: "d-dfcec8a2110d4c5da64894b1be238b15",
@@ -34,5 +23,5 @@ module.exports.sendEmail = function sendEmail(data,isAccountDisabed) {
         }
     };
 
-    emails.sendEmail(mandrillOptions, sendGridOptions, isAccountDisabed);
+    emails.sendEmail(sendGridOptions, isAccountDisabed);
 }
