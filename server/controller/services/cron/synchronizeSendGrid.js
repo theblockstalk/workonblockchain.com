@@ -98,9 +98,6 @@ async function synchDatabasetoList(listId) {
             try {
                 logger.debug('Updating sendgrid recipient', recipientUpdate);
 
-                if (settings.ENVIRONMENT !== "production") {
-                    recipientUpdate.email = sendGrid.addEmailEnvironment(recipientUpdate.email);
-                }
                 const updateResponse = await sendGrid.updateRecipient(recipientUpdate);
 
                 added = added + updateResponse.new_count;
@@ -135,18 +132,17 @@ async function synchDatabasetoList(listId) {
                     user: "true",
                     first_name: candidateDoc.first_name,
                     last_name: candidateDoc.last_name,
-                    referral_key: referralDoc.url_token,
-                    verify_email_key: userDoc.verify_email_key,
-                    account_dissabled: userDoc.disable_account.toString(),
-                    approved: userDoc.is_approved,
-                    email_verified: userDoc.is_verify,
-                    terms_id: candidateDoc.terms_id,
-                    created_date: userDoc.created_date
+                    user_referral_key: referralDoc.url_token,
+                    user_account_disabled: userDoc.disable_account.toString(),
+                    user_approved: userDoc.is_approved,
+                    user_email_verified: userDoc.is_verify,
+                    user_terms_id: candidateDoc.terms_id,
+                    user_created_date: userDoc.created_date,
+                    user_id: userDoc._id.toString()
                 };
                 if (candidateDoc.marketing_emails) {
-                    recipientUpdate.marketing_emails = candidateDoc.marketing_emails.toString();
+                    recipientUpdate.user_marketing_emails = candidateDoc.marketing_emails.toString();
                 }
-                recipientUpdate[settings.ENVIRONMENT + "_user_id"] = userDoc._id.toString();
 
                 await updateSendGridRecipient(listId, recipientUpdate);
             } else {
@@ -162,19 +158,18 @@ async function synchDatabasetoList(listId) {
                     user: "true",
                     first_name: companyDoc.first_name,
                     last_name: companyDoc.last_name,
-                    referral_key: referralDoc.url_token,
-                    verify_email_key: userDoc.verify_email_key,
-                    account_dissabled: userDoc.disable_account.toString(),
-                    approved: userDoc.is_approved,
-                    email_verified: userDoc.is_verify,
-                    terms_id: companyDoc.terms_id,
-                    created_date: userDoc.created_date,
-                    company_name: companyDoc.company_name
+                    user_referral_key: referralDoc.url_token,
+                    user_account_disabled: userDoc.disable_account.toString(),
+                    user_approved: userDoc.is_approved,
+                    user_email_verified: userDoc.is_verify,
+                    user_terms_id: companyDoc.terms_id,
+                    user_created_date: userDoc.created_date,
+                    company_name: companyDoc.company_name,
+                    user_id: userDoc._id.toString()
                 };
                 if (companyDoc.marketing_emails) {
-                    recipientUpdate.marketing_emails = companyDoc.marketing_emails.toString();
+                    recipientUpdate.user_marketing_emails = companyDoc.marketing_emails.toString();
                 }
-                recipientUpdate[settings.ENVIRONMENT + "_user_id"] = userDoc._id.toString();
 
                 await updateSendGridRecipient(listId, recipientUpdate);
             } else {

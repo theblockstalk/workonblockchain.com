@@ -120,6 +120,10 @@ module.exports.deleteRecipient = async function deleteRecipientFromList(recipien
 
 let lastRequest;
 module.exports.updateRecipient = async function updateRecipient(data) {
+    if (settings.ENVIRONMENT !== "production") {
+        data.email = sendGrid.addEmailEnvironment(data.email);
+    }
+
     const request = {
         method: 'PATCH',
         url: '/v3/contactdb/recipients',
