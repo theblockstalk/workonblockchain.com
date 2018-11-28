@@ -8,10 +8,6 @@ module.exports.sendEmail = function sendEmail(email,first_name,company_name,cand
     };
     const subject = "New candidates that match your search!";
 
-    const mandrillOptions = {
-
-    };
-
     const sendGridOptions = {
         templateId: "d-951e44e917e340798954c638f151bf76",
         subject: subject,
@@ -30,5 +26,5 @@ module.exports.sendEmail = function sendEmail(email,first_name,company_name,cand
     logger.debug('Sending email with sendGrid', {templateDetails: sendGridOptions});
 
 
-    emails.sendEmail(mandrillOptions, sendGridOptions, isAccountDisabed);
+    emails.sendEmail(sendGridOptions, isAccountDisabed);
 }
