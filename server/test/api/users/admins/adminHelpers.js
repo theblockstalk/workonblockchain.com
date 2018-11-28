@@ -66,7 +66,7 @@ const changeCandidateStatus = module.exports.changeCandidateStatus = async funct
         'reason': reason
     };
     const res = await chai.request(server)
-        .put('/users/approve_candidate/'+id)
+            .put('/users/change_candidate_status/'+id)
         .set('Authorization', jwtToken)
         .send(data);
     res.should.have.status(200);
