@@ -31,12 +31,13 @@ module.exports = async  function (req,res)
         salaryArray= {USD : salaryConverterResult[0] , GBP : salaryConverterResult[1]  , Euro : queryBody.salary};
     }
 
-    const userDoc = await users.find({type : 'candidate' , is_verify :1, is_approved :1, disable_account : false }).lean();
+    const userDoc = await users.find({type : 'candidate' , is_verify :1,'candidate.status.0.status': 'approved' ,disable_account : false }).lean();
     console.log(userDoc);
     if(userDoc){
         let userDocArray = [];
         for (detail of userDoc) {
-            userDocArray.push(detail._id);
+            const ids =  await getUsersIds(detail);
+            userDocArray.push(ids);
         }
 
         let queryString = [];
@@ -134,3 +135,6 @@ let filterData = async function filterData(candidateDetail , userId) {
     return filterReturnData.candidateAsCompany(candidateDetail,userId);
 }
 
+let getUsersIds = async function getUsersIds(detail) {
+    return detail._id;
+}

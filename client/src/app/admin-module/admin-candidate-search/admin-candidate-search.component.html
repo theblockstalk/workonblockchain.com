@@ -44,8 +44,8 @@
 
 	  							<select class="form-control " name="approve" [(ngModel)]="approve" (ngModelChange)="search_approved( $event)" >
 
-									  <option value="-1" disabled selected hidden >Active/Inactive</option>
-									  <option class='option' *ngFor='let options of admin_check'  [value]="options.name" selected>{{options.value}}</option>
+									  <option value="-1" disabled selected hidden >Approved/Rejected</option>
+									  <option class='option' *ngFor='let options of admin_check'  [value]="options.value" selected>{{options.name}}</option>
 							    </select>
 							</div>
 						</li>
@@ -128,8 +128,8 @@
 								<input type= "hidden" *ngIf='(data.users[0].is_verify ===1 && data.users[0].is_approved === 1)' name="is_approve" [ngModel]="0">
 
 								<div class="submit-button">
-									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data.users[0].is_verify ===1 && data.users[0].is_approved === 0)" >Active</button>
-									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data.users[0].is_verify ===1 && data.users[0].is_approved === 1)" >Inactive</button>
+									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data.users[0].is_verify ===1 && (data.users[0].candidate.status[0].status === 'Rejected' || data.users[0].candidate.status[0].status === 'rejected' || data.users[0].candidate.status[0].status === 'Deferred' || data.users[0].candidate.status[0].status === 'deferred' || data.users[0].candidate.status[0].status === 'Other' || data.users[0].candidate.status[0].status === 'other' || data.users[0].candidate.status[0].status === 'Wizard Completed' || data.users[0].candidate.status[0].status === 'wizard completed'))" >Active</button>
+									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data.users[0].is_verify ===1 && (data.users[0].candidate.status[0].status === 'Approved' || data.users[0].candidate.status[0].status === 'approved'))" >Inactive</button>
 									<button type="submit" class = "btn btn_descp" *ngIf = "data.users[0].is_verify ===0" disabled>Active</button>
 
 								</div>
@@ -147,8 +147,8 @@
 								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
 
 								<div class="submit-button">
-									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Active</button>
-									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Inactive</button>
+									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && (data._creator.candidate.status[0].status === 'Rejected' || data._creator.candidate.status[0].status === 'rejected' || data._creator.candidate.status[0].status === 'Deferred' || data._creator.candidate.status[0].status === 'deferred' || data._creator.candidate.status[0].status === 'Other' || data._creator.candidate.status[0].status === 'other' || data._creator.candidate.status[0].status === 'Wizard Completed' || data._creator.candidate.status[0].status === 'wizard completed'))">Active</button>
+									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && (data._creator.candidate.status[0].status === 'approved' || data._creator.candidate.status[0].status === 'Approved'))">Inactive</button>
 									<button type="submit" class = "btn btn_descp" *ngIf = "data._creator.is_verify ===0" disabled>Active</button>
 
 								</div>

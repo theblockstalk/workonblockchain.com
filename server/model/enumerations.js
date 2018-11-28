@@ -20,3 +20,7 @@ module.exports.workBlockchainInterests = ['Enterprise blockchain', 'Public block
 module.exports.workAvailability = ['1 month','Now','2 months','3 months','Longer than 3 months'];
 
 module.exports.otherSkills = ['P2P protocols' , 'Distributed computing and networks' , 'Security' , 'Formal verification' , 'Cryptography' , 'Game theory' , 'Economics' , 'Smart contract audits' , 'Zero Knowlege Proofs'];
+
+module.exports.candidateStatus = ['created','wizard completed','updated','approved','rejected','deferred', 'other'];
+
+module.exports.statusReasons = ['garbage','recruiter','not technical','other','profile incomplete','not looking for job', 'job found','not responded'];

@@ -31,8 +31,9 @@ describe('get a candidate or company info', function () {
             //creating a company
             const company = docGenerator.company();
             await companyHelper.signupVerifiedApprovedCompany(company);
-            const companyDoc = await Users.findOne({email: company.email}).lean();
             await userHelper.makeAdmin(company.email);
+            const companyDoc = await Users.findOne({email: company.email}).lean();
+
             //creating a candidate
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
