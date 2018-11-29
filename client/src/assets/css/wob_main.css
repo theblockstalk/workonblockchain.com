@@ -525,6 +525,16 @@ body{
     font-size: 13px;
     line-height: 24px;
   }
+  .text_col{
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+
+  .sel_padd{
+    padding: 0px;
+    width: 100%;
+  }
+
 }
 
 @media only screen and (max-width: 768px){
@@ -987,7 +997,6 @@ body{
 .form_error{
   margin-top: 1px;
   font-size: 12px;
-  position: absolute;
 }
 
 .custom_form .form-group{
@@ -1581,7 +1590,7 @@ input[type=checkbox] {
 
 
 .profile_group {
-  max-width: 950px;
+  max-width: 1150px;
   margin: auto;
 }
 
@@ -3904,6 +3913,92 @@ input:checked + .slider:before {
   top: 0px !important;
   float: right !important;
 }
+
+.pre_col{
+  padding-right: 0px;
+}
+
+.pre_sle{
+  padding-left: 5px;
+  top:37px;
+}
+
+.pre_sle_b {
+  padding-left: 5px;
+  top: 13px;
+}
+
+.pre_sle_c {
+  padding-left: 5px;
+  top: 34px;
+}
+
+.top_20{
+  top: 20px;
+}
+
+.status_select{
+  width: 200px !important;
+  float: left;
+  position: relative;
+  top: 20px;
+  left:15px;
+}
+
+.btnn_group{
+  top: 20px;
+  position: relative;
+  left: 20px;
+}
+
+.save_status{
+  padding: 6px 12px;
+  min-width: 90px;
+  border-radius: 0px !important;
+  color: #fff;
+  background-color: #537284;
+  border-color: #537284;
+  font-size: 15px;
+}
+
+.badges{
+  position: relative;
+  top: 10px;
+  left: 20px;
+}
+
+.badges .label{
+  padding: 5px;
+}
+
+.status_title{
+  position: relative;
+  margin-right: 10px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.date_sec{
+  position: relative;
+  top: 15px;
+  left: 20px;
+  padding: 10px 0px;
+}
+
+.status-date{
+  font-size: 17px;
+}
+
+.no_padding{
+  padding: 0px;
+}
+.noo_padding{
+  padding: 0px;
+}
+
+.text_col{
+  width: 50% !important;
+}
 /*==welcome model style end==*/
 
 /*=======TABLETS STYLES 768px to 992px========*/
@@ -3913,6 +4008,11 @@ input:checked + .slider:before {
   .navbar {
     border-radius: 0px !important;
   }
+  .modal-pref {
+    width: 900px;
+    margin: 30px auto;
+  }
+
 }
 
 @media (max-width: 1200px){
@@ -4032,7 +4132,6 @@ input:checked + .slider:before {
   .hidden_select{
     padding-left: 15px;
   }
-
   .center{
     text-align: center;
   }
@@ -4128,8 +4227,6 @@ input:checked + .slider:before {
     max-width: 100% !important;
   }
 
-  /*==New css 23-Nov-2018==*/
-
   .pre_col{
     padding-right: 0px;
   }
@@ -4194,8 +4291,6 @@ input:checked + .slider:before {
     padding-left: 0px;
     width: 230px;
   }
-
-  /*==/New css 23-Nov-2018==*/
 
   #frame .content .messages{
     max-height: 325px;
@@ -4283,6 +4378,19 @@ input:checked + .slider:before {
 
   .xs_input{
     margin-bottom: 20px;
+  }
+
+  .pre_col{
+    padding-right: 15px;
+  }
+
+  .pre_sle, .pre_sle_b, .pre_sle_c{
+    padding-left: 15px;
+    top:-10px;
+  }
+
+  .top_20{
+    top:0px;
   }
 
 }
