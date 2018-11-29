@@ -27,6 +27,10 @@ const convertToDays = module.exports.convertToDays = function convertToDays(when
 const reduceSalaryFactor = 0.9;
 
 module.exports.candidateSearch = async function candidateSearch(filters, search) {
+    logger.debug("Doing new candidate search", {
+        filters: filters,
+        search: search
+    });
     let candidates;
     let userQuery = {
         type : 'candidate'
