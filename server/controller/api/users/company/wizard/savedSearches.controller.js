@@ -23,5 +23,5 @@ module.exports = async function (req,res)
         errors.throwError("Company doc not found", 404);
     }
 
-
+   
 }

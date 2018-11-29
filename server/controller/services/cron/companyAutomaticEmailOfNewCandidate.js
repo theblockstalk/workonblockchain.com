@@ -19,7 +19,9 @@ module.exports = async function (req, res) {
         console.log(userDoc);
         if(userDoc) {
             let queryString = [];
-            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) { // not sure about this
+            console.log(companyDoc.last_email_sent);
+            console.log(new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000));
+            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) { 
                 let candidateDoc = await candidateSearch.candidateSearchQuery(companyDoc.saved_searches);
                 console.log(candidateDoc);
                 if(candidateDoc) {
@@ -40,6 +42,7 @@ module.exports = async function (req, res) {
                         }
                     }
                     const candidateListCount = candidateList.length;
+                    console.log(candidateListCount);
                     let candidates;
                     if(candidateListCount > 0) {
                         if(candidateListCount <= 10) {
@@ -74,6 +77,8 @@ module.exports = async function (req, res) {
     res.send({
         success : true
     })
+
+
 
 }
 

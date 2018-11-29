@@ -25,7 +25,8 @@ const convertToDays = module.exports.convertToDays = function convertToDays(when
 
 const candidateSearchQuery = module.exports.candidateSearchQuery = async function candidateSearchQuery(queryBody ) {
     let queryString = [];
-    let userDoc = await User.find({is_verify : 1 , is_approved : 1 , disable_account : false , type : 'candidate'  }).lean();
+    console.log(queryBody);
+    const userDoc = await User.find({type : 'candidate' , is_verify :1,'candidate.status.0.status': 'approved' ,disable_account : false }).lean();
     if(userDoc) {
         console.log("userDoc");
         let userDocArray = [];
