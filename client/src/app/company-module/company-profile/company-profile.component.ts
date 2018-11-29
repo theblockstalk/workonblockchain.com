@@ -289,6 +289,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                       $('#popModal_b').modal('show');
                       $(window).load(function()
                       {
+                        console.log("windows load");
                         $('#popModal_b').modal('show');
                       });
                     }
