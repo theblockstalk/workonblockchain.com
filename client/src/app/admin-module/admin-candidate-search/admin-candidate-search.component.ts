@@ -28,7 +28,12 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   active;
   inactive;
   approve;
-  admin_check = [{name:1 , value:"Active"}, {name:0 , value:"Inactive"}];
+  admin_check = [
+    {value:'approved', name:'Approved'},
+    {value:'rejected', name:'Rejected'},
+    {value:'deferred', name:'Deferred'},
+    {value:'other', name:'Other'}
+  ];
   information;
   admin_log;
   response;
@@ -134,16 +139,18 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   approveClick(event , approveForm: NgForm)
   {
     this.error = '';
+    let reason = '';
     if(event.srcElement.innerHTML ==='Active' )
     {
-      this.is_approve = 1;
+      this.is_approve = 'approved';
     }
-    else if(event.srcElement.innerHTML ==='Inactive')
+    else if(event.srcElement.innerHTML === 'Inactive')
     {
-      this.is_approve =0;
+      this.is_approve = 'rejected';
+      reason = 'garbage';
     }
 
-    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
+    this.authenticationService.approve_candidate(approveForm.value.id ,this.is_approve,reason)
       .subscribe(
         data =>
         {
@@ -232,7 +239,6 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
   search(event)
   {
-
     this.length =0;
     this.info=[];
     this.response = "";
@@ -244,60 +250,59 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     else
     {
       this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord)
+      .subscribe(
+        data =>
+        {
+            this.length =0;
+            this.info=[];
+            this.information = this.filter_array(data);
 
-        .subscribe(
-          data =>
-          {
-              this.length =0;
-              this.info=[];
-              this.information = this.filter_array(data);
 
+            for(let res of this.information)
+            {
 
-              for(let res of this.information)
-              {
+              this.length++;
+              this.info.push(res);
 
-                this.length++;
-                this.info.push(res);
+            }
 
-              }
+            if(this.length> 0 )
+            {
 
-              if(this.length> 0 )
-              {
-
-                this.log='';
-              }
-              else
-              {
-                this.response = "data";
-                this.log= 'No candidates matched this search criteria';
-              }
-
-              this.page =this.length;
-              this.response = "data";
-
-          },
-          error =>
-          {
-            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+              this.log='';
+            }
+            else
             {
               this.response = "data";
-              this.length = '';
-              this.info = [];
-              this.page = '';
-              this.log = error['error']['message'];
+              this.log= 'No candidates matched this search criteria';
             }
-            else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-            {
-              this.response = "data";
-              this.length = '';
-              this.info = [];
-              this.page = '';
-              this.log = error['error']['message'];
-            }
-            else {
-              this.log = "Something getting wrong";
-            }
-          });
+
+            this.page =this.length;
+            this.response = "data";
+
+        },
+        error =>
+        {
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.response = "data";
+            this.length = '';
+            this.info = [];
+            this.page = '';
+            this.log = error['error']['message'];
+          }
+          else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.response = "data";
+            this.length = '';
+            this.info = [];
+            this.page = '';
+            this.log = error['error']['message'];
+          }
+          else {
+            this.log = "Something getting wrong";
+          }
+        });
 
     }
 

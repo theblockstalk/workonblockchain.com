@@ -27,5 +27,21 @@ module.exports.setStatus = async function setStatus(status, jwtToken) {
         .send(data);
     res.should.have.status(200);
     return res;
+}
 
+module.exports.approveCandidate = async function approveCandidate(email) {
+    let newStatus = {
+        status: 'approved',
+        status_updated: new Date(),
+        timestamp: new Date()
+    };
+    await
+    Users.update({email: email}, {
+        $push: {
+            'candidate.status': {
+                $each: [newStatus],
+                $position: 0
+            }
+        }
+    });
 }

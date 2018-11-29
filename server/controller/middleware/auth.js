@@ -33,7 +33,12 @@ module.exports.isValidUser = asyncMiddleware(async function isValidUser(req, res
     await getUserFromToken(req);
     let user = req.auth.user;
     if (user.is_verify !== 1) errors.throwError("User is not verified", 403);
-    if (user.is_approved !== 1) errors.throwError("User is not a approved", 403);
+    if (user.type === 'company'){
+        if (user.is_approved !== 1) errors.throwError("User is not a approved", 403);
+    }
+    if (user.type === 'candidate') {
+        if (user.candidate.status[0].status !== 'approved') errors.throwError("User is not a approved", 403);
+    }
     next();
 });
 
@@ -53,7 +58,7 @@ module.exports.isValidCandidate = asyncMiddleware(async function isValidCandidat
     let user = req.auth.user;
     if (user.type !== 'candidate') errors.throwError("User is not a candidate", 403);
     if (user.is_verify !== 1) errors.throwError("User is not verified", 403);
-    if (user.is_approved !== 1) errors.throwError("User is not a approved", 403);
+    if (user.candidate.status[0].status !== 'approved') errors.throwError("User is not a approved", 403);
     if (user.disable_account !== false) errors.throwError("User account was dissabled", 403);
     next();
 });

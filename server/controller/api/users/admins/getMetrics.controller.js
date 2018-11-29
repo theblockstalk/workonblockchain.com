@@ -38,7 +38,7 @@ module.exports = async function (req, res) {
         let userDoc = await User.findOne({_id: candidateDoc._creator});
         if (userDoc.is_verify) emailVerified++;
         if (userDoc.disable_account) dissabled++;
-        if (userDoc.is_approved && !userDoc.disable_account) {
+        if (userDoc.candidate.status[0].status === 'approved' && !userDoc.disable_account) {
             approved++;
 
             if (candidateDoc.expected_salary && candidateDoc.expected_salary_currency) salaryList(salaryArray, candidateDoc.expected_salary, candidateDoc.expected_salary_currency)
