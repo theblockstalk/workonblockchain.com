@@ -287,7 +287,11 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                     if(data.terms_id && data.company_founded && data.no_of_employees && data.company_funded && data.company_description && !data.saved_searches ) {
                       console.log("show popup");
                       $('#popModal_b').modal('show');
-                    
+                      $(window).load(function()
+                      {
+                        console.log("windows load");
+                        $('#popModal_b').modal('show');
+                      });
                     }
                     if(data.saved_searches) {
                       this.saved_searche = data.saved_searches;
