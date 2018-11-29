@@ -313,6 +313,7 @@ export class AdminCandidateDetailComponent implements OnInit {
   approveClick(event , approveForm: NgForm)
   {
     this.error = '';
+    this.success = '';
     let reason = '';
     if(approveForm.value.set_status === "Rejected" || approveForm.value.set_status === "rejected")
     {
