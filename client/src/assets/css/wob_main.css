@@ -4172,27 +4172,6 @@ input:checked + .slider:before {
     left: 20px;
   }
 
-  .save_status{
-    padding: 6px 12px;
-    min-width: 90px;
-    border-radius: 0px !important;
-    color: #fff;
-    background-color: #537284;
-    border-color: #537284;
-    font-size: 15px;
-  }
-
-  .badges{
-    position: relative;
-    top: 10px;
-    left: 20px;
-  }
-
-  .badges .label{
-    padding: 8px;
-    font-size: 12px;
-  }
-
   .status_title{
     position: relative;
     margin-right: 10px;
@@ -4205,10 +4184,6 @@ input:checked + .slider:before {
     top: 15px;
     left: 20px;
     padding: 10px 0px;
-  }
-
-  .status-date{
-    font-size: 17px;
   }
 
   .shown_col{
@@ -4553,6 +4528,32 @@ input:checked + .slider:before {
 .reset_password_error .error{
   color: #e80000;
 }
+
+.save_status{
+  padding: 6px 12px;
+  min-width: 90px;
+  border-radius: 0px !important;
+  color: #fff;
+  background-color: #537284;
+  border-color: #537284;
+  font-size: 15px;
+}
+
+.badges{
+  position: relative;
+  top: 10px;
+  left: 20px;
+}
+
+.badges .label{
+  padding: 8px;
+  font-size: 12px;
+}
+
+.status-date{
+  font-size: 17px;
+}
+
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 
