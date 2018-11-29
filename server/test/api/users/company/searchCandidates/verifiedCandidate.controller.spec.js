@@ -41,7 +41,7 @@ describe('verified candidates as company', function () {
             const filterRes = await companyHelper.verifiedCandidate(userDoc.jwt_token);
 
             filterRes.body[0]._creator.is_verify.should.equal(1);
-            filterRes.body[0]._creator.is_approved.should.equal(1);
+            filterRes.body[0]._creator.candidate.status[0].status.should.equal('approved');
             filterRes.body[0]._creator.disable_account.should.equal(false);
             filterRes.body[0]._creator.type.should.equal("candidate");
         })

@@ -49,12 +49,12 @@ describe('admin search candidate by filter', function () {
             const chatDoc = await Chats.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
             const data = {
                 msg_tags : [chatDoc.msg_tag],
-                is_approve : candidateUserDoc.is_approved,
+                is_approve : candidateUserDoc.candidate.status[0].status,
                 word : candidate.first_name
             }
             const candidateFilterRes = await adminHelper.candidateFilter(data , candidateUserDoc.jwt_token);
             candidateFilterRes.body[0].first_name.should.equal(candidate.first_name);
-            candidateUserDoc.is_approved.should.equal(data.is_approve);
+            candidateUserDoc.candidate.status[0].status.should.equal('approved');
             chatDoc.msg_tag.should.valueOf(data.msg_tags);
 
         })

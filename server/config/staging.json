@@ -22,10 +22,6 @@
       "stream": "nodejs"
     }
   },
-  "mandrill": {
-    "fromAddress": "contact@workonblockchain.com",
-    "fromName": "STAGING - Work on Blockchain"
-  },
   "sendGrid": {
     "fromAddress": "staging.contact@workonblockchain.com",
     "fromName": "STAGING - Work on Blockchain"
@@ -46,9 +42,9 @@
   },
   "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
-    "unreadMessagesTick": "00 12 * * *",
-    "autoNotification" : "00 9 * * *",
-    "syncSendgrid": "00 8,11 * * * *"
+    "unreadMessagesTick": "00 12 * * 1-7",
+    "autoNotification" : "00 9 * * 1-7",
+    "syncSendgrid": "00 8 * * 1-7"
   },
   "slack": {
     "username": "STAGING bug reporter",

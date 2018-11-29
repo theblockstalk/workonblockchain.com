@@ -534,6 +534,7 @@ body{
     padding: 0px;
     width: 100%;
   }
+
 }
 
 @media only screen and (max-width: 768px){
@@ -693,8 +694,11 @@ body{
 
 
 @media screen and (min-width: 768px){
+  .select_error {
+    position: relative !important;
+  }
   .slider-indicator {
-    bottom: -35px !important;
+      bottom: -35px !important;
   }
 }
 
@@ -3106,8 +3110,12 @@ input:checked + .slider:before {
   border-radius: 0px;
 }
 
-
 .pro_list{
+  list-style: none;
+  padding-left: 0px;
+}
+
+.pro_list, .status_list{
   list-style: none;
   padding-left: 0px;
 }
@@ -3120,6 +3128,16 @@ input:checked + .slider:before {
   text-align: center;
   margin-bottom: 5px;
 }
+
+.status_list li{
+  display: inline-block;
+  margin-right: 5px;
+  background-color: #fff;
+  padding: 5px;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
 .pro_br-btm{
   border-bottom: 1px solid rgba(0,0,0,0.1);
 }
@@ -3994,11 +4012,16 @@ input:checked + .slider:before {
     width: 900px;
     margin: 30px auto;
   }
+
 }
 
 @media (max-width: 1200px){
   .wlcm_btn{
     right: 0px;
+  }
+
+  .shown_col, .hidden_select{
+    width: 50%;
   }
 }
 
@@ -4052,6 +4075,7 @@ input:checked + .slider:before {
   .sm-6 {
     width: 47%;
   }
+
   .pre_col{
     padding-right: 15px;
   }
@@ -4062,9 +4086,16 @@ input:checked + .slider:before {
   }
 
   .top_20{
-    top:0px;
+    top: 0px;
   }
 
+  .shown_col, .hidden_select{
+    width: 230px;
+  }
+
+  .hidden_select{
+    padding-left: 0px;
+  }
 }
 
 
@@ -4085,6 +4116,22 @@ input:checked + .slider:before {
 
 
 @media (max-width: 768px){
+  .pre_col{
+    padding-right: 15px;
+  }
+
+  .pre_sle, .pre_sle_b, .pre_sle_c{
+    padding-left: 15px;
+    top:-10px;
+  }
+
+  .top_20{
+    top:0px;
+  }
+
+  .hidden_select{
+    padding-left: 15px;
+  }
   .center{
     text-align: center;
   }
@@ -4178,6 +4225,96 @@ input:checked + .slider:before {
 
   .job-description{
     max-width: 100% !important;
+  }
+
+  .pre_col{
+    padding-right: 0px;
+  }
+
+  .pre_sle{
+    padding-left: 5px;
+    top:8px;
+  }
+
+  .pre_sle_b {
+    padding-left: 5px;
+    top: 13px;
+  }
+
+  .pre_sle_c {
+    padding-left: 5px;
+    top: 34px;
+  }
+
+  .pre_form label{
+
+    font-weight: normal;
+  }
+
+  .top_20{
+    top: 20px;
+  }
+
+  .status_select{
+    width: 200px !important;
+    float: left;
+    position: relative;
+    top: 20px;
+    left:15px;
+  }
+
+  .btnn_group{
+    top: 20px;
+    position: relative;
+    left: 20px;
+  }
+
+  .save_status{
+    padding: 6px 12px;
+    min-width: 90px;
+    border-radius: 0px !important;
+    color: #fff;
+    background-color: #537284;
+    border-color: #537284;
+    font-size: 15px;
+  }
+
+  .badges{
+    position: relative;
+    top: 10px;
+    left: 20px;
+  }
+
+  .badges .label{
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .status_title{
+    position: relative;
+    margin-right: 10px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .date_sec{
+    position: relative;
+    top: 15px;
+    left: 20px;
+    padding: 10px 0px;
+  }
+
+  .status-date{
+    font-size: 17px;
+  }
+
+  .shown_col{
+    width: 230px;
+  }
+
+  .hidden_select{
+    padding-left: 0px;
+    width: 230px;
   }
 
   #frame .content .messages{

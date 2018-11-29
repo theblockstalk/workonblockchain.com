@@ -42,14 +42,14 @@ describe('admin search company by filter', function () {
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
             await userHelper.makeAdmin(candidate.email);
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-
+            
             const initialJobOffer = docGenerator.initialJobOffer();
             const res = await chatHelper.insertMessage(companyUserDoc._id,candidateUserDoc._id,initialJobOffer,companyUserDoc.jwt_token);
             const chatDoc = await Chats.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
 
             const data = {
                 msg_tags : [chatDoc.msg_tag],
-                is_approve : candidateUserDoc.is_approved,
+                is_approve : 1,
                 word : company.company_name
             }
             const companyFilterRes = await adminHelper.companyFilter(data , companyUserDoc.jwt_token);

@@ -5,6 +5,7 @@ const sgClient = require('@sendgrid/client');
 const time = require('../time');
 
 const throttleTimeMs = 400;
+const environmentName = "wob_" + settings.ENVIRONMENT + "_environment";
 
 if (settings.isLiveApplication()) {
     logger.debug("Setting Sendgrid API key");
@@ -52,6 +53,27 @@ async function apiRequest(request) {
     }
 }
 
+module.exports.addEmailEnvironment = function addEmailEnvironment(email) {
+    const at = email.search("@");
+    const plus = email.search(/\+/g); // "+" symbol
+    let name;
+    if (plus !== -1) {
+        name = email.substring(0,at) + "_" + environmentName;
+    } else {
+        name = email.substring(0,at) + "+" + environmentName;
+    }
+    const domain = email.substring(at+1);
+    return name + "@" + domain;
+};
+
+module.exports.removeEmailEnvironment = function removeEmailEnvironment(email) {
+    const at = email.search("@");
+    const env = email.search(environmentName);
+    const name = email.substring(0, env - 1);
+    const domain = email.substring(env + environmentName.length + 1);
+    return name + "@" + domain;
+};
+
 module.exports.getAllLists = async function getAllLists() {
     const request = {
         method: 'GET',
@@ -98,6 +120,10 @@ module.exports.deleteRecipient = async function deleteRecipientFromList(recipien
 
 let lastRequest;
 module.exports.updateRecipient = async function updateRecipient(data) {
+    if (settings.ENVIRONMENT !== "production") {
+        data.email = sendGrid.addEmailEnvironment(data.email);
+    }
+
     const request = {
         method: 'PATCH',
         url: '/v3/contactdb/recipients',

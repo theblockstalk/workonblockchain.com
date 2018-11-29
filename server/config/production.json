@@ -26,10 +26,6 @@
     "fromAddress": "no-reply@workonblockchain.com",
     "fromName": "Work on Blockchain"
   },
-  "mandrill": {
-    "fromAddress": "no-reply@workonblockchain.com",
-    "fromName": "Work on Blockchain"
-  },
   "currencyRates": {
     "USD": {
       "GBP": 1.33,
@@ -46,9 +42,9 @@
   },
   "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
-    "unreadMessagesTick": "00 12 * * *",
-    "autoNotification" : "00 12 * * *",
-    "syncSendgrid": "00 9,12 * * * *"
+    "unreadMessagesTick": "30 12 * * 1-7",
+    "autoNotification" : "00 0 * * 1-7",
+    "syncSendgrid": "00 8 * * 1-7"
   },
   "slack": {
     "username": "PRODUCTION bug reporter",

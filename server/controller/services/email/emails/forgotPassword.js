@@ -35,14 +35,6 @@ module.exports.sendEmail = function sendEmail(emailAddress,name,hash) {
     }
    
     logger.debug('forgot passowrd feature: ' , merge_tags);
-    const mandrillOptions = {
-    	   templateName: "wob-forgot-password",
-    	    message: {
-    	    global_merge_vars: merge_tags ,
-    	    subject: subject,
-    	    to: sendToArray
-    	  }
-    };
 
     const sendGridOptions = {
         templateId: "d-84d5a0028f1141e68433cd97d14a876d",
@@ -59,5 +51,5 @@ module.exports.sendEmail = function sendEmail(emailAddress,name,hash) {
         }
     };
 
-    emails.sendEmail(mandrillOptions, sendGridOptions, false);
+    emails.sendEmail(sendGridOptions, false);
 }

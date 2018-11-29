@@ -43,7 +43,7 @@ describe('get verified candidate detail as company', function () {
             const filterRes = await companyHelper.getVerifiedCandidateDetail(candidateUserDoc._id , companyReply, companyUserDoc.jwt_token);
 
             filterRes.body._creator.is_verify.should.equal(1);
-            filterRes.body._creator.is_approved.should.equal(1);
+            filterRes.body._creator.candidate.status[0].status.should.equal('approved');
             filterRes.body._creator.disable_account.should.equal(false);
             filterRes.body._creator.type.should.equal("candidate");
             let name = candidate.first_name[0].toUpperCase() + candidate.last_name[0].toUpperCase();
