@@ -241,7 +241,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                       this.router.navigate(['/about_comp']);
                   }
 
-                  else if(((new Date(data._creator.created_date) > new Date('2018/11/27')) && data.saved_searches.length === 0)) {
+                  else if(((new Date(data._creator.created_date) > new Date('2018/11/28')) && (!data.saved_searches || data.saved_searches.length === 0))) {
                     this.router.navigate(['/preferences']);
                   }
 

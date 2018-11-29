@@ -12,6 +12,8 @@ module.exports = async  function (req,res)
 {
     let userId = req.auth.user._id;
     let queryBody = req.body;
+    console.log("query body");
+    console.log(queryBody);
     let salaryArray = [];
     let salaryConverterResult;
     if(queryBody.currency === '$ USD' && queryBody.salary)
@@ -32,7 +34,6 @@ module.exports = async  function (req,res)
     }
 
     const userDoc = await users.find({type : 'candidate' , is_verify :1,'candidate.status.0.status': 'approved' ,disable_account : false }).lean();
-    console.log(userDoc);
     if(userDoc){
         let userDocArray = [];
         for (detail of userDoc) {
@@ -90,6 +91,7 @@ module.exports = async  function (req,res)
         }
 
         const searchQuery = { $and: queryString };
+        console.log(searchQuery);
         const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator').lean();
         if(candidateDoc) {
             if(candidateDoc.length <= 0){

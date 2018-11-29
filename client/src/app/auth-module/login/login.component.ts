@@ -74,7 +74,7 @@ forgetMessage;
 
                 if(user.type === 'company') {
 
-                  if (new Date(user.created_date) < new Date('2018/11/27')) {
+                  if (new Date(user.created_date) < new Date('2018/11/28')) {
                     this.http.get<any>(URL + 'users/current_company/' + user._id, {
                       headers: new HttpHeaders().set('Authorization', user.jwt_token)
                     }).map((res) => res).subscribe(
