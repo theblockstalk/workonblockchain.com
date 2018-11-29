@@ -19,9 +19,9 @@ describe('admin run cron job metrics', function () {
         await mongo.drop();
     })
 
-    describe('GET /users/run_cron/:cron_name', () => {
+    describe('GET /users/run_cron/:cron_name', function() {
 
-        it('it should run the cron job', async () => {
+        it('it should run the cron job', async function() {
 
             const candidate = docGenerator.candidate();
 
@@ -33,7 +33,7 @@ describe('admin run cron job metrics', function () {
             cronRes.should.have.status(200);
         })
 
-        it('it should fail run the cron job with wrong name', async () => {
+        it('it should fail run the cron job with wrong name', async function() {
 
             const candidate = docGenerator.candidate();
 
@@ -43,6 +43,17 @@ describe('admin run cron job metrics', function () {
 
             const cronRes = await adminHelper.runCron("wrongParam", candidateUserDoc.jwt_token);
             cronRes.should.have.status(400);
-            })
+        })
+
+        it('it should fail for non-admin', async function() {
+
+            const candidate = docGenerator.candidate();
+
+            await candidateHelper.signupCandidate(candidate);
+            const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
+
+            const cronRes = await adminHelper.runCron("syncSendgrid", candidateUserDoc.jwt_token);
+            cronRes.should.have.status(403);
+        })
     })
 });
