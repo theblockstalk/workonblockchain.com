@@ -4554,6 +4554,10 @@ input:checked + .slider:before {
   font-size: 17px;
 }
 
+#sub_bttn {
+  margin-top: 5%;
+}
+
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 
