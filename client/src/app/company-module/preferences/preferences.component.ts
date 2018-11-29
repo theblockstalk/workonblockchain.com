@@ -178,6 +178,40 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     }
     else if(this.currentUser && this.currentUser.type === 'company') {
 
+      this.locations.sort(function(a, b){
+        if(b.name === 'Remote' || a.name === 'Remote') {
+        }
+        else {
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        }
+      })
+
+      this.job_types.sort(function(a, b){
+          if(a < b) { return -1; }
+          if(a > b) { return 1; }
+          return 0;
+      })
+
+      this.roles.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.blockchain.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.language_opt.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
       this.preferncesForm = new FormGroup({
         location: new FormControl(),
         job_type: new FormControl(),
