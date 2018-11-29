@@ -139,6 +139,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   approveClick(event , approveForm: NgForm)
   {
     this.error = '';
+    let reason = '';
     if(event.srcElement.innerHTML ==='Active' )
     {
       this.is_approve = 'approved';
@@ -146,9 +147,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     else if(event.srcElement.innerHTML === 'Inactive')
     {
       this.is_approve = 'rejected';
+      reason = 'garbage';
     }
 
-    this.authenticationService.approve_candidate(approveForm.value.id ,this.is_approve,'' )
+    this.authenticationService.approve_candidate(approveForm.value.id ,this.is_approve,reason)
       .subscribe(
         data =>
         {

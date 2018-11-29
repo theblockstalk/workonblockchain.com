@@ -28,9 +28,9 @@ module.exports = async function (req, res) {
                 }
                 newStatus.reason = reason;
             }
-            else if (status === 'other') {}
+            else if (status === 'other' || status === 'approved') {}
             else {
-                errors.throwError("Status " + status + " now allowed", 400);
+                errors.throwError("Status " + status + " not allowed", 400);
             }
             await
                 User.update({_id: userDoc._id}, {
