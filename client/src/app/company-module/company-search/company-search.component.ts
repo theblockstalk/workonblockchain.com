@@ -372,6 +372,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   positionchanged(data)
   {
+    this.not_found = '';
     if(this.select_value  !== data.value)
     {
       this.select_value = data.value;
@@ -383,6 +384,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   blockchainItems;
   blockchainchanged(data)
   {
+    this.not_found = '';
     if(this.selecteddd  !== data.value)
     {
       this.selecteddd = data.value;
@@ -464,6 +466,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     else {
+      this.not_found='';
       this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
         .subscribe(
           data =>
