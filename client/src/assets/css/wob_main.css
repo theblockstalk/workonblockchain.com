@@ -4400,6 +4400,11 @@ input:checked + .slider:before {
 .reset_password_error .error{
   color: #e80000;
 }
+
+#sub_bttn{
+  margin-top: 5%;
+}
+
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 
