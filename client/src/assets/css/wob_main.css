@@ -3281,7 +3281,7 @@ input:checked + .slider:before {
   display: block;
   font-size: 0;
   line-height: 1em;
-  margin-left: 45%;
+  margin-left: 45.32%;
 }
 
 .footer .social-icons {
