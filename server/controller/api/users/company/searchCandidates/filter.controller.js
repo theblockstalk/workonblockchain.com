@@ -12,8 +12,6 @@ module.exports = async  function (req,res)
 {
     let userId = req.auth.user._id;
     let queryBody = req.body;
-    console.log("query body");
-    console.log(queryBody);
     let salaryArray = [];
     let salaryConverterResult;
     if(queryBody.currency === '$ USD' && queryBody.salary)
