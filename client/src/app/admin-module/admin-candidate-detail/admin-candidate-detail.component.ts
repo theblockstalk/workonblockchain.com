@@ -106,12 +106,10 @@ export class AdminCandidateDetailComponent implements OnInit {
               this.set_status = this.candidate_status.status;
               if(this.set_status === 'Rejected' || this.set_status === 'rejected'){
                 this.status_reason_rejected = this.candidate_status.reason;
-                console.log(this.status_reason_rejected);
                 $("#sel1-reason-rejected").css("display", "block");
               }
               if(this.set_status === 'Deferred' || this.set_status === 'deferred'){
                 this.status_reason_deferred = this.candidate_status.reason;
-                console.log(this.status_reason_deferred);
                 $("#status_reason_deferred").css("display", "block");
               }
               this.info.push(data);
@@ -316,7 +314,6 @@ export class AdminCandidateDetailComponent implements OnInit {
   {
     this.error = '';
     let reason = '';
-    console.log(approveForm.value);
     if(approveForm.value.set_status === "Rejected" || approveForm.value.set_status === "rejected")
     {
       if(approveForm.value.status_reason_rejected){
