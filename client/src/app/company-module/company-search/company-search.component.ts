@@ -408,6 +408,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   not_found;
   salarysearchdata(key , value) {
 
+    this.not_found = '';
+
     if (this.salary) {
       if (this.currencyChange !== -1) {
         this.searchdata(key, value);
@@ -420,6 +422,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.responseMsg = "response";
             if (this.candidate_data.length <= 0) {
               this.not_found = 'No candidates matched this search criteria';
+            }
+            if(this.candidate_data.length > 0) {
+              this.not_found='';
             }
           },
           error =>
@@ -464,11 +469,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           data =>
           {
             this.candidate_data = data;
+            if(this.candidate_data.length > 0) {
+              this.not_found='';
+            }
             this.responseMsg = "response";
           },
           error =>
           {
-
+            this.not_found='';
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.responseMsg = "error";
               this.not_found = error['error']['message'];
@@ -526,6 +534,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
+          if(this.candidate_data.length > 0) {
+            this.not_found='';
+          }
           this.responseMsg = "response";
         },
 
