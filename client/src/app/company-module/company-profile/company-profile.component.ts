@@ -72,7 +72,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
        window.scrollTo(0, 0);
        setTimeout(() => {
          $('.selectpicker').selectpicker('refresh');
-       }, 50);
+       }, 150);
         }
 
   locations = [
@@ -244,7 +244,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                   else if(((new Date(data._creator.created_date) > new Date('2018/11/28')) && (!data.saved_searches || data.saved_searches.length === 0))) {
                     this.router.navigate(['/preferences']);
                   }
-                    
+
                   else
                   {
                       this.first_name=data.first_name;
@@ -286,10 +286,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
                     console.log(data);
                     if(data.terms_id && data.company_founded && data.no_of_employees && data.company_funded && data.company_description && !data.saved_searches ) {
                       console.log("show popup");
-                      $(window).load(function()
-                      {
-                        $('#popModal_b').modal('show');
-                      });
+                      $('#popModal_b').modal('show');
+                    
                     }
                     if(data.saved_searches) {
                       this.saved_searche = data.saved_searches;
