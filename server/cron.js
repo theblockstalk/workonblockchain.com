@@ -8,53 +8,55 @@ const cron = require('cron');
 const CronJob = cron.CronJob;
 
 module.exports.startCron = function startCron() {
-    const unreadMessagesJob = new CronJob({
-        cronTime: settings.CRON.UNREAD_MESSAGES_TICK,
-        onTick: function() {
-            Promise.resolve(unreadChatMessages()).catch(function (error) {
-                logger.error(error.message, {
-                    stack: error.stack,
-                    name: error.name
+    if (settings.isLiveApplication()) {
+        const unreadMessagesJob = new CronJob({
+            cronTime: settings.CRON.UNREAD_MESSAGES_TICK,
+            onTick: function() {
+                Promise.resolve(unreadChatMessages()).catch(function (error) {
+                    logger.error(error.message, {
+                        stack: error.stack,
+                        name: error.name
+                    });
                 });
-            });
-        },
-        start: true,
-        timeZone: 'CET'
-    });
+            },
+            start: true,
+            timeZone: 'CET'
+        });
 
-    const syncSendgrid = new CronJob({
-        cronTime: settings.CRON.SYNC_SENDGRID,
-        onTick: function() {
-            Promise.resolve(synchronizeSendGrid()).catch(function (error) {
-                logger.error(error.message, {
-                    stack: error.stack,
-                    name: error.name
+        const syncSendgrid = new CronJob({
+            cronTime: settings.CRON.SYNC_SENDGRID,
+            onTick: function() {
+                Promise.resolve(synchronizeSendGrid()).catch(function (error) {
+                    logger.error(error.message, {
+                        stack: error.stack,
+                        name: error.name
+                    });
                 });
-            });
-        },
-        start: true,
-        timeZone: 'CET'
-    });
+            },
+            start: true,
+            timeZone: 'CET'
+        });
 
-    const autoNotificationEmail = new CronJob({
-        cronTime: settings.CRON.AUTO_NOTIFICATION,
-        onTick: function() {
-            Promise.resolve(autoNotification()).catch(function (error) {
-                logger.error(error.message, {
-                    stack: error.stack,
-                    name: error.name
+        const autoNotificationEmail = new CronJob({
+            cronTime: settings.CRON.AUTO_NOTIFICATION,
+            onTick: function() {
+                Promise.resolve(autoNotification()).catch(function (error) {
+                    logger.error(error.message, {
+                        stack: error.stack,
+                        name: error.name
+                    });
                 });
-            });
-        },
-        start: true,
-        timeZone: 'CET'
-    });
+            },
+            start: true,
+            timeZone: 'CET'
+        });
 
-    logger.debug('Cron jobs', {
-        unreadMessagesJob: unreadMessagesJob,
-        syncSendgridJob: syncSendgrid,
-        autoNotification : autoNotificationEmail
-    });
+        logger.debug('Cron jobs', {
+            unreadMessagesJob: unreadMessagesJob,
+            syncSendgridJob: syncSendgrid,
+            autoNotification : autoNotificationEmail
+        });
 
-    logger.info('Cron jobs started');
+        logger.info('Cron jobs started');
+    }
 }
