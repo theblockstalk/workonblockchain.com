@@ -45,13 +45,8 @@ describe('admin get metrics', function () {
             metrics.emailVerified.should.equal(1);
             metrics.dissabled.should.equal(0);
             metrics.approvedEnabled.count.should.equal(1);
-            console.log("interested area");
-console.log(job.interest_area[0]);
-            const aggregrated = metrics.approvedEnabled.aggregated;
-            console.log("aggregate");
-            console.log(aggregrated);
-            console.log(aggregrated.interestAreas[job.interest_area[0]]);
 
+            const aggregrated = metrics.approvedEnabled.aggregated;
             aggregrated.nationality[profileData.nationality].should.equal(1);
             should.not.exist(aggregrated.nationality.Australian);
             aggregrated.availabilityDay[job.availability_day].should.equal(1);
