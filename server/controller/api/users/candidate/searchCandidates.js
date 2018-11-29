@@ -1,5 +1,6 @@
 const CandidateProfile = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
+const Chat = require('../../../../model/chat');
 
 const settings = require('../../../../settings');
 
@@ -23,94 +24,117 @@ const convertToDays = module.exports.convertToDays = function convertToDays(when
     }
 };
 
-const candidateSearchQuery = module.exports.candidateSearchQuery = async function candidateSearchQuery(queryBody ) {
-    let queryString = [];
-    console.log(queryBody);
-    const userDoc = await User.find({type : 'candidate' , is_verify :1,'candidate.status.0.status': 'approved' ,disable_account : false }).lean();
-    if(userDoc) {
-        console.log("userDoc");
-        let userDocArray = [];
+const reduceSalaryFactor = 0.9;
 
-        for (userDetail of userDoc) {
-            userDocArray.push(userDetail._id);
-        }
-        console.log(userDocArray);
+module.exports.candidateSearch = async function candidateSearch(filters, search) {
+    let candidates;
+    let userQuery = {
+        type : 'candidate'
+    };
 
-        if(userDocArray && userDocArray.length > 0) {
-            const usersToSearch = { "_creator": {$in: userDocArray}};
-            queryString.push(usersToSearch);
+    if (filters.is_verify) userQuery.is_verify = filters.is_verify;
+    if (filters.status) userQuery['candidate.status.0.status'] = filters.status;
+    if (filters.disable_account) userQuery.disable_account = filters.disable_account;
+    if (filters.msg_tags) {
+        let userIds = [];
+        const chatDocs = await Chat.find({msg_tag : {$in: filters.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
+        if (!chatDocs) {
+            errors.throwError("No users matched the search", 404);
         }
-        if (queryBody[0].location) {
-            const locationFilter = {"locations": {$in: queryBody[0].location}};
-            queryString.push(locationFilter);
+        for (chatDoc of chatDocs) {
+            userIds.push(chatDoc.sender_id);
+            userIds.push(chatDoc.receiver_id);
         }
-        if (queryBody[0].position) {
-            const rolesFilter = {"roles": {$in: queryBody[0].position}};
-            queryString.push(rolesFilter);
+        userQuery._creator = {$in : userIds};
+    }
+
+    let userDocIds;
+    let candidateQuery = [];
+    userDocIds = await User.find(userQuery, {_id: 1}).lean();
+
+    if(userDocIds && userDocIds.length > 0) {
+        candidateQuery.push({ "_creator": {$in: userDocIds}});
+    } else {
+        errors.throwError("No users matched the search", 404);
+    }
+
+    if (search) {
+        if(search.word) {
+            const wordSearch = { $or: [{ why_work: {'$regex' : search.word, $options: 'i'}},
+                    {description : {'$regex' : search.word, $options: 'i'}}] };
+            candidateQuery.push(wordSearch);
         }
-        if (queryBody[0].current_currency && queryBody[0].current_salary) {
+
+        if (search.locations && search.locations.length > 0) {
+            const locationFilter = {"locations": {$in: search.locations}};
+            candidateQuery.push(locationFilter);
+        }
+        if (search.positions && search.positions.length > 0) {
+            const rolesFilter = {"roles": {$in: search.positions}};
+            candidateQuery.push(rolesFilter);
+        }
+
+        if (search.salary.current_currency && search.salary.current_salary) {
             let salaryArray = [];
             let salaryConverterResult;
-            if(queryBody[0].current_currency === '$ USD' && queryBody[0].current_salary)
+            if(search.salary.current_currency === '$ USD' && search.salary.current_salary)
             {
-                salaryConverterResult = salary_converter(queryBody[0].current_salary, USD.GBP , USD.Euro );
-                salaryArray= {USD : queryBody[0].current_salary , GBP : salaryConverterResult[0] , Euro :salaryConverterResult[1]};
+                salaryConverterResult = salary_converter(search.salary.current_salary*reduceSalaryFactor, USD.GBP , USD.Euro );
+                salaryArray= {USD : search.salary.current_salary , GBP : salaryConverterResult[0] , Euro :salaryConverterResult[1]};
             }
 
-            if(queryBody[0].current_currency === '£ GBP' && queryBody[0].current_salary)
+            if(search.salary.current_currency === '£ GBP' && search.salary.current_salary)
             {
-                salaryConverterResult = salary_converter(queryBody[0].current_salary, GBP.USD , GBP.Euro );
-                salaryArray= {USD : salaryConverterResult[0] , GBP : queryBody[0].current_salary , Euro :salaryConverterResult[1]};
+                salaryConverterResult = salary_converter(search.salary.current_salary*reduceSalaryFactor, GBP.USD , GBP.Euro );
+                salaryArray= {USD : salaryConverterResult[0] , GBP : search.salary.current_salary , Euro :salaryConverterResult[1]};
             }
-            if(queryBody[0].current_currency === '€ EUR' && queryBody[0].current_salary)
+            if(search.salary.current_currency === '€ EUR' && search.salary.current_salary)
             {
-                salaryConverterResult = salary_converter(queryBody[0].current_salary, Euro.USD , Euro.GBP );
-                salaryArray= {USD : salaryConverterResult[0] , GBP : salaryConverterResult[1]  , Euro : queryBody[0].current_salary};
+                salaryConverterResult = salary_converter(search.salary.current_salary*reduceSalaryFactor, Euro.USD , Euro.GBP );
+                salaryArray= {USD : salaryConverterResult[0] , GBP : salaryConverterResult[1]  , Euro : search.salary.current_salary};
             }
 
-            if(salaryArray.length > 0 && queryBody[0].current_currency && queryBody[0].current_salary) {
-                const searchFilter = {
+            if(salaryArray.length > 0 && search.salary.current_currency && search.salary.current_salary) {
+                const currencyFiler = {
                     $or : [
                         { $and : [ { current_currency : "$ USD" }, { current_salary : {$lte: salaryArray.USD} } ] },
                         { $and : [ { current_currency : "£ GBP" }, { current_salary : {$lte: salaryArray.GBP} } ] },
                         { $and : [ { current_currency : "€ EUR" }, { current_salary : {$lte: salaryArray.Euro} } ] }
                     ]
                 };
-                queryString.push(searchFilter);
+                candidateQuery.push(currencyFiler);
             }
         }
 
-        if (queryBody[0].blockchain && queryBody[0].blockchain.length > 0) {
+        if (search.blockchains && search.blockchains.length > 0) {
             const platformFilter = {
                 $or: [
-                    {"commercial_platform.platform_name": {$in: queryBody[0].blockchain}},
-                    {"platforms.platform_name": {$in: queryBody[0].blockchain}}
+                    {"commercial_platform.platform_name": {$in: search.blockchains}},
+                    {"platforms.platform_name": {$in: search.blockchains}}
                 ]
             };
-            queryString.push(platformFilter);
+            candidateQuery.push(platformFilter);
         }
 
-        if (queryBody[0].skills && queryBody[0].skills.length > 0) {
-            const skillsFilter = {"programming_languages.language": queryBody[0].skills};
-            queryString.push(skillsFilter);
+        if (search.skills && search.skills.length > 0) {
+            const skillsFilter = {"programming_languages.language": skills};
+            candidateQuery.push(skillsFilter);
         }
-        if (queryBody[0].availability_day) {
-            const availabilityFilter = {"availability_day": queryBody[0].availability_day};
-            queryString.push(availabilityFilter);
-        }
-        const searchQuery = {$and: queryString};
-        if (queryString && queryString.length > 0) {
-            const candidateDoc = await CandidateProfile.find(searchQuery).populate('_creator');
-            return candidateDoc;
-        }
-        else {
-            return null;
+        if (search.availability_day) {
+            const availabilityFilter = {"availability_day": availability_day};
+            candidateQuery.push(availabilityFilter);
         }
     }
 
-    else {
-        return null;
+    const searchQuery = {$and: candidateQuery};
+    candidates = await CandidateProfile.find(searchQuery).populate('_creator').lean();
+    if (!candidates) {
+        errors.throwError("No candidates matched the search", 404);
     }
+    return {
+        count: candidates.length,
+        candidates: candidates
+    };
 
 }
 
