@@ -1,4 +1,4 @@
-import { Component, OnInit , AfterViewInit } from '@angular/core';
+import { Component, OnInit , AfterViewInit, AfterViewChecked } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -12,7 +12,7 @@ import {ScriptService} from '../../scripts/script.service';
   templateUrl: './preferences.component.html',
   styleUrls: ['./preferences.component.css']
 })
-export class PreferencesComponent implements OnInit, AfterViewInit {
+export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChecked {
   preferncesForm : FormGroup;
   saved_searches=[];
   location_log;
@@ -45,11 +45,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
   constructor(private scriptService : ScriptService,private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 100);
+    $('.selectpicker').selectpicker();
+  }
+
+  ngAfterViewChecked() {
+    $('.selectpicker').selectpicker('refresh');
   }
 
   locations = [
