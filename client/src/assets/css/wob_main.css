@@ -4158,14 +4158,6 @@ input:checked + .slider:before {
     top: 20px;
   }
 
-  .status_select{
-    width: 200px !important;
-    float: left;
-    position: relative;
-    top: 20px;
-    left:15px;
-  }
-
   .btnn_group{
     top: 20px;
     position: relative;
@@ -4537,12 +4529,13 @@ input:checked + .slider:before {
   background-color: #537284;
   border-color: #537284;
   font-size: 15px;
+  margin-left: 15px;
 }
 
 .badges{
   position: relative;
   top: 10px;
-  left: 20px;
+  left: -14px;
 }
 
 .badges .label{
@@ -4552,6 +4545,18 @@ input:checked + .slider:before {
 
 .status-date{
   font-size: 17px;
+}
+
+.alert-dismissible{
+  width: 35%;
+}
+
+.status_select{
+  width: 50% !important;
+}
+
+.my-css{
+  margin-top: 10px;
 }
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/

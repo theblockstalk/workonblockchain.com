@@ -29,14 +29,22 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   inactive;
   approve;
   admin_check = [
+    {value:'created', name:'Created'},
+    {value:'wizard completed', name:'Wizard Completed'},
     {value:'approved', name:'Approved'},
     {value:'rejected', name:'Rejected'},
     {value:'deferred', name:'Deferred'},
     {value:'other', name:'Other'}
   ];
+  admin_checks_new = [
+    {value:1, name:'Verified'},
+    {value:true, name:'Disabled'}
+  ];
   information;
   admin_log;
   response;
+  candidate_status;
+
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
   {
@@ -47,6 +55,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.length='';
     this.log='';
     this.approve=-1;
+    this.candidate_status = -1;
     this.response='';
     this.rolesData =
       [
@@ -222,7 +231,13 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   {
     this.approve =event;
     this.search(this.approve);
+  }
 
+  search_account_status(event)
+  {
+    console.log(event);
+    this.candidate_status = event;
+    this.search(this.candidate_status);
   }
 
   filter_array(arr)
@@ -242,14 +257,14 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.length =0;
     this.info=[];
     this.response = "";
-    if(this.approve == -1 && !this.select_value && !this.searchWord )
+    if(this.approve == -1 && !this.select_value && !this.searchWord && this.candidate_status === -1)
     {
       this.getAllCandidate();
     }
 
     else
     {
-      this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord)
+      this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord, this.candidate_status)
       .subscribe(
         data =>
         {
@@ -317,6 +332,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.approve=-1;
     this.info=[];
     this.searchWord='';
+    this.candidate_status = -1;
     this.getAllCandidate();
   }
 
