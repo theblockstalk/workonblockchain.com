@@ -4617,7 +4617,7 @@ input:checked + .slider:before {
   background-color: #537284;
   border-color: #537284;
   font-size: 15px;
-  margin-left: -5px;
+  margin-left: 15px;
   margin-bottom: 20px;
 }
 
