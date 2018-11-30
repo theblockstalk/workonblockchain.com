@@ -264,7 +264,12 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
     else
     {
-      this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord, this.candidate_status)
+      let queryBody : any = {};
+      if(this.approve !== -1) queryBody.is_approve = this.approve;
+      if(this.select_value && this.select_value.length > 0) queryBody.msg_tags = this.select_value;
+      if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
+      if(this.candidate_status !== -1) queryBody.status = this.candidate_status;
+      this.authenticationService.admin_candidate_filter(queryBody)
       .subscribe(
         data =>
         {
