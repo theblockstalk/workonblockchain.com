@@ -53,6 +53,7 @@ describe('admin search candidate by filter', function () {
                 word : candidate.first_name
             }
             const candidateFilterRes = await adminHelper.candidateFilter(data , candidateUserDoc.jwt_token);
+            console.log(candidateFilterRes.body);
             candidateFilterRes.body[0].first_name.should.equal(candidate.first_name);
             candidateUserDoc.candidate.status[0].status.should.equal('approved');
             chatDoc.msg_tag.should.valueOf(data.msg_tags);

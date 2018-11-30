@@ -989,9 +989,10 @@ export class UserService {
     }
 
 
-    filterSearch(word :string , skill : string , location: string , position:any , blockchain:any , avail:string, salary :string ,currency :string)
+    filterSearch(queryBody : any)
     {
-         return this.http.post<any>(URL+'users/filter', {word : word, skill : skill , location :location , position :position , blockchain : blockchain , availability : avail,salary:salary , currency :currency}, {
+      console.log(queryBody);
+         return this.http.post<any>(URL+'users/filter', queryBody, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>

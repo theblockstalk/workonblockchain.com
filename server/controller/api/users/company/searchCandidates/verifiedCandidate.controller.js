@@ -2,6 +2,7 @@ const User = require('../../../../../model/users');
 const CandidateProfile = require('../../../../../model/candidate_profile');
 const filterReturnData = require('../../filterReturnData');
 const errors = require('../../../../services/errors');
+const candidateSearch = require('../../candidate/searchCandidates');
 
 module.exports = async function (req,res) {
 

@@ -43,10 +43,9 @@ describe('search candidates as company', function () {
             const params = {
                 currency: candidateData.expected_salary_currency,
                 salary: candidateData.expected_salary,
-                position: candidateData.roles,
-                location: candidateData.locations,
-                availability: candidateData.availability_day,
-                skill : -1,
+                positions: candidateData.roles,
+                locations: candidateData.locations,
+                availability_day: candidateData.availability_day,
             }
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();

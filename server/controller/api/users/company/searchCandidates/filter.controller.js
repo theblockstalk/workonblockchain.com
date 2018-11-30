@@ -13,20 +13,19 @@ module.exports = async  function (req,res)
 {
     let userId = req.auth.user._id;
     let queryBody = req.body;
-    console.log("input parameter");
-    console.log(queryBody.salary);
-    console.log(queryBody.currency);
+    console.log("query Body");
+    console.log(queryBody);
     let search = {};
     if (queryBody.word) search.word = queryBody.word;
     if (queryBody.skills) search.skills = queryBody.skills;
-    if (queryBody.locations) search.word = queryBody.locations;
-    if (queryBody.positions) search.word = queryBody.positions;
+    if (queryBody.locations) search.locations = queryBody.locations;
+    if (queryBody.positions) search.positions = queryBody.positions;
     if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
     if (queryBody.availability_day) search.availability_day = queryBody.availability_day;
-    if (queryBody.current_currency) {
+    if (queryBody.current_currency && queryBody.current_salary) {
         search.salary = {
-            current_currency: queryBody.currency,
-            current_salary: queryBody.salary
+            current_currency: queryBody.current_currency,
+            current_salary: queryBody.current_salary
         }
     }
 
