@@ -10,7 +10,68 @@ const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 
-const reduceSalaryFactor = 0.9;
+const salaryFactor = 1.1;
+
+/*
+inputSchema = {
+    filers: {
+        is_verify: {
+            type: Number,
+            enum: [0, 1],
+        },
+        status: {
+            type: String,
+            enum: enumerations.candidateStatus
+        },
+        disable_account: Boolean,
+        msg_tags: {
+            type: String,
+            enum: enumerations.chatMsgTypes
+        },
+        afterDate: Date
+    },
+    search: {
+        name: String,
+        word: String,
+        locations: [{
+            type: String,
+            enum: enumerations.workLocations
+        }],
+        positions: [{
+            type: String,
+            enum: enumerations.workRoles
+        }],
+        blockchains: [{
+            type: String,
+            enum: enumerations.blockchainPlatforms
+        }],
+        skills: [{
+            type: String,
+            enum: enumerations.programmingLanguages
+        }],
+        salary: {
+            type: {
+                current_currency: {
+                    type: String,
+                    enum: enumerations.currencies
+                },
+                current_salary: Number
+            }
+        },
+        availability_day: {
+            type: String,
+            enum: enumerations.workAvailability
+        }
+    }
+};
+
+outputSchema = {
+    count: Number
+    candidates: [
+        type: candidateDoc
+    ]
+};
+*/
 
 module.exports.candidateSearch = async function candidateSearch(filters, search) {
     logger.debug("Doing new candidate search", {
@@ -27,6 +88,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     if (filters.status && filters.status !== -1) userQuery['candidate.status.0.status'] = filters.status;
     if (filters.disable_account) userQuery.disable_account = filters.disable_account;
     if (filters.msg_tags) {
+        // TODO: need to handle case for msg_tags = shared with two tags
         let userIds = [];
         const chatDocs = await Chat.find({msg_tag : {$in: filters.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
         if (!chatDocs) {
@@ -36,7 +98,12 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             userIds.push(chatDoc.sender_id);
             userIds.push(chatDoc.receiver_id);
         }
+        // TODO: make distinct list
         userQuery._id = {$in : userIds};
+    }
+
+    if (filters.afterDate) {
+        // TODO: need to consider filter afterDate
     }
     let userDocIds;
     let candidateQuery = [];
@@ -74,18 +141,18 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             let salaryConverterResult;
             if(search.salary.current_currency === '$ USD' && search.salary.current_salary)
             {
-                salaryConverterResult = salary_converter(search.salary.current_salary*reduceSalaryFactor, USD.GBP , USD.Euro );
+                salaryConverterResult = salary_converter(search.salary.current_salary*salaryFactor, USD.GBP , USD.Euro );
                 salaryArray= {USD : search.salary.current_salary , GBP : salaryConverterResult[0] , Euro :salaryConverterResult[1]};
             }
 
             if(search.salary.current_currency === '£ GBP' && search.salary.current_salary)
             {
-                salaryConverterResult = salary_converter(search.salary.current_salary*reduceSalaryFactor, GBP.USD , GBP.Euro );
+                salaryConverterResult = salary_converter(search.salary.current_salary*salaryFactor, GBP.USD , GBP.Euro );
                 salaryArray= {USD : salaryConverterResult[0] , GBP : search.salary.current_salary , Euro :salaryConverterResult[1]};
             }
             if(search.salary.current_currency === '€ EUR' && search.salary.current_salary)
             {
-                salaryConverterResult = salary_converter(search.salary.current_salary*reduceSalaryFactor, Euro.USD , Euro.GBP );
+                salaryConverterResult = salary_converter(search.salary.current_salary*salaryFactor, Euro.USD , Euro.GBP );
                 salaryArray= {USD : salaryConverterResult[0] , GBP : salaryConverterResult[1]  , Euro : search.salary.current_salary};
             }
 
@@ -102,6 +169,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         }
 
         if (search.blockchains && search.blockchains.length > 0 ) {
+            // TODO: make this not required
             const platformFilter = {
                 $or: [
                     {"commercial_platform.platform_name": {$in: search.blockchains}},
@@ -116,6 +184,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             candidateQuery.push(skillsFilter);
         }
         if (search.availability_day && search.availability_day !== -1) {
+            // TODO: needs to consider other options
             const availabilityFilter = {"availability_day": search.availability_day};
             candidateQuery.push(availabilityFilter);
         }
@@ -125,6 +194,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     if (!candidates) {
         errors.throwError("No candidates matched the search", 404);
     }
+    // TODO: order by blockchain experience
     return {
         count: candidates.length,
         candidates: candidates
