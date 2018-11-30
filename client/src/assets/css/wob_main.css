@@ -3935,28 +3935,10 @@ input:checked + .slider:before {
   top: 20px;
 }
 
-.status_select{
-  width: 200px !important;
-  float: left;
-  position: relative;
-  top: 20px;
-  left:15px;
-}
-
 .btnn_group{
   top: 20px;
   position: relative;
   left: 20px;
-}
-
-.save_status{
-  padding: 6px 12px;
-  min-width: 90px;
-  border-radius: 0px !important;
-  color: #fff;
-  background-color: #537284;
-  border-color: #537284;
-  font-size: 15px;
 }
 
 .badges{
@@ -4635,7 +4617,8 @@ input:checked + .slider:before {
   background-color: #537284;
   border-color: #537284;
   font-size: 15px;
-  margin-left: 15px;
+  margin-left: -5px;
+  margin-bottom: 20px;
 }
 
 .badges{
@@ -4655,6 +4638,7 @@ input:checked + .slider:before {
 
 .alert-dismissible{
   width: 35%;
+  margin-left: 13px;
 }
 
 .status_select{
