@@ -419,8 +419,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       else {
         let queryBody : any = {};
         if(this.searchWord) queryBody.word = this.searchWord;
-        if(this.selectedObj !== -1) queryBody.skills = [this.selectedObj];
-        if(this.countryChange !== -1) queryBody.locations = [this.countryChange];
+        if(this.selectedObj !== -1) queryBody.skills = this.selectedObj;
+        if(this.countryChange !== -1) queryBody.locations = this.countryChange;
         if(this.select_value && this.select_value.length > 0 ) queryBody.positions = this.select_value;
         if(this.selecteddd && this.selecteddd.length > 0) queryBody.blockchains = this.selecteddd;
         if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
