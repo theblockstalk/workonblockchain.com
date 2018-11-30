@@ -21,12 +21,12 @@ module.exports = async function (req,res) {
 
     let search = {};
     if (queryBody.word) {
-        search.name = queryBody.word;
+        search.name = queryBody.word
     }
 
     let candidateDocs = await candidateSearch.candidateSearch(filter, search);
 
-    for (candidateDoc of candidateDocs.candidates) {
+    for (let candidateDoc of candidateDocs.candidates) {
         await filterData(candidateDoc);
     }
 
