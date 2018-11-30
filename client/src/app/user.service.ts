@@ -991,7 +991,6 @@ export class UserService {
 
     filterSearch(queryBody : any)
     {
-      console.log(queryBody);
          return this.http.post<any>(URL+'users/filter', queryBody, {
             headers: new HttpHeaders().set('Authorization', this.token)
         })

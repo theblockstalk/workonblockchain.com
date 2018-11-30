@@ -41,8 +41,8 @@ describe('search candidates as company', function () {
             let candidateData = await Candidates.findOne({_creator: candidateUserDoc._id}).lean();
 
             const params = {
-                currency: candidateData.expected_salary_currency,
-                salary: candidateData.expected_salary,
+                current_currency: candidateData.current_currency,
+                current_salary: candidateData.current_salary,
                 positions: candidateData.roles,
                 locations: candidateData.locations,
                 availability_day: candidateData.availability_day,
@@ -51,12 +51,10 @@ describe('search candidates as company', function () {
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
             const filterRes = await companyHelper.companyFilter(params , comapnyUserDoc.jwt_token);
 
-            filterRes.body[0].expected_salary_currency.should.equal(params.currency);
-            filterRes.body[0].expected_salary.should.equal(params.salary);
-            filterRes.body[0].roles.should.valueOf(params.roles);
-            filterRes.body[0].programming_languages[0].language.should.valueOf(params.skill);
-            filterRes.body[0].locations.should.valueOf(params.location);
-            filterRes.body[0].platforms[0].should.valueOf(params.blockchain);
+            filterRes.body[0].current_currency.should.equal(params.current_currency);
+            filterRes.body[0].current_salary.should.equal(params.current_salary);
+            filterRes.body[0].roles.should.valueOf(params.positions);
+            filterRes.body[0].locations.should.valueOf(params.locations);
             filterRes.body[0].availability_day.should.equal(params.availability_day);
 
         })
