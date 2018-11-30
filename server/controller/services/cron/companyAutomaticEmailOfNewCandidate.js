@@ -19,8 +19,8 @@ module.exports = async function (req, res) {
         console.log(userDoc);
         if(userDoc) {
             console.log(companyDoc.last_email_sent);
-            console.log(new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000));
-            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
+            console.log(new Date(Date.now() - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000));
+            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
 
                 const savedSearch = companyDoc.saved_searches;
                 let candidateDocs = await candidateSearch.candidateSearch({
@@ -96,4 +96,22 @@ module.exports = async function (req, res) {
 
 }
 
+
+
+const convertToDays = module.exports.convertToDays = function convertToDays(when_receive_email_notitfications) {
+    switch(when_receive_email_notitfications) {
+        case "Weekly":
+            return 7;
+            break;
+        case "3 days":
+            return 3;
+            break;
+        case "Daily":
+            return 1;
+            break;
+        default :
+            return 0;
+            break;
+    }
+};
 

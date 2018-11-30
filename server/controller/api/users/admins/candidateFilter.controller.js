@@ -29,6 +29,7 @@ module.exports = async function (req,res) {
     for (candidateDoc of candidateDocs.candidates) {
         await filterData(candidateDoc);
     }
+
     res.send(candidateDocs.candidates);
 }
 

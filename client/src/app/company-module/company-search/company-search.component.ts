@@ -417,7 +417,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.searchdata(key, value);
       }
       else {
-        this.authenticationService.filterSearch(this.searchWord, this.selectedObj, this.countryChange, this.select_value, this.selecteddd, this.availabilityChange, this.salary, this.currencyChange)
+        let queryBody : any = {};
+        if(this.searchWord) queryBody.word = this.searchWord;
+        if(this.selectedObj !== -1) queryBody.skills = this.selectedObj;
+        if(this.countryChange !== -1) queryBody.locations = this.countryChange;
+        if(this.select_value && this.select_value.length > 0 ) queryBody.positions = this.select_value;
+        if(this.selecteddd && this.selecteddd.length > 0) queryBody.blockchains = this.selecteddd;
+        if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
+        if(this.salary && this.currencyChange !== -1) {
+          queryBody.current_salary  = this.salary;
+          queryBody.current_currency = this.currencyChange;
+        }
+        this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data => {
             this.candidate_data = data;
@@ -466,8 +477,20 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     else {
-      this.not_found='';
-      this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
+      this.not_found = '';
+      let queryBody : any = {};
+      if(this.searchWord) queryBody.word = this.searchWord;
+      if(this.selectedObj !== -1) queryBody.skills = this.selectedObj;
+      if(this.countryChange !== -1) queryBody.locations = this.countryChange;
+      if(this.select_value && this.select_value.length > 0 ) queryBody.positions = this.select_value;
+      if(this.selecteddd && this.selecteddd.length > 0) queryBody.blockchains = this.selecteddd;
+      if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
+      if(this.salary && this.currencyChange !== -1) {
+        queryBody.current_salary  = this.salary;
+        queryBody.current_currency = this.currencyChange;
+      }
+      this.authenticationService.filterSearch(queryBody )
+
         .subscribe(
           data =>
           {

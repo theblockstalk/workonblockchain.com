@@ -10,23 +10,6 @@ const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
 
-const convertToDays = module.exports.convertToDays = function convertToDays(when_receive_email_notitfications) {
-    switch(when_receive_email_notitfications) {
-        case "Weekly":
-            return 7;
-            break;
-        case "3 days":
-            return 3;
-            break;
-        case "Daily":
-            return 1;
-            break;
-        default :
-            return 0;
-            break;
-    }
-};
-
 const reduceSalaryFactor = 0.9;
 
 module.exports.candidateSearch = async function candidateSearch(filters, search) {
@@ -34,6 +17,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         filters: filters,
         search: search
     });
+
     let candidates;
     let userQuery = {
         type : 'candidate'
