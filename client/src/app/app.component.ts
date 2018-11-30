@@ -1,6 +1,5 @@
-import { Component , OnInit , AfterViewInit} from '@angular/core';
+import { Component , AfterViewInit} from '@angular/core';
 import {Router, NavigationStart, NavigationCancel, NavigationEnd} from '@angular/router';
-declare var jQuery: any;
 
 @Component({
   selector: 'app-root',
@@ -8,16 +7,12 @@ declare var jQuery: any;
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements AfterViewInit, OnInit {
+export class AppComponent implements AfterViewInit {
   loading;
   title = 'app';
   message: any;
   constructor(private router: Router) {
     this.loading = true;
-  }
-  ngOnInit() {
-    jQuery('.selectpicker').selectpicker({
-    });
   }
   ngAfterViewInit() {
     this.router.events
