@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input  , AfterViewInit} from '@angular/core';
+import { Component, OnInit,ElementRef, Input  , AfterViewInit , AfterViewChecked} from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -16,7 +16,7 @@ const URL = environment.backend_url;
   templateUrl: './edit-company-profile.component.html',
   styleUrls: ['./edit-company-profile.component.css']
 })
-export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
+export class EditCompanyProfileComponent implements OnInit , AfterViewInit, AfterViewChecked  {
 
   info : any;
   currentUser: User;
@@ -210,13 +210,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit  {
               private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
   }
 
-  ngAfterViewInit(): void {
-    $(function() {
-      setTimeout(() => {
-        console.log("time out");
-        $('.selectpicker').selectpicker('refresh');
-      }, 150);
-    })
+  ngAfterViewInit() {
+    $('.selectpicker').selectpicker();
+  }
+
+  ngAfterViewChecked() {
+    $('.selectpicker').selectpicker('refresh');
   }
 
   ngOnInit()
