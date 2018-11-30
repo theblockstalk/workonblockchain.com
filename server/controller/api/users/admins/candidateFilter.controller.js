@@ -14,9 +14,13 @@ module.exports = async function (req,res) {
    if (queryBody.disable_account) filter.disable_account = queryBody.disable_account;
    if (queryBody.msg_tags) filter.msg_tags = queryBody.msg_tags;
 
-   let candidateDocs = await candidateSearch.candidateSearch(filter, {
-        name: queryBody.word
-    });
+   let search = {};
+   if (queryBody.word) {
+       search.word = queryBody.word;
+       search.name = queryBody.word;
+   }
+
+   let candidateDocs = await candidateSearch.candidateSearch(filter, search);
 
     for (candidateDoc of candidateDocs.candidates) {
         await filterData(candidateDoc);

@@ -16,25 +16,28 @@ module.exports = async  function (req,res)
     console.log("input parameter");
     console.log(queryBody.salary);
     console.log(queryBody.currency);
-    let candidateDocs = await candidateSearch.candidateSearch({
+    let search = {};
+    if (queryBody.word) search.word = queryBody.word;
+    if (queryBody.skills) search.skills = queryBody.skills;
+    if (queryBody.locations) search.word = queryBody.locations;
+    if (queryBody.positions) search.word = queryBody.positions;
+    if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
+    if (queryBody.availability_day) search.availability_day = queryBody.availability_day;
+    if (queryBody.current_currency) {
+        search.salary = {
+            current_currency: queryBody.currency,
+            current_salary: queryBody.salary
+        }
+    }
+
+    candidateDocs = await candidateSearch.candidateSearch({
             is_verify: 1,
             status: 'approved',
             disable_account: false
-        }, {
-        word: queryBody.word,
-        skills: queryBody.skills,
-        locations: queryBody.location,
-        positions: queryBody.position,
-        blockchains: queryBody.blockchain,
-        salary: {
-            current_currency: queryBody.currency,
-            current_salary: queryBody.salary
-        },
-        availability_day: queryBody.availability
-    });
+        }, search);
 
     let filterArray = [];
-    for(candidateDetail of candidateDocs.candidates) {
+    for(let candidateDetail of candidateDocs.candidates) {
         const filterDataRes = await filterData(candidateDetail , userId);
         filterArray.push(filterDataRes);
     }

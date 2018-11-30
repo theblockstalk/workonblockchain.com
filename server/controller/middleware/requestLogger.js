@@ -2,12 +2,13 @@ const logger = require('../services/logger');
 
 module.exports = function (req, res, next) {
 
-    if (req.body.password) delete req.body.password;
+    let body = copyObject(req.body);
+    if (body.password) delete body.password;
 
     let log = {
         url: req.url,
         method: req.method,
-        body: req.body,
+        body: body,
         params: req.params,
         query: req.query
     };
@@ -16,3 +17,7 @@ module.exports = function (req, res, next) {
 
     next();
 };
+
+function copyObject(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
