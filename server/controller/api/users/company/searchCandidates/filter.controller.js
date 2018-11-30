@@ -32,18 +32,7 @@ module.exports = async  function (req,res)
         is_verify: 1,
         status: 'approved',
         disable_account: false
-    }, {
-        word: queryBody.word,
-        skills: queryBody.skill,
-        locations: queryBody.location,
-        positions: queryBody.position,
-        blockchains: queryBody.blockchain,
-        salary: {
-            current_currency: queryBody.currency,
-            current_salary: queryBody.salary
-        },
-        availability_day: queryBody.availability
-    });
+    }, search);
 
     let filterArray = [];
     for(let candidateDetail of candidateDocs.candidates) {

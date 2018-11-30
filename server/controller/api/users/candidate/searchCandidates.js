@@ -28,7 +28,7 @@ inputSchema = {
             type: String,
             enum: enumerations.chatMsgTypes
         },
-        afterDate: Date
+        onlyAfterDate: Date
     },
     search: {
         name: String,
@@ -88,7 +88,6 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     if (filters.status && filters.status !== -1) userQuery['candidate.status.0.status'] = filters.status;
     if (filters.disable_account) userQuery.disable_account = filters.disable_account;
     if (filters.msg_tags) {
-        // TODO: need to handle case for msg_tags = shared with two tags
         let userIds = [];
         const chatDocs = await Chat.find({msg_tag : {$in: filters.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
         if (!chatDocs) {
@@ -98,12 +97,12 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             userIds.push(chatDoc.sender_id);
             userIds.push(chatDoc.receiver_id);
         }
-        // TODO: make distinct list
-        userQuery._id = {$in : userIds};
+        const userIdsDistinct = makeDistinctNumberSet(userIds);
+        userQuery._id = {$in : userIdsDistinct};
     }
 
-    if (filters.afterDate) {
-        // TODO: need to consider filter afterDate
+    if (filters.firstApprovedDate) {
+        userQuery.first_approved_date = { $gte : filters.firstApprovedDate}
     }
     let userDocIds;
     let candidateQuery = [];
@@ -169,7 +168,6 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         }
 
         if (search.blockchains && search.blockchains.length > 0 ) {
-            // TODO: make this not required
             const platformFilter = {
                 $or: [
                     {"commercial_platform.platform_name": {$in: search.blockchains}},
@@ -183,9 +181,18 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             const skillsFilter = {"programming_languages.language": search.skills};
             candidateQuery.push(skillsFilter);
         }
-        if (search.availability_day && search.availability_day !== -1) {
-            // TODO: needs to consider other options
-            const availabilityFilter = {"availability_day": search.availability_day};
+        if (search.availability_day && search.availability_day !== -1 && search.availability_day !== 'Longer than 3 months') {
+            let dayArray;
+            if (search.availability_day === 'Now') {
+                dayArray = ['Now'];
+            } else if (search.availability_day === '1 month') {
+                dayArray = ['Now', '1 month'];
+            } else if (search.availability_day === '2 months') {
+                dayArray = ['Now', '1 month', '2 months'];
+            } else if (search.availability_day === '3 months') {
+                dayArray = ['Now', '1 month', '2 months', '3 months'];
+            }
+            const availabilityFilter = {"availability_day": {$in: dayArray}};
             candidateQuery.push(availabilityFilter);
         }
     }
@@ -194,7 +201,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     if (!candidates) {
         errors.throwError("No candidates matched the search", 404);
     }
-    // TODO: order by blockchain experience
+
     return {
         count: candidates.length,
         candidates: candidates
@@ -202,6 +209,9 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
 
 }
 
+function makeDistinctNumberSet(numberArray) {
+    return Array.from(new Set(userIds));
+}
 
 function salary_converter(salary_value, currency1, currency2)
 {

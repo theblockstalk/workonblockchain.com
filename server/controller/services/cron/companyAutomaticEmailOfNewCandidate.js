@@ -26,7 +26,8 @@ module.exports = async function (req, res) {
                 let candidateDocs = await candidateSearch.candidateSearch({
                     is_verify: 1,
                     status: 'approved',
-                    disable_account: false
+                    disable_account: false,
+                    firstApprovedDate: companyDoc.last_email_sent
                 }, {
                     skills: savedSearch.skills,
                     locations: savedSearch.locations,
