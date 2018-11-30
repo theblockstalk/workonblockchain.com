@@ -22,7 +22,7 @@ module.exports = async  function (req,res)
             disable_account: false
         }, {
         word: queryBody.word,
-        skills: queryBody.skills,
+        skills: queryBody.skill,
         locations: queryBody.location,
         positions: queryBody.position,
         blockchains: queryBody.blockchain,

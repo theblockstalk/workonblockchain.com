@@ -24,53 +24,7 @@
 						<span class = "short_intro">
 						<p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Companies</a></p>
 				 		</span>
-
-				 		<span class = "short_intro">
-				 		<form #approve_form="ngForm" >
-								<input type="hidden" name="type"  [ngModel]="data._creator.type">
-								<input type="hidden" name="email"  [ngModel]="data._creator.email">
-								<input type="hidden" name="name"  [ngModel]="data.first_name">
-								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
-								<input type="hidden" name="id" [ngModel]="data._creator._id">
-								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
-								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
-
-                <!--New code for 23-Nov-2018-->
-
-                <div class = "row status_row">
-                  <div class="shown_col col-sm-6 form-group">
-                     <select class="form-control" id="status_selector" [(ngModel)]="set_status" (ngModelChange) = "changeStatus($event)" name="set_status">
-                       <option *ngFor='let status of set_candidate_status' [value]="status.value" selected>{{status.name}}</option>
-                     </select>
-                  </div>
-                  <div class="col-sm-6 form-group" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
-                       <select class="form-control status_select" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
-                         <option *ngFor='let status of set_candidate_status_rejected' [value]="status.value" selected>{{status.name}}</option>
-                       </select>
-                  </div>
-                  <div class="col-sm-6 form-group" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
-                       <select class="form-control status_select" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
-                         <option *ngFor='let status of set_candidate_status_deferred' [value]="status.value" selected>{{status.name}}</option>
-                       </select>
-                  </div>
-                </div>
-
-                <div class = "form-group btnn_group">
-									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn save_status" *ngIf = "(data._creator.is_verify === 1)" >Save</button>
-								</div>
-
-                <!--/New code for 23-Nov-2018-->
-                <div class="alert alert-success alert-dismissible" *ngIf = "success">
-                  {{success}}
-                </div>
-
-                <div class="alert alert-danger alert-error alert-dismissible" *ngIf = "error">
-                  {{error}}
-                </div>
-              </form>
-						</span>
-
-				 	</div>
+          </div>
 
 				 	<div class="col-md-6 side-info">
 
@@ -113,8 +67,60 @@
 
 				 <section class = "profile job_info">
            <h3>Account</h3>
+           <span class = "short_intro">
+				 		<form #approve_form="ngForm" >
+								<input type="hidden" name="type"  [ngModel]="data._creator.type">
+								<input type="hidden" name="email"  [ngModel]="data._creator.email">
+								<input type="hidden" name="name"  [ngModel]="data.first_name">
+								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
+								<input type="hidden" name="id" [ngModel]="data._creator._id">
+								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
+								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
+
+              <!--New code for 23-Nov-2018-->
+
+                <div class = "row status_row info-area pro_br-btm">
+                  <div class = "col-md-3">
+                    <strong>Change status :</strong>
+                  </div>
+                  <div class="shown_col col-md-9 form-group">
+                     <select class="form-control status_select" id="status_selector" [(ngModel)]="set_status" (ngModelChange) = "changeStatus($event)" name="set_status">
+                       <option value="-1" disabled selected hidden >Select status</option>
+                       <option *ngFor='let status of set_candidate_status' [value]="status.value" selected>{{status.name}}</option>
+                     </select>
+                  </div>
+                  <div class = "col-md-3" *ngIf = "(set_status === 'deferred' || set_status === 'rejected')">
+                    <strong>Reason :</strong>
+                  </div>
+                  <div class="col-md-9 form-group" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
+                       <select class="form-control status_select" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
+                         <option value="-1" disabled selected hidden >Select reason</option>
+                         <option *ngFor='let status of set_candidate_status_rejected' [value]="status.value" selected>{{status.name}}</option>
+                       </select>
+                  </div>
+                  <div class="col-md-9 form-group" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
+                       <select class="form-control status_select" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
+                         <option value="-1" disabled selected hidden >Select reason</option>
+                         <option *ngFor='let status of set_candidate_status_deferred' [value]="status.value" selected>{{status.name}}</option>
+                       </select>
+                  </div>
+                  <div class = "form-group">
+									  <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn save_status" *ngIf = "(data._creator.is_verify === 1)" >Save</button>
+								  </div>
+
+                  <!--/New code for 23-Nov-2018-->
+                <div class="alert alert-success alert-dismissible" *ngIf = "success">
+                  {{success}}
+                </div>
+
+                <div class="alert alert-danger alert-error alert-dismissible" *ngIf = "error">
+                  {{error}}
+                </div>
+                </div>
+              </form>
+						</span>
            <div class="info-area pro_br-btm">
-             <div class = "col-md-3">
+             <div class = "col-md-3 my-css">
                <strong>Current status :</strong>
              </div>
              <div class = "col-md-9">
@@ -170,7 +176,7 @@
            </div>
 				 </ng-template>
 				 </div>
-         <div class="info-area pro_br-btm">
+         <!--<div class="info-area pro_br-btm">
 				 <ng-container *ngIf="set_status === 'Approved' || set_status === 'approved';else no_approve">
            <div class = "col-md-3">
              <strong>Approved by admin :</strong>
@@ -191,7 +197,7 @@
              </ul>
            </div>
 				 </ng-template>
-				</div>
+				</div>-->
 
            <div class="info-area pro_br-btm">
 				  <ng-container *ngIf="data._creator.disable_account === false;else no_enable">
