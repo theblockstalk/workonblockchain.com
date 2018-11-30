@@ -29,14 +29,22 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   inactive;
   approve;
   admin_check = [
+    {value:'created', name:'Created'},
+    {value:'wizard completed', name:'Wizard Completed'},
     {value:'approved', name:'Approved'},
     {value:'rejected', name:'Rejected'},
     {value:'deferred', name:'Deferred'},
     {value:'other', name:'Other'}
   ];
+  admin_checks_new = [
+    {value:1, name:'Verified'},
+    {value:true, name:'Disabled'}
+  ];
   information;
   admin_log;
   response;
+  candidate_status;
+
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
   {
@@ -47,6 +55,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.length='';
     this.log='';
     this.approve=-1;
+    this.candidate_status = -1;
     this.response='';
     this.rolesData =
       [
@@ -139,6 +148,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   approveClick(event , approveForm: NgForm)
   {
     this.error = '';
+    let reason = '';
     if(event.srcElement.innerHTML ==='Active' )
     {
       this.is_approve = 'approved';
@@ -146,9 +156,10 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     else if(event.srcElement.innerHTML === 'Inactive')
     {
       this.is_approve = 'rejected';
+      reason = 'garbage';
     }
 
-    this.authenticationService.approve_candidate(approveForm.value.id ,this.is_approve,'' )
+    this.authenticationService.approve_candidate(approveForm.value.id ,this.is_approve,reason)
       .subscribe(
         data =>
         {
@@ -220,7 +231,13 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   {
     this.approve =event;
     this.search(this.approve);
+  }
 
+  search_account_status(event)
+  {
+    console.log(event);
+    this.candidate_status = event;
+    this.search(this.candidate_status);
   }
 
   filter_array(arr)
@@ -240,14 +257,19 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.length =0;
     this.info=[];
     this.response = "";
-    if(this.approve == -1 && !this.select_value && !this.searchWord )
+    if(this.approve == -1 && !this.select_value && !this.searchWord && this.candidate_status === -1)
     {
       this.getAllCandidate();
     }
 
     else
     {
-      this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord)
+      let queryBody : any = {};
+      if(this.approve !== -1) queryBody.is_approve = this.approve;
+      if(this.select_value && this.select_value.length > 0) queryBody.msg_tags = this.select_value;
+      if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
+      if(this.candidate_status !== -1) queryBody.status = this.candidate_status;
+      this.authenticationService.admin_candidate_filter(queryBody)
       .subscribe(
         data =>
         {
@@ -315,6 +337,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.approve=-1;
     this.info=[];
     this.searchWord='';
+    this.candidate_status = -1;
     this.getAllCandidate();
   }
 

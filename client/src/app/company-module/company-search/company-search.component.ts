@@ -372,6 +372,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   positionchanged(data)
   {
+    this.not_found = '';
     if(this.select_value  !== data.value)
     {
       this.select_value = data.value;
@@ -383,6 +384,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   blockchainItems;
   blockchainchanged(data)
   {
+    this.not_found = '';
     if(this.selecteddd  !== data.value)
     {
       this.selecteddd = data.value;
@@ -408,6 +410,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   not_found;
   salarysearchdata(key , value) {
 
+    this.not_found = '';
+
     if (this.salary) {
       if (this.currencyChange !== -1) {
         this.searchdata(key, value);
@@ -431,6 +435,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.responseMsg = "response";
             if (this.candidate_data.length <= 0) {
               this.not_found = 'No candidates matched this search criteria';
+            }
+            if(this.candidate_data.length > 0) {
+              this.not_found='';
             }
           },
           error =>
@@ -470,6 +477,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     else {
+      this.not_found = '';
       let queryBody : any = {};
       if(this.searchWord) queryBody.word = this.searchWord;
       if(this.selectedObj !== -1) queryBody.skills = this.selectedObj;
@@ -482,15 +490,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryBody.current_currency = this.currencyChange;
       }
       this.authenticationService.filterSearch(queryBody )
+
         .subscribe(
           data =>
           {
             this.candidate_data = data;
+            if(this.candidate_data.length > 0) {
+              this.not_found='';
+            }
             this.responseMsg = "response";
           },
           error =>
           {
-
+            this.not_found='';
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.responseMsg = "error";
               this.not_found = error['error']['message'];
@@ -548,6 +560,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
+          if(this.candidate_data.length > 0) {
+            this.not_found='';
+          }
           this.responseMsg = "response";
         },
 

@@ -13,8 +13,7 @@ module.exports = async  function (req,res)
 {
     let userId = req.auth.user._id;
     let queryBody = req.body;
-    console.log("query Body");
-    console.log(queryBody);
+
     let search = {};
     if (queryBody.word) search.word = queryBody.word;
     if (queryBody.skills) search.skills = queryBody.skills;
@@ -29,11 +28,22 @@ module.exports = async  function (req,res)
         }
     }
 
-    candidateDocs = await candidateSearch.candidateSearch({
-            is_verify: 1,
-            status: 'approved',
-            disable_account: false
-        }, search);
+    let candidateDocs = await candidateSearch.candidateSearch({
+        is_verify: 1,
+        status: 'approved',
+        disable_account: false
+    }, {
+        word: queryBody.word,
+        skills: queryBody.skill,
+        locations: queryBody.location,
+        positions: queryBody.position,
+        blockchains: queryBody.blockchain,
+        salary: {
+            current_currency: queryBody.currency,
+            current_salary: queryBody.salary
+        },
+        availability_day: queryBody.availability
+    });
 
     let filterArray = [];
     for(let candidateDetail of candidateDocs.candidates) {

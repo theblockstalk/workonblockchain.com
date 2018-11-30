@@ -694,9 +694,6 @@ body{
 
 
 @media screen and (min-width: 768px){
-  .select_error {
-    position: relative !important;
-  }
   .slider-indicator {
       bottom: -35px !important;
   }
@@ -3290,6 +3287,7 @@ input:checked + .slider:before {
   display: block;
   font-size: 0;
   line-height: 1em;
+  margin-left: 45.32%;
 }
 
 .footer .social-icons {
@@ -3937,28 +3935,10 @@ input:checked + .slider:before {
   top: 20px;
 }
 
-.status_select{
-  width: 200px !important;
-  float: left;
-  position: relative;
-  top: 20px;
-  left:15px;
-}
-
 .btnn_group{
   top: 20px;
   position: relative;
   left: 20px;
-}
-
-.save_status{
-  padding: 6px 12px;
-  min-width: 90px;
-  border-radius: 0px !important;
-  color: #fff;
-  background-color: #537284;
-  border-color: #537284;
-  font-size: 15px;
 }
 
 .badges{
@@ -4255,39 +4235,10 @@ input:checked + .slider:before {
     top: 20px;
   }
 
-  .status_select{
-    width: 200px !important;
-    float: left;
-    position: relative;
-    top: 20px;
-    left:15px;
-  }
-
   .btnn_group{
     top: 20px;
     position: relative;
     left: 20px;
-  }
-
-  .save_status{
-    padding: 6px 12px;
-    min-width: 90px;
-    border-radius: 0px !important;
-    color: #fff;
-    background-color: #537284;
-    border-color: #537284;
-    font-size: 15px;
-  }
-
-  .badges{
-    position: relative;
-    top: 10px;
-    left: 20px;
-  }
-
-  .badges .label{
-    padding: 8px;
-    font-size: 12px;
   }
 
   .status_title{
@@ -4302,10 +4253,6 @@ input:checked + .slider:before {
     top: 15px;
     left: 20px;
     padding: 10px 0px;
-  }
-
-  .status-date{
-    font-size: 17px;
   }
 
   .shown_col{
@@ -4661,6 +4608,51 @@ input:checked + .slider:before {
 .reset_password_error .error{
   color: #e80000;
 }
+
+.save_status{
+  padding: 6px 12px;
+  min-width: 90px;
+  border-radius: 0px !important;
+  color: #fff;
+  background-color: #537284;
+  border-color: #537284;
+  font-size: 15px;
+  margin-left: 15px;
+  margin-bottom: 20px;
+}
+
+.badges{
+  position: relative;
+  top: 10px;
+  left: -14px;
+}
+
+.badges .label{
+  padding: 8px;
+  font-size: 12px;
+}
+
+.status-date{
+  font-size: 17px;
+}
+
+.alert-dismissible{
+  width: 35%;
+  margin-left: 13px;
+}
+
+.status_select{
+  width: 50% !important;
+}
+
+.my-css {
+  margin-top: 10px;
+}
+
+#sub_bttn {
+  margin-top: 5%;
+}
+
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 
