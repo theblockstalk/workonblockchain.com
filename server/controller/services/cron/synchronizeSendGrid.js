@@ -134,7 +134,7 @@ async function synchDatabasetoList(listId) {
                     last_name: candidateDoc.last_name,
                     user_referral_key: referralDoc.url_token,
                     user_account_disabled: userDoc.disable_account.toString(),
-                    user_approved: userDoc.candidate.status[0].status,
+                    user_status: userDoc.candidate.status[0].status,
                     user_email_verified: userDoc.is_verify,
                     user_terms_id: candidateDoc.terms_id,
                     user_created_date: userDoc.candidate.status[userDoc.candidate.status.length-1].timestamp,
