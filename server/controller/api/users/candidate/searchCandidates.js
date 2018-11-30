@@ -2,13 +2,9 @@ const CandidateProfile = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
 const Chat = require('../../../../model/chat');
 const logger = require('../../../services/logger');
+const currency = require('../../../services/currency');
 const errors = require('../../../services/errors');
 
-const settings = require('../../../../settings');
-
-const USD = settings.CURRENCY_RATES.USD;
-const GBP = settings.CURRENCY_RATES.GBP;
-const Euro = settings.CURRENCY_RATES.Euro;
 
 const salaryFactor = 1.1;
 
@@ -136,35 +132,15 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         }
 
         if (search.salary && search.salary.current_currency && search.salary.current_salary) {
-            let salaryArray = [];
-            let salaryConverterResult;
-            if(search.salary.current_currency === '$ USD' && search.salary.current_salary)
-            {
-                salaryConverterResult = salary_converter(search.salary.current_salary*salaryFactor, USD.GBP , USD.Euro );
-                salaryArray= {USD : search.salary.current_salary , GBP : salaryConverterResult[0] , Euro :salaryConverterResult[1]};
-            }
-
-            if(search.salary.current_currency === '£ GBP' && search.salary.current_salary)
-            {
-                salaryConverterResult = salary_converter(search.salary.current_salary*salaryFactor, GBP.USD , GBP.Euro );
-                salaryArray= {USD : salaryConverterResult[0] , GBP : search.salary.current_salary , Euro :salaryConverterResult[1]};
-            }
-            if(search.salary.current_currency === '€ EUR' && search.salary.current_salary)
-            {
-                salaryConverterResult = salary_converter(search.salary.current_salary*salaryFactor, Euro.USD , Euro.GBP );
-                salaryArray= {USD : salaryConverterResult[0] , GBP : salaryConverterResult[1]  , Euro : search.salary.current_salary};
-            }
-
-            if(salaryArray.length > 0 && search.salary.current_currency && search.salary.current_salary) {
-                const currencyFiler = {
-                    $or : [
-                        { $and : [ { current_currency : "$ USD" }, { current_salary : {$lte: salaryArray.USD} } ] },
-                        { $and : [ { current_currency : "£ GBP" }, { current_salary : {$lte: salaryArray.GBP} } ] },
-                        { $and : [ { current_currency : "€ EUR" }, { current_salary : {$lte: salaryArray.Euro} } ] }
-                    ]
-                };
-                candidateQuery.push(currencyFiler);
-            }
+            const curr = search.salary.current_currency;
+            const salary = search.salary.current_salary;
+            const usd = [{expected_salary_currency: "$ USD"}, {expected_salary: {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
+            const gbp = [{expected_salary_currency: "£ GBP"}, {expected_salary: {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
+            const eur = [{expected_salary_currency: "€ EUR"}, {expected_salary: {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
+            const currencyFiler = {
+                $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
+            };
+            candidateQuery.push(currencyFiler);
         }
 
         if (search.blockchains && search.blockchains.length > 0 ) {

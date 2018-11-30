@@ -1,11 +1,5 @@
-const settings = require('../../../../../settings');
-const users = require('../../../../../model/users');
-const CandidateProfile = require('../../../../../model/candidate_profile');
 const errors = require('../../../../services/errors');
 
-const USD = settings.CURRENCY_RATES.USD;
-const GBP = settings.CURRENCY_RATES.GBP;
-const Euro = settings.CURRENCY_RATES.Euro;
 const filterReturnData = require('../../filterReturnData');
 const candidateSearch = require('../../candidate/searchCandidates');
 
