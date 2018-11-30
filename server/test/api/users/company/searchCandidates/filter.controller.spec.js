@@ -57,7 +57,7 @@ describe('search candidates as company', function () {
             filterRes.body[0].programming_languages[0].language.should.valueOf(params.skill);
             filterRes.body[0].locations.should.valueOf(params.location);
             filterRes.body[0].platforms[0].should.valueOf(params.blockchain);
-            filterRes.body[0].availability_day.should.equal(params.availability);
+            filterRes.body[0].availability_day.should.equal(params.availability_day);
 
         })
     })

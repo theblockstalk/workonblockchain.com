@@ -16,13 +16,8 @@ module.exports = async function (req,res) {
 
    let search = {};
    if (queryBody.word) {
-       search.word = queryBody.word;
        search.name = queryBody.word;
    }
-   console.log("query body");
-   console.log(queryBody);
-   console.log("search");
-   console.log(search);
 
    let candidateDocs = await candidateSearch.candidateSearch(filter, search);
 
@@ -30,8 +25,6 @@ module.exports = async function (req,res) {
         await filterData(candidateDoc);
     }
 
-    console.log("candidate docs");
-    console.log(candidateDocs.candidates);
     res.send(candidateDocs.candidates);
 }
 
