@@ -49,7 +49,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit {
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 50);
+    }, 100);
   }
 
   locations = [
