@@ -1,12 +1,15 @@
 const CandidateProfile = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
 const Chat = require('../../../../model/chat');
+const logger = require('../../../services/logger');
+const errors = require('../../../services/errors');
 
 const settings = require('../../../../settings');
 
 const USD = settings.CURRENCY_RATES.USD;
 const GBP = settings.CURRENCY_RATES.GBP;
 const Euro = settings.CURRENCY_RATES.Euro;
+
 const convertToDays = module.exports.convertToDays = function convertToDays(when_receive_email_notitfications) {
     switch(when_receive_email_notitfications) {
         case "Weekly":
@@ -37,8 +40,8 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     };
 
     if (filters.is_verify) userQuery.is_verify = filters.is_verify;
-    if (filters.status) userQuery['candidate.status.0.status'] = filters.status;
-    if (filters.disable_account) userQuery.disable_account = filters.disable_account;
+    if (filters.status && filters.status !== -1) userQuery['candidate.status.0.status'] = filters.status;
+    if (filters.disable_account === false) userQuery.disable_account = filters.disable_account;
     if (filters.msg_tags) {
         let userIds = [];
         const chatDocs = await Chat.find({msg_tag : {$in: filters.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
@@ -49,7 +52,8 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             userIds.push(chatDoc.sender_id);
             userIds.push(chatDoc.receiver_id);
         }
-        userQuery._creator = {$in : userIds};
+
+        userQuery._id = {$in : userIds};
     }
 
     let userDocIds;
@@ -63,22 +67,27 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     }
 
     if (search) {
+        if(search.name) {
+            const nameSearch = { $or: [{ first_name: {'$regex' : search.name, $options: 'i'}},
+                {last_name : {'$regex' : search.name, $options: 'i'}}] };
+            candidateQuery.push(nameSearch);
+        }
         if(search.word) {
             const wordSearch = { $or: [{ why_work: {'$regex' : search.word, $options: 'i'}},
                     {description : {'$regex' : search.word, $options: 'i'}}] };
             candidateQuery.push(wordSearch);
         }
-
-        if (search.locations && search.locations.length > 0) {
+        if (search.locations && search.locations.length > 0 ) {
             const locationFilter = {"locations": {$in: search.locations}};
             candidateQuery.push(locationFilter);
         }
-        if (search.positions && search.positions.length > 0) {
+
+        if (search.positions && search.positions.length > 0  ) {
             const rolesFilter = {"roles": {$in: search.positions}};
             candidateQuery.push(rolesFilter);
         }
 
-        if (search.salary.current_currency && search.salary.current_salary) {
+        if (search.salary && search.salary.current_currency && search.salary.current_salary) {
             let salaryArray = [];
             let salaryConverterResult;
             if(search.salary.current_currency === '$ USD' && search.salary.current_salary)
@@ -98,7 +107,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                 salaryArray= {USD : salaryConverterResult[0] , GBP : salaryConverterResult[1]  , Euro : search.salary.current_salary};
             }
 
-            if(salaryArray.length > 0 && search.salary.current_currency && search.salary.current_salary) {
+            if(search.salary.current_currency && search.salary.current_salary) {
                 const currencyFiler = {
                     $or : [
                         { $and : [ { current_currency : "$ USD" }, { current_salary : {$lte: salaryArray.USD} } ] },
@@ -110,7 +119,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             }
         }
 
-        if (search.blockchains && search.blockchains.length > 0) {
+        if (search.blockchains && search.blockchains.length > 0 ) {
             const platformFilter = {
                 $or: [
                     {"commercial_platform.platform_name": {$in: search.blockchains}},
@@ -121,16 +130,17 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         }
 
         if (search.skills && search.skills.length > 0) {
-            const skillsFilter = {"programming_languages.language": skills};
+            const skillsFilter = {"programming_languages.language": search.skills};
             candidateQuery.push(skillsFilter);
         }
-        if (search.availability_day) {
-            const availabilityFilter = {"availability_day": availability_day};
+        if (search.availability_day && search.availability_day !== -1) {
+            const availabilityFilter = {"availability_day": search.availability_day};
             candidateQuery.push(availabilityFilter);
         }
     }
 
     const searchQuery = {$and: candidateQuery};
+
     candidates = await CandidateProfile.find(searchQuery).populate('_creator').lean();
     if (!candidates) {
         errors.throwError("No candidates matched the search", 404);

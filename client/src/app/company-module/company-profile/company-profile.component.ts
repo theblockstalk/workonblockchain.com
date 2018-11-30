@@ -1,4 +1,4 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit  } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -10,8 +10,7 @@ declare var $:any;
   templateUrl: './company-profile.component.html',
   styleUrls: ['./company-profile.component.css']
 })
-export class CompanyProfileComponent implements OnInit ,  AfterViewInit
-{
+export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
 
   currentUser: User;
   first_name;last_name;company_name;job_title;company_website;company_phone;company_country;
@@ -73,6 +72,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
        setTimeout(() => {
          $('.selectpicker').selectpicker('refresh');
        }, 150);
+
         }
 
   locations = [
@@ -283,15 +283,9 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
 
                       }
 
-                    console.log(data);
                     if(data.terms_id && data.company_founded && data.no_of_employees && data.company_funded && data.company_description && !data.saved_searches ) {
                       console.log("show popup");
                       $('#popModal_b').modal('show');
-                      $(window).load(function()
-                      {
-                        console.log("windows load");
-                        $('#popModal_b').modal('show');
-                      });
                     }
                     if(data.saved_searches) {
                       this.saved_searche = data.saved_searches;
@@ -327,6 +321,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit
            this.router.navigate(['/not_found']);
        }
   }
+
 
   candidate_prefernces() {
     this.error_msg = "";

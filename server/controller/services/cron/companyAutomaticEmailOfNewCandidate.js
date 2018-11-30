@@ -20,7 +20,7 @@ module.exports = async function (req, res) {
         if(userDoc) {
             console.log(companyDoc.last_email_sent);
             console.log(new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000));
-            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) { 
+            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
 
                 const savedSearch = companyDoc.saved_searches;
                 let candidateDocs = await candidateSearch.candidateSearch({
@@ -40,15 +40,15 @@ module.exports = async function (req, res) {
                 });
 
                 console.log(candidateDocs);
-                if(candidateDocs) {
+                if(candidateDocs.candidates) {
                     let candidateList = [];
-                    for ( let i = 0 ; i < candidateDocs.length; i++) {
-                        if(candidateDocs[i]._creator.first_approved_date) {
+                    for ( let i = 0 ; i < candidateDocs.candidates.length; i++) {
+                        if(candidateDocs.candidates[i]._creator.first_approved_date) {
                             let candidateInfo = {
-                                url : candidateDocs[i]._creator._id,
-                                why_work : candidateDocs[i].why_work,
-                                initials : candidateDocs[i].first_name.charAt(0).toUpperCase() + candidateDocs[i].last_name.charAt(0).toUpperCase(),
-                                programming_languages : candidateDocs[i].programming_languages
+                                url : candidateDocs.candidates[i]._creator._id,
+                                why_work : candidateDocs.candidates[i].why_work,
+                                initials : candidateDocs.candidates[i].first_name.charAt(0).toUpperCase() + candidateDocs.candidates[i].last_name.charAt(0).toUpperCase(),
+                                programming_languages : candidateDocs.candidates[i].programming_languages
                             }
                             candidateList.push(candidateInfo);
                             console.log("Candidate list : " + candidateList);
@@ -57,12 +57,11 @@ module.exports = async function (req, res) {
                             logger.debug("do nothing");
                         }
                     }
-                    const candidateListCount = candidateList.length;
-                    console.log(candidateListCount);
+
                     let candidates;
-                    if(candidateListCount > 0) {
-                        if(candidateListCount <= 10) {
-                            candidates = {"count" : candidateListCount , "list" : candidateList};
+                    if(candidateDocs.count > 0) {
+                        if(candidateDocs.count  <= 10) {
+                            candidates = {"count" : candidateDocs.count  , "list" : candidateList};
                         }
                         else {
                             candidates = {"count" : 'more than 10' , "list" : candidateList.slice(0, 10)};
@@ -93,7 +92,6 @@ module.exports = async function (req, res) {
     res.send({
         success : true
     })
-
 
 
 }

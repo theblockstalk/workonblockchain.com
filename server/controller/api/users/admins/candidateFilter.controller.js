@@ -3,6 +3,7 @@ const Chat = require('../../../../model/chat');
 const errors = require('../../../services/errors');
 
 const filterReturnData = require('../filterReturnData');
+const candidateSearch = require('../candidate/searchCandidates');
 
 module.exports = async function (req,res) {
    let queryBody = req.body;
@@ -14,7 +15,7 @@ module.exports = async function (req,res) {
    if (queryBody.msg_tags) filter.msg_tags = queryBody.msg_tags;
 
    let candidateDocs = await candidateSearch.candidateSearch(filter, {
-        word: queryBody.word
+        name: queryBody.word
     });
 
     for (candidateDoc of candidateDocs.candidates) {
