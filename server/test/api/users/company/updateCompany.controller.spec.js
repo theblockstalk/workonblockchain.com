@@ -35,18 +35,27 @@ describe('update profile as company', function () {
 
             updateRes.body.success.should.equal(true);
             const companyDoc = await Companies.findOne({_creator: companyUserDoc._id}).lean();
-            companyDoc.first_name.should.equal(updatedData.first_name);
-            companyDoc.last_name.should.equal(updatedData.last_name);
-            companyDoc.job_title.should.equal(updatedData.job_title);
-            companyDoc.company_name.should.equal(updatedData.company_name);
-            companyDoc.company_website.should.equal(updatedData.company_website);
-            companyDoc.company_country.should.equal(updatedData.country);
-            companyDoc.company_postcode.should.equal(updatedData.postal_code);
-            companyDoc.company_city.should.equal(updatedData.city);
-            companyDoc.company_founded.should.equal(updatedData.company_founded);
-            companyDoc.no_of_employees.should.equal(updatedData.no_of_employees);
-            companyDoc.company_funded.should.equal(updatedData.company_funded);
-            companyDoc.company_description.should.equal(updatedData.company_description);
+            companyDoc.first_name.should.equal(updatedData.info.first_name);
+            companyDoc.last_name.should.equal(updatedData.info.last_name);
+            companyDoc.job_title.should.equal(updatedData.info.job_title);
+            companyDoc.company_name.should.equal(updatedData.info.company_name);
+            companyDoc.company_website.should.equal(updatedData.info.company_website);
+            companyDoc.company_country.should.equal(updatedData.info.country);
+            companyDoc.company_postcode.should.equal(updatedData.info.postal_code);
+            companyDoc.company_city.should.equal(updatedData.info.city);
+            companyDoc.company_founded.should.equal(updatedData.info.company_founded);
+            companyDoc.no_of_employees.should.equal(updatedData.info.no_of_employees);
+            companyDoc.company_funded.should.equal(updatedData.info.company_funded);
+            companyDoc.company_description.should.equal(updatedData.info.company_description);
+
+            companyDoc.saved_searches[0].location.should.valueOf(updatedData.saved_searches[0].location);
+            companyDoc.saved_searches[0].job_type.should.valueOf(updatedData.saved_searches[0].job_type);
+            companyDoc.saved_searches[0].current_currency.should.equal(updatedData.saved_searches[0].current_currency);
+            companyDoc.saved_searches[0].current_salary.should.equal(updatedData.saved_searches[0].current_salary);
+            companyDoc.saved_searches[0].skills.should.valueOf(updatedData.saved_searches[0].skills);
+            companyDoc.saved_searches[0].when_receive_email_notitfications.should.equal(updatedData.saved_searches[0].when_receive_email_notitfications);
+            companyDoc.saved_searches[0].position.should.valueOf(updatedData.saved_searches[0].position);
+            companyDoc.saved_searches[0].blockchain.should.valueOf(updatedData.saved_searches[0].blockchain);
 
         })
     })

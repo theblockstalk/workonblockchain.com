@@ -1,24 +1,18 @@
-import { Component, OnInit, AfterViewInit  } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Component, OnInit , AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-import {NgForm , FormGroup,FormControl,FormBuilder} from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import {NgForm,FormGroup,FormControl,FormBuilder } from '@angular/forms';
 declare var $:any;
+import {ScriptService} from '../../scripts/script.service';
 
 @Component({
-  selector: 'app-company-profile',
-  templateUrl: './company-profile.component.html',
-  styleUrls: ['./company-profile.component.css']
+  selector: 'app-preferences',
+  templateUrl: './preferences.component.html',
+  styleUrls: ['./preferences.component.css']
 })
-export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
-
-  currentUser: User;
-  first_name;last_name;company_name;job_title;company_website;company_phone;company_country;
-  company_city;company_postcode;company_description;company_founded;company_funded;no_of_employees;
-    imgPath;
-    email;
-  companyMsgTitle;
-  companyMsgBody;
+export class PreferencesComponent implements OnInit, AfterViewInit {
   preferncesForm : FormGroup;
   saved_searches=[];
   location_log;
@@ -27,10 +21,16 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   availability_day_log;
   current_currency_log;
   current_salary_log;
+  blockchain_log;
+  skills_log;
   email_notification_log;
   error_msg;
   log;
+  currentUser: User;
   about_active_class;
+  terms_active_class;
+  companyMsgTitle;
+  companyMsgBody;
   positionSelected = [];
   current_salary;
   locationSelected = [];
@@ -40,40 +40,17 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   languageSelected = [];
   other_technologies;
   avail_day;
-  saved_searche;
-  constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
-        private router: Router,
-        private authenticationService: UserService) { }
+  pref_active_class;
 
-    sectionScroll;
-    internalRoute(page,dst){
-    this.sectionScroll=dst;
-    this.router.navigate([page], {fragment: dst});
-}
-
-    doScroll() {
-
-    if (!this.sectionScroll) {
-      return;
-    }
-    try {
-      var elements = document.getElementById(this.sectionScroll);
-
-      elements.scrollIntoView();
-    }
-    finally{
-      this.sectionScroll = null;
-    }
+  constructor(private scriptService : ScriptService,private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
   }
 
-    ngAfterViewInit(): void
-     {
-       window.scrollTo(0, 0);
-       setTimeout(() => {
-         $('.selectpicker').selectpicker('refresh');
-       }, 150);
-
-        }
+  ngAfterViewInit(): void {
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+  }
 
   locations = [
     {country_code:'000' , name:'Remote', value:'remote', checked:false},
@@ -193,135 +170,169 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   ];
 
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
-   url;
-  ngOnInit()
-  {
-     // //console.log(this.htmlContent);
-       this.router.events.subscribe((evt) => {
-      if (!(evt instanceof NavigationEnd)) {
-        return;
-      }
-      this.doScroll();
-      this.sectionScroll= null;
-    });
 
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      if(!this.currentUser)
-      {
-          this.router.navigate(['/login']);
-      }
-      if(this.currentUser && this.currentUser.type === 'company')
-      {
-        this.preferncesForm = new FormGroup({
-          location: new FormControl(),
-          job_type: new FormControl(),
-          position: new FormControl(),
-          availability_day: new FormControl(),
-          current_currency: new FormControl(),
-          current_salary: new FormControl(),
-          blockchain: new FormControl(),
-          skills: new FormControl(),
-          other_technologies: new FormControl(),
-          when_receive_email_notitfications: new FormControl(),
-        });
-           this.authenticationService.getCurrentCompany(this.currentUser._id)
-            .subscribe(
-                data =>
-                {
+  ngOnInit() {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(!this.currentUser) {
+      this.router.navigate(['/login']);
+    }
+    else if(this.currentUser && this.currentUser.type === 'company') {
 
-                  //console.log(data);
-                  if(!data.terms_id)
-                  {
-                      this.router.navigate(['/company_wizard']);
+      this.locations.sort(function(a, b){
+        if(b.name === 'Remote' || a.name === 'Remote') {
+        }
+        else {
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        }
+      })
+
+      this.job_types.sort(function(a, b){
+          if(a < b) { return -1; }
+          if(a > b) { return 1; }
+          return 0;
+      })
+
+      this.roles.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.blockchain.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.language_opt.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.preferncesForm = new FormGroup({
+        location: new FormControl(),
+        job_type: new FormControl(),
+        position: new FormControl(),
+        availability_day: new FormControl(),
+        current_currency: new FormControl(),
+        current_salary: new FormControl(),
+        blockchain: new FormControl(),
+        skills: new FormControl(),
+        other_technologies: new FormControl(),
+        when_receive_email_notitfications: new FormControl(),
+      });
+
+      this.authenticationService.getCurrentCompany(this.currentUser._id)
+        .subscribe(
+          data =>
+          {
+            if(data.terms_id)
+            {
+              this.terms_active_class = 'fa fa-check-circle text-success';
+            }
+            if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
+            {
+              this.about_active_class = 'fa fa-check-circle text-success';
+            }
+            if(data.saved_searches && data.saved_searches.length > 0) {
+              this.pref_active_class = 'fa fa-check-circle text-success';
+              this.preferncesForm = this._fb.group({
+                location: [data.saved_searches[0].location],
+                job_type: [data.saved_searches[0].job_type],
+                position: [data.saved_searches[0].position],
+                availability_day: [data.saved_searches[0].availability_day],
+                current_currency: [data.saved_searches[0].current_currency],
+                current_salary: [data.saved_searches[0].current_salary],
+                blockchain: [data.saved_searches[0].blockchain],
+                skills: [data.saved_searches[0].skills],
+                other_technologies: [data.saved_searches[0].other_technologies],
+                when_receive_email_notitfications: [data.saved_searches[0].when_receive_email_notitfications],
+              });
+
+              for (let locations of data.saved_searches[0].location) {
+                for(let option of this.locations) {
+                  if(option.name === locations ) {
+                    this.locationSelected.push(option.name);
                   }
-
-
-                  else if(!data.company_founded || !data.no_of_employees || !data.company_funded || !data.company_description )
-                  {
-                      this.router.navigate(['/about_comp']);
-                  }
-
-                  else if(((new Date(data._creator.created_date) > new Date('2018/11/28')) && (!data.saved_searches || data.saved_searches.length === 0))) {
-                    this.router.navigate(['/preferences']);
-                  }
-
-                  else
-                  {
-                      this.first_name=data.first_name;
-                      this.email=data._creator.email;
-                      this.last_name=data.last_name;
-                      this.company_name=data.company_name;
-                      this.job_title=data.job_title;
-                      if(data.company_website)
-                      {
-                            let loc= data.company_website;
-                            let x = loc.split("/");
-                            if(x[0] === 'http:' || x[0] === 'https:')
-                            {
-                                this.company_website = data.company_website;
-                            }
-                            else
-                            {
-                                this.company_website = 'http://' + data.company_website;
-                            }
-                      }
-                      this.company_phone =data.company_phone;
-                      this.company_country =data.company_country;
-                      this.company_city=data.company_city;
-                      this.company_postcode=data.company_postcode;
-                      this.company_description=data.company_description;
-                      this.company_founded =data.company_founded;
-                      this.company_funded=data.company_funded;
-                      this.no_of_employees=data.no_of_employees;
-                      if(data.company_logo != null )
-                      {
-                      ////console.log(data[0].image);
-
-                        this.imgPath =  data.company_logo;
-
-                        //console.log(this.imgPath);
-
-                      }
-
-                    if(data.terms_id && data.company_founded && data.no_of_employees && data.company_funded && data.company_description && !data.saved_searches ) {
-                      console.log("show popup");
-                      $('#popModal_b').modal('show');
-                    }
-                    if(data.saved_searches) {
-                      this.saved_searche = data.saved_searches;
-
-                    }
-
-                  }
-
-
-
-                },
-                error =>
-                {
-
-                  if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                   console.log(error['error']['message']);
-                  }
-
-
-                });
-        this.authenticationService.get_page_content('Company popup message')
-          .subscribe(
-            data => {
-              if(data)
-              {
-                this.companyMsgTitle= data[0].page_title;
-                this.companyMsgBody = data[0].page_content;
+                }
               }
-            });
-      }
-      else
-       {
-           this.router.navigate(['/not_found']);
-       }
-  }
+              for (let job_types of data.saved_searches[0].job_type) {
+                for(let option of this.job_types) {
+                  if(option === job_types ) {
+                    this.jobTypesSelected.push(option);
+                  }
+                }
+              }
+              for (let positions of data.saved_searches[0].position) {
+                for(let option of this.roles) {
+                  if(option.name === positions ) {
+                    this.positionSelected.push(option.name);
+                  }
+                }
+              }
+              if(data.saved_searches[0].blockchain && data.saved_searches[0].blockchain.length > 0) {
+                for(let blockchains of data.saved_searches[0].blockchain) {
+                  for(let option of this.blockchain) {
+                    if(option.name === blockchains) {
+                      this.blockchainSelected.push(option.name);
+                    }
+                  }
+                }
+              }
 
+              if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
+                for(let skills of data.saved_searches[0].skills) {
+                  for(let option of this.language_opt) {
+                    if(option.name === skills) {
+                      this.languageSelected.push(option.name);
+                    }
+                  }
+                }
+              }
+
+
+            }
+
+          },
+          error =>
+          {
+            if(error.message === 500 || error.message === 401)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+
+            if(error.message === 403)
+            {
+              // this.router.navigate(['/not_found']);
+            }
+          });
+
+      this.authenticationService.get_page_content('Company popup message')
+        .subscribe(
+          data => {
+            if(data)
+            {
+              this.companyMsgTitle= data[0].page_title;
+              this.companyMsgBody = data[0].page_content;
+            }
+          });
+    }
+    else {
+      this.router.navigate(['/not_found']);
+    }
+
+
+
+  }
 
   candidate_prefernces() {
     this.error_msg = "";
@@ -343,9 +354,13 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     }
     if(!this.preferncesForm.value.current_salary) {
       this.current_currency_log = "Please select available annual salary and currency";
-
     }
-
+    /*if(!this.preferncesForm.value.blockchain || this.preferncesForm.value.blockchain.length === 0) {
+      this.blockchain_log = "Please select blockchain technologies";
+    }
+    if(!this.preferncesForm.value.skills || this.preferncesForm.value.skills.length === 0) {
+      this.skills_log = "Please select programing languages";
+    }*/
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
@@ -360,11 +375,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
         .subscribe(
           data =>
           {
-
             if(data.success === true) {
-              this.saved_searche = this.saved_searches;
-              $('#popModal_b').modal('hide');
-
+              $('#popModal').modal('show');
             }
           },
           error => {
@@ -385,12 +397,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
       this.error_msg = "There is a field that still needs completion. Please scroll up.";
     }
 
-  }
-
-  redirectToCompany()
-  {
-    $('#popModal').modal('hide');
-    this.router.navigate(['/company_profile']);
   }
 
   locationSelectedOptions(name) {
@@ -442,4 +448,11 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
       return;
     }
   }
+
+  redirectToCompany()
+  {
+    $('#popModal').modal('hide');
+    this.router.navigate(['/company_profile']);
+  }
+
 }

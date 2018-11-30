@@ -4,7 +4,7 @@
   "description": "authentication test app",
   "main": "server.js",
   "scripts": {
-    "test": "nyc mocha ./test --recursive --exit --timeout 7000",
+    "test": "export NODE_ENV=test && nyc mocha ./test --recursive --exit --timeout 7000",
     "start": "nodemon --ignore 'uploads/*'"
   },
   "author": "",

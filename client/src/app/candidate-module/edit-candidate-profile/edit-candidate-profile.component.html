@@ -453,7 +453,7 @@
                         <div class="row">
                           <div class="col-md-4 collection-checkbox" *ngFor="let option of otherSkills">
 
-                            <div class="checkbox" >
+                            <div class="checkbox checkbox_height" >
                               <label class = "check-label lable"> {{option.name}}
                                 <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
 
@@ -493,7 +493,7 @@
                         <div class="row">
                           <div class="col-md-4 collection-checkbox" *ngFor="let option of otherFormalSkills">
 
-                            <div class="checkbox" >
+                            <div class="checkbox checkbox_height" >
                               <label class = "check-label lable"> {{option.name}}
                                 <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"   />
 
@@ -781,6 +781,9 @@
           </div>
           <div class = "button_area text-right">
             <button type="submit" class = "btn btn-self btn-pdg" [disabled] = "(current_salary.errors && salary) || (expect_salary.errors && expected_salaryyy)" >Save Profile</button>
+          </div>
+          <div class = "form_error error-log" *ngIf="error_msg">
+            <span class = "error">{{error_msg}}</span>
           </div>
         </div>
       </form>

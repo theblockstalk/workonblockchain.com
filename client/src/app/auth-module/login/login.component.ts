@@ -1,17 +1,17 @@
 import { Component, OnInit,OnDestroy,Directive } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
-//import {AlertService} from '../alert.service';
 import {User} from '../../Model/user';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { AuthService } from 'angular4-social-login';
 import { GoogleLoginProvider } from 'angular4-social-login';
 import { LinkedInService } from 'angular-linkedin-sdk';
-//import { Subscription } from 'rxjs/Subscription';
 import { DataService } from '../../data.service';
 import {NgForm} from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
+import {environment} from '../../../environments/environment';
 
+const URL = environment.backend_url;
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
      message:string;
     error;
 forgetMessage;
-  constructor(private route: ActivatedRoute,
+  constructor(private http: HttpClient , private route: ActivatedRoute,
         private router: Router,
         private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService,private titleService: Title,private newMeta: Meta) {
 		this.titleService.setTitle('Work on Blockchain | Login');
@@ -71,14 +71,29 @@ forgetMessage;
           this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, null)
             .subscribe(
                 user => {
-                //console.log(user);
 
-                if(user.type == 'company')
-                {
+                if(user.type === 'company') {
+
+                  if (new Date(user.created_date) < new Date('2018/11/28')) {
+                    this.http.get<any>(URL + 'users/current_company/' + user._id, {
+                      headers: new HttpHeaders().set('Authorization', user.jwt_token)
+                    }).map((res) => res).subscribe(
+                      (res) => {
+                        if (!res.saved_searches) {
+                          window.location.href = '/company_profile';
+                        }
+                        else {
+                          window.location.href = '/candidate-search';
+
+                        }
+                      });
+                  }
+                  else {
                     window.location.href = '/candidate-search';
 
+                  }
                 }
-                if(user.type == 'candidate')
+                if(user.type === 'candidate')
                 {
                    window.location.href = '/candidate_profile';
                 }

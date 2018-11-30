@@ -32,6 +32,8 @@ export class ReferralComponent implements OnInit {
   first_name;
   last_name;
   ref_link_for_not_logged_user = '';
+  termscondition = false;
+  terms_log = '';
 
   constructor(
     private authenticationService: UserService,private titleService: Title,private newMeta: Meta
@@ -151,7 +153,9 @@ export class ReferralComponent implements OnInit {
   }
 
   get_ref_link(refrealForm : NgForm){
-    if(refrealForm.value.email) {
+    this.terms_log = '';
+    if(refrealForm.value.email && refrealForm.value.terms) {
+      this.termscondition = refrealForm.value.terms;
       this.authenticationService.getRefCode(refrealForm.value.email)
       .subscribe(
         data => {
@@ -159,12 +163,16 @@ export class ReferralComponent implements OnInit {
           this.share_url = this.ref_link_for_not_logged_user;
           this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
         },
-        error => {
-
-        }
+        error => {}
       );
     }
     else{
+      if(!refrealForm.value.terms){
+        this.terms_log = "Please accept terms and conditions";
+      }
+      if(!refrealForm.value.email){
+        this.terms_log = "Please enter your email";
+      }
       this.ref_link_for_not_logged_user = '';
     }
   }

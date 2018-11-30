@@ -43,6 +43,7 @@ const companyImage = require('./controller/api/users/company/image.controller');
 const companyUpdate = require('./controller/api/users/company/updateCompany.controller');
 const companyWizardAbout = require('./controller/api/users/company/wizard/about.controller');
 const companyWizardTnT = require('./controller/api/users/company/wizard/getSummaryTnC.controller');
+const companySavedSearches = require('./controller/api/users/company/wizard/savedSearches.controller');
 const companySearchFilter = require('./controller/api/users/company/searchCandidates/filter.controller');
 const companySearchVerifiedCandidates = require('./controller/api/users/company/searchCandidates/verifiedCandidate.controller');
 const candidateVerifiedCandidateDetail = require('./controller/api/users/company/searchCandidates/getVerifiedCandidateDetail.controller');
@@ -73,6 +74,7 @@ const adminComanyFilter = require('./controller/api/users/admins/companyFilter.c
 const adminAddNewPagesContent = require('./controller/api/users/admins/pages/addTermsAndConditionsContent.controller');
 const adminGetMetrics = require('./controller/api/users/admins/getMetrics.controller');
 const adminChangeCandidateStatus = require('./controller/api/users/admins/changeCandidateStatus.controller');
+const adminRunCron = require('./controller/api/users/admins/runCronJob.controller');
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
@@ -114,6 +116,7 @@ router.post('/users/create_employer',  asyncMiddleware(companyRegister));
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
 router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
 router.put('/users/company_wizard',auth.isLoggedIn, asyncMiddleware(companyWizardTnT));
+router.put('/users/saved_searches',auth.isLoggedIn, asyncMiddleware(companySavedSearches));
 router.put('/users/about_company',auth.isLoggedIn, asyncMiddleware(companyWizardAbout));
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
 router.put('/users/update_company_profile',auth.isLoggedIn, asyncMiddleware(companyUpdate));
@@ -146,6 +149,7 @@ router.put('/users/add_privacy_content' , auth.isAdmin , asyncMiddleware(adminAd
 router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , asyncMiddleware(adminAddNewPagesContent));
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
 router.put('/users/change_candidate_status/:_id', auth.isAdmin  , asyncMiddleware(adminChangeCandidateStatus));
+router.get('/users/run_cron/:cron_name', auth.isAdmin, asyncMiddleware(adminRunCron));
 
 // Pages
 router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent));

@@ -60,6 +60,14 @@ const getMetrics = module.exports.getMetrics = async function getMetrics(jwtToke
     return res;
 }
 
+const runCron = module.exports.runCron = async function runCron(cronName, jwtToken) {
+    const res = await chai.request(server)
+        .get('/users/run_cron/' + cronName)
+        .set('Authorization', jwtToken)
+        .send();
+    return res;
+}
+
 const changeCandidateStatus = module.exports.changeCandidateStatus = async function changeCandidateStatus(id,status,reason,jwtToken) {
     const data = {
         'status': status,
