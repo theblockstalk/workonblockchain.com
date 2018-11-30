@@ -1,7 +1,7 @@
+const settings = require('../../../settings');
 const sendGrid = require('../email/sendGrid');
 const logger = require('../logger');
 const crypto = require('../crypto');
-const settings = require('../../../settings');
 const mongooseUsers = require('../../../model/mongoose/users');
 const mongooseCandidate = require('../../../model/mongoose/candidate');
 const mongooseCompany = require('../../../model/mongoose/company');
@@ -77,6 +77,7 @@ async function syncListToDatabase(listId, recipientCount) {
 
 async function synchDatabasetoList(listId) {
     let added = 0, updated = 0, errors = 0, i = 1;
+
     const count = await mongooseUsers.count({});
 
     await mongooseUsers.findAndIterate({}, async function(userDoc) {
@@ -128,7 +129,7 @@ async function synchDatabasetoList(listId) {
             if (candidateDoc) {
                 const recipientUpdate = {
                     email: userDoc.email,
-                    type: "candidate",
+                    user_type: "candidate",
                     user: "true",
                     first_name: candidateDoc.first_name,
                     last_name: candidateDoc.last_name,
@@ -154,7 +155,7 @@ async function synchDatabasetoList(listId) {
             if (companyDoc) {
                 const recipientUpdate = {
                     email: userDoc.email,
-                    type: "company",
+                    user_type: "company",
                     user: "true",
                     first_name: companyDoc.first_name,
                     last_name: companyDoc.last_name,
