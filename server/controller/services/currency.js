@@ -16,7 +16,8 @@ function mapCurrencyName(name) {
             return "GBP";
     }
 }
-module.exports.convert = function(base, dest, price) {
-    const usdPrice = price / currencyRatesUSD[mapCurrencyName(base)];
-    return usdPrice * currencyRatesUSD[mapCurrencyName(dest)];
+
+module.exports.convert = function(fromCurrency, toCurrency, price) {
+    const usdPrice = price * currencyRatesUSD[mapCurrencyName(fromCurrency)];
+    return usdPrice / currencyRatesUSD[mapCurrencyName(toCurrency)];
 };
