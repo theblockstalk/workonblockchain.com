@@ -94,10 +94,10 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             errors.throwError("No users matched the search", 404);
         }
         for (chatDoc of chatDocs) {
-            userIds.push(chatDoc.sender_id);
-            userIds.push(chatDoc.receiver_id);
+            userIds.push(chatDoc.sender_id.toString());
+            userIds.push(chatDoc.receiver_id.toString());
         }
-        const userIdsDistinct = makeDistinctNumberSet(userIds);
+        const userIdsDistinct = makeDistinctSet(userIds);
         userQuery._id = {$in : userIdsDistinct};
     }
 
@@ -209,8 +209,8 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
 
 }
 
-function makeDistinctNumberSet(numberArray) {
-    return Array.from(new Set(userIds));
+function makeDistinctSet(array) {
+    return Array.from(new Set(array));
 }
 
 function salary_converter(salary_value, currency1, currency2)
