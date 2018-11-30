@@ -10,9 +10,9 @@ module.exports = async function (req,res) {
     const userDoc = await User.find({type : 'candidate' , is_verify :1, 'candidate.status.0.status': 'approved' ,disable_account : false }).lean();
     let userIds = [];
     for (detail of userDoc) {
-        const ids =  await getUsersIds(detail);
-        userIds.push(ids);
+        userIds.push(detail._id);
     }
+
     const candidateDoc = await CandidateProfile.find({_creator : {$in : userIds }}).populate('_creator').lean();
     if(candidateDoc) {
         if(candidateDoc.length <= 0) {

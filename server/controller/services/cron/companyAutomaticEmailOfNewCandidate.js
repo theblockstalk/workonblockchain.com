@@ -18,21 +18,37 @@ module.exports = async function (req, res) {
         const userDoc = await User.find({is_verify : 1 , is_approved : 1 , disable_account : false , type : 'company' , _id : companyDoc._creator  }).lean();
         console.log(userDoc);
         if(userDoc) {
-            let queryString = [];
             console.log(companyDoc.last_email_sent);
             console.log(new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000));
-            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) { 
-                let candidateDoc = await candidateSearch.candidateSearchQuery(companyDoc.saved_searches);
-                console.log(candidateDoc);
-                if(candidateDoc) {
+            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - candidateSearch.convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
+
+                const savedSearch = companyDoc.saved_searches;
+                let candidateDocs = await candidateSearch.candidateSearch({
+                    is_verify: 1,
+                    status: 'approved',
+                    disable_account: false
+                }, {
+                    skills: savedSearch.skills,
+                    locations: savedSearch.locations,
+                    positions: savedSearch.positions,
+                    blockchains: savedSearch.blockchains,
+                    salary: {
+                        current_currency: savedSearch.current_currency,
+                        current_currency: savedSearch.current_currency
+                    },
+                    availability_day: savedSearch.availability_day
+                });
+
+                console.log(candidateDocs);
+                if(candidateDocs.candidates) {
                     let candidateList = [];
-                    for ( let i = 0 ; i < candidateDoc.length; i++) {
-                        if(candidateDoc[i]._creator.first_approved_date) {
+                    for ( let i = 0 ; i < candidateDocs.candidates.length; i++) {
+                        if(candidateDocs.candidates[i]._creator.first_approved_date) {
                             let candidateInfo = {
-                                url : candidateDoc[i]._creator._id,
-                                why_work : candidateDoc[i].why_work,
-                                initials : candidateDoc[i].first_name.charAt(0).toUpperCase() + candidateDoc[i].last_name.charAt(0).toUpperCase(),
-                                programming_languages : candidateDoc[i].programming_languages
+                                url : candidateDocs.candidates[i]._creator._id,
+                                why_work : candidateDocs.candidates[i].why_work,
+                                initials : candidateDocs.candidates[i].first_name.charAt(0).toUpperCase() + candidateDocs.candidates[i].last_name.charAt(0).toUpperCase(),
+                                programming_languages : candidateDocs.candidates[i].programming_languages
                             }
                             candidateList.push(candidateInfo);
                             console.log("Candidate list : " + candidateList);
@@ -41,12 +57,11 @@ module.exports = async function (req, res) {
                             logger.debug("do nothing");
                         }
                     }
-                    const candidateListCount = candidateList.length;
-                    console.log(candidateListCount);
+
                     let candidates;
-                    if(candidateListCount > 0) {
-                        if(candidateListCount <= 10) {
-                            candidates = {"count" : candidateListCount , "list" : candidateList};
+                    if(candidateDocs.count > 0) {
+                        if(candidateDocs.count  <= 10) {
+                            candidates = {"count" : candidateDocs.count  , "list" : candidateList};
                         }
                         else {
                             candidates = {"count" : 'more than 10' , "list" : candidateList.slice(0, 10)};
@@ -77,7 +92,6 @@ module.exports = async function (req, res) {
     res.send({
         success : true
     })
-
 
 
 }
