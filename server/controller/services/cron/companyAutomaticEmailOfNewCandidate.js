@@ -4,8 +4,8 @@ const users = require('../../../model/mongoose/users');
 const candidateSearch = require('../../../controller/api/users/candidate/searchCandidates');
 const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
+const settings = require('../../../settings');
 const logger = require('../logger');
-const errors = require('../errors');
 const filterReturnData = require('../../api/users/filterReturnData');
 
 module.exports = async function () {
@@ -15,10 +15,9 @@ module.exports = async function () {
         "saved_searches.0.when_receive_email_notitfications": {$ne: "Never"}
     }, async function (companyDoc) {
         const userDoc = await users.findOne({_id : companyDoc._creator});
-        console.log(userDoc);
+        logger.debug("Checking company " + companyDoc.company_name + " with user_id " + userDoc._id);
+
         if(userDoc) {
-            console.log(companyDoc.last_email_sent);
-            console.log(new Date(Date.now() - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000));
             if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
 
                 const savedSearch = companyDoc.saved_searches[0];
@@ -43,14 +42,14 @@ module.exports = async function () {
 
                     let candidateList = [];
                     for ( let i = 0 ; i < candidateDocs.candidates.length; i++) {
+                        const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidateDocs.candidates[i]._creator._id;
                         const candidateInfo = {
-                            url : candidateDocs.candidates[i]._creator._id,
-                            why_work : candidateDocs.candidates[i].why_work,
-                            initials : filterReturnData.createInitials(candidateDocs.candidates[i].first_name, candidateDocs.candidates[i].last_name),
-                            programming_languages : candidateDocs.candidates[i].programming_languages
-                        }
+                            url: url,
+                            why_work: candidateDocs.candidates[i].why_work,
+                            initials: filterReturnData.createInitials(candidateDocs.candidates[i].first_name, candidateDocs.candidates[i].last_name),
+                            programming_languages: candidateDocs.candidates[i].programming_languages
+                        };
                         candidateList.push(candidateInfo);
-                        console.log("Candidate list : " + candidateList);
                     }
 
                     let candidates;
@@ -77,6 +76,8 @@ module.exports = async function () {
                         })
                     }
                 }
+            } else {
+                logger.debug("Company has recently been sent an email");
             }
         }
         else {
