@@ -11,20 +11,18 @@ const mongooseReferral = require('../../../model/mongoose/referral');
 module.exports = async function() {
     logger.debug('Running sync sendgrid cron');
 
-    if (settings.isLiveApplication()) {
-        const list = await getList(settings.ENVIRONMENT);
-        const listId = list.id;
-        const recipientCount = list.recipient_count;
-        logger.info('Synchronizing users to Sendgrid list ' + settings.ENVIRONMENT, {
-            listId: listId
-        });
+    const list = await getList(settings.ENVIRONMENT);
+    const listId = list.id;
+    const recipientCount = list.recipient_count;
+    logger.info('Synchronizing users to Sendgrid list ' + settings.ENVIRONMENT, {
+        listId: listId
+    });
 
-        await syncListToDatabase(listId, recipientCount);
+    await syncListToDatabase(listId, recipientCount);
 
-        let results = await synchDatabasetoList(listId);
+    let results = await synchDatabasetoList(listId);
 
-        logger.info('Synchronized all users to Sendgrid', results);
-    }
+    logger.info('Synchronized all users to Sendgrid', results);
 }
 
 async function getList(listName) {

@@ -9,6 +9,7 @@ const logger = require('../logger');
 const filterReturnData = require('../../api/users/filterReturnData');
 
 module.exports = async function () {
+    logger.debug('Running candidate auto-notification for company cron');
 
     await company.findAndIterate({
         saved_searches: { $exists: true, $ne : [] },
