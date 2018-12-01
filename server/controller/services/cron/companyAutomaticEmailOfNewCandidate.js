@@ -8,7 +8,7 @@ const logger = require('../logger');
 const errors = require('../errors');
 const filterReturnData = require('../../api/users/filterReturnData');
 
-module.exports = async function (req, res) {
+module.exports = async function () {
 
     await company.findAndIterate({
         saved_searches: { $exists: true, $ne : [] },
@@ -31,12 +31,12 @@ module.exports = async function (req, res) {
                         firstApprovedDate: companyDoc.last_email_sent
                     }, {
                         skills: savedSearch.skills,
-                        locations: savedSearch.locations,
-                        positions: savedSearch.positions,
+                        locations: savedSearch.location,
+                        positions: savedSearch.position,
                         blockchains: savedSearch.blockchains,
                         salary: {
                             current_currency: savedSearch.current_currency,
-                            current_currency: savedSearch.current_currency
+                            current_salary: savedSearch.current_salary
                         },
                         availability_day: savedSearch.availability_day
                     });
@@ -83,12 +83,6 @@ module.exports = async function (req, res) {
             logger.error("User doc not found for company " + companyDoc._id);
         }
     })
-
-    res.send({
-        success : true
-    })
-
-
 }
 
 
