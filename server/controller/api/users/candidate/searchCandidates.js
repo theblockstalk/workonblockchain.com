@@ -182,7 +182,6 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         count: candidates.length,
         candidates: candidates
     };
-
 }
 
 function makeDistinctSet(array) {
