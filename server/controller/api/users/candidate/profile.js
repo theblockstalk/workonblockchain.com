@@ -2,8 +2,8 @@ const CandidateProfile = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
 const errors = require('../../../services/errors');
 
-module.exports.update = async function update(userId, queryBody, workHistory, educationHistory) {
-    const candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
+module.exports.update = async function update(candidateUserId, queryBody, workHistory, educationHistory, requestUserId) {
+    const candidateDoc = await CandidateProfile.findOne({ _creator: candidateUserId }).lean();
 
     let candidateUpdate = {};
 
@@ -38,12 +38,16 @@ module.exports.update = async function update(userId, queryBody, workHistory, ed
     if(queryBody.city) updateCandidateUser["candidate.base_city"] = queryBody.city;
     if(queryBody.base_country) updateCandidateUser["candidate.base_country"] = queryBody.base_country;
 
-    await User.update({ _id: userId },
+    let status = 'updated';
+    if (requestUserId && requestUserId !== candidateUserId) {
+        status = 'updated by admin';
+    }
+    await User.update({ _id: candidateUserId },
         {
+            $set: updateCandidateUser,
             $push: {
                 'candidate.status' : {
-                    $each: [{ status: 'updated',
-                        status_updated: new Date(),
+                    $each: [{ status: status,
                         timestamp: new Date()}],
                     $position: 0
                 }
