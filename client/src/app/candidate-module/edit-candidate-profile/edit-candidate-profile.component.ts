@@ -620,7 +620,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit(): void
   {
-    window.scrollTo(0, 0);
   }
 
 
