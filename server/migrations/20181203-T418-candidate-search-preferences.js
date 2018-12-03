@@ -1,0 +1,73 @@
+const users = require('../model/mongoose/users');
+const company = require('../model/mongoose/company');
+const logger = require('../controller/services/logger');
+
+let totalProcessed = 0;
+
+// This function will perform the migration
+module.exports.up = async function() {
+    for (const update of updates) {
+        totalProcessed++;
+        logger.debug("(" + totalProcessed + "/" + updates.length + ") Processing company " + update.email);
+
+        const userDoc = await users.findOneByEmail(update.email);
+        const updateObj = {
+            $push: {
+                'saved_searches': {
+                    $each: [update.search]
+                }
+            }
+        };
+        await company.update({_creator: userDoc._id}, updateObj)
+    }
+
+    logger.debug('Total processed: ' + totalProcessed);
+}
+
+const updates = [
+    {
+        email: "daniel.yanev@bitfinex.com",
+        search: {
+            location: ["Remote"],
+            job_type: ["Full time"],
+            position: ['Backend Developer', 'Frontend Developer', 'Fullstack Developer'],
+            availability_day: "3 months",
+            current_currency: "$ USD",
+            current_salary: 75000,
+            // blockchain: [],
+            skills: ["JavaScript", "Nodejs"],
+            other_technologies : "Typescript, Webpack, Babel;  MongoDB and MySQL would be useful too",
+            when_receive_email_notitfications : "Weekly"
+        }
+    },
+    // {
+    //     email: "daniel.yanev@bitfinex.com",
+    //     search: {
+    //         location: ["Remote"],
+    //         job_type: ["Full time"],
+    //         position: ['Backend Developer', 'Frontend Developer', 'Fullstack Developer'],
+    //         availability_day: "3 months",
+    //         current_currency: "$ USD",
+    //         current_salary: 75000,
+    //         // blockchain: [],
+    //         skills: ["JavaScript", "Nodejs"],
+    //         other_technologies: "Typescript, Webpack, Babel;  MongoDB and MySQL would be useful too",
+    //         when_receive_email_notitfications: "Weekly"
+    //     }
+    // },
+];
+
+
+// This function will undo the migration
+module.exports.down = async function() {
+    for (const update of updates) {
+        totalProcessed++;
+        logger.debug("(" + totalProcessed + "/" + updates.length + ") Processing company " + update.email);
+
+        const userDoc = await users.findOneByEmail(update.email);
+        await company.update({_creator: userDoc._id}, $unset: { 'saved_searches': 1 })
+    }
+
+
+    logger.debug('Total processed: ' + totalProcessed);
+}
