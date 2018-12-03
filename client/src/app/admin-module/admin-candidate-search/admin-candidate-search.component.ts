@@ -36,14 +36,19 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     {value:'deferred', name:'Deferred'},
     {value:'other', name:'Other'}
   ];
-  admin_checks_new = [
+  admin_checks_email_verify = [
     {value:1, name:'Verified'},
+    {value:0, name:'Not Verified'}
+  ];
+  admin_checks_candidate_account = [
+    {value:false, name:'Enabled'},
     {value:true, name:'Disabled'}
   ];
   information;
   admin_log;
   response;
   candidate_status;
+  candidate_status_account
 
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
@@ -56,15 +61,18 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.log='';
     this.approve=-1;
     this.candidate_status = -1;
+    this.candidate_status_account = -1;
     this.response='';
     this.rolesData =
       [
-        {id:'job_offer', text:'Job description sent'},
-        {id:'is_company_reply', text:'Job description accepted / reject'},
-        {id:'interview_offer', text:'Interview request sent'},
+        {id:'normal', text:'Normal'},
+        {id:'job_offer', text:'Job offer sent'},
+        {id:'job_offer_accepted', text:'Job offer accepted'},
+        {id:'job_offer_rejected', text:'Job offer rejected'},
+        {id:'interview_offer', text:'Interview offer sent'},
         {id:'employment_offer', text:'Employment offer sent'},
-        {id:'Employment offer accepted / reject', text:'Employment offer accepted / reject'},
-
+        {id:'employment_offer_accepted', text:'Employment offer accepted'},
+        {id:'employment_offer_rejected', text:'Employment offer rejected'},
       ];
 
     this.options = {
@@ -235,9 +243,14 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
   search_account_status(event)
   {
-    console.log(event);
     this.candidate_status = event;
     this.search(this.candidate_status);
+  }
+
+  search_candidate_account_status(event)
+  {
+    this.candidate_status_account = event;
+    this.search(this.candidate_status_account);
   }
 
   filter_array(arr)
@@ -257,7 +270,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.length =0;
     this.info=[];
     this.response = "";
-    if(this.approve == -1 && !this.select_value && !this.searchWord && this.candidate_status === -1)
+    if(this.approve == -1 && !this.select_value && !this.searchWord && this.candidate_status === -1 && this.candidate_status_account === -1)
     {
       this.getAllCandidate();
     }
@@ -268,7 +281,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
       if(this.approve !== -1) queryBody.is_approve = this.approve;
       if(this.select_value && this.select_value.length > 0) queryBody.msg_tags = this.select_value;
       if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
-      if(this.candidate_status !== -1) queryBody.status = this.candidate_status;
+      if(this.candidate_status !== -1) queryBody.verify_status = this.candidate_status;
+      if(this.candidate_status_account !== -1) queryBody.account_status = this.candidate_status_account;
       this.authenticationService.admin_candidate_filter(queryBody)
       .subscribe(
         data =>
@@ -338,6 +352,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.info=[];
     this.searchWord='';
     this.candidate_status = -1;
+    this.candidate_status_account = -1;
     this.getAllCandidate();
   }
 
