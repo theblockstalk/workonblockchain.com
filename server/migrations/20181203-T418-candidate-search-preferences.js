@@ -20,7 +20,8 @@ module.exports.up = async function() {
             }
         };
         console.log({_creator: userDoc._id}, updateObj);
-        await company.update({_creator: userDoc._id}, updateObj)
+        let updateResponse = await company.update({_creator: userDoc._id}, updateObj)
+        console.log(updateResponse);
     }
 
     logger.debug('Total processed: ' + totalProcessed);
@@ -36,10 +37,12 @@ const updates = [
             availability_day: "3 months",
             current_currency: "$ USD",
             current_salary: 75000,
-            // blockchain: [],
+            blockchain: 434322,
             skills: ["JavaScript", "Nodejs"],
             other_technologies : "Typescript, Webpack, Babel;  MongoDB and MySQL would be useful too",
-            when_receive_email_notitfications : "Weekly"
+            when_receive_email_notitfications : "Weekly",
+            not_allowed: true,
+            another_value: "I am a string"
         }
     },
     // {
