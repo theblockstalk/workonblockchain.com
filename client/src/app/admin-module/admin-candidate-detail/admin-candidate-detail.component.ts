@@ -105,7 +105,7 @@ export class AdminCandidateDetailComponent implements OnInit {
           .subscribe(
             data => {
               this.candidate_status = data._creator.candidate.status[0];
-              if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed'){}
+              if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){}
               else{
                 this.set_status = this.candidate_status.status;
               }
