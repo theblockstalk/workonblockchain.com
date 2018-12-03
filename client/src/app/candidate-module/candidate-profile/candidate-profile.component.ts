@@ -81,7 +81,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-
   }
   tweet_text;
   dateA;dateB;
