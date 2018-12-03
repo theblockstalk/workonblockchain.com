@@ -1022,33 +1022,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
     });
   }
 
-  addNewExpRow()
-  {
-    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
-    control.push(this.initExpRows());
-  }
-
-  deleteExpRow(index: number)
-  {
-    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
-    control.removeAt(index);
-  }
-
   get DynamicWorkFormControls()
   {
 
     return <FormArray>this.ExperienceForm.get('ExpItems');
-  }
-  addNewRow()
-  {
-    const control = <FormArray>this.EducationForm.controls['itemRows'];
-    control.push(this.initItemRows());
-  }
-
-  deleteRow(index: number)
-  {
-    const control = <FormArray>this.EducationForm.controls['itemRows'];
-    control.removeAt(index);
   }
 
   get DynamicEduFormControls() {
@@ -1076,9 +1053,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
       this.value=value;
       this.referringData = { language:this.value, exp_year: e.target.value};
       this.LangexpYear.push(this.referringData);
-
     }
-
 
   }
 
