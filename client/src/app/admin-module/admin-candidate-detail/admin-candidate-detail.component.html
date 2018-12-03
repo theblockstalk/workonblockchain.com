@@ -127,7 +127,7 @@
              </div>
              <div class = "col-md-9">
                <ul class = "status_list badges">
-                 <li *ngIf="candidate_status.status === 'Approved' || candidate_status.status === 'approved' || candidate_status.status === 'created' || candidate_status.status === 'wizard completed'"><span class="label label-success text-capitalize">{{candidate_status.status}}</span></li>
+                 <li *ngIf="candidate_status.status === 'Approved' || candidate_status.status === 'approved' || candidate_status.status === 'created' || candidate_status.status === 'wizard completed' || candidate_status.status === 'updated' || candidate_status.status === 'updated by admin'"><span class="label label-success text-capitalize">{{candidate_status.status}}</span></li>
                  <li *ngIf="candidate_status.status === 'Rejected' || candidate_status.status === 'rejected'"><span class="label label-danger text-capitalize">{{candidate_status.status}}</span></li>
                  <li *ngIf="candidate_status.status === 'Deferred' || candidate_status.status === 'deferred' || candidate_status.status === 'Other' || candidate_status.status === 'other'"><span class="label label-warning text-capitalize">{{candidate_status.status}}</span></li>
                </ul>
