@@ -48,7 +48,7 @@
         <div class="group">
 
           <div class="items">
-            <span>Disable my account and stop receiving all communications (email, phone and post)</span>
+            <span>Disable my account and stop receiving all web application emails</span>
             <div class="btn-container">
               <label class="switch">
                 <input type="checkbox" id="myCheck"  [(ngModel)]="info.disable_account" name="disable_account" (change)="account_setting('disabledAccount' , $event)">
@@ -102,6 +102,7 @@
       </div>
       <div class="modal-body">
         <p>
+          Please disable and re-enable your account and then send an email to<a href = "mailto:privacy@workonblockchain.com"> privacy@workonblockchain.com</a> to request a copy of your personal data.
           Please send an email to <a href = "mailto:privacy@workonblockchain.com"> privacy@workonblockchain.com </a>
           to request a copy of your personal data.
         </p>
@@ -126,8 +127,8 @@
       </div>
       <div class="modal-body">
         <p>
-          Please send an email to <a href = "mailto:privacy@workonblockchain.com"> privacy@workonblockchain.com </a>
-          to delete your account forever!.
+          Please disable your account and then send an email to <a href = "mailto:privacy@workonblockchain.com">privacy@workonblockchain.com </a> to delete your account forever!
+
         </p>
       </div>
       <div class="modal-footer text-right">

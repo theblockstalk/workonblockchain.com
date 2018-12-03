@@ -244,7 +244,7 @@
 
 
                 <div class="form-group col-md-6">
-                  <label><p class="label-p">When do you want hires to start working?</p></label>
+                  <label><p class="label-p">When do you need hires to start</p></label>
 
                   <select title="(select one)" formControlName = "availability_day" class="selectpicker">
                     <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
@@ -269,7 +269,7 @@
                 <div class = "col-md-12 no_padding">
 
                 <div class="form-group col-md-6">
-                  <label><p class="label-p">What programming languages do you want them to have experience in?(optional)</p></label>
+                  <label><p class="label-p">What programming languages do they need to know? (optional)</p></label>
                   <select multiple formControlName="skills" title="(select multiple)" class="selectpicker">
                     <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
 

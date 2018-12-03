@@ -38,7 +38,7 @@ module.exports = async  function (req,res)
         res.send(filterArray);
     }
     else {
-        errors.throwError("No candidates matched the search", 404);
+        errors.throwError("No candidates matched this search criteria", 404);
     }
 
 }
