@@ -294,7 +294,26 @@ export class AdminCandidateDetailComponent implements OnInit {
 
     }
   }
+  sectionScroll;
+  internalRoute(page,dst){
+    this.sectionScroll=dst;
+    this.router.navigate([page], {fragment: dst});
+  }
 
+  doScroll() {
+
+    if (!this.sectionScroll) {
+      return;
+    }
+    try {
+      var elements = document.getElementById(this.sectionScroll);
+
+      elements.scrollIntoView();
+    }
+    finally{
+      this.sectionScroll = null;
+    }
+  }
   ngAfterViewInit(){
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');

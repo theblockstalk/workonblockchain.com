@@ -12,6 +12,7 @@ import { AdminCandidateDetailComponent } from './admin-candidate-detail/admin-ca
 import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-chat.component';
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
 import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
+import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-profile/admin-update-candidate-profile.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { AdminCompanyDetailComponent } from './admin-company-detail/admin-compan
     AdminDisplayChatComponent,
     AdminCompanySearchComponent,
     AdminCompanyDetailComponent,
+    AdminUpdateCandidateProfileComponent,
   ]
 })
 export class AdminModuleModule { }
