@@ -51,7 +51,7 @@ describe('admin get metrics', function () {
             should.not.exist(aggregrated.nationality.Australian);
             aggregrated.availabilityDay[job.availability_day].should.equal(1);
             aggregrated.baseCountry[profileData.country].should.equal(1);
-            aggregrated.expectedSalaryUSD.min.should.equal(job.expected_salary*settings.CURRENCY_RATES.USD.Euro);
+            aggregrated.expectedSalaryUSD.min.should.equal(job.expected_salary*settings.CURRENCY_RATES_USD.Euro);
             aggregrated.interestAreas[job.interest_area[0]].should.equal(1);
             aggregrated.locations[job.country[0]].should.equal(1);
             aggregrated.locations[job.country[1]].should.equal(1);

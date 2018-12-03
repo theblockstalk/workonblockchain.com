@@ -61,7 +61,7 @@ function filterWhiteListFields(obj, whitelist) {
     return filteredObj;
 }
 
-function createInitials(first_name, last_name) {
+const createInitials = module.exports.createInitials = function createInitials(first_name, last_name) {
     return first_name.charAt(0).toUpperCase() + last_name.charAt(0).toUpperCase();
 }
 

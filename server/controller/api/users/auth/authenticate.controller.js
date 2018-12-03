@@ -68,7 +68,8 @@ module.exports = async function (req, res) {
                         is_admin: userDoc.is_admin,
                         type: userDoc.type,
                         is_approved: userDoc.is_approved,
-                        jwt_token: jwtUserToken
+                        jwt_token: jwtUserToken,
+                        created_date : userDoc.created_date
                     });
                 }
 

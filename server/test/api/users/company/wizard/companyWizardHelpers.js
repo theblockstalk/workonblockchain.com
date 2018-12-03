@@ -28,3 +28,24 @@ const companyAboutWizard = module.exports.companyAboutWizard = async function co
     res.should.have.status(200);
     return res;
 }
+
+const companySavedSearchesWizard = module.exports.companySavedSearchesWizard = async function companySavedSearchesWizard(preferences , jwtToken){
+
+    const res = await chai.request(server)
+        .put('/users/saved_searches')
+        .set('Authorization', jwtToken)
+        .send(preferences)
+    res.should.have.status(200);
+    return res;
+}
+
+const sendNewNotification = module.exports.sendNewNotification = async function sendNewNotification(last_email_sent , when_receive_notification) {
+    const now = new Date();
+    console.log(last_email_sent, now, when_receive_notification);
+    if(last_email_sent  <  new Date(now - (when_receive_notification * 24*60*60*1000))) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

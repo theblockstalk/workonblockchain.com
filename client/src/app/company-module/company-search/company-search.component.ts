@@ -34,6 +34,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
   job_offer_log;
+  saved_searches
 
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
@@ -256,7 +257,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
           data =>
           {
-            if(data.terms == false)
+
+            if(data.terms === false)
             {
               this.router.navigate(['/company_wizard']);
             }
@@ -264,6 +266,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             else if(!data.company_founded && !data.no_of_employees && !data.company_funded && !data.company_description )
             {
               this.router.navigate(['/about_comp']);
+            }
+            else if(!data.saved_searches  || ((new Date(data._creator.created_date) > new Date('2018/11/27')) && data.saved_searches.length === 0)) {
+              this.router.navigate(['/preferences']);
+
             }
             else
             {
@@ -303,13 +309,34 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 {
                   this.imgPath =  data.company_logo;
                 }
+                if(data.saved_searches) {
+                  this.saved_searches = data.saved_searches;
+                  console.log(data.saved_searches[0].location[0]);
+                  if(data.saved_searches[0].location[0] === 'Remote') {
+                    this.countryChange = 'remote';
+                  }
+                  else {
+                    this.countryChange = data.saved_searches[0].location[0];
+                  }
+                  if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
+                    this.selectedObj = data.saved_searches[0].skills[0];
+                  }
+                  this.select_value = data.saved_searches[0].position;
+                  if(data.saved_searches[0].blockchain && data.saved_searches[0].blockchain.length > 0) {
+                    this.selecteddd = data.saved_searches[0].blockchain;
 
-                this.getVerrifiedCandidate();
+                  }
+                  this.salary = data.saved_searches[0].current_salary;
+                  this.currencyChange = data.saved_searches[0].current_currency;
+                  this.availabilityChange = data.saved_searches[0].availability_day;
+                  this.searchdata('filter' , data.saved_searches[0] );
+                }
+                else {
+                  this.getVerrifiedCandidate();
+
+                }
+
               }
-
-
-
-
             }
 
           },
@@ -345,6 +372,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   positionchanged(data)
   {
+    this.not_found = '';
     if(this.select_value  !== data.value)
     {
       this.select_value = data.value;
@@ -356,6 +384,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   blockchainItems;
   blockchainchanged(data)
   {
+    this.not_found = '';
     if(this.selecteddd  !== data.value)
     {
       this.selecteddd = data.value;
@@ -381,18 +410,34 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   not_found;
   salarysearchdata(key , value) {
 
+    this.not_found = '';
+
     if (this.salary) {
       if (this.currencyChange !== -1) {
         this.searchdata(key, value);
       }
       else {
-        this.authenticationService.filterSearch(this.searchWord, this.selectedObj, this.countryChange, this.select_value, this.selecteddd, this.availabilityChange, this.salary, this.currencyChange)
+        let queryBody : any = {};
+        if(this.searchWord) queryBody.word = this.searchWord;
+        if(this.selectedObj !== -1) queryBody.skills = this.selectedObj;
+        if(this.countryChange !== -1) queryBody.locations = this.countryChange;
+        if(this.select_value && this.select_value.length > 0 ) queryBody.positions = this.select_value;
+        if(this.selecteddd && this.selecteddd.length > 0) queryBody.blockchains = this.selecteddd;
+        if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
+        if(this.salary && this.currencyChange !== -1) {
+          queryBody.current_salary  = this.salary;
+          queryBody.current_currency = this.currencyChange;
+        }
+        this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data => {
             this.candidate_data = data;
             this.responseMsg = "response";
             if (this.candidate_data.length <= 0) {
               this.not_found = 'No candidates matched this search criteria';
+            }
+            if(this.candidate_data.length > 0) {
+              this.not_found='';
             }
           },
           error =>
@@ -432,16 +477,32 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     else {
-      this.authenticationService.filterSearch(this.searchWord ,this.selectedObj , this.countryChange , this.select_value ,this.selecteddd, this.availabilityChange, this.salary , this.currencyChange )
+      this.not_found = '';
+      let queryBody : any = {};
+      if(this.searchWord) queryBody.word = this.searchWord;
+      if(this.selectedObj !== -1) queryBody.skills = this.selectedObj;
+      if(this.countryChange !== -1) queryBody.locations = this.countryChange;
+      if(this.select_value && this.select_value.length > 0 ) queryBody.positions = this.select_value;
+      if(this.selecteddd && this.selecteddd.length > 0) queryBody.blockchains = this.selecteddd;
+      if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
+      if(this.salary && this.currencyChange !== -1) {
+        queryBody.current_salary  = this.salary;
+        queryBody.current_currency = this.currencyChange;
+      }
+      this.authenticationService.filterSearch(queryBody )
+
         .subscribe(
           data =>
           {
             this.candidate_data = data;
+            if(this.candidate_data.length > 0) {
+              this.not_found='';
+            }
             this.responseMsg = "response";
           },
           error =>
           {
-
+            this.not_found='';
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.responseMsg = "error";
               this.not_found = error['error']['message'];
@@ -499,6 +560,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
+          if(this.candidate_data.length > 0) {
+            this.not_found='';
+          }
           this.responseMsg = "response";
         },
 
