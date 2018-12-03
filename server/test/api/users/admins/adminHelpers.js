@@ -80,3 +80,12 @@ const changeCandidateStatus = module.exports.changeCandidateStatus = async funct
     res.should.have.status(200);
     return res;
 }
+
+const updateCandidateProfile = module.exports.updateCandidateProfile = async function updateCandidateProfile(updatedData,jwtToken) {
+
+    const res = await chai.request(server)
+        .post('/users/update_candidate_profile')
+        .set('Authorization', jwtToken)
+        .send(updatedData);
+    return res;
+}
