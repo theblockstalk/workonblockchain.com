@@ -32,6 +32,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     {value:'created', name:'Created'},
     {value:'wizard completed', name:'Wizard Completed'},
     {value:'approved', name:'Approved'},
+    {value: 'updated', name: 'Updated'},
+    {value : 'updated by admin' , name: 'Updated by admin'},
     {value:'rejected', name:'Rejected'},
     {value:'deferred', name:'Deferred'},
     {value:'other', name:'Other'}

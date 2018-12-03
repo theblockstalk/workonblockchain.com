@@ -502,26 +502,14 @@
 				 <section class = "profile job_info">
 					<h3>Experience</h3>
 
-				 	<div class="info-area pro_br-btm">
 
-						<div class = "col-md-4" >
-							<strong>Current Base salary:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li>{{data.current_currency}} {{data.current_salary}}</li>
-							</ul>
-						</div>
-
-				 	</div>
-
-				 	<div class="info-area pro_br-btm" *ngIf="data.programming_languages && data.programming_languages.length>0">
+				 	<div class="info-area pro_br-btm" >
 
 						<div class = "col-md-4" >
 							<strong>Languages:</strong>
 						</div>
 						<div class = "col-md-8">
-							<ul class = "pro_list">
+							<ul class = "pro_list" *ngIf="data.programming_languages && data.programming_languages.length>0">
 								<li *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
 
 							</ul>
