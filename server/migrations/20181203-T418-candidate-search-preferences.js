@@ -11,6 +11,7 @@ module.exports.up = async function() {
         logger.debug("(" + totalProcessed + "/" + updates.length + ") Processing company " + update.email);
 
         const userDoc = await users.findOneByEmail(update.email);
+        if (!userDoc) throw Error("User " + update.email + " not found");
         const updateObj = {
             $push: {
                 'saved_searches': {
@@ -18,6 +19,7 @@ module.exports.up = async function() {
                 }
             }
         };
+        console.log({_creator: userDoc._id}, updateObj);
         await company.update({_creator: userDoc._id}, updateObj)
     }
 
@@ -65,7 +67,7 @@ module.exports.down = async function() {
         logger.debug("(" + totalProcessed + "/" + updates.length + ") Processing company " + update.email);
 
         const userDoc = await users.findOneByEmail(update.email);
-        await company.update({_creator: userDoc._id}, $unset: { 'saved_searches': 1 })
+        await company.update({_creator: userDoc._id}, {$unset: { 'saved_searches': 1 }})
     }
 
 
