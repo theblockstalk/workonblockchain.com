@@ -5,19 +5,7 @@ module.exports.sendEmail = function sendEmail(email, subject, htmlBody) {
         email: email
     };
     const sendToArray = [sendTo];
-	const new_message = htmlBody.replace(/\n/g, "<br>");  
-	
-    const mandrillOptions = {
-        templateName: "wob-refer-a-user",
-        message: {
-            global_merge_vars: [{
-                "name": "MESSAGE_BODY",
-                "content": new_message
-            }],
-            subject: subject,
-            to: sendToArray
-        }
-    };
+	const new_message = htmlBody.replace(/\n/g, "<br>");
 
     const sendGridOptions = {
         templateId: "d-39586637ba424da091b47dcb0e0bc8b5",
@@ -32,5 +20,5 @@ module.exports.sendEmail = function sendEmail(email, subject, htmlBody) {
         }
     };
 
-    emails.sendEmail(mandrillOptions, sendGridOptions, false);
+    emails.sendEmail(sendGridOptions, false);
 };

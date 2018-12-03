@@ -28,10 +28,30 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   active;
   inactive;
   approve;
-  admin_check = [{name:1 , value:"Active"}, {name:0 , value:"Inactive"}];
+  admin_check = [
+    {value:'created', name:'Created'},
+    {value:'wizard completed', name:'Wizard Completed'},
+    {value:'approved', name:'Approved'},
+    {value: 'updated', name: 'Updated'},
+    {value : 'updated by admin' , name: 'Updated by admin'},
+    {value:'rejected', name:'Rejected'},
+    {value:'deferred', name:'Deferred'},
+    {value:'other', name:'Other'}
+  ];
+  admin_checks_email_verify = [
+    {value:1, name:'Verified'},
+    {value:0, name:'Not Verified'}
+  ];
+  admin_checks_candidate_account = [
+    {value:false, name:'Enabled'},
+    {value:true, name:'Disabled'}
+  ];
   information;
   admin_log;
   response;
+  candidate_status;
+  candidate_status_account
+
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
   {
@@ -42,15 +62,19 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.length='';
     this.log='';
     this.approve=-1;
+    this.candidate_status = -1;
+    this.candidate_status_account = -1;
     this.response='';
     this.rolesData =
       [
-        {id:'job_offer', text:'Job description sent'},
-        {id:'is_company_reply', text:'Job description accepted / reject'},
-        {id:'interview_offer', text:'Interview request sent'},
+        {id:'normal', text:'Normal'},
+        {id:'job_offer', text:'Job offer sent'},
+        {id:'job_offer_accepted', text:'Job offer accepted'},
+        {id:'job_offer_rejected', text:'Job offer rejected'},
+        {id:'interview_offer', text:'Interview offer sent'},
         {id:'employment_offer', text:'Employment offer sent'},
-        {id:'Employment offer accepted / reject', text:'Employment offer accepted / reject'},
-
+        {id:'employment_offer_accepted', text:'Employment offer accepted'},
+        {id:'employment_offer_rejected', text:'Employment offer rejected'},
       ];
 
     this.options = {
@@ -134,16 +158,18 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   approveClick(event , approveForm: NgForm)
   {
     this.error = '';
+    let reason = '';
     if(event.srcElement.innerHTML ==='Active' )
     {
-      this.is_approve = 1;
+      this.is_approve = 'approved';
     }
-    else if(event.srcElement.innerHTML ==='Inactive')
+    else if(event.srcElement.innerHTML === 'Inactive')
     {
-      this.is_approve =0;
+      this.is_approve = 'rejected';
+      reason = 'garbage';
     }
 
-    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
+    this.authenticationService.approve_candidate(approveForm.value.id ,this.is_approve,reason)
       .subscribe(
         data =>
         {
@@ -215,7 +241,18 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   {
     this.approve =event;
     this.search(this.approve);
+  }
 
+  search_account_status(event)
+  {
+    this.candidate_status = event;
+    this.search(this.candidate_status);
+  }
+
+  search_candidate_account_status(event)
+  {
+    this.candidate_status_account = event;
+    this.search(this.candidate_status_account);
   }
 
   filter_array(arr)
@@ -232,72 +269,76 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
   search(event)
   {
-
     this.length =0;
     this.info=[];
     this.response = "";
-    if(this.approve == -1 && !this.select_value && !this.searchWord )
+    if(this.approve == -1 && !this.select_value && !this.searchWord && this.candidate_status === -1 && this.candidate_status_account === -1)
     {
       this.getAllCandidate();
     }
 
     else
     {
-      this.authenticationService.admin_candidate_filter(this.approve , this.select_value, this.searchWord)
+      let queryBody : any = {};
+      if(this.approve !== -1) queryBody.is_approve = this.approve;
+      if(this.select_value && this.select_value.length > 0) queryBody.msg_tags = this.select_value;
+      if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
+      if(this.candidate_status !== -1) queryBody.verify_status = this.candidate_status;
+      if(this.candidate_status_account !== -1) queryBody.account_status = this.candidate_status_account;
+      this.authenticationService.admin_candidate_filter(queryBody)
+      .subscribe(
+        data =>
+        {
+            this.length =0;
+            this.info=[];
+            this.information = this.filter_array(data);
 
-        .subscribe(
-          data =>
-          {
-              this.length =0;
-              this.info=[];
-              this.information = this.filter_array(data);
 
+            for(let res of this.information)
+            {
 
-              for(let res of this.information)
-              {
+              this.length++;
+              this.info.push(res);
 
-                this.length++;
-                this.info.push(res);
+            }
 
-              }
+            if(this.length> 0 )
+            {
 
-              if(this.length> 0 )
-              {
-
-                this.log='';
-              }
-              else
-              {
-                this.response = "data";
-                this.log= 'No candidates matched this search criteria';
-              }
-
-              this.page =this.length;
-              this.response = "data";
-
-          },
-          error =>
-          {
-            if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+              this.log='';
+            }
+            else
             {
               this.response = "data";
-              this.length = '';
-              this.info = [];
-              this.page = '';
-              this.log = error['error']['message'];
+              this.log= 'No candidates matched this search criteria';
             }
-            else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-            {
-              this.response = "data";
-              this.length = '';
-              this.info = [];
-              this.page = '';
-              this.log = error['error']['message'];
-            }
-            else {
-              this.log = "Something getting wrong";
-            }
-          });
+
+            this.page =this.length;
+            this.response = "data";
+
+        },
+        error =>
+        {
+          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.response = "data";
+            this.length = '';
+            this.info = [];
+            this.page = '';
+            this.log = error['error']['message'];
+          }
+          else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.response = "data";
+            this.length = '';
+            this.info = [];
+            this.page = '';
+            this.log = error['error']['message'];
+          }
+          else {
+            this.log = "Something getting wrong";
+          }
+        });
 
     }
 
@@ -312,6 +353,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.approve=-1;
     this.info=[];
     this.searchWord='';
+    this.candidate_status = -1;
+    this.candidate_status_account = -1;
     this.getAllCandidate();
   }
 

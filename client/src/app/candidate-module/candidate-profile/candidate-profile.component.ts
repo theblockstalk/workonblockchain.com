@@ -48,6 +48,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   message;
   candidateMsgTitle;
   candidateMsgBody;
+  candidate_status
   public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
   {
@@ -80,7 +81,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-
   }
   tweet_text;
   dateA;dateB;
@@ -145,7 +145,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
-                console.log(data);
+                this.candidate_status = data._creator.candidate.status[0];
                 if(data.first_name && data.last_name && data.contact_number && data.nationality &&
                   data.locations  && data.roles && data.interest_area &&
                   data.expected_salary && data.current_salary && data.why_work && data.description

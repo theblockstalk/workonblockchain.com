@@ -15,9 +15,6 @@ const UserSchema = new Schema({
     sendgrid_id: {
         type: String
     },
-    sendgrid_multipe_lists: {
-        type: Boolean
-    },
     linkedin_id :
         {
             type: String
@@ -49,7 +46,7 @@ const UserSchema = new Schema({
             type:String,
             enum: ['GOOGLE', 'LINKEDIN', '']
         },
-    is_approved:
+    is_approved: // DELETE ME
         {
             type:Number, // 0 = false, 1 = true
             enum: [0, 1],
@@ -139,10 +136,30 @@ const UserSchema = new Schema({
                         }
                     })],
                 }
-            }
+            },
+			status:{
+				type:[{
+					status: {
+						type: String,
+						enum: enumerations.candidateStatus,
+						required:true,
+					},
+					reason: {
+						type: String,
+						enum: enumerations.statusReasons
+					},
+					timestamp: {
+						type: Date,
+						required:true,
+					}
+				}]
+			}
         }
     },
-    created_date:
+	first_approved_date:{
+		type: Date
+	},
+    created_date: // DELETE ME
         {
             type: Date
         }

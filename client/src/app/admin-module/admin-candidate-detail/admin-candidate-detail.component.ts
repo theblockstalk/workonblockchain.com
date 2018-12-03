@@ -4,8 +4,7 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import {environment} from '../../../environments/environment';
-
+declare var $: any;
 
 @Component({
   selector: 'app-admin-candidate-detail',
@@ -22,9 +21,34 @@ export class AdminCandidateDetailComponent implements OnInit {
   imgPath;nationality;contact_number;
   credentials: any = {};
   admin_log;
+  candidate_status;
+  set_status;
+  status_reason_rejected;
+  status_reason_deferred;
+  set_candidate_status = [
+    {value:'approved', name:'Approved'},
+    {value:'rejected', name:'Rejected'},
+    {value:'deferred', name:'Deferred'},
+    {value:'other', name:'Other'}
+  ];
+
+  set_candidate_status_rejected = [
+    {value:'garbage', name:'Garbage'},
+    {value:'recruiter', name:'Recruiter'},
+    {value:'not technical', name:'Not Technical'},
+    {value:'other', name:'Other'}
+  ];
+
+  set_candidate_status_deferred = [
+    {value:'profile incomplete', name:'Profile Incomplete'},
+    {value:'not looking for job', name:'Not Looking for Job'},
+    {value:'job found', name:'Job Found'},
+    {value:'not responded', name:'Not Responded'},
+    {value:'other', name:'Other'}
+  ];
+
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
-
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
@@ -69,7 +93,9 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.referred_link = "";
     this.referred_name = "";
     this.error = "";
-
+    this.set_status = -1;
+    this.status_reason_rejected = -1;
+    this.status_reason_deferred = -1;
 
     if(this.user_id && this.admin_log && this.currentUser)
     {
@@ -78,6 +104,19 @@ export class AdminCandidateDetailComponent implements OnInit {
         this.authenticationService.getById(this.user_id)
           .subscribe(
             data => {
+              this.candidate_status = data._creator.candidate.status[0];
+              if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){}
+              else{
+                this.set_status = this.candidate_status.status;
+              }
+              if(this.set_status === 'Rejected' || this.set_status === 'rejected'){
+                this.status_reason_rejected = this.candidate_status.reason;
+                $("#sel1-reason-rejected").css("display", "block");
+              }
+              if(this.set_status === 'Deferred' || this.set_status === 'deferred'){
+                this.status_reason_deferred = this.candidate_status.reason;
+                $("#status_reason_deferred").css("display", "block");
+              }
               this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
@@ -256,82 +295,88 @@ export class AdminCandidateDetailComponent implements OnInit {
     }
   }
 
-  is_approve;is_approved;
-  error;
-  approveClick(event , approveForm: NgForm)
-  {
-    this.error = '';
-    if(event.srcElement.innerHTML ==='Active' )
-    {
-      this.is_approve = 1;
-    }
-    else if(event.srcElement.innerHTML ==='Inactive')
-    {
-      this.is_approve =0;
-    }
-
-    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
-      .subscribe(
-        data =>
-        {
-
-          if(data.success === true)
-          {
-
-            if(event.srcElement.innerHTML ==='Active' )
-            {
-              event.srcElement.innerHTML="Inactive";
-              this.is_approved = "Aprroved";
-            }
-            else if(event.srcElement.innerHTML ==='Inactive')
-            {
-              event.srcElement.innerHTML="Active";
-              this.is_approved = "";
-            }
-          }
-          else if(data.is_approved ===0)
-          {
-            if(event.srcElement.innerHTML ==='Active' )
-            {
-              event.srcElement.innerHTML="Inactive";
-              this.is_approved = "Aprroved";
-            }
-            else if(event.srcElement.innerHTML ==='Inactive')
-            {
-              event.srcElement.innerHTML="Active";
-              this.is_approved = "";
-            }
-          }
-
-        },
-        error =>
-        {
-          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-          {
-            this.error = error['error']['message'];
-          }
-          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-          {
-            this.error = error['error']['message'];
-          }
-          else {
-            this.error = "Something getting wrong";
-          }
-
-        });
+  ngAfterViewInit(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 200);
   }
 
-  filter_array(arr)
-  {
-    var hashTable = {};
+  changeStatus(event){
+    if(event === 'Rejected' || event === 'rejected'){
+      $("#sel1-reason-deferred").css('display', 'none');
+      $("#sel1-reason-rejected").css('display', 'block');
+    }
+    if(event === 'Deferred' || event === 'deferred'){
+      $("#sel1-reason-rejected").css('display', 'none');
+      $("#sel1-reason-deferred").css('display', 'block');
+    }
+  }
 
+  is_approve;is_approved;
+  error;
+  success;
+  approveClick(event , approveForm: NgForm) {
+    this.error = '';
+    this.success = '';
+    let reason = '';
+    if (approveForm.value.set_status === -1 || approveForm.value.set_status === 'wizard completed' || approveForm.value.set_status === 'created') {
+      this.error = 'Please select a status';
+    }
+    else if (approveForm.value.status_reason_rejected === -1 || approveForm.value.status_reason_deferred === -1) {
+      this.error = 'Please select a reason';
+    }
+    else{
+      if (approveForm.value.set_status === "Rejected" || approveForm.value.set_status === "rejected") {
+        if (approveForm.value.status_reason_rejected) {
+          this.saveApproveData(approveForm.value.id, approveForm.value.set_status, approveForm.value.status_reason_rejected);
+        }
+        else {
+          this.error = 'Please select a reason';
+        }
+      }
+      else if (approveForm.value.set_status === "Deferred" || approveForm.value.set_status === "deferred") {
+        if (approveForm.value.status_reason_deferred) {
+          this.saveApproveData(approveForm.value.id, approveForm.value.set_status, approveForm.value.status_reason_deferred);
+        }
+        else {
+          this.error = 'Please select a reason';
+        }
+      }
+      else {
+        this.saveApproveData(approveForm.value.id, approveForm.value.set_status, '');
+      }
+    }
+  }
+
+  saveApproveData(id:any, set_status:string, reason:string) {
+    this.authenticationService.approve_candidate(id, set_status, reason)
+    .subscribe(
+      data => {
+        if (data.success === true) {
+          this.candidate_status.status = set_status;
+          this.candidate_status.reason = reason;
+          this.success = 'Candidate status changed successfully';
+        }
+      },
+      error => {
+        if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+          this.error = error['error']['message'];
+        }
+        if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+          this.error = error['error']['message'];
+        }
+        else {
+          this.error = "Something getting wrong";
+        }
+      });
+  }
+
+  filter_array(arr) {
+    var hashTable = {};
     return arr.filter(function (el) {
       var key = JSON.stringify(el);
       var match = Boolean(hashTable[key]);
-
       return (match ? false : hashTable[key] = true);
     });
   }
-
-
 }

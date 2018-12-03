@@ -59,3 +59,33 @@ const getMetrics = module.exports.getMetrics = async function getMetrics(jwtToke
     res.should.have.status(200);
     return res;
 }
+
+const runCron = module.exports.runCron = async function runCron(cronName, jwtToken) {
+    const res = await chai.request(server)
+        .get('/users/run_cron/' + cronName)
+        .set('Authorization', jwtToken)
+        .send();
+    return res;
+}
+
+const changeCandidateStatus = module.exports.changeCandidateStatus = async function changeCandidateStatus(id,status,reason,jwtToken) {
+    const data = {
+        'status': status,
+        'reason': reason
+    };
+    const res = await chai.request(server)
+            .put('/users/change_candidate_status/'+id)
+        .set('Authorization', jwtToken)
+        .send(data);
+    res.should.have.status(200);
+    return res;
+}
+
+const updateCandidateProfile = module.exports.updateCandidateProfile = async function updateCandidateProfile(updatedData,jwtToken) {
+
+    const res = await chai.request(server)
+        .post('/users/update_candidate_profile')
+        .set('Authorization', jwtToken)
+        .send(updatedData);
+    return res;
+}

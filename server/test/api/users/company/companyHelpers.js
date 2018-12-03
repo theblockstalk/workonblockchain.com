@@ -87,7 +87,6 @@ const companyFilter = module.exports.companyFilter = async function companyFilte
         .post('/users/filter')
         .set('Authorization', jwtToken)
         .send(filterData)
-    res.should.have.status(200);
     return res;
 }
 

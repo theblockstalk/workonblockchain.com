@@ -40,6 +40,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   referred_link;
   detail_link;
   error_message;
+  saved_searche;
   ngOnInit()
   {
     this.referred_link = "";
@@ -59,6 +60,9 @@ export class AdminCompanyDetailComponent implements OnInit {
               this.info.push(data);
               this.approve = data._creator.is_approved;
               this.verify =data._creator.is_verify;
+              if(data.saved_searches.length > 0) {
+                this.saved_searche = data.saved_searches;
+              }
               if(data._creator.referred_email) {
                 console.log(data._creator.email);
                 this.authenticationService.getReferenceDetail(data._creator.referred_email)

@@ -31,17 +31,17 @@ module.exports.signupVerfiedCandidate = async function signupVerfiedCandidate(ca
 module.exports.signupVerifiedApprovedCandidate = async function signupVerifiedApprovedCandidate(candidate) {
     await signupCandidate(candidate);
     await userHelpers.verifyEmail(candidate.email);
-    await userHelpers.approve(candidate.email);
+    await userHelpers.approveCandidate(candidate.email);
 }
 
 module.exports.signupCandidateAndCompleteProfile = async function signupCandidateAndCompleteProfile(candidate, about, job,resume,experience) {
     const res = await signupCandidate(candidate);
     await userHelpers.verifyEmail(candidate.email);
-    await userHelpers.approve(candidate.email);
     await candidateWizardHelpers.about(about, res.body.jwt_token);
     await candidateWizardHelpers.job(job, res.body.jwt_token);
     await candidateWizardHelpers.resume(resume, res.body.jwt_token);
     await candidateWizardHelpers.experience(experience, res.body.jwt_token);
+    await userHelpers.approveCandidate(candidate.email);
 }
 
 const getAll = module.exports.getAll = async function getAll(jwtToken) {

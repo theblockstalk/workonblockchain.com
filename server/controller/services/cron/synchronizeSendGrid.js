@@ -1,7 +1,7 @@
+const settings = require('../../../settings');
 const sendGrid = require('../email/sendGrid');
 const logger = require('../logger');
 const crypto = require('../crypto');
-const settings = require('../../../settings');
 const mongooseUsers = require('../../../model/mongoose/users');
 const mongooseCandidate = require('../../../model/mongoose/candidate');
 const mongooseCompany = require('../../../model/mongoose/company');
@@ -11,20 +11,18 @@ const mongooseReferral = require('../../../model/mongoose/referral');
 module.exports = async function() {
     logger.debug('Running sync sendgrid cron');
 
-    if (settings.isLiveApplication()) {
-        const list = await getList(settings.ENVIRONMENT);
-        const listId = list.id;
-        const recipientCount = list.recipient_count;
-        logger.info('Synchronizing users to Sendgrid list ' + settings.ENVIRONMENT, {
-            listId: listId
-        });
+    const list = await getList(settings.ENVIRONMENT);
+    const listId = list.id;
+    const recipientCount = list.recipient_count;
+    logger.info('Synchronizing users to Sendgrid list ' + settings.ENVIRONMENT, {
+        listId: listId
+    });
 
-        await syncListToDatabase(listId, recipientCount);
+    await syncListToDatabase(listId, recipientCount);
 
-        let results = await synchDatabasetoList(listId);
+    let results = await synchDatabasetoList(listId);
 
-        logger.info('Synchronized all users to Sendgrid', results);
-    }
+    logger.info('Synchronized all users to Sendgrid', results);
 }
 
 async function getList(listName) {
@@ -47,25 +45,27 @@ async function syncListToDatabase(listId, recipientCount) {
 
         for (const recipient of recipients.recipients) {
             logger.debug('(' + i + '/' + recipientCount + ') Checking that ' + recipient.email + ' is in database');
-            const userDoc = await mongooseUsers.findOneByEmail(recipient.email);
+            let emailToSearch;
+            if (settings.ENVIRONMENT !== "production") {
+                emailToSearch = sendGrid.removeEmailEnvironment(recipient.email);
+            } else {
+                emailToSearch = recipient.email;
+            }
+            const userDoc = await mongooseUsers.findOneByEmail(emailToSearch);
 
             if (userDoc) {
-                if (!userDoc.sendgrid_id || userDoc.sendgrid_multipe_lists !== true) {
+                if (!userDoc.sendgrid_id) {
                     logger.debug('Adding sendgrid_id to user ' + recipient.email);
 
-                    let set = { sendgrid_id: recipient.id };
-                    const staging_user_id = sendGrid.getCustomFieldFromRecipient(recipient, "staging_user_id");
-                    const production_user_id = sendGrid.getCustomFieldFromRecipient(recipient, "production_user_id");
-
-                    if ( (staging_user_id.value && production_user_id.value) ||
-                         (production_user_id.value && settings.ENVIRONMENT !== 'production') ) {
-                        set.sendgrid_multipe_lists = true;
-                    }
-                    await mongooseUsers.update({_id: userDoc._id}, {$set: set});
+                    await mongooseUsers.update({_id: userDoc._id}, {$set: { sendgrid_id: recipient.id }});
                 }
             } else {
-                logger.debug('Deleting contact ' + recipient.email + ' from Sendgrid');
-                await sendGrid.deleteRecipient(recipient.id)
+                logger.debug('Deleting contact ' + recipient.email + ' from Sendgrid list ' + listId);
+                const updateResponse = await sendGrid.updateRecipient({
+                    email: emailToSearch,
+                    user: "false"
+                });
+                await sendGrid.deleteRecipientFromList(listId, recipient.id);
             }
             i++;
         }
@@ -75,6 +75,7 @@ async function syncListToDatabase(listId, recipientCount) {
 
 async function synchDatabasetoList(listId) {
     let added = 0, updated = 0, errors = 0, i = 1;
+
     const count = await mongooseUsers.count({});
 
     await mongooseUsers.findAndIterate({}, async function(userDoc) {
@@ -94,29 +95,24 @@ async function synchDatabasetoList(listId) {
 
         async function updateSendGridRecipient(listId, recipientUpdate) {
             try {
-                // If the user is in staging and production only update with production data
-                if (!userDoc.sendgrid_multipe_lists || settings.ENVIRONMENT === 'production') {
-                    logger.debug('Updating sendgrid recipient', recipientUpdate);
+                logger.debug('Updating sendgrid recipient', recipientUpdate);
 
-                    const updateResponse = await sendGrid.updateRecipient(recipientUpdate);
+                const updateResponse = await sendGrid.updateRecipient(recipientUpdate);
 
-                    added = added + updateResponse.new_count;
-                    updated = updated + updateResponse.updated_count;
-                    errors = errors + updateResponse.error_count;
+                added = added + updateResponse.new_count;
+                updated = updated + updateResponse.updated_count;
+                errors = errors + updateResponse.error_count;
 
-                    if (updateResponse.error_count > 0) {
-                        logger.error("Error updating user", {
-                            update: recipientUpdate,
-                            response: updateResponse
-                        });
-                    }
-
-                    const recipientId = updateResponse.persisted_recipients[0];
-                    await mongooseUsers.update({_id: userDoc._id}, {$set: {sendgrid_id: recipientId}});
-                    await sendGrid.addRecipientToList(listId, recipientId);
-                } else {
-                    logger.warn('User ' + recipientUpdate.email + ' was not updated to Sendgrid as this would overwrite the production recipient');
+                if (updateResponse.error_count > 0) {
+                    logger.error("Error updating user", {
+                        update: recipientUpdate,
+                        response: updateResponse
+                    });
                 }
+
+                const recipientId = updateResponse.persisted_recipients[0];
+                await mongooseUsers.update({_id: userDoc._id}, {$set: {sendgrid_id: recipientId}});
+                await sendGrid.addRecipientToList(listId, recipientId);
             } catch (error) {
                 logger.error(error.message, {
                     stack: error.stack,
@@ -131,21 +127,21 @@ async function synchDatabasetoList(listId) {
             if (candidateDoc) {
                 const recipientUpdate = {
                     email: userDoc.email,
-                    type: "candidate",
+                    user_type: "candidate",
                     user: "true",
                     first_name: candidateDoc.first_name,
                     last_name: candidateDoc.last_name,
-                    referral_key: referralDoc.url_token,
-                    account_dissabled: userDoc.disable_account.toString(),
-                    approved: userDoc.is_approved,
-                    email_verified: userDoc.is_verify,
-                    terms_id: candidateDoc.terms_id,
-                    created_date: userDoc.created_date
+                    user_referral_key: referralDoc.url_token,
+                    user_account_disabled: userDoc.disable_account.toString(),
+                    user_status: userDoc.candidate.status[0].status,
+                    user_email_verified: userDoc.is_verify,
+                    user_terms_id: candidateDoc.terms_id,
+                    user_created_date: userDoc.candidate.status[userDoc.candidate.status.length-1].timestamp,
+                    user_id: userDoc._id.toString()
                 };
                 if (candidateDoc.marketing_emails) {
-                    recipientUpdate.marketing_emails = candidateDoc.marketing_emails.toString();
+                    recipientUpdate.user_marketing_emails = candidateDoc.marketing_emails.toString();
                 }
-                recipientUpdate[settings.ENVIRONMENT + "_user_id"] = userDoc._id.toString();
 
                 await updateSendGridRecipient(listId, recipientUpdate);
             } else {
@@ -157,22 +153,22 @@ async function synchDatabasetoList(listId) {
             if (companyDoc) {
                 const recipientUpdate = {
                     email: userDoc.email,
-                    type: "company",
+                    user_type: "company",
                     user: "true",
                     first_name: companyDoc.first_name,
                     last_name: companyDoc.last_name,
-                    referral_key: referralDoc.url_token,
-                    account_dissabled: userDoc.disable_account.toString(),
-                    approved: userDoc.is_approved,
-                    email_verified: userDoc.is_verify,
-                    terms_id: companyDoc.terms_id,
-                    created_date: userDoc.created_date,
-                    company_name: companyDoc.company_name
+                    user_referral_key: referralDoc.url_token,
+                    user_account_disabled: userDoc.disable_account.toString(),
+                    user_approved: userDoc.is_approved,
+                    user_email_verified: userDoc.is_verify,
+                    user_terms_id: companyDoc.terms_id,
+                    user_created_date: userDoc.created_date,
+                    company_name: companyDoc.company_name,
+                    user_id: userDoc._id.toString()
                 };
                 if (companyDoc.marketing_emails) {
-                    recipientUpdate.marketing_emails = companyDoc.marketing_emails.toString();
+                    recipientUpdate.user_marketing_emails = companyDoc.marketing_emails.toString();
                 }
-                recipientUpdate[settings.ENVIRONMENT + "_user_id"] = userDoc._id.toString();
 
                 await updateSendGridRecipient(listId, recipientUpdate);
             } else {

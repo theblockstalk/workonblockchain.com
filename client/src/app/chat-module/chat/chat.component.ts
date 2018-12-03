@@ -157,7 +157,7 @@ export class ChatComponent implements OnInit {
                     }
                     */
                     this.is_approved = data._creator.is_approved;
-                    if(data._creator.is_approved === 0 )
+                    if(data._creator.candidate.status[0].status === 'Rejected' || data._creator.candidate.status[0].status === 'rejected')
                     {
                           this.disabled = true;
                           this.msg = "You can access this page when your account has been approved by an admin.";

@@ -8,18 +8,6 @@ module.exports.sendEmail = function sendEmail(email,name,isAccountDisabed) {
 
     const sendToArray = [sendTo];
 
-    const mandrillOptions = {
-        templateName: "wob-company-approved",
-        message: {
-        	 global_merge_vars: [{
-        	     "name": "FNAME",
-                 "content": name
-             }],
-            subject: subject,
-            to: sendToArray
-        }
-    };
-
     const sendGridOptions = {
         templateId: "d-02056a2f353b4493894597caeda49ba6",
         subject: subject,
@@ -34,5 +22,5 @@ module.exports.sendEmail = function sendEmail(email,name,isAccountDisabed) {
         }
     };
 
-    emails.sendEmail(mandrillOptions, sendGridOptions, isAccountDisabed);
+    emails.sendEmail(sendGridOptions, isAccountDisabed);
 }

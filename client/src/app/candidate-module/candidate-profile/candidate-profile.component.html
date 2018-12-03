@@ -55,7 +55,12 @@
 				 					<span class = "li_txt"> Contact Number : {{contact_number}}</span>
 
 				 			</li>
+              <li>
 
+                <span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
+                <span class = "li_txt text-capitalize">Candidate Status : {{candidate_status.status}}</span>
+
+              </li>
 
 				 		</ul>
 
@@ -164,8 +169,6 @@
 
           </div>
 
-
-
           <span class = "edit_profile_link">
 				 		<a  (click)="internalRoute('edit_profile','about_you')">
 				 			<i class="fa fa-pencil" aria-hidden="true"></i>
@@ -221,7 +224,7 @@
 				 	<div class="info-area pro_br-btm" *ngIf="expected_salary">
 
 						<div class = "col-md-3" >
-							<strong>Expected salary: </strong>
+							<strong>Expected annual salary: </strong>
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
@@ -234,7 +237,7 @@
 					<div class="info-area pro_br-btm" *ngIf="current_salary">
 
 						<div class = "col-md-3" >
-							<strong>Yearly current base salary:</strong>
+							<strong>Current annual salary:</strong>
 						</div>
 						<div class = "col-md-9">
 							<ul class = "pro_list">
@@ -380,10 +383,7 @@
 				 		</a>
 				 	</span>
 
-
-
-
-
+           
 				 </section>
 
 				  <section class = "profile job_info" *ngIf="!public_data && history.length>0 ">

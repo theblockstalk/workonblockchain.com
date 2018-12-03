@@ -1,7 +1,7 @@
 <!--candidate step completing-->
 
 <section class = "wizard_page">
-  
+
   <div class="container">
     <div class="row">
       <div class = "text-center steps-name">
@@ -13,29 +13,29 @@
           <li class = "step step-active"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
           <li class = "step"><i class="{{resume_active_class}}"></i><a routerLink="{{resume_class}}" class="btn {{resume_disable}}">Blockchain</a></li>
           <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn {{exp_disable}}" >Experience</a></li>
-          
+
         </ul>
       </div>
       <div class="col-md-12 wizard-form">
 
         <form class = "login_form"  #f="ngForm" (ngSubmit)="onSubmit(f)">
-          
+
           <fieldset class="scheduler-border">
               <legend class="scheduler-border">Tell us more about your dream job</legend>
             <div class="container collection">
               <div>
                 <label>  <p  class = "label-p">Where are you available to work?</p></label>
-                
+
                 <div class="answer"  >
-                  
-                  <div class = "row"  >  
+
+                  <div class = "row"  >
 
                     <div class="col-md-3 collection-checkbox" *ngFor="let option of options">
                       <span class = "checkbox-header"> <!--<strong>{{country.value}}</strong>--></span>
                       <div class="checkbox" >
                        <!--<div *ngIf=" country.id === option.country_code ">-->
                         <label class = "check-label lable"> {{option.name}}
-                          
+
                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
                           <span class="checkmark">
                             <div></div>
@@ -45,17 +45,17 @@
                         <!--</div>-->
                       </div>
 
-                      
+
 
                     </div>
-					
-                    
+
+
                   </div>
                 </div>
 
                 </div>
               </div>
-             
+
               <div class = "form_error" *ngIf="selectedcountry.length<=0">
 								<span class = "error">{{country_log}}</span>
 							</div>
@@ -65,12 +65,12 @@
             <div class="container collection">
               <div>
                  <label> <p  class = "label-p">What role are you looking for?</p></label>
-                
+
                 <div class="answer">
                   <div class = "row" >
 
                     <div class="col-md-3 collection-checkbox" *ngFor="let position_option of dropdown_options">
-                      
+
                       <div class="checkbox">
                         <label class = "check-label lable"> {{position_option.name}}
                           <input type="checkbox" name="options" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
@@ -79,11 +79,11 @@
                           </span>
                         </label>
                          <input type="text" class="form-control" [(ngModel)]='jobselected' name="roles" style="display: none;">
-                        
-                         
+
+
                       </div>
 
-                      
+
 
                     </div>
 
@@ -92,23 +92,23 @@
 								<span class = "error">{{roles_log}}</span>
 							</div>
                 </div>
-				
+
                 </div>
               </div>
           </div>
            <hr/>
-           
-          
+
+
               <div class = "form-group col-md-12 salary_class">
-              
+
               <div class="form-group col-md-6 col-left">
-                <label><p  class = "label-p">Yearly expected base salary</p></label>
+                <label><p  class = "label-p">Expected annual salary</p></label>
                        <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" class="form-control" id="" required name="expected_salary" placeholder=" 2000" [(ngModel)]="salary">
-          		
+
           			<div class = "form_error" >
 								<span class = "error" *ngIf="!salary  ; else expected_validation" >{{salary_log}}</span>
 								<span class = "error" #expected_validation  *ngIf="expect_salary.errors && salary">  Yearly expected base salary should be a number. </span>
-								
+
 							</div>
 
             </div>
@@ -116,45 +116,45 @@
               <label><p class = "label-p"></p></label>
              <select [(ngModel)]="base_currency" class="form-control" id="currency" required name="base_currency" >
                    <option value="-1" disabled selected hidden >Please choose currency</option>
-                  
+
                   <option class='option' *ngFor='let base_currency of currency'  [value]="base_currency" selected>{{base_currency}}</option>
-              
+
                 </select>
-                
-                
+
+
                 <div class = "form_error" *ngIf="base_currency ==-1">
 								<span class = "error">{{currency_log}}</span>
 							</div>
             </div>
             </div>
-            
-      
+
+
            <div class = "form-group col-md-12 salary_class">
            <div class="form-group col-md-6 col-left">
-					<label><p  class = "label-p">Currently yearly base salary</p></label>
+					<label><p  class = "label-p">Current annual salary</p></label>
                        <input type="text" class="form-control" #base_validation="ngModel"  pattern="^[0-9]*$" required id="" placeholder="2000" name="current_salary"  [(ngModel)]="current_salary">
-               
-        
+
+
 					<div class = "form_error" >
 						<span class = "error" *ngIf="!current_salary; else current_validation">{{current_sal_log}}</span>
 						<span class = "error" #current_validation *ngIf="base_validation.errors && current_salary" > Currently yearly base salary should be a number. </span>
-						
-					</div> 
-					
+
+					</div>
+
 			</div>
             <div class="form-group col-md-6 setting-top">
               <label><p class = "label-p"></p></label>
             <select [(ngModel)]="current_currency" class="form-control" id="currency"  required name="current_currency" >
                    <option value="-1" disabled selected hidden >Please choose currency</option>
-                
+
                   <option class='option' *ngFor='let current_currency of currency' #choose_currency [value]="current_currency" selected>{{current_currency}}</option>
-              
+
                 </select>
-                
-                
+
+
                 <div class = "form_error" *ngIf="current_currency==-1 ">
                 <span class = "error">{{current_currency_log}}</span>
-              </div> 
+              </div>
             </div>
             </div>
                   <hr/>
@@ -163,12 +163,12 @@
             <div class="container collection">
               <div>
                <label>   <p  class = "label-p">Which area are you interested in?</p></label>
-                
+
                 <div class="answer">
                   <div class = "row" >
 
                     <div class="col-md-4 collection-checkbox" *ngFor='let position_option of area_interested' >
-                      
+
                       <div class="checkbox">
                         <label class = "check-label lable"> {{position_option.name}}
                           <input type="checkbox" name="options" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
@@ -177,11 +177,11 @@
                           </span>
                         </label>
                          <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_area" style="display: none;">
-                        
-                         
+
+
                       </div>
 
-                      
+
 
                     </div>
 
@@ -194,30 +194,30 @@
                 </div>
               </div>
           </div>
-          
+
               <hr/>
 
               <!--<div class="form-group col-md-6">
                 <label><p class = "label-p  ">Which area are you interested in?</p></label>
                 <select class='form-control'  id="sel1" required name="interest_area" [(ngModel)]='selectedValue' (change)='onAreaSelected($event)' required="">
-              
+
               <option class='option' *ngFor='let position_option of area_interested'  [value]="position_option" selected>{{position_option}}</option></select>
             </div>-->
 
-            
-            
-    
 
-            
+
+
+
+
 
             <div class="form-group col-md-4">
               <label><p class = "label-p">Employment availability</p></label>
-                
+
                  <select [(ngModel)]="availability_day" class="form-control" id="month" required name="availability_day" >
                   <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
-              
+
                 </select>
-                
+
                 <div class = "form_error" *ngIf="!availability_day">
 								<span class = "error">{{avail_log}}</span>
 							</div>
@@ -225,7 +225,7 @@
 
             <!--<div class="form-group col-md-4 setting-top">
               <label><p></p></label>
-               
+
                 <select [(ngModel)]="availability_year" class="form-control" id="year" required name="availability_year"   >
                   <option class='option' *ngFor='let start_year of year'  [value]="start_year" selected>{{start_year}}</option>
                   <br/>
@@ -236,7 +236,7 @@
 
           <div class = "form-group text-right">
               <a routerLink="/about" class = "btn btn-prev">Prev Step</a>
-              
+
               <button type=submit class = "btn btn-self btn-pdg" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)">Next Step</button>
 
           </div>
@@ -245,7 +245,7 @@
           </div>
 
         </form>
-        
+
       </div>
     </div>
   </div>
