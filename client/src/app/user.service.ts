@@ -1166,6 +1166,40 @@ export class UserService {
 
             });
     }
+
+  update_candidate_profile(user_id: string, detail: any,  edu :any , history:any )
+  {
+
+    return this.http.post<any>(URL+'users/update_candidate_profile' , { user_id : user_id ,detail: detail, education: edu  , work : history} , {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
+      .map((res: Response) =>
+      {
+        console.log(res);
+        if (res)
+        {
+          return res;
+        }
+      }).catch((error: any) =>
+      {
+        console.log(error);
+        if (error)
+        {
+          if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+          else return Observable.throw(error);
+        }
+
+      });
+  }
     allCompanies()
     {
         return this.http.get<any>(URL+'users/company', {

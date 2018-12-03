@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { Select2Module } from 'ng2-select2';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { AdminModuleRoutingModule } from './admin-module-routing.module';
@@ -21,7 +21,8 @@ import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-p
     FormsModule,
     Select2Module,
     NgxPaginationModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AdminDashboardComponent,

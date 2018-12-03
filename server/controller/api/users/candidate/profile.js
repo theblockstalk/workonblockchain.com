@@ -2,7 +2,7 @@ const CandidateProfile = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
 const errors = require('../../../services/errors');
 
-module.exports.update = async function update(candidateUserId, queryBody, workHistory, educationHistory, requestUserId) {
+module.exports.update = async function update(candidateUserId, queryBody, educationHistory, workHistory, requestUserId) {
     const candidateDoc = await CandidateProfile.findOne({ _creator: candidateUserId }).lean();
 
     let candidateUpdate = {};
@@ -12,6 +12,7 @@ module.exports.update = async function update(candidateUserId, queryBody, workHi
     if (queryBody.github_account) candidateUpdate.github_account = queryBody.github_account;
     if (queryBody.exchange_account) candidateUpdate.stackexchange_account = queryBody.exchange_account;
     if (queryBody.contact_number) candidateUpdate.contact_number = queryBody.contact_number;
+    if (queryBody.nationality) candidateUpdate.nationality = queryBody.nationality;
     if (queryBody.country) candidateUpdate.locations = queryBody.country;
     if (queryBody.roles) candidateUpdate.roles = queryBody.roles;
     if (queryBody.interest_area) candidateUpdate.interest_area = queryBody.interest_area;

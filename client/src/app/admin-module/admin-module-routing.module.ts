@@ -16,8 +16,7 @@ const routes: Routes = [
   {path : 'admin-display-chat' , component: AdminDisplayChatComponent},
   {path : 'admin-company-search' , component: AdminCompanySearchComponent},
   {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
-  {path : 'admin-update-candidate-profile' , component : AdminUpdateCandidateProfileComponent }
-
+  {path : 'update-candidate-profile' , component : AdminUpdateCandidateProfileComponent }
 ];
 
 @NgModule({

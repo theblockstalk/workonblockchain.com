@@ -4,7 +4,9 @@
   <div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12" *ngFor = "let data of info">
-				 <section class = "profile personal_info">
+        <button [routerLink]="['/update-candidate-profile']" [queryParams]="{user: data._creator._id }"  class = "btn_popup">Edit Profile</button>
+
+        <section class = "profile personal_info">
 
 				 	<div class="col-md-6" >
 				 		<span class = "p_img" *ngIf="!imgPath">
