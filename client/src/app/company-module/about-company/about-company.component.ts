@@ -28,6 +28,9 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   companyMsgTitle;
   companyMsgBody;
   error_msg;
+  preference;
+  pref_active_class;
+  pref_disable;
   constructor(private route: ActivatedRoute,
         private router: Router,private http: HttpClient,
         private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
@@ -36,11 +39,11 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
      ngAfterViewInit(): void
      {
          window.scrollTo(0, 0);
-
     }
 
   ngOnInit() {
 
+    this.pref_disable='disabled';
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
        if(!this.currentUser)
@@ -71,8 +74,12 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                            this.img_src = last;
 
                            }
-
+                    this.preference  = '/preferences';
                       //this.router.navigate(['/login']);
+                  }
+                  if(data.saved_searches && data.saved_searches.length > 0) {
+
+                    this.pref_active_class = 'fa fa-check-circle text-success';
                   }
                  if(data.terms_id)
                   {
@@ -81,7 +88,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                   }
                   if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
                   {
-                     this.about_active_class = 'fa fa-check-circle text-success';
+                    this.pref_disable = '';
+                    this.about_active_class = 'fa fa-check-circle text-success';
                   }
 
                 },
@@ -103,15 +111,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                             // this.router.navigate(['/not_found']);
                         }
                 });
-         this.authenticationService.get_page_content('Company popup message')
-           .subscribe(
-             data => {
-               if(data)
-               {
-                 this.companyMsgTitle= data[0].page_title;
-                 this.companyMsgBody = data[0].page_content;
-               }
-             });
+
        }
       else
        {
@@ -178,7 +178,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                         }).map((res) => res).subscribe(
                         (success) =>
                         {
-                          $('#popModal').modal('show');
+                          this.router.navigate(['/preferences']);
                           //this.router.navigate(['/company_profile']);
                         },
                         (error) => {
@@ -202,11 +202,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
                 else
                 {
-                  $("#popModal").modal({
-                    backdrop: 'static',
-                    keyboard: true,
-                    show: true
-                  });
+                  this.router.navigate(['/preferences']);
                   //this.router.navigate(['/company_profile']);
                 }
 
@@ -234,10 +230,5 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
         }
           }
 
-  redirectToCompany()
-  {
-    $('#popModal').modal('hide');
-    this.router.navigate(['/company_profile']);
-  }
 
 }

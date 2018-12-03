@@ -14,24 +14,15 @@
   "client": {
     "url": "http://localhost:4200/"
   },
-  "currencyRates": {
-    "USD": {
-      "GBP": 1.29,
-      "Euro": 1.17
-    },
-    "GBP": {
-      "USD": 0.77,
-      "Euro": 0.90
-    },
-    "Euro": {
-      "USD": 0.85,
-      "GBP": 1.10
-    }
+  "currencyRatesUSD": {
+    "GBP": 1.28,
+    "Euro": 1.14
   },
   "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
     "unreadMessagesTick": "0-59 * * * *",
-    "syncSendgrid": "0-59 * * * *"
+    "syncSendgrid": "0-59 * * * *",
+    "autoNotification" : "0-59 * * * *"
   }
 }
 

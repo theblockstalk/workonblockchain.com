@@ -21,6 +21,9 @@ export class TermsWizardComponent implements OnInit {
   agree;
   about_disable;
   terms_id;
+  preference;
+  pref_active_class;
+  pref_disable;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -30,6 +33,7 @@ export class TermsWizardComponent implements OnInit {
 
   ngOnInit() {
     this.about_disable= "disabled";
+    this.pref_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if(!this.currentUser)
@@ -62,16 +66,24 @@ export class TermsWizardComponent implements OnInit {
 
             }
 
-            if(data.terms_id == true)
+            if(data.terms_id)
             {
               this.about_disable='';
               this.terms_active_class = 'fa fa-check-circle text-success';
               this.about_company = '/about_comp';
+              this.preference  = '/preferences';
+
             }
 
             if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
             {
+              this.pref_disable = '';
               this.about_active_class = 'fa fa-check-circle text-success';
+              this.preference  = '/preferences';
+
+            }
+            if(data.saved_searches && data.saved_searches.length > 0) {
+              this.pref_active_class = 'fa fa-check-circle text-success';
             }
 
           },
