@@ -23,7 +23,11 @@
               <legend class="scheduler-border">Blockchain Experience</legend>
               <div class="form-group col-md-12 col-left">
                 <label><p class = "label-p">Why do you want to work on blockchain?</p></label>
-                    <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because.."  #whywork name="why_work" required [(ngModel)]="why_work">
+                <ul>
+                  <li> let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
+                  <li> This is the first field that a company sees! </li>
+                </ul>
+                <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because.."  #whywork name="why_work" required [(ngModel)]="why_work">
 
             	<div class = "form_error" *ngIf="!why_work">
 								<span class = "error">{{why_work_log}}</span>

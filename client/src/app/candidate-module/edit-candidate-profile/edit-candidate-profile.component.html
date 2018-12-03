@@ -207,7 +207,7 @@
 
                 <div class="form-group col-md-12 salary_class">
                   <div class="form-group col-md-6">
-                    <label><p class = "label-p">Yearly expected base salary</p></label>
+                    <label><p class = "label-p">Expected annual salary</p></label>
                     <input type="text" class="form-control" id="" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="expected_salary" placeholder="2000" [(ngModel)]="expected_salaryyy">
                     <div class = "form_error" >
                       <span class = "error" *ngIf="!expected_salaryyy; else expected_validation " >{{salary_log}}</span>
@@ -230,7 +230,7 @@
                 </div>
                 <div class="form-group col-md-12 salary_class">
                   <div class="form-group col-md-6">
-                    <label><p  class = "label-p">Currently yearly base salary</p></label>
+                    <label><p  class = "label-p">Current annual salary</p></label>
                     <input type="text" class="form-control" id="" #current_salary="ngModel"  pattern="^[0-9]*$" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">
                     <div class = "form_error" >
                       <span class = "error" *ngIf="!salary; else current_validation">{{current_sal_logg}}</span>
@@ -318,6 +318,10 @@
                 <legend class="scheduler-border">Blockchain </legend>
                 <div class="form-group col-md-12 col-left">
                   <label><p class = "label-p">Why do you want to work on blockchain?</p></label>
+                  <ul>
+                    <li> let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
+                    <li> This is the first field that a company sees! </li>
+                  </ul>
                   <input type="text" class="form-control" id="" placeholder="i want to work on blockchain because ......."  #whywork name="why_work" [(ngModel)]="why_work">
                   <div class = "form_error" *ngIf="!why_work">
                     <span class = "error">{{why_work_log}}</span>
@@ -765,7 +769,12 @@
                   </div>
                 </div>
                 <div class="form-group col-md-12">
-                  <label><p class = "label-p">Please write a short 2-5 sentence bio for your profile</p></label>
+                  <label><p class = "label-p">Bio</p></label>
+                  <ul>
+                    <li> 2-5 sentences </li>
+                    <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
+                    <li> Example "Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." </li>
+                  </ul>
                   <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                   <div class = "form_error" *ngIf="!Intro">
                     <span class = "error">{{intro_log}}</span>
