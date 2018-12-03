@@ -41,7 +41,7 @@
   </div>
 </nav>
 
-<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "msg && close && !success  ">
+<div class="alert alert-danger pro_alert" *ngIf = "msg && close && !success  ">
     {{msg}}
  </div>
 
@@ -49,12 +49,12 @@
 
  <div *ngIf = "success_msg!='' && admin_route !== '/verify_email?'">
 
- <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success_msg!='' && success_msg!='not verify'">
+ <div class="alert alert-success pro_alert" *ngIf = "success_msg!='' && success_msg!='not verify'">
 <a href="#"  data-dismiss="alert" ></a>
     {{success_msg}}
  </div>
 
- 	<div class="alert alert-danger pro_alert alert-dismissible" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
+ 	<div class="alert alert-danger pro_alert" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
   <a href="#" data-dismiss="alert"  ></a>
     Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class = "">here</a>.
   </div>

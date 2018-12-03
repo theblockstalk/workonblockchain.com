@@ -39,9 +39,9 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         type : 'candidate'
     };
 
-    if (filters.is_verify) userQuery.is_verify = filters.is_verify;
+    if (filters.is_verify === 1 || filters.is_verify === 0) userQuery.is_verify = filters.is_verify;
     if (filters.status && filters.status !== -1) userQuery['candidate.status.0.status'] = filters.status;
-    if (filters.disable_account) userQuery.disable_account = filters.disable_account;
+    if (filters.disable_account === true || filters.disable_account === false) userQuery.disable_account = filters.disable_account;
     if (filters.msg_tags) {
         let userIds = [];
         const chatDocs = await Chat.find({msg_tag : {$in: filters.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();

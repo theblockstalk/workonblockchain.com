@@ -50,8 +50,17 @@
             <li>
               <div class = "form-group">
                 <select class="form-control " name="candidate_status" [(ngModel)]="candidate_status" (ngModelChange)="search_account_status($event)" >
-                  <option value="-1" disabled selected hidden >Verified/Disabled</option>
-                  <option class='option' *ngFor='let options of admin_checks_new'  [value]="options.value" selected>{{options.name}}</option>
+                  <option value="-1" disabled selected hidden >Email Verified/Not Verified</option>
+                  <option class='option' *ngFor='let options of admin_checks_email_verify'  [value]="options.value" selected>{{options.name}}</option>
+                </select>
+              </div>
+            </li>
+
+            <li>
+              <div class = "form-group">
+                <select class="form-control " name="candidate_status_account" [(ngModel)]="candidate_status_account" (ngModelChange)="search_candidate_account_status($event)" >
+                  <option value="-1" disabled selected hidden >Account Enabled/Disabled</option>
+                  <option class='option' *ngFor='let options of admin_checks_candidate_account'  [value]="options.value" selected>{{options.name}}</option>
                 </select>
               </div>
             </li>
