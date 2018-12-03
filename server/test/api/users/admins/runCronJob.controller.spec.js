@@ -30,7 +30,7 @@ describe('admin run cron job metrics', function () {
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
             const cronRes = await adminHelper.runCron("syncSendgrid", candidateUserDoc.jwt_token);
-            cronRes.should.have.status(200);
+            cronRes.should.have.status(500);
         })
 
         it('it should fail run the cron job with wrong name', async function() {

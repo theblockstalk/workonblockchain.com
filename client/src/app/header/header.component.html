@@ -15,7 +15,7 @@
       <ul class="nav navbar-nav navbar-right" >
         <li *ngIf="!currentUser"><a routerLink="signup"> <b>SIGN UP</b></a></li>
         <li *ngIf="!currentUser"><a routerLink="login">Login</a></li>
-        <li ><a routerLink="referral">Referral &pound;500 Reward</a></li>
+        <li ><a routerLink="referral">Referral £500+ Reward</a></li>
 
         <li *ngIf="(currentUser)"><a routerLink="chat">Chat</a></li>
         <li *ngIf="(currentUser && is_admin === 1)"><a routerLink="admin-dashboard">Dashboard</a></li>

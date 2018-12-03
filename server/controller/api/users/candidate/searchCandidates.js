@@ -175,7 +175,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     const searchQuery = {$and: candidateQuery};
     candidates = await CandidateProfile.find(searchQuery).populate('_creator').lean();
     if (!candidates) {
-        errors.throwError("No candidates matched the search", 404);
+        errors.throwError("No candidates matched this search criteria", 404);
     }
 
     return {
