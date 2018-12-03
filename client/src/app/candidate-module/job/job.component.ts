@@ -182,7 +182,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
                     //this.resume_class="/resume";
 
-                    if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day&& data.current_salary )
+                    if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day)
                     {
                         this.active_class = 'fa fa-check-circle text-success';
                     this.class = "btn";
@@ -453,7 +453,7 @@ export class JobComponent implements OnInit,AfterViewInit {
         {
             this.avail_log = "Please select employment availability";
         }
-        if(!this.current_salary)
+        /*if(!this.current_salary)
        {
            this.current_sal_log = "Please enter current base salary";
 
@@ -461,9 +461,9 @@ export class JobComponent implements OnInit,AfterViewInit {
        if(this.current_currency ==-1)
        {
            this.current_currency_log = "Please choose currency";
-       }
+       }*/
 
-        if(this.current_salary && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
+        if(this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
         {
         this.authenticationService.job(this.currentUser._creator,f.value)
             .subscribe(
