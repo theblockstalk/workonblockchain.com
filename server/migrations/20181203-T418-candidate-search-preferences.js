@@ -37,7 +37,7 @@ const updates = [
             availability_day: "3 months",
             current_currency: "$ USD",
             current_salary: 75000,
-            blockchain: 434322,
+            // blockchain: [],
             skills: ["JavaScript", "Nodejs"],
             other_technologies : "Typescript, Webpack, Babel;  MongoDB and MySQL would be useful too",
             when_receive_email_notitfications : "Weekly",
@@ -54,7 +54,7 @@ const updates = [
             availability_day: "3 months",
             current_currency: "$ USD",
             current_salary: 90000,
-            blockchain: ["Ripple", "Ethereum", "Bitcoin", "Stellar"],
+            // blockchain: ["Ripple", "Ethereum", "Bitcoin", "Stellar"],
             skills: ["Go"],
             other_technologies: "MongoDB, AWS",
             when_receive_email_notitfications: "Weekly"
@@ -62,13 +62,13 @@ const updates = [
     },{
         email: "gioele.cerati@ies-italia.it",
         search: {
-            // location: ["Remote"],
+            location: ["Remote"],
             job_type: ["Freelance"],
             position: ['Backend Developer', 'Mobile app developer' ],
             availability_day: "3 months",
             current_currency: "$ USD",
             current_salary: 50000,
-            // blockchain: ["Ripple", "Ethereum", "Bitcoin", "Stellar"],
+            // blockchain: [],
             skills: ["Java", "Python"],
             other_technologies: "Queue systems, distributed systems, FFMPEG",
             when_receive_email_notitfications: "Daily"
@@ -84,6 +84,7 @@ module.exports.down = async function() {
         logger.debug("(" + totalProcessed + "/" + updates.length + ") Processing company " + update.email);
 
         const userDoc = await users.findOneByEmail(update.email);
+        if (!userDoc) throw Error("User " + update.email + " not found");
         await company.update({_creator: userDoc._id}, {$unset: { 'saved_searches': 1 }})
     }
 
