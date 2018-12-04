@@ -569,7 +569,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
         else
         {
-            this.error_msg = "There is a field that still needs completion. Please scroll up.";
+            this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
          }
 
 
