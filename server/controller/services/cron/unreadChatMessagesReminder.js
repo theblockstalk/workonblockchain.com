@@ -7,7 +7,8 @@ const chatReminderEmail = require('../email/emails/chatReminder');
 const logger = require('../logger');
 
 module.exports = async function () {
-    logger.debug('get all unread msgs');
+    logger.debug('Running unread chat messages cron');
+
     const unreadReceiverIds = await chat.distinct("receiver_id", {is_read: 0});
 
     for(let i=0; i < unreadReceiverIds.length; i++){

@@ -1,7 +1,7 @@
+const settings = require('../../../settings');
 const sendGrid = require('../email/sendGrid');
 const logger = require('../logger');
 const crypto = require('../crypto');
-const settings = require('../../../settings');
 const mongooseUsers = require('../../../model/mongoose/users');
 const mongooseCandidate = require('../../../model/mongoose/candidate');
 const mongooseCompany = require('../../../model/mongoose/company');
@@ -11,20 +11,18 @@ const mongooseReferral = require('../../../model/mongoose/referral');
 module.exports = async function() {
     logger.debug('Running sync sendgrid cron');
 
-    if (settings.isLiveApplication()) {
-        const list = await getList(settings.ENVIRONMENT);
-        const listId = list.id;
-        const recipientCount = list.recipient_count;
-        logger.info('Synchronizing users to Sendgrid list ' + settings.ENVIRONMENT, {
-            listId: listId
-        });
+    const list = await getList(settings.ENVIRONMENT);
+    const listId = list.id;
+    const recipientCount = list.recipient_count;
+    logger.info('Synchronizing users to Sendgrid list ' + settings.ENVIRONMENT, {
+        listId: listId
+    });
 
-        await syncListToDatabase(listId, recipientCount);
+    await syncListToDatabase(listId, recipientCount);
 
-        let results = await synchDatabasetoList(listId);
+    let results = await synchDatabasetoList(listId);
 
-        logger.info('Synchronized all users to Sendgrid', results);
-    }
+    logger.info('Synchronized all users to Sendgrid', results);
 }
 
 async function getList(listName) {
@@ -77,6 +75,7 @@ async function syncListToDatabase(listId, recipientCount) {
 
 async function synchDatabasetoList(listId) {
     let added = 0, updated = 0, errors = 0, i = 1;
+
     const count = await mongooseUsers.count({});
 
     await mongooseUsers.findAndIterate({}, async function(userDoc) {
@@ -128,13 +127,13 @@ async function synchDatabasetoList(listId) {
             if (candidateDoc) {
                 const recipientUpdate = {
                     email: userDoc.email,
-                    type: "candidate",
+                    user_type: "candidate",
                     user: "true",
                     first_name: candidateDoc.first_name,
                     last_name: candidateDoc.last_name,
                     user_referral_key: referralDoc.url_token,
                     user_account_disabled: userDoc.disable_account.toString(),
-                    user_approved: userDoc.candidate.status[0].status,
+                    user_status: userDoc.candidate.status[0].status,
                     user_email_verified: userDoc.is_verify,
                     user_terms_id: candidateDoc.terms_id,
                     user_created_date: userDoc.candidate.status[userDoc.candidate.status.length-1].timestamp,
@@ -154,7 +153,7 @@ async function synchDatabasetoList(listId) {
             if (companyDoc) {
                 const recipientUpdate = {
                     email: userDoc.email,
-                    type: "company",
+                    user_type: "company",
                     user: "true",
                     first_name: companyDoc.first_name,
                     last_name: companyDoc.last_name,

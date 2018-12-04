@@ -23,8 +23,8 @@ export class AdminCandidateDetailComponent implements OnInit {
   admin_log;
   candidate_status;
   set_status;
-  status_reason_rejected = '';
-  status_reason_deferred = '';
+  status_reason_rejected;
+  status_reason_deferred;
   set_candidate_status = [
     {value:'approved', name:'Approved'},
     {value:'rejected', name:'Rejected'},
@@ -93,7 +93,9 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.referred_link = "";
     this.referred_name = "";
     this.error = "";
-
+    this.set_status = -1;
+    this.status_reason_rejected = -1;
+    this.status_reason_deferred = -1;
 
     if(this.user_id && this.admin_log && this.currentUser)
     {
@@ -103,7 +105,10 @@ export class AdminCandidateDetailComponent implements OnInit {
           .subscribe(
             data => {
               this.candidate_status = data._creator.candidate.status[0];
-              this.set_status = this.candidate_status.status;
+              if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){}
+              else{
+                this.set_status = this.candidate_status.status;
+              }
               if(this.set_status === 'Rejected' || this.set_status === 'rejected'){
                 this.status_reason_rejected = this.candidate_status.reason;
                 $("#sel1-reason-rejected").css("display", "block");
@@ -310,30 +315,36 @@ export class AdminCandidateDetailComponent implements OnInit {
   is_approve;is_approved;
   error;
   success;
-  approveClick(event , approveForm: NgForm)
-  {
+  approveClick(event , approveForm: NgForm) {
     this.error = '';
+    this.success = '';
     let reason = '';
-    if(approveForm.value.set_status === "Rejected" || approveForm.value.set_status === "rejected")
-    {
-      if(approveForm.value.status_reason_rejected){
-        this.saveApproveData(approveForm.value.id,approveForm.value.set_status,approveForm.value.status_reason_rejected);
-      }
-      else{
-        this.error = 'Please select a reason';
-      }
+    if (approveForm.value.set_status === -1 || approveForm.value.set_status === 'wizard completed' || approveForm.value.set_status === 'created') {
+      this.error = 'Please select a status';
     }
-    else if(approveForm.value.set_status === "Deferred" || approveForm.value.set_status === "deferred")
-    {
-      if(approveForm.value.status_reason_deferred){
-        this.saveApproveData(approveForm.value.id,approveForm.value.set_status,approveForm.value.status_reason_deferred);
-      }
-      else{
-        this.error = 'Please select a reason';
-      }
+    else if (approveForm.value.status_reason_rejected === -1 || approveForm.value.status_reason_deferred === -1) {
+      this.error = 'Please select a reason';
     }
     else{
-      this.saveApproveData(approveForm.value.id,approveForm.value.set_status,'');
+      if (approveForm.value.set_status === "Rejected" || approveForm.value.set_status === "rejected") {
+        if (approveForm.value.status_reason_rejected) {
+          this.saveApproveData(approveForm.value.id, approveForm.value.set_status, approveForm.value.status_reason_rejected);
+        }
+        else {
+          this.error = 'Please select a reason';
+        }
+      }
+      else if (approveForm.value.set_status === "Deferred" || approveForm.value.set_status === "deferred") {
+        if (approveForm.value.status_reason_deferred) {
+          this.saveApproveData(approveForm.value.id, approveForm.value.set_status, approveForm.value.status_reason_deferred);
+        }
+        else {
+          this.error = 'Please select a reason';
+        }
+      }
+      else {
+        this.saveApproveData(approveForm.value.id, approveForm.value.set_status, '');
+      }
     }
   }
 
@@ -342,6 +353,8 @@ export class AdminCandidateDetailComponent implements OnInit {
     .subscribe(
       data => {
         if (data.success === true) {
+          this.candidate_status.status = set_status;
+          this.candidate_status.reason = reason;
           this.success = 'Candidate status changed successfully';
         }
       },

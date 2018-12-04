@@ -2,6 +2,7 @@ const Candidate = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
 const enumerations = require('../../../../model/enumerations');
 const settings = require('../../../../settings');
+const curr = require('../../../services/currency');
 
 module.exports = async function (req, res) {
     let totalCandidates, emailVerified = 0, approved = 0, dissabled = 0, agreedTerms = 0;
@@ -147,13 +148,8 @@ function countAndAggregate(final, count, aggregate) {
 }
 
 function salaryList(salaryArray, expectedSalary, currency) {
-    let salaryUSD = expectedSalary;
-    if (currency === "€ EUR") {
-        salaryUSD = expectedSalary * settings.CURRENCY_RATES.USD.Euro;
-    } else if (currency === "£ GBP") {
-        salaryUSD = expectedSalary * settings.CURRENCY_RATES.USD.GBP;
-    }
-    salaryArray.push(salaryUSD);
+    const priceUsd = curr.convert(currency, "$ USD", expectedSalary);
+    salaryArray.push(priceUsd);
 }
 
 function average(arr) {

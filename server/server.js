@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const settings = require('./settings');
 const logger = require('./controller/services/logger');
 const sanitizer = require('./controller/middleware/sanitizer');
+const requestLogger = require('./controller/middleware/requestLogger');
 const errorHandler = require('./controller/middleware/errorHandler');
 const routes = require('./routes');
 const cron = require('./cron');
@@ -27,6 +28,7 @@ try {
 
     app.use(sanitizer.middleware);
 
+    app.use(requestLogger);
     app.use(routes);
 
     app.use(errorHandler);

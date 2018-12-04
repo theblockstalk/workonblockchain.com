@@ -6,6 +6,7 @@ import { CompanySearchComponent } from './company-search/company-search.componen
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
+import { PreferencesComponent } from './preferences/preferences.component';
 
 const routes: Routes = [
   {path : 'about_comp' , component: AboutCompanyComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path : 'company_profile' , component: CompanyProfileComponent},
   {path : 'edit_company_profile' , component: EditCompanyProfileComponent},
   {path : 'candidate-detail' , component: CandidateDetailComponent},
+  {path : 'preferences' , component: PreferencesComponent},
 
 ];
 
