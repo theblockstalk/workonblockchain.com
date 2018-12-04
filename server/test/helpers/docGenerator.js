@@ -221,7 +221,7 @@ module.exports.job = function job(){
             'Backend Developer', 'Fullstack Developer'
         ],
         interest_area: [
-            'Enterprise blockchain', 'Smart contract development'
+            "I don't know" , 'Enterprise blockchain', 'Smart contract development'
         ]
     }
 }
@@ -309,7 +309,7 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             intro: 'I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. ',
             country: [ 'remote', 'Amsterdam' ],
             roles: [ 'Backend Developer', 'Fullstack Developer' ],
-            interest_area: [ 'Enterprise blockchain', 'Smart contract development' ],
+            interest_area: ["I don't know", 'Enterprise blockchain', 'Smart contract development' ],
             platforms_designed: [
                 { value: 'Bitcoin' },
                 { value: 'Hyperledger Sawtooth' }

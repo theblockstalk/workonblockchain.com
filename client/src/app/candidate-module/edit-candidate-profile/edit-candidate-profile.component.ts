@@ -371,9 +371,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 for(let option of this.area_interested)
                 {
 
-                  if(option.value == interest)
+                  if(option.value === interest)
                   {
-                    option.checked=true;
+                    option.checked = true;
                     this.selectedValue.push(interest);
 
                   }
@@ -387,7 +387,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
                 for(let option of this.dropdown_options)
                 {
-                  if(option.value == area)
+                  if(option.value === area)
                   {
                     option.checked=true;
                     this.jobselected.push(area);
@@ -1568,7 +1568,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onComSkillExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill', value);
     let index = this.commercialSkillsExperienceYear.indexOf(updateItem);
 
@@ -1620,7 +1619,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onFormalExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
     let index = this.formal_skills.indexOf(updateItem);
 

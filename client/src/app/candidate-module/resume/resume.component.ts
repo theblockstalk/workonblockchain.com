@@ -592,11 +592,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
    onExpYearOptions(e , value)
    {
 
-       /*this.value=value;
-      this.referringData = { experimented_platform:this.value, exp_year: e.target.value};
-      this.expYear.push(this.referringData);*/
-
-       this.selectedValue = e.target.value;
        this.langValue = value;
          let updateItem = this.findObjectByKey(this.expYear, 'experimented_platform', value);
       let index = this.expYear.indexOf(updateItem);
@@ -624,10 +619,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
    onComExpYearOptions(e, value)
    {
 
-      /*this.value=value;
-     this.referringData = { platform_name :this.value, exp_year: e.target.value};
-      this.commercial_expYear.push(this.referringData); */
-     this.selectedValue = e.target.value;
        this.langValue = value;
         let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
       let index = this.commercial_expYear.indexOf(updateItem);
@@ -653,7 +644,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
    onPlatformYearOptions(e, value)
    {
-      this.selectedValue = e.target.value;
        this.langValue = value;
       /*this.value=value;
       this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
@@ -730,7 +720,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   onComSkillExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill', value);
     let index = this.commercialSkillsExperienceYear.indexOf(updateItem);
 
@@ -781,7 +770,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   onFormalExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
     let index = this.formal_skills.indexOf(updateItem);
 
