@@ -158,7 +158,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.link= "/job";
             }
 
-            if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day&& data.current_salary )
+            if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day)
             {
               this.resume_disable = '';
               this.job_active_class = 'fa fa-check-circle text-success';
