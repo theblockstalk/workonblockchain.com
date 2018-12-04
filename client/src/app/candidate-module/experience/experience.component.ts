@@ -104,13 +104,13 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
                       this.exp_active_class = 'fa fa-check-circle text-success';
                 }
-                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day &&data.current_salary && data.current_currency )
+                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day)
                   {
                     this.active_class='fa fa-check-circle text-success';
                      // this.job_active_class = 'fa fa-check-circle text-success';
 
                   }
-                if(data.work_history || data.education_history|| data.programming_languages ||data.current_salary || data.current_currency)
+                if(data.work_history || data.education_history|| data.programming_languages)
                 {
 
                     if(data.work_history.length>0)
