@@ -1568,7 +1568,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onComSkillExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill', value);
     let index = this.commercialSkillsExperienceYear.indexOf(updateItem);
 
@@ -1620,7 +1619,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onFormalExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
     let index = this.formal_skills.indexOf(updateItem);
 
