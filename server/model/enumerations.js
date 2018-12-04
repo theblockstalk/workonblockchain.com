@@ -15,7 +15,7 @@ module.exports.workLocations = ['Remote', 'Paris', 'London', 'Dublin', 'Amsterda
 
 module.exports.workRoles = ['Backend Developer', 'Frontend Developer', 'UI Developer', 'UX Designer', 'Fullstack Developer','Blockchain Developer' , 'Smart Contract Developer' , 'Architect', 'DevOps' , 'Software Tester' , 'CTO' , 'Technical Lead', 'Product Manager', 'Intern Developer', 'Researcher' , 'Mobile app developer' , 'Data scientist' , 'Security specialist'];
 
-module.exports.workBlockchainInterests = ['Enterprise blockchain', 'Public blockchain', 'Blockchain infrastructure', 'Smart contract development','Decentralized applications (dapps)','I donâ€™t know'];
+module.exports.workBlockchainInterests = ['Enterprise blockchain', 'Public blockchain', 'Blockchain infrastructure', 'Smart contract development','Decentralized applications (dapps)',"I don't know"];
 
 module.exports.workAvailability = ['1 month','Now','2 months','3 months','Longer than 3 months'];
 
@@ -25,7 +25,7 @@ module.exports.email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
 
 module.exports.jobTypes = ['Full time' , 'Part time' , 'Freelance' ];
 
-module.exports.candidateStatus = ['created','wizard completed','updated','approved','rejected','deferred', 'other'];
+module.exports.candidateStatus = ['created','wizard completed','updated', 'updated by admin', 'approved','rejected','deferred', 'other'];
 
 module.exports.statusReasons = ['garbage','recruiter','not technical','other','profile incomplete','not looking for job', 'job found','not responded'];
 

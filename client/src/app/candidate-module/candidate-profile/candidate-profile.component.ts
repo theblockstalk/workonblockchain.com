@@ -81,7 +81,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-
   }
   tweet_text;
   dateA;dateB;
@@ -149,9 +148,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.candidate_status = data._creator.candidate.status[0];
                 if(data.first_name && data.last_name && data.contact_number && data.nationality &&
                   data.locations  && data.roles && data.interest_area &&
-                  data.expected_salary && data.current_salary && data.why_work && data.description
-                  && !data._creator.candidate){
-
+                  data.expected_salary && data.why_work && data.description
+                  && !data._creator.candidate.base_country && !data._creator.candidate.base_city){
                   this.information.first_name = data.first_name;
                   this.information.last_name = data.last_name;
                   this.information.contact_number = data.contact_number;

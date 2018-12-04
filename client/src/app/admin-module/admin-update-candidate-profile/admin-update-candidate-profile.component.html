@@ -23,14 +23,14 @@
 
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">First Name</p></label>
-                  <input type="text" class="form-control" name="first_name" [(ngModel)]="info.first_name" id="" placeholder="First Name"  name="first_name" [(ngModel)]="info.first_name">
+                  <input type="text" disabled class="form-control" name="first_name" [(ngModel)]="info.first_name" id="" placeholder="First Name"  name="first_name" [(ngModel)]="info.first_name">
                   <div class = "form_error" *ngIf="!info.first_name">
                     <span class = "error">{{first_name_log}}</span>
                   </div>
                 </div>
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">Last Name</p></label>
-                  <input type="text" class="form-control" name="last_name" [(ngModel)]="info.last_name" id="" placeholder="Last Name"  name="last_name" [(ngModel)]="info.last_name">
+                  <input type="text" disabled class="form-control" name="last_name" [(ngModel)]="info.last_name" id="" placeholder="Last Name"  name="last_name" [(ngModel)]="info.last_name">
                   <div class = "form_error" *ngIf="!info.last_name">
                     <span class = "error">{{last_name_log}}</span>
                   </div>
@@ -39,8 +39,8 @@
 
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">Contact Number</p></label>
-                  <input type="tel" class="form-control" placeholder="Phone number" name="contact_number" [(ngModel)]="info.contact_number">
-                  <div class = "form_error" *ngIf="!info.contact_number">
+                  <input type="tel" disabled class="form-control" placeholder="Phone number" name="contact_number" [(ngModel)]="info.contact_number">
+                  <div class = "form_error"  *ngIf="!info.contact_number">
                     <span class = "error">{{contact_name_log}}</span>
                   </div>
                 </div>
@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="form-group col-md-6" ><br/><br/>
-                  <input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="info.image">
+                  <input type="file" disabled class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="info.image">
                   <label id="fileLabel" >
                     <span *ngIf="img_src" >{{img_src}}</span>
                     <span *ngIf="!img_src" >Upload Logo (optional)</span>
@@ -207,7 +207,7 @@
 
                 <div class="form-group col-md-12 salary_class">
                   <div class="form-group col-md-6">
-                    <label><p class = "label-p">Expected annual salary</p></label>
+                    <label><p class = "label-p">Yearly expected base salary</p></label>
                     <input type="text" class="form-control" id="" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="expected_salary" placeholder="2000" [(ngModel)]="expected_salaryyy">
                     <div class = "form_error" >
                       <span class = "error" *ngIf="!expected_salaryyy; else expected_validation " >{{salary_log}}</span>
@@ -230,11 +230,9 @@
                 </div>
                 <div class="form-group col-md-12 salary_class">
                   <div class="form-group col-md-6">
-                    <label><p  class = "label-p">Current annual salary (optional)</p></label>
+                    <label><p  class = "label-p">Currently yearly base salary</p></label>
                     <input type="text" class="form-control" id="" #current_salary="ngModel"  pattern="^[0-9]*$" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">
-                    <div>
-                      <span> This information is never shown to companies. It is used by us to help us help you set your expected salary. </span>
-                    </div>
+
                   </div>
 
                   <div class="form-group col-md-6 setting-top">
@@ -243,9 +241,8 @@
                       <option value="-1" disabled selected hidden >Please choose currency</option>
                       <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
                     </select>
-                    <div class = "form_error" *ngIf="current_currency==-1 ">
-                      <span class = "error">{{current_currency_logg}}</span>
-                    </div>
+
+
                   </div>
                 </div>
 
@@ -316,10 +313,6 @@
                 <legend class="scheduler-border">Blockchain </legend>
                 <div class="form-group col-md-12 col-left">
                   <label><p class = "label-p">Why do you want to work on blockchain?</p></label>
-                  <ul>
-                    <li> let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
-                    <li> This is the first field that a company sees! </li>
-                  </ul>
                   <input type="text" class="form-control" id="" placeholder="i want to work on blockchain because ......."  #whywork name="why_work" [(ngModel)]="why_work">
                   <div class = "form_error" *ngIf="!why_work">
                     <span class = "error">{{why_work_log}}</span>
@@ -697,13 +690,10 @@
                             <textarea rows="5" id="comment" maxlength="2000" placeholder="Job description" formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
                           </div>
 
-                          <div class = "form-group col-md-12 text-right">
-                            <a (click)="deleteExpRow(i)" class = "btn btn-prev gap-rgt">Remove</a>
-                          </div>
+
                         </div></div>
                     </div>
 
-                    <a (click)="addNewExpRow()" class = "btn btn-self mr_rgt mr-btm"><i class="fa fa-plus"></i> Add Position</a>
 
                   </div>
                 </div>
@@ -751,28 +741,17 @@
                             </div>
                           </div>
 
-                          <div class = "form-group text-right">
-                            <a  (click)="deleteRow(i)" class = "btn btn-prev gap-rgt">Remove</a>
-                          </div>
 
                         </div>
                       </div>
 
                     </div>
 
-                    <a  (click)="addNewRow()" class = "btn btn-self mr_rgt mr-btm"> <i class="fa fa-plus" ></i> Add Education</a>
-
-
 
                   </div>
                 </div>
                 <div class="form-group col-md-12">
-                  <label><p class = "label-p">Bio</p></label>
-                  <ul>
-                    <li> 2-5 sentences </li>
-                    <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
-                    <li> Example "Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." </li>
-                  </ul>
+                  <label><p class = "label-p">Please write a short 2-5 sentence bio for your profile</p></label>
                   <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
                   <div class = "form_error" *ngIf="!Intro">
                     <span class = "error">{{intro_log}}</span>

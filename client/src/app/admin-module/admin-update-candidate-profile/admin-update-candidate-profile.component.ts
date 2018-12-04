@@ -1,28 +1,26 @@
-import { Component, OnInit ,ElementRef, Input,AfterViewInit } from '@angular/core';
+import { Component, OnInit ,ElementRef, } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-declare var synapseThrow: any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
-import { FormBuilder, FormControl, FormArray, FormGroup,Validators } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { DataService } from "../../data.service";
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-candidate-profile',
-  templateUrl: './edit-candidate-profile.component.html',
-  styleUrls: ['./edit-candidate-profile.component.css']
+  selector: 'app-admin-update-candidate-profile',
+  templateUrl: './admin-update-candidate-profile.component.html',
+  styleUrls: ['./admin-update-candidate-profile.component.css']
 })
-export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
+export class AdminUpdateCandidateProfileComponent implements OnInit  {
 
   currentUser: User;
   info: any = {}; log;
   selectedValue = [];
   selectedcountry = [];
-  expYear=[];
   jobselected=[];
   salary;
   expected_salaryyy;
@@ -101,6 +99,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   contact_name_log;
   nationality_log;
   error_msg;
+  user_id;
 
   nationality = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
 
@@ -111,8 +110,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     ]
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
-  constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef)
-  {
+  constructor(private dataservice: DataService,private datePipe: DatePipe,private _fb: FormBuilder,private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService, private el: ElementRef) {
+    this.route.queryParams.subscribe(params => {
+      this.user_id = params['user'];
+    });
   }
 
   private education_data(): FormGroup[]
@@ -164,6 +165,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   formalDbArray=[];
   formalSkillDb;
   formal_expYear_db=[];
+  admin_log;
   ngOnInit()
   {
     this.info.base_country = -1
@@ -178,255 +180,107 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.ExperienceForm = this._fb.group({
       ExpItems: this._fb.array([this.initExpRows()])
     });
-    if(this.currentUser && this.currentUser.type=='candidate')
+    this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+
+    if(this.currentUser && this.admin_log)
     {
 
-      this.options.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
-        }
-        else {
+      if(this.admin_log.is_admin === 1) {
+        this.options.sort(function(a, b){
+          if(b.name === 'Remote' || a.name === 'Remote') {
+          }
+          else {
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+          }
+        })
+
+        this.dropdown_options.sort(function(a, b){
           if(a.name < b.name) { return -1; }
           if(a.name > b.name) { return 1; }
           return 0;
-        }
-      })
+        })
 
-      this.dropdown_options.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
+        this.area_interested.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
 
-      this.area_interested.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
+        this.commercially.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        this.designed.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        this.experimented.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
 
-      this.commercially.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-      this.designed.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-      this.experimented.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-
-      this.language_opt.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-      this.authenticationService.getById(this.currentUser._id)
-        .subscribe(data =>
-          {
-            if(data)
-              this.info.email = data._creator.email;
-            if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
+        this.language_opt.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        this.authenticationService.getById(this.user_id)
+          .subscribe(data =>
             {
-
-              this.info.contact_number = data.contact_number;
-              this.info.github_account = data.github_account;
-              this.info.exchange_account = data.stackexchange_account;
-              this.info.nationality = data.nationality;
-              this.info.first_name =data.first_name;
-              this.info.last_name =data.last_name;
-
-              if(data.image != null )
+              if(data)
+                this.info.email = data._creator.email;
+              if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
               {
-                this.info.image_src =  data.image ;
-                let x = this.info.image_src.split("/");
 
-                let last:any = x[x.length-1];
+                this.info.contact_number = data.contact_number;
+                this.info.github_account = data.github_account;
+                this.info.exchange_account = data.stackexchange_account;
+                this.info.nationality = data.nationality;
+                this.info.first_name =data.first_name;
+                this.info.last_name =data.last_name;
 
-                this.img_src = last;
-              }
-
-              if(data._creator.candidate && data._creator.candidate.base_country)
-              {
-                this.info.base_country = data._creator.candidate.base_country;
-              }
-              if(data._creator.candidate && data._creator.candidate.base_city){
-                this.info.city = data._creator.candidate.base_city;
-              }
-
-
-            }
-
-            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length>0)
-            {
-              this.commercialSkillsExperienceYear = data._creator.candidate.blockchain.commercial_skills;
-              for (let key of data._creator.candidate.blockchain.commercial_skills)
-              {
-                for(var i in key)
+                if(data.image != null )
                 {
+                  this.info.image_src =  data.image ;
+                  let x = this.info.image_src.split("/");
 
-                  for(let option of this.otherSkills)
-                  {
+                  let last:any = x[x.length-1];
 
-                    if(option.value === key[i])
-                    {
-                      option.checked=true;
-                      this.skillDbArray.push(key[i]);
-                      this.skillDb= ({value: key[i]});
-                      this.commercialSkills.push(this.skillDb);
-
-                    }
-                    else
-                    {
-
-                    }
-
-                  }
-
-                  for(let option of this.exp_year)
-                  {
-
-                    if(option.value === key[i])
-                    {
-                      option.checked=true;
-                      this.skill_expYear_db.push(key[i]);
-
-                    }
-
-                  }
-
+                  this.img_src = last;
                 }
-              }
-            }
 
-
-            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length>0)
-            {
-              this.formal_skills = data._creator.candidate.blockchain.formal_skills;
-              for (let key of data._creator.candidate.blockchain.formal_skills)
-              {
-                for(var i in key)
+                if(data._creator.candidate && data._creator.candidate.base_country)
                 {
-
-                  for(let option of this.otherFormalSkills)
-                  {
-
-                    if(option.value === key[i])
-                    {
-                      option.checked=true;
-                      this.formalDbArray.push(key[i]);
-                      this.formalSkillDb= ({value: key[i]});
-                      this.formal_skills_exp.push(this.formalSkillDb);
-
-                    }
-                    else
-                    {
-
-                    }
-
-                  }
-
-                  for(let option of this.exp_year)
-                  {
-
-                    if(option.value === key[i])
-                    {
-                      option.checked=true;
-                      this.formal_expYear_db.push(key[i]);
-
-                    }
-
-                  }
-
+                  this.info.base_country = data._creator.candidate.base_country;
                 }
-              }
-            }
-
-            if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
-            {
-
-              for (let country1 of data.locations)
-              {
-
-                for(let option of this.options)
-                {
-
-                  if(option.value == country1)
-                  {
-                    option.checked=true;
-                    this.selectedcountry.push(country1);
-
-                  }
-
+                if(data._creator.candidate && data._creator.candidate.base_city){
+                  this.info.city = data._creator.candidate.base_city;
                 }
 
               }
 
-              for(let interest of data.interest_area)
+              if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length>0)
               {
-
-                for(let option of this.area_interested)
-                {
-
-                  if(option.value === interest)
-                  {
-                    option.checked = true;
-                    this.selectedValue.push(interest);
-
-                  }
-
-                }
-
-              }
-
-              for (let area of data.roles)
-              {
-
-                for(let option of this.dropdown_options)
-                {
-                  if(option.value === area)
-                  {
-                    option.checked=true;
-                    this.jobselected.push(area);
-
-                  }
-
-                }
-
-              }
-
-              this.expected_salaryyy = data.expected_salary;
-
-              this.availability_day = data.availability_day;
-              if(data.expected_salary_currency)
-                this.base_currency = data.expected_salary_currency;
-            }
-
-            if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
-            {
-              this.why_work=data.why_work;
-
-              if(data.commercial_platform)
-              {
-                this.commercial_expYear =data.commercial_platform;
-                for (let key of data.commercial_platform)
+                this.commercialSkillsExperienceYear = data._creator.candidate.blockchain.commercial_skills;
+                for (let key of data._creator.candidate.blockchain.commercial_skills)
                 {
                   for(var i in key)
                   {
 
-
-                    for(let option of this.commercially)
+                    for(let option of this.otherSkills)
                     {
 
-                      if(option.value == key[i])
+                      if(option.value === key[i])
                       {
                         option.checked=true;
-                        this.db_valye.push(key[i]);
-                        this.db_lang= ({value: key[i]});
-                        this.commercially_worked.push(this.db_lang);
+                        this.skillDbArray.push(key[i]);
+                        this.skillDb= ({value: key[i]});
+                        this.commercialSkills.push(this.skillDb);
 
                       }
                       else
@@ -439,10 +293,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     for(let option of this.exp_year)
                     {
 
-                      if(option.value == key[i])
+                      if(option.value === key[i])
                       {
                         option.checked=true;
-                        this.expYear_db.push(key[i]);
+                        this.skill_expYear_db.push(key[i]);
 
                       }
 
@@ -450,28 +304,25 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
                   }
                 }
-
               }
 
-
-              if(data.platforms)
+              if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length>0)
               {
-                this.platforms = data.platforms;
-                for (let key of data.platforms)
+                this.formal_skills = data._creator.candidate.blockchain.formal_skills;
+                for (let key of data._creator.candidate.blockchain.formal_skills)
                 {
                   for(var i in key)
                   {
 
-
-                    for(let option of this.designed)
+                    for(let option of this.otherFormalSkills)
                     {
 
-                      if(option.value == key[i])
+                      if(option.value === key[i])
                       {
                         option.checked=true;
-                        this.plat_db_valye.push(key[i]);
-                        this.db_lang= ({value: key[i]});
-                        this.platforms_designed.push(this.db_lang);
+                        this.formalDbArray.push(key[i]);
+                        this.formalSkillDb= ({value: key[i]});
+                        this.formal_skills_exp.push(this.formalSkillDb);
 
                       }
                       else
@@ -484,13 +335,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     for(let option of this.exp_year)
                     {
 
-                      if(option.value == key[i])
+                      if(option.value === key[i])
                       {
                         option.checked=true;
-
-
-                        this.designed_expYear_db.push(key[i]);
-
+                        this.formal_expYear_db.push(key[i]);
 
                       }
 
@@ -500,87 +348,173 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }
               }
 
-
-              if(data.experimented_platform)
+              if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
               {
-                this.experimented_platform = [];
-                for (let plat of data.experimented_platform)
+
+                for (let country1 of data.locations)
                 {
 
-                  for(let option of this.experimented)
+                  for(let option of this.options)
                   {
 
-                    if(option.value == plat.value)
+                    if(option.value == country1)
                     {
                       option.checked=true;
-                      this.experimented_platform.push(option);
+                      this.selectedcountry.push(country1);
 
                     }
 
                   }
 
                 }
-              }
-            }
 
-            if(data.work_history && data.education_history|| data.programming_languages)
-            {
-
-
-
-              this.jobData = data.work_history;
-
-              for(let data1 of data.work_history)
-              {
-                this.current_work_check.push(data1.currentwork);
-
-              }
-
-              this.ExperienceForm = this._fb.group({
-                ExpItems: this._fb.array(
-                  this.history_data()
-                )
-              });
-
-              this.eduData = data.education_history;
-              this.EducationForm = this._fb.group({
-                itemRows: this._fb.array(
-                  this.education_data()
-                )
-              });
-              if(data.programming_languages)
-              {
-                this.LangexpYear = data.programming_languages;
-                for (let key of data.programming_languages)
+                for(let interest of data.interest_area)
                 {
-                  for(var i in key)
+
+                  for(let option of this.area_interested)
                   {
 
+                    if(option.value == interest)
+                    {
+                      option.checked=true;
+                      this.selectedValue.push(interest);
 
-                    for(let option of this.language_opt)
+                    }
+
+                  }
+
+                }
+
+                for (let area of data.roles)
+                {
+
+                  for(let option of this.dropdown_options)
+                  {
+                    if(option.value == area)
+                    {
+                      option.checked=true;
+                      this.jobselected.push(area);
+
+                    }
+
+                  }
+
+                }
+
+                this.expected_salaryyy = data.expected_salary;
+
+                this.availability_day = data.availability_day;
+                if(data.expected_salary_currency)
+                  this.base_currency = data.expected_salary_currency;
+              }
+
+              if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
+              {
+                this.why_work=data.why_work;
+
+                if(data.commercial_platform)
+                {
+                  this.commercial_expYear =data.commercial_platform;
+                  for (let key of data.commercial_platform)
+                  {
+                    for(var i in key)
                     {
 
-                      if(option.value == key[i])
+
+                      for(let option of this.commercially)
                       {
-                        option.checked=true;
-                        this.lang_db_valye.push(key[i]);
-                        this.db_lang= ({value: key[i]});
-                        this.language.push(this.db_lang);
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+                          this.db_valye.push(key[i]);
+                          this.db_lang= ({value: key[i]});
+                          this.commercially_worked.push(this.db_lang);
+
+                        }
+                        else
+                        {
+
+                        }
+
                       }
-                      else
+
+                      for(let option of this.exp_year)
                       {
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+                          this.expYear_db.push(key[i]);
+
+                        }
 
                       }
 
                     }
+                  }
+                }
 
-                    for(let option of this.exp_year)
+                if(data.platforms)
+                {
+                  this.platforms = data.platforms;
+                  for (let key of data.platforms)
+                  {
+                    for(var i in key)
                     {
 
-                      if(option.value == key[i])
+
+                      for(let option of this.designed)
+                      {
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+                          this.plat_db_valye.push(key[i]);
+                          this.db_lang= ({value: key[i]});
+                          this.platforms_designed.push(this.db_lang);
+
+                        }
+                        else
+                        {
+
+                        }
+
+                      }
+
+                      for(let option of this.exp_year)
+                      {
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+
+
+                          this.designed_expYear_db.push(key[i]);
+
+
+                        }
+
+                      }
+
+                    }
+                  }
+                }
+
+
+                if(data.experimented_platform)
+                {
+                  this.experimented_platform = [];
+                  for (let plat of data.experimented_platform)
+                  {
+
+                    for(let option of this.experimented)
+                    {
+
+                      if(option.value == plat.value)
                       {
                         option.checked=true;
-                        this.lang_expYear_db.push(key[i]);
+                        this.experimented_platform.push(option);
 
                       }
 
@@ -590,38 +524,106 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }
               }
 
-              this.salary = data.current_salary;
-              this.Intro =data.description;
-              if(data.current_currency)
-                this.current_currency =data.current_currency;
+              if(data.work_history && data.education_history|| data.programming_languages&&data.current_salary && data.current_currency)
+              {
 
-            }
-          },
-          error =>
-          {
-            if(error.message === 500 || error.message === 401)
-            {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
+                this.jobData = data.work_history;
 
-            if(error.message === 403)
+                for(let data1 of data.work_history)
+                {
+                  this.current_work_check.push(data1.currentwork);
+
+                }
+
+                this.ExperienceForm = this._fb.group({
+                  ExpItems: this._fb.array(
+                    this.history_data()
+                  )
+                });
+
+                this.eduData = data.education_history;
+                this.EducationForm = this._fb.group({
+                  itemRows: this._fb.array(
+                    this.education_data()
+                  )
+                });
+                if(data.programming_languages)
+                {
+                  this.LangexpYear = data.programming_languages;
+                  for (let key of data.programming_languages)
+                  {
+                    for(var i in key)
+                    {
+
+
+                      for(let option of this.language_opt)
+                      {
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+                          this.lang_db_valye.push(key[i]);
+                          this.db_lang= ({value: key[i]});
+                          this.language.push(this.db_lang);
+                        }
+                        else
+                        {
+
+                        }
+
+                      }
+
+                      for(let option of this.exp_year)
+                      {
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+                          this.lang_expYear_db.push(key[i]);
+
+                        }
+
+                      }
+
+                    }
+                  }
+                }
+
+                this.salary = data.current_salary;
+                this.Intro =data.description;
+                if(data.current_currency)
+                  this.current_currency =data.current_currency;
+
+              }
+            },
+            error =>
             {
-              this.router.navigate(['/not_found']);
-            }
-          });
+              if(error.message === 500 || error.message === 401)
+              {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+
+              if(error.message === 403)
+              {
+                this.router.navigate(['/not_found']);
+              }
+            });
+      }
+      else {
+        this.router.navigate(['/not_found']);
+      }
+
+    }
+    else {
+      this.router.navigate(['/not_found']);
     }
   }
-
-  ngAfterViewInit(): void
-  {
-  }
-
 
   currency=
     [
@@ -639,7 +641,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   options =
     [
-      {country_code:'000' , name:'Remote', value:'Remote', checked:false},
+      {country_code:'000' , name:'Remote', value:'remote', checked:false},
       {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
       {country_code:'001' ,name:'London', value:'London', checked:false},
       {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
@@ -945,18 +947,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     ]
 
 
-  roles_opt =
-    [
-      {name:'Backend Developer', value:'Backend Developer', checked:false},
-      {name:'BI Engineer', value:'BI Engineer', checked:false},
-      {name:'Big Data Engineer', value:'Big Data Engineer', checked:false},
-      {name:'CTO', value:'CTO', checked:false},
-      {name:'Lead Developer', value:'Lead Developer', checked:false},
-      {name:'Database Administrator', value:'Database Administrator', checked:false},
-      {name:'Security Engineer', value:'Security Engineer', checked:false},
-      {name:'Frontend Developer', value:'Frontend Developer', checked:false},
-    ]
-
   onLangExpOptions(obj)
   {
     let updateItem = this.language.find(this.findIndexToUpdate_funct, obj.value);
@@ -979,8 +969,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.language.push(obj);
     }
 
-    //console.log(this.language);
-
   }
 
 
@@ -990,27 +978,19 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
   findIndexToUpdate(type) {
-    ////console.log("funct");
     return type == this;
   }
 
   onJobSelected(e)
   {
-    //this.yearselected= event.target.value;
-    if(e.target.checked)
-    {
+    if(e.target.checked) {
       this.jobselected.push(e.target.value);
-      ////console.log("if");
     }
     else{
-
       let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
-
       let index = this.jobselected.indexOf(updateItem);
-
       this.jobselected.splice(index, 1);
     }
-    //this.position = event.target.value;
   }
 
   initItemRows()
@@ -1023,40 +1003,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     });
 
   }
-  initItemRows_db()
-  {
-    return this._fb.group({
-      uniname: [this.uniname],
-      degreename:[this.degreename],
-      fieldname:[this.fieldname],
-      edudate:[this.edudate],
-      eduyear:[this.eduyear]
-    });
-
-
-  }
-
-  initExpRows_db()
-  {
-    return this._fb.group({
-      companyname: [this.companyname],
-      positionname:[this.positionname],
-      locationname: [this.locationname],
-      description: [this.description] ,
-      startdate:[this.startdate],
-      startyear:[this.startyear],
-      enddate:[this.enddate],
-      endyear:[this.endyear],
-      currentwork:[this.currentwork],
-      currentenddate:[this.currentdate],
-      currentendyear:[this.currentyear]
-    });
-  }
-
 
   initExpRows()
   {
-    ////console.log(this.currentdate);
     return this._fb.group({
       companyname:[''],
       positionname:[''],
@@ -1073,44 +1022,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     });
   }
 
-
-  addNewExpRow()
-  {
-    // control refers to your formarray
-    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
-    // add new formgroup
-    control.push(this.initExpRows());
-  }
-
-  deleteExpRow(index: number)
-  {
-    // control refers to your formarray
-    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
-    // remove the chosen row
-    control.removeAt(index);
-  }
-
   get DynamicWorkFormControls()
   {
 
     return <FormArray>this.ExperienceForm.get('ExpItems');
-  }
-  addNewRow()
-  {
-    // control refers to your formarray
-    //this.EducationForm.value.itemRows = "";
-    const control = <FormArray>this.EducationForm.controls['itemRows'];
-    // add new formgroup
-    control.push(this.initItemRows());
-  }
-
-  deleteRow(index: number)
-  {
-
-    // control refers to your formarray
-    const control = <FormArray>this.EducationForm.controls['itemRows'];
-    // remove the chosen row
-    control.removeAt(index);
   }
 
   get DynamicEduFormControls() {
@@ -1122,7 +1037,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   {
 
     let updateItem = this.findObjectByKey(this.LangexpYear, 'language', value);
-    ////console.log(updateItem);
     let index = this.LangexpYear.indexOf(updateItem);
 
     if(index > -1)
@@ -1132,27 +1046,15 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.value=value;
       this.referringData = { language:this.value, exp_year: e.target.value};
       this.LangexpYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
 
     }
     else
     {
-      ////console.log("not exists");
       this.value=value;
       this.referringData = { language:this.value, exp_year: e.target.value};
       this.LangexpYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
-
     }
 
-
-  }
-  onRoleYearOptions(e, value)
-  {
-    this.value=value;
-    this.referringData = { platform_name:this.value, exp_year: e.target.value};
-    this.expYearRole.push(this.referringData);
-    ////console.log(this.expYearRole);
   }
 
   work_start_data(e)
@@ -1166,19 +1068,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onAreaSelected(e)
   {
-    //this.jobselected= e.target.value;
-
     if(e.target.checked)
     {
       this.selectedValue.push(e.target.value);
-      ////console.log("if");
     }
     else{
-      ////console.log("else");
       let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
-
       let index = this.selectedValue.indexOf(updateItem);
-
       this.selectedValue.splice(index, 1);
     }
 
@@ -1288,16 +1184,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
       this.avail_log = "Please select employment availability";
     }
-    /*if(!this.salary)
-    {
-      this.current_sal_logg = "Please enter current base salary";
 
-    }
-
-    if(this.current_currency === -1)
-    {
-      this.current_currency_logg = "Please choose currency";
-    }*/
     if(!this.why_work)
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
@@ -1420,13 +1307,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         }
 
       }
-
-
     }
-
-
     if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 &&
-      this.info.city && this.info.base_country != -1 && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.selectedValue.length > 0 && this.availability_day &&
+      this.info.city && this.info.base_country != -1 && this.expected_salaryyy &&  this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1  && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
@@ -1435,7 +1318,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.updateProfileData(profileForm.value);
     }
     else {
-      this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
+      this.error_msg = "There is a field that still needs completion. Please scroll up.";
     }
 
   }
@@ -1468,55 +1351,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
-    this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
+    this.authenticationService.update_candidate_profile(this.user_id, profileForm , this.education_json_array , this.experiencearray)
       .subscribe(
         data => {
           if(data.success && this.currentUser)
           {
-            let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-            let fileCount: number = inputEl.files.length;
-            let formData = new FormData();
-            if (fileCount > 0 )
-            {
-
-              if(inputEl.files.item(0).size < this.file_size)
-              {
-                formData.append('photo', inputEl.files.item(0));
-
-                this.http.post(URL+'users/image', formData ,  {
-                  headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                }).map((res) => res).subscribe(
-                  (success) =>
-                  {
-                    this.router.navigate(['/candidate_profile']);
-                  },
-                  (error) => {
-                    if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-                    {
-                      localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                      localStorage.removeItem('currentUser');
-                      localStorage.removeItem('googleUser');
-                      localStorage.removeItem('close_notify');
-                      localStorage.removeItem('linkedinUser');
-                      localStorage.removeItem('admin_log');
-                      window.location.href = '/login';
-                    }
-                  });
-              }
-              else
-              {
-                this.image_log = "Image size should be less than 1MB";
-              }
-            }
-            else
-            //window.location.href = '/candidate_profile';
-
-              this.router.navigate(['/candidate_profile']);
-          }
-
-          if(data.error)
-          {
-            this.dataservice.changeMessage(data.error);
+            console.log(data);
+            this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.user_id } });
           }
 
         },
@@ -1568,6 +1409,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onComSkillExpYearOptions(e, value)
   {
+    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill', value);
     let index = this.commercialSkillsExperienceYear.indexOf(updateItem);
 
@@ -1619,6 +1461,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onFormalExpYearOptions(e, value)
   {
+    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
     let index = this.formal_skills.indexOf(updateItem);
 

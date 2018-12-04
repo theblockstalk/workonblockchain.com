@@ -6,17 +6,23 @@ module.exports = async function (req,res) {
     let queryBody = req.body;
     let verify;
     let disable_account;
-    if(queryBody.status === '1') {
+    if(queryBody.verify_status === '1') {
         verify = 1;
     }
-    if(queryBody.status === 'true') {
+    if(queryBody.verify_status === '0') {
+        verify = 0;
+    }
+    if(queryBody.account_status === 'true') {
         disable_account = true;
+    }
+    if(queryBody.account_status === 'false') {
+        disable_account = false;
     }
 
     let filter = {};
-    if (verify) filter.is_verify = 1;
+    if (verify === 1 || verify === 0) filter.is_verify = verify;
     if (queryBody.is_approve) filter.status = queryBody.is_approve;
-    if (disable_account === true) filter.disable_account = true;
+    if (disable_account === true || disable_account === false) filter.disable_account = disable_account;
     if (queryBody.msg_tags) filter.msg_tags = queryBody.msg_tags;
 
     let search = {};

@@ -4652,6 +4652,9 @@ input:checked + .slider:before {
 #sub_bttn {
   margin-top: 5%;
 }
+.about_style {
+  padding : 0px;
+}
 
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
