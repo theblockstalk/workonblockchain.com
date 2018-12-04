@@ -311,8 +311,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 }
                 if(data.saved_searches) {
                   this.saved_searches = data.saved_searches;
-                  this.countryChange = data.saved_searches[0].location[1];
-
+                  console.log(data.saved_searches[0].location[0]);
+                  if(data.saved_searches[0].location[0] === 'Remote') {
+                    this.countryChange = 'remote';
+                  }
+                  else {
+                    this.countryChange = data.saved_searches[0].location[0];
+                  }
                   if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
                     this.selectedObj = data.saved_searches[0].skills[0];
                   }
