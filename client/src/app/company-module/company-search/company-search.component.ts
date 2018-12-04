@@ -13,11 +13,13 @@ declare var $:any;
 })
 export class CompanySearchComponent implements OnInit,AfterViewInit {
   currentUser: User;
-  log;info=[];roleChange;options2;length;page;searchWord;
+  log;info=[];options2;length;page;searchWord;
   credentials: any = {};job_title;
   public rolesData: Array<Select2OptionData>;
   public blockchainData : Array<Select2OptionData>;
+  public locationData: Array<Select2OptionData>;
   public options: Select2Options;
+  public locationOptions: Select2Options;
   public value;
   public current: string;
   msg;
@@ -34,7 +36,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
   job_offer_log;
-  saved_searches
+  saved_searches;
+  location_value;
 
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
@@ -86,32 +89,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     ]
 
 
-  cities =
-    [
-      {country_code:'000' , name:'Remote', value:'remote', checked:false},
-      {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-      {country_code:'001' ,name:'London', value:'London', checked:false},
-      {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-      {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-      {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-      {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-      {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-      {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-      {country_code: '002' ,name:'New York', value:'New York', checked:false},
-      {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-      {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-      {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-      {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-      {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-      {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-      {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-      {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-      {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-      {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-      {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-      {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
 
-    ]
 
 
   currency=
@@ -203,6 +181,33 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         {id:'Doge', text:'Doge'},
       ]
 
+    this.locationData =
+      [
+        {text:'Remote', id:'remote'},
+        {text:'Paris', id:'Paris'},
+        {text:'London', id:'London'},
+        {text:'Dublin', id:'Dublin'},
+        {text:'Amsterdam', id:'Amsterdam'},
+        {text:'Berlin', id:'Berlin'},
+        {text:'Barcelona', id:'Barcelona'},
+        {text:'Munich', id:'Munich'},
+        {text:'San Francisco', id:'San Francisco'},
+        {text:'New York', id:'New York'},
+        {text:'Los Angeles', id:'Los Angeles'},
+        {text:'Boston', id:'Boston'},
+        {text:'Chicago', id:'Chicago'},
+        {text:'Austin', id:'Austin'},
+        {text:'Zug', id:'Zug'},
+        {text:'Zurich', id:'Zurich'},
+        {text:'Edinburgh', id:'Edinburgh'},
+        {text:'Copenhagen', id:'Copenhagen'},
+        {text:'Stockholm', id:'Stockholm'},
+        {text:'Madrid', id:'Madrid'},
+        {text:'Toronto', id:'Toronto'},
+        {text:'Sydney', id:'Sydney'},
+
+      ]
+
     this.options = {
       multiple: true,
       placeholder: 'Position',
@@ -212,6 +217,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.options2 = {
       multiple: true,
       placeholder: 'Blockchain experience',
+      allowClear :true
+    }
+
+    this.locationOptions = {
+      multiple: true,
+      placeholder: 'Desired Location',
       allowClear :true
     }
 
@@ -311,7 +322,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 }
                 if(data.saved_searches) {
                   this.saved_searches = data.saved_searches;
-                  console.log(data.saved_searches[0].location[0]);
+                  this.location_value = data.saved_searches[0].location;
                   if(data.saved_searches[0].location[0] === 'Remote') {
                     this.countryChange = 'remote';
                   }
@@ -377,6 +388,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     {
       this.select_value = data.value;
       this.searchdata('roles' , this.select_value);
+    }
+
+  }
+
+  locationChanged(data)
+  {
+    this.not_found = '';
+    if(this.location_value  !== data.value)
+    {
+      this.location_value = data.value;
+      this.searchdata('roles' , this.location_value);
     }
 
   }

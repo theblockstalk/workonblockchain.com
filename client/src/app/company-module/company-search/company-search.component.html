@@ -48,12 +48,11 @@
 
                 <li>
                   <div class = "form-group">
-                    <select class="form-control" name="location" [(ngModel)]="countryChange" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  (ngModelChange)="searchdata('location' , $event)">
+                    <select2  [data]="locationData" allowClear="true" [attr.disabled]="disabled?'':null"  [disabled]="msg !== '' ? true : false" [options]="locationOptions" id="locations" [width]="500" [value]="location_value" (valueChanged)="locationChanged($event)">
 
-                      <option value="-1" disabled selected hidden>Desired Location</option>
-                      <option class='option' *ngFor='let option of cities'  [value]="option.value" >{{option.name}}</option>
 
-                    </select>
+                    </select2>
+                    <input type="text" class="form-control" [(ngModel)]='countryChange' name="location" style="display: none;">
                   </div>
                 </li>
 
