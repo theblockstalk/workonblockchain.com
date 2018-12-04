@@ -126,8 +126,8 @@ export class AdminCandidateDetailComponent implements OnInit {
               this.education_history.sort(this.education_sort_desc);
               this.countries = data.locations;
               this.countries.sort();
-              if(this.countries.indexOf("remote") > -1){
-                this.countries[0] = 'remote';
+              if(this.countries.indexOf("Remote") > -1){
+                this.countries[0] = 'Remote';
                 this.countries = this.filter_array(this.countries);
               }
               this.interest_area =data.interest_area;
