@@ -149,7 +149,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 if(data.first_name && data.last_name && data.contact_number && data.nationality &&
                   data.locations  && data.roles && data.interest_area &&
                   data.expected_salary && data.current_salary && data.why_work && data.description
-                  && !data._creator.candidate){
+                  && !data._creator.candidate.base_country && !data._creator.candidate.base_city){
 
                   this.information.first_name = data.first_name;
                   this.information.last_name = data.last_name;
