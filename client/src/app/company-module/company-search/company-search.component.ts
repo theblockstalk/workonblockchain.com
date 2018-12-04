@@ -88,7 +88,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   cities =
     [
-      {country_code:'000' , name:'Remote', value:'Remote', checked:false},
+      {country_code:'000' , name:'Remote', value:'remote', checked:false},
       {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
       {country_code:'001' ,name:'London', value:'London', checked:false},
       {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
