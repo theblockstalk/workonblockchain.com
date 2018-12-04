@@ -88,7 +88,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   cities =
     [
-      {country_code:'000' , name:'Remote', value:'remote', checked:false},
+      {country_code:'000' , name:'Remote', value:'Remote', checked:false},
       {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
       {country_code:'001' ,name:'London', value:'London', checked:false},
       {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
@@ -311,13 +311,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 }
                 if(data.saved_searches) {
                   this.saved_searches = data.saved_searches;
-                  console.log(data.saved_searches[0].location[0]);
-                  if(data.saved_searches[0].location[0] === 'Remote') {
-                    this.countryChange = 'remote';
-                  }
-                  else {
-                    this.countryChange = data.saved_searches[0].location[0];
-                  }
+                  this.countryChange = data.saved_searches[0].location[1];
+
                   if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
                     this.selectedObj = data.saved_searches[0].skills[0];
                   }
