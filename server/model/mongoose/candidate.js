@@ -21,7 +21,7 @@ module.exports.findOneByUserId = async function findOneByUserId(id) {
 }
 
 module.exports.update = async function update(selector, updateObj) {
-    await Candidate.findOneAndUpdate(selector, updateObj);
+    await Candidate.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
 
 module.exports.deleteOne = async function deleteOne(selector) {
