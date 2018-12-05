@@ -106,11 +106,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   base_city;
   commercial_skills;
   formal_skills;
-  invalidMsg;
   ngOnInit()
   {
     this.infoo='';
-    this.invalidMsg = '';
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
@@ -138,10 +136,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
       }
       if(this.currentUser && this.currentUser.type === 'candidate')
       {
-        this.dataservice.invalidUrl.subscribe(message => this.invalidMsg = message);
-        setInterval(() => {
-          this.invalidMsg = "" ;
-        }, 3000);
         this.information.country = -1;
 
         this.cand_id= this.currentUser._creator;
