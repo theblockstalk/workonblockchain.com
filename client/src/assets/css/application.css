@@ -1,0 +1,42 @@
+.fab {
+	color: #3C83B7;
+}
+
+.fas {
+	color: #3C83B7;
+}
+
+.form-group label {
+	font-weight:bold
+}
+
+.form-group .form-check label {
+	font-weight:normal
+}
+
+.navbar-brand>img {
+	width: 250px;
+	align: "left;"
+}
+
+.btn-linkdIn {
+	color: #fff;
+	background-color: #0976b4;
+	border-color: #0976b4;
+}
+
+.btn-linkdIn:hover {
+	background-color: #59707e;
+	border-color: #476b80;
+	color: #fff;
+}
+
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+	width: 100% !important;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
