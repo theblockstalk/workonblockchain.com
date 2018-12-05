@@ -21,7 +21,7 @@ module.exports.findOneByEmail = async function findOneByEmail(email) {
 }
 
 module.exports.update = async function update(selector, updateObj) {
-    await Referral.findOneAndUpdate(selector, updateObj);
+    await Referral.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
 
 module.exports.deleteOne = async function deleteOne(selector) {
