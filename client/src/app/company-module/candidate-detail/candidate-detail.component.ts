@@ -53,6 +53,7 @@ export class CandidateDetailComponent implements OnInit   {
   company_name;
   interview_location = '';
   interview_time = '';
+  invalidMsg;
 
   date_sort_desc = function (date1, date2)
   {
@@ -77,6 +78,7 @@ export class CandidateDetailComponent implements OnInit   {
   message;
   ngOnInit()
   {
+    this.invalidMsg = '';
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
@@ -224,8 +226,7 @@ export class CandidateDetailComponent implements OnInit   {
     }
 
     else if(this.currentUser && this.user_id  && this.currentUser.type === 'candidate') {
-      this.dataservice.invalidUrlFunc("Please log in with an approved company account to view this profile");
-      this.router.navigate(['/candidate_profile']);
+      this.invalidMsg = "Please log in with an approved company account to view this profile";
     }
     else
     {
