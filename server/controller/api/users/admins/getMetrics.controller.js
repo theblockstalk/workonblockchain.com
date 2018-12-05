@@ -28,7 +28,7 @@ module.exports = async function (req, res) {
     };
 
     let locationList = enumerations.workLocations;
-    locationList.push("remote");
+    //locationList.push("remote");
     let salaryArray = [];
 
     let programmingLanguagesCount = {}, programmingLanguagesAggregate = {};
