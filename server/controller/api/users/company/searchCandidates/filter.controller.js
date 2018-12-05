@@ -10,8 +10,8 @@ module.exports = async  function (req,res)
 
     let search = {};
     if (queryBody.word) search.word = queryBody.word;
-    if (queryBody.skills) search.skills = [queryBody.skills];
-    if (queryBody.locations) search.locations = [queryBody.locations];
+    if (queryBody.skills) search.skills = queryBody.skills;
+    if (queryBody.locations) search.locations = queryBody.locations;
     if (queryBody.positions) search.positions = queryBody.positions;
     if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
     if (queryBody.availability_day) search.availability_day = queryBody.availability_day;
