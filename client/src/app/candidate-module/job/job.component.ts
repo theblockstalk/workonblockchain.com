@@ -327,7 +327,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     {name:'Blockchain infrastructure', value:'Blockchain infrastructure', checked:false},
     {name:'Smart contract development', value:'Smart contract development', checked:false},
     {name:'Decentralized applications (dapps)', value:'Decentralized applications (dapps)', checked:false},
-    {name:'I don’t know', value:'I don’t know', checked:false},
+    {name:"I don't know", value:"I don't know", checked:false},
   ]
 
 
@@ -489,7 +489,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
         }
         else{
-          this.error_msg = "There is a field that still needs completion. Please scroll up.";
+          this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
         }
       }
 

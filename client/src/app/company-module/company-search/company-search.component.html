@@ -34,26 +34,21 @@
 
                 <li>
                   <div class = "form-group">
+                    <select2  [data]="skillsData" allowClear="true" [attr.disabled]="disabled?'':null"  [disabled]="msg !== '' ? true : false" [options]="skillOptions" id="roles" [width]="500" [value]="skill_value" (valueChanged)="skillChanged($event)">
 
-                    <select class="form-control" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false" name="skill" [(ngModel)]="selectedObj" (ngModelChange)="searchdata('skill' , $event)">
-
-                      <option value="-1" disabled selected hidden>Skills</option>
-                      <option class='option' *ngFor='let option of language_opt'  [value]="option.value" >{{option.name}}</option>
-
-
-                    </select>
+                    </select2>
+                    <input type="text" class="form-control" [(ngModel)]='selectedObj' name="skill" style="display: none;">
                   </div>
 
                 </li>
 
                 <li>
                   <div class = "form-group">
-                    <select class="form-control" name="location" [(ngModel)]="countryChange" [attr.disabled]="disabled?'':null" [disabled]="msg !== '' ? true : false"  (ngModelChange)="searchdata('location' , $event)">
+                    <select2  [data]="locationData" allowClear="true" [attr.disabled]="disabled?'':null"  [disabled]="msg !== '' ? true : false" [options]="locationOptions" id="locations" [width]="500" [value]="location_value" (valueChanged)="locationChanged($event)">
 
-                      <option value="-1" disabled selected hidden>Desired Location</option>
-                      <option class='option' *ngFor='let option of cities'  [value]="option.value" >{{option.name}}</option>
 
-                    </select>
+                    </select2>
+                    <input type="text" class="form-control" [(ngModel)]='countryChange' name="location" style="display: none;">
                   </div>
                 </li>
 
@@ -216,9 +211,7 @@
             </div>
             <!--end candidate-->
 
-
-            <pagination-controls (pageChange)="p = $event" *ngIf="candidate_data.length > 10"></pagination-controls>
-
+            <pagination-controls (pageChange)="p = $event" *ngIf="candidate_data && candidate_data.length > 10"></pagination-controls>
 
           </div>
           <!--end-md-9-col-->

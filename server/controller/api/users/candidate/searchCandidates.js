@@ -154,7 +154,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         }
 
         if (search.skills && search.skills.length > 0) {
-            const skillsFilter = {"programming_languages.language": search.skills};
+            const skillsFilter = {"programming_languages.language": {$in : search.skills}};
             candidateQuery.push(skillsFilter);
         }
         if (search.availability_day && search.availability_day !== -1 && search.availability_day !== 'Longer than 3 months') {
