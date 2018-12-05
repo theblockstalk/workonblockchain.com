@@ -78,7 +78,7 @@ export class CandidateDetailComponent implements OnInit   {
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
+    localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id ) {
       this.authenticationService.getLastJobDesc()
         .subscribe(
@@ -225,10 +225,9 @@ export class CandidateDetailComponent implements OnInit   {
 
     else
     {
-      this.router.events
-        .subscribe((event) => {
-          window.localStorage.setItem('previousUrl', this.router.url);
-        });
+
+      const location = window.location.href.split('/');
+      window.localStorage.setItem('previousUrl', location[3]);
       this.router.navigate(['/login']);
 
     }

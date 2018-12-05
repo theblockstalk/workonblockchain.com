@@ -80,6 +80,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               if(this.previousUrl) {
                 console.log("if");
                 console.log(this.previousUrl);
+                window.location.href = '/' + this.previousUrl;
               }
               else {
                 console.log("else");
