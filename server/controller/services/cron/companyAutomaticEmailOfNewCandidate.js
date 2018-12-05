@@ -32,7 +32,7 @@ module.exports = async function () {
                         skills: savedSearch.skills,
                         locations: savedSearch.location,
                         positions: savedSearch.position,
-                        blockchains: savedSearch.blockchains,
+                        blockchains: savedSearch.blockchain,
                         salary: {
                             current_currency: savedSearch.current_currency,
                             current_salary: savedSearch.current_salary
