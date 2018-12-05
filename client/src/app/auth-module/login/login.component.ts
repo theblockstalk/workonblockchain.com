@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
             if(user.type === 'company') {
               this.previousUrl = localStorage.getItem('previousUrl');
-              
+
               if(this.previousUrl) {
                 window.location.href = '/' + this.previousUrl;
               }

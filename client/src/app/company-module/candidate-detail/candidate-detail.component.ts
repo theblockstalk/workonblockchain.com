@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
-
+import { DataService } from "../../data.service";
 
 @Component({
   selector: 'app-candidate-detail',
@@ -41,7 +41,7 @@ export class CandidateDetailComponent implements OnInit   {
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
 
-  constructor(private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
+  constructor(private dataservice: DataService , private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
@@ -74,12 +74,12 @@ export class CandidateDetailComponent implements OnInit   {
   commercial;
   commercial_skills;
   formal_skills;
-
+  message;
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     localStorage.removeItem('previousUrl');
-    if(this.currentUser && this.user_id ) {
+    if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
       this.authenticationService.getLastJobDesc()
         .subscribe(
           data => {
@@ -223,9 +223,12 @@ export class CandidateDetailComponent implements OnInit   {
 
     }
 
+    else if(this.currentUser && this.user_id  && this.currentUser.type === 'candidate') {
+      this.dataservice.invalidUrlFunc("Please log in with an approved company account to view this profile");
+      this.router.navigate(['/candidate_profile']);
+    }
     else
     {
-
       const location = window.location.href.split('/');
       window.localStorage.setItem('previousUrl', location[3]);
       this.router.navigate(['/login']);
