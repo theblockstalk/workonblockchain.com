@@ -240,7 +240,7 @@
                   <div class="form-group col-md-6 setting-top">
                     <label><p  class = "label-p"></p></label>
                     <select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
-                      <option value="-1" disabled selected hidden >Please choose currency</option>
+                      <option value="-1" selected>Please choose currency</option>
                       <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
                     </select>
                     <div class = "form_error" *ngIf="current_currency==-1 ">
