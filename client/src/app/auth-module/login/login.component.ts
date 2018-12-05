@@ -75,15 +75,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
             if(user.type === 'company') {
               this.previousUrl = localStorage.getItem('previousUrl');
-
-
+              
               if(this.previousUrl) {
-                console.log("if");
-                console.log(this.previousUrl);
                 window.location.href = '/' + this.previousUrl;
               }
               else {
-                console.log("else");
                 if (new Date(user.created_date) < new Date('2018/11/28')) {
                   this.http.get<any>(URL + 'users/current_company/' + user._id, {
                     headers: new HttpHeaders().set('Authorization', user.jwt_token)
