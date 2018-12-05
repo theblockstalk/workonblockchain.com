@@ -13,11 +13,15 @@ declare var $:any;
 })
 export class CompanySearchComponent implements OnInit,AfterViewInit {
   currentUser: User;
-  log;info=[];roleChange;options2;length;page;searchWord;
+  log;info=[];options2;length;page;searchWord;
   credentials: any = {};job_title;
   public rolesData: Array<Select2OptionData>;
   public blockchainData : Array<Select2OptionData>;
+  public locationData: Array<Select2OptionData>;
+  public skillsData: Array<Select2OptionData>;
   public options: Select2Options;
+  public locationOptions: Select2Options;
+  public skillOptions : Select2Options;
   public value;
   public current: string;
   msg;
@@ -29,33 +33,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   display_name;
   interview_location = '';
   interview_time = '';
-  select_value='';selecteddd='';
+  select_value='';
+  selecteddd='';
   disabled;
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
   job_offer_log;
-  saved_searches
-
+  saved_searches;
+  location_value = '';
+  skill_value= '';
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
-
-  language_opt=
-    [
-      {name:'Java', value:'Java', checked:false},{name:'C', value:'C', checked:false},
-      {name:'C++', value:'C++', checked:false},{name:'C#', value:'C#', checked:false},
-      {name:'Python', value:'Python', checked:false},{name:'Visual Basic .NET', value:'Visual Basic .NET', checked:false},
-      {name:'PHP', value:'PHP', checked:false},{name:'JavaScript', value:'JavaScript', checked:false},
-      {name:'Delphi/Object Pascal', value:'Delphi/Object Pascal', checked:false},{name:'Swift', value:'Swift', checked:false},
-      {name:'Perl', value:'Perl', checked:false},{name:'Ruby', value:'Ruby', checked:false},
-      {name:'Assembly language', value:'Assembly language', checked:false},{name:'R', value:'R', checked:false},
-      {name:'Visual Basic', value:'Visual Basic', checked:false},{name:'Objective-C', value:'Objective-C', checked:false},
-      {name:'Go', value:'Go', checked:false},{name:'MATLAB', value:'MATLAB', checked:false},
-      {name:'PL/SQL', value:'PL/SQL', checked:false},{name:'Scratch', value:'Scratch', checked:false},
-      {name:'Solidity', value:'Solidity', checked:false},{name:'Serpent', value:'Serpent', checked:false},
-      {name:'LLL', value:'LLL', checked:false},{name:'Nodejs', value:'Nodejs', checked:false},
-      {name:'Scala', value:'Scala', checked:false},{name:'Rust', value:'Rust', checked:false},
-      {name:'Kotlin', value:'Kotlin', checked:false},{name:'Haskell', value:'Haskell', checked:false},
-
-    ]
 
 
   commercially=
@@ -84,35 +71,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       {name:'NXT', value:'NXT', checked:false},
 
     ]
-
-
-  cities =
-    [
-      {country_code:'000' , name:'Remote', value:'remote', checked:false},
-      {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-      {country_code:'001' ,name:'London', value:'London', checked:false},
-      {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-      {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-      {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-      {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-      {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-      {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-      {country_code: '002' ,name:'New York', value:'New York', checked:false},
-      {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-      {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-      {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-      {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-      {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-      {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-      {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-      {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-      {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-      {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-      {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-      {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-
-    ]
-
 
   currency=
     [
@@ -203,6 +161,66 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         {id:'Doge', text:'Doge'},
       ]
 
+    this.locationData =
+      [
+        {text:'Remote', id:'remote'},
+        {text:'Paris', id:'Paris'},
+        {text:'London', id:'London'},
+        {text:'Dublin', id:'Dublin'},
+        {text:'Amsterdam', id:'Amsterdam'},
+        {text:'Berlin', id:'Berlin'},
+        {text:'Barcelona', id:'Barcelona'},
+        {text:'Munich', id:'Munich'},
+        {text:'San Francisco', id:'San Francisco'},
+        {text:'New York', id:'New York'},
+        {text:'Los Angeles', id:'Los Angeles'},
+        {text:'Boston', id:'Boston'},
+        {text:'Chicago', id:'Chicago'},
+        {text:'Austin', id:'Austin'},
+        {text:'Zug', id:'Zug'},
+        {text:'Zurich', id:'Zurich'},
+        {text:'Edinburgh', id:'Edinburgh'},
+        {text:'Copenhagen', id:'Copenhagen'},
+        {text:'Stockholm', id:'Stockholm'},
+        {text:'Madrid', id:'Madrid'},
+        {text:'Toronto', id:'Toronto'},
+        {text:'Sydney', id:'Sydney'},
+
+      ]
+
+    this.skillsData=
+      [
+        {id:'Java', text:'Java'},
+        {id:'C', text:'C'},
+        {id:'C++', text:'C++'},
+        {id:'C#', text:'C#'},
+        {id:'Python', text:'Python'},
+        {id:'Visual Basic .NET', text:'Visual Basic .NET'},
+        {id:'PHP', text:'PHP'},
+        {id:'JavaScript', text:'JavaScript'},
+        {id:'Delphi/Object Pascal', text:'Delphi/Object Pascal'},
+        {id:'Swift', text:'Swift'},
+        {id:'Perl', text:'Perl'},
+        {id:'Ruby', text:'Ruby'},
+        {id:'Assembly language', text:'Assembly language'},
+        {id:'R', text:'R'},
+        {id:'Visual Basic', text:'Visual Basic'},
+        {id:'Objective-C', text:'Objective-C'},
+        {id:'Go', text:'Go'},
+        {id:'MATLAB', text:'MATLAB'},
+        {id:'PL/SQL', text:'PL/SQL'},
+        {id:'Scratch', text:'Scratch'},
+        {id:'Solidity', text:'Solidity'},
+        {id:'Serpent', text:'Serpent'},
+        {id:'LLL', text:'LLL'},
+        {id:'Nodejs', text:'Nodejs'},
+        {id:'Scala', text:'Scala'},
+        {id:'Rust', text:'Rust'},
+        {id:'Kotlin', text:'Kotlin'},
+        {id:'Haskell', text:'Haskell'},
+
+      ]
+
     this.options = {
       multiple: true,
       placeholder: 'Position',
@@ -215,6 +233,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       allowClear :true
     }
 
+    this.locationOptions = {
+      multiple: true,
+      placeholder: 'Desired Location',
+      allowClear :true
+    }
+
+    this.skillOptions = {
+      multiple: true,
+      placeholder: 'Skills',
+      allowClear :true
+    }
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if(!this.currentUser)
@@ -223,17 +253,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
     else if(this.currentUser && this.currentUser.type == 'company')
     {
-      this.language_opt.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
+      this.skillsData.sort(function(a, b){
+        if(a.text < b.text) { return -1; }
+        if(a.text > b.text) { return 1; }
         return 0;
       })
-      this.cities.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
+      this.locationData.sort(function(a, b){
+        if(b.text === 'Remote' || a.text === 'Remote') {
         }
         else {
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
+          if(a.text < b.text) { return -1; }
+          if(a.text > b.text) { return 1; }
           return 0;
         }
       })
@@ -309,22 +339,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 {
                   this.imgPath =  data.company_logo;
                 }
-                if(data.saved_searches) {
+                if(data.saved_searches && data.saved_searches.length > 0) {
                   this.saved_searches = data.saved_searches;
-                  console.log(data.saved_searches[0].location[0]);
-                  if(data.saved_searches[0].location[0] === 'Remote') {
-                    this.countryChange = 'remote';
-                  }
-                  else {
-                    this.countryChange = data.saved_searches[0].location[0];
-                  }
-                  if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
-                    this.selectedObj = data.saved_searches[0].skills[0];
-                  }
+                  this.location_value = data.saved_searches[0].location;
+                  this.skill_value = data.saved_searches[0].skills;
+
                   this.select_value = data.saved_searches[0].position;
                   if(data.saved_searches[0].blockchain && data.saved_searches[0].blockchain.length > 0) {
                     this.selecteddd = data.saved_searches[0].blockchain;
-
                   }
                   this.salary = data.saved_searches[0].current_salary;
                   this.currencyChange = data.saved_searches[0].current_currency;
@@ -381,6 +403,28 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
+  locationChanged(data)
+  {
+    this.not_found = '';
+    if(this.location_value  !== data.value)
+    {
+      this.location_value = data.value;
+      this.searchdata('location' , this.location_value);
+    }
+
+  }
+
+  skillChanged(data)
+  {
+    this.not_found = '';
+    if(this.skill_value  !== data.value)
+    {
+      this.skill_value = data.value;
+      this.searchdata('skill' , this.skill_value);
+    }
+
+  }
+
   blockchainItems;
   blockchainchanged(data)
   {
@@ -419,8 +463,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       else {
         let queryBody : any = {};
         if(this.searchWord) queryBody.word = this.searchWord;
-        if(this.selectedObj !== -1) queryBody.skills = this.selectedObj;
-        if(this.countryChange !== -1) queryBody.locations = this.countryChange;
+        if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
+        if(this.location_value && this.location_value.length > 0) queryBody.locations = this.location_value;
         if(this.select_value && this.select_value.length > 0 ) queryBody.positions = this.select_value;
         if(this.selecteddd && this.selecteddd.length > 0) queryBody.blockchains = this.selecteddd;
         if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
@@ -471,7 +515,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.verify_msg = "";
     this.responseMsg = "";
     this.not_found='';
-    if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && this.selectedObj === -1 &&  this.countryChange === -1 &&  this.currencyChange === -1 &&  this.availabilityChange === -1 )
+    if(!this.searchWord && !this.select_value && !this.selecteddd  && !this.salary  && !this.skill_value &&  !this.location_value &&  this.currencyChange === -1 &&  this.availabilityChange === -1 )
     {
       this.getVerrifiedCandidate();
     }
@@ -480,8 +524,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.not_found = '';
       let queryBody : any = {};
       if(this.searchWord) queryBody.word = this.searchWord;
-      if(this.selectedObj !== -1) queryBody.skills = this.selectedObj;
-      if(this.countryChange !== -1) queryBody.locations = this.countryChange;
+      if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
+      if(this.location_value && this.location_value.length > 0) queryBody.locations = this.location_value;
       if(this.select_value && this.select_value.length > 0 ) queryBody.positions = this.select_value;
       if(this.selecteddd && this.selecteddd.length > 0) queryBody.blockchains = this.selecteddd;
       if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
@@ -533,6 +577,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.availabilityChange=-1;
     this.blockchainItems='';
     this.select_value ='';
+    this.location_value = '';
+    this.skill_value = '';
     this.selecteddd = '';
     this.info = [];
     this.searchWord='';

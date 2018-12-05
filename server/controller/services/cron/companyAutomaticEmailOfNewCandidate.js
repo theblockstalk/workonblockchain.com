@@ -15,7 +15,7 @@ module.exports = async function () {
         saved_searches: { $exists: true, $ne : [] },
         "saved_searches.0.when_receive_email_notitfications": {$ne: "Never"}
     }, async function (companyDoc) {
-        const userDoc = await users.findOne({_id : companyDoc._creator});
+        const userDoc = await users.findOne({_id : companyDoc._creator , is_approved : 1 , disable_account :false});
         logger.debug("Checking company " + companyDoc.company_name + " with user_id " + userDoc._id);
 
         if(userDoc) {
@@ -33,7 +33,7 @@ module.exports = async function () {
                         skills: savedSearch.skills,
                         locations: savedSearch.location,
                         positions: savedSearch.position,
-                        blockchains: savedSearch.blockchains,
+                        blockchains: savedSearch.blockchain,
                         salary: {
                             current_currency: savedSearch.current_currency,
                             current_salary: savedSearch.current_salary
