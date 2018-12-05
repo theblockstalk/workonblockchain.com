@@ -10,7 +10,8 @@
 <ng-template #profile_section >
 <section class = "wizard_page">
    <div class="alert alert-info error-alert" *ngIf="message">{{message}}</div>
-	<div class="container">
+
+  <div class="container">
 		<div class="row profile_group">
 			<div class="col-md-12">
         <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn_popup">What happens next?</button>
@@ -383,7 +384,7 @@
 				 		</a>
 				 	</span>
 
-           
+
 				 </section>
 
 				  <section class = "profile job_info" *ngIf="!public_data && history.length>0 ">

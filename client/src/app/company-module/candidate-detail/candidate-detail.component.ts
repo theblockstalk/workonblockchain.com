@@ -3,14 +3,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
-
+import { DataService } from "../../data.service";
 
 @Component({
   selector: 'app-candidate-detail',
   templateUrl: './candidate-detail.component.html',
   styleUrls: ['./candidate-detail.component.css']
 })
-export class CandidateDetailComponent implements OnInit {
+export class CandidateDetailComponent implements OnInit   {
   id;
   user_id;
   first_name;
@@ -41,7 +41,7 @@ export class CandidateDetailComponent implements OnInit {
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
 
-  constructor(private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
+  constructor(private dataservice: DataService , private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
@@ -53,6 +53,7 @@ export class CandidateDetailComponent implements OnInit {
   company_name;
   interview_location = '';
   interview_time = '';
+  invalidMsg;
 
   date_sort_desc = function (date1, date2)
   {
@@ -74,55 +75,56 @@ export class CandidateDetailComponent implements OnInit {
   commercial;
   commercial_skills;
   formal_skills;
-
+  message;
   ngOnInit()
   {
+    this.invalidMsg = '';
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    localStorage.removeItem('previousUrl');
+    if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
+      this.authenticationService.getLastJobDesc()
+        .subscribe(
+          data => {
+            let prev_job_desc = data;
+            this.credentials.job_title = prev_job_desc.job_title;
+            this.credentials.salary = prev_job_desc.salary;
+            this.credentials.currency = prev_job_desc.salary_currency;
+            this.credentials.location = prev_job_desc.interview_location;
+            this.credentials.job_type = prev_job_desc.job_type;
+            this.credentials.job_desc = prev_job_desc.description;
+          },
+          error => {
+            if (error.message === 500 || error.message === 401) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-    if(this.currentUser && this.user_id ) {
-    this.authenticationService.getLastJobDesc()
-    .subscribe(
-      data => {
-        let prev_job_desc = data;
-        this.credentials.job_title = prev_job_desc.job_title;
-        this.credentials.salary = prev_job_desc.salary;
-        this.credentials.currency = prev_job_desc.salary_currency;
-        this.credentials.location = prev_job_desc.interview_location;
-        this.credentials.job_type = prev_job_desc.job_type;
-        this.credentials.job_desc = prev_job_desc.description;
-      },
-      error => {
-        if (error.message === 500 || error.message === 401) {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
+            if (error.message === 403) {
+              this.router.navigate(['/not_found']);
+            }
+          }
+        );
 
-        if (error.message === 403) {
-          this.router.navigate(['/not_found']);
-        }
-      }
-    );
-
-    this.ckeConfig = {
-      allowedContent: false,
-      extraPlugins: 'divarea',
-      forcePasteAsPlainText: true,
-      height: '15rem',
-      width: '23.2rem',
-      removePlugins: 'resize,elementspath',
-      removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
-    };
-    setInterval(() => {
-      this.job_offer_msg = '';
-    }, 7000);
-    this.company_reply = 0;
-    this.credentials.currency = -1;
-    this.credentials.user_id = this.user_id;
+      this.ckeConfig = {
+        allowedContent: false,
+        extraPlugins: 'divarea',
+        forcePasteAsPlainText: true,
+        height: '15rem',
+        width: '23.2rem',
+        removePlugins: 'resize,elementspath',
+        removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
+      };
+      setInterval(() => {
+        this.job_offer_msg = '';
+      }, 7000);
+      this.company_reply = 0;
+      this.credentials.currency = -1;
+      this.credentials.user_id = this.user_id;
 
 
 
@@ -223,9 +225,14 @@ export class CandidateDetailComponent implements OnInit {
 
     }
 
+    else if(this.currentUser && this.user_id  && this.currentUser.type === 'candidate') {
+      this.invalidMsg = "Please log in with an approved company account to view this profile";
+    }
     else
     {
-      this.router.navigate(['/not_found']);
+      const location = window.location.href.split('/');
+      window.localStorage.setItem('previousUrl', location[3]);
+      this.router.navigate(['/login']);
 
     }
   }
@@ -269,18 +276,18 @@ export class CandidateDetailComponent implements OnInit {
                 this.job_description = this.credentials.job_desc;
                 this.interview_location = this.credentials.location;
                 this.authenticationService.insertMessage(this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-                .subscribe(
-                  data => {
-                    ////console.log(data);
-                    this.job_offer_msg = 'Message has been successfully sent';
-                    this.router.navigate(['/chat']);
-                  },
-                  error => {
-                    ////console.log('error');
-                    ////console.log(error);
-                    //this.log = error;
-                  }
-                );
+                  .subscribe(
+                    data => {
+                      ////console.log(data);
+                      this.job_offer_msg = 'Message has been successfully sent';
+                      this.router.navigate(['/chat']);
+                    },
+                    error => {
+                      ////console.log('error');
+                      ////console.log(error);
+                      //this.log = error;
+                    }
+                  );
               }
             }
           );

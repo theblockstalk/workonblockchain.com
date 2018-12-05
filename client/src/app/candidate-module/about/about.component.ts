@@ -158,7 +158,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.link= "/job";
             }
 
-            if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day&& data.current_salary )
+            if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day)
             {
               this.resume_disable = '';
               this.job_active_class = 'fa fa-check-circle text-success';
@@ -322,7 +322,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     }
 
     else {
-      this.error_msg = "There is a field that still needs completion. Please scroll up.";
+      this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
 
 

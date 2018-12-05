@@ -230,19 +230,17 @@
                 </div>
                 <div class="form-group col-md-12 salary_class">
                   <div class="form-group col-md-6">
-                    <label><p  class = "label-p">Current annual salary</p></label>
+                    <label><p  class = "label-p">Current annual salary (optional)</p></label>
                     <input type="text" class="form-control" id="" #current_salary="ngModel"  pattern="^[0-9]*$" placeholder="2000" #salary_field name="salary" required  [(ngModel)]="salary">
-                    <div class = "form_error" >
-                      <span class = "error" *ngIf="!salary; else current_validation">{{current_sal_logg}}</span>
-                      <span class = "error" #current_validation *ngIf="current_salary.errors && salary" > Currently yearly base salary should be a number. </span>
-
+                    <div>
+                      <span> This information is never shown to companies. It is used by us to help us help you set your expected salary. </span>
                     </div>
                   </div>
 
                   <div class="form-group col-md-6 setting-top">
                     <label><p  class = "label-p"></p></label>
                     <select [(ngModel)]="current_currency" class="form-control" id="currency" required name="current_currency" >
-                      <option value="-1" disabled selected hidden >Please choose currency</option>
+                      <option value="-1" selected>Please choose currency</option>
                       <option class='option' *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
                     </select>
                     <div class = "form_error" *ngIf="current_currency==-1 ">

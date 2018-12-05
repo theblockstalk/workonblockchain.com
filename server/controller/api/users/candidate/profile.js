@@ -22,7 +22,7 @@ module.exports.update = async function update(candidateUserId, queryBody, educat
     if (queryBody.why_work) candidateUpdate.why_work = queryBody.why_work;
     if (queryBody.commercial_experience_year) candidateUpdate.commercial_platform = queryBody.commercial_experience_year;
     if (queryBody.experimented_platform) candidateUpdate.experimented_platform = queryBody.experimented_platform;
-    if (queryBody.salary) candidateUpdate.current_salary = queryBody.salary;
+    if (queryBody.salary || queryBody.salary === '') candidateUpdate.current_salary = queryBody.salary;
     if (queryBody.current_currency) candidateUpdate.current_currency = queryBody.current_currency;
     if (queryBody.language_experience_year) candidateUpdate.programming_languages = queryBody.language_experience_year;
     if (queryBody.intro) candidateUpdate.description = queryBody.intro;

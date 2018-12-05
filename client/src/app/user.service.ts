@@ -145,7 +145,7 @@ export class UserService {
                {
                         this.router.navigate(['/about']);
                }
-               else if(res['locations'].length < 1  || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary'] || !res['current_salary'] )
+               else if(res['locations'].length < 1  || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary'])
                {
 
                     this.router.navigate(['/job']);

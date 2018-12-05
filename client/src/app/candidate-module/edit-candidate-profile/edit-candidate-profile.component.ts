@@ -371,9 +371,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 for(let option of this.area_interested)
                 {
 
-                  if(option.value == interest)
+                  if(option.value === interest)
                   {
-                    option.checked=true;
+                    option.checked = true;
                     this.selectedValue.push(interest);
 
                   }
@@ -387,7 +387,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
                 for(let option of this.dropdown_options)
                 {
-                  if(option.value == area)
+                  if(option.value === area)
                   {
                     option.checked=true;
                     this.jobselected.push(area);
@@ -523,7 +523,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
             }
 
-            if(data.work_history && data.education_history|| data.programming_languages&&data.current_salary && data.current_currency)
+            if(data.work_history && data.education_history|| data.programming_languages)
             {
 
 
@@ -1288,7 +1288,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
       this.avail_log = "Please select employment availability";
     }
-    if(!this.salary)
+    /*if(!this.salary)
     {
       this.current_sal_logg = "Please enter current base salary";
 
@@ -1297,7 +1297,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.current_currency === -1)
     {
       this.current_currency_logg = "Please choose currency";
-    }
+    }*/
     if(!this.why_work)
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
@@ -1426,7 +1426,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
 
     if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 &&
-      this.info.city && this.info.base_country != -1 && this.expected_salaryyy && this.current_currency !=-1 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day &&
+      this.info.city && this.info.base_country != -1 && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
@@ -1435,7 +1435,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.updateProfileData(profileForm.value);
     }
     else {
-      this.error_msg = "There is a field that still needs completion. Please scroll up.";
+      this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
 
   }
@@ -1568,7 +1568,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onComSkillExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill', value);
     let index = this.commercialSkillsExperienceYear.indexOf(updateItem);
 
@@ -1620,7 +1619,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onFormalExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
     let index = this.formal_skills.indexOf(updateItem);
 
