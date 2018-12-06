@@ -43,8 +43,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   select_value='';
   selecteddd='';
   disabled;
-  ckeConfig: any;
-  @ViewChild("myckeditor") ckeditor: any;
+  //ckeConfig: any;
+  //@ViewChild("myckeditor") ckeditor: any;
   job_offer_log;
   saved_searches;
   location_value = '';
@@ -191,17 +191,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     ]
 
   ngAfterViewInit() {
-    window.scrollTo(0, 0)
-    $('.selectpicker').selectpicker();
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 200);
   }
 
   ngAfterViewChecked() {
-    $('.selectpicker').selectpicker('refresh');
+    //$('.selectpicker').selectpicker('refresh');
   }
   skill;
   ngOnInit()
   {
-    this.ckeConfig = {
+    /*this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
@@ -209,7 +211,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       width: '56rem',
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
-    };
+    };*/
     setInterval(() => {
       this.job_offer_log = '';
     }, 5000);

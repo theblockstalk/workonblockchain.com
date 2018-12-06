@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule , ReactiveFormsModule} from '@angular/forms';
-import { Select2Module } from 'ng2-select2';
 import {NgxPaginationModule} from 'ngx-pagination';
-import { CKEditorModule } from 'ng2-ckeditor';
+//import { CKEditorModule } from 'ng2-ckeditor';
 import { SharedModule } from '../app-shared.module';
-import {ScriptService} from '../scripts/script.service';
 
 import { CompanyModuleRoutingModule } from './company-module-routing.module';
 import { AboutCompanyComponent } from './about-company/about-company.component';
@@ -23,9 +21,8 @@ import { PreferencesComponent } from './preferences/preferences.component';
     CompanyModuleRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    Select2Module,
     NgxPaginationModule,
-    CKEditorModule,
+    //CKEditorModule,
     SharedModule,
   ],
   declarations: [
@@ -37,7 +34,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
     CandidateDetailComponent,
     PreferencesComponent
   ],
-  providers : [ScriptService]
+  //providers : [ScriptService]
 })
 export class CompanyModuleModule {
   constructor() {
