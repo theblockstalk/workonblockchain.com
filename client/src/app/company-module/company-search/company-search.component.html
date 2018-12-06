@@ -1,6 +1,6 @@
 <div class="container">
   <div class = "row">
-    <div class="col-md-12 bg-primary1">
+    <div class="col-md-12 bg-primary1 p-2">
       <form #f="ngForm" (ngSubmit)="searchdata('search', searchWord)" class="w-50 mx-auto">
         <div class="input-group">
           <input type="text" class="form-control" [(ngModel)]='searchWord' name="word" [disabled]="msg !== '' ? true : false"  placeholder="search">
@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mt-2">
     <div class = "col-md-12">
       <div class = "row">
         <div class = "col-md-3 border filter_bar">
@@ -91,52 +91,54 @@
             <h4 *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
 
             <div  *ngIf="msg === '' && verify_msg === ''">
-              <div *ngIf="candidate_data && candidate_data.length > 0" class="alert alert-info" role="alert">
+              <div *ngIf="candidate_data && candidate_data.length > 0" class="alert alert-info mt-2" role="alert">
                 <span>{{candidate_data.length}}</span> candidates match your search
               </div>
-              <div *ngIf="not_found !== '' ">
+              <div *ngIf="not_found !== '' " class="alert alert-danger mt-2" role="alert">
                 <span>{{not_found}}</span>
               </div>
             </div>
             <div *ngIf="candidate_data && candidate_data.length > 0 ">
               <div class="panel-group" *ngFor= "let data of candidate_data | paginate: { itemsPerPage:10, currentPage: p }">
-                <div class="panel panel-default" >
-                  <div class="panel-heading">
-                    <ng-container *ngIf="data.initials;else company_logo_top">
-                      <div>
-                        <img style="width:10%" class="img-thumbnail rounded float-left" src="/assets/profile/profile-image.png" alt="">
-                      </div>
-                    </ng-container>
-                    <ng-template #company_logo_top>
-                      <div>
-                        <img style="width:10%" class="img-thumbnail rounded float-left" *ngIf="data.image" src="{{data.image}}" alt="">
-                        <img style="width:10%" class="img-thumbnail rounded float-left" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
-                      </div>
-                    </ng-template>
+                <div class="panel panel-default border mb-3" >
+                  <div class="row m-0 bg-primary2">
 
                     <div class = "form-group ">
-                      <div class="row">
+                      <div class="row p-2">
+
                         <div class="col-md-8">
-                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.initials"><h2 class="w-25">{{data.initials}}</h2></a>
-                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2 class="w-25">{{data.first_name}}</h2></a>
+                          <ng-container *ngIf="data.initials;else company_logo_top">
+                            <div>
+                              <img style="width:15%" class="rounded-circle float-left" src="/assets/profile/profile-image.png" alt="">
+                            </div>
+                          </ng-container>
+                          <ng-template #company_logo_top>
+                            <div>
+                              <img style="width:15%" class="rounded-circle float-left " *ngIf="data.image" src="{{data.image}}" alt="">
+                              <img style="width:15%" class="rounded-circle float-left" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
+                            </div>
+                          </ng-template>
+
+                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.initials"><h2 class="w-25 ">{{data.initials}}</h2></a>
+                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2 class="w-25 ">{{data.first_name}}</h2></a>
 
 
-                          <span class="badge badge-secondary" *ngFor= "let roles of data.roles"> {{roles}} </span>
+                          <span class="badge badge-secondary mr-1" *ngFor= "let roles of data.roles"> {{roles}} </span>
 
                         </div>
                         <div class="col-md-4" >
                           <form #abc_form="ngForm" (ngSubmit)="onSubmit(abc_form.value)">
                             <input type="hidden" name="id" [ngModel]="data._creator._id">
                             <input type="hidden" name="name" [ngModel]="data.initials">
-                            <div class="float-right">
-                              <button type="submit" class = "btn btn-primary" data-toggle="modal" data-target="#myModal" >Send job description</button>
+                            <div class="float-right  mt-2 mx-5">
+                              <button type="submit" class = "btn bg-secondary2" data-toggle="modal" data-target="#myModal" >Send job description</button>
                             </div>
                           </form>
                         </div>
                       </div>
-
                     </div>
-                    <hr/>
+                  </div>
+                  <div class = "row m-0 p-2">
                     <div class="form-group">
                       <div class="row">
                         <div class="col-md-12">
@@ -163,8 +165,9 @@
 
 
                     </div>
-
                   </div>
+
+
                 </div>
               </div>
             </div>
