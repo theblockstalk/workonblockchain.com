@@ -1,7 +1,7 @@
 <div class = "container">
   <hr>
   <div class = "row">
-    <div class="col-md-8">
+    <div class="col-md-12">
       <h3 class="text-center">Login to WOB</h3>
       <div class="alert alert-success" role="alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
       <div class="alert alert-success" role="alert" *ngIf="message && !error">{{message}}</div>
@@ -13,32 +13,32 @@
   </div>
   <form (submit)="login(loginForm)"  #loginForm = ngForm>
     <div class = "row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="form-group">
           <label for="exampleInputEmail">Email address</label>
           <span><i class="fas fa-envelope" aria-hidden="true"></i></span>
-          <input type="email" class="form-control" placeholder="Enter email" name="name" required [(ngModel)]="credentials.email" aria-describedby="emailHelp">
+          <input type="email" class="form-control" id="exampleInputEmail" placeholder="Enter email" name="name" required [(ngModel)]="credentials.email" aria-describedby="emailHelp">
         </div>
       </div>
     </div>
     <div class = "row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="form-group">
           <label for="exampleInputPassword">Password</label>
           <span><i class="fas fa-lock" aria-hidden="true"></i></span>
-          <input type="password" class="form-control" placeholder="Password" name="password"  [(ngModel)]="credentials.password">
+          <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" name="password"  [(ngModel)]="credentials.password">
         </div>
       </div>
     </div>
     <div class = "row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="form-group">
           <input type="submit" class="form-control btn btn-secondary" value = "Log In" [disabled]="!loginForm.valid ">
         </div>
       </div>
     </div>
     <div class = "row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="form-group">
           <a  class = "form-control btn btn-primary" (click)="subscribeToLogin()" type = "submit">
             <i class="fa fa-linkedin-square" aria-hidden="true"></i>
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class = "row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="form-group">
           <a  class = "form-control btn btn-danger" type = "submit" (click)="signInWithGoogle()">
             <i class="fa fa-google-plus-square" aria-hidden="true"></i>

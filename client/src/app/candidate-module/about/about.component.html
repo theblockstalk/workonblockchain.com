@@ -1,151 +1,139 @@
-<section class = "wizard_page">
-
-  <div class="container">
+<div class="container">
+  <div class="row">
+    <div class = "text-center">
+      <ul class = "list-group">
+        <li class = "list-group-item">
+          <i class="{{term_active_class}}"></i>
+          <a routerLink="{{term_link}}"> Terms & Conditions</a>
+        </li>
+        <li class = "list-group-item">
+          <i class="{{term_active_class}}"></i>
+          <a routerLink="/prefill-profile"> Prefill Profile</a>
+        </li>
+        <li class = "list-group-item">
+          <i class="{{active_class}}"></i>
+          <a routerLink="/about"> About</a>
+        </li>
+        <li class = "list-group-item">
+          <i class="{{job_active_class}}"></i>
+          <a routerLink="{{link}}" class="btn  {{job_disable}}">Jobs</a>
+        </li>
+        <li class = "list-group-item">
+          <i class="{{resume_active_class}}"></i>
+          <a routerLink="{{resume_class}}" class="btn  {{resume_disable}}" >Blockchain</a>
+        </li>
+        <li class = "list-group-item">
+          <i class="{{exp_active_class}}"></i>
+          <a routerLink="{{exp_class}}" class="btn  {{exp_disable}}">Experience</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col-md-12">
+      <h3>About</h3>
+    </div>
+  </div>
+  <form (submit)="about()" #aboutForm = ngForm novalidate>
+    <div class = "row">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" required id="firstName" placeholder="First Name" name="first_name" [(ngModel)]="info.first_name">
+            <div class = "invalid-feedback" *ngIf="!info.first_name">
+              {{first_name_log}}
+            </div>
+          </div>
+        </div>
+    </div>
     <div class="row">
-      <div class = "text-center steps-name">
-        <ul class = "step-progress">
-        <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Terms & Conditions</a></li>
-          <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="/prefill-profile"> Prefill Profile</a></li>
-          <li class = "step step-active"><i class="{{active_class}}"></i><a routerLink="/about"> About</a></li>
-          <li class = "step"><i class="{{job_active_class}}"></i><a routerLink="{{link}}" class="btn  {{job_disable}}">Jobs</a></li>
-          <li class = "step"><i class="{{resume_active_class}}"></i><a routerLink="{{resume_class}}" class="btn  {{resume_disable}}" >Blockchain</a></li>
-          <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn  {{exp_disable}}">Experience</a></li>
-
-        </ul>
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" class="form-control" id="lastName" placeholder="Last Name"  name="last_name" [(ngModel)]="info.last_name">
+          <div class = "invalid-feedback" *ngIf="!info.last_name">
+            {{last_name_log}}
+          </div>
+        </div>
       </div>
-      <div class="col-md-12 wizard-form">
-
-        <form class = "login_form custom_form"  (submit)="about()" #aboutForm = ngForm novalidate>
-
-          <fieldset class="scheduler-border">
-              <legend class="scheduler-border">About You</legend>
-              <div class="form-group col-md-6">
-                <label><p class = "label-p">First Name</p></label>
-                <input type="text" class="form-control" required id=""  placeholder="First Name"  name="first_name" [(ngModel)]="info.first_name">
-
-
-				<div class = "form_error" *ngIf="!info.first_name">
-								<span class = "error">{{first_name_log}}</span>
-							</div>
-            </div>
-            <div class="form-group col-md-6">
-                <label><p class = "label-p">Last Name</p></label>
-                <input type="text" class="form-control" id="" placeholder="Last Name"  name="last_name" [(ngModel)]="info.last_name">
-
-				<div class = "form_error" *ngIf="!info.last_name">
-								<span class = "error">{{last_name_log}}</span>
-							</div>
-            </div>
-
-              <div class="form-group col-md-6">
-                <label><p class = "label-p">Github account URL</p></label>
-                <input type="text" #gitaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="" placeholder="Github account (optional)"  name="github_account" [(ngModel)]="info.github_account">
-
-				<div class = "form_error" *ngIf="gitaccount.errors">
-								<span class = "error">Enter url in proper format.</span>
-							</div>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label><p class = "label-p">Stackexchange account URL</p></label>
-                <input type="text" #stackaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account">
-
-				<div class = "form_error" *ngIf="stackaccount.errors">
-								<span class = "error">Enter url in proper format.</span>
-							</div>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label><p class = "label-p">Phone number (including country code)</p></label>
-                <input type="tel" class="form-control" id="" placeholder="(+1) 01 2345 6789" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
-
-
-				<div class = "form_error" *ngIf="!info.contact_number">
-								<span class = "error">{{contact_name_log}}</span>
-							</div>
-            </div>
-
-
-            <div class="form-group col-md-6">
-              <label><p class = "label-p">Nationality</p></label>
-              <!--  <input type="text" class="form-control" id="" placeholder="Nationality" name="nationality" #nationality required [(ngModel)]="info.nationality" >
--->
-			 <select class="form-control" style="display:inline;" required name="nationality" [(ngModel)]='info.nationality'  required="">
-              <option value="-1" disabled selected hidden >Please choose nationality</option>
-
-                <option class='option' *ngFor='let options of nationality' placeholder="Nationality"  [value]="options" selected>{{options}}</option>
-                </select>
-
-				<div class = "form_error" *ngIf="info.nationality === -1">
-								<span class = "error">{{nationality_log}}</span>
-							</div>
-		</div>
-
-            <div class = "form-group col-md-12 res_feild">
-
-              <div class="form-group col-md-12">
-                <p>Where do you currently live, or where are you most frequently based?</p>
-              </div>
-
-              <div class="form-group col-md-6">
-                <label><p class = "label-p">Country</p></label>
-                  <select class="form-control"  required name="country" [(ngModel)]="info.country"  required="">
-                    <option value="-1" disabled selected hidden >Please choose country</option>
-
-                    <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
-                  </select>
-                  <div class = "form_error" *ngIf="info.country === -1">
-                    <span class = "error">{{country_log}}</span>
-                  </div>
-              </div>
-
-              <div class="form-group col-md-6">
-                <label><p class = "label-p">City</p></label>
-                <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="info.city" >
-
-
-                <div class = "form_error" *ngIf="!info.city">
-                  <span class = "error">{{city_log}}</span>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="form-group col-md-6" >
-             	<label><p class = "label-p">Image</p></label>
-               	<input id="aa" #Image type="file" onchange="pressed()" accept="image/*" name="image" [(ngModel)]="info.image"  class="form-control" />
-
-                <label id="fileLabel" >
-					<span *ngIf="img_src" >{{img_src}}</span>
-					<span *ngIf="!img_src" >Upload Logo (optional)</span>
-				</label>
-			    <div class = "form_error image-log" *ngIf="image_log">
-					<span class = "error">{{image_log}}</span>
-				</div>
-            </div>
-
-
-          </fieldset>
-
-          <div class = "form-group text-right">
-          <a routerLink="/prefill-profile" class = "btn btn-prev">Prev Step</a>
-              <button type="submit" class = "btn btn-self btn-pdg"  >Next Step</button>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="githubURL">Github account URL</label>
+          <input type="text" #gitaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="githubURL" placeholder="Github account (optional)"  name="github_account" [(ngModel)]="info.github_account">
+          <div class = "invalid-feedback" *ngIf="gitaccount.errors">
+            Enter url in proper format.
           </div>
-
-          <div class = "form_error error-log" *ngIf="error_msg">
-            <span class = "error">{{error_msg}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="stackURL">Stackexchange account URL</label>
+          <input type="text" #stackaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="stackURL" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account">
+          <div class = "invalid-feedback" *ngIf="stackaccount.errors">
+            Enter url in proper format.
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="phone">Phone number (including country code)</label>
+          <input type="tel" class="form-control" id="phone" placeholder="(+1) 01 2345 6789" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
+          <div class = "invalid-feedback" *ngIf="!info.contact_number">
+            {{contact_name_log}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label>Nationality</label>
+          <select class="selectpicker" data-live-search="true"required name="nationality" [(ngModel)]='info.nationality'  required="">
+            <option value="-1" disabled selected hidden >Please choose nationality</option>
+            <option class='option' *ngFor='let options of nationality' placeholder="Nationality"  [value]="options" selected>{{options}}</option>
+          </select>
+          <div class = "invalid-feedback" *ngIf="info.nationality === -1">
+            <span class = "error">{{nationality_log}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class = "form-group col-md-12">
+        <div class="form-group col-md-12">
+          <p>Where do you currently live, or where are you most frequently based?</p>
+        </div>
 
-        </form>
+        <div class="form-group col-md-6">
+          <label><p class = "label-p">Country</p></label>
+          <select class="form-control"  required name="country" [(ngModel)]="info.country"  required="">
+            <option value="-1" disabled selected hidden >Please choose country</option>
+
+            <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
+          </select>
+          <div class = "form_error" *ngIf="info.country === -1">
+            <span class = "error">{{country_log}}</span>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><p class = "label-p">City</p></label>
+          <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="info.city" >
+
+
+          <div class = "form_error" *ngIf="!info.city">
+            <span class = "error">{{city_log}}</span>
+          </div>
+        </div>
 
       </div>
     </div>
-  </div>
-
-</section>
-
-
-<!--candidate step completing End-->
-
-<div class = "gap">
+  </form>
 </div>
+<!--candidate step completing End-->
