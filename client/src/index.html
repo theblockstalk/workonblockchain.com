@@ -59,59 +59,7 @@
 
 <!-- Load Facebook SDK for JavaScript -->
  <div id="fb-root"></div>
- <script>
 
-	$(window).load(function() {
-		// Animate loader off screen
-		$(".se-pre-con").fadeOut("slow");;
-	});
-</script>
-
-<script type="text/javascript">
-(function() {
-    'use strict';
-
-    var deps = [];
-
-    angular.module('sandbox', deps)
-        .controller('SandboxController', SandboxController)
-    ;
-
-    function SandboxController($element) {
-        /* jshint validthis : true */
-        var vm = this;
-        vm.activate   = toggle;
-        vm.deactivate = toggle;
-        vm.isActive   = isActive;
-
-        function toggle() {
-            var active   = vm.isActive();
-            var oldClass = active ? 'active' : 'inactive';
-            var newClass = active ? 'inactive' : 'active';
-            $element.removeClass(oldClass).addClass(newClass);
-        }
-
-        function isActive() {
-            return $element.hasClass('active');
-        }
-    }
-
-})();
-
-window.addEventListener('load', function() {
-
-	 $(function () {
-		    $('#1step').change(function () {
-		        if ($('#1step').is(':checked')) {
-		            $("#input_field").hide();
-		        } else {
-		            $("#input_field").show();
-		        }
-		    }).change();
-		});
-});
-
-</script>
 
   <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
