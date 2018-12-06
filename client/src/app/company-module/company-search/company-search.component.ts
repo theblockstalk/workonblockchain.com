@@ -197,7 +197,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   ngAfterViewChecked() {
     $('.selectpicker').selectpicker('refresh');
-    $('select').addClass('selectwidthauto');
   }
   skill;
   ngOnInit()

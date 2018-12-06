@@ -15,113 +15,155 @@
 
     <div class = "col-md-12">
       <div class = "row">
-      <div class = "col-md-3 border">
-        <div class="col-xs-2">
+        <div class = "col-md-3 border">
+          <div class="col-xs-2">
 
-        <div class="form-group">
-          <select title="skills" [(ngModel)]="skill_value" name="skill" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
-            <option *ngFor = "let skill of skillsData" [value]="skill.value">{{skill.name}}</option>
-          </select>
-        </div>
-
-        <div class = "form-group">
-          <select title="desired location" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
-            <option *ngFor = "let location of locationsData" [value]="location.value">{{location.name}}</option>
-          </select>
-        </div>
-        <div class = "form-group">
-          <select title="position" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
-            <option *ngFor = "let role of rolesData" [value]="role.value">{{role.name}}</option>
-          </select>
-        </div>
-
-        <div class = "form-group">
-          <select title="blockchain experience" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
-            <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
-          </select>
-        </div>
-
-        <div class = "form-group">
-          <div class="d-inline">
-            <input type="text"  class="form-control" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
-
-          </div>
-          <div class="d-inline">
-            <select title="currency" class="selectpicker form-control" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
-              <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
-            </select>
-          </div>
-
-        </div>
-
-        <div class="form-group">
-          <select title="availability" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
-            <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
-          </select>
-        </div>
-
-        <div class = "text-right btn-div">
-          <button (click)="reset()" type="button" class="btn btn-danger">Reset</button>
-        </div>
-
-
-      </div>
-      </div>
-      <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
-        <div class="col-md-9 text-center" >
-          <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
-        </div>
-
-      </ng-container>
-      <ng-template  #candidateInfo>
-
-        <div class="col-md-9">
-          <h4 *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
-
-          <div  *ngIf="msg === '' && verify_msg === ''">
-            <div *ngIf="candidate_data && candidate_data.length > 0">
-              <span>{{candidate_data.length}}</span> candidates match your search
-              <i class="fa fa-check tickk" aria-hidden="true"></i>
+            <div class="form-group">
+              <select title="skills" [(ngModel)]="skill_value" name="skill" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
+                <option *ngFor = "let skill of skillsData" [value]="skill.value">{{skill.name}}</option>
+              </select>
             </div>
-            <div *ngIf="not_found !== '' ">
-              <span>{{not_found}}</span>
-              <i class="fa fa-check tickk" aria-hidden="true"></i>
+
+            <div class = "form-group">
+              <select title="desired location" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
+                <option *ngFor = "let location of locationsData" [value]="location.value">{{location.name}}</option>
+              </select>
             </div>
+            <div class = "form-group">
+              <select title="position" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
+                <option *ngFor = "let role of rolesData" [value]="role.value">{{role.name}}</option>
+              </select>
+            </div>
+
+            <div class = "form-group">
+              <select title="blockchain experience" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
+                <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
+              </select>
+            </div>
+
+            <div class = "form-group">
+              <div class="row">
+                <div class="col-md-7">
+                  <input type="text"  class="form-control" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
+
+                </div>
+                <div class="col-md-5">
+                  <select title="currency" class="selectpicker form-control" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
+                    <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <select title="availability" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
+                <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
+              </select>
+            </div>
+
+            <div class = "text-right btn-div">
+              <button (click)="reset()" type="button" class="btn btn-danger">Reset</button>
+            </div>
+
+
           </div>
-          <div *ngIf="candidate_data && candidate_data.length > 0 ">
-            <div class="panel-group" *ngFor= "let data of candidate_data | paginate: { itemsPerPage:10, currentPage: p }">
-              <div class="panel panel-default" >
-                <div class="panel-heading">
-                  <ng-container *ngIf="data.initials;else company_logo_top">
-                    <div>
-                      <img style="width:10%" class="img-thumbnail rounded float-left" src="/assets/profile/profile-image.png" alt="">
-                    </div>
-                  </ng-container>
-                  <ng-template #company_logo_top>
-                    <div>
-                      <img style="width:10%" class="img-thumbnail rounded float-left" *ngIf="data.image" src="{{data.image}}" alt="">
-                      <img style="width:10%" class="img-thumbnail rounded float-left" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
-                    </div>
-                  </ng-template>
+        </div>
+        <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
+          <div class="col-md-9 text-center" >
+            <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
+          </div>
 
-                  <div class = "form-group ">
-                    <a [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.initials"><h2>{{data.initials}}</h2></a>
-                    <a [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2>{{data.first_name}}</h2></a>
+        </ng-container>
+        <ng-template  #candidateInfo>
 
-                    <div class="d-flex flex-row bd-highlight mb-3">
-                      <div class="p-2 bd-highlight" *ngFor= "let roles of data.roles">{{roles}}</div>
+          <div class="col-md-9">
+            <h4 *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
+
+            <div  *ngIf="msg === '' && verify_msg === ''">
+              <div *ngIf="candidate_data && candidate_data.length > 0" class="alert alert-info" role="alert">
+                <span>{{candidate_data.length}}</span> candidates match your search
+              </div>
+              <div *ngIf="not_found !== '' ">
+                <span>{{not_found}}</span>
+              </div>
+            </div>
+            <div *ngIf="candidate_data && candidate_data.length > 0 ">
+              <div class="panel-group" *ngFor= "let data of candidate_data | paginate: { itemsPerPage:10, currentPage: p }">
+                <div class="panel panel-default" >
+                  <div class="panel-heading">
+                    <ng-container *ngIf="data.initials;else company_logo_top">
+                      <div>
+                        <img style="width:10%" class="img-thumbnail rounded float-left" src="/assets/profile/profile-image.png" alt="">
+                      </div>
+                    </ng-container>
+                    <ng-template #company_logo_top>
+                      <div>
+                        <img style="width:10%" class="img-thumbnail rounded float-left" *ngIf="data.image" src="{{data.image}}" alt="">
+                        <img style="width:10%" class="img-thumbnail rounded float-left" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
+                      </div>
+                    </ng-template>
+
+                    <div class = "form-group ">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.initials"><h2 class="w-25">{{data.initials}}</h2></a>
+                          <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2 class="w-25">{{data.first_name}}</h2></a>
+
+
+                          <span class="badge badge-secondary" *ngFor= "let roles of data.roles"> {{roles}} </span>
+
+                        </div>
+                        <div class="col-md-4" >
+                          <form #abc_form="ngForm" (ngSubmit)="onSubmit(abc_form.value)">
+                            <input type="hidden" name="id" [ngModel]="data._creator._id">
+                            <input type="hidden" name="name" [ngModel]="data.initials">
+                            <div class="float-right">
+                              <button type="submit" class = "btn btn-primary" data-toggle="modal" data-target="#myModal" >Send job description</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+
                     </div>
+                    <hr/>
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <p ><i>{{data.why_work}}</i></p>
+                        </div>
+                      </div>
 
+                      <div class="row">
+                        <div class="col-sm-8">
+                          <h4>Bio</h4>
+                          <p>
+                            {{data.description}}
+                          </p>
+                        </div>
+                        <div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
+                          <h4>Languages</h4>
+                          <ul class="list-group">
+                            <li class="list-group-item" *ngFor = 'let lang of sorting(data.programming_languages)'>
+                              {{lang.language}} - {{lang.exp_year}} years
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+
+
+                    </div>
 
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
           </div>
-      </ng-template>
+        </ng-template>
       </div>
     </div>
   </div>
 </div>
+
+<br/><br/><br/><br/>
