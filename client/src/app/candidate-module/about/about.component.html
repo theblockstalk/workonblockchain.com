@@ -1,33 +1,46 @@
 <div class="container">
-  <div class="row">
-    <!--<div class = "text-center">-->
-      <div class="col-md-2">
-        <i class="{{term_active_class}}"></i>
-        <a routerLink="{{term_link}}"> Terms & Conditions</a>
-      </div>
-      <div class="col-md-2">
-        <i class="{{term_active_class}}"></i>
-        <a routerLink="/prefill-profile"> Prefill Profile</a>
-      </div>
-      <div class="col-md-2">
-        <i class="{{active_class}}"></i>
-        <a routerLink="/about"> About</a>
-      </div>
-      <div class="col-md-2">
-        <i class="{{job_active_class}}"></i>
-        <a routerLink="{{link}}" class="btn  {{job_disable}}">Jobs</a>
-      </div>
-      <div class="col-md-2">
-        <i class="{{resume_active_class}}"></i>
-        <a routerLink="{{resume_class}}" class="btn  {{resume_disable}}" >Blockchain</a>
-      </div>
-      <div class="col-md-2">
-        <i class="{{exp_active_class}}"></i>
-        <a routerLink="{{exp_class}}" class="btn  {{exp_disable}}">Experience</a>
-      </div>
-      <!--</div>-->
+  <div class="row mb-2">
+    <div class="col-md-12">
+      <ul class="nav justify-content-center wizard">
+        <li class="nav-item">
+          <a routerLink="{{term_link}}" class="nav-link">
+            <i class="{{term_active_class}}"></i>
+            Terms & Conditions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/prefill-profile" class="nav-link">
+            <i class="{{term_active_class}}"></i>
+            Prefill Profile
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/about" class="nav-link">
+            <i class="{{active_class}}"></i>
+            About
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="{{link}}" class="nav-link">
+            <i class="{{active_class}}"></i>
+            Jobs
+          </a>
+        </li>
+        <li class="nav-item px-2">
+          <a routerLink="{{resume_class}}" class="nav-link">
+            <i class="{{resume_active_class}}"></i>
+            Blockchain
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="{{exp_class}}" class="nav-link">
+            <i class="{{exp_active_class}}"></i>
+            Experience
+          </a>
+        </li>
+      </ul>
     </div>
-    <!--<div class="col-md-12">-->
+  </div>
   <div class = "row">
     <div class="col-md-12 text-center">
       <h3>About</h3>
@@ -37,7 +50,7 @@
     <div class = "row">
         <div class="col-md-6">
           <div class="form-group">
-            <label for="firstName">First Name</label>
+            <label for="firstName">First name</label>
             <input type="text" class="form-control" required id="firstName" placeholder="First Name" name="first_name" [(ngModel)]="info.first_name">
             <div class = "invalid-feedback" *ngIf="!info.first_name">
               {{first_name_log}}
@@ -46,7 +59,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label for="lastName">Last Name</label>
+            <label for="lastName">Last name</label>
             <input type="text" class="form-control" required id="lastName" placeholder="Last Name"  name="last_name" [(ngModel)]="info.last_name">
             <div class = "invalid-feedback" *ngIf="!info.last_name">
               {{last_name_log}}

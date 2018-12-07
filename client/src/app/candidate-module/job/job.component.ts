@@ -3,6 +3,7 @@ import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
+declare var $:any;
 
 import { HttpClient } from '@angular/common/http';
 
@@ -44,8 +45,10 @@ export class JobComponent implements OnInit,AfterViewInit {
   error_msg;
      ngAfterViewInit(): void
      {
-         window.scrollTo(0, 0);
-
+       window.scrollTo(0, 0);
+       setTimeout(() => {
+         $('.selectpicker').selectpicker();
+       }, 200);
     }
   ngOnInit()
   {

@@ -6,7 +6,7 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
-
+declare var $:any;
 
 @Component({
   selector: 'app-about',
@@ -62,7 +62,9 @@ export class AboutComponent implements OnInit,AfterViewInit
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
-
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 200);
   }
 
   ngOnInit()
