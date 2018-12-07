@@ -1,7 +1,6 @@
-<div class = "container">
-  <hr>
-  <div class = "row">
-    <div class="col-md-12">
+<div class = "container border w-75">
+  <div class = "row bg-light">
+    <div class="col-md-12 mt-2 mb-2">
       <h3 class="text-center">Login to WOB</h3>
       <div class="alert alert-success" role="alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
       <div class="alert alert-success" role="alert" *ngIf="message && !error">{{message}}</div>
@@ -12,8 +11,8 @@
     </div>
   </div>
   <form (submit)="login(loginForm)"  #loginForm = ngForm>
-    <div class = "row">
-      <div class="col-md-12">
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
         <div class="form-group">
           <label for="exampleInputEmail">Email address</label>
           <span><i class="fas fa-envelope" aria-hidden="true"></i></span>
@@ -21,8 +20,8 @@
         </div>
       </div>
     </div>
-    <div class = "row">
-      <div class="col-md-12">
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
         <div class="form-group">
           <label for="exampleInputPassword">Password</label>
           <span><i class="fas fa-lock" aria-hidden="true"></i></span>
@@ -30,31 +29,37 @@
         </div>
       </div>
     </div>
-    <div class = "row">
-      <div class="col-md-12">
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
         <div class="form-group">
           <input type="submit" class="form-control btn btn-secondary" value = "Log In" [disabled]="!loginForm.valid ">
         </div>
       </div>
     </div>
-    <div class = "row">
-      <div class="col-md-12">
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
         <div class="form-group">
-          <a  class = "form-control btn btn-primary" (click)="subscribeToLogin()" type = "submit">
-            <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+          <a  class = "form-control btn btn-info" (click)="subscribeToLogin()" type = "submit">
+            <i class="fab fa-linkedin" aria-hidden="true"></i>
             Login with LinkedIn
           </a>
         </div>
       </div>
     </div>
-    <div class = "row">
-      <div class="col-md-12">
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
         <div class="form-group">
           <a  class = "form-control btn btn-danger" type = "submit" (click)="signInWithGoogle()">
-            <i class="fa fa-google-plus-square" aria-hidden="true"></i>
+            <i class="fab fa-google" aria-hidden="true"></i>
             Login with Google
           </a>
         </div>
+      </div>
+    </div>
+    <div class="row justify-content-md-center mb-4">
+      <div class="col-md-8">
+        <a routerLink = "/forgot_password" >Forgot your Password</a> <br/>
+        <a routerLink = "/signup" >Sign Up</a>
       </div>
     </div>
   </form>
