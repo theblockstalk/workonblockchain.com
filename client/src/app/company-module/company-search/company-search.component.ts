@@ -5,6 +5,7 @@ import { Select2OptionData } from 'ng2-select2';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 declare var $:any;
+//import {PagerService} from '../../pager.service';
 
 @Component({
   selector: 'app-company-search',
@@ -43,8 +44,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   select_value='';
   selecteddd='';
   disabled;
-  //ckeConfig: any;
-  //@ViewChild("myckeditor") ckeditor: any;
+  ckeConfig: any;
+  @ViewChild("myckeditor") ckeditor: any;
   job_offer_log;
   saved_searches;
   location_value = '';
@@ -52,6 +53,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   location;
   role_value;
   blockchain_value;
+  pager: any = {};
+  pagedItems: any[];
+
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
 
@@ -203,15 +207,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   skill;
   ngOnInit()
   {
-    /*this.ckeConfig = {
+    this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
       height: '10rem',
-      width: '56rem',
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
-    };*/
+    };
     setInterval(() => {
       this.job_offer_log = '';
     }, 5000);
@@ -685,7 +688,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   msg_body;
   description;
   send_job_offer(msgForm : NgForm){
-
+console.log(msgForm.value);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
       if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
@@ -724,7 +727,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                       this.credentials.location = '';
                       this.credentials.job_type = '';
                       this.credentials.job_desc = '';
-                      $("#myModal").modal("hide");
+                      $("#jobDescriptionModal").modal("hide");
                       this.router.navigate(['/chat']);
                     },
                     error => {
@@ -762,5 +765,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       return 0;
     })
   }
+  /*setPage(page: number) {
+    if (page < 1 || page > this.pager.totalPages) {
+      return;
+    }
 
+    // get pager object from service
+
+    this.pager = this.pagerService.getPager(this.candidate_data.length, page);
+
+    // get current page of items
+    this.pagedItems = this.candidate_data.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }*/
 }

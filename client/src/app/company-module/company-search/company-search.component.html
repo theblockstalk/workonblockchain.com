@@ -3,7 +3,7 @@
     <div class="col-md-12 bg-primary1 p-2">
       <form #f="ngForm" (ngSubmit)="searchdata('search', searchWord)" class="w-50 mx-auto">
         <div class="input-group">
-          <input type="text" class="form-control" [(ngModel)]='searchWord' name="word" [disabled]="msg !== '' ? true : false"  placeholder="search">
+          <input type="text" class="form-control" [(ngModel)]='searchWord' name="word" [disabled]="msg !== '' ? true : false"  placeholder="Search">
 
           <div class="input-group-append">
             <button type="submit" [disabled]="!f.valid " class="btn btn-primary mb-2">Search</button>
@@ -21,28 +21,28 @@
             <h4>Filters</h4>
 
             <div class="form-group">
-              <select title="skills" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
+              <select title="Skills" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
                 <option *ngFor = "let skill of skillsData" [value]="skill.value">{{skill.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="desired location" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
+              <select title="Desired location" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let location of locationsData" [value]="location.value">{{location.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="position" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
+              <select title="Position" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let role of rolesData" [value]="role.value">{{role.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="blockchain experience" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
+              <select title="Blockchain experience" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
               </select>
             </div>
@@ -52,7 +52,7 @@
 
               <input type="text"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
 
-              <select title="currency" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
+              <select title="Currency" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
                 <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
               </select>
 
@@ -60,7 +60,7 @@
             <hr/>
 
             <div class="form-group">
-              <select title="availability" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
+              <select title="Availability" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
                 <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
               </select>
             </div>
@@ -91,7 +91,7 @@
               </div>
             </div>
             <div *ngIf="candidate_data && candidate_data.length > 0 ">
-              <div class="panel-group" *ngFor= "let data of candidate_data | paginate: { itemsPerPage:1, currentPage: p }">
+              <div class="panel-group" *ngFor= "let data of candidate_data | paginate: { itemsPerPage:10, currentPage: p }">
                 <div class="panel panel-default border mb-3" >
                   <div class="row m-0 bg-primary2">
 
@@ -114,8 +114,9 @@
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.initials"><h2 class="w-25 ">{{data.initials}}</h2></a>
                           <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2 class="w-25 ">{{data.first_name}}</h2></a>
 
-
-                          <span class="badge badge-secondary mr-1" *ngFor= "let roles of data.roles"> {{roles}} </span>
+                          <h5>
+                            <span class="badge badge-secondary mr-1" *ngFor= "let roles of data.roles"> {{roles}} </span>
+                          </h5>
 
                         </div>
                         <div class="col-md-4" >
@@ -123,47 +124,63 @@
                             <input type="hidden" name="id" [ngModel]="data._creator._id">
                             <input type="hidden" name="name" [ngModel]="data.initials">
                             <div class="float-right mt-2">
-                              <button type="submit" class = "btn bg-secondary2" data-toggle="modal" data-target="#myModal" >Send job description</button>
+                              <button type="submit" class = "btn bg-secondary2" data-toggle="modal" data-target="#jobDescriptionModal" >Send job description</button>
                             </div>
                           </form>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class = "row m-0 p-4">
-                    <div class="form-group">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <p ><i>{{data.why_work}}</i></p>
-                        </div>
+                  <div class = "col-md-12 m-0 p-4">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <span ><i>{{data.why_work}}</i></span>
                       </div>
-
-                      <div class="row">
-                        <div class="col-sm-8">
-                          <h4>Bio</h4>
-                          <p>
-                            {{data.description}}
-                          </p>
-                        </div>
-                        <div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
-                          <h4>Languages</h4>
-                          <ul class="list-group">
-                            <li class="list-group-item" *ngFor = 'let lang of sorting(data.programming_languages)'>
-                              {{lang.language}} - {{lang.exp_year}} years
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-
-
                     </div>
+
+                    <div class="row">
+                      <div class="col-sm-8">
+                        <h4>Bio</h4>
+                        <p>
+                          {{data.description}}
+                        </p>
+                      </div>
+                      <div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
+                        <h4>Languages</h4>
+                        <ul class="list-group">
+                          <li class="list-group-item" *ngFor = 'let lang of sorting(data.programming_languages)'>
+                            {{lang.language}} - {{lang.exp_year}} years
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
                   </div>
 
 
                 </div>
               </div>
             </div>
-            <pagination-controls (pageChange)="p = $event" *ngIf="candidate_data && candidate_data.length > 1"></pagination-controls>
+            <!--{{pager}}
+              <ul *ngIf="candidate_data && candidate_data.length > 10" class="pagination">
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                  <a (click)="setPage(1)">First</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                  <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+                </li>
+                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                  <a (click)="setPage(page)">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                  <a (click)="setPage(pager.totalPages)">Last</a>
+                </li>
+              </ul>-->
+
+            <pagination-controls (pageChange)="p = $event" *ngIf="candidate_data && candidate_data.length > 10 "></pagination-controls>
 
           </div>
         </ng-template>
@@ -172,4 +189,92 @@
   </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="jobDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-secondary3">
+        <h5 class="modal-title mx-auto" id="exampleModalLabel">Job description</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
+          <ng-container *ngIf="job_offer_log;else no_modal">
+            <div class = "model_notif text-center">
+              {{job_offer_log}}
+            </div>
+          </ng-container>
+          <ng-template #no_modal>
+          </ng-template>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="validationCustom1">Job Title</label>
+                <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Frontend developer">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="validationCustom02">Location</label>
+                <input type="text" id="validationCustom02" name="location" [(ngModel)]="credentials.location" class="form-control" id="" placeholder="London">
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="validationCustomSalary">Salary</label>
+                <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" id="" placeholder="$2000">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="validationCustom02">Currency</label>
+                <select title="Currency"  name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control" multiple data-live-search="true">
+                  <option *ngFor='let base_currency of currency' [value]="base_currency">{{base_currency}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="validationCustom02">Employment type</label>
+                <div *ngFor="let options of job_type">
+                  <label>
+                    <input type="radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
+                    {{options}}
+                  </label>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Job description</label>
+                <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                </ckeditor>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_desc || !credentials.job_type || !credentials.job_title || !credentials.location" class="btn btn-primary">Submit Job Offer</button>
+            <button type="reset" class="btn btn-danger">Reset</button>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
 <br/><br/><br/><br/>
