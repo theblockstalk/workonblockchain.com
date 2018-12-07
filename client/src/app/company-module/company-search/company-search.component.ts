@@ -5,7 +5,7 @@ import { Select2OptionData } from 'ng2-select2';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 declare var $:any;
-//import {PagerService} from '../../pager.service';
+import {PagerService} from '../../pager.service';
 
 @Component({
   selector: 'app-company-search',
@@ -56,7 +56,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   pager: any = {};
   pagedItems: any[];
 
-  constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
 
   commercially=
@@ -536,6 +536,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           {
             console.log(data);
             this.candidate_data = data;
+            this.setPage(1);
             if(this.candidate_data.length > 0) {
               this.not_found='';
             }
@@ -599,6 +600,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         dataa => {
           this.candidate_data = dataa;
+          this.setPage(1);
           if(this.candidate_data.length > 0) {
             this.not_found='';
           }
@@ -765,16 +767,8 @@ console.log(msgForm.value);
       return 0;
     })
   }
-  /*setPage(page: number) {
-    if (page < 1 || page > this.pager.totalPages) {
-      return;
-    }
-
-    // get pager object from service
-
+  setPage(page: number) {
     this.pager = this.pagerService.getPager(this.candidate_data.length, page);
-
-    // get current page of items
     this.pagedItems = this.candidate_data.slice(this.pager.startIndex, this.pager.endIndex + 1);
-  }*/
+  }
 }
