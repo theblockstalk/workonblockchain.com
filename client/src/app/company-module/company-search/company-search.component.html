@@ -14,11 +14,11 @@
   </div>
 
   <div class="row mt-2">
-    <div class = "col-md-12">
+    <div class = "col-md-12 p-0">
       <div class = "row">
-        <div class = "col-md-3 border filter_bar">
-          <h4>Filters</h4>
-          <div class="col-xs-2">
+        <div class = "col-md-3 ">
+          <div class="filter_bar p-2 border">
+            <h4>Filters</h4>
 
             <div class="form-group">
               <select title="skills" [ngModel]="skill_value" name="skill" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
@@ -71,12 +71,11 @@
                 <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
               </select>
             </div>
-            <hr/>
 
-            <div class = "text-right btn-div">
-              <button (click)="reset()" type="button" class="btn btn-danger">Reset</button>
-            </div>
-            <br/>
+
+          </div>
+          <div class = "form-group float-right mt-2">
+            <button (click)="reset()" type="button" class="btn btn-danger">Reset</button>
           </div>
         </div>
         <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
@@ -91,10 +90,10 @@
             <h4 *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
 
             <div  *ngIf="msg === '' && verify_msg === ''">
-              <div *ngIf="candidate_data && candidate_data.length > 0" class="alert alert-info mt-2" role="alert">
+              <div *ngIf="candidate_data && candidate_data.length > 0" class="alert alert-info mt-1" role="alert">
                 <span>{{candidate_data.length}}</span> candidates match your search
               </div>
-              <div *ngIf="not_found !== '' " class="alert alert-danger mt-2" role="alert">
+              <div *ngIf="not_found !== '' " class="alert alert-danger mt-1" role="alert">
                 <span>{{not_found}}</span>
               </div>
             </div>
@@ -104,18 +103,18 @@
                   <div class="row m-0 bg-primary2">
 
                     <div class = "form-group ">
-                      <div class="row p-2">
+                      <div class="row p-3">
 
                         <div class="col-md-8">
                           <ng-container *ngIf="data.initials;else company_logo_top">
-                            <div>
-                              <img style="width:15%" class="rounded-circle float-left" src="/assets/profile/profile-image.png" alt="">
+                            <div class="w-75">
+                              <img style="width:15%" class="rounded-circle float-left mr-2" src="/assets/profile/profile-image.png" alt="">
                             </div>
                           </ng-container>
                           <ng-template #company_logo_top>
-                            <div>
-                              <img style="width:15%" class="rounded-circle float-left " *ngIf="data.image" src="{{data.image}}" alt="">
-                              <img style="width:15%" class="rounded-circle float-left" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
+                            <div class="w-75">
+                              <img style="width:15%" class="rounded-circle float-left mr-2 " *ngIf="data.image" src="{{data.image}}" alt="">
+                              <img style="width:15%" class="rounded-circle float-left mr-2" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
                             </div>
                           </ng-template>
 
@@ -130,7 +129,7 @@
                           <form #abc_form="ngForm" (ngSubmit)="onSubmit(abc_form.value)">
                             <input type="hidden" name="id" [ngModel]="data._creator._id">
                             <input type="hidden" name="name" [ngModel]="data.initials">
-                            <div class="float-right  mt-2 mx-5">
+                            <div class="float-right mt-2">
                               <button type="submit" class = "btn bg-secondary2" data-toggle="modal" data-target="#myModal" >Send job description</button>
                             </div>
                           </form>
@@ -138,7 +137,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class = "row m-0 p-2">
+                  <div class = "row m-0 p-4">
                     <div class="form-group">
                       <div class="row">
                         <div class="col-md-12">
