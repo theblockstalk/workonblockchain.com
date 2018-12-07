@@ -17,11 +17,11 @@
     <div class = "col-md-12 p-0">
       <div class = "row">
         <div class = "col-md-3 ">
-          <div class="filter_bar p-2 border">
+          <div class="bg-primary2 p-2 border">
             <h4>Filters</h4>
 
             <div class="form-group">
-              <select title="skills" [ngModel]="skill_value" name="skill" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
+              <select title="skills" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
                 <option *ngFor = "let skill of skillsData" [value]="skill.value">{{skill.name}}</option>
               </select>
             </div>
@@ -49,22 +49,15 @@
             <hr/>
 
             <div class = "form-group">
-              <div class="row">
-                <div class="col-md-7">
-                  <input type="text"  class="form-control" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
 
-                </div>
-                <div class="col-md-5">
-                  <select title="currency" class="selectpicker form-control" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
-                    <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
-                  </select>
-                </div>
-              </div>
+              <input type="text"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
+
+              <select title="currency" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
+                <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
+              </select>
 
             </div>
             <hr/>
-
-
 
             <div class="form-group">
               <select title="availability" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
@@ -98,7 +91,7 @@
               </div>
             </div>
             <div *ngIf="candidate_data && candidate_data.length > 0 ">
-              <div class="panel-group" *ngFor= "let data of candidate_data | paginate: { itemsPerPage:10, currentPage: p }">
+              <div class="panel-group" *ngFor= "let data of candidate_data | paginate: { itemsPerPage:1, currentPage: p }">
                 <div class="panel panel-default border mb-3" >
                   <div class="row m-0 bg-primary2">
 
@@ -170,6 +163,7 @@
                 </div>
               </div>
             </div>
+            <pagination-controls (pageChange)="p = $event" *ngIf="candidate_data && candidate_data.length > 1"></pagination-controls>
 
           </div>
         </ng-template>
