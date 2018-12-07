@@ -5,6 +5,7 @@ import { Select2OptionData } from 'ng2-select2';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 declare var $:any;
+//import {PagerService} from '../../pager.service';
 
 @Component({
   selector: 'app-company-search',
@@ -43,8 +44,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   select_value='';
   selecteddd='';
   disabled;
-  //ckeConfig: any;
-  //@ViewChild("myckeditor") ckeditor: any;
+  ckeConfig: any;
+  @ViewChild("myckeditor") ckeditor: any;
   job_offer_log;
   saved_searches;
   location_value = '';
@@ -52,6 +53,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   location;
   role_value;
   blockchain_value;
+  pager: any = {};
+  pagedItems: any[];
+
   constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
 
@@ -203,15 +207,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   skill;
   ngOnInit()
   {
-    /*this.ckeConfig = {
+    this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
       height: '10rem',
-      width: '56rem',
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
-    };*/
+    };
     setInterval(() => {
       this.job_offer_log = '';
     }, 5000);
@@ -436,13 +439,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   information;
   not_found;
   salarysearchdata(key , value) {
-    console.log(key);
-    console.log(value);
-
     this.not_found = '';
 
     if (this.salary) {
-      if (this.currencyChange !== -1) {
+      if (this.currencyChange) {
         this.searchdata(key, value);
       }
       else {
@@ -453,59 +453,70 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(this.select_value && this.select_value.length > 0 ) queryBody.positions = this.select_value;
         if(this.selecteddd && this.selecteddd.length > 0) queryBody.blockchains = this.selecteddd;
         if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
-        if(this.salary && this.currencyChange !== -1) {
+        if(this.salary && this.currencyChange) {
           queryBody.current_salary  = this.salary;
           queryBody.current_currency = this.currencyChange;
         }
         this.authenticationService.filterSearch(queryBody)
-        .subscribe(
-          data => {
-            this.candidate_data = data;
-            this.responseMsg = "response";
-            if (this.candidate_data.length <= 0) {
-              this.not_found = 'No candidates matched this search criteria';
-            }
-            if(this.candidate_data.length > 0) {
-              this.not_found='';
-            }
-          },
-          error =>
-          {
-            if(error.message === 500)
+          .subscribe(
+            data => {
+              this.candidate_data = data;
+              this.responseMsg = "response";
+              if (this.candidate_data.length <= 0) {
+                this.not_found = 'No candidates matched this search criteria';
+              }
+              if(this.candidate_data.length > 0) {
+                this.not_found='';
+              }
+            },
+            error =>
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
+              if(error.message === 500)
+              {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
 
-            if(error.message === 403)
-            {
-              this.router.navigate(['/not_found']);
-            }
+              if(error.message === 403)
+              {
+                this.router.navigate(['/not_found']);
+              }
 
-          }
-        );
+            }
+          );
       }
     }
   }
 
   searchdata(key , value)
   {
+
     this.log='';
     this.candidate_data='';
     this.verify_msg = "";
     this.responseMsg = "";
     this.not_found='';
-    if(!this.searchWord && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.location_value &&  this.currencyChange === -1 &&  this.availabilityChange === -1 )
+
+    console.log("Skill value " + this.skill_value);
+    console.log("Location value " + this.location_value);
+    console.log("Search word " + this.searchWord);
+    console.log("Role value " + this.role_value);
+
+    console.log("Blockahin value " + this.blockchain_value);
+
+    if(!this.searchWord && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.location_value &&  !this.currencyChange &&  !this.availabilityChange )
     {
+      console.log("if");
       this.getVerrifiedCandidate();
     }
 
     else {
+      console.log("else");
       this.not_found = '';
       let queryBody : any = {};
       if(this.searchWord) queryBody.word = this.searchWord;
@@ -513,11 +524,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.location_value && this.location_value.length > 0) queryBody.locations = this.location_value;
       if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.role_value;
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
-      if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
-      if(this.salary && this.currencyChange !== -1) {
+      if(this.availabilityChange ) queryBody.availability_day = this.availabilityChange;
+      if(this.salary && this.currencyChange) {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
+      console.log(queryBody);
       this.authenticationService.filterSearch(queryBody )
         .subscribe(
           data =>
@@ -553,21 +565,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   reset()
   {
-
-    this.selectedObj=-1;
-    this.countryChange=-1;
-    this.rolesItems='';
-    this.salary='';
-    this.currencyChange= -1;
-    this.availabilityChange=-1;
-    this.blockchainItems='';
-    this.blockchain_value ='';
-    this.location_value = '';
-    this.skill_value = '';
-    this.role_value = '';
+    this.salary = '';
     this.info = [];
-    this.searchWord='';
-
+    this.searchWord = '';
+    this.skill_value = '';
+    this.location_value = '';
+    this.role_value = '';
+    this.blockchain_value = '';
+    this.currencyChange = '';
+    this.availabilityChange = '';
+    $('.selectpicker').val('default');
+    $('.selectpicker').selectpicker('refresh');
     this.getVerrifiedCandidate();
 
   }
@@ -647,97 +655,97 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.credentials.job_type = '';
     this.credentials.job_desc = '';
     this.authenticationService.getLastJobDesc()
-    .subscribe(
-      data => {
-        let prev_job_desc = data;
-        this.credentials.job_title = prev_job_desc.job_title;
-        this.credentials.salary = prev_job_desc.salary;
-        this.credentials.currency = prev_job_desc.salary_currency;
-        this.credentials.location = prev_job_desc.interview_location;
-        this.credentials.job_type = prev_job_desc.job_type;
-        this.credentials.job_desc = prev_job_desc.description;
-      },
-      error => {
-        if (error.message === 500 || error.message === 401) {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
+      .subscribe(
+        data => {
+          let prev_job_desc = data;
+          this.credentials.job_title = prev_job_desc.job_title;
+          this.credentials.salary = prev_job_desc.salary;
+          this.credentials.currency = prev_job_desc.salary_currency;
+          this.credentials.location = prev_job_desc.interview_location;
+          this.credentials.job_type = prev_job_desc.job_type;
+          this.credentials.job_desc = prev_job_desc.description;
+        },
+        error => {
+          if (error.message === 500 || error.message === 401) {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
 
-        if (error.message === 403) {
-          this.router.navigate(['/not_found']);
+          if (error.message === 403) {
+            this.router.navigate(['/not_found']);
+          }
         }
-      }
-    );
+      );
   }
-    date_of_joining;
-    msg_tag;
-    is_company_reply = 0;
-    msg_body;
-    description;
-    send_job_offer(msgForm : NgForm){
+  date_of_joining;
+  msg_tag;
+  is_company_reply = 0;
+  msg_body;
+  description;
+  send_job_offer(msgForm : NgForm){
+console.log(msgForm.value);
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
+      if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
+        this.authenticationService.get_job_desc_msgs(this.user_id.id,'job_offer')
+          .subscribe(
+            data => {
+              this.job_offer_log = 'You have already sent a job description to this candidate';
+            },
+            error => {
+              if(error.status === 500 || error.status === 401)
+              {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
 
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
-            if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){
-				this.authenticationService.get_job_desc_msgs(this.user_id.id,'job_offer')
-				.subscribe(
-					data => {
-            this.job_offer_log = 'You have already sent a job description to this candidate';
-					},
-					error => {
-            if(error.status === 500 || error.status === 401)
-            {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
+              if(error.status === 404)
+              {
+                this.date_of_joining = '10-07-2018';
+                this.msg_tag = 'job_offer';
+                this.is_company_reply = 0;
+                this.msg_body = '';
+                this.description = this.credentials.job_desc;
+                this.interview_location = this.credentials.location;
+                this.authenticationService.insertMessage(this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+                  .subscribe(
+                    data => {
+                      this.job_offer_log = 'Message successfully sent';
+                      this.credentials.job_title = '';
+                      this.credentials.salary = '';
+                      this.credentials.currency = '';
+                      this.credentials.location = '';
+                      this.credentials.job_type = '';
+                      this.credentials.job_desc = '';
+                      $("#jobDescriptionModal").modal("hide");
+                      this.router.navigate(['/chat']);
+                    },
+                    error => {
+
+                    }
+                  );
+              }
             }
-
-            if(error.status === 404)
-            {
-              this.date_of_joining = '10-07-2018';
-              this.msg_tag = 'job_offer';
-              this.is_company_reply = 0;
-              this.msg_body = '';
-              this.description = this.credentials.job_desc;
-              this.interview_location = this.credentials.location;
-              this.authenticationService.insertMessage(this.user_id.id,this.display_name,this.user_id.name,this.msg_body,this.description,this.credentials.job_title,this.credentials.salary,this.credentials.currency,this.date_of_joining,this.credentials.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
-                .subscribe(
-                  data => {
-                    this.job_offer_log = 'Message successfully sent';
-                    this.credentials.job_title = '';
-                    this.credentials.salary = '';
-                    this.credentials.currency = '';
-                    this.credentials.location = '';
-                    this.credentials.job_type = '';
-                    this.credentials.job_desc = '';
-                    $("#myModal").modal("hide");
-                    this.router.navigate(['/chat']);
-                  },
-                  error => {
-
-                  }
-                );
-            }
-					}
-				);
-			}
-			else{
-				this.job_offer_log = 'Salary should be a number';
-			}
-        }
-        else{
-            this.job_offer_log = 'Please enter all info';
-        }
+          );
+      }
+      else{
+        this.job_offer_log = 'Salary should be a number';
+      }
     }
+    else{
+      this.job_offer_log = 'Please enter all info';
+    }
+  }
 
   reset_msgs(){
     this.job_offer_log = '';
@@ -757,5 +765,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       return 0;
     })
   }
+  /*setPage(page: number) {
+    if (page < 1 || page > this.pager.totalPages) {
+      return;
+    }
 
+    // get pager object from service
+
+    this.pager = this.pagerService.getPager(this.candidate_data.length, page);
+
+    // get current page of items
+    this.pagedItems = this.candidate_data.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }*/
 }

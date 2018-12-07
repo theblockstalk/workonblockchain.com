@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule , ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
-//import { CKEditorModule } from 'ng2-ckeditor';
+import { CKEditorModule } from 'ng2-ckeditor';
 import { SharedModule } from '../app-shared.module';
 
 import { CompanyModuleRoutingModule } from './company-module-routing.module';
@@ -13,6 +13,7 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
 import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 import { PreferencesComponent } from './preferences/preferences.component';
+//import {PagerService} from '../pager.service';
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
-    //CKEditorModule,
+    CKEditorModule,
     SharedModule,
   ],
   declarations: [
@@ -34,10 +35,9 @@ import { PreferencesComponent } from './preferences/preferences.component';
     CandidateDetailComponent,
     PreferencesComponent
   ],
-  //providers : [ScriptService]
+  //providers : [PagerService]
 })
 export class CompanyModuleModule {
   constructor() {
-
   }
 }
