@@ -5,7 +5,6 @@ import {User} from '../../Model/user';
 import { HttpClient } from '@angular/common/http';
 import {NgForm,FormGroup,FormControl,FormBuilder } from '@angular/forms';
 declare var $:any;
-import {ScriptService} from '../../scripts/script.service';
 
 @Component({
   selector: 'app-preferences',
@@ -42,7 +41,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   avail_day;
   pref_active_class;
 
-  constructor(private scriptService : ScriptService,private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
+  constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
   }
 
   ngAfterViewInit() {
