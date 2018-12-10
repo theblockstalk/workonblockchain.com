@@ -6,7 +6,7 @@
           <input type="text" class="form-control" [(ngModel)]='searchWord' name="word" placeholder="Search">
 
           <div class="input-group-append">
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn wob-bg-secondary3"><i class="fas fa-search wob-bg-secondary3"></i></button>
           </div>
         </div>
       </form>
@@ -125,7 +125,7 @@
               </div>
             </div>
             <nav aria-label="Page navigation example" *ngIf="info && info.length > 10" >
-              <ul class="pagination nav justify-content-center">
+              <ul class="pagination nav justify-content-center mb-4">
                 <li class="page-item" >
                   <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
                 </li>

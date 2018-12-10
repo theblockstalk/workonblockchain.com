@@ -6,8 +6,9 @@
           <input type="text" class="form-control" [(ngModel)]='searchWord' name="word" [disabled]="msg !== '' ? true : false"  placeholder="Search">
 
           <div class="input-group-append">
-            <button type="submit" [disabled]="!f.valid " class="btn btn-primary ">Search</button>
+            <button type="submit" [disabled]="!f.valid " class="btn wob-bg-secondary3 "><i class="fas fa-search wob-bg-secondary3"></i></button>
           </div>
+
         </div>
       </form>
     </div>
@@ -156,7 +157,7 @@
               </div>
             </div>
             <nav aria-label="Page navigation example" *ngIf="candidate_data && candidate_data.length > 10" >
-              <ul class="pagination nav justify-content-center">
+              <ul class="pagination nav justify-content-center mb-4">
                 <li class="page-item" >
                   <a class="page-link" (click)="setPage(pager.currentPage - 1)">Previous</a>
                 </li>
