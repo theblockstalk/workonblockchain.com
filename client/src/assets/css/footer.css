@@ -1,0 +1,9 @@
+.wob-footer {
+	background: #253245;
+	border-top: 5px	solid #ffdc4e !important;
+}
+
+.wob-footer ul li a,
+.fa-twitter, .fa-linkedin-in, .fa-medium-m{
+	color: #fff;
+}

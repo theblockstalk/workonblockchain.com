@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <ul class="nav justify-content-center wizard">
         <li class="nav-item">
-          <a routerLink="{{term_link}}" class="nav-link">
+          <a routerLink="/terms-and-condition" class="nav-link">
             <i class="{{term_active_class}}"></i>
             Terms & Conditions
           </a>
@@ -21,7 +21,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a routerLink="{{link}}" class="nav-link">
+          <a routerLink="/job" class="nav-link">
             <i class="{{active_class}}"></i>
             Jobs
           </a>
@@ -102,7 +102,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <label><p></p></label>
+        <legend><p></p></legend>
         <select [(ngModel)]="base_currency" class="selectpicker" id="currency1" required name="base_currency" >
           <option value="-1" disabled selected hidden >Please choose currency</option>
           <option *ngFor='let base_currency of currency'  [value]="base_currency" selected>{{base_currency}}</option>
@@ -121,7 +121,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <label><p></p></label>
+        <legend><p></p></legend>
         <select [(ngModel)]="current_currency" class="selectpicker" id="currency"  required name="current_currency" >
           <option value="-1" disabled selected hidden >Please choose currency</option>
           <option *ngFor='let current_currency of currency' #choose_currency [value]="current_currency" selected>{{current_currency}}</option>

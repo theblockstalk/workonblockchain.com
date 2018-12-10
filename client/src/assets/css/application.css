@@ -14,25 +14,34 @@
 	font-weight:normal
 }
 
+.wob-wizard {
+	/*placeholder if we want to change wizard*/
+}
+
 .navbar-brand>img {
 	width: 250px;
 	align: "left;"
 }
 
-.btn-linkdIn {
-	color: #fff;
-	background-color: #0976b4;
-	border-color: #0976b4;
-}
-
-.btn-linkdIn:hover {
-	background-color: #59707e;
-	border-color: #476b80;
-	color: #fff;
+/*Use with bootstrap-social.css*/
+.btn-social .fab {
+	color: #fff
 }
 
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
 	width: 100% !important;
+}
+
+.btn-light {
+    color: #495057 !important;
+    background-color: #ffffff !important;
+    border-color: #ced4da !important;
+}
+
+.btn-light:hover {
+    color: #495057;
+    background-color: #ffffff;
+    border-color: #ced4da;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -40,14 +49,28 @@ input[type=number]::-webkit-outer-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
-.btn-light {
-  color: #495057 !important;
-  background-color: #ffffff !important;
-  border-color: #ced4da !important;
+
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
 }
 
-.btn-light:hover {
-  color: #495057;
-  background-color: #ffffff;
-  border-color: #ced4da;
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff !important;
+    text-decoration: none;
+    background-color: #d0d0d0 !important;
+}
+
+.modal-header{
+	display: block;
+	text-align: center;
+	color: #fff;
+}
+
+.modal-header .close span{
+	position: absolute !important;
+    color: #fff !important;
+    top: 0px !important;
+    right: 10px !important;
 }

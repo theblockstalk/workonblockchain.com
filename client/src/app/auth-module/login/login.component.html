@@ -1,5 +1,5 @@
-<div class = "container border w-75">
-  <div class = "row bg-light">
+<div class = "container border w-75 mb-4">
+  <div class = "row bg-primary2">
     <div class="col-md-12 mt-2 mb-2">
       <h3 class="text-center">Login to WOB</h3>
       <div class="alert alert-success" role="alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
@@ -39,7 +39,7 @@
     <div class = "row justify-content-md-center">
       <div class="col-md-8">
         <div class="form-group">
-          <a  class = "form-control btn btn-info" (click)="subscribeToLogin()" type = "submit">
+          <a  class = "btn btn-block btn-social btn-linkedin" (click)="subscribeToLogin()" type = "submit">
             <i class="fab fa-linkedin" aria-hidden="true"></i>
             Login with LinkedIn
           </a>
@@ -49,7 +49,7 @@
     <div class = "row justify-content-md-center">
       <div class="col-md-8">
         <div class="form-group">
-          <a  class = "form-control btn btn-danger" type = "submit" (click)="signInWithGoogle()">
+          <a  class = "btn btn-block btn-social btn-google" type = "submit" (click)="signInWithGoogle()">
             <i class="fab fa-google" aria-hidden="true"></i>
             Login with Google
           </a>
