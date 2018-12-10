@@ -6,25 +6,14 @@ const filterReturnData = require('../filterReturnData');
 
 module.exports = async function (req,res) {
     let queryBody = req.body;
+    console.log(queryBody);
     let msgTags = queryBody.msg_tags;
 
     let companyReply;
     let userIds= [];
     let queryString = [];
     if(queryBody.msg_tags) {
-        let picked = msgTags.find(o => o === 'is_company_reply');
-        var employ_offer = msgTags.find(o => o === 'Employment offer accepted / reject');
-        if(employ_offer) {
-            var offered = ['employment_offer_accepted', 'employment_offer_rejected'];
-            for (detail of offered) {
-                queryBody.msg_tags.push(detail);
-            }
-        }
-        if(picked) {
-            companyReply= [1,0];
-        }
-
-        const chatDoc = await Chat.find({$or : [{msg_tag : {$in: queryBody.msg_tags}} , {is_company_reply: {$in: companyReply} }]}).lean();
+        const chatDoc = await Chat.find({msg_tag : {$in: queryBody.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
         if(chatDoc && chatDoc.length > 0) {
             for (detail of chatDoc) {
                 userIds.push(detail.sender_id);
@@ -32,7 +21,7 @@ module.exports = async function (req,res) {
             }
             const msgTagFilter = {"_creator" : {$in : userIds}};
             queryString.push(msgTagFilter);
-            if(queryBody.is_approve!== -1) {
+            if(queryBody.is_approve) {
                 const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approve)};
                 queryString.push(isApproveFilter);
             }

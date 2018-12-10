@@ -1234,9 +1234,9 @@ export class UserService {
 
 
 
-    admin_company_filter(is_approve : number , msg_tags : any,word:any)
+    admin_company_filter(queryBody : any)
     {
-        return this.http.post<any>(URL+'users/admin_company_filter', { is_approve: is_approve , msg_tags : msg_tags , word:word}, {
+        return this.http.post<any>(URL+'users/admin_company_filter', queryBody , {
             headers: new HttpHeaders().set('Authorization', this.token)
         })
             .map((res: Response) =>

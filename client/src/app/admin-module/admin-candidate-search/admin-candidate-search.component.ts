@@ -225,7 +225,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
   msgtags;
   messagetag_changed(data)
   {
-      this.search(data);
+    this.search(data);
   }
 
   search_approved(event)

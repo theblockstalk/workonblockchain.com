@@ -1,6 +1,6 @@
 <div class="container">
   <div class = "row">
-    <div class="col-md-12 bg-primary1 p-2">
+    <div class="col-md-12 wob-bg-primary1 p-2">
       <form #f="ngForm" (ngSubmit)="searchdata('search', searchWord)" class="w-50 mx-auto">
         <div class="input-group">
           <input type="text" class="form-control" [(ngModel)]='searchWord' name="word" [disabled]="msg !== '' ? true : false"  placeholder="Search">
@@ -17,7 +17,7 @@
     <div class = "col-md-12 p-0">
       <div class = "row">
         <div class = "col-md-3 ">
-          <div class="bg-primary2 p-2 border">
+          <div class="wob-bg-primary2 p-2 border">
             <h4>Filters</h4>
 
             <div class="form-group">
@@ -93,36 +93,36 @@
             <div *ngIf="candidate_data && candidate_data.length > 0 ">
               <div class="panel-group" *ngFor= "let data of pagedItems ">
                 <div class="panel panel-default border mb-3" >
-                  <div class="row m-0 bg-primary2 pt-3 pb-3">
-					
-					<div class="col-md-9">
-					
-					<ng-container *ngIf="data.initials;else company_logo_top">
-                              <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="/assets/profile/profile-image.png" alt="">
-                          </ng-container>
-                          <ng-template #company_logo_top>
-                              <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="data.image" src="{{data.image}}" alt="">
-                              <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
-                          </ng-template>
-						<div class="ml-4">
+                  <div class="row m-0 wob-bg-primary2 pt-3 pb-3">
 
-					<a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
-                            <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
+                    <div class="col-md-9">
 
-                            <h5 class="ml-5">
-                              <span class="badge badge-secondary mr-1" *ngFor= "let roles of data.roles"> {{roles}} </span>
-                            </h5>
-							</div>
-					</div>
-					<div class="col-md-3">
-					 <form #abc_form="ngForm" (ngSubmit)="onSubmit(abc_form.value)">
-                            <input type="hidden" name="id" [ngModel]="data._creator._id">
-                            <input type="hidden" name="name" [ngModel]="data.initials">
-                            <div class="float-right">
-                              <button type="submit" class = "btn bg-secondary2" data-toggle="modal" data-target="#jobDescriptionModal" >Send job description</button>
-                            </div>
-                          </form>
-					</div>
+                      <ng-container *ngIf="data.initials;else company_logo_top">
+                        <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="/assets/profile/profile-image.png" alt="">
+                      </ng-container>
+                      <ng-template #company_logo_top>
+                        <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="data.image" src="{{data.image}}" alt="">
+                        <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" *ngIf="!data.image" src="/assets/profile/profile-image.png" alt="">
+                      </ng-template>
+                      <div class="ml-4">
+
+                        <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
+                        <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
+
+                        <h5 class="ml-5">
+                          <span class="badge badge-secondary mr-1" *ngFor= "let roles of data.roles"> {{roles}} </span>
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <form #abc_form="ngForm" (ngSubmit)="onSubmit(abc_form.value)">
+                        <input type="hidden" name="id" [ngModel]="data._creator._id">
+                        <input type="hidden" name="name" [ngModel]="data.initials">
+                        <div class="float-right">
+                          <button type="submit" class = "btn wob-bg-secondary2" data-toggle="modal" data-target="#jobDescriptionModal" >Send job description</button>
+                        </div>
+                      </form>
+                    </div>
 
                   </div>
                   <div class = "col-md-12 m-0 p-4">
@@ -181,7 +181,7 @@
 <div class="modal fade" id="jobDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header bg-secondary3">
+      <div class="modal-header wob-bg-secondary3">
         <h5 class="modal-title mx-auto" id="exampleModalLabel">Job description</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -264,4 +264,3 @@
     </div>
   </div>
 </div>
-<br/><br/><br/><br/>

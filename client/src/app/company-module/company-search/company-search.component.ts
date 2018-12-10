@@ -691,7 +691,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   msg_body;
   description;
   send_job_offer(msgForm : NgForm){
-console.log(msgForm.value);
+    console.log(msgForm.value);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc){
       if(this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary))>0 && this.credentials.salary % 1 === 0){

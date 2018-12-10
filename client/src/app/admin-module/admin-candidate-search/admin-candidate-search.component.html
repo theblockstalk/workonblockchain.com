@@ -1,12 +1,12 @@
 <div class="container">
   <div class = "row">
-    <div class="col-md-12 bg-primary1 p-2">
+    <div class="col-md-12 wob-bg-primary1 p-2">
       <form #f="ngForm" (ngSubmit)="onSearchName(f)" class="w-50 mx-auto">
         <div class="input-group">
           <input type="text" class="form-control" [(ngModel)]='searchWord' name="word" placeholder="Search">
 
           <div class="input-group-append">
-            <button type="submit" [disabled]="!f.valid " class="btn btn-primary mb-2">Search</button>
+            <button type="submit" class="btn btn-primary mb-2">Search</button>
           </div>
         </div>
       </form>
@@ -17,7 +17,7 @@
     <div class = "col-md-12 p-0">
       <div class = "row">
         <div class = "col-md-3 ">
-          <div class="bg-primary2 p-2 border">
+          <div class="wob-bg-primary2 p-2 border">
             <h4>Filters</h4>
 
             <div class="form-group">
@@ -46,8 +46,6 @@
                 <option class='option' *ngFor='let options of admin_checks_candidate_account'  [value]="options.value" selected>{{options.name}}</option>
               </select>
             </div>
-            <hr/>
-
 
           </div>
           <div class = "form-group float-right mt-2">
@@ -77,11 +75,12 @@
               <div class="panel-group" *ngFor= "let data of pagedItems ">
 
                 <div class="panel panel-default border mb-3" >
-                  <div class="row m-0 bg-primary2 pt-3 pb-3">
+                  <div class="row m-0 wob-bg-primary2 pt-3 pb-3">
 
                     <div class="col-md-12">
 
-                        <img style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="/assets/profile/profile-image.png" alt="">
+                      <img *ngIf="!data.image" style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="/assets/profile/profile-image.png" alt="">
+                      <img *ngIf="data.image" style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="{{data.image}}" alt="">
 
                       <div class="ml-4">
 
@@ -145,6 +144,4 @@
   </div>
 </div>
 
-
 <!-- Modal -->
-<br/><br/><br/><br/>

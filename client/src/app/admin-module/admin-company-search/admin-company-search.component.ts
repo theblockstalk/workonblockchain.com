@@ -1,9 +1,10 @@
 import { Component, OnInit,AfterViewInit } from '@angular/core';
 import {UserService} from '../../user.service';
 import {NgForm} from '@angular/forms';
-import { Select2OptionData } from 'ng2-select2';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
+import {PagerService} from '../../pager.service';
+declare var $:any;
 
 @Component({
   selector: 'app-admin-company-search',
@@ -18,8 +19,6 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   info;
   page;
   log;
-  rolesData;
-  options;
   admin_check = [{name:1 , value:"Active"}, {name:0 , value:"Inactive"}];
   approve;
   msgtags;
@@ -30,11 +29,27 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   admin_log;
   is_admin;
   response;
+  pager: any = {};
+  pagedItems: any[];
+  msgTagsOptions =
+    [
+      {value:'normal', name:'Normal' , checked:false},
+      {value:'job_offer', name:'Job offer sent' , checked:false},
+      {value:'job_offer_accepted', name:'Job offer accepted' , checked:false},
+      {value:'job_offer_rejected', name:'Job offer rejected' , checked:false},
+      {value:'interview_offer', name:'Interview offer sent' , checked:false},
+      {value:'employment_offer', name:'Employment offer sent' , checked:false},
+      {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
+      {value:'employment_offer_rejected', name:'Employment offer rejected' , checked:false},
+    ];
 
-  constructor(private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  constructor(private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 200);
   }
   ngOnInit()
   {
@@ -42,22 +57,6 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.log='';
     this.approve=-1;
     this.response = '';
-    this.rolesData =
-      [
-        {id:'job_offer', text:'Job description sent'},
-        {id:'is_company_reply', text:'Job description accepted / reject'},
-        {id:'interview_offer', text:'Interview request sent'},
-        {id:'employment_offer', text:'Employment offer sent'},
-        {id:'Employment offer accepted / reject', text:'Employment offer accepted / reject'},
-
-      ];
-
-    this.options =
-      {
-        multiple: true,
-        placeholder: 'Message Tags',
-        allowClear :true
-      }
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
@@ -90,31 +89,32 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         data =>
         {
+          console.log(data);
 
+          for(let res of data)
+          {
 
-            for(let res of data)
-            {
+            this.length++;
+            this.info.push(res);
 
-              this.length++;
-              this.info.push(res);
+          }
 
-            }
+          if(this.length> 0 )
+          {
+            this.page =this.length;
+            this.log='';
+            this.response = "data";
+            this.setPage(1);
+          }
+          else
+          {
+            this.log= 'No companies matched this search criteria';
+            this.info=[];
+            this.response = "data";
 
-            if(this.length> 0 )
-            {
-              this.page =this.length;
-              this.log='';
-              this.response = "data";
-            }
-            else
-            {
-              this.log= 'No companies matched this search criteria';
-              this.info=[];
-              this.response = "data";
-
-            }
-            this.length = '';
-
+          }
+          this.length = '';
+          this.setPage(1);
 
         },
         error =>
@@ -133,7 +133,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
         });
   }
 
-error ;
+  error ;
   approveClick(event , approveForm: NgForm)
   {
     this.error = '';
@@ -204,11 +204,7 @@ error ;
 
   messagetag_changed(data)
   {
-    if(this.select_value  !== data.value)
-    {
-      this.select_value = data.value;
-      this.search(this.select_value);
-    }
+      this.search(data);
 
   }
 
@@ -238,42 +234,47 @@ error ;
     this.info=[];
     this.response = "";
 
-    if(this.approve === -1 && !this.select_value && !this.searchWord )
+    if(!this.approve && !this.msgtags && !this.searchWord )
     {
       this.getAllCompanies();
 
     }
     else
     {
+      let queryBody : any = {};
+      if(this.approve) queryBody.is_approve = this.approve;
+      if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
+      if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
 
-      this.authenticationService.admin_company_filter(this.approve , this.select_value, this.searchWord)
+      console.log(queryBody);
+      this.authenticationService.admin_company_filter(queryBody)
         .subscribe(
           data =>
           {
-              this.information = this.filter_array(data);
+            console.log(data);
+            this.information = this.filter_array(data);
 
-              for(let res of this.information)
-              {
+            for(let res of this.information)
+            {
 
-                this.length++;
-                this.info.push(res);
+              this.length++;
+              this.info.push(res);
+            }
 
-              }
+            if(this.length> 0 )
+            {
 
+              this.log='';
+              this.page =this.length;
+              this.response = "data";
+              this.setPage(1);
 
-              if(this.length> 0 )
-              {
-
-                this.log='';
-                this.page =this.length;
-                this.response = "data";
-
-              }
-              else
-              {
-                this.response = "data";
-                this.log= 'No companies matched this search criteria';
-              }
+            }
+            else
+            {
+              this.response = "data";
+              this.log= 'No companies matched this search criteria';
+            }
           },
           error =>
           {
@@ -305,12 +306,18 @@ error ;
   reset()
   {
     this.msgtags = '';
-    this.select_value='';
-    this.approve=-1;
+    this.approve = '';
     this.info=[];
     this.searchWord='';
+    $('.selectpicker').val('default');
+    $('.selectpicker').selectpicker('refresh');
     this.getAllCompanies();
 
+  }
+
+  setPage(page: number) {
+    this.pager = this.pagerService.getPager(this.info.length, page);
+    this.pagedItems = this.info.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
 
 
