@@ -462,6 +462,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             data => {
               this.candidate_data = data;
               this.responseMsg = "response";
+              this.setPage(1);
               if (this.candidate_data.length <= 0) {
                 this.not_found = 'No candidates matched this search criteria';
               }

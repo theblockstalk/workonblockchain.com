@@ -13,6 +13,7 @@ import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-ch
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
 import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
 import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-profile/admin-update-candidate-profile.component';
+import {PagerService} from '../pager.service';
 
 @NgModule({
   imports: [
@@ -32,6 +33,8 @@ import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-p
     AdminCompanySearchComponent,
     AdminCompanyDetailComponent,
     AdminUpdateCandidateProfileComponent,
-  ]
+  ],
+  providers : [PagerService]
+
 })
 export class AdminModuleModule { }
