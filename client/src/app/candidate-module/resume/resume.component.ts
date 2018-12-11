@@ -482,14 +482,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
    blockchain_exp(expForm: NgForm)
    {
      this.error_msg="";
-
-     ////console.log(expForm.value);
-       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-        if(this.commercially_worked.length !== this.commercial_expYear.length )
-        {
-            this.commercial_log = "Please fill year of experience";
-        }
+     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+     if(this.commercially_worked.length !== this.commercial_expYear.length )
+     {
+       this.commercial_log = "Please fill year of experience";
+     }
      if(this.commercialSkills.length !== this.commercialSkillsExperienceYear.length)
      {
        this.commercial_skill_log = "Please fill year of experience";
@@ -540,7 +537,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
    oncommerciallyOptions(obj)
    {
-
    let updateItem = this.commercially_worked.find(this.findIndexToUpdate, obj.value);
       let index = this.commercially_worked.indexOf(updateItem);
       if(index > -1)
@@ -618,7 +614,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
    selectedValue;langValue;
    onComExpYearOptions(e, value)
    {
-
        this.langValue = value;
         let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
       let index = this.commercial_expYear.indexOf(updateItem);
