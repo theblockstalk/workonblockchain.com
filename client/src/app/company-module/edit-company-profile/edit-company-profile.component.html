@@ -117,12 +117,13 @@
 
               <fieldset class="scheduler-border">
                 <legend class="scheduler-border">About the Company</legend>
-
+                <div class="row">
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">When was the company founded?</p></label>
-                  <input type="text" class="form-control" id="" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
-                  <div class = "form_error" *ngIf="!company_founded">
-                    <span class = "error">{{founded_log}}</span>
+                  <input type="text" class="form-control" id="" #companyFounded="ngModel"  pattern="^[0-9]*$" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
+                  <div class = "form_error" *ngIf="!company_founded || companyFounded.errors">
+                    <span class = "error" *ngIf="!company_founded; else expected_validation " >{{founded_log}}</span>
+                    <span class = "error" #expected_validation  *ngIf="companyFounded.errors && company_founded">  Input data should be a number. </span>
                   </div>
                 </div>
 
@@ -133,7 +134,9 @@
                     <span class = "error">{{employee_log}}</span>
                   </div>
                 </div>
+                </div>
 
+                <div class="row">
                 <div class="form-group col-md-6">
                   <label><p class = "label-p">How is the company funded?</p></label>
                   <input type="text" class="form-control" id="" placeholder="How's compnay funded?" name="company_funded" [(ngModel)]="company_funded">
@@ -163,13 +166,16 @@
                     <span class = "error">{{image_log}}</span>
                   </div>
                 </div>
+                </div>
 
+                <div class="row">
                 <div class="form-group col-md-12 mr-top-04">
                   <label><p>Company Description</p></label>
                   <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="" name="company_description" [(ngModel)]="company_description"></textarea>
                   <div class = "form_error" *ngIf="!company_description">
                     <span class = "error">{{des_log}}</span>
                   </div>
+                </div>
                 </div>
 
               </fieldset>
@@ -307,7 +313,7 @@
           </div>
 
           <div class = "button_area text-right">
-            <button type="submit" class = "btn btn-self btn-pdg" [disabled]="website.errors && company_website" >Save Profile</button>
+            <button type="submit" class = "btn btn-self btn-pdg" [disabled]="website.errors && company_website || companyFounded.errors" >Save Profile</button>
           </div>
           <div class = "form_error error-log" *ngIf="error_msg">
             <span class = "error">{{error_msg}}</span>
