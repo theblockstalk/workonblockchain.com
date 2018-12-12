@@ -90,7 +90,7 @@ export class HeaderComponent implements OnInit {
       else if(this.user_type === 'company')
       {
 
-        this.authenticationService.getCurrentCompany(this.currentUser._creator)
+        /*this.authenticationService.getCurrentCompany(this.currentUser._creator)
           .subscribe(
             data =>
             {
@@ -116,7 +116,7 @@ export class HeaderComponent implements OnInit {
                   this.admin_route = '';
                 }
               }
-            });
+            });*/
       }
     }
     else

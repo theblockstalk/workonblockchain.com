@@ -144,7 +144,7 @@ console.log(companyeditor);
         .subscribe(
           data =>
           {
-            if(data.error)
+            if(data['error'])
             {
               this.company_error = "Something went wrong" ;
 

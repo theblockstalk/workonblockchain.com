@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule , ReactiveFormsModule} from '@angular/forms';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { Select2Module } from 'ng2-select2';
 import { SharedModule } from '../app-shared.module';
 import {ScriptService} from '../scripts/script.service';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 import { CompanyModuleRoutingModule } from './company-module-routing.module';
 import { AboutCompanyComponent } from './about-company/about-company.component';
@@ -23,6 +25,8 @@ import { PreferencesComponent } from './preferences/preferences.component';
     ReactiveFormsModule,
     CKEditorModule,
     SharedModule,
+    Select2Module,
+    NgxPaginationModule,
   ],
   declarations: [
     AboutCompanyComponent,

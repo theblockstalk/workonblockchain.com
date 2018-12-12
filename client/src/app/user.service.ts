@@ -4,9 +4,9 @@ import {User} from './Model/user';
 import {CandidateProfile} from './Model/CandidateProfile';
 import { DataService } from './data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable} from 'rxjs';
-import { map } from 'rxjs/operators';
-import { catchError } from 'rxjs/operators';
+import { Observable, throwError} from 'rxjs';
+
+import { map, catchError } from 'rxjs/operators';
 import {environment} from '../environments/environment';
 
 const URL = environment.backend_url;
@@ -53,7 +53,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -83,7 +83,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
     }));
 
@@ -115,7 +115,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -175,7 +175,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -195,7 +195,7 @@ export class UserService {
       {
         if (error)
         {
-          return Observable.throw(error);
+          return throwError(error);
         }
 
       }));
@@ -225,7 +225,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -285,7 +285,7 @@ export class UserService {
             localStorage.removeItem('admin_log');
             window.location.href = '/login';
           }
-          else return Observable.throw(error);
+          else return throwError(error);
         }
       }));
 
@@ -347,7 +347,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);                }
+        else return throwError(error);                }
     }));
 
   }
@@ -377,7 +377,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -409,7 +409,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -441,7 +441,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -473,7 +473,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -508,7 +508,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
     }));
 
@@ -539,7 +539,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(new Error(error));                }
+        else return throwError(new Error(error));                }
 
     }));
   }
@@ -569,7 +569,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(new Error(error));
+        else return throwError(new Error(error));
       }
 
     }));
@@ -600,7 +600,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(new Error(error));
+        else return throwError(new Error(error));
       }
 
     }));
@@ -630,7 +630,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
     }));
   }
@@ -659,7 +659,7 @@ export class UserService {
             localStorage.removeItem('admin_log');
             window.location.href = '/login';
           }
-          else return Observable.throw(error);
+          else return throwError(error);
         }
 
       }));
@@ -688,7 +688,7 @@ export class UserService {
         localStorage.removeItem('admin_log');
         window.location.href = '/login';
       }
-      else return Observable.throw(error);
+      else return throwError(error);
 
     }));
 
@@ -717,7 +717,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -737,7 +737,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -773,7 +773,7 @@ export class UserService {
           this.router.navigate(['/not_found']);
         }
 
-        else return Observable.throw(new Error(error));
+        else return throwError(new Error(error));
       }
 
     }));
@@ -793,7 +793,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -814,7 +814,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -834,7 +834,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(error);
+        return throwError(error);
       }
 
     }));
@@ -867,7 +867,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -897,7 +897,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(new Error(error));
+        else return throwError(new Error(error));
       }
 
     }));
@@ -929,7 +929,7 @@ export class UserService {
             localStorage.removeItem('admin_log');
             window.location.href = '/login';
           }
-          else return Observable.throw(error);
+          else return throwError(error);
         }
 
       }));
@@ -962,7 +962,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -983,7 +983,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -1003,7 +1003,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -1023,7 +1023,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -1070,7 +1070,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -1102,7 +1102,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -1135,7 +1135,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -1164,7 +1164,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -1197,7 +1197,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -1216,7 +1216,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -1246,7 +1246,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -1271,7 +1271,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(error);
+        return throwError(error);
       }
 
     }));
@@ -1291,7 +1291,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -1310,7 +1310,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -1341,7 +1341,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -1373,7 +1373,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -1395,7 +1395,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
 
     }));
@@ -1414,7 +1414,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return Observable.throw(error);
+        return throwError(error);
       }
 
     }));
@@ -1443,7 +1443,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));
@@ -1459,7 +1459,7 @@ export class UserService {
     }), catchError((error: any) => {
       //console.log(error.status);
       if (error.status) {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
     }));
   }
@@ -1473,7 +1473,7 @@ export class UserService {
       }
     }), catchError((error: any) => {
       if (error.status) {
-        return Observable.throw(new Error(error.status));
+        return throwError(new Error(error.status));
       }
     }));
   }
@@ -1484,13 +1484,15 @@ export class UserService {
       {
         if (res)
         {
+          console.log(res);
           return res;
         }
       }), catchError((error: any) =>
       {
         if (error )
         {
-          return Observable.throw(new Error(error));
+          console.log(error);
+          return throwError(new Error(error));
         }
 
       }));
@@ -1520,7 +1522,7 @@ export class UserService {
           localStorage.removeItem('admin_log');
           window.location.href = '/login';
         }
-        else return Observable.throw(error);
+        else return throwError(error);
       }
 
     }));

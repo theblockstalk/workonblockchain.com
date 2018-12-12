@@ -57,7 +57,7 @@ export class ProfileResolver  {
             {
               // this.router.navigate(['/not_found']);
             }
-          })
+          }));
 
       }
       if(this.currentUser.type === 'company')

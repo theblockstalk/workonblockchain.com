@@ -65,9 +65,8 @@ export class AdminTermsConditionEditorComponent implements OnInit {
                 data => {
                    if(data)
                    {
-                       //////console.log(data);
-                        this.page_title = data.page_title;
-                       this.editor_content = data.page_content;
+                        this.page_title = data['page_title'];
+                       this.editor_content = data['page_content'];
                        ////console.log(this.editor_content);
 
                    }
@@ -78,15 +77,15 @@ export class AdminTermsConditionEditorComponent implements OnInit {
                    if(data)
                    {
                       // ////console.log(data);
-                        this.company_page_title = data.page_title;
-                       this.company_editor_content = data.page_content;
+                        this.company_page_title = data['page_title'];
+                       this.company_editor_content = data['page_content'];
                        ////console.log(this.editor_content);
 
                    }
                    },
                  error =>
                  {
-                     if(error.message === 500 || error.message === 401)
+                     if(error['message'] === 500 || error['message'] === 401)
                      {
                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
                          localStorage.removeItem('currentUser');
@@ -151,7 +150,7 @@ export class AdminTermsConditionEditorComponent implements OnInit {
 		   .subscribe(
 		   data =>
 		   {
-			   if(data.error)
+			   if(data['error'])
 			   {
 				   this.company_error = "Something went wrong";
 

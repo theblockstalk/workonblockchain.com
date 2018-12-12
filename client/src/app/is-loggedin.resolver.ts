@@ -25,7 +25,7 @@ export class LoginResolver  {
                headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
              }).pipe(map(res =>
              {
-                 if (res && !res.saved_searches ) {
+                 if (res && !res['saved_searches'] ) {
                    window.location.href = '/company_profile';
                  }
                  else {
