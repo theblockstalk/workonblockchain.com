@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/delay';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
 import {environment} from '../environments/environment';
-
+import { map } from 'rxjs/operators';
 const URL = environment.backend_url;
 
 @Injectable()
@@ -21,7 +18,7 @@ export class ProfileResolver  {
       {
         this.http.get(URL + 'users/current/' + this.currentUser._creator ,  {
           headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-        }).map((res) => res).subscribe(
+        }).pipe(map(
           (res) => {
             if (res) {
               if (!res['terms_id'] || res['terms_id'] === false) {
@@ -47,20 +44,20 @@ export class ProfileResolver  {
 
             }
           },
-            (error) =>
+          (error) =>
+          {
+            if(error.message === 500 || error.message === 401)
             {
-              if(error.message === 500 || error.message === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                window.location.href = '/login';
-              }
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              window.location.href = '/login';
+            }
 
 
-              if(error.message === 403)
-              {
-                // this.router.navigate(['/not_found']);
-              }
-            })
+            if(error.message === 403)
+            {
+              // this.router.navigate(['/not_found']);
+            }
+          })
 
       }
       if(this.currentUser.type === 'company')
