@@ -28,8 +28,8 @@ export class PrivacyPolicyComponent implements OnInit {
           data => {
              if(data)
              {
-               this.page_title= data.page_title;
-               this.editor_content = data.page_content;
+               this.page_title= data['page_title'];
+               this.editor_content = data['page_content'];
              }
           }
       );

@@ -5,6 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataService } from "../../data.service";
 import {NgForm ,FormGroup , FormControl, FormBuilder} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+
 declare var $:any;
 
 import {environment} from '../../../environments/environment';
@@ -281,17 +283,17 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           {
             if(data)
             {
-              this.email = data._creator.email;
+              this.email = data['_creator'].email;
             }
-            if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
+            if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
             {
-              this.company_founded=data.company_founded;
-              this.no_of_employees=data.no_of_employees;
-              this.company_funded=data.company_funded;
-              this.company_description =data.company_description;
-              if(data.company_logo != null){
+              this.company_founded = data['company_founded'];
+              this.no_of_employees = data['no_of_employees'];
+              this.company_funded = data['company_funded'];
+              this.company_description = data['company_description'];
+              if(data['company_logo'] != null){
 
-                this.img_data  =  data.company_logo;
+                this.img_data  =  data['company_logo'];
 
                 let x = this.img_data.split("/");
 
@@ -302,44 +304,44 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
             }
 
-            if(data.first_name && data.last_name && data.job_title && data.company_name && data.company_website &&
-              data.company_phone && data.company_postcode)
+            if(data['first_name'] && data['last_name'] && data['job_title'] && data['company_name'] && data['company_website'] &&
+              data['company_phone'] && data['company_postcode'])
             {
-              this.first_name= data.first_name;
-              this.last_name=data.last_name;
-              this.job_title =data.job_title;
-              this.company_name=data.company_name;
-              this.company_website=data.company_website;
-              this.company_phone=data.company_phone;
-              this.company_country=data.company_country;
-              this.company_city =data.company_city;
-              this.company_postcode = data.company_postcode;
+              this.first_name= data['first_name'];
+              this.last_name=data['last_name'];
+              this.job_title =data['job_title'];
+              this.company_name=data['company_name'];
+              this.company_website=data['company_website'];
+              this.company_phone=data['company_phone'];
+              this.company_country=data['company_country'];
+              this.company_city =data['company_city'];
+              this.company_postcode = data['company_postcode'];
 
             }
 
-            if(data.saved_searches && data.saved_searches.length > 0) {
+            if(data['saved_searches'] && data['saved_searches'].length > 0) {
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
-                location: [data.saved_searches[0].location],
-                job_type: [data.saved_searches[0].job_type],
-                position: [data.saved_searches[0].position],
-                availability_day: [data.saved_searches[0].availability_day],
-                current_currency: [data.saved_searches[0].current_currency],
-                current_salary: [data.saved_searches[0].current_salary],
-                blockchain: [data.saved_searches[0].blockchain],
-                skills: [data.saved_searches[0].skills],
-                other_technologies: [data.saved_searches[0].other_technologies],
-                when_receive_email_notitfications: [data.saved_searches[0].when_receive_email_notitfications],
+                location: [data['saved_searches[0]'].location],
+                job_type: [data['saved_searches[0]'].job_type],
+                position: [data['saved_searches[0]'].position],
+                availability_day: [data['saved_searches[0]'].availability_day],
+                current_currency: [data['saved_searches[0]'].current_currency],
+                current_salary: [data['saved_searches[0]'].current_salary],
+                blockchain: [data['saved_searches[0]'].blockchain],
+                skills: [data['saved_searches[0]'].skills],
+                other_technologies: [data['saved_searches[0]'].other_technologies],
+                when_receive_email_notitfications: [data['saved_searches[0]'].when_receive_email_notitfications],
               });
 
-              for (let locations of data.saved_searches[0].location) {
+              for (let locations of data['saved_searches[0]'].location) {
                 for(let option of this.locations) {
                   if(option.name === locations ) {
                     this.locationSelected.push(option.name);
                   }
                 }
               }
-              for (let job_types of data.saved_searches[0].job_type) {
+              for (let job_types of data['saved_searches[0]'].job_type) {
                 for(let option of this.job_types) {
                   if(option === job_types ) {
                     this.jobTypesSelected.push(option);
@@ -347,7 +349,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 }
               }
 
-              for (let positions of data.saved_searches[0].position) {
+              for (let positions of data['saved_searches[0]'].position) {
                 for(let option of this.roles) {
                   if(option.name === positions ) {
                     this.positionSelected.push(option.name);
@@ -355,8 +357,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 }
               }
 
-              if(data.saved_searches[0].blockchain && data.saved_searches[0].blockchain.length > 0) {
-                for(let blockchains of data.saved_searches[0].blockchain) {
+              if(data['saved_searches[0]'].blockchain && data['saved_searches[0]'].blockchain.length > 0) {
+                for(let blockchains of data['saved_searches[0]'].blockchain) {
                   for(let option of this.blockchain) {
                     if(option.name === blockchains) {
                       this.blockchainSelected.push(option.name);
@@ -365,8 +367,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 }
               }
 
-              if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
-                for(let skills of data.saved_searches[0].skills) {
+              if(data['saved_searches[0]'].skills && data['saved_searches[0]'].skills.length > 0) {
+                for(let skills of data['saved_searches[0]'].skills) {
                   for(let option of this.language_opt) {
                     if(option.name === skills) {
                       this.languageSelected.push(option.name);
@@ -378,7 +380,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
+            if(error['message'] === 500 || error['message'] === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
@@ -389,7 +391,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               window.location.href = '/login';
             }
 
-            if(error.message === 403)
+            if(error['message'] === 403)
             {
               this.router.navigate(['/not_found']);
             }
@@ -495,8 +497,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
                   this.http.post(URL+'users/employer_image', formData, {
                     headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                  }).map((res) => res).subscribe(
-                    (success) =>
+                  }).pipe(map(res =>
                     {
                       this.router.navigate(['/company_profile']);
                     },
@@ -511,7 +512,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                         localStorage.removeItem('admin_log');
                         window.location.href = '/login';
                       }
-                    })
+                    }));
                 }
                 else
                 {

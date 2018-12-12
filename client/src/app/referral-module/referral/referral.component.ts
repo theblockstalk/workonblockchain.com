@@ -70,11 +70,10 @@ export class ReferralComponent implements OnInit {
         .subscribe(
           data => {
             if(data) {
-              const data = JSON.parse(data);
-              this.first_name = data.first_name;
-              this.last_name = data.last_name;
-              this.display_name = data.first_name+' '+data.last_name;
-              this.authenticationService.getRefCode(data._creator.email)
+              this.first_name = data['first_name'];
+              this.last_name = data['last_name'];
+              this.display_name = data['first_name'] +' '+ data['last_name'];
+              this.authenticationService.getRefCode(data['_creator'].email)
                 .subscribe(
                   data => {
                     this.ref_link = this.email_ref_link + data['url_token'];
@@ -137,7 +136,7 @@ export class ReferralComponent implements OnInit {
       this.authenticationService.send_refreal(this.credentials.email, this.email_subject, this.mail_body,this.share_url,this.first_name,this.last_name)
         .subscribe(
           data => {
-            this.log = data.msg;
+            this.log = data['msg'];
           },
           error => {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)

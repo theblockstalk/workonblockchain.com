@@ -404,8 +404,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
                 this.expected_salaryyy = data.expected_salary;
 
                 this.availability_day = data.availability_day;
-                if(data.expected_salary_currency)
-                  this.base_currency = data.expected_salary_currency;
+                if(data['expected_salary_currency'])
+                  this.base_currency = data['expected_salary_currency'];
               }
 
               if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)

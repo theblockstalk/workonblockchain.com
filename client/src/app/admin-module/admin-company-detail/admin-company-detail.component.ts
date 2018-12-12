@@ -70,22 +70,22 @@ export class AdminCompanyDetailComponent implements OnInit {
                     refData => {
 
                       console.log(refData);
-                      if (refData.candidateDoc) {
+                      if (refData['candidateDoc']) {
                         console.log("candidate");
-                        this.referred_name = refData.candidateDoc.first_name + " " + refData.candidateDoc.last_name;
+                        this.referred_name = refData['candidateDoc'].first_name + " " + refData['candidateDoc'].last_name;
                         this.detail_link = '/admin-candidate-detail';
-                        this.referred_link = refData.candidateDoc._creator;
+                        this.referred_link = refData['candidateDoc']._creator;
                       }
-                      else if (refData.companyDoc) {
+                      else if (refData['companyDoc']) {
                         console.log("company");
-                        this.referred_name = refData.companyDoc.first_name + " " + refData.companyDoc.last_name;
+                        this.referred_name = refData['companyDoc'].first_name + " " + refData['companyDoc'].last_name;
                         console.log(this.referred_name);
                         this.detail_link = '/admin-company-detail';
-                        this.referred_link = refData.companyDoc._creator;
+                        this.referred_link = refData['companyDoc']._creator;
                         console.log(this.referred_link);
                       }
                       else {
-                        this.referred_name = refData.refDoc.email;
+                        this.referred_name = refData['refDoc'].email;
                       }
 
                     },
@@ -105,9 +105,9 @@ export class AdminCompanyDetailComponent implements OnInit {
                     }
                   );
               }
-              if(data.company_logo != null )
+              if(data['company_logo'] != null )
               {
-                this.imgPath = data.company_logo;
+                this.imgPath = data['company_logo'];
               }
 
               if(data.company_website)

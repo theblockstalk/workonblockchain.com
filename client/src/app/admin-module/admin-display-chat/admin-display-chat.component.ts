@@ -352,9 +352,9 @@ export class AdminDisplayChatComponent implements OnInit {
 			.subscribe(
 				data => {
 					data = data.users;
-					if(data.company_logo!='')
+					if(data['company_logo']!='')
 					{
-						this.profile_pic = data.company_logo;
+						this.profile_pic = data['company_logo'];
 					}
 					this.display_name = data.company_name;
 					this.user_type = data._creator.type;

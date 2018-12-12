@@ -65,7 +65,7 @@ export class HeaderComponent implements OnInit {
 
               if(data)
               {
-                this.is_verify = data._creator.is_verify;
+                this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
                 {
                   this.success_msg = "not verify";
@@ -74,8 +74,8 @@ export class HeaderComponent implements OnInit {
                 {
                   this.success_msg='';
                 }
-                this.is_admin = data._creator.is_admin;
-                this.user_name = data.first_name+' '+data.last_name;
+                this.is_admin = data['_creator'].is_admin;
+                this.user_name = data['first_name'] +' '+ data['last_name'];
                 if(this.is_admin === 1)
                 {
                   //this.admin_route = '/admin';
@@ -90,13 +90,13 @@ export class HeaderComponent implements OnInit {
       else if(this.user_type === 'company')
       {
 
-        /*this.authenticationService.getCurrentCompany(this.currentUser._creator)
+        this.authenticationService.getCurrentCompany(this.currentUser['_creator'])
           .subscribe(
             data =>
             {
               if(data)
               {
-                this.is_verify = data._creator.is_verify;
+                this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
                 {
                   this.success_msg = "not verify";
@@ -105,8 +105,8 @@ export class HeaderComponent implements OnInit {
                 {
                   this.success_msg='';
                 }
-                this.is_admin = data._creator.is_admin;
-                this.user_name = data.first_name+' '+data.last_name;
+                this.is_admin = data['_creator'].is_admin;
+                this.user_name = data['first_name'] +' '+ data['last_name'];
                 if(this.is_admin === 1)
                 {
                   //this.admin_route = '/admin';
@@ -116,7 +116,7 @@ export class HeaderComponent implements OnInit {
                   this.admin_route = '';
                 }
               }
-            });*/
+            });
       }
     }
     else

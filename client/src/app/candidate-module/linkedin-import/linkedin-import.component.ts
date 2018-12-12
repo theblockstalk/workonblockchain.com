@@ -54,27 +54,27 @@ export class LinkedinImportComponent implements OnInit {
           data =>
           {
 
-            if(data.terms_id)
+            if(data['terms_id'])
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
 
-            if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+            if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.about_active_class = 'fa fa-check-circle text-success';
               this.job_disable = '';
               this.link= "/job";
             }
 
-            if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day&& data.current_salary )
+            if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'] && data['current_salary'] )
             {
               this.resume_disable = '';
               this.job_active_class = 'fa fa-check-circle text-success';
               this.resume_class="/resume";
             }
 
-            if(data.why_work )
+            if(data['why_work'] )
             {
               this.exp_disable = '';
               this.resume_class="/resume";
@@ -82,18 +82,16 @@ export class LinkedinImportComponent implements OnInit {
               this.resume_active_class='fa fa-check-circle text-success';
             }
 
-            if( data.programming_languages.length>0  &&data.description)
+            if( data['programming_languages'].length>0  &&data['description'])
             {
               this.exp_class = "/experience";
               this.exp_active_class = 'fa fa-check-circle text-success';
             }
 
-
-
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
+            if(error['message'] === 500 || error['message'] === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
@@ -104,7 +102,7 @@ export class LinkedinImportComponent implements OnInit {
               window.location.href = '/login';
             }
 
-            if(error.message === 403)
+            if(error['message'] === 403)
             {
               // this.router.navigate(['/not_found']);
             }

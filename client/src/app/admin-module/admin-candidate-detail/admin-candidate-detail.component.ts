@@ -104,7 +104,7 @@ export class AdminCandidateDetailComponent implements OnInit {
         this.authenticationService.getById(this.user_id)
           .subscribe(
             data => {
-              this.candidate_status = data._creator.candidate.status[0];
+              this.candidate_status = data['_creator'].candidate.status[0];
               if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){}
               else{
                 this.set_status = this.candidate_status.status;
@@ -118,23 +118,23 @@ export class AdminCandidateDetailComponent implements OnInit {
                 $("#status_reason_deferred").css("display", "block");
               }
               this.info.push(data);
-              this.approve = data._creator.is_approved;
-              this.verify =data._creator.is_verify;
-              this.work_history = data.work_history;
+              this.approve = data['_creator'].is_approved;
+              this.verify =data['_creator'].is_verify;
+              this.work_history = data['work_history'];
               this.work_history.sort(this.date_sort_desc);
-              this.education_history = data.education_history;
+              this.education_history = data['education_history'];
               this.education_history.sort(this.education_sort_desc);
-              this.countries = data.locations;
+              this.countries = data['locations'];
               this.countries.sort();
               if(this.countries.indexOf("remote") > -1){
                 this.countries[0] = 'remote';
                 this.countries = this.filter_array(this.countries);
               }
-              this.interest_area =data.interest_area;
+              this.interest_area =data['interest_area'];
               this.interest_area.sort();
-              this.roles  = data.roles;
+              this.roles  = data['roles'];
               this.roles.sort();
-              this.commercial = data.commercial_platform;
+              this.commercial = data['commercial_platform'];
               if(this.commercial && this.commercial.length>0){
                 this.commercial.sort(function(a, b){
                   if(a.platform_name < b.platform_name) { return -1; }
@@ -142,7 +142,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                   return 0;
                 })
               }
-              this.experimented = data.experimented_platform;
+              this.experimented = data['experimented_platform'];
               if(this.experimented && this.experimented.length>0){
                 this.experimented.sort(function(a, b){
                   if(a.name < b.name) { return -1; }
@@ -151,7 +151,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                 })
               }
 
-              this.languages= data.programming_languages;
+              this.languages= data['programming_languages'];
               if(this.languages && this.languages.length>0){
                 this.languages.sort(function(a, b){
                   if(a.language < b.language) { return -1; }
@@ -160,7 +160,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                 })
               }
 
-              this.platforms=data.platforms;
+              this.platforms=data['platforms'];
               if(this.platforms && this.platforms.length>0){
                 this.platforms.sort(function(a, b){
                   if(a.platform_name < b.platform_name) { return -1; }
@@ -169,9 +169,9 @@ export class AdminCandidateDetailComponent implements OnInit {
                 })
               }
 
-              if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length > 0)
+              if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.commercial_skills && data['_creator'].candidate.blockchain.commercial_skills.length > 0)
               {
-                this.commercial_skills = data._creator.candidate.blockchain.commercial_skills;
+                this.commercial_skills = data['_creator'].candidate.blockchain.commercial_skills;
                 this.commercial_skills.sort(function(a, b){
                   if(a.skill < b.skill) { return -1; }
                   if(a.skill > b.skill) { return 1; }
@@ -179,19 +179,19 @@ export class AdminCandidateDetailComponent implements OnInit {
                 })
               }
 
-              if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length > 0)
+              if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.formal_skills && data['_creator'].candidate.blockchain.formal_skills.length > 0)
               {
-                this.formal_skills = data._creator.candidate.blockchain.formal_skills;
+                this.formal_skills = data['_creator'].candidate.blockchain.formal_skills;
                 this.formal_skills.sort(function(a, b){
                   if(a.skill < b.skill) { return -1; }
                   if(a.skill > b.skill) { return 1; }
                   return 0;
                 })
               }
-              if(data.image != null )
+              if(data['image'] != null )
               {
 
-                this.imgPath =  data.image;
+                this.imgPath =  data['image'];
 
               }
 
@@ -205,34 +205,34 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.is_approved = "";
               }
 
-              if(data._creator.referred_email)
+              if(data['_creator'].referred_email)
               {
-                this.authenticationService.getReferenceDetail(data._creator.referred_email)
+                this.authenticationService.getReferenceDetail(data['_creator'].referred_email)
                   .subscribe(
                     refData => {
 
-                      if(refData.candidateDoc){
-                        if(refData.candidateDoc.first_name && refData.candidateDoc.last_name)
-                          this.referred_name = refData.candidateDoc.first_name + " " + refData.candidateDoc.last_name;
+                      if(refData['candidateDoc']){
+                        if(refData['candidateDoc']['first_name'] && refData['candidateDoc']['last_name'])
+                          this.referred_name = refData['candidateDoc']['first_name'] + " " + refData['candidateDoc']['last_name'];
                         else
-                          this.referred_name = refData.candidateDoc._id ;
+                          this.referred_name = refData['candidateDoc']._id ;
 
 
                         this.detail_link = '/admin-candidate-detail';
-                        this.referred_link = refData.candidateDoc._creator;
+                        this.referred_link = refData['candidateDoc']._creator;
                       }
-                      else if(refData.companyDoc){
-                        if(refData.companyDoc.first_name && refData.companyDoc.last_name)
-                          this.referred_name = refData.companyDoc.first_name + " " + refData.companyDoc.last_name;
+                      else if(refData['companyDoc']){
+                        if(refData['companyDoc'].first_name && refData['companyDoc'].last_name)
+                          this.referred_name = refData['companyDoc'].first_name + " " + refData['companyDoc'].last_name;
                         else
-                          this.referred_name = refData.companyDoc._id ;
+                          this.referred_name = refData['companyDoc']._id ;
 
                         this.detail_link = '/admin-company-detail';
-                        this.referred_link = refData.companyDoc._creator;
+                        this.referred_link = refData['companyDoc']._creator;
                       }
                       else
                       {
-                        this.referred_name = refData.refDoc.email;
+                        this.referred_name = refData['refDoc'].email;
                       }
 
                           },
@@ -252,24 +252,6 @@ export class AdminCandidateDetailComponent implements OnInit {
 
                     }
                   );
-                /*this.authenticationService.getById(data._creator.refered_id)
-                  .subscribe(
-                    data => {
-
-                      if(data!='')
-                      {
-                        this.first_name = data.first_name;
-                        this.last_name =data.last_name;
-
-                      }
-                      else
-                      {
-                        this.refeered="null";
-                      }
-                    });*/
-
-
-
               }
 
             },
@@ -352,7 +334,7 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.authenticationService.approve_candidate(id, set_status, reason)
     .subscribe(
       data => {
-        if (data.success === true) {
+        if (data['success'] === true) {
           this.candidate_status.status = set_status;
           this.candidate_status.reason = reason;
           this.success = 'Candidate status changed successfully';

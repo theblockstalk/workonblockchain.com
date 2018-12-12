@@ -288,23 +288,23 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           data =>
           {
 
-            if(data.terms === false)
+            if(data['terms'] === false)
             {
               this.router.navigate(['/company_wizard']);
             }
 
-            else if(!data.company_founded && !data.no_of_employees && !data.company_funded && !data.company_description )
+            else if(!data['company_founded'] && !data['no_of_employees'] && !data['company_funded'] && !data['company_description'] )
             {
               this.router.navigate(['/about_comp']);
             }
-            else if(!data.saved_searches  || ((new Date(data._creator.created_date) > new Date('2018/11/27')) && data.saved_searches.length === 0)) {
+            else if(!data['saved_searches']  || ((new Date(data['_creator'].created_date) > new Date('2018/11/27')) && data['saved_searches'].length === 0)) {
               this.router.navigate(['/preferences']);
 
             }
             else
             {
-              this.is_approved = data._creator.is_approved;
-              this.display_name = data.company_name;
+              this.is_approved = data['_creator'].is_approved;
+              this.display_name = data['company_name'];
 
               if(this.is_approved === 0 )
               {
@@ -312,7 +312,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 this.msg = "You can access this page when your account has been approved by an admin.";
                 this.log='';
               }
-              else if(data._creator.disable_account == true)
+              else if(data['_creator'].disable_account == true)
               {
                 this.disabled = true;
                 this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
@@ -322,36 +322,36 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               else
               {
                 this.disabled = false;
-                this.first_name=data.first_name;
-                this.last_name=data.last_name;
-                this.company_name=data.company_name;
-                this.job_title=data.job_title;
-                this.company_website=data.company_website;
-                this.company_phone =data.company_phone;
-                this.company_country =data.company_country;
-                this.company_city=data.company_city;
-                this.company_postcode=data.company_postcode;
-                this.company_description=data.company_description;
-                this.company_founded =data.company_founded;
-                this.company_funded=data.company_funded;
-                this.no_of_employees=data.no_of_employees;
-                if(data.company_logo != null )
+                this.first_name=data['first_name'];
+                this.last_name=data['last_name'];
+                this.company_name=data['company_name'];
+                this.job_title=data['job_title'];
+                this.company_website=data['company_website'];
+                this.company_phone =data['company_phone'];
+                this.company_country =data['company_country'];
+                this.company_city=data['company_city'];
+                this.company_postcode=data['company_postcode'];
+                this.company_description=data['company_description'];
+                this.company_founded =data['company_founded'];
+                this.company_funded=data['company_funded'];
+                this.no_of_employees=data['no_of_employees'];
+                if(data['company_logo'] != null )
                 {
-                  this.imgPath =  data.company_logo;
+                  this.imgPath =  data['company_logo'];
                 }
-                if(data.saved_searches && data.saved_searches.length > 0) {
-                  this.saved_searches = data.saved_searches;
-                  this.location_value = data.saved_searches[0].location;
-                  this.skill_value = data.saved_searches[0].skills;
+                if(data['saved_searches'] && data['saved_searches'].length > 0) {
+                  this.saved_searches = data['saved_searches'];
+                  this.location_value = data['saved_searches[0]'].location;
+                  this.skill_value = data['saved_searches[0]'].skills;
 
-                  this.select_value = data.saved_searches[0].position;
-                  if(data.saved_searches[0].blockchain && data.saved_searches[0].blockchain.length > 0) {
-                    this.selecteddd = data.saved_searches[0].blockchain;
+                  this.select_value = data['saved_searches[0]'].position;
+                  if(data['saved_searches[0]'].blockchain && data['saved_searches[0]'].blockchain.length > 0) {
+                    this.selecteddd = data['saved_searches[0]'].blockchain;
                   }
-                  this.salary = data.saved_searches[0].current_salary;
-                  this.currencyChange = data.saved_searches[0].current_currency;
-                  this.availabilityChange = data.saved_searches[0].availability_day;
-                  this.searchdata('filter' , data.saved_searches[0] );
+                  this.salary = data['saved_searches[0]'].current_salary;
+                  this.currencyChange = data['saved_searches[0]'].current_currency;
+                  this.availabilityChange = data['saved_searches[0]'].availability_day;
+                  this.searchdata('filter' , data['saved_searches[0]'] );
                 }
                 else {
                   this.getVerrifiedCandidate();
@@ -486,7 +486,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           },
           error =>
           {
-            if(error.message === 500)
+            if(error['message'] === 500)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
@@ -497,7 +497,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               window.location.href = '/login';
             }
 
-            if(error.message === 403)
+            if(error['message'] === 403)
             {
               this.router.navigate(['/not_found']);
             }
@@ -631,15 +631,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.authenticationService.getCurrentCompany(this.currentUser._creator)
       .subscribe(
         data => {
-          this.company_name = data.company_name;
+          this.company_name = data['company_name'];
         },
         error => {
-          if(error.message === 500 || error.message === 401  )
+          if(error['message'] === 500 || error['message'] === 401  )
           {
             localStorage.setItem('jwt_not_found', 'Jwt token not found');
             window.location.href = '/login';
           }
-          if(error.message === 403)
+          if(error['message'] === 403)
           {
             this.router.navigate(['/not_found']);
           }
@@ -664,16 +664,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.authenticationService.getLastJobDesc()
     .subscribe(
       data => {
-        let prev_job_desc = data;
-        this.credentials.job_title = prev_job_desc.job_title;
-        this.credentials.salary = prev_job_desc.salary;
-        this.credentials.currency = prev_job_desc.salary_currency;
-        this.credentials.location = prev_job_desc.interview_location;
-        this.credentials.job_type = prev_job_desc.job_type;
-        this.credentials.job_desc = prev_job_desc.description;
+        this.credentials.job_title = data['job_title'];
+        this.credentials.salary = data['salary'];
+        this.credentials.currency = data['salary_currency'];
+        this.credentials.location = data['interview_location'];
+        this.credentials.job_type = data['job_type'];
+        this.credentials.job_desc = data['description'];
       },
       error => {
-        if (error.message === 500 || error.message === 401) {
+        if (error['message'] === 500 || error['message'] === 401) {
           localStorage.setItem('jwt_not_found', 'Jwt token not found');
           localStorage.removeItem('currentUser');
           localStorage.removeItem('googleUser');
@@ -683,7 +682,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           window.location.href = '/login';
         }
 
-        if (error.message === 403) {
+        if (error['message'] === 403) {
           this.router.navigate(['/not_found']);
         }
       }
@@ -705,7 +704,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.job_offer_log = 'You have already sent a job description to this candidate';
 					},
 					error => {
-            if(error.status === 500 || error.status === 401)
+            if(error['status'] === 500 || error['status'] === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
@@ -716,7 +715,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               window.location.href = '/login';
             }
 
-            if(error.status === 404)
+            if(error['status'] === 404)
             {
               this.date_of_joining = '10-07-2018';
               this.msg_tag = 'job_offer';
