@@ -351,16 +351,16 @@ export class AdminDisplayChatComponent implements OnInit {
 			this.authenticationService.getCandidate(this.user_id,'0',1,this.user_type)
 			.subscribe(
 				data => {
-					data = data.users;
+					data = data['users'];
 					if(data['company_logo']!='')
 					{
 						this.profile_pic = data['company_logo'];
 					}
-					this.display_name = data.company_name;
-					this.user_type = data._creator.type;
+					this.display_name = data['company_name'];
+					this.user_type = data['_creator'].type;
 					//localStorage.setItem("company_type", this.user_type);
 					//localStorage.removeItem('type');
-					this.email  = data._creator.email;
+					this.email  = data['_creator'].email;
 				},
 				error =>
 				{
@@ -381,21 +381,21 @@ export class AdminDisplayChatComponent implements OnInit {
 			this.authenticationService.getById(this.user_id)
 			.subscribe(
 				data => {
-					if(data.error)
+					if(data['error'])
 					{
 						this.log= "Something Went Wrong";
 						localStorage.removeItem('company_type');
 					}
 					else
 					{
-						if(data.image!='')
+						if(data['image']!='')
 						{
-							this.profile_pic = data.image;
+							this.profile_pic = data['image'];
 						}
-						this.display_name = data.first_name+' '+data.last_name;
-						this.user_type = data._creator.type;
+						this.display_name = data['first_name'] +' '+data['last_name'];
+						this.user_type = data['_creator'].type;
 						//localStorage.removeItem('company_type');
-						this.email  = data._creator.email;
+						this.email  = data['_creator'].email;
 					}
 
 				}

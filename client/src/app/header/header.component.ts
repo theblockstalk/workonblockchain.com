@@ -157,9 +157,8 @@ export class HeaderComponent implements OnInit {
       this.authenticationService.verify_client(this.currentUser.email)
         .subscribe(
           data => {
-            if(data['msg'])
+            if(data['success'] === true)
             {
-
               this.success_msg = "Please check your email to verify your account" ;
 
               setInterval(() => {

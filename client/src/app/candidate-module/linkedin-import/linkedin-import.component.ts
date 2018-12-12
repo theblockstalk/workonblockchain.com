@@ -165,7 +165,7 @@ export class LinkedinImportComponent implements OnInit {
     Promise.all([
       import('./converter'),
       import('moment'),
-      import('isomorphic-unzip/zip-browser'),
+      import('isomorphic-unzip'),
       import('./csvtoarray')
     ]).then(modules => {
       const [LinkedInToJsonResume, Moment, Unzip, CsvToArray] = modules;
@@ -178,11 +178,25 @@ export class LinkedinImportComponent implements OnInit {
       const file = droppedFiles[0];
       fileName = file.name;
 
+    /*  const readBlob = (blob: Blob): Promise<string> => {
+        return new Promise(resolve => {
+          const reader: FileReader = new FileReader();
+          const fileReader: FileReader = new FileReader();
+
+          reader.onload = (event: Event) => {
+            const target: any = reader.result;
+            resolve(target);
+          };
+          reader.readAsText(blob);
+        });
+      };*/
+
       const readBlob = (blob: Blob): Promise<string> => {
         return new Promise(resolve => {
-          let reader = new FileReader();
-          reader.onload = (e: FileReaderEvent) => {
-            resolve(e.target.result);
+          const reader = new FileReader();
+          reader.onload = (event: Event) => {
+            const target: any = reader.result;
+            resolve(target);
           };
           reader.readAsText(blob);
         });

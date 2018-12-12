@@ -90,13 +90,10 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         data =>
         {
-
-
-            for(let res of data)
+            for(let i=0; i < data['length']; i++)
             {
-
               this.length++;
-              this.info.push(res);
+              this.info.push(data[i]);
 
             }
 
@@ -152,7 +149,7 @@ error ;
         data =>
         {
 
-          if(data.success === true)
+          if(data['success'] === true)
           {
             if(event.srcElement.innerHTML ==='Active' )
             {
@@ -163,7 +160,7 @@ error ;
               event.srcElement.innerHTML="Active";
             }
           }
-          else if(data.is_approved ===0)
+          else if(data['is_approved'] ===0)
           {
             if(event.srcElement.innerHTML ==='Active' )
             {
