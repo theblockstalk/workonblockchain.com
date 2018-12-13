@@ -42,6 +42,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     current_currency;
     current_salary;
   error_msg;
+  expected_validation;
      ngAfterViewInit(): void
      {
          window.scrollTo(0, 0);
