@@ -4,7 +4,7 @@ const asyncMiddleware = require('./asyncMiddleware');
 const errors = require('../services/errors');
 
 async function getUserFromToken(req) {
-
+console.log("auth");
     let token = req.headers.authorization;
     let payload = jwtToken.verifyJwtToken(token);
 

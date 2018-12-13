@@ -94,34 +94,34 @@ export class ExperienceComponent implements OnInit , AfterViewInit
             data => {
                 //console.log(data.education_history_history);
 
-                 if(data.terms_id)
+                 if(data['terms_id'])
                   {
                         this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
-                if(data.description)
+                if(data['description'])
                  {
 
                       this.exp_active_class = 'fa fa-check-circle text-success';
                 }
-                 if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day)
+                 if(data['locations'] && data['roles'] && data['interest_area'] || data['expected_salary'] || data['availability_day'])
                   {
                     this.active_class='fa fa-check-circle text-success';
                      // this.job_active_class = 'fa fa-check-circle text-success';
 
                   }
-                if(data.work_history || data.education_history|| data.programming_languages)
+                if(data['work_history'] || data['education_history'] || data['programming_languages'])
                 {
 
-                    if(data.work_history.length>0)
+                    if(data['work_history'].length>0)
                     {
-                        this.jobData = data.work_history;
+                        this.jobData = data['work_history'];
                        // console.log(this.jobData);
                         //console.log(this.jobData.startdate);
                        // console.log(this.datePipe.transform(((this.jobData.startdate)+1), 'MMMM'));
 
 
-                        for(let data1 of data.work_history)
+                        for(let data1 of data['work_history'])
                         {
                             //this.companyname = data1.companyname;
                             this.current_work_check.push(data1.currentwork);
@@ -136,10 +136,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                           )
                           });
                        }
-                    if(data.education_history.length>0)
+                    if(data['education_history'].length>0)
                     {
 
-                    this.eduData = data.education_history;
+                    this.eduData = data['education_history'];
                     this.EducationForm = this._fb.group({
                           itemRows: this._fb.array(
                                     this.education_data()
@@ -149,10 +149,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                         }
                         //this.exp_data.push(data.experience_roles) ;
                     ////console.log(data.experience_roles.length);
-                      if(data.programming_languages)
+                      if(data['programming_languages'])
                       {
-                          this.expYear = data.programming_languages;
-                      for (let key of data.programming_languages)
+                          this.expYear = data['programming_languages'];
+                      for (let key of data['programming_languages'])
                       {
                         for(var i in key)
                         {
@@ -196,18 +196,18 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                     }
 
 
-                    this.salary = data.current_salary;
-                    this.Intro =data.description;
-                    if(data.current_currency)
+                    this.salary = data['current_salary'];
+                    this.Intro =data['description'];
+                    if(data['current_currency'])
                     {
-                        this.current_currency =data.current_currency;
+                        this.current_currency =data['current_currency'];
                      }
                    // this.current_currency =-1;
 
                 }
 
 
-              if(!data.why_work )
+              if(!data['why_work'])
               {
                 this.router.navigate(['/resume']);
               }
@@ -222,7 +222,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
             },
             error=>
             {
-                if(error.message === 500 || error.message === 401)
+                if(error['message'] === 500 || error['message'] === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         localStorage.removeItem('currentUser');
@@ -245,8 +245,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
              data => {
                if(data)
                {
-                 this.candidateMsgTitle= data[0].page_title;
-                 this.candidateMsgBody = data[0].page_content;
+                 this.candidateMsgTitle= data['page_title'];
+                 this.candidateMsgBody = data['page_content'];
                }
              });
        }

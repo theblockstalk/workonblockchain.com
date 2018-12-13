@@ -147,8 +147,8 @@ export class ChatComponent implements OnInit {
                 data => {
                     //data[0]._creator.is_approved = 1;
                     //data[0].disable_account == false;
-					this.profile_pic = data.image;
-                    this.display_name = data.first_name+' '+data.last_name;
+          					this.profile_pic = data['image'];
+                    this.display_name = data['first_name'] +' '+ data['last_name'];
                     /*if(data._creator.is_approved == 0 || data._creator.disable_account == true){
                         this.approved_user = 0;
 					}
@@ -156,14 +156,14 @@ export class ChatComponent implements OnInit {
                         this.approved_user = 1;
                     }
                     */
-                    this.is_approved = data._creator.is_approved;
-                    if(data._creator.candidate.status[0].status === 'Rejected' || data._creator.candidate.status[0].status === 'rejected')
+                    this.is_approved = data['_creator'].is_approved;
+                    if(data['_creator'].candidate.status[0].status === 'Rejected' || data['_creator'].candidate.status[0].status === 'rejected')
                     {
                           this.disabled = true;
                           this.msg = "You can access this page when your account has been approved by an admin.";
                           this.log='';
                     }
-                    else if(data._creator.disable_account == true)
+                    else if(data['_creator'].disable_account == true)
                     {
                         this.disabled = true;
                         this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
@@ -177,13 +177,13 @@ export class ChatComponent implements OnInit {
                           data => {
                             if(data)
                             {
-                              this.candidateMsgTitle = data[0].page_title;
-                              this.candidateMsgContent = data[0].page_content;
+                              this.candidateMsgTitle = data['page_title'];
+                              this.candidateMsgContent = data['page_content'];
 
                             }
                           }
                         );
-                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
+                      if(data['_creator'].viewed_explanation_popup === false || !data['_creator'].viewed_explanation_popup){
                         $("#popModal").modal("show");
                       }
                       this.msg='';
@@ -191,13 +191,13 @@ export class ChatComponent implements OnInit {
                     }
                 },
                 error => {
-                    if(error.message == 500 || error.message == 401)
+                    if(error['message'] === 500 || error['message'] === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             window.location.href = '/login';
                         }
 
-                        if(error.message == 403)
+                        if(error['message'] === 403)
                         {
                             // this.router.navigate(['/not_found']);
                         }
@@ -210,8 +210,8 @@ export class ChatComponent implements OnInit {
                 data => {
                     //data[0]._creator.is_approved = 1;
                     //data[0].disable_account == false;
-                    this.profile_pic = data.company_logo;
-                    this.display_name = data.company_name;
+                    this.profile_pic = data['company_logo'];
+                    this.display_name = data['company_name'];
 					          //console.log(data);
                     /*if(data._creator.is_approved == 0 || data._creator.disable_account == true){
                         this.approved_user = 0;
@@ -219,16 +219,16 @@ export class ChatComponent implements OnInit {
                     else{
                         this.approved_user = 1;
                     }*/
-                    this.is_approved = data._creator.is_approved;
-                    this.approved_user = data._creator.is_approved;
-                    if(data._creator.is_approved === 0 )
+                    this.is_approved = data['_creator'].is_approved;
+                    this.approved_user = data['_creator'].is_approved;
+                    if(data['_creator'].is_approved === 0 )
                     {
                         //console.log("if");
                         this.disabled = true;
                         this.msg = "You can access this page when your account has been approved by an admin.";
                         this.log='';
                     }
-                    else if(data._creator.disable_account == true)
+                    else if(data['_creator'].disable_account == true)
                     {
                         //console.log("if else");
                         this.disabled = true;
@@ -242,12 +242,12 @@ export class ChatComponent implements OnInit {
                         .subscribe(
                           data => {
                             if (data) {
-                              this.companyMsgTitle = data[0].page_title;
-                              this.companyMsgContent = data[0].page_content;
+                              this.companyMsgTitle = data[0]['page_title'];
+                              this.companyMsgContent = data[0]['page_content'];
                             }
                           }
                         );
-                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
+                      if(data['_creator'].viewed_explanation_popup === false || !data['_creator'].viewed_explanation_popup){
                         $("#popModal").modal("show");
                       }
                       //console.log("else");
@@ -256,13 +256,13 @@ export class ChatComponent implements OnInit {
                     }
                 },
                 error => {
-                   if(error.message == 500 || error.message == 401)
+                   if(error['message'] === 500 || error['message'] === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             window.location.href = '/login';
                         }
 
-                        if(error.message == 403)
+                        if(error['message'] === 403)
                         {
                             // this.router.navigate(['/not_found']);
                         }

@@ -34,13 +34,13 @@ export class AccountSettingsComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data._creator.is_unread_msgs_to_send){
-              this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
+            if(data['_creator'].is_unread_msgs_to_send){
+              this.info.unread_msgs_emails = data['_creator'].is_unread_msgs_to_send;
             }
-            if(data._creator.disable_account || data.marketing_emails)
+            if(data['_creator'].disable_account || data['marketing_emails'])
             {
-              this.info.marketing = data.marketing_emails;
-              this.info.disable_account = data._creator.disable_account;
+              this.info.marketing = data['marketing_emails'];
+              this.info.disable_account = data['_creator'].disable_account;
             }
           });
     }
@@ -51,13 +51,13 @@ export class AccountSettingsComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data._creator.is_unread_msgs_to_send){
-              this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
+            if(data['_creator'].is_unread_msgs_to_send){
+              this.info.unread_msgs_emails = data['_creator'].is_unread_msgs_to_send;
             }
-            if(data._creator.disable_account || data.marketing_emails)
+            if(data['_creator'].disable_account || data['marketing_emails'])
             {
-              this.info.marketing = data.marketing_emails;
-              this.info.disable_account= data._creator.disable_account;
+              this.info.marketing = data['marketing_emails'];
+              this.info.disable_account= data['_creator'].disable_account;
             }
 
           },
@@ -157,9 +157,9 @@ export class AccountSettingsComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data.error )
+            if(data['error'] )
             {
-              this.log=data.error;
+              this.log=data['error'];
             }
             else
             {
