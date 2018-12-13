@@ -17,7 +17,7 @@
         </li>
         <li class="nav-item">
           <a routerLink="/about" class="nav-link">
-            <i class="{{active_class}}"></i>
+            <i class="{{term_active_class}}"></i>
             About
           </a>
         </li>
@@ -29,7 +29,7 @@
         </li>
         <li class="nav-item px-2">
           <a routerLink="/resume" class="nav-link">
-            <i class="{{active_class}}"></i>
+            <i class="{{exp_active_class}}"></i>
             Blockchain
           </a>
         </li>
@@ -73,6 +73,7 @@
           <div class="checkbox">
             <label>
               <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)" />
+              <img class="mb-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
               {{option.name}}
               <span>
                 <div></div>
@@ -116,6 +117,7 @@
             <label>
               <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
                      (change)="onPlatformOptions(option)"  />
+              <img class="mb-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
               {{option.value}}
               <span>
                 <div></div>
@@ -160,6 +162,7 @@
             <label>
               <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
                      (change)="onExpOptions(option)"  />
+              <img class="mb-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
               {{option.value}}
               <span>
                 <div></div>
