@@ -170,26 +170,14 @@ export class LinkedinImportComponent implements OnInit {
     ]).then(modules => {
       const [LinkedInToJsonResume, Moment, Unzip, CsvToArray] = modules;
       const csvToArray = CsvToArray.default;
-      const moment = Moment;
+      const moment = Moment['default'];
+      const unzipModule = Unzip.default;
       linkedinToJsonResume = new LinkedInToJsonResume.default();
       // cancel event and hover styling
       fileDragHover(e);
       const droppedFiles = e.target.files || e.dataTransfer.files;
       const file = droppedFiles[0];
       fileName = file.name;
-
-    /*  const readBlob = (blob: Blob): Promise<string> => {
-        return new Promise(resolve => {
-          const reader: FileReader = new FileReader();
-          const fileReader: FileReader = new FileReader();
-
-          reader.onload = (event: Event) => {
-            const target: any = reader.result;
-            resolve(target);
-          };
-          reader.readAsText(blob);
-        });
-      };*/
 
       const readBlob = (blob: Blob): Promise<string> => {
         return new Promise(resolve => {
@@ -204,7 +192,7 @@ export class LinkedinImportComponent implements OnInit {
 
       const readEntryContents = (entry: any): Promise<string> => {
         return new Promise(resolve => {
-          Unzip.getEntryData(entry, (error, blob) => {
+          unzipModule.getEntryData(entry, (error, blob) => {
             readBlob(blob).then(resolve);
           });
         });
@@ -212,9 +200,9 @@ export class LinkedinImportComponent implements OnInit {
 
       let unzip = null;
       const getEntries = (file, onend) => {
-        unzip = new Unzip(file);
+        unzip = new unzipModule(file);
         unzip.getEntries(function (error, entries) {
-          onend(entries);
+         onend(entries);
         });
       };
 
