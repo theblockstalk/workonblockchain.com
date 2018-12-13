@@ -198,7 +198,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
-    }, 200);
+    }, 300);
   }
 
   ngAfterViewChecked() {
@@ -323,13 +323,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   this.imgPath =  data['company_logo'];
                 }
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
+                  console.log(data['saved_searches']);
                   this.saved_searches = data['saved_searches'];
                   this.location_value = data['saved_searches'][0].location;
                   this.skill_value = data['saved_searches'][0].skills;
 
-                  this.select_value = data['saved_searches'][0].position;
+                  this.role_value = data['saved_searches'][0].position;
                   if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
-                    this.selecteddd = data['saved_searches'][0].blockchain;
+                    this.blockchain_value = data['saved_searches'][0].blockchain;
                   }
                   this.salary = data['saved_searches'][0].current_salary;
                   this.currencyChange = data['saved_searches'][0].current_currency;
@@ -389,22 +390,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   locationChanged(data)
   {
     this.not_found = '';
-    if(this.location_value  !== data.value)
-    {
       this.location_value = data.value;
       this.searchdata('location' , this.location_value);
-    }
 
   }
 
   skillChanged(data)
   {
     this.not_found = '';
-    if(this.skill_value  !== data.value)
-    {
       this.skill_value = data.value;
       this.searchdata('skill' , this.skill_value);
-    }
 
   }
 
@@ -412,12 +407,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   blockchainchanged(data)
   {
     this.not_found = '';
-    if(this.selecteddd  !== data.value)
-    {
-      this.selecteddd = data.value;
-      this.searchdata('blockchain' , this.selecteddd);
-    }
-
+    this.searchdata('blockchain' , this.selecteddd);
   }
 
   filter_array(arr)
@@ -447,8 +437,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(this.searchWord) queryBody.word = this.searchWord;
         if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
         if(this.location_value && this.location_value.length > 0) queryBody.locations = this.location_value;
-        if(this.select_value && this.select_value.length > 0 ) queryBody.positions = this.select_value;
-        if(this.selecteddd && this.selecteddd.length > 0) queryBody.blockchains = this.selecteddd;
+        if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.select_value;
+        if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.selecteddd;
         if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
         if(this.salary && this.currencyChange) {
           queryBody.current_salary  = this.salary;
