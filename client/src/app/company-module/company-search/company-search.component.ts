@@ -341,17 +341,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 }
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
                   this.saved_searches = data['saved_searches'];
-                  this.location_value = data['saved_searches[0]'].location;
-                  this.skill_value = data['saved_searches[0]'].skills;
+                  this.location_value = data['saved_searches'][0].location;
+                  this.skill_value = data['saved_searches'][0].skills;
 
-                  this.select_value = data['saved_searches[0]'].position;
-                  if(data['saved_searches[0]'].blockchain && data['saved_searches[0]'].blockchain.length > 0) {
-                    this.selecteddd = data['saved_searches[0]'].blockchain;
+                  this.select_value = data['saved_searches'][0].position;
+                  if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
+                    this.selecteddd = data['saved_searches'][0].blockchain;
                   }
-                  this.salary = data['saved_searches[0]'].current_salary;
-                  this.currencyChange = data['saved_searches[0]'].current_currency;
-                  this.availabilityChange = data['saved_searches[0]'].availability_day;
-                  this.searchdata('filter' , data['saved_searches[0]'] );
+                  this.salary = data['saved_searches'][0].current_salary;
+                  this.currencyChange = data['saved_searches'][0].current_currency;
+                  this.availabilityChange = data['saved_searches'][0].availability_day;
+                  this.searchdata('filter' , data['saved_searches'][0]);
                 }
                 else {
                   this.getVerrifiedCandidate();
