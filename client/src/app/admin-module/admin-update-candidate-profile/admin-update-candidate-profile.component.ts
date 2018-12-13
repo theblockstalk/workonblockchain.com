@@ -166,6 +166,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
   formalSkillDb;
   formal_expYear_db=[];
   admin_log;
+  expected_validation;
   ngOnInit()
   {
     this.info.base_country = -1
