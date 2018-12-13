@@ -43,6 +43,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     current_currency;
     current_salary;
   error_msg;
+  expected_validation;
      ngAfterViewInit(): void
      {
        window.scrollTo(0, 0);
@@ -93,34 +94,32 @@ export class JobComponent implements OnInit,AfterViewInit {
                 data => {
 
 
-                if(data.experience_roles!="")
+                if(data['experience_roles']!="")
                   {
                     this.exp_class = "btn";
                   }
 
-                  if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+                  if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
                   {
                         this.about_active_class = 'fa fa-check-circle text-success';
                   }
-                  if(data.terms_id)
+                  if(data['terms_id'])
                   {
                         this.term_active_class='fa fa-check-circle text-success';
                       this.term_link = '/terms-and-condition';
                   }
 
-                if(data.locations.length>0 || data.roles.length>0 || data.interest_area.length>0 ||  data.expected_salary || data.availability_day || data.expected_salary_currency)
+                if(data['locations'].length>0 || data['roles'].length>0 || data['interest_area'].length>0 ||  data['expected_salary'] || data['availability_day'] || data['expected_salary_currency'])
                 {
-
-
-                    if(data.locations)
+                    if(data['locations'])
                     {
-                     for (let country1 of data.locations)
+                     for (let country1 of data['locations'])
                      {
 
                       for(let option of this.options)
                       {
 
-                        if(option.value == country1)
+                        if(option.value === country1)
                         {
                           option.checked=true;
                           this.selectedcountry.push(country1);
@@ -133,15 +132,15 @@ export class JobComponent implements OnInit,AfterViewInit {
                     }
 
 
-                    if(data.interest_area)
+                    if(data['interest_area'])
                     {
-                    for (let interest of data.interest_area)
+                    for (let interest of data['interest_area'])
                      {
 
                       for(let option of this.area_interested)
                       {
 
-                        if(option.value == interest)
+                        if(option.value === interest)
                         {
                           option.checked=true;
                           this.selectedValue.push(interest);
@@ -155,9 +154,9 @@ export class JobComponent implements OnInit,AfterViewInit {
                    // this.jobselected=data.roles;
 
                     //this.selectedValue = data.interest_area;
-                    if(data.roles)
+                    if(data['roles'])
                     {
-                    for (let area of data.roles)
+                    for (let area of data['roles'])
                      {
 
                       for(let option of this.dropdown_options)
@@ -175,17 +174,17 @@ export class JobComponent implements OnInit,AfterViewInit {
                     }
                     }
 
-                    this.salary = data.expected_salary;
-                    this.availability_day = data.availability_day;
-                    if(data.expected_salary_currency)
-                        this.base_currency = data.expected_salary_currency;
-                    this.current_salary = data.current_salary;
-                    if(data.current_currency)
-                        this.current_currency =data.current_currency;
+                    this.salary = data['expected_salary'];
+                    this.availability_day = data['availability_day'];
+                    if(data['expected_salary_currency'])
+                        this.base_currency = data['expected_salary_currency'];
+                    this.current_salary = data['current_salary'];
+                    if(data['current_currency'])
+                        this.current_currency =data['current_currency'];
 
                     //this.resume_class="/resume";
 
-                    if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day)
+                    if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'])
                     {
                         this.active_class = 'fa fa-check-circle text-success';
                     this.class = "btn";
@@ -195,7 +194,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
                   }
 
-              if(data.why_work)
+              if(data['why_work'])
               {
                 this.exp_disable ='';
                 this.resume_active_class='fa fa-check-circle text-success';
@@ -205,7 +204,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
 
 
-              if(data.description )
+              if(data['description'] )
               {
                   this.exp_class = "/experience";
                   this.exp_active_class = 'fa fa-check-circle text-success';
@@ -218,7 +217,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
                 },
                 error => {
-                   if(error.message === 500 || error.message === 401)
+                   if(error['message'] === 500 || error['message'] === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                        localStorage.removeItem('currentUser');
@@ -229,7 +228,7 @@ export class JobComponent implements OnInit,AfterViewInit {
                         window.location.href = '/login';
                     }
 
-                    if(error.message === 403)
+                    if(error['message'] === 403)
                     {
                         this.router.navigate(['/not_found']);
                     }
@@ -476,9 +475,9 @@ export class JobComponent implements OnInit,AfterViewInit {
                     this.router.navigate(['/resume']);
                 }
 
-                if(data.error )
+                if(data['error'] )
                 {
-                    this.log=data.error;
+                    this.log= data['error'];
                 }
 
                 },

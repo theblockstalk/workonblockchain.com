@@ -7,6 +7,7 @@ import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {environment} from '../../../environments/environment';
 declare var $:any;
+import { map } from 'rxjs/operators';
 
 const URL = environment.backend_url;
 
@@ -58,14 +59,14 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                 {
 
                   ////console.log(data);
-                   if(data.company_founded || data.no_of_employees || data.company_funded || data.company_description ||data.company_logo)
+                   if(data['company_founded'] || data['no_of_employees'] || data['company_funded'] || data['company_description'] ||data['company_logo'])
                   {
-                     this.company_founded=data.company_founded;
-                     this.no_of_employees=data.no_of_employees;
-                     this.company_funded=data.company_funded;
-                     this.company_description =data.company_description;
-                       if(data.company_logo != null){
-                       this.img_data  =  data.company_logo;
+                     this.company_founded=data['company_founded'];
+                     this.no_of_employees=data['no_of_employees'];
+                     this.company_funded=data['company_funded'];
+                     this.company_description =data['company_description'];
+                       if(data['company_logo'] != null){
+                       this.img_data  =  data['company_logo'];
 
                         let x = this.img_data.split("/");
 
@@ -77,16 +78,16 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                     this.preference  = '/preferences';
                       //this.router.navigate(['/login']);
                   }
-                  if(data.saved_searches && data.saved_searches.length > 0) {
+                  if(data['saved_searches'] && data['saved_searches'].length > 0) {
 
                     this.pref_active_class = 'fa fa-check-circle text-success';
                   }
-                 if(data.terms_id)
+                 if(data['terms_id'])
                   {
                     this.terms_active_class = 'fa fa-check-circle text-success';
                       //this.router.navigate(['/login']);
                   }
-                  if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
+                  if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
                   {
                     this.pref_disable = '';
                     this.about_active_class = 'fa fa-check-circle text-success';
@@ -95,7 +96,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                 },
                 error =>
                 {
-                  if(error.message === 500 || error.message === 401)
+                  if(error['message'] === 500 || error['message'] === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                               localStorage.removeItem('currentUser');
@@ -106,7 +107,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                             window.location.href = '/login';
                         }
 
-                        if(error.message === 403)
+                        if(error['message'] === 403)
                         {
                             // this.router.navigate(['/not_found']);
                         }
@@ -175,9 +176,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
                         this.http.post(URL+'users/employer_image', formData , {
                         headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                        }).map((res) => res).subscribe(
-                        (success) =>
-                        {
+                        }).pipe(map(res =>
+                          {
                           this.router.navigate(['/preferences']);
                           //this.router.navigate(['/company_profile']);
                         },
@@ -192,7 +192,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
                             localStorage.removeItem('admin_log');
                             window.location.href = '/login';
                           }
-                        })
+                        }));
                     }
                     else
                     {

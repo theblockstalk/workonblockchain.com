@@ -88,7 +88,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
     if(this.currentUser && this.admin_log )
     {
-      if(this.admin_log.is_admin == 1)
+      if(this.admin_log.is_admin === 1)
         this.getAllCandidate();
       else
         this.router.navigate(['/not_found']);
@@ -169,7 +169,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
         data =>
         {
 
-          if(data.success === true )
+          if(data['success'] === true )
           {
 
             if(event.srcElement.innerHTML ==='Active' )
@@ -181,7 +181,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
               event.srcElement.innerHTML="Active";
             }
           }
-          if(data.is_approved ===0)
+          if(data['is_approved'] ===0)
           {
             if(event.srcElement.innerHTML ==='Active' )
             {

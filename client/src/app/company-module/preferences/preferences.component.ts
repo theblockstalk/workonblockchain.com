@@ -230,52 +230,52 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         .subscribe(
           data =>
           {
-            if(data.terms_id)
+            if(data['terms_id'])
             {
               this.terms_active_class = 'fa fa-check-circle text-success';
             }
-            if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
+            if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
             {
               this.about_active_class = 'fa fa-check-circle text-success';
             }
-            if(data.saved_searches && data.saved_searches.length > 0) {
+            if(data['saved_searches'] && data['saved_searches'].length > 0) {
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
-                location: [data.saved_searches[0].location],
-                job_type: [data.saved_searches[0].job_type],
-                position: [data.saved_searches[0].position],
-                availability_day: [data.saved_searches[0].availability_day],
-                current_currency: [data.saved_searches[0].current_currency],
-                current_salary: [data.saved_searches[0].current_salary],
-                blockchain: [data.saved_searches[0].blockchain],
-                skills: [data.saved_searches[0].skills],
-                other_technologies: [data.saved_searches[0].other_technologies],
-                when_receive_email_notitfications: [data.saved_searches[0].when_receive_email_notitfications],
+                location: [data['saved_searches'][0].location],
+                job_type: [data['saved_searches'][0].job_type],
+                position: [data['saved_searches'][0].position],
+                availability_day: [data['saved_searches'][0].availability_day],
+                current_currency: [data['saved_searches'][0].current_currency],
+                current_salary: [data['saved_searches'][0].current_salary],
+                blockchain: [data['saved_searches'][0].blockchain],
+                skills: [data['saved_searches'][0].skills],
+                other_technologies: [data['saved_searches'][0].other_technologies],
+                when_receive_email_notitfications: [data['saved_searches'][0].when_receive_email_notitfications],
               });
 
-              for (let locations of data.saved_searches[0].location) {
+              for (let locations of data['saved_searches'][0].location) {
                 for(let option of this.locations) {
                   if(option.name === locations ) {
                     this.locationSelected.push(option.name);
                   }
                 }
               }
-              for (let job_types of data.saved_searches[0].job_type) {
+              for (let job_types of data['saved_searches'][0].job_type) {
                 for(let option of this.job_types) {
                   if(option === job_types ) {
                     this.jobTypesSelected.push(option);
                   }
                 }
               }
-              for (let positions of data.saved_searches[0].position) {
+              for (let positions of data['saved_searches'][0].position) {
                 for(let option of this.roles) {
                   if(option.name === positions ) {
                     this.positionSelected.push(option.name);
                   }
                 }
               }
-              if(data.saved_searches[0].blockchain && data.saved_searches[0].blockchain.length > 0) {
-                for(let blockchains of data.saved_searches[0].blockchain) {
+              if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
+                for(let blockchains of data['saved_searches'][0].blockchain) {
                   for(let option of this.blockchain) {
                     if(option.name === blockchains) {
                       this.blockchainSelected.push(option.name);
@@ -284,8 +284,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 }
               }
 
-              if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
-                for(let skills of data.saved_searches[0].skills) {
+              if(data['saved_searches'][0].skills && data['saved_searches'][0].skills.length > 0) {
+                for(let skills of data['saved_searches'][0].skills) {
                   for(let option of this.language_opt) {
                     if(option.name === skills) {
                       this.languageSelected.push(option.name);
@@ -300,7 +300,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
+            if(error['message'] === 500 || error['message'] === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
@@ -311,7 +311,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
               window.location.href = '/login';
             }
 
-            if(error.message === 403)
+            if(error['message'] === 403)
             {
               // this.router.navigate(['/not_found']);
             }
@@ -322,8 +322,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           data => {
             if(data)
             {
-              this.companyMsgTitle= data[0].page_title;
-              this.companyMsgBody = data[0].page_content;
+              this.companyMsgTitle= data['page_title'];
+              this.companyMsgBody = data['page_content'];
             }
           });
     }
@@ -376,7 +376,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         .subscribe(
           data =>
           {
-            if(data.success === true) {
+            if(data['success'] === true) {
               $('#popModal').modal('show');
             }
           },

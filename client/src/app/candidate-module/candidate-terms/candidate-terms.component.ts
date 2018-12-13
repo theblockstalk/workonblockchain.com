@@ -72,19 +72,19 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       data => {
                         if(data)
                         {
-                          this.terms_id = data._id;
+                          this.terms_id = data['_id'];
                           //console.log(this.editor_content);
                         }
                       }
                     );
-                  if(data.terms_id ||data.marketing_emails)
+                  if(data['terms_id'] ||data['marketing_emails'])
                   {
 
                     this.termscondition = true;
-                    this.marketing_emails = data.marketing_emails;
+                    this.marketing_emails = data['marketing_emails'];
 
                   }
-                  if(data.terms_id)
+                  if(data['terms_id'])
                   {
                       this.about_disable = "";
                       this.prefill_disable = "";
@@ -93,12 +93,12 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.prefill_link = '/prefill-profile';
                       this.about_link="/about";
                   }
-                  if(!data.terms_id)
+                  if(!data['terms_id'])
                   {
                     this.termscondition = false;
                   }
 
-                  if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+                  if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
                   {
                       this.job_disable = "";
                       this.about_active_class = 'fa fa-check-circle text-success';
@@ -106,7 +106,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.link="/job";
                   }
 
-                  if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day)
+                  if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'])
                   {
                        this.resume_disable = "";
                       this.link="/job";
@@ -116,7 +116,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                   }
 
 
-                    if(data.why_work )
+                    if(data['why_work'] )
                     {
                         this.exp_disable = "";
                         this.resume_class="/resume";
@@ -125,16 +125,12 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                     // this.router.navigate(['/resume']);
                     }
 
-                    if(data.description)
+                    if(data['description'])
                     {
                         this.exp_class = "/experience";
                         this.exp_active_class = 'fa fa-check-circle text-success';
                         //this.router.navigate(['/experience']);
                     }
-
-
-
-
 
                 },
                 error =>

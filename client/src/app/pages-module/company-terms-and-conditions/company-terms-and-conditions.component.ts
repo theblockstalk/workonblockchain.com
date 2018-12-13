@@ -29,11 +29,8 @@ export class CompanyTermsAndConditionsComponent implements OnInit {
         data => {
           if(data)
           {
-            console.log(data);
-            this.company_page_title= data.page_title;
-            this.company_editor_content = data.page_content;
-            //console.log(this.editor_content);
-
+            this.company_page_title= data['page_title'];
+            this.company_editor_content = data['page_content'];
           }
         });
   }

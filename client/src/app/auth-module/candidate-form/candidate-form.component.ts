@@ -40,10 +40,10 @@ export class CandidateFormComponent implements OnInit {
         .subscribe(
           data => {
             if (data) {
-              if (data && data.name) {
-                this.ref_msg = data.name + ' thinks you should join workonblockchain.com';
+              if (data && data['name']) {
+                this.ref_msg = data['name'] + ' thinks you should join workonblockchain.com';
               }
-              this.credentials.referred_email = data.email;
+              this.credentials.referred_email = data['email'];
             }
             else {
               this.ref_msg = 'Your refer code is invalid. Please contact our support';

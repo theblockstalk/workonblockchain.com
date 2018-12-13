@@ -7,6 +7,7 @@ import {User} from '../../Model/user';
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 declare var $:any;
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-about',
@@ -106,41 +107,41 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-            if(data._creator.refered_id) //&& !data.first_name && !data.last_name)
+            if(data['_creator'].refered_id) //&& !data.first_name && !data.last_name)
             {
-              this.referred_id = data._creator.refered_id;
+              this.referred_id = data['_creator'].refered_id;
 
             }
-            if(data.terms_id)
+            if(data['terms_id'])
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
 
-            if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
+            if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['_creator'].candidate)
             {
 
-              this.info.contact_number = data.contact_number;
-              this.info.github_account = data.github_account;
-              this.info.exchange_account = data.stackexchange_account;
-              if(data.nationality)
+              this.info.contact_number = data['contact_number'];
+              this.info.github_account = data['github_account'];
+              this.info.exchange_account = data['stackexchange_account'];
+              if(data['nationality'])
               {
-                this.info.nationality = data.nationality;
+                this.info.nationality = data['nationality'];
               }
-              if(data._creator.candidate && data._creator.candidate.base_country)
+              if(data['_creator'].candidate && data['_creator'].candidate.base_country)
               {
-                this.info.country = data._creator.candidate.base_country;
+                this.info.country = data['_creator'].candidate.base_country;
               }
-              if(data._creator.candidate && data._creator.candidate.base_city){
-                this.info.city = data._creator.candidate.base_city;
+              if(data['_creator'].candidate && data['_creator'].candidate.base_city){
+                this.info.city = data['_creator'].candidate.base_city;
               }
 
-              this.info.first_name =data.first_name;
-              this.info.last_name =data.last_name;
+              this.info.first_name =data['first_name'];
+              this.info.last_name =data['last_name'];
 
-              if(data.image != null )
+              if(data['image'] != null )
               {
-                this.info.image_src = data.image ;
+                this.info.image_src = data['image'] ;
 
 
                 let x = this.info.image_src.split("/");
@@ -153,21 +154,21 @@ export class AboutComponent implements OnInit,AfterViewInit
 
             }
 
-            if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+            if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.active_class='fa fa-check-circle text-success';
               this.job_disable = '';
               this.link= "/job";
             }
 
-            if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day)
+            if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'])
             {
               this.resume_disable = '';
               this.job_active_class = 'fa fa-check-circle text-success';
               this.resume_class="/resume";
             }
 
-            if(data.why_work )
+            if(data['why_work'] )
             {
               this.exp_disable = '';
               this.resume_class="/resume";
@@ -175,7 +176,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.resume_active_class='fa fa-check-circle text-success';
             }
 
-            if( data.description)
+            if( data['description'])
             {
               this.exp_class = "/experience";
               this.exp_active_class = 'fa fa-check-circle text-success';
@@ -251,7 +252,7 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-            if(data.success)
+            if(data['success'])
             {
 
               if(this.info.image)
@@ -268,8 +269,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
                     this.http.post(URL+'users/image', formData ,  {
                       headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                    }).map((res) => res).subscribe(
-                      (success) =>
+                    }).pipe(map(res =>
                       {
 
                         this.router.navigate(['/job']);
@@ -287,7 +287,7 @@ export class AboutComponent implements OnInit,AfterViewInit
                           window.location.href = '/login';
                         }
 
-                      })
+                      }));
                   }
                   else
                   {

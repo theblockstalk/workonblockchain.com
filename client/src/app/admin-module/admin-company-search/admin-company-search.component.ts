@@ -89,15 +89,12 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         data =>
         {
-          console.log(data);
+            for(let i=0; i < data['length']; i++)
+            {
+              this.length++;
+              this.info.push(data[i]);
 
-          for(let res of data)
-          {
-
-            this.length++;
-            this.info.push(res);
-
-          }
+            }
 
           if(this.length> 0 )
           {
@@ -152,7 +149,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
         data =>
         {
 
-          if(data.success === true)
+          if(data['success'] === true)
           {
             if(event.srcElement.innerHTML ==='Active' )
             {
@@ -163,7 +160,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
               event.srcElement.innerHTML="Active";
             }
           }
-          else if(data.is_approved ===0)
+          else if(data['is_approved'] ===0)
           {
             if(event.srcElement.innerHTML ==='Active' )
             {

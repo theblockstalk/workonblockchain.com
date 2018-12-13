@@ -10,6 +10,7 @@ import { DataService } from '../../data.service';
 import {NgForm} from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
+import { map } from 'rxjs/operators';
 
 const URL = environment.backend_url;
 @Component({
@@ -73,18 +74,18 @@ export class LoginComponent implements OnInit, OnDestroy {
         .subscribe(
           user => {
 
-            if(user.type === 'company') {
+            if(user['type'] === 'company') {
               this.previousUrl = localStorage.getItem('previousUrl');
 
               if(this.previousUrl) {
                 window.location.href = '/' + this.previousUrl;
               }
               else {
-                if (new Date(user.created_date) < new Date('2018/11/28')) {
-                  this.http.get<any>(URL + 'users/current_company/' + user._id, {
-                    headers: new HttpHeaders().set('Authorization', user.jwt_token)
-                  }).map((res) => res).subscribe(
-                    (res) => {
+                if (new Date(user['created_date']) < new Date('2018/11/28')) {
+                  this.http.get<any>(URL + 'users/current_company/' + user['_id'], {
+                    headers: new HttpHeaders().set('Authorization', user['jwt_token'])
+                  }).pipe(map(res =>
+                  {
                       if (!res.saved_searches) {
                         window.location.href = '/company_profile';
                       }
@@ -92,7 +93,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         window.location.href = '/candidate-search';
 
                       }
-                    });
+                    }));
                 }
                 else {
                   window.location.href = '/candidate-search';
@@ -101,7 +102,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               }
 
             }
-            if(user.type === 'candidate')
+            if(user['type'] === 'candidate')
             {
               window.location.href = '/candidate_profile';
             }
