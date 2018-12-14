@@ -168,8 +168,8 @@
     </div>
 
     <div class = "form-group text-right">
-      <a routerLink="/about" class = "btn btn-secondary">Prev Step</a>
-      <button type=submit class = "btn btn-primary" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)">Next Step</button>
+      <a routerLink="/about" class = "btn btn-warning">Prev Step</a>
+      <button type=submit class = "btn btn-secondary ml-1" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)">Next Step</button>
     </div>
     <div class = "invalid-feedback" *ngIf="error_msg">
       {{error_msg}}

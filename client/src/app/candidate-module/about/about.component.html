@@ -46,7 +46,7 @@
       <h3>About</h3>
     </div>
   </div>
-  <form (submit)="about()" #aboutForm = ngForm class="p-4 border needs-validation" novalidate>
+  <form (submit)="about()" #aboutForm = ngForm class="mb-4 p-4 border needs-validation" novalidate>
     <div class = "row">
         <div class="col-md-6">
           <div class="form-group">
@@ -152,8 +152,8 @@
     </div>
     <div class="form-group">
       <div class = "text-right">
-        <a routerLink="/prefill-profile" class = "btn btn-secondary">Prev Step</a>
-        <button type="submit" class = "btn btn-primary">Next Step</button>
+        <a routerLink="/prefill-profile" class = "btn btn-warning">Prev Step</a>
+        <button type="submit" class = "btn btn-secondary ml-1">Next Step</button>
       </div>
     </div>
     <div class = "invalid-feedback text-right" *ngIf="error_msg">

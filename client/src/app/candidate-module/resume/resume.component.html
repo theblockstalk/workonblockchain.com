@@ -73,7 +73,7 @@
           <div class="checkbox">
             <label>
               <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)" />
-              <img class="mb-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
+              <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
               {{option.name}}
               <span>
                 <div></div>
@@ -117,7 +117,7 @@
             <label>
               <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
                      (change)="onPlatformOptions(option)"  />
-              <img class="mb-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
+              <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
               {{option.value}}
               <span>
                 <div></div>
@@ -162,7 +162,7 @@
             <label>
               <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
                      (change)="onExpOptions(option)"  />
-              <img class="mb-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
+              <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
               {{option.value}}
               <span>
                 <div></div>
@@ -186,7 +186,7 @@
           <div class="checkbox">
             <label>
               <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
-              <img class="mb-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
+              <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
               {{option.name}}
               <span>
                 <div></div>
@@ -229,7 +229,7 @@
           <div class="checkbox">
             <label>
               <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"   />
-              <img class="mb-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
+              <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
               {{option.name}}
               <span>
                 <div></div>
@@ -262,8 +262,8 @@
       </div>
     </div>
     <div class = "form-group text-right">
-      <a routerLink="/job" class = "btn btn-secondary">Prev Step</a>
-      <button type=submit  class = "btn btn-primary">Next Step</button>
+      <a routerLink="/job" class = "btn btn-warning">Prev Step</a>
+      <button type=submit  class = "btn btn-secondary ml-1">Next Step</button>
     </div>
     <div class = "invalid-feedback" *ngIf="error_msg">
       {{error_msg}}
