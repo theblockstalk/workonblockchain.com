@@ -234,7 +234,7 @@
 
         </fieldset>
 
-        <fieldset class = "border rounded my-3 py-3 px-5" id = "prefrences">
+        <fieldset class = "border rounded my-3 py-3 px-5" id = "prefrences" [formGroup]="preferncesForm">
 
           <legend class="w-auto m-0 px-1">
             Candidate preferences
@@ -246,10 +246,11 @@
               <div class="form-row">
                 <div class="form-group w-100">
                   <label>Where are you hiring?</label>
-                  <select multiple [(ngModel)] = "location" name="location" title="(select multiple)" class="selectpicker form-control" required>
+                  <select multiple formControlName = "location" title="(select multiple)" class="selectpicker form-control" required>
                     <option *ngFor='let location of locations;let i = index'  [selected] = "locationSelectedOptions(location.name)"  [value]="location.value">{{location.name}}</option>
+
                   </select>
-                  <div class = "invalid-feedback" *ngIf="!location || location.length === 0">
+                  <div class = "invalid-feedback" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
                     {{location_log}}
                   </div>
                 </div>
@@ -259,44 +260,50 @@
             <div class="col-md-6">
               <div class="form-row">
                 <div class="form-group w-100">
-                  <label>Number of employees?</label>
-                  <input type="number" class="form-control" placeholder="Number of employees" name="no_of_employees" [(ngModel)]="no_of_employees">
-                  <div class="invalid-feedback" *ngIf="!no_of_employees">
-                    {{employee_log}}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="row">
-
-            <div class="col-md-6">
-              <div class="form-row">
-                <div class="form-group w-100">
                   <label>What position types are you looking for?</label>
-                  <select multiple [(ngModel)]="job_type" name="job_type"  title="(select multiple)" class="selectpicker form-control" required>
+                  <select multiple formControlName="job_type"  title="(select multiple)" class="selectpicker form-control" required>
                     <option *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
 
                   </select>
-                  <div class = "invalid-feedback" *ngIf="!job_type || job_type.length === 0 ">
+                  <div class = "invalid-feedback" *ngIf="!preferncesForm.value.job_type || preferncesForm.value.job_type.length === 0 ">
                     {{job_type_log}}
                   </div>
                 </div>
               </div>
             </div>
 
+          </div>
+
+          <div class="row">
+
+
             <div class="col-md-6">
               <div class="form-row">
                 <div class="form-group w-100">
                   <label>What roles are you looking for?</label>
-                  <select multiple [(ngModel)]="position" name="position" title="(select multiple)" class="selectpicker form-control">
+                  <select multiple formControlName="position" title="(select multiple)" class="selectpicker form-control">
                     <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
 
                   </select>
-                  <div class = "invalid-feedback" *ngIf="!position || position.length === 0">
+                  <div class = "invalid-feedback" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
                     {{position_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-row">
+                <div class = "form-group w-100">
+                  <label>Available annual salary and currency?</label>
+
+                  <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="100000">
+
+                  <select title="Select currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
+                    <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary ">
+                    {{current_currency_log}}
                   </div>
                 </div>
               </div>
@@ -308,27 +315,10 @@
 
             <div class="col-md-6">
               <div class="form-row">
-                <div class = "form-group w-100">
-                  <label>Available annual salary and currency?</label>
-
-                  <input type="text" placeholder="Salary"  class="form-control w-50 float-left" [(ngModel)]="current_salary" name="current_salary" >
-
-                  <select title="Select currency" class="selectpicker form-control w-50 position-relative" [(ngModel)]="current_currency" name="current_currency" >
-                    <option *ngFor='let current_currency of currency' [attr.selected] = "current_currency === base_currency ? true : null " >{{current_currency}}</option>
-                  </select>
-                  <div class = "invalid-feedback" *ngIf="!current_currency || !current_salary ">
-                    {{current_currency_log}}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-row">
                 <div class="form-group w-100">
                   <label>When do you need hires to start</label>
-                  <select title="(select one)" name="availability_day" [(ngModel)] = "availability_day" class="selectpicker">
-                    <option *ngFor='let avail of availability'  [attr.selected] = "availability_day === avail.name ? true : null " >{{avail.name}}</option>
+                  <select title="(select one)" formControlName = "availability_day" class="selectpicker form-control">
+                    <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
 
                   </select>
 
@@ -339,10 +329,90 @@
               </div>
             </div>
 
+            <div class="col-md-6">
+              <div class="form-row">
+                <div class = "form-group w-100">
+                  <label>What blockchain technology experience do they need? (optional)</label>
+
+                  <select multiple formControlName="blockchain" title="(select multiple)" class="selectpicker form-control">
+                    <option *ngFor='let blockchain of blockchain' [selected] = "blockchainSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
+
+                  </select>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-        </fieldset>
+          <div class="row">
 
+
+            <div class="col-md-6">
+              <div class="form-row">
+                <div class="form-group w-100">
+                  <label>What programming languages do they need to know? (optional)</label>
+                  <select multiple formControlName="skills" title="(select multiple)" class="selectpicker form-control">
+                    <option *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
+
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-row">
+                <div class="form-group w-100">
+                  <label>Other technologies or requirements? (optional)</label>
+                  <input type="text" formControlName="other_technologies" [value] ="preferncesForm.value.other_technologies"  class="form-control" placeholder="(eg MongoDB, AWS)">
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-md-12">
+              <div class="form-row">
+                <div class = "form-group w-100">
+                  <label class="mr-3">What blockchain technology experience do they need? (optional)</label>
+
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons" >
+
+                    <div *ngFor="let receive of email_notificaiton; let i_ind =index">
+                      <label class="btn btn-secondary active">
+                        <input type="radio" formControlName="when_receive_email_notitfications" id="{{receive}}" autocomplete="off" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications">{{receive}}
+
+                      </label>
+
+
+                    </div>
+
+                  </div>
+
+                  <div class = "invalid-feedback" *ngIf="!when_receive_email_notitfications">
+                    {{email_notification_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+
+
+        </fieldset>
+        <div class="row">
+          <div class = "col-md-12">
+            <button type="submit" class = "btn wob-bg-secondary2 float-right" [disabled]="website.errors && company_website" >Save Profile</button>
+            <div class = "invalid-feedback float-right" *ngIf="error_msg">
+              {{error_msg}}
+            </div>
+          </div>
+
+        </div>
 
       </div>
     </div>

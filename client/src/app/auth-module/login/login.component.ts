@@ -13,6 +13,7 @@ import {environment} from '../../../environments/environment';
 import { map } from 'rxjs/operators';
 
 const URL = environment.backend_url;
+console.log(URL);
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -81,19 +82,13 @@ export class LoginComponent implements OnInit, OnDestroy {
                 window.location.href = '/' + this.previousUrl;
               }
               else {
+                console.log(user);
+                console.log(user['created_date']);
+                console.log(new Date(user['created_date']));
+                console.log(new Date('2018/11/28'));
                 if (new Date(user['created_date']) < new Date('2018/11/28')) {
-                  this.http.get<any>(URL + 'users/current_company/' + user['_id'], {
-                    headers: new HttpHeaders().set('Authorization', user['jwt_token'])
-                  }).pipe(map(res =>
-                  {
-                      if (!res.saved_searches) {
-                        window.location.href = '/company_profile';
-                      }
-                      else {
-                        window.location.href = '/candidate-search';
-
-                      }
-                    }));
+                  console.log("if");
+                  window.location.href = '/candidate-search';
                 }
                 else {
                   window.location.href = '/candidate-search';

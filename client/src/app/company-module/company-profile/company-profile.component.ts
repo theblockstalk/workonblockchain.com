@@ -307,8 +307,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
-                this.companyMsgTitle= data['page_title'];
-                this.companyMsgBody = data['page_content'];
+                this.companyMsgTitle= data[0]['page_title'];
+                this.companyMsgBody = data[0]['page_content'];
               }
             });
       }

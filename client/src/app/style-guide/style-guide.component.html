@@ -68,6 +68,7 @@
         <i class="fas fa-user fa-3x"></i>
         <i class="fas fa-cog fa-3x"></i>
         <i class="fas fa-sign-out-alt fa-3x"></i>
+        <i class="fas fa-id-card fa-3x"></i>
         <p>
           These all icon use in buttons <a href = "https://fontawesome.com/icons?d=gallery&m=free" target = "_blank">Fontawesome icon</a>
         </p>
@@ -139,7 +140,29 @@
       </ul>
     </div>
   </div>
+
+  <!--<div class = "row">
+              <div class="col-md-2">
+                 <p>List Group float right</p>
+              </div>
+              <div class="col-md-7">
+                  <ul class="list-group float-right">
+                    <li class="list-group-item"><i class="fas fa-building"></i> Comapany Name</li>
+                    <li class="list-group-item"><i class="fas fa-university"></i> Full Name of your institue</li>
+                    <li class="list-group-item"><i class="fas fa-id-card"></i> Language: Urdu, English</li>
+                    <li class="list-group-item"><i class="fas fa-map-marker-alt"></i> Current Location: Isb, Pak</li>
+                  </ul>
+              </div>
+              <div class="col-md-3">
+                 <ul>
+                    <li>use for profile page info</li>
+                 </ul>
+              </div>
+     </div>-->
+
 </div>
+
+
 <div class = "container">
   <h1>Typography</h1>
   <hr>
@@ -233,7 +256,6 @@
     </div>
   </div>
 </div>
-
 <div class = "container">
   <h1>Buttons</h1>
   <hr>
@@ -401,7 +423,7 @@
     <div class = "col-md-12">
       <nav class="navbar navbar-expand-lg">
         <a class="navbar-brand" href="#">
-          <img src = "images/logo_woc.png" alt="Work on Blockchain">
+          <img src = "/assests/images/logo_woc.png" alt="Work on Blockchain">
         </a>
         <div class="container navbar-collapse">
           <ul class="nav ml-auto">
@@ -669,7 +691,9 @@
           </div>
         </div>
       </div>
-
+      <script>
+        $("#startdate_datepicker").datepicker();
+      </script>
     </div>
     <div class="col-md-3">
       <ul>
@@ -811,13 +835,76 @@
         <textarea id="txtEditor"></textarea>
 
       </div>
-
+      <script>
+        $(document).ready(function() {
+          $("#txtEditor").Editor();
+        });
+      </script>
 
     </div>
 
     <div class="col-md-3">
       <ul>
         <li>use for text editor</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class = "row">
+    <div class="col-md-2">
+      <p>signup switcher</p>
+    </div>
+    <div class="col-md-7">
+      <div class="form-group">
+
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Candidate SignUp</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Company SignUp</a>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <form class = "py-3">
+              <h3 class = "text-center">Candidate SignUp</h3>
+              <div class = "form-group">
+                <input type="text" class="form-control" placeholder = "User email" id="">
+              </div>
+
+              <div class = "form-group">
+                <input type="password" class="form-control" placeholder = "Password" id="">
+              </div>
+
+              <div class = "form-group">
+                <input type="submit" class="form-control btn btn-primary" value = "SignUp" id="">
+              </div>
+
+            </form>
+          </div>
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <form class = "py-3">
+              <h3 class = "text-center">Company SignUp</h3>
+              <div class = "form-group">
+                <input type="text" class="form-control" placeholder = "Comapany name" id="">
+              </div>
+
+              <div class = "form-group">
+                <input type="password" class="form-control" placeholder = "Password" id="">
+              </div>
+
+              <div class = "form-group">
+                <input type="submit" class="form-control btn btn-primary" value = "SignUp" id="">
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Use for only signup candidate/company page.</li>
       </ul>
     </div>
   </div>
@@ -965,6 +1052,27 @@
 
 </div>
 
+<div class = "container">
+  <div class = "row">
+    <div class = "col-md-12">
+      <a href = "chat.html" class = "btn btn-primary">Go to chat window</a>
+    </div>
+  </div>
+</div>
+
+<div class = "container p-0 alert bg-light text-secondary">
+  <div class = "row">
+    <div class = "col-md-10 text-center">
+      <p class = "position-relative mt-2">
+        We use cookies to support your experience on our site. By continuing to use our site you agree to use of cookies. Please see our privacy policy for details of how we use cookies.
+      </p>
+    </div>
+    <div class = "col-md-2 text-center">
+      <a href = "" class = "btn btn-dark position-relative mt-3" data-dismiss="alert" aria-label="close">Yes, Got it.</a>
+    </div>
+  </div>
+</div>
+
 <div class = "container-fluid wob-footer">
   <div class = "row">
     <div class = "col-md-12">
@@ -981,6 +1089,8 @@
       </ul>
     </div>
   </div>
+
+
   <div class = "row">
     <div class = "col-md-12">
       <ul class="nav justify-content-center">
@@ -1006,3 +1116,9 @@
     </div>
   </div>
 </div>
+
+
+
+<a href="#" class = "btn btn-warning position-fixed" id="scroll-to-top" title="Back to top">
+  <i class="fas fa-angle-up"></i>
+</a>

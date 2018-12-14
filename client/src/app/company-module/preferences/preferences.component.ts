@@ -50,7 +50,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   ngAfterViewChecked() {
-    $('.selectpicker').selectpicker('refresh');
+    //$('.selectpicker').selectpicker('refresh');
   }
 
   locations = [
@@ -322,8 +322,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           data => {
             if(data)
             {
-              this.companyMsgTitle= data['page_title'];
-              this.companyMsgBody = data['page_content'];
+              this.companyMsgTitle= data[0]['page_title'];
+              this.companyMsgBody = data[0]['page_content'];
             }
           });
     }
