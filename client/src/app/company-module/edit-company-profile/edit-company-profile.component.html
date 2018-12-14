@@ -202,14 +202,16 @@
             <div class="col-md-6">
               <div class="form-row">
                 <div class="form-group w-100">
-                  <label></label>
+                  <label>Upload photo</label>
                   <div class="form-group">
-                    <input type="file"  name="image" [(ngModel)]="image" class="form-control-file mt-2" id="exampleFormControlFile1">
+                    <input type="file"  name="image" [(ngModel)]="image" class="form-control-file" id="profile">
                   </div>
                   <div class="invalid-feedback d-inline" *ngIf="!image_log">
                     {{image_log}}
                   </div>
                 </div>
+
+
               </div>
             </div>
 
@@ -378,16 +380,18 @@
                 <div class = "form-group w-100">
                   <label class="mr-3">What blockchain technology experience do they need? (optional)</label>
 
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons" >
+                     <!-- <label class="btn btn-secondary"  *ngFor="let receive of email_notificaiton; let i_ind =index"  [ngClass]="receive === preferncesForm.value.when_receive_email_notitfications ? 'active' : ''">
+                      <input type="radio" formControlName="when_receive_email_notitfications" (change)="emailNotificationChange($event)" autocomplete="off" id="{{receive}}" >{{receive}}
+                    </label>
+-->
 
-                    <div *ngFor="let receive of email_notificaiton; let i_ind =index">
-                      <label class="btn btn-secondary active">
-                        <input type="radio" formControlName="when_receive_email_notitfications" id="{{receive}}" autocomplete="off" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications">{{receive}}
+                  <div class="form-check-inline" >
+                    <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index">
+                      <input type="radio"  formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
+                    </label>
+                  </div>
 
-                      </label>
 
-
-                    </div>
 
                   </div>
                 </div>
@@ -396,10 +400,6 @@
                 </div>
               </div>
             </div>
-
-
-          </div>
-
 
 
         </fieldset>
