@@ -1,7 +1,10 @@
+<section class = "wob-bg-primary2">
+
 <div class="container my-2">
   <form  (submit)="company_profile(profileForm)" #profileForm = ngForm>
     <div class="row">
       <div class="col-md-12">
+        <section class="bg-white p-3 mt-5">
         <fieldset class = "border rounded my-3 py-3 px-5" id = "information">
           <legend class="w-auto m-0 px-1">
             Personal information
@@ -150,8 +153,11 @@
           </div>
 
         </fieldset >
+        </section>
 
-        <fieldset class = "border rounded my-3 py-3 px-5" id = "about_you">
+        <section class="bg-white p-3 mt-5">
+
+        <fieldset class = "bg-white border rounded my-3 py-3 px-5" id = "about_you">
 
           <legend class="w-auto m-0 px-1">
             About the company
@@ -235,8 +241,11 @@
 
 
         </fieldset>
+        </section>
 
-        <fieldset class = "border rounded my-3 py-3 px-5" id = "prefrences" [formGroup]="preferncesForm">
+        <section class="bg-white p-3 mt-5 mb-3">
+
+        <fieldset class = "bg-white border rounded my-3 py-3 px-5" id = "prefrences" [formGroup]="preferncesForm">
 
           <legend class="w-auto m-0 px-1">
             Candidate preferences
@@ -315,21 +324,7 @@
 
           <div class="row">
 
-            <div class="col-md-6">
-              <div class="form-row">
-                <div class="form-group w-100">
-                  <label>When do you need hires to start</label>
-                  <select title="(select one)" formControlName = "availability_day" class="selectpicker form-control">
-                    <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
 
-                  </select>
-
-                  <div class = "invalid-feedback d-inline" *ngIf="!avail_day">
-                    {{availability_day_log}}
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <div class="col-md-6">
               <div class="form-row">
@@ -343,12 +338,6 @@
                 </div>
               </div>
             </div>
-
-          </div>
-
-          <div class="row">
-
-
             <div class="col-md-6">
               <div class="form-row">
                 <div class="form-group w-100">
@@ -361,11 +350,34 @@
               </div>
             </div>
 
+          </div>
+
+          <div class="row">
+
+
+
+
             <div class="col-md-6">
               <div class="form-row">
                 <div class="form-group w-100">
                   <label>Other technologies or requirements? (optional)</label>
                   <input type="text" formControlName="other_technologies" [value] ="preferncesForm.value.other_technologies"  class="form-control" placeholder="(eg MongoDB, AWS)">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-row">
+                <div class="form-group w-100">
+                  <label>When do you need hires to start</label>
+                  <select title="(select one)" formControlName = "availability_day" class="selectpicker form-control">
+                    <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
+
+                  </select>
+
+                  <div class = "invalid-feedback d-inline" *ngIf="!avail_day">
+                    {{availability_day_log}}
+                  </div>
                 </div>
               </div>
             </div>
@@ -403,9 +415,10 @@
 
 
         </fieldset>
+        </section>
         <div class="row">
           <div class = "col-md-12">
-            <button type="submit" class = "btn wob-bg-secondary2 float-right" [disabled]="website.errors && company_website" >Save Profile</button>
+            <button type="submit" class = "btn wob-bg-secondary2 float-right mb-3" [disabled]="website.errors && company_website" >Save Profile</button>
             <div class = "invalid-feedback float-right d-inline" *ngIf="error_msg">
               {{error_msg}}
             </div>
@@ -418,3 +431,5 @@
 
   </form>
 </div>
+
+</section>
