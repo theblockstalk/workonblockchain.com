@@ -212,6 +212,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   ngAfterViewChecked() {
+
   }
 
   ngOnInit()
@@ -491,10 +492,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
             if(data && this.currentUser)
             {
               let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-              let fileCount: number = inputEl.files.length;
-              let formData = new FormData();
-              if (fileCount > 0 )
+console.log(inputEl)
+              if (inputEl && inputEl.files && inputEl.files.length > 0)
               {
+                let formData = new FormData();
                 if(inputEl.files.item(0).size < this.file_size)
                 {
                   formData.append('photo', inputEl.files.item(0));
@@ -596,6 +597,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     else {
       return;
     }
+  }
+
+  emailNotificationChange(e){
+    console.log("running");
   }
 
 }

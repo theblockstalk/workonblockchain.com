@@ -46,12 +46,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
-    setInterval(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
+
   }
 
   ngAfterViewChecked() {
+    setInterval(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
     //$('.selectpicker').selectpicker('refresh');
   }
 
