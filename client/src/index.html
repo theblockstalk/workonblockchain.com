@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -60,10 +61,6 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
-<!-- Load Facebook SDK for JavaScript -->
- <div id="fb-root"></div>
-
-
   <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
@@ -102,6 +99,12 @@
         return false;
       });
 
+    });
+  </script>
+  <script>
+    $("#startdate_datepicker").datepicker();
+    $(document).ready(function() {
+      $("#txtEditor").Editor();
     });
   </script>
 </body>
