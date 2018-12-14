@@ -9,6 +9,7 @@ const URL = environment.backend_url;
 declare var $:any;
 import { map } from 'rxjs/operators';
 
+
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
@@ -266,7 +267,6 @@ export class AboutComponent implements OnInit,AfterViewInit
                   if(inputEl.files.item(0).size < this.file_size)
                   {
                     formData.append('photo', inputEl.files.item(0));
-
                     this.http.post(URL+'users/image', formData ,  {
                       headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
                     }).pipe(map(res =>
