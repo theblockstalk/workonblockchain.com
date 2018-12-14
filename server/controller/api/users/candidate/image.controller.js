@@ -13,7 +13,7 @@ module.exports = async function (req, res) {
     } else {
         path = settings.FILE_URL + req.file.filename;
     }
-    
+
     let userId = req.auth.user._id;
 
     const candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
