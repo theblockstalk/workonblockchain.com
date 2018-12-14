@@ -11,8 +11,7 @@ import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-ch
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
 import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
 import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-profile/admin-update-candidate-profile.component';
-import { Select2Module } from 'ng2-select2';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {PagerService} from '../pager.service';
 
 @NgModule({
   imports: [
@@ -20,9 +19,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     AdminModuleRoutingModule,
     FormsModule,
     SharedModule,
-    ReactiveFormsModule,
-    Select2Module,
-    NgxPaginationModule
+    ReactiveFormsModule
   ],
   declarations: [
     AdminDashboardComponent,
@@ -32,6 +29,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
     AdminCompanySearchComponent,
     AdminCompanyDetailComponent,
     AdminUpdateCandidateProfileComponent,
-  ]
+  ],
+  providers : [PagerService]
+
 })
 export class AdminModuleModule { }

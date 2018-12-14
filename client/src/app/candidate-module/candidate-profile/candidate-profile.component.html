@@ -4,604 +4,453 @@
 </div>-->
 <!--Profile-inner-->
 <ng-container *ngIf="infoo==='';else profile_section" >
-<div class="se-pre-con"></div>
+<div class=""></div>
 </ng-container>
 
 <ng-template #profile_section >
-<section class = "wizard_page">
-   <div class="alert alert-info error-alert" *ngIf="message">{{message}}</div>
+  <section class = "wizard_page">
+     <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
 
-  <div class="container">
-		<div class="row profile_group">
-			<div class="col-md-12">
-        <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn_popup">What happens next?</button>
-
-
-        <section class = "profile personal_info" *ngIf="!public_data">
-
-				 	<div class="col-md-6" >
-				 		<span class = "p_img" *ngIf="!imgPath">
-				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
-				 		</span>
-				 		<span class = "p_img" *ngIf="imgPath">
-				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
-				 		</span>
-				 		<span class = "name">
-				 			<h3 class="text-capitalize">{{first_name}} {{last_name}}</h3>
-
-				 		</span>
-				 		<span class = "short_intro">
-				 			<p>{{description}}</p>
-				 		</span>
-
-
-
-				 	</div>
-
-				 	<div class="col-md-6 side-info">
-
-				 		<ul>
-
-
-				 			<li>
-
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
-				 					<span class = "li_txt">Nationality : {{nationality}}</span>
-
-				 			</li>
-
-				 			<li>
-
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
-				 					<span class = "li_txt"> Contact Number : {{contact_number}}</span>
-
-				 			</li>
-              <li>
-
-                <span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
-                <span class = "li_txt text-capitalize">Candidate Status : {{candidate_status.status}}</span>
-
-              </li>
-
-				 		</ul>
-
-				 	</div>
-				 	<span class = "edit_profile_link">
-				 		<a  (click)="internalRoute('edit_profile','about_you')">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-				 </section>
-
-				 <section class = "profile job_info" *ngIf="!public_data ">
-					<h3>About you</h3>
-					<div class="info-area pro_br-btm" >
-						<div class = "col-md-3">
-							<strong>Email Address :</strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li >{{email}}</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-
-					<div class="info-area pro_br-btm" *ngIf="contact_number">
-						<div class = "col-md-3">
-							<strong>Contact Number :  </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li >{{contact_number}}</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-				 	<div class="info-area pro_br-btm" *ngIf="github">
-						<div class = "col-md-3">
-							<strong>Github account URL : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li >{{github}}</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-
-				 	<div class="info-area pro_br-btm" *ngIf="stack">
-
-						<div class = "col-md-3" >
-							<strong>Stackexchange account URL : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li >{{stack}}</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-
-				 	<span class = "edit_profile_link">
-				 		<a  (click)="internalRoute('edit_profile','about_you')">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-
-				 </section>
-
-
-        <section class = "profile job_info" *ngIf="base_country || base_city ">
-          <h3>Residence/base location</h3>
-
-          <div class="info-area pro_br-btm"  *ngIf="base_country">
-            <div class = "col-md-3">
-              <strong>Country :</strong>
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-warning float-right text-white">What happens next?</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <fieldset class="border rounded py-3 px-5" *ngIf="!public_data">
+            <legend class="w-auto m-0">
+              <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+              <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+            </legend>
+            <div class="row">
+              <div class="col-md-12">
+                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
+                  <i class="fas fa-edit" aria-hidden="true"></i>
+                </a>
+              </div>
             </div>
-            <div class = "col-md-9">
-              <ul class = "pro_list">
-                <li >{{base_country}}</li>
+            <div class="row">
+              <div class="col-md-6">
+                <span>
+                  <h3 class="text-capitalize">{{first_name}} {{last_name}}</h3>
+                </span>
+                <span>
+                  <p>{{description}}</p>
+                </span>
+              </div>
+              <div class="col-md-6 mt-3">
+                <ul class="list-group list-group-flush float-right">
+                  <li class="list-group-item">
+                    <span><i class="fas fa-landmark mr-2"></i></span>
+                    <span>Nationality : {{nationality}}</span>
+                  </li>
+                  <li class="list-group-item">
+                    <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                    <span> Contact Number : {{contact_number}}</span>
+                  </li>
+                  <li class="list-group-item">
+                    <i class="fas fa-user mr-2"></i>
+                    <span class = "text-capitalize">Candidate Status : {{candidate_status.status}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </fieldset>
 
-              </ul>
+          <section class = "border rounded mt-4 py-3 px-5">
+            <div class="row">
+              <div class="col-md-6">
+                <h3> <i class="fas fa-user"></i> About you</h3>
+              </div>
+              <div class="col-md-6">
+                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
+                  <i class="fas fa-edit" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class = "col-md-3">
+                <strong>Email address :</strong>
+              </div>
+              <div class = "col-md-9">
+                <span>{{email}}</span>
+              </div>
+            </div>
+            <div class="row mt-4" *ngIf="github">
+              <div class = "col-md-3">
+                <strong>Github account URL : </strong>
+              </div>
+              <div class = "col-md-9">
+                <span>{{github}}</span>
+              </div>
+            </div>
+            <div class="row mt-4" *ngIf="stack">
+              <div class = "col-md-3">
+                <strong>Stackexchange account URL : </strong>
+              </div>
+              <div class = "col-md-9">
+                <span>{{stack}}</span>
+              </div>
+            </div>
+          </section>
+
+          <section class = "border rounded mt-4 py-3 px-5">
+            <div class="row">
+              <div class="col-md-6">
+                <h3><i class="fas fa-landmark"></i> Residence/base location</h3>
+              </div>
+              <div class="col-md-6">
+                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
+                  <i class="fas fa-edit" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+            <div class="row mt-4"  *ngIf="base_country">
+              <div class = "col-md-3">
+                <strong>Country :</strong>
+              </div>
+              <div class = "col-md-9">
+                <span>{{base_country}}</span>
+              </div>
+            </div>
+            <div class="row mt-4" *ngIf="base_city">
+              <div class = "col-md-3">
+                <strong>City :  </strong>
+              </div>
+              <div class = "col-md-9">
+                <span>{{base_city}}</span>
+              </div>
+            </div>
+          </section>
+
+          <section class = "border rounded mt-4 py-3 px-5">
+            <div class="row">
+              <div class="col-md-6">
+                <h3><i class="fas fa-briefcase"></i> Desired job</h3>
+              </div>
+              <div class="col-md-6">
+                <a class="float-right" (click)="internalRoute('edit_profile','job_candidate')">
+                  <i class="fas fa-edit" aria-hidden="true"></i>
+                </a>
+              </div>
             </div>
 
-          </div>
-
-
-          <div class="info-area pro_br-btm" *ngIf="base_city">
-            <div class = "col-md-3">
-              <strong>City :  </strong>
-            </div>
-            <div class = "col-md-9">
-              <ul class = "pro_list">
-                <li >{{base_city}}</li>
-
-              </ul>
+            <div class="row mt-4" *ngIf="countries">
+              <div class = "col-md-3">
+                <strong>Desired location : </strong>
+              </div>
+              <div class = "col-md-9">
+                  <span class="mr-2" *ngFor='let country of countries'>{{country.charAt(0).toUpperCase()}}{{country.slice(1)}}</span>
+              </div>
             </div>
 
-          </div>
-
-          <span class = "edit_profile_link">
-				 		<a  (click)="internalRoute('edit_profile','about_you')">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-
-        </section>
-
-				 <section class = "profile job_info" *ngIf="!public_data">
-					<h3>Desired Job</h3>
-				 	<div class="info-area pro_br-btm" *ngIf="countries">
-						<div class = "col-md-3">
-							<strong>Desired Location : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li *ngFor='let country of countries'>{{country.charAt(0).toUpperCase()}}{{country.slice(1)}}</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-
-				 	<div class="info-area pro_br-btm">
-
-						<div class = "col-md-3" *ngIf="interest_area">
-							<strong>Area of interest : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li *ngFor='let interest_area of interest_area;'>{{interest_area}}</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-				 	<div class="info-area pro_br-btm" *ngIf="roles">
-
-						<div class = "col-md-3" >
-							<strong>Desired roles : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li *ngFor='let roles_data of roles'>{{roles_data}}</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-				 	<div class="info-area pro_br-btm" *ngIf="expected_salary">
-
-						<div class = "col-md-3" >
-							<strong>Expected annual salary: </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li>{{expected_currency}} {{expected_salary}}</li>
-							</ul>
-						</div>
-
-				 	</div>
-
-					<div class="info-area pro_br-btm" *ngIf="current_salary">
-
-						<div class = "col-md-3" >
-							<strong>Current annual salary:</strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li>{{current_currency}} {{current_salary}}</li>
-							</ul>
-						</div>
-
-				 	</div>
-
-				 	<div class="info-area pro_br-btm" *ngIf="availability_day">
-
-						<div class = "col-md-3" >
-							<strong>Your Availablity : </strong>
-						</div>
-						<div class = "col-md-9">
-							<ul class = "pro_list">
-								<li>{{availability_day}}</li>
-							</ul>
-						</div>
-
-				 	</div>
-
-				 	<span class = "edit_profile_link">
-				 		<a (click)="internalRoute('edit_profile','job_candidate')">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-
-				 </section>
-
-				 <section class = "profile job_info" *ngIf="!public_data">
-					<h3>Blockchain and DLT Experience</h3>
-
-					<div class = "discp info-area pro_br-btm" *ngIf="why_work">
-						<h4 class = "disc_hd">Why do you want to work on Blockchain?</h4>
-						<p>
-							{{why_work}}
-						</p>
-					</div>
-
-
-				 	<div class="info-area pro_br-btm" *ngIf = "commercial && commercial.length > 0">
-
-						<div class = "col-md-4" >
-							<strong>Platform commercially worked with:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li *ngFor='let data of commercial;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-				 	<div class="info-area pro_br-btm" *ngIf = "platforms && platforms.length > 0">
-
-						<div class = "col-md-4" >
-							<strong>Platforms designed/developed smart contracts:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li *ngFor='let data of platforms;'>{{data.platform_name}}  : {{data.exp_year}} years</li>
-							</ul>
-						</div>
-
-				 	</div>
-
-				 	<div class="info-area pro_br-btm" *ngIf = "experimented && experimented.length > 0 ">
-
-						<div class = "col-md-4" >
-							<strong>Platform experimented with:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li *ngFor='let data of experimented;'>{{data.value}}</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-           <div class="info-area pro_br-btm" *ngIf = "commercial_skills && commercial_skills.length > 0">
-
-             <div class = "col-md-4" >
-               <strong>Commercial experience in these areas</strong>
-             </div>
-             <div class = "col-md-8">
-               <ul class = "pro_list">
-                 <li *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</li>
-               </ul>
-             </div>
-
-           </div>
-
-
-           <div class="info-area pro_br-btm" *ngIf = "formal_skills && formal_skills.length > 0">
-
-             <div class = "col-md-4" >
-               <strong>Formal (university) education in these areas
-               </strong>
-             </div>
-             <div class = "col-md-8">
-               <ul class = "pro_list">
-                 <li *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</li>
-               </ul>
-             </div>
-
-           </div>
-
-
-
-
-				 	<span class = "edit_profile_link">
-				 		<a  (click)="internalRoute('edit_profile','resume_candidate')">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-
-				 </section>
-
-				 <section class = "profile job_info" *ngIf="languages && languages.length>0">
-					<h3>Experience</h3>
-
-				 	<div class="info-area pro_br-btm" >
-
-						<div class = "col-md-4" >
-							<strong>Languages:</strong>
-						</div>
-						<div class = "col-md-8">
-							<ul class = "pro_list">
-								<li *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</li>
-
-							</ul>
-						</div>
-
-				 	</div>
-
-
-				 		<span class = "edit_profile_link">
-				 		<a  (click)="internalRoute('edit_profile','experience_candidate')">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-
-
-				 </section>
-
-				  <section class = "profile job_info" *ngIf="!public_data && history.length>0 ">
-
-					<h3>Work History</h3>
-					<div class = "company_area" *ngFor='let work of history'>
-					 	<div class="info-area pro_br-btm">
-							<div class = "col-md-4">
-								<strong>Company name: </strong>
-							</div>
-							<div class = "col-md-8">
-								<ul class = "pro_list">
-									<li>{{work.companyname}}</li>
-
-								</ul>
-							</div>
-
-					 	</div>
-
-					 	<div class="info-area pro_br-btm">
-					 		<div class = "col-md-4" >
-								<strong>Position: </strong>
-							</div>
-							<div class = "col-md-8">
-								<ul class = "pro_list">
-									<li>{{work.positionname}}</li>
-
-								</ul>
-							</div>
-					 	</div>
-
-					 	<div class="info-area pro_br-btm">
-
-							<div class = "col-md-4" >
-								<strong>Start and finish date:</strong>
-							</div>
-							<div class = "col-md-8">
-								<ul class = "pro_list" *ngIf='work.currentwork== true' >
-							<li>{{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}}, till now.</li>
-						</ul>
-						<ul class = "pro_list" *ngIf='work.currentwork== false ' >
-							<li>{{work.startdate | date:'MMMM-yyyy'}} , {{work.enddate | date:'MMMM-yyyy'}} </li>
-						</ul>
-							</div>
-
-					 	</div>
-
-					 	<div class="info-area pro_br-btm">
-
-							<div class = "col-md-4" >
-								<strong>Location: </strong>
-							</div>
-							<div class = "col-md-8">
-								<ul class = "pro_list">
-									<li>{{work.locationname}}</li>
-								</ul>
-							</div>
-
-					 	</div>
-
-					 	<div class = "discp info-area" *ngIf="work.description">
-					 	<div class = "col-md-12" >
-							<h4 class = "disc_hd">Description:</h4>
-							</div>
-							<div class = "col-md-12" >
-							<p>
-								{{work.description}}
-							</p>
-							</div>
-						</div>
-
-					</div>
-
-
-				 	<span class = "edit_profile_link">
-				 		<a (click)="internalRoute('edit_profile','work_candidate')">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-
-				 </section>
-
-				 <section class = "profile job_info" *ngIf="!public_data && education.length>0 ">
-
-					<h3>Education</h3>
-
-				 	<div class="col-md-12 info-area  pro_br-btm" *ngFor='let edu of education'>
-				 		<div class = "edu_feild">
-							<p>
-								<strong>{{edu.uniname}} </strong>
-							</p>
-							<p>
-								<span>{{edu.degreename}} - {{edu.fieldname}}</span>
-							</p>
-						</div>
-						<div class = "edu_date">
-							<p>
-								<span><i class="fa fa-calendar" aria-hidden="true"></i></span>
-								 {{edu.eduyear}}
-							</p>
-						</div>
-
-				 	</div>
-
-				 		<span class = "edit_profile_link">
-				 		<a (click)="internalRoute('edit_profile','education_candidate')">
-				 			<i class="fa fa-pencil" aria-hidden="true"></i>
-				 		</a>
-				 	</span>
-
-				 </section>
-
-
-			</div> <!--End col-md-9--->
-
-		</div>
-	</div>
-
-</section>
+            <div class="row mt-4">
+              <div class = "col-md-3" *ngIf="interest_area">
+                <strong>Area of interest : </strong>
+              </div>
+              <div class = "col-md-9">
+                  <span class="mr-2" *ngFor='let interest_area of interest_area;'>{{interest_area}}</span>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf="roles">
+              <div class = "col-md-3" >
+                <strong>Desired roles : </strong>
+              </div>
+              <div class = "col-md-9">
+                  <span class="mr-2" *ngFor='let roles_data of roles'>{{roles_data}}</span>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf="expected_salary">
+              <div class = "col-md-3" >
+                <strong>Expected annual salary: </strong>
+              </div>
+              <div class = "col-md-9">
+                <span>{{expected_currency}} {{expected_salary}}</span>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf="current_salary">
+              <div class = "col-md-3" >
+                <strong>Current annual salary:</strong>
+              </div>
+              <div class = "col-md-9">
+                <span>{{current_currency}} {{current_salary}}</span>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf="availability_day">
+              <div class = "col-md-3" >
+                <strong>Your availablity : </strong>
+              </div>
+              <div class = "col-md-9">
+                <span>{{availability_day}}</span>
+              </div>
+            </div>
+          </section>
+
+          <section class = "border rounded mt-4 py-3 px-5">
+            <div class="row">
+              <div class="col-md-6">
+                <h3><i class="fab fa-bitcoin"></i> Blockchain and DLT experience</h3>
+              </div>
+              <div class="col-md-6">
+                <a class="float-right" (click)="internalRoute('edit_profile','resume_candidate')">
+                  <i class="fas fa-edit" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class = "row mt-4" *ngIf="why_work">
+              <div class="col-md-6">
+                <h4>Why do you want to work on Blockchain?</h4>
+              </div>
+              <div class="col-md-12">
+                <p>
+                  {{why_work}}
+                </p>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf = "commercial && commercial.length > 0">
+              <div class = "col-md-4">
+                <strong>Platform commercially worked with:</strong>
+              </div>
+              <div class = "col-md-8">
+                <span class="mr-2" *ngFor='let data of commercial;'>{{data.platform_name}}  : {{data.exp_year}} years</span>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf = "platforms && platforms.length > 0">
+              <div class = "col-md-4" >
+                <strong>Platforms designed/developed smart contracts:</strong>
+              </div>
+              <div class = "col-md-8">
+                <span class="mr-2" *ngFor='let data of platforms;'>{{data.platform_name}}  : {{data.exp_year}} years</span>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf = "experimented && experimented.length > 0 ">
+              <div class = "col-md-4" >
+                <strong>Platform experimented with:</strong>
+              </div>
+              <div class = "col-md-8">
+                <span class="mr-2" *ngFor='let data of experimented;'>{{data.value}}</span>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf = "commercial_skills && commercial_skills.length > 0">
+              <div class = "col-md-4" >
+                <strong>Commercial experience in these areas</strong>
+              </div>
+              <div class = "col-md-8">
+                <span class="mr-2" *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</span>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf = "formal_skills && formal_skills.length > 0">
+              <div class = "col-md-4" >
+                <strong>
+                  Formal (university) education in these areas
+                </strong>
+              </div>
+              <div class = "col-md-8">
+                <span class="mr-2" *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</span>
+              </div>
+            </div>
+          </section>
+
+          <section class = "border rounded mt-4 py-3 px-5" *ngIf="languages && languages.length>0">
+            <div class="row">
+              <div class="col-md-6">
+                <h3><i class="fas fa-briefcase"></i> Experience</h3>
+              </div>
+              <div class="col-md-6">
+                <a class="float-right" (click)="internalRoute('edit_profile','experience_candidate')">
+                  <i class="fas fa-edit" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class = "col-md-4" >
+                <strong>Languages:</strong>
+              </div>
+              <div class = "col-md-8">
+                <span class="mr-2" *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</span>
+              </div>
+            </div>
+          </section>
+
+          <section class = "border rounded mt-4 py-3 px-5" *ngIf="!public_data && history.length>0 ">
+            <div class="row">
+              <div class="col-md-6">
+                <h3><i class="fas fa-wrench"></i> Work history</h3>
+              </div>
+              <div class="col-md-6">
+                <a class="float-right" (click)="internalRoute('edit_profile','work_candidate')">
+                  <i class="fas fa-edit" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+
+            <div *ngFor='let work of history'>
+              <div class="row mt-4">
+                <div class = "col-md-4">
+                  <strong>Company name: </strong>
+                </div>
+                <div class = "col-md-8">
+                  <span>{{work.companyname}}</span>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class = "col-md-4" >
+                  <strong>Position: </strong>
+                </div>
+                <div class = "col-md-8">
+                  <span>{{work.positionname}}</span>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class = "col-md-4" >
+                  <strong>Start and finish date:</strong>
+                </div>
+                <div class = "col-md-8">
+                  <span *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}}, till now.</span>
+                  <span *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} , {{work.enddate | date:'MMMM-yyyy'}} </span>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class = "col-md-4" >
+                  <strong>Location: </strong>
+                </div>
+                <div class = "col-md-8">
+                  <span><i class="fas fa-globe"></i> {{work.locationname}}</span>
+                </div>
+              </div>
+
+              <div class = "row mt-4" *ngIf="work.description">
+                <div class = "col-md-12" >
+                  <h4 class = "disc_hd">Description:</h4>
+                </div>
+                <div class = "col-md-12" >
+                  <p>
+                    {{work.description}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class = "border rounded mt-4 mb-5 py-3 px-5" *ngIf="!public_data && education.length>0 ">
+            <div class="row">
+              <div class="col-md-6">
+                <h3><i class="fas fa-university"></i> Education</h3>
+              </div>
+              <div class="col-md-6">
+                <a class="float-right" (click)="internalRoute('edit_profile','education_candidate')">
+                  <i class="fas fa-edit" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-12" *ngFor='let edu of education'>
+                <div class = "row">
+                  <div class="col-md-6">
+                    <p>
+                      <strong>{{edu.uniname}} </strong>
+                    </p>
+                    <p>
+                      <span>{{edu.degreename}} - {{edu.fieldname}}</span>
+                    </p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="float-right mt-4">
+                      <span><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                      {{edu.eduyear}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Modal -->
   <div id="popModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
+    <div class="modal-dialog" role="document">
       <!-- Modal content-->
-      <div class="modal-content costom_model">
-        <div class="modal-header mo-head">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
           <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
-          <h3 class="modal-title text-center mo">{{candidateMsgTitle}}
+          <h3 class="modal-title text-center">
+            {{candidateMsgTitle}}
           </h3>
         </div>
-        <div class="modal-body mo_body">
-            <div class = "mo_content" id = "style-6" [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
+        <div class="modal-body">
+            <div [innerHTML]="candidateMsgBody | safeHtml " *ngIf="candidateMsgBody"></div>
         </div>
-        <div class="modal-footer mo_footer">
-          <button type="reset" class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+        <div class="modal-footer">
+          <button type="reset" class="btn btn-primary" data-dismiss="modal">Got it</button>
         </div>
       </div>
-
     </div>
   </div>
   <!-- end model -->
-
-
-
 </ng-template>
 
-
 <!-- Modal-b -->
-
-
 <div id="popModal_b" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog">
-
+  <div class="modal-dialog" role="document">
     <!-- Modal content-->
-    <div class="modal-content contant_inner">
-      <div class="modal-header update_header">
-        <h3 class="modal-title text-center mo">Update your profile<br>
-        </h3>
-
-        <div class = "user_pic" *ngIf="imgPath">
-				 			<img  src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
-        </div>
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h3 class="modal-title text-center">Update your profile<br></h3>
+        <legend class="w-auto m-0">
+          <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+          <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+        </legend>
       </div>
       <h2 class = "text-center">{{first_name}} {{last_name}}</h2>
-      <div class="modal-body update_inner">
+      <div class="modal-body">
         <div class = "">
-
-
-          <div class = "model_form">
-            <div class="form-group">
-              <p><b>Where do you currently live, or where are you most frequently based?</b></p>
-            </div>
-
-            <form class = "login_form custom_form"  (submit)="about()" #aboutForm = ngForm novalidate>
-
-            <div class="form-group">
-              <label><p class = "label-p">Country</p></label>
-              <select class="form-control"  required name="country" [(ngModel)]="information.country"  required="">
-                <option value="-1" disabled selected hidden >Please choose country</option>
-
-                <option class='option' *ngFor='let options of base_countries'  [value]="options" selected>{{options}}</option>
-              </select>
-              <div class = "form_error" *ngIf="information.country === -1">
-                <span class = "error">{{country_log}}</span>
+            <strong>
+              Where do you currently live, or where are you most frequently based?
+            </strong>
+            <form class="needs-validation" novalidate (submit)="about()" #aboutForm = ngForm novalidate>
+              <div class="form-group">
+                <label>Country</label>
+                <select class="form-control" required name="country" [(ngModel)]="information.country"  required="">
+                  <option value="-1" disabled selected hidden >Please choose country</option>
+                  <option *ngFor='let options of base_countries'  [value]="options" selected>{{options}}</option>
+                </select>
+                <div class = "invalid-feedback" *ngIf="information.country === -1">
+                  {{country_log}}
+                </div>
               </div>
-            </div>
-
-            <div class="form-group">
-              <label><p class = "label-p">City</p></label>
-              <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="information.city" >
-
-
-              <div class = "form_error" *ngIf="!information.city">
-                <span class = "error">{{city_log}}</span>
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" class="form-control" placeholder="" name="city" #city required [(ngModel)]="information.city" >
+                <div class = "invalid-feedback" *ngIf="!information.city">
+                  {{city_log}}
+                </div>
               </div>
-            </div>
-
-            <div class="form-group">
-              <button type="submit" class = "form-control btn btn-mo model-btn"  >Update your profile</button>
-            </div>
+              <div class="form-group">
+                <button type="submit" class = "form-control btn btn-primary">Update your profile</button>
+              </div>
             </form>
-
-          </div>
-
-
         </div>
-
       </div>
     </div>
-
   </div>
 </div>
-
-
-
-
-
-
-<!--Profile-inner end-->

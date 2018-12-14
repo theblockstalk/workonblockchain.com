@@ -4,9 +4,7 @@ import { FormsModule , ReactiveFormsModule} from '@angular/forms';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { Select2Module } from 'ng2-select2';
 import { SharedModule } from '../app-shared.module';
-import {ScriptService} from '../scripts/script.service';
 import {NgxPaginationModule} from 'ngx-pagination';
-
 import { CompanyModuleRoutingModule } from './company-module-routing.module';
 import { AboutCompanyComponent } from './about-company/about-company.component';
 import { TermsWizardComponent } from './terms-wizard/terms-wizard.component';
@@ -15,6 +13,7 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
 import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 import { PreferencesComponent } from './preferences/preferences.component';
+import {PagerService} from '../pager.service';
 
 
 @NgModule({
@@ -37,10 +36,9 @@ import { PreferencesComponent } from './preferences/preferences.component';
     CandidateDetailComponent,
     PreferencesComponent
   ],
-  providers : [ScriptService]
+  providers : [PagerService]
 })
 export class CompanyModuleModule {
   constructor() {
-
   }
 }

@@ -1,70 +1,66 @@
-<!--login page start here -->
-<section class = "login_signup">
-  <div class="container">
-    <div class="row form_container border-top">
-      <div class="col-md-12 form_container_inner">
-        <div class="form-login">
-                <h3 class = "login_hd">Login to WOB</h3>
-                <div class="ref_msg">{{ref_msg}}</div>
-                <div class="alert alert-success error-alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
-                 <div class="alert alert-success error-alert" *ngIf="message && !error">{{message}}</div>
-                 <div class="alert alert-success error-alert" *ngIf="password_message && !message ">{{password_message}}</div>
-                 <div class="alert alert-danger error-alert" *ngIf="error && !message ">{{error}}</div>
-
-                <h5 class="alert alert-danger error-alert" *ngIf = "log">{{log}}</h5>
-                <h5 class="alert alert-danger error-alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on <a (click)="reset_passsword()" class = "">here</a> to reset it.</h5>
-                 <form class = "login_form" (submit)="login(loginForm)"  #loginForm = ngForm>
-
-                <div class="form-group">
-                  <span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-                  <input type="email" class="form-control" placeholder="Email" email  name="name" required [(ngModel)]="credentials.email">
-                </div>
-
-                <div class="form-group">
-                  <span><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                  <div class = "show_pass"><i toggle="#password-field" class="" aria-hidden="true" ></i></div>
-                  <input type="password" class="form-control" placeholder="password" id="password-field" name="password"  [(ngModel)]="credentials.password">
-                </div>
-
-               <!-- <div class="checkbox">
-        <label class="check-label"> Remember Me
-         <input type="checkbox" value="">
-         <span class="checkmark">
-          <div></div>
-         </span>
-        </label> </div>-->
-
-                <div class="form-group">
-                  <input type="submit" class="form-control btn btn-signup" value = "Log In" [disabled]="!loginForm.valid ">
-                </div>
-
-                <div class="form-group">
-                  <a  class = "form-control btn btn-linkdIn" (click)="subscribeToLogin()" type = "submit">
-                    <i class="fa fa-linkedin-square" aria-hidden="true"></i>
-                      Login with LinkedIn
-                  </a>
-
-                </div>
-
-                <div class="form-group">
-                  <a  class = "form-control btn btn-danger" type = "submit" (click)="signInWithGoogle()">
-                    <i class="fa fa-google-plus-square" aria-hidden="true"></i>
-                      Login with Google
-                  </a>
-
-                </div>
-
-                <div class="login_form_links">
-                  <a routerLink = "/forgot_password" >Forgot your Password</a> <br/>
-                  <a routerLink = "/signup" >Sign Up</a>
-                </div>
-
-               </form>
-              </div>
-      </div>
+<div class = "container border w-75 mb-4">
+  <div class = "row bg-primary2">
+    <div class="col-md-12 mt-2 mb-2">
+      <h3 class="text-center">Login to WOB</h3>
+      <div class="alert alert-success" role="alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
+      <div class="alert alert-success" role="alert" *ngIf="message && !error">{{message}}</div>
+      <div class="alert alert-success" role="alert" *ngIf="password_message && !message ">{{password_message}}</div>
+      <div class="alert alert-danger" role="alert" *ngIf="error && !message ">{{error}}</div>
+      <h5 class="alert alert-danger" role="alert" *ngIf = "log">{{log}}</h5>
+      <h5 class="alert alert-danger" role="alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on <a (click)="reset_passsword()" class = "">here</a> to reset it.</h5>
     </div>
   </div>
-</section>
-
-<div class = "gap">
+  <form (submit)="login(loginForm)"  #loginForm = ngForm>
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="exampleInputEmail">Email address</label>
+          <span><i class="fas fa-envelope ml-1" aria-hidden="true"></i></span>
+          <input type="email" class="form-control" id="exampleInputEmail" placeholder="Enter email" name="name" required [(ngModel)]="credentials.email" aria-describedby="emailHelp">
+        </div>
+      </div>
+    </div>
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label for="exampleInputPassword">Password</label>
+          <span><i class="fas fa-lock ml-1" aria-hidden="true"></i></span>
+          <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" name="password"  [(ngModel)]="credentials.password">
+        </div>
+      </div>
+    </div>
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
+        <div class="form-group">
+          <input type="submit" class="form-control btn btn-secondary" value = "Log In" [disabled]="!loginForm.valid ">
+        </div>
+      </div>
+    </div>
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
+        <div class="form-group">
+          <a  class = "btn btn-block btn-social btn-linkedin" (click)="subscribeToLogin()" type = "submit">
+            <i class="fab fa-linkedin" aria-hidden="true"></i>
+            Login with LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class = "row justify-content-md-center">
+      <div class="col-md-8">
+        <div class="form-group">
+          <a  class = "btn btn-block btn-social btn-google" type = "submit" (click)="signInWithGoogle()">
+            <i class="fab fa-google" aria-hidden="true"></i>
+            Login with Google
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-md-center mb-4">
+      <div class="col-md-8">
+        <a routerLink = "/forgot_password" >Forgot your Password</a> <br/>
+        <a routerLink = "/signup" >Sign Up</a>
+      </div>
+    </div>
+  </form>
 </div>

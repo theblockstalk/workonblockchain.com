@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import {HomeComponent} from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-
+import { StyleGuideComponent } from './style-guide/style-guide.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,7 @@ import { FooterComponent } from './footer/footer.component';
     HomeComponent,
     HeaderComponent,
     FooterComponent,
+    StyleGuideComponent
   ],
   imports: [
     BrowserModule,

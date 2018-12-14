@@ -28,119 +28,82 @@
     }
     </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type='text/css' href="./assets/css/bootstrap.min.css">
-  <link rel="stylesheet" type='text/css' href="./assets/css/bootstrap-select.css">
-  <link rel="stylesheet" type='text/css' href="./assets/css/wob_main.css">
-  <link rel="stylesheet" type='text/css' href="./assets/css/middle.css">
-  <link rel="stylesheet" type='text/css' href="./assets/css/select2.css">
-  <link rel="stylesheet" href="./assets/css/bootstrap-select.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-  <!--using fonts link-->
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+  <link rel = "stylesheet" href = "./assets/css/application.css"/>
+  <link rel = "stylesheet" href = "./assets/css/background.css"/>
+  <link rel = "stylesheet" href = "./assets/css/home-page.css"/>
+  <link rel = "stylesheet" href = "./assets/css/footer.css"/>
+  <link rel = "stylesheet" href = "./assets/css/switch.css"/>
+  <link rel = "stylesheet" href = "./assets/css/chat.css"/>
+  <link rel = "stylesheet" href = "./assets/css/bootstrap-social.css"/>
+  <link rel = "stylesheet" href="./assets/css/editor.css" type="text/css"/>
+  <script src="./assets/js/editor.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans|Quicksand" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 
   <!--Icon font link-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-	<!--<div class="se-pre-con"></div>-->
   <app-root></app-root>
 
 
 <!-- jqeury and js links-->
 
-<script src="./assets/js/jquery.min.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-<script src="./assets/js/custom.js"></script>
-<script src="./assets/js/bootstrap.min.js"></script>
-<script src="./assets/js/bootstrap-select.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<!--<script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
 
-<script> CKEDITOR.config.forcePasteAsPlainText = true; </script>-->
 <!-- Load Facebook SDK for JavaScript -->
  <div id="fb-root"></div>
- <script>
 
-	$(window).load(function() {
-		// Animate loader off screen
-		$(".se-pre-con").fadeOut("slow");;
-	});
-</script>
 
-<script type="text/javascript">
-(function() {
-    'use strict';
+  <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+  </script>
+  <script>
+    $(document).ready(function(){
 
-    var deps = [];
-
-    angular.module('sandbox', deps)
-        .controller('SandboxController', SandboxController)
-    ;
-
-    function SandboxController($element) {
-        /* jshint validthis : true */
-        var vm = this;
-        vm.activate   = toggle;
-        vm.deactivate = toggle;
-        vm.isActive   = isActive;
-
-        function toggle() {
-            var active   = vm.isActive();
-            var oldClass = active ? 'active' : 'inactive';
-            var newClass = active ? 'inactive' : 'active';
-            $element.removeClass(oldClass).addClass(newClass);
+      //Check to see if the window is top if not then display button
+      $(window).scroll(function(){
+        if ($(this).scrollTop() > 100) {
+          $('#scroll-to-top').fadeIn();
+        } else {
+          $('#scroll-to-top').fadeOut();
         }
+      });
 
-        function isActive() {
-            return $element.hasClass('active');
-        }
-    }
+      //Click event to scroll to top
+      $('#scroll-to-top').click(function(){
+        $('html, body').animate({scrollTop : 0},800);
+        return false;
+      });
 
-})();
-
-window.addEventListener('load', function() {
-
-	 $(function () {
-		    $('#1step').change(function () {
-		        if ($('#1step').is(':checked')) {
-		            $("#input_field").hide();
-		        } else {
-		            $("#input_field").show();
-		        }
-		    }).change();
-		});
-});
-
-</script>
-
-<script>
-/*$(".messages").animate({ scrollTop: $(document).height() }, "fast");
-
-function newMessage() {
-	message = $(".message-input input").val();
-	if($.trim(message) == '') {
-		return false;
-	}
-	$(".messages").animate({ scrollTop: $(document).height() }, "fast");
-};
-
-$('.submit').click(function() {
-  newMessage();
-});
-
-$(window).on('keydown', function(e) {
-  if (e.which == 13) {
-    newMessage();
-    return false;
-  }
-});*/
-</script>
-
-
+    });
+  </script>
 </body>
 </html>

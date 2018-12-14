@@ -1,0 +1,119 @@
+.fab {
+	color: #3C83B7;
+}
+
+.fas {
+	color: #3C83B7;
+}
+
+.form-group label {
+	font-weight:bold
+}
+
+.form-group .form-check label {
+	font-weight:normal
+}
+
+.wob-wizard {
+	/*placeholder if we want to change wizard*/
+}
+
+.navbar-brand>img {
+	width: 250px;
+	align: "left;"
+}
+
+/*Use with bootstrap-social.css*/
+.btn-social .fab {
+	color: #fff
+}
+
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+	width: 100% !important;
+}
+
+.btn-light {
+    color: #495057 !important;
+    background-color: #ffffff !important;
+    border-color: #ced4da !important;
+}
+
+.btn-light:hover {
+    color: #495057;
+    background-color: #ffffff;
+    border-color: #ced4da;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff !important;
+    text-decoration: none;
+    background-color: #d0d0d0 !important;
+}
+
+.modal-header{
+	display: block;
+	text-align: center;
+	color: #fff;
+}
+
+.modal-header .close span{
+	position: absolute !important;
+    color: #fff !important;
+    top: 0px !important;
+    right: 10px !important;
+}
+
+.nav-tabs .nav-link{
+	width: 50% !important;
+	font-weight: bold;
+}
+
+.list-group{
+	max-width: 450px;
+    display: block;
+} 
+
+.list-group li{
+	border: none !important;
+}
+
+
+#scroll-to-top{
+	bottom: 60px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    z-index: 100;
+    cursor: pointer;
+	color: #fff;
+    display: none;
+}
+
+#scroll-to-top::before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 40px;
+    height: 40px;
+}
+
+#scroll-to-top .fas{
+	color: #fff;
+}

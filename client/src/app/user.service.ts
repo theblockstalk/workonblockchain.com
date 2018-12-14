@@ -691,7 +691,6 @@ export class UserService {
       else return throwError(error);
 
     }));
-
   }
 
   send_refreal(email: string, subject: string, body: string,share_url: string, first_name: string, last_name: string){
@@ -1173,9 +1172,9 @@ export class UserService {
 
 
 
-  admin_company_filter(is_approve : number , msg_tags : any,word:any)
+  admin_company_filter(queryBody : any)
   {
-    return this.http.post(URL+'users/admin_company_filter', { is_approve: is_approve , msg_tags : msg_tags , word:word}, {
+    return this.http.post(URL+'users/admin_company_filter', queryBody, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

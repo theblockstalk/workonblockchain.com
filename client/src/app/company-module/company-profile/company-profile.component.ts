@@ -69,10 +69,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     ngAfterViewInit(): void
      {
        window.scrollTo(0, 0);
-       setTimeout(() => {
-         $('.selectpicker').selectpicker('refresh');
-       }, 150);
-
         }
 
   locations = [
@@ -311,8 +307,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
-                this.companyMsgTitle= data['page_title'];
-                this.companyMsgBody = data['page_content'];
+                this.companyMsgTitle= data[0]['page_title'];
+                this.companyMsgBody = data[0]['page_content'];
               }
             });
       }

@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {HomeComponent} from './home/home.component';
+import { StyleGuideComponent } from './style-guide/style-guide.component';
 
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent},
   { path: '', component: HomeComponent},
+  { path : 'style-guide' , component : StyleGuideComponent},
   { path: '', loadChildren: './auth-module/auth-module.module#AuthModuleModule'},
   { path: '', loadChildren: './pages-module/pages-module.module#PagesModuleModule'},
   { path: '', loadChildren: './referral-module/referral-module.module#ReferralModuleModule'},
@@ -13,8 +15,7 @@ const routes: Routes = [
   { path: '', loadChildren: './chat-module/chat-module.module#ChatModuleModule'},
   { path: '', loadChildren: './company-module/company-module.module#CompanyModuleModule'},
   { path: '', loadChildren: './admin-module/admin-module.module#AdminModuleModule'},
-  { path: '', loadChildren: './admin-editor-module/admin-editor-module.module#AdminEditorModuleModule'},
-
+  { path: '', loadChildren: './admin-editor-module/admin-editor-module.module#AdminEditorModuleModule'}
 ];
 
 
