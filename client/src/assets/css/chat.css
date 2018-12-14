@@ -460,8 +460,8 @@ only to be applied to the chat page*/
 }
 
 .arrow-up {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 5px solid black;
@@ -471,8 +471,8 @@ only to be applied to the chat page*/
 }
 
 .arrow-up-b {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 5px solid black;
@@ -500,7 +500,7 @@ only to be applied to the chat page*/
 
 
 #frame .content .messages ul li:before{
-	
+
 }
 
 .offers{
@@ -567,8 +567,7 @@ input[type=file] {
     margin-top: 20px;
     position: relative;
     right: 85px;
-}365
-
+}
 
 .wlcm_btn .btn {
     top: 0px !important;
@@ -587,11 +586,11 @@ input[type=file] {
 	#frame #sidepanel #contacts ul li.contact {
 		padding: 6px 0 46px 8px;
 	}
-	
+
 	#frame #sidepanel #contacts ul li.contact .wrap img {
 		margin-right: 0px;
 	}
-	
+
 	#frame .content .messages {
 		max-height: 325px;
 		min-height: 325px;
@@ -607,17 +606,17 @@ input[type=file] {
 		overflow-y: scroll;
 		overflow-x: hidden;
 	}
-	
+
 	#frame #sidepanel #profile {
 		width: 100%;
 		margin: 0 auto;
 		padding: 15px 0 0 5px;
 	}
-	
+
 	#frame #sidepanel #contacts ul li.contact .wrap img {
 		margin-right: 0px;
 	}
-	
+
 	#frame #sidepanel #contacts ul li.contact .wrap .meta {
 		display: none;
 	}
@@ -629,7 +628,7 @@ input[type=file] {
 	#frame #sidepanel {
 		width: 20%;
 	}
-	
+
 	#frame .content {
 		width: 80%;
 	}
@@ -639,7 +638,7 @@ input[type=file] {
 	.btn_rgt {
 		display: none;
 	}
-	
+
 	.btn_descp {
 		margin-bottom: 10px;
 	}
@@ -649,7 +648,7 @@ input[type=file] {
 	#frame #sidepanel #profile .wrap {
 		height: 60px;
 	}
-	
+
 	#frame #sidepanel #profile .wrap img {
 		width: 100%;
 	}

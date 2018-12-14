@@ -206,8 +206,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   ngAfterViewInit() {
-    setInterval(() => {
+    setTimeout(() => {
       $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
     }, 300);
   }
 
@@ -414,6 +415,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   {
     console.log("function executed");
     console.log(this.preferncesForm.value);
+    console.log(profileForm.value);
     this.error_msg = "";
     if(!this.first_name) {
       this.first_name_log="Please enter first name";
@@ -491,19 +493,25 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           data => {
             if(data && this.currentUser)
             {
-              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
 console.log(inputEl)
               if (inputEl && inputEl.files && inputEl.files.length > 0)
               {
+                console.log("if");
                 let formData = new FormData();
                 if(inputEl.files.item(0).size < this.file_size)
                 {
+
+                  console.log(inputEl.files.item(0).size);
+
                   formData.append('photo', inputEl.files.item(0));
 
+                  console.log(formData);
                   this.http.post(URL+'users/employer_image', formData, {
                     headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
                   }).pipe(map(res =>
                     {
+                      console.log(res);
                       this.router.navigate(['/company_profile']);
                     },
                     (error) => {
