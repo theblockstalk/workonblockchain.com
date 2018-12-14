@@ -245,8 +245,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
              data => {
                if(data)
                {
-                 this.candidateMsgTitle= data['page_title'];
-                 this.candidateMsgBody = data['page_content'];
+                 this.candidateMsgTitle= data[0]['page_title'];
+                 this.candidateMsgBody = data[0]['page_content'];
                }
              });
        }

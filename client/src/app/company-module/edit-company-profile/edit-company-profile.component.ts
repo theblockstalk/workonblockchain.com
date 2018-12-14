@@ -213,10 +213,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      $('.selectpicker').selectpicker();
-    }, 200);
-    //$('.selectpicker').selectpicker();
+    $('.selectpicker').selectpicker();
   }
 
   ngAfterViewChecked() {
@@ -337,27 +334,36 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 when_receive_email_notitfications: [data['saved_searches'][0].when_receive_email_notitfications],
               });
 
-              for (let locations of data['saved_searches'][0].location) {
-                for(let option of this.locations) {
-                  if(option.name === locations ) {
-                    this.locationSelected.push(option.name);
+              if(data['saved_searches'][0].location && data['saved_searches'][0].location.length >0){
+                for (let locations of data['saved_searches'][0].location) {
+                  for(let option of this.locations) {
+                    if(option.name === locations ) {
+                      this.locationSelected.push(option.name);
+                    }
                   }
                 }
               }
-              for (let job_types of data['saved_searches'][0].job_type) {
-                for(let option of this.job_types) {
-                  if(option === job_types ) {
-                    this.jobTypesSelected.push(option);
+
+              if(data['saved_searches'][0].job_type && data['saved_searches'][0].job_type.length > 0){
+                for (let job_types of data['saved_searches'][0].job_type) {
+                  for(let option of this.job_types) {
+                    if(option === job_types ) {
+                      this.jobTypesSelected.push(option);
+                    }
                   }
                 }
               }
-              for (let positions of data['saved_searches'][0].position) {
-                for(let option of this.roles) {
-                  if(option.name === positions ) {
-                    this.positionSelected.push(option.name);
+
+              if(data['saved_searches'][0].position && data['saved_searches'][0].position.length >0){
+                for (let positions of data['saved_searches'][0].position) {
+                  for(let option of this.roles) {
+                    if(option.name === positions ) {
+                      this.positionSelected.push(option.name);
+                    }
                   }
                 }
               }
+
               if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
                 for(let blockchains of data['saved_searches'][0].blockchain) {
                   for(let option of this.blockchain) {
@@ -411,6 +417,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   company_profile(profileForm: NgForm)
   {
+    console.log("function executed");
+    console.log(this.preferncesForm.value);
     this.error_msg = "";
     if(!this.first_name) {
       this.first_name_log="Please enter first name";

@@ -177,8 +177,8 @@ export class ChatComponent implements OnInit {
                           data => {
                             if(data)
                             {
-                              this.candidateMsgTitle = data['page_title'];
-                              this.candidateMsgContent = data['page_content'];
+                              this.candidateMsgTitle = data[0]['page_title'];
+                              this.candidateMsgContent = data[0]['page_content'];
 
                             }
                           }
