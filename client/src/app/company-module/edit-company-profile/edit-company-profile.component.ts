@@ -206,11 +206,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   ngAfterViewInit() {
-    $('.selectpicker').selectpicker();
+    setInterval(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
   }
 
   ngAfterViewChecked() {
-    //$('.selectpicker').selectpicker('refresh');
   }
 
   ngOnInit()
