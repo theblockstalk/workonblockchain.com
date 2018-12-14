@@ -198,11 +198,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
     }, 300);
+
   }
 
   ngAfterViewChecked() {
-    //$('.selectpicker').selectpicker('refresh');
+
+
   }
   skill;
   ngOnInit()

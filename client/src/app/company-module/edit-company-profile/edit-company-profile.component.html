@@ -202,14 +202,16 @@
             <div class="col-md-6">
               <div class="form-row">
                 <div class="form-group w-100">
-                  <label></label>
+                  <label>Upload photo</label>
                   <div class="form-group">
-                    <input type="file"  name="image" [(ngModel)]="image" class="form-control-file mt-2" id="exampleFormControlFile1">
+                    <input type="file"  name="image" [(ngModel)]="image" class="form-control-file" id="profile">
                   </div>
                   <div class="invalid-feedback d-inline" *ngIf="!image_log">
                     {{image_log}}
                   </div>
                 </div>
+
+
               </div>
             </div>
 
