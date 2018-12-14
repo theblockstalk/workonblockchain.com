@@ -22,7 +22,7 @@
                 <div class="form-group w-100">
                   <label>First name</label>
                   <input name="first_name" [(ngModel)]="first_name" type="text" class="form-control" placeholder="First name" required>
-                  <div class="invalid-feedback" *ngIf="!first_name">
+                  <div class="invalid-feedback d-inline" *ngIf="!first_name">
                     {{first_name_log}}
                   </div>
                 </div>
@@ -39,7 +39,7 @@
                   <label>Last name</label>
                   <input name="last_name" [(ngModel)]="last_name"  type="text" class="form-control" placeholder="Last name" required>
                 </div>
-                <div class="invalid-feedback" *ngIf="!last_name">
+                <div class="invalid-feedback d-inline" *ngIf="!last_name">
                   {{last_name_log}}
                 </div>
               </div>
@@ -50,7 +50,7 @@
                 <div class="form-group w-100">
                   <label>Job title</label>
                   <input name="job_title" [(ngModel)]="job_title" type="text" class="form-control" placeholder="Job title" required>
-                  <div class="invalid-feedback" *ngIf="!job_title">
+                  <div class="invalid-feedback d-inline" *ngIf="!job_title">
                     {{job_title_log}}
                   </div>
                 </div>
@@ -67,7 +67,7 @@
                   <label>Company name</label>
                   <input name="company_name" [(ngModel)]="company_name"  type="text" class="form-control" placeholder="Company name" required>
                 </div>
-                <div class="invalid-feedback" *ngIf="!company_name">
+                <div class="invalid-feedback d-inline" *ngIf="!company_name">
                   {{company_name_log}}
                 </div>
               </div>
@@ -81,7 +81,7 @@
                   <div class = "invalid-feedback" *ngIf="!company_website">
                     <span class = "error">{{company_website_log}}</span>
                   </div>
-                  <div class="invalid-feedback" *ngIf="website.errors && company_website">
+                  <div class="invalid-feedback d-inline" *ngIf="website.errors && company_website">
                     <span class = "error">Enter url in proper format.</span>
                   </div>
 
@@ -99,7 +99,7 @@
                   <label>Phone number</label>
                   <input name="phone_number" [(ngModel)]="company_phone"  type="tel" class="form-control" placeholder="Phone number" required>
                 </div>
-                <div class="invalid-feedback" *ngIf="!company_phone">
+                <div class="invalid-feedback d-inline" *ngIf="!company_phone">
                   {{company_phone_log}}
                 </div>
               </div>
@@ -112,7 +112,7 @@
                   <select title="Please choose country" class="selectpicker form-control"  required name="country" [(ngModel)]="company_country">
                     <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
                   </select>
-                  <div class="invalid-feedback" *ngIf="!company_country">
+                  <div class="invalid-feedback d-inline" *ngIf="!company_country">
                     {{company_country_log}}
                   </div>
                 </div>
@@ -129,7 +129,7 @@
                   <label>Postal Code</label>
                   <input type="text" class="form-control" placeholder="Postal code" required name="postal_code" [(ngModel)]="company_postcode">
                 </div>
-                <div class="invalid-feedback" *ngIf="!company_postcode">
+                <div class="invalid-feedback d-inline" *ngIf="!company_postcode">
                   {{company_postcode_log}}
                 </div>
               </div>
@@ -140,7 +140,7 @@
                 <div class="form-group w-100">
                   <label>City name</label>
                   <input type="text" class="form-control" placeholder="City name" required name="city" [(ngModel)]="company_city">
-                  <div class="invalid-feedback" *ngIf="!company_city">
+                  <div class="invalid-feedback d-inline" *ngIf="!company_city">
                     {{company_city_log}}
                   </div>
                 </div>
@@ -165,7 +165,7 @@
                   <label>When was the company founded?</label>
                   <input type="text" class="form-control" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
                 </div>
-                <div class="invalid-feedback" *ngIf="!company_founded">
+                <div class="invalid-feedback d-inline" *ngIf="!company_founded">
                   {{founded_log}}
                 </div>
               </div>
@@ -176,7 +176,7 @@
                 <div class="form-group w-100">
                   <label>Number of employees?</label>
                   <input type="number" class="form-control" placeholder="Number of employees" name="no_of_employees" [(ngModel)]="no_of_employees">
-                  <div class="invalid-feedback" *ngIf="!no_of_employees">
+                  <div class="invalid-feedback d-inline" *ngIf="!no_of_employees">
                     {{employee_log}}
                   </div>
                 </div>
@@ -193,7 +193,7 @@
                   <label>How is the company funded?</label>
                   <input type="text" class="form-control"  placeholder="How's company funded" name="company_funded" [(ngModel)]="company_funded">
                 </div>
-                <div class="invalid-feedback" *ngIf="!company_funded">
+                <div class="invalid-feedback d-inline" *ngIf="!company_funded">
                   {{funded_log}}
                 </div>
               </div>
@@ -206,7 +206,7 @@
                   <div class="form-group">
                     <input type="file"  name="image" [(ngModel)]="image" class="form-control-file mt-2" id="exampleFormControlFile1">
                   </div>
-                  <div class="invalid-feedback" *ngIf="!image_log">
+                  <div class="invalid-feedback d-inline" *ngIf="!image_log">
                     {{image_log}}
                   </div>
                 </div>
@@ -223,7 +223,7 @@
                   <div class="form-group">
                     <textarea name="company_description" [(ngModel)]="company_description" placeholder="Company description" class="form-control" rows="3"></textarea>
                   </div>
-                  <div class="invalid-feedback" *ngIf="!company_description">
+                  <div class="invalid-feedback d-inline" *ngIf="!company_description">
                     {{des_log}}
                   </div>
                 </div>
@@ -250,7 +250,7 @@
                     <option *ngFor='let location of locations;let i = index'  [selected] = "locationSelectedOptions(location.name)"  [value]="location.value">{{location.name}}</option>
 
                   </select>
-                  <div class = "invalid-feedback" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
+                  <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
                     {{location_log}}
                   </div>
                 </div>
@@ -265,7 +265,7 @@
                     <option *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
 
                   </select>
-                  <div class = "invalid-feedback" *ngIf="!preferncesForm.value.job_type || preferncesForm.value.job_type.length === 0 ">
+                  <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.job_type || preferncesForm.value.job_type.length === 0 ">
                     {{job_type_log}}
                   </div>
                 </div>
@@ -285,7 +285,7 @@
                     <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
 
                   </select>
-                  <div class = "invalid-feedback" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
+                  <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
                     {{position_log}}
                   </div>
                 </div>
@@ -302,7 +302,7 @@
                   <select title="Select currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
                     <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
                   </select>
-                  <div class = "invalid-feedback" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary ">
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary ">
                     {{current_currency_log}}
                   </div>
                 </div>
@@ -322,7 +322,7 @@
 
                   </select>
 
-                  <div class = "invalid-feedback" *ngIf="!avail_day">
+                  <div class = "invalid-feedback d-inline" *ngIf="!avail_day">
                     {{availability_day_log}}
                   </div>
                 </div>
@@ -390,10 +390,9 @@
                     </div>
 
                   </div>
-
-                  <div class = "invalid-feedback" *ngIf="!when_receive_email_notitfications">
-                    {{email_notification_log}}
-                  </div>
+                </div>
+                <div class = "invalid-feedback d-inline" *ngIf="!when_receive_email_notitfications">
+                  {{email_notification_log}}
                 </div>
               </div>
             </div>
@@ -407,7 +406,7 @@
         <div class="row">
           <div class = "col-md-12">
             <button type="submit" class = "btn wob-bg-secondary2 float-right" [disabled]="website.errors && company_website" >Save Profile</button>
-            <div class = "invalid-feedback float-right" *ngIf="error_msg">
+            <div class = "invalid-feedback float-right d-inline" *ngIf="error_msg">
               {{error_msg}}
             </div>
           </div>
