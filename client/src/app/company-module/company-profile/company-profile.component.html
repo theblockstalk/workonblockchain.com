@@ -1,4 +1,7 @@
-<div class="container my-2">
+<section class = "wob-bg-primary2">
+
+
+<div class="container mt-2">
   <div class="row">
     <div class="col-md-12">
       <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn wob-bg-secondary2 float-right mt-4" >What happens next?</button>
@@ -7,7 +10,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <fieldset class = "border rounded py-3 px-5">
+      <fieldset class = "border rounded py-3 px-5 bg-white">
         <legend class="w-auto m-0">
           <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
           <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
@@ -56,7 +59,7 @@
 
       </fieldset >
 
-      <section class = "border rounded mt-4 py-3 px-5">
+      <section class = "border rounded mt-4 py-3 px-5 bg-white">
         <div class="row">
           <div class="col-md-6">
             <h4>
@@ -101,7 +104,7 @@
       </section>
 
 
-      <section class = "border rounded mt-4 py-3 px-5">
+      <section class = "border rounded mt-4 py-3 px-5 bg-white">
         <div class="row">
           <div class="col-md-6">
             <h4>
@@ -146,7 +149,7 @@
         </div>
       </section>
 
-      <section class = "border rounded mt-4 py-3 px-5" *ngIf = "saved_searche && saved_searche.length > 0">
+      <section class = "bg-white border rounded my-4 py-3 px-5" *ngIf = "saved_searche && saved_searche.length > 0">
         <div class="row">
 
           <div class="col-md-6">
@@ -286,8 +289,7 @@
     </div>
   </div>
 </div>
-
-<br/><br/>
+</section>
 
 
 
