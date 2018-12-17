@@ -1,57 +1,56 @@
 <!--candidate step completing-->
-
-<div class="container">
-  <div class="row mb-2">
-    <div class="col-md-12">
-      <ul class="nav justify-content-center wizard">
-        <li class="nav-item">
-          <a routerLink="{{term_link}}" class="nav-link">
-            <i class="{{term_active_class}}"></i>
-            Terms & Conditions
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/prefill-profile" class="nav-link">
-            <i class="{{term_active_class}}"></i>
-            Prefill Profile
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/about" class="nav-link">
-            <i class="{{active_class}}"></i>
-            About
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/job" class="nav-link">
-            <i class="{{active_class}}"></i>
-            Jobs
-          </a>
-        </li>
-        <li class="nav-item px-2">
-          <a routerLink="/resume" class="nav-link">
-            <i class="{{active_class}}"></i>
-            Blockchain
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/experience" class="nav-link">
-            <i class="{{exp_active_class}}"></i>
-            Experience
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <form class="needs-validation" novalidate (submit)="experience_submit(expForm)" #expForm = ngForm novalidate>
-    <div class="row">
+<section class="wob-bg-primary2">
+  <div class="container">
+    <div class="row mb-4">
       <div class="col-md-12">
-        <legend>Experience</legend>
+        <ul class="nav justify-content-center wizard">
+          <li class="nav-item">
+            <a routerLink="{{term_link}}" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              Terms & Conditions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/prefill-profile" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              Prefill Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about" class="nav-link">
+              <i class="{{active_class}}"></i>
+              About
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/job" class="nav-link">
+              <i class="{{active_class}}"></i>
+              Jobs
+            </a>
+          </li>
+          <li class="nav-item px-2">
+            <a routerLink="/resume" class="nav-link">
+              <i class="{{active_class}}"></i>
+              Blockchain
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/experience" class="nav-link">
+              <i class="{{exp_active_class}}"></i>
+              Experience
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <div class="p-2 mb-2 border">
+    <form class="needs-validation p-4 mb-5 border bg-white" novalidate (submit)="experience_submit(expForm)" #expForm = ngForm novalidate>
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Technical experience</h2>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-md-12">
           <strong>Languages</strong>
@@ -95,12 +94,10 @@
             {{exp_lang_log}}
           </div>
       </div>
-    </div>
 
-    <div class="p-2 mb-2 border">
       <div class="row">
         <div class="col-md-12">
-          <strong>Work History</strong>
+          <h4>Work History</h4>
         </div>
       </div>
       <div class = "work-form" [formGroup]="ExperienceForm">
@@ -227,12 +224,10 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="p-2 mb-2 border">
       <div class="row">
         <div class="col-md-12">
-          <strong>Education</strong>
+          <h4>Education</h4>
         </div>
       </div>
       <div class = "work-form" [formGroup]="EducationForm">
@@ -294,38 +289,37 @@
           <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>
         </div>
       </div>
-    </div>
 
-     <div class="row">
-       <div class="alert alert-danger" *ngIf="message">{{message}}</div>
-       <div class="col-md-12">
-         <div class="form-group">
-           <label>Bio</label>
-           <ul>
-             <li> 2-5 sentences </li>
-             <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
-             <li> Example "Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." </li>
-           </ul>
-           <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
-           <div class = "invalid-feedback" *ngIf="!Intro">
-             {{intro_log}}
+       <div class="row">
+         <div class="alert alert-danger" *ngIf="message">{{message}}</div>
+         <div class="col-md-12">
+           <div class="form-group">
+             <label>Bio</label>
+             <ul>
+               <li> 2-5 sentences </li>
+               <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
+               <li> Example "Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." </li>
+             </ul>
+             <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+             <div class = "invalid-feedback" *ngIf="!Intro">
+               {{intro_log}}
+             </div>
            </div>
          </div>
        </div>
-     </div>
 
-     <div class = "form-group text-right">
-       <a routerLink="/resume" class = "btn btn-warning">Prev Step</a>
-       <button type="submit" class = "btn btn-secondary ml-1">Done</button>
-     </div>
+       <div class = "form-group text-right">
+         <a routerLink="/resume" class = "btn btn-warning text-white">Back</a>
+         <button type="submit" class = "btn btn-secondary ml-1">Done</button>
+       </div>
 
-     <div class = "invalid-feedback" *ngIf="error_msg">
-       {{error_msg}}
-     </div>
-     <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
-  </form>
-</div>
-
+       <div class = "invalid-feedback" *ngIf="error_msg">
+         {{error_msg}}
+       </div>
+       <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
+    </form>
+  </div>
+</section>
 <!-- Modal -->
 <div id="popModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document">

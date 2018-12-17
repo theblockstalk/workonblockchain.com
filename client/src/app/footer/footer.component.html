@@ -1,29 +1,22 @@
 <!--Cookies and privacy notice tab-->
 <ng-container *ngIf="display_cookie == 0;else cookie_disabled">
-<section class = "cookies_tab alert">
-	<div class = "container-fluid">
-		<div class="row">
-			<div class="col-md-10">
-				<p class = "pra-cookie">
-					We use cookies to support your
-					experience on our site. By
-					continuing to use our site you
-					agree to use of cookies.
-					Please see our
-					<a style = "text-decoration:underline;" target="_blank" href = "privacy-notice"> privacy notice </a>
-					for details of how we use cookies.
-				</p>
-			</div>
-			<div class = "col-md-2">
-				<a href="#" (click) ="accept_cookie()" class = "cookie_a" data-dismiss="alert" aria-label="close">
-					<div id="cookie-btn">
-						<p>Yes, Got it</p>
-					</div>
-				</a>
-			</div>
-		</div>
-</div>
-</section>
+  <div class = "container p-0 alert bg-light text-secondary">
+    <div class = "row">
+      <div class = "col-md-10 text-center">
+        <p class = "position-relative mt-2">
+          We use cookies to support your experience on our site. By continuing to use our
+          site you agree to use of cookies. Please see our
+          <a style = "text-decoration:underline;" target="_blank" href = "privacy-notice"> privacy notice </a>
+          for details of how we use cookies.
+        </p>
+      </div>
+      <div class = "col-md-2 text-center">
+        <a href="#" (click) ="accept_cookie()" class = "btn btn-dark position-relative mt-3" data-dismiss="alert" aria-label="close">
+          Yes, Got it
+        </a>
+      </div>
+    </div>
+  </div>
 </ng-container>
 <ng-template #cookie_disabled>
 </ng-template>
@@ -75,6 +68,6 @@
 <!--end-->
 
 <!--back to top-->
-<a href="#" id="scroll-to-top" title="Back to top" style="display: block;">
-	<span class="glyphicon glyphicon-chevron-up ico-last" aria-hidden="true"></span>
+<a href="#" class = "btn btn-warning position-fixed" id="scroll-to-top" title="Back to top">
+  <i class="fas fa-angle-up"></i>
 </a>

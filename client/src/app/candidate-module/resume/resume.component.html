@@ -1,71 +1,78 @@
 <!--candidate step completing-->
-<div class="container">
-  <div class="row mb-2">
-    <div class="col-md-12">
-      <ul class="nav justify-content-center wizard">
-        <li class="nav-item">
-          <a routerLink="{{term_link}}" class="nav-link">
-            <i class="{{term_active_class}}"></i>
-            Terms & Conditions
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/prefill-profile" class="nav-link">
-            <i class="{{term_active_class}}"></i>
-            Prefill Profile
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/about" class="nav-link">
-            <i class="{{term_active_class}}"></i>
-            About
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/job" class="nav-link">
-            <i class="{{active_class}}"></i>
-            Jobs
-          </a>
-        </li>
-        <li class="nav-item px-2">
-          <a routerLink="/resume" class="nav-link">
-            <i class="{{exp_active_class}}"></i>
-            Blockchain
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="{{exp_class}}" class="nav-link">
-            <i class="{{exp_active_class}}"></i>
-            Experience
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <form class="needs-validation" novalidate #expForm = ngForm (submit)="blockchain_exp(expForm)">
-    <div class="row">
+<section class="wob-bg-primary2">
+  <div class="container">
+    <div class="row mb-4">
       <div class="col-md-12">
-        <legend>Blockchain Experience</legend>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <strong>Why do you want to work on blockchain?</strong>
-        <ul>
-          <li> let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
-          <li> This is the first field that a company sees! </li>
+        <ul class="nav justify-content-center wizard">
+          <li class="nav-item">
+            <a routerLink="{{term_link}}" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              Terms & Conditions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/prefill-profile" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              Prefill Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              About
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/job" class="nav-link">
+              <i class="{{active_class}}"></i>
+              Jobs
+            </a>
+          </li>
+          <li class="nav-item px-2">
+            <a routerLink="/resume" class="nav-link">
+              <i class="{{exp_active_class}}"></i>
+              Blockchain
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="{{exp_class}}" class="nav-link">
+              <i class="{{exp_active_class}}"></i>
+              Experience
+            </a>
+          </li>
         </ul>
-        <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because.."  #whywork name="why_work" required [(ngModel)]="why_work">
-      </div>
-      <div class = "invalid-feedback" *ngIf="!why_work">
-        {{why_work_log}}
       </div>
     </div>
-
-    <div class="p-2 mb-2 border">
+    <form class="needs-validation p-4 mb-5 border bg-white" novalidate #expForm = ngForm (submit)="blockchain_exp(expForm)">
       <div class="row">
         <div class="col-md-12">
-          <strong>Platforms commercially worked with</strong>
+          <h2>Blockchain experience</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Why do you want to work on blockchain?</label>
+            <small id="emailHelp" class="form-text text-muted">
+              let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency?
+            </small>
+            <small id="emailHelp1" class="form-text text-muted mb-2">
+              This is the first field that a company sees!
+            </small>
+            <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because.."  #whywork name="why_work" required [(ngModel)]="why_work">
+          </div>
+        </div>
+        <div class = "invalid-feedback" *ngIf="!why_work">
+          {{why_work_log}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <h4>Blockchain technologies</h4>
+          <div class="form-group">
+            <label>Platforms commercially worked with</label>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -85,7 +92,9 @@
       </div>
       <div class="row" *ngIf="commercially_worked?.length > 0">
         <div class="col-md-12">
-          <strong>Years of experience</strong>
+          <div class="form-group">
+            <label>Years of experience</label>
+          </div>
         </div>
         <div class = "col-md-7" *ngFor="let option of commercially_worked; let i = index ">
           <p>{{option.value}}</p>
@@ -103,12 +112,12 @@
       <div class = "invalid-feedback" *ngIf="commercially_worked.length !== commercial_expYear.length">
         {{commercial_log}}
       </div>
-    </div>
 
-    <div class="p-2 mb-2 border">
       <div class="row">
         <div class="col-md-12">
-          <strong>Platforms designed/developed smart contracts on </strong>
+          <div class="form-group">
+            <label>Platforms designed/developed smart contracts on </label>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -129,7 +138,9 @@
       </div>
       <div class="row" *ngIf="platforms_designed?.length > 0">
         <div class="col-md-12">
-          <strong>Years of experience</strong>
+          <div class="form-group">
+            <label>Years of experience</label>
+          </div>
         </div>
         <div class = "col-md-7" *ngFor="let exp_value of platforms_designed;let i_index = index">
           <p>{{exp_value.value}}</p>
@@ -148,12 +159,12 @@
       <div class = "invalid-feedback" *ngIf="platforms_designed.length !== platforms.length">
         {{platform_log}}
       </div>
-    </div>
 
-    <div class="p-2 mb-2 border">
       <div class="row">
         <div class="col-md-12">
-          <strong>Platforms experimented with </strong>
+          <div class="form-group">
+            <label>Platforms experimented with </label>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -172,13 +183,14 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- commercial skills -->
-    <div class="p-2 mb-2 border">
+      <!-- commercial skills -->
       <div class="row">
         <div class="col-md-12">
-          <strong>Commercial experience in these areas </strong>
+          <h4>Blockchain skills</h4>
+          <div class="form-group">
+            <label>Commercial experience in these areas </label>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -198,7 +210,9 @@
       </div>
       <div class="row" *ngIf="commercialSkills?.length > 0">
         <div class="col-md-12">
-          <strong>Years of experience</strong>
+          <div class="form-group">
+            <label>Years of experience</label>
+          </div>
         </div>
         <div class = "col-md-7" *ngFor="let option of commercialSkills; let i = index ">
           <p>{{option.value}}</p>
@@ -216,12 +230,12 @@
       <div class = "invalid-feedback" *ngIf="commercialSkills.length !== commercialSkillsExperienceYear.length">
         {{commercial_skill_log}}
       </div>
-    </div>
 
-    <div class="p-2 mb-2 border">
       <div class="row">
         <div class="col-md-12">
-          <strong>Formal (university) education in these areas </strong>
+          <div class="form-group">
+            <label>Formal (university) education in these areas </label>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -241,7 +255,9 @@
       </div>
       <div class="row" *ngIf="formal_skills_exp?.length > 0">
         <div class="col-md-12">
-          <strong>Years of experience</strong>
+          <div class="form-group">
+            <label>Years of experience</label>
+          </div>
         </div>
         <div class = "col-md-7" *ngFor="let option of formal_skills_exp; let i = index ">
           <p>{{option.value}}</p>
@@ -260,13 +276,14 @@
       <div class = "invalid-feedback" *ngIf="formal_skills_exp.length !== formal_skills.length">
         {{formal_skills_log}}
       </div>
-    </div>
-    <div class = "form-group text-right">
-      <a routerLink="/job" class = "btn btn-warning">Prev Step</a>
-      <button type=submit  class = "btn btn-secondary ml-1">Next Step</button>
-    </div>
-    <div class = "invalid-feedback" *ngIf="error_msg">
-      {{error_msg}}
-    </div>
-  </form>
-</div>
+
+      <div class = "form-group text-right">
+        <a routerLink="/job" class = "btn btn-warning text-white">Back</a>
+        <button type=submit  class = "btn btn-secondary ml-1">Next</button>
+      </div>
+      <div class = "invalid-feedback" *ngIf="error_msg">
+        {{error_msg}}
+      </div>
+    </form>
+  </div>
+</section>
