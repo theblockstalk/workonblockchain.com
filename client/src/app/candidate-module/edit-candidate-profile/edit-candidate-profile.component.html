@@ -317,7 +317,7 @@
                 <div class="form-group col-md-12 col-left">
                   <label><p class = "label-p">Why do you want to work on blockchain?</p></label>
                   <ul>
-                    <li> let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
+                    <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
                     <li> This is the first field that a company sees! </li>
                   </ul>
                   <input type="text" class="form-control" id="" placeholder="i want to work on blockchain because ......."  #whywork name="why_work" [(ngModel)]="why_work">
@@ -614,8 +614,10 @@
                 <div class="form-group col-md-12" id="work_candidate">
                   <div class = "row work-history">
                     <h3>Work History</h3>
-                    <p>Your profile will be hidden from all companies you have listed in your work history.</p>
-
+                    <p>
+                      Company names listed in your work history will remain anonymous until you
+                      accept an interview from a hiring company.
+                    </p>
                     <div class = "work-form" [formGroup]="ExperienceForm">
                       <div formArrayName="ExpItems">
                         <div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
