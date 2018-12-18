@@ -199,12 +199,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
-    }, 300);
+    }, 500);
 
   }
 
   ngAfterViewChecked() {
-
 
   }
   skill;
@@ -229,7 +228,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.availabilityChange=-1;
     this.info = [];
     this.msg='';
-    this.credentials.currency = -1;
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -651,12 +649,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.authenticationService.getLastJobDesc()
       .subscribe(
         data => {
+          setTimeout(() => {
+            $('.selectpicker').selectpicker();
+            $('.selectpicker').selectpicker('refresh');
+          }, 500);
           this.credentials.job_title = data['job_title'];
           this.credentials.salary = data['salary'];
           this.credentials.currency = data['salary_currency'];
           this.credentials.location = data['interview_location'];
           this.credentials.job_type = data['job_type'];
           this.credentials.job_desc = data['description'];
+
         },
         error => {
           if (error['message'] === 500 || error['message'] === 401) {

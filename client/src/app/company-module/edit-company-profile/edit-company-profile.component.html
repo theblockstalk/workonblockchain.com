@@ -219,11 +219,8 @@
                 <div class="form-group w-100">
                   <label>Upload photo</label>
                   <div class="form-group">
-                    <input type="file" accept="image/*" placeholder="Upload file..." name="image" [(ngModel)]="image" class="form-control-file" id="profile">
-                    <label>
-                      <span *ngIf="img_src" >{{img_src}}</span>
-                      <span *ngIf="!img_src" >Upload Company Logo (optional)</span>
-                    </label>
+                    <input type="file" accept="image/*" name="image" [(ngModel)]="image" class="form-control-file" id="profile">
+                    <span *ngIf="img_src" >{{img_src}}</span>
                   </div>
                   <div class="invalid-feedback d-inline" *ngIf="!image_log">
                     {{image_log}}
@@ -432,11 +429,14 @@
         <div class="row">
           <div class = "col-md-12">
             <button type="submit" class = "btn wob-bg-secondary2 float-right mb-3" [disabled]="website.errors && company_website" >Save Profile</button>
-            <div class = "invalid-feedback float-right d-inline" *ngIf="error_msg">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class = "invalid-feedback float-right d-inline w-auto" *ngIf="error_msg">
               {{error_msg}}
             </div>
           </div>
-
         </div>
 
       </div>
