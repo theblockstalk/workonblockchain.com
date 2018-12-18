@@ -516,6 +516,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.availabilityChange ) queryBody.availability_day = this.availabilityChange;
       if(this.salary && this.currencyChange) {
+        setTimeout(() => {
+          $('.selectpicker').selectpicker();
+          $('.selectpicker').selectpicker('refresh');
+        }, 500);
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }

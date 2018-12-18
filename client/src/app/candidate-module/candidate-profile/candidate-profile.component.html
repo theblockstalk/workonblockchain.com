@@ -26,13 +26,6 @@
               <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
             </legend>
             <div class="row">
-              <div class="col-md-12">
-                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
-                  <i class="fas fa-edit" aria-hidden="true"></i>
-                </a>
-              </div>
-            </div>
-            <div class="row">
               <div class="col-md-6">
                 <span>
                   <h2 class="text-capitalize">{{first_name}} {{last_name}}</h2>
