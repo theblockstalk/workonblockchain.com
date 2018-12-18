@@ -116,111 +116,113 @@
                 </div>
               </div>
 
-            <div class="col-md-4">
-              <div class="form-group">
-                <label>Position</label>
-                <input type="text" formControlName="positionname" class="form-control" #position_field name="position" required>
-                <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].positionname">
-                  {{position_log}}
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="form-group">
-                <label>Location</label>
-                <input type="text" formControlName="locationname" class="form-control" #location_field name="location" required>
-                <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].locationname">
-                  {{location_log}}
-                </div>
-              </div>
-            </div>
-
-            <div class="hidden-class">
-              <div class="row ml-0">
-                <div class="col-md-12">
-                  <strong>Start Date</strong>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <select formControlName="start_date" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
-                      <option  *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
-                      <br/>
-                    </select>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Position</label>
+                  <input type="text" formControlName="positionname" class="form-control" #position_field name="position" required>
+                  <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].positionname">
+                    {{position_log}}
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <select formControlName="startyear" class="form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
-                      <option  *ngFor='let start_year of year'  [value]="start_year" selected>{{start_year}}</option>
-                      <br/>
-                    </select>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Location</label>
+                  <input type="text" formControlName="locationname" class="form-control" #location_field name="location" required>
+                  <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].locationname">
+                    {{location_log}}
                   </div>
                 </div>
-                <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].startdate || !this.ExperienceForm.value.ExpItems[i].startyear">
-                  {{start_date_log}}
-                </div>
               </div>
-            </div>
 
-            <div class="hidden-class" id="input_field" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork==false " >
-              <div class="row ml-1">
-                <div class="col-md-12">
-                  <strong>End Date</strong>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <select formControlName="end_date" class="form-control xs_input"  required name="roles"  required=""  >
-                      <option *ngFor='let end_month of month' [value]="end_month" selected >{{end_month}}</option>
-                      <br/>
-                    </select>
+              <div class="hidden-class">
+                <div class="row ml-0">
+                  <div class="col-md-12">
+                    <strong>Start Date</strong>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <select formControlName="start_date" class="form-control xs_input" id="month"  required name="roles"  (change)="work_start_data($event)" required="" >
+                        <option  *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
+                        <br/>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <select formControlName="startyear" class="form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
+                        <option  *ngFor='let start_year of year'  [value]="start_year" selected>{{start_year}}</option>
+                        <br/>
+                      </select>
+                    </div>
+                  </div>
+                  <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].startdate || !this.ExperienceForm.value.ExpItems[i].startyear">
+                    {{start_date_log}}
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <select formControlName="endyear" class="form-control xs_input" required name="roles" required=""  >
-                      <option *ngFor='let end_year of year' [value]="end_year" selected>{{end_year}}</option>
-                      <br/>
-                    </select>
+              </div>
+
+              <div class="hidden-class" id="input_field" *ngIf = "ExperienceForm.value.ExpItems[i].currentwork==false " >
+                <div class="row ml-1">
+                  <div class="col-md-12">
+                    <strong>End Date</strong>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <select formControlName="end_date" class="form-control xs_input"  required name="roles"  required=""  >
+                        <option *ngFor='let end_month of month' [value]="end_month" selected >{{end_month}}</option>
+                        <br/>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <select formControlName="endyear" class="form-control xs_input" required name="roles" required=""  >
+                        <option *ngFor='let end_year of year' [value]="end_year" selected>{{end_year}}</option>
+                        <br/>
+                      </select>
+                    </div>
+                  </div>
+                  <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].end_date || !this.ExperienceForm.value.ExpItems[i].endyear && this.ExperienceForm.value.ExpItems[i].companyname==false">
+                    {{end_date_log}}
                   </div>
                 </div>
-                <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].end_date || !this.ExperienceForm.value.ExpItems[i].endyear && this.ExperienceForm.value.ExpItems[i].companyname==false">
-                  {{end_date_log}}
+              </div>
+
+              <div class="col-md-4 mt-4">
+                <div class="form-group">
+                  <div class="checkbox" *ngFor="let current of current_work">
+                    <label>  {{current.name}}
+                      <input type="checkbox"  formControlName="currentwork"
+                             name="current.name" [checked]="current_work_check[i] "
+                             value="current.value"
+                             required  />
+                      <span>
+                        <div></div>
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="col-md-4 mt-4">
-              <div class="form-group">
-                <div class="checkbox" *ngFor="let current of current_work">
-                  <label>  {{current.name}}
-                    <input type="checkbox"  formControlName="currentwork"
-                           name="current.name" [checked]="current_work_check[i] "
-                           value="current.value"
-                           required  />
-                    <span>
-                      <div></div>
-                    </span>
-                  </label>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Job description (optional)</label>
+                  <textarea rows="5" id="comment" maxlength="2000" placeholder="Job description" formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
                 </div>
               </div>
-            </div>
-
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Job description (optional)</label>
-                <textarea rows="5" id="comment" maxlength="2000" placeholder="Job description" formControlName="description" class="form-control" #desc_field name="Description" required></textarea>
+              <div class="col-md-12">
+                <div class = "form-group text-right">
+                  <a (click)="deleteExpRow(i)" class = "btn btn-danger text-white">Remove</a>
+                </div>
               </div>
-            </div>
-
-            <div class = "form-group col-md-12 text-right">
-              <a (click)="deleteExpRow(i)" class = "btn btn-danger text-white">Remove</a>
             </div>
           </div>
-          </div>
-          <div class = "form-group col-md-12 ">
-            <!--<button class = "btn btn-self mr_rgt mr-btm" id = "addDom" (click)="addNewExpRow()"><i class="fa fa-plus"></i> Add Position </button> -->
-            <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>
+          <div class="col-md-12">
+            <div class = "form-group">
+              <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>
+            </div>
           </div>
         </div>
       </div>
@@ -279,14 +281,17 @@
                 </div>
               </div>
             </div>
-            <div class = "text-right">
-              <div class="form-group">
+            <div class = "col-md-12">
+              <div class="form-group text-right">
                 <a (click)="deleteRow(i)" class = "btn btn-danger text-white">Remove</a>
               </div>
             </div>
           </div>
-          <!--  <button class = "btn btn-self mr_rgt mr-btm" id = "addDom2" (click)="addNewRow()"><i class="fa fa-plus" ></i> Add Education </button> -->
-          <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>
+          <div class = "col-md-12">
+            <div class="form-group">
+              <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>
+            </div>
+          </div>
         </div>
       </div>
 

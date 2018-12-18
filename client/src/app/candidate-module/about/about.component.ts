@@ -252,28 +252,26 @@ export class AboutComponent implements OnInit,AfterViewInit
                 let formData = new FormData();
                 if (fileCount > 0) {
                   if (inputEl.files.item(0).size < this.file_size) {
-                    console.log('in size if');
                     formData.append('photo', inputEl.files.item(0));
                     this.authenticationService.uploadCandImage(formData)
-                      .subscribe(
-                        data => {
-                          if (data['success']) {
-                            console.log(data['success']);
-                            this.router.navigate(['/job']);
-                          }
-                        },
-                        error => {
-                          if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            localStorage.removeItem('currentUser');
-                            localStorage.removeItem('googleUser');
-                            localStorage.removeItem('close_notify');
-                            localStorage.removeItem('linkedinUser');
-                            localStorage.removeItem('admin_log');
-                            window.location.href = '/login';
-                          }
+                    .subscribe(
+                      data => {
+                        if (data['success']) {
+                          this.router.navigate(['/job']);
                         }
-                      );
+                      },
+                      error => {
+                        if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                          localStorage.removeItem('currentUser');
+                          localStorage.removeItem('googleUser');
+                          localStorage.removeItem('close_notify');
+                          localStorage.removeItem('linkedinUser');
+                          localStorage.removeItem('admin_log');
+                          window.location.href = '/login';
+                        }
+                      }
+                    );
                   }
                   else {
                     this.image_log = "Image size should be less than 1MB";

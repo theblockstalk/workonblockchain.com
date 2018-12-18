@@ -146,29 +146,29 @@
 
             <div class="row mt-4">
               <div class = "col-md-6" *ngIf="countries">
-                <div class="form-group">
+                <div class="form-group mb-1">
                   <label> Desired location:</label>
-                  <p class="mr-2" *ngFor='let country of countries'>
-                    {{country.charAt(0).toUpperCase()}}{{country.slice(1)}}
-                  </p>
+                </div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let country of countries'>
+                  {{country.charAt(0).toUpperCase()}}{{country.slice(1)}}
                 </div>
               </div>
               <div class = "col-md-6">
-                <div class="form-group">
+                <div class="form-group mb-1">
                   <label> Area of interest:</label>
-                  <p class="mr-2" *ngFor='let interest_area of interest_area;'>
-                    {{interest_area}}
-                  </p>
+                </div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let interest_area of interest_area;'>
+                  {{interest_area}}
                 </div>
               </div>
             </div>
             <div class="row mt-4">
               <div class = "col-md-6">
-                <div class="form-group">
+                <div class="form-group mb-1">
                   <label> Desired roles:</label>
-                  <p class="mr-2" *ngFor='let roles_data of roles'>
-                    {{roles_data}}
-                  </p>
+                </div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let roles_data of roles'>
+                  {{roles_data}}
                 </div>
               </div>
               <div class = "col-md-6" *ngIf="expected_salary">
@@ -227,49 +227,50 @@
 
             <div class="row mt-4" *ngIf = "commercial && commercial.length > 0">
               <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group mb-2">
                   <label>Platform commercially worked with:</label>
-                  <p class="mr-2" *ngFor='let data of commercial;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
-                    {{data.platform_name}} : {{data.exp_year}} years
-                  </p>
                 </div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of commercial;'>
+                  <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
+                  {{data.platform_name}} : {{data.exp_year}} years
+                </div>
+
               </div>
               <div class="col-md-6" *ngIf = "platforms && platforms.length > 0">
-                <div class="form-group">
+                <div class="form-group mb-1">
                   <label>Platforms designed/developed smart contracts:</label>
-                  <p class="mr-2" *ngFor='let data of platforms;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
-                    {{data.platform_name}}  : {{data.exp_year}} years
-                  </p>
+                </div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of platforms;'>
+                  <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
+                  {{data.platform_name}}  : {{data.exp_year}} years
                 </div>
               </div>
             </div>
 
             <div class="row mt-4">
               <div class="col-md-6" *ngIf = "experimented && experimented.length > 0 ">
-                <div class="form-group">
+                <div class="form-group mb-1">
                   <label>Platform experimented with:</label>
-                  <p class="mr-2" *ngFor='let data of experimented;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.value}}.png" alt="{{data.value}} Logo">
-                    {{data.value}}
-                  </p>
+                </div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of experimented;'>
+                  <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.value}}.png" alt="{{data.value}} Logo">
+                  {{data.value}}
                 </div>
               </div>
               <div class="col-md-6" *ngIf = "commercial_skills && commercial_skills.length > 0">
-                <div class="form-group">
+                <div class="form-group mb-1">
                   <label>Commercial experience in these areas:</label>
-                  <p class="mr-2" *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</p>
                 </div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
               </div>
             </div>
 
             <div class="row mt-4" >
               <div class="col-md-6" *ngIf = "formal_skills && formal_skills.length > 0">
-                <div class="form-group">
+                <div class="form-group mb-1">
                   <label>Formal (university) education in these areas:</label>
-                  <p class="mr-2" *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</p>
                 </div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
               </div>
             </div>
           </section>
