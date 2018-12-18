@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
-import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { FeesComponent } from './fees/fees.component';
 import { FaqComponent } from './faq/faq.component';
 import { TermsAndConditionComponent } from './terms-and-condition/terms-and-condition.component';
@@ -11,7 +10,6 @@ import { CompanyTermsAndConditionsComponent } from './company-terms-and-conditio
 const routes: Routes = [
   {path : 'privacy-notice' , component: PrivacyPolicyComponent},
   {path : 'contact-us' , component: ContactUsComponent},
-  {path : 'legal-notice' , component: LegalNoticeComponent},
   {path : 'fees' , component: FeesComponent},
   {path : 'faq' , component: FaqComponent},
   {path : 'terms-for-candidate' , component: TermsAndConditionComponent},

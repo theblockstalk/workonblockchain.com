@@ -1,7 +1,9 @@
+<section class = "bg-light">
+
 <div class="container my-2">
   <div class = "row">
-    <div class="col-md-12 wob-bg-primary1 p-2">
-      <form #f="ngForm" (ngSubmit)="searchdata('search', searchWord)" class="w-50 mx-auto">
+    <div class="col-md-12 wob-bg-primary1 p-4">
+      <!--<form #f="ngForm" (ngSubmit)="searchdata('search', searchWord)" class="w-50 mx-auto">
         <div class="input-group">
           <input type="text" class="form-control" [(ngModel)]='searchWord' name="word" [disabled]="msg !== '' ? true : false"  placeholder="Search">
 
@@ -10,7 +12,7 @@
           </div>
 
         </div>
-      </form>
+      </form>-->
     </div>
   </div>
 
@@ -93,8 +95,8 @@
             </div>
             <div *ngIf="candidate_data && candidate_data.length > 0 ">
               <div class="panel-group" *ngFor= "let data of pagedItems ">
-                <div class="panel panel-default border mb-3" >
-                  <div class="row m-0 wob-bg-primary2 pt-3 pb-3">
+                <div class="panel panel-default border mb-3 bg-white" >
+                  <div class="row m-0 wob-bg-primary2 py-4">
 
                     <div class="col-md-9">
 
@@ -129,24 +131,31 @@
                   <div class = "col-md-12 m-0 p-4">
                     <div class="row">
                       <div class="col-md-12">
+                        <div class="form-group">
                         <span ><i>{{data.why_work}}</i></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="data.programming_languages && data.programming_languages.length>0">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label><h4>Languages</h4></label>
+                          <div>
+                            <div class="d-inline-block p-2 border rounded mr-2" *ngFor = 'let lang of sorting(data.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
                     <div class="row">
-                      <div class="col-sm-8">
-                        <h4>Bio</h4>
-                        <p>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label><h4>Bio</h4></label>
+                        <p class="text-justify">
                           {{data.description}}
                         </p>
-                      </div>
-                      <div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
-                        <h4>Languages</h4>
-                        <ul class="list-group">
-                          <li class="list-group-item" *ngFor = 'let lang of sorting(data.programming_languages)'>
-                            {{lang.language}} - {{lang.exp_year}} years
-                          </li>
-                        </ul>
+                        </div>
                       </div>
                     </div>
 
@@ -223,7 +232,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="validationCustom02">Currency</label>
-                <select title="Currency"  name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control" multiple data-live-search="true">
+                <select title="Currency"  name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
                   <option *ngFor='let base_currency of currency' [value]="base_currency">{{base_currency}}</option>
                 </select>
               </div>
@@ -234,10 +243,9 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="validationCustom02">Employment type</label>
-                <div *ngFor="let options of job_type">
-                  <label>
-                    <input type="radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
-                    {{options}}
+                <div class="form-check" *ngFor="let options of job_type">
+                    <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
+                    <label class="form-check-label" for="{{options}}" >{{options}}
                   </label>
                 </div>
 
@@ -265,3 +273,4 @@
     </div>
   </div>
 </div>
+</section>

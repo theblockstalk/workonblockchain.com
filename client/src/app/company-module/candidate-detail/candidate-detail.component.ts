@@ -1,16 +1,17 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {NgForm} from '@angular/forms';
-import { DataService } from "../../data.service";
+import { DataService } from '../../data.service';
+declare var $:any;
 
 @Component({
   selector: 'app-candidate-detail',
   templateUrl: './candidate-detail.component.html',
   styleUrls: ['./candidate-detail.component.css']
 })
-export class CandidateDetailComponent implements OnInit   {
+export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   id;
   user_id;
   first_name;
@@ -38,8 +39,10 @@ export class CandidateDetailComponent implements OnInit   {
   roles;
   expected_salary;
   email;
-  //ckeConfig: any;
-  //@ViewChild("myckeditor") ckeditor: any;
+  currency = ["£ GBP" ,"€ EUR" , "$ USD"];
+
+  ckeConfig: any;
+  @ViewChild("myckeditor") ckeditor: any;
 
   constructor(private dataservice: DataService , private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
@@ -76,6 +79,14 @@ export class CandidateDetailComponent implements OnInit   {
   commercial_skills;
   formal_skills;
   message;
+
+  ngAfterViewInit() {
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
+  }
   ngOnInit()
   {
     this.invalidMsg = '';
@@ -85,12 +96,14 @@ export class CandidateDetailComponent implements OnInit   {
       this.authenticationService.getLastJobDesc()
         .subscribe(
           data => {
+
             this.credentials.job_title = data['job_title'];
             this.credentials.salary = data['salary'];
             this.credentials.currency = data['salary_currency'];
             this.credentials.location = data['interview_location'];
             this.credentials.job_type = data['job_type'];
             this.credentials.job_desc = data['description'];
+
           },
           error => {
             if (error['message'] === 500 || error['message'] === 401) {
@@ -109,20 +122,17 @@ export class CandidateDetailComponent implements OnInit   {
           }
         );
 
-      /*this.ckeConfig = {
+      this.ckeConfig = {
         allowedContent: false,
         extraPlugins: 'divarea',
         forcePasteAsPlainText: true,
-        height: '15rem',
-        width: '23.2rem',
         removePlugins: 'resize,elementspath',
         removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
-      };*/
+      };
       setInterval(() => {
         this.job_offer_msg = '';
       }, 7000);
       this.company_reply = 0;
-      this.credentials.currency = -1;
       this.credentials.user_id = this.user_id;
 
 
