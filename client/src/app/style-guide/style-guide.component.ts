@@ -11,6 +11,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   constructor() { }
 
   ngOnInit() {
+
   }
 
   ngAfterViewInit() {

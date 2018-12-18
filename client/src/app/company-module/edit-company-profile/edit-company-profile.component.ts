@@ -209,7 +209,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     setTimeout(() => {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
-    }, 300);
+    }, 400);
   }
 
   ngAfterViewChecked() {
@@ -287,15 +287,16 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               this.no_of_employees = data['no_of_employees'];
               this.company_funded = data['company_funded'];
               this.company_description = data['company_description'];
-              if(data['company_logo'] != null){
+              if(data['company_logo'] != null) {
 
-                this.img_data  =  data['company_logo'];
+                this.img_data = data['company_logo'];
 
                 let x = this.img_data.split("/");
 
-                let last:any = x[x.length-1];
+                let last: any = x[x.length - 1];
 
                 this.img_src = last;
+
               }
 
             }
@@ -507,25 +508,11 @@ console.log(inputEl)
                   formData.append('photo', inputEl.files.item(0));
 
                   console.log(formData);
-                  this.http.post(URL+'users/employer_image', formData, {
-                    headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                  }).pipe(map(res =>
-                    {
-                      console.log(res);
+                  this.authenticationService.company_image(formData)
+                    .subscribe(
+                      imageRes => {
                       this.router.navigate(['/company_profile']);
-                    },
-                    (error) => {
-                      if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-                      {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('googleUser');
-                        localStorage.removeItem('close_notify');
-                        localStorage.removeItem('linkedinUser');
-                        localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                      }
-                    }));
+                    });
                 }
                 else
                 {

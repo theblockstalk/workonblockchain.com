@@ -1,42 +1,37 @@
-<section class = "wob-bg-primary2">
+<section class = "bg-light">
 
 
 <div class="container mt-2">
   <div class="row">
     <div class="col-md-12">
-      <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn wob-bg-secondary2 float-right mt-4" >What happens next?</button>
+      <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn wob-bg-secondary2 float-right my-3" >What happens next?</button>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <fieldset class = "border rounded py-3 px-5 bg-white">
-        <legend class="w-auto m-0">
-          <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
-          <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
-        </legend>
+      <section class = "border rounded py-3 px-5 bg-white">
         <div class="row">
           <div class="col-md-6">
-
-            <div class="">
+            <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+            <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+            <div class="mt-3">
               <span><h3>{{company_name}}</h3></span>
               <span><p>{{company_description}}</p></span>
             </div>
-
           </div>
           <div class="col-md-5">
-
             <ul class="list-group list-group-flush float-right">
               <li class="list-group-item">
                 <span><i class="fas fa-building mr-2"></i></span>
                 <span><a [href]="company_website" target="_blank">{{company_website}}</a></span>
               </li>
               <li class="list-group-item">
-                <span><i class="fas fa-landmark mr-2"></i></span>
+                <span><i class="fas fa-map-marker-alt mr-2"></i></span>
                 <span >Country: {{company_country}}</span>
               </li>
               <li class="list-group-item">
-                <span><i class="fas fa-landmark mr-2"></i></span>
+                <span><i class="fas fa-map-marker-alt mr-2"></i></span>
                 <span class = "li_txt">City: {{company_city}}</span>
               </li>
               <li class="list-group-item">
@@ -44,11 +39,10 @@
                 <span class = "li_txt">Postcode: {{company_postcode}}</span>
               </li>
               <li class="list-group-item">
-                <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                <span><i class="fas fa-phone mr-2"></i></span>
                 <span class = "li_txt"> Phone: {{company_phone}}</span>
               </li>
             </ul>
-
           </div>
           <div class="col-md-1">
             <a class="float-right" (click)="internalRoute('edit_company_profile','information')">
@@ -57,14 +51,14 @@
           </div>
         </div>
 
-      </fieldset >
+      </section >
 
       <section class = "border rounded mt-4 py-3 px-5 bg-white">
         <div class="row">
           <div class="col-md-6">
-            <h4>
+            <h2>
               Company info
-            </h4>
+            </h2>
           </div>
           <div class="col-md-6">
             <a class="float-right" (click)="internalRoute('edit_company_profile','about_you')">
@@ -107,9 +101,9 @@
       <section class = "border rounded mt-4 py-3 px-5 bg-white">
         <div class="row">
           <div class="col-md-6">
-            <h4>
+            <h2>
               Company Administration
-            </h4>
+            </h2>
           </div>
           <div class="col-md-6">
             <a class="float-right" (click)="internalRoute('edit_company_profile','information')">
@@ -153,9 +147,9 @@
         <div class="row">
 
           <div class="col-md-6">
-            <h4>
+            <h2>
               Candidate preferences
-            </h4>
+            </h2>
           </div>
           <div class="col-md-6">
             <a class="float-right" (click)="internalRoute('edit_company_profile','prefrences')">
@@ -168,25 +162,18 @@
           <div class="col-md-6 mb-3">
             <div class="form-group">
               <label>Where are you hiring:</label>
-              <h5>
-                <span class="badge badge-pill badge-secondary mr-1" *ngFor= "let location of saved_searche[0].location">
-                  {{location}}
-                </span>
-              </h5>
-
+              <div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let location of saved_searche[0].location"> {{location}}</div>
+              </div>
             </div>
           </div>
 
           <div class="col-md-6 mb-3">
             <div class="form-group">
               <label>What position type are you looking for:</label>
-              <h5>
-                <span class="badge badge-pill badge-secondary mr-1" *ngFor= "let type of saved_searche[0].job_type">
-                  {{type}}
-                </span>
-              </h5>
-
-
+              <div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let type of saved_searche[0].job_type"> {{type}}</div>
+              </div>
             </div>
           </div>
 
@@ -194,33 +181,28 @@
           <div class="col-md-6 mb-3">
             <div class="form-group">
               <label>What role are you looking for:</label>
-              <h5>
-                <span class="badge badge-pill badge-secondary mr-1" *ngFor= "let position of saved_searche[0].position">
-                  {{position}}
-                </span>
-              </h5>
+              <div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let position of saved_searche[0].position"> {{position}}</div>
+              </div>
+
             </div>
           </div>
 
           <div class="col-md-6 mb-3" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
             <div class="form-group">
               <label>What blockchain technology experience do they need:</label>
-              <h5>
-                <span class="badge badge-pill badge-secondary mr-1" *ngFor = "let blockchain of saved_searche[0].blockchain">
-                  {{blockchain}}
-                </span>
-              </h5>
+              <div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let blockchain of saved_searche[0].blockchain"> {{blockchain}}</div>
+              </div>
             </div>
           </div>
 
           <div class="col-md-6 mb-3" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
             <div class="form-group">
               <label>What programming languages do they need to know:</label>
-              <h5>
-                <span class="badge badge-pill badge-secondary mr-1" *ngFor = "let lang of saved_searche[0].skills">
-                  {{lang}}
-                </span>
-              </h5>
+              <div>
+                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let lang of saved_searche[0].skills"> {{lang}}</div>
+              </div>
             </div>
           </div>
 
