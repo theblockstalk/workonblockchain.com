@@ -34,6 +34,7 @@ export class ReferralComponent implements OnInit {
   ref_link_for_not_logged_user = '';
   termscondition = false;
   terms_log = '';
+  log_success = '';
 
   constructor(
     private authenticationService: UserService,private titleService: Title,private newMeta: Meta
@@ -130,31 +131,32 @@ export class ReferralComponent implements OnInit {
   }
 
   send_email() {
-    this.log = 'Sending your Email';
-
     if(this.credentials.email && this.email_subject && this.mail_body){
+      this.log = '';
+      this.log_success = 'Sending your Email';
       this.authenticationService.send_refreal(this.credentials.email, this.email_subject, this.mail_body,this.share_url,this.first_name,this.last_name)
-        .subscribe(
-          data => {
-            this.log = data['msg'];
-          },
-          error => {
-            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-            {
-              this.log = error['error']['message'];
-            }
-            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-            {
-              this.log = error['error']['message'];
-            }
-            else{
-              this.log = error['error']['message'];
-            }
+      .subscribe(
+        data => {
+          this.log_success = data['msg'];
+        },
+        error => {
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.log = error['error']['message'];
           }
-        );
+          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.log = error['error']['message'];
+          }
+          else{
+            this.log = error['error']['message'];
+          }
+        }
+      );
     }
     else{
-      this.log = 'Please fill all fields';
+      this.log_success = '';
+        this.log = 'Please fill all fields';
     }
   }
   copyInputMessage(inputElement){

@@ -112,3 +112,10 @@ input[type=number]::-webkit-outer-spin-button {
 .ckeditor_tab >.cke>.cke_inner> .cke_top{
   display: none !Important;
 }
+
+/*CSS for referral page by Tayyab*/
+.referral_banner {
+  background-image: url('../images/blockchain-header.jpg');
+  color: #fff;
+}
+/*CSS for referral page ends*/

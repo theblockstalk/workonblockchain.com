@@ -20,21 +20,21 @@
       <div class="row">
         <div class="col-md-12">
           <!--use fieldset instaed of div to diplay image within border-->
-          <div class="border rounded py-3 px-5 bg-white mt-3" *ngIf="!public_data">
-            <legend class="w-auto m-0">
-              <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
-              <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
-            </legend>
+          <section class="border rounded py-3 px-5 bg-white mt-3" *ngIf="!public_data">
             <div class="row">
               <div class="col-md-6">
-                <span>
-                  <h2 class="text-capitalize">{{first_name}} {{last_name}}</h2>
-                </span>
-                <span>
-                  <p>{{description}}</p>
-                </span>
+                <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+                <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+                <div class="mt-3">
+                  <span>
+                    <h2 class="text-capitalize">{{first_name}} {{last_name}}</h2>
+                  </span>
+                  <span>
+                    <p>{{description}}</p>
+                  </span>
+                </div>
               </div>
-              <div class="col-md-6 mt-3">
+              <div class="col-md-5 mt-3">
                 <ul class="list-group list-group-flush float-right">
                   <li class="list-group-item">
                     <span><i class="fas fa-landmark mr-2"></i></span>
@@ -48,10 +48,19 @@
                     <i class="fas fa-user mr-2"></i>
                     <span class = "text-capitalize">Candidate status: {{candidate_status.status}}</span>
                   </li>
+                  <li class="list-group-item">
+                    <i class="fas fa-clock mr-2"></i>
+                    <span>Date created: {{date_created | date : 'dd-MMMM-yyyy'}}</span>
+                  </li>
                 </ul>
               </div>
+              <div class="col-md-1">
+                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
+                  <i class="fas fa-edit" aria-hidden="true"></i>
+                </a>
+              </div>
             </div>
-          </div>
+          </section>
 
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
@@ -283,7 +292,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Languages:</label>
-                  <p class="mr-2" *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</p>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</div>
                 </div>
               </div>
             </div>
