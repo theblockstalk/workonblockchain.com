@@ -1,246 +1,110 @@
-<!--<table class="table">
-    <thead>
-		<tr>
-			<th> <a routerLink="/about"> About</a></th>
-			<th><a routerLink="/job" >Job</a></th>
-			<th><a routerLink="/resume" class="{{class}}">Resume</a></th>
-			<th><a routerLink="/experience" class = "{{exp_class}}">Experience</a></th>
-			<th><a routerLink="/final" class = "{{final_class}}">Final</a></th>
-			<th><a routerLink="/referral" class = "{{referral_class}}">Referral</a></th>
-		</tr>
-    </thead>
-</table>
-<h5>Earn £500 by inviting others to our system</h5>
-<p>
-	If someone you refer us gets hired for a full
-	time position, we will give you an Amazon gift
-	card worth £500.
-</p>
-<h5> Your invite link </h5>
-<p> {{ref_link}} </p>
-<body data-scribe="section:share" class=" regular ltr ready">
-	<div id="widget">
-		<div class="btn-o" data-scribe="component:button" style="width: 61px;">
-			<a target="_blank" href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fwww.talent.io%2Finvite&amp;ref_src=twsrc%5Etfw&amp;text=I%E2%80%99m%20inviting%20you%20to%20talent.io!%20Sign%20up%20now%20and%20let%20companies%20apply%20to%20you.%20Receive%205%20%20job%20offers%20in%20one%20week.%20Salaries%20from%20%E2%82%AC35k%20-%20%E2%82%AC100k&amp;tw_p=tweetbutton&amp;url={{ref_link}};via=talentio" class="btn" id="b">
-				<i></i><span class="label" id="l">Tweet</span>
-			</a>
-		</div>
-	</div>
-</body>-->
-
-
-<!-- <section class = "referral-page"> -->
-
-		<!-- <div class="container referral-container"> -->
-			<!-- <ng-container *ngIf="display_list === 1;else second"> -->
-				<!-- <div class="row col-md-6 referral-inner"> -->
-					<!-- <div class="form-group"> -->
-						<!-- <label for="comment">All Candidates</label> -->
-						<!-- <ul> -->
-							<!-- <li *ngFor="let person of users">  -->
-								<!-- <button (click)="openDialog(person.email,person._id)"> -->
-									<!-- {{ person.email }} -->
-								<!-- </button> -->
-							<!-- </li> -->
-						<!-- </ul> -->
-					<!-- </div> -->
-				<!-- </div> -->
-				<!-- <ng-container *ngIf="show_msg_area === 1;else offer"> -->
-					<!-- <div class="row col-md-6 referral-inner"> -->
-						<!-- <form (submit)="send_message(msgForm)" #msgForm = ngForm> -->
-							<!-- <div class="form-group"> -->
-							  <!-- <label for="comment">Messages</label> -->
-							  <!-- <div *ngFor="let msg of new_msgss"> -->
-								<!-- {{msg.sender_name}}: -->
-								<!-- {{msg.message}} -->
-							  <!-- </div> -->
-							  <!-- <div> -->
-								<!-- {{msgs}} -->
-							  <!-- </div> -->
-							<!-- </div> -->
-							<!-- <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/> -->
-							<!-- <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/> -->
-							<!-- <div class="form-group"> -->
-							  <!-- <textarea class="form-control" placeholder="your message here" rows="3" name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"></textarea> -->
-							<!-- </div> -->
-							<!-- <p>{{log}}</p> -->
-							<!-- <div class="form-group"> -->
-								<!-- <button type="submit" class = "btn btn-lg btn-self" [disabled]="!msgForm.valid ">Send</button> -->
-							<!-- </div> -->
-						<!-- </form> -->
-					<!-- </div> -->
-				<!-- </ng-container> -->
-				<!-- <ng-template #offer> -->
-					<!-- <div class="row col-md-6 referral-inner"> -->
-						<!-- <div> -->
-							<!-- <form (submit)="send_message(msgForm)" #msgForm = ngForm> -->
-								<!-- <div class="form-group"> -->
-									<!-- <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/> -->
-									<!-- <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/> -->
-									<!-- <input type="hidden" name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/> -->
-									<!-- Send offer to {{credentials.email}}. -->
-								<!-- </div> -->
-								<!-- <div class="form-group"> -->
-									<!-- <button type="submit" class = "btn btn-lg btn-self">Send</button> -->
-								<!-- </div> -->
-							<!-- </form> -->
-						<!-- </div> -->
-					<!-- </div> -->
-				<!-- </ng-template> -->
-			<!-- </ng-container> -->
-			<!-- <ng-template #second> -->
-				<!-- <div class="row col-md-6 referral-inner"> -->
-					<!-- <div class="form-group"> -->
-						<!-- <label for="comment">All Companies</label> -->
-						<!-- <ul> -->
-							<!-- <li *ngFor="let person of users">  -->
-								<!-- <button (click)="openDialog(person.email,person._id)"> -->
-									<!-- {{ person.email }} -->
-								<!-- </button> -->
-							<!-- </li> -->
-						<!-- </ul> -->
-					<!-- </div> -->
-				<!-- </div> -->
-				<!-- <div class="row col-md-6 referral-inner"> -->
-					<!-- <form (submit)="send_message_candidate(msgForm1)" #msgForm1 = ngForm> -->
-						<!-- <div class="form-group"> -->
-						  <!-- <label for="comment">Messages</label> -->
-						  <!-- <div *ngFor="let msg of new_msgss"> -->
-						    <!-- {{msg.sender_name}}: -->
-							<!-- {{msg.message}} -->
-						  <!-- </div> -->
-						  <!-- <div> -->
-							<!-- {{new_msgs}} -->
-						  <!-- </div> -->
-						<!-- </div> -->
-						<!-- <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/> -->
-						<!-- <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/> -->
-						<!-- <div class="form-group"> -->
-						  <!-- <textarea class="form-control" placeholder="your message here" rows="3" name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"></textarea> -->
-						<!-- </div> -->
-						<!-- <p>{{log}}</p> -->
-						<!-- <div class="form-group"> -->
-							<!-- <button type="submit" class = "btn btn-lg btn-self" [disabled]="!msgForm1.valid ">Send</button> -->
-						<!-- </div> -->
-					<!-- </form> -->
-				<!-- </div> -->
-			<!-- </ng-template> -->
-		<!-- </div> -->
-
-		<!-- <div class = "gap"> -->
-		<!-- </div> -->
-
-	<!-- </section> -->
-
-	<!--Profile-inner-->
-	<!-- uncomment for use -->
-	<!--<div class="my-container">
-		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-	</div>-->
-	<ng-container *ngIf="file_uploaded === 0;else no_section" >
-		<div class="col-md-12 text-center" >
-			<img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
-		</div>
-	</ng-container>
-	<ng-template #no_section >
-<section class = "wizard_page">
-	<div class="container">
-
-			<div class="row">
-        <div class = "wlcm_btn" *ngIf="msg ===''">
-          <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn_descp btn-relative">What happens next?</button>
+<section class="wob-bg-primary2">
+<ng-container *ngIf="file_uploaded === 0;else no_section" >
+  <div class="col-md-12 text-center" >
+    <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif">
+  </div>
+</ng-container>
+<ng-template #no_section>
+  <div class="container">
+    <div class="row">
+      <div class = "col-md-12">
+        <div class="row mt-2">
+          <div *ngIf="msg ===''" class = "col-md-11 ml-4 float-right">
+            <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-warning float-right mb-1 text-light">What happens next?</button>
+          </div>
         </div>
-        <div class="chat-row">
-
-				<div *ngIf="msg!=''" class = "col-md-12" id="my-chat-design">
-					<h4 class="alert error-alert alert-danger pro_alert">
-						{{msg}}
-					</h4>
-				</div>
-				<div *ngIf="users && msg === ''" id = "frame">
-					<div class = "col-sm-4 col-xs-3" id="sidepanel">
-						<div id="profile" class = "padding_top-btm">
-							<div class="wrap">
-								<ng-container *ngIf="profile_pic;else company_logo_top">
-									<img id="profile-img" src="{{profile_pic}}" alt="">
-								</ng-container>
-								<ng-template #company_logo_top>
-									<img src="/assets/profile/profile-image.png" alt="">
-								</ng-template>
-								<p class="text-capitalize">{{display_name}}</p>
+        <div class = "d-flex my-4">
+          <div *ngIf="msg!==''" class = "col-md-12 py-5 mt-5">
+            <div class="alert alert-danger">
+              {{msg}}
+            </div>
+          </div>
+          <div class = "row" *ngIf="users && msg === ''" id = "frame">
+            <div class = "col-3 col-sm-4 float-left h-100 position-relative p-0">
+              <div class = "p-2 p-sm-3 border-bottom" style= "overflow:hidden;">
+                <div class = "wrap" style = "line-height:60px;">
+                  <ng-container *ngIf="profile_pic;else company_logo_top">
+                    <img id="profile-img" src="{{profile_pic}}" alt="Profile pic" class = "float-left rounded-circle" style = "width:60px;">
+                  </ng-container>
+                  <ng-template #company_logo_top>
+                    <img id="profile-img12" src="/assets/profile/profile-image.png" alt="" class = "float-left rounded-circle" style = "width:60px;">
+                  </ng-template>
+                  <p class = "float-left ml-4 d-none d-md-block text-capitalize">{{display_name}}</p>
+                </div>
+              </div>
+              <div id = "contact" class = "border-right">
+                <ul class = "list-group">
+                  <li *ngFor="let person of users;let i = index" [ngClass]="(credentials.id == person._creator._id)?'list-group-item list-group-item-secondary position-relative':'list-group-item list-group-item-lite'" (click)="openDialog(person.first_name,person._creator._id,person.company_name)" style= "overflow:hidden;">
+                    <div class = "cont m-auto position-relative">
+                      <ng-container *ngIf="currentUser.type == 'company';else cand_image">
+                        <ng-container *ngIf="person.image;else person_image">
+                          <img src="{{person.image}}" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
+                        </ng-container>
+                        <ng-template #person_image>
+                          <img src="/assets/profile/profile-image.png" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
+                        </ng-template>
+                        <div class="meta">
+                          <p *ngIf="person.initials" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;">{{ person.initials }}</p>
+                          <p *ngIf="person.first_name" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;">{{ person.first_name }} {{ person.last_name }}</p>
+                          <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute" style = "right:0px">
+                            {{unread_msgs_info[i].number_of_unread_msgs}}
+												  </span>
+                        </div>
+                      </ng-container>
+                      <ng-template #cand_image>
+                        <ng-container *ngIf="person.company_logo;else company_image">
+                          <img src="{{person.company_logo}}" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
+                        </ng-container>
+                        <ng-template #company_image>
+                          <img src="/assets/profile/profile-image.png" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
+                        </ng-template>
+                        <div class="meta">
+                          <p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;">{{ person.company_name }}</p>
+                          <span class="badge" *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute" style = "right:0px">
+                            {{unread_msgs_info[i].number_of_unread_msgs}}
+												  </span>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class = "col-9 col-sm-8 pl-0 pr-0">
+              <div class = "border-bottom" style = "overflow:hidden;">
+                <div class = "p-1 p-md-3 w-sm-100 w-75 float-left">
+                  <ul class="cand_info-ul">
+                    <ng-container *ngIf="currentUser.type == 'company';else cand">
+                      <ng-container *ngIf="job_desc;else no_job_desc">
+                        <li>Job type : {{job_desc.job_type}}</li>
+                        <li>Job title : {{job_desc.job_title}}</li>
+                        <li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
+                      </ng-container>
+                      <ng-template #no_job_desc>
+                        <li>Job type : N/A</li>
+                        <li>Job title : N/A</li>
+                        <li>Salary : N/A</li>
+                      </ng-template>
+                    </ng-container>
+                    <ng-template #cand>
+                      <li>Job title : {{job_desc.job_title}}</li>
+                      <li class="text-capitalize">Job Type : {{job_desc.job_type}}</li>
+                      <li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
+                    </ng-template>
+                  </ul>
+                </div>
+                <div class = "p-2 w-25 float-left d-none d-md-block">
+                  <button data-toggle="modal" data-target="#myModalNew" class="btn btn-warning float-right mb-1 text-light">View job description</button>
+                  <a *ngIf="(currentUser.type === 'company')" [routerLink]="['/candidate-detail']" [queryParams]="{user: credentials.id }" class="btn btn-warning float-right text-light">View candidate profile</a>
+                </div>
 							</div>
-						</div>
-						<div id="contacts">
-							<ul>
-								<li *ngFor="let person of users;let i = index" [ngClass]="(credentials.id == person._creator._id)?'contact active':'contact closee'" (click)="openDialog(person.first_name,person._creator._id,person.company_name)">
-									<div class="wrap">
-										<ng-container *ngIf="currentUser.type == 'company';else cand_image">
-											<ng-container *ngIf="person.image;else person_image">
-												<img src="{{person.image}}" alt="">
-											</ng-container>
-											<ng-template #person_image>
-												<img src="/assets/profile/profile-image.png" alt="">
-											</ng-template>
-											<div class="meta">
-												<p *ngIf="person.initials" class="name text-capitalize">{{ person.initials }}</p>
-												<p *ngIf="person.first_name" class="name text-capitalize">{{ person.first_name }} {{ person.last_name }}</p>
-												<span class="badge" *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs">
-													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
-												</span>
-											</div>
-										</ng-container>
-										<ng-template #cand_image>
-											<ng-container *ngIf="person.company_logo;else company_image">
-												<img src="{{person.company_logo}}" alt="logo">
-											</ng-container>
-											<ng-template #company_image>
-												<img src="/assets/profile/profile-image.png" alt="">
-											</ng-template>
-											<div class="meta">
-												<p class="name text-capitalize">{{ person.company_name }}</p>
-												<span class="badge" *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs">
-													<p>{{unread_msgs_info[i].number_of_unread_msgs}}</p>
-												</span>
-											</div>
-										</ng-template>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-						<div class="content col-sm-8 col-xs-9">
-							<div class="contact-profile">
-								<ul class = "cand_info-ul">
-									<ng-container *ngIf="currentUser.type == 'company';else cand">
-										<ng-container *ngIf="job_desc;else no_job_desc">
-											<li>Job type : {{job_desc.job_type}}</li>
-											<li>Job title : {{job_desc.job_title}}</li>
-											<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
-										</ng-container>
-										<ng-template #no_job_desc>
-											<li>Job type : N/A</li>
-											<li>Job title : N/A</li>
-											<li>Salary : N/A</li>
-										</ng-template>
-									</ng-container>
-									<ng-template #cand>
-										<li>Job title : {{job_desc.job_title}}</li>
-										<li class="text-capitalize">Job Type : {{job_desc.job_type}}</li>
-										<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
-									</ng-template>
-								</ul>
-								<span class = "btn_rgt">
-									<button data-toggle="modal" data-target="#myModalNew" class = "btn btn_descp">View job description</button>
-								  <a *ngIf="(currentUser.type === 'company')" [routerLink]="['/candidate-detail']" [queryParams]="{user: credentials.id }" class = "btn btn_descp">View candidate</a>
-								</span>
-							</div>
 
-							<div class="messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
-								<ul>
+              <div class="message p-2" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+                <ul>
 									<div *ngFor="let msg of new_msgss">
 										<ng-container *ngIf="msg.sender_id == currentUser._creator;else second">
-											<li class="replies">
-												<p>
+                      <li class="sent mb-5 rounded">
+                        <p class = "job-description p-2 text-light d-inline-block">
 													<span *ngIf="msg.job_title !== ''">
 														Job title:
 														{{msg.job_title}}
@@ -297,8 +161,9 @@
 											</div>
 										</ng-container>
 										<ng-template #second>
-											<li class="sent">
-												<p  class = "job-description">
+                      <li class="replies bg-info mb-5 rounded">
+                        <div class="arrow-up"></div>
+                        <p class = "p-2 text-light d-inline-block">
 													<!--<span *ngIf="msg.job_title === '' && (msg.interview_date_time === '' || msg.interview_date_time === null)" class="text-capitalize"> {{msg.sender_name}}:</span>-->
 													<span *ngIf="msg.job_title !== ''">
 														Job title:
@@ -373,7 +238,7 @@
 												<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 												<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
 												<span class = "offers_btn">
-													<button type="submit" class = "btn btn_descp">Accept offer</button>
+													<button type="submit" class = "btn btn-warning mb-1 text-light">Accept offer</button>
 												</span>
 											</form>
 											<form (submit)="reject_offer(msgForm)" #msgForm = ngForm style="display:inline;">
@@ -381,7 +246,7 @@
 												<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 												<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
 												<span class = "offers_btn">
-													<button type="submit" class = "btn btn_descp">Reject offer</button>
+													<button type="submit" class = "btn btn-warning mb-1 ml-1 text-light">Reject offer</button>
 												</span>
 											</form>
 										</div>
@@ -396,78 +261,82 @@
 								<div class="message-input">
 									<ng-container *ngIf="currentUser.type == 'company';else no_offers">
 										<div class = "offers">
-											<span class = "offers_btn">
-												<button type = "button" data-toggle="modal" data-target="#myModal" (click)="reset_msgs()" class = "btn btn_descp">Offer to interview</button>
-												<button type = "button" data-toggle="modal" data-target="#Modal" (click)="reset_msgs()" class = "btn btn_descp">Offer to employ</button>
-											</span>
-										</div>
-									</ng-container>
-									<ng-template #no_offers>
-									</ng-template>
-									<ng-container *ngIf="cand_job_offer == 1;else no_job_offer">
-										<div class = "offers">
+											<span class = "">
+											  <button type="button" data-toggle="modal" data-target="#myModal" (click)="reset_msgs()" class="btn btn-warning mb-1 text-light">Offer to interview</button>
+											  <button type="button" data-toggle="modal" data-target="#Modal" (click)="reset_msgs()" class="btn btn-warning mb-1 ml-1 text-light">Offer to employ</button>
+										  </span>
+                    </div>
+                  </ng-container>
+                  <ng-template #no_offers>
+                  </ng-template>
+                  <ng-container *ngIf="cand_job_offer == 1;else no_job_offer">
+                    <div class = "offers">
 											<form (submit)="accept_job_offer(msgForm)" #msgForm = ngForm style="display:inline;">
 												<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
 												<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 												<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
 												<input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
-												<span class = "offers_btn">
-													<button type="submit" class = "btn btn_descp">Accept employment offer</button>
-												</span>
+                        <div class = "offers">
+                          <span class = "">
+                            <button type="submit" class = "btn btn-warning mb-1 text-light">Accept employment offer</button>
+                          </span>
+                        </div>
 											</form>
 											<form (submit)="reject_job_offer(msgForm)" #msgForm = ngForm style="display:inline;">
 												<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
 												<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
 												<input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
 												<input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
-												<span class = "offers_btn">
-													<button type="submit" class = "btn btn_descp">Reject employment offer</button>
-												</span>
+                        <div class = "offers">
+                          <span class = "">
+                            <button type="submit" class = "btn btn-warning mb-1 text-light">Reject employment offer</button>
+                          </span>
+                        </div>
 											</form>
 										</div>
 									</ng-container>
 									<ng-template #no_job_offer>
 									</ng-template>
-									 <form (submit)="send_message(msgForm)" #msgForm = ngForm>
-										<div class="wrap">
-											<input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
-											<input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
-											<input type="hidden" name="first_message" id="first_message" [(ngModel)]="first_message"/>
-                      <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.msg_body" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
-                      </ckeditor>
-                      <span>
-												<button class = "btn btn-send" type="submit" id = "btnClick">
-													<i class="fa fa-paper-plane" aria-hidden="true"></i>
-													Send
-												</button>
-												<br>
-												<div class="file btn">
-													<i class="fa fa-upload" aria-hidden="true"></i>
-													Upload
-													<input id="aa" #Image type="file" (change) ="upload_file()" name="file" ng-model='file' class = "file-upload"/>
-												</div>
-											</span>
+                  <form (submit)="send_message(msgForm)" #msgForm = ngForm>
+                    <div class = "wrap bg-light p-2">
+                      <div class = "row">
+                        <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
+                        <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
+                        <input type="hidden" name="first_message" id="first_message" [(ngModel)]="first_message"/>
+                        <div class = "col-sm-12 col-md-8">
+                          <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.msg_body" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                          </ckeditor>
+                        </div>
+                        <div class = "col-sm-12 col-md-4">
+                          <button class = "btn btn-primary mb-2 w-100 rounded-0" type="submit" id = "btnClick">
+                            <i class="fas fa-paper-plane text-light mr-2" aria-hidden="true"></i>
+                            Send
+                          </button>
+                          <div class="file btn">
+                            <input id="aa" #Image type="file" (change) ="upload_file()" name="file" ng-model='file' class = "file-upload btn btn-primary w-100 rounded-0"/>
+                          </div>
+                        </div>
+                      </div>
 										</div>
 									</form>
 								</div>
 							</ng-container>
 							<ng-template #no_reply>
 							</ng-template>
-						</div>
-
-
-					</div><!--end col here-->
+                <!--end col here-->
 				</div>
+        </div>
+      </div>
+      </div>
   </div>
 			<div *ngIf="file_msg!=''" class = "col-md-12" id="my-chat-design" style="display: block;">
 				<h4 class="alert error-alert alert-danger pro_alert">
 					{{file_msg}}
 				</h4>
 			</div>
-		</div>
-
-</section>
+  </div>
 </ng-template>
+</section>
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -595,46 +464,67 @@
 
 <!--Job desc modal-->
 <!-- Modal -->
-<div id="myModalNew" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
+<div id="myModalNew" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <!-- Modal content-->
-    <div class="modal-content costom_model">
-      <div class="modal-header model-head">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <h4 class="modal-title text-center">Job description</h4>
       </div>
       <div class="modal-body">
-		<ng-container *ngIf="new_msgss;else no_job_desc_popup">
-			<div class = "dec_model">
-				<p>
-					<b>Job title:</b>
-					<span>{{new_msgss[0].job_title}}</span>
-				</p>
-				<p>
-					<b>Job type:</b>
-					<span>{{new_msgss[0].job_type}}</span>
-				</p>
-				<p>
-					<b>Salary:</b>
-					<span>{{new_msgss[0].salary}} {{new_msgss[0].salary_currency}}</span>
-				</p>
-				<div>
-					<b>Job description:</b><br>
-					<p class="job_decs" [innerHTML]="new_msgss[0].description | safeHtml">
-						{{new_msgss[0].description}}
-					</p>
-				</div>
-			</div>
-		</ng-container>
-		<ng-template #no_job_desc_popup>
-		</ng-template>
-		<div class="modal-footer">
-			<button type="button" data-dismiss="modal" class="btn btn-primary model-btn submit">Close</button>
-		</div>
+        <ng-container *ngIf="new_msgss;else no_job_desc_popup">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Job title:</label>
+                <p>{{new_msgss[0].job_title}}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Job type:</label>
+                <p>{{new_msgss[0].job_type}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Salary:</label>
+                <p>{{new_msgss[0].salary_currency}} {{new_msgss[0].salary}}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Localtion:</label>
+                <p>{{new_msgss[0].interview_location}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Job description:</label>
+                <p class="job_decs" [innerHTML]="new_msgss[0].description | safeHtml">
+                  {{new_msgss[0].description}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+        <ng-template #no_job_desc_popup>
+        </ng-template>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-primary model-btn submit">Close</button>
+        </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -645,7 +535,7 @@
 
     <!-- Modal content-->
     <div class="modal-content costom_model">
-      <div class="modal-header mo-head">
+      <div class="modal-header bg-primary">
         <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
         <h3 *ngIf="this.currentUser.type === 'company'" class="modal-title text-center mo">
           {{companyMsgTitle}}
@@ -663,7 +553,7 @@
         </div>
       </div>
       <div class="modal-footer mo_footer">
-        <button type="reset" (click)="update_status()" class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+        <button type="reset" (click)="update_status()" class="btn btn-primary model-btn" data-dismiss="modal">Got it</button>
       </div>
     </div>
 
