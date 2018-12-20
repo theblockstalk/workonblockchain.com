@@ -1,6 +1,6 @@
 import { Component, OnInit ,ElementRef, Input,AfterViewInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-declare var synapseThrow: any;
+declare var $:any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -619,6 +619,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit(): void
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
   }
 
 
