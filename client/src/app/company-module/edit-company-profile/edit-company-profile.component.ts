@@ -464,7 +464,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.job_type_log = "Please select position types";
     }
     if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
-      this.position_log = "Please select roles";
+      this.position_log = "Please select what roles are you looking";
     }
     if(!this.preferncesForm.value.availability_day) {
       this.availability_day_log = "Please select your availability day";
@@ -495,10 +495,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
             if(data && this.currentUser)
             {
               let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
-console.log(inputEl)
               if (inputEl && inputEl.files && inputEl.files.length > 0)
               {
-                console.log("if");
                 let formData = new FormData();
                 if(inputEl.files.item(0).size < this.file_size)
                 {

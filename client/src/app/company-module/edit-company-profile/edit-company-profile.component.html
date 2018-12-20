@@ -15,7 +15,7 @@
               <div class="form-row">
                 <div class="form-group w-100">
                   <label>Email</label>
-                  <input name="email" [(ngModel)]="email" type="text" class="form-control" placeholder="Email" required>
+                  <input name="email" disabled [(ngModel)]="email" type="text" class="form-control" placeholder="Email" required>
                 </div>
               </div>
             </div>
@@ -41,10 +41,11 @@
                 <div class="form-group w-100">
                   <label>Last name</label>
                   <input name="last_name" [(ngModel)]="last_name"  type="text" class="form-control" placeholder="Last name" required>
+                  <div class="invalid-feedback d-inline" *ngIf="!last_name">
+                    {{last_name_log}}
+                  </div>
                 </div>
-                <div class="invalid-feedback d-inline" *ngIf="!last_name">
-                  {{last_name_log}}
-                </div>
+
               </div>
             </div>
 
@@ -79,10 +80,11 @@
                   <div class="form-group w-100">
                     <label>Company name</label>
                     <input name="company_name" [(ngModel)]="company_name"  type="text" class="form-control" placeholder="Company name" required>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_name">
+                      {{company_name_log}}
+                    </div>
                   </div>
-                  <div class="invalid-feedback d-inline" *ngIf="!company_name">
-                    {{company_name_log}}
-                  </div>
+
                 </div>
               </div>
 
@@ -111,10 +113,11 @@
                   <div class="form-group w-100">
                     <label>Phone number</label>
                     <input name="phone_number" [(ngModel)]="company_phone"  type="tel" class="form-control" placeholder="Phone number" required>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_phone">
+                      {{company_phone_log}}
+                    </div>
                   </div>
-                  <div class="invalid-feedback d-inline" *ngIf="!company_phone">
-                    {{company_phone_log}}
-                  </div>
+
                 </div>
               </div>
 
@@ -139,12 +142,13 @@
               <div class="col-md-6">
                 <div class="form-row">
                   <div class="form-group w-100">
-                    <label>Postal Code</label>
+                    <label>Postal code</label>
                     <input type="text" class="form-control" placeholder="Postal code" required name="postal_code" [(ngModel)]="company_postcode">
+                    <div class="invalid-feedback d-inline" *ngIf="!company_postcode">
+                      {{company_postcode_log}}
+                    </div>
                   </div>
-                  <div class="invalid-feedback d-inline" *ngIf="!company_postcode">
-                    {{company_postcode_log}}
-                  </div>
+
                 </div>
               </div>
 
@@ -179,10 +183,11 @@
                 <div class="form-group w-100">
                   <label>When was the company founded?</label>
                   <input type="text" class="form-control" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
+                  <div class="invalid-feedback d-inline" *ngIf="!company_founded">
+                    {{founded_log}}
+                  </div>
                 </div>
-                <div class="invalid-feedback d-inline" *ngIf="!company_founded">
-                  {{founded_log}}
-                </div>
+
               </div>
             </div>
 
@@ -207,10 +212,11 @@
                 <div class="form-group w-100">
                   <label>How is the company funded?</label>
                   <input type="text" class="form-control"  placeholder="How's company funded" name="company_funded" [(ngModel)]="company_funded">
+                  <div class="invalid-feedback d-inline" *ngIf="!company_funded">
+                    {{funded_log}}
+                  </div>
                 </div>
-                <div class="invalid-feedback d-inline" *ngIf="!company_funded">
-                  {{funded_log}}
-                </div>
+
               </div>
             </div>
 
@@ -221,13 +227,12 @@
                   <div class="form-group">
                     <input type="file" accept="image/*" name="image" [(ngModel)]="image" class="form-control-file" id="profile">
                     <span *ngIf="img_src" >{{img_src}}</span>
+                    <div class="invalid-feedback d-inline" *ngIf="!image_log">
+                      {{image_log}}
+                    </div>
                   </div>
-                  <div class="invalid-feedback d-inline" *ngIf="!image_log">
-                    {{image_log}}
-                  </div>
+
                 </div>
-
-
               </div>
             </div>
 
@@ -240,10 +245,11 @@
                   <label>Company description</label>
                   <div class="form-group">
                     <textarea name="company_description" [(ngModel)]="company_description" placeholder="Company description" class="form-control" rows="3"></textarea>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_description">
+                      {{des_log}}
+                    </div>
                   </div>
-                  <div class="invalid-feedback d-inline" *ngIf="!company_description">
-                    {{des_log}}
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -377,7 +383,6 @@
             </div>
 
             <div class="col-md-6">
-              <div class="form-row">
                 <div class="form-group w-100">
                   <label>When do you need hires to start</label>
                   <select title="(select one)" formControlName = "availability_day" class="selectpicker form-control">
@@ -389,7 +394,6 @@
                     {{availability_day_log}}
                   </div>
                 </div>
-              </div>
             </div>
 
 
@@ -400,21 +404,19 @@
             <div class="col-md-12">
               <div class="form-row">
                 <div class = "form-group w-100">
-                  <label class="mr-3">What blockchain technology experience do they need? (optional)</label>
-
-                  <div class="form-check-inline" >
-                    <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index">
+                  <label>When would you like to receive emails with candidates that match your search?</label>
+                  <div>
+                  <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index">
                       <input type="radio"  formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
                     </label>
                   </div>
-
-
-
+                  <div class = "invalid-feedback d-inline" *ngIf="!when_receive_email_notitfications">
+                    {{email_notification_log}}
                   </div>
+                  </div>
+
                 </div>
-                <div class = "invalid-feedback d-inline" *ngIf="!when_receive_email_notitfications">
-                  {{email_notification_log}}
-                </div>
+
               </div>
             </div>
 
