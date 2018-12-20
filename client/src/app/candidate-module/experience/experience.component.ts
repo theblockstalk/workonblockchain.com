@@ -266,7 +266,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     current_work=
     [
-        {name:'I currently work there', value:'current', checked:false}
+        {name:'I currently work here', value:'current', checked:false}
     ]
 
     language_opt=

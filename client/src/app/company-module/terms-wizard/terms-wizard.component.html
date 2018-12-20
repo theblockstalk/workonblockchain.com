@@ -1,98 +1,106 @@
 <!--candidate step completing-->
+<section class="wob-bg-primary2 pb-5 pt-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
 
-<section class = "wizard_page">
+        <ul class="nav justify-content-center wizard mb-3">
+          <li class="nav-item">
+            <a routerLink="/company_wizard" class="nav-link">
+              <i class="{{terms_active_class}}"></i>
+              Summary of T&Cs
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="{{about_company}}" class="nav-link btn {{about_disable}}">
+              <i class="{{about_active_class}}"></i>
+              About the company
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="{{preference}}" class="nav-link btn {{pref_disable}}">
+              <i class="{{pref_active_class}}"></i>
+              Candidate preferences
+            </a>
+          </li>
 
-	<div class="container">
-		<div class="row">
-			<div class = "text-center steps-name hidden-xs">
-				<ul class = "step-progress">
-					<li class = "step step-active"><i class="{{terms_active_class}}"></i><a routerLink = "/company_wizard">Terms & Conditions</a></li>
-					<li class = "step"><i class="{{about_active_class}}"></i><a routerLink = "{{about_company}}" class="btn  {{about_disable}}">About the company</a></li>
-          <li class="step "><i class ="{{pref_active_class}}" ></i><a routerLink = "{{preference}}" class = "btn {{pref_disable}}">Candidate preferences</a></li>
         </ul>
-			</div>
-			<div class="col-md-12 wizard-form comp-cand_terms">
+      </div>
+    </div>
 
-				 <form class = "login_form"  (submit)="terms_wizard(termsForm)"  #termsForm = ngForm>
+    <div class="row border p-5 bg-white">
+      <form  (submit)="terms_wizard(termsForm)"  #termsForm = ngForm>
+        <div class="col-md-12 border p-2">
+          <p>
+            We want to keep things easy and transparent! That's why we've created this short summary of the important parts of the Terms and Conditions and the Privacy Policy. Please ensure that you understand what you are agreeing to when you create an account.
 
-				<div class = "scroll_div">
-				<p>
-					We want to keep things easy and transparent! That's why we've created this short summary of the important parts of the Terms and Conditions and the Privacy Policy. Please ensure that you understand what you are agreeing to when you create an account.
+          </p>
 
-				</p>
+          <h2>Who are we</h2>
+          <p>
+            We are BIOTS Limited. Our company registered address is Broad House, The Broadway, Old Hatfield, Herts, United Kingdom, AL9 5BG.
 
-				<h2>Who are we</h2>
-				<p>
-					We are BIOTS Limited. Our company registered address is Broad House, The Broadway, Old Hatfield, Herts, United Kingdom, AL9 5BG.
+          </p>
 
-				</p>
+          <h2>What do we do</h2>
+          <p>
+            We are a on-line recruitment hirirng platform whose services include identifying work opportunities for people registered on our Candidate database and presenting those Candidates to our Clients.
+          </p>
 
-				<h2>What do we do</h2>
-				<p>
-					We are a on-line recruitment hirirng platform whose services include identifying work opportunities for people registered on our Candidate database and presenting those Candidates to our Clients.
-				</p>
+          <h2>What happens when you create an account</h2>
+          <p>
+            We will review your account as soon as we can after you submit it to us.  We do not accept all applications to join our platform.
 
-				<h2>What happens when you create an account</h2>
-				<p>
-					We will review your account as soon as we can after you submit it to us.  We do not accept all applications to join our platform.
+          </p>
 
-				</p>
+          <p>
+            With an approved account, you will be able to search through our Candidate database, Approach candidates and send them Engagement offers. Until a Candidate approves the first Approach their identity will not be visible. If a Engagement with a candidate is accepted, then you will be subject to paying our<a routerLink="/fees"> Fees</a>.
+          </p>
 
-				<p>
-					With an approved account, you will be able to search through our Candidate database, Approach candidates and send them Engagement offers. Until a Candidate approves the first Approach their identity will not be visible. If a Engagement with a candidate is accepted, then you will be subject to paying our<a routerLink="/fees"> Fees</a>.
-				</p>
+          <p>
+            You will inform us as soon as practicable and in any event within seven days of the acceptance by a Candidate of your offer of an Engagement and in doing so, shall provide us with such information as we may reasonably require in respect of the Engagement in question.
+          </p>
 
-				<p>
-					You will inform us as soon as practicable and in any event within seven days of the acceptance by a Candidate of your offer of an Engagement and in doing so, shall provide us with such information as we may reasonably require in respect of the Engagement in question.
-				</p>
+          <h2>What happens to your data</h2>
+          <p>
+            We primarily use your data to provide the recruitment service described above. We use several third parties to process data. All information that could identify individuals within the European Union is stored exclusively within the European Union.
 
-				<h2>What happens to your data</h2>
-				<p>
-					We primarily use your data to provide the recruitment service described above. We use several third parties to process data. All information that could identify individuals within the European Union is stored exclusively within the European Union.
+          </p>
 
-				</p>
+          <h2>What are your rights</h2>
+          <p>
+            At any time, you have the right to request the information that we have on your account, or request that we delete your account permanently by emailing us at privacy@workonblockchain.com. We may ask for additional identification to complete this.
 
-				<h2>What are your rights</h2>
-				<p>
-					At any time, you have the right to request the information that we have on your account, or request that we delete your account permanently by emailing us at privacy@workonblockchain.com. We may ask for additional identification to complete this.
-
-				</p>
-        <p>Please read the <a routerLink="/terms-for-company" target="_blank">Terms of Business </a> for Companies and <a routerLink="/privacy-notice" target="_blank">Privacy Notice</a> for full details.</p>
-			</div>
-
-				<div class = "form-group col-md-8">
-					<div class="checkbox">
-						<label class = "check-label"> I have read and accepted the <a routerLink="/terms-for-company" target="_blank">Terms and Conditions</a> and the <a routerLink="/privacy-notice" target="_blank">Privacy Notice</a>.
-							<input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
-							<span class="checkmark">
-								<div></div>
-							</span>
-						</label>
-						<label class = "check-label"> I consent to receive marketing and promotional emails related to the workonblockchain.com platform.
-							<input type = "checkbox" value = ""  name="marketing" [(ngModel)]="marketing_emails">
-							<span class="checkmark">
-								<div></div>
-							</span>
-						</label>
-				  </div>
-				  <div class = "form_error" *ngIf ="termscondition!=true">
-								<span class = "error">{{this.terms_log}}</span>
-							</div>
-				</div>
-         <input type="hidden" name="termsID" id="termsID" [(ngModel)]="terms_id"/>
-
-					<div class = "form-group col-md-4 text-right">
-							<button type="submit" class = "btn btn-self btn-pdg" >Next Step</button>
-
-					</div>
-
-				</form>
-
-			</div>
-		</div>
-	</div>
-
+          </p>
+          <p>Please read the <a routerLink="/terms-for-company" target="_blank">Terms of Business </a> for Companies and <a routerLink="/privacy-notice" target="_blank">Privacy Notice</a> for full details.</p>
+        </div>
+        <div class="row">
+        <div class = "col-md-8 mt-3">
+          <label>
+            <input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+            I have read and accepted the <a  routerLink="/terms-for-company" target="_blank" >Terms and Conditions </a> and <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.
+            <span>
+                 <div></div>
+               </span>
+          </label>
+          <label>
+            <input type = "checkbox" value = ""  name="marketing" [(ngModel)]="marketing_emails">
+            I consent to receive marketing and promotional emails related to the <a href="https://workonblockchain.com" target="_blank" >workonblockchain.com</a> platform.
+            <span>
+                 <div></div>
+               </span>
+          </label>
+          <div class = "invalid-feedback d-inline" *ngIf ="termscondition != true">
+            {{terms_log}}
+          </div>
+          <input type="hidden" name="termsID" id="termsID" [(ngModel)]="terms_id"/>
+        </div>
+        <div class = "col-md-4 text-right mt-3">
+          <button type="submit" class = "btn btn-secondary">Next</button>
+        </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </section>
-
-
 <!--candidate step completing End-->

@@ -1,369 +1,305 @@
-<section class = "wizard_page">
-
-	<div *ngIf="error && error !== ''">
-		<h6 class="alert alert-danger error-alert" >{{error}}</h6>
-	</div>
-
-	<div class="container" *ngIf = "!error">
-		<div class="row profile_group">
-			<div class="col-md-12" *ngFor = "let data of info">
-				 <section class = "profile personal_info">
-
-				 	<div class="col-md-6">
-				 		<span class = "p_img" *ngIf="!imgPath">
-				 			<img src = "assets/profile/profile-image.png" class = "img-responsive" alt = "profile-img"/>
-				 		</span>
-				 		<span class = "p_img" *ngIf="imgPath">
-				 			<img src = "{{imgPath}}" class = "img-responsive" alt = "profile-img"/>
-				 		</span>
-
-				 		<span class = "name">
-				 			<h3 class="text-capitalize">{{data.company_name}} </h3>
-				 		</span>
-
-				 		<span class = "short_intro">
-				 			<p>{{data.company_description}}</p>
-				 		</span>
-
-				 		<span class = "short_intro">
-				 			<strong>Date created : </strong><span> {{data._creator.created_date | date:'dd-MMMM-yyyy'}}</span>
-				 		</span>
-				 		<span class = "short_intro">
-				 		<p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Candidates</a></p>
-				 		</span>
-				 		<span class = "short_intro">
-				 			<form #approve_form="ngForm" >
-								<input type="hidden" name="email"  [ngModel]="data._creator.email">
-								<input type="hidden" name="name"  [ngModel]="data.first_name">
-								<input type="hidden" name="type"  [ngModel]="data._creator.type">
-								<input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
-								<input type="hidden" name="id" [ngModel]="data._creator._id">
-								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
-								<input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
-
-								<div class="submit-button">
-									<button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Active</button>
-									<button type="submit" (click) = "approveClick($event , approve_form)" class = "btn btn_descp" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Inactive</button>
-									<button type="submit" class = "btn btn_descp" *ngIf = "data._creator.is_verify ===0" disabled>Active</button>
-
-								</div>
-							</form>
-							</span>
-
-				 		<!--  <div class="btn-share fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
-						<div class = "twitter-share-button">
-						<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a></div>
-						-->
-				 	</div>
-
-				 	<div class="col-md-6 side-info">
-
-				 		<ul>
-
-              <li *ngIf="referred_name !== ''">
-                <span class = "list-icon span_bg"> <img src="assets/profile/comp.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
-
-                <ng-container *ngIf="referred_link ; else noLink">
-             <span  class = "li_txt" >Refered By: <a  [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
+<section class = "wob-bg-primary2">
+  <div class="container mt-2">
+    <div class="row">
+      <div class="col-md-12" *ngFor = "let data of info" >
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+              <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+              <div class="mt-3">
+                <span><h3>{{data.company_name}}</h3></span>
+                <span><p>{{data.company_description}}</p></span>
+                <span>
+				 		      <a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Candidates</a>
+				 		    </span>
+                <span>
+                  <form #approve_form="ngForm" >
+                    <input type="hidden" name="email"  [ngModel]="data._creator.email">
+                    <input type="hidden" name="name"  [ngModel]="data.first_name">
+                    <input type="hidden" name="type"  [ngModel]="data._creator.type">
+                    <input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify">
+                    <input type="hidden" name="id" [ngModel]="data._creator._id">
+                    <input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0)' name="is_approve" [ngModel]="1">
+                    <input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
+								    <div class="my-3">
+                      <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn wob-bg-secondary2" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0)" >Active</button>
+                      <button type="submit" (click) = "approveClick($event , approve_form)" class = "btn wob-bg-secondary2" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1)" >Inactive</button>
+                      <button type="submit" class = "btn wob-bg-secondary2" *ngIf = "data._creator.is_verify ===0" disabled>Active</button>
+							    	</div>
+							    </form>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-group list-group-flush float-right">
+                <li *ngIf="referred_name !== ''">
+                  <span ><i class="fas fa-user mr-2"></i> </span>
+                  <ng-container *ngIf="referred_link ; else noLink">
+                  <span >Refered By: <a  [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
 					 				</span>
-                </ng-container>
-                <ng-template #noLink>
-                      <span  class = "li_txt" >Refered By: {{referred_name}}
-					 				</span>
-                </ng-template>
-
-
-
-              </li>
-
-				 			<li>
-
-					 				<span class = "list-icon span_bg"> <img src="assets/profile/download.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
-					 				<span class = "li_txt"><a [href]="company_website" target="_blank">{{company_website}}</a></span>
-
-				 			</li>
-
-				 			<li>
-
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-b.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
-				 					<span class = "li_txt">Country : {{data.company_country}}</span>
-
-				 			</li>
-							<li>
-
-					 				<span class = "list-icon span_bg"><img src="assets/profile/comp.png"> </span>
-					 				<span class = "li_txt">City: {{data.company_city}}</span>
-
-				 			</li>
-
-
-				 			<li>
-
-				 					<span class = "list-icon span_bg"> <img src="assets/profile/download-c.png" alt="Fedaral Urdu University of Arts Science and Technology."> </span>
-				 					<span class = "li_txt"> Phone : {{data.company_phone}}</span>
-
-				 			</li>
-				 		</ul>
-
-				 	</div>
-
-				 </section>
-
-				 <section class = "profile job_info">
-
-				<div class="col-md-6 info-area">
-				 <ng-container *ngIf="verify === 1;else no_verify">
-				 	<p>
-				 	<strong>Email verified :</strong>
-				 	<span>Yes</span>
-				 	</p>
-				 </ng-container>
-				 <ng-template #no_verify>
-				 		<p>
-				 	<strong>Email verified :</strong>
-				 	<span>No</span>
-				 	</p>
-				 </ng-template>
-				 </div>
-				 <div class="col-md-6 info-area">
-				 <ng-container *ngIf="is_approved !== '';else no_approve">
-				 	<p>
-				 	<strong>Approved by admin :</strong>
-				 	<span>Yes</span>
-				 	</p>
-				 </ng-container>
-				 <ng-template #no_approve>
-				 		<p>
-				 	<strong>Approved by admin :</strong>
-				 	<span>No</span>
-				 	</p>
-				 </ng-template>
-				</div>
-				 <div class="col-md-6 info-area">
-				  <ng-container *ngIf="data._creator.disable_account === false;else no_enable">
-				 	<p>
-				 	<strong>Account enabled :</strong>
-				 	<span>Yes</span>
-				 	</p>
-				 </ng-container>
-				 <ng-template #no_enable>
-				 		<p>
-				 	<strong>Account enabled :</strong>
-				 	<span>No</span>
-				 	</p>
-				 </ng-template>
-				 </div>
-				  <div class="col-md-6 info-area" *ngIf="data._creator.dissable_account_timestamp">
-				  <ng-container >
-				 	<p>
-				 	<strong>Account enabled/disabled timestamp :</strong>
-				 	<span>{{data._creator.dissable_account_timestamp | date:'short'}}</span>
-				 	</p>
-				  </ng-container>
-
-				 </div>
-
-
-
-				 </section>
-
-
-
-				 <section class = "profile job_info">
-					<h3>Company Info</h3>
-
-				 	<!--<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Position Type : </strong>
-							<span>Full Time, Part Time .</span>
-						</p>
-				 	</div>-->
-
-
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>When was the company founded: </strong>
-							<span>{{data.company_founded}}</span>
-						</p>
-				 	</div>
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>How is the company funded:</strong>
-							<span>{{data.company_funded}}</span>
-						</p>
-				 	</div>
-				 	<div class="col-md-6 info-area">
-      					<p>
-							<strong>Number of employees: </strong>
-							<span>{{data.no_of_employees}}</span>
-						</p>
-
-      				</div>
-
-
-
-				 </section>
-				  <section class = "profile job_info">
-					<h3>Company Administration</h3>
-
-				 	<div class="col-md-6 info-area">
-				 		<p>
-
-							<span class="alignment">{{data.first_name}} {{data.last_name}}</span>
-						</p>
-				 	</div>
-
-
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Title: </strong>
-							<span>{{data.job_title}}</span>
-						</p>
-				 	</div>
-
-				 	<div class="col-md-6 info-area">
-				 		<p>
-							<strong>Email Address: </strong>
-							<span>{{data._creator.email}}</span>
-						</p>
-				 	</div>
-
-
-				 </section>
-
-        <section class = "profile job_info" *ngIf = "saved_searche && saved_searche.length > 0">
-          <h3>Candidate preferences</h3>
-
-          <div class="info-area pro_br-btm">
-
-            <div class = "col-md-4" >
-              <strong>Where are you hiring:</strong>
-            </div>
-            <div class = "col-md-8">
-              <ul class = "pro_list" >
-                <li *ngFor = "let location of saved_searche[0].location">{{location}}</li>
-
+                  </ng-container>
+                  <ng-template #noLink>
+                    <span>Refered By: {{referred_name}}</span>
+                  </ng-template>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-building mr-2"></i></span>
+                  <span><a [href]="data.company_website" target="_blank">{{data.company_website}}</a></span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span >Country: {{data.company_country}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span class = "li_txt">City: {{data.company_city}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-phone mr-2"></i></span>
+                  <span class = "li_txt"> Phone: {{data.company_phone}}</span>
+                </li>
               </ul>
             </div>
-
           </div>
-
-          <div class="info-area pro_br-btm">
-
-            <div class = "col-md-4" >
-              <strong>What position type are you looking for:</strong>
-            </div>
-            <div class = "col-md-8">
-              <ul class = "pro_list">
-                <li  *ngFor = "let position of saved_searche[0].job_type">{{position}}</li>
-              </ul>
-            </div>
-
-          </div>
-
-          <div class="info-area pro_br-btm">
-
-            <div class = "col-md-4" >
-              <strong>What role are you looking for:</strong>
-            </div>
-            <div class = "col-md-8">
-              <ul class = "pro_list" >
-                <li *ngFor = "let position of saved_searche[0].position " >{{position}}</li>
-              </ul>
-            </div>
-
-          </div>
-
-          <div class="info-area pro_br-btm">
-
-            <div class = "col-md-4" >
-              <strong>Available annual salary and currency:</strong>
-            </div>
-            <div class = "col-md-8">
-              <ul class = "pro_list">
-                <li>{{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}</li>
-              </ul>
-            </div>
-
-          </div>
-
-
-
-          <div class="info-area pro_br-btm">
-
-            <div class = "col-md-4" >
-              <strong>When do you want to start hire working:</strong>
-            </div>
-            <div class = "col-md-8">
-              <ul class = "pro_list">
-                <li>{{saved_searche[0].availability_day}}</li>
-              </ul>
-            </div>
-
-          </div>
-
-          <div class="info-area pro_br-btm" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
-
-            <div class = "col-md-4" >
-              <strong>What blockchain technology experience do they need:</strong>
-            </div>
-            <div class = "col-md-8">
-              <ul class = "pro_list">
-                <li *ngFor = "let blockchain of saved_searche[0].blockchain">{{blockchain}}</li>
-
-              </ul>
-            </div>
-
-          </div>
-
-          <div class="info-area pro_br-btm" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
-
-            <div class = "col-md-4" >
-              <strong>What programming languages do you want them to have experience in:</strong>
-            </div>
-            <div class = "col-md-8">
-              <ul class = "pro_list">
-                <li *ngFor = "let lang of saved_searche[0].skills">{{lang}}</li>
-                <li>Ethereum</li>
-                <li>Php</li>
-                <li>My SQL</li>
-                <li>Java</li>
-              </ul>
-            </div>
-
-          </div>
-
-          <div class="info-area pro_br-btm" *ngIf="saved_searche[0].other_technologies">
-
-            <div class = "col-md-4" >
-              <strong>Other technologies or requirements?</strong>
-            </div>
-            <div class = "col-md-8">
-              <ul class = "pro_list">
-                <li>{{saved_searche[0].other_technologies}}</li>
-              </ul>
-            </div>
-
-          </div>
-
-          <div class="info-area pro_br-btm">
-
-            <div class = "col-md-4" >
-              <strong>When would you like to receive emails with candidates that match your search?</strong>
-            </div>
-            <div class = "col-md-8">
-              <ul class = "pro_list">
-                <li>{{saved_searche[0].when_receive_email_notitfications}}</li>
-              </ul>
-            </div>
-
-          </div>
-
         </section>
 
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-user"></i>
+                Account
+              </h2>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <ng-container >
+                <p>
+                  <strong>Account created date: </strong>
+                  <span>{{data._creator.created_date | date:'dd-MMMM-yyyy'}}</span>
+                </p>
+              </ng-container>
+            </div>
+            <div class="col-md-6 mb-3">
+              <ng-container *ngIf="verify === 1;else no_verify">
+                <p>
+                  <strong>Email verified: </strong>
+                  <span>Yes</span>
+                </p>
+              </ng-container>
+              <ng-template #no_verify>
+                <p>
+                  <strong>Email verified: </strong>
+                  <span>No</span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="col-md-6 mb-3">
+              <ng-container *ngIf="is_approved !== '';else no_approve">
+                <p>
+                  <strong>Approved by admin: </strong>
+                  <span>Yes</span>
+                </p>
+              </ng-container>
+              <ng-template #no_approve>
+                <p>
+                  <strong>Approved by admin: </strong>
+                  <span>No</span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="col-md-6">
+              <ng-container *ngIf="data._creator.disable_account === false;else no_enable">
+                <p>
+                  <strong>Account enabled: </strong>
+                  <span>Yes</span>
+                </p>
+              </ng-container>
+              <ng-template #no_enable>
+                <p>
+                  <strong>Account enabled: </strong>
+                  <span>No</span>
+                </p>
+              </ng-template>
+            </div>
+            <div class="col-md-6" *ngIf="data._creator.dissable_account_timestamp">
+              <ng-container >
+                <p>
+                  <strong>Account enabled/disabled timestamp: </strong>
+                  <span>{{data._creator.dissable_account_timestamp | date:'short'}}</span>
+                </p>
+              </ng-container>
+            </div>
+          </div>
+        </section>
 
-				 </div>
-				 </div>
-				 </div>
-				 </section>
-				 <br/><br/><br/>
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-building"></i>
+                Company info
+              </h2>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>When was the company founded:</label>
+                <p>
+                  {{data.company_founded}}
+                <p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>How is the company funded:</label>
+                <p>
+                  {{data.company_funded}}
+                <p>
+              </div>
+            </div>
+
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label>Number of employees:</label>
+                <p>
+                  {{data.no_of_employees}}
+                <p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-building"></i>
+                Company administration
+              </h2>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6 mb-2">
+              <div class="form-group">
+                <p>
+                  {{data.first_name}} {{data.last_name}}
+                <p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Title:</label>
+                <p>
+                  {{data.job_title}}
+                <p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Email:</label>
+                <p>
+                  {{data._creator.email}}
+                <p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class = "bg-white border rounded my-4 py-3 px-5" *ngIf = "saved_searche && saved_searche.length > 0">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-user"></i>
+                Candidate preferences
+              </h2>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>Where are you hiring:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let location of saved_searche[0].location"> {{location}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>What position type are you looking for:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let type of saved_searche[0].job_type"> {{type}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>What role are you looking for:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let position of saved_searche[0].position"> {{position}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3" >
+              <div class="form-group">
+                <label>What blockchain technology experience do they need:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let blockchain of saved_searche[0].blockchain">
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{blockchain}}.png" alt="{{blockchain}} Logo">
+                    {{blockchain}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3" >
+              <div class="form-group">
+                <label>What programming languages do they need to know:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let lang of saved_searche[0].skills"> {{lang}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3" >
+              <div class="form-group">
+                <label>Other technologies or requirements?</label>
+                <p>
+                  {{saved_searche[0].other_technologies}}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>Available annual salary and currency:</label>
+                <p>
+                  {{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}
+                <p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>When do you want to start hire working:</label>
+                <p>
+                  {{saved_searche[0].availability_day}}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6" >
+              <div class="form-group">
+                <label>When would you like to receive emails with candidates that match your search?</label>
+                <p>
+                  {{saved_searche[0].when_receive_email_notitfications}}
+                <p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

@@ -380,7 +380,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
           data =>
           {
             if(data['success'] === true) {
-              $('#popModal').modal('show');
+              $('#whatHappensNextModal').modal('show');
             }
           },
           error => {
@@ -455,7 +455,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   redirectToCompany()
   {
-    $('#popModal').modal('hide');
+    $('#whatHappensNextModal').modal('hide');
     this.router.navigate(['/company_profile']);
   }
 

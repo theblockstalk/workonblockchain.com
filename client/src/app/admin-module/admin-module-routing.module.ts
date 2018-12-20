@@ -8,6 +8,7 @@ import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-ch
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
 import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
 import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-profile/admin-update-candidate-profile.component';
+import { StyleGuideComponent } from './style-guide/style-guide.component';
 
 const routes: Routes = [
   {path : 'admin-dashboard' , component: AdminDashboardComponent},
@@ -16,7 +17,9 @@ const routes: Routes = [
   {path : 'admin-display-chat' , component: AdminDisplayChatComponent},
   {path : 'admin-company-search' , component: AdminCompanySearchComponent},
   {path : 'admin-company-detail' , component: AdminCompanyDetailComponent},
-  {path : 'update-candidate-profile' , component : AdminUpdateCandidateProfileComponent }
+  {path : 'update-candidate-profile' , component : AdminUpdateCandidateProfileComponent },
+  { path : 'style-guide' , component : StyleGuideComponent},
+
 ];
 
 @NgModule({

@@ -141,6 +141,24 @@
     </div>
   </div>
 
+  <div class = "row">
+    <div class="col-md-2">
+      <p>Blockchain Logos</p>
+    </div>
+    <div class="col-md-7">
+      <img class="mb-1 ml-1" src = "/assets/images/all_icons/Bitcoin.png" alt="Bitcoin Logo"> Bitcoin Logo
+      <img class="mb-1 ml-1" src = "/assets/images/all_icons/Cardano.png" alt="Cardano Logo"> Cardano Logo
+      <img class="mb-1 ml-1" src = "/assets/images/all_icons/Corda.png" alt="Corda Logo"> Corda Logo
+      <img class="mb-1 ml-1" src = "/assets/images/all_icons/Dash.png" alt="Dash Logo"> Dash Logo
+      <img class="mb-1 ml-1" src = "/assets/images/all_icons/Doge.png" alt="Doge Logo"> Doge Logo
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Add for blockchain Icons</li>
+      </ul>
+    </div>
+  </div>
+
   <!--<div class = "row">
               <div class="col-md-2">
                  <p>List Group float right</p>
@@ -423,7 +441,7 @@
     <div class = "col-md-12">
       <nav class="navbar navbar-expand-lg">
         <a class="navbar-brand" href="#">
-          <img src = "/assests/images/logo_woc.png" alt="Work on Blockchain">
+          <img src = "/assets/images/logo_woc.png" alt="Work on Blockchain">
         </a>
         <div class="container navbar-collapse">
           <ul class="nav ml-auto">
@@ -477,7 +495,7 @@
           <a class="nav-link" href="#">Jobs</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Blockchain</a>
+          <a class="nav-link btn disabled" href="#">Blockchain</a>
         </li>
       </ul>
     </div>
@@ -706,7 +724,6 @@
     <div class="col-md-7">
       <div class="form-group">
         <label>When would you like to receive emails?</label>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <label class="btn btn-secondary active">
             <input type="radio" name="options" id="option1" autocomplete="off">Never
           </label>
@@ -719,7 +736,6 @@
           <label class="btn btn-secondary">
             <input type="radio" name="options" id="option4" autocomplete="off">Daily
           </label>
-        </div>
       </div>
     </div>
     <div class="col-md-3">
@@ -916,13 +932,16 @@
     </div>
     <div class="col-md-7">
       <div class="form-group">
-        <label>Areas of interest</label>
-        <ul class="list-group">
-          <li class="list-group-item">Blockchain infrastructure</li>
-          <li class="list-group-item">Enterprise blockchain</li>
-          <li class="list-group-item">Smart contract development</li>
-        </ul>
+        <label>Areas of interest</label><div>
+        <div>
+          <div class="d-inline-block p-2 border rounded mr-1">Ethereum: 1-2 yrs</div>
+          <div class="d-inline-block p-2 border rounded mr-1">Bitcoin: 1-2 yrs</div>
+          <div class="d-inline-block p-2 border rounded mr-1">Ethereum: 1-2 yrs</div>
+          <div class="d-inline-block p-2 border rounded mr-1">Bitcoin: 1-2 yrs</div>
+        </div>
       </div>
+      </div>
+
     </div>
     <div class="col-md-3">
       <ul>
@@ -970,6 +989,11 @@
                   <label class="form-check-label">
                     <input class="form-check-input" type="checkbox"> Remember me
                   </label>
+                </div>
+
+                <div class="form-group">
+                  <ckeditor class="ckeditor_tab"  #myckeditor [config]="ckeConfig" debounce="500" >
+                  </ckeditor>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>

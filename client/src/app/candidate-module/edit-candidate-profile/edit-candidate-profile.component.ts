@@ -1482,16 +1482,15 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               if(inputEl.files.item(0).size < this.file_size)
               {
                 formData.append('photo', inputEl.files.item(0));
-
-                this.http.post(URL+'users/image', formData ,  {
-                  headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                }).pipe(map(res =>
-                  {
-                    this.router.navigate(['/candidate_profile']);
+                this.authenticationService.uploadCandImage(formData)
+                .subscribe(
+                  data => {
+                    if (data['success']) {
+                      this.router.navigate(['/candidate_profile']);
+                    }
                   },
-                  (error) => {
-                    if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-                    {
+                  error => {
+                    if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
                       localStorage.setItem('jwt_not_found', 'Jwt token not found');
                       localStorage.removeItem('currentUser');
                       localStorage.removeItem('googleUser');
@@ -1500,7 +1499,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                       localStorage.removeItem('admin_log');
                       window.location.href = '/login';
                     }
-                  }));
+                  }
+                );
               }
               else
               {

@@ -107,7 +107,7 @@ export class ChatComponent implements OnInit {
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
       height: '5rem',
-      width: '52rem',
+      width: '27rem',
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
     };
@@ -118,7 +118,7 @@ export class ChatComponent implements OnInit {
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
       height: '8rem',
-      width: '56rem',
+      width: '29rem',
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
     };
@@ -156,8 +156,8 @@ export class ChatComponent implements OnInit {
                         this.approved_user = 1;
                     }
                     */
-                    this.is_approved = data['_creator'].is_approved;
-                    if(data['_creator'].candidate.status[0].status === 'Rejected' || data['_creator'].candidate.status[0].status === 'rejected')
+
+                    if(data['_creator'].candidate.status[0].status === 'created' || data['_creator'].candidate.status[0].status === 'rejected' || data['_creator'].candidate.status[0].status === 'updated' || data['_creator'].candidate.status[0].status === 'wizard completed' || data['_creator'].candidate.status[0].status === 'deferred' || data['_creator'].candidate.status[0].status === 'other')
                     {
                           this.disabled = true;
                           this.msg = "You can access this page when your account has been approved by an admin.";

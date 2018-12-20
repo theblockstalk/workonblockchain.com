@@ -1,63 +1,90 @@
-<section class = "wizard_page">
+<section class = "wob-bg-primary2 p-5">
   <div class="container">
-    <div class="row">
-
+    <div class="row bg-white p-3">
       <div class="col-md-12">
-
-        <form class = "login_form"  (submit)="candidateMsg(candidateEditor)" #candidateEditor = ngForm >
-          <h3>Chat Popup Message for Candidate</h3>
-          <label><p class = "label-p">Message Title</p></label>
-          <input type="text" class="form-control" id="" placeholder="Enter page title" name="page_title" [(ngModel)]="candidateMsgTitle" >
-
-          <br/>
-          <div>
-            <label><p class = "label-p">Message Content </p></label>
-            <ckeditor [(ngModel)]="candidateMsgContent"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
-            </ckeditor>
-          </div><br/>
-          <input type="text" class="form-control" style="display:none;" name="page_name" [(ngModel)]="candidateMsgName" >
-
-          <button type="submit" class = "btn btn-self btn-pdg" >Save</button>
-          <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success">
-            {{success}}
+        <form (submit)="candidateMsg(candidateEditor)" #candidateEditor = ngForm >
+          <div class="row">
+            <div class="col-md-12">
+              <h2>Chat popup message for candidate</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Message title</label>
+                <input type="text" class="form-control" placeholder="Enter page title" name="page_title" [(ngModel)]="candidateMsgTitle" >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Message content</label>
+                <ckeditor [(ngModel)]="candidateMsgContent"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                </ckeditor>
+              </div>
+            </div>
+            <input type="hidden" class="form-control" name="page_name" [(ngModel)]="candidateMsgName" >
           </div>
 
-          <div class="alert alert-danger alert-error pro_alert alert-dismissible" *ngIf = "error">
-            {{error}}
+          <div class="row">
+            <div class="col-md-12">
+              <button type="submit" class = "btn btn-primary float-right" >Save</button>
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="alert alert-success" role="alert" *ngIf = "success">
+                {{success}}
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf = "error">
+                {{error}}
+              </div>
+            </div>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-
-  <div class="container">
-    <div class="row">
-
+  <div class="container mt-5">
+    <div class="row bg-white p-3">
       <div class="col-md-12">
-
-        <form class = "login_form"  (submit)="companyMsg(companyEditor)" #companyEditor = ngForm >
-
-
-          <h3>Chat Popup Message for Company</h3>
-          <label><p class = "label-p">Message Title</p></label>
-          <input type="text" class="form-control" id="" placeholder="Enter page title" name="page_title" [(ngModel)]="companyMsgTitle" >
-
-          <br/>
-          <div>
-            <label><p class = "label-p">Message Content </p></label>
-            <ckeditor [(ngModel)]="companyMsgContent"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
-            </ckeditor>
-          </div><br/>
-          <input type="text" class="form-control" style="display:none;" name="page_name" [(ngModel)]="companyMsgName" >
-
-          <button type="submit" class = "btn btn-self btn-pdg" >Save</button>
-          <div class="alert alert-success pro_alert alert-dismissible" *ngIf = "company_success">
-            {{company_success}}
+        <form (submit)="companyMsg(companyEditor)" #companyEditor = ngForm >
+          <div class="row">
+            <div class="col-md-12">
+              <h2>Chat popup message for company</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Message title</label>
+                <input type="text" class="form-control" placeholder="Enter page title" name="page_title" [(ngModel)]="companyMsgTitle" >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Message content</label>
+                <ckeditor [(ngModel)]="companyMsgContent"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                </ckeditor>
+              </div>
+            </div>
+            <input type="hidden" class="form-control" name="page_name" [(ngModel)]="companyMsgName" >
           </div>
 
-          <div class="alert alert-danger alert-error pro_alert alert-dismissible" *ngIf = "company_error">
-            {{company_error}}
+          <div class="row">
+            <div class="col-md-12">
+              <button type="submit" class = "btn btn-primary float-right" >Save</button>
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="alert alert-success" role="alert" *ngIf = "company_success">
+                {{company_success}}
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf = "company_error">
+                {{company_error}}
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -65,4 +92,3 @@
   </div>
 
 </section>
-

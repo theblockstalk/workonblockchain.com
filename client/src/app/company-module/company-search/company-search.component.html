@@ -1,7 +1,9 @@
+<section class = "wob-bg-primary2">
+
 <div class="container my-2">
   <div class = "row">
-    <div class="col-md-12 wob-bg-primary1 p-2">
-      <form #f="ngForm" (ngSubmit)="searchdata('search', searchWord)" class="w-50 mx-auto">
+    <div class="col-md-12 wob-bg-primary1 p-4">
+      <!--<form #f="ngForm" (ngSubmit)="searchdata('search', searchWord)" class="w-50 mx-auto">
         <div class="input-group">
           <input type="text" class="form-control" [(ngModel)]='searchWord' name="word" [disabled]="msg !== '' ? true : false"  placeholder="Search">
 
@@ -10,7 +12,7 @@
           </div>
 
         </div>
-      </form>
+      </form>-->
     </div>
   </div>
 
@@ -22,28 +24,28 @@
             <h4>Filters</h4>
 
             <div class="form-group">
-              <select title="Skills" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
+              <select title="Skills" [disabled]="msg !== '' ? true : false" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
                 <option *ngFor = "let skill of skillsData" [value]="skill.value">{{skill.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="Desired location" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
+              <select title="Desired location" [disabled]="msg !== '' ? true : false" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let location of locationsData" [value]="location.value">{{location.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="Position" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
+              <select title="Position" [disabled]="msg !== '' ? true : false" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let role of rolesData" [value]="role.value">{{role.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="Blockchain experience" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
+              <select title="Blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
               </select>
             </div>
@@ -51,9 +53,9 @@
 
             <div class = "form-group">
 
-              <input type="text"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
+              <input type="text" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
 
-              <select title="Currency" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
+              <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
                 <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
               </select>
 
@@ -61,7 +63,7 @@
             <hr/>
 
             <div class="form-group">
-              <select title="Availability" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
+              <select title="Availability" [disabled]="msg !== '' ? true : false" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
                 <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
               </select>
             </div>
@@ -69,7 +71,7 @@
 
           </div>
           <div class = "form-group float-right mt-2">
-            <button (click)="reset()" type="button" class="btn btn-danger">Reset</button>
+            <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-danger">Reset</button>
           </div>
         </div>
         <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
@@ -81,7 +83,7 @@
         <ng-template  #candidateInfo>
 
           <div class="col-md-9">
-            <h4 *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
+            <p *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</p>
 
             <div  *ngIf="msg === '' && verify_msg === ''">
               <div *ngIf="candidate_data && candidate_data.length > 0" class="alert alert-info mt-1" role="alert">
@@ -93,8 +95,8 @@
             </div>
             <div *ngIf="candidate_data && candidate_data.length > 0 ">
               <div class="panel-group" *ngFor= "let data of pagedItems ">
-                <div class="panel panel-default border mb-3" >
-                  <div class="row m-0 wob-bg-primary2 pt-3 pb-3">
+                <div class="panel panel-default border mb-3 bg-white" >
+                  <div class="row m-0 wob-bg-primary2 py-4">
 
                     <div class="col-md-9">
 
@@ -129,24 +131,31 @@
                   <div class = "col-md-12 m-0 p-4">
                     <div class="row">
                       <div class="col-md-12">
+                        <div class="form-group">
                         <span ><i>{{data.why_work}}</i></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="data.programming_languages && data.programming_languages.length>0">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label><h4>Languages</h4></label>
+                          <div>
+                            <div class="d-inline-block p-2 border rounded mr-2" *ngFor = 'let lang of sorting(data.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
                     <div class="row">
-                      <div class="col-sm-8">
-                        <h4>Bio</h4>
-                        <p>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label><h4>Bio</h4></label>
+                        <p class="text-justify">
                           {{data.description}}
                         </p>
-                      </div>
-                      <div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
-                        <h4>Languages</h4>
-                        <ul class="list-group">
-                          <li class="list-group-item" *ngFor = 'let lang of sorting(data.programming_languages)'>
-                            {{lang.language}} - {{lang.exp_year}} years
-                          </li>
-                        </ul>
+                        </div>
                       </div>
                     </div>
 
@@ -223,7 +232,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="validationCustom02">Currency</label>
-                <select title="Currency"  name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control" multiple data-live-search="true">
+                <select title="Currency"  name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
                   <option *ngFor='let base_currency of currency' [value]="base_currency">{{base_currency}}</option>
                 </select>
               </div>
@@ -234,10 +243,9 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="validationCustom02">Employment type</label>
-                <div *ngFor="let options of job_type">
-                  <label>
-                    <input type="radio" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
-                    {{options}}
+                <div class="form-check" *ngFor="let options of job_type">
+                    <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
+                    <label class="form-check-label" for="{{options}}" >{{options}}
                   </label>
                 </div>
 
@@ -265,3 +273,4 @@
     </div>
   </div>
 </div>
+</section>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { AdminModuleRoutingModule } from './admin-module-routing.module';
 import { SharedModule } from '../app-shared.module';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminCandidateSearchComponent } from './admin-candidate-search/admin-candidate-search.component';
@@ -11,6 +12,7 @@ import { AdminDisplayChatComponent } from './admin-display-chat/admin-display-ch
 import { AdminCompanySearchComponent } from './admin-company-search/admin-company-search.component';
 import { AdminCompanyDetailComponent } from './admin-company-detail/admin-company-detail.component';
 import { AdminUpdateCandidateProfileComponent } from './admin-update-candidate-profile/admin-update-candidate-profile.component';
+import { StyleGuideComponent } from './style-guide/style-guide.component';
 import {PagerService} from '../pager.service';
 
 @NgModule({
@@ -19,7 +21,8 @@ import {PagerService} from '../pager.service';
     AdminModuleRoutingModule,
     FormsModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CKEditorModule
   ],
   declarations: [
     AdminDashboardComponent,
@@ -29,6 +32,7 @@ import {PagerService} from '../pager.service';
     AdminCompanySearchComponent,
     AdminCompanyDetailComponent,
     AdminUpdateCandidateProfileComponent,
+    StyleGuideComponent
   ],
   providers : [PagerService]
 

@@ -48,7 +48,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   message;
   candidateMsgTitle;
   candidateMsgBody;
-  candidate_status
+  candidate_status;
+  date_created;
   public loading = false;information: any = {};
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService,private dataservice: DataService,private el: ElementRef)
   {
@@ -146,6 +147,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
+                this.date_created = data['_creator'].candidate.status[data['_creator'].candidate.status.length-1].timestamp;
                 this.candidate_status = data['_creator'].candidate.status[0];
                 if(data['first_name'] && data['last_name'] && data['contact_number'] && data['nationality'] &&
                   data['locations']  && data['roles'] && data['interest_area'] &&

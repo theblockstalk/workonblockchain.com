@@ -1,100 +1,101 @@
 <!--candidate step completing-->
-
-<div class="container">
-  <div class="row mb-3">
-    <div class="col-md-12">
-      <ul class="nav justify-content-center wizard">
-        <li class="nav-item">
-          <a routerLink="{{term_link}}" class="nav-link">
-            <i class="{{term_active_class}}"></i>
-            Terms & Conditions
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/prefill-profile" class="nav-link">
-            <i class="{{active_class}}"></i>
-            Prefill Profile
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/about" class="nav-link">
-            <i class="{{about_active_class}}"></i>
-            About
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="{{link}}" class="nav-link">
-            <i class="{{job_active_class}}"></i>
-            Jobs
-          </a>
-        </li>
-        <li class="nav-item px-2">
-          <a routerLink="{{resume_class}}" class="nav-link">
-            <i class="{{resume_active_class}}"></i>
-            Blockchain
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="{{exp_class}}" class="nav-link">
-            <i class="{{exp_active_class}}"></i>
-            Experience
-          </a>
-        </li>
-      </ul>
+<section class="wob-bg-primary2">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <ul class="nav justify-content-center wizard">
+          <li class="nav-item">
+            <a routerLink="{{term_link}}" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              Terms & Conditions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/prefill-profile" class="nav-link">
+              <i class="{{active_class}}"></i>
+              Prefill Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about" class="nav-link">
+              <i class="{{about_active_class}}"></i>
+              About
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="{{link}}" class="nav-link">
+              <i class="{{job_active_class}}"></i>
+              Jobs
+            </a>
+          </li>
+          <li class="nav-item px-2">
+            <a routerLink="{{resume_class}}" class="nav-link">
+              <i class="{{resume_active_class}}"></i>
+              Blockchain
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="{{exp_class}}" class="nav-link">
+              <i class="{{exp_active_class}}"></i>
+              Experience
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
 
-  <div class="row border p-3 mb-5">
-    <div class="col-md-12">
-      <form class="needs-validation" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
-        <h2 class = "text-center">Pre-fill your profile with LinkedIn import?</h2>
-        <p class = "text-center">
-          If you would like your profile data such as work history to be pre-filled please follow the steps below.
-        </p>
-        <p class = "text-center">
-          <input type="text" style="display:none;" class="form-control" id=""  name="skip_value" [(ngModel)]="skip_value">
-          <a class = "btn btn-warning text-white" (click) = "skipbutton()">Skip</a>
-        </p>
-        <div class="row">
-          <div class = "col-md-6">
-            <p>
-              <strong>Step 1-</strong>   Go to your LinkedIn data export page
-            </p>
-            <p>
-              <a href = "https://www.linkedin.com/psettings/member-data" target="_blank" class = "btn btn-secondary"><b>Open LinkedIn</b></a>
-            </p>
-            <p>
-              <strong>Step 2- </strong>   Download your profile data
-            </p>
-            <p class="ml-3">
-              <span>a-</span> Select: <span class = "choose_opt">Pick and Choose</span>
-              <br>
-              <span>b-</span> Select: <span class = "choose_opt">Profile</span>
-              <br>
-              <span>c-</span> Select: <span class = "choose_opt">Request archive</span>
-            </p>
-            <p>
-              The archive may take a while to become available. Refresh the page or check your email to access the download link.
-            </p>
-            <p>
-              <strong>Step 3-</strong> Upload the zip file you just download
-            </p>
-            <div class="form-group">
-              <input (change)="filechoosen($event)" type="file" accept=".zip , application/zip" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control-file" />
+    <div class="row border p-3 mb-5 bg-white">
+      <div class="col-md-12">
+        <form class="needs-validation" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
+          <h2 class = "text-center">Pre-fill your profile with LinkedIn import?</h2>
+          <p class = "text-center">
+            If you would like your profile data such as work history to be pre-filled please follow the steps below.
+          </p>
+          <div class="row">
+            <div class = "col-md-6">
+              <p>
+                <strong>Step 1-</strong>   Go to your LinkedIn data export page
+              </p>
+              <p>
+                <a href = "https://www.linkedin.com/psettings/member-data" target="_blank" class = "btn btn-secondary"><b>Open LinkedIn</b></a>
+              </p>
+              <p>
+                <strong>Step 2- </strong>   Download your profile data
+              </p>
+              <p class="ml-3">
+                <span>a-</span> Select: <span class = "choose_opt">Pick and Choose</span>
+                <br>
+                <span>b-</span> Select: <span class = "choose_opt">Profile</span>
+                <br>
+                <span>c-</span> Select: <span class = "choose_opt">Request archive</span>
+              </p>
+              <p>
+                The archive may take a while to become available. Refresh the page or check your email to access the download link.
+              </p>
+              <p>
+                <strong>Step 3-</strong> Upload the zip file you just download
+              </p>
+              <div class="form-group">
+                <input (change)="filechoosen($event)" type="file" accept=".zip , application/zip" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control-file" />
+              </div>
+              <div class = "file_error">
+                {{error_log}}
+              </div>
             </div>
-            <div class = "file_error">
-              {{error_log}}
+            <div class = "col-md-6">
+              <img src = "/assets/images/image.png" alt = "linkeIn-info image" class = "img-responsive  w-100"/>
             </div>
           </div>
-          <div class = "col-md-6">
-            <img src = "/assets/images/image.png" alt = "linkeIn-info image" class = "img-responsive  w-100"/>
+          <div class = "col-md-12 text-right mt-3">
+            <a routerLink="/terms-and-condition" class = "btn btn-warning text-white">Back</a>
+            <span class="ml-1">
+              <input type="text" style="display:none;" class="form-control" id=""  name="skip_value" [(ngModel)]="skip_value">
+              <a class = "btn btn-warning text-white" (click) = "skipbutton()">Skip</a>
+            </span>
+            <button type="submit" class = "btn btn-secondary ml-1">Next</button>
           </div>
-        </div>
-        <div class = "col-md-12 text-right mt-3">
-          <a routerLink="/terms-and-condition" class = "btn btn-warning">Prev Step</a>
-          <button type="submit" class = "btn btn-secondary ml-1">Next Step</button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+</section>

@@ -1,69 +1,93 @@
- <section class = "wizard_page">
-		<div class="container">
-		<div class="row">
-		
-			<div class="col-md-12">
-			
-				 <form class = "login_form"  (submit)="editor(editorForm)" #editorForm = ngForm >
-				 <h3>Terms And Condition For Candidate</h3>
-					    	<label><p class = "label-p">Page Title</p></label>
-						    <input type="text" class="form-control" id="" placeholder="Enter page title" name="page_title" [(ngModel)]="page_title" >
-							
-					<br/>
-				 <div>
-				 <label><p class = "label-p">Page Content </p></label>
-					<ckeditor [(ngModel)]="editor_content"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
-					</ckeditor>
-				</div><br/>
-			 <input type="text" class="form-control" style="display:none;" name="page_name" [(ngModel)]="page_name" >
-				
-				<button type="submit" class = "btn btn-self btn-pdg" >Save</button>
-				<div class="alert alert-success pro_alert alert-dismissible" *ngIf = "success">
-    				{{success}}    
- 			</div>
- 			
- 			<div class="alert alert-danger alert-error pro_alert alert-dismissible" *ngIf = "error">
-    				{{error}}    
- 			</div>
-			</form>
-			</div>
-			</div>
-			</div>
-			
+<section class = "wob-bg-primary2 p-5">
+  <div class="container">
+    <div class="row bg-white p-3">
+      <div class="col-md-12">
+        <form (submit)="editor(editorForm)" #editorForm = ngForm >
+          <div class="row">
+            <div class="col-md-12">
+              <h2>Terms and condition for candidate</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Page title</label>
+                <input type="text" class="form-control" placeholder="Enter page title" name="page_title" [(ngModel)]="page_title" >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Page content</label>
+                <ckeditor [(ngModel)]="editor_content"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                </ckeditor>
+              </div>
+            </div>
+            <input type="hidden" class="form-control"  name="page_name" [(ngModel)]="page_name" >
+          </div>
 
-		<div class="container">
-		<div class="row">
-		
-			<div class="col-md-12">
-			
-				 <form class = "login_form"  (submit)="company_editor(companyeditor)" #companyeditor = ngForm >
-				
-				 
-				 <h3>Terms And Condition For Company</h3>
-					    	<label><p class = "label-p">Page Title</p></label>
-						    <input type="text" class="form-control" id="" placeholder="Enter page title" name="page_title" [(ngModel)]="company_page_title" >
-							
-					<br/>
-				 <div>
-				 <label><p class = "label-p">Page Content </p></label>
-					<ckeditor [(ngModel)]="company_editor_content"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
-					</ckeditor>
-				</div><br/>
-			 <input type="text" class="form-control" style="display:none;" name="page_name" [(ngModel)]="company_page_name" >
-				
-				<button type="submit" class = "btn btn-self btn-pdg" >Save</button>
-				<div class="alert alert-success pro_alert alert-dismissible" *ngIf = "company_success">
-    				{{company_success}}    
- 			</div>
- 			
- 			<div class="alert alert-danger alert-error pro_alert alert-dismissible" *ngIf = "company_error">
-    				{{company_error}}    
- 			</div>
-			</form>
-			</div>
-			</div>
-			</div>
-			
+          <div class="row">
+            <div class="col-md-12">
+              <button type="submit" class = "btn btn-primary float-right" >Save</button>
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="alert alert-success" role="alert" *ngIf = "success">
+                {{success}}
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf = "error">
+                {{error}}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row bg-white p-3">
+      <div class="col-md-12">
+        <form (submit)="company_editor(companyeditor)" #companyeditor = ngForm >
+          <div class="row">
+            <div class="col-md-12">
+              <h2>Terms and condition for company</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Page title</label>
+                <input type="text" class="form-control" placeholder="Enter page title" name="page_title" [(ngModel)]="company_page_title" >              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Page content</label>
+                <ckeditor [(ngModel)]="company_editor_content"  #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
+                </ckeditor>
+              </div>
+            </div>
+            <input type="hidden" class="form-control" name="page_name" [(ngModel)]="company_page_name" >
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <button type="submit" class = "btn btn-primary float-right" >Save</button>
+            </div>
+            <div class="col-md-12 mt-3">
+              <div class="alert alert-success" role="alert" *ngIf = "company_success">
+                {{company_success}}
+              </div>
+              <div class="alert alert-danger" role="alert" *ngIf = "company_error">
+                {{company_error}}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </section>
-			
-			<!-- <div [innerHTML]="editor_text | safeHtml " *ngIf="editor_text"></div>-->

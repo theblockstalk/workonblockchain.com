@@ -213,71 +213,55 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   }
 
-  about()
-  {
+  about() {
     this.error_msg = "";
-    if(this.referred_id)
-    {
-      this.info.referred_id= this.referred_id;
+    if (this.referred_id) {
+      this.info.referred_id = this.referred_id;
     }
-    if(!this.info.first_name)
-    {
-      this.first_name_log="Please enter first name";
+    if (!this.info.first_name) {
+      this.first_name_log = "Please enter first name";
 
     }
-    if(!this.info.last_name)
-    {
-      this.last_name_log="Please enter last name";
+    if (!this.info.last_name) {
+      this.last_name_log = "Please enter last name";
 
     }
-    if(!this.info.contact_number)
-    {
-      this.contact_name_log ="Please enter contact number";
+    if (!this.info.contact_number) {
+      this.contact_name_log = "Please enter contact number";
     }
 
-    if(this.info.nationality === -1)
-    {
-      this.nationality_log ="Please choose nationality";
+    if (this.info.nationality === -1) {
+      this.nationality_log = "Please choose nationality";
     }
-    if(this.info.country === -1)
-    {
-      this.country_log ="Please choose base country";
+    if (this.info.country === -1) {
+      this.country_log = "Please choose base country";
     }
-    if(!this.info.city)
-    {
-      this.city_log ="Please enter base city";
+    if (!this.info.city) {
+      this.city_log = "Please enter base city";
     }
-    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 && this.info.city && this.info.country != -1 )
-    {
-      this.authenticationService.about(this.currentUser._creator,this.info)
+    if (this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality != -1 && this.info.city && this.info.country != -1) {
+      this.authenticationService.about(this.currentUser._creator, this.info)
         .subscribe(
-          data =>
-          {
-            if(data['success'])
-            {
+          data => {
+            if (data['success']) {
 
-              if(this.info.image)
-              {
+              if (this.info.image) {
 
                 let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
                 let fileCount: number = inputEl.files.length;
                 let formData = new FormData();
-                if (fileCount > 0 )
-                {
-                  if(inputEl.files.item(0).size < this.file_size)
-                  {
+                if (fileCount > 0) {
+                  if (inputEl.files.item(0).size < this.file_size) {
                     formData.append('photo', inputEl.files.item(0));
-                    this.http.post(URL+'users/image', formData ,  {
-                      headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                    }).pipe(map(res =>
-                      {
-
-                        this.router.navigate(['/job']);
+                    this.authenticationService.uploadCandImage(formData)
+                    .subscribe(
+                      data => {
+                        if (data['success']) {
+                          this.router.navigate(['/job']);
+                        }
                       },
-                      (error) =>
-                      {
-                        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-                        {
+                      error => {
+                        if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
                           localStorage.setItem('jwt_not_found', 'Jwt token not found');
                           localStorage.removeItem('currentUser');
                           localStorage.removeItem('googleUser');
@@ -286,48 +270,31 @@ export class AboutComponent implements OnInit,AfterViewInit
                           localStorage.removeItem('admin_log');
                           window.location.href = '/login';
                         }
-
-                      }));
+                      }
+                    );
                   }
-                  else
-                  {
+                  else {
                     this.image_log = "Image size should be less than 1MB";
                   }
-
                 }
-                else
-                {
-
+                else {
                   this.router.navigate(['/job']);
                 }
-
               }
-
-              else
-              {
-
+              else {
                 this.router.navigate(['/job']);
               }
-
             }
-
           },
-          error =>
-          {
-
-            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-            {
+          error => {
+            if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               window.location.href = '/not_found';
             }
-
           });
     }
-
     else {
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
-
-
   }
 
   /*referred_email()

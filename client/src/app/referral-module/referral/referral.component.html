@@ -1,140 +1,130 @@
 <ng-container *ngIf="show_refreal == 10;else no_show">
-<section class = "referral-page">
-
-		<div class="container referral-container">
-			<div class="row col-md-12 referral-inner">
-        <div class = "referral_banner">
-
-          <div class = "txt-left">Earn £500 when you invite a candidate (a technical professional) who gets hired.</div>
-
-          <div class = "txt-right">Earn £1,000 when you invite a company that
-            makes a hire</div>
-
-          <div class = "bnr_txt">
+  <section class="wob-bg-primary2 py-4">
+    <div class = "container border w-50 mb-5 bg-white">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12 referral_banner pr-2 mb-4">
+          <div class = "row mt-3">
+            <div class="col-md-8 wob-bg-secondary4 p-3">
+              <b>Earn £500 when you invite a candidate (a technical professional) who gets hired.</b>
+            </div>
+          </div>
+          <div class="row mt-3 float-right">
+            <div class="col-md-10 wob-bg-secondary2 p-3 ml-5 text-right">
+              <b>Earn £1,000 when you invite a company thatmakes a hire</b>
+            </div>
+          </div>
+          <div class = "col-md-12 mt-5 float-left text-left">
             <p>
               Please provide your email address below to get your unique referral link. Share this link with your contacts, if anyone creates an account with this link and is successfully hired or hire someone, we will use this email to reward you.
             </p>
-
             <p>
               *These offers do not apply to internships. A one-time referral reward is made when a candidate you introduce is hired full-time or a company you introduce make their first successful full-time hire.
             </p>
-
           </div>
-
         </div>
 
-					<div class = "link_area">
-						<h3 class = "invite_link">Your Invite link</h3>
-						<div class = "form-group">
-							<span>
-								<input type="text" style="font-size: 16px;width:88%;border: none;" value="{{ref_link}}" readonly #userinput />
-							</span>
-							<button class = "btn btn-default copy_btn" (click)="copyInputMessage(userinput)">Copy Link</button>
-						</div>
-						<div class = "twitter-share-button">
-							<a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
-						</div>
-					</div>
+        <div class="col-md-12">
+          <div class = "wob-bg-secondary3 px-4 py-4">
+            <h3 class = "text-white">Your Invite link</h3>
+            <div class = "form-group bg-white">
+              <span>
+                <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link}}" readonly #userinput />
+              </span>
+              <button class = "btn btn-default" (click)="copyInputMessage(userinput)">Copy Link</button>
+            </div>
+            <div class = "twitter-share-button">
+              <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
+            </div>
+          </div>
+        </div>
 
-					<hr>
-					<form (submit)="send_email()">
-						<div class="form-group">
-							<label>Email</label>
-							<input type="email" class="form-control" placeholder="Email" name="email" id="email" [(ngModel)]="credentials.email">
-						</div>
+        <div class="col-md-12">
+          <form (submit)="send_email()">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-control" placeholder="Email" name="email" id="email" [(ngModel)]="credentials.email">
+            </div>
 
-						<div class="form-group">
-							<label>Subject</label>
-							<input type="text" class="form-control" placeholder="Some thing text here about you email subject" name="subject" id="subject" [(ngModel)]="email_subject">
-						</div>
+            <div class="form-group">
+              <label>Subject</label>
+              <input type="text" class="form-control" placeholder="Some thing text here about you email subject" name="subject" id="subject" [(ngModel)]="email_subject">
+            </div>
 
-						<div class="form-group">
-						  <label for="comment">Body</label>
-						  <textarea class="form-control" placeholder="your message here" rows="14" name="mail_body" id="comment" [(ngModel)]="mail_body">{{mail_body}}</textarea>
-						</div>
-						<p style="color: green;font-size: 18px;">{{log}}</p>
-						<div class="form-group">
-							<button type="submit" class = "btn btn-lg btn-self">Send</button>
-						</div>
-					</form>
-
-
-			</div>
+            <div class="form-group">
+              <label>Body</label>
+              <textarea class="form-control" placeholder="your message here" rows="14" name="mail_body" id="comment" [(ngModel)]="mail_body">{{mail_body}}</textarea>
+            </div>
+            <div *ngIf="log_success" class="alert alert-success">{{log_success}}</div>
+            <div *ngIf="log" class="alert alert-danger">{{log}}</div>
+            <div class="form-group">
+              <button type="submit" class = "btn btn-secondary">Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
 		</div>
-
-		<div class = "gap">
-		</div>
-
 	</section>
 </ng-container>
 <ng-template #no_show>
-  <section class = "referral-page">
-
-    <div class="container ref_cont">
-      <div class="col-md-12 referral_new">
-
-        <div class = "referral_banner">
-
-          <div class = "txt-left">Earn £500 when you invite a candidate (a technical professional) who gets hired.</div>
-
-          <div class = "txt-right">Earn £1,000 when you invite a company that
-            makes a hire</div>
-
-          <div class = "bnr_txt">
+  <section class="wob-bg-primary2 py-4">
+    <div class = "container border w-50 mb-5 bg-white">
+      <div class="row justify-content-md-center">
+        <div class="col-md-12 referral_banner pr-2 mb-4">
+          <div class = "row mt-3">
+            <div class="col-md-8 wob-bg-secondary4 p-3">
+              <b>Earn £500 when you invite a candidate (a technical professional) who gets hired.</b>
+            </div>
+          </div>
+          <div class="row mt-3 float-right">
+            <div class="col-md-10 wob-bg-secondary2 p-3 ml-5 text-right">
+              <b>Earn £1,000 when you invite a company that makes a hire</b>
+            </div>
+          </div>
+          <div class = "col-md-12 mt-5 float-left text-left">
             <p>
               Please provide your email address below to get your unique referral link. Share this link with your contacts, if anyone creates an account with this link and is successfully hired or hire someone, we will use this email to reward you.
             </p>
-
             <p>
               *These offers do not apply to internships. A one-time referral reward is made when a candidate you introduce is hired full-time or a company you introduce make their first successful full-time hire.
             </p>
-
           </div>
-
         </div>
 
-        <div class = "ref_form">
-          <form (submit)="get_ref_link(refrealForm)" #refrealForm = ngForm>
+        <div class = "col-md-8 mt-3 mb-4">
+          <form (submit)="get_ref_link(refrealForm)" #refrealForm = ngForm class="needs-validation" novalidate>
             <div class="form-group">
-              <input type="email" class="form-control" placeholder="Email" id="email" name="email" [(ngModel)]="email"/>
+              <input type="email" class="form-control" placeholder="Email" id="email2" name="email" [(ngModel)]="email"/>
             </div>
             <div class = "form-group">
-              <div class="checkbox" style="margin-left: 20%;">
-                <label style="color: black;font-size: 15px;" class = "check-label"> I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.
-                  <input style="display:none;" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
-                  <span class="checkmark">
-                    <div></div>
-							    </span>
-                </label>
+              <div class="checkbox">
+                <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+                <label> I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.</label>
               </div>
-              <div style="margin-left: 19%;" class = "form_error" *ngIf="termscondition === false || terms_log">
+              <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "alert alert-danger">
                 <span class = "error">{{terms_log}}</span>
               </div>
             </div>
             <div class="form-group text-center">
-              <button type="submit" class = "btn btn-ref" id = "sub_bttn">Submit</button>
+              <button type="submit" class = "form-control btn btn-secondary" id = "sub_bttn">Submit</button>
             </div>
           </form>
         </div>
 
-        <div *ngIf="ref_link_for_not_logged_user">
-          <hr>
-          <div class = "link_area">
-            <h3 class = "invite_link">Your invite link</h3>
-            <div class = "form-group">
+        <div class="col-md-12" *ngIf="ref_link_for_not_logged_user">
+          <div class = "wob-bg-secondary3 px-4 py-4">
+            <h4 class = "text-white">Your invite link</h4>
+            <div class = "form-group bg-white">
               <span>
-								<input type="text" style="font-size: 16px;width:88%;border: none;" value="{{ref_link_for_not_logged_user}}" readonly #newRefLink />
-							</span>
-              <button class = "btn btn-default copy_btn" (click)="copyInputMessage(newRefLink)">Copy Link</button>
+                <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link_for_not_logged_user}}" readonly #newRefLink />
+              </span>
+              <button class = "btn btn-default ml-5" (click)="copyInputMessage(newRefLink)">Copy Link</button>
             </div>
             <!--<div class = "twitter-share-button">
               <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
             </div>-->
           </div>
         </div>
-
       </div>
     </div>
-
   </section>
 </ng-template>

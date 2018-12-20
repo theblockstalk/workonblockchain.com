@@ -7,7 +7,7 @@
         <section class="bg-white p-3 mt-5">
         <fieldset class = "border rounded my-3 py-3 px-5" id = "information">
           <legend class="w-auto m-0 px-1">
-            Personal information
+            <h4>Company administrator</h4>
           </legend>
           <div class="row">
 
@@ -15,7 +15,7 @@
               <div class="form-row">
                 <div class="form-group w-100">
                   <label>Email</label>
-                  <input name="email" [(ngModel)]="email" type="text" class="form-control" placeholder="Email" required>
+                  <input name="email" disabled [(ngModel)]="email" type="text" class="form-control" placeholder="Email" required>
                 </div>
               </div>
             </div>
@@ -41,10 +41,11 @@
                 <div class="form-group w-100">
                   <label>Last name</label>
                   <input name="last_name" [(ngModel)]="last_name"  type="text" class="form-control" placeholder="Last name" required>
+                  <div class="invalid-feedback d-inline" *ngIf="!last_name">
+                    {{last_name_log}}
+                  </div>
                 </div>
-                <div class="invalid-feedback d-inline" *ngIf="!last_name">
-                  {{last_name_log}}
-                </div>
+
               </div>
             </div>
 
@@ -62,97 +63,109 @@
 
           </div>
 
-          <div class="row">
-
-            <div class="col-md-6">
-              <div class="form-row">
-                <div class="form-group w-100">
-                  <label>Company name</label>
-                  <input name="company_name" [(ngModel)]="company_name"  type="text" class="form-control" placeholder="Company name" required>
-                </div>
-                <div class="invalid-feedback d-inline" *ngIf="!company_name">
-                  {{company_name_log}}
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-row">
-                <div class="form-group w-100">
-                  <label>Company website</label>
-                  <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="Company website" required name="company_website" [(ngModel)]="company_website">
-                  <div class = "invalid-feedback" *ngIf="!company_website">
-                    <span class = "error">{{company_website_log}}</span>
-                  </div>
-                  <div class="invalid-feedback d-inline" *ngIf="website.errors && company_website">
-                    <span class = "error">Enter url in proper format.</span>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="row">
-
-            <div class="col-md-6">
-              <div class="form-row">
-                <div class="form-group w-100">
-                  <label>Phone number</label>
-                  <input name="phone_number" [(ngModel)]="company_phone"  type="tel" class="form-control" placeholder="Phone number" required>
-                </div>
-                <div class="invalid-feedback d-inline" *ngIf="!company_phone">
-                  {{company_phone_log}}
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-row">
-                <div class="form-group w-100">
-                  <label>Country name</label>
-                  <select title="Please choose country" class="selectpicker form-control"  required name="country" [(ngModel)]="company_country">
-                    <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
-                  </select>
-                  <div class="invalid-feedback d-inline" *ngIf="!company_country">
-                    {{company_country_log}}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="row">
-
-            <div class="col-md-6">
-              <div class="form-row">
-                <div class="form-group w-100">
-                  <label>Postal Code</label>
-                  <input type="text" class="form-control" placeholder="Postal code" required name="postal_code" [(ngModel)]="company_postcode">
-                </div>
-                <div class="invalid-feedback d-inline" *ngIf="!company_postcode">
-                  {{company_postcode_log}}
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-row">
-                <div class="form-group w-100">
-                  <label>City name</label>
-                  <input type="text" class="form-control" placeholder="City name" required name="city" [(ngModel)]="company_city">
-                  <div class="invalid-feedback d-inline" *ngIf="!company_city">
-                    {{company_city_log}}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
         </fieldset >
+        </section>
+
+        <section class="bg-white p-3 mt-5">
+
+          <fieldset class = "bg-white border rounded my-3 py-3 px-5" id = "about_you">
+
+            <legend class="w-auto m-0 px-1">
+              <h4>Company info</h4>
+            </legend>
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Company name</label>
+                    <input name="company_name" [(ngModel)]="company_name"  type="text" class="form-control" placeholder="Company name" required>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_name">
+                      {{company_name_log}}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Company website</label>
+                    <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="Company website" required name="company_website" [(ngModel)]="company_website">
+                    <div class = "invalid-feedback" *ngIf="!company_website">
+                      <span class = "error">{{company_website_log}}</span>
+                    </div>
+                    <div class="invalid-feedback d-inline" *ngIf="website.errors && company_website">
+                      <span class = "error">Enter url in proper format.</span>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Phone number</label>
+                    <input name="phone_number" [(ngModel)]="company_phone"  type="tel" class="form-control" placeholder="Phone number" required>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_phone">
+                      {{company_phone_log}}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Country name</label>
+                    <select title="Please choose country" class="selectpicker form-control"  required name="country" [(ngModel)]="company_country">
+                      <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
+                    </select>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_country">
+                      {{company_country_log}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Postal code</label>
+                    <input type="text" class="form-control" placeholder="Postal code" required name="postal_code" [(ngModel)]="company_postcode">
+                    <div class="invalid-feedback d-inline" *ngIf="!company_postcode">
+                      {{company_postcode_log}}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>City name</label>
+                    <input type="text" class="form-control" placeholder="City name" required name="city" [(ngModel)]="company_city">
+                    <div class="invalid-feedback d-inline" *ngIf="!company_city">
+                      {{company_city_log}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </fieldset>
         </section>
 
         <section class="bg-white p-3 mt-5">
@@ -160,7 +173,7 @@
         <fieldset class = "bg-white border rounded my-3 py-3 px-5" id = "about_you">
 
           <legend class="w-auto m-0 px-1">
-            About the company
+            <h4>About the company</h4>
           </legend>
 
           <div class="row">
@@ -170,10 +183,11 @@
                 <div class="form-group w-100">
                   <label>When was the company founded?</label>
                   <input type="text" class="form-control" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
+                  <div class="invalid-feedback d-inline" *ngIf="!company_founded">
+                    {{founded_log}}
+                  </div>
                 </div>
-                <div class="invalid-feedback d-inline" *ngIf="!company_founded">
-                  {{founded_log}}
-                </div>
+
               </div>
             </div>
 
@@ -198,10 +212,11 @@
                 <div class="form-group w-100">
                   <label>How is the company funded?</label>
                   <input type="text" class="form-control"  placeholder="How's company funded" name="company_funded" [(ngModel)]="company_funded">
+                  <div class="invalid-feedback d-inline" *ngIf="!company_funded">
+                    {{funded_log}}
+                  </div>
                 </div>
-                <div class="invalid-feedback d-inline" *ngIf="!company_funded">
-                  {{funded_log}}
-                </div>
+
               </div>
             </div>
 
@@ -210,14 +225,14 @@
                 <div class="form-group w-100">
                   <label>Upload photo</label>
                   <div class="form-group">
-                    <input type="file"  name="image" [(ngModel)]="image" class="form-control-file" id="profile">
+                    <input type="file" accept="image/*" name="image" [(ngModel)]="image" class="form-control-file" id="profile">
+                    <span *ngIf="img_src" >{{img_src}}</span>
+                    <div class="invalid-feedback d-inline" *ngIf="!image_log">
+                      {{image_log}}
+                    </div>
                   </div>
-                  <div class="invalid-feedback d-inline" *ngIf="!image_log">
-                    {{image_log}}
-                  </div>
+
                 </div>
-
-
               </div>
             </div>
 
@@ -230,10 +245,11 @@
                   <label>Company description</label>
                   <div class="form-group">
                     <textarea name="company_description" [(ngModel)]="company_description" placeholder="Company description" class="form-control" rows="3"></textarea>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_description">
+                      {{des_log}}
+                    </div>
                   </div>
-                  <div class="invalid-feedback d-inline" *ngIf="!company_description">
-                    {{des_log}}
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -243,12 +259,12 @@
         </fieldset>
         </section>
 
-        <section class="bg-white p-3 mt-5 mb-3">
+        <section class="bg-white p-3 my-5">
 
         <fieldset class = "bg-white border rounded my-3 py-3 px-5" id = "prefrences" [formGroup]="preferncesForm">
 
           <legend class="w-auto m-0 px-1">
-            Candidate preferences
+            <h4>Candidate preferences</h4>
           </legend>
 
           <div class="row">
@@ -305,7 +321,7 @@
 
             <div class="col-md-6">
               <div class="form-row">
-                <div class = "form-group w-100">
+                <div class = "form-group w-auto">
                   <label>Available annual salary and currency?</label>
 
                   <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="100000">
@@ -367,7 +383,6 @@
             </div>
 
             <div class="col-md-6">
-              <div class="form-row">
                 <div class="form-group w-100">
                   <label>When do you need hires to start</label>
                   <select title="(select one)" formControlName = "availability_day" class="selectpicker form-control">
@@ -379,7 +394,6 @@
                     {{availability_day_log}}
                   </div>
                 </div>
-              </div>
             </div>
 
 
@@ -390,26 +404,19 @@
             <div class="col-md-12">
               <div class="form-row">
                 <div class = "form-group w-100">
-                  <label class="mr-3">What blockchain technology experience do they need? (optional)</label>
-
-                     <!-- <label class="btn btn-secondary"  *ngFor="let receive of email_notificaiton; let i_ind =index"  [ngClass]="receive === preferncesForm.value.when_receive_email_notitfications ? 'active' : ''">
-                      <input type="radio" formControlName="when_receive_email_notitfications" (change)="emailNotificationChange($event)" autocomplete="off" id="{{receive}}" >{{receive}}
-                    </label>
--->
-
-                  <div class="form-check-inline" >
-                    <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index">
+                  <label>When would you like to receive emails with candidates that match your search?</label>
+                  <div>
+                  <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index">
                       <input type="radio"  formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
                     </label>
                   </div>
-
-
-
+                  <div class = "invalid-feedback d-inline" *ngIf="!when_receive_email_notitfications">
+                    {{email_notification_log}}
                   </div>
+                  </div>
+
                 </div>
-                <div class = "invalid-feedback d-inline" *ngIf="!when_receive_email_notitfications">
-                  {{email_notification_log}}
-                </div>
+
               </div>
             </div>
 
@@ -418,12 +425,16 @@
         </section>
         <div class="row">
           <div class = "col-md-12">
-            <button type="submit" class = "btn wob-bg-secondary2 float-right mb-3" [disabled]="website.errors && company_website" >Save Profile</button>
-            <div class = "invalid-feedback float-right d-inline" *ngIf="error_msg">
+            <button type="submit" class = "btn wob-bg-secondary2 float-right" [disabled]="website.errors && company_website" >Save Profile</button>
+
+          </div>
+        </div>
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <div class = "invalid-feedback float-right d-inline w-auto" *ngIf="error_msg">
               {{error_msg}}
             </div>
           </div>
-
         </div>
 
       </div>

@@ -1,6 +1,6 @@
 <!--Account setting page code start here-->
 
-<section class="bg-light">
+<section class="wob-bg-primary2">
   <div class = "row justify-content-md-center">
     <div class = "col-md-8">
       <div class="alert alert-info" *ngIf="inform">
@@ -10,65 +10,82 @@
     </div>
   </div>
 
-  <div class="container border p-5 mt-5 mb-5">
+  <div class="container border p-5 mt-5 mb-5 bg-white">
     <div class="row mb-4">
       <div class="col-md-12">
         <h1 class = "text-center">Account Settings</h1>
       </div>
     </div>
-    <div class="row ml-5 mb-4">
-      <div class="col-md-6">
-          <span>Marketing emails</span>
+    <div class="row ml-5 mb-4 border-bottom">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label>Marketing emails</label>
+        </div>
       </div>
-      <div class="col-md-6">
-        <div class="wob-switch-toggle">
+      <div class="col-md-4">
+        <div class="wob-switch-toggle float-right">
           <input id="switch" type="checkbox" checked [(ngModel)]="info.marketing" name="marketing_email" (change)="account_setting('marketingEmail' , $event)" >
           <label for="switch">Toggle</label>
         </div>
       </div>
     </div>
 
-    <div class="row ml-5 mb-4">
-      <div class="col-md-6">
-        <span>Unread Chat Messages Email</span>
+
+    <div class="row ml-5 mb-4 border-bottom">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label>Unread Chat Messages Email</label>
+        </div>
       </div>
-      <div class="col-md-6">
-        <div class="wob-switch-toggle">
+      <div class="col-md-4">
+        <div class="wob-switch-toggle float-right">
           <input id="switch1" type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="unread_msgs_emails_send()" >
           <label for="switch1">Toggle</label>
         </div>
       </div>
     </div>
 
-    <div class="row ml-5 mb-4">
-      <div class="col-md-6">
-        <span>Disable my account and stop receiving all web application emails</span>
+    <div class="row ml-5 mb-4 border-bottom">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label>Disable my account and stop receiving all web application emails</label>
+        </div>
       </div>
-      <div class="col-md-6">
-        <div class="wob-switch-toggle">
+      <div class="col-md-4">
+        <div class="wob-switch-toggle float-right">
             <input id="switch2" type="checkbox" id="myCheck"  [(ngModel)]="info.disable_account" name="disable_account" (change)="account_setting('disabledAccount' , $event)">
           <label for="switch2">Toggle</label>
           </div>
         </div>
     </div>
 
-    <div class="row ml-5 mb-4">
+    <div class="row ml-5 mb-4 border-bottom">
       <div class="col-md-12">
-        <a routerLink="/change-password" >Change Password</a>
+        <div class="form-group">
+          <a routerLink="/change-password" >Change Password</a>
+        </div>
       </div>
     </div>
 
     <div class = "row ml-5 mb-4">
       <div class="col-md-12">
-        <label for="name"><a href="#" type = "button" data-toggle="modal" data-target="#myModal">Request</a> a copy of the personal data we have about your account.
-        </label>
+        <div class="form-group">
+          <div class="alert alert-info" role="alert">
+              <a href="#" data-toggle="modal" data-target="#myModal">Request</a> a copy of the personal data we have about your account.
+          </div>
+
+        </div>
       </div>
     </div>
 
     <div class = "row ml-5 mb-4">
       <div class="col-md-12">
-        <label for="name"><a href="#" type = "button" data-toggle="modal" data-target="#Modal">Delete</a> your account forever.
-        </label>
+        <div class="form-group">
+          <div class="alert alert-danger" role="alert">
+              <a href="#"  data-toggle="modal" data-target="#Modal">Delete</a> your account forever.
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
