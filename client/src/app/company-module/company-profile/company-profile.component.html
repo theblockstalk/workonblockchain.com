@@ -1,277 +1,257 @@
 <section class = "bg-light">
-
-
-<div class="container mt-2">
-  <div class="row">
-    <div class="col-md-12">
-      <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn wob-bg-secondary2 float-right my-3" >What happens next?</button>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      <section class = "border rounded py-3 px-5 bg-white">
-        <div class="row">
-          <div class="col-md-6">
-            <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
-            <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
-            <div class="mt-3">
-              <span><h3>{{company_name}}</h3></span>
-              <span><p>{{company_description}}</p></span>
-            </div>
-          </div>
-          <div class="col-md-5">
-            <ul class="list-group list-group-flush float-right">
-              <li class="list-group-item">
-                <span><i class="fas fa-building mr-2"></i></span>
-                <span><a [href]="company_website" target="_blank">{{company_website}}</a></span>
-              </li>
-              <li class="list-group-item">
-                <span><i class="fas fa-map-marker-alt mr-2"></i></span>
-                <span >Country: {{company_country}}</span>
-              </li>
-              <li class="list-group-item">
-                <span><i class="fas fa-map-marker-alt mr-2"></i></span>
-                <span class = "li_txt">City: {{company_city}}</span>
-              </li>
-              <li class="list-group-item">
-                <span><i class="fas fa-id-card mr-2"></i></span>
-                <span class = "li_txt">Postcode: {{company_postcode}}</span>
-              </li>
-              <li class="list-group-item">
-                <span><i class="fas fa-phone mr-2"></i></span>
-                <span class = "li_txt"> Phone: {{company_phone}}</span>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-1">
-            <a class="float-right" (click)="internalRoute('edit_company_profile','information')">
-              <i class="fas fa-edit" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-
-      </section >
-
-      <section class = "border rounded mt-4 py-3 px-5 bg-white">
-        <div class="row">
-          <div class="col-md-6">
-            <h2>
-              Company info
-            </h2>
-          </div>
-          <div class="col-md-6">
-            <a class="float-right" (click)="internalRoute('edit_company_profile','about_you')">
-              <i class="fas fa-edit" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-md-6 mb-3">
-            <div class="form-group">
-              <label>When was the company founded:</label>
-              <p>
-                {{company_founded}}
-              <p>
-            </div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <div class="form-group">
-              <label>How is the company funded:</label>
-              <p>
-                {{company_funded}}
-              <p>
-            </div>
-          </div>
-
-          <div class="col-md-6 ">
-            <div class="form-group">
-              <label>Number of employees:</label>
-              <p>
-                {{no_of_employees}}
-              <p>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-
-      <section class = "border rounded mt-4 py-3 px-5 bg-white">
-        <div class="row">
-          <div class="col-md-6">
-            <h2>
-              Company administration
-            </h2>
-          </div>
-          <div class="col-md-6">
-            <a class="float-right" (click)="internalRoute('edit_company_profile','information')">
-              <i class="fas fa-edit" aria-hidden="true"></i>
-            </a>
-          </div>
-
-        </div>
-        <div class="row mt-3">
-
-          <div class="col-md-6 mb-2">
-            <div class="form-group">
-              <p>
-                {{first_name}} {{last_name}}
-              <p>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Title:</label>
-              <p>
-                {{job_title}}
-              <p>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Email:</label>
-              <p>
-                {{email}}
-              <p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class = "bg-white border rounded my-4 py-3 px-5" *ngIf = "saved_searche && saved_searche.length > 0">
-        <div class="row">
-
-          <div class="col-md-6">
-            <h2>
-              Candidate preferences
-            </h2>
-          </div>
-          <div class="col-md-6">
-            <a class="float-right" (click)="internalRoute('edit_company_profile','prefrences')">
-              <i class="fas fa-edit" aria-hidden="true"></i>
-            </a>
-          </div>
-
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-6 mb-3">
-            <div class="form-group">
-              <label>Where are you hiring:</label>
-              <div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let location of saved_searche[0].location"> {{location}}</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <div class="form-group">
-              <label>What position type are you looking for:</label>
-              <div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let type of saved_searche[0].job_type"> {{type}}</div>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="col-md-6 mb-3">
-            <div class="form-group">
-              <label>What role are you looking for:</label>
-              <div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let position of saved_searche[0].position"> {{position}}</div>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="col-md-6 mb-3" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
-            <div class="form-group">
-              <label>What blockchain technology experience do they need:</label>
-              <div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let blockchain of saved_searche[0].blockchain"> {{blockchain}}</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 mb-3" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
-            <div class="form-group">
-              <label>What programming languages do they need to know:</label>
-              <div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let lang of saved_searche[0].skills"> {{lang}}</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 mb-3" *ngIf="saved_searche[0].other_technologies">
-            <div class="form-group">
-              <label>Other technologies or requirements?</label>
-              <p>
-                {{saved_searche[0].other_technologies}}
-              </p>
-            </div>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <div class="form-group">
-              <label>Available annual salary and currency:</label>
-              <p>
-                {{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}
-              <p>
-            </div>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <div class="form-group">
-              <label>When do you want to start hire working:</label>
-              <p>
-                {{saved_searche[0].availability_day}}
-              </p>
-            </div>
-          </div>
-
-
-          <div class="col-md-6" >
-            <div class="form-group">
-              <label>When would you like to receive emails with candidates that match your search?</label>
-              <p>
-                {{saved_searche[0].when_receive_email_notitfications}}
-              <p>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="whatHappensNextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-primary">
-        <h3 class="modal-title text-center mo">{{companyMsgTitle}}
-        </h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+  <div class="container mt-2">
+    <div class="row">
+      <div class="col-md-12">
+        <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn wob-bg-secondary2 float-right my-3" >What happens next?</button>
       </div>
-      <div class="modal-body">
-        <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <section class = "border rounded py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+              <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+              <div class="mt-3">
+                <span><h2>{{company_name}}</h2></span>
+                <span><p>{{company_description}}</p></span>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <ul class="list-group list-group-flush float-right">
+                <li class="list-group-item">
+                  <span><i class="fas fa-building mr-2"></i></span>
+                  <span><a [href]="company_website" target="_blank">{{company_website}}</a></span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span >Country: {{company_country}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                  <span class = "li_txt">City: {{company_city}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-id-card mr-2"></i></span>
+                  <span class = "li_txt">Postcode: {{company_postcode}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-phone mr-2"></i></span>
+                  <span class = "li_txt"> Phone: {{company_phone}}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-1">
+              <a class="float-right" (click)="internalRoute('edit_company_profile','information')">
+                <i class="fas fa-edit" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-building mr-1" aria-hidden="true"></i>
+                Company info
+              </h2>
+            </div>
+            <div class="col-md-6">
+              <a class="float-right" (click)="internalRoute('edit_company_profile','about_you')">
+                <i class="fas fa-edit" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>When was the company founded:</label>
+                <p>
+                  {{company_founded}}
+                <p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>How is the company funded:</label>
+                <p>
+                  {{company_funded}}
+                <p>
+              </div>
+            </div>
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label>Number of employees:</label>
+                <p>
+                  {{no_of_employees}}
+                <p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-building" aria-hidden="true"></i>
+                Company administration
+              </h2>
+            </div>
+            <div class="col-md-6">
+              <a class="float-right" (click)="internalRoute('edit_company_profile','information')">
+                <i class="fas fa-edit" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-2">
+              <div class="form-group">
+                <p>
+                  {{first_name}} {{last_name}}
+                <p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Title:</label>
+                <p>
+                  {{job_title}}
+                <p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Email:</label>
+                <p>
+                  {{email}}
+                <p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class = "bg-white border rounded my-4 py-3 px-5" *ngIf = "saved_searche && saved_searche.length > 0">
+          <div class="row">
+            <div class="col-md-6">
+              <h2>
+                <i class="fas fa-user" aria-hidden="true"></i>
+                Candidate preferences
+              </h2>
+            </div>
+            <div class="col-md-6">
+              <a class="float-right" (click)="internalRoute('edit_company_profile','prefrences')">
+                <i class="fas fa-edit" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>Where are you hiring:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let location of saved_searche[0].location"> {{location}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>What position type are you looking for:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let type of saved_searche[0].job_type"> {{type}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>What role are you looking for:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let position of saved_searche[0].position"> {{position}}</div>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
+              <div class="form-group">
+                <label>What blockchain technology experience do they need:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let blockchain of saved_searche[0].blockchain">
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{blockchain}}.png" alt="{{blockchain}} Logo">
+                    {{blockchain}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
+              <div class="form-group">
+                <label>What programming languages do they need to know:</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let lang of saved_searche[0].skills"> {{lang}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf="saved_searche[0].other_technologies">
+              <div class="form-group">
+                <label>Other technologies or requirements?</label>
+                <p>
+                  {{saved_searche[0].other_technologies}}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>Available annual salary and currency:</label>
+                <p>
+                  {{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}
+                <p>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>When do you want to start hire working:</label>
+                <p>
+                  {{saved_searche[0].availability_day}}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6" >
+              <div class="form-group">
+                <label>When would you like to receive emails with candidates that match your search?</label>
+                <p>
+                  {{saved_searche[0].when_receive_email_notitfications}}
+                <p>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
-</div>
+
+  <div class="modal fade" id="whatHappensNextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h2 class="modal-title text-center mo">{{companyMsgTitle}}
+          </h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-mo btn-primary" data-dismiss="modal">Got it</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-
-
-
