@@ -24,28 +24,28 @@
             <h4>Filters</h4>
 
             <div class="form-group">
-              <select title="Skills" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
+              <select title="Skills" [disabled]="msg !== '' ? true : false" [(ngModel)]="skill_value" name="skills" (ngModelChange)="searchdata('skill', $event)" class="selectpicker form-control" placeholder="Skills" multiple data-live-search="true">
                 <option *ngFor = "let skill of skillsData" [value]="skill.value">{{skill.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="Desired location" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
+              <select title="Desired location" [disabled]="msg !== '' ? true : false" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let location of locationsData" [value]="location.value">{{location.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="Position" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
+              <select title="Position" [disabled]="msg !== '' ? true : false" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let role of rolesData" [value]="role.value">{{role.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="Blockchain experience" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
+              <select title="Blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
               </select>
             </div>
@@ -53,9 +53,9 @@
 
             <div class = "form-group">
 
-              <input type="text"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
+              <input type="text" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
 
-              <select title="Currency" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
+              <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
                 <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
               </select>
 
@@ -63,7 +63,7 @@
             <hr/>
 
             <div class="form-group">
-              <select title="Availability" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
+              <select title="Availability" [disabled]="msg !== '' ? true : false" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
                 <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
               </select>
             </div>
@@ -71,7 +71,7 @@
 
           </div>
           <div class = "form-group float-right mt-2">
-            <button (click)="reset()" type="button" class="btn btn-danger">Reset</button>
+            <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-danger">Reset</button>
           </div>
         </div>
         <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
