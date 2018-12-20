@@ -4656,6 +4656,10 @@ input:checked + .slider:before {
   padding : 0px;
 }
 
+.work_history{
+  margin-bottom :8px !important;
+}
+
 /*=======MD SCREEN STYLES 992px to 1200px========*/
 
 
