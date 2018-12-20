@@ -83,7 +83,7 @@
         <ng-template  #candidateInfo>
 
           <div class="col-md-9">
-            <h4 *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</h4>
+            <p *ngIf="msg!='' " class="alert alert-danger error-alert">{{msg}}</p>
 
             <div  *ngIf="msg === '' && verify_msg === ''">
               <div *ngIf="candidate_data && candidate_data.length > 0" class="alert alert-info mt-1" role="alert">
