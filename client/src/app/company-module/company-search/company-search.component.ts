@@ -726,7 +726,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                           this.credentials.location = '';
                           this.credentials.job_type = '';
                           this.credentials.job_desc = '';
-                          $("#myModal").modal("hide");
+                          $("#jobDescriptionModal").modal("hide");
                           this.router.navigate(['/chat']);
                         },
                         error => {
