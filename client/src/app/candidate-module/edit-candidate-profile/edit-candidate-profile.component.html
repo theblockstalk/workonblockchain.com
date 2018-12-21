@@ -187,7 +187,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label><p></p></label>
+                    <label>Expected annual salary currency</label>
                     <select [(ngModel)]="base_currency" class="form-control selectpicker" title="Please choose currency" required name="base_currency" >
                       <option *ngFor='let baseCurrency of currency'  [value]="base_currency" [attr.selected]="base_currency === baseCurrency">{{baseCurrency}}</option>
                     </select>
@@ -210,8 +210,8 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label><p></p></label>
-                    <select [(ngModel)]="current_currency" class="form-control" name="current_currency" >
+                    <label>Current annual salary currency</label>
+                    <select [(ngModel)]="current_currency" class="form-control selectpicker" name="current_currency" >
                       <option value="-1" selected>Please choose currency</option>
                       <option *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
                     </select>

@@ -112,7 +112,7 @@
               </div>
               <select [(ngModel)]="base_currency" class="selectpicker" id="currency1" required name="base_currency" >
                 <option value="-1" disabled selected hidden >Please choose currency</option>
-                <option *ngFor='let base_currency of currency'  [value]="base_currency" selected>{{base_currency}}</option>
+                <option *ngFor='let base_currency of currency' [attr.selected] [value]="base_currency" selected>{{base_currency}}</option>
               </select>
               <div class = "invalid-feedback" *ngIf="base_currency === -1">
                 {{currency_log}}
@@ -135,7 +135,7 @@
               </div>
               <select [(ngModel)]="current_currency" class="selectpicker" id="currency"  required name="current_currency" >
                 <option value="-1" disabled selected hidden >Please choose currency</option>
-                <option *ngFor='let current_currency of currency' #choose_currency [value]="current_currency" selected>{{current_currency}}</option>
+                <option *ngFor='let current_currency of currency' #choose_currency [attr.selected] [value]="current_currency" selected>{{current_currency}}</option>
               </select>
               <div class = "invalid-feedback" *ngIf="current_currency === -1 ">
                 {{current_currency_log}}
@@ -174,7 +174,7 @@
                 <label>Employment availability</label>
               </div>
               <select [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
-              <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
+              <option class='option' *ngFor='let start_month of month' [attr.selected]  [value]="start_month" selected>{{start_month}}</option>
               </select>
               <div class = "invalid-feedback" *ngIf="!availability_day">
                 {{avail_log}}
