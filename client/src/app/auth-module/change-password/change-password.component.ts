@@ -61,13 +61,14 @@ export class ChangePasswordComponent implements OnInit {
 
     if(this.credentials.password && this.credentials.current_password && this.credentials.password == this.credentials.confirm_password)
     {
+      console.log("if");
       this.confirm_password='';
 
       this.authenticationService.change_password(this.credentials)
         .subscribe(
           data =>
           {
-
+console.log(data);
               this.log='';
 
               localStorage.setItem('password_change_msg', JSON.stringify("Your password has been successfully changed. Please log back in to continue!"));
@@ -83,6 +84,7 @@ export class ChangePasswordComponent implements OnInit {
           },
           error=>
           {
+            console.log(error);
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
               this.log = error['error']['message'];
