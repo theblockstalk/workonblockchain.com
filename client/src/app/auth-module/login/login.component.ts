@@ -10,7 +10,7 @@ import { DataService } from '../../data.service';
 import {NgForm} from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
-import { map } from 'rxjs/operators';
+
 
 const URL = environment.backend_url;
 console.log(URL);

@@ -105,7 +105,7 @@ export class ChatComponent implements OnInit {
     var styles = document.createElement("link");
     styles.rel = "stylesheet";
     styles.type = "text/css";
-    styles.href = "/assets/css/chat.css"; 
+    styles.href = "/assets/css/chat.css";
     document.getElementsByTagName("head")[0].appendChild(styles);
 
     this.ckeConfig = {
