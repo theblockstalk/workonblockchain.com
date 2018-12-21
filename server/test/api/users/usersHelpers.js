@@ -42,6 +42,7 @@ module.exports.approveCandidate = async function approveCandidate(email) {
                 $each: [newStatus],
                 $position: 0
             }
-        }
+        },
+        'first_approved_date': new Date()
     });
 }
