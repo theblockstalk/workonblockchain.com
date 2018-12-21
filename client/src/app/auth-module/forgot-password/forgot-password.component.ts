@@ -29,24 +29,24 @@ export class ForgotPasswordComponent implements OnInit {
 
   forgot_password(f: NgForm)
   {
-
-
-    this.authenticationService.forgot_password(f.value.email)
+    if(!f.value.email){
+      this.log = 'Please enter your email';
+    }
+    else {
+      this.authenticationService.forgot_password(f.value.email)
       .subscribe(
         data => {
 
-            this.dataservice.forgertMessage("Please check your email to reset the password.");
-            this.router.navigate(["/login"]);
+          this.dataservice.forgertMessage("Please check your email to reset the password.");
+          this.router.navigate(["/login"]);
 
         },
         error => {
-          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-          {
+          if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
             this.dataservice.changeMessage(error['error']['message']);
             this.log = error['error']['message'];
           }
-          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-          {
+          else if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
             this.dataservice.changeMessage(error['error']['message']);
             this.log = error['error']['message'];
           }
@@ -56,6 +56,6 @@ export class ForgotPasswordComponent implements OnInit {
           }
 
         });
+    }
   }
-
 }
