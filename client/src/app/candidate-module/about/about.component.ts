@@ -66,7 +66,8 @@ export class AboutComponent implements OnInit,AfterViewInit
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
-    }, 200);
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
   }
 
   ngOnInit()

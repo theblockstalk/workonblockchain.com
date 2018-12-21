@@ -14,7 +14,7 @@
             </div>
           </div>
           <div class = "d-flex my-4">
-            <div *ngIf="msg!==''" class = "col-md-12 py-5 mt-5">
+            <div *ngIf="msg!==''" class = "col-md-12 py-5 my-3">
               <div class="alert alert-danger">
                 {{msg}}
               </div>
@@ -276,22 +276,18 @@
                           <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
                           <input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
                           <input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
-                          <div class = "offers">
-                            <span class = "">
-                              <button type="submit" class = "btn btn-warning mb-1 text-light">Accept employment offer</button>
-                            </span>
-                          </div>
+                          <span class = "">
+                            <button type="submit" class = "btn btn-warning mb-1 text-light">Accept employment offer</button>
+                          </span>
                         </form>
                         <form (submit)="reject_job_offer(msgForm)" #msgForm = ngForm style="display:inline;">
                           <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
                           <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
                           <input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
                           <input type="hidden" name="job_offer_id" id="job_offer_id" [(ngModel)]="credentials.job_offer_id"/>
-                          <div class = "offers">
-                            <span class = "">
-                              <button type="submit" class = "btn btn-warning mb-1 text-light">Reject employment offer</button>
-                            </span>
-                          </div>
+                          <span class = "">
+                            <button type="submit" class = "btn btn-warning mb-1 ml-1 text-light">Reject employment offer</button>
+                          </span>
                         </form>
                       </div>
                     </ng-container>

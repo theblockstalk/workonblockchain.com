@@ -1410,7 +1410,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
 
   onComSkillExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill', value);
     let index = this.commercialSkillsExperienceYear.indexOf(updateItem);
 
@@ -1462,7 +1461,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
 
   onFormalExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
     let index = this.formal_skills.indexOf(updateItem);
 
