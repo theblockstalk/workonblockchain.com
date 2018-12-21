@@ -55,6 +55,7 @@
           <div class="row">
             <div class="col-md-12">
               <h2>
+                <i class="fas fa-user"></i>
                 About
               </h2>
             </div>
@@ -107,6 +108,7 @@
           <div class="row">
             <div class="col-md-12">
               <h2>
+                <i class="fas fa-globe"></i>
                 Residence/base location
               </h2>
             </div>
@@ -136,6 +138,7 @@
           <div class="row">
             <div class="col-md-12">
               <h2>
+                <i class="fas fa-briefcase"></i>
                 Desired job
               </h2>
             </div>
@@ -195,7 +198,8 @@
           <div class="row">
             <div class="col-md-12">
               <h2>
-                Blockchain and DLT experience
+                <i class="fab fa-bitcoin"></i>
+                Blockchain experience
               </h2>
             </div>
           </div>
@@ -211,7 +215,10 @@
               <div class="form-group">
                 <label>Platform commercially worked with: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of commercial;'> {{data.platform_name}}: {{data.exp_year}} years </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of commercial;'>
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
+                    {{data.platform_name}}: {{data.exp_year}} years
+                  </div>
                 </div>
               </div>
             </div>
@@ -220,7 +227,10 @@
               <div class="form-group">
                 <label>Platforms designed/developed smart contracts: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of platforms;'> {{data.platform_name}}: {{data.exp_year}} years </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of platforms;'>
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
+                    {{data.platform_name}}: {{data.exp_year}} years
+                  </div>
                 </div>
               </div>
             </div>
@@ -229,7 +239,10 @@
               <div class="form-group">
                 <label>Platform experimented with: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of data.experimented_platform;'> {{data.value}}</div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of data.experimented_platform;'>
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.value}}.png" alt="{{data.value}} Logo">
+                    {{data.value}}
+                  </div>
                 </div>
               </div>
             </div>
@@ -259,6 +272,7 @@
           <div class="row">
             <div class="col-md-12">
               <h2>
+                <i class="fas fa-briefcase"></i>
                 Experience
               </h2>
             </div>
@@ -282,6 +296,7 @@
           <div class="row">
             <div class="col-md-12">
               <h2>
+                <i class="fas fa-wrench"></i>
                 Work history
               </h2>
             </div>
@@ -311,7 +326,7 @@
           <div class="row">
             <div class="col-md-12">
               <h2>
-                Work history
+                <i class="fas fa-university"></i> Education
               </h2>
             </div>
           </div>
