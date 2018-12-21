@@ -317,6 +317,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
             }
 
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
+              setTimeout(() => {
+                $('.selectpicker').selectpicker();
+                $('.selectpicker').selectpicker('refresh');
+              }, 500);
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
                 location: [data['saved_searches'][0].location],
