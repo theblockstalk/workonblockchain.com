@@ -162,8 +162,7 @@ export class ChatComponent implements OnInit {
                         this.approved_user = 1;
                     }
                     */
-
-                    if(data['_creator'].candidate.status[0].status === 'created' || data['_creator'].candidate.status[0].status === 'rejected' || data['_creator'].candidate.status[0].status === 'updated' || data['_creator'].candidate.status[0].status === 'wizard completed' || data['_creator'].candidate.status[0].status === 'deferred' || data['_creator'].candidate.status[0].status === 'other')
+                    if(!data['_creator'].first_approved_date)
                     {
                           this.disabled = true;
                           this.msg = "You can access this page when your account has been approved by an admin.";
