@@ -1,3 +1,5 @@
+<section class = "wob-bg-primary2">
+
 <div class="container">
   <div class = "row">
     <div class="col-md-12 wob-bg-primary1 p-2">
@@ -28,21 +30,21 @@
             <hr/>
 
             <div class = "form-group">
-              <select title="Approved/Rejected" class="selectpicker form-control " name="approve" [(ngModel)]="approve" (ngModelChange)="search_approved($event)" >
+              <select title="Status" class="selectpicker form-control " name="approve" [(ngModel)]="approve" (ngModelChange)="search_approved($event)" >
                 <option *ngFor='let options of admin_check'  [value]="options.value" selected>{{options.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="Email Verified/Not Verified" class="selectpicker form-control " name="candidate_status" [(ngModel)]="candidate_status" (ngModelChange)="search_account_status($event)" >
+              <select title="Email verification" class="selectpicker form-control " name="candidate_status" [(ngModel)]="candidate_status" (ngModelChange)="search_account_status($event)" >
                 <option *ngFor='let options of admin_checks_email_verify'  [value]="options.value" selected>{{options.name}}</option>
               </select>
             </div>
             <hr/>
 
             <div class = "form-group">
-              <select title="Account Enabled/Disabled" class="selectpicker form-control " name="candidate_status_account" [(ngModel)]="candidate_status_account" (ngModelChange)="search_candidate_account_status($event)" >
+              <select title="Account enabled" class="selectpicker form-control " name="candidate_status_account" [(ngModel)]="candidate_status_account" (ngModelChange)="search_candidate_account_status($event)" >
                 <option class='option' *ngFor='let options of admin_checks_candidate_account'  [value]="options.value" selected>{{options.name}}</option>
               </select>
             </div>
@@ -94,7 +96,7 @@
                     </div>
 
                   </div>
-                  <div class = "col-md-12 m-0 p-4">
+                  <div class = "col-md-12 m-0 p-4 bg-white">
                     <div class="row">
                       <div class="col-md-12">
                         <span ><i>{{data.why_work}}</i></span>
@@ -144,5 +146,5 @@
     </div>
   </div>
 </div>
-
+</section>
 <!-- Modal -->

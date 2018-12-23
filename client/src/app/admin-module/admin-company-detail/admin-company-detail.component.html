@@ -1,8 +1,8 @@
-<section class = "wob-bg-primary2">
-  <div class="container mt-2">
+<section class = "wob-bg-primary2 py-5">
+  <div class="container">
     <div class="row">
       <div class="col-md-12" *ngFor = "let data of info" >
-        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+        <section class = "border rounded py-3 px-5 bg-white">
           <div class="row">
             <div class="col-md-6">
               <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
@@ -75,62 +75,54 @@
           </div>
           <div class="row mt-3">
             <div class="col-md-6 mb-3">
-              <ng-container >
-                <p>
-                  <strong>Account created date: </strong>
-                  <span>{{data._creator.created_date | date:'dd-MMMM-yyyy'}}</span>
-                </p>
-              </ng-container>
+              <div class="form-group">
+                  <label>Account created date: </label>
+                  <p>{{data._creator.created_date | date:'dd-MMMM-yyyy'}}</p>
+              </div>
             </div>
             <div class="col-md-6 mb-3">
+              <div class="form-group">
               <ng-container *ngIf="verify === 1;else no_verify">
-                <p>
-                  <strong>Email verified: </strong>
-                  <span>Yes</span>
-                </p>
+                  <label>Email verified: </label>
+                  <p>Yes</p>
               </ng-container>
               <ng-template #no_verify>
-                <p>
-                  <strong>Email verified: </strong>
-                  <span>No</span>
-                </p>
+                  <label>Email verified: </label>
+                  <p>No</p>
               </ng-template>
+              </div>
             </div>
             <div class="col-md-6 mb-3">
+              <div class="form-group">
+
               <ng-container *ngIf="is_approved !== '';else no_approve">
-                <p>
-                  <strong>Approved by admin: </strong>
-                  <span>Yes</span>
-                </p>
+                  <label>Approved by admin: </label>
+                  <p>Yes</p>
               </ng-container>
               <ng-template #no_approve>
-                <p>
-                  <strong>Approved by admin: </strong>
-                  <span>No</span>
-                </p>
+                  <label>Approved by admin: </label>
+                  <p>No</p>
               </ng-template>
+              </div>
             </div>
             <div class="col-md-6">
+              <div class="form-group">
+
               <ng-container *ngIf="data._creator.disable_account === false;else no_enable">
-                <p>
-                  <strong>Account enabled: </strong>
-                  <span>Yes</span>
-                </p>
+                  <label>Account enabled: </label>
+                  <p>Yes</p>
               </ng-container>
               <ng-template #no_enable>
-                <p>
-                  <strong>Account enabled: </strong>
-                  <span>No</span>
-                </p>
+                  <label>Account enabled: </label>
+                  <p>No</p>
               </ng-template>
+              </div>
             </div>
             <div class="col-md-6" *ngIf="data._creator.dissable_account_timestamp">
-              <ng-container >
-                <p>
-                  <strong>Account enabled/disabled timestamp: </strong>
-                  <span>{{data._creator.dissable_account_timestamp | date:'short'}}</span>
-                </p>
-              </ng-container>
+              <div class="form-group">
+                 <label>Account enabled/disabled timestamp: </label>
+                  <p>{{data._creator.dissable_account_timestamp | date:'short'}}</p>
+              </div>
             </div>
           </div>
         </section>
