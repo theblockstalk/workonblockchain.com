@@ -19,7 +19,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   info;
   page;
   log;
-  admin_check = [{name:1 , value:"Active"}, {name:0 , value:"Inactive"}];
+  admin_check = [{name:1 , value:"Approved"}, {name:0 , value:"Not approved"}];
   approve;
   msgtags;
   information;
@@ -126,66 +126,6 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
           }
           else {
             this.log = "Something getting wrong";
-          }
-        });
-  }
-
-  error ;
-  approveClick(event , approveForm: NgForm)
-  {
-    this.error = '';
-
-    if(event.srcElement.innerHTML ==='Active' )
-    {
-      this.is_approve = 1;
-    }
-    else if(event.srcElement.innerHTML ==='Inactive')
-    {
-      this.is_approve =0;
-    }
-
-    this.authenticationService.aprrove_user(approveForm.value.id ,this.is_approve )
-      .subscribe(
-        data =>
-        {
-
-          if(data['success'] === true)
-          {
-            if(event.srcElement.innerHTML ==='Active' )
-            {
-              event.srcElement.innerHTML="Inactive";
-            }
-            else if(event.srcElement.innerHTML ==='Inactive')
-            {
-              event.srcElement.innerHTML="Active";
-            }
-          }
-          else if(data['is_approved'] ===0)
-          {
-            if(event.srcElement.innerHTML ==='Active' )
-            {
-              event.srcElement.innerHTML="Inactive";
-            }
-            else if(event.srcElement.innerHTML ==='Inactive')
-            {
-              event.srcElement.innerHTML="Active";
-            }
-          }
-
-        },
-
-        error =>
-        {
-          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-          {
-            this.error = error['error']['message'];
-          }
-          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-          {
-            this.error = error['error']['message'];
-          }
-          else {
-            this.error = "Something getting wrong";
           }
         });
   }
@@ -315,6 +255,22 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.info.length, page);
     this.pagedItems = this.info.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
+
+  company_website;
+  websiteUrl(link){
+    let loc = link;
+    let x = loc.split("/");
+    if(x[0] === 'http:' || x[0] === 'https:')
+    {
+      this.company_website = link;
+      return this.company_website;
+    }
+    else
+    {
+      this.company_website = 'http://' + link;
+      return this.company_website;
+    }
   }
 
 
