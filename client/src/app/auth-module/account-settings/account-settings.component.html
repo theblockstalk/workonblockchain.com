@@ -1,16 +1,8 @@
 <!--Account setting page code start here-->
 
-<section class="wob-bg-primary2">
-  <div class = "row justify-content-md-center">
-    <div class = "col-md-8">
-      <div class="alert alert-info" *ngIf="inform">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        {{message}}
-      </div>
-    </div>
-  </div>
+<section class="wob-bg-primary2 py-5">
 
-  <div class="container border p-5 mt-5 mb-5 bg-white">
+  <div class="container border p-5 bg-white">
     <div class="row mb-4">
       <div class="col-md-12">
         <h1 class = "text-center">Account Settings</h1>
@@ -34,7 +26,7 @@
     <div class="row ml-5 mb-4 border-bottom">
       <div class="col-md-8">
         <div class="form-group">
-          <label>Unread Chat Messages Email</label>
+          <label>Unread chat messages email</label>
         </div>
       </div>
       <div class="col-md-4">
@@ -53,7 +45,7 @@
       </div>
       <div class="col-md-4">
         <div class="wob-switch-toggle float-right">
-            <input id="switch2" type="checkbox" id="myCheck"  [(ngModel)]="info.disable_account" name="disable_account" (change)="account_setting('disabledAccount' , $event)">
+            <input id="switch2" type="checkbox" checked  [(ngModel)]="info.disable_account" name="disable_account" (change)="account_setting('disabledAccount' , $event)">
           <label for="switch2">Toggle</label>
           </div>
         </div>
