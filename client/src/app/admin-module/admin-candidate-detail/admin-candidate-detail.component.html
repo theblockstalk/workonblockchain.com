@@ -1,51 +1,67 @@
 <!--Profile-inner-->
-<section class = "wob-bg-primary2">
+<section class = "wob-bg-primary2 py-5">
   <div class="container">
+
 		<div class="row">
-			<div class="col-md-12 mt-3" *ngFor = "let data of info">
-        <button [routerLink]="['/update-candidate-profile']" [queryParams]="{user: data._creator._id }" class = "btn btn-primary float-right">Edit Profile</button>
-        <section class="border rounded py-3 px-5 bg-white mt-5">
-          <legend class="w-auto m-0">
-            <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
-            <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
-          </legend>
+			<div class="col-md-12" *ngFor = "let data of info">
+
+        <div class="row">
+          <div class="col-md-12">
+            <button [routerLink]="['/update-candidate-profile']" [queryParams]="{user: data._creator._id }" class = "btn btn-primary float-right">Edit Profile</button>
+
+          </div>
+        </div>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
             <div class="col-md-6">
-              <span>
-                <h2 class="text-capitalize">{{data.first_name}} {{data.last_name}} </h2>
-              </span>
-              <span>
-                <p>{{data.description}}</p>
-              </span>
-              <span>
+              <img *ngIf="!data.image" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+              <img *ngIf="data.image " src = "{{data.image}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
+              <div class="mt-3">
+                <span><h3>{{data.first_name.charAt(0).toUpperCase()}}{{data.first_name.slice(1)}} {{data.last_name.charAt(0).toUpperCase()}}{{data.last_name.slice(1)}}</h3></span>
+
+                <span><p class="text-justify">{{data.description}}</p></span>
+
+                <span>
                 <p><a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Companies</a></p>
               </span>
+              </div>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6">
               <ul class="list-group list-group-flush float-right">
                 <li *ngIf="referred_name !== ''" class="list-group-item">
                   <ng-container *ngIf="referred_link ; else noLink">
+                    <span><i class="fas fa-user mr-2"></i></span>
                     <span>Refered By:
                       <a [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
                     </span>
                   </ng-container>
                   <ng-template #noLink>
+                    <span><i class="fas fa-user mr-2"></i></span>
                     <span>Refered By: {{referred_name}}
                     </span>
                   </ng-template>
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-landmark mr-2"></i></span>
-                  <span>Nationality: {{data.nationality}}</span>
+                  <span>Nationality : {{data.nationality}}</span>
                 </li>
                 <li class="list-group-item">
-                  <span><i class="fas fa-phone mr-2"></i></span>
-                  <span> Contact number: {{data.contact_number}}</span>
+                  <span><i class="fas fa-suitcase mr-2"></i></span>
+                  <span >Expected annual salary : {{data.expected_salary_currency}} {{data.expected_salary}}</span>
                 </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-align-justify mr-2"></i></span>
+                  <span >Your availability : {{data.availability_day}}</span>
+                </li>
+
               </ul>
             </div>
+
           </div>
-        </section>
+
+        </section >
+
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
@@ -65,13 +81,9 @@
                 <input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1)' name="is_approve" [ngModel]="0">
                 <!--New code for 23-Nov-2018-->
                 <div class="row">
-                  <div class = "col-md-3">
-                    <div class="form-group">
-                      <label>Change status :</label>
-                    </div>
-                  </div>
                   <div class="col-md-6">
                     <div class="form-group">
+                      <label>Change status: </label>
                       <select class="form-control status_select" id="status_selector" [(ngModel)]="set_status" (ngModelChange) = "changeStatus($event)" name="set_status">
                         <option value="-1" disabled selected hidden >Select status</option>
                         <option *ngFor='let status of set_candidate_status' [value]="status.value" selected>{{status.name}}</option>
@@ -81,14 +93,10 @@
                 </div>
 
                 <div class="row">
-                  <div class = "col-md-3" *ngIf = "(set_status === 'deferred' || set_status === 'rejected')">
-                    <div class="form-group">
-                      <label>Reason :</label>
-                    </div>
-                  </div>
                   <div class="col-md-6" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
                     <div class="form-group">
-                       <select class="form-control" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
+                      <label>Reason: </label>
+                      <select class="form-control" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
                          <option value="-1" disabled selected hidden >Select reason</option>
                          <option *ngFor='let status of set_candidate_status_rejected' [value]="status.value" selected>{{status.name}}</option>
                        </select>
@@ -96,12 +104,16 @@
                   </div>
                   <div class="col-md-6" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
                     <div class="form-group">
-                       <select class="form-control" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
+                      <label>Reason: </label>
+                      <select class="form-control" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
                          <option value="-1" disabled selected hidden >Select reason</option>
                          <option *ngFor='let status of set_candidate_status_deferred' [value]="status.value" selected>{{status.name}}</option>
                        </select>
                     </div>
                   </div>
+                </div>
+
+                <div class="row">
                   <div class="col-md-6">
                     <div class = "form-group">
                       <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn-primary" *ngIf = "(data._creator.is_verify === 1)" >Save</button>
@@ -137,9 +149,7 @@
                 </p>
               </div>
             </div>
-          </div>
 
-          <div class="row">
             <div class = "col-md-6">
               <div class="form-group">
                 <label>Date created:</label>
@@ -159,9 +169,7 @@
                 </p>
               </div>
             </div>
-          </div>
 
-          <div class="row">
             <div class = "col-md-6">
               <div class="form-group">
                 <label>Account enabled:</label>
@@ -186,72 +194,80 @@
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
-            <div class="col-md-6">
-              <h4><i class="fas fa-user"></i> About</h4>
+            <div class="col-md-12">
+              <h2>
+                <i class="fas fa-user"></i>
+                About
+              </h2>
             </div>
+
           </div>
 
-          <div class="row mt-4">
-            <div class = "col-md-6">
+          <div class="row mt-3">
+            <div class="col-md-6 mb-3">
               <div class="form-group">
-                <label>Email Address:</label>
+                <label>Email address: </label>
                 <p>
                   {{data._creator.email}}
-                </p>
+                <p>
               </div>
             </div>
-            <div class = "col-md-6">
+            <div class="col-md-6 mb-3">
               <div class="form-group">
-                <label>Contact Number:</label>
+                <label>Contact number:</label>
                 <p>
                   {{data.contact_number}}
-                </p>
+                <p>
               </div>
             </div>
           </div>
 
-          <div class="row">
-            <div class = "col-md-6" *ngIf="data.github_account">
-              <div class="form-group">
-                <label>Github account URL:</label>
+          <div class="row mt-3" *ngIf="data.github_account || data.stackexchange_account" >
+            <div class="col-md-6 mb-3">
+              <div class="form-group" *ngIf="data.github_account">
+                <label>Github account url: </label>
                 <p>
                   {{data.github_account}}
-                </p>
+                <p>
               </div>
             </div>
-            <div class = "col-md-6" *ngIf="data.stackexchange_account">
-              <div class="form-group">
-                <label>Stackexchange account URL:</label>
+            <div class="col-md-6 mb-3">
+              <div class="form-group" *ngIf="data.stackexchange_account">
+                <label>Stackexchange account url:</label>
                 <p>
                   {{data.stackexchange_account}}
-                </p>
+                <p>
               </div>
             </div>
           </div>
+
         </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
-            <div class="col-md-6">
-              <h4><i class="fas fa-globe"></i> Residence/base location</h4>
+            <div class="col-md-12">
+              <h2>
+                <i class="fas fa-globe"></i>
+                Residence/base location
+              </h2>
             </div>
           </div>
+          <div class="row mt-3">
 
-          <div class="row mt-4">
-            <div class = "col-md-6" *ngIf = "data._creator.candidate.base_country">
+            <div class="col-md-6 mb-3">
               <div class="form-group">
-                <label>Country:</label>
+                <label>Country: </label>
                 <p>
                   {{data._creator.candidate.base_country}}
-                </p>
+                <p>
               </div>
             </div>
-            <div class = "col-md-6" *ngIf = "data._creator.candidate.base_city">
+            <div class="col-md-6 mb-3">
               <div class="form-group">
-                <label>City:</label>
+                <label>City: </label>
                 <p>
                   {{data._creator.candidate.base_city}}
-                </p>
+                <p>
               </div>
             </div>
           </div>
@@ -259,181 +275,213 @@
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
-            <div class="col-md-6">
-              <h4><i class="fas fa-briefcase"></i> Desired job</h4>
-            </div>
-          </div>
-
-          <div class="row mt-4">
-            <div class = "col-md-6">
-              <div class="form-group mb-1">
-                <label>Desired Location:</label>
-              </div>
-              <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let country of countries'>{{country.charAt(0).toUpperCase()}}{{country.slice(1)}}</div>
-            </div>
-            <div class = "col-md-6">
-              <div class="form-group mb-1">
-                <label>Desired Position:</label>
-              </div>
-              <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let interest_area of interest_area;'>{{interest_area}}</div>
+            <div class="col-md-12">
+              <h2>
+                <i class="fas fa-briefcase"></i>
+                Desired job
+              </h2>
             </div>
           </div>
 
           <div class="row mt-3">
-            <div class = "col-md-6">
-              <div class="form-group mb-1">
-                <label>Roles:</label>
+
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>Expected annual salary: </label>
+                  <p>{{data.expected_salary_currency}} {{data.expected_salary}}</p>
+                </div>
               </div>
-              <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let roles_data of roles'>{{roles_data}}</div>
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label>Your availablity: </label>
+                  <p>{{data.availability_day}}</p>
+                </div>
             </div>
-            <div class = "col-md-6" *ngIf="data.expected_salary">
+          </div>
+
+          <div class="row">
+
+            <div class="col-md-6 mb-3">
               <div class="form-group">
-                <label>Expected annual salary:</label>
-                <p>
-                  {{data.expected_salary_currency}} {{data.expected_salary}}
-                </p>
+                <label>Current annual salary: </label>
+                <p>{{data.current_currency}} {{data.current_salary}}</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label>Desired location: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let country of countries'> {{country.charAt(0).toUpperCase()}}{{country.slice(1)}} </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label>Area of interest: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let interest_area of interest_area;'> {{interest_area}} </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="row mt-3">
-            <div class = "col-md-6" *ngIf="data.current_salary">
+          <div class="row">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
-                <label>Current annual salary:</label>
-                <p>
-                  {{data.current_currency}} {{data.current_salary}}
-                </p>
+                <label>Roles: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let roles_data of roles'> {{roles_data}} </div>
+                </div>
               </div>
             </div>
-            <div class = "col-md-6">
-              <div class="form-group">
-                <label>Your Availability:</label>
-                <p>
-                  {{data.availability_day}}
-                </p>
-              </div>
-            </div>
+
           </div>
+
         </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
           <div class="row">
-            <div class="col-md-6">
-              <h4><i class="fab fa-bitcoin"></i> Blockchain experience</h4>
+            <div class="col-md-12">
+              <h2>
+                <i class="fab fa-bitcoin"></i>
+                Blockchain experience
+              </h2>
             </div>
           </div>
-
-          <div class="row mt-4">
-            <div class = "col-md-6">
+          <div class="row mt-3">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
-                <label>Why do you want to work on blockChain?</label>
-                <p>
-                  {{data.why_work}}
-                </p>
+                <label>Why work on blockchain? </label>
+                <p>{{data.why_work}}</p>
               </div>
             </div>
-            <div class = "col-md-6">
-              <div class="form-group mb-1">
-                <label>Platform commercially worked with:</label>
+
+            <div class="col-md-12 mb-3" *ngIf="commercial && commercial.length > 0 ">
+              <div class="form-group">
+                <label>Platform commercially worked with: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of commercial;'>
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
+                    {{data.platform_name}}: {{data.exp_year}} years
+                  </div>
+                </div>
               </div>
-              <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let commercial_platform of commercial;'>
-                <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{commercial_platform.platform_name}}.png" alt="{{commercial_platform.platform_name}} Logo">
-                {{commercial_platform.platform_name}} : {{commercial_platform.exp_year}} years
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="platforms && platforms.length > 0">
+              <div class="form-group">
+                <label>Platforms designed/developed smart contracts: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of platforms;'>
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
+                    {{data.platform_name}}: {{data.exp_year}} years
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="experimented && experimented.length>0">
+              <div class="form-group">
+                <label>Platform experimented with: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of data.experimented_platform;'>
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.value}}.png" alt="{{data.value}} Logo">
+                    {{data.value}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="commercial_skills && commercial_skills.length > 0">
+              <div class="form-group">
+                <label>Commercial experience in these areas: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of commercial_skills;'> {{data.skill}}: {{data.exp_year}} years </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3" *ngIf="formal_skills && formal_skills.length > 0">
+              <div class="form-group">
+                <label>Formal (university) education in these areas: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of formal_skills;'> {{data.skill}}: {{data.exp_year}} years </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+          <div class="row">
+            <div class="col-md-12">
+              <h2>
+                <i class="fas fa-briefcase"></i>
+                Experience
+              </h2>
             </div>
           </div>
 
           <div class="row mt-3">
-            <div class = "col-md-6">
-              <div class="form-group mb-1">
-                <label>Platforms designed/developed smart contracts:</label>
-              </div>
-              <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of platforms;'>
-                <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
-                {{data.platform_name}}  : {{data.exp_year}} years
-              </div>
-            </div>
-            <div class = "col-md-6">
-              <div class="form-group mb-1">
-                <label>Platform experimented with:</label>
-              </div>
-              <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of experimented;'>
-                <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.value}}.png" alt="{{data.value}} Logo">
-                {{data.value}}
-              </div>
-            </div>
-          </div>
-
-          <div class="row mt-3">
-            <div class = "col-md-6">
-              <div class="form-group mb-1">
-                <label>Commercial experience in these areas:</label>
-              </div>
-              <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
-            </div>
-            <div class = "col-md-6">
-              <div class="form-group mb-1">
-                <label>Formal (university) education in these areas:</label>
-              </div>
-              <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
-            </div>
-          </div>
-        </section>
-
-        <section class = "border rounded mt-4 py-3 px-5 bg-white">
-          <div class="row">
-            <div class="col-md-6">
-              <h4><i class="fas fa-briefcase"></i> Experience</h4>
-            </div>
-          </div>
-
-          <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
-                <label>Languages:</label>
+                <label>Languages: </label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let lang of languages;'> {{lang.language}}: {{lang.exp_year}} years </div>
+                </div>
               </div>
-              <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
+          <div class="row">
+            <div class="col-md-12">
+              <h2>
+                <i class="fas fa-wrench"></i>
+                Work history
+              </h2>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngFor='let work of history'>
+            <div class="col-md-12">
+              <h4>{{work.positionname}}</h4>
+              <strong>{{work.companyname}}</strong>
+            </div>
+            <div class="col-md-6">
+              <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}}, till now.</p>
+              <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} , {{work.enddate | date:'MMMM-yyyy'}} </p>
+            </div>
+            <div class="col-md-6">
+              <i class="fas fa-globe"></i> {{work.locationname}}
+            </div>
+            <div class="col-md-12">
+              <p class="text-justify">
+                {{work.description}}
+              </p>
             </div>
           </div>
         </section>
 
-        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" >
           <div class="row">
-            <div class="col-md-6">
-              <h4><i class="fas fa-wrench"></i> Work history</h4>
+            <div class="col-md-12">
+              <h2>
+                <i class="fas fa-university"></i> Education
+              </h2>
             </div>
           </div>
 
-          <div *ngFor='let work of work_history'>
-            <div class="row mt-4">
-              <div class="col-md-12">
-                <h4>{{work.positionname}}</h4>
-                <strong>{{work.companyname}}</strong>
-              </div>
-              <div class="col-md-6">
-                <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}}, till now.</p>
-                <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} , {{work.enddate | date:'MMMM-yyyy'}} </p>
-              </div>
-              <div class="col-md-6">
-                <i class="fas fa-globe"></i> {{work.locationname}}
-              </div>
-              <div class="col-md-12">
-                <p>
-                  {{work.description}}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class = "border rounded mt-4 mb-5 py-3 px-5 bg-white">
-          <div class="row">
-            <div class="col-md-6">
-              <h4><i class="fas fa-university"></i> Education</h4>
-            </div>
-          </div>
-
-          <div class="row mt-4" *ngFor='let edu of education_history'>
+          <div class="row mt-4" *ngFor='let edu of education'>
             <div class="col-md-12">
               <h4>{{edu.uniname}}</h4>
             </div>
@@ -445,6 +493,7 @@
               {{edu.eduyear}}
             </div>
           </div>
+
         </section>
       </div> <!--End col-md-12--->
     </div>
