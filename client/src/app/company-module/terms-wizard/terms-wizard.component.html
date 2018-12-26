@@ -28,9 +28,9 @@
       </div>
     </div>
 
-    <div class="row border p-5 bg-white">
+    <div class="row p-4 bg-white">
       <form  (submit)="terms_wizard(termsForm)"  #termsForm = ngForm>
-        <div class="col-md-12 border p-2">
+        <div class="col-md-12 p-2">
           <p>
             We want to keep things easy and transparent! That's why we've created this short summary of the important parts of the Terms and Conditions and the Privacy Policy. Please ensure that you understand what you are agreeing to when you create an account.
 
@@ -75,7 +75,7 @@
           <p>Please read the <a routerLink="/terms-for-company" target="_blank">Terms of Business </a> for Companies and <a routerLink="/privacy-notice" target="_blank">Privacy Notice</a> for full details.</p>
         </div>
         <div class="row">
-        <div class = "col-md-8 mt-3">
+        <div class = "col-md-8 mt-2">
           <label>
             <input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
             I have read and accepted the <a  routerLink="/terms-for-company" target="_blank" >Terms and Conditions </a> and <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.
@@ -95,10 +95,14 @@
           </div>
           <input type="hidden" name="termsID" id="termsID" [(ngModel)]="terms_id"/>
         </div>
-        <div class = "col-md-4 text-right mt-3">
-          <button type="submit" class = "btn btn-secondary">Next</button>
         </div>
+        <div class="row">
+          <div class="col-md-8"></div>
+          <div class = "col-md-4 text-right mt-3">
+            <button type="submit" class = "btn btn-secondary">Next</button>
+          </div>
         </div>
+
       </form>
     </div>
   </div>

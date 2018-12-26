@@ -137,7 +137,7 @@
           </div>
         </section>
 
-        <section class = "bg-white border rounded my-4 py-3 px-5" *ngIf = "saved_searche && saved_searche.length > 0">
+        <section class = "bg-white border rounded mt-4 py-3 px-5" *ngIf = "saved_searche && saved_searche.length > 0">
           <div class="row">
             <div class="col-md-6">
               <h2>
@@ -153,7 +153,7 @@
           </div>
 
           <div class="row mt-3">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>Where are you hiring:</label>
                 <div>
@@ -161,7 +161,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>What position type are you looking for:</label>
                 <div>
@@ -169,7 +169,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>What role are you looking for:</label>
                 <div>
@@ -178,7 +178,7 @@
 
               </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>Available annual salary and currency:</label>
                 <p>
@@ -186,7 +186,7 @@
                 <p>
               </div>
             </div>
-            <div class="col-md-6 mb-3" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
+            <div class="col-md-12 mb-3" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
               <div class="form-group">
                 <label>What blockchain technology experience do they need:</label>
                 <div>
@@ -197,7 +197,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
+            <div class="col-md-12 mb-3" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
               <div class="form-group">
                 <label>What programming languages do they need to know:</label>
                 <div>
@@ -205,7 +205,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3" *ngIf="saved_searche[0].other_technologies">
+            <div class="col-md-12 mb-3" *ngIf="saved_searche[0].other_technologies">
               <div class="form-group">
                 <label>Other technologies or requirements?</label>
                 <p>
@@ -214,7 +214,7 @@
               </div>
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>When do you want to start hire working:</label>
                 <p>
@@ -222,7 +222,7 @@
                 </p>
               </div>
             </div>
-            <div class="col-md-6" >
+            <div class="col-md-12" >
               <div class="form-group">
                 <label>When would you like to receive emails with candidates that match your search?</label>
                 <p>
