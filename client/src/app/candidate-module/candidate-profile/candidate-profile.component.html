@@ -240,7 +240,7 @@
             </div>
 
             <div class="row mt-4" *ngIf = "commercial && commercial.length > 0">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <div class="form-group mb-2">
                   <label>Platform commercially worked with:</label>
                 </div>
@@ -248,9 +248,11 @@
                   <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
                   {{data.platform_name}} : {{data.exp_year}} years
                 </div>
-
               </div>
-              <div class="col-md-6" *ngIf = "platforms && platforms.length > 0">
+            </div>
+
+            <div class="row mt-4" *ngIf = "platforms && platforms.length > 0">
+              <div class="col-md-12">
                 <div class="form-group mb-1">
                   <label>Platforms designed/developed smart contracts:</label>
                 </div>
@@ -262,7 +264,7 @@
             </div>
 
             <div class="row mt-4">
-              <div class="col-md-6" *ngIf = "experimented && experimented.length > 0 ">
+              <div class="col-md-12" *ngIf = "experimented && experimented.length > 0 ">
                 <div class="form-group mb-1">
                   <label>Platform experimented with:</label>
                 </div>
@@ -271,7 +273,10 @@
                   {{data.value}}
                 </div>
               </div>
-              <div class="col-md-6" *ngIf = "commercial_skills && commercial_skills.length > 0">
+            </div>
+
+            <div class="row mt-4" *ngIf = "commercial_skills && commercial_skills.length > 0">
+              <div class="col-md-12">
                 <div class="form-group mb-1">
                   <label>Commercial experience in these areas:</label>
                 </div>
@@ -279,8 +284,8 @@
               </div>
             </div>
 
-            <div class="row mt-4" >
-              <div class="col-md-6" *ngIf = "formal_skills && formal_skills.length > 0">
+            <div class="row mt-4" *ngIf = "formal_skills && formal_skills.length > 0">
+              <div class="col-md-12">
                 <div class="form-group mb-1">
                   <label>Formal (university) education in these areas:</label>
                 </div>
