@@ -26,13 +26,10 @@
       </div>
     </div>
 
-    <div class="row border p-3 bg-white">
+    <div class="row p-4 bg-white">
       <div class="col-md-12">
         <form (submit)="about_company(aboutForm)"  #aboutForm = ngForm>
-            <fieldset class = "border rounded py-3 px-5" id = "information">
-              <legend class="w-auto m-0 px-1">
-                <h2>About company</h2>
-              </legend>
+            <section class = "p-2" id = "information">
               <div class="row">
 
                 <div class="col-md-6">
@@ -46,13 +43,13 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-group w-100">
-                      <label>Number of employees?</label>
-                      <input type="number" class="form-control" required placeholder="Number of employees?" name="no_of_employees" [(ngModel)]="no_of_employees">
-                      <div class="invalid-feedback d-inline" *ngIf="!no_of_employees">
-                        {{employee_log}}
-                      </div>
+                  <div class="form-group w-100">
+                    <label>How is the company funded?</label>
+                    <input type="text" class="form-control" required placeholder="How's company funded?" name="company_funded" [(ngModel)]="company_funded">
+                    <div class="invalid-feedback d-inline" *ngIf="!company_funded">
+                      {{funded_log}}
                     </div>
+                  </div>
                 </div>
 
               </div>
@@ -60,13 +57,13 @@
               <div class="row">
 
                 <div class="col-md-6">
-                    <div class="form-group w-100">
-                      <label>How is the company funded?</label>
-                      <input type="text" class="form-control" required placeholder="How's company funded?" name="company_funded" [(ngModel)]="company_funded">
-                    <div class="invalid-feedback d-inline" *ngIf="!company_funded">
-                      {{funded_log}}
+                  <div class="form-group w-100">
+                    <label>Number of employees?</label>
+                    <input type="number" class="form-control" required placeholder="Number of employees?" name="no_of_employees" [(ngModel)]="no_of_employees">
+                    <div class="invalid-feedback d-inline" *ngIf="!no_of_employees">
+                      {{employee_log}}
                     </div>
-                    </div>
+                  </div>
                 </div>
 
                 <div class="col-md-6">
@@ -96,7 +93,7 @@
                 </div>
               </div>
 
-            </fieldset >
+            </section >
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -108,9 +105,9 @@
             </div>
           </div>
 
-          <div class="row mb-5">
+          <div class="row" *ngIf="error_msg">
             <div class="col-md-12">
-              <div class = "invalid-feedback float-right d-inline w-auto" *ngIf="error_msg">
+              <div class = "invalid-feedback float-right d-inline w-auto" >
                 {{error_msg}}
               </div>
             </div>
