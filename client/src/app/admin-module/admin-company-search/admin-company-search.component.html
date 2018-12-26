@@ -1,3 +1,5 @@
+<section class = "wob-bg-primary2">
+
 <div class="container">
   <div class = "row">
     <div class="col-md-12 wob-bg-primary1 p-2">
@@ -28,7 +30,7 @@
             <hr/>
 
             <div class = "form-group">
-              <select title="Active/Inactive" class="selectpicker form-control " name="approve" [(ngModel)]="approve" (ngModelChange)="search_approved( $event)" >
+              <select title="Status" class="selectpicker form-control " name="approve" [(ngModel)]="approve" (ngModelChange)="search_approved( $event)" >
                 <option class='option' *ngFor='let options of admin_check'  [value]="options.name" selected>{{options.value}}</option>
               </select>
             </div>
@@ -63,7 +65,7 @@
                 <div class="panel panel-default border mb-3" >
                   <div class="row m-0 wob-bg-primary2 pt-3 pb-3">
 
-                    <div class="col-md-8">
+                    <div class="col-md-12">
 
                       <img *ngIf="!data.company_logo" style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="/assets/profile/profile-image.png" alt="">
                       <img *ngIf="data.company_logo" style="width: 60px;height: 55px;" class="rounded-circle float-left mr-2" src="{{data.company_logo}}" alt="">
@@ -75,25 +77,10 @@
                       </div>
 
                     </div>
-                    <div class="col-md-4">
-                      <form #approve_form="ngForm">
-                        <input type="hidden" name="email"  [ngModel]="data._creator.email || (data.users && data.users[0].email)">
-                        <input type="hidden" name="name"  [ngModel]="data.first_name ">
-                        <input type="hidden" name="type"  [ngModel]="data._creator.type || (data.users && data.users[0].type)">
-                        <input type="hidden" name="is_verify" [ngModel]="data._creator.is_verify || (data.users && data.users[0].is_verify)">
-                        <input type="hidden" name="id" [ngModel]="data._creator._id || (data.users && data.users[0]._id)">
-                        <input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 0) || (data.users && data.users[0].is_verify === 1 && data.users[0].is_approved ===0)' name="is_approve" [ngModel]="1">
-                        <input type= "hidden" *ngIf='(data._creator.is_verify ===1 && data._creator.is_approved === 1) || (data.users && data.users[0].is_verify === 1 && data.users[0].is_approved ===1)' name="is_approve" [ngModel]="0">
-                        <div class="float-right">
-                          <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn wob-bg-secondary2" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 0) || (data.users && data.users[0].is_verify === 1 && data.users[0].is_approved ===0)" >Active</button>
-                          <button type="submit" (click) = "approveClick($event , approve_form)" class = "btn wob-bg-secondary2" *ngIf = "(data._creator.is_verify ===1 && data._creator.is_approved === 1) || (data.users && data.users[0].is_verify === 1 && data.users[0].is_approved ===1)" >Inactive</button>
-                          <button type="submit" class = "btn wob-bg-secondary2" *ngIf = "data._creator.is_verify ===0 || (data.users && data.users[0].is_verify === 0)" disabled>Active</button>
-                        </div>
-                      </form>
-                    </div>
+
 
                   </div>
-                  <div class = "col-md-12 m-0 p-4">
+                  <div class = "col-md-12 m-0 p-4 bg-white">
 
                     <div class="row">
                       <div class="col-sm-8">
@@ -105,7 +92,7 @@
                       <div class="col-sm-4" >
                         <h4>Detail</h4>
                         <ul class="list-group">
-                          <li class="list-group-item" >Website : {{data.company_website}}</li>
+                          <li class="list-group-item" ><a [href]="websiteUrl(data.company_website)" target="_blank">{{data.company_website}}</a></li>
                           <li class="list-group-item"> Company Founded : {{data.company_founded}} </li>
                         </ul>
                       </div>
@@ -137,4 +124,4 @@
     </div>
   </div>
 </div>
-
+</section>

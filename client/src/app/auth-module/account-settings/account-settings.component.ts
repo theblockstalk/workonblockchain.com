@@ -108,27 +108,6 @@ export class AccountSettingsComponent implements OnInit {
           data =>
           {
             this.inform = data;
-            console.log(this.info);
-            if(statusName === 'marketingEmail') {
-              if(this.info.marketing) {
-                this.message = 'Your profile is currently enabled for marketing emails.';
-              }
-              else if(!this.info.marketing) {
-                this.message = 'Your profile is currently disabled for marketing emails.';
-              }
-              else {
-
-              }
-            }
-            if(statusName === 'disabledAccount') {
-              if(this.info.disable_account){
-                this.message = 'Your profile is currently disabled';
-              }
-
-              if(!this.info.disable_account) {
-                this.message = 'Your profile is currently enabled';
-              }
-            }
 
           },
           error => {
@@ -164,12 +143,7 @@ export class AccountSettingsComponent implements OnInit {
             else
             {
               this.inform=data;
-              if(this.info.unread_msgs_emails){
-                this.message = 'Your profile is currently enabled for unread chat messages email';
-              }
-              else{
-                this.message = 'Your profile is currently disabled for unread chat messages email';
-              }
+
             }
           },
           error => {
