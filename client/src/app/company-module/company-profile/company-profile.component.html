@@ -1,14 +1,14 @@
-<section class = "wob-bg-primary2">
-  <div class="container mt-2">
+<section class = "wob-bg-primary2 py-5">
+  <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn wob-bg-secondary2 float-right my-3" >What happens next?</button>
+        <button type = "button" data-toggle="modal" data-target="#whatHappensNextModal" class="btn btn-secondary float-right" >What happens next?</button>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-12">
-        <section class = "border rounded py-3 px-5 bg-white">
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
           <div class="row">
             <div class="col-md-6">
               <img *ngIf="!imgPath" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
@@ -43,7 +43,7 @@
               </ul>
             </div>
             <div class="col-md-1">
-              <a class="float-right" (click)="internalRoute('edit_company_profile','information')">
+              <a class="float-right" (click)="internalRoute('edit_company_profile','about_you')">
                 <i class="fas fa-edit" aria-hidden="true"></i>
               </a>
             </div>
@@ -59,7 +59,7 @@
               </h2>
             </div>
             <div class="col-md-6">
-              <a class="float-right" (click)="internalRoute('edit_company_profile','about_you')">
+              <a class="float-right" (click)="internalRoute('edit_company_profile','company_info')">
                 <i class="fas fa-edit" aria-hidden="true"></i>
               </a>
             </div>
@@ -97,7 +97,7 @@
           <div class="row">
             <div class="col-md-6">
               <h2>
-                <i class="fas fa-building" aria-hidden="true"></i>
+                <i class="fas fa-user icon" aria-hidden="true"></i>
                 Company administration
               </h2>
             </div>
@@ -120,7 +120,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Title:</label>
+                <label>Job title:</label>
                 <p>
                   {{job_title}}
                 <p>
@@ -141,7 +141,7 @@
           <div class="row">
             <div class="col-md-6">
               <h2>
-                <i class="fas fa-user" aria-hidden="true"></i>
+                <i class="fas fa-search" aria-hidden="true"></i>
                 Candidate preferences
               </h2>
             </div>
@@ -157,7 +157,7 @@
               <div class="form-group">
                 <label>Where are you hiring:</label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let location of saved_searche[0].location"> {{location}}</div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let location of saved_searche[0].location"> {{location}}</div>
                 </div>
               </div>
             </div>
@@ -165,7 +165,7 @@
               <div class="form-group">
                 <label>What position type are you looking for:</label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let type of saved_searche[0].job_type"> {{type}}</div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let type of saved_searche[0].job_type"> {{type}}</div>
                 </div>
               </div>
             </div>
@@ -173,16 +173,24 @@
               <div class="form-group">
                 <label>What role are you looking for:</label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let position of saved_searche[0].position"> {{position}}</div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let position of saved_searche[0].position"> {{position}}</div>
                 </div>
 
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label>Available annual salary and currency:</label>
+                <p>
+                  {{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}
+                <p>
               </div>
             </div>
             <div class="col-md-6 mb-3" *ngIf="saved_searche[0].blockchain && saved_searche[0].blockchain.length >0">
               <div class="form-group">
                 <label>What blockchain technology experience do they need:</label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let blockchain of saved_searche[0].blockchain">
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let blockchain of saved_searche[0].blockchain">
                     <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{blockchain}}.png" alt="{{blockchain}} Logo">
                     {{blockchain}}
                   </div>
@@ -193,7 +201,7 @@
               <div class="form-group">
                 <label>What programming languages do they need to know:</label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let lang of saved_searche[0].skills"> {{lang}}</div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let lang of saved_searche[0].skills"> {{lang}}</div>
                 </div>
               </div>
             </div>
@@ -205,14 +213,7 @@
                 </p>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-group">
-                <label>Available annual salary and currency:</label>
-                <p>
-                  {{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}
-                <p>
-              </div>
-            </div>
+
             <div class="col-md-6 mb-3">
               <div class="form-group">
                 <label>When do you want to start hire working:</label>

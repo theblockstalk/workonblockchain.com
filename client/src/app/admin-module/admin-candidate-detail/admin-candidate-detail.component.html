@@ -12,7 +12,7 @@
           </div>
         </div>
 
-        <section class = "border rounded mt-4 py-3 px-5 bg-white">
+        <section class = "border rounded mt-3 py-3 px-5 bg-white">
           <div class="row">
             <div class="col-md-6">
               <img *ngIf="!data.image" src = "assets/profile/profile-image.png" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
@@ -316,7 +316,7 @@
               <div class="form-group">
                 <label>Desired location: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let country of countries'> {{country.charAt(0).toUpperCase()}}{{country.slice(1)}} </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of countries'> {{country.charAt(0).toUpperCase()}}{{country.slice(1)}} </div>
                 </div>
               </div>
             </div>
@@ -324,7 +324,7 @@
               <div class="form-group">
                 <label>Area of interest: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let interest_area of interest_area;'> {{interest_area}} </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let interest_area of interest_area;'> {{interest_area}} </div>
                 </div>
               </div>
             </div>
@@ -335,7 +335,7 @@
               <div class="form-group">
                 <label>Roles: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let roles_data of roles'> {{roles_data}} </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let roles_data of roles'> {{roles_data}} </div>
                 </div>
               </div>
             </div>
@@ -365,7 +365,7 @@
               <div class="form-group">
                 <label>Platform commercially worked with: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of commercial;'>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
                     <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
                     {{data.platform_name}}: {{data.exp_year}} years
                   </div>
@@ -377,7 +377,7 @@
               <div class="form-group">
                 <label>Platforms designed/developed smart contracts: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of platforms;'>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of platforms;'>
                     <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
                     {{data.platform_name}}: {{data.exp_year}} years
                   </div>
@@ -389,7 +389,7 @@
               <div class="form-group">
                 <label>Platform experimented with: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of data.experimented_platform;'>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of data.experimented_platform;'>
                     <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.value}}.png" alt="{{data.value}} Logo">
                     {{data.value}}
                   </div>
@@ -401,7 +401,7 @@
               <div class="form-group">
                 <label>Commercial experience in these areas: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of commercial_skills;'> {{data.skill}}: {{data.exp_year}} years </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial_skills;'> {{data.skill}}: {{data.exp_year}} years </div>
                 </div>
               </div>
             </div>
@@ -410,7 +410,7 @@
               <div class="form-group">
                 <label>Formal (university) education in these areas: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let data of formal_skills;'> {{data.skill}}: {{data.exp_year}} years </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of formal_skills;'> {{data.skill}}: {{data.exp_year}} years </div>
                 </div>
               </div>
             </div>
@@ -433,7 +433,7 @@
               <div class="form-group">
                 <label>Languages: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let lang of languages;'> {{lang.language}}: {{lang.exp_year}} years </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let lang of languages;'> {{lang.language}}: {{lang.exp_year}} years </div>
                 </div>
               </div>
             </div>

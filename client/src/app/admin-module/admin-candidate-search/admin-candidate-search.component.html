@@ -112,11 +112,9 @@
                       </div>
                       <div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
                         <h4>Languages</h4>
-                        <ul class="list-group">
-                          <li class="list-group-item" *ngFor = 'let lang of sorting(data.programming_languages)'>
-                            {{lang.language}} - {{lang.exp_year}} years
-                          </li>
-                        </ul>
+                        <div>
+                          <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngFor = 'let lang of sorting(data.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
+                        </div>
                       </div>
                     </div>
 
