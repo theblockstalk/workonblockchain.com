@@ -46,7 +46,7 @@
     <form class="needs-validation p-4 mb-5 border bg-white" novalidate #expForm = ngForm (submit)="blockchain_exp(expForm)">
       <div class="row">
         <div class="col-md-12">
-          <h2>Blockchain experience</h2>
+          <h4>Blockchain experience</h4>
         </div>
       </div>
       <div class="row">
@@ -60,9 +60,9 @@
             <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because.."  #whywork name="why_work" required [(ngModel)]="why_work">
           </div>
         </div>
-        <div class = "invalid-feedback" *ngIf="!why_work">
-          {{why_work_log}}
-        </div>
+      </div>
+      <div class = "invalid-feedback" style="display: block;" *ngIf="!why_work">
+        {{why_work_log}}
       </div>
 
       <div class="row">
@@ -107,7 +107,7 @@
           </div>
         </div>
       </div>
-      <div class = "invalid-feedback" *ngIf="commercially_worked.length !== commercial_expYear.length">
+      <div class = "invalid-feedback" style="display: block;" *ngIf="commercially_worked.length !== commercial_expYear.length">
         {{commercial_log}}
       </div>
 
@@ -154,7 +154,7 @@
           </div>
         </div>
       </div>
-      <div class = "invalid-feedback" *ngIf="platforms_designed.length !== platforms.length">
+      <div class = "invalid-feedback" style="display: block;" *ngIf="platforms_designed.length !== platforms.length">
         {{platform_log}}
       </div>
 
@@ -225,7 +225,7 @@
           </div>
         </div>
       </div>
-      <div class = "invalid-feedback" *ngIf="commercialSkills.length !== commercialSkillsExperienceYear.length">
+      <div class = "invalid-feedback" style="display: block;" *ngIf="commercialSkills.length !== commercialSkillsExperienceYear.length">
         {{commercial_skill_log}}
       </div>
 
@@ -268,10 +268,9 @@
             <!--</div>-->
             <input type="text" class="form-control" name="formal_skills" [(ngModel)]='formal_skills' style="display: none;">
           </div>
-
         </div>
       </div>
-      <div class = "invalid-feedback" *ngIf="formal_skills_exp.length !== formal_skills.length">
+      <div class = "invalid-feedback" style="display: block;" *ngIf="formal_skills_exp.length !== formal_skills.length">
         {{formal_skills_log}}
       </div>
 
@@ -279,7 +278,7 @@
         <a routerLink="/job" class = "btn btn-warning text-white">Back</a>
         <button type=submit  class = "btn btn-secondary ml-1">Next</button>
       </div>
-      <div class = "invalid-feedback" *ngIf="error_msg">
+      <div class = "invalid-feedback text-right" style="display: block;" *ngIf="error_msg">
         {{error_msg}}
       </div>
     </form>
