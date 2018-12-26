@@ -47,7 +47,7 @@
     <form class="needs-validation p-4 mb-5 border bg-white" novalidate (submit)="experience_submit(expForm)" #expForm = ngForm novalidate>
       <div class="row">
         <div class="col-md-12">
-          <h2>Technical experience</h2>
+          <h4>Technical experience</h4>
         </div>
       </div>
 
@@ -70,29 +70,29 @@
             <input type="text" class="form-control" [(ngModel)]='language' name="language" style="display: none;">
           </div>
         </div>
-        <div class = "invalid-feedback" *ngIf="language.length <=0 ">
-          {{lang_log}}
-        </div>
+      </div>
+      <div class = "invalid-feedback" style="display: block;" *ngIf="language.length <=0 ">
+        {{lang_log}}
       </div>
       <div class="row" *ngIf="language?.length > 0">
         <div class="col-md-12">
           <strong>Years of experience</strong>
         </div>
-          <div class = "col-md-7" *ngFor="let lang_value of language; let i = index ">
-            <p>{{lang_value.value}}</p>
-            <div class = "form-group">
-              <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-                <label class="btn btn-secondary" *ngFor="let exp of exp_year; let i_ind =index" for="{{lang_value.value}}{{i_ind}}">
-                  <input type="radio" id="{{lang_value.value}}{{i_ind}}" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)">
-                  {{exp.name}}
-                </label>
-              <!--</div>-->
-              <input type="text" class="form-control"  name="language_experience_year" [(ngModel)]='expYear' style="display: none;">
-            </div>
+        <div class = "col-md-7" *ngFor="let lang_value of language; let i = index ">
+          <p>{{lang_value.value}}</p>
+          <div class = "form-group">
+            <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+              <label class="btn btn-secondary" *ngFor="let exp of exp_year; let i_ind =index" for="{{lang_value.value}}{{i_ind}}">
+                <input type="radio" id="{{lang_value.value}}{{i_ind}}" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)">
+                {{exp.name}}
+              </label>
+            <!--</div>-->
+            <input type="text" class="form-control"  name="language_experience_year" [(ngModel)]='expYear' style="display: none;">
           </div>
-          <div class = "invalid-feedback" *ngIf="expYear.length !== language.length">
-            {{exp_lang_log}}
-          </div>
+        </div>
+      </div>
+      <div class = "invalid-feedback" style="display: block;" *ngIf="expYear.length !== language.length">
+        {{exp_lang_log}}
       </div>
 
       <div class="row">
@@ -109,7 +109,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Company</label>
-                  <input type="text" id="" placeholder="" required formControlName="companyname" class="form-control" #company_field name="company">
+                  <input type="text" id="" placeholder="John Ltd" required formControlName="companyname" class="form-control" #company_field name="company">
                   <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].companyname">
                     {{company_log}}
                   </div>
@@ -119,7 +119,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Position</label>
-                  <input type="text" formControlName="positionname" class="form-control" #position_field name="position" required>
+                  <input type="text" formControlName="positionname" placeholder="Developer" class="form-control" #position_field name="position" required>
                   <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].positionname">
                     {{position_log}}
                   </div>
@@ -129,7 +129,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Location</label>
-                  <input type="text" formControlName="locationname" class="form-control" #location_field name="location" required>
+                  <input type="text" formControlName="locationname" placeholder="Panama" class="form-control" #location_field name="location" required>
                   <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].locationname">
                     {{location_log}}
                   </div>
@@ -241,7 +241,7 @@
               <div class="col-md-3">
                   <div class="form-group">
                     <label>University</label>
-                    <input formControlName="uniname" class="form-control" type="text" #uni_field name="uni" required >
+                    <input formControlName="uniname" placeholder="National University" class="form-control" type="text" #uni_field name="uni" required >
                       <div class = "invalid-feedback" *ngIf="!this.EducationForm.value.itemRows[i].uniname">
                         {{uni_name_log}}
                       </div>
@@ -251,7 +251,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Degree</label>
-                  <input formControlName="degreename" class="form-control" type="text" #degree_field name="uni" required  >
+                  <input formControlName="degreename" placeholder="Computer Science" class="form-control" type="text" #degree_field name="uni" required  >
                   <div class = "invalid-feedback" *ngIf="!this.EducationForm.value.itemRows[i].degreename">
                     {{degree_log}}
                   </div>
@@ -261,7 +261,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Field of study</label>
-                  <input formControlName="fieldname" class="form-control" type="text" #study_field name="study" required  >
+                  <input formControlName="fieldname" class="form-control" placeholder="Information Technology" type="text" #study_field name="study" required  >
                   <div class = "invalid-feedback" *ngIf="!this.EducationForm.value.itemRows[i].fieldname">
                     {{field_log}}
                   </div>
@@ -303,7 +303,6 @@
              <ul>
                <li> 2-5 sentences </li>
                <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
-               <li> Example "Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." </li>
              </ul>
              <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
              <div class = "invalid-feedback" *ngIf="!Intro">
@@ -318,7 +317,7 @@
          <button type="submit" class = "btn btn-secondary ml-1">Done</button>
        </div>
 
-       <div class = "invalid-feedback" *ngIf="error_msg">
+       <div class = "invalid-feedback text-right" style="display: block;" *ngIf="error_msg">
          {{error_msg}}
        </div>
        <div class="alert alert-danger error-alert" *ngIf="log">{{log}}</div>
