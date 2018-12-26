@@ -1,19 +1,17 @@
 <section class="wob-bg-primary2 py-4">
-  <div class = "container border w-75 mb-5 bg-white">
+  <div class = "container w-50 mb-5 bg-white">
     <div class = "row justify-content-md-center">
-      <div class="col-md-8">
+      <div class="col-12 bg-white">
         <div class="form-group">
           <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#candidate" role="tab" aria-controls="nav-home" aria-selected="true">Candidate</a>
-              <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#company" role="tab" aria-controls="nav-profile" aria-selected="false">Company</a>
+              <a class="nav-item nav-link active text-center" id="nav-home-tab" data-toggle="tab" href="#candidate" role="tab" aria-controls="nav-home" aria-selected="true">Candidate</a>
+              <a class="nav-item nav-link text-center" id="nav-profile-tab" data-toggle="tab" href="#company" role="tab" aria-controls="nav-profile" aria-selected="false">Company</a>
             </div>
           </nav>
         </div>
-      </div>
-    </div>
-    <div class = "row justify-content-md-center">
-      <div class="tab-content col-md-8" id="nav-tabContent">
+        <div class = "row">
+      <div class="tab-content col-md-12" id="nav-tabContent">
         <div class="tab-pane fade show active" id="candidate" role="tabpanel" aria-labelledby="nav-home-tab">
           <div *ngIf="ref_msg" class="alert alert-success">{{ref_msg}}</div>
           <div *ngIf = "log" class="alert alert-danger error-alert" >{{log}}</div>
@@ -49,14 +47,14 @@
               <input type="submit" class="form-control btn btn-secondary" value = "Sign up" [disabled]="!loginForm.valid ">
             </div>
             <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-linkedin" type = "submit" (click)="subscribeToLogin()">
+              <a  class = "btn btn-block btn-social btn-linkedin text-center" type = "submit" (click)="subscribeToLogin()">
                 <i class="fab fa-linkedin" aria-hidden="true"></i>
                 Sign up with LinkedIn
               </a>
             </div>
 
             <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-google" type = "submit" (click)="signInWithGoogle()">
+              <a  class = "btn btn-block btn-social btn-google text-center" type = "submit" (click)="signInWithGoogle()">
                 <i class="fab fa-google" aria-hidden="true"></i>
                 Sign up with Google
               </a>
@@ -153,6 +151,8 @@
           </form>
         </div>
       </div>
+      </div>
+    </div>
     </div>
   </div>
 </section>
