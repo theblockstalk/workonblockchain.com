@@ -1,37 +1,40 @@
-<div class = "container">
-  <div class = "row">
+<div class = "container-fluid border-bottom">
+  <div class = "row ">
     <div class = "col-md-12">
-      <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" routerLink="/">
+      <nav class="navbar navbar-expand-lg fixed-top bg-white px-lg-5">
+        <a class="navbar-brand ml-5" routerLink="/">
           <img src = "/assets/images/navbar_imgs/logo/logo_woc.png" alt="Work on Blockchain">
         </a>
-        <div class="container navbar-collapse">
-          <ul class="nav ml-auto">
-            <li class="nav-item" *ngIf="!currentUser">
-              <a class="nav-link active" routerLink="signup">SIGN UP</a>
+        <button class="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav ml-auto p-3 p-lg-0 mr-5">
+            <li class="nav-item pr-2" *ngIf="!currentUser">
+              <a class="nav-link text-dark active" routerLink="signup">SIGN UP</a>
             </li>
-            <li class="nav-item" *ngIf="!currentUser">
-              <a class="nav-link" routerLink="login">Login</a>
+            <li class="nav-item pr-2" *ngIf="!currentUser">
+              <a class="nav-link text-dark" routerLink="login">Login</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="referral">Referral £500+ Reward</a>
+            <li class="nav-item pr-2">
+              <a class="nav-link text-dark" routerLink="referral">Referral £500+ Reward</a>
             </li>
-            <li class="nav-item" *ngIf="currentUser">
-              <a class="nav-link" routerLink="chat">Chat</a>
+            <li class="nav-item pr-2" *ngIf="currentUser">
+              <a class="nav-link text-dark" routerLink="chat">Chat</a>
             </li>
-            <li class="nav-item" *ngIf="(currentUser && is_admin === 1)">
-              <a class="nav-link" routerLink="admin-dashboard">Dashboard</a>
+            <li class="nav-item pr-2" *ngIf="(currentUser && is_admin === 1)">
+              <a class="nav-link text-dark" routerLink="admin-dashboard">Dashboard</a>
             </li>
-            <li class="nav-item dropdown" *ngIf="(currentUser)">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+            <li class="nav-item dropdown pr-2" *ngIf="(currentUser)">
+              <a class="nav-link dropdown-toggle text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" *ngIf="(currentUser && user_type === 'candidate')" routerLink="candidate_profile">Profile</a>
-                <a class="dropdown-item" *ngIf="(currentUser && user_type === 'candidate')" routerLink="edit_profile">Edit Profile</a>
-                <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="company_profile">Profile</a>
-                <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="edit_company_profile">Edit Profile</a>
-                <a class="dropdown-item" *ngIf="(currentUser && user_type === 'company')" routerLink="candidate-search">Search Candidate</a>
-                <a class="dropdown-item" routerLink="account-settings">Settings</a>
-                <a class="dropdown-item" *ngIf="currentUser" href="" (click)="logout()">Log out</a>
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'candidate')" routerLink="candidate_profile">Profile</a>
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'candidate')" routerLink="edit_profile">Edit Profile</a>
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'company')" routerLink="company_profile">Profile</a>
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'company')" routerLink="edit_company_profile">Edit Profile</a>
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'company')" routerLink="candidate-search">Search Candidate</a>
+                <a class="dropdown-item text-dark" routerLink="account-settings">Settings</a>
+                <a class="dropdown-item text-dark" *ngIf="currentUser" href="" (click)="logout()">Log out</a>
                 <!--<div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Separated link</a>-->
               </div>
