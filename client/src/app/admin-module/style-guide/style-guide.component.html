@@ -722,6 +722,7 @@
     <div class="col-md-7">
       <div class="form-group">
         <label>When would you like to receive emails?</label>
+        <div>
           <label class="btn btn-secondary active">
             <input type="radio" name="options" id="option1" autocomplete="off">Never
           </label>
@@ -734,6 +735,8 @@
           <label class="btn btn-secondary">
             <input type="radio" name="options" id="option4" autocomplete="off">Daily
           </label>
+        </div>
+
       </div>
     </div>
     <div class="col-md-3">
@@ -820,6 +823,51 @@
     <div class="col-md-3">
       <ul>
         <li>use for text editor</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class = "row">
+    <div class="col-md-2">
+      <p>Angular ckeditor</p>
+    </div>
+
+    <div class="col-md-7">
+      <div class="form-group">
+        <label>Enter  your text detail here</label>
+
+        <ckeditor   #myckeditor  [config]="ckeEditorConfig" debounce="500" >
+        </ckeditor>
+      </div>
+
+    </div>
+
+    <div class="col-md-3">
+      <ul>
+        <li>use for text editor CMS</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class = "row">
+    <div class="col-md-2">
+      <p>Angular ckeditor without formatting bar</p>
+    </div>
+
+    <div class="col-md-7">
+      <div class="form-group">
+        <label>Enter  your text detail here</label>
+
+        <ckeditor class="ckeditor_tab"  #myckeditor [config]="ckeConfig" debounce="500" >
+        </ckeditor>
+      </div>
+
+    </div>
+
+    <div class="col-md-3">
+      <ul>
+        <li>Use for formatted text</li>
       </ul>
     </div>
   </div>
