@@ -2,14 +2,14 @@ const Chat = require('../../../model/chat');
 
 const removeSensativeData = module.exports.removeSensativeData = function removeSensativeData(userDoc,sendOptions)
 {
-    if(userDoc._creator)
+    if(userDoc)
 	{
-		delete userDoc._creator.password_hash;
-	    delete userDoc._creator.salt;
+		delete userDoc.password_hash;
+	    delete userDoc.salt;
         if(!sendOptions) sendOptions={};
-        if (!sendOptions.jwt_token) delete userDoc._creator.jwt_token;
-        if (!sendOptions.verify_email_key )delete userDoc._creator.verify_email_key;
-        if (!sendOptions.forgot_password_key) delete userDoc._creator.forgot_password_key;
+        if (!sendOptions.jwt_token) delete userDoc.jwt_token;
+        if (!sendOptions.verify_email_key )delete userDoc.verify_email_key;
+        if (!sendOptions.forgot_password_key) delete userDoc.forgot_password_key;
 	}
 
     return userDoc;
