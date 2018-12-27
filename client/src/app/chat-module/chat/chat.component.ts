@@ -162,8 +162,7 @@ export class ChatComponent implements OnInit {
                         this.approved_user = 1;
                     }
                     */
-
-                    if(data['_creator'].candidate.status[0].status === 'created' || data['_creator'].candidate.status[0].status === 'rejected' || data['_creator'].candidate.status[0].status === 'updated' || data['_creator'].candidate.status[0].status === 'wizard completed' || data['_creator'].candidate.status[0].status === 'deferred' || data['_creator'].candidate.status[0].status === 'other')
+                    if(!data['_creator'].first_approved_date)
                     {
                           this.disabled = true;
                           this.msg = "You can access this page when your account has been approved by an admin.";
@@ -953,7 +952,7 @@ export class ChatComponent implements OnInit {
     this.credentials.msg_body = '';
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log("show_msg_area: " + this.show_msg_area);
-      setInterval(() => {
+      //setInterval(() => {
         //receiver,sender
         //console.log("ID: " + this.credentials.id);
         this.authenticationService.get_user_messages(this.credentials.id,0)
@@ -1040,7 +1039,7 @@ export class ChatComponent implements OnInit {
               }
             }
           );
-      }, 2000);
+      //}, 2000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver

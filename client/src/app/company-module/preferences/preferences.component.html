@@ -1,4 +1,4 @@
-<section class="wob-bg-primary2 pb-5 pt-3">
+<section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -26,14 +26,10 @@
       </div>
     </div>
 
-    <div class="row border p-3 bg-white">
+    <div class="row p-4 border bg-white">
       <div class="col-md-12">
         <form  [formGroup]="preferncesForm" (ngSubmit)="candidate_prefernces()">
-          <fieldset class = "border rounded py-3 px-5" id = "information">
-            <legend class="w-auto m-0 px-1">
-              <h2>Candidate preferences</h2>
-            </legend>
-
+          <section class = "p-2" id = "information">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
@@ -153,7 +149,7 @@
               </div>
             </div>
 
-          </fieldset>
+          </section>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -165,9 +161,9 @@
             </div>
           </div>
 
-          <div class="row mb-5">
+          <div class="row" *ngIf="error_msg">
             <div class="col-md-12">
-              <div class = "invalid-feedback float-right d-inline w-auto" *ngIf="error_msg">
+              <div class = "invalid-feedback float-right d-inline w-auto" >
                 {{error_msg}}
               </div>
             </div>
