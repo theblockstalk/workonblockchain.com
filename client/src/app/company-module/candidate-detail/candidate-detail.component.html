@@ -1,5 +1,5 @@
-<section class = "py-5" *ngIf="invalidMsg && invalidMsg !== ''">
-  <div class="container">
+<section class = "wob-bg-primary2 py-5 mt-5" *ngIf="invalidMsg && invalidMsg !== ''">
+  <div class="container pt-2">
     <div class="row" >
       <div class = "invalid-feedback d-inline w-auto" >
         <span> <i class="fas fa-exclamation-circle"></i></span>
@@ -11,9 +11,9 @@
   </div>
 </section>
 
-<section class = "wob-bg-primary2 py-5" *ngIf="!invalidMsg || invalidMsg === ''">
+<section class = "wob-bg-primary2 py-5 mt-5" *ngIf="!invalidMsg || invalidMsg === ''">
 
-  <div class="container">
+  <div class="container pt-2">
 
     <div class="row">
       <div class="col-md-9 mb-4" *ngFor= "let data of cand_data">
