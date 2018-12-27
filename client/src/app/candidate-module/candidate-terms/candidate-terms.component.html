@@ -1,5 +1,5 @@
 <!--candidate step completing-->
-<section class="wob-bg-primary2">
+<section class="wob-bg-primary2 pb-5 pt-3">
   <div class="container">
     <div class="row mb-4">
       <div class="col-md-12">
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <div class="row border p-5 mb-5 bg-white">
+    <div class="row p-4 border bg-white">
       <form class="needs-validation" novalidate (submit)="terms_and_condition(termForm)" #termForm = ngForm>
          <div class="col-md-12 mb-4">
            <p>
@@ -94,7 +94,7 @@
                  <div></div>
                </span>
           </label>
-          <div class = "invalid-feedback" *ngIf="termscondition == false">
+          <div class = "invalid-feedback d-inline" *ngIf="termscondition == false">
             {{terms_log}}
           </div>
         </div>

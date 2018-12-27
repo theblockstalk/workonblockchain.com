@@ -1,4 +1,4 @@
-<section class="wob-bg-primary2">
+<section class="wob-bg-primary2 pb-5 pt-3">
   <div class="container">
     <div class="row mb-4">
       <div class="col-md-12">
@@ -42,35 +42,35 @@
         </ul>
       </div>
     </div>
-    <div class = "row bg-white border mb-5 p-4">
+    <div class="row p-4 border bg-white">
       <div class="col-md-12">
-        <form (submit)="about()" #aboutForm = ngForm class="needs-validation" novalidate>
+        <form (submit)="about()" #aboutForm = ngForm>
           <div class = "row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="firstName">First name</label>
-                  <input type="text" class="form-control" required id="firstName" placeholder="John" name="first_name" [(ngModel)]="info.first_name">
-                  <div class = "invalid-feedback" style="display: block;" *ngIf="!info.first_name">
-                    {{first_name_log}}
-                  </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" required id="firstName" placeholder="John" name="first_name" [(ngModel)]="info.first_name">
+                <div class = "invalid-feedback d-inline"  *ngIf="!info.first_name">
+                  {{first_name_log}}
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="lastName">Last name</label>
-                  <input type="text" class="form-control" required id="lastName" placeholder="Smith"  name="last_name" [(ngModel)]="info.last_name">
-                  <div class = "invalid-feedback" style="display: block;" *ngIf="!info.last_name">
-                    {{last_name_log}}
-                  </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" required id="lastName" placeholder="Smith"  name="last_name" [(ngModel)]="info.last_name">
+                <div class = "invalid-feedback d-inline"  *ngIf="!info.last_name">
+                  {{last_name_log}}
                 </div>
               </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="githubURL">Github account URL (optional)</label>
                 <input type="text" #gitaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="githubURL" placeholder="test.com"  name="github_account" [(ngModel)]="info.github_account">
-                <div class = "invalid-feedback" style="display: block;" *ngIf="gitaccount.errors">
+                <div class = "invalid-feedback d-inline"  *ngIf="gitaccount.errors">
                   Enter url in proper format.
                 </div>
               </div>
@@ -79,7 +79,7 @@
               <div class="form-group">
                 <label for="stackURL">Stackexchange account URL (optional)</label>
                 <input type="text" #stackaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="stackURL" placeholder="test.com" name="exchange_account" [(ngModel)]="info.exchange_account">
-                <div class = "invalid-feedback" style="display: block;" *ngIf="stackaccount.errors">
+                <div class = "invalid-feedback d-inline"  *ngIf="stackaccount.errors">
                   Enter url in proper format.
                 </div>
               </div>
@@ -90,7 +90,7 @@
               <div class="form-group">
                 <label for="phone">Phone number (including country code)</label>
                 <input type="tel" class="form-control" id="phone" placeholder="(+1) 01 2345 6789" name="contact_number" #contact_number required [(ngModel)]="info.contact_number" >
-                <div class = "invalid-feedback" style="display: block;" *ngIf="!info.contact_number">
+                <div class = "invalid-feedback d-inline"  *ngIf="!info.contact_number">
                   {{contact_name_log}}
                 </div>
               </div>
@@ -102,7 +102,7 @@
                   <option value="-1" disabled selected hidden >Please choose nationality</option>
                   <option *ngFor='let options of nationality' placeholder="Nationality"  [value]="options" [attr.selected]="options === info.nationality ? true : null">{{options}}</option>
                 </select>
-                <div class = "invalid-feedback" style="display: block;" *ngIf="info.nationality === -1">
+                <div class = "invalid-feedback d-inline"  *ngIf="info.nationality === -1">
                   <span class = "error">{{nationality_log}}</span>
                 </div>
               </div>
@@ -119,7 +119,7 @@
                   <option value="-1" disabled selected hidden >Please choose country</option>
                   <option *ngFor='let options of countries'  [value]="options" [attr.selected]="options === info.country ? true : null">{{options}}</option>
                 </select>
-                <div class = "invalid-feedback" style="display: block;" *ngIf="info.country === -1">
+                <div class = "invalid-feedback d-inline"  *ngIf="info.country === -1">
                   {{country_log}}
                 </div>
               </div>
@@ -128,7 +128,7 @@
               <div class="form-group">
                 <label>City</label>
                 <input type="text" class="form-control" placeholder="Panama" name="city" #city required [(ngModel)]="info.city" >
-                <div class = "invalid-feedback" style="display: block;" *ngIf="!info.city">
+                <div class = "invalid-feedback d-inline"  *ngIf="!info.city">
                   {{city_log}}
                 </div>
               </div>
@@ -142,7 +142,7 @@
                 <label>
                   <span *ngIf="img_src" >{{img_src}}</span>
                 </label>
-                <div class = "invalid-feedback" style="display: block;" *ngIf="image_log">
+                <div class = "invalid-feedback d-inline" *ngIf="image_log">
                   {{image_log}}
                 </div>
               </div>
@@ -154,7 +154,7 @@
               <button type="submit" class = "btn btn-secondary ml-1">Next</button>
             </div>
           </div>
-          <div class = "invalid-feedback text-right" style="display: block;" *ngIf="error_msg">
+          <div class = "invalid-feedback d-inline text-right float-right" *ngIf="error_msg">
             {{error_msg}}
           </div>
         </form>

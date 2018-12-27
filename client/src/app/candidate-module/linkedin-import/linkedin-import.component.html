@@ -1,5 +1,5 @@
 <!--candidate step completing-->
-<section class="wob-bg-primary2">
+<section class="wob-bg-primary2 pb-5 pt-3">
   <div class="container">
     <div class="row mb-4">
       <div class="col-md-12">
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <div class="row border p-3 mb-5 bg-white">
+    <div class="row border p-4 bg-white">
       <div class="col-md-12">
         <form class="needs-validation" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
           <h4 class = "text-center">Pre-fill your profile with LinkedIn import?</h4>
@@ -78,7 +78,7 @@
               <div class="form-group">
                 <input (change)="filechoosen($event)" type="file" accept=".zip , application/zip" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control-file" />
               </div>
-              <div class = "file_error">
+              <div class = "invalid-feedback d-inline">
                 {{error_log}}
               </div>
             </div>
