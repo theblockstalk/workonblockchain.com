@@ -1079,6 +1079,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   addNewExpRow()
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
     // control refers to your formarray
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     // add new formgroup
@@ -1100,11 +1104,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
   addNewRow()
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
     // control refers to your formarray
     //this.EducationForm.value.itemRows = "";
     const control = <FormArray>this.EducationForm.controls['itemRows'];
     // add new formgroup
     control.push(this.initItemRows());
+  }
+  currently_work(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
   }
 
   deleteRow(index: number)

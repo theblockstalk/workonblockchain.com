@@ -553,6 +553,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }
     else {
       return ;
+      return ;
     }
 
   }

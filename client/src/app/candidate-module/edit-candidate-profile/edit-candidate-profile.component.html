@@ -3,12 +3,16 @@
 <section class = "wob-bg-primary2 py-5">
   <div class="container">
     <div class="row">
-      <form class="needs-validation" novalidate (submit)="candidate_profile(profileForm)" #profileForm = ngForm>
+      <form (submit)="candidate_profile(profileForm)" #profileForm = ngForm>
         <div class="col-md-12">
           <!--about us form-->
           <section class="border rounded bg-white py-3 px-5">
-            <legend class="w-auto m-0 px-1"> <i class="fas fa-user"></i> About you</legend>
             <div class="row">
+              <div class="col-md-12">
+                <h2> <i class="fas fa-user"></i> About you</h2>
+              </div>
+            </div>
+            <div class="row mt-4">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Email</label>
@@ -19,7 +23,7 @@
                 <div class="form-group">
                   <label>First Name</label>
                   <input type="text" class="form-control" name="first_name" [(ngModel)]="info.first_name" required placeholder="First Name"  name="first_name" [(ngModel)]="info.first_name">
-                  <div class = "invalid-feedback" *ngIf="!info.first_name">
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.first_name">
                     {{first_name_log}}
                   </div>
                 </div>
@@ -31,7 +35,7 @@
                 <div class="form-group">
                   <label>Last Name</label>
                   <input type="text" class="form-control" name="last_name" [(ngModel)]="info.last_name" required placeholder="Last Name"  name="last_name" [(ngModel)]="info.last_name">
-                  <div class = "invalid-feedback" *ngIf="!info.last_name">
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.last_name">
                     {{last_name_log}}
                   </div>
                 </div>
@@ -40,7 +44,7 @@
                 <div class="form-group">
                   <label>Contact number</label>
                   <input type="tel" class="form-control" required placeholder="Phone number" name="contact_number" [(ngModel)]="info.contact_number">
-                  <div class = "invalid-feedback" *ngIf="!info.contact_number">
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
                     {{contact_name_log}}
                   </div>
                 </div>
@@ -52,7 +56,7 @@
                 <div class="form-group">
                   <label>Stackexchange account URL (optional)</label>
                   <input type="text" #stackaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="stackexchange account (optional)" name="exchange_account" [(ngModel)]="info.exchange_account" >
-                  <div class = "invalid-feedback" *ngIf="stackaccount.errors">
+                  <div class = "invalid-feedback d-inline" *ngIf="stackaccount.errors">
                     Enter url in proper format
                   </div>
                 </div>
@@ -61,7 +65,7 @@
                 <div class="form-group">
                   <label>Github account URL (optional)</label>
                   <input type="text" #gitaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="github_account" [(ngModel)]="info.github_account" placeholder="Github account (optional)">
-                  <div class = "invalid-feedback" *ngIf="gitaccount.errors">
+                  <div class = "invalid-feedback d-inline" *ngIf="gitaccount.errors">
                     Enter url in proper format
                   </div>
                 </div>
@@ -75,23 +79,21 @@
                   <select class="form-control selectpicker" title="Please choose nationality" required name="nationality" [(ngModel)]='info.nationality' required>
                     <option *ngFor='let options of nationality' [value]="options" [attr.selected]="options === info.nationality ? true : null ">{{options}}</option>
                   </select>
-                  <div class = "invalid-feedback" *ngIf="info.nationality">
+                  <div class = "invalid-feedback d-inline" *ngIf="info.nationality">
                     {{nationality_log}}
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class = "row">
               <div class="col-md-6">
-                <div class="form-group" ><br/><br/>
+                <div class="form-group" >
                   <label>Profile picture</label>
                   <input type="file" class="form-control-file" id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
                   <label>
                     <span *ngIf="img_src" >{{img_src}}</span>
                     <span *ngIf="!img_src" >Upload Logo (optional)</span>
                   </label>
-                  <div class = "invalid-feedback" *ngIf="image_log">
+                  <div class = "invalid-feedback d-inline" *ngIf="image_log">
                     {{image_log}}
                   </div>
                 </div>
@@ -101,8 +103,12 @@
           <!--about us form End-->
 
           <section class="border rounded bg-white mt-4 py-3 px-5">
-            <legend class="w-auto m-0 px-1"><i class="fas fa-map-marker-alt"></i> Residence/base location</legend>
-            <div class = "row">
+            <div class="row">
+              <div class="col-md-12">
+                <h2><i class="fas fa-map-marker-alt"></i> Residence/base location</h2>
+              </div>
+            </div>
+            <div class = "row mt-4">
               <div class="col-md-12">
                 <div class="form-group">
                   <p>Where do you currently live, or where are you most frequently based?</p>
@@ -114,7 +120,7 @@
                   <select title="Please choose base country" class="form-control selectpicker" required name="base_country" [(ngModel)]="info.base_country">
                     <option *ngFor='let options of countries'  [value]="options" [attr.selected]="options === info.base_country ? true : null ">{{options}}</option>
                   </select>
-                  <div class = "invalid-feedback" *ngIf="info.base_country">
+                  <div class = "invalid-feedback d-inline" *ngIf="info.base_country">
                     {{base_country_log}}
                   </div>
                 </div>
@@ -123,7 +129,7 @@
                 <div class="form-group">
                   <label>City</label>
                   <input type="text" class="form-control" required placeholder="" name="city" #city required [(ngModel)]="info.city" >
-                  <div class = "invalid-feedback" *ngIf="!info.city">
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.city">
                     {{city_log}}
                   </div>
                 </div>
@@ -133,46 +139,57 @@
 
           <!--job information form start here-->
           <section class="border rounded bg-white mt-4 py-3 px-5">
-            <legend class="w-auto m-0 px-1"><i class="fas fa-briefcase"></i> Tell us more about your dream job</legend>
             <div class="row">
+              <div class="col-md-12">
+                <h2><i class="fas fa-briefcase"></i>Tell us more about your dream job</h2>
+              </div>
+            </div>
+            <div class="row mt-4">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Where are you available to work?</label>
-                </div>
-              </div>
-              <div class="col-md-3" *ngFor="let option of options">
-                <span> <!--<strong>{{country.value}}</strong>--></span>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
-                    {{option.name}}
-                  </label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}" [checked]="option.checked" (change)="updateCheckedOptions($event)" />
+                        <label class="form-check-label">
+                          {{option.name}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                   <input type="text" class="form-control" [(ngModel)]='selectedcountry' name="country" style="display: none;">
+                  <div class = "invalid-feedback d-inline" *ngIf="selectedcountry.length<=0">
+                    {{country_log}}
+                  </div>
                 </div>
               </div>
-              <div class = "invalid-feedback" *ngIf="selectedcountry.length<=0">
-                {{country_log}}
-              </div>
+
+
             </div>
 
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>What role are you looking for?</label>
-                </div>
-              </div>
-              <div class="col-md-3" *ngFor="let position_option of dropdown_options">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="options" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
-                    {{position_option.name}}
-                  </label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-3 mb-3" *ngFor="let position_option of dropdown_options">
+                        <input class="form-check-input" type="checkbox" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" id="{{position_option}}">
+                        <label class="form-check-label" for="{{position_option}}">
+                          {{position_option.name}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                   <input type="text" class="form-control" [(ngModel)]='jobselected' name="roles" style="display: none;">
+                  <div class = "invalid-feedback d-inline" *ngIf="jobselected.length<=0">
+                    {{roles_log}}
+                  </div>
                 </div>
               </div>
-              <div class = "invalid-feedback" *ngIf="jobselected.length<=0">
-                {{roles_log}}
-              </div>
+
+
             </div>
 
             <div class="row">
@@ -180,7 +197,7 @@
                 <div class="form-group">
                   <label>Expected annual salary</label>
                   <input type="text" class="form-control" #expect_salary="ngModel" pattern="^[0-9]*$" required name="expected_salary" placeholder="2000" [(ngModel)]="expected_salaryyy">
-                  <div class = "invalid-feedback">
+                  <div class = "invalid-feedback d-inline">
                     <span *ngIf="!expected_salaryyy; else expected_validation">{{salary_log}}</span>
                     <span #expected_validation  *ngIf="expect_salary.errors && expected_salaryyy">  Yearly expected base salary should be a number. </span>
                   </div>
@@ -192,7 +209,7 @@
                   <select [(ngModel)]="base_currency" class="form-control selectpicker" title="Please choose currency" required name="base_currency" >
                     <option *ngFor='let baseCurrency of currency'  [value]="base_currency" [attr.selected]="base_currency === baseCurrency">{{baseCurrency}}</option>
                   </select>
-                  <div class = "invalid-feedback" *ngIf="base_currency">
+                  <div class = "invalid-feedback d-inline" *ngIf="base_currency">
                     {{currency_log}}
                   </div>
                 </div>
@@ -216,7 +233,7 @@
                     <option value="-1" selected>Please choose currency</option>
                     <option *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
                   </select>
-                  <div class = "invalid-feedback" *ngIf="current_currency === -1 ">
+                  <div class = "invalid-feedback d-inline" *ngIf="current_currency === -1 ">
                     {{current_currency_logg}}
                   </div>
                 </div>
@@ -227,33 +244,39 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Which area are you interested in?</label>
-                </div>
-              </div>
-              <div class="col-md-3" *ngFor='let position_option of area_interested'>
-                <div class="checkbox">
-                  <label >
-                    <input type="checkbox" name="options" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
-                    {{position_option.name}}
-                  </label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-3 mb-3" *ngFor='let position_option of area_interested'>
+                        <input type="checkbox" class="form-check-input"  [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
+                        <label class="form-check-label" >
+                          {{position_option.name}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                   <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_area" style="display: none;">
+                  <div class = "invalid-feedback d-inline" *ngIf="selectedValue.length <=0">
+                    {{interest_log}}
+                  </div>
                 </div>
               </div>
-              <div class = "invalid-feedback" *ngIf="selectedValue.length <=0">
-                {{interest_log}}
-              </div>
+
+
             </div>
 
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Employment availability</label>
+                  <select [(ngModel)]="availability_day" class="form-control selectpicker" required name="availability_day" >
+                    <option *ngFor='let start_month of month' [value]="start_month" [attr.selected]="start_month === availability_day">{{start_month}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline" *ngIf="!availability_day">
+                    {{avail_log}}
+                  </div>
                 </div>
-                <select [(ngModel)]="availability_day" class="form-control selectpicker" required name="availability_day" >
-                  <option *ngFor='let start_month of month' [value]="start_month" [attr.selected]="start_month === availability_day">{{start_month}}</option>
-                </select>
-                <div class = "invalid-feedback" *ngIf="!availability_day">
-                  {{avail_log}}
-                </div>
+
+
               </div>
             </div>
           </section>
@@ -261,19 +284,23 @@
 
           <!--resume job form start here-->
           <section class="border rounded bg-white mt-4 py-3 px-5">
-            <legend class="w-auto m-0 px-1"><i class="fab fa-bitcoin"></i> Blockchain</legend>
             <div class="row">
+              <div class="col-md-6">
+                <h2><i class="fab fa-bitcoin"></i> Blockchain experience</h2>
+              </div>
+            </div>
+            <div class="row mt-4">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Why do you want to work on blockchain?</label>
-                </div>
-                <ul>
-                  <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
-                  <li> This is the first field that a company sees! </li>
-                </ul>
-                <input type="text" class="form-control" required placeholder="i want to work on blockchain because ......."  #whywork name="why_work" [(ngModel)]="why_work">
-                <div class = "invalid-feedback" *ngIf="!why_work">
-                  {{why_work_log}}
+                  <ul>
+                    <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
+                    <li> This is the first field that a company sees! </li>
+                  </ul>
+                  <input type="text" class="form-control" required placeholder="i want to work on blockchain because ......."  #whywork name="why_work" [(ngModel)]="why_work">
+                  <div class = "invalid-feedback d-inline" *ngIf="!why_work">
+                    {{why_work_log}}
+                  </div>
                 </div>
               </div>
             </div>
@@ -283,17 +310,21 @@
                 <h4>Blockchain technologies</h4>
                 <div class="form-group">
                   <label>Platforms commercially worked with</label>
-                </div>
-              </div>
-              <div class="col-md-3" *ngFor="let option of commercially">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"              required (change)="oncommerciallyOptions(option)"   />
-                    {{option.name}}
-                  </label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-3 mb-3" *ngFor="let option of commercially">
+                        <input type="checkbox" class="form-check-input"  value="{{option.value}}"  [checked]="option.checked"              required (change)="oncommerciallyOptions(option)"   />
+                        <label class="form-check-label">
+                          {{option.name}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                   <input type="text" class="form-control" [(ngModel)]='commercially_worked' name="commercially_worked" style="display: none;">
+
                 </div>
               </div>
+
             </div>
             <div class="row" *ngIf="commercially_worked?.length > 0">
               <div class="col-md-12">
@@ -311,7 +342,7 @@
                   <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
                 </div>
               </div>
-              <div class = "invalid-feedback" *ngIf="commercially_worked.length !== commercial_expYear.length">
+              <div class = "invalid-feedback d-inline ml-3" *ngIf="commercially_worked.length !== commercial_expYear.length">
                 {{commercial_log}}
               </div>
             </div>
@@ -320,16 +351,18 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Platforms designed/developed smart contracts on </label>
-                </div>
-              </div>
-              <div class="col-md-3" *ngFor="let option of designed">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
-                           (change)="onPlatformOptions(option)" required  />
-                    {{option.value}}
-                  </label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-3 mb-3" *ngFor="let option of designed">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onPlatformOptions(option)" required  />
+                        <label class="form-check-label">
+                          {{option.value}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                   <input type="text" class="form-control" [(ngModel)]='platforms_designed' name="platforms_designed" style="display: none;">
+
                 </div>
               </div>
             </div>
@@ -349,7 +382,7 @@
                   <input type="text" class="form-control" name="platforms" [(ngModel)]='platforms' style="display: none;">
                 </div>
               </div>
-              <div class = "invalid-feedback" *ngIf="platforms_designed.length !== platforms.length">
+              <div class = "invalid-feedback d-inline ml-3" *ngIf="platforms_designed.length !== platforms.length">
                 {{platform_log}}
               </div>
             </div>
@@ -358,16 +391,18 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Platforms experimented with </label>
-                </div>
-              </div>
-              <div class="col-md-4" *ngFor="let option of experimented">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
-                           (change)="onExpOptions(option)" required  />
-                    {{option.value}}
-                  </label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onExpOptions(option)" required  />
+                        <label class="form-check-label">
+                          {{option.value}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                   <input type="text" class="form-control" [(ngModel)]='experimented_platform' name="experimented_platform" style="display: none;">
+
                 </div>
               </div>
             </div>
@@ -378,15 +413,18 @@
                 <h4>Blockchain skills</h4>
                 <div class="form-group">
                   <label>Commercial experience in these areas </label>
-                </div>
-              </div>
-              <div class="col-md-3" *ngFor="let option of otherSkills">
-                <div class="checkbox" >
-                  <label class = "check-label lable">
-                    <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
-                    {{option.name}}
-                  </label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-4 mb-3" *ngFor="let option of otherSkills">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
+                        <label class="form-check-label">
+                          {{option.name}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                   <input type="text" class="form-control" [(ngModel)]='commercialSkills' name="commercial_skills_name" style="display: none;">
+
                 </div>
               </div>
             </div>
@@ -406,7 +444,7 @@
                   <input type="text" class="form-control" name="commercial_skills" [(ngModel)]='commercialSkillsExperienceYear' style="display: none;">
                 </div>
               </div>
-              <div class = "invalid-feedback" *ngIf="commercialSkills.length !== commercialSkillsExperienceYear.length">
+              <div class = "invalid-feedback d-inline ml-3" *ngIf="commercialSkills.length !== commercialSkillsExperienceYear.length">
                 {{commercial_skill_log}}
               </div>
             </div>
@@ -415,15 +453,18 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Formal (university) education in these areas </label>
-                </div>
-              </div>
-              <div class="col-md-4" *ngFor="let option of otherFormalSkills">
-                <div class="checkbox" >
-                  <label>
-                    <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"/>
-                    {{option.name}}
-                  </label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-4 mb-3" *ngFor="let option of otherFormalSkills">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"/>
+                        <label class="form-check-label">
+                          {{option.name}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                   <input type="text" class="form-control" [(ngModel)]='formal_skills_exp' name="formal_skills_exp" style="display: none;">
+
                 </div>
               </div>
             </div>
@@ -443,7 +484,7 @@
                   <input type="text" class="form-control" name="formal_skills" [(ngModel)]='formal_skills' style="display: none;">
                 </div>
               </div>
-              <div class = "invalid-feedback" *ngIf="formal_skills_exp.length !== formal_skills.length">
+              <div class = "invalid-feedback d-inline ml-3" *ngIf="formal_skills_exp.length !== formal_skills.length">
                 {{formal_skills_log}}
               </div>
             </div>
@@ -452,26 +493,33 @@
 
           <!--experience form start here-->
           <section class="border rounded bg-white mt-4 py-3 px-5">
-            <legend class="w-auto m-0 px-1"><i class="fas fa-briefcase"></i> Experience</legend>
             <div class="row">
+              <div class="col-md-12">
+                <h2><i class="fas fa-briefcase"></i> Experience</h2>
+              </div>
+            </div>
+            <div class="row mt-4">
               <div class="col-md-12">
                 <div class = "form-group">
                   <label>Languages</label>
-                </div>
-              </div>
-              <div class="col-md-4" *ngFor="let option of language_opt">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
-                           (change)="onLangExpOptions(option)" required  />
-                    {{option.name}}
-                  </label>
+                  <div class="checkbox">
+                    <div class="row m-0">
+                      <div class="form-check col-md-3 mb-3" *ngFor="let option of language_opt">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onLangExpOptions(option)" required  />
+                        <label class="form-check-label">
+                          {{option.name}}
+                        </label>
+                      </div>
+                    </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="LangexpYear.length !==  language.length ">
+                      {{lang_log}}
+                    </div>
+                  </div>
                   <input type="text" class="form-control" [(ngModel)]='language' name="language" style="display: none;">
+
                 </div>
               </div>
-              <div class = "invalid-feedback" *ngIf="language.length <=0 ">
-                {{lang_log}}
-              </div>
+
             </div>
             <div class="row" *ngIf="language?.length > 0">
               <div class="col-md-12">
@@ -489,7 +537,7 @@
                   <input type="text" class="form-control" name="language_experience_year" [(ngModel)]='LangexpYear' style="display: none;">
                 </div>
               </div>
-              <div class = "invalid-feedback" *ngIf="LangexpYear.length !== language.length ">
+              <div class = "invalid-feedback d-inline ml-3" *ngIf="LangexpYear.length !== language.length ">
                 {{exp_lang_log}}
               </div>
             </div>
@@ -497,14 +545,15 @@
           <!--experience form end here-->
 
           <section class="border rounded bg-white mt-4 py-3 px-5">
-            <legend class="w-auto m-0 px-1"> <i class="fas fa-wrench"></i> Work History</legend>
-            <div class = "row">
+            <div class="row">
               <div class="col-md-12">
-                <h4></h4>
+                <h2><i class="fas fa-wrench"></i> Work history</h2>
                 <small id="emailHelp12" class="form-text text-muted">Your profile will be hidden from all companies you have listed in your work history.</small>
+
               </div>
             </div>
-            <div class = "work-form" [formGroup]="ExperienceForm">
+
+            <div class = "work-form mt-4" [formGroup]="ExperienceForm">
               <div formArrayName="ExpItems">
                 <div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
                   <div class="row">
@@ -512,7 +561,7 @@
                       <div class="form-group">
                         <label><p>Company</p></label>
                         <input type="text" id="" placeholder="" formControlName="companyname" class="form-control" #company_field name="company">
-                        <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].companyname">
+                        <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].companyname">
                           {{company_log}}
                         </div>
                       </div>
@@ -521,7 +570,7 @@
                       <div class="form-group">
                         <label><p>Position</p></label>
                         <input type="text" formControlName="positionname" class="form-control" #position_field name="position" required  >
-                        <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].positionname">
+                        <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].positionname">
                           {{position_log}}
                         </div>
                       </div>
@@ -530,7 +579,7 @@
                       <div class="form-group">
                         <label><p>Location</p></label>
                         <input type="text" formControlName="locationname" class="form-control" #location_field name="location" required  >
-                        <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].locationname">
+                        <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].locationname">
                           {{location_log}}
                         </div>
                       </div>
@@ -543,7 +592,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <select formControlName="start_date" class="selectpicker form-control xs_input" id="month" required name="roles" (change)="work_start_data($event)">
+                            <select title="" formControlName="start_date" class="selectpicker form-control xs_input" id="month" required name="roles" (change)="work_start_data($event)">
                               <option  *ngFor='let start_month of calen_month' [value]="start_month" [attr.selected]="ExperienceForm.value.ExpItems[i].start_date === start_month ? true : null">{{start_month}}</option>
                               <br/>
                             </select>
@@ -551,13 +600,13 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <select formControlName="startyear" class="selectpicker form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
+                            <select title="" formControlName="startyear" class="selectpicker form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
                               <option  *ngFor='let start_year of year'  [value]="start_year" [attr.selected]="ExperienceForm.value.ExpItems[i].startyear === start_year ? true : null">{{start_year}}</option>
                               <br/>
                             </select>
                           </div>
                         </div>
-                        <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].start_date || !this.ExperienceForm.value.ExpItems[i].startyear">
+                        <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].start_date || !this.ExperienceForm.value.ExpItems[i].startyear">
                           {{start_date_log}}
                         </div>
                       </div>
@@ -570,7 +619,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <select formControlName="end_date" class="selectpicker form-control xs_input"  required name="roles"  required=""  >
+                            <select title = "" formControlName="end_date" class="selectpicker form-control xs_input"  required name="roles"  required=""  >
                               <option  *ngFor='let end_month of calen_month'  [value]="end_month" [attr.selected]="ExperienceForm.value.ExpItems[i].end_date === end_month ? true : null">{{end_month}}</option>
                               <br/>
                             </select>
@@ -578,13 +627,13 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <select formControlName="endyear" class="selectpicker form-control xs_input" required name="roles" required=""  >
+                            <select title="" formControlName="endyear" class="selectpicker form-control xs_input" required name="roles" required=""  >
                               <option  *ngFor='let end_year of year'  [value]="end_year" [attr.selected]="ExperienceForm.value.ExpItems[i].endyear === end_year ? true : null" >{{end_year}}</option>
                               <br/>
                             </select>
                           </div>
                         </div>
-                        <div class = "invalid-feedback" *ngIf="!this.ExperienceForm.value.ExpItems[i].end_date || !this.ExperienceForm.value.ExpItems[i].endyear && this.ExperienceForm.value.ExpItems[i].companyname==false">
+                        <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].end_date || !this.ExperienceForm.value.ExpItems[i].endyear && this.ExperienceForm.value.ExpItems[i].companyname==false">
                           {{end_date_log}}
                         </div>
                       </div>
@@ -597,7 +646,7 @@
                             <input type="checkbox"  formControlName="currentwork"
                                    name="current.name" [checked]="current_work_check[i] "
                                    value="current.value"
-                                   required  />
+                                   required (change)="currently_work()" />
                             <span>
                               <div></div>
                             </span>
@@ -618,7 +667,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                   <div class = "form-group">
                     <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>
                   </div>
@@ -628,8 +677,12 @@
           </section>
 
           <section class="border rounded bg-white mt-4 py-3 px-5 mb-5">
-            <legend class="w-auto m-0 px-1"><i class="fas fa-university"></i> Education</legend>
             <div class="row">
+              <div class="col-md-6">
+                <h2><i class="fas fa-university"></i> Education</h2>
+              </div>
+            </div>
+            <div class="row mt-4">
               <div class="col-md-12">
                 <h4></h4>
               </div>
@@ -642,7 +695,7 @@
                       <div class="form-group">
                         <label>University</label>
                         <input formControlName="uniname" class="form-control" type="text" #uni_field name="uni" required>
-                        <div class = "invalid-feedback" *ngIf="!this.EducationForm.value.itemRows[i].uniname">
+                        <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].uniname">
                           {{uni_name_log}}
                         </div>
                       </div>
@@ -651,7 +704,7 @@
                       <div class="form-group">
                         <label>Degree</label>
                         <input formControlName="degreename" class="form-control" type="text" #degree_field name="uni" required>
-                        <div class = "invalid-feedback" *ngIf="!this.EducationForm.value.itemRows[i].degreename">
+                        <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].degreename">
                           {{degree_log}}
                         </div>
                       </div>
@@ -660,7 +713,7 @@
                       <div class="form-group">
                         <label>Field of study</label>
                         <input formControlName="fieldname" class="form-control" type="text" #study_field name="study" required>
-                        <div class = "invalid-feedback" *ngIf="!this.EducationForm.value.itemRows[i].fieldname">
+                        <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].fieldname">
                           {{field_log}}
                         </div>
                       </div>
@@ -672,7 +725,7 @@
                           <option *ngFor='let graduation_year of year'  [value]="graduation_year" [attr.selected]="EducationForm.value.itemRows[i].eduyear === eduyear ? true : null">{{graduation_year}}</option>
                           <br/>
                         </select>
-                        <div class = "invalid-feedback" *ngIf="!this.EducationForm.value.itemRows[i].eduyear">
+                        <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].eduyear">
                           {{eduYear_log}}
                         </div>
                       </div>
@@ -684,7 +737,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 p-0">
                   <div class = "form-group">
                     <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>
                   </div>
@@ -701,7 +754,7 @@
                     <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
                   </ul>
                   <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Quick intro description box. Eg Full stack developer with 2 years experience in NodeJS, Javascript and React with 6 months Ethereum development experience at application level etc.." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
-                  <div class = "invalid-feedback" *ngIf="!Intro">
+                  <div class = "invalid-feedback d-inline" *ngIf="!Intro">
                     {{intro_log}}
                   </div>
                 </div>
@@ -711,10 +764,12 @@
 
           <div class = "form-group text-right">
             <button type="submit" class = "btn btn-secondary" [disabled] = "(current_salary.errors && salary) || (expect_salary.errors && expected_salaryyy)" >Save Profile</button>
+            <br/>
+            <div class = "invalid-feedback d-inline mt-2" *ngIf="error_msg">
+              {{error_msg}}
+            </div>
           </div>
-          <div class = "invalid-feedback" *ngIf="error_msg">
-            {{error_msg}}
-          </div>
+
         </div>
       </form>
     </div>
