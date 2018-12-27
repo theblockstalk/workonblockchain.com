@@ -3,7 +3,6 @@ const chaiHttp = require('chai-http');
 const server = require('../../../../../server');
 const mongo = require('../../../../helpers/mongo');
 const Users = require('../../../../../model/users');
-const candidateProfile = require('../../../../../model/candidate_profile');
 const Pages = require('../../../../../model/pages_content');
 const docGenerator = require('../../../../helpers/docGenerator');
 const candidateHelper = require('../candidateHelpers');
@@ -32,16 +31,18 @@ describe('add terms of candidate', function () {
             const info = docGenerator.cmsContentForTCCandidate();
             const cmsRes = await adminHelper.addTermsContent(info , companyDoc.jwt_token);
             const cmsDoc = await Pages.findOne({page_name: info.page_name}).lean();
-
+            console.log(cmsDoc);
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
 
-            const userDoc = await Users.findOne({email: candidate.email}).lean();
+            let userDoc = await Users.findOne({email: candidate.email}).lean();
             const candTerms = docGenerator.termsAndConditions();
             const res = await candidateHelper.candidateTerms(cmsDoc._id,candTerms,userDoc.jwt_token);
-            const newCandidateInfo = await candidateProfile.findOne({_creator: userDoc._id}).lean();
-            newCandidateInfo.marketing_emails.should.equal(candTerms.marketing);
-            const cmsID = newCandidateInfo.terms_id.toString();
+            userDoc = await Users.findOne({email: candidate.email}).lean();
+            userDoc.marketing_emails.should.equal(candTerms.marketing);
+            console.log(userDoc);
+            const cmsID = userDoc.candidate.terms_id.toString();
+            console.log(cmsID);
             cmsID.should.equal(cmsDoc._id.toString());
         })
     })

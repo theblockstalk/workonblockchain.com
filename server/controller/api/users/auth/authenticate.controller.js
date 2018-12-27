@@ -13,7 +13,7 @@ module.exports = async function (req, res) {
       if(userDoc) {
           let jwtUserToken = jwtToken.createJwtToken(userDoc);
           await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
-          const candidateDoc = await  CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
+          const candidateDoc = await  User.findOne({ _creator:  userDoc._id }).lean();
           res.send({
               _id:candidateDoc._id,
               _creator: userDoc._id,

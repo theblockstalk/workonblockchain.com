@@ -1,4 +1,3 @@
-const CandidateProfile = require('../../../../../model/candidate_profile');
 const User = require('../../../../../model/users');
 const referral = require('../../../../../model/referrals');
 const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
@@ -13,23 +12,21 @@ module.exports = async function (req, res) {
 
     const myUserDoc = req.auth.user;
 
-    const candidateDoc = await CandidateProfile.findOne({ _creator: myUserDoc._id }).lean();
+    const candidateUserDoc = await User.findOne({ _id: myUserDoc._id }).lean();
 
-    if(candidateDoc) {
+    if(candidateUserDoc) {
         const queryBody = req.body;
         let candidateUpdate = {}
         if (queryBody.first_name) candidateUpdate.first_name = queryBody.first_name;
         if (queryBody.last_name) candidateUpdate.last_name = queryBody.last_name;
-        if (queryBody.github_account) candidateUpdate.github_account = queryBody.github_account;
-        if (queryBody.exchange_account) candidateUpdate.stackexchange_account = queryBody.exchange_account;
+        if (queryBody.github_account) candidateUpdate['candidate.github_account'] = queryBody.github_account;
+        if (queryBody.exchange_account) candidateUpdate['candidate.stackexchange_account'] = queryBody.exchange_account;
         if (queryBody.contact_number) candidateUpdate.contact_number = queryBody.contact_number;
         if (queryBody.nationality) candidateUpdate.nationality = queryBody.nationality;
+        if (queryBody.city) candidateUpdate['candidate.base_city'] = queryBody.city;
+        if (queryBody.country) candidateUpdate['candidate.base_country'] = queryBody.country;
 
-        await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
-
-        if (queryBody.country && queryBody.city) {
-            await User.update({ _id: myUserDoc._id },{ $set: {'candidate.base_city' : queryBody.city , 'candidate.base_country' : queryBody.country } });
-        }
+        await User.update({ _id: candidateUserDoc._id },{ $set: candidateUpdate });
 
         const refDoc = await referral.findOne({
             email : myUserDoc.referred_email
@@ -38,12 +35,12 @@ module.exports = async function (req, res) {
             const userDoc = await User.findOne({email : refDoc.email}).lean();
 
             if(userDoc && userDoc.type){
-                const candidateDoc = await CandidateProfile.findOne({_creator : userDoc._id}).lean();
+                const candidateUserDoc = await User.findOne({_id : userDoc._id}).lean();
                 let data;
-                if(candidateDoc && candidateDoc.first_name)
+                if(candidateUserDoc && candidateUserDoc.first_name)
                 {
                     data = {
-                        fname: candidateDoc.first_name,
+                        fname: candidateUserDoc.first_name,
                         email : refDoc.email,
                         referred_fname: queryBody.first_name,
                         referred_lname: queryBody.last_name
@@ -86,8 +83,6 @@ module.exports = async function (req, res) {
                 };
             await User.update({ _id: myUserDoc._id },{ $set: set });
             verify_send_email(myUserDoc.email, verifyEmailToken);
-
-
         }
 
         res.send({

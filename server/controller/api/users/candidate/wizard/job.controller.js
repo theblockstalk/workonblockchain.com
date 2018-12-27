@@ -1,25 +1,24 @@
-const CandidateProfile = require('../../../../../model/candidate_profile');
+const User = require('../../../../../model/users');
 const errors = require('../../../../services/errors');
 
 module.exports = async function (req,res)
 {
 	let userId = req.auth.user._id;
-    const candidateDoc = await CandidateProfile.findOne({ _creator: userId}).lean();
+    const candidateUserDoc = await User.findOne({ _id: userId}).lean();
 
-    if(candidateDoc) {
+    if(candidateUserDoc) {
         const queryBody = req.body;
-        console.log(queryBody);
         let candidateUpdate = {}
-        if (queryBody.country) candidateUpdate.locations = queryBody.country;
-        if (queryBody.roles) candidateUpdate.roles = queryBody.roles;
-        if (queryBody.interest_area) candidateUpdate.interest_area = queryBody.interest_area;
-        if (queryBody.base_currency) candidateUpdate.expected_salary_currency = queryBody.base_currency;
-        if (queryBody.expected_salary) candidateUpdate.expected_salary = queryBody.expected_salary;
-        if (queryBody.availability_day) candidateUpdate.availability_day = queryBody.availability_day;
-        if (queryBody.current_salary) candidateUpdate.current_salary = queryBody.current_salary;
-        if (queryBody.current_currency) candidateUpdate.current_currency = queryBody.current_currency;
+        if (queryBody.country) candidateUpdate['candidate.locations'] = queryBody.country;
+        if (queryBody.roles) candidateUpdate['candidate.roles'] = queryBody.roles;
+        if (queryBody.interest_area) candidateUpdate['candidate.interest_areas'] = queryBody.interest_area;
+        if (queryBody.base_currency) candidateUpdate['candidate.expected_salary_currency'] = queryBody.base_currency;
+        if (queryBody.expected_salary) candidateUpdate['candidate.expected_salary'] = queryBody.expected_salary;
+        if (queryBody.availability_day) candidateUpdate['candidate.availability_day'] = queryBody.availability_day;
+        if (queryBody.current_salary) candidateUpdate['candidate.current_salary'] = queryBody.current_salary;
+        if (queryBody.current_currency) candidateUpdate['candidate.current_currency'] = queryBody.current_currency;
 
-        await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
+        await User.update({ _id: userId },{ $set: candidateUpdate });
         res.send({
             success : true
         })

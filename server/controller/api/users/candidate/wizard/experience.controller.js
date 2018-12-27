@@ -1,20 +1,17 @@
-const CandidateProfile = require('../../../../../model/candidate_profile');
 const User = require('../../../../../model/users');
 const errors = require('../../../../services/errors');
 
 module.exports = async function (req,res) {
 	let userId = req.auth.user._id;
-    const candidateDoc = await CandidateProfile.findOne({ _creator: userId}).lean();
+    const candidateUserDoc = await User.findOne({ _id: userId}).lean();
 
-    if(candidateDoc) {
+    if(candidateUserDoc) {
         const queryBody = req.body;
         let candidateUpdate = {}
-        if (queryBody.language_exp) candidateUpdate.programming_languages = queryBody.language_exp;
-        if (queryBody.education) candidateUpdate.education_history = queryBody.education;
-        if (queryBody.work) candidateUpdate.work_history = queryBody.work;
-        if (queryBody.detail.intro) candidateUpdate.description = queryBody.detail.intro;
-
-        await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
+        if (queryBody.language_exp) candidateUpdate['candidate.programming_languages'] = queryBody.language_exp;
+        if (queryBody.education) candidateUpdate['candidate.education_history'] = queryBody.education;
+        if (queryBody.work) candidateUpdate['candidate.work_history'] = queryBody.work;
+        if (queryBody.detail.intro) candidateUpdate['candidate.description'] = queryBody.detail.intro;
 
         await User.update({ _id: userId },
             {
@@ -25,7 +22,8 @@ module.exports = async function (req,res) {
                         timestamp: new Date()}],
                         $position: 0
                     }
-                }
+                },
+                $set: candidateUpdate
             }
         );
         res.send({

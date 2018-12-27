@@ -1,4 +1,4 @@
-const CandidateProfile = require('../../../../../model/candidate_profile');
+const User = require('../../../../../model/users');
 const Pages = require('../../../../../model/pages_content');
 const errors = require('../../../../services/errors');
 
@@ -7,18 +7,17 @@ const errors = require('../../../../services/errors');
 module.exports = async function (req,res) {
 
 	let userId = req.auth.user._id;
-	let candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
-	if(candidateDoc) {
+	let candidateUserDoc = await User.findOne({ _id: userId }).lean();
+	if(candidateUserDoc) {
         const queryBody = req.body;
         let candidateUpdate = {}
-
         if(queryBody.termsID)
         {
             const pagesDoc =  await Pages.findOne({_id: queryBody.termsID}).lean();
             if(pagesDoc) {
-                if(pagesDoc._id) candidateUpdate.terms_id = pagesDoc._id;
+                if(pagesDoc._id) candidateUpdate["candidate.terms_id"] = pagesDoc._id;
                 if(queryBody.marketing) candidateUpdate.marketing_emails = queryBody.marketing;
-                await CandidateProfile.update({ _creator: userId },{ $set: candidateUpdate });
+                await User.update({ _id: userId },{ $set: candidateUpdate });
                 res.send({
                     success : true
                 })
@@ -31,7 +30,7 @@ module.exports = async function (req,res) {
         else {
             if(queryBody.marketing) {
                 candidateUpdate.marketing_emails = queryBody.marketing;
-                await CandidateProfile.update({ _creator: userId },{ $set: candidateUpdate });
+                await User.update({ _id: userId },{ $set: candidateUpdate });
             }
 
             res.send({

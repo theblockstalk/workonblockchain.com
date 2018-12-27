@@ -1,4 +1,3 @@
-const CandidateProfile = require('../../../../../model/candidate_profile');
 const User = require('../../../../../model/users');
 const errors = require('../../../../services/errors');
 
@@ -8,26 +7,20 @@ module.exports = async function (req, res) {
 
     const myUserDoc = req.auth.user;
 
-    const candidateDoc = await CandidateProfile.findOne({ _creator: myUserDoc._id }).lean();
+    const candidateUserDoc = await User.findOne({ _id: myUserDoc._id }).lean();
 
-    if(candidateDoc) {
+    if(candidateUserDoc) {
         const userParam = req.body;
 
         let candidateUpdate = {}
-        if (userParam.why_work) candidateUpdate.why_work = userParam.why_work;
-        if (userParam.commercial_experience_year) candidateUpdate.commercial_platform = userParam.commercial_experience_year;
-        if (userParam.experimented_platform) candidateUpdate.experimented_platform = userParam.experimented_platform;
-        if (userParam.platforms) candidateUpdate.platforms = userParam.platforms;
+        if (userParam.why_work) candidateUpdate["candidate.why_work"] = userParam.why_work;
+        if (userParam.commercial_experience_year) candidateUpdate["candidate.blockchain.commercial_platforms"] = userParam.commercial_experience_year;
+        if (userParam.experimented_platform) candidateUpdate["candidate.blockchain.experimented_platforms"] = userParam.experimented_platform;
+        if (userParam.platforms) candidateUpdate["candidate.blockchain.smart_contract_platforms"] = userParam.platforms;
+        if(userParam.commercial_skills) candidateUpdate["candidate.blockchain.commercial_skills"] = userParam.commercial_skills;
+        if(userParam.formal_skills) candidateUpdate["candidate.blockchain.formal_skills"] = userParam.formal_skills;
 
-
-        await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
-
-        let updateCandidateUser = {}
-
-        if(userParam.commercial_skills) updateCandidateUser["candidate.blockchain.commercial_skills"] = userParam.commercial_skills;
-        if(userParam.formal_skills) updateCandidateUser["candidate.blockchain.formal_skills"] = userParam.formal_skills;
-
-        await User.update({ _id: myUserDoc._id },{ $set: updateCandidateUser });
+        await User.update({ _id: myUserDoc._id },{ $set: candidateUpdate });
 
         res.send({
             success: true

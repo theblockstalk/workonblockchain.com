@@ -251,12 +251,12 @@ module.exports.resume = function resume(){
         platforms:[
             {
                 _id: '5bbc37432997bf00408501b7',
-                platform_name: 'Bitcoin',
+                name: 'Bitcoin',
                 exp_year: '0-1'
             },
             {
                 _id: '5bbc37432997bf00408501b6',
-                platform_name: 'Hyperledger Sawtooth',
+                name: 'Hyperledger Sawtooth',
                 exp_year: '1-2'
             }
         ],
