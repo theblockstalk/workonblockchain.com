@@ -1,4 +1,4 @@
-const CandidateProfile = require('../../../../../model/candidate_profile');
+const User = require('../../../../../model/users');
 const filterReturnData = require('../../filterReturnData');
 const errors = require('../../../../services/errors');
 
@@ -7,7 +7,7 @@ module.exports = async  function (req, res) {
     let userId = req.auth.user._id;
     let queryBody = req.body;
 
-    const candidateDoc = await CandidateProfile.find({_creator : queryBody._id}).populate('_creator').lean();
+    const candidateDoc = await User.find({_id : queryBody._id}).lean();
     if(candidateDoc && candidateDoc.length > 0) {
         const filterData = await filterReturnData.candidateAsCompany(candidateDoc[0],userId);
         res.send(filterData);

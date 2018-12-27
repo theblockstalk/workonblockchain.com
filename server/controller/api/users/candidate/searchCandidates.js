@@ -1,4 +1,3 @@
-const CandidateProfile = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
 const Chat = require('../../../../model/chat');
 const logger = require('../../../services/logger');
@@ -7,67 +6,6 @@ const errors = require('../../../services/errors');
 
 
 const salaryFactor = 1.1;
-
-/*
-inputSchema = {
-    filers: {
-        is_verify: {
-            type: Number,
-            enum: [0, 1],
-        },
-        status: {
-            type: String,
-            enum: enumerations.candidateStatus
-        },
-        disable_account: Boolean,
-        msg_tags: {
-            type: String,
-            enum: enumerations.chatMsgTypes
-        },
-        onlyAfterDate: Date
-    },
-    search: {
-        name: String,
-        word: String,
-        locations: [{
-            type: String,
-            enum: enumerations.workLocations
-        }],
-        positions: [{
-            type: String,
-            enum: enumerations.workRoles
-        }],
-        blockchains: [{
-            type: String,
-            enum: enumerations.blockchainPlatforms
-        }],
-        skills: [{
-            type: String,
-            enum: enumerations.programmingLanguages
-        }],
-        salary: {
-            type: {
-                current_currency: {
-                    type: String,
-                    enum: enumerations.currencies
-                },
-                current_salary: Number
-            }
-        },
-        availability_day: {
-            type: String,
-            enum: enumerations.workAvailability
-        }
-    }
-};
-
-outputSchema = {
-    count: Number
-    candidates: [
-        type: candidateDoc
-    ]
-};
-*/
 
 module.exports.candidateSearch = async function candidateSearch(filters, search) {
     logger.debug("Doing new candidate search", {
@@ -105,7 +43,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     userDocIds = await User.find(userQuery, {_id: 1}).lean();
 
     if(userDocIds && userDocIds.length > 0) {
-        candidateQuery.push({ "_creator": {$in: userDocIds}});
+        candidateQuery.push({ "_id": {$in: userDocIds}});
     } else {
         errors.throwError("No users matched the search", 404);
     }
@@ -117,26 +55,26 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             candidateQuery.push(nameSearch);
         }
         if(search.word) {
-            const wordSearch = { $or: [{ why_work: {'$regex' : search.word, $options: 'i'}},
+            const wordSearch = { $or: [{ "candidate.why_work": {'$regex' : search.word, $options: 'i'}},
                 {description : {'$regex' : search.word, $options: 'i'}}] };
             candidateQuery.push(wordSearch);
         }
         if (search.locations && search.locations.length > 0 ) {
-            const locationFilter = {"locations": {$in: search.locations}};
+            const locationFilter = {"candidate.locations": {$in: search.locations}};
             candidateQuery.push(locationFilter);
         }
 
         if (search.positions && search.positions.length > 0  ) {
-            const rolesFilter = {"roles": {$in: search.positions}};
+            const rolesFilter = {"candidate.roles": {$in: search.positions}};
             candidateQuery.push(rolesFilter);
         }
 
         if (search.salary && search.salary.current_currency && search.salary.current_salary) {
             const curr = search.salary.current_currency;
             const salary = search.salary.current_salary;
-            const usd = [{expected_salary_currency: "$ USD"}, {expected_salary: {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
-            const gbp = [{expected_salary_currency: "£ GBP"}, {expected_salary: {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
-            const eur = [{expected_salary_currency: "€ EUR"}, {expected_salary: {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
+            const usd = [{"candidate.expected_salary_currency": "$ USD"}, {"candidate.expected_salary": {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
+            const gbp = [{"candidate.expected_salary_currency": "£ GBP"}, {"candidate.expected_salary": {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
+            const eur = [{"candidate.expected_salary_currency": "€ EUR"}, {"candidate.expected_salary": {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
             const currencyFiler = {
                 $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
             };
@@ -146,15 +84,15 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         if (search.blockchains && search.blockchains.length > 0 ) {
             const platformFilter = {
                 $or: [
-                    {"commercial_platform.platform_name": {$in: search.blockchains}},
-                    {"platforms.platform_name": {$in: search.blockchains}}
+                    {"candidate.blockchain.commercial_platform.name": {$in: search.blockchains}},
+                    {"candidate.blockchain.smart_contract_platforms.name": {$in: search.blockchains}}
                 ]
             };
             candidateQuery.push(platformFilter);
         }
 
         if (search.skills && search.skills.length > 0) {
-            const skillsFilter = {"programming_languages.language": {$in: search.skills}};
+            const skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
             candidateQuery.push(skillsFilter);
         }
         if (search.availability_day && search.availability_day !== -1 && search.availability_day !== 'Longer than 3 months') {
@@ -168,12 +106,12 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             } else if (search.availability_day === '3 months') {
                 dayArray = ['Now', '1 month', '2 months', '3 months'];
             }
-            const availabilityFilter = {"availability_day": {$in: dayArray}};
+            const availabilityFilter = {"candidate.availability_day": {$in: dayArray}};
             candidateQuery.push(availabilityFilter);
         }
     }
     const searchQuery = {$and: candidateQuery};
-    candidates = await CandidateProfile.find(searchQuery).populate('_creator').lean();
+    candidates = await User.find(searchQuery).lean();
     if (!candidates) {
         errors.throwError("No candidates matched this search criteria", 404);
     }

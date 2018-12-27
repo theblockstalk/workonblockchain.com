@@ -18,16 +18,16 @@ const removeSensativeData = module.exports.removeSensativeData = function remove
 
 const anonymosCandidateFields = ['image', 'locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_area',
     'availability_day', 'why_work', 'commercial_platform', 'experimented_platform', 'platforms', 'current_currency',
-    'current_salary', 'programming_languages', 'education_history', 'work_history', 'description', '_creator','nationality'];
+    'current_salary', 'programming_languages', 'education_history', 'work_history', 'description','nationality'];
 
 const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
     
-	if(candidateDoc.first_name && candidateDoc.last_name && candidateDoc.work_history)
+	if(candidateDoc.first_name && candidateDoc.last_name && candidateDoc.candidate.work_history)
 	{
 		const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);
 
-		candidateDoc = filterWhiteListFields(candidateDoc, anonymosCandidateFields);
-	    candidateDoc.work_history = candidateDoc.work_history.map((work) => {
+		//candidateDoc = filterWhiteListFields(candidateDoc, anonymosCandidateFields);
+	    candidateDoc.candidate.work_history = candidateDoc.candidate.work_history.map((work) => {
 	        delete work.companyname;
 	        return work;
 	    });
@@ -36,15 +36,15 @@ const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData
     
     delete candidateDoc.first_name;
 	delete candidateDoc.last_name;
-	delete candidateDoc.github_account;
-	delete candidateDoc.stackexchange_account;
-	delete candidateDoc._creator.email;
-   
+	delete candidateDoc.candidate.github_account;
+	delete candidateDoc.candidate.stackexchange_account;
+	delete candidateDoc.email;
+   //console.log(candidateDoc);
     return candidateDoc;
 };
 
 const anonymosCompanyFields = ['company_name', 'company_website', 'company_country', 'company_city','company_description',
-		'company_logo', 'company_funded','no_of_employees','company_founded','company_postcode','company_phone','job_title','_creator'];
+		'company_logo', 'company_funded','no_of_employees','company_founded','company_postcode','company_phone','job_title'];
 
 module.exports.anonymousCandidateData = function anonymousCandidateData(companyDoc) {
     companyDoc = filterWhiteListFields(companyDoc, anonymosCompanyFields);
@@ -68,7 +68,8 @@ const createInitials = module.exports.createInitials = function createInitials(f
 
 
 module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
-    const acceptedJobOffer = await Chat.find({sender_id: candidateDoc._creator._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
+    const acceptedJobOffer = await Chat.find({sender_id: candidateDoc._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
+    console.log(acceptedJobOffer);
     if (acceptedJobOffer && acceptedJobOffer.length>0)
         return removeSensativeData(candidateDoc);
 

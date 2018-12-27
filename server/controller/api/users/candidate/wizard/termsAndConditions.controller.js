@@ -15,7 +15,7 @@ module.exports = async function (req,res) {
         {
             const pagesDoc =  await Pages.findOne({_id: queryBody.termsID}).lean();
             if(pagesDoc) {
-                if(pagesDoc._id) candidateUpdate["candidate.terms_id"] = pagesDoc._id;
+                if(pagesDoc._id) candidateUpdate['candidate.terms_id'] = pagesDoc._id;
                 if(queryBody.marketing) candidateUpdate.marketing_emails = queryBody.marketing;
                 await User.update({ _id: userId },{ $set: candidateUpdate });
                 res.send({

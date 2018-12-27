@@ -4,7 +4,6 @@ const crypto = require('crypto');
 const server = require('../../../../../../server');
 const mongo = require('../../../../helpers/mongo');
 const Users = require('../../../../../model/users');
-const Companies = require('../../../../../model/employer_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
 const companyHelper = require('../companyHelpers');
 const candidateHelper = require('../../candidate/candidateHelpers');
@@ -41,11 +40,10 @@ describe('get verified candidate detail as company', function () {
 
             const companyReply =0 ;
             const filterRes = await companyHelper.getVerifiedCandidateDetail(candidateUserDoc._id , companyReply, companyUserDoc.jwt_token);
-
-            filterRes.body._creator.is_verify.should.equal(1);
-            filterRes.body._creator.candidate.status[0].status.should.equal('approved');
-            filterRes.body._creator.disable_account.should.equal(false);
-            filterRes.body._creator.type.should.equal("candidate");
+            filterRes.body.is_verify.should.equal(1);
+            filterRes.body.candidate.status[0].status.should.equal('approved');
+            filterRes.body.disable_account.should.equal(false);
+            filterRes.body.type.should.equal("candidate");
             let name = candidate.first_name[0].toUpperCase() + candidate.last_name[0].toUpperCase();
             filterRes.body.initials.should.equal(name);
 

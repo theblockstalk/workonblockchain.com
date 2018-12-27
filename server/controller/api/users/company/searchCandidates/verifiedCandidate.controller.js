@@ -1,5 +1,4 @@
 const User = require('../../../../../model/users');
-const CandidateProfile = require('../../../../../model/candidate_profile');
 const filterReturnData = require('../../filterReturnData');
 const errors = require('../../../../services/errors');
 const candidateSearch = require('../../candidate/searchCandidates');
@@ -13,7 +12,6 @@ module.exports = async function (req,res) {
         status: 'approved',
         disable_account: false
     }, {});
-
     let filterArray = [];
     for(let candidateDetail of candidateDocs.candidates) {
         const filterDataRes = await filterData(candidateDetail , userId);
