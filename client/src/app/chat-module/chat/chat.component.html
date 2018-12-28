@@ -46,7 +46,7 @@
                           <div class="meta">
                             <p *ngIf="person.initials" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.initials }}</b></p>
                             <p *ngIf="person.first_name" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.first_name }} {{ person.last_name }}</b></p>
-                            <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute" style = "right:0px">
+                            <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px">
                               {{unread_msgs_info[i].number_of_unread_msgs}}
                             </span>
                           </div>
@@ -100,11 +100,11 @@
                 </div>
 
                 <div class="message p-2" #scrollMe [scrollTop]="scrollMe.scrollHeight">
-                  <ul>
+                  <ul class = "ul_pd">
                     <div *ngFor="let msg of new_msgss">
                       <ng-container *ngIf="msg.sender_id == currentUser._creator;else second">
-                        <li class="sent mb-5 rounded">
-                          <p class = "job-description p-2 text-light d-inline-block">
+                        <li class="sent mb-5 col-md-12">
+                          <p class = "p-2 send_p job-description rounded d-inline-block">
                             <span *ngIf="msg.job_title !== ''">
                               <b>Job title:</b>
                               {{msg.job_title}}
@@ -161,9 +161,9 @@
                         </div>
                       </ng-container>
                       <ng-template #second>
-                        <li class="replies bg-info mb-5 rounded">
+                        <li class="replies mb-5 col-md-12">
                           <div class="arrow-up"></div>
-                          <p class = "p-2 text-light d-inline-block">
+                          <p class = "p-2 rec_p bg-info rounded text-light d-inline-block">
                             <!--<span *ngIf="msg.job_title === '' && (msg.interview_date_time === '' || msg.interview_date_time === null)" class="text-capitalize"> {{msg.sender_name}}:</span>-->
                             <span *ngIf="msg.job_title !== ''">
                               <b>Job title:</b>
@@ -299,18 +299,22 @@
                           <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
                           <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
                           <input type="hidden" name="first_message" id="first_message" [(ngModel)]="first_message"/>
-                          <div class = "col-sm-12 col-md-8">
+                          <div class = "col-8 col-sm-8 col-md-9 col-lg-10">
                             <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.msg_body" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
                             </ckeditor>
                           </div>
-                          <div class = "col-sm-12 col-md-4">
-                            <button class = "btn btn-primary mb-2 w-100 rounded-0" type="submit" id = "btnClick">
-                              <i class="fas fa-paper-plane text-light mr-2" aria-hidden="true"></i>
-                              Send
-                            </button>
-                            <div class="file btn">
-                              <input id="aa" #Image type="file" (change) ="upload_file()" name="file" ng-model='file' class = "file-upload btn btn-primary w-100 rounded-0"/>
-                            </div>
+                          <div class = "col-4 col-sm-4 col-md-3 col-lg-2">
+                            <span class = "btn_mobile">
+                              <button class = "send btn btn-primary mb-2 rounded-0" type="submit" id = "btnClick">
+                                <i class="fas fa-paper-plane text-light mr-2" aria-hidden="true"></i>
+                                Send
+                              </button>
+                              <div class="file btn btn-primary mb-2 rounded-0">
+                                <i class="fa fa-upload" aria-hidden="true"></i>
+                                Upload
+                                <input id="aa" #Image type="file" (change) ="upload_file()" name="file" ng-model='file' class = "file-upload"/>
+                              </div>
+                            </span>
                           </div>
                         </div>
                       </div>

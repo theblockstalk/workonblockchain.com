@@ -112,8 +112,8 @@ export class ChatComponent implements OnInit {
       allowedContent: false,
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
-      height: '5rem',
-      width: '27rem',
+      height: '6rem',
+      width: '33rem',
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
     };
@@ -952,7 +952,7 @@ export class ChatComponent implements OnInit {
     this.credentials.msg_body = '';
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log("show_msg_area: " + this.show_msg_area);
-      //setInterval(() => {
+      setInterval(() => {
         //receiver,sender
         //console.log("ID: " + this.credentials.id);
         this.authenticationService.get_user_messages(this.credentials.id,0)
@@ -1039,7 +1039,7 @@ export class ChatComponent implements OnInit {
               }
             }
           );
-      //}, 2000);
+      }, 2000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver
