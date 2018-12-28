@@ -220,7 +220,7 @@ module.exports.job = function job(){
         roles: [
             'Backend Developer', 'Fullstack Developer'
         ],
-        interest_area: [
+        interest_areas: [
             "I don't know" , 'Enterprise blockchain', 'Smart contract development'
         ]
     }
@@ -234,7 +234,7 @@ module.exports.resume = function resume(){
             { value: 'Bitcoin' },
             { value: 'Hyperledger Sawtooth' }
         ],
-        experimented_platform:[
+        experimented_platforms:[
             {
                 _id: '5bbc37432997bf00408501b9',
                 name: 'Bitcoin',
@@ -248,7 +248,7 @@ module.exports.resume = function resume(){
                 checked: true
             }
         ],
-        platforms:[
+        smart_contract_platforms:[
             {
                 _id: '5bbc37432997bf00408501b7',
                 name: 'Bitcoin',
@@ -309,12 +309,12 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             intro: 'I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. ',
             country: [ 'remote', 'Amsterdam' ],
             roles: [ 'Backend Developer', 'Fullstack Developer' ],
-            interest_area: ["I don't know", 'Enterprise blockchain', 'Smart contract development' ],
+            interest_areas: ["I don't know", 'Enterprise blockchain', 'Smart contract development' ],
             platforms_designed: [
                 { value: 'Bitcoin' },
                 { value: 'Hyperledger Sawtooth' }
             ],
-            experimented_platform:[
+            experimented_platforms:[
                 {
                     _id: '5bbc37432997bf00408501b9',
                     name: 'Bitcoin',
@@ -336,7 +336,7 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
                 },
                 {
                     _id: '5bbc37432997bf00408501b6',
-                    name: 'Hyperledger Sawtooth',
+                    platform_name: 'Hyperledger Sawtooth',
                     exp_year: '1-2'
                 }
             ],
