@@ -36,10 +36,10 @@ describe('add resume of candidate', function () {
             const blockchainSkills = userDoc.candidate.blockchain;
 
             userDoc.candidate.why_work.should.equal(candidateExperience.why_work);
-            blockchainSkills.experimented_platforms[0].name.should.equal(candidateExperience.experimented_platform[0].name);
-            blockchainSkills.experimented_platforms[0].checked.should.equal(candidateExperience.experimented_platform[0].checked);
-            blockchainSkills.smart_contract_platforms[0].name.should.equal(candidateExperience.platforms[0].name);
-            blockchainSkills.smart_contract_platforms[0].exp_year.should.equal(candidateExperience.platforms[0].exp_year);
+            blockchainSkills.experimented_platforms[0].name.should.equal(candidateExperience.experimented_platforms[0].name);
+            blockchainSkills.experimented_platforms[0].checked.should.equal(candidateExperience.experimented_platforms[0].checked);
+            blockchainSkills.smart_contract_platforms[0].name.should.equal(candidateExperience.smart_contract_platforms[0].name);
+            blockchainSkills.smart_contract_platforms[0].exp_year.should.equal(candidateExperience.smart_contract_platforms[0].exp_year);
             blockchainSkills.commercial_skills[0].skill.should.equal(candidateExperience.commercial_skills[0].skill);
             blockchainSkills.commercial_skills[0].exp_year.should.equal(candidateExperience.commercial_skills[0].exp_year);
             blockchainSkills.formal_skills[0].skill.should.equal(candidateExperience.formal_skills[0].skill);

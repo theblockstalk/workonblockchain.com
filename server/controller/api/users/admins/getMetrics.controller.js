@@ -7,10 +7,9 @@ const curr = require('../../../services/currency');
 module.exports = async function (req, res) {
     let totalCandidates, emailVerified = 0, approved = 0, dissabled = 0, agreedTerms = 0;
 
-    let candidateCursor = await Candidate.find({}).cursor();
-    totalCandidates = await Candidate.find({}).count();
+    let candidateCursor = await User.find({type : 'candidate'}).cursor();
+    totalCandidates = await User.find({type : 'candidate'}).count();
     let candidateDoc = await candidateCursor.next();
-
     let aggregatedData = {
         nationality: {},
         availabilityDay: {},
@@ -28,7 +27,6 @@ module.exports = async function (req, res) {
     };
 
     let locationList = enumerations.workLocations;
-    //locationList.push("remote");
     let salaryArray = [];
 
     let programmingLanguagesCount = {}, programmingLanguagesAggregate = {};
@@ -36,28 +34,24 @@ module.exports = async function (req, res) {
     let blockchainSmartCount = {}, blockchainSmartAggregate = {};
 
     for ( null ; candidateDoc !== null; candidateDoc = await candidateCursor.next()) {
-        let userDoc = await User.findOne({_id: candidateDoc._creator});
-        if (userDoc.is_verify) emailVerified++;
-        if (userDoc.disable_account) dissabled++;
-        if (userDoc.candidate.status[0].status === 'approved' && !userDoc.disable_account) {
+        if (candidateDoc.is_verify) emailVerified++;
+        if (candidateDoc.disable_account) dissabled++;
+        if (candidateDoc.candidate.status[0].status === 'approved' && !candidateDoc.disable_account) {
             approved++;
-
-            if (candidateDoc.expected_salary && candidateDoc.expected_salary_currency) salaryList(salaryArray, candidateDoc.expected_salary, candidateDoc.expected_salary_currency)
+            if (candidateDoc.candidate.expected_salary && candidateDoc.candidate.expected_salary_currency) salaryList(salaryArray, candidateDoc.candidate.expected_salary, candidateDoc.candidate.expected_salary_currency)
             aggregateField(aggregatedData.nationality, candidateDoc.nationality, enumerations.nationalities);
-            aggregateField(aggregatedData.availabilityDay, candidateDoc.availability_day, enumerations.workAvailability);
-            if (userDoc.candidate) aggregateField(aggregatedData.baseCountry, userDoc.candidate.base_country, enumerations.countries);
-            aggregateArray(aggregatedData.locations, candidateDoc.locations, locationList);
-            aggregateArray(aggregatedData.roles, candidateDoc.roles, enumerations.workRoles);
-            aggregateArray(aggregatedData.interestAreas, candidateDoc.interest_area, enumerations.workBlockchainInterests);
-            // aggregateObjArray(aggregatedData.blockchain.commercial, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name");
-            // aggregateObjArray(aggregatedData.blockchain.smartContract, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name");
-            aggregateObjArray(aggregatedData.blockchain.experimented, candidateDoc.experimented_platform, enumerations.blockchainPlatforms, "name");
-            aggregateObjArray(programmingLanguagesCount, candidateDoc.programming_languages, enumerations.programmingLanguages, "language");
-            aggregateObjArrayAggregate(programmingLanguagesAggregate, candidateDoc.programming_languages, enumerations.programmingLanguages, "language", "exp_year");
-            aggregateObjArray(blockchainCommercialCount, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name");
-            aggregateObjArrayAggregate(blockchainCommercialAggregate, candidateDoc.commercial_platform, enumerations.blockchainPlatforms, "platform_name", "exp_year");
-            aggregateObjArray(blockchainSmartCount, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name");
-            aggregateObjArrayAggregate(blockchainSmartAggregate, candidateDoc.platforms, enumerations.blockchainPlatforms, "platform_name", "exp_year");
+            aggregateField(aggregatedData.availabilityDay, candidateDoc.candidate.availability_day, enumerations.workAvailability);
+            aggregateField(aggregatedData.baseCountry, candidateDoc.candidate.base_country, enumerations.countries);
+            aggregateArray(aggregatedData.locations, candidateDoc.candidate.locations, locationList);
+            aggregateArray(aggregatedData.roles, candidateDoc.candidate.roles, enumerations.workRoles);
+            aggregateArray(aggregatedData.interestAreas, candidateDoc.candidate.interest_areas, enumerations.workBlockchainInterests);
+            aggregateObjArray(aggregatedData.blockchain.experimented, candidateDoc.candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms, "name");
+            aggregateObjArray(programmingLanguagesCount, candidateDoc.candidate.programming_languages, enumerations.programmingLanguages, "language");
+            aggregateObjArrayAggregate(programmingLanguagesAggregate, candidateDoc.candidate.programming_languages, enumerations.programmingLanguages, "language", "exp_year");
+            aggregateObjArray(blockchainCommercialCount, candidateDoc.candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name");
+            aggregateObjArrayAggregate(blockchainCommercialAggregate, candidateDoc.candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
+            aggregateObjArray(blockchainSmartCount, candidateDoc.candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name");
+            aggregateObjArrayAggregate(blockchainSmartAggregate, candidateDoc.candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
 
         }
         if (candidateDoc.terms) agreedTerms++;

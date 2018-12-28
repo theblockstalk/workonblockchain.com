@@ -44,13 +44,13 @@ describe('update candidate profile', function () {
             candidateUserDoc.nationality.should.equal(candidateEditProfileData.detail.nationality);
             candidateUserDoc.candidate.locations.should.valueOf(candidateEditProfileData.detail.country);
             candidateUserDoc.candidate.roles.should.valueOf(candidateEditProfileData.detail.roles);
-            candidateUserDoc.candidate.interest_areas.should.valueOf(candidateEditProfileData.detail.interest_area);
+            candidateUserDoc.candidate.interest_areas.should.valueOf(candidateEditProfileData.detail.interest_areas);
             candidateUserDoc.candidate.expected_salary_currency.should.equal(candidateEditProfileData.detail.base_currency);
             candidateUserDoc.candidate.expected_salary.should.equal(candidateEditProfileData.detail.expected_salary);
             candidateUserDoc.candidate.availability_day.should.equal(candidateEditProfileData.detail.availability_day);
             candidateUserDoc.candidate.why_work.should.equal(candidateEditProfileData.detail.why_work);
-            candidateUserDoc.candidate.blockchain.experimented_platforms.should.valueOf(candidateEditProfileData.detail.experimented_platform);
-            candidateUserDoc.candidate.blockchain.smart_contract_platforms.should.valueOf(candidateEditProfileData.detail.platforms);
+            candidateUserDoc.candidate.blockchain.experimented_platforms.should.valueOf(candidateEditProfileData.detail.experimented_platforms);
+            candidateUserDoc.candidate.blockchain.smart_contract_platforms.should.valueOf(candidateEditProfileData.detail.smart_contract_platforms);
             candidateUserDoc.candidate.current_salary.should.equal(candidateEditProfileData.detail.salary);
             candidateUserDoc.candidate.current_currency.should.equal(candidateEditProfileData.detail.current_currency);
             candidateUserDoc.candidate.programming_languages.should.valueOf(candidateEditProfileData.detail.language_experience_year);

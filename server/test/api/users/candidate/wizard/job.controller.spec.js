@@ -33,7 +33,7 @@ describe('add job of candidate', function () {
             userDoc = await Users.findOne({email: candidate.email}).lean();
             userDoc.candidate.locations[0].should.equal(candidateExperience.country[0]);
             userDoc.candidate.roles[0].should.equal(candidateExperience.roles[0]);
-            userDoc.candidate.interest_areas[0].should.equal(candidateExperience.interest_area[0]);
+            userDoc.candidate.interest_areas[0].should.equal(candidateExperience.interest_areas[0]);
             userDoc.candidate.availability_day.should.equal(candidateExperience.availability_day);
             userDoc.candidate.current_currency.should.equal(candidateExperience.current_currency);
             userDoc.candidate.current_salary.should.equal(candidateExperience.current_salary);
