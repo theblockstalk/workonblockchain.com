@@ -112,8 +112,8 @@ export class ChatComponent implements OnInit {
       allowedContent: false,
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
-      height: '5rem',
-      width: '27rem',
+      height: '6rem',
+      width: '33rem',
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
     };
@@ -162,8 +162,7 @@ export class ChatComponent implements OnInit {
                         this.approved_user = 1;
                     }
                     */
-
-                    if(data['_creator'].candidate.status[0].status === 'created' || data['_creator'].candidate.status[0].status === 'rejected' || data['_creator'].candidate.status[0].status === 'updated' || data['_creator'].candidate.status[0].status === 'wizard completed' || data['_creator'].candidate.status[0].status === 'deferred' || data['_creator'].candidate.status[0].status === 'other')
+                    if(!data['_creator'].first_approved_date)
                     {
                           this.disabled = true;
                           this.msg = "You can access this page when your account has been approved by an admin.";

@@ -5,12 +5,12 @@ import {User} from '../../Model/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { AuthService } from 'angular4-social-login';
 import { GoogleLoginProvider } from 'angular4-social-login';
-import { LinkedInService } from 'angular-linkedin-sdk';
 import { DataService } from '../../data.service';
 import {NgForm} from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
 
+import { LinkedInService } from '../../linkedin-api';
 
 const URL = environment.backend_url;
 console.log(URL);

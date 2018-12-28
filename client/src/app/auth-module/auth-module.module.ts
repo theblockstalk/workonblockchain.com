@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SocialLoginModule, AuthServiceConfig } from 'angular4-social-login';
 import { GoogleLoginProvider } from 'angular4-social-login';
-import { LinkedInSdkModule } from 'angular-linkedin-sdk';
+import { LinkedInSdkModule } from '../linkedin-api';
 
 import {AuthModuleRoutingModule} from './auth-module-routing.module';
 

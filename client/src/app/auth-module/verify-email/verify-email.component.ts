@@ -49,12 +49,12 @@ export class VerifyEmailComponent implements OnInit {
 
                        else if (this.currentUser.type == "candidate") {
                          this.succesMsg = data['msg'];
-                         window.location.href = '/candidate_profile';
+                         //window.location.href = '/candidate_profile';
                        }
 
                        else if (this.currentUser.type == "company") {
                          this.succesMsg = data['msg'];
-                         window.location.href = '/company_profile';
+                        // window.location.href = '/company_profile';
                        }
                        // return data;
                      }

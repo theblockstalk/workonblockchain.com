@@ -1,10 +1,11 @@
-import { Component, OnInit,ElementRef, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit,ElementRef} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-import { HttpClient } from '@angular/common/http';
-import {NgForm,FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { HttpClient} from '@angular/common/http';
+import {FormGroup} from '@angular/forms';
 
+declare var $: any;
 
 @Component({
   selector: 'app-admin-display-chat',
@@ -22,7 +23,6 @@ export class AdminDisplayChatComponent implements OnInit {
     credentials: any = {};
     users = [];
     msgs = '';
-    new_msgs = '';
     new_msgss = '';
     show_msg_area = 1;
     display_list = 0;
@@ -37,18 +37,14 @@ export class AdminDisplayChatComponent implements OnInit {
     is_company_reply = 0;
     company_reply = 0;
     cand_offer = 0;
-    interview_log = '';
-    job_offer_log = '';
     job_type='';
-    show_accpet_reject = 0;
     email;
     length;
     company_type;
     admin_log;
-    file_url;
     profile_pic;
     display_name;
-	new_messges = [];
+    new_messges = [];
  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
 
@@ -61,6 +57,11 @@ export class AdminDisplayChatComponent implements OnInit {
 
    }
   ngOnInit() {
+    var styles = document.createElement("link");
+    styles.rel = "stylesheet";
+    styles.type = "text/css";
+    styles.href = "../../assets/css/chat.css";
+    document.getElementsByTagName("head")[0].appendChild(styles);
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
      //localStorage.removeItem('company_type');
@@ -95,7 +96,7 @@ export class AdminDisplayChatComponent implements OnInit {
             .subscribe(
                 msg_data => {
 					if(msg_data['datas'].length>0)
-                    {
+					{
 						this.new_messges.push(msg_data['datas']);
 						this.new_messges = this.filter_array(msg_data['datas']);
 						this.length = msg_data['datas'].length;
@@ -142,14 +143,13 @@ export class AdminDisplayChatComponent implements OnInit {
 								);
 							}
 						}
-                    }
-                    else
-                    {
-                        this.length = 0;
-                        ////console.log("elseee");
-
-                     }
-                },
+					}
+					else
+					  {
+					    this.length = 0;
+              ////console.log("elseee");
+            }
+            },
                 error => {
                   if(error.status === 500 || error.status === 401)
                   {
@@ -170,29 +170,30 @@ export class AdminDisplayChatComponent implements OnInit {
             );
         }
         else{
-            this.authenticationService.get_user_messages_only(this.user_id)
-            .subscribe(
-                msg_data => {
-					if(msg_data['datas'].length>0){
-                        this.new_messges.push(msg_data['datas']);
-						this.new_messges = this.filter_array(msg_data['datas']);
-						////console.log(this.new_messges);
-                        this.length = msg_data['datas'].length;
-						for (var key_messages in this.new_messges) {
-							if(this.user_id == this.new_messges[key_messages].sender_id){
-								////console.log('my');
-							}
-							else{
-								this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',1,'company')
-								.subscribe(
-									data => {
-										this.users.push(data['users']);
-										////console.log(this.users);
-										this.count = 0;
-										for (var key_users_new in this.users) {
-											if(this.count == 0){
-												this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name);
-											}
+         console.log('cand viewed by comp');
+         this.authenticationService.get_user_messages_only(this.user_id)
+         .subscribe(
+           msg_data => {
+             if(msg_data['datas'].length>0){
+               this.new_messges.push(msg_data['datas']);
+               this.new_messges = this.filter_array(msg_data['datas']);
+               this.length = msg_data['datas'].length;
+               for (var key_messages in this.new_messges) {
+                 if(this.user_id == this.new_messges[key_messages].sender_id){
+                   ////console.log('my');
+                 }
+                 else{
+                   this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',1,'company')
+                   .subscribe(
+                     data => {
+                       console.log(data['users']);
+                       this.users.push(data['users']);
+                       ////console.log(this.users);
+                       this.count = 0;
+                       for (var key_users_new in this.users) {
+                         if(this.count == 0){
+                           this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name);
+											  }
 											this.count = this.count + 1;
 											//this.currentUser._creator //receiver
 											/*this.authenticationService.get_unread_msgs_of_user(this.currentUser._creator,this.users[key_users_new]._creator._id)

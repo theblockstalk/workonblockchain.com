@@ -154,11 +154,11 @@ export class AdminCompanyDetailComponent implements OnInit {
   approveClick(event , approveForm: NgForm)
   {
     this.error = '';
-    if(event.srcElement.innerHTML ==='Active' )
+    if(event.srcElement.innerHTML ==='Approve' )
     {
       this.is_approve = 1;
     }
-    else if(event.srcElement.innerHTML ==='Inactive')
+    else if(event.srcElement.innerHTML ==='Disapprove')
     {
       this.is_approve =0;
     }
@@ -171,27 +171,27 @@ export class AdminCompanyDetailComponent implements OnInit {
           if(data['success'] === true)
           {
 
-            if(event.srcElement.innerHTML ==='Active' )
+            if(event.srcElement.innerHTML ==='Approve' )
             {
-              event.srcElement.innerHTML="Inactive";
+              event.srcElement.innerHTML="Disapprove";
               this.is_approved = "Aprroved";
             }
-            else if(event.srcElement.innerHTML ==='Inactive')
+            else if(event.srcElement.innerHTML ==='Disapprove')
             {
-              event.srcElement.innerHTML="Active";
+              event.srcElement.innerHTML="Approve";
               this.is_approved = "";
             }
           }
           else if(data['is_approved'] === 0)
           {
-            if(event.srcElement.innerHTML ==='Active' )
+            if(event.srcElement.innerHTML ==='Approve' )
             {
-              event.srcElement.innerHTML="Inactive";
+              event.srcElement.innerHTML="Disapprove";
               this.is_approved = "Aprroved";
             }
-            else if(event.srcElement.innerHTML ==='Inactive')
+            else if(event.srcElement.innerHTML ==='Disapprove')
             {
-              event.srcElement.innerHTML="Active";
+              event.srcElement.innerHTML="Approve";
               this.is_approved = "";
             }
           }

@@ -542,7 +542,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           });
     }
     else {
-      this.error_msg = "There is a field that still needs completion. Please scroll up.";
+      this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
   }
 
@@ -552,6 +552,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       return 'selected';
     }
     else {
+      return ;
       return ;
     }
 

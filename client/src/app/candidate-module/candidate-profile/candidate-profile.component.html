@@ -8,13 +8,13 @@
 </ng-container>
 
 <ng-template #profile_section >
-  <section class = "wob-bg-primary2">
+  <section class = "wob-bg-primary2 py-5 mt-5">
      <div class="alert alert-info" role="alert" *ngIf="message">{{message}}</div>
 
-    <div class="container">
+    <div class="container pt-2">
       <div class="row">
-        <div class="col-md-12 mt-3">
-          <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-warning float-right text-white">What happens next?</button>
+        <div class="col-md-12">
+          <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-secondary float-right text-white">What happens next?</button>
         </div>
       </div>
       <div class="row">
@@ -41,12 +41,12 @@
                     <span>Nationality: {{nationality}}</span>
                   </li>
                   <li class="list-group-item">
-                    <span><i class="fas fa-map-marker-alt mr-2"></i></span>
+                    <span><i class="fas fa-phone mr-2"></i></span>
                     <span> Contact number: {{contact_number}}</span>
                   </li>
                   <li class="list-group-item">
                     <i class="fas fa-user mr-2"></i>
-                    <span class = "text-capitalize">Candidate status: {{candidate_status.status}}</span>
+                    Candidate status: <span class = "text-capitalize">{{candidate_status.status}}</span>
                   </li>
                   <li class="list-group-item">
                     <i class="fas fa-clock mr-2"></i>
@@ -65,7 +65,7 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
               <div class="col-md-6">
-                <h4> <i class="fas fa-user"></i> About you</h4>
+                <h2> <i class="fas fa-user"></i> About you</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
@@ -82,7 +82,7 @@
                   <p>
                 </div>
               </div>
-              <div class = "col-md-6">
+              <div class = "col-md-6" *ngIf="github">
                 <div class="form-group">
                   <label> Github account URL:</label>
                   <p>
@@ -106,10 +106,10 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
               <div class="col-md-6">
-                <h4><i class="fas fa-landmark"></i> Residence/base location</h4>
+                <h2><i class="fas fa-map-marker-alt"></i> Residence/base location</h2>
               </div>
               <div class="col-md-6">
-                <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
+                <a class="float-right" (click)="internalRoute('edit_profile','residence')">
                   <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
               </div>
@@ -137,7 +137,7 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
               <div class="col-md-6">
-                <h4><i class="fas fa-briefcase"></i> Desired job</h4>
+                <h2><i class="fas fa-briefcase"></i> Desired job</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','job_candidate')">
@@ -147,33 +147,49 @@
             </div>
 
             <div class="row mt-4">
-              <div class = "col-md-6" *ngIf="countries">
-                <div class="form-group mb-1">
+              <div class = "col-md-12" *ngIf="countries">
+                <div class="form-group">
                   <label> Desired location:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of countries'>
+                      {{country.charAt(0).toUpperCase()}}{{country.slice(1)}}
+                    </div>
+                  </div>
                 </div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let country of countries'>
-                  {{country.charAt(0).toUpperCase()}}{{country.slice(1)}}
-                </div>
-              </div>
-              <div class = "col-md-6">
-                <div class="form-group mb-1">
-                  <label> Area of interest:</label>
-                </div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let interest_area of interest_area;'>
-                  {{interest_area}}
-                </div>
+
               </div>
             </div>
+
             <div class="row mt-4">
-              <div class = "col-md-6">
-                <div class="form-group mb-1">
-                  <label> Desired roles:</label>
+              <div class = "col-md-12">
+                <div class="form-group ">
+                  <label> Area of interest:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let interest_area of interest_area;'>
+                      {{interest_area}}
+                    </div>
+                  </div>
                 </div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let roles_data of roles'>
-                  {{roles_data}}
-                </div>
+
               </div>
-              <div class = "col-md-6" *ngIf="expected_salary">
+            </div>
+
+            <div class="row mt-4">
+              <div class = "col-md-12">
+                <div class="form-group">
+                  <label> Desired roles:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let roles_data of roles'>
+                      {{roles_data}}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class = "col-md-12" *ngIf="expected_salary">
                 <div class="form-group">
                   <label> Expected annual salary:</label>
                   <p class="mr-2">
@@ -182,16 +198,21 @@
                 </div>
               </div>
             </div>
+
             <div class="row mt-4">
-              <div class = "col-md-6" *ngIf="current_salary">
+              <div class = "col-md-12" *ngIf="current_salary">
                 <div class="form-group">
-                  <label> Current annual salary:</label>
+                  <label class="mb-0"> Current annual salary:</label>
+                  <small id="emailHelp" class="form-text text-muted mt-0 mb-2">This information is never shown to companies. It is used by us to help us help you set your expected salary.</small>
                   <p class="mr-2">
                     {{current_currency}} {{current_salary}}
                   <p>
                 </div>
               </div>
-              <div class = "col-md-6" *ngIf="availability_day">
+            </div>
+
+            <div class="row mt-4">
+              <div class = "col-md-12" *ngIf="availability_day">
                 <div class="form-group">
                   <label> Your availablity:</label>
                   <p class="mr-2">
@@ -205,7 +226,7 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
               <div class="col-md-6">
-                <h4><i class="fab fa-bitcoin"></i> Blockchain experience</h4>
+                <h2><i class="fab fa-bitcoin"></i> Blockchain experience</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','resume_candidate')">
@@ -218,61 +239,79 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Why do you want to work on blockchain?</label>
+                  <p>
+                    {{why_work}}
+                  </p>
                 </div>
               </div>
+            </div>
+
+            <div class="row" *ngIf = "commercial && commercial.length > 0">
               <div class="col-md-12">
-                <p>
-                  {{why_work}}
-                </p>
-              </div>
-            </div>
-
-            <div class="row mt-4" *ngIf = "commercial && commercial.length > 0">
-              <div class="col-md-6">
-                <div class="form-group mb-2">
+                <div class="form-group">
                   <label>Platform commercially worked with:</label>
-                </div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of commercial;'>
-                  <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
-                  {{data.platform_name}} : {{data.exp_year}} years
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
+                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
+                      {{data.platform_name}} : {{data.exp_year}} years
+                    </div>
+                  </div>
                 </div>
 
               </div>
-              <div class="col-md-6" *ngIf = "platforms && platforms.length > 0">
-                <div class="form-group mb-1">
+            </div>
+
+            <div class="row" *ngIf = "platforms && platforms.length > 0">
+              <div class="col-md-12">
+                <div class="form-group">
                   <label>Platforms designed/developed smart contracts:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of platforms;'>
+                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
+                      {{data.platform_name}}  : {{data.exp_year}} years
+                    </div>
+                  </div>
                 </div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of platforms;'>
-                  <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
-                  {{data.platform_name}}  : {{data.exp_year}} years
-                </div>
+
               </div>
             </div>
 
-            <div class="row mt-4">
-              <div class="col-md-6" *ngIf = "experimented && experimented.length > 0 ">
-                <div class="form-group mb-1">
+            <div class="row">
+              <div class="col-md-12" *ngIf = "experimented && experimented.length > 0 ">
+                <div class="form-group">
                   <label>Platform experimented with:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of experimented;'>
+                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.value}}.png" alt="{{data.value}} Logo">
+                      {{data.value}}
+                    </div>
+                  </div>
                 </div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of experimented;'>
-                  <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.value}}.png" alt="{{data.value}} Logo">
-                  {{data.value}}
-                </div>
-              </div>
-              <div class="col-md-6" *ngIf = "commercial_skills && commercial_skills.length > 0">
-                <div class="form-group mb-1">
-                  <label>Commercial experience in these areas:</label>
-                </div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
+
               </div>
             </div>
 
-            <div class="row mt-4" >
-              <div class="col-md-6" *ngIf = "formal_skills && formal_skills.length > 0">
-                <div class="form-group mb-1">
-                  <label>Formal (university) education in these areas:</label>
+            <div class="row" *ngIf = "commercial_skills && commercial_skills.length > 0">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Commercial experience in these areas:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
+
+                  </div>
                 </div>
-                <div class="d-inline-block p-2 border rounded mr-1" *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
+              </div>
+            </div>
+
+            <div class="row" *ngIf = "formal_skills && formal_skills.length > 0">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Formal (university) education in these areas:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
+
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -280,7 +319,7 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="languages && languages.length>0">
             <div class="row">
               <div class="col-md-6">
-                <h4><i class="fas fa-briefcase"></i> Experience</h4>
+                <h2><i class="fas fa-briefcase"></i> Experience</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','experience_candidate')">
@@ -289,11 +328,13 @@
               </div>
             </div>
             <div class="row mt-4">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <div class="form-group">
-                  <label>Languages:</label>
-                  <div class="d-inline-block p-2 border rounded mr-1 mb-1" *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</div>
-                </div>
+                  <label>Languages: </label>
+                  <div>
+                  <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</div>
+                  </div>
+                  </div>
               </div>
             </div>
           </section>
@@ -301,7 +342,7 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="!public_data && history.length>0 ">
             <div class="row">
               <div class="col-md-6">
-                <h4><i class="fas fa-wrench"></i> Work history</h4>
+                <h2><i class="fas fa-wrench"></i> Work history</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','work_candidate')">
@@ -335,7 +376,7 @@
           <section class = "border rounded mt-4 mb-5 py-3 px-5 bg-white" *ngIf="!public_data && education.length>0 ">
             <div class="row">
               <div class="col-md-6">
-                <h4><i class="fas fa-university"></i> Education</h4>
+                <h2><i class="fas fa-university"></i> Education</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','education_candidate')">
