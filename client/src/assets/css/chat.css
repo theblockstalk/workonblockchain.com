@@ -53,7 +53,7 @@ only to be applied to the chat page*/
     position: relative;
     float: right;
     margin-right: 15px;
-    top: -10px;
+    top: -60px;
     font-size: 10px;
 }
 
@@ -73,7 +73,7 @@ only to be applied to the chat page*/
     position: relative;
     float: left;
     margin-left: 5px;
-    top: -10px;
+    top: -60px;
     font-size: 10px;
 }
 
