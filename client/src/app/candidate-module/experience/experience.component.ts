@@ -54,9 +54,20 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
      ngAfterViewInit(): void
      {
+       setTimeout(() => {
+         $('.selectpicker').selectpicker();
+         $('.selectpicker').selectpicker('refresh');
+       }, 500);
          window.scrollTo(0, 0);
 
     }
+
+  currentWork(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+  }
     message;
     current_work_check=[];
     ngOnInit()
@@ -401,7 +412,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     addNewExpRow()
     {
-
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
       const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
       control.push(this.initExpRows());
     }
@@ -418,6 +432,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     }
     addNewRow()
     {
+      setTimeout(() => {
+        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker('refresh');
+      }, 100);
       const control = <FormArray>this.EducationForm.controls['itemRows'];
       control.push(this.initItemRows());
     }
