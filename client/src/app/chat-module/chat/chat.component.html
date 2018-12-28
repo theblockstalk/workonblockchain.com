@@ -9,7 +9,7 @@
       <div class="row">
         <div class = "col-md-12">
           <div class="row mt-2">
-            <div *ngIf="msg ===''" class = "col-md-11 ml-4 float-right">
+            <div *ngIf="msg ===''" class = "col-md-11 ml-4 float-right mt-5">
               <button type = "button" data-toggle="modal" data-target="#popModal" class = "btn btn-secondary float-right mb-1 text-light">What happens next?</button>
             </div>
           </div>
@@ -27,7 +27,7 @@
                       <img id="profile-img" src="{{profile_pic}}" alt="Profile pic" class = "float-left rounded-circle" style = "width:60px;">
                     </ng-container>
                     <ng-template #company_logo_top>
-                      <img id="profile-img12" src="/assets/profile/profile-image.png" alt="" class = "float-left rounded-circle" style = "width:60px;">
+                      <img id="profile-img12" src="/assets/profile/profile-image.png" alt="Profile pic" class = "float-left rounded-circle" style = "width:60px;">
                     </ng-template>
                     <p class = "float-left ml-4 d-none d-md-block text-capitalize">{{display_name}}</p>
                   </div>
@@ -38,10 +38,10 @@
                       <div class = "cont m-auto position-relative">
                         <ng-container *ngIf="currentUser.type == 'company';else cand_image">
                           <ng-container *ngIf="person.image;else person_image">
-                            <img src="{{person.image}}" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
+                            <img src="{{person.image}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
                           </ng-container>
                           <ng-template #person_image>
-                            <img src="/assets/profile/profile-image.png" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
+                            <img src="/assets/profile/profile-image.png" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
                           </ng-template>
                           <div class="meta">
                             <p *ngIf="person.initials" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.initials }}</b></p>
@@ -53,7 +53,7 @@
                         </ng-container>
                         <ng-template #cand_image>
                           <ng-container *ngIf="person.company_logo;else company_image">
-                            <img src="{{person.company_logo}}" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
+                            <img src="{{person.company_logo}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
                           </ng-container>
                           <ng-template #company_image>
                             <img src="/assets/profile/profile-image.png" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
@@ -153,10 +153,12 @@
                             <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
                               <b>Employment contract:</b>
                             </span>
-                            <a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                            <span *ngIf="msg.file_name">
+                              <a href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                            </span>
                           </p>
                         </li>
-                        <div class="chat_user">
+                        <div class="chat_company">
                           {{msg.date_created | date: 'MM/dd/yyyy HH:mm'}}
                         </div>
                       </ng-container>
@@ -164,7 +166,6 @@
                         <li class="replies mb-5 col-md-12">
                           <div class="arrow-up"></div>
                           <p class = "p-2 rec_p bg-info rounded text-light d-inline-block">
-                            <!--<span *ngIf="msg.job_title === '' && (msg.interview_date_time === '' || msg.interview_date_time === null)" class="text-capitalize"> {{msg.sender_name}}:</span>-->
                             <span *ngIf="msg.job_title !== ''">
                               <b>Job title:</b>
                               {{msg.job_title}}
@@ -210,8 +211,10 @@
                             <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
                               <b>Employment contract:</b>
                             </span>
-                            <a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
-                            <br *ngIf="msg.file_name"/>
+                            <span *ngIf="msg.file_name">
+                              <a href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              <br/>
+                            </span>
                             <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.msg_tag == 'employment_offer'">
                               {{msg.message}}
                               <br/>
@@ -221,7 +224,7 @@
                             </span>
                           </p>
                         </li>
-                        <div class="chat_company">
+                        <div class="chat_user">
                           {{msg.date_created | date: 'MM/dd/yyyy HH:mm'}}
                         </div>
                       </ng-template>
@@ -360,7 +363,7 @@
               <div class="form-group">
                 <label>Date:</label>
                 <p>
-                  <my-date-picker name="mydateinterview" [options]="myDatePickerOptions" [(ngModel)]="credentials.date" required ></my-date-picker>
+                  <my-date-picker name="mydateinterview" [options]="myDatePickerOptions" [(ngModel)]="credentials.date" required placeholder="01/01/1970"></my-date-picker>
                 </p>
               </div>
             </div>
@@ -368,7 +371,7 @@
               <div class="form-group">
                 <label>Time:</label>
                 <p>
-                  <input type="time" name="time" [(ngModel)]="credentials.time" class="form-control" id="">
+                  <input type="time" name="time" [(ngModel)]="credentials.time" class="form-control" placeholder="00:00">
                 </p>
               </div>
             </div>
@@ -378,7 +381,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Location:</label>
-                <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" id="">
+                <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" placeholder="London">
               </div>
             </div>
           </div>
@@ -387,7 +390,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Other details (optional):</label>
-                <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
+                <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500">
                 </ckeditor>
               </div>
             </div>
@@ -428,13 +431,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Job title:</label>
-                <input type="text" class="form-control" name="job_title" [(ngModel)]="credentials.job_title" id="">
+                <input type="text" class="form-control" name="job_title" [(ngModel)]="credentials.job_title" placeholder="Director">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Yearly base salary:</label>
-                <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" id="">
+                <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" placeholder="10000">
                 <div class = "form_error" >
                   <span class = "error" *ngIf="expect_salary.errors && credentials.base_salary"> Salary should be a number. </span>
                 </div>
@@ -469,7 +472,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Start date</label>
-                <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="credentials.start_date" required ></my-date-picker>
+                <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="credentials.start_date" required placeholder="10000"></my-date-picker>
               </div>
             </div>
           </div>
@@ -488,7 +491,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Employment contract</label>
-                <input id="my_aa" #Image type="file" (change)="show_file_name()" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" name="image" [(ngModel)]="credentials.employment_contract" class="form-control" />
+                <input id="my_aa" #Image type="file" (change)="show_file_name()" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" name="image" [(ngModel)]="credentials.employment_contract" class="form-control border-0"/>
                 <label id="fileLabel">
                   <span *ngIf="img_name">{{img_name}}</span>
                   <span *ngIf="!img_name">Upload contract file (optional)</span>
@@ -555,7 +558,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div class="form-group">
                 <label>Job description:</label>
                 <p class="job_decs" [innerHTML]="new_msgss[0].description | safeHtml">
