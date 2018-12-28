@@ -1,5 +1,4 @@
 const users = require('../../../model/users');
-const CandidateProfile = require('../../../model/candidate_profile');
 const EmployerProfile = require('../../../model/employer_profile');
 const chat = require('../../../model/chat');
 
@@ -16,11 +15,7 @@ module.exports = async function () {
 
         if(userDoc){
             if(userDoc.type === 'candidate'){
-                let candidateDoc = await CandidateProfile.find({ _creator: userDoc._id},{"first_name":1});
-
-                if(candidateDoc) {
-                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, candidateDoc[0].first_name);
-                }
+                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, userDoc.first_name);
             }
             else{
                 let companyDoc = await EmployerProfile.find({ _creator: userDoc._id},{"first_name":1});
