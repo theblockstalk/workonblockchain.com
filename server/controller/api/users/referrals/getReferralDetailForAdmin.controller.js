@@ -1,7 +1,6 @@
 const referral = require('../../../../model/referrals');
 const user = require('../../../../model/users');
 const employerProfile = require('../../../../model/employer_profile');
-const candidateProfile = require('../../../../model/candidate_profile');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
@@ -15,10 +14,8 @@ module.exports = async function (req, res) {
             const userDoc = await user.findOne({email : refDoc.email}).lean();
             if(userDoc){
                 if(userDoc.type === 'candidate'){
-                    const candidateDoc = await candidateProfile.findOne({_creator : userDoc._id}).lean();
-
                     res.send({
-                        candidateDoc :  candidateDoc
+                        candidateDoc :  userDoc
                     });
 
                 }

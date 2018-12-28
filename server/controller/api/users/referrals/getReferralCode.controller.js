@@ -2,7 +2,6 @@ const crypto = require('crypto');
 const referral = require('../../../../model/referrals');
 const user = require('../../../../model/users');
 const employerProfile = require('../../../../model/employer_profile');
-const candidateProfile = require('../../../../model/candidate_profile');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
@@ -15,11 +14,10 @@ module.exports = async function (req, res) {
 
         if(userDoc){
             if(userDoc.type === 'candidate'){
-                const candidateDoc = await candidateProfile.findOne({_creator : userDoc._id}).lean();
-                if(candidateDoc.first_name){
+                if(userDoc.first_name){
                     res.send({
                         email : userDoc.email,
-                        name : candidateDoc.first_name,
+                        name : userDoc.first_name,
                         referred_id : refDoc._id
                     });
                 }

@@ -1,6 +1,5 @@
 const User = require('../../../../model/users');
 const errors = require('../../../services/errors');
-const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 
 module.exports = async function (req,res) {
@@ -9,7 +8,7 @@ module.exports = async function (req,res) {
     const timestamp = new Date();
     if(queryBody.statusName === 'marketingEmail') {
         if(user.type === 'candidate') {
-            await CandidateProfile.update({ _creator : user._id },{ $set: {marketing_emails : queryBody.statusValue} });
+            await User.update({ _id : user._id },{ $set: {marketing_emails : queryBody.statusValue} });
         }
         if(user.type === 'company') {
             await EmployerProfile.update({ _creator : user._id },{ $set: {marketing_emails : queryBody.statusValue} });

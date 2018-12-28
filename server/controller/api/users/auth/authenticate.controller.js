@@ -1,5 +1,4 @@
 const User = require('../../../../model/users');
-const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
@@ -43,10 +42,8 @@ module.exports = async function (req, res) {
                 if(userDoc.type === 'candidate') {
                     let jwtUserToken = jwtToken.createJwtToken(userDoc);
                     await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
-                    const candidateDoc = await CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
                     res.send({
-                        _id: candidateDoc._id,
-                        _creator: userDoc._id,
+                        _id: userDoc._id,
                         email: userDoc.email,
                         email_hash: userDoc.email_hash,
                         is_admin: userDoc.is_admin,

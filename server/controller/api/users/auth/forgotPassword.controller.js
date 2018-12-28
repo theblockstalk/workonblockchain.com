@@ -3,7 +3,6 @@ const User = require('../../../../model/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
-const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 
 module.exports = async function (req,res) {
@@ -30,14 +29,11 @@ module.exports = async function (req,res) {
             await User.update({ _id: userDoc._id },{ $set: {'forgot_password_key': forgotPasswordToken } });
             if(userDoc.type === 'candidate') {
                 let name;
-                const candidateDoc = await CandidateProfile.find({_creator : userDoc._id}).populate('_creator').lean();
-                if(candidateDoc && candidateDoc.length > 0 && candidateDoc[0].first_name) {
-                    name = candidateDoc[0].first_name;
+                const candidateDoc = await User.find({_id : userDoc._id}).lean();
+                if(candidateDoc && candidateDoc.first_name) {
+                    name = candidateDoc.first_name;
                 }
-                else
-                {
-                    name = null;
-                }
+
                 forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);
                 res.send({
                     success : true
@@ -48,9 +44,6 @@ module.exports = async function (req,res) {
                 const companyDoc = await EmployerProfile.find({_creator : userDoc._id}).populate('_creator').lean();
                 if(companyDoc && companyDoc.length > 0 ) {
                     name = companyDoc[0].first_name;
-                }
-                else {
-                    name = null;
                 }
 
                 forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);

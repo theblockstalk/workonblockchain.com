@@ -27,6 +27,7 @@ const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData
 		const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);
 
 		//candidateDoc = filterWhiteListFields(candidateDoc, anonymosCandidateFields);
+
 	    candidateDoc.candidate.work_history = candidateDoc.candidate.work_history.map((work) => {
 	        delete work.companyname;
 	        return work;
@@ -39,7 +40,6 @@ const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData
 	delete candidateDoc.candidate.github_account;
 	delete candidateDoc.candidate.stackexchange_account;
 	delete candidateDoc.email;
-   //console.log(candidateDoc);
     return candidateDoc;
 };
 
@@ -69,7 +69,6 @@ const createInitials = module.exports.createInitials = function createInitials(f
 
 module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
     const acceptedJobOffer = await Chat.find({sender_id: candidateDoc._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
-    console.log(acceptedJobOffer);
     if (acceptedJobOffer && acceptedJobOffer.length>0)
         return removeSensativeData(candidateDoc);
 

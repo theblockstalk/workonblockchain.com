@@ -1,5 +1,4 @@
 const User = require('../../../../model/users');
-const CandidateProfile = require('../../../../model/candidate_profile');
 const EmployerProfile = require('../../../../model/employer_profile');
 const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');
 const errors = require('../../../services/errors');
@@ -9,21 +8,14 @@ module.exports = async function verify_send_email(emailAddress, verifyEmailToken
     if(userDoc) {
         if(userDoc.type === 'candidate') {
             let name;
-            const candidateDoc = await CandidateProfile.find({_creator : userDoc._id}).populate('_creator').lean();
-            if(candidateDoc && candidateDoc.length > 0 ) {
-                if(candidateDoc[0].first_name) {
-                    name = candidateDoc[0].first_name;
-                }
-                else {
-                    name = null;
-                }
-                verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
-                return true;
+            if(userDoc.first_name){
+                name = userDoc.first_name;
             }
             else {
-                verifyEmailEmail.sendEmail(userDoc.email, null ,verifyEmailToken);
-                return true;
+                name = null;
             }
+            verifyEmailEmail.sendEmail(userDoc.email, null ,verifyEmailToken);
+            return true;
         }
         if(userDoc.type === 'company') {
             let name;

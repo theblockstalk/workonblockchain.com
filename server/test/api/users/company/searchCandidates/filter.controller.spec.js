@@ -37,7 +37,6 @@ describe('search candidates as company', function () {
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            console.log(candidateUserDoc);
             const params = {
                 positions: candidateUserDoc.candidate.roles,
                 locations: candidateUserDoc.candidate.locations,
