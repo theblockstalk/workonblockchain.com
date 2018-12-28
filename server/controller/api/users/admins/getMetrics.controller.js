@@ -1,4 +1,3 @@
-const Candidate = require('../../../../model/candidate_profile');
 const User = require('../../../../model/users');
 const enumerations = require('../../../../model/enumerations');
 const settings = require('../../../../settings');
