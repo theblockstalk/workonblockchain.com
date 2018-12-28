@@ -64,13 +64,14 @@
               <label class = "col-md-12 noo_padding">
                 <p class="label-p">Available annual salary and currency?</p></label>
 
-              <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control col-md-6 text_col" id="" placeholder="100000">
+              <input type="number" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control col-md-6 text_col" id="" placeholder="100000">
 
               <select title ="(select currency)" formControlName = "current_currency" id = "currencySelected" class="selectpicker col-md-6 sel_padd">
 
                 <option class='option' *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
 
               </select>
+
               <div class = "form_error" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary ">
                 <span class = "error">{{current_currency_log}}</span>
               </div>
