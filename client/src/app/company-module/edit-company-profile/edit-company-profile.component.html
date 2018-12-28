@@ -243,7 +243,7 @@
                     <option class='option' *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
 
                   </select>
-                  <div class = "form_error" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary ">
+                  <div class = "form_error" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary || current_currency_log ">
                     <span class = "error">{{current_currency_log}}</span>
                   </div>
                 </div>
