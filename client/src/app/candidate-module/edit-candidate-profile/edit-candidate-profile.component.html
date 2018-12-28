@@ -64,7 +64,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Github account URL (optional)</label>
-                  <input type="text" #gitaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="github_account" [(ngModel)]="info.github_account" placeholder=" https://github.com/username">
+                  <input type="text" #gitaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="github_account" [(ngModel)]="info.github_account" placeholder="https://github.com/username">
                   <div class = "invalid-feedback d-inline" *ngIf="gitaccount.errors">
                     Enter url in proper format
                   </div>
