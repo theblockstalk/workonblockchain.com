@@ -491,7 +491,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Employment contract</label>
-                <input id="my_aa" #Image type="file" (change)="show_file_name()" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" name="image" [(ngModel)]="credentials.employment_contract" class="form-control" />
+                <input id="my_aa" #Image type="file" (change)="show_file_name()" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" name="image" [(ngModel)]="credentials.employment_contract" class="form-control border-0"/>
                 <label id="fileLabel">
                   <span *ngIf="img_name">{{img_name}}</span>
                   <span *ngIf="!img_name">Upload contract file (optional)</span>
@@ -558,7 +558,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div class="form-group">
                 <label>Job description:</label>
                 <p class="job_decs" [innerHTML]="new_msgss[0].description | safeHtml">
