@@ -33,7 +33,7 @@
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link}}" readonly #userinput />
               </span>
-                <button class = "btn btn-default" (click)="copyInputMessage(userinput)">Copy Link</button>
+                <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy Link</button>
               </div>
               <div class = "twitter-share-button">
                 <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
@@ -119,14 +119,14 @@
             </div>
             <div class="col"></div>
 
-            <div class="col-md-12" *ngIf="ref_link_for_not_logged_user">
+            <div class="col-md-12 p-0" *ngIf="ref_link_for_not_logged_user">
               <div class = "wob-bg-secondary3 px-4 py-4">
                 <h4 class = "text-white">Your invite link</h4>
                 <div class = "form-group bg-white">
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link_for_not_logged_user}}" readonly #newRefLink />
               </span>
-                  <button class = "btn btn-default ml-5" (click)="copyInputMessage(newRefLink)">Copy Link</button>
+                  <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(newRefLink)">Copy Link</button>
                 </div>
                 <!--<div class = "twitter-share-button">
                   <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
