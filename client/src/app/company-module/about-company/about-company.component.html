@@ -35,7 +35,7 @@
                 <div class="col-md-6">
                     <div class="form-group w-100">
                       <label>When was the company founded?</label>
-                      <input type="number" class="form-control" required placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
+                      <input type="number" class="form-control" required placeholder="2000" name="company_founded" [(ngModel)]="company_founded" >
                       <div class="invalid-feedback d-inline" *ngIf="!company_founded">
                         {{founded_log}}
                       </div>
@@ -45,7 +45,7 @@
                 <div class="col-md-6">
                   <div class="form-group w-100">
                     <label>How is the company funded?</label>
-                    <input type="text" class="form-control" required placeholder="How's company funded?" name="company_funded" [(ngModel)]="company_funded">
+                    <input type="text" class="form-control" required placeholder="Private investment from the founders and one angle" name="company_funded" [(ngModel)]="company_funded">
                     <div class="invalid-feedback d-inline" *ngIf="!company_funded">
                       {{funded_log}}
                     </div>
@@ -59,7 +59,7 @@
                 <div class="col-md-6">
                   <div class="form-group w-100">
                     <label>Number of employees?</label>
-                    <input type="number" class="form-control" required placeholder="Number of employees?" name="no_of_employees" [(ngModel)]="no_of_employees">
+                    <input type="number" class="form-control" required placeholder="10" name="no_of_employees" [(ngModel)]="no_of_employees">
                     <div class="invalid-feedback d-inline" *ngIf="!no_of_employees">
                       {{employee_log}}
                     </div>
@@ -85,7 +85,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                       <label>Company description</label>
-                      <textarea name="company_description" [(ngModel)]="company_description" placeholder="Company description" class="form-control" rows="3"></textarea>
+                      <textarea name="company_description" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
                       <div class="invalid-feedback d-inline" *ngIf="!company_description">
                         {{des_log}}
                       </div>

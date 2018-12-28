@@ -213,7 +213,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="validationCustom02">Location</label>
-                <input type="text" id="validationCustom02" name="location" [(ngModel)]="credentials.location" class="form-control" id="" placeholder="London">
+                <input type="text" id="validationCustom02" name="location" [(ngModel)]="credentials.location" class="form-control" placeholder="London">
 
               </div>
             </div>
@@ -223,7 +223,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="validationCustomSalary">Salary</label>
-                <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" id="" placeholder="$2000">
+                <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="1000">
               </div>
             </div>
             <div class="col-md-6">

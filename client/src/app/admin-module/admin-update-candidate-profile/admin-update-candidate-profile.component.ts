@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef, } from '@angular/core';
+import { Component, OnInit ,ElementRef, AfterViewInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
@@ -9,13 +9,14 @@ import { DataService } from "../../data.service";
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import { DatePipe } from '@angular/common';
+declare var $:any;
 
 @Component({
   selector: 'app-admin-update-candidate-profile',
   templateUrl: './admin-update-candidate-profile.component.html',
   styleUrls: ['./admin-update-candidate-profile.component.css']
 })
-export class AdminUpdateCandidateProfileComponent implements OnInit  {
+export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewInit {
 
   currentUser: User;
   info: any = {}; log;
@@ -114,6 +115,16 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
+  }
+
+  ngAfterViewInit(): void
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
+    window.scrollTo(0, 0);
+
   }
 
   private education_data(): FormGroup[]
