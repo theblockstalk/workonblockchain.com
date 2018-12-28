@@ -357,6 +357,10 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.preferncesForm.value.current_salary) {
       this.current_currency_log = "Please select available annual salary and currency";
     }
+    let reg = new RegExp('^[0-9]+$');
+    if(!this.preferncesForm.value.current_salary.match(reg)){
+      this.current_currency_log = "Salary should be a number";
+    }
     /*if(!this.preferncesForm.value.blockchain || this.preferncesForm.value.blockchain.length === 0) {
       this.blockchain_log = "Please select blockchain technologies";
     }
@@ -370,7 +374,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
       this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && this.preferncesForm.value.current_salary &&
-      this.preferncesForm.value.when_receive_email_notitfications) {
+      this.preferncesForm.value.when_receive_email_notitfications && this.preferncesForm.value.current_salary.match(reg)) {
 
       this.saved_searches.push(this.preferncesForm.value);
       this.authenticationService.candidate_prefernece(this.saved_searches)
