@@ -229,13 +229,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         .subscribe(data =>
           {
             if(data)
-              this.info.email = data['_creator'].email;
-            if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['_creator'].candidate)
+              this.info.email = data['email'];
+            if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
             {
 
               this.info.contact_number = data['contact_number'];
-              this.info.github_account = data['github_account'];
-              this.info.exchange_account = data['stackexchange_account'];
+              this.info.github_account = data['candidate'].github_account;
+              this.info.exchange_account = data['candidate'].stackexchange_account;
               this.info.nationality = data['nationality'];
               this.info.first_name =data['first_name'];
               this.info.last_name =data['last_name'];
@@ -250,21 +250,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 this.img_src = last;
               }
 
-              if(data['_creator'].candidate && data['_creator'].candidate.base_country)
+              if(data['candidate'] && data['candidate'].base_country)
               {
-                this.info.base_country = data['_creator'].candidate.base_country;
+                this.info.base_country = data['candidate'].base_country;
               }
-              if(data['_creator'].candidate && data['_creator'].candidate.base_city){
-                this.info.city = data['_creator'].candidate.base_city;
+              if(data['candidate'] && data['candidate'].base_city){
+                this.info.city = data['candidate'].base_city;
               }
 
 
             }
 
-            if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.commercial_skills && data['_creator'].candidate.blockchain.commercial_skills.length>0)
+            if(data['candidate'] && data['candidate'].blockchain && data['candidate'].blockchain.commercial_skills && data['candidate'].blockchain.commercial_skills.length>0)
             {
-              this.commercialSkillsExperienceYear = data['_creator'].candidate.blockchain.commercial_skills;
-              for (let key of data['_creator'].candidate.blockchain.commercial_skills)
+              this.commercialSkillsExperienceYear = data['candidate'].blockchain.commercial_skills;
+              for (let key of data['candidate'].blockchain.commercial_skills)
               {
                 for(var i in key)
                 {
@@ -304,10 +304,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
             }
 
 
-            if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.formal_skills && data['_creator'].candidate.blockchain.formal_skills.length>0)
+            if(data['candidate'] && data['candidate'].blockchain && data['candidate'].blockchain.formal_skills && data['candidate'].blockchain.formal_skills.length>0)
             {
-              this.formal_skills = data['_creator'].candidate.blockchain.formal_skills;
-              for (let key of data['_creator'].candidate.blockchain.formal_skills)
+              this.formal_skills = data['candidate'].blockchain.formal_skills;
+              for (let key of data['candidate'].blockchain.formal_skills)
               {
                 for(var i in key)
                 {
@@ -346,10 +346,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
             }
 
-            if(data['locations'] && data['roles'] && data['interest_area'] &&  data['expected_salary'] && data['availability_day'] && data['expected_salary_currency'])
+            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas &&  data['candidate'].expected_salary && data['candidate'].availability_day && data['candidate'].expected_salary_currency)
             {
 
-              for (let country1 of data['locations'])
+              for (let country1 of data['candidate'].locations)
               {
 
                 for(let option of this.options)
@@ -366,7 +366,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
               }
 
-              for(let interest of data['interest_area'])
+              for(let interest of data['candidate'].interest_areas)
               {
 
                 for(let option of this.area_interested)
@@ -383,7 +383,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
               }
 
-              for (let area of data['roles'])
+              for (let area of data['candidate'].roles)
               {
 
                 for(let option of this.dropdown_options)
@@ -399,21 +399,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
               }
 
-              this.expected_salaryyy = data['expected_salary'];
+              this.expected_salaryyy = data['candidate'].expected_salary;
 
-              this.availability_day = data['availability_day'];
-              if(data['expected_salary_currency'])
-                this.base_currency = data['expected_salary_currency'];
+              this.availability_day = data['candidate'].availability_day;
+              if(data['candidate'].expected_salary_currency)
+                this.base_currency = data['candidate'].expected_salary_currency;
             }
 
-            if(data['commercial_platform'] || data['experimented_platform'] || data['why_work'] || data['platforms'])
+            if(data['candidate'].blockchain.commercial_platforms || data['candidate'].blockchain.experimented_platforms || data['candidate'].why_work || data['candidate'].blockchain.smart_contract_platforms)
             {
-              this.why_work=data['why_work'];
+              this.why_work=data['candidate'].why_work;
 
-              if(data['commercial_platform'])
+              if(data['candidate'].blockchain.commercial_platforms)
               {
-                this.commercial_expYear =data['commercial_platform'];
-                for (let key of data['commercial_platform'])
+                this.commercial_expYear = data['candidate'].blockchain.commercial_platforms;
+                for (let key of data['candidate'].blockchain.commercial_platforms)
                 {
                   for(var i in key)
                   {
@@ -455,10 +455,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
 
 
-              if(data['platforms'])
+              if(data['candidate'].blockchain.smart_contract_platforms)
               {
-                this.platforms = data['platforms'];
-                for (let key of data['platforms'])
+                this.platforms = data['candidate'].blockchain.smart_contract_platforms;
+                for (let key of data['candidate'].blockchain.smart_contract_platforms)
                 {
                   for(var i in key)
                   {
@@ -502,10 +502,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
 
 
-              if(data['experimented_platform'])
+              if(data['candidate'].blockchain.experimented_platforms)
               {
                 this.experimented_platform = [];
-                for (let plat of data['experimented_platform'])
+                for (let plat of data['candidate'].blockchain.experimented_platforms)
                 {
 
                   for(let option of this.experimented)
@@ -524,12 +524,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
             }
 
-            if(data['work_history'] && data['education_history'] || data['programming_languages'])
+            if(data['candidate'].work_history && data['candidate'].education_history || data['candidate'].programming_languages)
             {
 
-              this.jobData = data['work_history'];
+              this.jobData = data['candidate'].work_history;
 
-              for(let data1 of data['work_history'])
+              for(let data1 of data['candidate'].work_history)
               {
                 this.current_work_check.push(data1.currentwork);
 
@@ -541,16 +541,16 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 )
               });
 
-              this.eduData = data['education_history'];
+              this.eduData = data['candidate'].education_history;
               this.EducationForm = this._fb.group({
                 itemRows: this._fb.array(
                   this.education_data()
                 )
               });
-              if(data['programming_languages'])
+              if(data['candidate'].programming_languages)
               {
-                this.LangexpYear = data['programming_languages'];
-                for (let key of data['programming_languages'])
+                this.LangexpYear = data['candidate'].programming_languages;
+                for (let key of data['candidate'].programming_languages)
                 {
                   for(var i in key)
                   {
@@ -589,10 +589,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }
               }
 
-              this.salary = data['current_salary'];
-              this.Intro =data['description'];
-              if(data['current_currency'])
-                this.current_currency =data['current_currency'];
+              this.Intro =data['candidate'].description;
+
+              if(data['candidate'].current_currency ){
+                this.current_currency =data['candidate'].current_currency;
+              }
+              if(data['candidate'].current_salary) {
+                this.salary = data['candidate'].current_salary;
+              }
 
             }
           },
@@ -815,7 +819,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(index > -1)
     {
       this.commercially_worked.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'platform_name', obj.value);
+      let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'name', obj.value);
       let index2 = this.commercial_expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -841,7 +845,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(index > -1)
     {
       this.platforms_designed.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.platforms, 'platform_name', obj.value);
+      let updateItem2 = this.findObjectByKey(this.platforms, 'name', obj.value);
       let index2 = this.platforms.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -865,7 +869,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   {
 
 
-    let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
+    let updateItem = this.findObjectByKey(this.commercial_expYear, 'name', value);
 
     let index = this.commercial_expYear.indexOf(updateItem);
 
@@ -874,14 +878,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
       this.commercial_expYear.splice(index, 1);
       this.value=value;
-      this.referringData = { platform_name :this.value, exp_year: e.target.value};
+      this.referringData = { name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
 
     }
     else
     {
       this.value=value;
-      this.referringData = { platform_name :this.value, exp_year: e.target.value};
+      this.referringData = { name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
 
     }
@@ -893,7 +897,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   onPlatformYearOptions(e, value)
   {
 
-    let updateItem = this.findObjectByKey(this.platforms, 'platform_name', value);
+    let updateItem = this.findObjectByKey(this.platforms, 'name', value);
     let index = this.platforms.indexOf(updateItem);
 
     if(index > -1)
@@ -901,14 +905,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
       this.platforms.splice(index, 1);
       this.value=value;
-      this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
+      this.platformreferringData = { name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
 
     }
     else
     {
       this.value=value;
-      this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
+      this.platformreferringData = { name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
     }
 
@@ -1167,7 +1171,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   onRoleYearOptions(e, value)
   {
     this.value=value;
-    this.referringData = { platform_name:this.value, exp_year: e.target.value};
+    this.referringData = { name:this.value, exp_year: e.target.value};
     this.expYearRole.push(this.referringData);
     ////console.log(this.expYearRole);
   }
@@ -1501,24 +1505,24 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               {
                 formData.append('photo', inputEl.files.item(0));
                 this.authenticationService.uploadCandImage(formData)
-                .subscribe(
-                  data => {
-                    if (data['success']) {
-                      this.router.navigate(['/candidate_profile']);
+                  .subscribe(
+                    data => {
+                      if (data['success']) {
+                        this.router.navigate(['/candidate_profile']);
+                      }
+                    },
+                    error => {
+                      if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('googleUser');
+                        localStorage.removeItem('close_notify');
+                        localStorage.removeItem('linkedinUser');
+                        localStorage.removeItem('admin_log');
+                        window.location.href = '/login';
+                      }
                     }
-                  },
-                  error => {
-                    if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                      localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                      localStorage.removeItem('currentUser');
-                      localStorage.removeItem('googleUser');
-                      localStorage.removeItem('close_notify');
-                      localStorage.removeItem('linkedinUser');
-                      localStorage.removeItem('admin_log');
-                      window.location.href = '/login';
-                    }
-                  }
-                );
+                  );
               }
               else
               {
