@@ -133,8 +133,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .error_msg {
-  z-index: 9999;
-  position: relative;
   top: 60px;
   width: 70%;
 }

@@ -40,7 +40,6 @@ export class HeaderComponent implements OnInit {
         this.location = loc;
         let x = loc.split("-");
         this.admin_route = x[0];
-
       } else {
         //this.route = 'Home'
       }

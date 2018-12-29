@@ -1,17 +1,17 @@
 <section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row mb-4">
+    <div class="row mb-2">
       <div class="col-md-12">
         <ul class="nav justify-content-center wizard">
           <li class="nav-item">
             <a routerLink="{{term_link}}" class="nav-link">
-              <i class="{{active_class}}"></i>
+              <i class="{{term_active_class}}"></i>
               Terms & Conditions
             </a>
           </li>
           <li class="nav-item">
             <a routerLink="/prefill-profile" class="nav-link">
-              <i class="{{active_class}}"></i>
+              <i class="{{term_active_class}}"></i>
               Prefill Profile
             </a>
           </li>
@@ -22,19 +22,19 @@
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{link}}" class="nav-link">
-              <i class="{{active_class}}"></i>
+            <a routerLink="{{link}}" class="nav-link btn {{job_disable}}">
+              <i class="{{job_active_class}}"></i>
               Jobs
             </a>
           </li>
           <li class="nav-item px-2">
-            <a routerLink="{{resume_class}}" class="nav-link">
+            <a routerLink="{{resume_class}}" class="nav-link btn {{resume_disable}}">
               <i class="{{resume_active_class}}"></i>
               Blockchain
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{exp_class}}" class="nav-link">
+            <a routerLink="{{exp_class}}" class="nav-link btn {{exp_disable}}">
               <i class="{{exp_active_class}}"></i>
               Experience
             </a>
