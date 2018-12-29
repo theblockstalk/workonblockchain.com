@@ -151,9 +151,9 @@
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}" [checked]="option.checked" (change)="updateCheckedOptions($event)" />
                         <label class="form-check-label">
-                          {{option.name}}
+                          <input type="checkbox" class="form-check-input" value="{{option.value}}" [checked]="option.checked" (change)="updateCheckedOptions($event)" />
+                            {{option.name}}
                         </label>
                       </div>
                     </div>
@@ -175,8 +175,8 @@
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-3 mb-3" *ngFor="let position_option of dropdown_options">
-                        <input class="form-check-input" type="checkbox" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" id="{{position_option}}">
-                        <label class="form-check-label" for="{{position_option}}">
+                        <label class="form-check-label">
+                          <input class="form-check-input" type="checkbox" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" id="{{position_option}}">
                           {{position_option.name}}
                         </label>
                       </div>
@@ -247,8 +247,8 @@
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-4 mb-3" *ngFor='let position_option of area_interested'>
-                        <input type="checkbox" class="form-check-input"  [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
                         <label class="form-check-label" >
+                          <input type="checkbox" class="form-check-input"  [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
                           {{position_option.name}}
                         </label>
                       </div>
@@ -313,9 +313,9 @@
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-3 mb-3" *ngFor="let option of commercially">
-                        <input type="checkbox" class="form-check-input"  value="{{option.value}}"  [checked]="option.checked"              required (change)="oncommerciallyOptions(option)"   />
-                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
                         <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input"  value="{{option.value}}"  [checked]="option.checked"              required (change)="oncommerciallyOptions(option)"   />
+                          <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
                           {{option.name}}
                         </label>
                       </div>
@@ -355,9 +355,9 @@
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-3 mb-3" *ngFor="let option of designed">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onPlatformOptions(option)" required  />
-                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
                         <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onPlatformOptions(option)" required  />
+                          <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
                           {{option.value}}
                         </label>
                       </div>
@@ -396,9 +396,9 @@
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onExpOptions(option)" required  />
-                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
                         <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onExpOptions(option)" required  />
+                          <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
                           {{option.value}}
                         </label>
                       </div>
@@ -419,8 +419,8 @@
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-4 mb-3" *ngFor="let option of otherSkills">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
                         <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
                           {{option.name}}
                         </label>
                       </div>
@@ -459,8 +459,8 @@
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-4 mb-3" *ngFor="let option of otherFormalSkills">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"/>
                         <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"/>
                           {{option.name}}
                         </label>
                       </div>
@@ -508,8 +508,8 @@
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-3 mb-3" *ngFor="let option of language_opt">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onLangExpOptions(option)" required  />
                         <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onLangExpOptions(option)" required  />
                           {{option.name}}
                         </label>
                       </div>
@@ -650,8 +650,8 @@
                         <div class="checkbox">
                           <div class="row ">
                             <div class="form-check" *ngFor="let current of current_work">
-                              <input type="checkbox" (change)="currentWork()"  class="form-check-input" formControlName="currentwork"  [checked]="current_work_check[i] "  value="current.value" />
                               <label class="form-check-label">
+                                <input type="checkbox" (change)="currentWork()"  class="form-check-input" formControlName="currentwork"  [checked]="current_work_check[i] "  value="current.value" />
                                 {{current.name}}
                               </label>
                             </div>

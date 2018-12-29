@@ -51,8 +51,8 @@
             <div class="checkbox">
               <div class="row m-0">
                 <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
-                  <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
                   <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
                     {{option.name}}
                   </label>
                 </div>
@@ -72,8 +72,8 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let position_option of dropdown_options">
-                      <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
                         {{position_option.name}}
                       </label>
                     </div>
@@ -149,8 +149,8 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-4 mb-3" *ngFor="let position_option of area_interested">
-                      <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
                         {{position_option.name}}
                       </label>
                     </div>
