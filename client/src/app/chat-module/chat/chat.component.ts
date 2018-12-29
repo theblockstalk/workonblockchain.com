@@ -78,6 +78,8 @@ export class ChatComponent implements OnInit {
   companyMsgContent = '';
   candidateMsgTitle = '';
   candidateMsgContent = '';
+  salary_currency_select = ["£ GBP" ,"€ EUR" , "$ USD"];
+  employment_type_select = ["Part Time", "Full Time", "Contract"];
 
   constructor(
     private authenticationService: UserService,
@@ -101,7 +103,18 @@ export class ChatComponent implements OnInit {
     }
 
   is_approved;disabled;
+
+  ngAfterViewInit(): void
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
+  }
+
   ngOnInit() {
+    this.credentials.employment_type = -1;
+    this.credentials.currency = -1;
     var styles = document.createElement("link");
     styles.rel = "stylesheet";
     styles.type = "text/css";

@@ -106,8 +106,10 @@
                   <input type="email" class="form-control" placeholder="Email" id="email2" name="email" [(ngModel)]="email"/>
                 </div>
                 <div class="checkbox">
-                  <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
-                  <label> I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.</label>
+                  <label>
+                    <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+                    I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.
+                  </label>
                 </div>
                 <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "alert alert-danger">
                   <span class = "error">{{terms_log}}</span>

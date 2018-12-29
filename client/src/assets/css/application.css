@@ -118,9 +118,23 @@ input[type=number]::-webkit-outer-spin-button {
   background-image: url('../images/blockchain-header.jpg');
   color: #fff;
 }
+/*CSS for referral page ends*/
 
 .cookie_bar{
   bottom: 0px;
   z-index: 9999;
 }
-/*CSS for referral page ends*/
+
+.navbar-toggler {
+  border-color: rgb(72, 72, 72);
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(9,55,244, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.error_msg {
+  z-index: 9999;
+  position: relative;
+  top: 60px;
+  width: 70%;
+}

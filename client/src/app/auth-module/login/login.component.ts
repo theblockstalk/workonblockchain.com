@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   type;
   user;data;result;googleUser;linkedinUser;
   code; ref_msg;
+  button_status = '';
 
   message:string;
   error;
@@ -66,6 +67,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   previousUrl;
   login(loginForm: NgForm)
   {
+    this.button_status="submit";
     this.message='';
     this.type='candidate';
 

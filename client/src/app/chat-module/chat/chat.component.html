@@ -436,6 +436,17 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
+                <label>Employment type</label>
+                <select class="form-control selectpicker" name="employment_type" [(ngModel)]="credentials.employment_type">
+                  <option value="-1" disabled selected hidden>Select employment type</option>
+                  <option *ngFor='let type of employment_type_select' [value]="type" [attr.selected]="type === credentials.employment_type? true : null">{{type}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
                 <label>Yearly base salary:</label>
                 <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" placeholder="10000">
                 <div class = "form_error" >
@@ -443,26 +454,12 @@
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label>Currency </label>
-                <select class="form-control" name="currency" [(ngModel)]="credentials.currency" id="sel1">
-                  <option>£ GBP</option>
-                  <option>€ EUR</option>
-                  <option>$ USD</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Employment type</label>
-                <select class="form-control" name="employment_type" [(ngModel)]="credentials.employment_type" id="sel1">
-                  <option>Part Time</option>
-                  <option>Full Time</option>
-                  <option>Contract</option>
+                <select class="form-control selectpicker" name="currency" [(ngModel)]="credentials.currency" id="sel1">
+                  <option value="-1" disabled selected hidden>Select currency</option>
+                  <option *ngFor='let yearly_salary_curency of salary_currency_select' [value]="yearly_salary_curency" [attr.selected]="yearly_salary_curency === credentials.currency? true : null">{{yearly_salary_curency}}</option>
                 </select>
               </div>
             </div>
@@ -472,7 +469,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Start date</label>
-                <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="credentials.start_date" required placeholder="10000"></my-date-picker>
+                <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="credentials.start_date" required placeholder="01/01/1970"></my-date-picker>
               </div>
             </div>
           </div>

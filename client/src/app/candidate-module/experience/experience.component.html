@@ -59,8 +59,8 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of language_opt">
-                      <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)" required #lang  />
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)" required #lang  />
                         {{option.name}}
                       </label>
                     </div>
@@ -195,8 +195,8 @@
                       <div class="checkbox">
                         <div class="row ">
                           <div class="form-check" *ngFor="let current of current_work">
-                            <input type="checkbox" (change)="currentWork()" class="form-check-input" formControlName="currentwork"  [checked]="current_work_check[i] "  value="current.value" />
                             <label class="form-check-label">
+                              <input type="checkbox" (change)="currentWork()" class="form-check-input" formControlName="currentwork"  [checked]="current_work_check[i] "  value="current.value" />
                               {{current.name}}
                             </label>
                           </div>
