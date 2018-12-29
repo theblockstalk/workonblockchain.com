@@ -91,7 +91,6 @@
                   <input type="file" class="form-control-file" id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
                   <label>
                     <span *ngIf="img_src" >{{img_src}}</span>
-                    <span *ngIf="!img_src" >Upload Logo (optional)</span>
                   </label>
                   <div class = "invalid-feedback d-inline" *ngIf="image_log">
                     {{image_log}}
