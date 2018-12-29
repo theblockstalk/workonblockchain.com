@@ -28,13 +28,13 @@
             </a>
           </li>
           <li class="nav-item px-2">
-            <a routerLink="{{resume_class}}" class="nav-link">
+            <a routerLink="{{resume_class}}" class="nav-link btn {{resume_disable}}">
               <i class="{{resume_active_class}}"></i>
               Blockchain
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{exp_class}}" class="nav-link">
+            <a routerLink="{{exp_class}}" class="nav-link btn {{exp_disable}}">
               <i class="{{exp_active_class}}"></i>
               Experience
             </a>
@@ -168,7 +168,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Employment availability</label>
-                <select title="Now" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
+                <select title="(select one)" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
                   <option class='option' *ngFor='let start_month of month' [attr.selected]  [value]="start_month" selected>{{start_month}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="!availability_day">
