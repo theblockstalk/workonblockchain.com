@@ -8,7 +8,9 @@
           <div class="col-md-12 ">
             <h3 class="text-center">Login</h3>
           </div>
-          <div class="col-md-8">
+        </div>
+        <div class = "row">
+          <div class="col-md-12">
             <div class="alert alert-success" role="alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
             <div class="alert alert-success" role="alert" *ngIf="message && !error">{{message}}</div>
             <div class="alert alert-success" role="alert" *ngIf="password_message && !message ">{{password_message}}</div>
@@ -23,7 +25,10 @@
               <div class="form-group">
                 <span><i class="fas fa-envelope mr-1" aria-hidden="true"></i></span>
                 <label for="exampleInputEmail">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail" placeholder="Enter email" name="name" required [(ngModel)]="credentials.email" aria-describedby="emailHelp">
+                <input type="email" class="form-control" id="exampleInputEmail" placeholder="Enter email" name="name" required [(ngModel)]="credentials.email" aria-describedby="emailHelp" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
+                <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
+                  Enter email in correct format like myemail@gmail.com.
+                </div>
               </div>
             </div>
           </div>

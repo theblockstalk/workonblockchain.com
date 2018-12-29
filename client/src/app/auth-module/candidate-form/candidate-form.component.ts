@@ -70,7 +70,7 @@ export class CandidateFormComponent implements OnInit {
   {
     $(function(){
       var hash = window.location.hash;
-      hash && $('div.nav a[href="' + hash + '"]').tab('show');
+      hash && $('ul.nav a[href="' + hash + '"]').tab('show');
       $('.nav-tabs a').click(function (e) {
         $(this).tab('show');
         var scrollmem = $('body').scrollTop();
