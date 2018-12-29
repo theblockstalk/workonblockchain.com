@@ -46,7 +46,7 @@
   </div>
   <div class = "row justify-content-md-center">
     <div class = "col-md-10">
-      <div class="alert alert-danger" role="alert" *ngIf = "msg && close && !success  ">
+      <div class="alert alert-danger  mt-5 pt-3" role="alert" *ngIf = "msg && close && !success  ">
         {{msg}}
       </div>
       <div>
@@ -55,7 +55,7 @@
             <a href="#"  data-dismiss="alert"></a>
             {{success_msg}}
           </div>
-          <div class="alert alert-danger" role="alert" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
+          <div class="alert alert-danger  mt-5 pt-3" role="alert" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
             <a href="#" data-dismiss="alert" ></a>
             Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class="text-primary">here</a>.
           </div>

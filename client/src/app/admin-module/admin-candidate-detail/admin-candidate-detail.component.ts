@@ -104,7 +104,7 @@ export class AdminCandidateDetailComponent implements OnInit {
         this.authenticationService.getById(this.user_id)
           .subscribe(
             data => {
-              this.candidate_status = data['_creator'].candidate.status[0];
+              this.candidate_status = data['candidate'].status[0];
               if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){}
               else{
                 this.set_status = this.candidate_status.status;
@@ -118,40 +118,23 @@ export class AdminCandidateDetailComponent implements OnInit {
                 $("#status_reason_deferred").css("display", "block");
               }
               this.info.push(data);
-              this.approve = data['_creator'].is_approved;
-              this.verify =data['_creator'].is_verify;
-              this.work_history = data['work_history'];
+              this.verify =data['is_verify'];
+              this.work_history = data['candidate'].work_history;
               this.work_history.sort(this.date_sort_desc);
-              this.education_history = data['education_history'];
+              this.education_history = data['candidate'].education_history;
               this.education_history.sort(this.education_sort_desc);
-              this.countries = data['locations'];
+              this.countries = data['candidate'].locations;
               this.countries.sort();
               if(this.countries.indexOf("remote") > -1){
                 this.countries[0] = 'remote';
                 this.countries = this.filter_array(this.countries);
               }
-              this.interest_area =data['interest_area'];
+              this.interest_area =data['candidate'].interest_areas;
               this.interest_area.sort();
-              this.roles  = data['roles'];
+              this.roles  = data['candidate'].roles;
               this.roles.sort();
-              this.commercial = data['commercial_platform'];
-              if(this.commercial && this.commercial.length>0){
-                this.commercial.sort(function(a, b){
-                  if(a.platform_name < b.platform_name) { return -1; }
-                  if(a.platform_name > b.platform_name) { return 1; }
-                  return 0;
-                })
-              }
-              this.experimented = data['experimented_platform'];
-              if(this.experimented && this.experimented.length>0){
-                this.experimented.sort(function(a, b){
-                  if(a.name < b.name) { return -1; }
-                  if(a.name > b.name) { return 1; }
-                  return 0;
-                })
-              }
 
-              this.languages= data['programming_languages'];
+              this.languages= data['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
                 this.languages.sort(function(a, b){
                   if(a.language < b.language) { return -1; }
@@ -160,34 +143,59 @@ export class AdminCandidateDetailComponent implements OnInit {
                 })
               }
 
-              this.platforms=data['platforms'];
-              if(this.platforms && this.platforms.length>0){
-                this.platforms.sort(function(a, b){
-                  if(a.platform_name < b.platform_name) { return -1; }
-                  if(a.platform_name > b.platform_name) { return 1; }
-                  return 0;
-                })
+
+
+              if(data['candidate'] && data['candidate'].blockchain) {
+                if(data['candidate'].blockchain.commercial_platforms){
+                  this.commercial = data['candidate'].blockchain.commercial_platforms;
+                  if(this.commercial && this.commercial.length>0){
+                    this.commercial.sort(function(a, b){
+                      if(a.platform_name < b.platform_name) { return -1; }
+                      if(a.platform_name > b.platform_name) { return 1; }
+                      return 0;
+                    })
+                  }
+                }
+                if(data['candidate'].blockchain.experimented_platforms){
+                  this.experimented = data['candidate'].blockchain.experimented_platforms;
+                  if(this.experimented && this.experimented.length>0){
+                    this.experimented.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    })
+                  }
+                }
+                if(data['candidate'].blockchain.smart_contract_platforms) {
+                  this.platforms=data['candidate'].blockchain.smart_contract_platforms;
+                  if(this.platforms && this.platforms.length>0){
+                    this.platforms.sort(function(a, b){
+                      if(a.platform_name < b.platform_name) { return -1; }
+                      if(a.platform_name > b.platform_name) { return 1; }
+                      return 0;
+                    })
+                  }
+                }
+                if(data['candidate'].blockchain.commercial_skills) {
+                  this.commercial_skills = data['candidate'].blockchain.commercial_skills;
+                  this.commercial_skills.sort(function(a, b){
+                    if(a.skill < b.skill) { return -1; }
+                    if(a.skill > b.skill) { return 1; }
+                    return 0;
+                  })
+                }
+                if(data['candidate'].blockchain.formal_skills){
+                  this.formal_skills = data['candidate'].blockchain.formal_skills;
+                  this.formal_skills.sort(function(a, b){
+                    if(a.skill < b.skill) { return -1; }
+                    if(a.skill > b.skill) { return 1; }
+                    return 0;
+                  })
+                }
+
               }
 
-              if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.commercial_skills && data['_creator'].candidate.blockchain.commercial_skills.length > 0)
-              {
-                this.commercial_skills = data['_creator'].candidate.blockchain.commercial_skills;
-                this.commercial_skills.sort(function(a, b){
-                  if(a.skill < b.skill) { return -1; }
-                  if(a.skill > b.skill) { return 1; }
-                  return 0;
-                })
-              }
 
-              if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.formal_skills && data['_creator'].candidate.blockchain.formal_skills.length > 0)
-              {
-                this.formal_skills = data['_creator'].candidate.blockchain.formal_skills;
-                this.formal_skills.sort(function(a, b){
-                  if(a.skill < b.skill) { return -1; }
-                  if(a.skill > b.skill) { return 1; }
-                  return 0;
-                })
-              }
               if(data['image'] != null )
               {
 
@@ -205,9 +213,9 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.is_approved = "";
               }
 
-              if(data['_creator'].referred_email)
+              if(data['referred_email'])
               {
-                this.authenticationService.getReferenceDetail(data['_creator'].referred_email)
+                this.authenticationService.getReferenceDetail(data['referred_email'])
                   .subscribe(
                     refData => {
 
