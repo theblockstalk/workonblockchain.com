@@ -34,10 +34,10 @@ export class AdminDashboardComponent implements OnInit {
                     if(data)
                     {
                         //this.is_verify = data._creator.is_verify;
-                         this.is_admin = data['_creator'].is_admin;
+                         this.is_admin = data['is_admin'];
                         if(this.is_admin == 1)
                         {
-                            localStorage.setItem('admin_log', JSON.stringify(data['_creator']));
+                            localStorage.setItem('admin_log', JSON.stringify(data));
                         }
                         else
                         {

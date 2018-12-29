@@ -77,14 +77,14 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                         }
                       }
                     );
-                  if(data['terms_id'] ||data['marketing_emails'])
+                  if(data['candidate'].terms_id ||data['marketing_emails'])
                   {
 
                     this.termscondition = true;
                     this.marketing_emails = data['marketing_emails'];
 
                   }
-                  if(data['terms_id'])
+                  if(data['candidate'].terms_id)
                   {
                       this.about_disable = "";
                       this.prefill_disable = "";
@@ -93,7 +93,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.prefill_link = '/prefill-profile';
                       this.about_link="/about";
                   }
-                  if(!data['terms_id'])
+                  if(!data['candidate'].terms_id)
                   {
                     this.termscondition = false;
                   }
@@ -106,7 +106,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                       this.link="/job";
                   }
 
-                  if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'])
+                  if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
                   {
                        this.resume_disable = "";
                       this.link="/job";
@@ -116,7 +116,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                   }
 
 
-                    if(data['why_work'] )
+                    if(data['candidate'].why_work )
                     {
                         this.exp_disable = "";
                         this.resume_class="/resume";
@@ -125,7 +125,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                     // this.router.navigate(['/resume']);
                     }
 
-                    if(data['description'])
+                    if(data['candidate'].description)
                     {
                         this.exp_class = "/experience";
                         this.exp_active_class = 'fa fa-check-circle text-success';
