@@ -86,10 +86,10 @@
 
                       <div class="ml-4">
 
-                        <a  [routerLink]="['/admin-candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
+                        <a  [routerLink]="['/admin-candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
 
                         <h5 class="ml-5">
-                          <span class="badge badge-pill badge-dark mr-1" *ngFor= "let roles of data.roles"> {{roles}} </span>
+                          <span class="badge badge-pill badge-dark mr-1" *ngFor= "let roles of data.candidate.roles"> {{roles}} </span>
                         </h5>
                       </div>
                     </div>
@@ -98,7 +98,7 @@
                   <div class = "col-md-12 m-0 p-4 bg-white">
                     <div class="row">
                       <div class="col-md-12">
-                        <span ><i>{{data.why_work}}</i></span>
+                        <span ><i>{{data.candidate.why_work}}</i></span>
                       </div>
                     </div>
 
@@ -106,20 +106,19 @@
                       <div class="col-sm-8">
                         <h4>Bio</h4>
                         <p>
-                          {{data.description}}
+                          {{data.candidate.description}}
                         </p>
                       </div>
-                      <div class="col-sm-4" *ngIf="data.programming_languages && data.programming_languages.length>0">
+                      <div class="col-sm-4" *ngIf="data.candidate.programming_languages && data.candidate.programming_languages.length>0">
                         <h4>Languages</h4>
                         <div>
-                          <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngFor = 'let lang of sorting(data.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
+                          <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngFor = 'let lang of sorting(data.candidate.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
                         </div>
                       </div>
                     </div>
 
                   </div>
-
-
+                  
                 </div>
               </div>
             </div>
