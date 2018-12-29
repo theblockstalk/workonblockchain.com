@@ -546,7 +546,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     if(index > -1)
     {
       this.commercially_worked.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'platform_name',  obj.value);
+      let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'name',  obj.value);
       let index2 = this.commercial_expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -561,6 +561,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.commercially_worked.push(obj);
     }
 
+    console.log(this.commercially_worked);
+    console.log(this.commercial_expYear)
+
   }
 
   onPlatformOptions(obj)
@@ -571,7 +574,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     if(index > -1)
     {
       this.platforms_designed.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.platforms, 'platform_name', obj.value);
+      let updateItem2 = this.findObjectByKey(this.platforms, 'name', obj.value);
       let index2 = this.platforms.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -619,7 +622,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   onComExpYearOptions(e, value)
   {
     this.langValue = value;
-    let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
+    let updateItem = this.findObjectByKey(this.commercial_expYear, 'name', value);
     let index = this.commercial_expYear.indexOf(updateItem);
 
     if(index > -1)
@@ -627,14 +630,14 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       this.commercial_expYear.splice(index, 1);
       this.value=value;
-      this.referringData = { platform_name :this.value, exp_year: e.target.value};
+      this.referringData = { name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
 
     }
     else
     {
       this.value=value;
-      this.referringData = { platform_name :this.value, exp_year: e.target.value};
+      this.referringData = { name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
     }
 
@@ -645,7 +648,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   {
     this.langValue = value;
     /*this.value=value;
-    this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
+    this.platformreferringData = { name:this.value, exp_year: e.target.value};
     this.platforms.push(this.platformreferringData);
     */
 
@@ -657,14 +660,14 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
       this.platforms.splice(index, 1);
       this.value=value;
-      this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
+      this.platformreferringData = { name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
 
     }
     else
     {
       this.value=value;
-      this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
+      this.platformreferringData = { name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
 
     }
