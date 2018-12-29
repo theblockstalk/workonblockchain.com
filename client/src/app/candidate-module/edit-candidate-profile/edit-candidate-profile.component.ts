@@ -1076,9 +1076,18 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     });
   }
 
-
+  currentWork(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+  }
   addNewExpRow()
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
     // control refers to your formarray
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     // add new formgroup
@@ -1103,7 +1112,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 100);
     // control refers to your formarray
     //this.EducationForm.value.itemRows = "";
     const control = <FormArray>this.EducationForm.controls['itemRows'];

@@ -22,7 +22,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Company name</label>
-                    <input name="company_name" [(ngModel)]="company_name"  type="text" class="form-control" placeholder="Company name" required>
+                    <input name="company_name" [(ngModel)]="company_name"  type="text" class="form-control" placeholder="Google Inc." required>
                     <div class="invalid-feedback d-inline" *ngIf="!company_name">
                       {{company_name_log}}
                     </div>
@@ -35,7 +35,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Company website</label>
-                    <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="Company website" required name="company_website" [(ngModel)]="company_website">
+                    <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" required name="company_website" [(ngModel)]="company_website">
                     <div class = "invalid-feedback" *ngIf="!company_website">
                       <span class = "error">{{company_website_log}}</span>
                     </div>
@@ -69,7 +69,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>City name</label>
-                    <input type="text" class="form-control" placeholder="City name" required name="city" [(ngModel)]="company_city">
+                    <input type="text" class="form-control" placeholder="London" required name="city" [(ngModel)]="company_city">
                     <div class="invalid-feedback d-inline" *ngIf="!company_city">
                       {{company_city_log}}
                     </div>
@@ -85,7 +85,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Postal code</label>
-                    <input type="text" class="form-control" placeholder="Postal code" required name="postal_code" [(ngModel)]="company_postcode">
+                    <input type="text" class="form-control" placeholder="SW1 7XL" required name="postal_code" [(ngModel)]="company_postcode">
                     <div class="invalid-feedback d-inline" *ngIf="!company_postcode">
                       {{company_postcode_log}}
                     </div>
@@ -98,7 +98,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Phone number</label>
-                    <input name="phone_number" [(ngModel)]="company_phone"  type="tel" class="form-control" placeholder="Phone number" required>
+                    <input name="phone_number" [(ngModel)]="company_phone"  type="tel" class="form-control" placeholder=" (+1) 123 456 7890" required>
                     <div class="invalid-feedback d-inline" *ngIf="!company_phone">
                       {{company_phone_log}}
                     </div>
@@ -127,7 +127,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>When was the company founded?</label>
-                    <input type="text" class="form-control" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
+                    <input type="text" class="form-control" placeholder="2000" name="company_founded" [(ngModel)]="company_founded" >
                     <div class="invalid-feedback d-inline" *ngIf="!company_founded">
                       {{founded_log}}
                     </div>
@@ -140,7 +140,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>How is the company funded?</label>
-                    <input type="text" class="form-control"  placeholder="How's company funded" name="company_funded" [(ngModel)]="company_funded">
+                    <input type="text" class="form-control"  placeholder="Private investment from the founders and one angle" name="company_funded" [(ngModel)]="company_funded">
                     <div class="invalid-feedback d-inline" *ngIf="!company_funded">
                       {{funded_log}}
                     </div>
@@ -157,7 +157,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Number of employees?</label>
-                    <input type="number" class="form-control" placeholder="Number of employees" name="no_of_employees" [(ngModel)]="no_of_employees">
+                    <input type="number" class="form-control" placeholder="10" name="no_of_employees" [(ngModel)]="no_of_employees">
                     <div class="invalid-feedback d-inline" *ngIf="!no_of_employees">
                       {{employee_log}}
                     </div>
@@ -189,7 +189,7 @@
                   <div class="form-group w-100">
                     <label>Company description</label>
                     <div class="form-group">
-                      <textarea name="company_description" [(ngModel)]="company_description" placeholder="Company description" class="form-control" rows="3"></textarea>
+                      <textarea name="company_description" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
                       <div class="invalid-feedback d-inline" *ngIf="!company_description">
                         {{des_log}}
                       </div>
@@ -218,7 +218,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Email</label>
-                    <input name="email" disabled [(ngModel)]="email" type="text" class="form-control" placeholder="Email" required>
+                    <input name="email" disabled [(ngModel)]="email" type="text" class="form-control" placeholder="johnsmilt@workonblockchain.com" required>
                   </div>
                 </div>
               </div>
@@ -227,7 +227,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>First name</label>
-                    <input name="first_name" [(ngModel)]="first_name" type="text" class="form-control" placeholder="First name" required>
+                    <input name="first_name" [(ngModel)]="first_name" type="text" class="form-control" placeholder="John" required>
                     <div class="invalid-feedback d-inline" *ngIf="!first_name">
                       {{first_name_log}}
                     </div>
@@ -243,7 +243,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Last name</label>
-                    <input name="last_name" [(ngModel)]="last_name"  type="text" class="form-control" placeholder="Last name" required>
+                    <input name="last_name" [(ngModel)]="last_name"  type="text" class="form-control" placeholder="Smith" required>
                     <div class="invalid-feedback d-inline" *ngIf="!last_name">
                       {{last_name_log}}
                     </div>
@@ -256,7 +256,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Job title</label>
-                    <input name="job_title" [(ngModel)]="job_title" type="text" class="form-control" placeholder="Job title" required>
+                    <input name="job_title" [(ngModel)]="job_title" type="text" class="form-control" placeholder="Director" required>
                     <div class="invalid-feedback d-inline" *ngIf="!job_title">
                       {{job_title_log}}
                     </div>
@@ -336,7 +336,7 @@
                   <div class = "form-group w-auto">
                     <label>Available annual salary and currency?</label>
 
-                    <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="100000">
+                    <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="10000">
 
                     <select title="Select currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
                       <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
@@ -381,9 +381,6 @@
             </div>
 
             <div class="row">
-
-
-
 
               <div class="col-md-6">
                 <div class="form-row">

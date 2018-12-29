@@ -77,7 +77,7 @@
                 <div class = "form-group w-auto">
                   <label>Available annual salary and currency?</label>
 
-                  <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="100000">
+                  <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="10000">
 
                   <select title="Select currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
                     <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
@@ -178,7 +178,7 @@
 
 </section>
 
-<div class="modal fade" id="whatHappensNextModal" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div id="whatHappensNextModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-primary">
