@@ -122,7 +122,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
     setTimeout(() => {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 700);
     window.scrollTo(0, 0);
 
   }
@@ -1493,6 +1493,47 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
     }
 
   }
+  addNewExpRow()
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+    // control refers to your formarray
+    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
+    // add new formgroup
+    control.push(this.initExpRows());
+  }
 
+  deleteExpRow(index: number)
+  {
+    // control refers to your formarray
+    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
+    // remove the chosen row
+    control.removeAt(index);
+  }
+
+  addNewRow()
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+    // control refers to your formarray
+    //this.EducationForm.value.itemRows = "";
+    const control = <FormArray>this.EducationForm.controls['itemRows'];
+    // add new formgroup
+    control.push(this.initItemRows());
+  }
+
+
+  deleteRow(index: number)
+  {
+
+    // control refers to your formarray
+    const control = <FormArray>this.EducationForm.controls['itemRows'];
+    // remove the chosen row
+    control.removeAt(index);
+  }
 
 }
