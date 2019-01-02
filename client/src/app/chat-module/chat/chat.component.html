@@ -60,7 +60,7 @@
                           </ng-template>
                           <div class="meta">
                             <p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.company_name }}</b></p>
-                            <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px">
+                            <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
                               <b>{{unread_msgs_info[i].number_of_unread_msgs}}</b>
                             </span>
                           </div>
@@ -127,7 +127,7 @@
                             </span>
                             <span *ngIf="msg.interview_date_time">
                               <b>Interview date & time:</b>
-                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
+                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm'}}
                               <br/>
                             </span>
                             <span *ngIf="msg.interview_location && msg.msg_tag == 'interview_offer'">
@@ -188,7 +188,7 @@
                             </span>
                             <span *ngIf="msg.interview_date_time">
                               <b>Interview date & time:</b>
-                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
+                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm'}}
                               <br/>
                             </span>
                             <span *ngIf="msg.interview_location && msg.msg_tag === 'interview_offer'">
@@ -362,15 +362,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Date:</label>
-                <div class="input-group mb-3">
-                  <input type="text" class="form-control" [(ngModel)]="credentials.date" required placeholder="01/01/1970" id="startdate_datepicker">
+                <!--<div class="input-group mb-3">
+                  <input type="text" class="form-control" name="date" [(ngModel)]="credentials.date" required placeholder="01/01/1970" id="startdate_datepicker">
                   <div class="input-group-append">
                     <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
                   </div>
-                </div>
-                <!--<p>
+                </div>-->
+                <p>
                   <my-date-picker name="mydateinterview" [options]="myDatePickerOptions" [(ngModel)]="credentials.date" required placeholder="01/01/1970"></my-date-picker>
-                </p>-->
+                </p>
               </div>
             </div>
             <div class="col-md-6">
