@@ -35,11 +35,13 @@ export class ReferralComponent implements OnInit {
   termscondition = false;
   terms_log = '';
   log_success = '';
+  twitterText;
 
   constructor(
     private authenticationService: UserService,private titleService: Title,private newMeta: Meta
   ) {
     this.titleService.setTitle('Work on Blockchain | £500 reward for referrals');
+    this.twitterText = 'Start your career in the exciting and breakthrough area of blockchain';
     const url2 = 'https://platform.twitter.com/widgets.js';
     if (!document.querySelector(`script[src='${url2}']`)) {
       let script = document.createElement('script');

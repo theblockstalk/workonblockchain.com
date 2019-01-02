@@ -79,7 +79,7 @@
 
                   <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="10000">
 
-                  <select title="Select currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
+                  <select title="Currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
                     <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary ">
@@ -120,7 +120,7 @@
 
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>When do you need hires to start</label>
+                  <label>When do you need hires to start?</label>
                   <select title="(select one)" formControlName = "availability_day" class="form-control selectpicker">
                     <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
 
@@ -155,7 +155,7 @@
               <div class="form-group">
                 <div class = "text-right mt-3">
                   <a routerLink="/about_comp" class = "btn btn-warning text-white">Back</a>
-                  <button type="submit" class = "btn btn-secondary ml-1">Next</button>
+                  <button type="submit" class = "btn btn-primary ml-1">Next</button>
                 </div>
               </div>
             </div>
