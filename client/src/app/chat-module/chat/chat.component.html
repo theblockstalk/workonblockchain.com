@@ -352,7 +352,7 @@
       <div class="modal-body">
         <form (submit)="send_interview_message(msgForm)" #msgForm = ngForm style="overflow: hidden;">
           <ng-container *ngIf="interview_log;else no_modal">
-            <div class = "model_notif text-center">
+            <div class = "alert alert-danger text-center">
               {{interview_log}}
             </div>
           </ng-container>
@@ -362,15 +362,12 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Date:</label>
-                <!--<div class="input-group mb-3">
-                  <input type="text" class="form-control" name="date" [(ngModel)]="credentials.date" required placeholder="01/01/1970" id="startdate_datepicker">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" name="date" [(ngModel)]="credentials.date" is-open="date.opened" required placeholder="01/01/1970" id="startdate_datepicker">
                   <div class="input-group-append">
                     <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
                   </div>
-                </div>-->
-                <p>
-                  <my-date-picker name="mydateinterview" [options]="myDatePickerOptions" [(ngModel)]="credentials.date" required placeholder="01/01/1970"></my-date-picker>
-                </p>
+                </div>
               </div>
             </div>
             <div class="col-md-6">
@@ -405,7 +402,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group text-right">
-                <button type="submit" [disabled]="!credentials.date || !credentials.time || !credentials.location" class="btn btn-primary model-btn submit">Send</button>
+                <button type="submit" [disabled]="!credentials.time || !credentials.location" class="btn btn-primary model-btn submit">Send</button>
               </div>
             </div>
           </div>
@@ -475,7 +472,12 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Start date:</label>
-                <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="credentials.start_date" required placeholder="01/01/1970"></my-date-picker>
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" name="date" [(ngModel)]="credentials.start_date" is-open="date.opened" required placeholder="01/01/1970" id="startdate_datepicker_employ">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
