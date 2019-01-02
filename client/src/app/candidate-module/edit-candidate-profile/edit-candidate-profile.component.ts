@@ -622,7 +622,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 600);
   }
 
 
@@ -925,7 +925,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     return null;
   }
 
-  calen_month= ["January","Februray","March","April","May","June","July","August","September","October","November","December"]
+  calen_month= ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
 
   language_opt=

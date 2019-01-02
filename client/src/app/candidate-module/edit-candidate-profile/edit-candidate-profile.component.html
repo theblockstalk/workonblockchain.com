@@ -679,7 +679,7 @@
                 </div>
                 <div class="col-md-12 p-0">
                   <div class = "form-group">
-                    <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>
+                    <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add position</a>
                   </div>
                 </div>
               </div>
@@ -749,7 +749,7 @@
                 </div>
                 <div class="col-md-12 p-0">
                   <div class = "form-group">
-                    <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>
+                    <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add education</a>
                   </div>
                 </div>
               </div>
@@ -773,7 +773,8 @@
           </section>
 
           <div class = "form-group text-right">
-            <button type="submit" class = "btn btn-secondary" [disabled] = "(current_salary.errors && salary) || (expect_salary.errors && expected_salaryyy)" >Save Profile</button>
+            <a routerLink="/candidate_profile" class = "btn btn-secondary text-white mr-2">Cancel</a>
+            <button type="submit" class = "btn btn-primary" [disabled] = "(current_salary.errors && salary) || (expect_salary.errors && expected_salaryyy)" >Save</button>
             <br/>
             <div class = "invalid-feedback d-inline mt-2" *ngIf="error_msg">
               {{error_msg}}
