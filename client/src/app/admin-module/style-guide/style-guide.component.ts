@@ -44,5 +44,5 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
     $("#startdate_datepicker").datepicker();
 
   }
-  
+
 }
