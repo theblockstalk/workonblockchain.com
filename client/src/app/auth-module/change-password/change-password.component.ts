@@ -17,6 +17,7 @@ export class ChangePasswordComponent implements OnInit {
   confirm_password;
   id;
   log;
+  buttonSubmit;
 
   constructor( private route: ActivatedRoute,
                private router: Router,
@@ -39,7 +40,7 @@ export class ChangePasswordComponent implements OnInit {
   change_password(formdata: NgForm)
   {
 
-
+    this.buttonSubmit = 'submit';
     if(!this.credentials.current_password)
     {
 
@@ -59,16 +60,14 @@ export class ChangePasswordComponent implements OnInit {
 
     }
 
-    if(this.credentials.password && this.credentials.current_password && this.credentials.password == this.credentials.confirm_password)
+    if(formdata.valid === true && this.credentials.password && this.credentials.current_password && this.credentials.password == this.credentials.confirm_password)
     {
-      console.log("if");
       this.confirm_password='';
 
       this.authenticationService.change_password(this.credentials)
         .subscribe(
           data =>
           {
-console.log(data);
               this.log='';
 
               localStorage.setItem('password_change_msg', JSON.stringify("Your password has been successfully changed. Please log back in to continue!"));
