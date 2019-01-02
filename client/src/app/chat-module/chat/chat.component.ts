@@ -110,6 +110,12 @@ export class ChatComponent implements OnInit {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
     }, 500);
+    $("#startdate_datepicker").datepicker({
+      startDate: '-1'
+    });
+    $("#startdate_datepicker_employ").datepicker({
+      startDate: '-1'
+    });
   }
 
   ngOnInit() {
@@ -667,7 +673,8 @@ export class ChatComponent implements OnInit {
     this.job_offer_log = '';
     this.file_msg = '';
     this.img_name = '';
-    if (this.credentials.date && this.credentials.time && this.credentials.location) {
+    let interview_date = $('#startdate_datepicker').val();
+    if (interview_date && this.credentials.time && this.credentials.location) {
       $("#myModal").modal("hide");
       //console.log('interview');
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -679,7 +686,7 @@ export class ChatComponent implements OnInit {
         this.description = this.credentials.description;
       }
       //console.log(this.credentials.msg_body);
-      this.date_of_joining = this.credentials.date.formatted;
+      this.date_of_joining = interview_date;
       this.interview_location = this.credentials.location;
       this.interview_time = this.credentials.time;
       this.authenticationService.insertMessage(this.credentials.id, this.display_name, this.credentials.email, this.credentials.msg_body, this.description, this.job_title, this.salary, this.salary_currency, this.date_of_joining, this.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
@@ -743,18 +750,18 @@ export class ChatComponent implements OnInit {
       let toArray = inputEl.files.item(0).type.split("/");
       if (inputEl.files.item(0).size <= this.file_size && (toArray[0] === 'image' || inputEl.files.item(0).type === 'application/pdf' || inputEl.files.item(0).type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
         formData.append('photo', inputEl.files.item(0));
-        //console.log(inputEl.files.item(0));
-          if (this.credentials.job_title && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description) {
-            if (this.credentials.base_salary && Number(this.credentials.base_salary) && (Number(this.credentials.base_salary)) > 0 && this.credentials.base_salary % 1 === 0) {
-              this.send_employment_offer(this.credentials, 1,formData);
-            }
-            else {
-              this.job_offer_log = 'Salary should be a number';
-            }
+        this.credentials.start_date = $('#startdate_datepicker_employ').val();
+        if (this.credentials.job_title && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description) {
+          if (this.credentials.base_salary && Number(this.credentials.base_salary) && (Number(this.credentials.base_salary)) > 0 && this.credentials.base_salary % 1 === 0) {
+            this.send_employment_offer(this.credentials, 1,formData);
           }
           else {
-            this.job_offer_log = 'Please enter all info';
+            this.job_offer_log = 'Salary should be a number';
           }
+        }
+        else {
+          this.job_offer_log = 'Please enter all info';
+        }
       }
       else {
         this.job_offer_log = 'Only pdf,image & docx are allowed of size less than 1MB';
@@ -1052,7 +1059,7 @@ export class ChatComponent implements OnInit {
               }
             }
           );
-      }, 2000);
+      }, 7000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver
@@ -1208,7 +1215,7 @@ export class ChatComponent implements OnInit {
           formData.append('job_title', my_credentials.job_title);
           formData.append('salary', my_credentials.base_salary);
           formData.append('currency', my_credentials.currency);
-          formData.append('date_of_joining', my_credentials.start_date.formatted);
+          formData.append('date_of_joining', my_credentials.start_date);
           formData.append('job_type', my_credentials.employment_type);
           formData.append('msg_tag', this.msg_tag);
           formData.append('is_company_reply', '1');

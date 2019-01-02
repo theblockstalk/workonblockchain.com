@@ -46,7 +46,7 @@
                           <div class="meta">
                             <p *ngIf="person.initials" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.initials }}</b></p>
                             <p *ngIf="person.first_name" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.first_name }} {{ person.last_name }}</b></p>
-                            <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px">
+                            <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
                               {{unread_msgs_info[i].number_of_unread_msgs}}
                             </span>
                           </div>
@@ -60,7 +60,7 @@
                           </ng-template>
                           <div class="meta">
                             <p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.company_name }}</b></p>
-                            <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px">
+                            <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
                               <b>{{unread_msgs_info[i].number_of_unread_msgs}}</b>
                             </span>
                           </div>
@@ -127,7 +127,7 @@
                             </span>
                             <span *ngIf="msg.interview_date_time">
                               <b>Interview date & time:</b>
-                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
+                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm'}}
                               <br/>
                             </span>
                             <span *ngIf="msg.interview_location && msg.msg_tag == 'interview_offer'">
@@ -165,7 +165,7 @@
                       <ng-template #second>
                         <li class="replies mb-5 col-md-12">
                           <div class="arrow-up"></div>
-                          <p class = "p-2 rec_p bg-info rounded text-light d-inline-block">
+                          <p class = "p-2 rec_p rounded text-light d-inline-block wob-bg-primary1">
                             <span *ngIf="msg.job_title !== ''">
                               <b>Job title:</b>
                               {{msg.job_title}}
@@ -188,7 +188,7 @@
                             </span>
                             <span *ngIf="msg.interview_date_time">
                               <b>Interview date & time:</b>
-                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
+                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm'}}
                               <br/>
                             </span>
                             <span *ngIf="msg.interview_location && msg.msg_tag === 'interview_offer'">
@@ -308,11 +308,11 @@
                           </div>
                           <div class = "col-4 col-sm-4 col-md-3 col-lg-2">
                             <span class = "btn_mobile">
-                              <button class = "send btn btn-primary mb-2 rounded-0" type="submit" id = "btnClick">
+                              <button class = "send btn btn-primary mb-2" type="submit" id = "btnClick">
                                 <i class="fas fa-paper-plane text-light mr-2" aria-hidden="true"></i>
                                 Send
                               </button>
-                              <div class="file btn btn-primary mb-2 rounded-0">
+                              <div class="file btn btn-primary mb-2">
                                 <i class="fa fa-upload" aria-hidden="true"></i>
                                 Upload
                                 <input id="aa" #Image type="file" (change) ="upload_file()" name="file" ng-model='file' class = "file-upload"/>
@@ -352,7 +352,7 @@
       <div class="modal-body">
         <form (submit)="send_interview_message(msgForm)" #msgForm = ngForm style="overflow: hidden;">
           <ng-container *ngIf="interview_log;else no_modal">
-            <div class = "model_notif text-center">
+            <div class = "alert alert-danger text-center">
               {{interview_log}}
             </div>
           </ng-container>
@@ -362,9 +362,12 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Date:</label>
-                <p>
-                  <my-date-picker name="mydateinterview" [options]="myDatePickerOptions" [(ngModel)]="credentials.date" required placeholder="01/01/1970"></my-date-picker>
-                </p>
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" name="date" [(ngModel)]="credentials.date" is-open="date.opened" required placeholder="01/01/1970" id="startdate_datepicker">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-md-6">
@@ -399,7 +402,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group text-right">
-                <button type="submit" [disabled]="!credentials.date || !credentials.time || !credentials.location" class="btn btn-primary model-btn submit">Submit</button>
+                <button type="submit" [disabled]="!credentials.time || !credentials.location" class="btn btn-primary model-btn submit">Send</button>
               </div>
             </div>
           </div>
@@ -438,7 +441,7 @@
               <div class="form-group">
                 <label>Employment type</label>
                 <select class="form-control selectpicker" name="employment_type" [(ngModel)]="credentials.employment_type">
-                  <option value="-1" disabled selected hidden>Select employment type</option>
+                  <option value="-1" disabled selected hidden>(select one)</option>
                   <option *ngFor='let type of employment_type_select' [value]="type" [attr.selected]="type === credentials.employment_type? true : null">{{type}}</option>
                 </select>
               </div>
@@ -447,7 +450,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Yearly base salary:</label>
+                <label>Annual salary:</label>
                 <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" placeholder="10000">
                 <div class = "form_error" >
                   <span class = "error" *ngIf="expect_salary.errors && credentials.base_salary"> Salary should be a number. </span>
@@ -458,7 +461,7 @@
               <div class="form-group">
                 <label>Currency </label>
                 <select class="form-control selectpicker" name="currency" [(ngModel)]="credentials.currency" id="sel1">
-                  <option value="-1" disabled selected hidden>Select currency</option>
+                  <option value="-1" disabled selected hidden>Currency</option>
                   <option *ngFor='let yearly_salary_curency of salary_currency_select' [value]="yearly_salary_curency" [attr.selected]="yearly_salary_curency === credentials.currency? true : null">{{yearly_salary_curency}}</option>
                 </select>
               </div>
@@ -468,8 +471,13 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Start date</label>
-                <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="credentials.start_date" required placeholder="01/01/1970"></my-date-picker>
+                <label>Start date:</label>
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" name="date" [(ngModel)]="credentials.start_date" is-open="date.opened" required placeholder="01/01/1970" id="startdate_datepicker_employ">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -477,7 +485,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Job description</label>
+                <label>Job description:</label>
                 <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
                 </ckeditor>
               </div>
@@ -487,12 +495,12 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Employment contract</label>
-                <input id="my_aa" #Image type="file" (change)="show_file_name()" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" name="image" [(ngModel)]="credentials.employment_contract" class="form-control border-0"/>
+                <label>Employment contract (optional):</label>
                 <label id="fileLabel">
                   <span *ngIf="img_name">{{img_name}}</span>
-                  <span *ngIf="!img_name">Upload contract file (optional)</span>
+                  <!--<span *ngIf="!img_name">Employment contract (optional):</span>-->
                 </label>
+                <input id="my_aa" #Image type="file" (change)="show_file_name()" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" name="image" [(ngModel)]="credentials.employment_contract" class="form-control border-0"/>
               </div>
             </div>
           </div>
@@ -500,7 +508,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group text-right">
-                <button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_description || !credentials.employment_type || !credentials.job_title" class="btn btn-primary model-btn submit">Submit</button>
+                <button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_description || !credentials.employment_type || !credentials.job_title" class="btn btn-primary model-btn submit">Send</button>
               </div>
             </div>
           </div>

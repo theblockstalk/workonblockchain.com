@@ -318,6 +318,19 @@
   </div>
   <div class = "row">
     <div class="col-md-2">
+      <p>Other button</p>
+    </div>
+    <div class="col-md-7">
+      <button type="button" class="btn btn-warning mb-1 text-light">Other buttons</button>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Use for Reject and Cancel the action.</li>
+      </ul>
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col-md-2">
       <p>Google button</p>
     </div>
     <div class="col-md-7">
@@ -478,22 +491,40 @@
     <div class = "col-md-12">
       <ul class="nav justify-content-center wizard">
         <li class="nav-item">
-          <a class="nav-link active" href="#"><i class="fas fa-check-circle"></i> Terms & conditions</a>
+          <a routerLink="/terms-and-condition" class="nav-link">
+            <i class="fa fa-check-circle text-success"></i>
+            Terms & Conditions
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fas fa-check-circle"></i> Prefill profile</a>
+          <a routerLink="/prefill-profile" class="nav-link">
+            <i class="fa fa-check-circle text-success"></i>
+            Prefill Profile
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fas fa-check-circle"></i> About Companies Terms</a>
+          <a routerLink="/about" class="nav-link">
+            <i class="fa fa-check-circle text-success"></i>
+            About
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"><i class="fas fa-check-circle"></i> About</a>
+          <a routerLink="/job" class="nav-link">
+            <i class="fa fa-check-circle text-success"></i>
+            Jobs
+          </a>
+        </li>
+        <li class="nav-item px-2">
+          <a routerLink="/resume" class="nav-link">
+            <i class="fa fa-check-circle text-success"></i>
+            Blockchain
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Jobs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link btn disabled" href="#">Blockchain</a>
+          <a routerLink="/experience" class="nav-link btn disabled">
+            <i class="{{exp_active_class}}"></i>
+            Experience
+          </a>
         </li>
       </ul>
     </div>
@@ -705,6 +736,25 @@
           <div class="input-group-append">
             <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
           </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col-md-2">
+      <p>Input time</p>
+    </div>
+    <div class="col-md-7">
+      <div class="form-group">
+        <label>Time</label>
+        <div class="input-group mb-3">
+          <input type="time" name="time" class="form-control" placeholder="00:00">
         </div>
       </div>
 

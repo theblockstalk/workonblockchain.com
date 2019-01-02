@@ -41,6 +41,8 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 200);
+    $("#startdate_datepicker").datepicker();
+
   }
 
 }

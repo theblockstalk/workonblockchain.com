@@ -42,7 +42,7 @@
                   </li>
                   <li class="list-group-item">
                     <span><i class="fas fa-phone mr-2"></i></span>
-                    <span> Contact number: {{contact_number}}</span>
+                    <span> Phone: {{contact_number}}</span>
                   </li>
                   <li class="list-group-item">
                     <i class="fas fa-user mr-2"></i>
@@ -65,7 +65,7 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
               <div class="col-md-6">
-                <h2> <i class="fas fa-user"></i> About you</h2>
+                <h2> <i class="fas fa-user"></i> About</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
@@ -253,7 +253,7 @@
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
                       <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
-                      {{data.platform_name}} : {{data.exp_year}} years
+                      {{data.platform_name}}: {{data.exp_year}} years
                     </div>
                   </div>
                 </div>
@@ -268,7 +268,7 @@
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of platforms;'>
                       <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
-                      {{data.platform_name}}  : {{data.exp_year}} years
+                      {{data.platform_name}}: {{data.exp_year}} years
                     </div>
                   </div>
                 </div>
@@ -296,7 +296,7 @@
                 <div class="form-group">
                   <label>Commercial experience in these areas:</label>
                   <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial_skills;'>{{data.skill}}: {{data.exp_year}} years</div>
 
                   </div>
                 </div>
@@ -308,7 +308,7 @@
                 <div class="form-group">
                   <label>Formal (university) education in these areas:</label>
                   <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of formal_skills;'>{{data.skill}}: {{data.exp_year}} years</div>
 
                   </div>
                 </div>
@@ -332,7 +332,7 @@
                 <div class="form-group">
                   <label>Languages: </label>
                   <div>
-                  <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</div>
+                  <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}}: {{lang.exp_year}} years</div>
                   </div>
                   </div>
               </div>

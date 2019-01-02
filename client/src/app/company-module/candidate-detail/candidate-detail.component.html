@@ -33,15 +33,19 @@
               <ul class="list-group list-group-flush float-right">
                 <li class="list-group-item">
                   <span><i class="fas fa-landmark mr-2"></i></span>
-                  <span>Nationality : {{data.nationality}}</span>
+                  <span>Nationality: {{data.nationality}}</span>
+                </li>
+                <li class="list-group-item" *ngIf="data.first_name">
+                  <span><i class="fas fa-phone mr-2"></i></span>
+                  <span >Phone: {{data.contact_number}}</span>
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-suitcase mr-2"></i></span>
-                  <span >Expected annual salary : {{data.expected_salary_currency}} {{data.expected_salary}}</span>
+                  <span >Expected annual salary: {{data.expected_salary_currency}} {{data.expected_salary}}</span>
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-align-justify mr-2"></i></span>
-                  <span >Your availability : {{data.availability_day}}</span>
+                  <span >Availability: {{data.availability_day}}</span>
                 </li>
 
               </ul>
@@ -71,27 +75,17 @@
                 <p>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-group">
-                <label>Contact number:</label>
-                <p>
-                  {{data.contact_number}}
-                <p>
-              </div>
-            </div>
-          </div>
-
-          <div class="row mt-3" *ngIf="data.github_account || data.stackexchange_account" >
-            <div class="col-md-6 mb-3">
-              <div class="form-group" *ngIf="data.github_account">
+            <div class="col-md-6 mb-3" *ngIf="data.github_account">
+              <div class="form-group" >
                 <label>Github account url: </label>
                 <p>
                   {{data.github_account}}
                 <p>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <div class="form-group" *ngIf="data.stackexchange_account">
+
+            <div class="col-md-6 mb-3" *ngIf="data.stackexchange_account">
+              <div class="form-group" >
                 <label>Stackexchange account url:</label>
                 <p>
                   {{data.stackexchange_account}}
@@ -146,21 +140,19 @@
 
           <div class="row mt-3">
 
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>Expected annual salary: </label>
                 <p>{{data.expected_salary_currency}} {{data.expected_salary}}</p>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>Your availablity: </label>
                 <p>{{data.availability_day}}</p>
               </div>
             </div>
-          </div>
 
-          <div class="row">
 
             <div class="col-md-12 mb-3">
               <div class="form-group">
@@ -178,9 +170,7 @@
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="row">
             <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>Roles: </label>

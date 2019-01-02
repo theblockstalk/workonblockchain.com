@@ -25,7 +25,7 @@ We will only include this CSS file on the home page*/
   position: relative;
   top: 30px;
   line-height: 30px;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 300;
   font-family: 'Roboto', sans-serif;
   max-width: 650px;
@@ -130,36 +130,10 @@ We will only include this CSS file on the home page*/
 }
 
 .slider_p {
+  font-size : 18px;
   max-width: 700px;
   margin: auto;
   height: 150px;
-}
-
-.slider-inner::before {
-  position: absolute;
-  right: 40px;
-  top: auto;
-  bottom: 150px;
-  content: "“";
-  font-family: Quicksand;
-  font-size: 150px;
-  font-weight: bolder;
-  transform: rotate(-180deg);
-  line-height: 30px;
-  color: rgb(244, 245, 250);
-}
-
-.slider-inner::after {
-  font-size: 180px;
-  color: rgb(244, 245, 250);
-  top: 158px;
-  content: "“";
-  bottom: 110px;
-  font-family: Quicksand;
-  font-weight: bold;
-  left: 20px;
-  right: auto;
-  position: absolute;
 }
 
 .bottom-img {
@@ -205,6 +179,12 @@ We will only include this CSS file on the home page*/
     bottom: -35px !important;
   }
 
+}
+
+@media (min-width: 1550px){
+  #stripes {
+    height: 65%;
+  }
 }
 
 @media (max-width: 992px) and (min-width: 768px){
