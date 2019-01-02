@@ -70,7 +70,7 @@
 
           </div>
           <div class = "form-group float-right mt-2">
-            <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-danger">Reset</button>
+            <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary">Reset</button>
           </div>
         </div>
         <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
@@ -121,7 +121,7 @@
                         <input type="hidden" name="id" [ngModel]="data._creator._id">
                         <input type="hidden" name="name" [ngModel]="data.initials">
                         <div class="float-right">
-                          <button type="submit" class = "btn wob-bg-secondary2" data-toggle="modal" data-target="#jobDescriptionModal" >Send job description</button>
+                          <button type="submit" class = "btn btn-primary" data-toggle="modal" data-target="#jobDescriptionModal" >Send job description</button>
                         </div>
                       </form>
                     </div>
@@ -228,7 +228,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="validationCustom02">Currency</label>
+                <label for="validationCustom02" class="invisible">Currency</label>
                 <select title="Currency"  name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
                   <option *ngFor='let base_currency of currency' [value]="base_currency">{{base_currency}}</option>
                 </select>
@@ -260,8 +260,8 @@
             </div>
           </div>
           <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary">Reset</button>
             <button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_desc || !credentials.job_type || !credentials.job_title || !credentials.location" class="btn btn-primary">Send</button>
-            <button type="reset" class="btn btn-danger">Reset</button>
           </div>
         </form>
 
