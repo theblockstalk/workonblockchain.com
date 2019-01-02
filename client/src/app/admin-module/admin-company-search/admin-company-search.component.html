@@ -36,7 +36,7 @@
 
           </div>
           <div class = "form-group float-right mt-2">
-            <button (click)="reset()" type="button" class="btn btn-danger">Reset</button>
+            <button (click)="reset()" type="button" class="btn btn-secondary">Reset</button>
           </div>
         </div>
         <ng-container *ngIf="response === '';else no_section" >
@@ -90,16 +90,17 @@
                       </div>
                       <div class="col-sm-4" >
                         <h4>Detail</h4>
-                        <ul class="list-group">
-                          <li class="list-group-item" ><a [href]="websiteUrl(data.company_website)" target="_blank">{{data.company_website}}</a></li>
-                          <li class="list-group-item"> Company Founded : {{data.company_founded}} </li>
-                        </ul>
+                        <div>
+                          <div class="d-inline-block p-2 border rounded mr-1 mt-1">
+                            <a [href]="websiteUrl(data.company_website)" target="_blank">{{data.company_website}}</a>
+                          </div>
+                          <div class="d-inline-block p-2 border rounded mr-1 mt-1">
+                            Company founded: {{data.company_founded}}
+                          </div>
+                        </div>
                       </div>
                     </div>
-
                   </div>
-
-
                 </div>
               </div>
             </div>

@@ -110,6 +110,9 @@ export class ChatComponent implements OnInit {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
     }, 500);
+    $("#startdate_datepicker").datepicker({
+      startDate: '-1'
+    });
   }
 
   ngOnInit() {
@@ -1052,7 +1055,7 @@ export class ChatComponent implements OnInit {
               }
             }
           );
-      }, 2000);
+      }, 7000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver
