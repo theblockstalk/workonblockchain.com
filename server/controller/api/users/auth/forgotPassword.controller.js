@@ -34,10 +34,7 @@ module.exports = async function (req,res) {
                 if(candidateDoc && candidateDoc.length > 0 && candidateDoc[0].first_name) {
                     name = candidateDoc[0].first_name;
                 }
-                else
-                {
-                    name = null;
-                }
+
                 forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);
                 res.send({
                     success : true
@@ -48,9 +45,6 @@ module.exports = async function (req,res) {
                 const companyDoc = await EmployerProfile.find({_creator : userDoc._id}).populate('_creator').lean();
                 if(companyDoc && companyDoc.length > 0 ) {
                     name = companyDoc[0].first_name;
-                }
-                else {
-                    name = null;
                 }
 
                 forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);
