@@ -1,17 +1,17 @@
-<div class = "container-fluid border-bottom">
+<div class = "container-fluid">
   <div class = "row ">
     <div class = "col-md-12">
-      <nav class="navbar navbar-expand-lg fixed-top bg-white px-lg-5">
-        <a class="navbar-brand ml-5" routerLink="/">
+      <nav class="navbar navbar-expand-lg fixed-top bg-white px-lg-5 px-2">
+        <a class="navbar-brand ml-0 ml-md-5 ml-lg-5" routerLink="/">
           <img src = "/assets/images/navbar_imgs/logo/logo_woc.png" alt="Work on Blockchain">
         </a>
         <button class="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
-          <ul class="navbar-nav ml-auto p-3 p-lg-0 mr-5">
+          <ul class="navbar-nav ml-auto p-3 p-lg-0 mr-0 mr-md-5 mr-lg-5">
             <li class="nav-item pr-2" *ngIf="!currentUser">
-              <a class="nav-link text-dark active" routerLink="signup">SIGN UP</a>
+              <b><a class="nav-link text-dark active" routerLink="signup">SIGN UP</a></b>
             </li>
             <li class="nav-item pr-2" *ngIf="!currentUser">
               <a class="nav-link text-dark" routerLink="login">Login</a>
@@ -42,23 +42,17 @@
           </ul>
         </div>
       </nav>
-    </div>
-  </div>
-  <div class = "row justify-content-md-center">
-    <div class = "col-md-10">
-      <div class="alert alert-danger" role="alert" *ngIf = "msg && close && !success  ">
+      <div class="alert alert-danger error_msg mx-auto" role="alert" *ngIf = "msg && close && !success  ">
         {{msg}}
       </div>
-      <div>
-        <div *ngIf = "success_msg!='' && admin_route !== '/verify_email?'">
-          <div class="alert alert-success" role="alert" *ngIf = "success_msg!='' && success_msg!='not verify'">
-            <a href="#"  data-dismiss="alert"></a>
-            {{success_msg}}
-          </div>
-          <div class="alert alert-danger" role="alert" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
-            <a href="#" data-dismiss="alert" ></a>
-            Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class="text-primary">here</a>.
-          </div>
+      <div *ngIf = "success_msg!='' && admin_route !== '/verify_email?' && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
+        <div class="alert alert-success error_msg mx-auto" role="alert" *ngIf = "success_msg!='' && success_msg!='not verify'">
+          <a href="#"  data-dismiss="alert"></a>
+          {{success_msg}}
+        </div>
+        <div class="alert alert-danger error_msg mx-auto" role="alert" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' ">
+          <a href="#" data-dismiss="alert" ></a>
+          Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class="text-primary">here</a>.
         </div>
       </div>
     </div>

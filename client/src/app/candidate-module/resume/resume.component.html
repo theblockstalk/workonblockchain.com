@@ -1,7 +1,7 @@
 <!--candidate step completing-->
 <section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row mb-4">
+    <div class="row mb-2">
       <div class="col-md-12">
         <ul class="nav justify-content-center wizard">
           <li class="nav-item">
@@ -35,7 +35,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{exp_class}}" class="nav-link">
+            <a routerLink="{{exp_class}}" class="nav-link btn {{exp_disable}}">
               <i class="{{exp_active_class}}"></i>
               Experience
             </a>
@@ -77,16 +77,15 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of commercially">
-                      <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)" />
-                      <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)" />
+                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
                         {{option.name}}
                       </label>
                     </div>
                   </div>
                 </div>
                 <input type="text" class="form-control" [(ngModel)]='commercially_worked' name="commercially_worked" style="display: none;">
-
               </div>
             </div>
           </div>
@@ -121,16 +120,15 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of designed">
-                      <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onPlatformOptions(option)"  />
-                      <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onPlatformOptions(option)"  />
+                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
                         {{option.value}}
                       </label>
                     </div>
                   </div>
                 </div>
                 <input type="text" class="form-control" [(ngModel)]='platforms_designed' name="platforms_designed" style="display: none;">
-
               </div>
             </div>
           </div>
@@ -166,9 +164,9 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
-                      <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)"  />
-                      <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)"  />
+                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
                         {{option.value}}
                       </label>
                     </div>
@@ -188,8 +186,8 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-4 mb-3" *ngFor="let option of otherSkills">
-                      <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
                         {{option.name}}
                       </label>
                     </div>
@@ -231,8 +229,8 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-4 mb-3" *ngFor="let option of otherFormalSkills">
-                      <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"   />
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"   />
                         {{option.name}}
                       </label>
                     </div>

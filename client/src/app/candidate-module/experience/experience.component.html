@@ -1,7 +1,7 @@
 <!--candidate step completing-->
 <section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row mb-4">
+    <div class="row mb-2">
       <div class="col-md-12">
         <ul class="nav justify-content-center wizard">
           <li class="nav-item">
@@ -59,8 +59,8 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of language_opt">
-                      <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)" required #lang  />
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)" required #lang  />
                         {{option.name}}
                       </label>
                     </div>
@@ -195,8 +195,8 @@
                       <div class="checkbox">
                         <div class="row ">
                           <div class="form-check" *ngFor="let current of current_work">
-                            <input type="checkbox" (change)="currentWork()" class="form-check-input" formControlName="currentwork"  [checked]="current_work_check[i] "  value="current.value" />
                             <label class="form-check-label">
+                              <input type="checkbox" (change)="currentWork()" class="form-check-input" formControlName="currentwork"  [checked]="current_work_check[i] "  value="current.value" />
                               {{current.name}}
                             </label>
                           </div>

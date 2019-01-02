@@ -33,7 +33,7 @@
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link}}" readonly #userinput />
               </span>
-                <button class = "btn btn-default" (click)="copyInputMessage(userinput)">Copy Link</button>
+                <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy Link</button>
               </div>
               <div class = "twitter-share-button">
                 <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
@@ -85,7 +85,7 @@
                 </div>
               </div>
               <div class="row mt-3 float-right">
-                <div class="col-md-10 wob-bg-secondary2 p-3 ml-5 text-right">
+                <div class="col-md-12 wob-bg-secondary2 p-3 text-right">
                   <b>Earn £1,000 when you invite a company that makes a hire</b>
                 </div>
               </div>
@@ -106,8 +106,10 @@
                   <input type="email" class="form-control" placeholder="Email" id="email2" name="email" [(ngModel)]="email"/>
                 </div>
                 <div class="checkbox">
-                  <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
-                  <label> I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.</label>
+                  <label>
+                    <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+                    I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.
+                  </label>
                 </div>
                 <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "alert alert-danger">
                   <span class = "error">{{terms_log}}</span>
@@ -119,14 +121,14 @@
             </div>
             <div class="col"></div>
 
-            <div class="col-md-12" *ngIf="ref_link_for_not_logged_user">
+            <div class="col-md-12 p-0" *ngIf="ref_link_for_not_logged_user">
               <div class = "wob-bg-secondary3 px-4 py-4">
                 <h4 class = "text-white">Your invite link</h4>
                 <div class = "form-group bg-white">
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link_for_not_logged_user}}" readonly #newRefLink />
               </span>
-                  <button class = "btn btn-default ml-5" (click)="copyInputMessage(newRefLink)">Copy Link</button>
+                  <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(newRefLink)">Copy Link</button>
                 </div>
                 <!--<div class = "twitter-share-button">
                   <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>

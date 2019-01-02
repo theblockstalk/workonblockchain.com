@@ -3,176 +3,242 @@ for chat stylesheet
 only to be applied to the chat page*/
 
 #frame {
-    width: 100%;
-    min-width: 360px;
-    max-width: 1000px;
-    height: 92vh;
-    min-height: 300px;
-    max-height: 720px;
-    background: #fff;
-    margin: auto;
-    padding-left: 0px;
-    padding-right: 0px;
-    box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
-    -webkit-box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
-    border: 1px solid #dadbdd;
-    overflow: hidden;
+  width: 100%;
+  min-width: 360px;
+  max-width: 1000px;
+  height: 92vh;
+  min-height: 300px;
+  max-height: 720px;
+  background: #fff;
+  margin: auto;
+  padding-left: 0px;
+  padding-right: 0px;
+  box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
+  -webkit-box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
+  border: 1px solid #dadbdd;
+  overflow: hidden;
 }
 
 
 #contact {
-    height: calc(100% - 93px);
-    overflow-y: scroll;
-    overflow-x: hidden;
+  height: calc(100% - 93px);
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 #contact ul li {
-    position: relative;
-    padding: 20px 0 20px 0;
-    font-size: 0.9em;
-    cursor: pointer;
+  position: relative;
+  padding: 20px 0 20px 0;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 
 .message {
-    height: auto;
-    /* min-height: calc(100% - 93px); */
-    /* max-height: calc(100% - 93px); */
-    overflow-y: scroll;
-    max-height: 400px;
-    min-height: 400px;
+  height: auto;
+  overflow-y: scroll;
+  max-height: 400px;
+  min-height: 400px;
 }
 
 .sent {
-    width: 90%;
-    position: relative;
-    left: -30px;
+  position: relative;
+  float: left;
 }
 
 .chat_user {
     position: relative;
     float: right;
-    margin-right: 30px;
-    top: -25px;
+    margin-right: 15px;
+    top: -60px;
     font-size: 10px;
 }
 
 .name_chat {
-    font-weight: bold;
-    margin-right: 10px;
+  font-weight: bold;
+  margin-right: 10px;
 }
 
 .replies {
-    width: 90%;
-    position: relative;
-    right: -35px;
+  position: relative;
+  float: right;
 }
 
 .chat_company {
     position: relative;
     float: left;
-    margin-left: -10px;
-    top: -25px;
+    margin-left: 5px;
+    top: -60px;
     font-size: 10px;
 }
 
-.arrow-up {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid black;
-    border-bottom: 5px solid #17a2b8;
-    float: right;
-    margin-right: 10px;
-    top: -5px;
-    position: relative;
-    right: -62px;
-}
-
-.arrow-up-b {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid black;
-    border-bottom: 5px solid #ffc107;
-    margin-left: 10px;
-    top: -5px;
-    position: relative;
-}
-
 .offers_b {
-    width: 90%;
-    background: transparent;
-    padding: 10px;
-    overflow: hidden;
-    margin: auto;
-    text-align: center;
+  width: 90%;
+  background: transparent;
+  padding: 10px;
+  overflow: hidden;
+  margin: auto;
+  text-align: center;
 }
 
 .message-input {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    z-index: 99;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 99;
 }
 
 .offers {
-    width: 100%;
-    background: #e6e9f0;
-    padding: 10px;
-    overflow: hidden;
-    margin: auto;
-    text-align: center;
+  width: 100%;
+  background: #e6e9f0;
+  padding: 10px;
+  overflow: hidden;
+  margin: auto;
+  text-align: center;
 }
 
 .cand_info-ul {
-    list-style: none;
-    padding-left: 10px;
+  list-style: none;
+  padding-left: 10px;
 }
 
 .cont {
-    width: 90%;
+  width: 90%;
 }
 
 .message ul {
-    list-style: none;
+  list-style: none;
 }
 
 .job-description {
-    background-color: #e6e9f0 !important;
-    color: #2a2a2a !important;
+  background-color: #e6e9f0 !important;
+  color: #2a2a2a !important;
 }
 
 .cand_info-ul li {
-    line-height: 20px;
+  line-height: 20px;
+}
+
+.file {
+  position: absolute;
+  right: 15px;
+  bottom: -4px;
+  cursor: pointer;
+}
+
+.file-upload {
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  top: 0;
+  width: 95px;
+}
+
+input[type=file] {
+  color: transparent;
+}
+
+.send{
+  position: absolute;
+  right: 15px;
+  width: 97px;
+}
+
+.rec_p{
+  float: right;
+  left: 14px;
+  position: relative;
+}
+
+.send_p{
+  float: left;
+  right: 14px;
+  position: relative;
+}
+
+.rec_p::before{
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+  border-bottom: 5px solid #17a2b8;
+  margin-right: 10px;
+  top: -5px;
+  right: 5px;
+}
+
+.send_p::before{
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+  border-bottom: 5px solid #e6e9f0;
+  margin-right: 10px;
+  top: -5px;
+  left: 10px;
+}
+
+.ul_pd{
+  padding-inline-start: 10px;
 }
 
 
 @media (max-width: 992px){
-	.cand_info-ul {
-		font-size: 12px;
-		width: 100%;
-	}
-	
-	.cand_info-ul li {
-		line-height: 20px;
-	}
+  .cand_info-ul {
+    font-size: 12px;
+    width: 100%;
+  }
+
+  .cand_info-ul li {
+    line-height: 20px;
+  }
 }
 
 @media (max-width: 768px){
-	
-	.message {
-		max-height: 325px;
-		min-height: 325px;
-	}
-	
-	#contact ul li{
-		padding: 10px 2px;
-	}
-	
-	#frame{
-		height: 130vh;
-	}
 
+  .message {
+    max-height: 325px;
+    min-height: 325px;
+  }
+
+  #contact ul li{
+    padding: 10px 2px;
+  }
+
+  #frame{
+    height: 130vh;
+  }
+
+}
+
+@media (max-width: 430px){
+  .btn_mobile{
+    position: relative;
+    width: 85px;
+    height: 100%;
+    float: right;
+    left: 10px;
+  }
+
+  .send {
+    position: absolute;
+    right: 15px;
+    width: 70px;
+    font-size: 12px;
+  }
+
+  .file{
+    width: 70px;
+    font-size: 12px;
+    right: 15px;
+  }
+
+  .job-description, .replies, .sent{
+    font-size: 12px;
+  }
 }
