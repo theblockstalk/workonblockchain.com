@@ -1460,7 +1460,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   file_size=1048576;
   image_log;
-  expected_validation;
 
   updateProfileData(profileForm)
   {
