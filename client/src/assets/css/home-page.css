@@ -181,6 +181,12 @@ We will only include this CSS file on the home page*/
 
 }
 
+@media (min-width: 1550px){
+  #stripes {
+    height: 65%;
+  }
+}
+
 @media (max-width: 992px) and (min-width: 768px){
   .img_md{
     width: 100%;
