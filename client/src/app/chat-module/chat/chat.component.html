@@ -76,9 +76,9 @@
                     <ul class="cand_info-ul">
                       <ng-container *ngIf="currentUser.type == 'company';else cand">
                         <ng-container *ngIf="job_desc;else no_job_desc">
-                          <li>Job type: {{job_desc.job_type}}</li>
-                          <li>Job title: {{job_desc.job_title}}</li>
-                          <li>Salary: {{job_desc.salary}} {{job_desc.salary_currency}}</li>
+                          <li>Job type: {{job_desc.type}}</li>
+                          <li>Job title: {{job_desc.title}}</li>
+                          <li>Salary: {{job_desc.salary_currency}} {{job_desc.salary}}</li>
                         </ng-container>
                         <ng-template #no_job_desc>
                           <li>Job type: N/A</li>
@@ -87,9 +87,9 @@
                         </ng-template>
                       </ng-container>
                       <ng-template #cand>
-                        <li>Job title: {{job_desc.job_title}}</li>
-                        <li class="text-capitalize">Job Type : {{job_desc.job_type}}</li>
-                        <li>Salary: {{job_desc.salary}} {{job_desc.salary_currency}}</li>
+                        <li>Job title: {{job_desc.title}}</li>
+                        <li>Job type : {{job_desc.type}}</li>
+                        <li>Salary: {{job_desc.salary_currency}} {{job_desc.salary}}</li>
                       </ng-template>
                     </ul>
                   </div>
@@ -105,56 +105,73 @@
                       <ng-container *ngIf="msg.sender_id == currentUser._creator;else second">
                         <li class="sent mb-5 col-md-12">
                           <p class = "p-2 send_p job-description rounded d-inline-block">
-                            <span *ngIf="msg.job_title !== ''">
+                            <span *ngIf="msg.message.job_offer">
                               <b>Job title:</b>
-                              {{msg.job_title}}
+                              {{msg.message.job_offer.title}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.salary">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Job title:</b>
+                              {{msg.message.employment_offer.title}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer">
                               <b>Salary:</b>
-                              {{msg.salary}} {{msg.salary_currency}}
+                              {{msg.message.job_offer.salary}} {{msg.message.job_offer.salary_currency}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.job_type !== ''">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Salary:</b>
+                              {{msg.message.employment_offer.salary}} {{msg.message.employment_offer.salary_currency}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer">
                               <b>Job type:</b>
-                              {{msg.job_type}}
+                              {{msg.message.job_offer.type}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.msg_tag == 'employment_offer'">
-                              <b>Joining date:</b>
-                              {{msg.date_of_joining | date: 'MM/dd/yyyy'}}
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Start date:</b>
+                              {{msg.message.employment_offer.start_date | date: 'MM/dd/yyyy'}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_date_time">
+                            <span *ngIf="msg.message.interview_offer">
                               <b>Interview date & time:</b>
-                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
+                              {{msg.message.interview_offer.date_time | date: 'MM/dd/yyyy HH:mm'}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_location && msg.msg_tag == 'interview_offer'">
+                            <span *ngIf="msg.message.interview_offer">
                               <b>Interview location:</b>
-                              {{msg.interview_location}}
+                              {{msg.message.interview_offer.location}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_location && msg.msg_tag == 'job_offer'">
+                            <span *ngIf="msg.message.job_offer">
                               <b>Location:</b>
-                              {{msg.interview_location}}
+                              {{msg.message.job_offer.location}}
                               <br/>
                             </span>
-                            <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+                            <span *ngIf="msg.message.job_offer || msg.message.employment_offer">
                               <b>Description:</b><br>
                             </span>
-                            <span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
-                              {{msg.description}}
+                            <span *ngIf="msg.message.job_offer" [innerHTML]="msg.message.job_offer.description | safeHtml">
+                              {{msg.message.job_offer.description}}
                               <br/>
                             </span>
-                            <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
-                              {{msg.message}}
+                            <span *ngIf="msg.message.employment_offer" [innerHTML]="msg.message.employment_offer.description | safeHtml">
+                              {{msg.message.employment_offer.description}}
+                              <br/>
                             </span>
-                            <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
+                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
+                              {{msg.message.normal.message}}
+                            </span>
+                            <span *ngIf="msg.message.employment_offer">
                               <b>Employment contract:</b>
                             </span>
-                            <span *ngIf="msg.file_name">
-                              <a href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                            <span *ngIf="msg.message.employment_offer">
+                              <a href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                            </span>
+                            <span *ngIf="msg.message.file">
+                              <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
                             </span>
                           </p>
                         </li>
@@ -166,24 +183,44 @@
                         <li class="replies mb-5 col-md-12">
                           <div class="arrow-up"></div>
                           <p class = "p-2 rec_p bg-info rounded text-light d-inline-block">
-                            <span *ngIf="msg.job_title !== ''">
+                            <span *ngIf="msg.message.job_offer">
                               <b>Job title:</b>
-                              {{msg.job_title}}
+                              {{msg.message.job_offer.title}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.salary">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Job title:</b>
+                              {{msg.message.employment_offer.title}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer">
                               <b>Salary:</b>
-                              {{msg.salary}} {{msg.salary_currency}}
+                              {{msg.message.job_offer.salary_currency}} {{msg.message.job_offer.salary}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.job_type !== ''">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Salary:</b>
+                              {{msg.message.employment_offer.salary_currency}} {{msg.message.employment_offer.salary}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer">
                               <b>Job type:</b>
-                              {{msg.job_type}}
+                              {{msg.message.job_offer.type}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.msg_tag == 'employment_offer'">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Job type:</b>
+                              {{msg.message.employment_offer.type}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer">
+                              <b>Location:</b>
+                              {{msg.message.job_offer.location}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.employment_offer">
                               <b>Joining date:</b>
-                              {{msg.date_of_joining | date: 'MM/dd/yyyy'}}
+                              {{msg.message.employment_offer.start_date | date: 'MM/dd/yyyy'}}
                               <br/>
                             </span>
                             <span *ngIf="msg.interview_date_time">
@@ -526,18 +563,18 @@
         <h4 class="modal-title text-center">Job description</h4>
       </div>
       <div class="modal-body">
-        <ng-container *ngIf="new_msgss;else no_job_desc_popup">
+        <ng-container *ngIf="job_desc;else no_job_desc_popup">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label>Job title:</label>
-                <p>{{new_msgss[0].job_title}}</p>
+                <p>{{job_desc.title}}</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Job type:</label>
-                <p>{{new_msgss[0].job_type}}</p>
+                <p>{{job_desc.type}}</p>
               </div>
             </div>
           </div>
@@ -546,13 +583,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Salary:</label>
-                <p>{{new_msgss[0].salary_currency}} {{new_msgss[0].salary}}</p>
+                <p>{{job_desc.salary_currency}} {{job_desc.salary}}</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Location:</label>
-                <p>{{new_msgss[0].interview_location}}</p>
+                <p>{{job_desc.location}}</p>
               </div>
             </div>
           </div>
@@ -561,8 +598,8 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Job description:</label>
-                <p class="job_decs" [innerHTML]="new_msgss[0].description | safeHtml">
-                  {{new_msgss[0].description}}
+                <p class="job_decs" [innerHTML]="job_desc.description | safeHtml">
+                  {{job_desc.description}}
                 </p>
               </div>
             </div>

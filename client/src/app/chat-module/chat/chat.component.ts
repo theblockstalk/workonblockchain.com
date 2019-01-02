@@ -31,7 +31,7 @@ export class ChatComponent implements OnInit {
     credentials: any = {};
     users = [];
     msgs = '';
-    new_msgss = '';
+    new_msgss : any = {};
     show_msg_area = 1;
     display_list = 0;
     count=0;
@@ -41,7 +41,7 @@ export class ChatComponent implements OnInit {
     date_of_joining = '';
     first_message = 0;
     msg_tag = '';
-    job_desc = '';
+    job_desc : any = {};
     is_company_reply = 0;
     company_reply = 0;
     cand_offer = 0;
@@ -319,17 +319,15 @@ export class ChatComponent implements OnInit {
                         if(msg_data['datas'].length>0){
                             this.new_messges.push(msg_data['datas']);
                             this.new_messges = this.filter_array(msg_data['datas']);
-                            //console.log(this.new_messges);
                             for (var key_messages in this.new_messges) {
                                 if(this.currentUser._creator == this.new_messges[key_messages].receiver_id){
                                     //console.log('my');
                                 }
                                 else{
-                                    this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].is_company_reply,'candidate')
+                                    this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].msg_tag,'candidate')
                                     .subscribe(
                                         data => {
                                             this.users.push(data['users']);
-                                            //console.log(this.users);
                                             this.count = 0;
                                             for (var key_users_new in this.users) {
                                                 //console.log(this.users[key_users_new]._creator._id);
@@ -952,7 +950,7 @@ export class ChatComponent implements OnInit {
     this.credentials.msg_body = '';
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log("show_msg_area: " + this.show_msg_area);
-      //setInterval(() => {
+      setInterval(() => {
         //receiver,sender
         //console.log("ID: " + this.credentials.id);
         this.authenticationService.get_user_messages(this.credentials.id,0)
@@ -960,8 +958,7 @@ export class ChatComponent implements OnInit {
             data => {
               //console.log('data');
               this.new_msgss = data['datas'];
-              //console.log(this.new_msgss);
-              this.job_desc = data['datas'][0];
+              this.job_desc = data['datas'][0].message.job_offer;
               this.authenticationService.update_chat_msg_status(id,0)
                 .subscribe(
                   data => {
@@ -1039,7 +1036,7 @@ export class ChatComponent implements OnInit {
               }
             }
           );
-      //}, 2000);
+      }, 2000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver

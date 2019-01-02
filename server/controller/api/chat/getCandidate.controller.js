@@ -5,24 +5,24 @@ const EmployerProfile = require('../../../model/employer_profile');
 const filterReturnData = require('../users/filterReturnData');
 
 module.exports = async function (req, res) {
-    let sender_id,receiver_id,is_company_reply,user_type;
+    let sender_id,receiver_id,msg_tag,user_type;
     if (req.body.sender_id === '0') { // company is calling endpoint
         sender_id = req.auth.user._id;
         receiver_id = req.body.receiver_id;
-        is_company_reply = req.body.is_company_reply;
+        msg_tag = req.body.msg_tag;
         user_type = req.body.type;
     }
     else if (req.body.receiver_id === '0') { // candidate is calling endpoint
         sender_id = req.body.sender_id;
         receiver_id = req.auth.user._id;
-        is_company_reply = req.body.is_company_reply;
+        msg_tag = req.body.msg_tag;
         user_type = req.body.type;
     }
     else { // admin is calling endpoint
         if (req.auth.user.is_admin){
             sender_id = req.body.sender_id;
             receiver_id = req.body.receiver_id;
-            is_company_reply = req.body.is_company_reply;
+            msg_tag = req.body.msg_tag;
             user_type = req.body.type;
         }
     }
@@ -37,8 +37,7 @@ module.exports = async function (req, res) {
             if (candidateProfile)
             {
                 let query_result = filterReturnData.removeSensativeData(candidateProfile);
-                if(is_company_reply === 1){
-                }
+                if(msg_tag === 'job_offer_accepted'){}
                 else{
                     query_result = filterReturnData.anonymousSearchCandidateData(query_result);
                 }

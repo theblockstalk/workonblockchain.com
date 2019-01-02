@@ -52,7 +52,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   }
   company_reply; currentUser: User;
   credentials: any = {};
-  job_type = ["Part Time", "Full Time"];
+  job_type = ["Part time", "Full time"];
   company_name;
   interview_location = '';
   interview_time = '';

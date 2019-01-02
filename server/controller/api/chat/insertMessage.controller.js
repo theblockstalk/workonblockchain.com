@@ -38,6 +38,7 @@ module.exports = async function (req, res) {
                 salary: req.body.salary,
                 salary_currency: req.body.currency,
                 type: req.body.job_type,
+                location: req.body.interview_location,
                 description: new_description
             }
         }

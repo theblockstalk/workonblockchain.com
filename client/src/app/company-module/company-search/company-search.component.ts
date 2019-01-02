@@ -96,7 +96,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       "Now","1 month","2 months","3 months","Longer than 3 months"
     ]
 
-  job_type = ["Part Time", "Full Time"];
+  job_type = ["Part time", "Full time"];
 
   skillsData=
     [

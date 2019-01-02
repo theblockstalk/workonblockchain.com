@@ -45,27 +45,31 @@ const ChatSchema = new Schema({
         normal: {
             message: {
                 type: String,
-                required: true
+                required: false
             }
         },
         job_offer: {
             title: {
                 type:String,
-                required: true
+                required: false
             },
             salary: {
                 type: Number,
-                required: true
+                required: false
             },
             salary_currency: {
                 type: String,
                 enum: enumerations.currencies,
-                required: true
+                required: false
             },
             type: {
                 type: String,
                 enum: enumerations.jobTypes,
-                required: true
+                required: false
+            },
+            location: {
+                type: String,
+                required: false
             },
             description: {
                 type:String,
@@ -87,51 +91,49 @@ const ChatSchema = new Schema({
         interview_offer: {
             location: {
                 type: String,
-                required: true
+                required: false
             },
             date_time: {
                 type: Date,
-                required: true
+                required: false
             }
         },
         employment_offer: {
             title: {
                 type:String,
-                required: true
+                required: false
             },
             salary: {
                 type: Number,
-                required: true
+                required: false
             },
             salary_currency: {
                 type: String,
                 enum: enumerations.currencies,
-                required: true
+                required: false
             },
             type: {
                 type: String,
                 enum: enumerations.jobTypes,
-                required: true
+                required: false
             },
             start_date: {
                 type: Date,
-                required: true
+                required: false
             },
             description: {
                 type:String,
                 required:false
             },
             file_url: {
-                type: String,
-                required: false,
-                validate: regexes.url
+                type: String
             }
         },
         employment_offer_accepted: {
             employment_offer_reference:{
                 type: Schema.Types.ObjectId,
                 ref: 'Chat',
-                required:true
+                required:false
             },
             message: {
                 type: String,
@@ -141,7 +143,7 @@ const ChatSchema = new Schema({
         employment_offer_rejected: {
             employment_offer_reference:{
                 type: Schema.Types.ObjectId,
-                required: true,
+                required: false,
                 ref: 'Chat'
             },
             message: {
