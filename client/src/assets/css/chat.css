@@ -208,10 +208,13 @@ input[type=file] {
   .cand_info-ul li {
     line-height: 20px;
   }
+
+  #cke_editor3, #cke_editor1{
+    width: 20rem !important;
+  }
 }
 
 @media (max-width: 768px){
-
   .message {
     max-height: 325px;
     min-height: 325px;
@@ -223,6 +226,10 @@ input[type=file] {
 
   #frame{
     height: 130vh;
+  }
+
+  #cke_editor3, #cke_editor1{
+    width: 20rem !important;
   }
 
 }
@@ -254,6 +261,6 @@ input[type=file] {
   }
 
   #cke_editor3, #cke_editor1{
-    width: 12rem !important;
+    width: 10rem !important;
   }
 }
