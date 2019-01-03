@@ -36,7 +36,7 @@
                 <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy Link</button>
               </div>
               <div class = "twitter-share-button">
-                <a href="https://twitter.com/share"  [attr.data-url] = "ref_link" [attr.data-text]="twitterText" class="twitter-share-button d-inline-block position-relative">Tweet</a>
+                <a href="https://twitter.com/intent/tweet?text={{text}}" [attr.data-url] = "ref_link" [attr.data-text]="twitterText" class="twitter-share-button d-inline-block position-relative">Tweet</a>
               </div>
             </div>
           </div>
