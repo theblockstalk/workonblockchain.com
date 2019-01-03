@@ -197,6 +197,10 @@ input[type=file] {
   #cke_editor3, #cke_editor1{
     height: 8rem !important;
   }
+
+  .message-input {
+    bottom:62px !important;
+  }
 }
 
 @media (max-width: 992px){
