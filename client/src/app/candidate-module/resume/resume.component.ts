@@ -464,7 +464,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.experimented_platform.push(obj);
       }
 
-
+console.log(this.experimented_platform);
 
   }
 
@@ -482,6 +482,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
    blockchain_exp(expForm: NgForm)
    {
      this.error_msg="";
+     console.log(expForm.value);
      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
      if(this.commercially_worked.length !== this.commercial_expYear.length )
      {
@@ -509,6 +510,19 @@ export class ResumeComponent implements OnInit,AfterViewInit {
        if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
        && this.commercialSkills.length === this.commercialSkillsExperienceYear.length && this.formal_skills_exp.length === this.formal_skills.length)
        {
+         if(this.commercially_worked.length === 0) {
+           expForm.value.commercial_experience_year = [];
+         }
+
+         if(this.platforms_designed.length === 0) {
+           expForm.value.platforms = [];
+         }
+         if(this.commercialSkills.length === 0) {
+           expForm.value.commercial_skills = [];
+         }
+         if(this.formal_skills_exp.length === 0) {
+           expForm.value.formal_skills = [];
+         }
         this.authenticationService.resume(this.currentUser._creator , expForm.value)
             .subscribe(
                 data => {

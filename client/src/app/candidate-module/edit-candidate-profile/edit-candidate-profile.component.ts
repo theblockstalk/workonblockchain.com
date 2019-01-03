@@ -623,7 +623,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
-    }, 600);
+    }, 900);
   }
 
 
@@ -804,6 +804,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.experimented_platform.push(obj);
     }
 
+    console.log(this.experimented_platform);
+
 
   }
 
@@ -832,12 +834,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
 
 
+  console.log(this.commercially_worked);
+    console.log(this.commercial_expYear);
   }
 
   onPlatformOptions(obj)
   {
 
-    let updateItem = this.platforms_designed.find(this.findIndexToUpdate_funct, obj.value);
+    let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
     let index = this.platforms_designed.indexOf(updateItem);
     if(index > -1)
     {
@@ -856,6 +860,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       obj.checked =true;
       this.platforms_designed.push(obj);
     }
+
+    console.log(this.platforms_designed);
 
 
   }
@@ -988,15 +994,17 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
 
+  findIndexToUpdate(obj)
+  {
+    return obj.value === this;
+  }
+
   findIndexToUpdate_funct(obj)
   {
     return obj.value === this;
   }
 
-  findIndexToUpdate(type) {
-    ////console.log("funct");
-    return type == this;
-  }
+
 
   onJobSelected(e)
   {
@@ -1486,6 +1494,33 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
+
+    console.log(profileForm);
+    if(this.commercially_worked.length === 0) {
+      profileForm.commercial_experience_year = [];
+    }
+    else {
+      profileForm.commercial_experience_year = this.commercial_expYear;
+    }
+
+    if(this.platforms_designed.length === 0) {
+      profileForm.platforms = [];
+    }
+    else {
+      profileForm.platforms = this.platforms;
+    }
+    if(this.commercialSkills.length === 0) {
+      profileForm.commercial_skills = [];
+    }
+    else {
+      profileForm.commercial_skills = this.commercialSkillsExperienceYear;
+    }
+    if(this.formal_skills_exp.length === 0) {
+      profileForm.formal_skills = [];
+    }
+    else {
+      profileForm.formal_skills = this.formal_skills;
+    }
     this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
       .subscribe(
         data => {
@@ -1580,6 +1615,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       obj.checked =true;
       this.commercialSkills.push(obj);
     }
+
 
   }
 
