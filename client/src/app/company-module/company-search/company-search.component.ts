@@ -767,7 +767,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           }
         }
     else{
-      this.job_offer_log = 'Please enter all info';
+      this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
 

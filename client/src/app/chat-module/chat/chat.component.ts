@@ -733,7 +733,7 @@ export class ChatComponent implements OnInit {
         );
     }
     else {
-      this.interview_log = 'Please fill all fields';
+      this.interview_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
 
@@ -760,7 +760,7 @@ export class ChatComponent implements OnInit {
           }
         }
         else {
-          this.job_offer_log = 'Please enter all info';
+          this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
       }
       else {
@@ -780,7 +780,7 @@ export class ChatComponent implements OnInit {
         }
       }
       else {
-        this.job_offer_log = 'Please enter all info';
+        this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
       }
     }
   }

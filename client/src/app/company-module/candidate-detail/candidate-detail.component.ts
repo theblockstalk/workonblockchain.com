@@ -251,6 +251,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   is_company_reply = 0;
   msg_body;
   job_offer_msg;
+  job_offer_msg_success;
   full_name;
   job_description;
   send_job_offer(msgForm : NgForm) {
@@ -288,7 +289,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   .subscribe(
                     data => {
                       ////console.log(data);
-                      this.job_offer_msg = 'Message has been successfully sent';
+                      this.job_offer_msg_success = 'Message has been successfully sent';
                       this.router.navigate(['/chat']);
                     },
                     error => {
@@ -306,7 +307,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       }
     }
     else {
-      this.job_offer_msg = 'Please enter all info';
+      this.job_offer_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
   filter_array(arr)

@@ -355,7 +355,7 @@
               <input type="hidden" name="name" [(ngModel)]="credentials.name" class="form-control">
             </div>
             <div class="form-group">
-              <label>Salary</label>
+              <label>Annual salary</label>
 
               <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="10000">
               <div class = "invalid-feedback d-inline float-left" *ngIf="expect_salary.errors && credentials.salary">
@@ -364,7 +364,7 @@
             </div>
 
             <div class="form-group">
-              <label>Currency</label>
+              <label class="invisible">Currency</label>
               <select title="Currency" class="selectpicker form-control" name="currency" [(ngModel)]="credentials.currency">
                 <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === credentials.currency? true : null">{{base_currency}}</option>
               </select>
@@ -387,11 +387,14 @@
               <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
               </ckeditor>
             </div>
-            <div class="alert alert-success" role="alert" *ngIf="job_offer_msg">
+            <div class="alert alert-success" role="alert" *ngIf="job_offer_msg_success">
+              {{job_offer_msg_success}}
+            </div>
+            <div class = "invalid-feedback d-inline-block mb-2">
               {{job_offer_msg}}
             </div>
             <div class = "form-group text-center">
-              <button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_desc || !credentials.job_type || !credentials.job_title || !credentials.location" class="btn btn-primary">Send</button>
+              <button type="submit" class="btn btn-primary">Send</button>
             </div>
           </form>
         </section>

@@ -197,9 +197,6 @@
       <div class="modal-body">
         <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
           <ng-container *ngIf="job_offer_log;else no_modal">
-            <div class = "model_notif text-center">
-              {{job_offer_log}}
-            </div>
           </ng-container>
           <ng-template #no_modal>
           </ng-template>
@@ -222,7 +219,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="validationCustomSalary">Salary</label>
+                <label for="validationCustomSalary">Annual salary</label>
                 <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="10000">
               </div>
             </div>
@@ -261,8 +258,11 @@
             </div>
           </div>
           <div class="modal-footer">
+            <div class = "invalid-feedback d-inline-block">
+              {{job_offer_log}}
+            </div>
             <button type="reset" class="btn btn-secondary">Reset</button>
-            <button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_desc || !credentials.job_type || !credentials.job_title || !credentials.location" class="btn btn-primary">Send</button>
+            <button type="submit" class="btn btn-primary">Send</button>
           </div>
         </form>
 
