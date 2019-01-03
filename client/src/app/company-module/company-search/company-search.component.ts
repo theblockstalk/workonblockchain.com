@@ -209,6 +209,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   skill;
   ngOnInit()
   {
+    this.credentials.currency = -1;
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',

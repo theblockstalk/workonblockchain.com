@@ -35,9 +35,13 @@
                 <div class="col-md-6">
                     <div class="form-group w-100">
                       <label>When was the company founded?</label>
-                      <input type="number" class="form-control" required placeholder="2000" name="company_founded" [(ngModel)]="company_founded" >
+                      <input type="text" class="form-control" #companyFounded="ngModel"  pattern="^[0-9]*$" required name="company_founded" placeholder="1997" [(ngModel)]="company_founded">
                       <div class="invalid-feedback d-inline" *ngIf="!company_founded">
                         {{founded_log}}
+                      </div>
+
+                      <div class="invalid-feedback d-inline" *ngIf="companyFounded.errors && company_founded">
+                        Input data should be a number.
                       </div>
                     </div>
                 </div>
@@ -79,6 +83,7 @@
                     </div>
                 </div>
 
+
               </div>
 
               <div class="row">
@@ -91,6 +96,7 @@
                       </div>
                   </div>
                 </div>
+
               </div>
 
             </section >
@@ -111,6 +117,7 @@
                 {{error_msg}}
               </div>
             </div>
+
           </div>
 
         </form>

@@ -350,14 +350,14 @@
           <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
             <div class="form-group">
               <label>Job title</label>
-              <input type="text" name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Job Title">
+              <input type="text" name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Full stack developer">
               <input type="hidden" name="user_id" [(ngModel)]="credentials.user_id" class="form-control">
               <input type="hidden" name="name" [(ngModel)]="credentials.name" class="form-control">
             </div>
             <div class="form-group">
               <label>Salary</label>
 
-              <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="Your salary eg 2000">
+              <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="10000">
               <div class = "invalid-feedback d-inline float-left" *ngIf="expect_salary.errors && credentials.salary">
                 Salary should be a number.
               </div>
@@ -365,15 +365,13 @@
 
             <div class="form-group">
               <label>Currency</label>
-
-              <select title="Please choose currency" class="selectpicker form-control" name="currency" [(ngModel)]="credentials.currency">
+              <select title="Currency" class="selectpicker form-control" name="currency" [(ngModel)]="credentials.currency">
                 <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === credentials.currency? true : null">{{base_currency}}</option>
-
               </select>
             </div>
             <div class="form-group">
               <label>Location</label>
-              <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" placeholder="Location eg London">
+              <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" placeholder="London">
             </div>
             <div class="form-group">
               <label>Job type</label>
