@@ -33,7 +33,7 @@
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link}}" readonly #userinput />
               </span>
-                <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy Link</button>
+                <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy</button>
               </div>
               <div class = "twitter-share-button">
                 <a href="https://twitter.com/share"  [attr.data-url] = "ref_link" [attr.data-text]="twitterText" class="twitter-share-button d-inline-block position-relative">Tweet</a>
@@ -128,7 +128,7 @@
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link_for_not_logged_user}}" readonly #newRefLink />
               </span>
-                  <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(newRefLink)">Copy Link</button>
+                  <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(newRefLink)">Copy</button>
                 </div>
 
               </div>

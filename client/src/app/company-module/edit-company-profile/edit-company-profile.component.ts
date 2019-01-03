@@ -209,7 +209,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     setTimeout(() => {
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 700);
   }
 
   ngAfterViewChecked() {
@@ -479,7 +479,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(!this.preferncesForm.value.current_salary) {
       this.current_currency_log = "Please select available annual salary and currency";
     }
-
+    if(!Number(this.preferncesForm.value.current_salary)){
+      this.current_currency_log = "Salary should be a number";
+    }
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
@@ -490,9 +492,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm.value.location && this.preferncesForm.value.location.length > 0 &&
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
-      this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && this.preferncesForm.value.current_salary &&
+      this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications)  {
       this.saved_searches.push(this.preferncesForm.value);
+      this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.authenticationService.edit_company_profile(profileForm.value , this.saved_searches)
         .subscribe(
           data => {

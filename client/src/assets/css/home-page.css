@@ -145,11 +145,23 @@ We will only include this CSS file on the home page*/
   width: 100%;
 }
 
+.slider-indicator li{
+  width: 10px;
+  height: 10px;
+  background: transparent;
+  border: 1px solid #ffc107;
+}
+
+.carousel-indicators .active {
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+}
+
 
 @media (min-width: 768px){
 
   #security .content {
-    padding: 20px 40px 60px 0;
+    padding: 65px 40px 60px 0;
   }
 
   #security .figure {

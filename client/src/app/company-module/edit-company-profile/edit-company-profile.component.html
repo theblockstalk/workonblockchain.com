@@ -341,7 +341,7 @@
                     <select title="Select currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
                       <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
                     </select>
-                    <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary ">
+                    <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary || current_currency_log">
                       {{current_currency_log}}
                     </div>
                   </div>
