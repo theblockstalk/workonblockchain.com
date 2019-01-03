@@ -186,6 +186,18 @@ input[type=file] {
   padding-inline-start: 10px;
 }
 
+.employment-contract{
+  position: absolute;
+  right: 45px;
+  top: 10px;
+  left: 120px;
+}
+
+@media (min-width: 1500px){
+  #cke_editor3, #cke_editor1{
+    height: 8rem !important;
+  }
+}
 
 @media (max-width: 992px){
   .cand_info-ul {

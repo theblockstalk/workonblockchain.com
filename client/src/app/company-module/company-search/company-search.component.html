@@ -207,7 +207,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="validationCustom1">Job title</label>
-                <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Frontend developer">
+                <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Full stack developer">
               </div>
             </div>
             <div class="col-md-6">
@@ -223,13 +223,14 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="validationCustomSalary">Salary</label>
-                <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="1000">
+                <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="10000">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="validationCustom02" class="invisible">Currency</label>
-                <select title="Currency"  name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
+                <select title="Currency" name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
+                  <option value="-1" disabled selected hidden>Currency</option>
                   <option *ngFor='let base_currency of currency' [value]="base_currency">{{base_currency}}</option>
                 </select>
               </div>
