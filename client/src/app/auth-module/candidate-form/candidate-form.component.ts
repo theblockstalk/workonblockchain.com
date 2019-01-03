@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import { AuthService } from 'angular4-social-login';
@@ -14,7 +14,7 @@ import { LinkedInService } from '../../linkedin-api';
   templateUrl: './candidate-form.component.html',
   styleUrls: ['./candidate-form.component.css']
 })
-export class CandidateFormComponent implements OnInit {
+export class CandidateFormComponent implements OnInit, AfterViewInit {
   loading = false;
   data;result;
   user;googleUser;email;linkedinUser;message;
@@ -66,6 +66,16 @@ export class CandidateFormComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void
+  {
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
+  }
+
+
   ngOnInit()
   {
     $(function(){
@@ -84,7 +94,6 @@ export class CandidateFormComponent implements OnInit {
 
     this.credentials.email='';
 
-    this.credentials.country=-1;
     this.dataservice.currentMessage.subscribe(message => this.message = message);
     setInterval(() => {
       this.message = "" ;
@@ -322,7 +331,7 @@ export class CandidateFormComponent implements OnInit {
     {
       this.companyPhoneLog = 'Please enter phone number';
     }
-    if(this.credentials.country === -1)
+    if(!this.credentials.country)
     {
       this.companyCountryLog = 'Please select country name';
     }
@@ -339,7 +348,7 @@ export class CandidateFormComponent implements OnInit {
       this.companyPasswordLog = 'Please enter password'
     }
     if(signupForm.valid === true && this.credentials.email && this.credentials.first_name && this.credentials.last_name && this.credentials.job_title && this.credentials.company_name
-      && this.credentials.company_website && this.credentials.phone_number && this.credentials.country != -1 && this.credentials.postal_code &&
+      && this.credentials.company_website && this.credentials.phone_number && this.credentials.country && this.credentials.postal_code &&
       this.credentials.city && this.credentials.password && this.credentials.password === this.credentials.confirm_password)
     {
       this.authenticationService.create_employer(this.credentials)

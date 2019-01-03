@@ -72,11 +72,9 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   ngOnInit()
   {
-    this.info.country=-1;
     this.job_disable = "disabled";
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
-    this.info.nationality=-1;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
 
@@ -231,16 +229,16 @@ export class AboutComponent implements OnInit,AfterViewInit
       this.contact_name_log = "Please enter contact number";
     }
 
-    if (this.info.nationality === -1) {
+    if (!this.info.nationality) {
       this.nationality_log = "Please choose nationality";
     }
-    if (this.info.country === -1) {
+    if (!this.info.country) {
       this.country_log = "Please choose base country";
     }
     if (!this.info.city) {
       this.city_log = "Please enter base city";
     }
-    if (this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality != -1 && this.info.city && this.info.country != -1) {
+    if (this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality && this.info.city && this.info.country) {
       this.authenticationService.about(this.currentUser._creator, this.info)
         .subscribe(
           data => {

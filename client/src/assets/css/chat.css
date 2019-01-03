@@ -186,6 +186,18 @@ input[type=file] {
   padding-inline-start: 10px;
 }
 
+.employment-contract{
+  position: absolute;
+  right: 45px;
+  top: 10px;
+  left: 120px;
+}
+
+@media (min-width: 1500px){
+  #cke_editor3, #cke_editor1{
+    height: 8rem !important;
+  }
+}
 
 @media (max-width: 992px){
   .cand_info-ul {
@@ -196,10 +208,13 @@ input[type=file] {
   .cand_info-ul li {
     line-height: 20px;
   }
+
+  #cke_editor3, #cke_editor1{
+    width: 20rem !important;
+  }
 }
 
 @media (max-width: 768px){
-
   .message {
     max-height: 325px;
     min-height: 325px;
@@ -211,6 +226,10 @@ input[type=file] {
 
   #frame{
     height: 130vh;
+  }
+
+  #cke_editor3, #cke_editor1{
+    width: 20rem !important;
   }
 
 }
@@ -242,6 +261,6 @@ input[type=file] {
   }
 
   #cke_editor3, #cke_editor1{
-    width: 12rem !important;
+    width: 10rem !important;
   }
 }
