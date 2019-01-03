@@ -98,8 +98,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Nationality</label>
-                <select class="form-control selectpicker" required name="nationality" [(ngModel)]='info.nationality'>
-                  <option value="-1" disabled selected hidden >Please choose nationality</option>
+                <select class="form-control selectpicker" title="(select one)" required name="nationality" [(ngModel)]='info.nationality'>
                   <option *ngFor='let options of nationality' placeholder="Nationality"  [value]="options" [attr.selected]="options === info.nationality ? true : null">{{options}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="info.nationality === -1">
@@ -115,8 +114,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Country</label>
-                <select class="form-control selectpicker" required name="country" [(ngModel)]="info.country">
-                  <option value="-1" disabled selected hidden >Please choose country</option>
+                <select class="form-control selectpicker" title="(select one)" required name="country" [(ngModel)]="info.country">
                   <option *ngFor='let options of countries'  [value]="options" [attr.selected]="options === info.country ? true : null">{{options}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="info.country === -1">
