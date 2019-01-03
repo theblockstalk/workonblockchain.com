@@ -435,7 +435,7 @@ export class JobComponent implements OnInit,AfterViewInit {
             this.roles_log = "Please select at least one role";
         }
 
-        if(this.base_currency==-1)
+        if(!this.base_currency)
         {
             this.currency_log = "Please choose currency";
         }
@@ -467,12 +467,10 @@ export class JobComponent implements OnInit,AfterViewInit {
           this.current_currency_log = "Please choose currency";
         }
 
-        console.log(this.current_currency);
         if(!this.current_salary && this.current_currency) {
           this.current_sal_log = "Please enter current base salary";
         }
-console.log(f);
-        if(f.valid === true && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
+        if(f.valid === true && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
         {
         this.authenticationService.job(this.currentUser._creator,f.value)
             .subscribe(

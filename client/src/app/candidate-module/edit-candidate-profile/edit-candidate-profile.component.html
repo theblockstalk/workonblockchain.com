@@ -221,11 +221,11 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Expected annual salary currency</label>
+                  <label class="invisible">Expected annual salary currency</label>
                   <select [(ngModel)]="base_currency" class="form-control selectpicker" title="Please choose currency" required name="base_currency" >
                     <option *ngFor='let baseCurrency of currency'  [value]="base_currency" [attr.selected]="base_currency === baseCurrency">{{baseCurrency}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="base_currency">
+                  <div class = "invalid-feedback d-inline" *ngIf="!base_currency">
                     {{currency_log}}
                   </div>
                 </div>
@@ -240,16 +240,20 @@
                   <small id="emailHelp" class="form-text text-muted">
                     This information is never shown to companies. It is used by us to help us help you set your expected salary.
                   </small>
+                  <div class = "invalid-feedback d-inline" *ngIf="(!salary && current_currency) ">
+
+                  {{current_sal_log}}
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Current annual salary currency</label>
-                  <select [(ngModel)]="current_currency" class="form-control selectpicker" name="current_currency" >
-                    <option value="-1" selected>Please choose currency</option>
+                  <label class="invisible">Current annual salary currency</label>
+                  <select [(ngModel)]="current_currency" title="Currency" class="form-control selectpicker" name="current_currency" >
+                    <option value="-1">Please choose currency</option>
                     <option *ngFor='let current_currency of currency'  [value]="current_currency" selected>{{current_currency}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="current_currency === -1 ">
+                  <div class = "invalid-feedback d-inline" *ngIf="(salary && !current_currency) ">
                     {{current_currency_logg}}
                   </div>
                 </div>

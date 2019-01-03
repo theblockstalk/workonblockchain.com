@@ -168,10 +168,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   formal_expYear_db=[];
   ngOnInit()
   {
-    this.info.base_country = -1
-    this.info.nationality = -1;
-    this.current_currency = -1;
-    this.base_currency = -1;
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
@@ -1250,6 +1247,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   city_log;
   commercial_skill_log;
   formal_skills_log;
+  current_sal_log;
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -1269,12 +1267,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.contact_name_log ="Please enter contact number";
     }
 
-    if(this.info.nationality === -1)
+    if(!this.info.nationality )
     {
       this.nationality_log ="Please choose nationality";
     }
 
-    if(this.info.base_country === -1)
+    if(!this.info.base_country )
     {
       this.base_country_log ="Please choose base country";
     }
@@ -1295,7 +1293,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
 
 
-    if(this.base_currency === -1)
+    if(!this.base_currency)
     {
       this.currency_log = "Please choose currency";
     }
@@ -1450,9 +1448,16 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     }
 
+    if(this.salary && !this.current_currency) {
+      this.current_currency_logg = "Please choose currency";
+    }
 
-    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 &&
-      this.info.city && this.info.base_country != -1 && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.selectedValue.length > 0 && this.availability_day &&
+    if(!this.salary && this.current_currency) {
+      this.current_sal_log = "Please enter current base salary";
+    }
+
+    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
+      this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length

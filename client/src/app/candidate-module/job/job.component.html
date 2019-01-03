@@ -108,7 +108,7 @@
                 <select [(ngModel)]="base_currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
                   <option *ngFor='let base_currency of currency' [attr.selected] [value]="base_currency">{{base_currency}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="base_currency === -1">
+                <div class = "invalid-feedback d-inline"  *ngIf="!base_currency">
                   {{currency_log}}
                 </div>
               </div>
