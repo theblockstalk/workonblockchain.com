@@ -54,8 +54,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   ngOnInit()
   {
   ////console.log(this.options.name);
-    this.current_currency =-1;
-    this.base_currency = -1;
+
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -464,8 +463,16 @@ export class JobComponent implements OnInit,AfterViewInit {
        {
            this.current_currency_log = "Please choose currency";
        }*/
+        if(this.current_salary && !this.current_currency) {
+          this.current_currency_log = "Please choose currency";
+        }
 
-        if(this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
+        console.log(this.current_currency);
+        if(!this.current_salary && this.current_currency) {
+          this.current_sal_log = "Please enter current base salary";
+        }
+console.log(f);
+        if(f.valid === true && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.salary && this.selectedValue.length > 0 && this.availability_day)
         {
         this.authenticationService.job(this.currentUser._creator,f.value)
             .subscribe(
