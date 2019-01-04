@@ -620,6 +620,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
     }, 900);
   }

@@ -57,8 +57,11 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 900);
     window.scrollTo(0, 0);
 
   }

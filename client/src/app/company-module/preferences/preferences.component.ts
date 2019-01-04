@@ -50,10 +50,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   ngAfterViewChecked() {
-    setInterval(() => {
+    setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 300);
-    //$('.selectpicker').selectpicker('refresh');
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 900);
   }
 
   locations = [

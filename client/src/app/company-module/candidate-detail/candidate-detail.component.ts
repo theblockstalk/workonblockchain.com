@@ -84,8 +84,11 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 900);
   }
   ngOnInit()
   {

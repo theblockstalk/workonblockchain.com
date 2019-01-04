@@ -198,8 +198,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 900);
 
   }
 
@@ -509,8 +512,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.salary && this.currencyChange) {
         setTimeout(() => {
           $('.selectpicker').selectpicker();
+        }, 300);
+
+        setTimeout(() => {
           $('.selectpicker').selectpicker('refresh');
-        }, 500);
+        }, 900);
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
@@ -651,8 +657,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         data => {
           setTimeout(() => {
             $('.selectpicker').selectpicker();
+          }, 300);
+
+          setTimeout(() => {
             $('.selectpicker').selectpicker('refresh');
-          }, 500);
+          }, 900);
           this.credentials.job_title = data['job_title'];
           this.credentials.salary = data['salary'];
           this.credentials.currency = data['salary_currency'];

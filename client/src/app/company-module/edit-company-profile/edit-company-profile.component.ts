@@ -209,8 +209,11 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   ngAfterViewInit() {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 700);
+    }, 900);
   }
 
   ngAfterViewChecked() {
