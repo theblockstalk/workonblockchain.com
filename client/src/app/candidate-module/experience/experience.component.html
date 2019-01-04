@@ -80,7 +80,7 @@
               <p>{{lang_value.value}}</p>
               <div class = "form-group">
                 <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-                <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index" for="{{lang_value.value}}{{i_ind}}">
+                <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" for="{{lang_value.value}}{{i_ind}}" [ngClass]="expYear_db[i] === exp.value && db_valye[i] === lang_value.value? 'btn-primary' : 'btn-secondary'">
                   <input type="radio" id="{{lang_value.value}}{{i_ind}}" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)">
                   {{exp.name}}
                 </label>
@@ -155,7 +155,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <select title="1970" formControlName="startyear" class="selectpicker form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
+                          <select title="(select one)" formControlName="startyear" class="selectpicker form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
                             <option  *ngFor='let start_year of year'  [value]="start_year" [attr.selected]="ExperienceForm.value.ExpItems[i].startyear === start_year ? true : null">{{start_year}}</option>
                           </select>
                           <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].startyear">

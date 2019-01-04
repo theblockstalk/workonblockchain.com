@@ -298,8 +298,8 @@
               <strong>{{work.companyname}}</strong>
             </div>
             <div class="col-md-6">
-              <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}}, till now.</p>
-              <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} , {{work.enddate | date:'MMMM-yyyy'}} </p>
+              <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}} <i class="fas fa-long-arrow-alt-right"></i> now.</p>
+              <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} <i class="fas fa-long-arrow-alt-right"></i> {{work.enddate | date:'MMMM-yyyy'}} </p>
             </div>
             <div class="col-md-6">
               <i class="fas fa-globe"></i> {{work.locationname}}

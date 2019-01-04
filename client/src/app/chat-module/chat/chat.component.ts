@@ -671,6 +671,7 @@ export class ChatComponent implements OnInit {
   date_log;
   time_log;
   location_log;
+  description_log;
 
   send_interview_message(msgForm : NgForm) {
     this.interview_log = '';
@@ -680,6 +681,7 @@ export class ChatComponent implements OnInit {
     this.date_log = '';
     this.time_log = '';
     this.location_log = '';
+    this.description_log = '';
 
     let interview_date = $('#startdate_datepicker').val();
     if(!interview_date){
@@ -691,8 +693,11 @@ export class ChatComponent implements OnInit {
     if(!this.credentials.location){
       this.location_log = 'Please enter location';
     }
+    if(!this.credentials.description){
+      this.description_log = 'Please enter details';
+    }
 
-    if (interview_date && this.credentials.time && this.credentials.location) {
+    if (interview_date && this.credentials.time && this.credentials.location && this.credentials.description) {
       $("#myModal").modal("hide");
       //console.log('interview');
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -1369,6 +1374,7 @@ export class ChatComponent implements OnInit {
     this.salary_log = '';
     this.salary_currency_log = '';
     this.job_desc_log = '';
+    this.description_log = '';
 	}
 
   update_status(){

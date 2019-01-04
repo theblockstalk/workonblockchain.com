@@ -357,7 +357,7 @@
               <div class = "col-md-7" *ngFor="let option of commercially_worked; let i = index ">
                 <p>{{option.value}}</p>
                 <div class = "form-group">
-                  <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index">
+                  <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" [ngClass]=" expYear_db[i] === exp.value && db_valye[i] === option.value? 'btn-primary' : 'btn-secondary'">
                     <input type="radio" name="radiogroup- {{ option.value}}" id="rg{{option.value}}{{i_ind}}"  value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
                     {{exp.name}}
                   </label>
@@ -398,7 +398,7 @@
               <div class = "col-md-7" *ngFor="let exp_value of platforms_designed;let i_index = index">
                 <p>{{exp_value.value}}</p>
                 <div class = "form-group">
-                  <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index">
+                  <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" [ngClass]="designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value? 'btn-primary' : 'btn-secondary'">
                     <input type="radio" name="radiogroup - {{ exp_value.value }} "  [checked]=" designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value" id="dg{{exp_value.value}}{{i_ind}}"  value="{{exp.value}}" (change)="onPlatformYearOptions($event , exp_value.value)"  >
                     {{exp.name}}
                   </label>
@@ -461,7 +461,7 @@
               <div class = "col-md-7" *ngFor="let option of commercialSkills; let i = index ">
                 <p>{{option.value}}</p>
                 <div class = "form-group">
-                  <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index">
+                  <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" [ngClass]="skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value? 'btn-primary' : 'btn-secondary'">
                     <input type="radio" name="commercialradiogroup- {{ option.value}}" id="skill{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value">
                     {{exp.name}}
                   </label>
@@ -501,7 +501,7 @@
               <div class = "col-md-7" *ngFor="let option of formal_skills_exp; let i = index ">
                 <p>{{option.value}}</p>
                 <div class = "form-group">
-                  <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index">
+                  <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" [ngClass]="formal_expYear_db[i] === exp.value && formalDbArray[i] === option.value? 'btn-primary' : 'btn-secondary'">
                     <input type="radio" name="formalradiogroup- {{ option.value}}" id="formal{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onFormalExpYearOptions($event , option.value)" [checked]="formal_expYear_db[i] === exp.value && formalDbArray[i] === option.value" >
                     {{exp.name}}
                   </label>
@@ -554,7 +554,7 @@
               <div class = "col-md-7" *ngFor="let lang_value of language; let i = index ">
                 <p>{{lang_value.value}}</p>
                 <div class = "form-group">
-                  <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index">
+                  <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" [ngClass] = "lang_expYear_db[i] === exp.value && lang_db_valye[i] === lang_value.value? 'btn-primary' : 'btn-secondary' ">
                     <input type="radio" name="radiogrop- {{ lang_value.value}}" [checked]="lang_expYear_db[i] === exp.value && lang_db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onLangExpYearOptions($event , lang_value.value)" id= "radiogrop{{lang_value.value}}{{i_ind}}" >
                     {{exp.name}}
                   </label>

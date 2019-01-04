@@ -144,7 +144,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>How is the company funded?</label>
-                    <input type="text" class="form-control"  placeholder="Private investment from the founders and one angle" name="company_funded" [(ngModel)]="company_funded">
+                    <input type="text" class="form-control"  placeholder="Private investment from the founders and one angel" name="company_funded" [(ngModel)]="company_funded">
                     <div class="invalid-feedback d-inline" *ngIf="!company_funded">
                       {{funded_log}}
                     </div>
@@ -173,7 +173,7 @@
               <div class="col-md-6">
                 <div class="form-row">
                   <div class="form-group w-100">
-                    <label>Upload photo</label>
+                    <label>Company logo (optional)</label>
                     <div class="form-group">
                       <input type="file" accept="image/*" name="image" [(ngModel)]="image" class="form-control-file" id="profile">
                       <span *ngIf="img_src" >{{img_src}}</span>
@@ -326,7 +326,7 @@
               <div class="col-md-6">
                 <div class="form-row">
                   <div class="form-group w-100">
-                    <label>What roles are you looking for?</label>
+                    <label>What roles are you hiring for?</label>
                     <select multiple formControlName="position" title="(select multiple)" class="selectpicker form-control">
                       <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
 
@@ -422,7 +422,7 @@
                   <div class = "form-group w-100">
                     <label>When would you like to receive emails with candidates that match your search?</label>
                     <div>
-                      <label class="btn btn-primary" *ngFor="let receive of email_notificaiton; let i_ind =index">
+                      <label class="btn" *ngFor="let receive of email_notificaiton; let i_ind =index" [ngClass]="receive === preferncesForm.value.when_receive_email_notitfications? 'btn-primary' : 'btn-secondary'">
                         <input type="radio"  formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
                       </label>
                     </div>

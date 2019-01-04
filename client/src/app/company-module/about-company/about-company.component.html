@@ -49,7 +49,7 @@
                 <div class="col-md-6">
                   <div class="form-group w-100">
                     <label>How is the company funded?</label>
-                    <input type="text" class="form-control" required placeholder="Private investment from the founders and one angle" name="company_funded" [(ngModel)]="company_funded">
+                    <input type="text" class="form-control" required placeholder="Private investment from the founders and one angel" name="company_funded" [(ngModel)]="company_funded">
                     <div class="invalid-feedback d-inline" *ngIf="!company_funded">
                       {{funded_log}}
                     </div>
@@ -72,7 +72,7 @@
 
                 <div class="col-md-6">
                     <div class="form-group w-100">
-                      <label>Upload photo</label>
+                      <label>Company logo (optional)</label>
                       <div class="form-group">
                         <input type="file" accept="image/*" name="image" [(ngModel)]="image" class="form-control-file" id="profile">
                         <span *ngIf="img_src" >{{img_src}}</span>

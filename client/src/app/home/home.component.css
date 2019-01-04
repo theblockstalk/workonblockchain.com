@@ -15,6 +15,35 @@
   top: -1px;
 }
 
+.main_banner{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:100%;
+  min-width: 100%;
+}
+
+.main_banner::before{
+  content: '';
+  width:100%;
+  height: 100;
+  -webkit-transform: skewY(-5deg);
+  transform: skewY(-5deg);
+  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
+  content: "";
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  background: linear-gradient(150deg,#53f 15%,#05d5ff 70%,#a6ffcb 94%);
+  background-image: url('/assets/images/banner-top.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  top: -1px;
+  left:0px;
+}
+
 .row-main{
   padding: 150px 0px;
 }
@@ -191,7 +220,7 @@
 
 }
 
-@media (min-width: 1400px){
+@media (min-width: 1500px){
   #stripes {
     height: 65%;
   }

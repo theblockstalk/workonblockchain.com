@@ -83,6 +83,7 @@ export class AdminCandidateDetailComponent implements OnInit {
   detail_link;
   commercial_skills;
   formal_skills;
+  created_date;
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -97,6 +98,7 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.status_reason_rejected = -1;
     this.status_reason_deferred = -1;
 
+
     if(this.user_id && this.admin_log && this.currentUser)
     {
       if(this.admin_log.is_admin == 1)
@@ -105,7 +107,8 @@ export class AdminCandidateDetailComponent implements OnInit {
           .subscribe(
             data => {
               this.candidate_status = data['_creator'].candidate.status[0];
-              if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){}
+              if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
+              }
               else{
                 this.set_status = this.candidate_status.status;
               }
@@ -168,6 +171,12 @@ export class AdminCandidateDetailComponent implements OnInit {
                   return 0;
                 })
               }
+
+              if(data['_creator'].candidate && data['_creator'].candidate.status){
+                this.created_date = data['_creator'].candidate.status[data['_creator'].candidate.status.length-1].timestamp
+
+              }
+
 
               if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.commercial_skills && data['_creator'].candidate.blockchain.commercial_skills.length > 0)
               {
