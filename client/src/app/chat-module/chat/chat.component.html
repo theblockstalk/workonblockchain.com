@@ -396,9 +396,12 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Other details (optional):</label>
+                <label>Other details:</label>
                 <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500">
                 </ckeditor>
+                <div class = "invalid-feedback d-inline"  *ngIf="description_log">
+                  {{description_log}}
+                </div>
               </div>
             </div>
           </div>
