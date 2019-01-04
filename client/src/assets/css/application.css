@@ -39,12 +39,6 @@
     border-color: #ced4da;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-}
-
 .btn-default {
     color: #333;
     background-color: #fff;
