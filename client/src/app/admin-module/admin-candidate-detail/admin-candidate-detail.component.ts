@@ -173,7 +173,7 @@ export class AdminCandidateDetailComponent implements OnInit {
               }
 
               if(data['_creator'].candidate && data['_creator'].candidate.status){
-                this.created_date = data._creator.candidate.status[data._creator.candidate.status.length-1].timestamp
+                this.created_date = data['_creator'].candidate.status[data['_creator'].candidate.status.length-1].timestamp
 
               }
 
