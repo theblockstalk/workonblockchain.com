@@ -422,7 +422,7 @@
                   <div class = "form-group w-100">
                     <label>When would you like to receive emails with candidates that match your search?</label>
                     <div>
-                      <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index">
+                      <label class="btn btn-primary" *ngFor="let receive of email_notificaiton; let i_ind =index">
                         <input type="radio"  formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
                       </label>
                     </div>

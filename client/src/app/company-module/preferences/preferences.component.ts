@@ -341,7 +341,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   candidate_prefernces() {
     this.error_msg = "";
 
-    console.log(this.preferncesForm.value)
+
     if(!this.preferncesForm.value.location || this.preferncesForm.value.location.length === 0 ) {
       this.location_log = "Please select where are you hiring";
     }

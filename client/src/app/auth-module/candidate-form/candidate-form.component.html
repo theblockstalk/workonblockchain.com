@@ -130,7 +130,7 @@
               <select class="selectpicker form-control" title="(select one)"  required name="country" [(ngModel)]="credentials.country"  required="">
                 <option *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
               </select>
-              <div class="invalid-feedback d-inline" *ngIf="credentials.country === -1">
+              <div class="invalid-feedback d-inline" *ngIf="!credentials.country">
                 {{companyCountryLog}}
               </div>
              </div>

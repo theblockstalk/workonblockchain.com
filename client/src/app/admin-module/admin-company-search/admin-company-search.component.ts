@@ -183,12 +183,10 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
       if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
 
-      console.log(queryBody);
       this.authenticationService.admin_company_filter(queryBody)
         .subscribe(
           data =>
           {
-            console.log(data);
             this.information = this.filter_array(data);
 
             for(let res of this.information)

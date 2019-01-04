@@ -74,10 +74,8 @@ export class AdminCompanyDetailComponent implements OnInit {
                       }
                       else if (refData['companyDoc']) {
                         this.referred_name = refData['companyDoc'].first_name + " " + refData['companyDoc'].last_name;
-                        console.log(this.referred_name);
                         this.detail_link = '/admin-company-detail';
                         this.referred_link = refData['companyDoc']._creator;
-                        console.log(this.referred_link);
                       }
                       else {
                         this.referred_name = refData['refDoc'].email;
@@ -132,7 +130,6 @@ export class AdminCompanyDetailComponent implements OnInit {
           },
           error =>
           {
-            console.log(error);
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.error = error['error']['message'];
             }

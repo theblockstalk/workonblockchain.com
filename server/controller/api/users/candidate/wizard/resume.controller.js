@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
 
     if(candidateDoc) {
         const userParam = req.body;
-
+console.log(userParam);
         let candidateUpdate = {}
         if (userParam.why_work) candidateUpdate.why_work = userParam.why_work;
         if (userParam.commercial_experience_year) candidateUpdate.commercial_platform = userParam.commercial_experience_year;

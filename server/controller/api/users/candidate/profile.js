@@ -5,6 +5,7 @@ const errors = require('../../../services/errors');
 module.exports.update = async function update(candidateUserId, queryBody, educationHistory, workHistory, requestUserId) {
     const candidateDoc = await CandidateProfile.findOne({ _creator: candidateUserId }).lean();
 
+    console.log(queryBody);
     let candidateUpdate = {};
 
     if (queryBody.first_name) candidateUpdate.first_name = queryBody.first_name;
@@ -20,6 +21,7 @@ module.exports.update = async function update(candidateUserId, queryBody, educat
     if (queryBody.expected_salary) candidateUpdate.expected_salary = queryBody.expected_salary;
     if (queryBody.availability_day) candidateUpdate.availability_day = queryBody.availability_day;
     if (queryBody.why_work) candidateUpdate.why_work = queryBody.why_work;
+    if (queryBody.platforms) candidateUpdate.platforms = queryBody.platforms;
     if (queryBody.commercial_experience_year) candidateUpdate.commercial_platform = queryBody.commercial_experience_year;
     if (queryBody.experimented_platform) candidateUpdate.experimented_platform = queryBody.experimented_platform;
     if (queryBody.salary || queryBody.salary === '') candidateUpdate.current_salary = queryBody.salary;
