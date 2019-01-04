@@ -334,7 +334,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           );
       }
       else {
-        this.job_offer_msg = 'Salary should be a number';
+        //this.job_offer_msg = 'Salary should be a number';
+        this.job_offer_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
       }
     }
     else {
