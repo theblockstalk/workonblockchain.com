@@ -62,7 +62,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                <label>What roles are you looking for?</label>
+                <label>What roles are you hiring for?</label>
                 <select multiple formControlName="position" title="(select multiple)" class="form-control selectpicker">
                   <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
 
