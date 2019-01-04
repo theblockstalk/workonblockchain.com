@@ -773,17 +773,8 @@
       <div class="form-group">
         <label>When would you like to receive emails?</label>
         <div>
-          <label class="btn btn-secondary">
-            <input type="radio" name="options" id="option1" autocomplete="off">Never
-          </label>
-          <label class="btn btn-secondary">
-            <input type="radio" name="options" id="option2" autocomplete="off">Daily
-          </label>
-          <label class="btn btn-secondary">
-            <input type="radio" name="options" id="option3" autocomplete="off">3 days
-          </label>
-          <label class="btn btn-secondary">
-            <input type="radio" name="options" id="option4" autocomplete="off">Daily
+          <label class="btn" *ngFor="let receive of email_notificaiton;" [ngClass]="receive === when_receive_email_notitfications? 'btn-primary' : 'btn-secondary'">
+            <input type="radio" [checked] = "receive === when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
           </label>
         </div>
 

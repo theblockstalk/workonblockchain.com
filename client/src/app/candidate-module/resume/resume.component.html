@@ -100,7 +100,7 @@
               <p>{{option.value}}</p>
               <div class = "form-group">
                 <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-                <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index" for="rg{{option.value}}{{i_ind}}">
+                <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" for="rg{{option.value}}{{i_ind}}" [ngClass]="expYear_db[i] === exp.value && db_valye[i] === option.value? 'btn-primary' : 'btn-secondary'">
                   <input type="radio" autocomplete="off" name="radiogroup- {{ option.value}}" id="rg{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
                   {{exp.name}}
                 </label>
@@ -143,7 +143,7 @@
               <p>{{exp_value.value}}</p>
               <div class = "form-group">
                 <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-                <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index" for="group{{exp_value.value}}{{i_ind}}">
+                <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" for="group{{exp_value.value}}{{i_ind}}" [ngClass]="designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value? 'btn-primary' : 'btn-secondary'">
                   <input type="radio" autocomplete="off" name="group - {{ exp_value.value }} "  id="group{{exp_value.value}}{{i_ind}}" [checked]=" designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value"
                          value="{{exp.value}}" (change)="onPlatformYearOptions($event , exp_value.value)" >
                   {{exp.name}}
@@ -209,7 +209,7 @@
               <p>{{option.value}}</p>
               <div class = "form-group">
                 <!--<div class="btn-group btn-group-toggle" data-toggle="buttons" >-->
-                <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index" for="skill{{option.value}}{{i_ind}}">
+                <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" for="skill{{option.value}}{{i_ind}}" [ngClass]="skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value? 'btn-primary' : 'btn-secondary'">
                   <input type="radio" autocomplete="off" name="commercialradiogroup- {{ option.value}}" id="skill{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value">
                   {{exp.name}}
                 </label>
@@ -252,7 +252,7 @@
               <p>{{option.value}}</p>
               <div class = "form-group">
                 <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-                <label class="btn btn-primary" *ngFor="let exp of exp_year; let i_ind =index" for="formal{{option.value}}{{i_ind}}">
+                <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" for="formal{{option.value}}{{i_ind}}" 	  [ngClass]="formal_expYear_db[i] === exp.value && formalDbArray[i] === option.value? 'btn-primary' : 'btn-secondary'">
                   <input type="radio" name="formalradiogroup- {{ option.value}}" id="formal{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onFormalExpYearOptions($event , option.value)" [checked]="formal_expYear_db[i] === exp.value && formalDbArray[i] === option.value" >
                   {{exp.name}}
                 </label>
