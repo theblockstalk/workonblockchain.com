@@ -1518,7 +1518,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.education_json_array.push(this.educationjson) ;
     }
 
-    console.log(profileForm);
     if(this.commercially_worked.length === 0) {
       profileForm.commercial_experience_year = [];
     }

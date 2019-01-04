@@ -188,7 +188,7 @@
                           <select title="(select one)" formControlName="endyear" class="selectpicker form-control xs_input" required name="roles" required=""  >
                             <option  *ngFor='let end_year of year'  [value]="end_year" [attr.selected]="ExperienceForm.value.ExpItems[i].endyear === end_year ? true : null" >{{end_year}}</option>
                           </select>
-                          <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].endyear  && this.ExperienceForm.value.ExpItems[i].currentwork === false">
+                          <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].endyear  && this.ExperienceForm.value.ExpItems[i].currentwork ===false">
                             {{end_date_year_log}}
                           </div>
                         </div>
@@ -281,9 +281,8 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label>Graduation</label>
-                      <select title="1970" formControlName="eduyear" class='selectpicker form-control'  required name="roles"  required=""  >
+                      <select title="(select one)" formControlName="eduyear" class='selectpicker form-control'  required name="roles"  required=""  >
                         <option class='option' *ngFor='let graduation_year of year'  [value]="graduation_year" selected>{{graduation_year}}</option>
-                        <br/>
                       </select>
                       <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].eduyear">
                         {{eduYear_log}}
