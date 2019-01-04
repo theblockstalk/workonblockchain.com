@@ -13,7 +13,7 @@ import {environment} from '../../../environments/environment';
 import { LinkedInService } from '../../linkedin-api';
 
 const URL = environment.backend_url;
-console.log(URL);
+//console.log(URL);
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -84,12 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 window.location.href = '/' + this.previousUrl;
               }
               else {
-                console.log(user);
-                console.log(user['created_date']);
-                console.log(new Date(user['created_date']));
-                console.log(new Date('2018/11/28'));
                 if (new Date(user['created_date']) < new Date('2018/11/28')) {
-                  console.log("if");
                   window.location.href = '/candidate-search';
                 }
                 else {

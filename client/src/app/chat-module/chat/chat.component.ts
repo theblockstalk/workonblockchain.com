@@ -668,12 +668,30 @@ export class ChatComponent implements OnInit {
         );
   }
 
+  date_log;
+  time_log;
+  location_log;
+
   send_interview_message(msgForm : NgForm) {
     this.interview_log = '';
     this.job_offer_log = '';
     this.file_msg = '';
     this.img_name = '';
+    this.date_log = '';
+    this.time_log = '';
+    this.location_log = '';
+
     let interview_date = $('#startdate_datepicker').val();
+    if(!interview_date){
+      this.date_log = 'Please enter date';
+    }
+    if(!this.credentials.time){
+      this.time_log = 'Please enter time';
+    }
+    if(!this.credentials.location){
+      this.location_log = 'Please enter location';
+    }
+
     if (interview_date && this.credentials.time && this.credentials.location) {
       $("#myModal").modal("hide");
       //console.log('interview');
@@ -737,11 +755,25 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  job_title_log;
+  start_date_log;
+  employment_type_log;
+  salary_log;
+  salary_currency_log;
+  job_desc_log;
+
   send_job_message(msgForm : NgForm) {
     this.interview_log = '';
     this.job_offer_log = '';
     this.file_msg = '';
     this.img_name = '';
+    this.job_title_log = '';
+    this.start_date_log = '';
+    this.employment_type_log = '';
+    this.salary_log = '';
+    this.salary_currency_log = '';
+    this.job_desc_log = '';
+
     let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
     let fileCount: number = inputEl.files.length;
     let formData = new FormData();
@@ -751,6 +783,26 @@ export class ChatComponent implements OnInit {
       if (inputEl.files.item(0).size <= this.file_size && (toArray[0] === 'image' || inputEl.files.item(0).type === 'application/pdf' || inputEl.files.item(0).type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
         formData.append('photo', inputEl.files.item(0));
         this.credentials.start_date = $('#startdate_datepicker_employ').val();
+        if(!this.credentials.start_date){
+          this.start_date_log = 'Please enter start date';
+        }
+
+        if(!this.credentials.job_title){
+          this.job_title_log = 'Please enter job title';
+        }
+        if(!this.credentials.employment_type){
+          this.employment_type_log = 'Please select employment type';
+        }
+        if(!this.credentials.base_salary){
+          this.salary_log = 'Please enter salary';
+        }
+        if(!this.credentials.currency){
+          this.salary_currency_log = 'Please select currency';
+        }
+        if(!this.credentials.job_description){
+          this.job_desc_log = 'Please enter job description';
+        }
+
         if (this.credentials.job_title && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description) {
           if (this.credentials.base_salary && Number(this.credentials.base_salary) && (Number(this.credentials.base_salary)) > 0 && this.credentials.base_salary % 1 === 0) {
             this.send_employment_offer(this.credentials, 1,formData);
@@ -770,6 +822,26 @@ export class ChatComponent implements OnInit {
     else {
       //console.log('no file');
       this.credentials.start_date = $('#startdate_datepicker_employ').val();
+      if(!this.credentials.start_date){
+        this.start_date_log = 'Please enter start date';
+      }
+
+      if(!this.credentials.job_title){
+        this.job_title_log = 'Please enter job title';
+      }
+      if(!this.credentials.employment_type){
+        this.employment_type_log = 'Please select employment type';
+      }
+      if(!this.credentials.base_salary){
+        this.salary_log = 'Please enter salary';
+      }
+      if(!this.credentials.currency){
+        this.salary_currency_log = 'Please select currency';
+      }
+      if(!this.credentials.job_description){
+        this.job_desc_log = 'Please enter job description';
+      }
+
       if (this.credentials.job_title && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description) {
         if (this.credentials.base_salary && Number(this.credentials.base_salary) && (Number(this.credentials.base_salary)) > 0 && this.credentials.base_salary % 1 === 0) {
           formData.append('photo', '');
@@ -1288,6 +1360,15 @@ export class ChatComponent implements OnInit {
     this.credentials.start_date = '';
     this.credentials.job_description = '';
     this.img_name = '';
+    this.date_log = '';
+    this.time_log = '';
+    this.location_log = '';
+    this.job_title_log = '';
+    this.start_date_log = '';
+    this.employment_type_log = '';
+    this.salary_log = '';
+    this.salary_currency_log = '';
+    this.job_desc_log = '';
 	}
 
   update_status(){

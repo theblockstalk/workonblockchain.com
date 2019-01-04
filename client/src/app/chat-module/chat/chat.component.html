@@ -364,15 +364,19 @@
                   <div class="input-group-append">
                     <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
                   </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="date_log">
+                    {{date_log}}
+                  </div>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Time:</label>
-                <p>
-                  <input type="time" name="time" [(ngModel)]="credentials.time" class="form-control" placeholder="00:00">
-                </p>
+                <input type="time" name="time" [(ngModel)]="credentials.time" class="form-control" placeholder="00:00">
+                <div class = "invalid-feedback d-inline"  *ngIf="time_log">
+                  {{time_log}}
+                </div>
               </div>
             </div>
           </div>
@@ -382,6 +386,9 @@
               <div class="form-group">
                 <label>Location:</label>
                 <input type="text" name="location" [(ngModel)]="credentials.location" class="form-control" placeholder="London">
+                <div class = "invalid-feedback d-inline"  *ngIf="location_log">
+                  {{location_log}}
+                </div>
               </div>
             </div>
           </div>
@@ -432,6 +439,9 @@
               <div class="form-group">
                 <label>Job title:</label>
                 <input type="text" class="form-control" name="job_title" [(ngModel)]="credentials.job_title" placeholder="Full stack developer">
+                <div class = "invalid-feedback d-inline"  *ngIf="job_title_log">
+                  {{job_title_log}}
+                </div>
               </div>
             </div>
             <div class="col-md-6">
@@ -441,6 +451,9 @@
                   <option value="-1" disabled selected hidden>(select one)</option>
                   <option *ngFor='let type of employment_type_select' [value]="type" [attr.selected]="type === credentials.employment_type? true : null">{{type}}</option>
                 </select>
+                <div class = "invalid-feedback d-inline"  *ngIf="employment_type_log">
+                  {{employment_type_log}}
+                </div>
               </div>
             </div>
           </div>
@@ -449,8 +462,11 @@
               <div class="form-group">
                 <label>Annual salary:</label>
                 <input type="text" #expect_salary="ngModel"  pattern="^[0-9]*$" required class="form-control" name="base_salary" [(ngModel)]="credentials.base_salary" placeholder="10000">
-                <div class = "form_error" >
-                  <span class = "error" *ngIf="expect_salary.errors && credentials.base_salary"> Salary should be a number. </span>
+                <div class = "invalid-feedback d-inline" *ngIf="expect_salary.errors && credentials.base_salary">
+                  Salary should be a number.
+                </div>
+                <div class = "invalid-feedback d-inline"  *ngIf="salary_log">
+                  {{salary_log}}
                 </div>
               </div>
             </div>
@@ -461,6 +477,9 @@
                   <option value="-1" disabled selected hidden>Currency</option>
                   <option *ngFor='let yearly_salary_curency of salary_currency_select' [value]="yearly_salary_curency" [attr.selected]="yearly_salary_curency === credentials.currency? true : null">{{yearly_salary_curency}}</option>
                 </select>
+                <div class = "invalid-feedback d-inline"  *ngIf="salary_currency_log">
+                  {{salary_currency_log}}
+                </div>
               </div>
             </div>
           </div>
@@ -474,6 +493,9 @@
                   <div class="input-group-append">
                     <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
                   </div>
+                  <div class = "invalid-feedback d-inline"  *ngIf="start_date_log">
+                    {{start_date_log}}
+                  </div>
                 </div>
               </div>
             </div>
@@ -485,6 +507,9 @@
                 <label>Job description:</label>
                 <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_description" #myckeditor name="html_text" [config]="ckeConfigInterview" debounce="500" >
                 </ckeditor>
+                <div class = "invalid-feedback d-inline"  *ngIf="job_desc_log">
+                  {{job_desc_log}}
+                </div>
               </div>
             </div>
           </div>
