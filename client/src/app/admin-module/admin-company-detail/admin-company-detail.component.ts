@@ -56,12 +56,12 @@ export class AdminCompanyDetailComponent implements OnInit {
         .subscribe(
           data =>
           {
-
               this.info.push(data);
               this.approve = data['_creator'].is_approved;
               this.verify =data['_creator'].is_verify;
               if(data['saved_searches'].length > 0) {
                 this.saved_searche = data['saved_searches'];
+                console.log(this.saved_searche);
               }
               if(data['_creator'].referred_email) {
                 this.authenticationService.getReferenceDetail(data['_creator'].referred_email)
