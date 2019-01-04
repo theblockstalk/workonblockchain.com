@@ -80,7 +80,7 @@
               <p>{{lang_value.value}}</p>
               <div class = "form-group">
                 <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-                <label class="btn" *ngFor="let exp of exp_year; let i_ind =index" for="{{lang_value.value}}{{i_ind}}" [ngClass]="expYear_db[i] === exp.value && db_valye[i] === lang_value.value? 'btn-primary' : 'btn-secondary'">
+                <label class="btn btn-secondary" *ngFor="let exp of exp_year; let i_ind =index" for="{{lang_value.value}}{{i_ind}}">
                   <input type="radio" id="{{lang_value.value}}{{i_ind}}" name="radiogroup- {{ lang_value.value}}" [checked]=" expYear_db[i] === exp.value && db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onExpYearOptions($event , lang_value.value)">
                   {{exp.name}}
                 </label>

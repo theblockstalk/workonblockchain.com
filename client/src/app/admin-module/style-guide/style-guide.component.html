@@ -773,7 +773,7 @@
       <div class="form-group">
         <label>When would you like to receive emails?</label>
         <div>
-          <label class="btn" *ngFor="let receive of email_notificaiton;" [ngClass]="receive === when_receive_email_notitfications? 'btn-primary' : 'btn-secondary'">
+          <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton;" >
             <input type="radio" [checked] = "receive === when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
           </label>
         </div>

@@ -121,8 +121,11 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
   {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 700);
+    }, 900);
     window.scrollTo(0, 0);
 
   }
