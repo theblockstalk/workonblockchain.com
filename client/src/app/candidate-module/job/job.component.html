@@ -106,7 +106,7 @@
               <div class="form-group">
                 <label class="invisible">Expected annual salary currency</label>
                 <select [(ngModel)]="base_currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
-                  <option *ngFor='let base_currency of currency' [attr.selected] [value]="base_currency">{{base_currency}}</option>
+                  <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === base_currency ? true : null" [value]="baseCurrency">{{baseCurrency}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="!base_currency">
                   {{currency_log}}
@@ -135,9 +135,9 @@
 
                 <select [(ngModel)]="current_currency" title="Currency" class="selectpicker" id="currency"  required name="current_currency" >
                   <option value="-1" >Currency</option>
-                  <option *ngFor='let current_currency of currency' #choose_currency [attr.selected] [value]="current_currency">{{current_currency}}</option>
+                  <option *ngFor='let currentCurrency of currency' #choose_currency [attr.selected]="current_currency === currentCurrency ? true : null"[value]="currentCurrency">{{currentCurrency}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline" *ngIf="(current_salary && !current_currency) ">
+                <div class = "invalid-feedback d-inline" *ngIf="current_currency_log ">
                   {{current_currency_log}}
                 </div>
               </div>

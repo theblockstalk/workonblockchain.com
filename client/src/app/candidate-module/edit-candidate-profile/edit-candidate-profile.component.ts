@@ -103,6 +103,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   nationality_log;
   error_msg;
   expected_validation;
+  start_date_year_log;
+  end_date_year_log;
 
   nationality = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
 
@@ -357,7 +359,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                   {
                     option.checked=true;
                     this.selectedcountry.push(country1);
-
                   }
 
                 }
@@ -402,6 +403,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               this.availability_day = data['availability_day'];
               if(data['expected_salary_currency'])
                 this.base_currency = data['expected_salary_currency'];
+              console.log(this.base_currency);
             }
 
             if(data['commercial_platform'] || data['experimented_platform'] || data['why_work'] || data['platforms'])
@@ -986,7 +988,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.language.push(obj);
     }
 
-    //console.log(this.language);
+    console.log(this.language);
+    console.log(this.LangexpYear);
 
   }
 
@@ -1013,7 +1016,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
     else{
 
-      let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
+      let updateItem = this.jobselected.find(this.findIndexToUpdateCheck, e.target.value);
 
       let index = this.jobselected.indexOf(updateItem);
 
@@ -1198,7 +1201,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
     else{
       ////console.log("else");
-      let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
+      let updateItem = this.selectedValue.find(this.findIndexToUpdateCheck, e.target.value);
 
       let index = this.selectedValue.indexOf(updateItem);
 
@@ -1209,22 +1212,25 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   updateCheckedOptions(e)
   {
-    //this.interest = e.target.value;
-
     if(e.target.checked)
     {
       this.selectedcountry.push(e.target.value);
-      ////console.log("if");
     }
     else{
-      ////console.log("else");
-      let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value);
+      let updateItem = this.selectedcountry.find(this.findIndexToUpdateCheck, e.target.value);
 
       let index = this.selectedcountry.indexOf(updateItem);
 
       this.selectedcountry.splice(index, 1);
     }
 
+    console.log(this.selectedcountry);
+
+  }
+
+  findIndexToUpdateCheck(type) {
+    ////console.log("funct");
+    return type == this;
   }
   ////////////////////////save edit profile data//////////////////////////////////
   start_monthh;
@@ -1248,9 +1254,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   commercial_skill_log;
   formal_skills_log;
   current_sal_log;
+  count;
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
+    this.count = 0;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1312,16 +1320,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
       this.avail_log = "Please select employment availability";
     }
-    /*if(!this.salary)
-    {
-      this.current_sal_logg = "Please enter current base salary";
 
-    }
-
-    if(this.current_currency === -1)
-    {
-      this.current_currency_logg = "Please choose currency";
-    }*/
     if(!this.why_work)
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
@@ -1414,14 +1413,24 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
         }
 
-        if(!this.ExperienceForm.value.ExpItems[key].start_date || !this.ExperienceForm.value.ExpItems[key].startyear)
+        if(!this.ExperienceForm.value.ExpItems[key].startdate )
         {
-          this.start_date_log = "Please fill start date ";
+          this.start_date_log = "Please fill month";
         }
 
-        if(!this.ExperienceForm.value.ExpItems[key].end_date || !this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].companyname==false)
+        if( !this.ExperienceForm.value.ExpItems[key].startyear)
         {
-          this.end_date_log = "Please fill end date ";
+          this.start_date_year_log = "Please fill year";
+        }
+
+        if(!this.ExperienceForm.value.ExpItems[key].end_date && this.ExperienceForm.value.ExpItems[key].currentwork === false)
+        {
+          this.end_date_log = "Please fill month";
+        }
+
+        if(!this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork === false)
+        {
+          this.end_date_year_log = "Please fill year ";
         }
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname &&
@@ -1450,13 +1459,20 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     if(this.salary && !this.current_currency) {
       this.current_currency_logg = "Please choose currency";
+      this.count++;
     }
 
-    if(!this.salary && this.current_currency) {
+    if(this.salary && this.current_currency === "-1" ) {
+      this.current_currency_logg = "Please choose currency";
+      this.count++;
+    }
+
+    if(!this.salary && this.current_currency != -1) {
       this.current_sal_log = "Please enter current base salary";
+      this.count++;
     }
 
-    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
+    if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
       this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
@@ -1476,6 +1492,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   updateProfileData(profileForm)
   {
+    console.log(this.base_currency);
+    console.log(this.current_currency);
     this.experiencearray=[];
     this.education_json_array=[];
     for (var key in this.ExperienceForm.value.ExpItems)
@@ -1508,6 +1526,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       profileForm.commercial_experience_year = this.commercial_expYear;
     }
 
+
     if(this.platforms_designed.length === 0) {
       profileForm.platforms = [];
     }
@@ -1526,6 +1545,26 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     else {
       profileForm.formal_skills = this.formal_skills;
     }
+
+    if(this.language.length === 0) {
+      profileForm.language = [];
+    }
+    else {
+      profileForm.language_experience_year = this.LangexpYear;
+    }
+
+    if(this.selectedcountry){
+      profileForm.country = this.selectedcountry;
+    }
+
+    if(this.jobselected){
+      profileForm.roles = this.jobselected;
+    }
+
+    if(this.selectedValue){
+      profileForm.interest_area = this.selectedValue;
+    }
+
     this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
       .subscribe(
         data => {
