@@ -149,7 +149,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
     if(!this.company_description)
     {
-      this.des_log = 'Please fill Company Description';
+      this.des_log = 'Please fill company description';
 
     }
     if(this.company_founded && this.no_of_employees && this.company_funded && this.company_description)

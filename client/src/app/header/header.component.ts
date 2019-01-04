@@ -33,13 +33,14 @@ export class HeaderComponent implements OnInit {
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
     this.success_msg='';
+    this.admin_route = window.location.pathname;
     router.events.subscribe((val) => {
       if(location.path() != ''){
         this.route = location.path();
         let loc= this.route;
         this.location = loc;
         let x = loc.split("-");
-        this.admin_route = x[0];
+        this.admin_route = window.location.pathname;
       } else {
         //this.route = 'Home'
       }

@@ -369,7 +369,6 @@
             </div>
 
             <div class="form-group">
-              <label class="invisible">Currency</label>
               <select title="Currency" class="selectpicker form-control" name="currency" [(ngModel)]="credentials.currency">
                 <option *ngFor='let base_currency of currency' [value]="base_currency" [attr.selected]="base_currency === credentials.currency? true : null">{{base_currency}}</option>
               </select>
