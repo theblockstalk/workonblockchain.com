@@ -1429,7 +1429,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
         data => {
           if(data['success'] && this.currentUser)
           {
-            console.log(data);
+
             this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.user_id } });
           }
 

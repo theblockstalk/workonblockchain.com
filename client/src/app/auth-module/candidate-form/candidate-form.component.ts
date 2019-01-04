@@ -141,7 +141,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     }
     if(loginForm.valid === true && this.credentials.email && this.credentials.password && this.credentials.confirm_password && this.credentials.password == this.credentials.confirm_password)
     {
-      console.log("if");
+
       this.authenticationService.create(this.credentials)
         .subscribe(
           data =>

@@ -464,7 +464,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
         this.experimented_platform.push(obj);
       }
 
-console.log(this.experimented_platform);
+
 
   }
 
@@ -482,7 +482,7 @@ console.log(this.experimented_platform);
    blockchain_exp(expForm: NgForm)
    {
      this.error_msg="";
-     console.log(expForm.value);
+
      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
      if(this.commercially_worked.length !== this.commercial_expYear.length )
      {

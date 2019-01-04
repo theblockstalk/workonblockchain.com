@@ -403,7 +403,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               this.availability_day = data['availability_day'];
               if(data['expected_salary_currency'])
                 this.base_currency = data['expected_salary_currency'];
-              console.log(this.base_currency);
             }
 
             if(data['commercial_platform'] || data['experimented_platform'] || data['why_work'] || data['platforms'])
@@ -803,8 +802,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.experimented_platform.push(obj);
     }
 
-    console.log(this.experimented_platform);
-
 
   }
 
@@ -832,10 +829,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.commercially_worked.push(obj);
     }
 
-
-  console.log(this.commercially_worked);
-    console.log(this.commercial_expYear);
-  }
+    }
 
   onPlatformOptions(obj)
   {
@@ -859,8 +853,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       obj.checked =true;
       this.platforms_designed.push(obj);
     }
-
-    console.log(this.platforms_designed);
 
 
   }
@@ -988,8 +980,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.language.push(obj);
     }
 
-    console.log(this.language);
-    console.log(this.LangexpYear);
 
   }
 
@@ -1224,7 +1214,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.selectedcountry.splice(index, 1);
     }
 
-    console.log(this.selectedcountry);
 
   }
 
@@ -1492,8 +1481,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   updateProfileData(profileForm)
   {
-    console.log(this.base_currency);
-    console.log(this.current_currency);
     this.experiencearray=[];
     this.education_json_array=[];
     for (var key in this.ExperienceForm.value.ExpItems)

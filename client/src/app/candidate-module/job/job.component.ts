@@ -91,7 +91,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
-            console.log(data);
 
             if(data['experience_roles']!="")
             {
@@ -180,10 +179,6 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.current_salary = data['current_salary'];
               if(data['current_currency'])
                 this.current_currency =data['current_currency'];
-
-              console.log(this.base_currency);
-              console.log(this.current_currency);
-              //this.resume_class="/resume";
 
               if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'])
               {
@@ -361,7 +356,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.selectedcountry.splice(index, 1);
     }
 
-    console.log(this.selectedcountry)
 
   }
 
@@ -473,9 +467,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.count++;
     }
 
-    console.log(typeof(this.current_currency));
     if(this.current_salary && this.current_currency === "-1" ) {
-      console.log("if");
       this.current_currency_log = "Please choose currency";
       this.count++;
     }

@@ -419,9 +419,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   company_profile(profileForm: NgForm)
   {
-    console.log("function executed");
-    console.log(this.preferncesForm.value);
-    console.log(profileForm.value);
     this.error_msg = "";
     if(!this.first_name) {
       this.first_name_log="Please enter first name";
@@ -510,11 +507,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 if(inputEl.files.item(0).size < this.file_size)
                 {
 
-                  console.log(inputEl.files.item(0).size);
-
                   formData.append('photo', inputEl.files.item(0));
 
-                  console.log(formData);
                   this.authenticationService.company_image(formData)
                     .subscribe(
                       imageRes => {
@@ -602,8 +596,5 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }
   }
 
-  emailNotificationChange(e){
-    console.log("running");
-  }
 
 }

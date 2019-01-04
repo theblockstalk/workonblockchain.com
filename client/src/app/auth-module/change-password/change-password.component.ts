@@ -83,7 +83,6 @@ export class ChangePasswordComponent implements OnInit {
           },
           error=>
           {
-            console.log(error);
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
             {
               this.log = error['error']['message'];

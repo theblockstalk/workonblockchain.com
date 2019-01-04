@@ -614,7 +614,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   educationjson; education_json_array=[];
   submit_info(searchForm )
   {
-    console.log(searchForm.value);
     this.experiencearray=[];
     this.education_json_array=[];
     this.log='';
