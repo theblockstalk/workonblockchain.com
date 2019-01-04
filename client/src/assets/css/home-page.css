@@ -193,7 +193,7 @@ We will only include this CSS file on the home page*/
 
 }
 
-@media (min-width: 1550px){
+@media (min-width: 1327px){
   #stripes {
     height: 65%;
   }
