@@ -34,13 +34,13 @@ export class AccountSettingsComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data._creator.is_unread_msgs_to_send){
-              this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
+            if(data['_creator'].is_unread_msgs_to_send){
+              this.info.unread_msgs_emails = data['_creator'].is_unread_msgs_to_send;
             }
-            if(data._creator.disable_account || data.marketing_emails)
+            if(data['_creator'].disable_account || data['marketing_emails'])
             {
-              this.info.marketing = data.marketing_emails;
-              this.info.disable_account = data._creator.disable_account;
+              this.info.marketing = data['marketing_emails'];
+              this.info.disable_account = data['_creator'].disable_account;
             }
           });
     }
@@ -51,13 +51,13 @@ export class AccountSettingsComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data._creator.is_unread_msgs_to_send){
-              this.info.unread_msgs_emails = data._creator.is_unread_msgs_to_send;
+            if(data['_creator'].is_unread_msgs_to_send){
+              this.info.unread_msgs_emails = data['_creator'].is_unread_msgs_to_send;
             }
-            if(data._creator.disable_account || data.marketing_emails)
+            if(data['_creator'].disable_account || data['marketing_emails'])
             {
-              this.info.marketing = data.marketing_emails;
-              this.info.disable_account= data._creator.disable_account;
+              this.info.marketing = data['marketing_emails'];
+              this.info.disable_account= data['_creator'].disable_account;
             }
 
           },
@@ -92,7 +92,7 @@ export class AccountSettingsComponent implements OnInit {
   status;
   account_setting(statusName , statusValue)
   {
-    console.log(statusValue);
+
     this.inform = '';
     if(statusName === 'marketingEmail') {
       this.status = {statusName : statusName , statusValue : this.info.marketing};
@@ -108,27 +108,6 @@ export class AccountSettingsComponent implements OnInit {
           data =>
           {
             this.inform = data;
-            console.log(this.info);
-            if(statusName === 'marketingEmail') {
-              if(this.info.marketing) {
-                this.message = 'Your profile is currently enabled for marketing emails.';
-              }
-              else if(!this.info.marketing) {
-                this.message = 'Your profile is currently disabled for marketing emails.';
-              }
-              else {
-
-              }
-            }
-            if(statusName === 'disabledAccount') {
-              if(this.info.disable_account){
-                this.message = 'Your profile is currently disabled';
-              }
-
-              if(!this.info.disable_account) {
-                this.message = 'Your profile is currently enabled';
-              }
-            }
 
           },
           error => {
@@ -157,19 +136,14 @@ export class AccountSettingsComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data.error )
+            if(data['error'] )
             {
-              this.log=data.error;
+              this.log=data['error'];
             }
             else
             {
               this.inform=data;
-              if(this.info.unread_msgs_emails){
-                this.message = 'Your profile is currently enabled for unread chat messages email';
-              }
-              else{
-                this.message = 'Your profile is currently disabled for unread chat messages email';
-              }
+
             }
           },
           error => {

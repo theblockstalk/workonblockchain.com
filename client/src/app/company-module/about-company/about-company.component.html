@@ -1,102 +1,127 @@
-<!--candidate step completing-->
-
-<section class = "wizard_page">
-
+<section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
     <div class="row">
-      <div class = "text-center steps-name hidden-xs">
-        <ul class = "step-progress">
-          <li class = "step"><i class="{{terms_active_class}}"></i><a routerLink = "/company_wizard">Summary of T&Cs</a></li>
-          <li class = "step step-active"><i class="{{about_active_class}}"></i><a routerLink = "/about_comp">About the company</a></li>
-          <li class="step "><i class ="{{pref_active_class}}" ></i><a routerLink = "{{preference}}" class = "btn {{pref_disable}}">Candidate preferences</a></li>
+      <div class="col-md-12">
+        <ul class="nav justify-content-center wizard mb-3">
+          <li class="nav-item">
+            <a routerLink="/company_wizard" class="nav-link">
+              <i class="{{terms_active_class}}"></i>
+              Summary of T&Cs
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about_comp" class="nav-link">
+              <i class="{{about_active_class}}"></i>
+              About the company
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="{{preference}}" class="nav-link btn {{pref_disable}}">
+              <i class="{{pref_active_class}}"></i>
+              Candidate preferences
+            </a>
+          </li>
 
         </ul>
       </div>
-      <div class="col-md-12 wizard-form">
+    </div>
 
-        <form class = "login_form"  (submit)="about_company(aboutForm)"  #aboutForm = ngForm>
+    <div class="row p-4 border bg-white">
+      <div class="col-md-12">
+        <form (submit)="about_company(aboutForm)"  #aboutForm = ngForm>
+            <section class = "p-2" id = "information">
+              <div class="row">
 
-          <fieldset class="scheduler-border">
-            <legend class="scheduler-border">About Company</legend>
-            <p>{{log}}</p>
+                <div class="col-md-6">
+                    <div class="form-group w-100">
+                      <label>When was the company founded?</label>
+                      <input type="text" class="form-control" #companyFounded="ngModel"  pattern="^[0-9]*$" required name="company_founded" placeholder="1997" [(ngModel)]="company_founded">
+                      <div class="invalid-feedback d-inline" *ngIf="!company_founded">
+                        {{founded_log}}
+                      </div>
 
-            <div class = "row">
-            <div class="form-group col-md-6">
-              <label><p class = "label-p">When was the company founded?</p></label>
-              <input type="text" class="form-control" #companyFounded="ngModel"  pattern="^[0-9]*$" required name="company_founded" placeholder="1997" [(ngModel)]="company_founded">
-              <div class = "form_error" *ngIf="!company_founded || companyFounded.errors">
-                <span class = "error" *ngIf="!company_founded; else expected_validation " >{{founded_log}}</span>
-                <span class = "error" #expected_validation  *ngIf="companyFounded.errors && company_founded">  Input data should be a number. </span>
+                      <div class="invalid-feedback d-inline" *ngIf="companyFounded.errors && company_founded">
+                        Input data should be a number.
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group w-100">
+                    <label>How is the company funded?</label>
+                    <input type="text" class="form-control" required placeholder="Private investment from the founders and one angel" name="company_funded" [(ngModel)]="company_funded">
+                    <div class="invalid-feedback d-inline" *ngIf="!company_funded">
+                      {{funded_log}}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="row">
+
+                <div class="col-md-6">
+                  <div class="form-group w-100">
+                    <label>Number of employees?</label>
+                    <input type="number" class="form-control" required placeholder="10" name="no_of_employees" [(ngModel)]="no_of_employees">
+                    <div class="invalid-feedback d-inline" *ngIf="!no_of_employees">
+                      {{employee_log}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group w-100">
+                      <label>Company logo (optional)</label>
+                      <div class="form-group">
+                        <input type="file" accept="image/*" name="image" [(ngModel)]="image" class="form-control-file" id="profile">
+                        <span *ngIf="img_src" >{{img_src}}</span>
+                      </div>
+                      <div class="invalid-feedback d-inline" *ngIf="!image_log">
+                        {{image_log}}
+                      </div>
+                    </div>
+                </div>
+
+
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Company description</label>
+                      <textarea name="company_description" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
+                      <div class="invalid-feedback d-inline" *ngIf="!company_description">
+                        {{des_log}}
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </section >
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class = "text-right mt-3">
+                  <a routerLink="/company_wizard" class = "btn btn-warning text-white">Back</a>
+                  <button type="submit" class = "btn btn-primary ml-1">Next</button>
+                </div>
               </div>
             </div>
-
-            <div class="form-group col-md-6">
-              <label><p class = "label-p">Number of employees?</p></label>
-              <input type="number" class="form-control" id="" required placeholder="Number of employees?" name="no_of_employees" [(ngModel)]="no_of_employees">
-
-              <div class = "form_error" *ngIf="!no_of_employees">
-                <span class = "error">{{employee_log}}</span>
-              </div>
-            </div>
-            </div>
-
-            <div class = "row">
-            <div class="form-group col-md-6">
-              <label><p class = "label-p">How is the company funded?</p></label>
-              <input type="text" class="form-control" id="" required placeholder="How's company funded?" name="company_funded" [(ngModel)]="company_funded">
-
-              <div class = "form_error" *ngIf="!company_funded">
-                <span class = "error">{{funded_log}}</span>
-              </div>
-            </div>
-
-            <div class="form-group col-md-6 mr-top-33" >
-              <input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="image" >
-              <label id="fileLabel" >
-                <span *ngIf="img_src" >{{img_src}}</span>
-                <span *ngIf="!img_src" >Upload Company Logo (optional)</span>
-              </label>
-              <div class = "form_error image-log" *ngIf="image_log">
-                <span class = "error">{{image_log}}</span>
-              </div>
-            </div>
-            </div>
-
-            <div class = "row">
-            <div class="form-group col-md-12 mr-top-04">
-              <label><p>Company Description</p></label>
-              <textarea class="form-control" required rows="5" id="comment" maxlength="2000" placeholder="" name="company_description" [(ngModel)]="company_description"></textarea>
-
-              <div class = "form_error" *ngIf="!company_description">
-                <span class = "error">{{des_log}}</span>
-              </div>
-            </div>
-            </div>
-
-          </fieldset>
-
-          <div class = "form-group text-right">
-            <a href = "company_wizard" class = "btn btn-prev">Prev Step</a>
-            <button type="submit" class = "btn btn-self btn-pdg" [disabled]="companyFounded.errors" >Next Step</button>
           </div>
 
+          <div class="row" *ngIf="error_msg">
+            <div class="col-md-12">
+              <div class = "invalid-feedback float-right d-inline w-auto" >
+                {{error_msg}}
+              </div>
+            </div>
 
-          <div class = "form_error error-log" *ngIf="error_msg">
-            <span class = "error">{{error_msg}}</span>
           </div>
 
         </form>
-
       </div>
     </div>
-  </div>
-
-
+    </div>
 </section>
-
-
-
-<!--candidate step completing End-->
-
-<div class = "gap">
-</div>

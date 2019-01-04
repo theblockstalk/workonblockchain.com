@@ -33,14 +33,14 @@ export class HeaderComponent implements OnInit {
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
     this.success_msg='';
+    this.admin_route = window.location.pathname;
     router.events.subscribe((val) => {
       if(location.path() != ''){
         this.route = location.path();
         let loc= this.route;
         this.location = loc;
         let x = loc.split("-");
-        this.admin_route = x[0];
-
+        this.admin_route = window.location.pathname;
       } else {
         //this.route = 'Home'
       }
@@ -65,7 +65,7 @@ export class HeaderComponent implements OnInit {
 
               if(data)
               {
-                this.is_verify = data._creator.is_verify;
+                this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
                 {
                   this.success_msg = "not verify";
@@ -74,8 +74,8 @@ export class HeaderComponent implements OnInit {
                 {
                   this.success_msg='';
                 }
-                this.is_admin = data._creator.is_admin;
-                this.user_name = data.first_name+' '+data.last_name;
+                this.is_admin = data['_creator'].is_admin;
+                this.user_name = data['first_name'] +' '+ data['last_name'];
                 if(this.is_admin === 1)
                 {
                   //this.admin_route = '/admin';
@@ -90,13 +90,13 @@ export class HeaderComponent implements OnInit {
       else if(this.user_type === 'company')
       {
 
-        this.authenticationService.getCurrentCompany(this.currentUser._creator)
+        this.authenticationService.getCurrentCompany(this.currentUser['_creator'])
           .subscribe(
             data =>
             {
               if(data)
               {
-                this.is_verify = data._creator.is_verify;
+                this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
                 {
                   this.success_msg = "not verify";
@@ -105,8 +105,8 @@ export class HeaderComponent implements OnInit {
                 {
                   this.success_msg='';
                 }
-                this.is_admin = data._creator.is_admin;
-                this.user_name = data.first_name+' '+data.last_name;
+                this.is_admin = data['_creator'].is_admin;
+                this.user_name = data['first_name'] +' '+ data['last_name'];
                 if(this.is_admin === 1)
                 {
                   //this.admin_route = '/admin';
@@ -157,9 +157,8 @@ export class HeaderComponent implements OnInit {
       this.authenticationService.verify_client(this.currentUser.email)
         .subscribe(
           data => {
-            if(data['msg'])
+            if(data['success'] === true)
             {
-
               this.success_msg = "Please check your email to verify your account" ;
 
               setInterval(() => {

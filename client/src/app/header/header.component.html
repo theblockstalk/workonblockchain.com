@@ -1,62 +1,63 @@
-<nav class="navbar navbar-inverse navbar-main" data-spy="affix" data-offset-top="205">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" routerLink="/">
-        <img src = "/assets/images/navbar_imgs/logo/logo_woc.png" alt = "main_logo" />
-      </a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar" >
-
-      <ul class="nav navbar-nav navbar-right" >
-        <li *ngIf="!currentUser"><a routerLink="signup"> <b>SIGN UP</b></a></li>
-        <li *ngIf="!currentUser"><a routerLink="login">Login</a></li>
-        <li ><a routerLink="referral">Referral £500+ Reward</a></li>
-
-        <li *ngIf="(currentUser)"><a routerLink="chat">Chat</a></li>
-        <li *ngIf="(currentUser && is_admin === 1)"><a routerLink="admin-dashboard">Dashboard</a></li>
-
-       <!-- <li *ngIf="(currentUser && user_type === 'candidate' )"><a routerLink="referral">Referral - &pound; 500 Reward</a></li>
-      -->  <li class="dropdown" *ngIf="(currentUser)">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li *ngIf="(currentUser && user_type === 'candidate')"><a routerLink="candidate_profile">Profile</a></li>
-        <li *ngIf="(currentUser && user_type === 'candidate')"><a routerLink="edit_profile">Edit Profile</a></li>
-        <li *ngIf="(currentUser && user_type === 'company')"><a routerLink="company_profile">Profile</a></li>
-        <li *ngIf="(currentUser && user_type === 'company')"><a routerLink="edit_company_profile">Edit Profile</a></li>
-        <li *ngIf="(currentUser && user_type === 'company')"><a routerLink="candidate-search">Search Candidate</a></li>
-         <li><a routerLink="account-settings"><i class="icon-cog icon-right"></i>Setting</a></li>
-        <li *ngIf="currentUser"><a href="" (click)="logout()">Logout</a></li>
+<div class = "container-fluid">
+  <div class = "row ">
+    <div class = "col-md-12">
+      <nav class="navbar navbar-expand-lg fixed-top bg-white px-lg-5 px-2">
+        <a class="navbar-brand ml-0 ml-md-5 ml-lg-5" routerLink="/">
+          <img src = "/assets/images/navbar_imgs/logo/logo_woc.png" alt="Work on Blockchain">
+        </a>
+        <button class="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav ml-auto p-3 p-lg-0 mr-0 mr-md-5 mr-lg-5">
+            <li class="nav-item pr-2" *ngIf="!currentUser">
+              <b><a class="nav-link text-dark active" routerLink="signup">SIGN UP</a></b>
+            </li>
+            <li class="nav-item pr-2" *ngIf="!currentUser">
+              <a class="nav-link text-dark" routerLink="login">Login</a>
+            </li>
+            <li class="nav-item pr-2">
+              <a class="nav-link text-dark" routerLink="referral">Referral £500+ Reward</a>
+            </li>
+            <li class="nav-item pr-2" *ngIf="currentUser">
+              <a class="nav-link text-dark" routerLink="chat">Chat</a>
+            </li>
+            <li class="nav-item pr-2" *ngIf="(currentUser && is_admin === 1)">
+              <a class="nav-link text-dark" routerLink="admin-dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item dropdown pr-2" *ngIf="(currentUser)">
+              <a class="nav-link dropdown-toggle text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'candidate')" routerLink="candidate_profile">Profile</a>
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'candidate')" routerLink="edit_profile">Edit profile</a>
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'company')" routerLink="company_profile">Profile</a>
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'company')" routerLink="edit_company_profile">Edit profile</a>
+                <a class="dropdown-item text-dark" *ngIf="(currentUser && user_type === 'company')" routerLink="candidate-search">Search candidate</a>
+                <a class="dropdown-item text-dark" routerLink="account-settings">Settings</a>
+                <a class="dropdown-item text-dark" *ngIf="currentUser" href="" (click)="logout()">Log out</a>
+                <!--<div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>-->
+              </div>
+            </li>
           </ul>
-        </li>
+        </div>
+      </nav>
+      <div class="alert alert-danger error_msg mx-auto" role="alert" *ngIf = "msg && close && !success  ">
+        {{msg}}
+      </div>
+      <div *ngIf = "success_msg!=''  && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
+        <div class="alert alert-success error_msg mx-auto" role="alert" *ngIf = "success_msg!='' && success_msg!='not verify'">
+          <a href="#"  data-dismiss="alert"></a>
+          {{success_msg}}
+        </div>
 
-      </ul>
-
-
+        <div class="alert alert-danger error_msg mx-auto" role="alert" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' && admin_route && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
+          <a href="#" data-dismiss="alert" ></a>
+          Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class="text-primary">here</a>.
+        </div>
+      </div>
     </div>
   </div>
-</nav>
-
-<div class="alert alert-danger pro_alert" *ngIf = "msg && close && !success  ">
-    {{msg}}
- </div>
-
-<div>
-
- <div *ngIf = "success_msg!='' && admin_route !== '/verify_email?'">
-
- <div class="alert alert-success pro_alert" *ngIf = "success_msg!='' && success_msg!='not verify'">
-<a href="#"  data-dismiss="alert" ></a>
-    {{success_msg}}
- </div>
-
- 	<div class="alert alert-danger pro_alert" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
-  <a href="#" data-dismiss="alert"  ></a>
-    Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class = "">here</a>.
-  </div>
- </div>
 </div>
+
+

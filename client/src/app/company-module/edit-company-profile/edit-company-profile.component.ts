@@ -5,6 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataService } from "../../data.service";
 import {NgForm ,FormGroup , FormControl, FormBuilder} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+
 declare var $:any;
 
 import {environment} from '../../../environments/environment';
@@ -54,7 +56,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   company_country_log;
   company_city_log;
   image_log;
-  website;
   preferncesForm : FormGroup;
   saved_searches=[];
   location_log;
@@ -62,27 +63,22 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   position_log;
   availability_day_log;
   current_currency_log;
-  current_salary_log;
-  blockchain_log;
-  skills_log;
   email_notification_log;
   error_msg;
   about_active_class;
-  terms_active_class;
   companyMsgTitle;
-  companyMsgBody;
   positionSelected = [];
   current_salary;
   locationSelected = [];
   jobTypesSelected = [];
   index;
-  selected_currency;
   blockchainSelected = [];
   languageSelected = [];
   other_technologies;
-  email_notification;
   avail_day;
   pref_active_class;
+  when_receive_email_notitfications;
+  expected_validation;
 
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
@@ -211,11 +207,17 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   ngAfterViewInit() {
-    $('.selectpicker').selectpicker();
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 900);
   }
 
   ngAfterViewChecked() {
-    $('.selectpicker').selectpicker('refresh');
+
   }
 
   ngOnInit()
@@ -281,82 +283,94 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           {
             if(data)
             {
-              this.email = data._creator.email;
+              this.email = data['_creator'].email;
             }
-            if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
+            if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
             {
-              this.company_founded=data.company_founded;
-              this.no_of_employees=data.no_of_employees;
-              this.company_funded=data.company_funded;
-              this.company_description =data.company_description;
-              if(data.company_logo != null){
+              this.company_founded = data['company_founded'];
+              this.no_of_employees = data['no_of_employees'];
+              this.company_funded = data['company_funded'];
+              this.company_description = data['company_description'];
+              if(data['company_logo'] != null) {
 
-                this.img_data  =  data.company_logo;
+                this.img_data = data['company_logo'];
 
                 let x = this.img_data.split("/");
 
-                let last:any = x[x.length-1];
+                let last: any = x[x.length - 1];
 
                 this.img_src = last;
+
               }
 
             }
 
-            if(data.first_name && data.last_name && data.job_title && data.company_name && data.company_website &&
-              data.company_phone && data.company_postcode)
+            if(data['first_name'] && data['last_name'] && data['job_title'] && data['company_name'] && data['company_website'] &&
+              data['company_phone'] && data['company_postcode'])
             {
-              this.first_name= data.first_name;
-              this.last_name=data.last_name;
-              this.job_title =data.job_title;
-              this.company_name=data.company_name;
-              this.company_website=data.company_website;
-              this.company_phone=data.company_phone;
-              this.company_country=data.company_country;
-              this.company_city =data.company_city;
-              this.company_postcode = data.company_postcode;
+              this.first_name= data['first_name'];
+              this.last_name=data['last_name'];
+              this.job_title =data['job_title'];
+              this.company_name=data['company_name'];
+              this.company_website=data['company_website'];
+              this.company_phone=data['company_phone'];
+              this.company_country=data['company_country'];
+              this.company_city =data['company_city'];
+              this.company_postcode = data['company_postcode'];
 
             }
 
-            if(data.saved_searches && data.saved_searches.length > 0) {
+            if(data['saved_searches'] && data['saved_searches'].length > 0) {
+              setTimeout(() => {
+                $('.selectpicker').selectpicker();
+                $('.selectpicker').selectpicker('refresh');
+              }, 500);
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
-                location: [data.saved_searches[0].location],
-                job_type: [data.saved_searches[0].job_type],
-                position: [data.saved_searches[0].position],
-                availability_day: [data.saved_searches[0].availability_day],
-                current_currency: [data.saved_searches[0].current_currency],
-                current_salary: [data.saved_searches[0].current_salary],
-                blockchain: [data.saved_searches[0].blockchain],
-                skills: [data.saved_searches[0].skills],
-                other_technologies: [data.saved_searches[0].other_technologies],
-                when_receive_email_notitfications: [data.saved_searches[0].when_receive_email_notitfications],
+                location: [data['saved_searches'][0].location],
+                job_type: [data['saved_searches'][0].job_type],
+                position: [data['saved_searches'][0].position],
+                availability_day: [data['saved_searches'][0].availability_day],
+                current_currency: [data['saved_searches'][0].current_currency],
+                current_salary: [data['saved_searches'][0].current_salary],
+                blockchain: [data['saved_searches'][0].blockchain],
+                skills: [data['saved_searches'][0].skills],
+                other_technologies: [data['saved_searches'][0].other_technologies],
+                when_receive_email_notitfications: [data['saved_searches'][0].when_receive_email_notitfications],
               });
 
-              for (let locations of data.saved_searches[0].location) {
-                for(let option of this.locations) {
-                  if(option.name === locations ) {
-                    this.locationSelected.push(option.name);
-                  }
-                }
-              }
-              for (let job_types of data.saved_searches[0].job_type) {
-                for(let option of this.job_types) {
-                  if(option === job_types ) {
-                    this.jobTypesSelected.push(option);
+              if(data['saved_searches'][0].location && data['saved_searches'][0].location.length >0){
+                for (let locations of data['saved_searches'][0].location) {
+                  for(let option of this.locations) {
+                    if(option.name === locations ) {
+                      this.locationSelected.push(option.name);
+                    }
                   }
                 }
               }
 
-              for (let positions of data.saved_searches[0].position) {
-                for(let option of this.roles) {
-                  if(option.name === positions ) {
-                    this.positionSelected.push(option.name);
+              if(data['saved_searches'][0].job_type && data['saved_searches'][0].job_type.length > 0){
+                for (let job_types of data['saved_searches'][0].job_type) {
+                  for(let option of this.job_types) {
+                    if(option === job_types ) {
+                      this.jobTypesSelected.push(option);
+                    }
                   }
                 }
               }
 
-              if(data.saved_searches[0].blockchain && data.saved_searches[0].blockchain.length > 0) {
-                for(let blockchains of data.saved_searches[0].blockchain) {
+              if(data['saved_searches'][0].position && data['saved_searches'][0].position.length >0){
+                for (let positions of data['saved_searches'][0].position) {
+                  for(let option of this.roles) {
+                    if(option.name === positions ) {
+                      this.positionSelected.push(option.name);
+                    }
+                  }
+                }
+              }
+
+              if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
+                for(let blockchains of data['saved_searches'][0].blockchain) {
                   for(let option of this.blockchain) {
                     if(option.name === blockchains) {
                       this.blockchainSelected.push(option.name);
@@ -365,8 +379,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 }
               }
 
-              if(data.saved_searches[0].skills && data.saved_searches[0].skills.length > 0) {
-                for(let skills of data.saved_searches[0].skills) {
+              if(data['saved_searches'][0].skills && data['saved_searches'][0].skills.length > 0) {
+                for(let skills of data['saved_searches'][0].skills) {
                   for(let option of this.language_opt) {
                     if(option.name === skills) {
                       this.languageSelected.push(option.name);
@@ -374,11 +388,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   }
                 }
               }
+
             }
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
+            if(error['message'] === 500 || error['message'] === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
@@ -389,7 +404,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               window.location.href = '/login';
             }
 
-            if(error.message === 403)
+            if(error['message'] === 403)
             {
               this.router.navigate(['/not_found']);
             }
@@ -454,7 +469,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.job_type_log = "Please select position types";
     }
     if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
-      this.position_log = "Please select roles";
+      this.position_log = "Please select what roles are you looking";
     }
     if(!this.preferncesForm.value.availability_day) {
       this.availability_day_log = "Please select your availability day";
@@ -465,9 +480,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(!this.preferncesForm.value.current_salary) {
       this.current_currency_log = "Please select available annual salary and currency";
     }
-
-    let reg = new RegExp('^[0-9]+$');
-    if(!this.preferncesForm.value.current_salary.match(reg)){
+    if(!Number(this.preferncesForm.value.current_salary)){
       this.current_currency_log = "Salary should be a number";
     }
 
@@ -481,42 +494,29 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm.value.location && this.preferncesForm.value.location.length > 0 &&
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
-      this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && this.preferncesForm.value.current_salary &&
-      this.preferncesForm.value.when_receive_email_notitfications && this.preferncesForm.value.current_salary.match(reg))  {
+      this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
+      this.preferncesForm.value.when_receive_email_notitfications)  {
       this.saved_searches.push(this.preferncesForm.value);
+      this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.authenticationService.edit_company_profile(profileForm.value , this.saved_searches)
         .subscribe(
           data => {
             if(data && this.currentUser)
             {
-              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-              let fileCount: number = inputEl.files.length;
-              let formData = new FormData();
-              if (fileCount > 0 )
+              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
+              if (inputEl && inputEl.files && inputEl.files.length > 0)
               {
+                let formData = new FormData();
                 if(inputEl.files.item(0).size < this.file_size)
                 {
+
                   formData.append('photo', inputEl.files.item(0));
 
-                  this.http.post(URL+'users/employer_image', formData, {
-                    headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                  }).map((res) => res).subscribe(
-                    (success) =>
-                    {
+                  this.authenticationService.company_image(formData)
+                    .subscribe(
+                      imageRes => {
                       this.router.navigate(['/company_profile']);
-                    },
-                    (error) => {
-                      if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-                      {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('googleUser');
-                        localStorage.removeItem('close_notify');
-                        localStorage.removeItem('linkedinUser');
-                        localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                      }
-                    })
+                    });
                 }
                 else
                 {
@@ -544,7 +544,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           });
     }
     else {
-      this.error_msg = "There is a field that still needs completion. Please scroll up.";
+      this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
   }
 
@@ -554,6 +554,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       return 'selected';
     }
     else {
+      return ;
       return ;
     }
 
@@ -597,5 +598,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       return;
     }
   }
+
 
 }

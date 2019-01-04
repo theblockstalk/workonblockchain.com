@@ -67,8 +67,8 @@ export class AdminFaqEditorComponent implements OnInit {
                    if(data)
                    {
                        ////console.log(data);
-                        this.page_title = data[0].page_title;
-                       this.editor_content = data[0].page_content;
+                        this.page_title = data[0]['page_title'];
+                       this.editor_content = data[0]['page_content'];
                        ////console.log(this.editor_content);
 
                    }
@@ -76,7 +76,7 @@ export class AdminFaqEditorComponent implements OnInit {
 
                  error =>
                  {
-                     if(error.message === 500 || error.message === 401)
+                     if(error['message'] === 500 || error['message'] === 401)
                      {
                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
                          localStorage.removeItem('currentUser');

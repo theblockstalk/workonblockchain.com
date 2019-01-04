@@ -1,331 +1,461 @@
-<!--Edit profile page start here-->
+<section class = "wob-bg-primary2 py-5 mt-5">
 
-<section class="wizard_page">
-  <div class="container">
-    <div class="row profile_group">
-
-
-      <form  (submit)="company_profile(profileForm)" #profileForm = ngForm>
+  <div class="container pt-2 ">
+    <form  (submit)="company_profile(profileForm)" #profileForm = ngForm>
+      <div class="row">
         <div class="col-md-12">
 
-          <!--personal information form-->
-          <div class = "wizard-form mr-top-form" id = "information">
-            <div class = "login_form">
+          <section class="bg-white border rounded py-3 px-5" id="about_you">
 
-              <fieldset class="scheduler-border">
-                <legend class="scheduler-border">Personal Information</legend>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h2>
+                  <i class="fas fa-building" aria-hidden="true"></i>
+                  About the company
+                </h2>
+              </div>
 
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">Email</p></label>
-                  <input type="Text" class="form-control"  required name="email" [(ngModel)]="email" disabled >
+            </div>
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Company name</label>
+                    <input name="company_name" [(ngModel)]="company_name"  type="text" class="form-control" placeholder="Google Inc." required>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_name">
+                      {{company_name_log}}
+                    </div>
+                  </div>
+
                 </div>
+              </div>
 
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">First Name</p></label>
-                  <input type="Text" class="form-control" placeholder="First Name" id="user" required name="first_name" [(ngModel)]="first_name" >
-                  <div class = "form_error" *ngIf="!first_name">
-                    <span class = "error">{{first_name_log}}</span>
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Company website</label>
+                    <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" required name="company_website" [(ngModel)]="company_website">
+                    <div class = "invalid-feedback" *ngIf="!company_website">
+                      <span class = "error">{{company_website_log}}</span>
+                    </div>
+                    <div class="invalid-feedback d-inline" *ngIf="website.errors && company_website">
+                      <span class = "error">Enter url in proper format.</span>
+                    </div>
+
                   </div>
                 </div>
+              </div>
 
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">Last Name</p></label>
-                  <input type="Text" class="form-control" placeholder="Last Name" required name="last_name" [(ngModel)]="last_name" >
-                  <div class = "form_error" *ngIf="!last_name">
-                    <span class = "error">{{last_name_log}}</span>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">Job Title</p></label>
-                  <input type="text" class="form-control" placeholder="Job Title" required name="job_title" [(ngModel)]="job_title">
-                  <div class = "form_error" *ngIf="!job_title">
-                    <span class = "error">{{job_title_log}}</span>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">Company Name</p></label>
-                  <input type="text" class="form-control" placeholder="Company Name" id="com_name" required name="company_name" [(ngModel)]="company_name">
-                  <div class = "form_error" *ngIf="!company_name">
-                    <span class = "error">{{company_name_log}}</span>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">Company Website</p></label>
-                  <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="Company Website" required name="company_website" [(ngModel)]="company_website">
-                  <div class = "form_error" *ngIf="!company_website">
-                    <span class = "error">{{company_website_log}}</span>
-                  </div>
-                  <div class="form_error" *ngIf="website.errors && company_website">
-                    <span class = "error">Enter url in proper format.</span>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">Phone Number</p></label>
-                  <input type="tel" class="form-control" placeholder="Phone Number" id="phone_no" required name="phone_number" [(ngModel)]="company_phone">
-                  <div class = "form_error" *ngIf="!company_phone">
-                    <span class = "error">{{company_phone_log}}</span>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">Country Name</p></label>
-                  <!-- <input type="text" class="form-control " placeholder="Country" id="country" required name="country" [(ngModel)]="company_country">
-         -->		 <select class="form-control"  required name="country" [(ngModel)]="company_country" required="">
-                  <option value="-1" disabled selected hidden >Please choose country</option>
-
-                  <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
-                </select>
-                  <div class = "form_error" *ngIf="company_country==-1">
-                    <span class = "error">{{company_country_log}}</span>
-                  </div>
-                </div>
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">Postal Code</p></label>
-                  <input type="text" class="form-control" placeholder="Postal Code" id="post_no" required name="postal_code" [(ngModel)]="company_postcode">
-                  <div class = "form_error" *ngIf="!company_postcode">
-                    <span class = "error">{{company_postcode_log}}</span>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">City Name</p></label>
-                  <input type="text" class="form-control" placeholder="City" required name="city" [(ngModel)]="company_city">
-                  <div class = "form_error" *ngIf="!company_city">
-                    <span class = "error">{{company_city_log}}</span>
-                  </div>
-                </div>
-
-                <!-- <div class="form-group col-md-6" *ngIf = 'info.image_src'>
-                                  <label><p class = "label-p">Image</p></label>
-                                  <img src = {{info.image_src}} >
-
-                            </div>-->
-
-              </fieldset>
             </div>
 
-          </div>
-          <!--personal information form End-->
+            <div class="row">
 
-          <!--about us form-->
-          <div class = "wizard-form mr-top-form" id = "about_you">
-            <div class = "login_form">
-
-              <fieldset class="scheduler-border">
-                <legend class="scheduler-border">About the Company</legend>
-                <div class="row">
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">When was the company founded?</p></label>
-                  <input type="text" class="form-control" id="" #companyFounded="ngModel"  pattern="^[0-9]*$" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
-                  <div class = "form_error" *ngIf="!company_founded || companyFounded.errors">
-                    <span class = "error" *ngIf="!company_founded; else expected_validation " >{{founded_log}}</span>
-                    <span class = "error" #expected_validation  *ngIf="companyFounded.errors && company_founded">  Input data should be a number. </span>
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Country name</label>
+                    <select title="Please choose country" class="selectpicker form-control"  required name="country" [(ngModel)]="company_country">
+                      <option class='option' *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
+                    </select>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_country">
+                      {{company_country_log}}
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">Number of employees?</p></label>
-                  <input type="number" class="form-control" id="" placeholder="Number of employees?" name="no_of_employees" [(ngModel)]="no_of_employees">
-                  <div class = "form_error" *ngIf="!no_of_employees">
-                    <span class = "error">{{employee_log}}</span>
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>City name</label>
+                    <input type="text" class="form-control" placeholder="London" required name="city" [(ngModel)]="company_city">
+                    <div class="invalid-feedback d-inline" *ngIf="!company_city">
+                      {{company_city_log}}
+                    </div>
                   </div>
                 </div>
-                </div>
+              </div>
 
-                <div class="row">
-                <div class="form-group col-md-6">
-                  <label><p class = "label-p">How is the company funded?</p></label>
-                  <input type="text" class="form-control" id="" placeholder="How's compnay funded?" name="company_funded" [(ngModel)]="company_funded">
-                  <div class = "form_error" *ngIf="!company_funded">
-                    <span class = "error">{{funded_log}}</span>
-                  </div>
-                </div>
-
-
-
-                <!-- <div class="form-group col-md-6 mr-top-33" >
-                              <input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="image" >
-                              <label id="fileLabel">
-                              <span *ngIf="image_src" >{{image_src}}</span>
-                              <span *ngIf="!image_src" >Upload Image</span>
-                              </label>
-
-                          </div>-->
-
-                <div class="form-group col-md-6 mr-top-33" >
-                  <input type="file" class="form-control" id="aa" accept="image/*" onchange="pressed()" name="image" [(ngModel)]="image" >
-                  <label id="fileLabel" >
-                    <span *ngIf="img_src" >{{img_src}}</span>
-                    <span *ngIf="!img_src" >Upload Company Logo (optional)</span>
-                  </label>
-                  <div class = "form_error image-log" *ngIf="image_log">
-                    <span class = "error">{{image_log}}</span>
-                  </div>
-                </div>
-                </div>
-
-                <div class="row">
-                <div class="form-group col-md-12 mr-top-04">
-                  <label><p>Company Description</p></label>
-                  <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="" name="company_description" [(ngModel)]="company_description"></textarea>
-                  <div class = "form_error" *ngIf="!company_description">
-                    <span class = "error">{{des_log}}</span>
-                  </div>
-                </div>
-                </div>
-
-              </fieldset>
             </div>
 
-          </div>
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Postal code</label>
+                    <input type="text" class="form-control" placeholder="SW1 7XL" required name="postal_code" [(ngModel)]="company_postcode">
+                    <div class="invalid-feedback d-inline" *ngIf="!company_postcode">
+                      {{company_postcode_log}}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Phone number</label>
+                    <input name="phone_number" [(ngModel)]="company_phone"  type="tel" class="form-control" placeholder=" (+1) 123 456 7890" required>
+                    <div class="invalid-feedback d-inline" *ngIf="!company_phone">
+                      {{company_phone_log}}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
 
 
-          <!--Candidate preferences form-->
+            </div>
+          </section>
 
-          <div class="wizard-form mr-top-form" id = "prefrences" [formGroup]="preferncesForm">
+          <section class="bg-white border rounded mt-4 py-3 px-5" id="company_info">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h2>
+                  <i class="fas fa-building" aria-hidden="true"></i>
+                  Company info
+                </h2>
+              </div>
 
-            <div class="login_form pre_form" >
+            </div>
+            <div class="row">
 
-              <fieldset class="scheduler-border">
-                <legend class="scheduler-border">Candidate preferences</legend>
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>When was the company founded?</label>
+                    <input type="text" class="form-control" id="" #companyFounded="ngModel"  pattern="^[0-9]*$" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
+                    <div class="invalid-feedback d-inline" *ngIf="!company_founded; else expected_validation">
+                      {{founded_log}}
+                    </div>
+                    <div class="invalid-feedback d-inline" #expected_validation *ngIf="companyFounded.errors && company_founded">
+                      Input data should be a number.
+                    </div>
 
-                <div class="form-group col-md-6">
-                  <label><p class="label-p">Where are you hiring?</p></label>
+                  </div>
 
-                  <select multiple id="locations" formControlName = "location" title="(select multiple)" class="selectpicker" required>
-                    <option class='option' *ngFor='let location of locations;let i = index'  [selected] = "locationSelectedOptions(location.name)"  [value]="location.value">{{location.name}}</option>
+                </div>
+              </div>
 
-                  </select>
-                  <div class = "form_error" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
-                    <span class = "error">{{location_log}}</span>
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>How is the company funded?</label>
+                    <input type="text" class="form-control"  placeholder="Private investment from the founders and one angel" name="company_funded" [(ngModel)]="company_funded">
+                    <div class="invalid-feedback d-inline" *ngIf="!company_funded">
+                      {{funded_log}}
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Number of employees?</label>
+                    <input type="number" class="form-control" placeholder="10" name="no_of_employees" [(ngModel)]="no_of_employees">
+                    <div class="invalid-feedback d-inline" *ngIf="!no_of_employees">
+                      {{employee_log}}
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                <div class="form-group col-md-6">
-                  <label><p class="label-p">What position types are you looking for?</p></label>
-                  <select multiple formControlName="job_type"  title="(select multiple)" class="selectpicker" required>
-                    <option class='option' *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Company logo (optional)</label>
+                    <div class="form-group">
+                      <input type="file" accept="image/*" name="image" [(ngModel)]="image" class="form-control-file" id="profile">
+                      <span *ngIf="img_src" >{{img_src}}</span>
+                      <div class="invalid-feedback d-inline" *ngIf="!image_log">
+                        {{image_log}}
+                      </div>
+                    </div>
 
-                  </select>
-                  <div class = "form_error" *ngIf="!preferncesForm.value.job_type || preferncesForm.value.job_type.length === 0 ">
-                    <span class = "error">{{job_type_log}}</span>
                   </div>
                 </div>
+              </div>
 
 
+            </div>
 
-                <div class="form-group col-md-6">
-                  <label><p class="label-p">What roles are you looking for?</p></label>
-                  <select multiple formControlName="position" title="(select multiple)" class="selectpicker">
-                    <option class='option' *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Company description</label>
+                    <div class="form-group">
+                      <textarea name="company_description" [(ngModel)]="company_description" placeholder="An American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, search engine, cloud computing, software, and hardware." class="form-control" rows="3"></textarea>
+                      <div class="invalid-feedback d-inline" *ngIf="!company_description">
+                        {{des_log}}
+                      </div>
+                    </div>
 
-                  </select>
-                  <div class = "form_error" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
-                    <span class = "error">{{position_log}}</span>
                   </div>
                 </div>
+              </div>
+            </div>
 
+          </section>
 
+          <section class="bg-white border rounded mt-4 py-3 px-5" id="information">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h2>
+                  <i class="fas fa-user icon" aria-hidden="true"></i>
+                  Company administration
+                </h2>
+              </div>
 
-                <div class="form-group col-md-6 pre_col">
+            </div>
+            <div class="row">
 
-                  <label class = "col-md-12 noo_padding">
-                    <p class="label-p">Available annual salary and currency?</p></label>
-
-                  <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control col-md-6 text_col" id="" placeholder="100000">
-
-                  <select title ="(select currency)" formControlName = "current_currency" id = "currencySelected" class="selectpicker col-md-6 sel_padd">
-
-                    <option class='option' *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
-
-                  </select>
-                  <div class = "form_error" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary || current_currency_log ">
-                    <span class = "error">{{current_currency_log}}</span>
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Email</label>
+                    <input name="email" disabled [(ngModel)]="email" type="text" class="form-control" placeholder="johnsmilt@workonblockchain.com" required>
                   </div>
                 </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>First name</label>
+                    <input name="first_name" [(ngModel)]="first_name" type="text" class="form-control" placeholder="John" required>
+                    <div class="invalid-feedback d-inline" *ngIf="!first_name">
+                      {{first_name_log}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Last name</label>
+                    <input name="last_name" [(ngModel)]="last_name"  type="text" class="form-control" placeholder="Smith" required>
+                    <div class="invalid-feedback d-inline" *ngIf="!last_name">
+                      {{last_name_log}}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Job title</label>
+                    <input name="job_title" [(ngModel)]="job_title" type="text" class="form-control" placeholder="Director" required>
+                    <div class="invalid-feedback d-inline" *ngIf="!job_title">
+                      {{job_title_log}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </section>
 
 
-                <div class="form-group col-md-6">
-                  <label><p class="label-p">When do you need hires to start</p></label>
+          <section class="bg-white border rounded mt-4 py-3 px-5" id = "prefrences" [formGroup]="preferncesForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <h2>
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                  Candidate preferences
+                </h2>
+              </div>
+            </div>
 
-                  <select title="(select one)" formControlName = "availability_day" class="selectpicker">
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Where are you hiring?</label>
+                    <select multiple formControlName = "location" title="(select multiple)" class="selectpicker form-control" required>
+                      <option *ngFor='let location of locations;let i = index'  [selected] = "locationSelectedOptions(location.name)"  [value]="location.value">{{location.name}}</option>
+
+                    </select>
+                    <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
+                      {{location_log}}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>What position types are you looking for?</label>
+                    <select multiple formControlName="job_type"  title="(select multiple)" class="selectpicker form-control" required>
+                      <option *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
+
+                    </select>
+                    <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.job_type || preferncesForm.value.job_type.length === 0 ">
+                      {{job_type_log}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>What roles are you hiring for?</label>
+                    <select multiple formControlName="position" title="(select multiple)" class="selectpicker form-control">
+                      <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
+
+                    </select>
+                    <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
+                      {{position_log}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class = "form-group w-auto">
+                    <label>Available annual salary and currency?</label>
+
+                    <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="10000">
+
+                    <select title="Select currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
+                      <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
+                    </select>
+                    <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary || current_currency_log">
+                      {{current_currency_log}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+
+
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class = "form-group w-100">
+                    <label>What blockchain technology experience do they need? (optional)</label>
+
+                    <select multiple formControlName="blockchain" title="(select multiple)" class="selectpicker form-control">
+                      <option *ngFor='let blockchain of blockchain' [selected] = "blockchainSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
+
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>What programming languages do they need to know? (optional)</label>
+                    <select multiple formControlName="skills" title="(select multiple)" class="selectpicker form-control">
+                      <option *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
+
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-row">
+                  <div class="form-group w-100">
+                    <label>Other technologies or requirements? (optional)</label>
+                    <input type="text" formControlName="other_technologies" [value] ="preferncesForm.value.other_technologies"  class="form-control" placeholder="(eg MongoDB, AWS)">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group w-100">
+                  <label>When do you need hires to start?</label>
+                  <select title="(select one)" formControlName = "availability_day" class="selectpicker form-control">
                     <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
 
                   </select>
 
-                  <div class = "form_error" *ngIf="!avail_day">
-                    <span class = "error">{{availability_day_log}}</span>
+                  <div class = "invalid-feedback d-inline" *ngIf="!avail_day">
+                    {{availability_day_log}}
                   </div>
                 </div>
+              </div>
 
-                <div class="form-group col-md-6">
-                  <label><p class="label-p">What blockchain technology experience do they need? (optional)</p></label>
-                  <select multiple formControlName="blockchain" title="(select multiple)" class="selectpicker">
-                    <option class='option' *ngFor='let blockchain of blockchain' [selected] = "blockchainSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
-
-                  </select>
-
-                </div>
-
-
-                <div class = "col-md-12 no_padding">
-
-                <div class="form-group col-md-6">
-                  <label><p class="label-p">What programming languages do they need to know? (optional)</p></label>
-                  <select multiple formControlName="skills" title="(select multiple)" class="selectpicker">
-                    <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
-
-                  </select>
-
-
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label><p class="label-p">Other technologies or requirements? (optional)</p></label>
-                  <input type="text" formControlName="other_technologies" [value] ="preferncesForm.value.other_technologies"  class="form-control" id="" placeholder="(eg MongoDB, AWS)">
-                </div>
-                </div>
-
-                <div class="form-group col-md-12">
-                  <label><p class="label-p">When would you like to receive emails with candidates that match your search?</p></label>
-                  <div class="radio-toolbar controls__group">
-                    <div *ngFor="let receive of email_notificaiton; let i_ind =index">
-
-                      <input type="radio" formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}" name="when_receive_email_notitfications" >
-                      <label class="radio-inline d-flex justify-content-center align-items-center" for="radio - {{receive}}">{{receive}}</label>
-
-                    </div>
-
-                  </div>
-                  <div class = "form_error" *ngIf="!preferncesForm.value.when_receive_email_notitfications">
-                    <span class = "error">{{email_notification_log}}</span>
-                  </div>
-                </div>
-
-              </fieldset>
 
             </div>
 
+            <div class="row">
+
+              <div class="col-md-12">
+                <div class="form-row">
+                  <div class = "form-group w-100">
+                    <label>When would you like to receive emails with candidates that match your search?</label>
+                    <div>
+                      <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index" >
+                        <input type="radio"  formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
+                      </label>
+                    </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="!when_receive_email_notitfications">
+                      {{email_notification_log}}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </section>
+
+          <div class="row mt-3">
+            <div class = "col-md-12 float-right text-right">
+              <a routerLink="/company_profile" class = "btn btn-secondary text-white mr-2">Cancel</a>
+              <button type="submit" class = "btn btn-primary " [disabled]="website.errors && company_website" >Save</button>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class = "invalid-feedback float-right d-inline w-auto" *ngIf="error_msg">
+                {{error_msg}}
+              </div>
+            </div>
           </div>
 
-          <div class = "button_area text-right">
-            <button type="submit" class = "btn btn-self btn-pdg" [disabled]="website.errors && company_website || companyFounded.errors" >Save Profile</button>
-          </div>
-          <div class = "form_error error-log" *ngIf="error_msg">
-            <span class = "error">{{error_msg}}</span>
-          </div>
         </div>
-      </form>
-    </div>
+      </div>
+
+    </form>
   </div>
 
 </section>
-
-<!--/End edit profile page here-->
-
-<div class = "gap">
-</div>

@@ -1,109 +1,101 @@
 <!--candidate step completing-->
-
-<section class = "wizard_page">
-
+<section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row">
-      <div class = "text-center steps-name">
-
-         <ul class = "step-progress">
-           <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Terms & Conditions</a></li>
-           <li class = "step step-active"><i class="{{active_class}}"></i><a routerLink="/prefill-profile"> Prefill Profile</a></li>
-           <li class = "step "><i class="{{about_active_class}}"></i><a routerLink="/about"> About</a></li>
-           <li class = "step"><i class="{{job_active_class}}"></i><a routerLink="{{link}}" class="btn  {{job_disable}}">Jobs</a></li>
-           <li class = "step"><i class="{{resume_active_class}}"></i><a routerLink="{{resume_class}}" class="btn  {{resume_disable}}" >Blockchain</a></li>
-           <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn  {{exp_disable}}">Experience</a></li>
-         </ul>
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <ul class="nav justify-content-center wizard">
+          <li class="nav-item">
+            <a routerLink="{{term_link}}" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              Terms & Conditions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/prefill-profile" class="nav-link">
+              <i class="{{active_class}}"></i>
+              Prefill Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about" class="nav-link">
+              <i class="{{about_active_class}}"></i>
+              About
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="{{link}}" class="nav-link btn  {{job_disable}}">
+              <i class="{{job_active_class}}"></i>
+              Jobs
+            </a>
+          </li>
+          <li class="nav-item px-2">
+            <a routerLink="{{resume_class}}" class="nav-link btn  {{resume_disable}}">
+              <i class="{{resume_active_class}}"></i>
+              Blockchain
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="{{exp_class}}" class="nav-link btn  {{exp_disable}}">
+              <i class="{{exp_active_class}}"></i>
+              Experience
+            </a>
+          </li>
+        </ul>
       </div>
-      <div class="col-md-12 wizard-form comp-cand_terms">
-        <form class = "login_form"  #f="ngForm" (ngSubmit)="onSubmit(f)">
+    </div>
 
-
-            <div class = "linkein_info">
-              <h2 class = "text-center">Pre-fill your profile with LinkedIn import?</h2>
-            </div>
-            <p class = "link_p text-center">
-              If you would like your profile data such as work history to be pre-filled please follow the steps below.
-            </p>
-
-            <p class = "link_p text-center">
-              <input type="text" style="display:none;" class="form-control" id=""  name="skip_value" [(ngModel)]="skip_value">
-              <a class = "btn submit_btn btn_wth btn_brd btn-pdg" (click) = "skipbutton()">Skip</a>
-            </p>
-
+    <div class="row border p-4 bg-white">
+      <div class="col-md-12">
+        <form class="needs-validation" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
+          <h4 class = "text-center">Pre-fill your profile with LinkedIn import?</h4>
+          <p class = "text-center">
+            If you would like your profile data such as work history to be pre-filled please follow the steps below.
+          </p>
+          <div class="row">
             <div class = "col-md-6">
-
-              <p class = "link_p">
-                <span class = "step-num">Step 1-</span>   Go to your LinkedIn data export page
+              <p>
+                <strong>Step 1-</strong>   Go to your LinkedIn data export page
               </p>
-
-              <p class = "link_p">
-                <a href = "https://www.linkedin.com/psettings/member-data" target="_blank" class = "btn btn-self btn_wth btn-pdg"><b>Open LinkedIn</b></a>
+              <p>
+                <a href = "https://www.linkedin.com/psettings/member-data" target="_blank" class = "btn btn-secondary"><b>Open LinkedIn</b></a>
               </p>
-
-              <p class = "link_p">
-                <span class = "step-num">Step 2- </span>   Download your profile data
+              <p>
+                <strong>Step 2- </strong>   Download your profile data
               </p>
-
-              <p class = "steps-pra link_p">
-                <span class = "step-num">a-</span> Select: <span class = "choose_opt">Pick and Choose</span>
+              <p class="ml-3">
+                <span>a-</span> Select: <span class = "choose_opt">Pick and Choose</span>
                 <br>
-                <span class = "step-num">b-</span> Select: <span class = "choose_opt">Profile</span>
+                <span>b-</span> Select: <span class = "choose_opt">Profile</span>
                 <br>
-                <span class = "step-num">c-</span> Select: <span class = "choose_opt">Request archive</span>
+                <span>c-</span> Select: <span class = "choose_opt">Request archive</span>
               </p>
-
-
-              <p class = "link_p">
+              <p>
                 The archive may take a while to become available. Refresh the page or check your email to access the download link.
               </p>
-
-
-              <p class = "link_p">
-                <span class = "step-num">Step 3-</span> Upload the zip file you just download
+              <p>
+                <strong>Step 3-</strong> Upload the zip file you just download
               </p>
-
-
-              <div class="file-uploadd">
-                <div class="file-select">
-
-                  <div class="file-select-button" id="fileName">Choose File</div>
-                  <div class="file-select-name" id="noFile">No file chosen...</div>
-                  <input (change)="filechoosen($event)" type="file" accept=".zip , application/zip" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control" />
-
-                </div>
+              <div class="form-group">
+                <input (change)="filechoosen($event)" type="file" accept=".zip , application/zip" id="fileselect" name="fileselect" [(ngModel)]="file_name" class="form-control-file" />
               </div>
-
-              <div class = "file_error">
+              <div class = "invalid-feedback d-inline">
                 {{error_log}}
               </div>
-
             </div>
-
-            <div class = "col-md-6 img-col-set">
-              <div class = "info_image">
-                <img src = "/assets/images/image.png" alt = "linkeIn-info image" class = "img-responsive"/>
-              </div>
+            <div class = "col-md-6">
+              <img src = "/assets/images/image.png" alt = "linkeIn-info image" class = "img-responsive  w-100"/>
             </div>
-
-
-
-          <div class = "col-md-12 nxt_btne text-right">
-            <a routerLink="/terms-and-condition" class = "btn btn-prev">Prev Step</a>
-            <button type="submit" class = "btn btn-self btn-pdg"  >Next Step</button>
           </div>
-
-
-
+          <div class = "col-md-12 text-right mt-3">
+            <a routerLink="/terms-and-condition" class = "btn btn-warning text-white">Back</a>
+            <span class="ml-1">
+              <input type="text" style="display:none;" class="form-control" id=""  name="skip_value" [(ngModel)]="skip_value">
+              <a class = "btn btn-primary text-white" (click) = "skipbutton()">Skip</a>
+            </span>
+            <button type="submit" class = "btn btn-primary ml-1">Next</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
-
 </section>
-
-
-<!--candidate step completing End-->
-
-<div class = "gap">
-</div>

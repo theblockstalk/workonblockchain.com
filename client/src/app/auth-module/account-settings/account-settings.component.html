@@ -1,142 +1,125 @@
 <!--Account setting page code start here-->
+<section class="wob-bg-primary2 py-5 mt-5">
 
-<section class = "setting">
+  <div class="container border p-5 bg-white">
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <h1 class = "text-center">Account Settings</h1>
+      </div>
+    </div>
+    <div class="row mx-lg-5 mx-md-5 mx-0 mb-4 border-bottom">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label>Marketing emails</label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="wob-switch-toggle float-right">
+          <input id="switch" type="checkbox" checked [(ngModel)]="info.marketing" name="marketing_email" (change)="account_setting('marketingEmail' , $event)" >
+          <label for="switch">Toggle</label>
+        </div>
+      </div>
+    </div>
 
-  <div class="alert alert-info pro_alert" *ngIf="inform">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    {{message}}
-  </div>
 
-  <!--<div class="alert alert-success pro_alert" *ngIf="enable_msg">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            Your profile is currently enable.
-  </div>-->
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 wizard-form sett_padd">
-        <h1 class = "text-center sett-mr-btm">Account Settings</h1>
-        <div class="group">
-          <!--<h1>Required for platform use</h1>-->
+    <div class="row mx-lg-5 mx-md-5 mx-0 mb-4 border-bottom">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label>Unread chat messages email</label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="wob-switch-toggle float-right">
+          <input id="switch1" type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="unread_msgs_emails_send()" >
+          <label for="switch1">Toggle</label>
+        </div>
+      </div>
+    </div>
 
-          <div class="items">
-            <!--<label for="email">Email</label>-->
-            <span>Marketing emails</span>
-            <div class="btn-container">
-              <label class="switch">
-                <input type="checkbox" checked [(ngModel)]="info.marketing" name="marketing_email" (change)="account_setting('marketingEmail' , $event)" >
-                <span class="slider round"></span>
-              </label>
-            </div>
+    <div class="row mx-lg-5 mx-md-5 mx-0 mb-4 border-bottom">
+      <div class="col-md-8">
+        <div class="form-group">
+          <label>Disable my account and stop receiving all web application emails</label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="wob-switch-toggle float-right">
+            <input id="switch2" type="checkbox" checked  [(ngModel)]="info.disable_account" name="disable_account" (change)="account_setting('disabledAccount' , $event)">
+          <label for="switch2">Toggle</label>
           </div>
         </div>
+    </div>
 
-        <div class="group">
-          <!--<h1>Required for platform use</h1>-->
-
-          <div class="items">
-            <!--<label for="email">Email</label>-->
-            <span>Unread Chat Messages Email</span>
-            <div class="btn-container">
-              <label class="switch">
-                <input type="checkbox" checked [(ngModel)]="info.unread_msgs_emails" (change)="unread_msgs_emails_send()" >
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
+    <div class="row mx-lg-5 mx-md-5 mx-0 mb-4 border-bottom">
+      <div class="col-md-12">
+        <div class="form-group">
+          <a routerLink="/change-password" >Change Password</a>
         </div>
+      </div>
+    </div>
 
-        <div class="group">
-
-          <div class="items">
-            <span>Disable my account and stop receiving all web application emails</span>
-            <div class="btn-container">
-              <label class="switch">
-                <input type="checkbox" id="myCheck"  [(ngModel)]="info.disable_account" name="disable_account" (change)="account_setting('disabledAccount' , $event)">
-                <span class="slider round"></span>
-              </label>
-            </div>
+    <div class = "row mx-lg-5 mx-md-5 mx-0 mb-4">
+      <div class="col-md-12">
+        <div class="form-group">
+          <div class="alert alert-info" role="alert">
+              <a href="#" data-toggle="modal" data-target="#myModal">Request</a> a copy of the personal data we have about your account.
           </div>
 
-
-
         </div>
+      </div>
+    </div>
 
-
-        <div class="group">
-          <div class="items">
-            <a routerLink="/change-password" >Change Password</a>
-
+    <div class = "row mx-lg-5 mx-md-5 mx-0 mb-4">
+      <div class="col-md-12">
+        <div class="form-group">
+          <div class="alert alert-danger" role="alert">
+              <a href="#"  data-toggle="modal" data-target="#Modal">Delete</a> your account forever.
           </div>
+
         </div>
-
-        <div class = "group">
-          <div class="items no-line primary">
-            <label for="name"><a href="#" type = "button" data-toggle="modal" data-target="#myModal">Request</a> a copy of the personal data we have about your account.
-            </label>
-          </div>
-        </div>
-
-        <div class = "group">
-          <div class="items no-line danger">
-            <label for="name"><a href="#" type = "button" data-toggle="modal" data-target="#Modal">Delete</a> your account forever.
-            </label>
-          </div>
-        </div>
-
-
       </div>
     </div>
   </div>
-
 </section>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
+  <div class="modal-dialog" role="document">
     <!-- Modal content-->
-    <div class="modal-content costom_model">
-      <div class="modal-header model-head">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title text-center">Request Copy Data</h4>
       </div>
       <div class="modal-body">
         <p>
           Please disable and re-enable your account and then send an email to<a href = "mailto:privacy@workonblockchain.com"> privacy@workonblockchain.com</a> to request a copy of your personal data.
-
         </p>
       </div>
       <div class="modal-footer">
       </div>
     </div>
-
   </div>
 </div>
 
-
 <!-- Modal b-->
 <div id="Modal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
+  <div class="modal-dialog" role="document">
     <!-- Modal content-->
-    <div class="modal-content costom_model">
-      <div class="modal-header model-head">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title text-center">Request Delete Your Account</h4>
       </div>
       <div class="modal-body">
         <p>
           Please disable your account and then send an email to <a href = "mailto:privacy@workonblockchain.com">privacy@workonblockchain.com </a> to delete your account forever!
-
         </p>
       </div>
       <div class="modal-footer text-right">
       </div>
     </div>
-
   </div>
 </div>
-
-<!--Profile-inner end-->
 
 <!--Account setting page code End here-->

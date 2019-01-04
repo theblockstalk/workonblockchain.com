@@ -1,276 +1,279 @@
 <!--candidate step completing-->
-
-<section class = "wizard_page">
-
+<section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row">
-      <div class = "text-center steps-name">
-        <ul class = "step-progress">
-          <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="{{term_link}}"> Terms & Conditions</a></li>
-          <li class = "step"><i class="{{term_active_class}}"></i><a routerLink="/prefill-profile"> Prefill Profile</a></li>
-          <li class = "step "><i class="{{active_class}}"></i><a routerLink="/about"> About</a></li>
-          <li class = "step"><i class="{{active_class}}"></i><a routerLink="/job">Jobs</a></li>
-          <li class = "step step-active"><i class="{{resume_active_class}}"></i><a routerLink="/resume" >Blockchain</a></li>
-          <li class = "step"><i class="{{exp_active_class}}"></i><a routerLink="{{exp_class}}" class="btn  {{exp_disable}}" >Experience</a></li>
-
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <ul class="nav justify-content-center wizard">
+          <li class="nav-item">
+            <a routerLink="{{term_link}}" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              Terms & Conditions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/prefill-profile" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              Prefill Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about" class="nav-link">
+              <i class="{{term_active_class}}"></i>
+              About
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/job" class="nav-link">
+              <i class="{{active_class}}"></i>
+              Jobs
+            </a>
+          </li>
+          <li class="nav-item px-2">
+            <a routerLink="/resume" class="nav-link">
+              <i class="{{exp_active_class}}"></i>
+              Blockchain
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="{{exp_class}}" class="nav-link btn {{exp_disable}}">
+              <i class="{{exp_active_class}}"></i>
+              Experience
+            </a>
+          </li>
         </ul>
       </div>
-      <div class="wizard-form">
+    </div>
 
-        <form class = "login_form"  #expForm = ngForm (submit)="blockchain_exp(expForm)">
-
-          <fieldset class="scheduler-border">
-              <legend class="scheduler-border">Blockchain Experience</legend>
-              <div class="form-group col-md-12 col-left">
-                <label><p class = "label-p">Why do you want to work on blockchain?</p></label>
+    <div class="row p-4 border bg-white">
+      <div class="col-md-12">
+        <form #expForm = ngForm (submit)="blockchain_exp(expForm)">
+          <div class="row">
+            <div class="col-md-12">
+              <h4><i class="fab fa-bitcoin mr-1"></i>Blockchain experience</h4>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Why do you want to work on blockchain?</label>
                 <ul>
-                  <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have has with trust and transparency? </li>
+                  <li> Let companies know what excites you about this space. Perhaps it is it the innovation, the disruption, the bleeding edge tech, or maybe it's the developer community or values that the people in it have with trust and transparency? </li>
                   <li> This is the first field that a company sees! </li>
                 </ul>
-                <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because.."  #whywork name="why_work" required [(ngModel)]="why_work">
-
-            	<div class = "form_error" *ngIf="!why_work">
-								<span class = "error">{{why_work_log}}</span>
-							</div>
-            </div>
-
-            <div class="container collection col-md-12">
-
-                <div class="answer">
-
-                  <div class = "">
-
-                    <div class=" collection-checkbox">
-                      <span class = "checkbox-header"> <strong>Platforms commercially worked with </strong></span>
-
-                     <div class="row">
-                    <div class="col-md-4 collection-checkbox" *ngFor="let option of commercially">
-
-                      <div class="checkbox" >
-                        <label class = "check-label lable"> {{option.name}}
-                           <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)"   />
-
-                          <span class="checkmark">
-                          <div></div>
-                          </span>
-                        </label>
-                        <input type="text" class="form-control" [(ngModel)]='commercially_worked' name="commercially_worked" style="display: none;">
-                      </div>
-
-                    </div>
-                    </div>
-
-                      <div *ngIf="commercially_worked?.length > 0">
-                        <p class = "exp_p">Years of experience</p>
-                        <div class = "row" *ngFor="let option of commercially_worked; let i = index ">
-
-                        <p class="rd_label label-p">{{option.value}}</p>
-                        <div class = "form-group radio-toolbar col-md-12 controls__group">
-		<div *ngFor="let exp of exp_year; let i_ind =index">
-         <input type="radio" name="radiogroup- {{ option.value}}" id="rg{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
-       <label class="radio-inline d-flex justify-content-center align-items-center" for="rg{{option.value}}{{i_ind}}">
-        {{exp.name}}
-          </label>
-		  </div>
-		  <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
-      </div>
-
+                <input type="text" class="form-control" id="" placeholder="I want to work on blockchain because ..."  #whywork name="why_work" required [(ngModel)]="why_work">
+                <div class = "invalid-feedback d-inline"  *ngIf="!why_work">
+                  {{why_work_log}}
                 </div>
-                <div class = "form_error" *ngIf="commercially_worked.length !== commercial_expYear.length">
-								<span class = "error">{{commercial_log}}</span>
-							</div>
-          </div>
-
-                   <span class = "checkbox-header"> <strong> Platforms designed/developed smart contracts on </strong></span>
-                     <div class="row">
-                    <div class="col-md-4 collection-checkbox" *ngFor="let option of designed">
-
-                      <div class="checkbox" >
-                        <label class = "check-label lable"> {{option.value}}
-                          <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
-                          (change)="onPlatformOptions(option)"  />
-
-                          <span class="checkmark">
-                          <div></div>
-                          </span>
-                        </label>
-                        <input type="text" class="form-control" [(ngModel)]='platforms_designed' name="platforms_designed" style="display: none;">
-                      </div>
-
-                    </div>
-                    </div>
-
-
-              <hr>
-          <div *ngIf="platforms_designed?.length > 0">
-           <p class = "exp_p">Years of experience</p>
-          <div class = "row" *ngFor="let exp_value of platforms_designed;let i_index = index">
-
-            <p class="rd_label label-p">{{exp_value.value}}</p>
-            <div class = "form-group radio-toolbar col-md-12 controls__group">
-		<div *ngFor="let exp of exp_year; let i_ind =index">
-         <input type="radio" name="group - {{ exp_value.value }} "  id="group{{exp_value.value}}{{i_ind}}" [checked]=" designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value"
-            value="{{exp.value}}" (change)="onPlatformYearOptions($event , exp_value.value)" >
-       <label class="radio-inline d-flex justify-content-center align-items-center" for="group{{exp_value.value}}{{i_ind}}">
-        {{exp.name}}
-          </label>
-		  </div>
-		  <input type="text" class="form-control" name="platforms" [(ngModel)]='platforms' style="display: none;">
-      </div>
-
-          </div>
-          <div class = "form_error" *ngIf="platforms_designed.length !== platforms.length">
-								<span class = "error">{{platform_log}}</span>
-							</div>
+              </div>
+            </div>
           </div>
 
 
-                      <span class = "checkbox-header"> <strong>Platforms experimented with </strong></span>
-                     <div class="row">
-                    <div class="col-md-4 collection-checkbox" *ngFor="let option of experimented">
-
-                      <div class="checkbox" >
-                        <label class = "check-label lable"> {{option.value}}
-                          <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"
-                          (change)="onExpOptions(option)"  />
-
-                          <span class="checkmark">
-                          <div></div>
-                          </span>
-                        </label>
-                        <input type="text" class="form-control" [(ngModel)]='experimented_platform' name="experimented_platform" style="display: none;">
-                      </div>
-
+          <div class="row">
+            <div class="col-md-12">
+              <h4>Blockchain technologies</h4>
+              <div class="form-group mt-4">
+                <label>Platforms commercially worked with</label>
+                <div class="checkbox">
+                  <div class="row m-0">
+                    <div class="form-check col-md-3 mb-3" *ngFor="let option of commercially">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommerciallyOptions(option)" />
+                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
+                        {{option.name}}
+                      </label>
                     </div>
+                  </div>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]='commercially_worked' name="commercially_worked" style="display: none;">
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="commercially_worked?.length > 0">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Years of experience</label>
+              </div>
+            </div>
+            <div class = "col-md-7" *ngFor="let option of commercially_worked; let i = index ">
+              <p>{{option.value}}</p>
+              <div class = "form-group">
+                <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+                <label class="btn btn-secondary" *ngFor="let exp of exp_year; let i_ind =index" for="rg{{option.value}}{{i_ind}}" >
+                  <input type="radio" autocomplete="off" name="radiogroup- {{ option.value}}" id="rg{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
+                  {{exp.name}}
+                </label>
+                <!--</div>-->
+                <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
+              </div>
+            </div>
+          </div>
+          <div class = "invalid-feedback d-inline"  *ngIf="commercially_worked.length !== commercial_expYear.length">
+            {{commercial_log}}
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Platforms designed/developed smart contracts on </label>
+                <div class="checkbox">
+                  <div class="row m-0">
+                    <div class="form-check col-md-3 mb-3" *ngFor="let option of designed">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onPlatformOptions(option)"  />
+                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
+                        {{option.value}}
+                      </label>
                     </div>
+                  </div>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]='platforms_designed' name="platforms_designed" style="display: none;">
+              </div>
+            </div>
+          </div>
 
-                      <!-- commercial skills -->
-                      <span class = "checkbox-header"> <strong>Commercial experience in these areas </strong></span>
+          <div class="row" *ngIf="platforms_designed?.length > 0">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Years of experience</label>
+              </div>
+            </div>
+            <div class = "col-md-7" *ngFor="let exp_value of platforms_designed;let i_index = index">
+              <p>{{exp_value.value}}</p>
+              <div class = "form-group">
+                <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+                <label class="btn btn-secondary" *ngFor="let exp of exp_year; let i_ind =index" for="group{{exp_value.value}}{{i_ind}}" >
+                  <input type="radio" autocomplete="off" name="group - {{ exp_value.value }} "  id="group{{exp_value.value}}{{i_ind}}" [checked]=" designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value"
+                         value="{{exp.value}}" (change)="onPlatformYearOptions($event , exp_value.value)" >
+                  {{exp.name}}
+                </label>
+                <!--</div>-->
+                <input type="text" class="form-control" name="platforms" [(ngModel)]='platforms' style="display: none;">
+              </div>
+            </div>
+          </div>
+          <div class = "invalid-feedback d-inline"  *ngIf="platforms_designed.length !== platforms.length">
+            {{platform_log}}
+          </div>
 
-                      <div class="row">
-                        <div class="col-md-4 collection-checkbox" *ngFor="let option of otherSkills">
-
-                          <div class="checkbox" >
-                            <label class = "check-label lable"> {{option.name}}
-                              <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
-
-                              <span class="checkmark">
-                          <div></div>
-                          </span>
-                            </label>
-                            <input type="text" class="form-control" [(ngModel)]='commercialSkills' name="commercial_skills_name" style="display: none;">
-                          </div>
-
-                        </div>
-                      </div>
-
-                      <div *ngIf="commercialSkills?.length > 0">
-                        <p class = "exp_p">Years of experience</p>
-                        <div class = "row" *ngFor="let option of commercialSkills; let i = index ">
-
-                          <p class="rd_label label-p">{{option.value}}</p>
-                          <div class = "form-group radio-toolbar col-md-12 controls__group">
-                            <div *ngFor="let exp of exp_year; let i_ind =index">
-                              <input type="radio" name="commercialradiogroup- {{ option.value}}" id="skill{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value">
-                              <label class="radio-inline d-flex justify-content-center align-items-center" for="skill{{option.value}}{{i_ind}}">
-                                {{exp.name}}
-                              </label>
-                            </div>
-                            <input type="text" class="form-control" name="commercial_skills" [(ngModel)]='commercialSkillsExperienceYear' style="display: none;">
-                          </div>
-
-                        </div>
-                        <div class = "form_error" *ngIf="commercialSkills.length !== commercialSkillsExperienceYear.length">
-                          <span class = "error">{{commercial_skill_log}}</span>
-                        </div>
-                      </div>
-
-                      <span class = "checkbox-header"> <strong>Formal (university) education in these areas </strong></span>
-
-                      <div class="row">
-                        <div class="col-md-4 collection-checkbox" *ngFor="let option of otherFormalSkills">
-
-                          <div class="checkbox" >
-                            <label class = "check-label lable"> {{option.name}}
-                              <input type="checkbox" name="options" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"   />
-
-                              <span class="checkmark">
-                          <div></div>
-                          </span>
-                            </label>
-                            <input type="text" class="form-control" [(ngModel)]='formal_skills_exp' name="formal_skills_exp" style="display: none;">
-                          </div>
-
-                        </div>
-                      </div>
-
-                      <div *ngIf="formal_skills_exp?.length > 0">
-                        <p class = "exp_p">Years of experience</p>
-                        <div class = "row" *ngFor="let option of formal_skills_exp; let i = index ">
-
-                          <p class="rd_label label-p">{{option.value}}</p>
-                          <div class = "form-group radio-toolbar col-md-12 controls__group">
-                            <div *ngFor="let exp of exp_year; let i_ind =index">
-                              <input type="radio" name="formalradiogroup- {{ option.value}}" id="formal{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onFormalExpYearOptions($event , option.value)" [checked]="formal_expYear_db[i] === exp.value && formalDbArray[i] === option.value" >
-                              <label class="radio-inline d-flex justify-content-center align-items-center" for="formal{{option.value}}{{i_ind}}">
-                                {{exp.name}}
-                              </label>
-                            </div>
-                            <input type="text" class="form-control" name="formal_skills" [(ngModel)]='formal_skills' style="display: none;">
-                          </div>
-
-                        </div>
-                        <div class = "form_error" *ngIf="formal_skills_exp.length !== formal_skills.length">
-                          <span class = "error">{{formal_skills_log}}</span>
-                        </div>
-                      </div>
-
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Platforms experimented with </label>
+                <div class="checkbox">
+                  <div class="row m-0">
+                    <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)"  />
+                        <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
+                        {{option.value}}
+                      </label>
                     </div>
+                  </div>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]='experimented_platform' name="experimented_platform" style="display: none;">
 
+              </div>
+            </div>
+          </div>
+          <!-- commercial skills -->
+          <div class="row">
+            <div class="col-md-12">
+              <h4>Blockchain skills</h4>
+              <div class="form-group mt-4">
+                <label>Commercial experience in these areas </label>
+                <div class="checkbox">
+                  <div class="row m-0">
+                    <div class="form-check col-md-4 mb-3" *ngFor="let option of otherSkills">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="oncommercialSkillsOptions(option)"   />
+                        {{option.name}}
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
-              <hr>
-         <!--  <div *ngIf="experimented_platform?.length > 0">
-           <p class = "exp_p">Year of Experience of each platform</p>
-          <div class = "row" *ngFor="let exp_value of experimented_platform;let i_index = index">
+              <input type="text" class="form-control" [(ngModel)]='commercialSkills' name="commercial_skills_name" style="display: none;">
 
-            <p class="rd_label label-p">{{exp_value.value}}</p>
-             <div class = "form-group radio-toolbar col-md-12 controls__group">
-		<div *ngFor="let exp of exp_year; let i_ind =index">
-          <input type="radio" id="radio_button"  id="radio{{exp_value.value}}{{i_ind}}" (change) = "onExpYearOptions($event , exp_value.value)" name="rgroup - {{ exp_value.value }} "  [checked]=" exp_expYear[i_index] === exp.value && exp_db_valye[i_index] === exp_value.value"
-            value="{{exp.value}}"  >
-       <label class="radio-inline d-flex justify-content-center align-items-center" for="radio{{exp_value.value}}{{i_ind}}">
-        {{exp.name}}
-          </label>
-		  </div>
-		  <input type="text" class="form-control" name="experience_year" [(ngModel)]='expYear' style="display: none;">
-      </div>
+            </div>
           </div>
-          </div>-->
 
+          <div class="row" *ngIf="commercialSkills?.length > 0">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Years of experience</label>
+              </div>
+            </div>
+            <div class = "col-md-7" *ngFor="let option of commercialSkills; let i = index ">
+              <p>{{option.value}}</p>
+              <div class = "form-group">
+                <!--<div class="btn-group btn-group-toggle" data-toggle="buttons" >-->
+                <label class="btn btn-secondary" *ngFor="let exp of exp_year; let i_ind =index" for="skill{{option.value}}{{i_ind}}" >
+                  <input type="radio" autocomplete="off" name="commercialradiogroup- {{ option.value}}" id="skill{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComSkillExpYearOptions($event , option.value)" [checked]=" skill_expYear_db[i] === exp.value && skillDbArray[i] === option.value">
+                  {{exp.name}}
+                </label>
+                <!--</div>-->
+                <input type="text" class="form-control" name="commercial_skills" [(ngModel)]='commercialSkillsExperienceYear' style="display: none;">
+              </div>
+            </div>
+          </div>
+          <div class = "invalid-feedback d-inline"  *ngIf="commercialSkills.length !== commercialSkillsExperienceYear.length">
+            {{commercial_skill_log}}
+          </div>
 
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Formal (university) education in these areas </label>
+                <div class="checkbox">
+                  <div class="row m-0">
+                    <div class="form-check col-md-4 mb-3" *ngFor="let option of otherFormalSkills">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"   />
+                        {{option.name}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]='formal_skills_exp' name="formal_skills_exp" style="display: none;">
 
-          </fieldset>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="formal_skills_exp?.length > 0">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Years of experience</label>
+              </div>
+            </div>
+            <div class = "col-md-7" *ngFor="let option of formal_skills_exp; let i = index ">
+              <p>{{option.value}}</p>
+              <div class = "form-group">
+                <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+                <label class="btn btn-secondary" *ngFor="let exp of exp_year; let i_ind =index" for="formal{{option.value}}{{i_ind}}" >
+                  <input type="radio" name="formalradiogroup- {{ option.value}}" id="formal{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onFormalExpYearOptions($event , option.value)" [checked]="formal_expYear_db[i] === exp.value && formalDbArray[i] === option.value" >
+                  {{exp.name}}
+                </label>
+                <!--</div>-->
+                <input type="text" class="form-control" name="formal_skills" [(ngModel)]='formal_skills' style="display: none;">
+              </div>
+            </div>
+          </div>
+          <div class = "invalid-feedback d-inline"  *ngIf="formal_skills_exp.length !== formal_skills.length">
+            {{formal_skills_log}}
+          </div>
 
           <div class = "form-group text-right">
-              <a routerLink="/job" class = "btn btn-prev">Prev Step</a>
-              <button type=submit  class = "btn btn-self btn-pdg">Next Step</button>
+            <a routerLink="/job" class = "btn btn-warning text-white">Back</a>
+            <button type=submit  class = "btn btn-primary ml-1">Next</button>
           </div>
-          <div class = "form_error error-log" *ngIf="error_msg">
-            <span class = "error">{{error_msg}}</span>
+          <div class = "invalid-feedback d-inline text-right float-right"  *ngIf="error_msg">
+            {{error_msg}}
           </div>
-
         </form>
-
       </div>
     </div>
   </div>
-
 </section>
-
-
-<!--candidate step completing End-->
-
-<div class = "gap">
-</div>

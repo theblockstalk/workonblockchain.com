@@ -1,0 +1,270 @@
+/*@Najeeb
+for chat stylesheet
+only to be applied to the chat page*/
+
+#frame {
+  width: 100%;
+  min-width: 360px;
+  max-width: 1000px;
+  height: 92vh;
+  min-height: 300px;
+  max-height: 720px;
+  background: #fff;
+  margin: auto;
+  padding-left: 0px;
+  padding-right: 0px;
+  box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
+  -webkit-box-shadow: 0 4px 6px 4px rgba(185, 185, 185, 0.3);
+  border: 1px solid #dadbdd;
+  overflow: hidden;
+}
+
+
+#contact {
+  height: calc(100% - 93px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#contact ul li {
+  position: relative;
+  padding: 20px 0 20px 0;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.message {
+  height: auto;
+  overflow-y: scroll;
+  max-height: 400px;
+  min-height: 400px;
+}
+
+.sent {
+  position: relative;
+  float: left;
+}
+
+.chat_user {
+  position: relative;
+  float: right;
+  margin-right: 15px;
+  top: -60px;
+  font-size: 10px;
+}
+
+.name_chat {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.replies {
+  position: relative;
+  float: right;
+}
+
+.chat_company {
+  position: relative;
+  float: left;
+  margin-left: 5px;
+  top: -60px;
+  font-size: 10px;
+}
+
+.offers_b {
+  width: 90%;
+  background: transparent;
+  padding: 10px;
+  overflow: hidden;
+  margin: auto;
+  text-align: center;
+}
+
+.message-input {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 99;
+}
+
+.offers {
+  width: 100%;
+  background: #e6e9f0;
+  padding: 10px;
+  overflow: hidden;
+  margin: auto;
+  text-align: center;
+}
+
+.cand_info-ul {
+  list-style: none;
+  padding-left: 10px;
+}
+
+.cont {
+  width: 90%;
+}
+
+.message ul {
+  list-style: none;
+}
+
+.job-description {
+  background-color: #e6e9f0 !important;
+  color: #2a2a2a !important;
+}
+
+.cand_info-ul li {
+  line-height: 20px;
+}
+
+.file {
+  position: absolute;
+  right: 15px;
+  bottom: -4px;
+  cursor: pointer;
+}
+
+.file-upload {
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  top: 0;
+  width: 95px;
+}
+
+input[type=file] {
+  color: transparent;
+}
+
+.send{
+  position: absolute;
+  right: 15px;
+  width: 97px;
+}
+
+.rec_p{
+  float: right;
+  left: 14px;
+  position: relative;
+}
+
+.send_p{
+  float: left;
+  right: 14px;
+  position: relative;
+}
+
+.rec_p::before{
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #253245;
+  margin-right: 10px;
+  top: -5px;
+  right: 5px;
+}
+
+.send_p::before{
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+  border-bottom: 5px solid #e6e9f0;
+  margin-right: 10px;
+  top: -5px;
+  left: 10px;
+}
+
+.ul_pd{
+  padding-inline-start: 10px;
+}
+
+.employment-contract{
+  position: absolute;
+  right: 45px;
+  top: 10px;
+  left: 120px;
+}
+
+@media (min-width: 1500px){
+  #cke_editor3, #cke_editor1{
+    height: 8rem !important;
+  }
+
+  .message-input {
+    bottom:62px !important;
+  }
+}
+
+@media (max-width: 992px){
+  .cand_info-ul {
+    font-size: 12px;
+    width: 100%;
+  }
+
+  .cand_info-ul li {
+    line-height: 20px;
+  }
+
+  #cke_editor3, #cke_editor1{
+    width: 20rem !important;
+  }
+}
+
+@media (max-width: 768px){
+  .message {
+    max-height: 325px;
+    min-height: 325px;
+  }
+
+  #contact ul li{
+    padding: 10px 2px;
+  }
+
+  #frame{
+    height: 130vh;
+  }
+
+  #cke_editor3, #cke_editor1{
+    width: 20rem !important;
+  }
+
+}
+
+@media (max-width: 430px){
+  .btn_mobile{
+    position: relative;
+    width: 85px;
+    height: 100%;
+    float: right;
+    left: 10px;
+  }
+
+  .send {
+    position: absolute;
+    right: 15px;
+    width: 70px;
+    font-size: 12px;
+  }
+
+  .file{
+    width: 70px;
+    font-size: 12px;
+    right: 15px;
+  }
+
+  .job-description, .replies, .sent{
+    font-size: 12px;
+  }
+
+  #cke_editor3, #cke_editor1{
+    width: 10rem !important;
+  }
+}

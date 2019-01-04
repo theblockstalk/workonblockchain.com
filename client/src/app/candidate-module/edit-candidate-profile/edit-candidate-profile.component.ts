@@ -1,6 +1,6 @@
 import { Component, OnInit ,ElementRef, Input,AfterViewInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-declare var synapseThrow: any;
+declare var $:any;
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -10,6 +10,7 @@ import { DataService } from "../../data.service";
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import { DatePipe } from '@angular/common';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-candidate-profile',
@@ -101,13 +102,16 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   contact_name_log;
   nationality_log;
   error_msg;
+  expected_validation;
+  start_date_year_log;
+  end_date_year_log;
 
   nationality = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
 
   current_work_check=[];
   current_work=
     [
-      {name:'I currently work there', value:'current', checked:false}
+      {name:'I currently work here', value:'current', checked:false}
     ]
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
@@ -166,10 +170,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   formal_expYear_db=[];
   ngOnInit()
   {
-    this.info.base_country = -1
-    this.info.nationality = -1;
-    this.current_currency = -1;
-    this.base_currency = -1;
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
@@ -228,20 +229,20 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         .subscribe(data =>
           {
             if(data)
-              this.info.email = data._creator.email;
-            if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
+              this.info.email = data['_creator'].email;
+            if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['_creator'].candidate)
             {
 
-              this.info.contact_number = data.contact_number;
-              this.info.github_account = data.github_account;
-              this.info.exchange_account = data.stackexchange_account;
-              this.info.nationality = data.nationality;
-              this.info.first_name =data.first_name;
-              this.info.last_name =data.last_name;
+              this.info.contact_number = data['contact_number'];
+              this.info.github_account = data['github_account'];
+              this.info.exchange_account = data['stackexchange_account'];
+              this.info.nationality = data['nationality'];
+              this.info.first_name =data['first_name'];
+              this.info.last_name =data['last_name'];
 
-              if(data.image != null )
+              if(data['image'] != null )
               {
-                this.info.image_src =  data.image ;
+                this.info.image_src =  data['image'] ;
                 let x = this.info.image_src.split("/");
 
                 let last:any = x[x.length-1];
@@ -249,21 +250,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 this.img_src = last;
               }
 
-              if(data._creator.candidate && data._creator.candidate.base_country)
+              if(data['_creator'].candidate && data['_creator'].candidate.base_country)
               {
-                this.info.base_country = data._creator.candidate.base_country;
+                this.info.base_country = data['_creator'].candidate.base_country;
               }
-              if(data._creator.candidate && data._creator.candidate.base_city){
-                this.info.city = data._creator.candidate.base_city;
+              if(data['_creator'].candidate && data['_creator'].candidate.base_city){
+                this.info.city = data['_creator'].candidate.base_city;
               }
 
 
             }
 
-            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length>0)
+            if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.commercial_skills && data['_creator'].candidate.blockchain.commercial_skills.length>0)
             {
-              this.commercialSkillsExperienceYear = data._creator.candidate.blockchain.commercial_skills;
-              for (let key of data._creator.candidate.blockchain.commercial_skills)
+              this.commercialSkillsExperienceYear = data['_creator'].candidate.blockchain.commercial_skills;
+              for (let key of data['_creator'].candidate.blockchain.commercial_skills)
               {
                 for(var i in key)
                 {
@@ -303,10 +304,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
             }
 
 
-            if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length>0)
+            if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.formal_skills && data['_creator'].candidate.blockchain.formal_skills.length>0)
             {
-              this.formal_skills = data._creator.candidate.blockchain.formal_skills;
-              for (let key of data._creator.candidate.blockchain.formal_skills)
+              this.formal_skills = data['_creator'].candidate.blockchain.formal_skills;
+              for (let key of data['_creator'].candidate.blockchain.formal_skills)
               {
                 for(var i in key)
                 {
@@ -345,10 +346,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
             }
 
-            if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
+            if(data['locations'] && data['roles'] && data['interest_area'] &&  data['expected_salary'] && data['availability_day'] && data['expected_salary_currency'])
             {
 
-              for (let country1 of data.locations)
+              for (let country1 of data['locations'])
               {
 
                 for(let option of this.options)
@@ -358,14 +359,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                   {
                     option.checked=true;
                     this.selectedcountry.push(country1);
-
                   }
 
                 }
 
               }
 
-              for(let interest of data.interest_area)
+              for(let interest of data['interest_area'])
               {
 
                 for(let option of this.area_interested)
@@ -382,7 +382,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
               }
 
-              for (let area of data.roles)
+              for (let area of data['roles'])
               {
 
                 for(let option of this.dropdown_options)
@@ -398,21 +398,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
               }
 
-              this.expected_salaryyy = data.expected_salary;
+              this.expected_salaryyy = data['expected_salary'];
 
-              this.availability_day = data.availability_day;
-              if(data.expected_salary_currency)
-                this.base_currency = data.expected_salary_currency;
+              this.availability_day = data['availability_day'];
+              if(data['expected_salary_currency'])
+                this.base_currency = data['expected_salary_currency'];
             }
 
-            if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
+            if(data['commercial_platform'] || data['experimented_platform'] || data['why_work'] || data['platforms'])
             {
-              this.why_work=data.why_work;
+              this.why_work=data['why_work'];
 
-              if(data.commercial_platform)
+              if(data['commercial_platform'])
               {
-                this.commercial_expYear =data.commercial_platform;
-                for (let key of data.commercial_platform)
+                this.commercial_expYear =data['commercial_platform'];
+                for (let key of data['commercial_platform'])
                 {
                   for(var i in key)
                   {
@@ -454,10 +454,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
 
 
-              if(data.platforms)
+              if(data['platforms'])
               {
-                this.platforms = data.platforms;
-                for (let key of data.platforms)
+                this.platforms = data['platforms'];
+                for (let key of data['platforms'])
                 {
                   for(var i in key)
                   {
@@ -501,10 +501,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
 
 
-              if(data.experimented_platform)
+              if(data['experimented_platform'])
               {
                 this.experimented_platform = [];
-                for (let plat of data.experimented_platform)
+                for (let plat of data['experimented_platform'])
                 {
 
                   for(let option of this.experimented)
@@ -523,14 +523,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               }
             }
 
-            if(data.work_history && data.education_history|| data.programming_languages)
+            if(data['work_history'] && data['education_history'] || data['programming_languages'])
             {
 
+              this.jobData = data['work_history'];
 
-
-              this.jobData = data.work_history;
-
-              for(let data1 of data.work_history)
+              for(let data1 of data['work_history'])
               {
                 this.current_work_check.push(data1.currentwork);
 
@@ -542,16 +540,16 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 )
               });
 
-              this.eduData = data.education_history;
+              this.eduData = data['education_history'];
               this.EducationForm = this._fb.group({
                 itemRows: this._fb.array(
                   this.education_data()
                 )
               });
-              if(data.programming_languages)
+              if(data['programming_languages'])
               {
-                this.LangexpYear = data.programming_languages;
-                for (let key of data.programming_languages)
+                this.LangexpYear = data['programming_languages'];
+                for (let key of data['programming_languages'])
                 {
                   for(var i in key)
                   {
@@ -590,10 +588,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }
               }
 
-              this.salary = data.current_salary;
-              this.Intro =data.description;
-              if(data.current_currency)
-                this.current_currency =data.current_currency;
+              this.salary = data['current_salary'];
+              this.Intro =data['description'];
+              if(data['current_currency'])
+                this.current_currency =data['current_currency'];
 
             }
           },
@@ -620,6 +618,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit(): void
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 900);
   }
 
 
@@ -827,13 +832,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.commercially_worked.push(obj);
     }
 
-
-  }
+    }
 
   onPlatformOptions(obj)
   {
 
-    let updateItem = this.platforms_designed.find(this.findIndexToUpdate_funct, obj.value);
+    let updateItem = this.platforms_designed.find(this.findIndexToUpdate, obj.value);
     let index = this.platforms_designed.indexOf(updateItem);
     if(index > -1)
     {
@@ -922,7 +926,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     return null;
   }
 
-  calen_month= ["January","Februray","March","April","May","June","July","August","September","October","November","December"]
+  calen_month= ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
 
   language_opt=
@@ -979,20 +983,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.language.push(obj);
     }
 
-    //console.log(this.language);
 
   }
 
+
+  findIndexToUpdate(obj)
+  {
+    return obj.value === this;
+  }
 
   findIndexToUpdate_funct(obj)
   {
     return obj.value === this;
   }
 
-  findIndexToUpdate(type) {
-    ////console.log("funct");
-    return type == this;
-  }
+
 
   onJobSelected(e)
   {
@@ -1004,7 +1009,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
     else{
 
-      let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
+      let updateItem = this.jobselected.find(this.findIndexToUpdateCheck, e.target.value);
 
       let index = this.jobselected.indexOf(updateItem);
 
@@ -1073,9 +1078,18 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     });
   }
 
-
+  currentWork(){
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+  }
   addNewExpRow()
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
     // control refers to your formarray
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     // add new formgroup
@@ -1097,12 +1111,17 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
   addNewRow()
   {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
     // control refers to your formarray
     //this.EducationForm.value.itemRows = "";
     const control = <FormArray>this.EducationForm.controls['itemRows'];
     // add new formgroup
     control.push(this.initItemRows());
   }
+
 
   deleteRow(index: number)
   {
@@ -1175,7 +1194,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
     else{
       ////console.log("else");
-      let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
+      let updateItem = this.selectedValue.find(this.findIndexToUpdateCheck, e.target.value);
 
       let index = this.selectedValue.indexOf(updateItem);
 
@@ -1186,22 +1205,24 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   updateCheckedOptions(e)
   {
-    //this.interest = e.target.value;
-
     if(e.target.checked)
     {
       this.selectedcountry.push(e.target.value);
-      ////console.log("if");
     }
     else{
-      ////console.log("else");
-      let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value);
+      let updateItem = this.selectedcountry.find(this.findIndexToUpdateCheck, e.target.value);
 
       let index = this.selectedcountry.indexOf(updateItem);
 
       this.selectedcountry.splice(index, 1);
     }
 
+
+  }
+
+  findIndexToUpdateCheck(type) {
+    ////console.log("funct");
+    return type == this;
   }
   ////////////////////////save edit profile data//////////////////////////////////
   start_monthh;
@@ -1224,9 +1245,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   city_log;
   commercial_skill_log;
   formal_skills_log;
+  current_sal_log;
+  count;
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
+    this.count = 0;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1243,12 +1267,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.contact_name_log ="Please enter contact number";
     }
 
-    if(this.info.nationality === -1)
+    if(!this.info.nationality )
     {
       this.nationality_log ="Please choose nationality";
     }
 
-    if(this.info.base_country === -1)
+    if(!this.info.base_country )
     {
       this.base_country_log ="Please choose base country";
     }
@@ -1269,7 +1293,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
 
 
-    if(this.base_currency === -1)
+    if(!this.base_currency)
     {
       this.currency_log = "Please choose currency";
     }
@@ -1288,16 +1312,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
       this.avail_log = "Please select employment availability";
     }
-    /*if(!this.salary)
-    {
-      this.current_sal_logg = "Please enter current base salary";
 
-    }
-
-    if(this.current_currency === -1)
-    {
-      this.current_currency_logg = "Please choose currency";
-    }*/
     if(!this.why_work)
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
@@ -1390,14 +1405,24 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
         }
 
-        if(!this.ExperienceForm.value.ExpItems[key].start_date || !this.ExperienceForm.value.ExpItems[key].startyear)
+        if(!this.ExperienceForm.value.ExpItems[key].startdate )
         {
-          this.start_date_log = "Please fill start date ";
+          this.start_date_log = "Please fill month";
         }
 
-        if(!this.ExperienceForm.value.ExpItems[key].end_date || !this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].companyname==false)
+        if( !this.ExperienceForm.value.ExpItems[key].startyear)
         {
-          this.end_date_log = "Please fill end date ";
+          this.start_date_year_log = "Please fill year";
+        }
+
+        if(!this.ExperienceForm.value.ExpItems[key].end_date && this.ExperienceForm.value.ExpItems[key].currentwork === false)
+        {
+          this.end_date_log = "Please fill month";
+        }
+
+        if(!this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork === false)
+        {
+          this.end_date_year_log = "Please fill year ";
         }
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname &&
@@ -1424,9 +1449,23 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     }
 
+    if(this.salary && !this.current_currency) {
+      this.current_currency_logg = "Please choose currency";
+      this.count++;
+    }
 
-    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 &&
-      this.info.city && this.info.base_country != -1 && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1 && this.selectedValue.length > 0 && this.availability_day &&
+    if(this.salary && this.current_currency === "-1" ) {
+      this.current_currency_logg = "Please choose currency";
+      this.count++;
+    }
+
+    if(!this.salary && this.current_currency != -1) {
+      this.current_sal_log = "Please enter current base salary";
+      this.count++;
+    }
+
+    if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
+      this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
@@ -1468,10 +1507,57 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
+
+    if(this.commercially_worked.length === 0) {
+      profileForm.commercial_experience_year = [];
+    }
+    else {
+      profileForm.commercial_experience_year = this.commercial_expYear;
+    }
+
+
+    if(this.platforms_designed.length === 0) {
+      profileForm.platforms = [];
+    }
+    else {
+      profileForm.platforms = this.platforms;
+    }
+    if(this.commercialSkills.length === 0) {
+      profileForm.commercial_skills = [];
+    }
+    else {
+      profileForm.commercial_skills = this.commercialSkillsExperienceYear;
+    }
+    if(this.formal_skills_exp.length === 0) {
+      profileForm.formal_skills = [];
+    }
+    else {
+      profileForm.formal_skills = this.formal_skills;
+    }
+
+    if(this.language.length === 0) {
+      profileForm.language = [];
+    }
+    else {
+      profileForm.language_experience_year = this.LangexpYear;
+    }
+
+    if(this.selectedcountry){
+      profileForm.country = this.selectedcountry;
+    }
+
+    if(this.jobselected){
+      profileForm.roles = this.jobselected;
+    }
+
+    if(this.selectedValue){
+      profileForm.interest_area = this.selectedValue;
+    }
+
     this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
       .subscribe(
         data => {
-          if(data.success && this.currentUser)
+          if(data['success'] && this.currentUser)
           {
             let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
             let fileCount: number = inputEl.files.length;
@@ -1482,17 +1568,15 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               if(inputEl.files.item(0).size < this.file_size)
               {
                 formData.append('photo', inputEl.files.item(0));
-
-                this.http.post(URL+'users/image', formData ,  {
-                  headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                }).map((res) => res).subscribe(
-                  (success) =>
-                  {
-                    this.router.navigate(['/candidate_profile']);
+                this.authenticationService.uploadCandImage(formData)
+                .subscribe(
+                  data => {
+                    if (data['success']) {
+                      this.router.navigate(['/candidate_profile']);
+                    }
                   },
-                  (error) => {
-                    if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-                    {
+                  error => {
+                    if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
                       localStorage.setItem('jwt_not_found', 'Jwt token not found');
                       localStorage.removeItem('currentUser');
                       localStorage.removeItem('googleUser');
@@ -1501,7 +1585,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                       localStorage.removeItem('admin_log');
                       window.location.href = '/login';
                     }
-                  });
+                  }
+                );
               }
               else
               {
@@ -1514,9 +1599,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               this.router.navigate(['/candidate_profile']);
           }
 
-          if(data.error)
+          if(data['error'])
           {
-            this.dataservice.changeMessage(data.error);
+            this.dataservice.changeMessage(data['error']);
           }
 
         },
@@ -1563,6 +1648,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       obj.checked =true;
       this.commercialSkills.push(obj);
     }
+
 
   }
 

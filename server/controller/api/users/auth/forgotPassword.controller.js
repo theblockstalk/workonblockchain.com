@@ -14,12 +14,12 @@ module.exports = async function (req,res) {
     if(userDoc) {
         if(userDoc.social_type === 'GOOGLE')
         {
-            errors.throwError("Please login using gmail", 400);
+            errors.throwError("Please log into your account using the 'Log in with Google' button", 400);
         }
 
         else if(userDoc.social_type === 'LINKEDIN')
         {
-            errors.throwError("Please login using linkedin", 400);
+            errors.throwError("Please log into your account using the 'Log in with LinkedIn' button", 400);
         }
 
         else {

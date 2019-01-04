@@ -69,10 +69,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     ngAfterViewInit(): void
      {
        window.scrollTo(0, 0);
-       setTimeout(() => {
-         $('.selectpicker').selectpicker('refresh');
-       }, 150);
-
         }
 
   locations = [
@@ -230,65 +226,64 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
                 {
 
                   //console.log(data);
-                  if(!data.terms_id)
+                  if(!data['terms_id'])
                   {
                       this.router.navigate(['/company_wizard']);
                   }
 
 
-                  else if(!data.company_founded || !data.no_of_employees || !data.company_funded || !data.company_description )
+                  else if(!data['company_founded'] || !data['no_of_employees'] || !data['company_funded'] || !data['company_description'] )
                   {
                       this.router.navigate(['/about_comp']);
                   }
 
-                  else if(((new Date(data._creator.created_date) > new Date('2018/11/28')) && (!data.saved_searches || data.saved_searches.length === 0))) {
+                  else if(((new Date(data['_creator'].created_date) > new Date('2018/11/28')) && (!data['saved_searches'] || data['saved_searches'].length === 0))) {
                     this.router.navigate(['/preferences']);
                   }
 
                   else
                   {
-                      this.first_name=data.first_name;
-                      this.email=data._creator.email;
-                      this.last_name=data.last_name;
-                      this.company_name=data.company_name;
-                      this.job_title=data.job_title;
-                      if(data.company_website)
+                      this.first_name=data['first_name'];
+                      this.email=data['_creator'].email;
+                      this.last_name=data['last_name'];
+                      this.company_name=data['company_name'];
+                      this.job_title=data['job_title'];
+                      if(data['company_website'])
                       {
-                            let loc= data.company_website;
+                            let loc= data['company_website'];
                             let x = loc.split("/");
                             if(x[0] === 'http:' || x[0] === 'https:')
                             {
-                                this.company_website = data.company_website;
+                                this.company_website = data['company_website'];
                             }
                             else
                             {
-                                this.company_website = 'http://' + data.company_website;
+                                this.company_website = 'http://' + data['company_website'];
                             }
                       }
-                      this.company_phone =data.company_phone;
-                      this.company_country =data.company_country;
-                      this.company_city=data.company_city;
-                      this.company_postcode=data.company_postcode;
-                      this.company_description=data.company_description;
-                      this.company_founded =data.company_founded;
-                      this.company_funded=data.company_funded;
-                      this.no_of_employees=data.no_of_employees;
-                      if(data.company_logo != null )
+                      this.company_phone =data['company_phone'];
+                      this.company_country =data['company_country'];
+                      this.company_city=data['company_city'];
+                      this.company_postcode=data['company_postcode'];
+                      this.company_description=data['company_description'];
+                      this.company_founded =data['company_founded'];
+                      this.company_funded=data['company_funded'];
+                      this.no_of_employees=data['no_of_employees'];
+                      if(data['company_logo'] != null )
                       {
                       ////console.log(data[0].image);
 
-                        this.imgPath =  data.company_logo;
+                        this.imgPath =  data['company_logo'];
 
                         //console.log(this.imgPath);
 
                       }
 
-                    if(data.terms_id && data.company_founded && data.no_of_employees && data.company_funded && data.company_description && !data.saved_searches ) {
-                      console.log("show popup");
+                    if(data['terms_id'] && data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'] && !data['saved_searches'] ) {
                       $('#popModal_b').modal('show');
                     }
-                    if(data.saved_searches) {
-                      this.saved_searche = data.saved_searches;
+                    if(data['saved_searches']) {
+                      this.saved_searche = data['saved_searches'];
 
                     }
 
@@ -311,8 +306,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
-                this.companyMsgTitle= data[0].page_title;
-                this.companyMsgBody = data[0].page_content;
+                this.companyMsgTitle= data[0]['page_title'];
+                this.companyMsgBody = data[0]['page_content'];
               }
             });
       }
@@ -361,7 +356,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
           data =>
           {
 
-            if(data.success === true) {
+            if(data['success'] === true) {
               this.saved_searche = this.saved_searches;
               $('#popModal_b').modal('hide');
 

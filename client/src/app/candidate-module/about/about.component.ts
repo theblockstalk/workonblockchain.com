@@ -6,6 +6,8 @@ import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
+declare var $:any;
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -62,16 +64,20 @@ export class AboutComponent implements OnInit,AfterViewInit
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
 
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 900);
   }
 
   ngOnInit()
   {
-    this.info.country=-1;
     this.job_disable = "disabled";
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
-    this.info.nationality=-1;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
 
@@ -104,41 +110,41 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-            if(data._creator.refered_id) //&& !data.first_name && !data.last_name)
+            if(data['_creator'].refered_id) //&& !data.first_name && !data.last_name)
             {
-              this.referred_id = data._creator.refered_id;
+              this.referred_id = data['_creator'].refered_id;
 
             }
-            if(data.terms_id)
+            if(data['terms_id'])
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
 
-            if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
+            if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['_creator'].candidate)
             {
 
-              this.info.contact_number = data.contact_number;
-              this.info.github_account = data.github_account;
-              this.info.exchange_account = data.stackexchange_account;
-              if(data.nationality)
+              this.info.contact_number = data['contact_number'];
+              this.info.github_account = data['github_account'];
+              this.info.exchange_account = data['stackexchange_account'];
+              if(data['nationality'])
               {
-                this.info.nationality = data.nationality;
+                this.info.nationality = data['nationality'];
               }
-              if(data._creator.candidate && data._creator.candidate.base_country)
+              if(data['_creator'].candidate && data['_creator'].candidate.base_country)
               {
-                this.info.country = data._creator.candidate.base_country;
+                this.info.country = data['_creator'].candidate.base_country;
               }
-              if(data._creator.candidate && data._creator.candidate.base_city){
-                this.info.city = data._creator.candidate.base_city;
+              if(data['_creator'].candidate && data['_creator'].candidate.base_city){
+                this.info.city = data['_creator'].candidate.base_city;
               }
 
-              this.info.first_name =data.first_name;
-              this.info.last_name =data.last_name;
+              this.info.first_name =data['first_name'];
+              this.info.last_name =data['last_name'];
 
-              if(data.image != null )
+              if(data['image'] != null )
               {
-                this.info.image_src = data.image ;
+                this.info.image_src = data['image'] ;
 
 
                 let x = this.info.image_src.split("/");
@@ -151,21 +157,21 @@ export class AboutComponent implements OnInit,AfterViewInit
 
             }
 
-            if(data.contact_number  && data.nationality && data.first_name && data.last_name)
+            if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.active_class='fa fa-check-circle text-success';
               this.job_disable = '';
               this.link= "/job";
             }
 
-            if(data.locations && data.roles && data.interest_area && data.expected_salary && data.availability_day)
+            if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'])
             {
               this.resume_disable = '';
               this.job_active_class = 'fa fa-check-circle text-success';
               this.resume_class="/resume";
             }
 
-            if(data.why_work )
+            if(data['why_work'] )
             {
               this.exp_disable = '';
               this.resume_class="/resume";
@@ -173,7 +179,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.resume_active_class='fa fa-check-circle text-success';
             }
 
-            if( data.description)
+            if( data['description'])
             {
               this.exp_class = "/experience";
               this.exp_active_class = 'fa fa-check-circle text-success';
@@ -209,73 +215,55 @@ export class AboutComponent implements OnInit,AfterViewInit
 
   }
 
-  about()
-  {
+  about() {
     this.error_msg = "";
-    if(this.referred_id)
-    {
-      this.info.referred_id= this.referred_id;
+    if (this.referred_id) {
+      this.info.referred_id = this.referred_id;
     }
-    if(!this.info.first_name)
-    {
-      this.first_name_log="Please enter first name";
+    if (!this.info.first_name) {
+      this.first_name_log = "Please enter first name";
 
     }
-    if(!this.info.last_name)
-    {
-      this.last_name_log="Please enter last name";
+    if (!this.info.last_name) {
+      this.last_name_log = "Please enter last name";
 
     }
-    if(!this.info.contact_number)
-    {
-      this.contact_name_log ="Please enter contact number";
+    if (!this.info.contact_number) {
+      this.contact_name_log = "Please enter contact number";
     }
 
-    if(this.info.nationality === -1)
-    {
-      this.nationality_log ="Please choose nationality";
+    if (!this.info.nationality) {
+      this.nationality_log = "Please choose nationality";
     }
-    if(this.info.country === -1)
-    {
-      this.country_log ="Please choose base country";
+    if (!this.info.country) {
+      this.country_log = "Please choose base country";
     }
-    if(!this.info.city)
-    {
-      this.city_log ="Please enter base city";
+    if (!this.info.city) {
+      this.city_log = "Please enter base city";
     }
-    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 && this.info.city && this.info.country != -1 )
-    {
-      this.authenticationService.about(this.currentUser._creator,this.info)
+    if (this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality && this.info.city && this.info.country) {
+      this.authenticationService.about(this.currentUser._creator, this.info)
         .subscribe(
-          data =>
-          {
-            if(data.success)
-            {
+          data => {
+            if (data['success']) {
 
-              if(this.info.image)
-              {
+              if (this.info.image) {
 
                 let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
                 let fileCount: number = inputEl.files.length;
                 let formData = new FormData();
-                if (fileCount > 0 )
-                {
-                  if(inputEl.files.item(0).size < this.file_size)
-                  {
+                if (fileCount > 0) {
+                  if (inputEl.files.item(0).size < this.file_size) {
                     formData.append('photo', inputEl.files.item(0));
-
-                    this.http.post(URL+'users/image', formData ,  {
-                      headers: new HttpHeaders().set('Authorization', this.currentUser.jwt_token)
-                    }).map((res) => res).subscribe(
-                      (success) =>
-                      {
-
-                        this.router.navigate(['/job']);
+                    this.authenticationService.uploadCandImage(formData)
+                    .subscribe(
+                      data => {
+                        if (data['success']) {
+                          this.router.navigate(['/job']);
+                        }
                       },
-                      (error) =>
-                      {
-                        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-                        {
+                      error => {
+                        if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
                           localStorage.setItem('jwt_not_found', 'Jwt token not found');
                           localStorage.removeItem('currentUser');
                           localStorage.removeItem('googleUser');
@@ -284,48 +272,31 @@ export class AboutComponent implements OnInit,AfterViewInit
                           localStorage.removeItem('admin_log');
                           window.location.href = '/login';
                         }
-
-                      })
+                      }
+                    );
                   }
-                  else
-                  {
+                  else {
                     this.image_log = "Image size should be less than 1MB";
                   }
-
                 }
-                else
-                {
-
+                else {
                   this.router.navigate(['/job']);
                 }
-
               }
-
-              else
-              {
-
+              else {
                 this.router.navigate(['/job']);
               }
-
             }
-
           },
-          error =>
-          {
-
-            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-            {
+          error => {
+            if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               window.location.href = '/not_found';
             }
-
           });
     }
-
     else {
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
-
-
   }
 
   /*referred_email()

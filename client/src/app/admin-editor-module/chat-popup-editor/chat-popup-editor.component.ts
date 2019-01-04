@@ -61,8 +61,8 @@ export class ChatPopupEditorComponent implements OnInit {
             data => {
               if(data)
               {
-                this.candidateMsgTitle = data[0].page_title;
-                this.candidateMsgContent = data[0].page_content;
+                this.candidateMsgTitle = data[0]['page_title'];
+                this.candidateMsgContent = data[0]['page_content'];
 
               }
             });
@@ -71,14 +71,14 @@ export class ChatPopupEditorComponent implements OnInit {
             data => {
               if(data)
               {
-                this.companyMsgTitle = data[0].page_title;
-                this.companyMsgContent = data[0].page_content;
+                this.companyMsgTitle = data[0]['page_title'];
+                this.companyMsgContent = data[0]['page_content'];
 
               }
             },
             error =>
             {
-              if(error.message === 500 || error.message === 401)
+              if(error['message'] === 500 || error['message'] === 401)
               {
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                 localStorage.removeItem('currentUser');
@@ -136,7 +136,7 @@ export class ChatPopupEditorComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data.error)
+            if(data['error'])
             {
               this.company_error = "Something went wrong" ;
 

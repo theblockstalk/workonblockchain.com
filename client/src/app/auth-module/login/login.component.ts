@@ -5,13 +5,15 @@ import {User} from '../../Model/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { AuthService } from 'angular4-social-login';
 import { GoogleLoginProvider } from 'angular4-social-login';
-import { LinkedInService } from 'angular-linkedin-sdk';
 import { DataService } from '../../data.service';
 import {NgForm} from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
 
+import { LinkedInService } from '../../linkedin-api';
+
 const URL = environment.backend_url;
+//console.log(URL);
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -25,6 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   type;
   user;data;result;googleUser;linkedinUser;
   code; ref_msg;
+  button_status = '';
 
   message:string;
   error;
@@ -64,6 +67,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   previousUrl;
   login(loginForm: NgForm)
   {
+    this.button_status="submit";
     this.message='';
     this.type='candidate';
 
@@ -73,26 +77,15 @@ export class LoginComponent implements OnInit, OnDestroy {
         .subscribe(
           user => {
 
-            if(user.type === 'company') {
+            if(user['type'] === 'company') {
               this.previousUrl = localStorage.getItem('previousUrl');
 
               if(this.previousUrl) {
                 window.location.href = '/' + this.previousUrl;
               }
               else {
-                if (new Date(user.created_date) < new Date('2018/11/28')) {
-                  this.http.get<any>(URL + 'users/current_company/' + user._id, {
-                    headers: new HttpHeaders().set('Authorization', user.jwt_token)
-                  }).map((res) => res).subscribe(
-                    (res) => {
-                      if (!res.saved_searches) {
-                        window.location.href = '/company_profile';
-                      }
-                      else {
-                        window.location.href = '/candidate-search';
-
-                      }
-                    });
+                if (new Date(user['created_date']) < new Date('2018/11/28')) {
+                  window.location.href = '/candidate-search';
                 }
                 else {
                   window.location.href = '/candidate-search';
@@ -101,7 +94,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               }
 
             }
-            if(user.type === 'candidate')
+            if(user['type'] === 'candidate')
             {
               window.location.href = '/candidate_profile';
             }

@@ -77,19 +77,19 @@ export class ResumeComponent implements OnInit,AfterViewInit {
             .subscribe(
                 data => {
 
-                if(data.terms_id)
+                if(data['terms_id'])
                   {
                       this.term_active_class='fa fa-check-circle text-success';
                      this.term_link = '/terms-and-condition';
                   }
-                if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
+                if(data['commercial_platform'] || data['experimented_platform'] || data['why_work'] || data['platforms'])
                 {
-                  this.why_work=data.why_work;
+                  this.why_work=data['why_work'];
 
-                    if(data.commercial_platform)
+                    if(data['commercial_platform'])
                     {
-                        this.commercial_expYear =data.commercial_platform;
-                     for (let key of data.commercial_platform)
+                        this.commercial_expYear =data['commercial_platform'];
+                     for (let key of data['commercial_platform'])
                       {
                         for(var i in key)
                         {
@@ -132,10 +132,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                       }
                      }
 
-                      if(data.platforms)
+                      if(data['platforms'])
                       {
-                          this.platforms = data.platforms;
-                       for (let key of data.platforms)
+                          this.platforms = data['platforms'];
+                       for (let key of data['platforms'])
                       {
                         for(var i in key)
                         {
@@ -179,9 +179,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                      }
 
 
-                      if(data.experimented_platform)
+                      if(data['experimented_platform'])
                       {
-                          for (let plat of data.experimented_platform)
+                          for (let plat of data['experimented_platform'])
                      {
 
                       for(let option of this.experimented)
@@ -203,10 +203,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
                 }
 
-                  if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length>0)
+                  if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.commercial_skills && data['_creator'].candidate.blockchain.commercial_skills.length>0)
                   {
-                    this.commercialSkillsExperienceYear = data._creator.candidate.blockchain.commercial_skills;
-                    for (let key of data._creator.candidate.blockchain.commercial_skills)
+                    this.commercialSkillsExperienceYear = data['_creator'].candidate.blockchain.commercial_skills;
+                    for (let key of data['_creator'].candidate.blockchain.commercial_skills)
                     {
                       for(var i in key)
                       {
@@ -246,10 +246,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                   }
 
 
-                  if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length>0)
+                  if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.formal_skills && data['_creator'].candidate.blockchain.formal_skills.length>0)
                   {
-                    this.formal_skills = data._creator.candidate.blockchain.formal_skills;
-                    for (let key of data._creator.candidate.blockchain.formal_skills)
+                    this.formal_skills = data['_creator'].candidate.blockchain.formal_skills;
+                    for (let key of data['_creator'].candidate.blockchain.formal_skills)
                     {
                       for(var i in key)
                       {
@@ -288,13 +288,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                     }
                   }
 
-                if(data.locations && data.roles && data.interest_area || data.expected_salary || data.availability_day && data.current_salary )
+                if(data['locations'] && data['roles'] && data['interest_area'] || data['expected_salary'] || data['availability_day'] && data['current_salary'] )
                   {
                       this.job_active_class = 'fa fa-check-circle text-success';
 
                   }
 
-              if(data.why_work  )
+              if(data['why_work'] )
               {
                 this.exp_class = "/experience";
                  this.exp_disable = "";
@@ -302,7 +302,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                // this.router.navigate(['/resume']);
               }
 
-              if( data.description )
+              if( data['description'])
               {
 
                   this.exp_active_class = 'fa fa-check-circle text-success';
@@ -313,7 +313,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
                 },
                 error => {
-                   if(error.message === 500 || error.message === 401)
+                   if(error['message'] === 500 || error['message'] === 401)
                     {
                         localStorage.setItem('jwt_not_found', 'Jwt token not found');
                         localStorage.removeItem('currentUser');
@@ -324,7 +324,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                         window.location.href = '/login';
                     }
 
-                    if(error.message === 403)
+                    if(error['message'] === 403)
                     {
                         this.router.navigate(['/not_found']);
                     }
@@ -355,7 +355,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     {name:'EOS', value:'EOS', checked:false},
     {name:'NEO', value:'NEO', checked:false},
     {name:'Waves', value:'Waves', checked:false},
-    {name:'Steem', value:'Steem', checked:false},
+    {name:'Steemit', value:'Steemit', checked:false},
     {name:'Lisk', value:'Lisk', checked:false},
     {name:'Quantum', value:'Quantum', checked:false},
     {name:'Tezos', value:'Tezos', checked:false},
@@ -421,7 +421,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {name:'Corda', value:'Corda', checked:false},
       {name:'EOS', value:'EOS', checked:false},
       {name:'Waves', value:'Waves', checked:false},
-      {name:'Steem', value:'Steem', checked:false},
+      {name:'Steemit', value:'Steemit', checked:false},
       {name:'Lisk', value:'Lisk', checked:false},
       {name:'Quantum', value:'Quantum', checked:false},
       {name:'Tezos', value:'Tezos', checked:false},
@@ -483,13 +483,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
    {
      this.error_msg="";
 
-     ////console.log(expForm.value);
-       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-        if(this.commercially_worked.length !== this.commercial_expYear.length )
-        {
-            this.commercial_log = "Please fill year of experience";
-        }
+     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+     if(this.commercially_worked.length !== this.commercial_expYear.length )
+     {
+       this.commercial_log = "Please fill year of experience";
+     }
      if(this.commercialSkills.length !== this.commercialSkillsExperienceYear.length)
      {
        this.commercial_skill_log = "Please fill year of experience";
@@ -512,6 +510,19 @@ export class ResumeComponent implements OnInit,AfterViewInit {
        if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
        && this.commercialSkills.length === this.commercialSkillsExperienceYear.length && this.formal_skills_exp.length === this.formal_skills.length)
        {
+         if(this.commercially_worked.length === 0) {
+           expForm.value.commercial_experience_year = [];
+         }
+
+         if(this.platforms_designed.length === 0) {
+           expForm.value.platforms = [];
+         }
+         if(this.commercialSkills.length === 0) {
+           expForm.value.commercial_skills = [];
+         }
+         if(this.formal_skills_exp.length === 0) {
+           expForm.value.formal_skills = [];
+         }
         this.authenticationService.resume(this.currentUser._creator , expForm.value)
             .subscribe(
                 data => {
@@ -540,7 +551,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
    oncommerciallyOptions(obj)
    {
-
    let updateItem = this.commercially_worked.find(this.findIndexToUpdate, obj.value);
       let index = this.commercially_worked.indexOf(updateItem);
       if(index > -1)
@@ -618,7 +628,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
    selectedValue;langValue;
    onComExpYearOptions(e, value)
    {
-
        this.langValue = value;
         let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
       let index = this.commercial_expYear.indexOf(updateItem);

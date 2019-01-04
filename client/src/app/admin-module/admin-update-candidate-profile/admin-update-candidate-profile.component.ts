@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef, } from '@angular/core';
+import { Component, OnInit ,ElementRef, AfterViewInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
@@ -9,13 +9,14 @@ import { DataService } from "../../data.service";
 import {environment} from '../../../environments/environment';
 const URL = environment.backend_url;
 import { DatePipe } from '@angular/common';
+declare var $:any;
 
 @Component({
   selector: 'app-admin-update-candidate-profile',
   templateUrl: './admin-update-candidate-profile.component.html',
   styleUrls: ['./admin-update-candidate-profile.component.css']
 })
-export class AdminUpdateCandidateProfileComponent implements OnInit  {
+export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewInit {
 
   currentUser: User;
   info: any = {}; log;
@@ -106,7 +107,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
   current_work_check=[];
   current_work=
     [
-      {name:'I currently work there', value:'current', checked:false}
+      {name:'I currently work here', value:'current', checked:false}
     ]
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
@@ -114,6 +115,19 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
     });
+  }
+
+  ngAfterViewInit(): void
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 900);
+    window.scrollTo(0, 0);
+
   }
 
   private education_data(): FormGroup[]
@@ -166,12 +180,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
   formalSkillDb;
   formal_expYear_db=[];
   admin_log;
+  expected_validation;
   ngOnInit()
   {
-    this.info.base_country = -1
-    this.info.nationality = -1;
-    this.current_currency = -1;
-    this.base_currency = -1;
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
@@ -233,20 +245,20 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
           .subscribe(data =>
             {
               if(data)
-                this.info.email = data._creator.email;
-              if(data.contact_number  || data.nationality || data.first_name || data.last_name || data._creator.candidate)
+                this.info.email = data['_creator'].email;
+              if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['_creator'].candidate)
               {
 
-                this.info.contact_number = data.contact_number;
-                this.info.github_account = data.github_account;
-                this.info.exchange_account = data.stackexchange_account;
-                this.info.nationality = data.nationality;
-                this.info.first_name =data.first_name;
-                this.info.last_name =data.last_name;
+                this.info.contact_number = data['contact_number'];
+                this.info.github_account = data['github_account'];
+                this.info.exchange_account = data['stackexchange_account'];
+                this.info.nationality = data['nationality'];
+                this.info.first_name =data['first_name'];
+                this.info.last_name =data['last_name'];
 
-                if(data.image != null )
+                if(data['image'] != null )
                 {
-                  this.info.image_src =  data.image ;
+                  this.info.image_src =  data['image'] ;
                   let x = this.info.image_src.split("/");
 
                   let last:any = x[x.length-1];
@@ -254,20 +266,20 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
                   this.img_src = last;
                 }
 
-                if(data._creator.candidate && data._creator.candidate.base_country)
+                if(data['_creator'].candidate && data['_creator'].candidate.base_country)
                 {
-                  this.info.base_country = data._creator.candidate.base_country;
+                  this.info.base_country = data['_creator'].candidate.base_country;
                 }
-                if(data._creator.candidate && data._creator.candidate.base_city){
-                  this.info.city = data._creator.candidate.base_city;
+                if(data['_creator'].candidate && data['_creator'].candidate.base_city){
+                  this.info.city = data['_creator'].candidate.base_city;
                 }
 
               }
 
-              if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.commercial_skills && data._creator.candidate.blockchain.commercial_skills.length>0)
+              if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.commercial_skills && data['_creator'].candidate.blockchain.commercial_skills.length>0)
               {
-                this.commercialSkillsExperienceYear = data._creator.candidate.blockchain.commercial_skills;
-                for (let key of data._creator.candidate.blockchain.commercial_skills)
+                this.commercialSkillsExperienceYear = data['_creator'].candidate.blockchain.commercial_skills;
+                for (let key of data['_creator'].candidate.blockchain.commercial_skills)
                 {
                   for(var i in key)
                   {
@@ -306,10 +318,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
                 }
               }
 
-              if(data._creator.candidate && data._creator.candidate.blockchain && data._creator.candidate.blockchain.formal_skills && data._creator.candidate.blockchain.formal_skills.length>0)
+              if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.formal_skills && data['_creator'].candidate.blockchain.formal_skills.length>0)
               {
-                this.formal_skills = data._creator.candidate.blockchain.formal_skills;
-                for (let key of data._creator.candidate.blockchain.formal_skills)
+                this.formal_skills = data['_creator'].candidate.blockchain.formal_skills;
+                for (let key of data['_creator'].candidate.blockchain.formal_skills)
                 {
                   for(var i in key)
                   {
@@ -348,10 +360,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
                 }
               }
 
-              if(data.locations && data.roles && data.interest_area &&  data.expected_salary && data.availability_day && data.expected_salary_currency)
+              if(data['locations'] && data['roles'] && data['interest_area'] &&  data['expected_salary'] && data['availability_day'] && data['expected_salary_currency'])
               {
 
-                for (let country1 of data.locations)
+                for (let country1 of data['locations'])
                 {
 
                   for(let option of this.options)
@@ -368,7 +380,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
 
                 }
 
-                for(let interest of data.interest_area)
+                for(let interest of data['interest_area'])
                 {
 
                   for(let option of this.area_interested)
@@ -385,7 +397,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
 
                 }
 
-                for (let area of data.roles)
+                for (let area of data['roles'])
                 {
 
                   for(let option of this.dropdown_options)
@@ -401,21 +413,21 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
 
                 }
 
-                this.expected_salaryyy = data.expected_salary;
+                this.expected_salaryyy = data['expected_salary'];
 
-                this.availability_day = data.availability_day;
-                if(data.expected_salary_currency)
-                  this.base_currency = data.expected_salary_currency;
+                this.availability_day = data['availability_day'];
+                if(data['expected_salary_currency'])
+                  this.base_currency = data['expected_salary_currency'];
               }
 
-              if(data.commercial_platform || data.experimented_platform || data.why_work || data.platforms)
+              if(data['commercial_platform'] || data['experimented_platform'] || data['why_work'] || data['platforms'])
               {
-                this.why_work=data.why_work;
+                this.why_work=data['why_work'];
 
-                if(data.commercial_platform)
+                if(data['commercial_platform'])
                 {
-                  this.commercial_expYear =data.commercial_platform;
-                  for (let key of data.commercial_platform)
+                  this.commercial_expYear =data['commercial_platform'];
+                  for (let key of data['commercial_platform'])
                   {
                     for(var i in key)
                     {
@@ -455,10 +467,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
                   }
                 }
 
-                if(data.platforms)
+                if(data['platforms'])
                 {
-                  this.platforms = data.platforms;
-                  for (let key of data.platforms)
+                  this.platforms = data['platforms'];
+                  for (let key of data['platforms'])
                   {
                     for(var i in key)
                     {
@@ -502,10 +514,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
                 }
 
 
-                if(data.experimented_platform)
+                if(data['experimented_platform'])
                 {
                   this.experimented_platform = [];
-                  for (let plat of data.experimented_platform)
+                  for (let plat of data['experimented_platform'])
                   {
 
                     for(let option of this.experimented)
@@ -524,12 +536,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
                 }
               }
 
-              if(data.work_history && data.education_history|| data.programming_languages&&data.current_salary && data.current_currency)
+              if(data['work_history'] && data['education_history'] || data['programming_languages'] && data['current_salary'] && data['current_currency'])
               {
 
-                this.jobData = data.work_history;
+                this.jobData = data['work_history'];
 
-                for(let data1 of data.work_history)
+                for(let data1 of data['work_history'])
                 {
                   this.current_work_check.push(data1.currentwork);
 
@@ -541,16 +553,16 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
                   )
                 });
 
-                this.eduData = data.education_history;
+                this.eduData = data['education_history'];
                 this.EducationForm = this._fb.group({
                   itemRows: this._fb.array(
                     this.education_data()
                   )
                 });
-                if(data.programming_languages)
+                if(data['programming_languages'])
                 {
-                  this.LangexpYear = data.programming_languages;
-                  for (let key of data.programming_languages)
+                  this.LangexpYear = data['programming_languages'];
+                  for (let key of data['programming_languages'])
                   {
                     for(var i in key)
                     {
@@ -589,10 +601,10 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
                   }
                 }
 
-                this.salary = data.current_salary;
-                this.Intro =data.description;
-                if(data.current_currency)
-                  this.current_currency =data.current_currency;
+                this.salary = data['current_salary'];
+                this.Intro =data['description'];
+                if(data['current_currency'])
+                  this.current_currency =data['current_currency'];
 
               }
             },
@@ -924,7 +936,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
     return null;
   }
 
-  calen_month= ["January","Februray","March","April","May","June","July","August","September","October","November","December"]
+  calen_month= ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
 
   language_opt=
@@ -1120,9 +1132,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
   city_log;
   commercial_skill_log;
   formal_skills_log;
+  count;
+  current_sal_log;
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
+    this.count = 0;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1139,12 +1154,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
       this.contact_name_log ="Please enter contact number";
     }
 
-    if(this.info.nationality === -1)
+    if(!this.info.nationality)
     {
       this.nationality_log ="Please choose nationality";
     }
 
-    if(this.info.base_country === -1)
+    if(!this.info.base_country)
     {
       this.base_country_log ="Please choose base country";
     }
@@ -1165,7 +1180,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
     }
 
 
-    if(this.base_currency === -1)
+    if(!this.base_currency )
     {
       this.currency_log = "Please choose currency";
     }
@@ -1308,8 +1323,23 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
 
       }
     }
-    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 &&
-      this.info.city && this.info.base_country != -1 && this.expected_salaryyy &&  this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1  && this.selectedValue.length > 0 && this.availability_day &&
+
+    if(this.salary && !this.current_currency) {
+      this.current_currency_logg = "Please choose currency";
+      this.count++;
+    }
+
+    if(this.salary && this.current_currency === "-1" ) {
+      this.current_currency_logg = "Please choose currency";
+      this.count++;
+    }
+
+    if(!this.salary && this.current_currency != -1) {
+      this.current_sal_log = "Please enter current base salary";
+      this.count++;
+    }
+    if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
+      this.info.city && this.info.base_country && this.expected_salaryyy &&  this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency  && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
@@ -1351,12 +1381,58 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
+
+    if(this.commercially_worked.length === 0) {
+      profileForm.commercial_experience_year = [];
+    }
+    else {
+      profileForm.commercial_experience_year = this.commercial_expYear;
+    }
+
+
+    if(this.platforms_designed.length === 0) {
+      profileForm.platforms = [];
+    }
+    else {
+      profileForm.platforms = this.platforms;
+    }
+    if(this.commercialSkills.length === 0) {
+      profileForm.commercial_skills = [];
+    }
+    else {
+      profileForm.commercial_skills = this.commercialSkillsExperienceYear;
+    }
+    if(this.formal_skills_exp.length === 0) {
+      profileForm.formal_skills = [];
+    }
+    else {
+      profileForm.formal_skills = this.formal_skills;
+    }
+
+    if(this.language.length === 0) {
+      profileForm.language = [];
+    }
+    else {
+      profileForm.language_experience_year = this.LangexpYear;
+    }
+
+    if(this.selectedcountry){
+      profileForm.country = this.selectedcountry;
+    }
+
+    if(this.jobselected){
+      profileForm.roles = this.jobselected;
+    }
+
+    if(this.selectedValue){
+      profileForm.interest_area = this.selectedValue;
+    }
     this.authenticationService.update_candidate_profile(this.user_id, profileForm , this.education_json_array , this.experiencearray)
       .subscribe(
         data => {
-          if(data.success && this.currentUser)
+          if(data['success'] && this.currentUser)
           {
-            console.log(data);
+
             this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.user_id } });
           }
 
@@ -1409,7 +1485,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
 
   onComSkillExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.commercialSkillsExperienceYear, 'skill', value);
     let index = this.commercialSkillsExperienceYear.indexOf(updateItem);
 
@@ -1461,7 +1536,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
 
   onFormalExpYearOptions(e, value)
   {
-    this.selectedValue = e.target.value;
     let updateItem = this.findObjectByKey(this.formal_skills, 'skill', value);
     let index = this.formal_skills.indexOf(updateItem);
 
@@ -1483,6 +1557,47 @@ export class AdminUpdateCandidateProfileComponent implements OnInit  {
     }
 
   }
+  addNewExpRow()
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+    // control refers to your formarray
+    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
+    // add new formgroup
+    control.push(this.initExpRows());
+  }
 
+  deleteExpRow(index: number)
+  {
+    // control refers to your formarray
+    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
+    // remove the chosen row
+    control.removeAt(index);
+  }
+
+  addNewRow()
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+    // control refers to your formarray
+    //this.EducationForm.value.itemRows = "";
+    const control = <FormArray>this.EducationForm.controls['itemRows'];
+    // add new formgroup
+    control.push(this.initItemRows());
+  }
+
+
+  deleteRow(index: number)
+  {
+
+    // control refers to your formarray
+    const control = <FormArray>this.EducationForm.controls['itemRows'];
+    // remove the chosen row
+    control.removeAt(index);
+  }
 
 }

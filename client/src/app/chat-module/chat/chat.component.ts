@@ -78,6 +78,8 @@ export class ChatComponent implements OnInit {
   companyMsgContent = '';
   candidateMsgTitle = '';
   candidateMsgContent = '';
+  salary_currency_select = ["£ GBP" ,"€ EUR" , "$ USD"];
+  employment_type_select = ["Part Time", "Full Time", "Contract"];
 
   constructor(
     private authenticationService: UserService,
@@ -101,13 +103,36 @@ export class ChatComponent implements OnInit {
     }
 
   is_approved;disabled;
+
+  ngAfterViewInit(): void
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
+    $("#startdate_datepicker").datepicker({
+      startDate: '-1'
+    });
+    $("#startdate_datepicker_employ").datepicker({
+      startDate: '-1'
+    });
+  }
+
   ngOnInit() {
+    this.credentials.employment_type = -1;
+    this.credentials.currency = -1;
+    var styles = document.createElement("link");
+    styles.rel = "stylesheet";
+    styles.type = "text/css";
+    styles.href = "/assets/css/chat.css";
+    document.getElementsByTagName("head")[0].appendChild(styles);
+
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
-      height: '5rem',
-      width: '52rem',
+      height: '5.3rem',
+      width: '33rem',
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
     };
@@ -118,7 +143,7 @@ export class ChatComponent implements OnInit {
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
       height: '8rem',
-      width: '56rem',
+      width: '29rem',
       removePlugins: 'resize,elementspath',
       removeButtons: 'Cut,Copy,Paste,Undo,Redo,Anchor,Bold,Italic,Underline,Subscript,Superscript,Source,Save,Preview,Print,Templates,Find,Replace,SelectAll,NewPage,PasteFromWord,Form,Checkbox,Radio,TextField,Textarea,Button,ImageButton,HiddenField,RemoveFormat,TextColor,Maximize,ShowBlocks,About,Font,FontSize,Link,Unlink,Image,Flash,Table,Smiley,Iframe,Language,Indent,BulletedList,NumberedList,Outdent,Blockquote,CreateDiv,JustifyLeft,JustifyCenter,JustifyRight,JustifyBlock,BidiLtr,BidiRtl,HorizontalRule,SpecialChar,PageBreak,Styles,Format,BGColor,PasteText,CopyFormatting,Strike,Select,Scayt'
     };
@@ -147,8 +172,8 @@ export class ChatComponent implements OnInit {
                 data => {
                     //data[0]._creator.is_approved = 1;
                     //data[0].disable_account == false;
-					this.profile_pic = data.image;
-                    this.display_name = data.first_name+' '+data.last_name;
+          					this.profile_pic = data['image'];
+                    this.display_name = data['first_name'] +' '+ data['last_name'];
                     /*if(data._creator.is_approved == 0 || data._creator.disable_account == true){
                         this.approved_user = 0;
 					}
@@ -162,7 +187,7 @@ export class ChatComponent implements OnInit {
                           this.msg = "You can access this page when your account has been approved by an admin.";
                           this.log='';
                     }
-                    else if(data._creator.disable_account == true)
+                    else if(data['_creator'].disable_account == true)
                     {
                         this.disabled = true;
                         this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
@@ -176,13 +201,13 @@ export class ChatComponent implements OnInit {
                           data => {
                             if(data)
                             {
-                              this.candidateMsgTitle = data[0].page_title;
-                              this.candidateMsgContent = data[0].page_content;
+                              this.candidateMsgTitle = data[0]['page_title'];
+                              this.candidateMsgContent = data[0]['page_content'];
 
                             }
                           }
                         );
-                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
+                      if(data['_creator'].viewed_explanation_popup === false || !data['_creator'].viewed_explanation_popup){
                         $("#popModal").modal("show");
                       }
                       this.msg='';
@@ -190,13 +215,13 @@ export class ChatComponent implements OnInit {
                     }
                 },
                 error => {
-                    if(error.message == 500 || error.message == 401)
+                    if(error['message'] === 500 || error['message'] === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             window.location.href = '/login';
                         }
 
-                        if(error.message == 403)
+                        if(error['message'] === 403)
                         {
                             // this.router.navigate(['/not_found']);
                         }
@@ -209,8 +234,8 @@ export class ChatComponent implements OnInit {
                 data => {
                     //data[0]._creator.is_approved = 1;
                     //data[0].disable_account == false;
-                    this.profile_pic = data.company_logo;
-                    this.display_name = data.company_name;
+                    this.profile_pic = data['company_logo'];
+                    this.display_name = data['company_name'];
 					          //console.log(data);
                     /*if(data._creator.is_approved == 0 || data._creator.disable_account == true){
                         this.approved_user = 0;
@@ -218,16 +243,16 @@ export class ChatComponent implements OnInit {
                     else{
                         this.approved_user = 1;
                     }*/
-                    this.is_approved = data._creator.is_approved;
-                    this.approved_user = data._creator.is_approved;
-                    if(data._creator.is_approved === 0 )
+                    this.is_approved = data['_creator'].is_approved;
+                    this.approved_user = data['_creator'].is_approved;
+                    if(data['_creator'].is_approved === 0 )
                     {
                         //console.log("if");
                         this.disabled = true;
                         this.msg = "You can access this page when your account has been approved by an admin.";
                         this.log='';
                     }
-                    else if(data._creator.disable_account == true)
+                    else if(data['_creator'].disable_account == true)
                     {
                         //console.log("if else");
                         this.disabled = true;
@@ -241,12 +266,12 @@ export class ChatComponent implements OnInit {
                         .subscribe(
                           data => {
                             if (data) {
-                              this.companyMsgTitle = data[0].page_title;
-                              this.companyMsgContent = data[0].page_content;
+                              this.companyMsgTitle = data[0]['page_title'];
+                              this.companyMsgContent = data[0]['page_content'];
                             }
                           }
                         );
-                      if(data._creator.viewed_explanation_popup === false || !data._creator.viewed_explanation_popup){
+                      if(data['_creator'].viewed_explanation_popup === false || !data['_creator'].viewed_explanation_popup){
                         $("#popModal").modal("show");
                       }
                       //console.log("else");
@@ -255,13 +280,13 @@ export class ChatComponent implements OnInit {
                     }
                 },
                 error => {
-                   if(error.message == 500 || error.message == 401)
+                   if(error['message'] === 500 || error['message'] === 401)
                         {
                             localStorage.setItem('jwt_not_found', 'Jwt token not found');
                             window.location.href = '/login';
                         }
 
-                        if(error.message == 403)
+                        if(error['message'] === 403)
                         {
                             // this.router.navigate(['/not_found']);
                         }
@@ -643,12 +668,36 @@ export class ChatComponent implements OnInit {
         );
   }
 
+  date_log;
+  time_log;
+  location_log;
+  description_log;
+
   send_interview_message(msgForm : NgForm) {
     this.interview_log = '';
     this.job_offer_log = '';
     this.file_msg = '';
     this.img_name = '';
-    if (this.credentials.date && this.credentials.time && this.credentials.location) {
+    this.date_log = '';
+    this.time_log = '';
+    this.location_log = '';
+    this.description_log = '';
+
+    let interview_date = $('#startdate_datepicker').val();
+    if(!interview_date){
+      this.date_log = 'Please enter date';
+    }
+    if(!this.credentials.time){
+      this.time_log = 'Please enter time';
+    }
+    if(!this.credentials.location){
+      this.location_log = 'Please enter location';
+    }
+    if(!this.credentials.description){
+      this.description_log = 'Please enter details';
+    }
+
+    if (interview_date && this.credentials.time && this.credentials.location && this.credentials.description) {
       $("#myModal").modal("hide");
       //console.log('interview');
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -660,7 +709,7 @@ export class ChatComponent implements OnInit {
         this.description = this.credentials.description;
       }
       //console.log(this.credentials.msg_body);
-      this.date_of_joining = this.credentials.date.formatted;
+      this.date_of_joining = interview_date;
       this.interview_location = this.credentials.location;
       this.interview_time = this.credentials.time;
       this.authenticationService.insertMessage(this.credentials.id, this.display_name, this.credentials.email, this.credentials.msg_body, this.description, this.job_title, this.salary, this.salary_currency, this.date_of_joining, this.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
@@ -707,15 +756,29 @@ export class ChatComponent implements OnInit {
         );
     }
     else {
-      this.interview_log = 'Please fill all fields';
+      this.interview_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
+
+  job_title_log;
+  start_date_log;
+  employment_type_log;
+  salary_log;
+  salary_currency_log;
+  job_desc_log;
 
   send_job_message(msgForm : NgForm) {
     this.interview_log = '';
     this.job_offer_log = '';
     this.file_msg = '';
     this.img_name = '';
+    this.job_title_log = '';
+    this.start_date_log = '';
+    this.employment_type_log = '';
+    this.salary_log = '';
+    this.salary_currency_log = '';
+    this.job_desc_log = '';
+
     let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
     let fileCount: number = inputEl.files.length;
     let formData = new FormData();
@@ -724,18 +787,38 @@ export class ChatComponent implements OnInit {
       let toArray = inputEl.files.item(0).type.split("/");
       if (inputEl.files.item(0).size <= this.file_size && (toArray[0] === 'image' || inputEl.files.item(0).type === 'application/pdf' || inputEl.files.item(0).type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
         formData.append('photo', inputEl.files.item(0));
-        //console.log(inputEl.files.item(0));
-          if (this.credentials.job_title && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description) {
-            if (this.credentials.base_salary && Number(this.credentials.base_salary) && (Number(this.credentials.base_salary)) > 0 && this.credentials.base_salary % 1 === 0) {
-              this.send_employment_offer(this.credentials, 1,formData);
-            }
-            else {
-              this.job_offer_log = 'Salary should be a number';
-            }
+        this.credentials.start_date = $('#startdate_datepicker_employ').val();
+        if(!this.credentials.start_date){
+          this.start_date_log = 'Please enter start date';
+        }
+
+        if(!this.credentials.job_title){
+          this.job_title_log = 'Please enter job title';
+        }
+        if(!this.credentials.employment_type){
+          this.employment_type_log = 'Please select employment type';
+        }
+        if(!this.credentials.base_salary){
+          this.salary_log = 'Please enter salary';
+        }
+        if(!this.credentials.currency){
+          this.salary_currency_log = 'Please select currency';
+        }
+        if(!this.credentials.job_description){
+          this.job_desc_log = 'Please enter job description';
+        }
+
+        if (this.credentials.job_title && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description) {
+          if (this.credentials.base_salary && Number(this.credentials.base_salary) && (Number(this.credentials.base_salary)) > 0 && this.credentials.base_salary % 1 === 0) {
+            this.send_employment_offer(this.credentials, 1,formData);
           }
           else {
-            this.job_offer_log = 'Please enter all info';
+            this.job_offer_log = 'Salary should be a number';
           }
+        }
+        else {
+          this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
+        }
       }
       else {
         this.job_offer_log = 'Only pdf,image & docx are allowed of size less than 1MB';
@@ -743,6 +826,27 @@ export class ChatComponent implements OnInit {
     }
     else {
       //console.log('no file');
+      this.credentials.start_date = $('#startdate_datepicker_employ').val();
+      if(!this.credentials.start_date){
+        this.start_date_log = 'Please enter start date';
+      }
+
+      if(!this.credentials.job_title){
+        this.job_title_log = 'Please enter job title';
+      }
+      if(!this.credentials.employment_type){
+        this.employment_type_log = 'Please select employment type';
+      }
+      if(!this.credentials.base_salary){
+        this.salary_log = 'Please enter salary';
+      }
+      if(!this.credentials.currency){
+        this.salary_currency_log = 'Please select currency';
+      }
+      if(!this.credentials.job_description){
+        this.job_desc_log = 'Please enter job description';
+      }
+
       if (this.credentials.job_title && this.credentials.start_date && this.credentials.currency && this.credentials.employment_type && this.credentials.job_description) {
         if (this.credentials.base_salary && Number(this.credentials.base_salary) && (Number(this.credentials.base_salary)) > 0 && this.credentials.base_salary % 1 === 0) {
           formData.append('photo', '');
@@ -753,7 +857,7 @@ export class ChatComponent implements OnInit {
         }
       }
       else {
-        this.job_offer_log = 'Please enter all info';
+        this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
       }
     }
   }
@@ -1033,7 +1137,7 @@ export class ChatComponent implements OnInit {
               }
             }
           );
-      }, 2000);
+      }, 7000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver
@@ -1189,7 +1293,7 @@ export class ChatComponent implements OnInit {
           formData.append('job_title', my_credentials.job_title);
           formData.append('salary', my_credentials.base_salary);
           formData.append('currency', my_credentials.currency);
-          formData.append('date_of_joining', my_credentials.start_date.formatted);
+          formData.append('date_of_joining', my_credentials.start_date);
           formData.append('job_type', my_credentials.employment_type);
           formData.append('msg_tag', this.msg_tag);
           formData.append('is_company_reply', '1');
@@ -1261,6 +1365,16 @@ export class ChatComponent implements OnInit {
     this.credentials.start_date = '';
     this.credentials.job_description = '';
     this.img_name = '';
+    this.date_log = '';
+    this.time_log = '';
+    this.location_log = '';
+    this.job_title_log = '';
+    this.start_date_log = '';
+    this.employment_type_log = '';
+    this.salary_log = '';
+    this.salary_currency_log = '';
+    this.job_desc_log = '';
+    this.description_log = '';
 	}
 
   update_status(){

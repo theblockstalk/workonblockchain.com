@@ -1,124 +1,125 @@
-<!--Profile-inner-->
-<section class = "wizard_page">
+<section class="wob-bg-primary2 mt-5 py-5">
 	<div class="container">
-		<div class="row chat-row">
-			<div id = "frame" *ngIf="length > 0">
-				<div class = "col-sm-4 col-xs-3" id="sidepanel">
-					<div id="profile" class = "padding_top-btm">
-						<div class="wrap">
-
+		<div class="row">
+      <div class = "col-md-12">
+        <div class = "row" id = "frame" *ngIf="length > 0">
+          <div class = "col-3 col-sm-4 float-left h-100 position-relative p-0">
+            <div class = "p-2 p-sm-3 border-bottom" style= "overflow:hidden;">
+              <div class = "wrap" style = "line-height:60px;">
 								<ng-container *ngIf="profile_pic;else company_logo_top">
-									<img id="profile-img" src="{{profile_pic}}" alt="">
+									<img id="profile-img" src="{{profile_pic}}" alt="Profile pic" class = "float-left rounded-circle" style = "width:60px;">
 								</ng-container>
 								<ng-template #company_logo_top>
-									<img src="/assets/profile/profile-image.png" alt="">
+									<img id="profile-img12" src="/assets/profile/profile-image.png" alt="Profile pic" class = "float-left rounded-circle" style = "width:60px;">
 								</ng-template>
-								<p class="text-capitalize">{{display_name}}</p>
+								<p class = "float-left ml-4 d-none d-md-block text-capitalize">{{display_name}}</p>
 							</div>
-					</div>
-					<div id="contacts">
-						<ul>
-							<li *ngFor="let person of users" [ngClass]="(credentials.id == person._creator._id)?'contact active':'contact closee'" (click)="openDialog(person.first_name,person._creator._id)">
-									<div class="wrap">
-										<ng-container *ngIf="user_type == 'company';else cand_image">
+            </div>
+            <div id = "contact" class = "border-right">
+              <ul class = "list-group">
+                <li *ngFor="let person of users" [ngClass]="(credentials.id == person._creator._id)?'list-group-item wob-bg-secondary3':'list-group-item list-group-item-lite position-relative'" (click)="openDialog(person.first_name,person._creator._id)">
+                  <div class = "cont m-auto position-relative">
+										<ng-container *ngIf="user_type === 'company';else cand_image">
 											<ng-container *ngIf="person.image;else person_image">
-												<img src="{{person.image}}" alt="logo">
+												<img src="{{person.image}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
 											</ng-container>
 											<ng-template #person_image>
-												<img src="/assets/profile/profile-image.png" alt="">
+												<img src="/assets/profile/profile-image.png" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
 											</ng-template>
 										</ng-container>
 										<ng-template #cand_image>
 											<ng-container *ngIf="person.company_logo;else company_image">
-												<img src="{{person.company_logo}}" alt="logo">
+												<img src="{{person.company_logo}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
 											</ng-container>
 											<ng-template #company_image>
-												<img src="/assets/profile/profile-image.png" alt="">
+												<img src="/assets/profile/profile-image.png" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
 											</ng-template>
 
 										</ng-template>
 										<div class="meta">
-											<p class="name" class="text-capitalize" *ngIf="user_type == 'company' && person.first_name">{{ person.first_name }} {{ person.last_name }}</p>
-											<p class="name" class="text-capitalize" *ngIf="user_type == 'company' && person.initials">{{ person.initials }}</p>
-											<p class="name" class="text-capitalize" *ngIf="user_type == 'candidate'">{{ person.company_name }}</p>
+											<p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;" *ngIf="user_type == 'company' && person.first_name">{{ person.first_name }} {{ person.last_name }}</p>
+											<p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;" *ngIf="user_type == 'company' && person.initials">{{ person.initials }}</p>
+											<p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;" *ngIf="user_type == 'candidate'">{{ person.company_name }}</p>
 										</div>
-									</div>
-								</li>
-						</ul>
-					</div>
-				</div>
-					<div class="content col-sm-8 col-xs-9">
-						<div class="contact-profile">
-							<ul class = "cand_info-ul">
-								<ng-container *ngIf="user_type == 'company';else cand">
-									<ng-container *ngIf="job_desc;else no_job_desc">
-										<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
-										<li>Job title : {{job_desc.job_title}}</li>
-										<li>Job type : {{job_desc.job_type}}</li>
-									</ng-container>
-									<ng-template #no_job_desc>
-										<li>Salary : N/A</li>
-										<li>Job title : N/A</li>
-										<li>Job type : N/A</li>
-									</ng-template>
-								</ng-container>
-								<ng-template #cand>
-									<li>Job title : {{job_desc.job_title}}</li>
-									<li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
-									<li>Job type : {{job_desc.job_type}}</li>
-								</ng-template>
-							</ul>
-							<!-- <span class = "btn_rgt">
-								<button class = "btn btn_descp">View Job Discription</button>
-							</span>-->
-						</div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class = "col-9 col-sm-8 pl-0 pr-0">
+            <div class = "border-bottom" style = "overflow:hidden;">
+              <div class = "p-1 p-md-3 w-sm-100 w-75 float-left">
+                <ul class = "cand_info-ul">
+                  <ng-container *ngIf="user_type === 'company';else cand">
+                    <ng-container *ngIf="job_desc;else no_job_desc">
+                      <li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
+                      <li>Job title : {{job_desc.job_title}}</li>
+                      <li>Job type : {{job_desc.job_type}}</li>
+                    </ng-container>
+                    <ng-template #no_job_desc>
+                      <li>Salary : N/A</li>
+                      <li>Job title : N/A</li>
+                      <li>Job type : N/A</li>
+                    </ng-template>
+                  </ng-container>
+                  <ng-template #cand>
+                    <li>Job title : {{job_desc.job_title}}</li>
+                    <li>Salary : {{job_desc.salary}} {{job_desc.salary_currency}}</li>
+                    <li>Job type : {{job_desc.job_type}}</li>
+                  </ng-template>
+                </ul>
+                <!-- <span class = "btn_rgt">
+                  <button class = "btn btn_descp">View Job Discription</button>
+                </span>-->
+              </div>
+            </div>
 
-						<div class="messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
-							<ul>
-								<div *ngFor="let msg of new_msgss">
-									<ng-container *ngIf="msg.sender_id == user_id;else second">
-										<li class="sent">
-											<p class = "job-description">
+            <div class="message p-2" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+              <ul class = "ul_pd">
+                <div *ngFor="let msg of new_msgss">
+									<ng-container *ngIf="msg.sender_id === user_id;else second">
+                    <li class="sent mb-5 col-md-12">
+                      <p class = "p-2 send_p job-description rounded d-inline-block">
 												<span class="text-capitalize">{{msg.sender_name}}:</span>
 												<span *ngIf="msg.job_title !== ''">
 													<br/>
-													Job title:
+													<b>Job title:</b>
 													{{msg.job_title}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.salary">
-													Salary:
+                        <span *ngIf="msg.salary">
+													<b>Salary:</b>
 													{{msg.salary}} {{msg.salary_currency}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.job_type !== ''">
-													Job type:
+                        <span *ngIf="msg.job_type !== ''">
+													<b>Job type:</b>
 													{{msg.job_type}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.msg_tag == 'job_offered'">
-													Joining date:
+                        <span *ngIf="msg.msg_tag == 'job_offered'">
+													<b>Joining date:</b>
 													{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.interview_date_time">
+                        <span *ngIf="msg.interview_date_time">
 													<br/>
-													Interview date & time:
+													<b>Interview date & time:</b>
 													{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 													<br/>
 												</span>
                         <span *ngIf="msg.interview_location && msg.msg_tag === 'interview_offer'">
-														Interview location:
-														{{msg.interview_location}}
-														<br/>
-													</span>
+                          <b>Interview location:</b>
+                          {{msg.interview_location}}
+                          <br/>
+                        </span>
                         <span *ngIf="msg.interview_location && msg.msg_tag === 'job_offer'">
-														Location:
+														<b>Location:</b>
 														{{msg.interview_location}}
 														<br/>
 													</span>
                         <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
-													Description:
+													<b>Description:</b><br>
 												</span>
 												<span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													{{msg.description}}
@@ -128,58 +129,61 @@
 													{{msg.message}}
 												</span>
                         <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
-														Employment contract:
+														<b>Employment contract:</b>
 													</span>
-                        <a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                        <span *ngIf="msg.file_name">
+                          <a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                        </span>
                       </p>
-										</li>
-										<div class="chat_company">
-											{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
-										</div>
+                    </li>
+                    <div class="chat_company">
+                      {{msg.date_created | date: 'MM/dd/yyyy HH:mm'}}
+                    </div>
 									</ng-container>
 									<ng-template #second>
-										<li class="replies">
-											<p>
-												<span class="text-capitalize">{{msg.sender_name}}:</span>
+                    <li class="replies mb-5 col-md-12">
+                      <div class="arrow-up"></div>
+                      <p class = "p-2 rec_p wob-bg-primary1 rounded text-light d-inline-block">
+                        <span class="text-capitalize">{{msg.sender_name}}:</span>
 												<span *ngIf="msg.job_title !== ''">
 													<br/>
-													Job title:
+													<b>Job title:</b>
 													{{msg.job_title}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.salary">
-													Salary:
+                        <span *ngIf="msg.salary">
+													<b>Salary:</b>
 													{{msg.salary}} {{msg.salary_currency}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.job_type !== ''">
-													Job type:
+                        <span *ngIf="msg.job_type !== ''">
+													<b>Job type:</b>
 													{{msg.job_type}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.msg_tag == 'job_offered'">
-													Joining date:
+                        <span *ngIf="msg.msg_tag == 'job_offered'">
+													<b>Joining date:</b>
 													{{msg.date_of_joining | date: 'MM/dd/yyyy'}}
 													<br/>
 												</span>
-                      <span *ngIf="msg.interview_date_time">
+                        <span *ngIf="msg.interview_date_time">
 													<br/>
-													Interview date & time:
+													<b>Interview date & time:</b>
 													{{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm:ss'}}
 													<br/>
 												</span>
                         <span *ngIf="msg.interview_location && msg.msg_tag === 'interview_offer'">
-														Interview location:
+														<b>Interview location:</b>
 														{{msg.interview_location}}
 														<br/>
 													</span>
                         <span *ngIf="msg.interview_location && msg.msg_tag === 'job_offer'">
-														Location:
+														<b>Location:</b>
 														{{msg.interview_location}}
 														<br/>
 													</span>
                         <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
-													Description:
+													<b>Description:</b><br>
                         </span>
 												<span [innerHTML]="msg.description | safeHtml " *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
 													{{msg.description}}
@@ -189,40 +193,31 @@
 													{{msg.message}}
 												</span>
                         <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
-														Employment contract:
-													</span>
-												<a *ngIf="msg.file_name" href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                          <b>Employment contract:</b>
+                        </span>
+                        <span *ngIf="msg.file_name">
+												  <a href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                        </span>
 											</p>
 										</li>
 										<div class="chat_user">
-											{{msg.date_created | date: 'MM/dd/yyyy HH:mm:ss'}}
+											{{msg.date_created | date: 'MM/dd/yyyy HH:mm'}}
 										</div>
 									</ng-template>
 								</div>
 								<li class = "offers_b"></li>
 							</ul>
 						</div>
-
-
-
-					</div>
-
-
-				</div><!--end col here-->
-
-				<div *ngIf = "length === 0">
-
-					Didn't chat with any one yet
-				</div>
-
-			</div>
-
-		</div>
-
+          </div>
+        </div><!--end col here-->
+        <div class = "row py-5 mb-5 mt-5 justify-content-center social-icons my-4">
+          <div class="col-md-6">
+            <div *ngIf = "length === 0" class="alert alert-danger text-center">
+              Didn't chat with any one yet
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-
-
-<!--Profile-inner end-->
-
-<div class = "gap">
-</div>

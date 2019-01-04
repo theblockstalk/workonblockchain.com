@@ -1,175 +1,199 @@
-<section class="wizard_page">
-
+<section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
     <div class="row">
-      <div class = "form_error" *ngIf="log">
-        <span class = "error">{{log}}</span>
-      </div>
-      <div class="text-center steps-name hidden-xs">
-        <ul class="step-progress">
-          <li class = "step"><i class="{{terms_active_class}}"></i><a routerLink = "/company_wizard">Summary of T&Cs</a></li>
-          <li class = "step"><i class="{{about_active_class}}"></i><a routerLink = "/about_comp">About the company</a></li>
-          <li class="step step-active"><i class = "{{pref_active_class}}" ></i> <a routerLink = "/preferences">Candidate preferences</a></li>
+      <div class="col-md-12">
+        <ul class="nav justify-content-center wizard mb-3">
+          <li class="nav-item">
+            <a routerLink="/company_wizard" class="nav-link">
+              <i class="{{terms_active_class}}"></i>
+              Summary of T&Cs
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/about_comp" class="nav-link">
+              <i class="{{about_active_class}}"></i>
+              About the company
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/preferences" class="nav-link">
+              <i class="{{pref_active_class}}"></i>
+              Candidate preferences
+            </a>
+          </li>
+
         </ul>
       </div>
+    </div>
 
-      <div class="col-md-12 wizard-form">
+    <div class="row p-4 border bg-white">
+      <div class="col-md-12">
+        <form  [formGroup]="preferncesForm" (ngSubmit)="candidate_prefernces()">
+          <section class = "p-2" id = "information">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Where are you hiring?</label>
+                  <select multiple id="locations" formControlName = "location" title="(select multiple)" class="form-control selectpicker" required>
+                    <option *ngFor='let location of locations;let i = index' [value]="location.value">{{location.name}}</option>
 
-        <form class="login_form custom_form" [formGroup]="preferncesForm" (ngSubmit)="candidate_prefernces()" novalidate>
-          <!--#prefForm = ngForm (submit)="candidate_prefernces(prefForm)">-->
+                  </select>
+                  <div class="invalid-feedback d-inline" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
+                    {{location_log}}
+                  </div>
+                </div>
+              </div>
 
-          <fieldset class="scheduler-border">
-            <legend class="scheduler-border">Candidate preferences</legend>
+              <div class="col-md-6">
+                <div class="form-group">
 
-            <div class="form-group col-md-6">
-              <label><p class="label-p">Where are you hiring?</p></label>
+                  <label>What position types are you looking for?</label>
+                  <select multiple formControlName="job_type"  title="(select multiple)" class="form-control selectpicker" required>
+                    <option *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
 
-              <select multiple id="locations" formControlName = "location" title="(select multiple)" class="selectpicker" required>
-                <option class='option' *ngFor='let location of locations;let i = index'  [selected] = "locationSelectedOptions(location.name)"  [value]="location.value">{{location.name}}</option>
-
-              </select>
-              <div class = "form_error" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
-                <span class = "error">{{location_log}}</span>
+                  </select>
+                  <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.job_type || preferncesForm.value.job_type.length === 0 ">
+                    {{job_type_log}}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="form-group col-md-6">
-              <label><p class="label-p">What position types are you looking for?</p></label>
-              <select multiple formControlName="job_type"  title="(select multiple)" class="selectpicker" required>
-                <option class='option' *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                <label>What roles are you hiring for?</label>
+                <select multiple formControlName="position" title="(select multiple)" class="form-control selectpicker">
+                  <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
 
-              </select>
-              <div class = "form_error" *ngIf="!preferncesForm.value.job_type || preferncesForm.value.job_type.length === 0 ">
-                <span class = "error">{{job_type_log}}</span>
+                </select>
+                <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
+                  {{position_log}}
+                </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class = "form-group w-auto">
+                  <label>Available annual salary and currency?</label>
+
+                  <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="10000">
+
+                  <select title="Currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
+                    <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary || current_currency_log">
+                    {{current_currency_log}}
+                  </div>
+                </div>
               </div>
             </div>
 
-
-
-            <div class="form-group col-md-6">
-              <label><p class="label-p">What roles are you looking for?</p></label>
-              <select multiple formControlName="position" title="(select multiple)" class="selectpicker">
-                <option class='option' *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
-
-              </select>
-              <div class = "form_error" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
-                <span class = "error">{{position_log}}</span>
-              </div>
-            </div>
-
-
-
-            <div class="form-group col-md-6 pre_col">
-
-              <label class = "col-md-12 noo_padding">
-                <p class="label-p">Available annual salary and currency?</p></label>
-
-              <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control col-md-6 text_col" id="" placeholder="100000">
-
-              <select title ="(select currency)" formControlName = "current_currency" id = "currencySelected" class="selectpicker col-md-6 sel_padd">
-
-                <option class='option' *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
-
-              </select>
-
-              <div class = "form_error" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary || current_currency_log">
-                <span class = "error">{{current_currency_log}}</span>
-              </div>
-            </div>
-
-
-            <div class="form-group col-md-6">
-              <label><p class="label-p">When do you need hires to start</p></label>
-
-              <select title="(select one)" formControlName = "availability_day" class="selectpicker">
-                <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
-
-              </select>
-
-              <div class = "form_error" *ngIf="!avail_day">
-                <span class = "error">{{availability_day_log}}</span>
-              </div>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label><p class="label-p">What blockchain technology experience do they need? (optional)</p></label>
-              <select multiple formControlName="blockchain" title="(select multiple)" class="selectpicker">
-                <option class='option' *ngFor='let blockchain of blockchain' [selected] = "blockchainSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
-
-              </select>
-
-            </div>
-
-
-          <div class = "col-md-12 no_padding">
-            <div class="form-group col-md-6">
-              <label><p class="label-p">What programming languages do they need to know? (optional)</p></label>
-              <select multiple formControlName="skills" title="(select multiple)" class="selectpicker">
-                <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
-
-              </select>
-
-            </div>
-
-            <div class="form-group col-md-6">
-              <label><p class="label-p">Other technologies or requirements? (optional)</p></label>
-              <input type="text" formControlName="other_technologies" [value] ="preferncesForm.value.other_technologies"  class="form-control" id="" placeholder="(eg MongoDB, AWS)">
-            </div>
-          </div>
-
-            <div class="form-group col-md-12">
-              <label><p class="label-p">When would you like to receive emails with candidates that match your search?</p></label>
-              <div class="radio-toolbar controls__group">
-                <div *ngFor="let receive of email_notificaiton; let i_ind =index">
-
-                  <input type="radio" formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}" name="when_receive_email_notitfications" >
-                  <label class="radio-inline d-flex justify-content-center align-items-center" for="radio - {{receive}}">{{receive}}</label>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>What blockchain technology experience do they need? (optional)</label>
+                  <select multiple formControlName="blockchain" title="(select multiple)" class="form-control selectpicker">
+                    <option *ngFor='let blockchain of blockchain' [selected] = "blockchainSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
+                  </select>
 
                 </div>
-
               </div>
-              <div class = "form_error" *ngIf="!preferncesForm.value.when_receive_email_notitfications">
-                <span class = "error">{{email_notification_log}}</span>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>What programming languages do they need to know? (optional)</label>
+                  <select multiple formControlName="skills" title="(select multiple)" class="form-control selectpicker">
+                    <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
+                  </select>
+                </div>
               </div>
             </div>
 
-          </fieldset>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Other technologies or requirements? (optional)</label>
+                  <input type="text" formControlName="other_technologies" [value] ="preferncesForm.value.other_technologies"  class="form-control" placeholder="(eg MongoDB, AWS)">
+                </div>
+              </div>
 
-          <div class="form-group text-right">
-            <a routerLink="/about_comp" class="btn btn-prev">Prev Step</a>
-            <button type=submit  class = "btn btn-self btn-pdg">Done</button>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>When do you need hires to start?</label>
+                  <select title="(select one)" formControlName = "availability_day" class="form-control selectpicker">
+                    <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
+
+                  </select>
+
+                  <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.availability_day">
+                    {{availability_day_log}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                  <div class = "form-group w-100">
+                    <label>When would you like to receive emails with candidates that match your search?</label>
+                    <div>
+                      <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index">
+                        <input type="radio"  formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
+                      </label>
+                    </div>
+                    <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.when_receive_email_notitfications">
+                      {{email_notification_log}}
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+          </section>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class = "text-right mt-3">
+                  <a routerLink="/about_comp" class = "btn btn-warning text-white">Back</a>
+                  <button type="submit" class = "btn btn-primary ml-1">Done</button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class = "form_error error-log" *ngIf="error_msg">
-            <span class = "error">{{error_msg}}</span>
+
+          <div class="row" *ngIf="error_msg">
+            <div class="col-md-12">
+              <div class = "invalid-feedback float-right d-inline w-auto" >
+                {{error_msg}}
+              </div>
+            </div>
           </div>
 
         </form>
-
       </div>
     </div>
+
   </div>
 
-  <!-- Modal -->
-  <div id="popModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content costom_model">
-        <div class="modal-header mo-head">
-          <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
-          <h3 class="modal-title text-center mo">{{companyMsgTitle}}
-          </h3>
-        </div>
-        <div class="modal-body mo_body">
-          <div class = "mo_content" id = "style-6" [innerHTML]="companyMsgBody | safeHtml " *ngIf="companyMsgBody"></div>
-        </div>
-        <div class="modal-footer mo_footer">
-          <a (click) = redirectToCompany() class="btn btn-mo model-btn" data-dismiss="modal">Got it</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <!-- end model -->
 
 </section>
+
+<div id="whatHappensNextModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h3 class="modal-title text-center mo">{{companyMsgTitle}}
+        </h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click) = redirectToCompany() class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+      </div>
+    </div>
+  </div>
+</div>

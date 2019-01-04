@@ -42,8 +42,7 @@ export class VerifyEmailComponent implements OnInit {
                      if (data['success'] === true && data['msg']) {
                        if (!this.currentUser) {
                          this.succesMsg = 'Email verified. Please login to continue.';
-
-                         //window.location.href = '/login';
+                         window.location.href = '/login';
 
                        }
 

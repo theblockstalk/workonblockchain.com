@@ -47,7 +47,7 @@ export class TermsWizardComponent implements OnInit {
         data => {
           if(data)
           {
-            this.terms_id = data._id;
+            this.terms_id = data['_id'];
           }
         }
       );
@@ -56,17 +56,17 @@ export class TermsWizardComponent implements OnInit {
           data =>
           {
             ////console.log(data);
-            this.marketing_emails = data.marketing_emails;
-            if(data.terms_id)
+            this.marketing_emails = data['marketing_emails'];
+            if(data['terms_id'])
             {
               this.termscondition = true;
-              this.marketing_emails = data.marketing_emails;
+              this.marketing_emails = data['marketing_emails'];
 
               this.about_company = '/about_comp';
 
             }
 
-            if(data.terms_id)
+            if(data['terms_id'])
             {
               this.about_disable='';
               this.terms_active_class = 'fa fa-check-circle text-success';
@@ -75,21 +75,21 @@ export class TermsWizardComponent implements OnInit {
 
             }
 
-            if(data.company_founded && data.no_of_employees && data.company_funded && data.company_description)
+            if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
             {
               this.pref_disable = '';
               this.about_active_class = 'fa fa-check-circle text-success';
               this.preference  = '/preferences';
 
             }
-            if(data.saved_searches && data.saved_searches.length > 0) {
+            if(data['saved_searches'] && data['saved_searches'].length > 0) {
               this.pref_active_class = 'fa fa-check-circle text-success';
             }
 
           },
           error =>
           {
-            if(error.message === 500 || error.message === 401)
+            if(error['message'] === 500 || error['message'] === 401)
             {
               localStorage.setItem('jwt_not_found', 'Jwt token not found');
               localStorage.removeItem('currentUser');
@@ -100,7 +100,7 @@ export class TermsWizardComponent implements OnInit {
               window.location.href = '/login';
             }
 
-            if(error.message === 403)
+            if(error['message'] === 403)
             {
               this.router.navigate(['/not_found']);
             }
