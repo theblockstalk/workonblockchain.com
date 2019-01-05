@@ -46,17 +46,17 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
-
-  }
-
-  ngAfterViewChecked() {
-    setTimeout(() => {
+	setTimeout(() => {
       $('.selectpicker').selectpicker();
-    }, 300);
+    }, 900);
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 900);
+    }, 1000);
+  }
+
+  ngAfterViewChecked() {
+    
   }
 
   locations = [
@@ -218,6 +218,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         if(a.name > b.name) { return 1; }
         return 0;
       })
+	  
 
       this.preferncesForm = new FormGroup({
         location: new FormControl(),
@@ -231,7 +232,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         other_technologies: new FormControl(),
         when_receive_email_notitfications: new FormControl(),
       });
-
+	  
+	 
       this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
@@ -299,9 +301,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                   }
                 }
               }
-
-
-            }
+			}
 
           },
           error =>
