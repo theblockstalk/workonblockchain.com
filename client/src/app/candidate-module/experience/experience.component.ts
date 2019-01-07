@@ -91,90 +91,69 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     this.ExperienceForm = this._fb.group({
       ExpItems: this._fb.array([this.initExpRows()])
-      });
+    });
 
-      if(!this.currentUser)
-       {
-          this.router.navigate(['/login']);
-       }
-       if(this.currentUser && this.currentUser.type == 'candidate')
-       {
-         this.language_opt.sort(function(a, b){
-           if(a.name < b.name) { return -1; }
-           if(a.name > b.name) { return 1; }
-           return 0;
-         })
-          this.authenticationService.getById(this.currentUser._id)
-            .subscribe(
-            data => {
-                //console.log(data.education_history_history);
+    if(!this.currentUser)
+    {
+      this.router.navigate(['/login']);
+    }
+    if(this.currentUser && this.currentUser.type == 'candidate')
+    {
+      this.language_opt.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+      this.authenticationService.getById(this.currentUser._id)
+        .subscribe(
+          data => {
+            //console.log(data.education_history_history);
 
-                 if(data['candidate'].terms_id)
-                  {
-                        this.term_active_class='fa fa-check-circle text-success';
-                     this.term_link = '/terms-and-condition';
-                  }
-                if(data['candidate'].description)
-                 {
+            if(data['candidate'].terms_id)
+            {
+              this.term_active_class='fa fa-check-circle text-success';
+              this.term_link = '/terms-and-condition';
+            }
+            if(data['candidate'].description)
+            {
 
-                      this.exp_active_class = 'fa fa-check-circle text-success';
-                }
-                 if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day)
-                  {
-                    this.active_class='fa fa-check-circle text-success';
-                     // this.job_active_class = 'fa fa-check-circle text-success';
+              this.exp_active_class = 'fa fa-check-circle text-success';
+            }
+            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day)
+            {
+              this.active_class='fa fa-check-circle text-success';
+              // this.job_active_class = 'fa fa-check-circle text-success';
 
-                  }
-                if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
-                {
+            }
+            if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
+            {
 
-                    if(data['candidate'].work_history.length>0)
-                    {
-                        this.jobData = data['candidate'].work_history;
-
-                        for(let data1 of data['candidate'].work_history)
-                        {
-                            //this.companyname = data1.companyname;
-                            this.current_work_check.push(data1.currentwork);
+              if(data['candidate'].work_history.length>0)
+              {
+                this.jobData = data['candidate'].work_history;
+                // console.log(this.jobData);
+                //console.log(this.jobData.startdate);
+                // console.log(this.datePipe.transform(((this.jobData.startdate)+1), 'MMMM'));
 
 
-                for(let data1 of data['work_history'])
+                for(let data1 of data['candidate'].work_history)
                 {
                   //this.companyname = data1.companyname;
                   this.current_work_check.push(data1.currentwork);
 
-
                 }
 
-                    this.ExperienceForm = this._fb.group({
-                              ExpItems: this._fb.array(
-                                    this.history_data()
-                          )
-                          });
-                       }
-                    if(data['candidate'].education_history.length>0)
-                    {
 
-                    this.eduData = data['candidate'].education_history;
-                    this.EducationForm = this._fb.group({
-                          itemRows: this._fb.array(
-                                    this.education_data()
-                          )
-                        });
+                this.ExperienceForm = this._fb.group({
+                  ExpItems: this._fb.array(
+                    this.history_data()
+                  )
+                });
+              }
+              if(data['candidate'].education_history.length>0)
+              {
 
-                        }
-                        //this.exp_data.push(data.experience_roles) ;
-                    ////console.log(data.experience_roles.length);
-                      if(data['candidate'].programming_languages)
-                      {
-                          this.expYear = data['candidate'].programming_languages;
-                      for (let key of data['candidate'].programming_languages)
-                      {
-                        for(var i in key)
-                        {
-
-
-                this.eduData = data['education_history'];
+                this.eduData = data['candidate'].education_history;
                 this.EducationForm = this._fb.group({
                   itemRows: this._fb.array(
                     this.education_data()
@@ -184,10 +163,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
               }
               //this.exp_data.push(data.experience_roles) ;
               ////console.log(data.experience_roles.length);
-              if(data['programming_languages'])
+              if(data['candidate'].programming_languages)
               {
-                this.expYear = data['programming_languages'];
-                for (let key of data['programming_languages'])
+                this.expYear = data['candidate'].programming_languages;
+                for (let key of data['candidate'].programming_languages)
                 {
                   for(var i in key)
                   {
@@ -224,29 +203,19 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
                       }
 
-                    this.salary = data['candidate'].current_salary;
-                    this.Intro =data['candidate'].description;
-                    if(data['candidate'].current_currency)
-                    {
-                        this.current_currency = data['candidate'].current_currency;
-                     }
-                   // this.current_currency =-1;
+                    }
 
                   }
                 }
               }
 
 
-              if(!data['candidate'].why_work)
-          {
-                this.current_currency =data['current_currency'];
-              }
-              // this.current_currency =-1;
+              this.Intro =data['candidate'].description;
 
             }
 
 
-            if(!data['why_work'])
+            if(!data['candidate'].why_work)
             {
               this.router.navigate(['/resume']);
             }

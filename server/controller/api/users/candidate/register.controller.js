@@ -34,9 +34,7 @@ module.exports = async function (req, res) {
     let hash = crypto.createHmac('sha512', salt);
     hash.update(userParam.password);
     let hashedPasswordAndSalt = hash.digest('hex');
-
-    let newUser = new User
-    ({
+    let candidateRegister = {
         email: userParam.email,
         password_hash: hashedPasswordAndSalt,
         salt : salt,
@@ -53,9 +51,9 @@ module.exports = async function (req, res) {
                 timestamp: new Date()
             }]
         }
-    });
+    }
+    const candidateUserCreated = await User.insert(candidateRegister);
 
-    const candidateUserCreated = await newUser.save();
     let url_token;
 
     if(candidateUserCreated) {
@@ -70,13 +68,13 @@ module.exports = async function (req, res) {
             let new_hash = crypto.createHmac('sha512', new_salt);
             url_token = new_hash.digest('hex');
             url_token = url_token.substr(url_token.length - 10);
-            let document = new referral
-            ({
+
+            let document = {
                 email : userParam.email,
                 url_token : url_token,
                 date_created: new Date(),
-            });
-            await document.save();
+            };
+            referral.insert(document);
         }
 
         res.send

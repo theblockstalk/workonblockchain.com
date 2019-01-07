@@ -836,7 +836,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.commercially_worked.push(obj);
     }
 
-    }
+  }
 
   onPlatformOptions(obj)
   {
@@ -1256,6 +1256,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.error_msg = "";
     this.count = 0;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(profileForm.value);
     if(!this.info.first_name)
     {
       this.first_name_log="Please enter first name";
@@ -1453,7 +1454,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     }
 
-    if(this.salary && !this.current_currency) {
+    if(this.salary && !this.current_currency ) {
       this.current_currency_logg = "Please choose currency";
       this.count++;
     }
@@ -1463,9 +1464,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.count++;
     }
 
-    if(!this.salary && this.current_currency != -1) {
+    if(!this.salary && this.current_currency) {
       this.current_sal_log = "Please enter current base salary";
       this.count++;
+    }
+
+    if((!this.salary && !this.current_currency) || (!this.salary && this.current_currency === "-1")){
+      this.count = 0;
     }
 
     if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
@@ -1513,18 +1518,18 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
 
     if(this.commercially_worked.length === 0) {
-      profileForm.commercial_experience_year = [];
+      profileForm.commercial_platforms = [];
     }
     else {
-      profileForm.commercial_experience_year = this.commercial_expYear;
+      profileForm.commercial_platforms = this.commercial_expYear;
     }
 
 
     if(this.platforms_designed.length === 0) {
-      profileForm.platforms = [];
+      profileForm.smart_contract_platforms = [];
     }
     else {
-      profileForm.platforms = this.platforms;
+      profileForm.smart_contract_platforms = this.platforms;
     }
     if(this.commercialSkills.length === 0) {
       profileForm.commercial_skills = [];

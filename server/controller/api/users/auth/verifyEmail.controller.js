@@ -1,10 +1,10 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
     const verifyEmailHash = req.params.email_hash;
-    const userDoc = await User.findOne({ verify_email_key: verifyEmailHash }).lean();
+    const userDoc = await User.findOne({ verify_email_key: verifyEmailHash });
 
     if(userDoc) {
         const payloaddata = jwtToken.verifyJwtToken(verifyEmailHash);

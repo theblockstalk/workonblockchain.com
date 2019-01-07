@@ -1,4 +1,4 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const EmployerProfile = require('../../../../model/employer_profile');
 const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
@@ -8,11 +8,11 @@ module.exports = async function (req, res) {
 
     let queryBody = req.body;
     if(queryBody.linkedin_id) {
-      const userDoc =  await User.findOne({linkedin_id : queryBody.linkedin_id }).lean();
+      const userDoc =  await User.findOne({linkedin_id : queryBody.linkedin_id });
       if(userDoc) {
           let jwtUserToken = jwtToken.createJwtToken(userDoc);
           await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
-          const candidateDoc = await  User.findOne({ _creator:  userDoc._id }).lean();
+          const candidateDoc = await  User.findOneById( userDoc._id );
           res.send({
               _id:candidateDoc._id,
               _creator: userDoc._id,
@@ -32,7 +32,7 @@ module.exports = async function (req, res) {
 
     else
     {
-        let userDoc =  await User.findOne({email : queryBody.email }).lean();
+        let userDoc =  await User.findOneByEmail( queryBody.email);
         if(userDoc) {
             let hash = crypto.createHmac('sha512', userDoc.salt);
             hash.update(queryBody.password);

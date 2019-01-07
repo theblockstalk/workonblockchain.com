@@ -1,11 +1,11 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const crypto = require('crypto');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req,res)
 {
     let userId = req.auth.user._id;
-    const userDoc = await User.findOne({_id : userId }).lean();
+    const userDoc = await User.findOneById( userId );
     if(userDoc) {
         let queryBody = req.body;
         let hash = crypto.createHmac('sha512', userDoc.salt);

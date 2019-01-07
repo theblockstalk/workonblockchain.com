@@ -41,8 +41,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     let userDocIds;
     let candidateQuery = [];
     userDocIds = await User.findOne(userQuery, {_id: 1});
-
-    if(userDocIds && userDocIds.length > 0) {
+    if(userDocIds) {
         candidateQuery.push({ "_id": {$in: userDocIds}});
     } else {
         errors.throwError("No users matched the search", 404);
@@ -117,7 +116,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     }
 
     return {
-        count: candidates.length,
+        count: await User.count(searchQuery),
         candidates: candidates
     };
 }

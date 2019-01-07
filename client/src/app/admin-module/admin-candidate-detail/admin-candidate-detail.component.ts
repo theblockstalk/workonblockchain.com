@@ -107,7 +107,7 @@ export class AdminCandidateDetailComponent implements OnInit {
           .subscribe(
             data => {
 
-              this.candidate_status = data['_creator'].candidate.status[0];
+              this.candidate_status = data['candidate'].status[0];
               if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
               }
               else{
@@ -122,6 +122,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                 $("#status_reason_deferred").css("display", "block");
               }
               this.info.push(data);
+              console.log(this.info);
               this.verify =data['is_verify'];
               this.work_history = data['candidate'].work_history;
               this.work_history.sort(this.date_sort_desc);
@@ -147,24 +148,21 @@ export class AdminCandidateDetailComponent implements OnInit {
                 })
               }
 
-              
-              if(data['_creator'].candidate && data['_creator'].candidate.status){
-                this.created_date = data['_creator'].candidate.status[data['_creator'].candidate.status.length-1].timestamp
-
-              }
-
-
-              if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.commercial_skills && data['_creator'].candidate.blockchain.commercial_skills.length > 0)
-              {
-                this.commercial_skills = data['_creator'].candidate.blockchain.commercial_skills;
-                this.commercial_skills.sort(function(a, b){
-                  if(a.skill < b.skill) { return -1; }
-                  if(a.skill > b.skill) { return 1; }
-                  return 0;
-                })
+              if(data['candidate'] && data['candidate'].status){
+                this.created_date = data['candidate'].status[data['candidate'].status.length-1].timestamp;
               }
 
               if(data['candidate'] && data['candidate'].blockchain) {
+
+                if(data['candidate'].blockchain.commercial_skills) {
+                  this.commercial_skills = data['candidate'].blockchain.commercial_skills;
+                  this.commercial_skills.sort(function(a, b){
+                    if(a.skill < b.skill) { return -1; }
+                    if(a.skill > b.skill) { return 1; }
+                    return 0;
+                  })
+                }
+
                 if(data['candidate'].blockchain.commercial_platforms){
                   this.commercial = data['candidate'].blockchain.commercial_platforms;
                   if(this.commercial && this.commercial.length>0){

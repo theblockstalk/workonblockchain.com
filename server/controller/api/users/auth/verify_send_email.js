@@ -1,10 +1,10 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const EmployerProfile = require('../../../../model/employer_profile');
 const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');
 const errors = require('../../../services/errors');
 
 module.exports = async function verify_send_email(emailAddress, verifyEmailToken) {
-    const userDoc = await User.findOne({ email :emailAddress }).lean();
+    const userDoc = await User.findOneByEmail(emailAddress);
     if(userDoc) {
         if(userDoc.type === 'candidate') {
             let name;

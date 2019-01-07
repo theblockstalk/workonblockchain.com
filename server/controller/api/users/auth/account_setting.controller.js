@@ -1,4 +1,4 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
 const EmployerProfile = require('../../../../model/employer_profile');
 

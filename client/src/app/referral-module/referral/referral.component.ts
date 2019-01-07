@@ -69,14 +69,14 @@ export class ReferralComponent implements OnInit {
     this.show_refreal = 1;
     if(this.currentUser && this.currentUser.type === 'candidate'){
       this.show_refreal = 10;
-      this.authenticationService.getById(this.currentUser._creator)
+      this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
             if(data) {
               this.first_name = data['first_name'];
               this.last_name = data['last_name'];
               this.display_name = data['first_name'] +' '+ data['last_name'];
-              this.authenticationService.getRefCode(data['_creator'].email)
+              this.authenticationService.getRefCode(data['email'])
                 .subscribe(
                   data => {
                     this.ref_link = this.email_ref_link + data['url_token'];

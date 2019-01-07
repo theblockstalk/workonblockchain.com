@@ -116,7 +116,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
       this.user_id = params['user'];
     });
   }
-
   ngAfterViewInit(): void
   {
     setTimeout(() => {
@@ -181,6 +180,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
   formal_expYear_db=[];
   admin_log;
   expected_validation;
+
   ngOnInit()
   {
 
@@ -431,6 +431,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
                 }
 
                 if(data['candidate'].blockchain.formal_skills) {
+                  this.formal_skills = data['candidate'].blockchain.formal_skills;
                   for (let key of data['candidate'].blockchain.formal_skills)
                   {
                     for(var i in key)
@@ -827,7 +828,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
     if(index > -1)
     {
       this.commercially_worked.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'name', obj.value);
+      let updateItem2 = this.findObjectByKey(this.commercial_expYear, 'platform_name', obj.value);
       let index2 = this.commercial_expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -853,7 +854,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
     if(index > -1)
     {
       this.platforms_designed.splice(index, 1);
-      let updateItem2 = this.findObjectByKey(this.platforms, 'name', obj.value);
+      let updateItem2 = this.findObjectByKey(this.platforms, 'platform_name', obj.value);
       let index2 = this.platforms.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -877,7 +878,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
   {
 
 
-    let updateItem = this.findObjectByKey(this.commercial_expYear, 'name', value);
+    let updateItem = this.findObjectByKey(this.commercial_expYear, 'platform_name', value);
 
     let index = this.commercial_expYear.indexOf(updateItem);
 
@@ -886,14 +887,14 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
 
       this.commercial_expYear.splice(index, 1);
       this.value=value;
-      this.referringData = { name :this.value, exp_year: e.target.value};
+      this.referringData = { platform_name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
 
     }
     else
     {
       this.value=value;
-      this.referringData = { name :this.value, exp_year: e.target.value};
+      this.referringData = { platform_name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
 
     }
@@ -905,7 +906,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
   onPlatformYearOptions(e, value)
   {
 
-    let updateItem = this.findObjectByKey(this.platforms, 'name', value);
+    let updateItem = this.findObjectByKey(this.platforms, 'platform_name', value);
     let index = this.platforms.indexOf(updateItem);
 
     if(index > -1)
@@ -913,14 +914,14 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
 
       this.platforms.splice(index, 1);
       this.value=value;
-      this.platformreferringData = { name:this.value, exp_year: e.target.value};
+      this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
 
     }
     else
     {
       this.value=value;
-      this.platformreferringData = { name:this.value, exp_year: e.target.value};
+      this.platformreferringData = { platform_name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
     }
 

@@ -1,5 +1,5 @@
 const mongo = require('mongoskin');
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
@@ -9,7 +9,7 @@ module.exports = async function (req,res) {
 
     let queryBody = req.params;
 
-    const userDoc  = await User.findOne({ email : queryBody.email  }).lean();
+    const userDoc  = await User.findOneByEmail( queryBody.email );
     if(userDoc) {
         if(userDoc.social_type === 'GOOGLE')
         {
@@ -29,7 +29,7 @@ module.exports = async function (req,res) {
             await User.update({ _id: userDoc._id },{ $set: {'forgot_password_key': forgotPasswordToken } });
             if(userDoc.type === 'candidate') {
                 let name;
-                const candidateDoc = await User.find({_id : userDoc._id}).lean();
+                const candidateDoc = await User.findOneById( userDoc._id);
                 if(candidateDoc && candidateDoc.first_name) {
                     name = candidateDoc.first_name;
 

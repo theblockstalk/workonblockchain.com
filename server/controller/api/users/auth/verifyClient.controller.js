@@ -1,4 +1,4 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
 
@@ -9,7 +9,7 @@ const verify_send_email = require('./verify_send_email');
 module.exports = async function verify_client(req,res) {
 
     let queryBody = req.params;
-    const userDoc = await User.findOne({ email : queryBody.email }).lean();
+    const userDoc = await User.findOneByEmail( queryBody.email );
     if(userDoc) {
         let signOptions = {
             expiresIn:  "1h",

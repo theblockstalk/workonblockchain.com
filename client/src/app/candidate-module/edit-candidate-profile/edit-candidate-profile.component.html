@@ -22,7 +22,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>First Name</label>
-                  <input type="text" class="form-control" name="first_name" [(ngModel)]="info.first_name" required placeholder="John"  name="first_name" [(ngModel)]="info.first_name">
+                  <input type="text" class="form-control" disabled disabled name="first_name" [(ngModel)]="info.first_name" required placeholder="John"  name="first_name" [(ngModel)]="info.first_name">
                   <div class = "invalid-feedback d-inline" *ngIf="!info.first_name">
                     {{first_name_log}}
                   </div>
@@ -34,7 +34,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Last Name</label>
-                  <input type="text" class="form-control" name="last_name" [(ngModel)]="info.last_name" required placeholder="Smith"  name="last_name" [(ngModel)]="info.last_name">
+                  <input type="text" class="form-control" disabled disabled name="last_name" [(ngModel)]="info.last_name" required placeholder="Smith"  name="last_name" [(ngModel)]="info.last_name">
                   <div class = "invalid-feedback d-inline" *ngIf="!info.last_name">
                     {{last_name_log}}
                   </div>
@@ -43,7 +43,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Contact number</label>
-                  <input type="tel" class="form-control" required placeholder="(+1) 123 456 7890" name="contact_number" [(ngModel)]="info.contact_number">
+                  <input type="tel" class="form-control" disabled disabled required placeholder="(+1) 123 456 7890" name="contact_number" [(ngModel)]="info.contact_number">
                   <div class = "invalid-feedback d-inline" *ngIf="!info.contact_number">
                     {{contact_name_log}}
                   </div>
@@ -88,7 +88,7 @@
               <div class="col-md-6">
                 <div class="form-group" >
                   <label>Profile picture</label>
-                  <input type="file" class="form-control-file" id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
+                  <input type="file" class="form-control-file" disabled disabled id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
                   <label>
                     <span *ngIf="img_src" >{{img_src}}</span>
                   </label>
@@ -169,7 +169,7 @@
                       <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
                         <label class="form-check-label">
                           <input type="checkbox" class="form-check-input" value="{{option.value}}" [checked]="option.checked" (change)="updateCheckedOptions($event)" />
-                            {{option.name}}
+                          {{option.name}}
                         </label>
                       </div>
                     </div>
@@ -243,7 +243,7 @@
                   </small>
                   <div class = "invalid-feedback d-inline" *ngIf="(!salary && current_currency) ">
 
-                  {{current_sal_log}}
+                    {{current_sal_log}}
                   </div>
                 </div>
               </div>
@@ -707,7 +707,8 @@
                 </div>
                 <div class="col-md-12 p-0">
                   <div class = "form-group">
-                    <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add position</a>
+                    <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>
+
                   </div>
                 </div>
               </div>
@@ -776,7 +777,24 @@
                 </div>
                 <div class="col-md-12 p-0">
                   <div class = "form-group">
-                    <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add education</a>
+                    <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Bio</label>
+                  <ul>
+                    <li> 2-5 sentences </li>
+                    <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
+                  </ul>
+                  <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+                  <div class = "invalid-feedback d-inline" *ngIf="!Intro">
+                    {{intro_log}}
+
                   </div>
                 </div>
               </div>
@@ -785,7 +803,7 @@
           </section>
 
           <div class = "form-group text-right">
-            <a routerLink="/candidate_profile" class = "btn btn-secondary text-white mr-2">Cancel</a>
+            <a [routerLink]="['/admin-candidate-detail']" [queryParams]="{user: user_id}" class = "btn btn-secondary text-white mr-2">Cancel</a>
             <button type="submit" class = "btn btn-primary" [disabled] = "(current_salary.errors && salary) || (expect_salary.errors && expected_salaryyy)" >Save</button>
             <br/>
             <div class = "invalid-feedback d-inline mt-2" *ngIf="error_msg">

@@ -63,7 +63,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     {
       this.router.navigate(['/signup']);
     }
-    if(this.currentUser && this.currentUser.type=='candidate')
+    if(this.currentUser && this.currentUser.type === 'candidate')
     {
       this.options.sort(function(a, b){
         if(b.name === 'Remote' || a.name === 'Remote') {
@@ -91,6 +91,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
+
             if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.about_active_class = 'fa fa-check-circle text-success';
@@ -101,9 +102,8 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.term_link = '/terms-and-condition';
             }
 
-            if(data['candidate'].locations || data['candidate'].roles|| data['candidate'].interest_areas ||  data['candidate'].expected_salary || data['candidate'].availability_day || data['candidate'].expected_salary_currency)
+            if(data['candidate'].locations.length>0 || data['candidate'].roles.length>0 || data['candidate'].interest_areas.length>0 ||  data['candidate'].expected_salary || data['candidate'].availability_day || data['candidate'].expected_salary_currency)
             {
-              console.log("if");
               if(data['candidate'].locations)
               {
                 for (let country1 of data['candidate'].locations)
@@ -117,126 +117,115 @@ export class JobComponent implements OnInit,AfterViewInit {
                       option.checked=true;
                       this.selectedcountry.push(country1);
 
+                    }
+
+                  }
+
+                }
+              }
+
+
+              if(data['candidate'].interest_areas)
+              {
+                for (let interest of data['candidate'].interest_areas)
+                {
+
+                  for(let option of this.area_interested)
+                  {
+
+                    if(option.value === interest)
+                    {
+                      option.checked=true;
+                      this.selectedValue.push(interest);
 
                     }
 
                   }
 
-                  if(data['candidate'].interest_areas)
+                }
+              }
+              // this.jobselected=data.roles;
+
+              //this.selectedValue = data.interest_area;
+              if(data['candidate'].roles)
+              {
+                for (let area of data['candidate'].roles)
+                {
+
+                  for(let option of this.dropdown_options)
                   {
-                    for (let interest of data['candidate'].interest_areas)
+                    // //console.log(option);
+                    if(option.value === area)
                     {
+                      option.checked=true;
+                      this.jobselected.push(area);
+
+                    }
+
+                  }
+
+                }
+              }
+
+              this.salary = data['candidate'].expected_salary;
+              this.availability_day = data['candidate'].availability_day;
+              if(data['candidate'].expected_salary_currency)
+                this.base_currency = data['candidate'].expected_salary_currency;
+              if(data['candidate'].current_currency && data['candidate'].current_salary)
+                this.current_currency =data['candidate'].current_currency;
+              this.current_salary = data['candidate'].current_salary;
 
 
-                      if(data['interest_area'])
-                      {
-                        for (let interest of data['interest_area'])
-                        {
+              if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
+              {
+                this.active_class = 'fa fa-check-circle text-success';
+                this.class = "btn";
+                this.job_active_class = 'fa fa-check-circle text-success';
+                this.resume_disable ='';
+                this.resume_class="/resume";
 
-                          for(let option of this.area_interested)
-                          {
+              }
 
-                            if(option.value === interest)
-                            {
-                              option.checked=true;
-                              this.selectedValue.push(interest);
-
-                            }
-
-                            //this.selectedValue = data.interest_area;
-                            if(data['candidate'].roles)
-                            {
-                              for (let area of data['candidate'].roles)
-                              {
-
-
-                              }
-                            }
-                            // this.jobselected=data.roles;
-
-                            //this.selectedValue = data.interest_area;
-                            if(data['roles'])
-                            {
-                              for (let area of data['roles'])
-                              {
-
-                                for(let option of this.dropdown_options)
-                                {
-                                  // //console.log(option);
-                                  if(option.value == area)
-                                  {
-                                    option.checked=true;
-                                    this.jobselected.push(area);
-
-                                  }
-                                  this.salary = data['candidate'].expected_salary;
-                                  this.availability_day = data['candidate'].availability_day;
-                                  if(data['candidate'].expected_salary_currency)
-                                    this.base_currency = data['candidate'].expected_salary_currency;
-                                  this.current_salary = data['candidate'].current_salary;
-                                  if(data['candidate'].current_currency)
-                                    this.current_currency =data['candidate'].current_currency;
-
-
-                                  this.salary = data['expected_salary'];
-                                  this.availability_day = data['availability_day'];
-                                  if(data['expected_salary_currency'])
-                                    this.base_currency = data['expected_salary_currency'];
-                                  this.current_salary = data['current_salary'];
-                                  if(data['current_currency'])
-                                    this.current_currency =data['current_currency'];
-
-                                  if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
-                                  {
-                                    this.active_class = 'fa fa-check-circle text-success';
-                                    this.class = "btn";
-                                    this.job_active_class = 'fa fa-check-circle text-success';
-                                    this.resume_disable ='';
-                                    this.resume_class="/resume";
-
-
-                                  }
-
-                                  if(data['candidate'].why_work)
-                                  {
-                                    this.exp_disable ='';
-                                    this.resume_active_class='fa fa-check-circle text-success';
-                                    // this.router.navigate(['/resume']);
-                                    this.exp_class = "/experience";
-                                  }
+              if(data['candidate'].why_work)
+              {
+                this.exp_disable ='';
+                this.resume_active_class='fa fa-check-circle text-success';
+                // this.router.navigate(['/resume']);
+                this.exp_class = "/experience";
+              }
 
 
 
-                                  if(data['candidate'].description )
-                                  {
-                                    this.exp_class = "/experience";
-                                    this.exp_active_class = 'fa fa-check-circle text-success';
-                                    //this.router.navigate(['/experience']);
-                                  }
+              if(data['candidate'].description )
+              {
+                this.exp_class = "/experience";
+                this.exp_active_class = 'fa fa-check-circle text-success';
+                //this.router.navigate(['/experience']);
+              }
 
-                                }
+            }
 
 
 
-                              },
-                              error => {
-                                if(error['message'] === 500 || error['message'] === 401)
-                                {
-                                  localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                  localStorage.removeItem('currentUser');
-                                  localStorage.removeItem('googleUser');
-                                  localStorage.removeItem('close_notify');
-                                  localStorage.removeItem('linkedinUser');
-                                  localStorage.removeItem('admin_log');
-                                  window.location.href = '/login';
-                                }
+          },
+          error => {
+            if(error['message'] === 500 || error['message'] === 401)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-                                if(error['message'] === 403)
-                                {
-                                  this.router.navigate(['/not_found']);
-                                }
+            if(error['message'] === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-                              });
+          });
       //this.router.navigate(['/about']);
     }
     else
