@@ -29,7 +29,7 @@ module.exports = async function (req, res) {
         sender_id : mongoose.Types.ObjectId(userId),
         receiver_id : mongoose.Types.ObjectId(req.body.receiver_id),
         msg_tag: req.body.msg_tag,
-        is_read: 0,
+        is_read: false,
         date_created: new Date(),
         //new one
         message: {
