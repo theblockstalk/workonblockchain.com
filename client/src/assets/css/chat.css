@@ -49,7 +49,7 @@ only to be applied to the chat page*/
   position: relative;
   float: right;
   margin-right: 15px;
-  top: -10px;
+  top: -60px;
   font-size: 10px;
 }
 
@@ -67,7 +67,7 @@ only to be applied to the chat page*/
   position: relative;
   float: left;
   margin-left: 5px;
-  top: -10px;
+  top: -60px;
   font-size: 10px;
 }
 
@@ -162,8 +162,7 @@ input[type=file] {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 5px solid black;
-  border-bottom: 5px solid #17a2b8;
+  border-bottom: 5px solid #253245;
   margin-right: 10px;
   top: -5px;
   right: 5px;
@@ -187,6 +186,22 @@ input[type=file] {
   padding-inline-start: 10px;
 }
 
+.employment-contract{
+  position: absolute;
+  right: 45px;
+  top: 10px;
+  left: 120px;
+}
+
+@media (min-width: 1500px){
+  #cke_editor3, #cke_editor1{
+    height: 8rem !important;
+  }
+
+  .message-input {
+    bottom:62px !important;
+  }
+}
 
 @media (max-width: 992px){
   .cand_info-ul {
@@ -197,10 +212,13 @@ input[type=file] {
   .cand_info-ul li {
     line-height: 20px;
   }
+
+  #cke_editor3, #cke_editor1{
+    width: 20rem !important;
+  }
 }
 
 @media (max-width: 768px){
-
   .message {
     max-height: 325px;
     min-height: 325px;
@@ -212,6 +230,10 @@ input[type=file] {
 
   #frame{
     height: 130vh;
+  }
+
+  #cke_editor3, #cke_editor1{
+    width: 20rem !important;
   }
 
 }
@@ -240,5 +262,9 @@ input[type=file] {
 
   .job-description, .replies, .sent{
     font-size: 12px;
+  }
+
+  #cke_editor3, #cke_editor1{
+    width: 10rem !important;
   }
 }

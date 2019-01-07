@@ -42,7 +42,7 @@
                   </li>
                   <li class="list-group-item">
                     <span><i class="fas fa-phone mr-2"></i></span>
-                    <span> Contact number: {{contact_number}}</span>
+                    <span> Phone: {{contact_number}}</span>
                   </li>
                   <li class="list-group-item">
                     <i class="fas fa-user mr-2"></i>
@@ -50,7 +50,7 @@
                   </li>
                   <li class="list-group-item">
                     <i class="fas fa-clock mr-2"></i>
-                    <span>Date created: {{date_created | date : 'dd-MMMM-yyyy'}}</span>
+                    <span>Date created: {{date_created | date : 'dd'}} {{date_created | date : 'MMMM'}} {{date_created | date : 'yyyy'}}</span>
                   </li>
                 </ul>
               </div>
@@ -65,7 +65,7 @@
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
               <div class="col-md-6">
-                <h2> <i class="fas fa-user"></i> About you</h2>
+                <h2> <i class="fas fa-user"></i> About</h2>
               </div>
               <div class="col-md-6">
                 <a class="float-right" (click)="internalRoute('edit_profile','about_you')">
@@ -133,6 +133,7 @@
               </div>
             </div>
           </section>
+
 
           <section class = "border rounded mt-4 py-3 px-5 bg-white">
             <div class="row">
@@ -253,7 +254,7 @@
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
                       <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
-                      {{data.name}} : {{data.exp_year}} years
+                      {{data.name}}: {{data.exp_year}} years
                     </div>
                   </div>
                 </div>
@@ -267,8 +268,9 @@
                   <label>Platforms designed/developed smart contracts:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of platforms;'>
+
                       <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
-                      {{data.name}}  : {{data.exp_year}} years
+                      {{data.name}}: {{data.exp_year}} years
                     </div>
                   </div>
                 </div>
@@ -296,7 +298,7 @@
                 <div class="form-group">
                   <label>Commercial experience in these areas:</label>
                   <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial_skills;'>{{data.skill}}: {{data.exp_year}} years</div>
 
                   </div>
                 </div>
@@ -308,7 +310,7 @@
                 <div class="form-group">
                   <label>Formal (university) education in these areas:</label>
                   <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of formal_skills;'>{{data.skill}}  : {{data.exp_year}} years</div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of formal_skills;'>{{data.skill}}: {{data.exp_year}} years</div>
 
                   </div>
                 </div>
@@ -332,7 +334,7 @@
                 <div class="form-group">
                   <label>Languages: </label>
                   <div>
-                  <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}} : {{lang.exp_year}} years</div>
+                  <div class="d-inline-block p-2 border rounded ml-1 mb-1 mt-1" *ngFor='let lang of languages;'>{{lang.language}}: {{lang.exp_year}} years</div>
                   </div>
                   </div>
               </div>
@@ -358,8 +360,8 @@
                   <strong>{{work.companyname}}</strong>
                 </div>
                 <div class="col-md-6">
-                  <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}}, till now.</p>
-                  <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} , {{work.enddate | date:'MMMM-yyyy'}} </p>
+                  <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}} <i class="fas fa-long-arrow-alt-right"></i> now.</p>
+                  <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} <i class="fas fa-long-arrow-alt-right"></i> {{work.enddate | date:'MMMM-yyyy'}} </p>
                 </div>
                 <div class="col-md-6">
                   <i class="fas fa-globe"></i> {{work.locationname}}

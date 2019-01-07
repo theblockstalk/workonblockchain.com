@@ -32,6 +32,7 @@ module.exports = async function (req,res) {
                 const candidateDoc = await User.find({_id : userDoc._id}).lean();
                 if(candidateDoc && candidateDoc.first_name) {
                     name = candidateDoc.first_name;
+
                 }
 
                 forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);

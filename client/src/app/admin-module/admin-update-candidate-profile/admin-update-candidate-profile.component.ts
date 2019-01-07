@@ -107,7 +107,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
   current_work_check=[];
   current_work=
     [
-      {name:'I currently work there', value:'current', checked:false}
+      {name:'I currently work here', value:'current', checked:false}
     ]
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
@@ -121,8 +121,11 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
   {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 900);
     window.scrollTo(0, 0);
 
   }
@@ -180,10 +183,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
   expected_validation;
   ngOnInit()
   {
-    this.info.base_country = -1
-    this.info.nationality = -1;
-    this.current_currency = -1;
-    this.base_currency = -1;
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
@@ -937,7 +937,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
     return null;
   }
 
-  calen_month= ["January","Februray","March","April","May","June","July","August","September","October","November","December"]
+  calen_month= ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
 
   language_opt=
@@ -1133,9 +1133,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
   city_log;
   commercial_skill_log;
   formal_skills_log;
+  count;
+  current_sal_log;
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
+    this.count = 0;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1152,12 +1155,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
       this.contact_name_log ="Please enter contact number";
     }
 
-    if(this.info.nationality === -1)
+    if(!this.info.nationality)
     {
       this.nationality_log ="Please choose nationality";
     }
 
-    if(this.info.base_country === -1)
+    if(!this.info.base_country)
     {
       this.base_country_log ="Please choose base country";
     }
@@ -1178,7 +1181,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
     }
 
 
-    if(this.base_currency === -1)
+    if(!this.base_currency )
     {
       this.currency_log = "Please choose currency";
     }
@@ -1321,8 +1324,23 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
 
       }
     }
-    if(this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality!=-1 &&
-      this.info.city && this.info.base_country != -1 && this.expected_salaryyy &&  this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency!=-1  && this.selectedValue.length > 0 && this.availability_day &&
+
+    if(this.salary && !this.current_currency) {
+      this.current_currency_logg = "Please choose currency";
+      this.count++;
+    }
+
+    if(this.salary && this.current_currency === "-1" ) {
+      this.current_currency_logg = "Please choose currency";
+      this.count++;
+    }
+
+    if(!this.salary && this.current_currency != -1) {
+      this.current_sal_log = "Please enter current base salary";
+      this.count++;
+    }
+    if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
+      this.info.city && this.info.base_country && this.expected_salaryyy &&  this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency  && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
@@ -1364,12 +1382,58 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
+
+    if(this.commercially_worked.length === 0) {
+      profileForm.commercial_experience_year = [];
+    }
+    else {
+      profileForm.commercial_experience_year = this.commercial_expYear;
+    }
+
+
+    if(this.platforms_designed.length === 0) {
+      profileForm.platforms = [];
+    }
+    else {
+      profileForm.platforms = this.platforms;
+    }
+    if(this.commercialSkills.length === 0) {
+      profileForm.commercial_skills = [];
+    }
+    else {
+      profileForm.commercial_skills = this.commercialSkillsExperienceYear;
+    }
+    if(this.formal_skills_exp.length === 0) {
+      profileForm.formal_skills = [];
+    }
+    else {
+      profileForm.formal_skills = this.formal_skills;
+    }
+
+    if(this.language.length === 0) {
+      profileForm.language = [];
+    }
+    else {
+      profileForm.language_experience_year = this.LangexpYear;
+    }
+
+    if(this.selectedcountry){
+      profileForm.country = this.selectedcountry;
+    }
+
+    if(this.jobselected){
+      profileForm.roles = this.jobselected;
+    }
+
+    if(this.selectedValue){
+      profileForm.interest_area = this.selectedValue;
+    }
     this.authenticationService.update_candidate_profile(this.user_id, profileForm , this.education_json_array , this.experiencearray)
       .subscribe(
         data => {
           if(data['success'] && this.currentUser)
           {
-            console.log(data);
+
             this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.user_id } });
           }
 
@@ -1494,6 +1558,47 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
     }
 
   }
+  addNewExpRow()
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+    // control refers to your formarray
+    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
+    // add new formgroup
+    control.push(this.initExpRows());
+  }
 
+  deleteExpRow(index: number)
+  {
+    // control refers to your formarray
+    const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
+    // remove the chosen row
+    control.removeAt(index);
+  }
+
+  addNewRow()
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+    // control refers to your formarray
+    //this.EducationForm.value.itemRows = "";
+    const control = <FormArray>this.EducationForm.controls['itemRows'];
+    // add new formgroup
+    control.push(this.initItemRows());
+  }
+
+
+  deleteRow(index: number)
+  {
+
+    // control refers to your formarray
+    const control = <FormArray>this.EducationForm.controls['itemRows'];
+    // remove the chosen row
+    control.removeAt(index);
+  }
 
 }

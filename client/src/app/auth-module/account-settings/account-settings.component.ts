@@ -92,7 +92,7 @@ export class AccountSettingsComponent implements OnInit {
   status;
   account_setting(statusName , statusValue)
   {
-    console.log(statusValue);
+
     this.inform = '';
     if(statusName === 'marketingEmail') {
       this.status = {statusName : statusName , statusValue : this.info.marketing};

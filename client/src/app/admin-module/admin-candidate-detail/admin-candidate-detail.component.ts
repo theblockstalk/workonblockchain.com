@@ -83,6 +83,7 @@ export class AdminCandidateDetailComponent implements OnInit {
   detail_link;
   commercial_skills;
   formal_skills;
+  created_date;
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -97,6 +98,7 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.status_reason_rejected = -1;
     this.status_reason_deferred = -1;
 
+
     if(this.user_id && this.admin_log && this.currentUser)
     {
       if(this.admin_log.is_admin == 1)
@@ -104,8 +106,10 @@ export class AdminCandidateDetailComponent implements OnInit {
         this.authenticationService.getById(this.user_id)
           .subscribe(
             data => {
-              this.candidate_status = data['candidate'].status[0];
-              if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){}
+
+              this.candidate_status = data['_creator'].candidate.status[0];
+              if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
+              }
               else{
                 this.set_status = this.candidate_status.status;
               }
@@ -126,7 +130,7 @@ export class AdminCandidateDetailComponent implements OnInit {
               this.countries = data['candidate'].locations;
               this.countries.sort();
               if(this.countries.indexOf("remote") > -1){
-                this.countries[0] = 'remote';
+                this.countries.splice(0, 0, "remote");
                 this.countries = this.filter_array(this.countries);
               }
               this.interest_area =data['candidate'].interest_areas;
@@ -143,7 +147,22 @@ export class AdminCandidateDetailComponent implements OnInit {
                 })
               }
 
+              
+              if(data['_creator'].candidate && data['_creator'].candidate.status){
+                this.created_date = data['_creator'].candidate.status[data['_creator'].candidate.status.length-1].timestamp
 
+              }
+
+
+              if(data['_creator'].candidate && data['_creator'].candidate.blockchain && data['_creator'].candidate.blockchain.commercial_skills && data['_creator'].candidate.blockchain.commercial_skills.length > 0)
+              {
+                this.commercial_skills = data['_creator'].candidate.blockchain.commercial_skills;
+                this.commercial_skills.sort(function(a, b){
+                  if(a.skill < b.skill) { return -1; }
+                  if(a.skill > b.skill) { return 1; }
+                  return 0;
+                })
+              }
 
               if(data['candidate'] && data['candidate'].blockchain) {
                 if(data['candidate'].blockchain.commercial_platforms){

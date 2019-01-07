@@ -276,7 +276,6 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
       if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
       if(this.candidate_status) queryBody.verify_status = this.candidate_status;
       if(this.candidate_status_account) queryBody.account_status = this.candidate_status_account;
-      console.log(queryBody);
       this.authenticationService.admin_candidate_filter(queryBody)
         .subscribe(
           data =>

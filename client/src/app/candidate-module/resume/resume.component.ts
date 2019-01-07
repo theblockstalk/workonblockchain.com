@@ -347,31 +347,31 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
 
   commercially=
-    [
-      {name:'Bitcoin', value:'Bitcoin', checked:false},
-      {name:'Ethereum', value:'Ethereum', checked:false},
-      {name:'Ripple', value:'Ripple', checked:false},
-      {name:'Stellar', value:'Stellar', checked:false},
-      {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
-      {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
-      {name:'Quorum', value:'Quorum', checked:false},
-      {name:'Corda', value:'Corda', checked:false},
-      {name:'EOS', value:'EOS', checked:false},
-      {name:'NEO', value:'NEO', checked:false},
-      {name:'Waves', value:'Waves', checked:false},
-      {name:'Steem', value:'Steem', checked:false},
-      {name:'Lisk', value:'Lisk', checked:false},
-      {name:'Quantum', value:'Quantum', checked:false},
-      {name:'Tezos', value:'Tezos', checked:false},
-      {name:'Cardano', value:'Cardano', checked:false},
-      {name:'Litecoin', value:'Litecoin', checked:false},
-      {name:'Monero', value:'Monero', checked:false},
-      {name:'ZCash', value:'ZCash', checked:false},
-      {name:'IOTA', value:'IOTA', checked:false},
-      {name:'NEM', value:'NEM', checked:false},
-      {name:'NXT', value:'NXT', checked:false},
+  [
+    {name:'Bitcoin', value:'Bitcoin', checked:false},
+    {name:'Ethereum', value:'Ethereum', checked:false},
+    {name:'Ripple', value:'Ripple', checked:false},
+    {name:'Stellar', value:'Stellar', checked:false},
+    {name:'Hyperledger Fabric', value:'Hyperledger Fabric', checked:false},
+    {name:'Hyperledger Sawtooth', value:'Hyperledger Sawtooth', checked:false},
+    {name:'Quorum', value:'Quorum', checked:false},
+    {name:'Corda', value:'Corda', checked:false},
+    {name:'EOS', value:'EOS', checked:false},
+    {name:'NEO', value:'NEO', checked:false},
+    {name:'Waves', value:'Waves', checked:false},
+    {name:'Steemit', value:'Steemit', checked:false},
+    {name:'Lisk', value:'Lisk', checked:false},
+    {name:'Quantum', value:'Quantum', checked:false},
+    {name:'Tezos', value:'Tezos', checked:false},
+    {name:'Cardano', value:'Cardano', checked:false},
+    {name:'Litecoin', value:'Litecoin', checked:false},
+    {name:'Monero', value:'Monero', checked:false},
+    {name:'ZCash', value:'ZCash', checked:false},
+    {name:'IOTA', value:'IOTA', checked:false},
+    {name:'NEM', value:'NEM', checked:false},
+    {name:'NXT', value:'NXT', checked:false},
 
-    ]
+  ]
 
   otherSkills =
     [
@@ -425,7 +425,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {name:'Corda', value:'Corda', checked:false},
       {name:'EOS', value:'EOS', checked:false},
       {name:'Waves', value:'Waves', checked:false},
-      {name:'Steem', value:'Steem', checked:false},
+      {name:'Steemit', value:'Steemit', checked:false},
       {name:'Lisk', value:'Lisk', checked:false},
       {name:'Quantum', value:'Quantum', checked:false},
       {name:'Tezos', value:'Tezos', checked:false},

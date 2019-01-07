@@ -1146,7 +1146,6 @@ export class UserService {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
-      console.log(res);
       if (res)
       {
         return res;
@@ -1515,7 +1514,6 @@ export class UserService {
       {
         if (res)
         {
-          console.log(res);
           return res;
         }
       }), catchError((error: any) =>

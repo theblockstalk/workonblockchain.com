@@ -1,6 +1,6 @@
 <section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row mb-4">
+    <div class="row mb-2">
       <div class="col-md-12">
         <ul class="nav justify-content-center wizard">
           <li class="nav-item">
@@ -22,19 +22,20 @@
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{link}}" class="nav-link">
+
+            <a routerLink="{{link}}" class="nav-link btn {{job_disable}}">
               <i class="{{job_active_class}}"></i>
               Jobs
             </a>
           </li>
           <li class="nav-item px-2">
-            <a routerLink="{{resume_class}}" class="nav-link">
+            <a routerLink="{{resume_class}}" class="nav-link btn {{resume_disable}}">
               <i class="{{resume_active_class}}"></i>
               Blockchain
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{exp_class}}" class="nav-link">
+            <a routerLink="{{exp_class}}" class="nav-link btn {{exp_disable}}">
               <i class="{{exp_active_class}}"></i>
               Experience
             </a>
@@ -98,11 +99,10 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Nationality</label>
-                <select class="form-control selectpicker" required name="nationality" [(ngModel)]='info.nationality'>
-                  <option value="-1" disabled selected hidden >Please choose nationality</option>
+                <select class="form-control selectpicker" title="(select one)" required name="nationality" [(ngModel)]='info.nationality'>
                   <option *ngFor='let options of nationality' placeholder="Nationality"  [value]="options" [attr.selected]="options === info.nationality ? true : null">{{options}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="info.nationality === -1">
+                <div class = "invalid-feedback d-inline"  *ngIf="!info.nationality">
                   <span class = "error">{{nationality_log}}</span>
                 </div>
               </div>
@@ -115,11 +115,10 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Country</label>
-                <select class="form-control selectpicker" required name="country" [(ngModel)]="info.country">
-                  <option value="-1" disabled selected hidden >Please choose country</option>
+                <select class="form-control selectpicker" title="(select one)" required name="country" [(ngModel)]="info.country">
                   <option *ngFor='let options of countries'  [value]="options" [attr.selected]="options === info.country ? true : null">{{options}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="info.country === -1">
+                <div class = "invalid-feedback d-inline"  *ngIf="!info.country">
                   {{country_log}}
                 </div>
               </div>
@@ -151,7 +150,7 @@
           <div class="form-group">
             <div class = "text-right">
               <a routerLink="/prefill-profile" class = "btn btn-warning text-white">Back</a>
-              <button type="submit" class = "btn btn-secondary ml-1">Next</button>
+              <button type="submit" class = "btn btn-primary ml-1">Next</button>
             </div>
           </div>
           <div class = "invalid-feedback d-inline text-right float-right" *ngIf="error_msg">

@@ -27,6 +27,7 @@ module.exports = async function (req, res) {
       else {
           errors.throwError("User not found" , 404)
       }
+
     }
 
     else

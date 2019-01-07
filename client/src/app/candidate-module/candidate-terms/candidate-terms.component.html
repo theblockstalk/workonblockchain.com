@@ -1,7 +1,7 @@
 <!--candidate step completing-->
 <section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row mb-4">
+    <div class="row mb-2">
       <div class="col-md-12">
         <ul class="nav justify-content-center wizard">
           <li class="nav-item">
@@ -11,31 +11,31 @@
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{prefill_link}}" class="nav-link">
-              <i class="{{about_active_class}}"></i>
+            <a routerLink="{{prefill_link}}" class="nav-link btn {{prefill_disable}}">
+              <i class="{{term_active_class}}"></i>
               Prefill Profile
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{about_link}}" class="nav-link">
+            <a routerLink="{{about_link}}" class="nav-link btn {{about_disable}}">
               <i class="{{about_active_class}}"></i>
               About
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{link}}" class="nav-link">
+            <a routerLink="{{link}}" class="nav-link btn {{job_disable}}">
               <i class="{{job_active_class}}"></i>
               Jobs
             </a>
           </li>
           <li class="nav-item px-2">
-            <a routerLink="{{resume_class}}" class="nav-link">
+            <a routerLink="{{resume_class}}" class="nav-link btn {{resume_disable}}">
               <i class="{{resume_active_class}}"></i>
               Blockchain
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{exp_class}}" class="nav-link">
+            <a routerLink="{{exp_class}}" class="nav-link btn {{exp_disable}}">
               <i class="{{exp_active_class}}"></i>
               Experience
             </a>
@@ -77,12 +77,12 @@
            <p>
              At any time, you have the right to request the information that we have on your account, or request that we delete your account permanently by emailing us at privacy@workonblockchain.com. We may ask for additional identification to complete this.
            </p>
-           <p>Please read the <a  routerLink="/terms-for-candidate" target="_blank" >Terms and Conditions for Candidates</a> and <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a> for full details.</p>
+           <p>Please read the <a  routerLink="/terms-for-candidate" target="_blank" >Candidate terms and conditions</a> and <a  routerLink="/privacy-notice" target="_blank" >Privacy notice</a> for full details.</p>
          </div>
         <div class = "col-md-8">
           <label>
             <input type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
-            I have read the <a  routerLink="/terms-for-candidate" target="_blank" >Terms and Conditions </a> and <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.
+            I have read the <a  routerLink="/terms-for-candidate" target="_blank" >Candidate terms and conditions </a> and <a  routerLink="/privacy-notice" target="_blank" >Privacy notice</a>.
             <span>
                  <div></div>
                </span>
@@ -100,7 +100,7 @@
         </div>
         <input type="hidden" name="termsID" id="termsID" [(ngModel)]="terms_id"/>
         <div class = "col-md-12 text-right">
-          <button type="submit" class = "btn btn-secondary">Next</button>
+          <button type="submit" class = "btn btn-primary">Next</button>
         </div>
       </form>
     </div>

@@ -44,7 +44,11 @@
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-landmark mr-2"></i></span>
-                  <span>Nationality : {{data.nationality}}</span>
+                  <span>Nationality: {{data.nationality}}</span>
+                </li>
+                <li class="list-group-item">
+                  <span><i class="fas fa-phone mr-2"></i></span>
+                  <span>Phone: {{data.contact_number}}</span>
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-suitcase mr-2"></i></span>
@@ -53,6 +57,7 @@
                 <li class="list-group-item">
                   <span><i class="fas fa-align-justify mr-2"></i></span>
                   <span >Your availability : {{data.candidate.availability_day}}</span>
+
                 </li>
 
               </ul>
@@ -152,7 +157,8 @@
               <div class="form-group">
                 <label>Date created:</label>
                 <p>
-                  {{data.candidate.status[data.candidate.status.length-1].timestamp | date : 'dd-MMMM-yyyy'}}
+
+                  {{created_date | date : 'dd'}} {{created_date | date : 'MMMM'}} {{created_date | date : 'yyyy'}}
                 </p>
               </div>
             </div>
@@ -223,12 +229,16 @@
           <div class="row mt-3" *ngIf="data.candidate.github_account || data.candidate.stackexchange_account" >
             <div class="col-md-6 mb-3">
               <div class="form-group" *ngIf="data.candidate.github_account">
+
                 <label>Github account url: </label>
                 <p>
                   {{data.candidate.github_account}}
                 <p>
               </div>
             </div>
+          </div>
+
+          <div class="row mt-3" *ngIf="data.github_account || data.stackexchange_account" >
             <div class="col-md-6 mb-3">
               <div class="form-group" *ngIf="data.candidate.stackexchange_account">
                 <label>Stackexchange account url:</label>
@@ -309,7 +319,6 @@
           </div>
 
           <div class="row">
-
             <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>Desired location: </label>
@@ -318,6 +327,10 @@
                 </div>
               </div>
             </div>
+          </div>
+
+
+          <div class="row">
             <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>Area of interest: </label>
@@ -331,15 +344,40 @@
           <div class="row">
             <div class="col-md-12 mb-3">
               <div class="form-group">
-                <label>Roles: </label>
+                <label>Desired roles: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let roles_data of roles'> {{roles_data}} </div>
                 </div>
               </div>
             </div>
-
           </div>
 
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Expected annual salary: </label>
+                <p>{{data.expected_salary_currency}} {{data.expected_salary}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Your availablity: </label>
+                <p>{{data.availability_day}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Current annual salary: </label>
+                <p>{{data.current_currency}} {{data.current_salary}}</p>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section class = "border rounded mt-4 py-3 px-5 bg-white">
@@ -456,8 +494,8 @@
               <strong>{{work.companyname}}</strong>
             </div>
             <div class="col-md-6">
-              <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}}, till now.</p>
-              <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} , {{work.enddate | date:'MMMM-yyyy'}} </p>
+              <p *ngIf='work.currentwork== true'><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} {{work.startyear}} <i class="fas fa-long-arrow-alt-right"></i> now.</p>
+              <p *ngIf='work.currentwork== false '><i class="fas fa-calendar"></i> {{work.startdate | date:'MMMM-yyyy'}} <i class="fas fa-long-arrow-alt-right"></i> {{work.enddate | date:'MMMM-yyyy'}} </p>
             </div>
             <div class="col-md-6">
               <i class="fas fa-globe"></i> {{work.locationname}}

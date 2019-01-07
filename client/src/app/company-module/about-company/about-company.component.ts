@@ -149,7 +149,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
     if(!this.company_description)
     {
-      this.des_log = 'Please fill Company Description';
+      this.des_log = 'Please fill company description';
 
     }
     if(this.company_founded && this.no_of_employees && this.company_funded && this.company_description)
@@ -158,21 +158,20 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
         .subscribe(
           data => {
             if (data) {
-              console.log(data);
+
               let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
               let fileCount: number = inputEl.files.length;
               let formData = new FormData();
               if (fileCount > 0) {
-                console.log("if")
+
                 if (inputEl && inputEl.files && inputEl.files.length > 0) {
                   let formData = new FormData();
                   if (inputEl.files.item(0).size < this.file_size) {
 
-                    console.log(inputEl.files.item(0).size);
 
                     formData.append('photo', inputEl.files.item(0));
 
-                    console.log(formData);
+
                     this.authenticationService.company_image(formData)
                       .subscribe(
                         imageRes => {

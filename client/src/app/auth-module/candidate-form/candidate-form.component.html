@@ -2,12 +2,12 @@
   <div class = "container pt-2">
     <div class = "row">
       <div class="col"></div>
-      <div class="col-8 bg-white p-0">
+      <div class="col-8 bg-white p-0 border">
         <div class="form-group">
           <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="p-3 nav-item nav-link active text-center" id="nav-home-tab" data-toggle="tab" href="#candidate" role="tab" aria-controls="nav-home" aria-selected="true">Candidate</a>
-              <a class="p-3 nav-item nav-link text-center" id="nav-profile-tab" data-toggle="tab" href="#company" role="tab" aria-controls="nav-profile" aria-selected="false">Company</a>
+              <a class="p-3 nav-item nav-link active text-center border-top-0 border-left-0 " id="nav-home-tab" data-toggle="tab" href="#candidate" role="tab" aria-controls="nav-home" aria-selected="true">Candidate</a>
+              <a class="p-3 nav-item nav-link text-center border-top-0 border-right-0 " id="nav-profile-tab" data-toggle="tab" href="#company" role="tab" aria-controls="nav-profile" aria-selected="false">Company</a>
             </div>
           </nav>
         </div>
@@ -20,7 +20,7 @@
             <div class = "form-group">
               <span><i class="fas fa-envelope mr-1" aria-hidden="true"></i></span>
               <label>Email address</label>
-              <input type="email" class="form-control" placeholder = "johnsmilt@workonblockchain.com" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' name="name" required  [(ngModel)]="credentials.email">
+              <input type="email" class="form-control" placeholder = "email@example.com" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' name="name" required  [(ngModel)]="credentials.email">
               <div *ngIf="email_log" class="invalid-feedback d-inline">{{email_log}}</div>
               <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
                 Enter email in correct format like myemail@gmail.com.
@@ -45,14 +45,14 @@
               <input type="submit" class="form-control btn btn-secondary" value = "Sign up" >
             </div>
             <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-linkedin text-center" type = "submit" (click)="subscribeToLogin()">
+              <a  class = "btn btn-block btn-social btn-linkedin text-center"  (click)="subscribeToLogin()">
                 <i class="fab fa-linkedin" aria-hidden="true"></i>
                 Sign up with LinkedIn
               </a>
             </div>
 
             <div class="form-group">
-              <a  class = "btn btn-block btn-social btn-google text-center" type = "submit" (click)="signInWithGoogle()">
+              <a  class = "btn btn-block btn-social btn-google text-center"  (click)="signInWithGoogle()">
                 <i class="fab fa-google" aria-hidden="true"></i>
                 Sign up with Google
               </a>
@@ -65,7 +65,7 @@
             <div class = "form-group">
               <span><i class="fas fa-envelope mr-1" aria-hidden="true"></i></span>
               <label>Email address</label>
-              <input type="email" class="form-control" placeholder = "johnsmilt@workonblockchain.com" #comp_email="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' name="email" [(ngModel)]="credentials.email" email required>
+              <input type="email" class="form-control" placeholder = "email@example.com" #comp_email="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' name="email" [(ngModel)]="credentials.email" email required>
               <div *ngIf="comp_email.errors && credentials.email!='' && companySignup" class="invalid-feedback d-inline">
                 Enter email in correct format like myemail@gmail.com.
               </div>
@@ -126,12 +126,11 @@
             </div>
             <div class="form-group">
               <span><i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i></span>
-              <label>Select country</label>
-              <select class="form-control"  required name="country" [(ngModel)]="credentials.country"  required="">
-                <option value="-1" disabled selected hidden >Please choose country</option>
+              <label>Country</label>
+              <select class="selectpicker form-control" title="(select one)"  required name="country" [(ngModel)]="credentials.country"  required="">
                 <option *ngFor='let options of countries'  [value]="options" selected>{{options}}</option>
               </select>
-              <div class="invalid-feedback d-inline" *ngIf="credentials.country === -1">
+              <div class="invalid-feedback d-inline" *ngIf="!credentials.country">
                 {{companyCountryLog}}
               </div>
              </div>

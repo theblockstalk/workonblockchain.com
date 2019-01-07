@@ -11,7 +11,7 @@ module.exports = async function (req, res) {
 
     if(candidateUserDoc) {
         const userParam = req.body;
-
+console.log(userParam);
         let candidateUpdate = {}
         if (userParam.why_work) candidateUpdate['candidate.why_work'] = userParam.why_work;
         if (userParam.commercial_platforms) candidateUpdate['candidate.blockchain.commercial_platforms'] = userParam.commercial_platforms;

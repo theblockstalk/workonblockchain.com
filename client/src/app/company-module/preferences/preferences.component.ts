@@ -46,14 +46,17 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
+	setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 900);
 
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 1000);
   }
 
   ngAfterViewChecked() {
-    setInterval(() => {
-      $('.selectpicker').selectpicker();
-    }, 300);
-    //$('.selectpicker').selectpicker('refresh');
+    
   }
 
   locations = [
@@ -215,6 +218,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         if(a.name > b.name) { return 1; }
         return 0;
       })
+	  
 
       this.preferncesForm = new FormGroup({
         location: new FormControl(),
@@ -228,7 +232,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         other_technologies: new FormControl(),
         when_receive_email_notitfications: new FormControl(),
       });
-
+	  
+	 
       this.authenticationService.getCurrentCompany(this.currentUser._id)
         .subscribe(
           data =>
@@ -296,9 +301,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                   }
                 }
               }
-
-
-            }
+			}
 
           },
           error =>
@@ -341,6 +344,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   candidate_prefernces() {
     this.error_msg = "";
 
+
     if(!this.preferncesForm.value.location || this.preferncesForm.value.location.length === 0 ) {
       this.location_log = "Please select where are you hiring";
     }
@@ -359,21 +363,19 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.preferncesForm.value.current_salary) {
       this.current_currency_log = "Please select available annual salary and currency";
     }
-    /*if(!this.preferncesForm.value.blockchain || this.preferncesForm.value.blockchain.length === 0) {
-      this.blockchain_log = "Please select blockchain technologies";
+    if(!Number(this.preferncesForm.value.current_salary)){
+      this.current_currency_log = "Salary should be a number";
     }
-    if(!this.preferncesForm.value.skills || this.preferncesForm.value.skills.length === 0) {
-      this.skills_log = "Please select programing languages";
-    }*/
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
     if(this.preferncesForm.value.location && this.preferncesForm.value.location.length > 0 &&
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
-      this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && this.preferncesForm.value.current_salary &&
+      this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications) {
 
+      this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.saved_searches.push(this.preferncesForm.value);
       this.authenticationService.candidate_prefernece(this.saved_searches)
         .subscribe(
