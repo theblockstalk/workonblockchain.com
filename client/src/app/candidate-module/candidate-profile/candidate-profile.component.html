@@ -250,7 +250,7 @@
             <div class="row" *ngIf = "commercial && commercial.length > 0">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Platform commercially worked with:</label>
+                  <label>Platforms commercially worked with and developed on:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
                       <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
@@ -265,7 +265,7 @@
             <div class="row" *ngIf = "platforms && platforms.length > 0">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Platforms designed/developed smart contracts:</label>
+                  <label>Platforms commercially designed and developed smart contracts on:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of platforms;'>
                       <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
