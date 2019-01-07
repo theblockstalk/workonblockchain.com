@@ -1,5 +1,5 @@
 const User = require('../../../../model/users');
-const EmployerProfile = require('../../../../model/employer_profile');
+const EmployerProfile = require('../../../../model/mongoose/company');
 const errors = require('../../../services/errors');
 
 const candidateApprovedEmail = require('../../../services/email/emails/candidateApproved');
@@ -22,7 +22,7 @@ module.exports = async function (req, res) {
 
         }
         if(userDoc.type === 'company') {
-            const companyDoc = await EmployerProfile.findOne({ _creator: userDoc._id}).lean();
+            const companyDoc = await EmployerProfile.findOne({ _creator: userDoc._id});
             if(companyDoc) {
                 companyApprovedEmail.sendEmail(userDoc.email, companyDoc.first_name, userDoc.disable_account);
                 res.send({

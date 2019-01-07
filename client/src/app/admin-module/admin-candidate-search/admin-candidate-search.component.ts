@@ -282,11 +282,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           {
             this.length =0;
             this.info=[];
-            let dataArray = [];
             console.log(data);
-            let candidates = dataArray.push(data);
-            console.log(dataArray.push(data));
-            this.information = this.filter_array(candidates);
+            this.information = this.filter_array(data);
 
 
             for(let res of this.information)
