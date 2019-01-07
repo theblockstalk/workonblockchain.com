@@ -13,6 +13,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   ckeEditorConfig: any;
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
   when_receive_email_notitfications;
+  tweet;
   constructor() { }
 
   ngOnInit() {
@@ -34,6 +35,7 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
       minHeight: '5rem',
 
     };
+    this.tweet = 'http://localhost:4200/refer?code=f4ca5a5443';
 
   }
 
