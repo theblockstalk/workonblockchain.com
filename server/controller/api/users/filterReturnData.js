@@ -15,32 +15,34 @@ const removeSensativeData = module.exports.removeSensativeData = function remove
     return userDoc;
 };
 
+const anonymosUserFields = ['candidate', 'image', 'initials', 'nationality'];
 
-const anonymosCandidateFields = ['image', 'locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_area',
-    'availability_day', 'why_work', 'commercial_platform', 'experimented_platform', 'platforms', 'current_currency',
+const anonymosCandidateFields = ['locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_areas',
+    'availability_day', 'why_work', 'commercial_platforms', 'experimented_platforms', 'platforms', 'current_currency',
     'current_salary', 'programming_languages', 'education_history', 'work_history', 'description','nationality'];
 
-const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(candidateDoc) {
-    
-	if(candidateDoc.first_name && candidateDoc.last_name && candidateDoc.candidate.work_history)
-	{
-		const initials = createInitials(candidateDoc.first_name, candidateDoc.last_name);
+const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(userDoc) {
 
-		//candidateDoc = filterWhiteListFields(candidateDoc, anonymosCandidateFields);
+    if(userDoc.first_name && userDoc.last_name)
+    {
+        const initials = createInitials(userDoc.first_name, userDoc.last_name);
 
-	    candidateDoc.candidate.work_history = candidateDoc.candidate.work_history.map((work) => {
-	        delete work.companyname;
-	        return work;
-	    });
-	    candidateDoc.initials = initials;   
-	}	
-    
-    delete candidateDoc.first_name;
-	delete candidateDoc.last_name;
-	delete candidateDoc.candidate.github_account;
-	delete candidateDoc.candidate.stackexchange_account;
-	delete candidateDoc.email;
-    return candidateDoc;
+        userDoc.initials = initials;
+    }
+
+    userDoc = filterWhiteListFields(userDoc, anonymosUserFields);
+
+    if (userDoc.candidate) {
+        if (userDoc.candidte.work_history) {
+            userDoc.candidate.work_history = userDoc.candidate.work_history.map((work) => {
+                delete work.companyname;
+            return work;
+        });
+        }
+        userDoc.candidate = filterWhiteListFields(userDoc.candidate, anonymosCandidateFields);
+    }
+
+    return userDoc;
 };
 
 const anonymosCompanyFields = ['company_name', 'company_website', 'company_country', 'company_city','company_description',

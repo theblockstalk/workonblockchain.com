@@ -1,17 +1,20 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const filterReturnData = require('../filterReturnData');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
+    let filteredUsers = [];
+    await User.findAndIterate({type : 'candidate'}, async function(userDoc) {
+        filterReturnData.removeSensativeData(userDoc);
+        filteredUsers.push(userDoc);
+    });
 
-    const candidateUserDoc = await User.find().lean();
-    if(candidateUserDoc) {
-        for (detail of candidateUserDoc) {
-            filterReturnData.removeSensativeData(detail);
-        }
-        res.send(candidateUserDoc);
+    if(filteredUsers && filteredUsers.length > 0) {
+        res.send(filteredUsers);
     }
+
     else {
         errors.throwError("No candidate exists", 404)
     }
+
 }

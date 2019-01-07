@@ -1,5 +1,5 @@
 const User = require('../../../../model/mongoose/users');
-const EmployerProfile = require('../../../../model/employer_profile');
+const EmployerProfile = require('../../../../model/mongoose/company');
 const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
 const errors = require('../../../services/errors');
@@ -57,7 +57,7 @@ module.exports = async function (req, res) {
                 if(userDoc.type === 'company') {
                     let jwtUserToken = jwtToken.createJwtToken(userDoc);
                     await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
-                    const companyDoc = await EmployerProfile.findOne({ _creator:  userDoc._id }).lean();
+                    const companyDoc = await EmployerProfile.findOne({ _creator:  userDoc._id });
                     res.send({
                         _id: companyDoc._id,
                         _creator: userDoc._id,

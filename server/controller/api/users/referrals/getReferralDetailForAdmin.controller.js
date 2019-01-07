@@ -1,17 +1,15 @@
-const referral = require('../../../../model/referrals');
-const user = require('../../../../model/users');
-const employerProfile = require('../../../../model/employer_profile');
+const referral = require('../../../../model/mongoose/referral');
+const user = require('../../../../model/mongoose/users');
+const employerProfile = require('../../../../model/mongoose/company');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
     const userId = req.auth.user;
 
     if(userId.is_admin === 1){
-        const refDoc = await referral.findOne({
-            email:req.body.email
-        }).lean();
+        const refDoc = await referral.findOneByEmail(req.body.email);
         if(refDoc){
-            const userDoc = await user.findOne({email : refDoc.email}).lean();
+            const userDoc = await user.findOneByEmail( refDoc.email );
             if(userDoc){
                 if(userDoc.type === 'candidate'){
                     res.send({
@@ -20,7 +18,7 @@ module.exports = async function (req, res) {
 
                 }
                 if(userDoc.type === 'company'){
-                    const employerDoc = await employerProfile.findOne({_creator : userDoc._id}).lean();
+                    const employerDoc = await employerProfile.findOne({_creator : userDoc._id});
 
                     res.send({
                         companyDoc : employerDoc,

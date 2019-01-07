@@ -3,7 +3,7 @@ const User = require('../../../../model/mongoose/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
-const EmployerProfile = require('../../../../model/employer_profile');
+const EmployerProfile = require('../../../../model/mongoose/company');
 
 module.exports = async function (req,res) {
 
@@ -42,7 +42,7 @@ module.exports = async function (req,res) {
             }
             if(userDoc.type === 'company') {
                 let name;
-                const companyDoc = await EmployerProfile.find({_creator : userDoc._id}).populate('_creator').lean();
+                const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).populate('_creator');
                 if(companyDoc && companyDoc.length > 0 ) {
                     name = companyDoc[0].first_name;
                 }

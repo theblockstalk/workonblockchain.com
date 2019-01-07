@@ -1,6 +1,6 @@
 const User = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
-const EmployerProfile = require('../../../../model/employer_profile');
+const EmployerProfile = require('../../../../model/mongoose/company');
 
 module.exports = async function (req,res) {
     let user = req.auth.user;
