@@ -70,7 +70,7 @@
 
           </div>
           <div class = "form-group float-right mt-2">
-            <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-danger">Reset</button>
+            <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary">Reset</button>
           </div>
         </div>
         <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
@@ -121,7 +121,7 @@
                         <input type="hidden" name="id" [ngModel]="data._creator._id">
                         <input type="hidden" name="name" [ngModel]="data.initials">
                         <div class="float-right">
-                          <button type="submit" class = "btn wob-bg-secondary2" data-toggle="modal" data-target="#jobDescriptionModal" >Send job description</button>
+                          <button type="submit" class = "btn btn-primary" data-toggle="modal" data-target="#jobDescriptionModal" >Send job description</button>
                         </div>
                       </form>
                     </div>
@@ -197,9 +197,6 @@
       <div class="modal-body">
         <form (submit)="send_job_offer(msgForm)" #msgForm = ngForm>
           <ng-container *ngIf="job_offer_log;else no_modal">
-            <div class = "model_notif text-center">
-              {{job_offer_log}}
-            </div>
           </ng-container>
           <ng-template #no_modal>
           </ng-template>
@@ -207,14 +204,19 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="validationCustom1">Job title</label>
-                <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Frontend developer">
+                <input type="text" id="validationCustom1" required name="job_title" [(ngModel)]="credentials.job_title" class="form-control" placeholder="Full stack developer">
+                <div class = "invalid-feedback d-inline"  *ngIf="job_title_log">
+                  {{job_title_log}}
+                </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="validationCustom02">Location</label>
                 <input type="text" id="validationCustom02" name="location" [(ngModel)]="credentials.location" class="form-control" placeholder="London">
-
+                <div class = "invalid-feedback d-inline"  *ngIf="location_log">
+                  {{location_log}}
+                </div>
               </div>
             </div>
           </div>
@@ -222,16 +224,23 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="validationCustomSalary">Salary</label>
-                <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="1000">
+                <label for="validationCustomSalary">Annual salary</label>
+                <input type="text" id="validationCustomSalary" #expect_salary="ngModel"  pattern="^[0-9]*$" required name="salary" [(ngModel)]="credentials.salary" class="form-control" placeholder="10000">
+                <div class = "invalid-feedback d-inline"  *ngIf="salary_log">
+                  {{salary_log}}
+                </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="validationCustom02">Currency</label>
-                <select title="Currency"  name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
+                <label for="validationCustom02" class="invisible">Currency</label>
+                <select title="Currency" name="currency" [(ngModel)]="credentials.currency" class="selectpicker form-control">
+                  <option value="-1" disabled selected hidden>Currency</option>
                   <option *ngFor='let base_currency of currency' [value]="base_currency">{{base_currency}}</option>
                 </select>
+                <div class = "invalid-feedback d-inline"  *ngIf="salary_currency_log">
+                  {{salary_currency_log}}
+                </div>
               </div>
             </div>
           </div>
@@ -241,11 +250,13 @@
               <div class="form-group">
                 <label for="validationCustom02">Employment type</label>
                 <div class="form-check" *ngFor="let options of job_type">
-                    <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
-                    <label class="form-check-label" for="{{options}}" >{{options}}
+                  <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
+                  <label class="form-check-label" for="{{options}}" >{{options}}
                   </label>
                 </div>
-
+                <div class = "invalid-feedback d-inline"  *ngIf="employment_log">
+                  {{employment_log}}
+                </div>
               </div>
             </div>
           </div>
@@ -256,12 +267,18 @@
                 <label>Job description</label>
                 <ckeditor class="ckeditor_tab" [(ngModel)]="credentials.job_desc" #myckeditor name="html_text" [config]="ckeConfig" debounce="500" >
                 </ckeditor>
+                <div class = "invalid-feedback d-inline"  *ngIf="job_desc_log">
+                  {{job_desc_log}}
+                </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" [disabled]="expect_salary.errors || !credentials.currency || !credentials.job_desc || !credentials.job_type || !credentials.job_title || !credentials.location" class="btn btn-primary">Send</button>
-            <button type="reset" class="btn btn-danger">Reset</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+          <div class = "invalid-feedback d-inline-block text-right">
+            {{job_offer_log}}
           </div>
         </form>
 

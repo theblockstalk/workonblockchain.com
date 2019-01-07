@@ -1,4 +1,4 @@
-<section class="wob-bg-primary2 mt-5">
+<section class="wob-bg-primary2 mt-5 py-5">
 	<div class="container">
 		<div class="row">
       <div class = "col-md-12">
@@ -143,7 +143,7 @@
 									<ng-template #second>
                     <li class="replies mb-5 col-md-12">
                       <div class="arrow-up"></div>
-                      <p class = "p-2 rec_p bg-info rounded text-light d-inline-block">
+                      <p class = "p-2 rec_p wob-bg-primary1 rounded text-light d-inline-block">
                         <span class="text-capitalize">{{msg.sender_name}}:</span>
 												<span *ngIf="msg.job_title !== ''">
 													<br/>
@@ -208,28 +208,16 @@
 								<li class = "offers_b"></li>
 							</ul>
 						</div>
-
-
-
-					</div>
-
-
-				</div><!--end col here-->
+          </div>
+        </div><!--end col here-->
+        <div class = "row py-5 mb-5 mt-5 justify-content-center social-icons my-4">
+          <div class="col-md-6">
+            <div *ngIf = "length === 0" class="alert alert-danger text-center">
+              Didn't chat with any one yet
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-				<div *ngIf = "length === 0">
-
-					Didn't chat with any one yet
-				</div>
-
-			</div>
-
-		</div>
-
+  </div>
 </section>
-
-
-<!--Profile-inner end-->
-
-<div class = "gap">
-</div>

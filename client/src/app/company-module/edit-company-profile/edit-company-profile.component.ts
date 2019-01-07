@@ -78,6 +78,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   avail_day;
   pref_active_class;
   when_receive_email_notitfications;
+  expected_validation;
 
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
@@ -208,8 +209,11 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   ngAfterViewInit() {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 900);
   }
 
   ngAfterViewChecked() {
@@ -418,9 +422,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   company_profile(profileForm: NgForm)
   {
-    console.log("function executed");
-    console.log(this.preferncesForm.value);
-    console.log(profileForm.value);
     this.error_msg = "";
     if(!this.first_name) {
       this.first_name_log="Please enter first name";
@@ -479,6 +480,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(!this.preferncesForm.value.current_salary) {
       this.current_currency_log = "Please select available annual salary and currency";
     }
+    if(!Number(this.preferncesForm.value.current_salary)){
+      this.current_currency_log = "Salary should be a number";
+    }
 
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
@@ -490,9 +494,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm.value.location && this.preferncesForm.value.location.length > 0 &&
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
-      this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && this.preferncesForm.value.current_salary &&
+      this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications)  {
       this.saved_searches.push(this.preferncesForm.value);
+      this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.authenticationService.edit_company_profile(profileForm.value , this.saved_searches)
         .subscribe(
           data => {
@@ -505,11 +510,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 if(inputEl.files.item(0).size < this.file_size)
                 {
 
-                  console.log(inputEl.files.item(0).size);
-
                   formData.append('photo', inputEl.files.item(0));
 
-                  console.log(formData);
                   this.authenticationService.company_image(formData)
                     .subscribe(
                       imageRes => {
@@ -597,8 +599,5 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }
   }
 
-  emailNotificationChange(e){
-    console.log("running");
-  }
 
 }

@@ -11,11 +11,12 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   @ViewChild("myckeditor") ckeditor: any;
   ckeConfig: any;
   ckeEditorConfig: any;
-
+  email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
+  when_receive_email_notitfications;
   constructor() { }
 
   ngOnInit() {
-
+    this.when_receive_email_notitfications = 'Daily';
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
@@ -41,6 +42,8 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 200);
+    $("#startdate_datepicker").datepicker();
+
   }
 
 }

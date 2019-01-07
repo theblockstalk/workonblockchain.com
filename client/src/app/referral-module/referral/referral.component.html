@@ -33,10 +33,10 @@
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link}}" readonly #userinput />
               </span>
-                <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy Link</button>
+                <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(userinput)">Copy</button>
               </div>
               <div class = "twitter-share-button">
-                <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
+                <a href="https://twitter.com/intent/tweet?text={{text}}" [attr.data-url] = "email_ref_link" [attr.data-text]="text" class="twitter-share-button d-inline-block position-relative">Tweet</a>
               </div>
             </div>
           </div>
@@ -60,7 +60,7 @@
               <div *ngIf="log_success" class="alert alert-success">{{log_success}}</div>
               <div *ngIf="log" class="alert alert-danger">{{log}}</div>
               <div class="form-group">
-                <button type="submit" class = "btn btn-secondary">Send</button>
+                <button type="submit" class = "btn btn-primary">Send</button>
               </div>
             </form>
           </div>
@@ -106,14 +106,16 @@
                   <input type="email" class="form-control" placeholder="Email" id="email2" name="email" [(ngModel)]="email"/>
                 </div>
                 <div class="checkbox">
-                  <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
-                  <label> I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.</label>
+                  <label>
+                    <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+                    I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy Notice</a>.
+                  </label>
                 </div>
                 <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "alert alert-danger">
                   <span class = "error">{{terms_log}}</span>
                 </div>
                 <div class="form-group text-center">
-                  <button type="submit" class = "form-control btn btn-secondary" id = "sub_bttn">Submit</button>
+                  <button type="submit" class = "form-control btn btn-primary" id = "sub_bttn">Submit</button>
                 </div>
               </form>
             </div>
@@ -126,11 +128,9 @@
               <span>
                 <input type="text" class="border-0 w-75 px-4 py-4" value="{{ref_link_for_not_logged_user}}" readonly #newRefLink />
               </span>
-                  <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(newRefLink)">Copy Link</button>
+                  <button class = "btn btn-default float-right mt-3 mr-3" (click)="copyInputMessage(newRefLink)">Copy</button>
                 </div>
-                <!--<div class = "twitter-share-button">
-                  <a href="https://twitter.com/share" style="display: inline-block;position: relative;" [attr.data-text]="text"  class="twitter-share-button">Tweet</a>
-                </div>-->
+
               </div>
             </div>
           </div>

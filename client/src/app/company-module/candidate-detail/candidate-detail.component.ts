@@ -84,8 +84,11 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 900);
   }
   ngOnInit()
   {
@@ -150,7 +153,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               this.countries = dataa['locations'];
               this.countries.sort();
               if(this.countries.indexOf("remote") > -1){
-                this.countries[0] = 'remote';
+                this.countries.splice(0, 0, "remote");
                 this.countries = this.filter_array(this.countries);
               }
 
@@ -215,7 +218,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           },
           error => {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              console.log(error['error']['message']);
+              //console.log(error['error']['message']);
               this.router.navigate(['/not_found']);
             }
 
@@ -251,11 +254,43 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   is_company_reply = 0;
   msg_body;
   job_offer_msg;
+  job_offer_msg_success;
   full_name;
   job_description;
+  job_title_log;
+  location_log;
+  salary_log;
+  salary_currency_log;
+  employment_log;
+  job_desc_log;
+
   send_job_offer(msgForm : NgForm) {
+    this.job_title_log = '';
+    this.location_log = '';
+    this.salary_log = '';
+    this.salary_currency_log = '';
+    this.employment_log = '';
+    this.job_desc_log = '';
+    if(!this.credentials.job_title){
+      this.job_title_log = 'Please enter job title';
+    }
+    if(!this.credentials.location){
+      this.location_log = 'Please enter location';
+    }
+    if(!this.credentials.salary){
+      this.salary_log = 'Please enter salary';
+    }
+    if(!this.credentials.currency){
+      this.salary_currency_log = 'Please select currency';
+    }
+    if(!this.credentials.job_type){
+      this.employment_log = 'Please select employment type';
+    }
+    if(!this.credentials.job_desc){
+      this.job_desc_log = 'Please enter job description';
+    }
+
     this.full_name = this.first_name;
-    ////console.log(this.full_name);
     if (this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
       if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -288,7 +323,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   .subscribe(
                     data => {
                       ////console.log(data);
-                      this.job_offer_msg = 'Message has been successfully sent';
+                      this.job_offer_msg_success = 'Message has been successfully sent';
                       this.router.navigate(['/chat']);
                     },
                     error => {
@@ -302,11 +337,12 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           );
       }
       else {
-        this.job_offer_msg = 'Salary should be a number';
+        //this.job_offer_msg = 'Salary should be a number';
+        this.job_offer_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
       }
     }
     else {
-      this.job_offer_msg = 'Please enter all info';
+      this.job_offer_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
   filter_array(arr)

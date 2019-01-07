@@ -1,6 +1,6 @@
 <section class="wob-bg-primary2 pb-5 pt-3 mt-5">
   <div class="container">
-    <div class="row mb-4">
+    <div class="row mb-2">
       <div class="col-md-12">
         <ul class="nav justify-content-center wizard">
           <li class="nav-item">
@@ -28,13 +28,13 @@
             </a>
           </li>
           <li class="nav-item px-2">
-            <a routerLink="{{resume_class}}" class="nav-link">
+            <a routerLink="{{resume_class}}" class="nav-link btn {{resume_disable}}">
               <i class="{{resume_active_class}}"></i>
               Blockchain
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="{{exp_class}}" class="nav-link">
+            <a routerLink="{{exp_class}}" class="nav-link btn {{exp_disable}}">
               <i class="{{exp_active_class}}"></i>
               Experience
             </a>
@@ -51,8 +51,8 @@
             <div class="checkbox">
               <div class="row m-0">
                 <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
-                  <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
                   <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"   (change)="updateCheckedOptions($event)" />
                     {{option.name}}
                   </label>
                 </div>
@@ -72,8 +72,8 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let position_option of dropdown_options">
-                      <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
                         {{position_option.name}}
                       </label>
                     </div>
@@ -104,12 +104,11 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Expected annual salary currency</label>
-                <select [(ngModel)]="base_currency" class="selectpicker" id="currency1" required name="base_currency" >
-                  <option value="-1" disabled selected hidden >Please choose currency</option>
-                  <option *ngFor='let base_currency of currency' [attr.selected] [value]="base_currency">{{base_currency}}</option>
+                <label class="invisible">Expected annual salary currency</label>
+                <select [(ngModel)]="base_currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
+                  <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === base_currency ? true : null" [value]="baseCurrency">{{baseCurrency}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline"  *ngIf="base_currency === -1">
+                <div class = "invalid-feedback d-inline"  *ngIf="!base_currency">
                   {{currency_log}}
                 </div>
               </div>
@@ -124,18 +123,21 @@
                 <small id="emailHelp" class="form-text text-muted">
                   This information is never shown to companies. It is used by us to help us help you set your expected salary.
                 </small>
+                <div class = "invalid-feedback d-inline" *ngIf="(!current_salary && current_currency) ">
+                  {{current_sal_log}}
+                </div>
               </div>
 
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Current annual salary currency</label>
+                <label class="invisible">Current annual salary currency</label>
 
-                <select [(ngModel)]="current_currency" class="selectpicker" id="currency"  required name="current_currency" >
-                  <option value="-1" disabled selected hidden >Please choose currency</option>
-                  <option *ngFor='let current_currency of currency' #choose_currency [attr.selected] [value]="current_currency">{{current_currency}}</option>
+                <select [(ngModel)]="current_currency" title="Currency" class="selectpicker" id="currency"  required name="current_currency" >
+                  <option value="-1" >Currency</option>
+                  <option *ngFor='let currentCurrency of currency' #choose_currency [attr.selected]="current_currency === currentCurrency ? true : null"[value]="currentCurrency">{{currentCurrency}}</option>
                 </select>
-                <div class = "invalid-feedback d-inline" *ngIf="current_currency === -1 ">
+                <div class = "invalid-feedback d-inline" *ngIf="current_currency_log ">
                   {{current_currency_log}}
                 </div>
               </div>
@@ -149,8 +151,8 @@
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-4 mb-3" *ngFor="let position_option of area_interested">
-                      <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
                       <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onAreaSelected($event)" required="" />
                         {{position_option.name}}
                       </label>
                     </div>
@@ -168,7 +170,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Employment availability</label>
-                <select title="Now" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
+                <select title="(select one)" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
                   <option class='option' *ngFor='let start_month of month' [attr.selected]  [value]="start_month" selected>{{start_month}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="!availability_day">
@@ -180,7 +182,7 @@
 
           <div class = "form-group text-right">
             <a routerLink="/about" class = "btn btn-warning text-white">Back</a>
-            <button type=submit class = "btn btn-secondary ml-1" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)">Next</button>
+            <button type=submit class = "btn btn-primary ml-1" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)">Next</button>
           </div>
           <div class = "invalid-feedback d-inline text-right float-right"  *ngIf="error_msg">
             {{error_msg}}

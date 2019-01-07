@@ -9,25 +9,31 @@ module.exports = async function (req, res) {
 
     let queryBody = req.body;
     if(queryBody.linkedin_id) {
-      const userDoc =  await User.findOne({linkedin_id : queryBody.linkedin_id }).lean();
-      if(userDoc) {
-          let jwtUserToken = jwtToken.createJwtToken(userDoc);
-          await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
-          const candidateDoc = await  CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
-          res.send({
-              _id:candidateDoc._id,
-              _creator: userDoc._id,
-              email: userDoc.email,
-              email_hash: userDoc.email_hash,
-              is_admin:userDoc.is_admin,
-              type:userDoc.type,
-              is_approved : userDoc.is_approved,
-              jwt_token: jwtUserToken
-          });
-      }
-      else {
-          errors.throwError("User not found" , 404)
-      }
+        let userDoc =  await User.findOne({email : queryBody.email }).lean();
+        if(userDoc && userDoc.social_type === 'LINKEDIN' && !userDoc.linkedin_id){
+            await User.update({_id: userDoc._id}, {$set: {'linkedin_id': queryBody.linkedin_id}});
+        }
+        userDoc =  await User.findOne({linkedin_id : queryBody.linkedin_id }).lean();
+        if(userDoc && userDoc.social_type === 'LINKEDIN' && userDoc.linkedin_id) {
+            let jwtUserToken = jwtToken.createJwtToken(userDoc);
+            await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+            const candidateDoc = await  CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
+            res.send({
+                _id:candidateDoc._id,
+                _creator: userDoc._id,
+                email: userDoc.email,
+                email_hash: userDoc.email_hash,
+                is_admin:userDoc.is_admin,
+                type:userDoc.type,
+                is_approved : userDoc.is_approved,
+                jwt_token: jwtUserToken
+            });
+        }
+        else {
+            errors.throwError("User not found" , 404)
+        }
+
+
     }
 
     else

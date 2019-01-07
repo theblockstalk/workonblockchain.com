@@ -198,8 +198,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     window.scrollTo(0, 0);
     setTimeout(() => {
       $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 500);
+    }, 900);
 
   }
 
@@ -209,6 +212,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   skill;
   ngOnInit()
   {
+    this.credentials.currency = -1;
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
@@ -327,7 +331,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   this.imgPath =  data['company_logo'];
                 }
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
-                  console.log(data['saved_searches']);
                   this.saved_searches = data['saved_searches'];
                   this.location_value = data['saved_searches'][0].location;
                   this.skill_value = data['saved_searches'][0].skills;
@@ -492,21 +495,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.responseMsg = "";
     this.not_found='';
 
-    console.log("Skill value " + this.skill_value);
-    console.log("Location value " + this.location_value);
-    console.log("Search word " + this.searchWord);
-    console.log("Role value " + this.role_value);
-
-    console.log("Blockahin value " + this.blockchain_value);
-
     if(!this.searchWord && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.location_value &&  !this.currencyChange &&  !this.availabilityChange )
     {
-      console.log("if");
       this.getVerrifiedCandidate();
     }
 
     else {
-      console.log("else");
       this.not_found = '';
       let queryBody : any = {};
       if(this.searchWord) queryBody.word = this.searchWord;
@@ -518,17 +512,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.salary && this.currencyChange) {
         setTimeout(() => {
           $('.selectpicker').selectpicker();
+        }, 300);
+
+        setTimeout(() => {
           $('.selectpicker').selectpicker('refresh');
-        }, 500);
+        }, 900);
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
-      console.log(queryBody);
       this.authenticationService.filterSearch(queryBody )
         .subscribe(
           data =>
           {
-            console.log(data);
             this.candidate_data = data;
             this.setPage(1);
             if(this.candidate_data.length > 0) {
@@ -650,13 +645,23 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.credentials.location = '';
     this.credentials.job_type = '';
     this.credentials.job_desc = '';
+    this.job_title_log = '';
+    this.location_log = '';
+    this.salary_log = '';
+    this.salary_currency_log = '';
+    this.employment_log = '';
+    this.job_desc_log = '';
+
     this.authenticationService.getLastJobDesc()
       .subscribe(
         data => {
           setTimeout(() => {
             $('.selectpicker').selectpicker();
+          }, 300);
+
+          setTimeout(() => {
             $('.selectpicker').selectpicker('refresh');
-          }, 500);
+          }, 900);
           this.credentials.job_title = data['job_title'];
           this.credentials.salary = data['salary'];
           this.credentials.currency = data['salary_currency'];
@@ -688,9 +693,41 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     is_company_reply = 0;
     msg_body;
     description;
-    send_job_offer(msgForm : NgForm){
+    job_title_log;
+    location_log;
+    salary_log;
+    salary_currency_log;
+    employment_log;
+    job_desc_log;
 
+    send_job_offer(msgForm : NgForm){
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.job_title_log = '';
+        this.location_log = '';
+        this.salary_log = '';
+        this.salary_currency_log = '';
+        this.employment_log = '';
+        this.job_desc_log = '';
+
+        if(!this.credentials.job_title){
+          this.job_title_log = 'Please enter job title';
+        }
+        if(!this.credentials.location){
+          this.location_log = 'Please enter location';
+        }
+        if(!this.credentials.salary){
+          this.salary_log = 'Please enter salary';
+        }
+        if(!this.credentials.currency){
+          this.salary_currency_log = 'Please select currency';
+        }
+        if(!this.credentials.job_type){
+          this.employment_log = 'Please select employment type';
+        }
+        if(!this.credentials.job_desc){
+          this.job_desc_log = 'Please enter job description';
+        }
+
         if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
           if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
             this.authenticationService.get_job_desc_msgs(this.user_id.id, 'job_offer')
@@ -762,11 +799,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               );
           }
           else {
-            this.job_offer_log = 'Salary should be a number';
+            this.salary_log = 'Salary should be a number';
+            this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
           }
         }
     else{
-      this.job_offer_log = 'Please enter all info';
+      this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
 

@@ -127,10 +127,14 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>When was the company founded?</label>
-                    <input type="text" class="form-control" placeholder="2000" name="company_founded" [(ngModel)]="company_founded" >
-                    <div class="invalid-feedback d-inline" *ngIf="!company_founded">
+                    <input type="text" class="form-control" id="" #companyFounded="ngModel"  pattern="^[0-9]*$" placeholder="1997" name="company_founded" [(ngModel)]="company_founded" >
+                    <div class="invalid-feedback d-inline" *ngIf="!company_founded; else expected_validation">
                       {{founded_log}}
                     </div>
+                    <div class="invalid-feedback d-inline" #expected_validation *ngIf="companyFounded.errors && company_founded">
+                      Input data should be a number.
+                    </div>
+
                   </div>
 
                 </div>
@@ -140,10 +144,11 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>How is the company funded?</label>
-                    <input type="text" class="form-control"  placeholder="Private investment from the founders and one angle" name="company_funded" [(ngModel)]="company_funded">
+                    <input type="text" class="form-control"  placeholder="Private investment from the founders and one angel" name="company_funded" [(ngModel)]="company_funded">
                     <div class="invalid-feedback d-inline" *ngIf="!company_funded">
                       {{funded_log}}
                     </div>
+
                   </div>
 
                 </div>
@@ -168,7 +173,7 @@
               <div class="col-md-6">
                 <div class="form-row">
                   <div class="form-group w-100">
-                    <label>Upload photo</label>
+                    <label>Company logo (optional)</label>
                     <div class="form-group">
                       <input type="file" accept="image/*" name="image" [(ngModel)]="image" class="form-control-file" id="profile">
                       <span *ngIf="img_src" >{{img_src}}</span>
@@ -180,6 +185,7 @@
                   </div>
                 </div>
               </div>
+
 
             </div>
 
@@ -292,6 +298,7 @@
                     <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
                       {{location_log}}
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -319,7 +326,7 @@
               <div class="col-md-6">
                 <div class="form-row">
                   <div class="form-group w-100">
-                    <label>What roles are you looking for?</label>
+                    <label>What roles are you hiring for?</label>
                     <select multiple formControlName="position" title="(select multiple)" class="selectpicker form-control">
                       <option *ngFor='let role of roles' [selected] = "positionSelectedOptions(role.value)"  [value]="role.value">{{role.name}}</option>
 
@@ -341,7 +348,7 @@
                     <select title="Select currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
                       <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
                     </select>
-                    <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary ">
+                    <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary || current_currency_log">
                       {{current_currency_log}}
                     </div>
                   </div>
@@ -393,7 +400,7 @@
 
               <div class="col-md-6">
                 <div class="form-group w-100">
-                  <label>When do you need hires to start</label>
+                  <label>When do you need hires to start?</label>
                   <select title="(select one)" formControlName = "availability_day" class="selectpicker form-control">
                     <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
 
@@ -415,7 +422,7 @@
                   <div class = "form-group w-100">
                     <label>When would you like to receive emails with candidates that match your search?</label>
                     <div>
-                      <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index">
+                      <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton; let i_ind =index" >
                         <input type="radio"  formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
                       </label>
                     </div>
@@ -431,10 +438,11 @@
           </section>
 
           <div class="row mt-3">
-            <div class = "col-md-12">
-              <button type="submit" class = "btn wob-bg-secondary2 float-right" [disabled]="website.errors && company_website" >Save Profile</button>
-
+            <div class = "col-md-12 float-right text-right">
+              <a routerLink="/company_profile" class = "btn btn-secondary text-white mr-2">Cancel</a>
+              <button type="submit" class = "btn btn-primary " [disabled]="website.errors && company_website" >Save</button>
             </div>
+
           </div>
           <div class="row">
             <div class="col-md-12">

@@ -42,19 +42,18 @@ export class VerifyEmailComponent implements OnInit {
                      if (data['success'] === true && data['msg']) {
                        if (!this.currentUser) {
                          this.succesMsg = 'Email verified. Please login to continue.';
-
-                         //window.location.href = '/login';
+                         window.location.href = '/login';
 
                        }
 
                        else if (this.currentUser.type == "candidate") {
                          this.succesMsg = data['msg'];
-                         //window.location.href = '/candidate_profile';
+                         window.location.href = '/candidate_profile';
                        }
 
                        else if (this.currentUser.type == "company") {
                          this.succesMsg = data['msg'];
-                        // window.location.href = '/company_profile';
+                         window.location.href = '/company_profile';
                        }
                        // return data;
                      }

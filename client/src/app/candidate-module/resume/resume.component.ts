@@ -355,7 +355,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     {name:'EOS', value:'EOS', checked:false},
     {name:'NEO', value:'NEO', checked:false},
     {name:'Waves', value:'Waves', checked:false},
-    {name:'Steem', value:'Steem', checked:false},
+    {name:'Steemit', value:'Steemit', checked:false},
     {name:'Lisk', value:'Lisk', checked:false},
     {name:'Quantum', value:'Quantum', checked:false},
     {name:'Tezos', value:'Tezos', checked:false},
@@ -421,7 +421,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       {name:'Corda', value:'Corda', checked:false},
       {name:'EOS', value:'EOS', checked:false},
       {name:'Waves', value:'Waves', checked:false},
-      {name:'Steem', value:'Steem', checked:false},
+      {name:'Steemit', value:'Steemit', checked:false},
       {name:'Lisk', value:'Lisk', checked:false},
       {name:'Quantum', value:'Quantum', checked:false},
       {name:'Tezos', value:'Tezos', checked:false},
@@ -482,6 +482,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
    blockchain_exp(expForm: NgForm)
    {
      this.error_msg="";
+
      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
      if(this.commercially_worked.length !== this.commercial_expYear.length )
      {
@@ -509,6 +510,19 @@ export class ResumeComponent implements OnInit,AfterViewInit {
        if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
        && this.commercialSkills.length === this.commercialSkillsExperienceYear.length && this.formal_skills_exp.length === this.formal_skills.length)
        {
+         if(this.commercially_worked.length === 0) {
+           expForm.value.commercial_experience_year = [];
+         }
+
+         if(this.platforms_designed.length === 0) {
+           expForm.value.platforms = [];
+         }
+         if(this.commercialSkills.length === 0) {
+           expForm.value.commercial_skills = [];
+         }
+         if(this.formal_skills_exp.length === 0) {
+           expForm.value.formal_skills = [];
+         }
         this.authenticationService.resume(this.currentUser._creator , expForm.value)
             .subscribe(
                 data => {
