@@ -1,7 +1,7 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const crypto = require('crypto');
 const jwtToken = require('../../../services/jwtToken');
-const referral = require('../../../../model/referrals');
+const referral = require('../../../../model/mongoose/referral');
 const errors = require('../../../services/errors');
 
 ///////to create new candidate////////////////////////////
@@ -11,13 +11,13 @@ module.exports = async function (req, res) {
     let userParam = req.body;
 
     if(userParam.linkedin_id) {
-        const candidateUserDoc = await User.findOne({ linkedin_id: userParam.linkedin_id }).lean();
+        const candidateUserDoc = await User.findOne({ linkedin_id: userParam.linkedin_id });
         if (candidateUserDoc) {
             let errorMsg = 'Email "' + userParam.email + '" is already taken';
             errors.throwError(errorMsg , 400)
         }
     }
-    const userDoc = await User.findOne({ email: userParam.email }).lean();
+    const userDoc = await User.findOneByEmail(userParam.email);
     if (userDoc )
     {
         let errorMsg = 'Email "' + userParam.email + '" is already taken';
@@ -61,7 +61,7 @@ module.exports = async function (req, res) {
     if(candidateUserCreated) {
         let jwtUserToken = jwtToken.createJwtToken(candidateUserCreated);
         await User.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken}});
-        const referralDoc = await referral.findOne({ email: userParam.email }).lean();
+        const referralDoc = await referral.findOneByEmail( userParam.email );
         if(referralDoc) {
             url_token = referralDoc.url_token;
         }

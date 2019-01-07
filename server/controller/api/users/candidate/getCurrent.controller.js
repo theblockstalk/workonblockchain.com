@@ -1,9 +1,9 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const filterReturnData = require('../filterReturnData');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
-    const candidateDoc = await User.findById(req.params._id).lean();
+    const candidateDoc = await User.findOneById(req.params._id);
     if(candidateDoc) {
         const filterData = filterReturnData.removeSensativeData(candidateDoc);
         res.send(filterData);

@@ -1,4 +1,4 @@
-const User = require('../../../../../model/users');
+const User = require('../../../../../model/mongoose/users');
 const Pages = require('../../../../../model/pages_content');
 const errors = require('../../../../services/errors');
 
@@ -7,7 +7,7 @@ const errors = require('../../../../services/errors');
 module.exports = async function (req,res) {
 
 	let userId = req.auth.user._id;
-	let candidateUserDoc = await User.findOne({ _id: userId }).lean();
+	let candidateUserDoc = await User.findOneById(userId);
 	if(candidateUserDoc) {
         const queryBody = req.body;
         let candidateUpdate = {}

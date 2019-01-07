@@ -1,5 +1,5 @@
 const settings = require('../../../../settings');
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const logger = require('../../../services/logger');
 const errors = require('../../../services/errors');
 
@@ -16,7 +16,7 @@ module.exports = async function (req, res) {
 
     let userId = req.auth.user._id;
 
-    const candidateDoc = await User.findOne({ _id: userId }).lean();
+    const candidateDoc = await User.findOneById(userId);
     if(candidateDoc) {
         await User.update({ _id: userId },{ $set: {'image' : path } });
         res.send({

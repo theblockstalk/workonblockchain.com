@@ -1,4 +1,4 @@
-const User = require('../../../../../model/users');
+const User = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
 
 ///// for candidate resume(blockchain) wizard ///////////////////
@@ -7,7 +7,7 @@ module.exports = async function (req, res) {
 
     const myUserDoc = req.auth.user;
 
-    const candidateUserDoc = await User.findOne({ _id: myUserDoc._id }).lean();
+    const candidateUserDoc = await User.findOneById(myUserDoc._id );
 
     if(candidateUserDoc) {
         const userParam = req.body;

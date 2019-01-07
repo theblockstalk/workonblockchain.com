@@ -1,4 +1,4 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const Chat = require('../../../../model/chat');
 const logger = require('../../../services/logger');
 const currency = require('../../../services/currency');
@@ -40,7 +40,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     }
     let userDocIds;
     let candidateQuery = [];
-    userDocIds = await User.find(userQuery, {_id: 1}).lean();
+    userDocIds = await User.findOne(userQuery, {_id: 1});
 
     if(userDocIds && userDocIds.length > 0) {
         candidateQuery.push({ "_id": {$in: userDocIds}});
@@ -111,7 +111,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         }
     }
     const searchQuery = {$and: candidateQuery};
-    candidates = await User.find(searchQuery).lean();
+    candidates = await User.findOne(searchQuery);
     if (!candidates) {
         errors.throwError("No candidates matched this search criteria", 404);
     }

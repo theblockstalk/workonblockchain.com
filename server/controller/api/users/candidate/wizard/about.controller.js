@@ -1,5 +1,5 @@
-const User = require('../../../../../model/users');
-const referral = require('../../../../../model/referrals');
+const User = require('../../../../../model/mongoose/users');
+const referral = require('../../../../../model/mongoose/referral');
 const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
 const verify_send_email = require('../../auth/verify_send_email');
 const jwtToken = require('../../../../services/jwtToken');
@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
 
     const myUserDoc = req.auth.user;
 
-    const candidateUserDoc = await User.findOne({ _id: myUserDoc._id }).lean();
+    const candidateUserDoc = await User.findOneById(myUserDoc._id );
 
     if(candidateUserDoc) {
         const queryBody = req.body;
@@ -28,14 +28,12 @@ module.exports = async function (req, res) {
 
         await User.update({ _id: candidateUserDoc._id },{ $set: candidateUpdate });
 
-        const refDoc = await referral.findOne({
-            email : myUserDoc.referred_email
-        }).lean();
+        const refDoc = await referral.findOneByEmail(myUserDoc.referred_email);
         if(refDoc){
-            const userDoc = await User.findOne({email : refDoc.email}).lean();
+            const userDoc = await User.findOneByEmail(refDoc.email);
 
             if(userDoc && userDoc.type){
-                const candidateUserDoc = await User.findOne({_id : userDoc._id}).lean();
+                const candidateUserDoc = await User.findOneById(userDoc._id);
                 let data;
                 if(candidateUserDoc && candidateUserDoc.first_name)
                 {

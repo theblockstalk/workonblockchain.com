@@ -1,8 +1,8 @@
-const User = require('../../../../model/users');
+const User = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
 
 module.exports.update = async function update(candidateUserId, queryBody, educationHistory, workHistory, requestUserId) {
-    const candidateDoc = await User.findOne({ _id: candidateUserId }).lean();
+    const candidateDoc = await User.findOneById(candidateUserId);
 
     let updateCandidateUser = {};
 
