@@ -163,7 +163,7 @@ const endpoints = [
 const register = function(endpoint) {
     const path = '/v2' + endpoint.request.path;
     router[endpoint.request.type](path,
-        asyncMiddleware(endpoint.auth),
+        asyncMiddleware.thenNext(endpoint.auth),
         asyncMiddleware(endpoint.endpoint)
     );
 };
