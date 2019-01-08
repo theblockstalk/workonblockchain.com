@@ -18,7 +18,12 @@ const validateInputs = function(inputSchemas) {
             if (schema) {
                 const input = req[type];
                 if (input) {
-                    const doc = new mongoose.Document(input, schema);
+                    console.log('validating ' + type);
+                    console.log(input, schema.obj);
+                    const model = mongoose.model('modelToValidate' + Date.now().toString(), schema);
+                    const doc = new model(input);
+                    // let a = mongoose;
+                    // const doc = new mongoose.Document(input, schema);
                     const errors = doc.validateSync();
                     if (errors) throw new Error(JSON.stringify(errors));
                 }
