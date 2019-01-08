@@ -226,10 +226,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }, 5000);
     this.length='';
     this.log='';
-    this.selectedObj=-1;
-    this.countryChange=-1;
-    this.currencyChange= -1;
-    this.availabilityChange=-1;
     this.info = [];
     this.msg='';
 
@@ -434,7 +430,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   not_found;
   salarysearchdata(key , value) {
     this.not_found = '';
-
+    console.log(this.salary);
+    console.log(this.currencyChange);
     if (this.salary) {
       if (this.currencyChange) {
         this.searchdata(key, value);
@@ -446,11 +443,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(this.location_value && this.location_value.length > 0) queryBody.locations = this.location_value;
         if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.select_value;
         if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.selecteddd;
-        if(this.availabilityChange !== -1) queryBody.availability_day = this.availabilityChange;
+        if(this.availabilityChange) queryBody.availability_day = this.availabilityChange;
         if(this.salary && this.currencyChange) {
           queryBody.current_salary  = this.salary;
           queryBody.current_currency = this.currencyChange;
         }
+        console.log(queryBody)
         this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data => {

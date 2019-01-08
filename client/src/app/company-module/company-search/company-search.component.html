@@ -52,9 +52,9 @@
 
             <div class = "form-group">
 
-              <input type="text" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
+              <input type="number" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Job salary">
 
-              <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency"(ngModelChange)="salarysearchdata('currency' , $event)">
+              <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)">
                 <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
               </select>
 
@@ -108,17 +108,17 @@
                       </ng-template>
                       <div class="ml-4">
 
-                        <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
-                        <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._creator._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
+                        <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.initials"><h2 class="">{{data.initials}}</h2></a>
+                        <a  [routerLink]="['/candidate-detail']"  [queryParams]="{user: data._id }" *ngIf="data.first_name"><h2 class="">{{data.first_name[0].toUpperCase() + data.first_name.slice(1)}} </h2></a>
 
                         <h5 class="ml-5">
-                          <span class="badge badge-pill badge-dark mr-1" *ngFor= "let roles of data.roles"> {{roles}} </span>
+                          <span class="badge badge-pill badge-dark mr-1" *ngFor= "let roles of data.candidate.roles"> {{roles}} </span>
                         </h5>
                       </div>
                     </div>
                     <div class="col-md-3">
                       <form #abc_form="ngForm" (ngSubmit)="onSubmit(abc_form.value)">
-                        <input type="hidden" name="id" [ngModel]="data._creator._id">
+                        <input type="hidden" name="id" [ngModel]="data._id">
                         <input type="hidden" name="name" [ngModel]="data.initials">
                         <div class="float-right">
                           <button type="submit" class = "btn btn-primary" data-toggle="modal" data-target="#jobDescriptionModal" >Send job description</button>
@@ -131,12 +131,12 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                        <span ><i>{{data.why_work}}</i></span>
+                        <span ><i>{{data.candidate.why_work}}</i></span>
                         </div>
                       </div>
                     </div>
 
-                    <div class="row" *ngIf="data.programming_languages && data.programming_languages.length>0">
+                    <div class="row" *ngIf="data.candidate.programming_languages && data.candidate.programming_languages.length>0">
                       <div class="col-md-8">
                         <div class="form-group">
                           <label><h4>Bio</h4></label>
@@ -150,7 +150,7 @@
                         <div class="form-group">
                           <label><h4>Languages</h4></label>
                           <div>
-                            <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngFor = 'let lang of sorting(data.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
+                            <div class="d-inline-block p-2 border rounded mr-2 mt-2" *ngFor = 'let lang of sorting(data.candidate.programming_languages)'>{{lang.language}}: {{lang.exp_year}} years </div>
                           </div>
                         </div>
                       </div>

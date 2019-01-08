@@ -1,4 +1,3 @@
-const User = require('../../../../../model/users');
 const filterReturnData = require('../../filterReturnData');
 const errors = require('../../../../services/errors');
 const candidateSearch = require('../../candidate/searchCandidates');

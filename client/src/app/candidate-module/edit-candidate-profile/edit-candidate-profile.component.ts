@@ -1256,7 +1256,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.error_msg = "";
     this.count = 0;
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(profileForm.value);
     if(!this.info.first_name)
     {
       this.first_name_log="Please enter first name";
@@ -1480,6 +1479,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
     )
     {
+      if(typeof(this.expected_salaryyy) === 'string' )
+        profileForm.value.expected_salary = parseInt(this.expected_salaryyy);
       this.updateProfileData(profileForm.value);
     }
     else {

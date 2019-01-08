@@ -1,18 +1,19 @@
-const EmployerProfile = require('../../../../model/employer_profile');
+const EmployerProfile = require('../../../../model/mongoose/company');
 const filterReturnData = require('../filterReturnData');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
-
-    let employerProfile = await EmployerProfile.findById(req.params._id).populate('_creator').lean();
+console.log(req.params);
+console.log(req.body);
+    let employerProfile = await EmployerProfile.findOneById(req.params._id);
     if(employerProfile){
         const employerRes =  filterReturnData.removeSensativeData(employerProfile);
         res.send(employerRes);
     }
     else {
-        employerProfile =  await EmployerProfile.find({_creator : req.params._id}).populate('_creator').lean();
-        if(employerProfile && employerProfile.length > 0){
-            const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile[0]);
+        employerProfile =  await EmployerProfile.findOne({_creator : req.params._id});
+        if(employerProfile){
+            const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
             res.send(employerCreatorRes);
         }
         else

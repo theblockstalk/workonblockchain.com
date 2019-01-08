@@ -1,4 +1,4 @@
-const EmployerProfile = require('../../../../../model/employer_profile');
+const EmployerProfile = require('../../../../../model/mongoose/company');
 const Pages = require('../../../../../model/pages_content');
 const errors = require('../../../../services/errors');
 
@@ -7,7 +7,7 @@ const errors = require('../../../../services/errors');
 module.exports = async   function (req,res)
 {
     let userId = req.auth.user._id;
-    const employerDoc = await EmployerProfile.findOne({ _creator: userId }).lean();
+    const employerDoc = await EmployerProfile.findOne({ _creator: userId });
 
     if(employerDoc) {
         const queryBody = req.body;

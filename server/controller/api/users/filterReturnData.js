@@ -15,11 +15,12 @@ const removeSensativeData = module.exports.removeSensativeData = function remove
     return userDoc;
 };
 
-const anonymosUserFields = ['candidate', 'image', 'initials', 'nationality'];
+const anonymosUserFields = ['candidate', 'image', 'initials', 'nationality', '_id'];
 
 const anonymosCandidateFields = ['locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_areas',
-    'availability_day', 'why_work', 'commercial_platforms', 'experimented_platforms', 'platforms', 'current_currency',
-    'current_salary', 'programming_languages', 'education_history', 'work_history', 'description','nationality'];
+    'availability_day', 'why_work', 'commercial_platforms', 'blockchain', 'experimented_platforms', 'smart_contract_platforms' , 'commercial_skills',
+    'formal_skills' , 'current_currency', 'current_salary', 'programming_languages', 'education_history', 'work_history', 'description',
+    'nationality'];
 
 const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(userDoc) {
 
@@ -33,7 +34,7 @@ const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData
     userDoc = filterWhiteListFields(userDoc, anonymosUserFields);
 
     if (userDoc.candidate) {
-        if (userDoc.candidte.work_history) {
+        if (userDoc.candidate.work_history) {
             userDoc.candidate.work_history = userDoc.candidate.work_history.map((work) => {
                 delete work.companyname;
             return work;

@@ -1,6 +1,7 @@
 const users = require('../../../model/users');
 const CandidateProfile = require('../../../model/candidate_profile');
 const EmployerProfile = require('../../../model/employer_profile');
+const errors = require('../../services/errors');
 
 const filterReturnData = require('../users/filterReturnData');
 

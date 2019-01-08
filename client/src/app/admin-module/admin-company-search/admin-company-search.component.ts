@@ -89,6 +89,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         data =>
         {
+          console.log(data);
             for(let i=0; i < data['length']; i++)
             {
               this.length++;
