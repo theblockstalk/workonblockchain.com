@@ -10,7 +10,6 @@ module.exports = async function (req, res) {
     if (userDoc) {
         let newStatus = {
             status: status,
-            status_updated: new Date(),
             timestamp: new Date()
         };
         if (status === 'approved' && !userDoc.first_approved_date) {
