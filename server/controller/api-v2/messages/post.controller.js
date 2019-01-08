@@ -1,4 +1,4 @@
-const auth = require('../../middleware/auth');
+const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const enumerations = require('../../../model/enumerations');
 
@@ -28,12 +28,10 @@ module.exports.request = {
 
 module.exports.auth = async function(req) {
     console.log('in auth function')
-    await auth.isValidUser(req);
-    //
+    // await auth.isValidUser(req);
+
     // if (req.query.admin) {
-    //     if (req.auth.user.is_admin !== true) {
-    //         errors.throwError("Not an admin", 401);
-    //     }
+    //     await auth.isAdmin(req);
     // }
 }
 
