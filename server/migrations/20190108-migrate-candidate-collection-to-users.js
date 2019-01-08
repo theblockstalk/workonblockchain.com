@@ -31,7 +31,7 @@ module.exports.up = async function() {
             for(let platform of userDoc.commercial_platform) {
                 let commercialPlatformInput = {
                     name: platform.platform_name,
-                    exp_year: platform.platform
+                    exp_year: platform.exp_year
                 }
 
                 commercialPlatformsObject.push(commercialPlatformInput);
@@ -44,7 +44,7 @@ module.exports.up = async function() {
             for(let platform of userDoc.platforms) {
                 let platformsInput = {
                     name: platform.platform_name,
-                    exp_year: platform.platform
+                    exp_year: platform.exp_year
                 }
 
                 platformsObject.push(platformsInput);
