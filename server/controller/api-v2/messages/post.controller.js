@@ -7,24 +7,24 @@ module.exports.request = {
     path: '/messages'
 };
 
-// const bodySchema = new Schema({
-//     user_id: {
-//         type: String,
-//         required: true
-//     },
-//     msg_tag: {
-//         type: String,
-//         enum: enumerations.chatMsgTypes,
-//         required: true
-//     }
-//     // message: {
-//     //
-//     // }
-// });
+const bodySchema = new Schema({
+    user_id: {
+        type: String,
+        required: true
+    },
+    msg_tag: {
+        type: String,
+        enum: enumerations.chatMsgTypes,
+        required: true
+    }
+    // message: {
+    //
+    // }
+});
 
-// module.exports.inputValidation = {
-//     body: bodySchema
-// };
+module.exports.inputValidation = {
+    body: bodySchema
+};
 
 module.exports.auth = async function(req) {
     console.log('in auth function')
