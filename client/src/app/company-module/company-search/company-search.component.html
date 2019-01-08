@@ -273,6 +273,16 @@
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class = "alert alert-danger" *ngIf="job_offer_log_erorr">
+                {{job_offer_log_erorr}}
+              </div>
+              <div class = "alert alert-danger" *ngIf="job_offer_log_success">
+                {{job_offer_log_success}}
+              </div>
+            </div>
+          </div>
           <div class="modal-footer">
             <button type="reset" class="btn btn-secondary">Reset</button>
             <button type="submit" class="btn btn-primary">Send</button>
