@@ -298,6 +298,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   salary_currency_log;
   employment_log;
   job_desc_log;
+  job_offer_log_erorr;
 
   send_job_offer(msgForm : NgForm) {
     this.job_title_log = '';
@@ -306,6 +307,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     this.salary_currency_log = '';
     this.employment_log = '';
     this.job_desc_log = '';
+    this.job_offer_log_erorr = '';
+
     if(!this.credentials.job_title){
       this.job_title_log = 'Please enter job title';
     }
@@ -332,7 +335,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         this.authenticationService.get_job_desc_msgs(this.credentials.user_id, 'job_offer')
           .subscribe(
             data => {
-              this.job_offer_msg = 'You have already sent a job description to this candidate';
+              this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
             },
             error => {
               if(error['status'] === 500 || error['status'] === 401)

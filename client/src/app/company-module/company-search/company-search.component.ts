@@ -649,6 +649,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.salary_currency_log = '';
     this.employment_log = '';
     this.job_desc_log = '';
+    this.job_offer_log_success = '';
+    this.job_offer_log_erorr = '';
 
     this.authenticationService.getLastJobDesc()
       .subscribe(
@@ -697,6 +699,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     salary_currency_log;
     employment_log;
     job_desc_log;
+    job_offer_log_success;
+    job_offer_log_erorr;
 
     send_job_offer(msgForm : NgForm){
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -706,6 +710,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.salary_currency_log = '';
         this.employment_log = '';
         this.job_desc_log = '';
+        this.job_offer_log_success = '';
+        this.job_offer_log_erorr = '';
 
         if(!this.credentials.job_title){
           this.job_title_log = 'Please enter job title';
@@ -731,7 +737,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.authenticationService.get_job_desc_msgs(this.user_id.id, 'job_offer')
               .subscribe(
                 data => {
-                  this.job_offer_log = 'You have already sent a job description to this candidate';
+                  this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
                 },
                 error => {
                   if (error['status'] === 500 || error['status'] === 401) {
@@ -754,7 +760,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
                       .subscribe(
                         data => {
-                          this.job_offer_log = 'Message successfully sent';
+                          this.job_offer_log_success = 'Message successfully sent';
                           this.credentials.job_title = '';
                           this.credentials.salary = '';
                           this.credentials.currency = '';
@@ -775,7 +781,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                             this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
                               .subscribe(
                                 data => {
-                                  this.job_offer_log = 'Message successfully sent';
+                                  this.job_offer_log_success = 'Message successfully sent';
                                   this.credentials.job_title = '';
                                   this.credentials.salary = '';
                                   this.credentials.currency = '';
@@ -814,6 +820,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.credentials.location = '';
     this.credentials.job_type = '';
     this.credentials.job_desc = '';
+    this.job_offer_log_success = '';
+    this.job_offer_log_erorr = '';
   }
 
   sorting(languages){
