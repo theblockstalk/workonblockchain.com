@@ -3,12 +3,13 @@ const candidateProfile = require('../model/mongoose/candidate');
 const Referral = require('../model/referrals');
 const mongoose = require('mongoose');
 
-let totalDocsToProcess, totalModified = 0;
+let totalDocsToProcess, totalModified = 0, totalProcessed = 0;
 module.exports.up = async function() {
     totalDocsToProcess =await candidateProfile.count({});
-    console.log('Total document to process: ' + totalDocsToProcess);
+    logger.debug(totalDocsToProcess);
     await candidateProfile.findAndIterate({}, async function(userDoc) {
-        console.log("candidate document: " + userDoc);
+        totalProcessed++;
+        logger.debug("candidate document: ", userDoc);
        let migrateUser ={};
         if(userDoc.terms_id) migrateUser['candidate.terms_id'] = userDoc.terms_id;
         if(userDoc.marketing_emails)  migrateUser['marketing_emails'] = userDoc.marketing_emails;
@@ -58,13 +59,13 @@ module.exports.up = async function() {
         if(userDoc.work_history) migrateUser['candidate.work_history'] = userDoc.work_history;
         if(userDoc.description) migrateUser['candidate.description'] = userDoc.description;
 
-        console.log("Migrate input data: " + migrateUser );
-        await Users.update({ _id: userDoc._creator },{ $set: migrateUser });
-        totalModified++;
-
+        logger.debug("migrate user doc: ", migrateUser);
+        const update = await Users.update({ _id: userDoc._creator },{ $set: migrateUser });
+        if (update && update.nModified) totalModified++;
 
     });
 
+    console.log('Total processed document: ' + totalProcessed);
     console.log('Total modified document: ' + totalModified);
 
 
