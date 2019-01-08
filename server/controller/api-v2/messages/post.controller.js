@@ -26,16 +26,16 @@ module.exports.request = {
 //     body: bodySchema
 // };
 
-// module.exports.auth = async function(req) {
-//     console.log('in auth function')
-//     // await auth.isValidUser(req);
-//
-//     // if (req.query.admin) {
-//     //     if (req.auth.user.is_admin !== true) {
-//     //         errors.throwError("Not an admin", 401);
-//     //     }
-//     // }
-// }
+module.exports.auth = async function(req) {
+    console.log('in auth function')
+    await auth.isValidUser(req);
+    //
+    // if (req.query.admin) {
+    //     if (req.auth.user.is_admin !== true) {
+    //         errors.throwError("Not an admin", 401);
+    //     }
+    // }
+}
 
 module.exports.endpoint = async function (req, res) {
     console.log('in endpoint')
