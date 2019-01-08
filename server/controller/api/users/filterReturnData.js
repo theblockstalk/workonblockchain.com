@@ -15,19 +15,18 @@ const removeSensativeData = module.exports.removeSensativeData = function remove
     return userDoc;
 };
 
-const anonymosUserFields = ['candidate', 'image', 'initials', 'nationality', '_id'];
+const anonymosUserFields = ['candidate', 'image', 'initials', 'nationality', '_id', 'is_verify', 'disable_account' , 'type'];
 
 const anonymosCandidateFields = ['locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_areas',
     'availability_day', 'why_work', 'commercial_platforms', 'blockchain', 'experimented_platforms', 'smart_contract_platforms' , 'commercial_skills',
     'formal_skills' , 'current_currency', 'current_salary', 'programming_languages', 'education_history', 'work_history', 'description',
-    'nationality'];
+    'nationality' , 'status'];
 
 const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(userDoc) {
 
     if(userDoc.first_name && userDoc.last_name)
     {
         const initials = createInitials(userDoc.first_name, userDoc.last_name);
-
         userDoc.initials = initials;
     }
 
