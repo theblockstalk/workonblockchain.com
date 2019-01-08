@@ -156,4 +156,14 @@ router.get('/users/run_cron/:cron_name', auth.isAdmin, asyncMiddleware(adminRunC
 // Pages
 router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent));
 
+// const endpoints = [
+//     require('./controller/api-v2/messages/post.controller')
+// ];
+//
+// const register = function(endpoint) {
+//
+// }
+const post = require('./controller/api-v2/messages/post.controller');
+router[post.request.type]('/v2' + post.request.path, asyncMiddleware(post.endpoint));
+
 module.exports = router;

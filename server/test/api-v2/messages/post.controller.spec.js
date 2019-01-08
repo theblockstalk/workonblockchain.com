@@ -11,12 +11,12 @@ chai.use(chaiHttp);
 
 describe('send a message', function () {
 
-    afterEach(async () => {
+    afterEach(async function () {
         console.log('dropping database');
         await mongo.drop();
     })
 
-    describe('POST /messages', () => {
+    describe('POST /v2/messages', () => {
 
         it('it should send a message', async () => {
 
