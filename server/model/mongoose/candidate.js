@@ -44,3 +44,12 @@ module.exports.count = async function count(selector) {
 module.exports.findWithCursor = async function findWithCursor(selector) {
     return await Candidate.find(selector).cursor();
 }
+
+module.exports.findAndIterate = async function findAndIterate(selector, fn) {
+    let cursor = await this.findWithCursor(selector);
+    let doc = await cursor.next();
+
+    for (null; doc !== null; doc = await cursor.next()) {
+        await fn(doc);
+    }
+}

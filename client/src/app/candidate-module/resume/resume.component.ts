@@ -509,7 +509,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
-
+console.log(this.experimented_platform);
     if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length && this.formal_skills_exp.length === this.formal_skills.length)
     {

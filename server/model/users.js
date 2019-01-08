@@ -230,10 +230,11 @@ const UserSchema = new Schema({
                                 type: String,
                                 enum: enumerations.blockchainPlatforms
                             },
-                            exp_year: {
+                            value: {
                                 type: String,
                                 enum: enumerations.blockchainPlatforms
                             },
+                            checked : Boolean
                         }]
                     },
                     smart_contract_platforms: {
