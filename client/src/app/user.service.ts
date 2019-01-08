@@ -754,9 +754,9 @@ export class UserService {
     }));
   }
 
-  getCandidate(sender_id:string,receiver_id:string,is_company_reply:number,type: string)
+  getCandidate(sender_id:string,receiver_id:string,msg_tag:string,type: string)
   {
-    return this.http.post(URL+'users/get_candidate', {type:type,sender_id:sender_id,receiver_id:receiver_id,is_company_reply:is_company_reply}, {
+    return this.http.post(URL+'users/get_candidate', {type:type,sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

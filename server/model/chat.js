@@ -93,6 +93,10 @@ const ChatSchema = new Schema({
                 type: String,
                 required: false
             },
+            description:{
+                type: String,
+                required: false
+            },
             date_time: {
                 type: Date,
                 required: false

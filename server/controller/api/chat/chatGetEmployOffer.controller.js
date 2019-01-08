@@ -5,9 +5,6 @@ module.exports = async function (req, res) {
     const userId = req.auth.user._id;
     const chatDoc = await chat.findOne({
         $and:[{
-        is_job_offered: 1
-        },
-        {
             sender_id: userId
         },
         {

@@ -6,6 +6,7 @@ const filterReturnData = require('../users/filterReturnData');
 
 module.exports = async function (req, res) {
     let sender_id,receiver_id,msg_tag,user_type;
+    console.log(req.body);
     if (req.body.sender_id === '0') { // company is calling endpoint
         sender_id = req.auth.user._id;
         receiver_id = req.body.receiver_id;
@@ -41,6 +42,7 @@ module.exports = async function (req, res) {
                 else{
                     query_result = filterReturnData.anonymousSearchCandidateData(query_result);
                 }
+                console.log(query_result);
                 res.send({
                     users:query_result
                 });

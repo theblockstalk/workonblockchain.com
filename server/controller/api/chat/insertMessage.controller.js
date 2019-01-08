@@ -25,38 +25,114 @@ module.exports = async function (req, res) {
         interview_date = req.body.date_of_joining+' '+req.body.interview_time+':00';
     }
 
-    let newChat = new chat({
-        sender_id : mongoose.Types.ObjectId(userId),
-        receiver_id : mongoose.Types.ObjectId(req.body.receiver_id),
-        msg_tag: req.body.msg_tag,
-        is_read: false,
-        date_created: new Date(),
-        //new one
-        message: {
-            job_offer:{
-                title: req.body.job_title,
-                salary: req.body.salary,
-                salary_currency: req.body.currency,
-                type: req.body.job_type,
-                location: req.body.interview_location,
-                description: new_description
+    if(req.body.msg_tag === 'job_offer') {
+        let newChat = new chat({
+            sender_id: mongoose.Types.ObjectId(userId),
+            receiver_id: mongoose.Types.ObjectId(req.body.receiver_id),
+            msg_tag: req.body.msg_tag,
+            is_read: false,
+            date_created: new Date(),
+            //new one
+            message: {
+                job_offer: {
+                    title: req.body.job_title,
+                    salary: req.body.salary,
+                    salary_currency: req.body.currency,
+                    type: req.body.job_type,
+                    location: req.body.interview_location,
+                    description: new_description
+                }
             }
-        }
-        //old one
-        /*sender_name: req.body.sender_name,
-        receiver_name: req.body.receiver_name,
-        message: new_msg,
-        description: new_description,
-        job_title: req.body.job_title,
-        salary: req.body.salary,
-        salary_currency: req.body.currency,
-        date_of_joining: '',
-        is_company_reply: req.body.is_company_reply,
-        job_type: req.body.job_type,
-        interview_location: req.body.interview_location,
-        interview_date_time: interview_date*/
+            //old one
+            /*sender_name: req.body.sender_name,
+            receiver_name: req.body.receiver_name,
+            message: new_msg,
+            description: new_description,
+            job_title: req.body.job_title,
+            salary: req.body.salary,
+            salary_currency: req.body.currency,
+            date_of_joining: '',
+            is_company_reply: req.body.is_company_reply,
+            job_type: req.body.job_type,
+            interview_location: req.body.interview_location,
+            interview_date_time: interview_date*/
 
-    });
-    await newChat.save();
-    res.send({Success:'Msg sent'});
+        });
+        await newChat.save();
+        res.send({Success: 'Msg sent'});
+    }
+
+    if(req.body.msg_tag === 'job_offer_accepted') {
+        let newChat = new chat({
+            sender_id: mongoose.Types.ObjectId(userId),
+            receiver_id: mongoose.Types.ObjectId(req.body.receiver_id),
+            msg_tag: req.body.msg_tag,
+            is_read: false,
+            date_created: new Date(),
+            //new one
+            message: {
+                job_offer_accepted: {
+                    message: new_msg
+                }
+            }
+        });
+        await newChat.save();
+        res.send({Success: 'Msg sent'});
+    }
+
+    if(req.body.msg_tag === 'job_offer_rejected') {
+        let newChat = new chat({
+            sender_id: mongoose.Types.ObjectId(userId),
+            receiver_id: mongoose.Types.ObjectId(req.body.receiver_id),
+            msg_tag: req.body.msg_tag,
+            is_read: false,
+            date_created: new Date(),
+            //new one
+            message: {
+                job_offer_rejected: {
+                    message: new_msg
+                }
+            }
+        });
+        await newChat.save();
+        res.send({Success: 'Msg sent'});
+    }
+
+    if(req.body.msg_tag === 'normal') {
+        let newChat = new chat({
+            sender_id: mongoose.Types.ObjectId(userId),
+            receiver_id: mongoose.Types.ObjectId(req.body.receiver_id),
+            msg_tag: req.body.msg_tag,
+            is_read: false,
+            date_created: new Date(),
+            //new one
+            message: {
+                normal: {
+                    message: new_msg
+                }
+            }
+        });
+        await newChat.save();
+        res.send({Success: 'Msg sent'});
+    }
+
+    if(req.body.msg_tag === 'interview_offer') {
+        let newChat = new chat({
+            sender_id: mongoose.Types.ObjectId(userId),
+            receiver_id: mongoose.Types.ObjectId(req.body.receiver_id),
+            msg_tag: req.body.msg_tag,
+            is_read: false,
+            date_created: new Date(),
+            //new one
+            message: {
+                interview_offer: {
+                    location: req.body.interview_location,
+                    description: new_description,
+                    date_time: interview_date
+                }
+            }
+        });
+        await newChat.save();
+        res.send({Success: 'Msg sent'});
+    }
 };

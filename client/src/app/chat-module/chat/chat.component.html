@@ -150,7 +150,7 @@
                               {{msg.message.job_offer.location}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.message.job_offer || msg.message.employment_offer">
+                            <span *ngIf="msg.message.job_offer || msg.message.employment_offer || msg.message.interview_offer">
                               <b>Description:</b><br>
                             </span>
                             <span *ngIf="msg.message.job_offer" [innerHTML]="msg.message.job_offer.description | safeHtml">
@@ -161,8 +161,9 @@
                               {{msg.message.employment_offer.description}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
-                              {{msg.message.normal.message}}
+                            <span *ngIf="msg.message.interview_offer" [innerHTML]="msg.message.interview_offer.description | safeHtml">
+                              {{msg.message.interview_offer.description}}
+                              <br/>
                             </span>
                             <span *ngIf="msg.message.employment_offer">
                               <b>Employment contract: </b>
@@ -170,8 +171,21 @@
                             <span *ngIf="msg.message.employment_offer">
                               <a href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
                             </span>
+                            <span *ngIf="msg.message.employment_offer">
+                              <a *ngIf="msg.message.employment_offer.file_url !== ''" href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              <span *ngIf="msg.message.employment_offer.file_url === ''">N/A</span>
+                            </span>
                             <span *ngIf="msg.message.file">
                               <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                            </span>
+                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
+                              {{msg.message.normal.message}}
+                            </span>
+                            <span *ngIf="msg.message.job_offer_accepted" [innerHTML]="msg.message.job_offer_accepted.message | safeHtml">
+                              {{msg.message.job_offer_accepted.message}}
+                            </span>
+                            <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
+                              {{msg.message.job_offer_rejected.message}}
                             </span>
                           </p>
                         </li>
@@ -183,7 +197,7 @@
                         <li class="replies mb-5 col-md-12">
                           <div class="arrow-up"></div>
                           <p class = "p-2 rec_p rounded text-light d-inline-block wob-bg-primary1">
-                            <span *ngIf="msg.job_title !== ''">
+                            <span *ngIf="msg.message.job_offer">
                               <b>Job title:</b>
                               {{msg.message.job_offer.title}}
                               <br/>
@@ -223,41 +237,49 @@
                               {{msg.message.employment_offer.start_date | date: 'MM/dd/yyyy'}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_date_time">
+                            <span *ngIf="msg.message.interview_offer">
                               <b>Interview date & time:</b>
-                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm'}}
+                              {{msg.message.interview_offer.date_time | date: 'MM/dd/yyyy HH:mm'}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_location && msg.msg_tag === 'interview_offer'">
+                            <span *ngIf="msg.message.interview_offer">
                               <b>Interview location:</b>
-                              {{msg.interview_location}}
+                              {{msg.message.interview_offer.location}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_location && msg.msg_tag === 'job_offer'">
-                              <b>Location:</b>
-                              {{msg.interview_location}}
-                              <br/>
-                            </span>
-                            <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+                            <span *ngIf="msg.message.job_offer || msg.message.employment_offer || msg.message.interview_offer">
                               <b>Description:</b><br>
                             </span>
-                            <span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
-                              {{msg.description}}
+                            <span *ngIf="msg.message.job_offer" [innerHTML]="msg.message.job_offer.description | safeHtml">
+                              {{msg.message.job_offer.description}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
+                            <span *ngIf="msg.message.employment_offer" [innerHTML]="msg.message.employment_offer.description | safeHtml">
+                              {{msg.message.employment_offer.description}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.interview_offer" [innerHTML]="msg.message.interview_offer.description | safeHtml">
+                              {{msg.message.interview_offer.description}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.employment_offer">
                               <b>Employment contract: </b>
                             </span>
-                            <span *ngIf="msg.file_name">
-                              <a href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
-                              <br/>
+                            <span *ngIf="msg.message.employment_offer">
+                              <a *ngIf="msg.message.employment_offer.file_url !== ''" href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              <span *ngIf="msg.message.employment_offer.file_url === ''">N/A</span>
                             </span>
-                            <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.msg_tag == 'employment_offer'">
-                              {{msg.message}}
-                              <br/>
+                            <span *ngIf="msg.message.file">
+                              <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
                             </span>
-                            <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
-                              {{msg.message}}
+                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
+                              {{msg.message.normal.message}}
+                            </span>
+                            <span *ngIf="msg.message.job_offer_accepted" [innerHTML]="msg.message.job_offer_accepted.message | safeHtml">
+                              {{msg.message.job_offer_accepted.message}}
+                            </span>
+                            <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
+                              {{msg.message.job_offer_rejected.message}}
                             </span>
                           </p>
                         </li>
@@ -274,9 +296,9 @@
                     <div class="message-input">
                       <div class = "offers">
                         <form (submit)="accept_offer(msgForm)" #msgForm = ngForm style="display:inline;">
-                          <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
-                          <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
-                          <input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
+                          <input type="hidden" name="email" [(ngModel)]="credentials.email"/>
+                          <input type="hidden" name="id" [(ngModel)]="credentials.id"/>
+                          <input type="hidden" placeholder="Write your message..." name="msg_body" [(ngModel)]="credentials.msg_body"/>
                           <span class = "offers_btn">
                             <button type="submit" class = "btn btn-warning mb-1 text-light">Accept offer</button>
                           </span>

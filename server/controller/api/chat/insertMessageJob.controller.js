@@ -29,6 +29,25 @@ module.exports = async function (req, res) {
         let newChat = new chat({
             sender_id : mongoose.Types.ObjectId(userId),
             receiver_id : mongoose.Types.ObjectId(req.body.receiver_id),
+            msg_tag: req.body.msg_tag,
+            is_read: false,
+            date_created: new Date(),
+            //new one
+            message: {
+                employment_offer: {
+                    title: req.body.job_title,
+                    salary: req.body.salary,
+                    salary_currency: req.body.currency,
+                    type: req.body.job_type,
+                    start_date: req.body.date_of_joining,
+                    description: new_description,
+                    file_url: path
+                }
+            }
+        });
+        /*let newChat = new chat({
+            sender_id : mongoose.Types.ObjectId(userId),
+            receiver_id : mongoose.Types.ObjectId(req.body.receiver_id),
             sender_name: req.body.sender_name,
             receiver_name: req.body.receiver_name,
             message: new_msg,
@@ -44,7 +63,7 @@ module.exports = async function (req, res) {
             is_job_offered: req.body.job_offered,
             is_read: 0,
             date_created: new Date()
-        });
+        });*/
         await newChat.save();
         res.send({Success:'Msg sent'});
     }
