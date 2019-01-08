@@ -266,7 +266,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
 
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
 
           data =>

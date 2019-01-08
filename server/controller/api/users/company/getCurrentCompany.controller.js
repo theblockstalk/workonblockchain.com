@@ -3,23 +3,17 @@ const filterReturnData = require('../filterReturnData');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
-console.log(req.params);
-console.log(req.body);
-    let employerProfile = await EmployerProfile.findOneById(req.params._id);
+    console.log(req.params);
+    console.log(req.body);
+
+    employerProfile =  await EmployerProfile.findOne({_creator : req.params._id});
     if(employerProfile){
-        const employerRes =  filterReturnData.removeSensativeData(employerProfile);
-        res.send(employerRes);
+        const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
+        res.send(employerCreatorRes);
     }
-    else {
-        employerProfile =  await EmployerProfile.findOne({_creator : req.params._id});
-        if(employerProfile){
-            const employerCreatorRes = filterReturnData.removeSensativeData(employerProfile);
-            res.send(employerCreatorRes);
-        }
-        else
-        {
-            errors.throwError("User not found", 404)
-        }
+    else
+    {
+        errors.throwError("User not found", 404)
     }
 
 }

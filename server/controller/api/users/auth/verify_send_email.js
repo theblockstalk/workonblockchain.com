@@ -19,7 +19,7 @@ module.exports = async function verify_send_email(emailAddress, verifyEmailToken
         }
         if(userDoc.type === 'company') {
             let name;
-            const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).populate('_creator');
+            const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id});
             if(companyDoc && companyDoc.length > 0 ) {
                 if(companyDoc[0].first_name) {
                     name = companyDoc[0].first_name;

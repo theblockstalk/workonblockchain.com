@@ -124,7 +124,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     {name:'Technical Lead', value:'Technical Lead', checked:false},
     {name:'Product Manager', value:'Product Manager', checked:false},
     {name:'Intern Developer', value:'Intern Developer', checked:false},
-    {name:'Researcher', value:'Researcher ', checked:false},
+    {name:'Researcher', value:'Researcher', checked:false},
     {name:'Mobile app developer', value:'Mobile app developer', checked:false},
     {name:'Data scientist', value:'Data scientist', checked:false},
     {name:'Security specialist ', value:'Security specialist', checked:false},
@@ -277,7 +277,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         other_technologies: new FormControl(),
         when_receive_email_notitfications: new FormControl(),
       });
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
           data =>
           {

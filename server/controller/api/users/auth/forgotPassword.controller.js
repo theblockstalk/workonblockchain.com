@@ -42,7 +42,7 @@ module.exports = async function (req,res) {
             }
             if(userDoc.type === 'company') {
                 let name;
-                const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).populate('_creator');
+                const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id});
                 if(companyDoc && companyDoc.length > 0 ) {
                     name = companyDoc[0].first_name;
                 }
