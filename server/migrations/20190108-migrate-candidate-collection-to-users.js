@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 let totalDocsToProcess, totalModified = 0;
 module.exports.up = async function() {
-    totalDocsToProcess = candidateProfile.count({});
+    totalDocsToProcess =await candidateProfile.count({});
     console.log('Total document to process: ' + totalDocsToProcess);
     await candidateProfile.findAndIterate({}, async function(userDoc) {
         console.log("candidate document: " + userDoc);
