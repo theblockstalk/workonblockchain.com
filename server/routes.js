@@ -163,15 +163,10 @@ const endpoints = [
 const register = function(endpoint) {
     const path = '/v2' + endpoint.request.path;
     router[endpoint.request.type](path,
-        function (req, res, next) {
-            asyncMiddleware(endpoint.auth);
-            next()
-        },
+        asyncMiddleware(endpoint.auth),
         asyncMiddleware(endpoint.endpoint)
     );
 };
-// const post = require('./controller/api-v2/messages/post.controller');
-// router[post.request.type]('/v2' + post.request.path, asyncMiddleware(post.endpoint));
 
 const registerEndpoint = function() {
     for (const endpoint of endpoints) {

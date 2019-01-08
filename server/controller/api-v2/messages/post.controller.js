@@ -28,7 +28,7 @@ module.exports.request = {
 
 module.exports.auth = async function(req) {
     console.log('in auth function')
-    // await auth.isValidUser(req);
+    await auth.isValidUser(req);
 
     // if (req.query.admin) {
     //     await auth.isAdmin(req);
