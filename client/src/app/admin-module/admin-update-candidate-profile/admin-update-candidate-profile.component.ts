@@ -1341,7 +1341,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit , AfterViewI
     if((!this.salary && !this.current_currency) || (!this.salary && this.current_currency === "-1")){
       this.count = 0;
     }
-    
+
     if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
       this.info.city && this.info.base_country && this.expected_salaryyy &&  this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency  && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
