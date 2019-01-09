@@ -22,12 +22,22 @@ describe('POST /messages', function () {
     describe('authorization and control', function () {
 
         it('it should should fail with wrong body schema', async function () {
-            const res = await messagesHelpers.post({not_a_field: "my id", msg_tag: 'job_offer'}, 'fake jwt token');
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const res = await messagesHelpers.post({not_a_field: "my id", msg_tag: 'job_offer'}, companyUserDoc.jwt_token);
+            res.body.message.should.equal("ValidationError: user_id: Path `user_id` is required.");
             res.status.should.equal(500);
         })
 
         it('it should should fail with invalid jwtToken', async function () {
             const res = await messagesHelpers.post({user_id: "my id", msg_tag: 'job_offer'}, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViOWQ0MGQ3MjVjZWM5MWY1YzgyNjM0ZiIsInR5cGUiOiJjYW5kaWRhdGUiLCJjcmVhdGVkX2RhdGUiOiIyMDE4LTA5LTE1VDE3OjI2OjQ3LjE4OFoiLCJpYXQiOjE1MzcwMzI0MzZ9.v1uv2zLsqhRPc0ADYqr1ZpY-MfP4sOqrwHsmk25GjN0');
+            res.body.message.should.equal("Cannot read property 'jwt_token' of null");
             res.status.should.equal(500);
         })
 
@@ -41,7 +51,6 @@ describe('POST /messages', function () {
             await companyHelper.signupVerifiedApprovedCompany(company);
             const companyUserDoc = await users.findOneByEmail(company.email);
 
-            //creating a candidate
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
