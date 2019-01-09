@@ -308,7 +308,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       {name:'Technical Lead', value:'Technical Lead', checked:false},
       {name:'Product Manager', value:'Product Manager', checked:false},
       {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher', value:'Researcher ', checked:false},
+      {name:'Researcher', value:'Researcher', checked:false},
       {name:'Mobile app developer', value:'Mobile app developer', checked:false},
       {name:'Data scientist', value:'Data scientist', checked:false},
       {name:'Security specialist ', value:'Security specialist', checked:false},
@@ -468,17 +468,28 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.count++;
     }
 
-    if(!this.current_salary && this.current_currency) {
+    if(!this.current_salary && this.current_currency !== "-1") {
       this.current_sal_log = "Please enter current base salary";
       this.count++;
     }
-
     if((!this.current_salary && !this.current_currency) || (!this.current_salary && this.current_currency === "-1")){
       this.count = 0;
     }
+
     if( this.count === 0 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
     {
-      this.authenticationService.job(this.currentUser._creator,f.value)
+      if(typeof(f.value.expected_salary) === 'string' )
+        f.value.expected_salary = parseInt(f.value.expected_salary);
+      if(f.value.current_salary && typeof (f.value.current_salary) === 'string') {
+        f.value.current_salary = parseInt(f.value.current_salary);
+
+      }
+      if(f.value.current_salary === '') {
+        f.value.current_salary = 0;
+      }
+      f.value.current_salary = parseInt(f.value.current_salary);
+      f.value.expected_salary = parseInt(f.value.expected_salary);
+      this.authenticationService.job(this.currentUser._creator, f.value)
         .subscribe(
           data => {
             if(data && this.currentUser)

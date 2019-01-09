@@ -689,7 +689,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       {name:'Technical Lead', value:'Technical Lead', checked:false},
       {name:'Product Manager', value:'Product Manager', checked:false},
       {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher ', value:'Researcher ', checked:false},
+      {name:'Researcher', value:'Researcher', checked:false},
       {name:'Mobile app developer', value:'Mobile app developer', checked:false},
       {name:'Data scientist', value:'Data scientist', checked:false},
       {name:'Security specialist ', value:'Security specialist', checked:false},
@@ -709,7 +709,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   year=
     [
-      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
+      2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997,1996,1995,1994
     ]
 
   month= ["Now","1 month","2 months","3 months","Longer than 3 months"]
@@ -808,7 +808,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       obj.checked =true;
       this.experimented_platform.push(obj);
     }
-
 
   }
 
@@ -1481,6 +1480,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
       if(typeof(this.expected_salaryyy) === 'string' )
         profileForm.value.expected_salary = parseInt(this.expected_salaryyy);
+      if(this.salary && typeof (this.salary) === 'string') {
+        profileForm.value.salary = parseInt(this.salary);
+
+      }
       this.updateProfileData(profileForm.value);
     }
     else {

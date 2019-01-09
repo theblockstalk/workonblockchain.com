@@ -2,6 +2,7 @@ const Users = require('../model/mongoose/users');
 const candidateProfile = require('../model/mongoose/candidate');
 const Referral = require('../model/referrals');
 const mongoose = require('mongoose');
+const logger = require('../controller/services/logger');
 
 let totalDocsToProcess, totalModified = 0, totalProcessed = 0;
 module.exports.up = async function() {
@@ -65,12 +66,139 @@ module.exports.up = async function() {
 
     });
 
+    console.log('Total candidate document to process: ' + totalProcessed);
     console.log('Total processed document: ' + totalProcessed);
     console.log('Total modified document: ' + totalModified);
-
-
 }
 
 module.exports.down = async function() {
+    totalDocsToProcess =await Users.count({type:'candidate'});
+    logger.debug(totalDocsToProcess);
+    await Users.findAndIterate({type: 'candidate'}, async function(candidateDoc) {
+        totalProcessed++;
+        logger.debug("candidate document: ", candidateDoc);
+        let migrateUser ={};
+        if(candidateDoc.marketing_emails)  migrateUser['marketing_emails'] = candidateDoc.marketing_emails;
+        if(candidateDoc.first_name) migrateUser['first_name'] = candidateDoc.first_name;
+        if(candidateDoc.last_name) migrateUser['last_name'] = candidateDoc.last_name;
+         if(candidateDoc.contact_number) migrateUser['contact_number'] = candidateDoc.contact_number;
+        if(candidateDoc.nationality) migrateUser['nationality'] = candidateDoc.nationality;
+        if(candidateDoc.image) migrateUser['image'] = candidateDoc.image;
+          if(candidateDoc.candidate){
+            if(candidateDoc.candidate.terms_id) migrateUser['terms_id'] = candidateDoc.candidate.terms_id;
+            if(candidateDoc.candidate.github_account) migrateUser['github_account'] = candidateDoc.candidate.github_account;
+            if(candidateDoc.candidate.stackexchange_account)  migrateUser['stackexchange_account'] = candidateDoc.candidate.stackexchange_account;
+            if(candidateDoc.candidate.locations) migrateUser['locations'] = candidateDoc.candidate.locations;
+            if(candidateDoc.candidate.roles) {
+                let roles = [];
+                for( let roleValue of candidateDoc.candidate.roles) {
+                    if(roleValue === 'Researcher ') {
+                        roles.push('Researcher');
+
+                    }
+                    else {
+                        roles.push(roleValue);
+                    }
+                }
+                migrateUser['roles'] = roles;
+
+            }
+            if(candidateDoc.candidate.expected_salary_currency) migrateUser['expected_salary_currency'] = candidateDoc.candidate.expected_salary_currency;
+            if(candidateDoc.candidate.expected_salary) migrateUser['expected_salary'] = candidateDoc.candidate.expected_salary;
+            if(candidateDoc.candidate.interest_areas) migrateUser['interest_area'] = candidateDoc.candidate.interest_areas;
+            if(candidateDoc.candidate.availability_day) migrateUser['availability_day'] = candidateDoc.candidate.availability_day;
+            if(candidateDoc.candidate.why_work) migrateUser['why_work'] = candidateDoc.candidate.why_work;
+            if(candidateDoc.candidate.blockchain) {
+                if(candidateDoc.candidate.blockchain.commercial_platforms) {
+                    let commercialPlatformsObject = [];
+                    let commercialPlatformInput={}
+                    for(let platform of candidateDoc.candidate.blockchain.commercial_platforms) {
+                        if(platform.name === 'Steem') {
+                            commercialPlatformInput = {
+                                platform_name: 'Steemit',
+                                exp_year: platform.exp_year
+                            }
+                        }
+                        else {
+                            commercialPlatformInput = {
+                                platform_name: platform.name,
+                                exp_year: platform.exp_year
+                            }
+                        }
+
+                        commercialPlatformsObject.push(commercialPlatformInput);
+                    }
+                    migrateUser['commercial_platform'] = commercialPlatformsObject;
+                }
+                if(candidateDoc.candidate.blockchain.experimented_platforms) {
+                    let experimentedPlatformsObject = [];
+                    let experimentedPlatformInput={}
+                    for(let platform of candidateDoc.candidate.blockchain.experimented_platforms) {
+                        if(platform.value === 'Steem') {
+                            experimentedPlatformInput = {
+                                value: 'Steemit',
+                                name: 'Steemit',
+                                checked: true
+                            }
+                        }
+                        else {
+                            experimentedPlatformInput = {
+                                value: 'Steemit',
+                                name: 'Steemit',
+                                checked: true
+                            }
+                        }
+
+                        experimentedPlatformsObject.push(experimentedPlatformInput);
+                    }
+                    migrateUser['experimented_platform'] = experimentedPlatformsObject;
+                }
+                if(candidateDoc.candidate.blockchain.smart_contract_platforms) {
+                    let platformsObject = [];
+                    for(let platform of candidateDoc.candidate.blockchain.smart_contract_platforms) {
+                        let platformsInput = {
+                            platform_name: platform.name,
+                            exp_year: platform.exp_year
+                        }
+
+                        platformsObject.push(platformsInput);
+                    }
+                    migrateUser['platforms'] = platformsObject;
+                }
+            }
+
+              if(candidateDoc.candidate.current_currency) {
+
+                  if(candidateDoc.candidate.current_currency === "-1") {
+                      migrateUser['current_currency'] = "";
+                  }
+                  else {
+                      migrateUser['current_currency'] = candidateDoc.candidate.current_currency;
+                  }
+
+              }
+              if(candidateDoc.candidate.current_salary) {
+                  if(candidateDoc.candidate.current_salary === -1) {
+                      migrateUser['current_salary'] = 0;
+                  }
+                  else {
+                      migrateUser['current_salary'] = candidateDoc.candidate.current_salary;
+                  }
+              }
+              if(candidateDoc.candidate.programming_languages) migrateUser['programming_languages'] = candidateDoc.candidate.programming_languages;
+              if(candidateDoc.candidate.education_history) migrateUser['education_history'] = candidateDoc.candidate.education_history;
+              if(candidateDoc.candidate.work_history) migrateUser['work_history'] = candidateDoc.candidate.work_history;
+              if(candidateDoc.candidate.description) migrateUser['description'] = candidateDoc.candidate.description;
+
+          }
+
+        logger.debug("migrate user doc: ", migrateUser);
+        const update = await candidateProfile.update({ _creator: candidateDoc._id },{ $set: migrateUser });
+        if (update && update.nModified) totalModified++;
+
+    });
+    console.log('Total candidate document to process: ' + totalProcessed);
+    console.log('Total processed document: ' + totalProcessed);
+    console.log('Total modified document: ' + totalModified);
 
 }

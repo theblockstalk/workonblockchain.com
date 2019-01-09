@@ -1,5 +1,4 @@
-const users = require('../../../model/users');
-const CandidateProfile = require('../../../model/candidate_profile');
+const users = require('../../../model/mongoose/users');
 const EmployerProfile = require('../../../model/employer_profile');
 
 const filterReturnData = require('../users/filterReturnData');
@@ -29,14 +28,10 @@ module.exports = async function (req, res) {
     if(req.body.type === 'candidate') {
         const userDoc = await users.findOne({
             $and: [{ _id : receiver_id }, { type : user_type }]
-        }).lean();
+        });
         if(userDoc){
-            const candidateProfile = await CandidateProfile.findOne({
-                "_creator": userDoc._id
-            }).populate('_creator').lean();
-            if (candidateProfile)
-            {
-                let query_result = filterReturnData.removeSensativeData(candidateProfile);
+
+                let query_result = filterReturnData.removeSensativeData(userDoc);
                 if(is_company_reply === 1){
                 }
                 else{
@@ -45,11 +40,6 @@ module.exports = async function (req, res) {
                 res.send({
                     users:query_result
                 });
-            }
-            else
-            {
-                errors.throwError('User not found', 404);
-            }
         }
         else{
             errors.throwError('User not found', 404);
