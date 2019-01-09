@@ -1449,7 +1449,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     }
 
-    if(this.salary && !this.current_currency) {
+
+    if(this.salary && !this.current_currency ) {
       this.current_currency_logg = "Please choose currency";
       this.count++;
     }
@@ -1459,9 +1460,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.count++;
     }
 
-    if(!this.salary && this.current_currency != -1) {
+    if(!this.salary && this.current_currency !== "-1") {
       this.current_sal_log = "Please enter current base salary";
       this.count++;
+    }
+    if((!this.salary && !this.current_currency) || (!this.salary && this.current_currency === "-1")){
+      this.count = 0;
     }
 
     if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
