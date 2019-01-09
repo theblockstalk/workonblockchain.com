@@ -8,6 +8,7 @@ module.exports = async function (req,res)
 
     if(candidateUserDoc) {
         const queryBody = req.body;
+        console.log(queryBody);
         let candidateUpdate = {}
         if (queryBody.country) candidateUpdate['candidate.locations'] = queryBody.country;
         if (queryBody.roles) candidateUpdate['candidate.roles'] = queryBody.roles;

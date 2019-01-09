@@ -163,7 +163,6 @@ const CandidateProfileSchema = new Schema({
                 },
                 fieldname: {
                     type: String,
-                    required: true
                 },
                 eduyear: Number
             })]
