@@ -3,7 +3,7 @@ const users = require('../../model/mongoose/users');
 const errors = require('../services/errors');
 
 async function getUserFromToken(req) {
-    if (!req.auth.user) {
+    if (!req.auth) {
         let token = req.headers.authorization;
         let payload = jwtToken.verifyJwtToken(token);
 
