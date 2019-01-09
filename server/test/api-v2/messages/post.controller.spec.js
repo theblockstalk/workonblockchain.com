@@ -5,6 +5,7 @@ const messagesHelpers = require('./helpers');
 const docGenerator = require('../../helpers/docGenerator');
 const companyHelper = require('../../api/users/company/companyHelpers');
 const candidateHelper = require('../../api/users/candidate/candidateHelpers');
+const docGeneratorV2 = require('../../helpers/docGenerator-v2');
 const users = require('../../../model/mongoose/users');
 
 const assert = chai.assert;
@@ -55,7 +56,8 @@ describe('POST /messages', function () {
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
-            const res = await messagesHelpers.post({user_id: "heathea", msg_tag: 'job_offer'}, companyUserDoc.jwt_token);
+            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
             res.status.should.equal(200);
         })
 
