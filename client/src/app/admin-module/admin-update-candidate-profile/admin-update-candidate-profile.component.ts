@@ -510,17 +510,16 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
               if(data['candidate'].blockchain.experimented_platforms)
               {
-                this.experimented_platform = [];
                 for (let plat of data['candidate'].blockchain.experimented_platforms)
                 {
 
                   for(let option of this.experimented)
                   {
 
-                    if(option.value == plat.value)
+                    if(option.value === plat)
                     {
                       option.checked=true;
-                      this.experimented_platform.push(option);
+                      this.experimented_platform.push(plat);
 
                     }
 
@@ -800,25 +799,29 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       {name:'6+', value:'6+', checked:false}
     ]
 
-  onExpOptions(obj)
+  onExpOptions(e)
   {
 
-    let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
-    let index = this.experimented_platform.indexOf(updateItem);
-    if(index > -1)
+    if(e.target.checked)
     {
+      this.experimented_platform.push(e.target.value);
+    }
+    else{
+      let updateItem = this.experimented_platform.find(this.findIndexToUpdateExperimented, e.target.value);
+
+      let index = this.experimented_platform.indexOf(updateItem);
+
       this.experimented_platform.splice(index, 1);
-
-    }
-    else
-    {
-      obj.checked =true;
-      this.experimented_platform.push(obj);
     }
 
+    console.log(this.experimented_platform);
 
   }
 
+  findIndexToUpdateExperimented(type) {
+    ////console.log("funct");
+    return type == this;
+  }
 
   oncommerciallyOptions(obj)
   {

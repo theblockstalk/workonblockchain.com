@@ -191,7 +191,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                   for(let option of this.experimented)
                   {
 
-                    if(option.value == plat.value)
+                    if(option.value === plat)
                     {
                       option.checked=true;
                       this.experimented_platform.push(plat);
@@ -201,7 +201,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                   }
 
                 }
-
               }
 
 
@@ -452,26 +451,27 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
 
 
-  onExpOptions(obj)
+  onExpOptions(e)
   {
 
-    let updateItem = this.experimented_platform.find(this.findIndexToUpdate, obj.value);
-    let index = this.experimented_platform.indexOf(updateItem);
-    if(index > -1)
+    if(e.target.checked)
     {
+      this.experimented_platform.push(e.target.value);
+    }
+    else{
+      let updateItem = this.experimented_platform.find(this.findIndexToUpdateExperimented, e.target.value);
+
+      let index = this.experimented_platform.indexOf(updateItem);
+
       this.experimented_platform.splice(index, 1);
-
     }
-    else
-    {
-      obj.checked =true;
-      this.experimented_platform.push(obj);
-    }
-
-
 
   }
 
+  findIndexToUpdateExperimented(type) {
+    ////console.log("funct");
+    return type == this;
+  }
 
   findIndexToUpdate(obj)
   {

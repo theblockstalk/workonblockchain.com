@@ -223,8 +223,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.experimented = data['candidate'].blockchain.experimented_platforms;
                 if(this.experimented && this.experimented.length>0){
                   this.experimented.sort(function(a, b){
-                    if(a.name < b.name) { return -1; }
-                    if(a.name > b.name) { return 1; }
+                    if(a < b) { return -1; }
+                    if(a > b) { return 1; }
                     return 0;
                   })
                 }

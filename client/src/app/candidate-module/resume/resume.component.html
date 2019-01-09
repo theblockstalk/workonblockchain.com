@@ -165,7 +165,7 @@
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
                       <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)"  />
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions($event)"  />
                         <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
                         {{option.value}}
                       </label>

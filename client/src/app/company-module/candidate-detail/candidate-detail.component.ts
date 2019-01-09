@@ -219,10 +219,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   this.experimented = dataa['candidate'].blockchain.experimented_platforms;
                   if (this.experimented && this.experimented.length > 0) {
                     this.experimented.sort(function (a, b) {
-                      if (a.name < b.name) {
+                      if (a < b) {
                         return -1;
                       }
-                      if (a.name > b.name) {
+                      if (a > b) {
                         return 1;
                       }
                       return 0;

@@ -226,15 +226,8 @@ const UserSchema = new Schema({
                     },
                     experimented_platforms: {
                         type: [{
-                            name: {
-                                type: String,
-                                enum: enumerations.blockchainPlatforms
-                            },
-                            value: {
-                                type: String,
-                                enum: enumerations.blockchainPlatforms
-                            },
-                            checked : Boolean
+                            type: String,
+                            enum: enumerations.blockchainPlatforms
                         }]
                     },
                     smart_contract_platforms: {
