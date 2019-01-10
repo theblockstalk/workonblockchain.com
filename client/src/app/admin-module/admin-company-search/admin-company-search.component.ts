@@ -55,7 +55,6 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   {
     this.length='';
     this.log='';
-    this.approve=-1;
     this.response = '';
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -141,8 +140,7 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
 
   messagetag_changed(data)
   {
-      this.search(data);
-
+    this.search(data);
   }
 
   search_approved(event)
