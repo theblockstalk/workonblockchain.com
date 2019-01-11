@@ -44,7 +44,10 @@ pipelines:
             deployment: production
             trigger: manual
             script:
-              - cd scripts
+              - cd client
+              - npm install
+              - npm install -g @angular/cli
+              - cd ../scripts
               - npm install
               - cd ../
               - node scripts/client.js production
