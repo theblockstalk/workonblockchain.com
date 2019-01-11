@@ -46,7 +46,8 @@ module.exports.up = async function() {
         if(candidateDoc.nationality) set['nationality'] = candidateDoc.nationality;
         else unset['nationality'] = 1;
 
-        if(candidateDoc.image && candidateDoc.image !== null) set['image'] = candidateDoc.image;
+        if(candidateDoc.image ) set['image'] = candidateDoc.image;
+        else unset['image'] = 1;
 
         if(candidateDoc.locations && candidateDoc.locations.length >0) set['candidate.locations'] = candidateDoc.locations;
         else unset['candidate.locations'] = 1;
@@ -280,11 +281,11 @@ module.exports.down = async function() {
 
         logger.debug("migrate user doc: ", migrateUser);
         const update = await candidateProfile.insert(migrateUser);
-        await Users.update({_id: userDoc._creator}, { $unset: ['terms_id', 'marketing_emails', 'first_name' , 'last_name', 'candidate.github_account',
-                'candidate.stackexchange_account' , 'contact_number' , 'nationality' , 'image' , 'candidate.locations' , 'candidate.roles' , 'candidate.expected_salary_currency' ,
-                'candidate.expected_salary' , 'candidate.interest_areas' , 'candidate.availability_day' , 'candidate.why_work' , 'candidate.blockchain.commercial_platforms' ,
-                'candidate.blockchain.experimented_platform' , 'candidate.blockchain.smart_contract_platforms' , 'candidate.current_currency' , 'candidate.current_salary',
-                'candidate.programming_languages', 'candidate.education_history' , 'candidate.work_history' , 'candidate.description']})
+        await Users.update({_id: userDoc._id}, { $unset: {'terms_id': 1, 'first_name': 1 , 'last_name': 1, 'candidate.github_account': 1,
+                'candidate.stackexchange_account': 1 , 'contact_number': 1 , 'nationality': 1 , 'image': 1 , 'candidate.locations': 1 , 'candidate.roles': 1 , 'candidate.expected_salary_currency': 1 ,
+                'candidate.expected_salary': 1 , 'candidate.interest_areas': 1 , 'candidate.availability_day': 1 , 'candidate.why_work': 1 , 'candidate.blockchain.commercial_platforms': 1 ,
+                'candidate.blockchain.experimented_platform': 1 , 'candidate.blockchain.smart_contract_platforms': 1 , 'candidate.current_currency': 1 , 'candidate.current_salary': 1,
+                'candidate.programming_languages': 1, 'candidate.education_history': 1 , 'candidate.work_history': 1 , 'candidate.description': 1}})
         totalModified++;
 
     });
