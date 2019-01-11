@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit {
                 {
                   if(data)
                   {
-                    if(data.first_name && data.last_name ) {
+                    if(data['first_name'] && data['last_name'] ) {
                       this.show_me_link = true;
                     }
 
