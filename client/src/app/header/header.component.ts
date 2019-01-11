@@ -29,63 +29,62 @@ export class HeaderComponent implements OnInit {
   success;
   success_msg;
   location;
+  show_me_link;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
     this.success_msg='';
-    this.admin_route = window.location.pathname;
     router.events.subscribe((val) => {
       if(location.path() != ''){
-        this.route = location.path();
-        let loc= this.route;
-        this.location = loc;
-        let x = loc.split("-");
         this.admin_route = window.location.pathname;
       } else {
         //this.route = 'Home'
       }
     });
 
-
-
-
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
+    this.show_me_link = false;
     if(this.currentUser )
     {
       this.user_type = this.currentUser.type;
 
       if(this.user_type === 'candidate')
       {
+        setInterval(() => {
+          if (this.show_me_link === false) {
+            this.authenticationService.getById(this.currentUser._id)
+              .subscribe(
+                data =>
+                {
+                  if(data)
+                  {
+                    if(data['first_name'] && data['last_name'] ) {
+                      this.show_me_link = true;
+                    }
 
-        this.authenticationService.getById(this.currentUser._id)
-          .subscribe(
-            data =>
-            {
-
-              if(data)
-              {
-                this.is_verify = data['_creator'].is_verify;
-                if(this.is_verify == 0)
-                {
-                  this.success_msg = "not verify";
-                }
-                else
-                {
-                  this.success_msg='';
-                }
-                this.is_admin = data['_creator'].is_admin;
-                this.user_name = data['first_name'] +' '+ data['last_name'];
-                if(this.is_admin === 1)
-                {
-                  //this.admin_route = '/admin';
-                }
-                else
-                {
-                  this.admin_route = '';
-                }
-              }
-            });
+                    this.is_verify = data['_creator'].is_verify;
+                    if(this.is_verify == 0)
+                    {
+                      this.success_msg = "not verify";
+                    }
+                    else
+                    {
+                      this.success_msg='';
+                    }
+                    this.is_admin = data['_creator'].is_admin;
+                    this.user_name = data['first_name'] +' '+ data['last_name'];
+                    if(this.is_admin === 1)
+                    {
+                      //this.admin_route = '/admin';
+                    }
+                    else
+                    {
+                      this.admin_route = '';
+                    }
+                  }
+                });
+          }
+        },20);
       }
       else if(this.user_type === 'company')
       {

@@ -45,13 +45,13 @@
       <div class="alert alert-danger error_msg mx-auto" role="alert" *ngIf = "msg && close && !success  ">
         {{msg}}
       </div>
-      <div *ngIf = "success_msg!=''  && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
+      <div *ngIf = "success_msg!=''  && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && admin_route !== '/prefill-profile' && admin_route !== '/terms-and-condition' ">
         <div class="alert alert-success error_msg mx-auto" role="alert" *ngIf = "success_msg!='' && success_msg!='not verify'">
           <a href="#"  data-dismiss="alert"></a>
           {{success_msg}}
         </div>
 
-        <div class="alert alert-danger error_msg mx-auto" role="alert" *ngIf = "is_verify===0 && !msg && success_msg==='not verify' && admin_route && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && location !== '/prefill-profile' && location !== '/terms-and-condition' ">
+        <div class="alert alert-danger error_msg mx-auto" role="alert" *ngIf = " show_me_link=== true && is_verify===0 && !msg && success_msg==='not verify' && admin_route && admin_route!== '/experience' && admin_route!== '/resume' && admin_route!== '/job' && admin_route!== '/about' && admin_route !== '/prefill-profile' && admin_route !== '/terms-and-condition' ">
           <a href="#" data-dismiss="alert" ></a>
           Please check your inbox and click on the link to verify your email. To send a new verification link please click <a (click)="verify_client()" class="text-primary">here</a>.
         </div>
