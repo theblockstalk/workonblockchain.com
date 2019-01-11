@@ -147,6 +147,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
+                console.log("candidate profile data: " + data);
                 this.date_created = data['_creator'].candidate.status[data['_creator'].candidate.status.length-1].timestamp;
                 this.candidate_status = data['_creator'].candidate.status[0];
                 if(data['first_name'] && data['last_name'] && data['contact_number'] && data['nationality'] &&
