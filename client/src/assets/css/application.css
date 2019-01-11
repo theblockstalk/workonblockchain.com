@@ -110,3 +110,10 @@
 ::-ms-input-placeholder { /* Microsoft Edge */
   color: #999;
 }
+
+pre {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+  font-size: 1rem !important;
+  color: #333 !important;
+  white-space:pre-wrap;
+}
