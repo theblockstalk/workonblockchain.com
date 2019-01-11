@@ -129,6 +129,7 @@ export class UserService {
     {
       if (res)
       {
+        console.log("server candidate response: " + res);
         if(!res['terms_id'])
         {
           this.router.navigate(['/terms-and-condition']);

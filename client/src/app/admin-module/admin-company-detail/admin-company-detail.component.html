@@ -9,7 +9,7 @@
               <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
               <div class="mt-3">
                 <span><h3>{{data.company_name}}</h3></span>
-                <span><p>{{data.company_description}}</p></span>
+                <span><pre>{{data.company_description}}</pre></span>
                 <span>
 				 		      <a [routerLink]="['/admin-display-chat']" [queryParams]="{user: user_id , type : data._creator.type}" >Show Chat With Candidates</a>
 				 		    </span>
