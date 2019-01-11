@@ -225,7 +225,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getProfileById(this.currentUser._id)
         .subscribe(data =>
           {
             if(data)
