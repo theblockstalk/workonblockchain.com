@@ -50,41 +50,43 @@ export class HeaderComponent implements OnInit {
 
       if(this.user_type === 'candidate')
       {
-        setInterval(() => {
-          if (this.show_me_link === false) {
             this.authenticationService.getById(this.currentUser._id)
               .subscribe(
                 data =>
                 {
-                  if(data)
-                  {
-                    if(data['first_name'] && data['last_name'] ) {
-                      this.show_me_link = true;
-                    }
+                  setInterval(() => {
+                    if(data)
+                    {
+                      if(data['first_name'] && data['last_name'] ) {
+                        if (this.show_me_link === false) {
+                          this.show_me_link = true;
+                        }
 
-                    this.is_verify = data['_creator'].is_verify;
-                    if(this.is_verify == 0)
-                    {
-                      this.success_msg = "not verify";
+                        this.is_verify = data['_creator'].is_verify;
+                        if(this.is_verify == 0)
+                        {
+                          this.success_msg = "not verify";
+                        }
+                        else
+                        {
+                          this.success_msg='';
+                        }
+                        this.is_admin = data['_creator'].is_admin;
+                        this.user_name = data['first_name'] +' '+ data['last_name'];
+                        if(this.is_admin === 1)
+                        {
+                          //this.admin_route = '/admin';
+                        }
+                        else
+                        {
+                          this.admin_route = '';
+                        }
+                      }
                     }
-                    else
-                    {
-                      this.success_msg='';
-                    }
-                    this.is_admin = data['_creator'].is_admin;
-                    this.user_name = data['first_name'] +' '+ data['last_name'];
-                    if(this.is_admin === 1)
-                    {
-                      //this.admin_route = '/admin';
-                    }
-                    else
-                    {
-                      this.admin_route = '';
-                    }
-                  }
-                });
-          }
-        },20);
+                  },20);
+                  });
+
+       // },20);
       }
       else if(this.user_type === 'company')
       {
