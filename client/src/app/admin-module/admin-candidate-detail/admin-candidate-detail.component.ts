@@ -124,10 +124,16 @@ export class AdminCandidateDetailComponent implements OnInit {
               this.info.push(data);
               console.log(this.info);
               this.verify =data['is_verify'];
-              this.work_history = data['candidate'].work_history;
-              this.work_history.sort(this.date_sort_desc);
-              this.education_history = data['candidate'].education_history;
-              this.education_history.sort(this.education_sort_desc);
+              if(data['candidate'].work_history) {
+                this.work_history = data['candidate'].work_history;
+                this.work_history.sort(this.date_sort_desc);
+              }
+
+              if(data['candidate'].education_history) {
+                this.education_history = data['candidate'].education_history;
+                this.education_history.sort(this.education_sort_desc);
+              }
+
               this.countries = data['candidate'].locations;
               this.countries.sort();
               if(this.countries.indexOf("remote") > -1){

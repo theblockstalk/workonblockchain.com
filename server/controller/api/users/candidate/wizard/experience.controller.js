@@ -1,5 +1,6 @@
 const User = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
+const filterReturnData = require('../../filterReturnData');
 
 module.exports = async function (req,res) {
 	let userId = req.auth.user._id;
@@ -7,10 +8,17 @@ module.exports = async function (req,res) {
 
     if(candidateUserDoc) {
         const queryBody = req.body;
-        let candidateUpdate = {}
-        if (queryBody.language_exp) candidateUpdate['candidate.programming_languages'] = queryBody.language_exp;
-        if (queryBody.education) candidateUpdate['candidate.education_history'] = queryBody.education;
-        if (queryBody.work) candidateUpdate['candidate.work_history'] = queryBody.work;
+        let candidateUpdate = {};
+        let unset = {};
+        if (queryBody.language_exp && queryBody.language_exp.length > 0) candidateUpdate['candidate.programming_languages'] = queryBody.language_exp;
+        else unset['candidate.programming_languages'] = 1;
+
+        if (queryBody.education && queryBody.education.length > 0) candidateUpdate['candidate.education_history'] = queryBody.education;
+        else unset['candidate.education_history'] = 1;
+
+        if (queryBody.work && queryBody.work.length > 0) candidateUpdate['candidate.work_history'] = queryBody.work;
+        else unset['candidate.work_history'] = 1;
+
         if (queryBody.detail.intro) candidateUpdate['candidate.description'] = queryBody.detail.intro;
 
         await User.update({ _id: userId },
@@ -26,6 +34,10 @@ module.exports = async function (req,res) {
                 $set: candidateUpdate
             }
         );
+
+        if (!filterReturnData.isEmptyObject(unset)) {
+            await User.update({ _id: userId},{$unset: unset});
+        }
         res.send({
             success : true
         })

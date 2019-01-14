@@ -183,21 +183,30 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.nationality = data['nationality'];
                 this.contact_number =data['contact_number'];
                 this.description =data['candidate'].description;
-                this.history =data['candidate'].work_history;
-                this.history.sort(this.date_sort_desc);
-                this.education = data['candidate'].education_history;
-                this.education.sort(this.education_sort_desc);
-                for(let data1 of data['candidate'].work_history)
+                if(data['candidate'].work_history && data['candidate'].work_history.length > 0)
                 {
-                  this.companyname = data1.companyname;
-                  this.currentwork = data1.currentwork;
+                  this.history =data['candidate'].work_history;
+                  this.history.sort(this.date_sort_desc);
+                  for(let data1 of data['candidate'].work_history)
+                  {
+                    this.companyname = data1.companyname;
+                    this.currentwork = data1.currentwork;
 
+                  }
                 }
 
-                for(let edu of data['candidate'].education_history)
-                {
-                  this.degreename = edu.degreename;
+                if(data['candidate'].education_history && data['candidate'].education_history.length > 0) {
+                  this.education = data['candidate'].education_history;
+                  this.education.sort(this.education_sort_desc);
+                  for(let edu of data['candidate'].education_history)
+                  {
+                    this.degreename = edu.degreename;
+                  }
                 }
+
+
+
+
                 this.countries = data['candidate'].locations;
                 this.countries.sort();
                 if(this.countries.indexOf("remote") > -1){

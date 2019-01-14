@@ -1,5 +1,6 @@
 const User = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
+const filterReturnData = require('../../filterReturnData');
 
 module.exports = async function (req,res)
 {
@@ -8,8 +9,8 @@ module.exports = async function (req,res)
 
     if(candidateUserDoc) {
         const queryBody = req.body;
-        console.log(queryBody);
-        let candidateUpdate = {}
+        let candidateUpdate = {};
+        let unset = {};
         if (queryBody.country) candidateUpdate['candidate.locations'] = queryBody.country;
         if (queryBody.roles) candidateUpdate['candidate.roles'] = queryBody.roles;
         if (queryBody.interest_areas) candidateUpdate['candidate.interest_areas'] = queryBody.interest_areas;
@@ -17,9 +18,20 @@ module.exports = async function (req,res)
         if (queryBody.expected_salary) candidateUpdate['candidate.expected_salary'] = queryBody.expected_salary;
         if (queryBody.availability_day) candidateUpdate['candidate.availability_day'] = queryBody.availability_day;
         if (queryBody.current_salary) candidateUpdate['candidate.current_salary'] = queryBody.current_salary;
-        if (queryBody.current_currency) candidateUpdate['candidate.current_currency'] = queryBody.current_currency;
+        else unset['candidate.current_salary'] = 1;
+        if (queryBody.current_currency && queryBody.current_currency !== "-1") candidateUpdate['candidate.current_currency'] = queryBody.current_currency;
+        else unset['candidate.current_currency'] = 1;
 
-        await User.update({ _id: userId },{ $set: candidateUpdate });
+        let updateObj;
+        if (!filterReturnData.isEmptyObject(candidateUpdate) && !filterReturnData.isEmptyObject(unset)) {
+            updateObj = {$set: candidateUpdate, $unset: unset}
+        } else if (!filterReturnData.isEmptyObject(candidateUpdate)) {
+            updateObj = {$set: candidateUpdate};
+        } else if (!filterReturnData.isEmptyObject(unset)) {
+            updateObj = {$unset: unset};
+        }
+
+        await User.update({ _id: userId }, updateObj);
         res.send({
             success : true
         })

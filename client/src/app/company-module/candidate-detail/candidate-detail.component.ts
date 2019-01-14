@@ -144,11 +144,16 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         .subscribe(
           dataa => {
             if (dataa) {
-              console.log(dataa);
-              this.history = dataa['candidate'].work_history;
-              this.history.sort(this.date_sort_desc);
-              this.education = dataa['candidate'].education_history;
-              this.education.sort(this.education_sort_desc);
+              if(dataa['candidate'].work_history) {
+                this.history = dataa['candidate'].work_history;
+                this.history.sort(this.date_sort_desc);
+              }
+
+              if(dataa['candidate'].education_history) {
+                this.education = dataa['candidate'].education_history;
+                this.education.sort(this.education_sort_desc);
+              }
+
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
               this.countries = dataa['candidate'].locations;

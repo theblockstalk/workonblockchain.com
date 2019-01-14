@@ -78,3 +78,12 @@ module.exports.candidateAsCompany = async function candidateAsCompany(candidateD
         return anonymousSearchCandidateData(candidateDoc);
 
 };
+
+const isEmptyObject = module.exports.isEmptyObject = function isEmptyObject(obj) {
+    for(let prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+            return false;
+        }
+    }
+    return true;
+}
