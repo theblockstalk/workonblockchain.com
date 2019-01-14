@@ -146,12 +146,11 @@ module.exports.up = async function() {
             const update = await Chat.update({_id: chatDoc._id}, updateObj);
             if (update && update.nModified) totalModified++;
         }
-        //This code is used to unset the chat collection items
-        /*let updateObj = {
-            $unset: { sender_name: 1, receiver_name: 1, is_company_reply:1, is_job_offered:1}
-        };
-
-        logger.debug("chat doc update", updateObj);
-        const update = await Chat.update({_id: chatDoc._id}, updateObj);*/
     }
+}
+
+// This function will undo the migration
+module.exports.down = async function() {
+    totalDocsToProcess = await Chat.find({}).count();
+    logger.debug(totalDocsToProcess);
 }

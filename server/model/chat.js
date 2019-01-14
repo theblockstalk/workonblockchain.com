@@ -32,7 +32,8 @@ const ChatSchema = new Schema({
         file: {
             url: {
                 type: String,
-                required: false
+                required: false,
+                validate: regexes.url
             }
         },
         normal: {
@@ -123,7 +124,8 @@ const ChatSchema = new Schema({
                 required: false
             },
             file_url: {
-                type: String
+                type: String,
+                validate: regexes.url
             }
         },
         employment_offer_accepted: {
