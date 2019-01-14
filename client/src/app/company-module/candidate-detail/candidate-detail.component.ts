@@ -100,6 +100,13 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         .subscribe(
           data => {
             if(data) {
+              setTimeout(() => {
+                $('.selectpicker').selectpicker();
+              }, 300);
+
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 900);
               this.credentials.job_title = data['job_title'];
               this.credentials.salary = data['salary'];
               this.credentials.currency = data['salary_currency'];
