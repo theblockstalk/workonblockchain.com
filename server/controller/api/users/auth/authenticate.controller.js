@@ -15,7 +15,7 @@ module.exports = async function (req, res) {
           const candidateDoc = await  User.findOneById( userDoc._id );
           res.send({
               _id:candidateDoc._id,
-              _creator: userDoc._id,
+              _creator: userDoc._id, // remove this after chat refactor
               email: userDoc.email,
               email_hash: userDoc.email_hash,
               is_admin:userDoc.is_admin,
@@ -45,6 +45,7 @@ module.exports = async function (req, res) {
                     await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
                     res.send({
                         _id: userDoc._id,
+                        _creator : userDoc._id, // remove this after chat refactor
                         email: userDoc.email,
                         email_hash: userDoc.email_hash,
                         is_admin: userDoc.is_admin,

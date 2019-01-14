@@ -234,20 +234,8 @@ module.exports.resume = function resume(){
             { value: 'Bitcoin' },
             { value: 'Hyperledger Sawtooth' }
         ],
-        experimented_platforms:[
-            {
-                _id: '5bbc37432997bf00408501b9',
-                name: 'Bitcoin',
-                value: 'Bitcoin',
-                checked: true
-            },
-            {
-                _id: '5bbc37432997bf00408501b8',
-                name: 'Hyperledger Fabric',
-                value: 'Hyperledger Fabric',
-                checked: true
-            }
-        ],
+        experimented_platforms:['Bitcoin' , 'Hyperledger Fabric' ],
+
         smart_contract_platforms:[
             {
                 _id: '5bbc37432997bf00408501b7',
@@ -314,20 +302,8 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
                 { value: 'Bitcoin' },
                 { value: 'Hyperledger Sawtooth' }
             ],
-            experimented_platforms:[
-                {
-                    _id: '5bbc37432997bf00408501b9',
-                    name: 'Bitcoin',
-                    value: 'Bitcoin',
-                    checked: true
-                },
-                {
-                    _id: '5bbc37432997bf00408501b8',
-                    name: 'Hyperledger Fabric',
-                    value: 'Hyperledger Fabric',
-                    checked: true
-                }
-            ],
+            experimented_platforms:['Bitcoin' , 'Hyperledger Fabric'],
+
             smart_contract_platforms:[
                 {
                     _id: '5bbc37432997bf00408501b7',

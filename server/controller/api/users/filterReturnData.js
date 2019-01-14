@@ -46,7 +46,7 @@ const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData
 };
 
 const anonymosCompanyFields = ['company_name', 'company_website', 'company_country', 'company_city','company_description',
-		'company_logo', 'company_funded','no_of_employees','company_founded','company_postcode','company_phone','job_title'];
+		'company_logo', 'company_funded','no_of_employees','company_founded','company_postcode','company_phone','job_title', '_creator'];
 
 module.exports.anonymousCandidateData = function anonymousCandidateData(companyDoc) {
     companyDoc = filterWhiteListFields(companyDoc, anonymosCompanyFields);

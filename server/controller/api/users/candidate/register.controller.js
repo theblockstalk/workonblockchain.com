@@ -80,6 +80,7 @@ module.exports = async function (req, res) {
         res.send
         ({
             _id: candidateUserCreated._id,
+            _creator : candidateUserCreated._id, // remove this after chat refactor
             type:candidateUserCreated.type,
             email: candidateUserCreated.email,
             ref_link: url_token,
