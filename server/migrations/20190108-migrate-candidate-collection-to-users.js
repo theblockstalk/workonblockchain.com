@@ -19,10 +19,6 @@ function isReal(val) {
     return false;
 }
 
-function isValidate(value) {
-    if(value && value !== null && typeof value !== "undefined" && value !== "") return true;
-    return false;
-}
 
 
 module.exports.up = async function() {
@@ -55,7 +51,7 @@ module.exports.up = async function() {
         if(candidateDoc.nationality) set['nationality'] = candidateDoc.nationality;
         else unset['nationality'] = 1;
 
-        if(isValidate(candidateDoc.image)) set['image'] = candidateDoc.image;
+        if(candidateDoc.image) set['image'] = candidateDoc.image;
 
         if(candidateDoc.locations && candidateDoc.locations.length >0) set['candidate.locations'] = candidateDoc.locations;
         else unset['candidate.locations'] = 1;
