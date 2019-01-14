@@ -42,6 +42,7 @@ describe('get a candidate or company info', function () {
 
             const userDetails = await chatHelper.getUserInfo(companyDoc._id,candidateDoc._id,isCompanyReply,candidate.type,companyDoc.jwt_token);
             const response = userDetails.body;
+            console.log(response.users);
             response.users.email.should.equal(candidate.email);
             response.users.type.should.equal(candidate.type);
         })

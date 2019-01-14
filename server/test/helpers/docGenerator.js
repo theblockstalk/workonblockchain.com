@@ -347,13 +347,13 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             ]
 
         } ,
-        education : {
+        education : [{
             uniname: 'CUST',
             degreename: 'BSCS',
             fieldname: 'CS',
             eduyear: 2016
-        },
-        work:{
+        }],
+        work:[{
             companyname: 'MWAN',
             positionname: 'Team Lead',
             locationname: 'Tokyo Japan',
@@ -361,7 +361,7 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             startdate: '2016-02-29T19:00:00.000Z',
             enddate: '2018-10-09T07:32:38.732Z',
             currentwork: true
-        }
+        }]
     }
 }
 

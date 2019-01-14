@@ -56,21 +56,9 @@ describe('admin update candidate profile', function () {
                         {value: 'Bitcoin'},
                         {value: 'Hyperledger Sawtooth'}
                     ],
-                    experimented_platform: [
-                        {
-                            _id: '5bbc37432997bf00408501b9',
-                            name: 'Bitcoin',
-                            value: 'Bitcoin',
-                            checked: true
-                        },
-                        {
-                            _id: '5bbc37432997bf00408501b8',
-                            name: 'Hyperledger Fabric',
-                            value: 'Hyperledger Fabric',
-                            checked: true
-                        }
-                    ],
-                    platforms: [
+                    experimented_platforms: ['Bitcoin' , 'Hyperledger Fabric'],
+
+                    smart_contract_platforms: [
                         {
                             _id: '5bbc37432997bf00408501b7',
                             platform_name: 'Bitcoin',
@@ -113,13 +101,13 @@ describe('admin update candidate profile', function () {
                     ]
 
                 },
-                education: {
+                education: [{
                     uniname: 'CUST',
                     degreename: 'BSCS',
                     fieldname: 'CS',
                     eduyear: 2016
-                },
-                work: {
+                }],
+                work: [{
                     companyname: 'MWAN',
                     positionname: 'Team Lead',
                     locationname: 'Tokyo Japan',
@@ -127,14 +115,16 @@ describe('admin update candidate profile', function () {
                     startdate: '2016-02-29T19:00:00.000Z',
                     enddate: '2018-10-09T07:32:38.732Z',
                     currentwork: true
-                }
+                }]
             }
+            console.log(candidateEditProfileData);
 
             const res = await adminHelper.updateCandidateProfile(candidateEditProfileData ,candidateUserDoc.jwt_token);
             res.body.success.should.equal(true);
 
             candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             const blockchainSkills = candidateUserDoc.candidate.blockchain;
+            console.log(blockchainSkills)
 
             candidateUserDoc.first_name.should.equal(candidateEditProfileData.detail.first_name);
             candidateUserDoc.last_name.should.equal(candidateEditProfileData.detail.last_name);
@@ -149,8 +139,8 @@ describe('admin update candidate profile', function () {
             candidateUserDoc.candidate.expected_salary.should.equal(candidateEditProfileData.detail.expected_salary);
             candidateUserDoc.candidate.availability_day.should.equal(candidateEditProfileData.detail.availability_day);
             candidateUserDoc.candidate.why_work.should.equal(candidateEditProfileData.detail.why_work);
-            blockchainSkills.experimented_platforms.should.valueOf(candidateEditProfileData.detail.experimented_platform);
-            blockchainSkills.smart_contract_platforms.should.valueOf(candidateEditProfileData.detail.platforms);
+            blockchainSkills.experimented_platforms.should.valueOf(candidateEditProfileData.detail.experimented_platforms);
+            blockchainSkills.smart_contract_platforms.should.valueOf(candidateEditProfileData.detail.smart_contract_platforms);
             candidateUserDoc.candidate.current_salary.should.equal(candidateEditProfileData.detail.salary);
             candidateUserDoc.candidate.current_currency.should.equal(candidateEditProfileData.detail.current_currency);
             candidateUserDoc.candidate.programming_languages.should.valueOf(candidateEditProfileData.detail.language_experience_year);
@@ -163,8 +153,6 @@ describe('admin update candidate profile', function () {
             blockchainSkills.commercial_skills[0].exp_year.should.equal(candidateEditProfileData.detail.commercial_skills[0].exp_year);
             blockchainSkills.formal_skills[0].skill.should.equal(candidateEditProfileData.detail.formal_skills[0].skill);
             blockchainSkills.formal_skills[0].exp_year.should.equal(candidateEditProfileData.detail.formal_skills[0].exp_year);
-
-
         })
     })
 });

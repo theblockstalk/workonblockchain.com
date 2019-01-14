@@ -36,10 +36,12 @@ module.exports = async function (req, res) {
                 if(is_company_reply === 1){
                      candidateObject = {
                         '_creator'  : {
-                            _creator : userDoc._id,
                             _id : userDoc._id
 
                         },
+                         _creator : userDoc._id,
+                         email : userDoc.email,
+                         type : userDoc.type,
                          first_name : userDoc.first_name,
                          last_name : userDoc.last_name
 
@@ -48,9 +50,11 @@ module.exports = async function (req, res) {
                 else{
                     candidateObject = {
                         '_creator'  : {
-                            _creator : userDoc._id,
                             _id : userDoc._id,
                         },
+                        _creator : userDoc._id,
+                        email : userDoc.email,
+                        type : userDoc.type,
                         initials : filterReturnData.createInitials(userDoc.first_name,userDoc.last_name)
 
                     }

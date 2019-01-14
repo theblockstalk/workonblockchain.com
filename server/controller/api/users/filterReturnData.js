@@ -15,7 +15,7 @@ const removeSensativeData = module.exports.removeSensativeData = function remove
     return userDoc;
 };
 
-const anonymosUserFields = ['candidate', 'image', 'initials', 'nationality', '_id', 'is_verify', 'disable_account' , 'type'];
+const anonymosUserFields = ['candidate', 'image', 'initials', 'nationality', '_id', 'is_verify', 'disable_account' , 'type', 'email'];
 
 const anonymosCandidateFields = ['locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_areas',
     'availability_day', 'why_work', 'commercial_platforms', 'blockchain', 'experimented_platforms', 'smart_contract_platforms' , 'commercial_skills',
