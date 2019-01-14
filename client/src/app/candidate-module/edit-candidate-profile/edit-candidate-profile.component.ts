@@ -268,41 +268,41 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 this.commercialSkillsExperienceYear = data['candidate'].blockchain.commercial_skills;
                 for (let key of data['candidate'].blockchain.commercial_skills)
                 {
-                for(var i in key)
-                {
-
-                  for(let option of this.otherSkills)
+                  for(var i in key)
                   {
 
-                    if(option.value === key[i])
+                    for(let option of this.otherSkills)
                     {
-                      option.checked=true;
-                      this.skillDbArray.push(key[i]);
-                      this.skillDb= ({value: key[i]});
-                      this.commercialSkills.push(this.skillDb);
+
+                      if(option.value === key[i])
+                      {
+                        option.checked=true;
+                        this.skillDbArray.push(key[i]);
+                        this.skillDb= ({value: key[i]});
+                        this.commercialSkills.push(this.skillDb);
+
+                      }
+                      else
+                      {
+
+                      }
 
                     }
-                    else
+
+                    for(let option of this.exp_year)
                     {
+
+                      if(option.value === key[i])
+                      {
+                        option.checked=true;
+                        this.skill_expYear_db.push(key[i]);
+
+                      }
 
                     }
 
                   }
-
-                  for(let option of this.exp_year)
-                  {
-
-                    if(option.value === key[i])
-                    {
-                      option.checked=true;
-                      this.skill_expYear_db.push(key[i]);
-
-                    }
-
-                  }
-
                 }
-              }
               }
 
               if(data['candidate'].blockchain.formal_skills )

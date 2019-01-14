@@ -105,9 +105,9 @@
                     <div class="row">
                       <div class="col-sm-8">
                         <h4>Bio</h4>
-                        <p>
-                          {{data.candidate.description}}
-                        </p>
+
+                        <pre>{{data.candidate.description}}</pre>
+
                       </div>
                       <div class="col-sm-4" *ngIf="data.candidate.programming_languages && data.candidate.programming_languages.length>0">
                         <h4>Languages</h4>

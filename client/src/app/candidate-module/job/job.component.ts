@@ -476,6 +476,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.count = 0;
     }
 
+
     if( this.count === 0 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
     {
       if(typeof(f.value.expected_salary) === 'string' )

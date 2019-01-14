@@ -1470,6 +1470,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.count++;
     }
 
+
     if((!this.salary && !this.current_currency) || (!this.salary && this.current_currency === "-1")){
       this.count = 0;
     }
