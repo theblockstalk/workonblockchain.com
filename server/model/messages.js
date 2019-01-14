@@ -38,103 +38,124 @@ const MessageSchema = new Schema({
     },
     message: {
         file: {
-            url: {
-                type: String,
-                required: false,
-                validate: regexes.url
-            }
+            type: new Schema({
+                url: {
+                    type: String,
+                    required: true,
+                    validate: regexes.url
+                }
+            }),
+            required: false
         },
         normal: {
-            message: {
-                type: String,
-                required: false
-            }
+            type: new Schema({
+                message: {
+                    type: String,
+                    required: true
+                }
+            }),
+            required: false
         },
         job_offer: {
-            title: {
-                type: String,
-                required: false
-            },
-            salary: {
-                type: Number,
-                required: false
-            },
-            salary_currency: {
-                type: String,
-                enum: enumerations.currencies,
-                required: false
-            },
-            type: {
-                type: String,
-                enum: enumerations.jobTypes,
-                required: false
-            },
-            location: {
-                type: String,
-                required: false
-            },
-            description: {
-                type: String,
-                required: false
-            }
+            type: new Schema({
+                title: {
+                    type: String,
+                    required: true
+                },
+                salary: {
+                    type: Number,
+                    required: true
+                },
+                salary_currency: {
+                    type: String,
+                    enum: enumerations.currencies,
+                    required: true
+                },
+                type: {
+                    type: String,
+                    enum: enumerations.jobTypes,
+                    required: true
+                },
+                location: {
+                    type: String,
+                    required: true
+                },
+                description: {
+                    type: String,
+                    required: false
+                }
+            }),
+            required: false
         },
         job_offer_accepted: {
-            message: {
-                type: String,
-                required: false
-            }
+            type: new Schema({
+                message: {
+                    type: String,
+                    required: true
+                }
+            }),
+            required: false
         },
         job_offer_rejected: {
-            message: {
-                type: String,
-                required: false
-            }
+            type: new Schema({
+                message: {
+                    type: String,
+                    required: true
+                }
+            }),
+            required: false
         },
         interview_offer: {
-            location: {
-                type: String,
-                required: false
-            },
-            description: {
-                type: String,
-                required: false
-            },
-            date_time: {
-                type: Date,
-                required: false
-            }
+            type: new Schema({
+                location: {
+                    type: String,
+                    required: true
+                },
+                description: {
+                    type: String,
+                    required: false
+                },
+                date_time: {
+                    type: Date,
+                    required: true
+                }
+            }),
+            required: false
         },
         employment_offer: {
-            title: {
-                type: String,
-                required: false
-            },
-            salary: {
-                type: Number,
-                required: false
-            },
-            salary_currency: {
-                type: String,
-                enum: enumerations.currencies,
-                required: false
-            },
-            type: {
-                type: String,
-                enum: enumerations.jobTypes,
-                required: false
-            },
-            start_date: {
-                type: Date,
-                required: false
-            },
-            description: {
-                type: String,
-                required: false
-            },
-            file_url: {
-                type: String,
-                validate: regexes.url
-            }
+            type: new Schema({
+                title: {
+                    type: String,
+                    required: true
+                },
+                salary: {
+                    type: Number,
+                    required: true
+                },
+                salary_currency: {
+                    type: String,
+                    enum: enumerations.currencies,
+                    required: true
+                },
+                type: {
+                    type: String,
+                    enum: enumerations.jobTypes,
+                    required: true
+                },
+                start_date: {
+                    type: Date,
+                    required: true
+                },
+                description: {
+                    type: String,
+                    required: false
+                },
+                file_url: {
+                    type: String,
+                    validate: regexes.url
+                }
+            }),
+            required: false
         },
         employment_offer_accepted: {
             employment_offer_message_id: {
@@ -148,15 +169,18 @@ const MessageSchema = new Schema({
             }
         },
         employment_offer_rejected: {
-            employment_offer_message_id: {
-                type: Schema.Types.ObjectId,
-                required: false,
-                ref: 'Messages'
-            },
-            message: {
-                type: String,
-                required: false
-            }
+            type: new Schema({
+                employment_offer_message_id: {
+                    type: Schema.Types.ObjectId,
+                    required: true,
+                    ref: 'Messages'
+                },
+                message: {
+                    type: String,
+                    required: true
+                }
+            }),
+            required: false
         }
     }
 });
