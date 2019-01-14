@@ -2,9 +2,7 @@ let Messages = require('../messages');
 
 module.exports.insert = async function (data) {
     let newDoc = new Messages(data);
-
     await newDoc.save();
-
     return newDoc._doc;
 }
 
