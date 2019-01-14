@@ -87,7 +87,7 @@ module.exports.up = async function() {
             };
 
             if( isValidValue(chatDoc.file_name) ){
-                newMessageDoc.message.file_url.description = chatDoc.file_name;
+                newMessageDoc.message.employment_offer.file_url = chatDoc.file_name;
             }
 
         }
