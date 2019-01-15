@@ -630,7 +630,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <select title="(select one)" formControlName="startyear" class="selectpicker form-control xs_input"  required name="roles"  required="" (change)="work_start_year($event)" >
+                            <select title="(select one)" formControlName="startyear" class="selectpicker form-control xs_input" (change)="work_start_year($event)" >
                               <option  *ngFor='let start_year of year'  [value]="start_year" [attr.selected]="ExperienceForm.value.ExpItems[i].startyear === start_year ? true : null">{{start_year}}</option>
                             </select>
                             <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].startyear">
@@ -761,7 +761,7 @@
                       <div class="form-group">
                         <label>Graduation</label>
                         <select title="(select one)" formControlName="eduyear" class='selectpicker form-control'  required name="roles"  required=""  >
-                          <option class='option' *ngFor='let graduation_year of year'  [value]="graduation_year" selected>{{graduation_year}}</option>
+                          <option class='option' *ngFor='let graduation_year of graduation_year'  [value]="graduation_year" selected>{{graduation_year}}</option>
                         </select>
                         <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].eduyear">
                           {{eduYear_log}}
