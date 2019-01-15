@@ -597,6 +597,12 @@
 
           <div class="row">
             <div class="col-md-12">
+              <div *ngIf="job_offer_log_error" class="mt-3 alert alert-danger">
+                {{job_offer_log_error}}
+              </div>
+              <div *ngIf="job_offer_log_success" class="mt-3 alert alert-danger">
+                {{job_offer_log_success}}
+              </div>
               <div class="form-group text-right">
                 <button type="submit" class="btn btn-primary model-btn submit">Send</button>
                 <div class = "invalid-feedback d-inline-block mt-2 mb-2">

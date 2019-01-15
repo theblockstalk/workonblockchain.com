@@ -765,6 +765,8 @@ export class ChatComponent implements OnInit {
   salary_log;
   salary_currency_log;
   job_desc_log;
+  job_offer_log_success;
+  job_offer_log_error;
 
   send_job_message(msgForm : NgForm) {
     this.interview_log = '';
@@ -777,6 +779,8 @@ export class ChatComponent implements OnInit {
     this.salary_log = '';
     this.salary_currency_log = '';
     this.job_desc_log = '';
+    this.job_offer_log_success = '';
+    this.job_offer_log_error = '';
 
     let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#my_aa');
     let fileCount: number = inputEl.files.length;
@@ -1264,7 +1268,7 @@ export class ChatComponent implements OnInit {
     this.authenticationService.get_employment_offer_info(my_credentials.id, 'employment_offer')
     .subscribe(
       data => {
-        this.job_offer_log = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
+        this.job_offer_log_error = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
       },
       error => {
         if (error.status === 500 || error.status === 401) {
@@ -1305,7 +1309,7 @@ export class ChatComponent implements OnInit {
               data => {
                 //console.log(data);
                 this.credentials.msg_body = '';
-                this.job_offer_log = 'Message has been successfully sent';
+                this.job_offer_log_success = 'Message has been successfully sent';
                 this.credentials.job_title = '';
                 this.credentials.base_salary = '';
                 this.credentials.currency = '';
@@ -1374,6 +1378,8 @@ export class ChatComponent implements OnInit {
     this.salary_currency_log = '';
     this.job_desc_log = '';
     this.description_log = '';
+    this.job_offer_log_success = '';
+    this.job_offer_log_error = '';
 	}
 
   update_status(){
