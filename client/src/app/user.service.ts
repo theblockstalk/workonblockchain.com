@@ -129,8 +129,7 @@ export class UserService {
     {
       if (res)
       {
-        console.log("server candidate response: " + res);
-        if(!res['terms_id'])
+        if(!res['candidate'].terms_id)
         {
           this.router.navigate(['/terms-and-condition']);
 
@@ -140,17 +139,17 @@ export class UserService {
         {
           this.router.navigate(['/about']);
         }
-        else if(res['locations'].length < 1  || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary'])
+        else if(res['candidate'].locations.length < 1  || res['candidate'].roles.length < 1 || res['candidate'].interest_areas.length < 1 || !res['candidate'].expected_salary)
         {
 
           this.router.navigate(['/job']);
         }
-        else if(!res['why_work'] )
+        else if(!res['candidate'].why_work)
         {
           this.router.navigate(['/resume']);
         }
 
-        else if(!res['description'])
+        else if(!res['candidate'].description)
         {
           this.router.navigate(['/experience']);
 

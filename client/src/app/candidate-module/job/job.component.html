@@ -119,12 +119,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Current annual salary (optional)</label>
-                <input type="text" class="form-control" #base_validation="ngModel"  pattern="^[0-9]*$" required id="" placeholder="10000" name="current_salary"  [(ngModel)]="current_salary">
+                <input type="text" class="form-control" #base_validation="ngModel" pattern="^[0-9]*$" placeholder="10000" #salary_field name="current_salary" [(ngModel)]="current_salary">
                 <small id="emailHelp" class="form-text text-muted">
                   This information is never shown to companies. It is used by us to help us help you set your expected salary.
                 </small>
-                <div class = "invalid-feedback d-inline" *ngIf="(!current_salary && current_currency) ">
+                <div class = "invalid-feedback d-inline" expected_validation *ngIf="(!current_salary && current_currency) ">
                   {{current_sal_log}}
+                </div>
+                <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="base_validation.errors && current_salary">
+                  Current annual salary should be a number.
                 </div>
               </div>
 
@@ -158,7 +161,7 @@
                     </div>
                   </div>
                 </div>
-                <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_area" style="display: none;">
+                <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_areas" style="display: none;">
                 <div class = "invalid-feedback d-inline"  *ngIf="selectedValue.length <=0">
                   {{interest_log}}
                 </div>
@@ -170,6 +173,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Employment availability</label>
+
                 <select title="(select one)" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
                   <option class='option' *ngFor='let start_month of month' [attr.selected]  [value]="start_month" selected>{{start_month}}</option>
                 </select>

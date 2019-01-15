@@ -1,8 +1,7 @@
-const User = require('../../../../model/users');
-const CandidateProfile = require('../../../../model/candidate_profile');
+const users = require('../../../../model/mongoose/users');
 const crypto = require('crypto');
 const jwtToken = require('../../../services/jwtToken');
-const referral = require('../../../../model/referrals');
+const referral = require('../../../../model/mongoose/referral');
 const errors = require('../../../services/errors');
 
 ///////to create new candidate////////////////////////////
@@ -12,15 +11,13 @@ module.exports = async function (req, res) {
     let userParam = req.body;
 
     if(userParam.linkedin_id) {
-        const candidateUserDoc = await User.findOne({ linkedin_id: userParam.linkedin_id }).lean();
+        const candidateUserDoc = await users.findOne({ linkedin_id: userParam.linkedin_id });
         if (candidateUserDoc) {
             let errorMsg = 'Email "' + userParam.email + '" is already taken';
             errors.throwError(errorMsg , 400)
         }
     }
-
-    const userDoc = await User.findOne({ email: userParam.email }).lean();
-    console.log(userDoc);
+    const userDoc = await users.findOneByEmail(userParam.email);
     if (userDoc )
     {
         let errorMsg = 'Email "' + userParam.email + '" is already taken';
@@ -37,9 +34,7 @@ module.exports = async function (req, res) {
     let hash = crypto.createHmac('sha512', salt);
     hash.update(userParam.password);
     let hashedPasswordAndSalt = hash.digest('hex');
-
-    let newUser = new User
-    ({
+    let newUserDoc = {
         email: userParam.email,
         password_hash: hashedPasswordAndSalt,
         salt : salt,
@@ -56,29 +51,15 @@ module.exports = async function (req, res) {
                 timestamp: new Date()
             }]
         }
-    });
+    }
+    const candidateUserCreated = await users.insert(newUserDoc);
 
-    const candidateUserCreated = await newUser.save();
     let url_token;
-
-    /*let updateCandidateUser = {};
-    updateCandidateUser["candidate.candidate_status"] = [{
-        status: 'created',
-        status_updated: new Date(),
-        timestamp: new Date()
-    }];
-    await User.update({_id: candidateUserCreated._id }, {$set: updateCandidateUser});*/
 
     if(candidateUserCreated) {
         let jwtUserToken = jwtToken.createJwtToken(candidateUserCreated);
-        await User.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken}});
-        let info = new CandidateProfile
-        ({
-            _creator : candidateUserCreated._id
-        });
-        const candidateUserDoc = await info.save();
-
-        const referralDoc = await referral.findOne({ email: userParam.email }).lean();
+        await users.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken}});
+        const referralDoc = await referral.findOneByEmail( userParam.email );
         if(referralDoc) {
             url_token = referralDoc.url_token;
         }
@@ -86,20 +67,20 @@ module.exports = async function (req, res) {
             let new_salt = crypto.randomBytes(16).toString('base64');
             let new_hash = crypto.createHmac('sha512', new_salt);
             url_token = new_hash.digest('hex');
-            url_token = url_token.substr(url_token.length - 10); //getting last 10 characters
-            let document = new referral
-            ({
+            url_token = url_token.substr(url_token.length - 10);
+
+            let document = {
                 email : userParam.email,
                 url_token : url_token,
                 date_created: new Date(),
-            });
-            await document.save();
+            };
+            referral.insert(document);
         }
 
         res.send
         ({
-            _id:candidateUserDoc.id,
-            _creator: candidateUserCreated._id,
+            _id: candidateUserCreated._id,
+            _creator : candidateUserCreated._id, // remove this after chat refactor
             type:candidateUserCreated.type,
             email: candidateUserCreated.email,
             ref_link: url_token,

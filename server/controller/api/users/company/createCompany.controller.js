@@ -1,13 +1,13 @@
 const settings = require('../../../../settings');
 const jwt = require('jsonwebtoken');
-const Users = require('../../../../model/users');
+const Users = require('../../../../model/mongoose/users');
 const crypto = require('crypto');
-const EmployerProfile = require('../../../../model/employer_profile');
+const companies = require('../../../../model/mongoose/company');
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
 const verify_send_email = require('../auth/verify_send_email');
-const referral = require('../../../../model/referrals');
+const referral = require('../../../../model/mongoose/referral');
 const referedCompanyEmail = require('../../../services/email/emails/youReferredACompany');
 const errors = require('../../../services/errors');
 
@@ -37,7 +37,7 @@ module.exports = async function (req, res) {
     else
     {
 
-        const companyDoc = await Users.findOne({ email: queryBody.email }).lean();
+        const companyDoc = await Users.findOneByEmail(queryBody.email);
         if(companyDoc){
             const responseMsg = 'Email "' + queryBody.email + '" is already taken';
             errors.throwError(responseMsg, 400)
@@ -49,8 +49,7 @@ module.exports = async function (req, res) {
             let hashedPasswordAndSalt = hash.digest('hex');
 
             let random = crypto.randomBytes(16).toString('base64');
-            let newCompanyDoc = new Users
-            ({
+            let newCompanyDoc = {
                 email: queryBody.email,
                 password_hash: hashedPasswordAndSalt,
                 salt : salt,
@@ -59,14 +58,13 @@ module.exports = async function (req, res) {
                 created_date: new Date(),
                 referred_email : queryBody.referred_email
 
-            });
-            const companyUserCreated  =  await newCompanyDoc.save();
+            };
+            const companyUserCreated  =  await Users.insert(newCompanyDoc);
             if(companyUserCreated)
             {
                 let jwtUserToken = jwtToken.createJwtToken(companyUserCreated);
                 await Users.update({ _id: companyUserCreated._id },{ $set: { 'jwt_token': jwtUserToken } });
-                let employerDetail = new EmployerProfile
-                ({
+                let employerDetail = {
                     _creator : companyUserCreated._id,
                     first_name : queryBody.first_name,
                     last_name: queryBody.last_name,
@@ -77,9 +75,9 @@ module.exports = async function (req, res) {
                     company_country:queryBody.country,
                     company_city:queryBody.city,
                     company_postcode:queryBody.postal_code,
-                });
+                };
 
-                let employerDoc = await employerDetail.save();
+                let employerDoc = await companies.insert(employerDetail);
 
                 let signOptions = {
                     expiresIn:  "1h",
@@ -95,13 +93,11 @@ module.exports = async function (req, res) {
                 verify_send_email(companyUserCreated.email, verifyEmailToken);
 
                 //sending email to referee
-                const refDoc = await referral.findOne({
-                    email : queryBody.referred_email
-                }).lean();
+                const refDoc = await referral.findOneByEmail(queryBody.referred_email);
                 if(refDoc){
-                    const userDoc = await Users.findOne({email : refDoc.email}).lean();
+                    const userDoc = await Users.findOneByEmail(refDoc.email);
                     if(userDoc && userDoc.type){
-                            const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id}).lean();
+                            const companyDoc = await companies.findOne({_creator : userDoc._id});
                             let data;
                             if(companyDoc && companyDoc.first_name)
                             {
@@ -140,13 +136,14 @@ module.exports = async function (req, res) {
                     }
                 }
                 //end
-                let userData = filterReturnData.removeSensativeData({_creator : companyUserCreated.toObject()})
+                console.log(employerDoc);
+                let userData = filterReturnData.removeSensativeData(companyUserCreated)
                 res.send({
-                    _id:employerDoc.id,
-                    _creator: userData._creator._id,
-                    type:userData._creator.type,
-                    email: userData._creator.email,
-                    is_approved : userData._creator.is_approved,
+                    _id:employerDoc._id,
+                    _creator: userData._id,
+                    type:userData.type,
+                    email: userData.email,
+                    is_approved : userData.is_approved,
                     jwt_token: jwtUserToken
                 });
             }

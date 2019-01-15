@@ -161,13 +161,13 @@ export class ChatComponent implements OnInit {
       //this.msg='';
       //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      //console.log(this.currentUser);
       //for live
       //this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
       this.file_url = URL;//'http://localhost/workonblockchain.com/server/uploads/';
       if(this.currentUser){
         if(this.currentUser.type == 'candidate'){
-            this.authenticationService.getById(this.currentUser._creator)
+          //this.currentUser._creator = this.currentUser._id;
+            this.authenticationService.getById(this.currentUser._id)
             .subscribe(
                 data => {
                     //data[0]._creator.is_approved = 1;
@@ -181,13 +181,13 @@ export class ChatComponent implements OnInit {
                         this.approved_user = 1;
                     }
                     */
-                    if(!data['_creator'].first_approved_date)
+                    if(!data['first_approved_date'])
                     {
                           this.disabled = true;
                           this.msg = "You can access this page when your account has been approved by an admin.";
                           this.log='';
                     }
-                    else if(data['_creator'].disable_account == true)
+                    else if(data['disable_account'] == true)
                     {
                         this.disabled = true;
                         this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
@@ -207,7 +207,7 @@ export class ChatComponent implements OnInit {
                             }
                           }
                         );
-                      if(data['_creator'].viewed_explanation_popup === false || !data['_creator'].viewed_explanation_popup){
+                      if(data['viewed_explanation_popup'] === false || !data['viewed_explanation_popup']){
                         $("#popModal").modal("show");
                       }
                       this.msg='';
@@ -340,7 +340,7 @@ export class ChatComponent implements OnInit {
                             this.new_messges = this.filter_array(msg_data['datas']);
                             //console.log(this.new_messges);
                             for (var key_messages in this.new_messges) {
-                                if(this.currentUser._creator == this.new_messges[key_messages].receiver_id){
+                                if(this.currentUser._creator === this.new_messges[key_messages].receiver_id){
                                     //console.log('my');
                                 }
                                 else{
@@ -414,7 +414,6 @@ export class ChatComponent implements OnInit {
                 .subscribe(
                     msg_data => {
                         this.loading = false;
-                        //console.log(msg_data['datas']);
                         if(msg_data['datas'].length>0){
                             //console.log('this.currentUser._creator: '+this.currentUser._creator);
                             this.new_messges.push(msg_data['datas']);
@@ -422,7 +421,7 @@ export class ChatComponent implements OnInit {
                             //console.log(this.new_messges);
                             for (var key_messages in this.new_messges) {
                                 //console.log('length: '+this.new_messges.length);
-                                if(this.currentUser._creator == this.new_messges[key_messages].sender_id){
+                                if(this.currentUser._creator === this.new_messges[key_messages].sender_id){
                                     //console.log('my');
                                 }
                                 else{
@@ -430,7 +429,6 @@ export class ChatComponent implements OnInit {
                                     .subscribe(
                                         data => {
                                             this.users.push(data['users']);
-                                            //console.log(this.users);
                                             this.count = 0;
                                             for (var key_users_new in this.users) {
                                                 if(this.count == 0){
@@ -1054,7 +1052,7 @@ export class ChatComponent implements OnInit {
     this.credentials.msg_body = '';
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log("show_msg_area: " + this.show_msg_area);
-      setInterval(() => {
+      //setInterval(() => {
         //receiver,sender
         //console.log("ID: " + this.credentials.id);
         this.authenticationService.get_user_messages(this.credentials.id,0)
@@ -1062,7 +1060,7 @@ export class ChatComponent implements OnInit {
             data => {
               //console.log('data');
               this.new_msgss = data['datas'];
-              //console.log(this.new_msgss);
+              console.log(this.new_msgss);
               this.job_desc = data['datas'][0];
               this.authenticationService.update_chat_msg_status(id,0)
                 .subscribe(
@@ -1141,7 +1139,7 @@ export class ChatComponent implements OnInit {
               }
             }
           );
-      }, 7000);
+      //}, 7000);
 		this.unread_msgs_info = [];
 		for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver

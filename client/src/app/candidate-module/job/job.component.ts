@@ -63,7 +63,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     {
       this.router.navigate(['/signup']);
     }
-    if(this.currentUser && this.currentUser.type=='candidate')
+    if(this.currentUser && this.currentUser.type === 'candidate')
     {
       this.options.sort(function(a, b){
         if(b.name === 'Remote' || a.name === 'Remote') {
@@ -92,26 +92,21 @@ export class JobComponent implements OnInit,AfterViewInit {
         .subscribe(
           data => {
 
-            if(data['experience_roles']!="")
-            {
-              this.exp_class = "btn";
-            }
-
             if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.about_active_class = 'fa fa-check-circle text-success';
             }
-            if(data['terms_id'])
+            if(data['candidate'].terms_id)
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
 
-            if(data['locations'].length>0 || data['roles'].length>0 || data['interest_area'].length>0 ||  data['expected_salary'] || data['availability_day'] || data['expected_salary_currency'])
+            if(data['candidate'].locations.length>0 || data['candidate'].roles.length>0 || data['candidate'].interest_areas.length>0 ||  data['candidate'].expected_salary || data['candidate'].availability_day || data['candidate'].expected_salary_currency)
             {
-              if(data['locations'])
+              if(data['candidate'].locations)
               {
-                for (let country1 of data['locations'])
+                for (let country1 of data['candidate'].locations)
                 {
 
                   for(let option of this.options)
@@ -130,9 +125,9 @@ export class JobComponent implements OnInit,AfterViewInit {
               }
 
 
-              if(data['interest_area'])
+              if(data['candidate'].interest_areas)
               {
-                for (let interest of data['interest_area'])
+                for (let interest of data['candidate'].interest_areas)
                 {
 
                   for(let option of this.area_interested)
@@ -152,15 +147,15 @@ export class JobComponent implements OnInit,AfterViewInit {
               // this.jobselected=data.roles;
 
               //this.selectedValue = data.interest_area;
-              if(data['roles'])
+              if(data['candidate'].roles)
               {
-                for (let area of data['roles'])
+                for (let area of data['candidate'].roles)
                 {
 
                   for(let option of this.dropdown_options)
                   {
                     // //console.log(option);
-                    if(option.value == area)
+                    if(option.value === area)
                     {
                       option.checked=true;
                       this.jobselected.push(area);
@@ -172,15 +167,16 @@ export class JobComponent implements OnInit,AfterViewInit {
                 }
               }
 
-              this.salary = data['expected_salary'];
-              this.availability_day = data['availability_day'];
-              if(data['expected_salary_currency'])
-                this.base_currency = data['expected_salary_currency'];
-              this.current_salary = data['current_salary'];
-              if(data['current_currency'])
-                this.current_currency =data['current_currency'];
+              this.salary = data['candidate'].expected_salary;
+              this.availability_day = data['candidate'].availability_day;
+              if(data['candidate'].expected_salary_currency)
+                this.base_currency = data['candidate'].expected_salary_currency;
+              if(data['candidate'].current_currency && data['candidate'].current_salary)
+                this.current_currency =data['candidate'].current_currency;
+              this.current_salary = data['candidate'].current_salary;
 
-              if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'])
+
+              if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
               {
                 this.active_class = 'fa fa-check-circle text-success';
                 this.class = "btn";
@@ -190,7 +186,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
               }
 
-              if(data['why_work'])
+              if(data['candidate'].why_work)
               {
                 this.exp_disable ='';
                 this.resume_active_class='fa fa-check-circle text-success';
@@ -200,7 +196,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
 
 
-              if(data['description'] )
+              if(data['candidate'].description )
               {
                 this.exp_class = "/experience";
                 this.exp_active_class = 'fa fa-check-circle text-success';
@@ -312,7 +308,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       {name:'Technical Lead', value:'Technical Lead', checked:false},
       {name:'Product Manager', value:'Product Manager', checked:false},
       {name:'Intern Developer', value:'Intern Developer', checked:false},
-      {name:'Researcher', value:'Researcher ', checked:false},
+      {name:'Researcher', value:'Researcher', checked:false},
       {name:'Mobile app developer', value:'Mobile app developer', checked:false},
       {name:'Data scientist', value:'Data scientist', checked:false},
       {name:'Security specialist ', value:'Security specialist', checked:false},
@@ -483,7 +479,18 @@ export class JobComponent implements OnInit,AfterViewInit {
 
     if( this.count === 0 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
     {
-      this.authenticationService.job(this.currentUser._creator,f.value)
+      if(typeof(f.value.expected_salary) === 'string' )
+        f.value.expected_salary = parseInt(f.value.expected_salary);
+      if(f.value.current_salary && typeof (f.value.current_salary) === 'string') {
+        f.value.current_salary = parseInt(f.value.current_salary);
+
+      }
+      if(f.value.current_salary === '') {
+        f.value.current_salary = 0;
+      }
+      f.value.current_salary = parseInt(f.value.current_salary);
+      f.value.expected_salary = parseInt(f.value.expected_salary);
+      this.authenticationService.job(this.currentUser._creator, f.value)
         .subscribe(
           data => {
             if(data && this.currentUser)

@@ -55,8 +55,8 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Stackexchange account URL (optional)</label>
-                  <input type="text" #stackaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://stackexchange.com/users/12345/username" name="exchange_account" [(ngModel)]="info.exchange_account" >
-                  <div class = "invalid-feedback d-inline" *ngIf="stackaccount.errors">
+                  <input type="text" #stackaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="exchange_account" [(ngModel)]="info.exchange_account" placeholder="https://stackexchange.com/users/12345/username">
+                  <div class = "invalid-feedback d-inline" *ngIf="info.exchange_account && stackaccount.errors">
                     Enter url in proper format
                   </div>
                 </div>
@@ -88,7 +88,7 @@
               <div class="col-md-6">
                 <div class="form-group" >
                   <label>Profile picture</label>
-                  <input type="file" class="form-control-file" disabled id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
+                  <input type="file" disabled class="form-control-file"  id="aa" accept="image/*" name="image" [(ngModel)]="info.image">
                   <label>
                     <span *ngIf="img_src" >{{img_src}}</span>
                   </label>
@@ -275,7 +275,7 @@
                       </div>
                     </div>
                   </div>
-                  <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_area" style="display: none;">
+                  <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_areas" style="display: none;">
                   <div class = "invalid-feedback d-inline" *ngIf="selectedValue.length <=0">
                     {{interest_log}}
                   </div>
@@ -361,7 +361,7 @@
                     <input type="radio" name="radiogroup- {{ option.value}}" id="rg{{option.value}}{{i_ind}}"  value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
                     {{exp.name}}
                   </label>
-                  <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
+                  <input type="text" class="form-control" name="commercial_platforms" [(ngModel)]='commercial_expYear' style="display: none;">
                 </div>
               </div>
               <div class = "invalid-feedback d-inline ml-3" *ngIf="commercially_worked.length !== commercial_expYear.length">
@@ -402,7 +402,7 @@
                     <input type="radio" name="radiogroup - {{ exp_value.value }} "  [checked]=" designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value" id="dg{{exp_value.value}}{{i_ind}}"  value="{{exp.value}}" (change)="onPlatformYearOptions($event , exp_value.value)"  >
                     {{exp.name}}
                   </label>
-                  <input type="text" class="form-control" name="platforms" [(ngModel)]='platforms' style="display: none;">
+                  <input type="text" class="form-control" name="smart_contract_platforms" [(ngModel)]='platforms' style="display: none;">
                 </div>
               </div>
               <div class = "invalid-feedback d-inline ml-3" *ngIf="platforms_designed.length !== platforms.length">
@@ -418,14 +418,14 @@
                     <div class="row m-0">
                       <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
                         <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onExpOptions(option)" required  />
+                          <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onExpOptions($event)" required  />
                           <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
                           {{option.value}}
                         </label>
                       </div>
                     </div>
                   </div>
-                  <input type="text" class="form-control" [(ngModel)]='experimented_platform' name="experimented_platform" style="display: none;">
+                  <input type="text" class="form-control" [(ngModel)]='experimented_platform' name="experimented_platforms" style="display: none;">
 
                 </div>
               </div>
@@ -707,7 +707,8 @@
                 </div>
                 <div class="col-md-12 p-0">
                   <div class = "form-group">
-                    <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add position</a>
+                    <a (click)="addNewExpRow()" class = "btn btn-primary text-white"><i class="fa fa-plus"></i> Add Position</a>
+
                   </div>
                 </div>
               </div>
@@ -776,7 +777,24 @@
                 </div>
                 <div class="col-md-12 p-0">
                   <div class = "form-group">
-                    <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add education</a>
+                    <a  (click)="addNewRow()" class = "btn btn-primary text-white"> <i class="fa fa-plus" ></i> Add Education</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Bio</label>
+                  <ul>
+                    <li> 2-5 sentences </li>
+                    <li> Quick overview of your current role and responsibilities and your principal development stack and skills </li>
+                  </ul>
+                  <textarea class="form-control" rows="5" id="comment" maxlength="2000" placeholder="Senior java and nodejs developer with 10 years development experience. Worked in the healthcare and finance industries. Active Ethereum smart contract developer." #intro name="intro" required  [(ngModel)]="Intro" ></textarea>
+                  <div class = "invalid-feedback d-inline" *ngIf="!Intro">
+                    {{intro_log}}
+
                   </div>
                 </div>
               </div>

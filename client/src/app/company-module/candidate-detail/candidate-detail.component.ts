@@ -99,14 +99,21 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       this.authenticationService.getLastJobDesc()
         .subscribe(
           data => {
+            if(data) {
+              setTimeout(() => {
+                $('.selectpicker').selectpicker();
+              }, 300);
 
-            this.credentials.job_title = data['job_title'];
-            this.credentials.salary = data['salary'];
-            this.credentials.currency = data['salary_currency'];
-            this.credentials.location = data['interview_location'];
-            this.credentials.job_type = data['job_type'];
-            this.credentials.job_desc = data['description'];
-
+              setTimeout(() => {
+                $('.selectpicker').selectpicker('refresh');
+              }, 900);
+              this.credentials.job_title = data['job_title'];
+              this.credentials.salary = data['salary'];
+              this.credentials.currency = data['salary_currency'];
+              this.credentials.location = data['interview_location'];
+              this.credentials.job_type = data['job_type'];
+              this.credentials.job_desc = data['description'];
+            }
           },
           error => {
             if (error['message'] === 500 || error['message'] === 401) {
@@ -144,41 +151,32 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         .subscribe(
           dataa => {
             if (dataa) {
-              this.history = dataa['work_history'];
-              this.history.sort(this.date_sort_desc);
-              this.education = dataa['education_history'];
-              this.education.sort(this.education_sort_desc);
+              if(dataa['candidate'].work_history) {
+                this.history = dataa['candidate'].work_history;
+                this.history.sort(this.date_sort_desc);
+              }
+
+              if(dataa['candidate'].education_history) {
+                this.education = dataa['candidate'].education_history;
+                this.education.sort(this.education_sort_desc);
+              }
+
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
-              this.countries = dataa['locations'];
+              this.countries = dataa['candidate'].locations;
               this.countries.sort();
               if(this.countries.indexOf("remote") > -1){
                 this.countries.splice(0, 0, "remote");
                 this.countries = this.filter_array(this.countries);
               }
 
-              this.interest_area =dataa['interest_area'];
+              this.interest_area =dataa['candidate'].interest_areas;
               this.interest_area.sort();
-              this.roles  = dataa['roles'];
+              this.roles  = dataa['candidate'].roles;
               this.roles.sort();
-              this.commercial = dataa['commercial_platform'];
-              if(this.commercial && this.commercial.length>0){
-                this.commercial.sort(function(a, b){
-                  if(a.platform_name < b.platform_name) { return -1; }
-                  if(a.platform_name > b.platform_name) { return 1; }
-                  return 0;
-                })
-              }
-              this.experimented = dataa['experimented_platform'];
-              if(this.experimented && this.experimented.length>0){
-                this.experimented.sort(function(a, b){
-                  if(a.name < b.name) { return -1; }
-                  if(a.name > b.name) { return 1; }
-                  return 0;
-                })
-              }
 
-              this.languages= dataa['programming_languages'];
+
+              this.languages= dataa['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
                 this.languages.sort(function(a, b){
                   if(a.language < b.language) { return -1; }
@@ -187,33 +185,82 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 })
               }
 
-              this.platforms=dataa['platforms'];
-              if(this.platforms && this.platforms.length>0){
-                this.platforms.sort(function(a, b){
-                  if(a.platform_name < b.platform_name) { return -1; }
-                  if(a.platform_name > b.platform_name) { return 1; }
-                  return 0;
-                })
-              }
-              if(dataa['_creator'].candidate && dataa['_creator'].candidate.blockchain && dataa['_creator'].candidate.blockchain.commercial_skills && dataa['_creator'].candidate.blockchain.commercial_skills.length > 0)
-              {
-                this.commercial_skills = dataa['_creator']['candidate'].blockchain.commercial_skills;
-                this.commercial_skills.sort(function(a, b){
-                  if(a.skill < b.skill) { return -1; }
-                  if(a.skill > b.skill) { return 1; }
-                  return 0;
-                })
+              if(dataa['candidate'] && dataa['candidate'].blockchain) {
+                if (dataa['candidate'].blockchain.commercial_skills) {
+                  this.commercial_skills = dataa['candidate'].blockchain.commercial_skills;
+                  this.commercial_skills.sort(function (a, b) {
+                    if (a.skill < b.skill) {
+                      return -1;
+                    }
+                    if (a.skill > b.skill) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                }
+
+                if (dataa['candidate'].blockchain.formal_skills) {
+                  this.formal_skills = dataa['candidate'].blockchain.formal_skills;
+                  this.formal_skills.sort(function (a, b) {
+                    if (a.skill < b.skill) {
+                      return -1;
+                    }
+                    if (a.skill > b.skill) {
+                      return 1;
+                    }
+                    return 0;
+                  });
+                }
+
+                if (dataa['candidate'].blockchain.commercial_platforms) {
+                  this.commercial = dataa['candidate'].blockchain.commercial_platforms;
+                  if (this.commercial && this.commercial.length > 0) {
+                    this.commercial.sort(function (a, b) {
+                      if (a.platform_name < b.platform_name) {
+                        return -1;
+                      }
+                      if (a.platform_name > b.platform_name) {
+                        return 1;
+                      }
+                      return 0;
+                    });
+                  }
+                }
+
+                if (dataa['candidate'].blockchain.experimented_platforms) {
+                  this.experimented = dataa['candidate'].blockchain.experimented_platforms;
+                  if (this.experimented && this.experimented.length > 0) {
+                    this.experimented.sort(function (a, b) {
+                      if (a < b) {
+                        return -1;
+                      }
+                      if (a > b) {
+                        return 1;
+                      }
+                      return 0;
+                    });
+                  }
+                }
+
+                if (dataa['candidate'].blockchain.smart_contract_platforms) {
+                  this.platforms = dataa['candidate'].blockchain.smart_contract_platforms;
+                  if (this.platforms && this.platforms.length > 0) {
+                    this.platforms.sort(function (a, b) {
+                      if (a.platform_name < b.platform_name) {
+                        return -1;
+                      }
+                      if (a.platform_name > b.platform_name) {
+                        return 1;
+                      }
+                      return 0;
+                    })
+
+
+                  }
+
+                }
               }
 
-              if(dataa['_creator'].candidate && dataa['_creator'].candidate.blockchain && dataa['_creator'].candidate.blockchain.formal_skills && dataa['_creator'].candidate.blockchain.formal_skills.length > 0)
-              {
-                this.formal_skills = dataa['_creator'].candidate.blockchain.formal_skills;
-                this.formal_skills.sort(function(a, b){
-                  if(a.skill < b.skill) { return -1; }
-                  if(a.skill > b.skill) { return 1; }
-                  return 0;
-                })
-              }
             }
           },
           error => {

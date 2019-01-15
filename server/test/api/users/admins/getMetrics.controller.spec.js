@@ -31,7 +31,7 @@ describe('admin get metrics', function () {
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
             await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
-
+            const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             const company = docGenerator.company();
             const companyTnCWizard = docGenerator.companyTnCWizard();
             const companyAbout = docGenerator.companyAbout();
@@ -47,12 +47,13 @@ describe('admin get metrics', function () {
             metrics.approvedEnabled.count.should.equal(1);
 
             const aggregrated = metrics.approvedEnabled.aggregated;
+            console.log("blockchain");
             aggregrated.nationality[profileData.nationality].should.equal(1);
             should.not.exist(aggregrated.nationality.Australian);
             aggregrated.availabilityDay[job.availability_day].should.equal(1);
             aggregrated.baseCountry[profileData.country].should.equal(1);
             aggregrated.expectedSalaryUSD.min.should.equal(job.expected_salary*settings.CURRENCY_RATES_USD.Euro);
-            aggregrated.interestAreas[job.interest_area[0]].should.equal(1);
+            aggregrated.interestAreas[job.interest_areas[0]].should.equal(1);
             aggregrated.locations[job.country[0]].should.equal(1);
             aggregrated.locations[job.country[1]].should.equal(1);
             aggregrated.roles[job.roles[0]].should.equal(1);
@@ -60,8 +61,8 @@ describe('admin get metrics', function () {
             aggregrated.programmingLanguages[experience.language_exp[0].language].aggregate[experience.language_exp[0].exp_year].should.equal(1);
             aggregrated.programmingLanguages[experience.language_exp[1].language].count.should.equal(1);
             aggregrated.programmingLanguages[experience.language_exp[1].language].aggregate[experience.language_exp[1].exp_year].should.equal(1);
-            aggregrated.blockchain.experimented[resume.experimented_platform[0].name].should.equal(1);
-            aggregrated.blockchain.experimented[resume.experimented_platform[1].name].should.equal(1);
+            aggregrated.blockchain.experimented[resume.experimented_platforms[0]].should.equal(1);
+            aggregrated.blockchain.experimented[resume.experimented_platforms[1]].should.equal(1);
             should.not.exist(aggregrated.blockchain.experimented["EOS"]);
         })
     })

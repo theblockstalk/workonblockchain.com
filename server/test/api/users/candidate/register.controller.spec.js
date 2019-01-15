@@ -4,7 +4,6 @@ const crypto = require('crypto');
 const server = require('../../../../server');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
-const Candidates = require('../../../../model/candidate_profile');
 const docGenerator = require('../../../helpers/docGenerator');
 const candidateHepler = require('./candidateHelpers');
 
@@ -44,10 +43,7 @@ describe('signup as candidate', function () {
             hash.update(candidate.password);
             const hashedPasswordAndSalt = hash.digest('hex');
             userDoc.password_hash.should.equal(hashedPasswordAndSalt);
-
-            const candidateDoc = await Candidates.findOne({_creator: userDoc._id}).lean();
-            should.exist(candidateDoc);
-            candidateDoc.marketing_emails.should.equal(false);
+            userDoc.marketing_emails.should.equal(false);
         })
     })
 });

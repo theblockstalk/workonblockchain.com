@@ -110,18 +110,19 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-            if(data['_creator'].refered_id) //&& !data.first_name && !data.last_name)
+            console.log(data);
+            if(data['refered_id']) //&& !data.first_name && !data.last_name)
             {
-              this.referred_id = data['_creator'].refered_id;
+              this.referred_id = data['refered_id'];
 
             }
-            if(data['terms_id'])
+            if(data['candidate'].terms_id)
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
 
-            if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['_creator'].candidate)
+            if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
             {
 
               this.info.contact_number = data['contact_number'];
@@ -131,12 +132,12 @@ export class AboutComponent implements OnInit,AfterViewInit
               {
                 this.info.nationality = data['nationality'];
               }
-              if(data['_creator'].candidate && data['_creator'].candidate.base_country)
+              if(data['candidate'] && data['candidate'].base_country)
               {
-                this.info.country = data['_creator'].candidate.base_country;
+                this.info.country = data['candidate'].base_country;
               }
-              if(data['_creator'].candidate && data['_creator'].candidate.base_city){
-                this.info.city = data['_creator'].candidate.base_city;
+              if(data['candidate'] && data['candidate'].base_city){
+                this.info.city = data['candidate'].base_city;
               }
 
               this.info.first_name =data['first_name'];
@@ -164,14 +165,14 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.link= "/job";
             }
 
-            if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'])
+            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day)
             {
               this.resume_disable = '';
               this.job_active_class = 'fa fa-check-circle text-success';
               this.resume_class="/resume";
             }
 
-            if(data['why_work'] )
+            if(data['candidate'].why_work )
             {
               this.exp_disable = '';
               this.resume_class="/resume";
@@ -179,7 +180,7 @@ export class AboutComponent implements OnInit,AfterViewInit
               this.resume_active_class='fa fa-check-circle text-success';
             }
 
-            if( data['description'])
+            if( data['candidate'].description)
             {
               this.exp_class = "/experience";
               this.exp_active_class = 'fa fa-check-circle text-success';

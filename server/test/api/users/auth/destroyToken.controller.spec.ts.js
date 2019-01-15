@@ -4,8 +4,6 @@ const crypto = require('crypto');
 const server = require('../../../../server');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
-const Candidates = require('../../../../model/candidate_profile');
-const Companies = require('../../../../model/employer_profile');
 const companyHepler = require('../company/companyHelpers');
 const candidateHepler = require('../candidate/candidateHelpers');
 const authenticateHepler = require('./authenticateHelpers');
@@ -35,7 +33,7 @@ describe('destroy token' , function () {
             const accountSetting = await authenticateHepler.destroyToken(userDoc.jwt_token);
 
             userDoc = await Users.findOne({email: company.email}).lean();
-            should.equal(userDoc.jwt_token, null);
+            should.equal(typeof userDoc.jwt_token, 'undefined');
         })
     })
 })

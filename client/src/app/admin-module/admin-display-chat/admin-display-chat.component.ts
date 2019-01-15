@@ -80,10 +80,10 @@ export class AdminDisplayChatComponent implements OnInit {
                 this.new_messges.push(msg_data['datas']);
 						    this.new_messges = this.filter_array(msg_data['datas']);
 						    this.length = msg_data['datas'].length;
+
 						    for (var key_messages in this.new_messges)
 						    {
 						      if(this.user_id == this.new_messges[key_messages].receiver_id){
-						        //console.log('my');
                   }
                   else{
                     this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,1,this.type)
@@ -94,10 +94,10 @@ export class AdminDisplayChatComponent implements OnInit {
                         for (var key_users_new in this.users) {
                           if(this.count == 0){
                             if(this.users[key_users_new].first_name){
-                              this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'');
+                              this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator,'');
                             }
                             else{
-                              this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'');
+                              this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator,'');
                             }
                           }
                           this.count = this.count + 1;
@@ -146,7 +146,6 @@ export class AdminDisplayChatComponent implements OnInit {
                 for (var key_messages in this.new_messges)
                 {
                   if(this.user_id == this.new_messges[key_messages].sender_id){
-                    //console.log('my');
                   }
                   else{
                     this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',1,'company')
@@ -157,7 +156,7 @@ export class AdminDisplayChatComponent implements OnInit {
                         this.count = 0;
                         for (var key_users_new in this.users) {
                           if(this.count === 0){
-                            this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name);
+                            this.openDialog('',this.users[key_users_new]._creator,this.users[key_users_new].company_name);
                           }
                           this.count = this.count + 1;
                         }
@@ -306,6 +305,7 @@ export class AdminDisplayChatComponent implements OnInit {
 			.subscribe(
 				data =>
         {
+
 				  if(data['error'])
 				  {
 				    this.log= "Something Went Wrong";
@@ -318,8 +318,8 @@ export class AdminDisplayChatComponent implements OnInit {
 							this.profile_pic = data['image'];
 						}
 						this.display_name = data['first_name'] +' '+data['last_name'];
-						this.user_type = data['_creator'].type;
-						this.email  = data['_creator'].email;
+						this.user_type = data['type'];
+						this.email  = data['email'];
 					}
 				}
 			);

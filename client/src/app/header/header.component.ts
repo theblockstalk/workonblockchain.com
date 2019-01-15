@@ -65,7 +65,7 @@ export class HeaderComponent implements OnInit {
 
               if(data)
               {
-                this.is_verify = data['_creator'].is_verify;
+                this.is_verify = data['is_verify'];
                 if(this.is_verify == 0)
                 {
                   this.success_msg = "not verify";
@@ -74,7 +74,7 @@ export class HeaderComponent implements OnInit {
                 {
                   this.success_msg='';
                 }
-                this.is_admin = data['_creator'].is_admin;
+                this.is_admin = data['is_admin'];
                 this.user_name = data['first_name'] +' '+ data['last_name'];
                 if(this.is_admin === 1)
                 {

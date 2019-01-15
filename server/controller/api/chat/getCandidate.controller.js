@@ -1,8 +1,8 @@
-const users = require('../../../model/users');
-const CandidateProfile = require('../../../model/candidate_profile');
+const users = require('../../../model/mongoose/users');
 const EmployerProfile = require('../../../model/employer_profile');
 
 const filterReturnData = require('../users/filterReturnData');
+const errors = require('../../services/errors');
 
 module.exports = async function (req, res) {
     let sender_id,receiver_id,is_company_reply,user_type;
@@ -29,27 +29,38 @@ module.exports = async function (req, res) {
     if(req.body.type === 'candidate') {
         const userDoc = await users.findOne({
             $and: [{ _id : receiver_id }, { type : user_type }]
-        }).lean();
+        });
         if(userDoc){
-            const candidateProfile = await CandidateProfile.findOne({
-                "_creator": userDoc._id
-            }).populate('_creator').lean();
-            if (candidateProfile)
-            {
-                let query_result = filterReturnData.removeSensativeData(candidateProfile);
+            let candidateObject= {}  //// remove this after chat refactor
+                //let query_result = filterReturnData.removeSensativeData(userDoc); //// uncomment this after chat refactor
                 if(is_company_reply === 1){
+                     candidateObject = {
+                        _creator : {
+                            _id : userDoc._id,
+                            email : userDoc.email,
+                            type : userDoc.type,
+                        },
+                         _creator : userDoc._id,
+                         first_name : userDoc.first_name,
+                         last_name : userDoc.last_name
+
+                    }
                 }
                 else{
-                    query_result = filterReturnData.anonymousSearchCandidateData(query_result);
+                    candidateObject = {
+                        _creator  : {
+                            _id : userDoc._id,
+                            email : userDoc.email,
+                            type : userDoc.type,
+                        },
+                        initials : filterReturnData.createInitials(userDoc.first_name,userDoc.last_name)
+
+                    }
+                    //query_result = filterReturnData.anonymousSearchCandidateData(query_result); //// uncomment this after chat refactor
                 }
                 res.send({
-                    users:query_result
+                    users:candidateObject
                 });
-            }
-            else
-            {
-                errors.throwError('User not found', 404);
-            }
         }
         else{
             errors.throwError('User not found', 404);
@@ -58,17 +69,17 @@ module.exports = async function (req, res) {
     else{
         const userDoc = await users.findOne({
             $and: [{ _id : sender_id }, { type : user_type }]
-        }).lean();
+        });
         if(userDoc) {
             const companyProfile = await EmployerProfile.findOne({
                 "_creator": userDoc._id
             }).populate('_creator').lean();
             if (companyProfile)
             {
-                let query_result = filterReturnData.removeSensativeData(companyProfile);
-                query_result = filterReturnData.anonymousCandidateData(query_result);
+                //let query_result = filterReturnData.removeSensativeData(companyProfile);
+                //query_result = filterReturnData.anonymousCandidateData(query_result);
                 res.send({
-                    users:query_result
+                    users:companyProfile
                 });
             }
             else

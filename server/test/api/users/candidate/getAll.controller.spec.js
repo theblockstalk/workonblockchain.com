@@ -5,7 +5,6 @@ const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const docGenerator = require('../../../helpers/docGenerator');
 const candidateHelper = require('./candidateHelpers');
-const Candidates = require('../../../../model/candidate_profile');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -31,14 +30,14 @@ describe('get all users', function () {
 
             await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
-            const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            let candidateData = await Candidates.findOne({_creator: candidateUserDoc._id}).lean();
+            let userDoc = await Users.findOne({email: candidate.email}).lean();
 
-            const userDoc = await Users.findOne({email: candidate.email}).lean();
-            const getAllCandidates = await candidateHelper.getAll(candidateUserDoc.jwt_token);
-            getAllCandidates.body[0]._creator.email.should.equal(candidateUserDoc.email);
-            getAllCandidates.body[0].first_name.should.equal(candidateData.first_name);
-            getAllCandidates.body[0].last_name.should.equal(candidateData.last_name);
+            const getAllCandidates = await candidateHelper.getAll(userDoc.jwt_token);
+            userDoc = await Users.findOne({email: candidate.email}).lean();
+
+            getAllCandidates.body[0].email.should.equal(userDoc.email);
+            getAllCandidates.body[0].first_name.should.equal(userDoc.first_name);
+            getAllCandidates.body[0].last_name.should.equal(userDoc.last_name);
         })
     })
 });
