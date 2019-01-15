@@ -86,7 +86,7 @@ export class AdminDisplayChatComponent implements OnInit {
 						        //console.log('my');
                   }
                   else{
-                    this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,1,this.type)
+                    this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].msg_tag,this.type)
                     .subscribe(
                       data => {
                         this.users.push(data['users']);
@@ -149,7 +149,7 @@ export class AdminDisplayChatComponent implements OnInit {
                     //console.log('my');
                   }
                   else{
-                    this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',1,'company')
+                    this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',this.new_messges[key_messages].msg_tag,'company')
                     .subscribe(
                       data =>
                       {
@@ -276,7 +276,7 @@ export class AdminDisplayChatComponent implements OnInit {
   get_user_type()
   {
     if(this.user_type == 'company'){
-      this.authenticationService.getCandidate(this.user_id,'0',1,this.user_type)
+      this.authenticationService.getCandidate(this.user_id,'0',this.new_messges[key_messages].msg_tag,this.user_type)
 			.subscribe(
 			  data =>
         {

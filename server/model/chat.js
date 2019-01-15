@@ -28,205 +28,89 @@ const ChatSchema = new Schema({
         ref: 'User',
         required:true
     },
-    message: {
-        file: {
-            url: {
-                type: String,
-                required: false,
-                validate: regexes.url
-            }
-        },
-        normal: {
-            message: {
-                type: String,
-                required: false
-            }
-        },
-        job_offer: {
-            title: {
-                type: String,
-                required: false
-            },
-            salary: {
-                type: Number,
-                required: false
-            },
-            salary_currency: {
-                type: String,
-                enum: enumerations.currencies,
-                required: false
-            },
-            type: {
-                type: String,
-                enum: enumerations.jobTypes,
-                required: false
-            },
-            location: {
-                type: String,
-                required: false
-            },
-            description: {
-                type: String,
-                required: false
-            }
-        },
-        job_offer_accepted: {
-            message: {
-                type: String,
-                required: false
-            }
-        },
-        job_offer_rejected: {
-            message: {
-                type: String,
-                required: false
-            }
-        },
-        interview_offer: {
-            location: {
-                type: String,
-                required: false
-            },
-            description: {
-                type: String,
-                required: false
-            },
-            date_time: {
-                type: Date,
-                required: false
-            }
-        },
-        employment_offer: {
-            title: {
-                type: String,
-                required: false
-            },
-            salary: {
-                type: Number,
-                required: false
-            },
-            salary_currency: {
-                type: String,
-                enum: enumerations.currencies,
-                required: false
-            },
-            type: {
-                type: String,
-                enum: enumerations.jobTypes,
-                required: false
-            },
-            start_date: {
-                type: Date,
-                required: false
-            },
-            description: {
-                type: String,
-                required: false
-            },
-            file_url: {
-                type: String,
-                validate: regexes.url
-            }
-        },
-        employment_offer_accepted: {
-            employment_offer_reference: {
-                type: Schema.Types.ObjectId,
-                ref: 'Chat',
-                required: false
-            },
-            message: {
-                type: String,
-                required: false
-            }
-        },
-        employment_offer_rejected: {
-            employment_offer_reference: {
-                type: Schema.Types.ObjectId,
-                required: false,
-                ref: 'Chat'
-            },
-            message: {
-                type: String,
-                required: false
-            }
-        }
+    message:
+    {
+        type:String,
+        required:false
     },
     description:
-        {
-            type:String,
-            required:false
-        },
+    {
+        type:String,
+        required:false
+    },
     job_title:
-        {
-            type:String
-        },
+    {
+        type:String
+    },
     salary:
-        {
-            type:Number
-        },
-    salary_currency: {
+    {
+        type:Number
+    },
+    salary_currency:
+    {
         type: String,
         enum: ['£ GBP' ,'€ EUR' , '$ USD', '']
     },
     date_of_joining: //used in case of offer to employ
-        {
-            type:Date // Date
-        },
+     {
+        type:Date // Date
+    },
     msg_tag:
-        {
-            type:String,
-            enum: enumerations.chatMsgTypes,
-            required: true
-        },
+    {
+        type:String,
+        enum: enumerations.chatMsgTypes,
+        required: true
+    },
     is_company_reply:
-        {
-            type:Number, // 0 = false, 1 = true ???
-            enum: [0, 1],
-            default:0
-        },
+    {
+        type:Number, // 0 = false, 1 = true ???
+        enum: [0, 1],
+        default:0
+    },
     job_type:
-        {
-            type:String,
-            enum: ['Full Time', 'Part Time','Contract', '']
-        },
+    {
+        type:String,
+        enum: ['Full Time', 'Part Time','Contract', '']
+    },
     interview_location:
-        {
-            type:String
-        },
+    {
+        type:String
+    },
     interview_date_time:
-        {
-            type: Date // Date and time for interview offer
-        },
+     {
+        type: Date // Date and time for interview offer
+    },
     file_name:
-        {
-            type:String
-            //validate: regexes.url
-        },
+    {
+        type:String
+        //validate: regexes.url
+    },
     is_job_offered:
-        {
-            type:Number,
-            enum: [0, 1, 2, 3],
-            // 0 = no offer to candidate
-            // 1 = job offered
-            // 2 = job offer accepted by candidate
-            // 3 = job offer rejected by candidate
-            default:0
-        },
+     {
+        type:Number,
+        enum: [0, 1, 2, 3],
+        // 0 = no offer to candidate
+        // 1 = job offered
+        // 2 = job offer accepted by candidate
+        // 3 = job offer rejected by candidate
+        default:0
+    },
     is_read:
-        {
-            type:Number, // 0 = false, 1 = true
-            enum: [0, 1],
-            default:0
-        },
-    employment_offer_reference:{
+    {
+        type:Number, // 0 = false, 1 = true
+        enum: [0, 1],
+        default:0
+    },
+    employment_offer_reference:
+    {
         type: Schema.Types.ObjectId,
         ref: 'Chat'
     },
     date_created:
-        {
-            type: Date,
-            required: true
-        }
+     {
+        type: Date,
+        required: true
+    }
 });
 
 module.exports = mongoose.model('Chat',ChatSchema);
