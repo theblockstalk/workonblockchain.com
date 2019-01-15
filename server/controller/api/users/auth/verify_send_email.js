@@ -14,7 +14,7 @@ module.exports = async function verify_send_email(emailAddress, verifyEmailToken
             else {
                 name = null;
             }
-            verifyEmailEmail.sendEmail(userDoc.email, null ,verifyEmailToken);
+            verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
             return true;
         }
         if(userDoc.type === 'company') {
