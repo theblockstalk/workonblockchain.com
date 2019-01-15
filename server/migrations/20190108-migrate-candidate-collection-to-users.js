@@ -1,4 +1,4 @@
-const users = require('../model/mongoose/users');
+const Users = require('../model/mongoose/users');
 const candidateProfile = require('../model/mongoose/candidate');
 const Referral = require('../model/referrals');
 const mongoose = require('mongoose');
@@ -134,7 +134,7 @@ module.exports.up = async function() {
             for (let education of candidateDoc.education_history) {
                 if(education.uniname === "") education.uniname = "other";
                 if(education.degreename === "") education.degreename = "other";
-                if(education.fieldname === "") education.fieldname = "other";
+                if(education.fieldname === "" || !education.fieldname) education.fieldname = "other";
                 educationHistory.push(education);
             }
             set['candidate.education_history'] = educationHistory;
@@ -341,7 +341,7 @@ module.exports.down = async function() {
 
         logger.debug("migrate user doc: ", migrateUser);
         const data = await candidateProfile.insert(migrateUser);
-        await users.update({_id: userDoc._id}, { $unset: unset});
+        await Users.update({_id: userDoc._id}, { $unset: unset});
         totalModified++;
 
     });
