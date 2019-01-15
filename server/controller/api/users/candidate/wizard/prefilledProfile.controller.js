@@ -1,4 +1,4 @@
-const User = require('../../../../../model/mongoose/users');
+const users = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
 
 ///// for prefill the candidate profile data ///////////////////
@@ -6,7 +6,7 @@ const errors = require('../../../../services/errors');
 module.exports = async function (req, res) {
 
     const userId = req.auth.user._id;
-    const candidateUserDoc = await User.findOneById(userId);
+    const candidateUserDoc = await users.findOneById(userId);
 
     if(candidateUserDoc) {
         const userParam = req.body;
@@ -17,7 +17,7 @@ module.exports = async function (req, res) {
         if (userParam.workHistory) candidateUpdate['candidate.work_history'] = userParam.workHistory;
         if (userParam.basics.summary) candidateUpdate['candidate.description'] = userParam.basics.summary;
 
-        await User.update({ _id: userId },{ $set: candidateUpdate });
+        await users.update({ _id: userId },{ $set: candidateUpdate });
 
         res.send({
             success: true

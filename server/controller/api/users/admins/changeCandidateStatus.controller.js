@@ -1,11 +1,11 @@
-const User = require('../../../../model/users');
+const users = require('../../../../model/mongoose/users');
 const enumerations = require('../../../../model/enumerations');
 const errors = require('../../../services/errors');
 const candidateApprovedEmail = require('../../../services/email/emails/candidateApproved');
 
 module.exports = async function (req, res) {
     const userId = req.params._id;
-    const userDoc = await User.findOne({_id: userId}).lean();
+    const userDoc = await users.findOneById(userId);
     const status = req.body.status;
     if (userDoc) {
         let newStatus = {
@@ -13,7 +13,7 @@ module.exports = async function (req, res) {
             timestamp: new Date()
         };
         if (status === 'approved' && !userDoc.first_approved_date) {
-            await User.update({_id: userId}, {$set: {'first_approved_date': new Date()}});
+            await users.update({_id: userId}, {$set: {'first_approved_date': new Date()}});
         }
         else if (status === 'rejected' || status === 'deferred') {
             const reason = req.body.reason;
@@ -27,7 +27,7 @@ module.exports = async function (req, res) {
             errors.throwError("Status " + status + " not allowed", 400);
         }
         await
-            User.update({_id: userDoc._id}, {
+            users.update({_id: userDoc._id}, {
                     $push: {
                         'candidate.status': {
                             $each: [newStatus],

@@ -33,7 +33,7 @@ describe('destroy token' , function () {
             const accountSetting = await authenticateHepler.destroyToken(userDoc.jwt_token);
 
             userDoc = await Users.findOne({email: company.email}).lean();
-            should.equal(userDoc.jwt_token, null);
+            should.equal(typeof userDoc.jwt_token, 'undefined');
         })
     })
 })

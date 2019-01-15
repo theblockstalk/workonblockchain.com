@@ -1,4 +1,4 @@
-const User = require('../../../../../model/mongoose/users');
+const users = require('../../../../../model/mongoose/users');
 const Pages = require('../../../../../model/pages_content');
 const errors = require('../../../../services/errors');
 
@@ -7,7 +7,7 @@ const errors = require('../../../../services/errors');
 module.exports = async function (req,res) {
 
 	let userId = req.auth.user._id;
-	let candidateUserDoc = await User.findOneById(userId);
+	let candidateUserDoc = await users.findOneById(userId);
 	if(candidateUserDoc) {
         const queryBody = req.body;
         let candidateUpdate = {}
@@ -17,7 +17,7 @@ module.exports = async function (req,res) {
             if(pagesDoc) {
                 if(pagesDoc._id) candidateUpdate['candidate.terms_id'] = pagesDoc._id;
                 if(queryBody.marketing) candidateUpdate.marketing_emails = queryBody.marketing;
-                await User.update({ _id: userId },{ $set: candidateUpdate });
+                await users.update({ _id: userId },{ $set: candidateUpdate });
                 res.send({
                     success : true
                 })
@@ -30,7 +30,7 @@ module.exports = async function (req,res) {
         else {
             if(queryBody.marketing) {
                 candidateUpdate.marketing_emails = queryBody.marketing;
-                await User.update({ _id: userId },{ $set: candidateUpdate });
+                await users.update({ _id: userId },{ $set: candidateUpdate });
             }
 
             res.send({

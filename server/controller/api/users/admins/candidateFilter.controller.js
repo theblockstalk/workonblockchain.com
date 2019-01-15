@@ -4,7 +4,6 @@ const filterReturnData = require('../filterReturnData');
 
 module.exports = async function (req,res) {
     let queryBody = req.body;
-    console.log(queryBody);
     let verify;
     let disable_account;
     if(queryBody.verify_status === '1') {
@@ -31,11 +30,11 @@ module.exports = async function (req,res) {
         search.name = queryBody.word
     }
 
-    console.log(search);
-    console.log(filter);
     let candidateDocs = await candidateSearch.candidateSearch(filter, search);
-console.log(candidateDocs)
-    await filterData(candidateDocs.candidates);
+
+    for (let candidateDoc of candidateDocs.candidates) {
+        await filterData(candidateDoc);
+    }
 
     res.send(candidateDocs.candidates);
 }

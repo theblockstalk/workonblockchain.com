@@ -1,9 +1,9 @@
-const User = require('../../../../model/mongoose/users');
+const users = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
 const filterReturnData = require('../filterReturnData');
 
 module.exports.update = async function update(candidateUserId, queryBody, educationHistory, workHistory, requestUserId) {
-    const candidateDoc = await User.findOneById(candidateUserId);
+    const candidateDoc = await users.findOneById(candidateUserId);
     let updateCandidateUser = {};
     let unset = {};
     if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;
@@ -51,7 +51,7 @@ module.exports.update = async function update(candidateUserId, queryBody, educat
     if (requestUserId && requestUserId !== candidateUserId) {
         status = 'updated by admin';
     }
-    await User.update({ _id: candidateUserId }, {
+    await users.update({ _id: candidateUserId }, {
             $set: updateCandidateUser,
             $push: {
                 'candidate.status' : {
@@ -64,6 +64,6 @@ module.exports.update = async function update(candidateUserId, queryBody, educat
     );
 
     if (!filterReturnData.isEmptyObject(unset)) {
-        await User.update({ _id: candidateUserId},{$unset: unset});
+        await users.update({ _id: candidateUserId},{$unset: unset});
     }
 }

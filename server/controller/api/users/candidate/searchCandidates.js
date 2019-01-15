@@ -1,4 +1,4 @@
-const User = require('../../../../model/mongoose/users');
+const users = require('../../../../model/mongoose/users');
 const Chat = require('../../../../model/chat');
 const logger = require('../../../services/logger');
 const currency = require('../../../services/currency');
@@ -6,6 +6,67 @@ const errors = require('../../../services/errors');
 
 
 const salaryFactor = 1.1;
+
+/*
+inputSchema = {
+    filers: {
+        is_verify: {
+            type: Number,
+            enum: [0, 1],
+        },
+        status: {
+            type: String,
+            enum: enumerations.candidateStatus
+        },
+        disable_account: Boolean,
+        msg_tags: {
+            type: String,
+            enum: enumerations.chatMsgTypes
+        },
+        onlyAfterDate: Date
+    },
+    search: {
+        name: String,
+        word: String,
+        locations: [{
+            type: String,
+            enum: enumerations.workLocations
+        }],
+        positions: [{
+            type: String,
+            enum: enumerations.workRoles
+        }],
+        blockchains: [{
+            type: String,
+            enum: enumerations.blockchainPlatforms
+        }],
+        skills: [{
+            type: String,
+            enum: enumerations.programmingLanguages
+        }],
+        salary: {
+            type: {
+                current_currency: {
+                    type: String,
+                    enum: enumerations.currencies
+                },
+                current_salary: Number
+            }
+        },
+        availability_day: {
+            type: String,
+            enum: enumerations.workAvailability
+        }
+    }
+};
+
+outputSchema = {
+    count: Number
+    candidates: [
+        type: candidateDoc
+    ]
+};
+*/
 
 module.exports.candidateSearch = async function candidateSearch(filters, search) {
     logger.debug("Doing new candidate search", {
@@ -42,7 +103,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     let candidateQuery = [];
     let filteredResult = [];
     let totalProccessed = 0;
-    await User.findAndIterate(userQuery, async function(userDoc) {
+    await users.findAndIterate(userQuery, async function(userDoc) {
         candidateQuery.push({ "_id": userDoc._id});
         if (search) {
             if(search.name) {
@@ -108,7 +169,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         }
         console.log(candidateQuery);
         const searchQuery = {$and: candidateQuery};
-        candidates = await User.findOne(searchQuery);
+        candidates = await users.findOne(searchQuery);
         if(candidates) {
             filteredResult.push(candidates);
             totalProccessed++;

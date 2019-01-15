@@ -1,11 +1,11 @@
-const User = require('../../../../../model/mongoose/users');
+const users = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
 const filterReturnData = require('../../filterReturnData');
 
 module.exports = async function (req,res)
 {
 	let userId = req.auth.user._id;
-    const candidateUserDoc = await User.findOneById(userId);
+    const candidateUserDoc = await users.findOneById(userId);
 
     if(candidateUserDoc) {
         const queryBody = req.body;
@@ -31,7 +31,7 @@ module.exports = async function (req,res)
             updateObj = {$unset: unset};
         }
 
-        await User.update({ _id: userId }, updateObj);
+        await users.update({ _id: userId }, updateObj);
         res.send({
             success : true
         })

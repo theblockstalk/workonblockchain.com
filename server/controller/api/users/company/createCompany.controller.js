@@ -2,7 +2,7 @@ const settings = require('../../../../settings');
 const jwt = require('jsonwebtoken');
 const Users = require('../../../../model/mongoose/users');
 const crypto = require('crypto');
-const EmployerProfile = require('../../../../model/mongoose/company');
+const companies = require('../../../../model/mongoose/company');
 const emails = settings.COMPANY_EMAIL_BLACKLIST;
 const jwtToken = require('../../../services/jwtToken');
 const filterReturnData = require('../filterReturnData');
@@ -77,7 +77,7 @@ module.exports = async function (req, res) {
                     company_postcode:queryBody.postal_code,
                 };
 
-                let employerDoc = await EmployerProfile.insert(employerDetail);
+                let employerDoc = await companies.insert(employerDetail);
 
                 let signOptions = {
                     expiresIn:  "1h",
@@ -97,7 +97,7 @@ module.exports = async function (req, res) {
                 if(refDoc){
                     const userDoc = await Users.findOneByEmail(refDoc.email);
                     if(userDoc && userDoc.type){
-                            const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id});
+                            const companyDoc = await companies.findOne({_creator : userDoc._id});
                             let data;
                             if(companyDoc && companyDoc.first_name)
                             {

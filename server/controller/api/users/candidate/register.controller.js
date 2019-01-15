@@ -1,4 +1,4 @@
-const User = require('../../../../model/mongoose/users');
+const users = require('../../../../model/mongoose/users');
 const crypto = require('crypto');
 const jwtToken = require('../../../services/jwtToken');
 const referral = require('../../../../model/mongoose/referral');
@@ -11,13 +11,13 @@ module.exports = async function (req, res) {
     let userParam = req.body;
 
     if(userParam.linkedin_id) {
-        const candidateUserDoc = await User.findOne({ linkedin_id: userParam.linkedin_id });
+        const candidateUserDoc = await users.findOne({ linkedin_id: userParam.linkedin_id });
         if (candidateUserDoc) {
             let errorMsg = 'Email "' + userParam.email + '" is already taken';
             errors.throwError(errorMsg , 400)
         }
     }
-    const userDoc = await User.findOneByEmail(userParam.email);
+    const userDoc = await users.findOneByEmail(userParam.email);
     if (userDoc )
     {
         let errorMsg = 'Email "' + userParam.email + '" is already taken';
@@ -34,7 +34,7 @@ module.exports = async function (req, res) {
     let hash = crypto.createHmac('sha512', salt);
     hash.update(userParam.password);
     let hashedPasswordAndSalt = hash.digest('hex');
-    let candidateRegister = {
+    let newUserDoc = {
         email: userParam.email,
         password_hash: hashedPasswordAndSalt,
         salt : salt,
@@ -52,13 +52,13 @@ module.exports = async function (req, res) {
             }]
         }
     }
-    const candidateUserCreated = await User.insert(candidateRegister);
+    const candidateUserCreated = await users.insert(newUserDoc);
 
     let url_token;
 
     if(candidateUserCreated) {
         let jwtUserToken = jwtToken.createJwtToken(candidateUserCreated);
-        await User.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken}});
+        await users.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken}});
         const referralDoc = await referral.findOneByEmail( userParam.email );
         if(referralDoc) {
             url_token = referralDoc.url_token;

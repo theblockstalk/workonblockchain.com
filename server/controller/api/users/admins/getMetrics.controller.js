@@ -1,4 +1,4 @@
-const User = require('../../../../model/users');
+const users = require('../../../../model/mongoose/users');
 const enumerations = require('../../../../model/enumerations');
 const settings = require('../../../../settings');
 const curr = require('../../../services/currency');
@@ -6,9 +6,7 @@ const curr = require('../../../services/currency');
 module.exports = async function (req, res) {
     let totalCandidates, emailVerified = 0, approved = 0, dissabled = 0, agreedTerms = 0;
 
-    let candidateCursor = await User.find({type : 'candidate'}).cursor();
-    totalCandidates = await User.find({type : 'candidate'}).count();
-    let candidateDoc = await candidateCursor.next();
+    totalCandidates = await users.count({type : 'candidate'});
     let aggregatedData = {
         nationality: {},
         availabilityDay: {},
@@ -32,31 +30,33 @@ module.exports = async function (req, res) {
     let blockchainCommercialCount = {}, blockchainCommercialAggregate = {};
     let blockchainSmartCount = {}, blockchainSmartAggregate = {};
 
-    for ( null ; candidateDoc !== null; candidateDoc = await candidateCursor.next()) {
-        if (candidateDoc.is_verify) emailVerified++;
-        if (candidateDoc.disable_account) dissabled++;
-        if (candidateDoc.candidate.status[0].status === 'approved' && !candidateDoc.disable_account) {
+    let candidate;
+    await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
+        candidate = userDoc.candidate;
+        if (userDoc.is_verify) emailVerified++;
+        if (userDoc.disable_account) dissabled++;
+        if (candidate.status[0].status === 'approved' && !userDoc.disable_account) {
             approved++;
-            if (candidateDoc.candidate.expected_salary && candidateDoc.candidate.expected_salary_currency) salaryList(salaryArray, candidateDoc.candidate.expected_salary, candidateDoc.candidate.expected_salary_currency)
-            aggregateField(aggregatedData.nationality, candidateDoc.nationality, enumerations.nationalities);
-            aggregateField(aggregatedData.availabilityDay, candidateDoc.candidate.availability_day, enumerations.workAvailability);
-            aggregateField(aggregatedData.baseCountry, candidateDoc.candidate.base_country, enumerations.countries);
-            aggregateArray(aggregatedData.locations, candidateDoc.candidate.locations, locationList);
-            aggregateArray(aggregatedData.roles, candidateDoc.candidate.roles, enumerations.workRoles);
-            aggregateArray(aggregatedData.interestAreas, candidateDoc.candidate.interest_areas, enumerations.workBlockchainInterests);
-            aggregateArray(aggregatedData.blockchain.experimented, candidateDoc.candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);
-            aggregateObjArray(programmingLanguagesCount, candidateDoc.candidate.programming_languages, enumerations.programmingLanguages, "language");
-            aggregateObjArrayAggregate(programmingLanguagesAggregate, candidateDoc.candidate.programming_languages, enumerations.programmingLanguages, "language", "exp_year");
-            aggregateObjArray(blockchainCommercialCount, candidateDoc.candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name");
-            aggregateObjArrayAggregate(blockchainCommercialAggregate, candidateDoc.candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
-            aggregateObjArray(blockchainSmartCount, candidateDoc.candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name");
-            aggregateObjArrayAggregate(blockchainSmartAggregate, candidateDoc.candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
+            if (candidate.expected_salary && candidate.expected_salary_currency) salaryList(salaryArray, candidate.expected_salary, candidate.expected_salary_currency)
+            aggregateField(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);
+            aggregateField(aggregatedData.availabilityDay, candidate.availability_day, enumerations.workAvailability);
+            aggregateField(aggregatedData.baseCountry, candidate.base_country, enumerations.countries);
+            aggregateArray(aggregatedData.locations, candidate.locations, locationList);
+            aggregateArray(aggregatedData.roles, candidate.roles, enumerations.workRoles);
+            aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
+            aggregateArray(aggregatedData.blockchain.experimented, candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);
+            aggregateObjArray(programmingLanguagesCount, candidate.programming_languages, enumerations.programmingLanguages, "language");
+            aggregateObjArrayAggregate(programmingLanguagesAggregate, candidate.programming_languages, enumerations.programmingLanguages, "language", "exp_year");
+            aggregateObjArray(blockchainCommercialCount, candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name");
+            aggregateObjArrayAggregate(blockchainCommercialAggregate, candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
+            aggregateObjArray(blockchainSmartCount, candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name");
+            aggregateObjArrayAggregate(blockchainSmartAggregate, candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
 
         }
-        if (candidateDoc.terms) agreedTerms++;
+        if (userDoc.terms) agreedTerms++;
 
-    }
-    
+    });
+
     countAndAggregate(aggregatedData.programmingLanguages, programmingLanguagesCount, programmingLanguagesAggregate);
     countAndAggregate(aggregatedData.blockchain.commercial, blockchainCommercialCount, blockchainCommercialAggregate);
     countAndAggregate(aggregatedData.blockchain.smartContract, blockchainSmartCount, blockchainSmartAggregate);

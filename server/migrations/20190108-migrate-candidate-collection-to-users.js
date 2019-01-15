@@ -1,4 +1,4 @@
-const Users = require('../model/mongoose/users');
+const users = require('../model/mongoose/users');
 const candidateProfile = require('../model/mongoose/candidate');
 const Referral = require('../model/referrals');
 const mongoose = require('mongoose');
@@ -34,10 +34,8 @@ module.exports.up = async function() {
         if(candidateDoc.marketing_emails) set['marketing_emails'] = candidateDoc.marketing_emails;
 
         if(candidateDoc.first_name) set['first_name'] = candidateDoc.first_name;
-        else unset['first_name'] = 1;
 
         if(candidateDoc.last_name) set['last_name'] = candidateDoc.last_name;
-        else unset['last_name'] = 1;
 
         if(candidateDoc.github_account) set['candidate.github_account'] = candidateDoc.github_account;
         else unset['candidate.github_account'] = 1;
@@ -46,15 +44,12 @@ module.exports.up = async function() {
         else unset['candidate.stackexchange_account'] = 1;
 
         if(candidateDoc.contact_number) set['contact_number'] = candidateDoc.contact_number;
-        else unset['contact_number'] = 1;
 
         if(candidateDoc.nationality) set['nationality'] = candidateDoc.nationality;
-        else unset['nationality'] = 1;
 
         if(candidateDoc.image) set['image'] = candidateDoc.image;
 
         if(candidateDoc.locations && candidateDoc.locations.length >0) set['candidate.locations'] = candidateDoc.locations;
-        else unset['candidate.locations'] = 1;
 
         if(candidateDoc.roles && candidateDoc.roles.length > 0) {
             let roles = [];
@@ -65,10 +60,8 @@ module.exports.up = async function() {
 
             set['candidate.roles'] = roles;
         }
-        else unset['candidate.roles'] = 1;
 
         if(candidateDoc.expected_salary_currency && candidateDoc.expected_salary_currency !== "") set['candidate.expected_salary_currency'] = candidateDoc.expected_salary_currency;
-        else unset['candidate.expected_salary_currency'] =1;
 
         if(isReal(parseInt(candidateDoc.expected_salary))) set['candidate.expected_salary'] = candidateDoc.expected_salary;
 
@@ -80,13 +73,10 @@ module.exports.up = async function() {
             }
             set['candidate.interest_areas'] = interestedArea;
         }
-        else unset['candidate.interest_areas'] = 1;
 
         if(candidateDoc.availability_day && candidateDoc.availability_day !== "" ) set['candidate.availability_day'] = candidateDoc.availability_day;
-        else unset['candidate.availability_day'] = 1;
 
         if(candidateDoc.why_work) set['candidate.why_work'] = candidateDoc.why_work;
-        else unset['candidate.why_work'] = 1;
 
         if(candidateDoc.commercial_platform && candidateDoc.commercial_platform.length >0 ) {
             let commercialPlatformsObject = [];
@@ -165,7 +155,6 @@ module.exports.up = async function() {
         else unset['candidate.work_history'] =1;
 
         if(candidateDoc.description) set['candidate.description'] = candidateDoc.description;
-        else unset['candidate.description'] = 1;
 
         let updateObj;
         if (!isEmptyObject(set) && !isEmptyObject(unset)) {
@@ -178,7 +167,7 @@ module.exports.up = async function() {
 
         if (updateObj) {
             logger.debug("migrate user doc: ", set);
-            await Users.update({ _id: candidateDoc._creator }, updateObj);
+            await users.update({ _id: candidateDoc._creator }, updateObj);
             await candidateProfile.deleteOne({_id: candidateDoc._id});
             totalModified++;
         }
@@ -191,9 +180,9 @@ module.exports.up = async function() {
 }
 
 module.exports.down = async function() {
-    totalDocsToProcess =await Users.count({type:'candidate'});
+    totalDocsToProcess =await users.count({type:'candidate'});
     logger.debug(totalDocsToProcess);
-    await Users.findAndIterate({type: 'candidate'}, async function(userDoc) {
+    await users.findAndIterate({type: 'candidate'}, async function(userDoc) {
         totalProcessed++;
         logger.debug("candidate document: ", userDoc);
         let migrateUser ={};
@@ -352,7 +341,7 @@ module.exports.down = async function() {
 
         logger.debug("migrate user doc: ", migrateUser);
         const data = await candidateProfile.insert(migrateUser);
-        await Users.update({_id: userDoc._id}, { $unset: unset});
+        await users.update({_id: userDoc._id}, { $unset: unset});
         totalModified++;
 
     });

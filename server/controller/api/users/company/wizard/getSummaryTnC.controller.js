@@ -1,4 +1,4 @@
-const EmployerProfile = require('../../../../../model/mongoose/company');
+const companies = require('../../../../../model/mongoose/company');
 const Pages = require('../../../../../model/pages_content');
 const errors = require('../../../../services/errors');
 
@@ -7,7 +7,7 @@ const errors = require('../../../../services/errors');
 module.exports = async   function (req,res)
 {
     let userId = req.auth.user._id;
-    const employerDoc = await EmployerProfile.findOne({ _creator: userId });
+    const employerDoc = await companies.findOne({ _creator: userId });
 
     if(employerDoc) {
         const queryBody = req.body;
@@ -19,7 +19,7 @@ module.exports = async   function (req,res)
             if(pagesDoc) {
                 if(pagesDoc._id) employerUpdate.terms_id = pagesDoc._id;
                 if(queryBody.marketing) employerUpdate.marketing_emails = queryBody.marketing;
-                await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
+                await companies.update({ _creator: userId },{ $set: employerUpdate });
                 res.send({
                     success : true
                 })
@@ -32,7 +32,7 @@ module.exports = async   function (req,res)
         else {
             if(queryBody.marketing) {
                 employerUpdate.marketing_emails = queryBody.marketing;
-                await EmployerProfile.update({ _creator: userId },{ $set: employerUpdate });
+                await companies.update({ _creator: userId },{ $set: employerUpdate });
             }
 
             res.send({

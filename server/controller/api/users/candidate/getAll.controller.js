@@ -1,10 +1,10 @@
-const User = require('../../../../model/mongoose/users');
+const users = require('../../../../model/mongoose/users');
 const filterReturnData = require('../filterReturnData');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
     let filteredUsers = [];
-    await User.findAndIterate({type : 'candidate'}, async function(userDoc) {
+    await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         filterReturnData.removeSensativeData(userDoc);
         filteredUsers.push(userDoc);
     });

@@ -1,15 +1,15 @@
 const mongo = require('mongoskin');
-const User = require('../../../../model/mongoose/users');
+const users = require('../../../../model/mongoose/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
 const forgotPasswordEmail = require('../../../services/email/emails/forgotPassword');
-const EmployerProfile = require('../../../../model/mongoose/company');
+const companies = require('../../../../model/mongoose/company');
 
 module.exports = async function (req,res) {
 
     let queryBody = req.params;
 
-    const userDoc  = await User.findOneByEmail( queryBody.email );
+    const userDoc  = await users.findOneByEmail( queryBody.email );
     if(userDoc) {
         if(userDoc.social_type === 'GOOGLE')
         {
@@ -26,10 +26,10 @@ module.exports = async function (req,res) {
                 expiresIn:  "1h",
             };
             let forgotPasswordToken = jwtToken.createJwtToken(userDoc , signOptions);
-            await User.update({ _id: userDoc._id },{ $set: {'forgot_password_key': forgotPasswordToken } });
+            await users.update({ _id: userDoc._id },{ $set: {'forgot_password_key': forgotPasswordToken } });
             if(userDoc.type === 'candidate') {
                 let name;
-                const candidateDoc = await User.findOneById( userDoc._id);
+                const candidateDoc = await users.findOneById( userDoc._id);
                 if(candidateDoc && candidateDoc.first_name) {
                     name = candidateDoc.first_name;
 
@@ -42,7 +42,7 @@ module.exports = async function (req,res) {
             }
             if(userDoc.type === 'company') {
                 let name;
-                const companyDoc = await EmployerProfile.findOne({_creator : userDoc._id});
+                const companyDoc = await companies.findOne({_creator : userDoc._id});
                 if(companyDoc && companyDoc.length > 0 ) {
                     name = companyDoc[0].first_name;
                 }
