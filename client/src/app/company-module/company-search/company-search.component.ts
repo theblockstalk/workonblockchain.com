@@ -586,6 +586,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
       .subscribe(
         dataa => {
+          console.log(dataa)
           this.candidate_data = dataa;
           this.setPage(1);
           if(this.candidate_data.length > 0) {

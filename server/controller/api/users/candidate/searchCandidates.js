@@ -78,6 +78,8 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     let userQuery = {
         type : 'candidate'
     };
+    let filteredResult = [];
+    let totalProccessed = 0;
 
     if (filters.is_verify === 1 || filters.is_verify === 0) userQuery.is_verify = filters.is_verify;
     if (filters.status && filters.status !== -1) userQuery['candidate.status.0.status'] = filters.status;
@@ -99,12 +101,11 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     if (filters.firstApprovedDate) {
         userQuery.first_approved_date = { $gte : filters.firstApprovedDate}
     }
-    let userDocIds;
-    let candidateQuery = [];
-    let filteredResult = [];
-    let totalProccessed = 0;
     await users.findAndIterate(userQuery, async function(userDoc) {
-        candidateQuery.push({ "_id": userDoc._id});
+        let candidateQuery = [];
+        if(userDoc) {
+            candidateQuery.push({ "_id":  userDoc._id});
+        }
         if (search) {
             if(search.name) {
                 const nameSearch = { $or: [{ first_name: {'$regex' : search.name, $options: 'i'}},
@@ -112,7 +113,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                 candidateQuery.push(nameSearch);
             }
             if(search.word) {
-                const wordSearch = { $or: [{ "candidate.why_work": {'$regex' : search.word, $options: 'i'}},
+                const wordSearch = { $or: [{ 'candidate.why_work': {'$regex' : search.word, $options: 'i'}},
                         {description : {'$regex' : search.word, $options: 'i'}}] };
                 candidateQuery.push(wordSearch);
             }
@@ -129,9 +130,9 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             if (search.salary && search.salary.current_currency && search.salary.current_salary) {
                 const curr = search.salary.current_currency;
                 const salary = search.salary.current_salary;
-                const usd = [{"candidate.expected_salary_currency": "$ USD"}, {"candidate.expected_salary": {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
-                const gbp = [{"candidate.expected_salary_currency": "£ GBP"}, {"candidate.expected_salary": {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
-                const eur = [{"candidate.expected_salary_currency": "€ EUR"}, {"candidate.expected_salary": {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
+                const usd = [{'candidate.expected_salary_currency': "$ USD"}, {'candidate.expected_salary': {$lte: salaryFactor*currency.convert(curr, "$ USD", salary)}}];
+                const gbp = [{'candidate.expected_salary_currency': "£ GBP"}, {'candidate.expected_salary': {$lte: salaryFactor*currency.convert(curr, "£ GBP", salary)}}];
+                const eur = [{'candidate.expected_salary_currency': "€ EUR"}, {'candidate.expected_salary': {$lte: salaryFactor*currency.convert(curr, "€ EUR", salary)}}];
                 const currencyFiler = {
                     $or : [{ $and : usd }, { $and : gbp }, { $and : eur }]
                 };
@@ -141,7 +142,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             if (search.blockchains && search.blockchains.length > 0 ) {
                 const platformFilter = {
                     $or: [
-                        {"candidate.blockchain.commercial_platform.name": {$in: search.blockchains}},
+                        {"candidate.commercial_platforms.name": {$in: search.blockchains}},
                         {"candidate.blockchain.smart_contract_platforms.name": {$in: search.blockchains}}
                     ]
                 };
@@ -167,14 +168,12 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                 candidateQuery.push(availabilityFilter);
             }
         }
-        console.log(candidateQuery);
         const searchQuery = {$and: candidateQuery};
         candidates = await users.findOne(searchQuery);
         if(candidates) {
             filteredResult.push(candidates);
             totalProccessed++;
         }
-
     });
 
     if(filteredResult && filteredResult.length > 0) {
@@ -186,7 +185,6 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     else {
         errors.throwError("No candidates matched this search criteria", 404);
     }
-
 }
 
 function makeDistinctSet(array) {

@@ -35,13 +35,12 @@ module.exports = async function (req, res) {
                 //let query_result = filterReturnData.removeSensativeData(userDoc); //// uncomment this after chat refactor
                 if(is_company_reply === 1){
                      candidateObject = {
-                        '_creator'  : {
-                            _id : userDoc._id
-
+                        _creator : {
+                            _id : userDoc._id,
+                            email : userDoc.email,
+                            type : userDoc.type,
                         },
                          _creator : userDoc._id,
-                         email : userDoc.email,
-                         type : userDoc.type,
                          first_name : userDoc.first_name,
                          last_name : userDoc.last_name
 
@@ -49,12 +48,11 @@ module.exports = async function (req, res) {
                 }
                 else{
                     candidateObject = {
-                        '_creator'  : {
+                        _creator  : {
                             _id : userDoc._id,
+                            email : userDoc.email,
+                            type : userDoc.type,
                         },
-                        _creator : userDoc._id,
-                        email : userDoc.email,
-                        type : userDoc.type,
                         initials : filterReturnData.createInitials(userDoc.first_name,userDoc.last_name)
 
                     }
