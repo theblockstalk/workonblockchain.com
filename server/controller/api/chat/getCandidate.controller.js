@@ -78,7 +78,6 @@ module.exports = async function (req, res) {
             {
                 //let query_result = filterReturnData.removeSensativeData(companyProfile);
                 //query_result = filterReturnData.anonymousCandidateData(query_result);
-
                 res.send({
                     users:companyProfile
                 });
