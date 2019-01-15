@@ -1,4 +1,4 @@
-const User = require('../../../../../model/mongoose/users');
+const users = require('../../../../../model/mongoose/users');
 const referral = require('../../../../../model/mongoose/referral');
 const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
 const verify_send_email = require('../../auth/verify_send_email');
@@ -12,7 +12,7 @@ module.exports = async function (req, res) {
 
     const myUserDoc = req.auth.user;
 
-    const candidateUserDoc = await User.findOneById(myUserDoc._id );
+    const candidateUserDoc = await users.findOneById(myUserDoc._id );
 
     if(candidateUserDoc) {
         const queryBody = req.body;
@@ -26,14 +26,14 @@ module.exports = async function (req, res) {
         if (queryBody.city) candidateUpdate['candidate.base_city'] = queryBody.city;
         if (queryBody.country) candidateUpdate['candidate.base_country'] = queryBody.country;
 
-        await User.update({ _id: candidateUserDoc._id },{ $set: candidateUpdate });
+        await users.update({ _id: candidateUserDoc._id },{ $set: candidateUpdate });
 
         const refDoc = await referral.findOneByEmail(myUserDoc.referred_email);
         if(refDoc){
-            const userDoc = await User.findOneByEmail(refDoc.email);
+            const userDoc = await users.findOneByEmail(refDoc.email);
 
             if(userDoc && userDoc.type){
-                const candidateUserDoc = await User.findOneById(userDoc._id);
+                const candidateUserDoc = await users.findOneById(userDoc._id);
                 let data;
                 if(candidateUserDoc && candidateUserDoc.first_name)
                 {
@@ -79,7 +79,7 @@ module.exports = async function (req, res) {
                     verify_email_key: verifyEmailToken,
 
                 };
-            await User.update({ _id: myUserDoc._id },{ $set: set });
+            await users.update({ _id: myUserDoc._id },{ $set: set });
             verify_send_email(myUserDoc.email, verifyEmailToken);
         }
 
