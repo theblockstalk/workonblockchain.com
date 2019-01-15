@@ -307,6 +307,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
               if(data['candidate'].blockchain.formal_skills )
               {
+                this.formal_skills = data['candidate'].blockchain.formal_skills;
                 for (let key of data['candidate'].blockchain.formal_skills)
                 {
                   for(var i in key)
@@ -1446,20 +1447,15 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
       }
 
-
     }
 
-    if(this.salary && !this.current_currency ) {
+    if((this.salary && !this.current_currency) || (this.salary && this.current_currency === -1)) {
       this.current_currency_logg = "Please choose currency";
       this.count++;
     }
 
-    if(this.salary && this.current_currency === "-1" ) {
-      this.current_currency_logg = "Please choose currency";
-      this.count++;
-    }
 
-    if(!this.salary && this.current_currency) {
+    if(!this.salary && this.current_currency !== '-1') {
       this.current_sal_log = "Please enter current base salary";
       this.count++;
     }
