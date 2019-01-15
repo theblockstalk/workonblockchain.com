@@ -32,39 +32,39 @@ module.exports = async function (req, res) {
         });
         if(userDoc){
             let candidateObject= {}  //// remove this after chat refactor
-                //let query_result = filterReturnData.removeSensativeData(userDoc); //// uncomment this after chat refactor
-                if(is_company_reply === 1){
-                     candidateObject = {
-                        _creator : {
-                            _id : userDoc._id,
-                            email : userDoc.email,
-                            type : userDoc.type,
-                        },
-                         _creator : userDoc._id,
-                         first_name : userDoc.first_name,
-                         last_name : userDoc.last_name
+            //let query_result = filterReturnData.removeSensativeData(userDoc); //// uncomment this after chat refactor
+            if(is_company_reply === 1){
+                candidateObject = {
+                    '_creator' : {
+                        _id : userDoc._id,
+                        email : userDoc.email,
+                        type : userDoc.type,
+                    },
+                    'first_name' : userDoc.first_name,
+                    'last_name' : userDoc.last_name
 
-                    }
                 }
-                else{
-                    candidateObject = {
-                        _creator  : {
-                            _id : userDoc._id,
-                            email : userDoc.email,
-                            type : userDoc.type,
-                        },
-                        initials : filterReturnData.createInitials(userDoc.first_name,userDoc.last_name)
+            }
+            else{
+                candidateObject = {
+                    '_creator'  : {
+                        _id : userDoc._id,
+                        email : userDoc.email,
+                        type : userDoc.type,
+                    },
+                    'initials' : filterReturnData.createInitials(userDoc.first_name,userDoc.last_name)
 
-                    }
-                    //query_result = filterReturnData.anonymousSearchCandidateData(query_result); //// uncomment this after chat refactor
                 }
-                res.send({
-                    users:candidateObject
-                });
+                //query_result = filterReturnData.anonymousSearchCandidateData(query_result); //// uncomment this after chat refactor
+            }
+            console.log(candidateObject);
+            res.send({
+                users:candidateObject
+            });
         }
         else{
             errors.throwError('User not found', 404);
-		}
+        }
     }
     else{
         const userDoc = await users.findOne({
@@ -90,5 +90,5 @@ module.exports = async function (req, res) {
         else{
             errors.throwError('User not found', 404);
         }
-	}
+    }
 };
