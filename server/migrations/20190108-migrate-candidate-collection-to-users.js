@@ -1,4 +1,4 @@
-const Users = require('../model/mongoose/users');
+const users = require('../model/mongoose/users');
 const candidateProfile = require('../model/mongoose/candidate');
 const Referral = require('../model/referrals');
 const mongoose = require('mongoose');
@@ -341,7 +341,7 @@ module.exports.down = async function() {
 
         logger.debug("migrate user doc: ", migrateUser);
         const data = await candidateProfile.insert(migrateUser);
-        await Users.update({_id: userDoc._id}, { $unset: unset});
+        await users.update({_id: userDoc._id}, { $unset: unset});
         totalModified++;
 
     });
