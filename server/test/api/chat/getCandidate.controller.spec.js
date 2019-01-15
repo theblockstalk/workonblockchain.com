@@ -42,7 +42,8 @@ describe('get a candidate or company info', function () {
 
             const userDetails = await chatHelper.getUserInfo(companyDoc._id,candidateDoc._id,isCompanyReply,candidate.type,companyDoc.jwt_token);
             const response = userDetails.body;
-            response.users._creator.should.equal(String(candidateDoc._id));
+            response.users._creator.email.should.equal(candidate.email);
+            response.users._creator.type.should.equal(candidate.type);
         })
     })
 });
