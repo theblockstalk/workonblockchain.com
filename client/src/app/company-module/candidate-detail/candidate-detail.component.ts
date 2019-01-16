@@ -297,47 +297,45 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
     if (this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
       if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.authenticationService.get_job_desc_msgs(this.credentials.user_id, 'job_offer')
-          .subscribe(
-            data => {
+        let job_offer : any = {};
+        job_offer.title = this.credentials.job_title;
+        job_offer.salary = this.credentials.salary;
+        job_offer.salary_currency = this.credentials.currency;
+        job_offer.type = this.credentials.job_type;
+        job_offer.location = this.credentials.location;
+        job_offer.description = this.credentials.job_desc;
+        let new_offer : any = {};
+        new_offer.job_offer = job_offer;
+        this.authenticationService.send_job_offer_to_cand(this.credentials.user_id, 'job_offer',new_offer)
+        .subscribe(
+          data => {
+            this.job_offer_msg_success = 'Message has been successfully sent';
+            this.router.navigate(['/chat']);
+          },
+          error => {
+            if (error['status'] === 400) {
               this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
-            },
-            error => {
-              if(error['status'] === 500 || error['status'] === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
-
-              if(error['status'] === 404)
-              {
-                this.date_of_joining = '10-07-2018';
-                this.msg_tag = 'job_offer';
-                this.is_company_reply = 0;
-                this.msg_body = '';
-                this.job_description = this.credentials.job_desc;
-                this.interview_location = this.credentials.location;
-                this.authenticationService.insertMessage(this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-                  .subscribe(
-                    data => {
-                      ////console.log(data);
-                      this.job_offer_msg_success = 'Message has been successfully sent';
-                      this.router.navigate(['/chat']);
-                    },
-                    error => {
-                      ////console.log('error');
-                      ////console.log(error);
-                      //this.log = error;
-                    }
-                  );
-              }
             }
-          );
+            if(error['status'] === 500 || error['status'] === 401){
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+            if(error['status'] === 404){
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+          }
+        );
       }
       else {
         //this.job_offer_msg = 'Salary should be a number';
@@ -348,6 +346,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
       this.job_offer_msg = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
   }
+
   filter_array(arr)
   {
     var hashTable = {};

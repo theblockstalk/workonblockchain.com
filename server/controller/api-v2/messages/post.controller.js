@@ -63,7 +63,7 @@ module.exports.inputValidation = {
     body: bodySchema
 };
 
-module.exports.auth = async(req) {
+module.exports.auth = async function (req) {
     console.log('in auth');
     await auth.isValidUser(req);
 
@@ -72,7 +72,7 @@ module.exports.auth = async(req) {
     // }
 }
 
-const checkJobOfferAccepted = function (userType, sender_id, receiver_id) {
+const checkJobOfferAccepted = async function (userType, sender_id, receiver_id) {
     let messageDoc;
     if (userType === 'candidate') {
         messageDoc = await messages.findOne({
@@ -94,8 +94,8 @@ const checkMessageSenderType = function (userType, expectedType) {
     if (userType !== expectedType) errors.throwError("Message can only be sent by a " + expectedType, 400);
 }
 
-module.exports.endpoint = async (req, res) {
-    console.log('in endpoint')
+module.exports.endpoint = async function (req, res) {
+    console.log('in endpoint');
 
     const body = req.body;
 

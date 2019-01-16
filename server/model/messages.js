@@ -158,15 +158,18 @@ const MessageSchema = new Schema({
             required: false
         },
         employment_offer_accepted: {
-            employment_offer_message_id: {
-                type: Schema.Types.ObjectId,
-                ref: 'Messages',
-                required: false
-            },
-            message: {
-                type: String,
-                required: false
-            }
+            type: new Schema({
+                employment_offer_message_id: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Messages',
+                    required: false
+                },
+                message: {
+                    type: String,
+                    required: false
+                }
+            }),
+            required: false
         },
         employment_offer_rejected: {
             type: new Schema({

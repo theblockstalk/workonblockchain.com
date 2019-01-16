@@ -10,7 +10,7 @@ import { map, catchError } from 'rxjs/operators';
 import {environment} from '../environments/environment';
 
 const URL = environment.backend_url;
-
+const messagesURL = environment.backend_url_for_messages;
 
 @Injectable()
 export class UserService {
@@ -1288,8 +1288,8 @@ export class UserService {
 
   }
 
-  get_job_desc_msgs(receiver_id:string,msg_tag:string){
-    return this.http.post(URL+'users/get_job_desc_msgs', {receiver_id:receiver_id,msg_tag:msg_tag}, {
+  send_job_offer_to_cand(receiver_id:string,msg_tag:string, message:any){
+    return this.http.post(messagesURL+'messages', {receiver_id:receiver_id,msg_tag:msg_tag,message:message}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1495,7 +1495,7 @@ export class UserService {
   }
 
   getLastJobDesc() {
-    return this.http.post(URL + 'users/get_last_job_desc_msg', {}, {
+    return this.http.get(messagesURL+'conversations/', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res) {

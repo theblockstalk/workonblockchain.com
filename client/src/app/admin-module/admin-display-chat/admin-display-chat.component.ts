@@ -276,7 +276,7 @@ export class AdminDisplayChatComponent implements OnInit {
   get_user_type()
   {
     if(this.user_type == 'company'){
-      this.authenticationService.getCandidate(this.user_id,'0',this.new_messges[key_messages].msg_tag,this.user_type)
+      this.authenticationService.getCandidate(this.user_id,'0','job_offer_accepted',this.user_type)
 			.subscribe(
 			  data =>
         {
