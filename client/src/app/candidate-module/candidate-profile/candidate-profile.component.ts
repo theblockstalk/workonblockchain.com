@@ -253,6 +253,23 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                       })
                     }
                   }
+
+                  if(data['candidate'].blockchain.commercial_skills) {
+                    this.commercial_skills = data['candidate'].blockchain.commercial_skills;
+                    this.commercial_skills.sort(function(a, b){
+                      if(a.skill < b.skill) { return -1; }
+                      if(a.skill > b.skill) { return 1; }
+                      return 0;
+                    })
+                  }
+                  if(data['candidate'].blockchain.formal_skills) {
+                    this.formal_skills = data['candidate'].blockchain.formal_skills;
+                    this.formal_skills.sort(function(a, b){
+                      if(a.skill < b.skill) { return -1; }
+                      if(a.skill > b.skill) { return 1; }
+                      return 0;
+                    })
+                  }
                 }
 
 
@@ -272,27 +289,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.current_currency = data['candidate'].current_currency;
                 this.current_salary = data['candidate'].current_salary;
 
-
-
-                if(data['candidate'] && data['candidate'].blockchain && data['candidate'].blockchain.commercial_skills && data['candidate'].blockchain.commercial_skills.length > 0)
-                {
-                  this.commercial_skills = data['candidate'].blockchain.commercial_skills;
-                  this.commercial_skills.sort(function(a, b){
-                    if(a.skill < b.skill) { return -1; }
-                    if(a.skill > b.skill) { return 1; }
-                    return 0;
-                  })
-                }
-
-                if(data['candidate'] && data['candidate'].blockchain && data['candidate'].blockchain.formal_skills && data['candidate'].blockchain.formal_skills.length > 0)
-                {
-                  this.formal_skills = data['candidate'].blockchain.formal_skills;
-                  this.formal_skills.sort(function(a, b){
-                    if(a.skill < b.skill) { return -1; }
-                    if(a.skill > b.skill) { return 1; }
-                    return 0;
-                  })
-                }
 
                 if(data['image'] != null )
                 {
