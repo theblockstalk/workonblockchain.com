@@ -1508,11 +1508,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   image_log;
   dateValidation;
   dateCount;
+  submit;
   updateProfileData(profileForm)
   {
     this.experiencearray=[];
     this.education_json_array=[];
     this.dateCount = 0;
+    this.submit = 'click';
     for (var key in this.ExperienceForm.value.ExpItems)
     {
       this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
@@ -1791,6 +1793,29 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
     else {
       return false;
+    }
+  }
+
+  compareDates(startmonth , startyear , endmonth, endyear, current) {
+    let startMonth = this.monthNameToNum(startmonth);
+    let startDateFormat  = new Date(startyear, startMonth);
+
+    let endMonth = this.monthNameToNum(endmonth);
+    let endDateFormat  = new Date(endyear, endMonth);
+
+    if(current  === true) {
+      return false;
+    }
+    else {
+
+      if(startDateFormat > endDateFormat && this.submit === 'click') {
+        this.verify = false;
+        return true;
+      }
+      else {
+        this.verify = true;
+        return false;
+      }
     }
   }
 

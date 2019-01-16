@@ -636,6 +636,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   educationjson; education_json_array=[];
   dateValidation;
   count;
+  submit;
   submit_info(searchForm )
   {
     this.experiencearray=[];
@@ -643,6 +644,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     this.log='';
     this.count = 0;
     this.dateValidation = '';
+    this.submit = "click";
 
     if(this.ExperienceForm.value.ExpItems)
     {
@@ -796,7 +798,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     if(month && year) {
       this.startmonthIndex = this.monthNameToNum(month);
       this.start_date_format  = new Date(year, this.startmonthIndex);
-      if(this.start_date_format > new Date()) {
+      if(this.start_date_format > new Date() ) {
         this.verify= false;
         return true;
       }
@@ -810,7 +812,25 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     }
   }
 
-  endDateYear() {
-    this.dateValidation = "";
+  compareDates(startmonth , startyear , endmonth, endyear, current) {
+    let startMonth = this.monthNameToNum(startmonth);
+    let startDateFormat  = new Date(startyear, startMonth);
+
+    let endMonth = this.monthNameToNum(endmonth);
+    let endDateFormat  = new Date(endyear, endMonth);
+
+    if(current  === true) {
+      return false;
+    }
+    else {
+      if(startDateFormat > endDateFormat && this.submit === 'click') {
+        this.verify = false;
+        return true;
+      }
+      else {
+        this.verify = true;
+        return false;
+      }
+    }
   }
 }
