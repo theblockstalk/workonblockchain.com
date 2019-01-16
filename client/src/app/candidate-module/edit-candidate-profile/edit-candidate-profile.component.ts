@@ -170,7 +170,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   formal_expYear_db=[];
   ngOnInit()
   {
-
+    this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
@@ -1259,6 +1259,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   formal_skills_log;
   current_sal_log;
   count;
+  eduYear_verify_log;
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -1386,7 +1387,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         {
           this.eduYear_log = "Please fill graduation year";
         }
-        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename && this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
+        if(this.EducationForm.value.itemRows[key].eduyear >  this.currentyear) {
+          this.eduYear_verify_log = "Date must be in the past";
+        }
+
+
+        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename &&
+          this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear &&
+          this.EducationForm.value.itemRows[key].eduyear <=  this.currentyear)
         {
 
           this.edu_count = parseInt(key) + 1;
@@ -1654,9 +1662,15 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           });
     }
 
+    else {
+      this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
+    }
+
 
   }
-
+  endDateYear() {
+    this.dateValidation = "";
+  }
   commercialSkills=[];
   commercialSkillsExperienceYear=[];
 
@@ -1779,4 +1793,5 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       return false;
     }
   }
+
 }

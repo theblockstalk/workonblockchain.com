@@ -87,8 +87,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     this.shown=true;
     this.currentdate = this.datePipe.transform(this.today, 'MMMM');
     this.currentyear = this.datePipe.transform(this.today, 'yyyy');
-    console.log(this.currentdate);
-    console.log(this.currentyear);
+
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
     });
@@ -809,5 +808,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     else {
       return false;
     }
+  }
+
+  endDateYear() {
+    this.dateValidation = "";
   }
 }
