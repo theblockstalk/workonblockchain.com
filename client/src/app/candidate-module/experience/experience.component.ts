@@ -74,17 +74,21 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   }
   message;
   current_work_check=[];
+
   ngOnInit()
   {
     this.salary='';
     this.current_currency =-1;
     this.jobData = [];
     this.eduData=[];
+
     // this.dataservice.currentMessage.subscribe(message => this.message = message);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.shown=true;
-    //this.currentdate = this.datePipe.transform(this.today, 'MMM');
-    //this.currentyear = this.datePipe.transform(this.today, 'yyyy');
+    this.currentdate = this.datePipe.transform(this.today, 'MMMM');
+    this.currentyear = this.datePipe.transform(this.today, 'yyyy');
+    console.log(this.currentdate);
+    console.log(this.currentyear);
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
     });
@@ -418,6 +422,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
     }, 100);
+
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     control.push(this.initExpRows());
   }
@@ -471,6 +476,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   exp_count=0;edu_count=0;
   start_date_year_log;
   end_date_year_log;
+  start_date_year_verify_log;
+  end_date_year_veirfy_log;
+  eduYear_verify_log
   experience_submit(searchForm: NgForm)
   {
     this.error_msg="";
@@ -514,7 +522,13 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         {
           this.eduYear_log = "Please fill graduation year";
         }
-        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename && this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
+        if(this.EducationForm.value.itemRows[key].eduyear >  this.currentyear) {
+          this.eduYear_verify_log = "Date must be in the past";
+        }
+
+        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename &&
+          this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear &&
+          this.EducationForm.value.itemRows[key].eduyear <=  this.currentyear)
         {
 
           this.edu_count = this.edu_count + 1;
@@ -528,6 +542,19 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
       for (var key in this.ExperienceForm.value.ExpItems)
       {
+        this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
+        this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
+        this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
+        console.log(this.datePipe.transform(this.start_date_format , 'yyyy-MM-dd'));
+        console.log(this.datePipe.transform(this.today, 'yyyy-MM-dd'));
+        if(this.ExperienceForm.value.ExpItems[key].currentwork === true)
+        {
+          this.end_date_format = this.today;
+        }
+        else
+        {
+          this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+        }
         if(!this.ExperienceForm.value.ExpItems[key].companyname)
         {
           this.company_log = "Please fill company";
@@ -555,6 +582,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.start_date_year_log = "Please fill start date year";
         }
 
+        if(this.datePipe.transform(this.start_date_format , 'yyyy-MM-dd') >  this.datePipe.transform(this.today, 'yyyy-MM-dd')) {
+          this.start_date_year_verify_log = "Date must be in the past";
+        }
+
         if(!this.ExperienceForm.value.ExpItems[key].end_date && this.ExperienceForm.value.ExpItems[key].currentwork === false)
         {
           this.end_date_log = "Please fill end date month";
@@ -565,11 +596,16 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.end_date_year_log = "Please fill end date year ";
         }
 
+        if(this.end_date_format >  this.today && this.ExperienceForm.value.ExpItems[key].currentwork === false) {
+          this.end_date_year_veirfy_log = "Date must be in the past";
+        }
+
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
-          this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date &&
-          this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
+          this.ExperienceForm.value.ExpItems[key].startyear && this.start_date_format <=  this.today &&
+          this.ExperienceForm.value.ExpItems[key].end_date && this.ExperienceForm.value.ExpItems[key].endyear && this.end_date_format <=  this.today &&
+          this.ExperienceForm.value.ExpItems[key].currentwork==false)
         {
           this.exp_count = this.exp_count + 1;
 
@@ -578,7 +614,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&
           this.ExperienceForm.value.ExpItems[key].locationname &&this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
-          this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
+          this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true &&
+          this.start_date_format <=  this.today)
         {
           this.exp_count = this.exp_count + 1;
 
