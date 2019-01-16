@@ -186,8 +186,11 @@
                             {{end_date_log}}
                           </div>
 
-                          <div class = "invalid-feedback d-inline" #endDateVerification *ngIf="checkDateVerification(this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear)">
+                          <div class = "invalid-feedback d-inline" #endDateVerification *ngIf="checkDateVerification(this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear);else compareDate">
                             Date must be in the past
+                          </div>
+                          <div class = "invalid-feedback d-inline" #compareDate *ngIf="dateValidation && dateValidation !== ''">
+                            {{dateValidation}}
                           </div>
                         </div>
                       </div>
@@ -199,6 +202,7 @@
                           <div class = "invalid-feedback d-inline" *ngIf="(!this.ExperienceForm.value.ExpItems[i].endyear  && this.ExperienceForm.value.ExpItems[i].currentwork ===false)">
                             {{end_date_year_log}}
                           </div>
+
 
                         </div>
                       </div>

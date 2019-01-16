@@ -635,12 +635,15 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   start_date_format;
   end_date_format;
   educationjson; education_json_array=[];
+  dateValidation;
+  count;
   submit_info(searchForm )
   {
     this.experiencearray=[];
     this.education_json_array=[];
     this.log='';
-
+    this.count = 0;
+    this.dateValidation = '';
 
     if(this.ExperienceForm.value.ExpItems)
     {
@@ -656,6 +659,14 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         else
         {
           this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+
+          if(this.start_date_format > this.end_date_format) {
+            this.dateValidation = 'Date must be greater than previous date';
+            this.count = 1;
+          }
+          else {
+            this.count = 0;
+          }
         }
         this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
         this.experiencearray.push(this.experiencejson);
@@ -675,31 +686,38 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     }
 
 
-    this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.education_json_array , this.experiencearray , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
-      .subscribe(
-        data => {
-          if(data)
-          {
+    if(this.count === 0) {
+      this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.education_json_array , this.experiencearray , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
+        .subscribe(
+          data => {
+            console.log(data);
+            if(data)
+            {
 
-            $("#popModal").modal({
-              backdrop: 'static',
-              keyboard: true,
-              show: true
-            });
+              $("#popModal").modal({
+                backdrop: 'static',
+                keyboard: true,
+                show: true
+              });
 
-            //this.router.navigate(['/candidate_profile']);
-          }
+              //this.router.navigate(['/candidate_profile']);
+            }
 
 
 
-        },
-        error => {
-          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-            this.router.navigate(['/not_found']);
-          }
+          },
+          error => {
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.router.navigate(['/not_found']);
+            }
 
-        });
+          });
 
+    }
+    else
+    {
+      this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
+    }
 
   }
 

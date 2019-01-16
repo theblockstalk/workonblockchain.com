@@ -623,8 +623,11 @@
                             <select title="(select one)" formControlName="start_date" class="selectpicker form-control xs_input" id="month" required name="roles" (change)="work_start_data($event)">
                               <option  *ngFor='let start_month of calen_month' [value]="start_month" [attr.selected]="ExperienceForm.value.ExpItems[i].start_date === start_month ? true : null">{{start_month}}</option>
                             </select>
-                            <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].start_date">
+                            <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].start_date;else startDateVerification">
                               {{start_date_log}}
+                            </div>
+                            <div class = "invalid-feedback d-inline" #startDateVerification *ngIf="checkDateVerification(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear)">
+                              Date must be in the past
                             </div>
                           </div>
                         </div>
@@ -653,8 +656,14 @@
                             <select title = "(select one)" formControlName="end_date" class="selectpicker form-control xs_input"  required name="roles"  required=""  >
                               <option  *ngFor='let end_month of calen_month'  [value]="end_month" [attr.selected]="ExperienceForm.value.ExpItems[i].end_date === end_month ? true : null">{{end_month}}</option>
                             </select>
-                            <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].end_date  && this.ExperienceForm.value.ExpItems[i].currentwork === false">
+                            <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].end_date  && this.ExperienceForm.value.ExpItems[i].currentwork === false; else endDateVerification ">
                               {{end_date_log}}
+                            </div>
+                            <div class = "invalid-feedback d-inline" #endDateVerification *ngIf="checkDateVerification(this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear);else compareDate">
+                              Date must be in the past
+                            </div>
+                            <div class = "invalid-feedback d-inline" #compareDate *ngIf="dateValidation && dateValidation !== ''">
+                              {{dateValidation}}
                             </div>
                           </div>
                         </div>

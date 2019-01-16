@@ -1475,7 +1475,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.count = 0;
     }
 
-    if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
+    if(this.verify === true && this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
       this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
@@ -1498,11 +1498,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   file_size=1048576;
   image_log;
-
+  dateValidation;
+  dateCount;
   updateProfileData(profileForm)
   {
     this.experiencearray=[];
     this.education_json_array=[];
+    this.dateCount = 0;
     for (var key in this.ExperienceForm.value.ExpItems)
     {
       this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
@@ -1512,6 +1514,18 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       if(this.ExperienceForm.value.ExpItems[key].currentwork == true )
       {
         this.end_date_format = new Date();
+      }
+      else
+      {
+        this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+
+        if(this.start_date_format > this.end_date_format) {
+          this.dateValidation = 'Date must be greater than previous date';
+          this.dateCount = 1;
+        }
+        else {
+          this.dateCount = 0;
+        }
       }
       this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
       this.experiencearray.push(this.experiencejson);
@@ -1571,72 +1585,75 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       profileForm.interest_area = this.selectedValue;
     }
 
-    this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
-      .subscribe(
-        data => {
-          if(data['success'] && this.currentUser)
-          {
-            let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-            let fileCount: number = inputEl.files.length;
-            let formData = new FormData();
-            if (fileCount > 0 )
+    if(this.dateCount === 0) {
+      this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
+        .subscribe(
+          data => {
+            if(data['success'] && this.currentUser)
             {
-
-              if(inputEl.files.item(0).size < this.file_size)
+              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+              let fileCount: number = inputEl.files.length;
+              let formData = new FormData();
+              if (fileCount > 0 )
               {
-                formData.append('photo', inputEl.files.item(0));
-                this.authenticationService.uploadCandImage(formData)
-                  .subscribe(
-                    data => {
-                      if (data['success']) {
-                        this.router.navigate(['/candidate_profile']);
+
+                if(inputEl.files.item(0).size < this.file_size)
+                {
+                  formData.append('photo', inputEl.files.item(0));
+                  this.authenticationService.uploadCandImage(formData)
+                    .subscribe(
+                      data => {
+                        if (data['success']) {
+                          this.router.navigate(['/candidate_profile']);
+                        }
+                      },
+                      error => {
+                        if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                          localStorage.removeItem('currentUser');
+                          localStorage.removeItem('googleUser');
+                          localStorage.removeItem('close_notify');
+                          localStorage.removeItem('linkedinUser');
+                          localStorage.removeItem('admin_log');
+                          window.location.href = '/login';
+                        }
                       }
-                    },
-                    error => {
-                      if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('googleUser');
-                        localStorage.removeItem('close_notify');
-                        localStorage.removeItem('linkedinUser');
-                        localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                      }
-                    }
-                  );
+                    );
+                }
+                else
+                {
+                  this.image_log = "Image size should be less than 1MB";
+                }
               }
               else
-              {
-                this.image_log = "Image size should be less than 1MB";
-              }
+              //window.location.href = '/candidate_profile';
+
+                this.router.navigate(['/candidate_profile']);
             }
-            else
-            //window.location.href = '/candidate_profile';
 
-              this.router.navigate(['/candidate_profile']);
-          }
+            if(data['error'])
+            {
+              this.dataservice.changeMessage(data['error']);
+            }
 
-          if(data['error'])
-          {
-            this.dataservice.changeMessage(data['error']);
-          }
+          },
+          error => {
+            this.dataservice.changeMessage(error);
+            this.log = 'Something getting wrong';
+            if(error.message === 500)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-        },
-        error => {
-          this.dataservice.changeMessage(error);
-          this.log = 'Something getting wrong';
-          if(error.message === 500)
-          {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
-          }
+          });
+    }
 
-        });
 
   }
 
@@ -1744,5 +1761,22 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   }
 
-
+  verify;
+  checkDateVerification(month,year) {
+    if(month && year) {
+      this.startmonthIndex = this.monthNameToNum(month);
+      this.start_date_format  = new Date(year, this.startmonthIndex);
+      if(this.start_date_format > new Date()) {
+        this.verify= false;
+        return true;
+      }
+      else {
+        this.verify= true;
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
+  }
 }
