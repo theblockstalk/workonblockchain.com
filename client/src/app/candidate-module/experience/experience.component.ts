@@ -542,19 +542,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
       for (var key in this.ExperienceForm.value.ExpItems)
       {
-        this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
-        this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
-        this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
-        console.log(this.datePipe.transform(this.start_date_format , 'yyyy-MM-dd'));
-        console.log(this.datePipe.transform(this.today, 'yyyy-MM-dd'));
-        if(this.ExperienceForm.value.ExpItems[key].currentwork === true)
-        {
-          this.end_date_format = this.today;
-        }
-        else
-        {
-          this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
-        }
+
+
         if(!this.ExperienceForm.value.ExpItems[key].companyname)
         {
           this.company_log = "Please fill company";
@@ -582,9 +571,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.start_date_year_log = "Please fill start date year";
         }
 
-        if(this.datePipe.transform(this.start_date_format , 'yyyy-MM-dd') >  this.datePipe.transform(this.today, 'yyyy-MM-dd')) {
-          this.start_date_year_verify_log = "Date must be in the past";
-        }
+
 
         if(!this.ExperienceForm.value.ExpItems[key].end_date && this.ExperienceForm.value.ExpItems[key].currentwork === false)
         {
@@ -596,15 +583,13 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.end_date_year_log = "Please fill end date year ";
         }
 
-        if(this.end_date_format >  this.today && this.ExperienceForm.value.ExpItems[key].currentwork === false) {
-          this.end_date_year_veirfy_log = "Date must be in the past";
-        }
+
 
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
-          this.ExperienceForm.value.ExpItems[key].startyear && this.start_date_format <=  this.today &&
-          this.ExperienceForm.value.ExpItems[key].end_date && this.ExperienceForm.value.ExpItems[key].endyear && this.end_date_format <=  this.today &&
+          this.ExperienceForm.value.ExpItems[key].startyear&&
+          this.ExperienceForm.value.ExpItems[key].end_date && this.ExperienceForm.value.ExpItems[key].endyear &&
           this.ExperienceForm.value.ExpItems[key].currentwork==false)
         {
           this.exp_count = this.exp_count + 1;
@@ -614,8 +599,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&
           this.ExperienceForm.value.ExpItems[key].locationname &&this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
-          this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true &&
-          this.start_date_format <=  this.today)
+          this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true
+          )
         {
           this.exp_count = this.exp_count + 1;
 
@@ -632,7 +617,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     console.log("education form count " + this.EducationForm.value.itemRows.length);
     console.log("work history count " + this.exp_count);
     console.log("work history form count " + this.ExperienceForm.value.ExpItems.length);
-    if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
+    if(this.verify === true &&this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
     {
       this.submit_info(searchForm);
 
@@ -788,5 +773,23 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   work_start_year(e)
   {
     this.start_year= e.target.value;
+  }
+  verify;
+  checkDateVerification(month,year) {
+    if(month && year) {
+      this.startmonthIndex = this.monthNameToNum(month);
+      this.start_date_format  = new Date(year, this.startmonthIndex);
+      if(this.start_date_format > new Date()) {
+        this.verify= false;
+        return true;
+      }
+      else {
+        this.verify= true;
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
   }
 }
