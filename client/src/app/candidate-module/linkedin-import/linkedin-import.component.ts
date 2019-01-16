@@ -82,7 +82,7 @@ export class LinkedinImportComponent implements OnInit {
               this.resume_active_class='fa fa-check-circle text-success';
             }
 
-            if( data['candidate'].programming_languages.length>0  && data['candidate'].description)
+            if(data['candidate'].description)
             {
               this.exp_class = "/experience";
               this.exp_active_class = 'fa fa-check-circle text-success';
