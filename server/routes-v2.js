@@ -5,7 +5,9 @@ const asyncMiddleware = require('./controller/middleware/asyncMiddleware');
 
 const endpoints = [
     require('./controller/api-v2/messages/post.controller'),
-    require('./controller/api-v2/messages/get.controller')
+    require('./controller/api-v2/messages/get.controller'),
+    require('./controller/api-v2/conversations/get.controller'),
+    require('./controller/api-v2/conversations/messages/get.controller')
 ];
 
 function isEmpty(obj) {
@@ -30,7 +32,6 @@ const validateInputs = function(request, inputSchemas) {
         for (const type of validationTypes) {
             const input = req[type];
             if (input && !isEmpty(input)) {
-                console.log('in if');
                 console.log('validating ' + type, input);
                 const doc = new models[type](input);
                 const error = doc.validateSync();

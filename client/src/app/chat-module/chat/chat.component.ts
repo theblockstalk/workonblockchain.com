@@ -335,10 +335,9 @@ export class ChatComponent implements OnInit {
               this.authenticationService.get_user_messages_only(0)
                 .subscribe(
                     msg_data => {
-                        if(msg_data['datas'].length>0){
-                            this.new_messges.push(msg_data['datas']);
-                            this.new_messges = this.filter_array(msg_data['datas']);
-                            console.log(this.new_messges);
+                        if(msg_data){
+                            this.new_messges.push(msg_data);
+                            this.new_messges = this.filter_array(msg_data);
                             for (var key_messages in this.new_messges) {
                                 if(this.currentUser._creator == this.new_messges[key_messages].receiver_id){
                                     //console.log('my');
@@ -349,7 +348,6 @@ export class ChatComponent implements OnInit {
                                         data => {
                                             this.users.push(data['users']);
                                             this.users = this.filter_array(this.users);
-                                            console.log(this.users);
                                             this.count = 0;
                                             for (var key_users_new in this.users) {
                                                 //console.log(this.users[key_users_new]._creator._id);
@@ -366,7 +364,6 @@ export class ChatComponent implements OnInit {
                                                 this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
                                                 .subscribe(
                                                     data => {
-                                                        //console.log(data);
                                                         this.unread_msgs_info.push(data);
                                                     },
                                                     error => {
@@ -415,11 +412,11 @@ export class ChatComponent implements OnInit {
                 .subscribe(
                     msg_data => {
                         this.loading = false;
-                        //console.log(msg_data['datas']);
-                        if(msg_data['datas'].length>0){
+                        console.log(msg_data);
+                        if(msg_data){
                             //console.log('this.currentUser._creator: '+this.currentUser._creator);
-                            this.new_messges.push(msg_data['datas']);
-                            this.new_messges = this.filter_array(msg_data['datas']);
+                            this.new_messges.push(msg_data);
+                            this.new_messges = this.filter_array(msg_data);
                             //console.log(this.new_messges);
                             for (var key_messages in this.new_messges) {
                                 //console.log('length: '+this.new_messges.length);
@@ -1059,9 +1056,10 @@ export class ChatComponent implements OnInit {
         this.authenticationService.get_user_messages(this.credentials.id,0)
           .subscribe(
             data => {
-              //console.log('data');
-              this.new_msgss = data['datas'];
-              this.job_desc = data['datas'][0].message.job_offer;
+              console.log(data);
+
+              this.new_msgss = data;
+              this.job_desc = data[0].message.job_offer;
               this.authenticationService.update_chat_msg_status(id,0)
                 .subscribe(
                   data => {

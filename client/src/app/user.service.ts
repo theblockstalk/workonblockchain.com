@@ -832,7 +832,7 @@ export class UserService {
 
   get_user_messages(receiver_id: string, sender_id: any)
   {
-    return this.http.post(URL+'users/get_messages', {receiver_id:receiver_id,sender_id:sender_id}, {
+    return this.http.get(messagesURL+'conversations/messages?receiver_id='+receiver_id+'&sender_id='+sender_id, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -853,10 +853,9 @@ export class UserService {
 
   get_user_messages_only(id:any)
   {
-    return this.http.post(URL+'users/get_user_messages', {id:id}, {
+    return this.http.get(messagesURL+'conversations/?id='+id, {
       headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
+    }).pipe(map((res: Response) => {
       if (res)
       {
         return res;
@@ -1495,7 +1494,7 @@ export class UserService {
   }
 
   getLastJobDesc() {
-    return this.http.get(messagesURL+'conversations/', {
+    return this.http.get(messagesURL+'messages/', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res) {

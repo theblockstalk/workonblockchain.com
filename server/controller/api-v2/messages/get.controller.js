@@ -6,18 +6,15 @@ const messages = require('../../../model/mongoose/messages'); // TODO need to ch
 
 module.exports.request = {
     type: 'get',
-    path: '/conversations/:sender_id'
+    path: '/messages/'
 };
 
-const bodySchema = new Schema({
-    sender_id: {
-        type: String,
-        required: true
-    }
-});
+const querySchema = new Schema({
+    sender_id: String
+})
 
 module.exports.inputValidation = {
-    body: bodySchema
+    query: querySchema
 };
 
 module.exports.auth = async function (req) {
@@ -41,9 +38,9 @@ module.exports.endpoint = async function (req, res) {
 
     checkMessageSenderType(userType, 'company');
 
-    messageDoc = await messages.find({
+    messageDoc = await messages.findLastJobOffer({
         sender_id: sender_id,
         msg_tag: 'job_offer'
     });
-    res.send(messageDoc[messageDoc.length-1]);
+    res.send(messageDoc);
 }

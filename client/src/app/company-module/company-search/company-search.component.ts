@@ -657,7 +657,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.authenticationService.getLastJobDesc()
       .subscribe(
         data => {
-          console.log(data);
+          let job_offer = data['message'].job_offer;
           setTimeout(() => {
             $('.selectpicker').selectpicker();
           }, 300);
@@ -665,12 +665,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           setTimeout(() => {
             $('.selectpicker').selectpicker('refresh');
           }, 900);
-          this.credentials.job_title = data['job_title'];
-          this.credentials.salary = data['salary'];
-          this.credentials.currency = data['salary_currency'];
-          this.credentials.location = data['interview_location'];
-          this.credentials.job_type = data['job_type'];
-          this.credentials.job_desc = data['description'];
+          this.credentials.job_title = job_offer.title;
+          this.credentials.salary = job_offer.salary;
+          this.credentials.currency = job_offer.salary_currency;
+          this.credentials.location = job_offer.location;
+          this.credentials.job_type = job_offer.type;
+          this.credentials.job_desc = job_offer.description;
 
         },
         error => {
