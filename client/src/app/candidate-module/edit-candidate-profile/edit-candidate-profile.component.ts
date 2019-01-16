@@ -1264,6 +1264,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   {
     this.error_msg = "";
     this.count = 0;
+    this.submit = "click";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1408,6 +1409,18 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.exp_count =0;
       for (var key in this.ExperienceForm.value.ExpItems)
       {
+        this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
+        this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
+        this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
+        if(this.ExperienceForm.value.ExpItems[key].currentwork === true)
+        {
+          this.end_date_format = Date.now();
+        }
+        else
+        {
+          this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+
+        }
         if(!this.ExperienceForm.value.ExpItems[key].companyname)
         {
           this.company_log = "Please fill company";
@@ -1450,7 +1463,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date &&
           this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
         {
-          this.exp_count = parseInt(key) + 1;
+
+          this.submit = 'click';
+          if(this.compareDates(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear,this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear , this.ExperienceForm.value.ExpItems[key].currentwork)) {
+            this.dateValidation = 'Date must be greater than previous date';
+          }
+          else {
+            this.exp_count = parseInt(key) + 1;
+          }
 
         }
 
@@ -1513,7 +1533,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   {
     this.experiencearray=[];
     this.education_json_array=[];
-    this.dateCount = 0;
     this.submit = 'click';
     for (var key in this.ExperienceForm.value.ExpItems)
     {
@@ -1529,13 +1548,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       {
         this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
 
-        if(this.start_date_format > this.end_date_format) {
-          this.dateValidation = 'Date must be greater than previous date';
-          this.dateCount = 1;
-        }
-        else {
-          this.dateCount = 0;
-        }
       }
       this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
       this.experiencearray.push(this.experiencejson);
@@ -1595,7 +1607,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       profileForm.interest_area = this.selectedValue;
     }
 
-    if(this.dateCount === 0) {
       this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
         .subscribe(
           data => {
@@ -1662,11 +1673,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
             }
 
           });
-    }
-
-    else {
-      this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
-    }
 
 
   }
@@ -1807,8 +1813,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       return false;
     }
     else {
-
       if(startDateFormat > endDateFormat && this.submit === 'click') {
+        this.dateValidation = 'Date must be greater than previous date';
         this.verify = false;
         return true;
       }

@@ -675,8 +675,8 @@
                             </div>
                           </div>
                         </div>
-                        <div class = "invalid-feedback d-inline ml-3" #compareDate *ngIf="compareDates(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear,this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear , this.ExperienceForm.value.ExpItems[i].currentwork)">
-                          Date must be greater than previous date
+                        <div class = "invalid-feedback d-inline ml-3" #compareDate *ngIf="(dateValidation != '' &&this.ExperienceForm.value.ExpItems[i].endyear && this.ExperienceForm.value.ExpItems[i].end_date)|| compareDates(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear,this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear , this.ExperienceForm.value.ExpItems[i].currentwork)">
+                          {{dateValidation}}
                         </div>
                       </div>
 
