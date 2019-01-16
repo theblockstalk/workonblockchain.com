@@ -3,7 +3,6 @@ const sendGrid = require('../email/sendGrid');
 const logger = require('../logger');
 const crypto = require('../crypto');
 const mongooseUsers = require('../../../model/mongoose/users');
-const mongooseCandidate = require('../../../model/mongoose/candidate');
 const mongooseCompany = require('../../../model/mongoose/company');
 const mongooseReferral = require('../../../model/mongoose/referral');
 
@@ -123,31 +122,26 @@ async function synchDatabasetoList(listId) {
         }
 
         if (userDoc.type === "candidate") {
-            let candidateDoc = await mongooseCandidate.findOneByUserId(userDoc._id);
-            if (candidateDoc) {
                 const recipientUpdate = {
                     email: userDoc.email,
                     user_type: "candidate",
                     user: "true",
-                    first_name: candidateDoc.first_name,
-                    last_name: candidateDoc.last_name,
+                    first_name: userDoc.first_name,
+                    last_name: userDoc.last_name,
                     user_referral_key: referralDoc.url_token,
                     user_account_disabled: userDoc.disable_account.toString(),
                     user_status: userDoc.candidate.status[0].status,
                     user_email_verified: userDoc.is_verify,
-                    user_terms_id: candidateDoc.terms_id,
+                    user_terms_id: userDoc.candidate.terms_id,
                     user_created_date: userDoc.candidate.status[userDoc.candidate.status.length-1].timestamp,
                     user_id: userDoc._id.toString()
                 };
                 if (candidateDoc.marketing_emails) {
-                    recipientUpdate.user_marketing_emails = candidateDoc.marketing_emails.toString();
+                    recipientUpdate.user_marketing_emails = userDoc.marketing_emails.toString();
                 }
 
                 await updateSendGridRecipient(listId, recipientUpdate);
-            } else {
-                logger.error("Candidate doc for user " + userDoc._id + " not found during sendGrid sync");
-                errors = errors + 1;
-            }
+
         } else {
             let companyDoc = await mongooseCompany.findOneByUserId(userDoc._id);
             if (companyDoc) {

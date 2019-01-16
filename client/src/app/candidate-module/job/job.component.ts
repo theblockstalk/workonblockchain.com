@@ -102,7 +102,7 @@ export class JobComponent implements OnInit,AfterViewInit {
               this.term_link = '/terms-and-condition';
             }
 
-            if(data['candidate'].locations.length>0 || data['candidate'].roles.length>0 || data['candidate'].interest_areas.length>0 ||  data['candidate'].expected_salary || data['candidate'].availability_day || data['candidate'].expected_salary_currency)
+            if(data['candidate'].locations || data['candidate'].roles || data['candidate'].interest_areas ||  data['candidate'].expected_salary || data['candidate'].availability_day || data['candidate'].expected_salary_currency)
             {
               if(data['candidate'].locations)
               {

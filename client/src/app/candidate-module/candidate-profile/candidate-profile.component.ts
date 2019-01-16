@@ -221,64 +221,74 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.roles.sort();
                 this.availability_day =data['candidate'].availability_day;
                 this.why_work = data['candidate'].why_work;
-                this.commercial = data['candidate'].blockchain.commercial_platforms;
-                if(this.commercial && this.commercial.length>0){
-                  this.commercial.sort(function(a, b){
-                    if(a.name < b.name) { return -1; }
-                    if(a.name > b.name) { return 1; }
-                    return 0;
-                  })
+                if(data['candidate'].blockchain) {
+                  if(data['candidate'].blockchain.commercial_platforms) {
+                    this.commercial = data['candidate'].blockchain.commercial_platforms;
+                    if(this.commercial && this.commercial.length>0){
+                      this.commercial.sort(function(a, b){
+                        if(a.name < b.name) { return -1; }
+                        if(a.name > b.name) { return 1; }
+                        return 0;
+                      })
+                    }
+                  }
+
+                  if(data['candidate'].blockchain.experimented_platforms) {
+                    this.experimented = data['candidate'].blockchain.experimented_platforms;
+                    if(this.experimented && this.experimented.length>0){
+                      this.experimented.sort(function(a, b){
+                        if(a < b) { return -1; }
+                        if(a > b) { return 1; }
+                        return 0;
+                      })
+                    }
+                  }
+                  if(data['candidate'].blockchain.smart_contract_platforms) {
+                    this.platforms=data['candidate'].blockchain.smart_contract_platforms;
+                    if(this.platforms && this.platforms.length>0){
+                      this.platforms.sort(function(a, b){
+                        if(a.name < b.name) { return -1; }
+                        if(a.name > b.name) { return 1; }
+                        return 0;
+                      })
+                    }
+                  }
+
+                  if(data['candidate'].blockchain.commercial_skills) {
+                    this.commercial_skills = data['candidate'].blockchain.commercial_skills;
+                    this.commercial_skills.sort(function(a, b){
+                      if(a.skill < b.skill) { return -1; }
+                      if(a.skill > b.skill) { return 1; }
+                      return 0;
+                    })
+                  }
+                  if(data['candidate'].blockchain.formal_skills) {
+                    this.formal_skills = data['candidate'].blockchain.formal_skills;
+                    this.formal_skills.sort(function(a, b){
+                      if(a.skill < b.skill) { return -1; }
+                      if(a.skill > b.skill) { return 1; }
+                      return 0;
+                    })
+                  }
                 }
 
-                this.experimented = data['candidate'].blockchain.experimented_platforms;
-                if(this.experimented && this.experimented.length>0){
-                  this.experimented.sort(function(a, b){
-                    if(a < b) { return -1; }
-                    if(a > b) { return 1; }
-                    return 0;
-                  })
+
+
+                if(data['candidate'].programming_languages) {
+                  this.languages= data['candidate'].programming_languages;
+                  if(this.languages && this.languages.length>0){
+                    this.languages.sort(function(a, b){
+                      if(a.language < b.language) { return -1; }
+                      if(a.language > b.language) { return 1; }
+                      return 0;
+                    })
+                  }
                 }
 
-                this.languages= data['candidate'].programming_languages;
-                if(this.languages && this.languages.length>0){
-                  this.languages.sort(function(a, b){
-                    if(a.language < b.language) { return -1; }
-                    if(a.language > b.language) { return 1; }
-                    return 0;
-                  })
-                }
 
                 this.current_currency = data['candidate'].current_currency;
                 this.current_salary = data['candidate'].current_salary;
 
-                this.platforms=data['candidate'].blockchain.smart_contract_platforms;
-                if(this.platforms && this.platforms.length>0){
-                  this.platforms.sort(function(a, b){
-                    if(a.name < b.name) { return -1; }
-                    if(a.name > b.name) { return 1; }
-                    return 0;
-                  })
-                }
-
-                if(data['candidate'] && data['candidate'].blockchain && data['candidate'].blockchain.commercial_skills && data['candidate'].blockchain.commercial_skills.length > 0)
-                {
-                  this.commercial_skills = data['candidate'].blockchain.commercial_skills;
-                  this.commercial_skills.sort(function(a, b){
-                    if(a.skill < b.skill) { return -1; }
-                    if(a.skill > b.skill) { return 1; }
-                    return 0;
-                  })
-                }
-
-                if(data['candidate'] && data['candidate'].blockchain && data['candidate'].blockchain.formal_skills && data['candidate'].blockchain.formal_skills.length > 0)
-                {
-                  this.formal_skills = data['candidate'].blockchain.formal_skills;
-                  this.formal_skills.sort(function(a, b){
-                    if(a.skill < b.skill) { return -1; }
-                    if(a.skill > b.skill) { return 1; }
-                    return 0;
-                  })
-                }
 
                 if(data['image'] != null )
                 {

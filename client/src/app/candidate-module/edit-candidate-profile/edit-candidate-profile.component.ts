@@ -219,83 +219,248 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(a.name > b.name) { return 1; }
         return 0;
       })
+      this.otherSkills.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+
+      this.otherFormalSkills.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
 
       this.language_opt.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
       })
-      this.authenticationService.getById(this.currentUser._id)
+      this.authenticationService.getProfileById(this.currentUser._id)
         .subscribe(data =>
           {
             if(data)
+            {
               this.info.email = data['email'];
-            if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
-            {
-
-              this.info.contact_number = data['contact_number'];
-              this.info.github_account = data['candidate'].github_account;
-              this.info.exchange_account = data['candidate'].stackexchange_account;
-              this.info.nationality = data['nationality'];
-              this.info.first_name =data['first_name'];
-              this.info.last_name =data['last_name'];
-
-              if(data['image'] != null )
+              if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
-                this.info.image_src =  data['image'] ;
-                let x = this.info.image_src.split("/");
 
-                let last:any = x[x.length-1];
+                this.info.contact_number = data['contact_number'];
+                this.info.github_account = data['candidate'].github_account;
+                this.info.exchange_account = data['candidate'].stackexchange_account;
+                this.info.nationality = data['nationality'];
+                this.info.first_name =data['first_name'];
+                this.info.last_name =data['last_name'];
 
-                this.img_src = last;
-              }
-
-              if(data['candidate'] && data['candidate'].base_country)
-              {
-                this.info.base_country = data['candidate'].base_country;
-              }
-              if(data['candidate'] && data['candidate'].base_city){
-                this.info.city = data['candidate'].base_city;
-              }
-
-
-            }
-            this.why_work=data['candidate'].why_work;
-            if(data['candidate'] && data['candidate'].blockchain)
-            {
-              if(data['candidate'].blockchain.commercial_skills )
-              {
-                this.commercialSkillsExperienceYear = data['candidate'].blockchain.commercial_skills;
-                for (let key of data['candidate'].blockchain.commercial_skills)
+                if(data['image'] != null )
                 {
-                  for(var i in key)
-                  {
+                  this.info.image_src =  data['image'] ;
+                  let x = this.info.image_src.split("/");
 
-                    for(let option of this.otherSkills)
+                  let last:any = x[x.length-1];
+
+                  this.img_src = last;
+                }
+
+                if(data['candidate'] && data['candidate'].base_country)
+                {
+                  this.info.base_country = data['candidate'].base_country;
+                }
+                if(data['candidate'] && data['candidate'].base_city){
+                  this.info.city = data['candidate'].base_city;
+                }
+
+
+              }
+              this.why_work=data['candidate'].why_work;
+              if(data['candidate'] && data['candidate'].blockchain)
+              {
+                if(data['candidate'].blockchain.commercial_skills )
+                {
+                  this.commercialSkillsExperienceYear = data['candidate'].blockchain.commercial_skills;
+                  for (let key of data['candidate'].blockchain.commercial_skills)
+                  {
+                    for(var i in key)
                     {
 
-                      if(option.value === key[i])
+                      for(let option of this.otherSkills)
                       {
-                        option.checked=true;
-                        this.skillDbArray.push(key[i]);
-                        this.skillDb= ({value: key[i]});
-                        this.commercialSkills.push(this.skillDb);
+
+                        if(option.value === key[i])
+                        {
+                          option.checked=true;
+                          this.skillDbArray.push(key[i]);
+                          this.skillDb= ({value: key[i]});
+                          this.commercialSkills.push(this.skillDb);
+
+                        }
+                        else
+                        {
+
+                        }
 
                       }
-                      else
+
+                      for(let option of this.exp_year)
                       {
+
+                        if(option.value === key[i])
+                        {
+                          option.checked=true;
+                          this.skill_expYear_db.push(key[i]);
+
+                        }
 
                       }
 
                     }
+                  }
+                }
 
-                    for(let option of this.exp_year)
+                if(data['candidate'].blockchain.formal_skills )
+                {
+                  this.formal_skills = data['candidate'].blockchain.formal_skills;
+                  for (let key of data['candidate'].blockchain.formal_skills)
+                  {
+                    for(var i in key)
                     {
 
-                      if(option.value === key[i])
+                      for(let option of this.otherFormalSkills)
+                      {
+
+                        if(option.value === key[i])
+                        {
+                          option.checked=true;
+                          this.formalDbArray.push(key[i]);
+                          this.formalSkillDb= ({value: key[i]});
+                          this.formal_skills_exp.push(this.formalSkillDb);
+
+                        }
+                        else
+                        {
+
+                        }
+
+                      }
+
+                      for(let option of this.exp_year)
+                      {
+
+                        if(option.value === key[i])
+                        {
+                          option.checked=true;
+                          this.formal_expYear_db.push(key[i]);
+
+                        }
+
+                      }
+
+                    }
+                  }
+                }
+
+                if(data['candidate'].blockchain.commercial_platforms)
+                {
+                  this.commercial_expYear = data['candidate'].blockchain.commercial_platforms;
+                  for (let key of data['candidate'].blockchain.commercial_platforms)
+                  {
+                    for(var i in key)
+                    {
+
+
+                      for(let option of this.commercially)
+                      {
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+                          this.db_valye.push(key[i]);
+                          this.db_lang= ({value: key[i]});
+                          this.commercially_worked.push(this.db_lang);
+
+                        }
+                        else
+                        {
+
+                        }
+
+                      }
+
+                      for(let option of this.exp_year)
+                      {
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+                          this.expYear_db.push(key[i]);
+
+                        }
+
+                      }
+
+                    }
+                  }
+
+                }
+
+                if(data['candidate'].blockchain.smart_contract_platforms)
+                {
+                  this.platforms = data['candidate'].blockchain.smart_contract_platforms;
+                  for (let key of data['candidate'].blockchain.smart_contract_platforms)
+                  {
+                    for(var i in key)
+                    {
+
+
+                      for(let option of this.designed)
+                      {
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+                          this.plat_db_valye.push(key[i]);
+                          this.db_lang= ({value: key[i]});
+                          this.platforms_designed.push(this.db_lang);
+
+                        }
+                        else
+                        {
+
+                        }
+
+                      }
+
+                      for(let option of this.exp_year)
+                      {
+
+                        if(option.value == key[i])
+                        {
+                          option.checked=true;
+
+
+                          this.designed_expYear_db.push(key[i]);
+
+
+                        }
+
+                      }
+
+                    }
+                  }
+                }
+
+                if(data['candidate'].blockchain.experimented_platforms)
+                {
+                  for (let plat of data['candidate'].blockchain.experimented_platforms)
+                  {
+
+                    for(let option of this.experimented)
+                    {
+
+                      if(option.value === plat)
                       {
                         option.checked=true;
-                        this.skill_expYear_db.push(key[i]);
+                        this.experimented_platform.push(plat);
 
                       }
 
@@ -305,67 +470,91 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 }
               }
 
-              if(data['candidate'].blockchain.formal_skills )
+              if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas &&  data['candidate'].expected_salary && data['candidate'].availability_day && data['candidate'].expected_salary_currency)
               {
-                this.formal_skills = data['candidate'].blockchain.formal_skills;
-                for (let key of data['candidate'].blockchain.formal_skills)
+
+                for (let country1 of data['candidate'].locations)
                 {
-                  for(var i in key)
+
+                  for(let option of this.options)
                   {
 
-                    for(let option of this.otherFormalSkills)
+                    if(option.value == country1)
                     {
-
-                      if(option.value === key[i])
-                      {
-                        option.checked=true;
-                        this.formalDbArray.push(key[i]);
-                        this.formalSkillDb= ({value: key[i]});
-                        this.formal_skills_exp.push(this.formalSkillDb);
-
-                      }
-                      else
-                      {
-
-                      }
-
+                      option.checked=true;
+                      this.selectedcountry.push(country1);
                     }
 
-                    for(let option of this.exp_year)
+                  }
+
+                }
+
+                for(let interest of data['candidate'].interest_areas)
+                {
+
+                  for(let option of this.area_interested)
+                  {
+
+                    if(option.value === interest)
                     {
-
-                      if(option.value === key[i])
-                      {
-                        option.checked=true;
-                        this.formal_expYear_db.push(key[i]);
-
-                      }
+                      option.checked = true;
+                      this.selectedValue.push(interest);
 
                     }
 
                   }
+
                 }
+
+                for (let area of data['candidate'].roles)
+                {
+
+                  for(let option of this.dropdown_options)
+                  {
+                    if(option.value === area)
+                    {
+                      option.checked=true;
+                      this.jobselected.push(area);
+
+                    }
+
+                  }
+
+                }
+
+                this.expected_salaryyy = data['candidate'].expected_salary;
+
+                this.availability_day = data['candidate'].availability_day;
+                if(data['candidate'].expected_salary_currency)
+                  this.base_currency = data['candidate'].expected_salary_currency;
               }
 
-              if(data['candidate'].blockchain.commercial_platforms)
+
+              if(data['candidate'].current_currency ){
+                this.current_currency =data['candidate'].current_currency;
+              }
+              if(data['candidate'].current_salary) {
+                this.salary = data['candidate'].current_salary;
+              }
+              this.Intro =data['candidate'].description;
+              if(data['candidate'].programming_languages && data['candidate'].programming_languages.length > 0)
               {
-                this.commercial_expYear = data['candidate'].blockchain.commercial_platforms;
-                for (let key of data['candidate'].blockchain.commercial_platforms)
+                this.LangexpYear = data['candidate'].programming_languages;
+                for (let key of data['candidate'].programming_languages)
                 {
                   for(var i in key)
                   {
 
 
-                    for(let option of this.commercially)
+                    for(let option of this.language_opt)
                     {
 
                       if(option.value == key[i])
                       {
                         option.checked=true;
-                        this.db_valye.push(key[i]);
+                        this.lang_db_valye.push(key[i]);
                         this.db_lang= ({value: key[i]});
-                        this.commercially_worked.push(this.db_lang);
-
+                        this.language.push(this.db_lang);
                       }
                       else
                       {
@@ -380,54 +569,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                       if(option.value == key[i])
                       {
                         option.checked=true;
-                        this.expYear_db.push(key[i]);
-
-                      }
-
-                    }
-
-                  }
-                }
-
-              }
-
-              if(data['candidate'].blockchain.smart_contract_platforms)
-              {
-                this.platforms = data['candidate'].blockchain.smart_contract_platforms;
-                for (let key of data['candidate'].blockchain.smart_contract_platforms)
-                {
-                  for(var i in key)
-                  {
-
-
-                    for(let option of this.designed)
-                    {
-
-                      if(option.value == key[i])
-                      {
-                        option.checked=true;
-                        this.plat_db_valye.push(key[i]);
-                        this.db_lang= ({value: key[i]});
-                        this.platforms_designed.push(this.db_lang);
-
-                      }
-                      else
-                      {
-
-                      }
-
-                    }
-
-                    for(let option of this.exp_year)
-                    {
-
-                      if(option.value == key[i])
-                      {
-                        option.checked=true;
-
-
-                        this.designed_expYear_db.push(key[i]);
-
+                        this.lang_expYear_db.push(key[i]);
 
                       }
 
@@ -436,169 +578,41 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                   }
                 }
               }
+              if(data['candidate'].work_history) {
+                this.jobData = data['candidate'].work_history;
 
-              if(data['candidate'].blockchain.experimented_platforms)
-              {
-                for (let plat of data['candidate'].blockchain.experimented_platforms)
+                for(let data1 of data['candidate'].work_history)
                 {
-
-                  for(let option of this.experimented)
-                  {
-
-                    if(option.value === plat)
-                    {
-                      option.checked=true;
-                      this.experimented_platform.push(plat);
-
-                    }
-
-                  }
-
-                }
-              }
-            }
-
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas &&  data['candidate'].expected_salary && data['candidate'].availability_day && data['candidate'].expected_salary_currency)
-            {
-
-              for (let country1 of data['candidate'].locations)
-              {
-
-                for(let option of this.options)
-                {
-
-                  if(option.value == country1)
-                  {
-                    option.checked=true;
-                    this.selectedcountry.push(country1);
-                  }
+                  this.current_work_check.push(data1.currentwork);
 
                 }
 
+                this.ExperienceForm = this._fb.group({
+                  ExpItems: this._fb.array(
+                    this.history_data()
+                  )
+                });
               }
 
-              for(let interest of data['candidate'].interest_areas)
+              if(data['candidate'].education_history)
               {
 
-                for(let option of this.area_interested)
-                {
+                this.eduData = data['candidate'].education_history;
+                this.EducationForm = this._fb.group({
+                  itemRows: this._fb.array(
+                    this.education_data()
+                  )
+                });
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker();
+                }, 300);
 
-                  if(option.value === interest)
-                  {
-                    option.checked = true;
-                    this.selectedValue.push(interest);
-
-                  }
-
-                }
-
-              }
-
-              for (let area of data['candidate'].roles)
-              {
-
-                for(let option of this.dropdown_options)
-                {
-                  if(option.value === area)
-                  {
-                    option.checked=true;
-                    this.jobselected.push(area);
-
-                  }
-
-                }
-
-              }
-
-              this.expected_salaryyy = data['candidate'].expected_salary;
-
-              this.availability_day = data['candidate'].availability_day;
-              if(data['candidate'].expected_salary_currency)
-                this.base_currency = data['candidate'].expected_salary_currency;
-            }
-
-
-            if(data['candidate'].current_currency ){
-              this.current_currency =data['candidate'].current_currency;
-            }
-            if(data['candidate'].current_salary) {
-              this.salary = data['candidate'].current_salary;
-            }
-            this.Intro =data['candidate'].description;
-            if(data['candidate'].programming_languages && data['candidate'].programming_languages.length > 0)
-            {
-              this.LangexpYear = data['candidate'].programming_languages;
-              for (let key of data['candidate'].programming_languages)
-              {
-                for(var i in key)
-                {
-
-
-                  for(let option of this.language_opt)
-                  {
-
-                    if(option.value == key[i])
-                    {
-                      option.checked=true;
-                      this.lang_db_valye.push(key[i]);
-                      this.db_lang= ({value: key[i]});
-                      this.language.push(this.db_lang);
-                    }
-                    else
-                    {
-
-                    }
-
-                  }
-
-                  for(let option of this.exp_year)
-                  {
-
-                    if(option.value == key[i])
-                    {
-                      option.checked=true;
-                      this.lang_expYear_db.push(key[i]);
-
-                    }
-
-                  }
-
-                }
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 900);
               }
             }
-            if(data['candidate'].work_history) {
-              this.jobData = data['candidate'].work_history;
 
-              for(let data1 of data['candidate'].work_history)
-              {
-                this.current_work_check.push(data1.currentwork);
-
-              }
-
-              this.ExperienceForm = this._fb.group({
-                ExpItems: this._fb.array(
-                  this.history_data()
-                )
-              });
-            }
-
-            if(data['candidate'].education_history)
-            {
-
-              this.eduData = data['candidate'].education_history;
-              this.EducationForm = this._fb.group({
-                itemRows: this._fb.array(
-                  this.education_data()
-                )
-              });
-              setTimeout(() => {
-                $('.selectpicker').selectpicker();
-              }, 300);
-
-              setTimeout(() => {
-                $('.selectpicker').selectpicker('refresh');
-              }, 900);
-            }
           },
           error =>
           {
