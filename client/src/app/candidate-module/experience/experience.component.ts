@@ -486,6 +486,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     this.button_status = 'submit';
     this.dateValidation= '';
 
+
     if(this.expYear.length !== this.language.length)
     {
 
@@ -635,7 +636,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     console.log("education form count " + this.EducationForm.value.itemRows.length);
     console.log("work history count " + this.exp_count);
     console.log("work history form count " + this.ExperienceForm.value.ExpItems.length);
-    if(this.verify === true &&this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
+
+    if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length) {
+      this.verify = true;
+    }
+
+    if(this.verify === true )
     {
       this.submit_info(searchForm);
 
