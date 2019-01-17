@@ -40,8 +40,12 @@
                         {{founded_log}}
                       </div>
 
-                      <div class="invalid-feedback d-inline" *ngIf="companyFounded.errors && company_founded">
+                      <div class="invalid-feedback d-inline" *ngIf="companyFounded.errors && company_founded;else yearVerification">
                         Input data should be a number.
+                      </div>
+
+                      <div class="invalid-feedback d-inline" #yearVerification *ngIf="company_funded >  currentyear">
+                        {{yearValidation}}
                       </div>
                     </div>
                 </div>

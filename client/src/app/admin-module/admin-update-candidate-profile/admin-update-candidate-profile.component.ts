@@ -1393,14 +1393,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         {
           this.eduYear_log = "Please fill graduation year";
         }
-        if(this.EducationForm.value.itemRows[key].eduyear >  this.currentyear) {
-          this.eduYear_verify_log = "Date must be in the past";
-        }
-
 
         if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename &&
-          this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear &&
-          this.EducationForm.value.itemRows[key].eduyear <=  this.currentyear)
+          this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
         {
 
           this.edu_count = parseInt(key) + 1;

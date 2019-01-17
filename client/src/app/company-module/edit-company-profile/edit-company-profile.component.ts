@@ -6,6 +6,7 @@ import { DataService } from "../../data.service";
 import {NgForm ,FormGroup , FormControl, FormBuilder} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 declare var $:any;
 
@@ -79,6 +80,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   pref_active_class;
   when_receive_email_notitfications;
   expected_validation;
+  currentyear;
+  yearValidation;
 
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
@@ -201,7 +204,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
 
-  constructor(private route: ActivatedRoute, private _fb: FormBuilder ,
+  constructor(private route: ActivatedRoute, private _fb: FormBuilder ,private datePipe: DatePipe,
               private router: Router,private http: HttpClient,
               private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
   }
@@ -223,6 +226,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   ngOnInit()
   {
     this.company_country=-1;
+    this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if(!this.currentUser)
@@ -423,6 +428,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   company_profile(profileForm: NgForm)
   {
     this.error_msg = "";
+    if(this.company_founded){
+      this.company_founded = parseInt(this.company_founded);
+    }
     if(!this.first_name) {
       this.first_name_log="Please enter first name";
     }
@@ -453,6 +461,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(!this.company_founded) {
       this.founded_log = 'Please fill when was the company founded';
     }
+    if(this.company_founded >  this.currentyear ) {
+      this.yearValidation = "Date must be in the past"
+    }
+
+    if(this.company_founded < 1800) {
+      this.yearValidation = "Please enter value greater than 1800";
+    }
+
     if(!this.no_of_employees) {
       this.employee_log = 'Please fill no. of employees';
     }
@@ -488,7 +504,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.email_notification_log = "Please select when you want to receive email notification";
     }
 
-    if(this.company_founded && this.no_of_employees && this.company_funded && this.company_description &&
+    if(this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees && this.company_funded && this.company_description &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode &&
       this.preferncesForm.value.location && this.preferncesForm.value.location.length > 0 &&
@@ -498,6 +514,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm.value.when_receive_email_notitfications)  {
       this.saved_searches.push(this.preferncesForm.value);
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
+      profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
       this.authenticationService.edit_company_profile(profileForm.value , this.saved_searches)
         .subscribe(
           data => {

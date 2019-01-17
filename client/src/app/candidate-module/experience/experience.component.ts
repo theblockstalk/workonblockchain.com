@@ -522,13 +522,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         {
           this.eduYear_log = "Please fill graduation year";
         }
-        if(this.EducationForm.value.itemRows[key].eduyear >  this.currentyear) {
-          this.eduYear_verify_log = "Date must be in the past";
-        }
 
         if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename &&
-          this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear &&
-          this.EducationForm.value.itemRows[key].eduyear <=  this.currentyear)
+          this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
         {
 
           this.edu_count = this.edu_count + 1;
@@ -639,6 +635,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length) {
       this.verify = true;
+    }
+
+    else {
+      this.verify = false;
     }
 
     if(this.verify === true )
