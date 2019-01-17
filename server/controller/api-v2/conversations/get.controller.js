@@ -8,7 +8,8 @@ module.exports.request = {
 };
 
 const querySchema = new Schema({
-    id: String
+    user_id: String,
+    admin: Boolean
 })
 
 module.exports.inputValidation = {
@@ -19,17 +20,9 @@ module.exports.auth = async function (req) {
     console.log('in auth');
     await auth.isValidUser(req);
 
-    // if (req.query.admin) {
-    //     await auth.isAdmin(req);
-    // }
-}
-
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
+    if (req.query.admin) {
+        await auth.isAdmin(req);
     }
-    return true;
 }
 
 module.exports.endpoint = async function (req, res) {
@@ -37,8 +30,8 @@ module.exports.endpoint = async function (req, res) {
     //const userType = req.auth.user.type;
     let userId;
 
-    if(req.query.id && req.query.id !== '0' && req.auth.user.is_admin){
-        userId = req.query.id;
+    if(req.query.user_id && req.query.user_id !== '0'){
+        userId = req.query.user_id;
     }
     else{
         userId = req.auth.user._id;
@@ -48,5 +41,7 @@ module.exports.endpoint = async function (req, res) {
         $or:[{receiver_id:userId},{sender_id: userId}]
     },{_id:0,sender_id:1,receiver_id:1,msg_tag:1})
         .sort({date_created: 'descending'}).lean();
-    res.send(messageDoc);
+    res.send({
+        conversations:messageDoc
+    });
 }

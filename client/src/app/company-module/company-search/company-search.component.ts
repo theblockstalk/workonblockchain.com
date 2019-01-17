@@ -747,7 +747,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         let new_offer : any = {};
         new_offer.job_offer = job_offer;
 
-        this.authenticationService.send_job_offer_to_cand(this.user_id.id, 'job_offer',new_offer)
+        this.authenticationService.send_message(this.user_id.id, 'job_offer',new_offer)
         .subscribe(
           data => {
             this.job_offer_log_success = 'Message successfully sent';

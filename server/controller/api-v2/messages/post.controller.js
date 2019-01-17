@@ -66,10 +66,6 @@ module.exports.inputValidation = {
 module.exports.auth = async function (req) {
     console.log('in auth');
     await auth.isValidUser(req);
-
-    // if (req.query.admin) {
-    //     await auth.isAdmin(req);
-    // }
 }
 
 const checkJobOfferAccepted = async function (userType, sender_id, receiver_id) {

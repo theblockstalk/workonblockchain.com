@@ -5,16 +5,15 @@ const mongoose = require('mongoose');
 
 module.exports.request = {
     type: 'get',
-    path: '/conversations/messages/'
+    path: '/conversations/:sender_id/messages/'
 };
 
-const querySchema = new Schema({
-    sender_id: String,
-    receiver_id: String
+const paramSchema = new Schema({
+    sender_id: String
 })
 
 module.exports.inputValidation = {
-    query: querySchema
+    params: paramSchema
 };
 
 module.exports.auth = async function (req) {
@@ -39,19 +38,37 @@ module.exports.endpoint = async function (req, res) {
     //const userType = req.auth.user.type;
     let userId;
 
-    if(req.query.sender_id !== '0' && req.auth.user.is_admin){
+    /*if(req.query.sender_id !== '0' && req.auth.user.is_admin){
         userId = req.query.sender_id
     }
     else{
         userId = req.auth.user._id;
-    }
+    }*/
 
-    const messageDoc = await Messages.find({
+    userId = req.auth.user._id;
+    const messageDocs = await Messages.find({
         $or : [
-            { $and : [ { receiver_id : mongoose.Types.ObjectId(req.query.receiver_id) }, { sender_id : userId } ] },
-            { $and : [ { receiver_id : userId }, { sender_id : mongoose.Types.ObjectId(req.query.receiver_id) } ] }
+            { $and : [ { receiver_id : mongoose.Types.ObjectId(req.params.sender_id) }, { sender_id : userId } ] },
+            { $and : [ { receiver_id : userId }, { sender_id : mongoose.Types.ObjectId(req.params.sender_id) } ] }
         ]
     }).sort({_id: 'ascending'}).lean();
 
-    res.send(messageDoc);
+    let jobOfferStatus = [];
+    for(let i=0; i< messageDocs.length; i++){
+        if (messageDocs[i].msg_tag === 'job_offer_accepted'){
+            jobOfferStatus.push('accepted');
+        }
+        else if (messageDocs[i].msg_tag === 'job_offer_rejected'){
+            jobOfferStatus.push('rejected');
+        }
+        else{
+            jobOfferStatus.push('sent');
+        }
+    }
+    console.log(jobOfferStatus);
+
+    res.send({
+        messages:messageDocs,
+        jobOffer: jobOfferStatus
+    });
 }

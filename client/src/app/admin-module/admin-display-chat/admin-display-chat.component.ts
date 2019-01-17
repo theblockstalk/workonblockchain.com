@@ -22,7 +22,7 @@ export class AdminDisplayChatComponent implements OnInit {
   credentials: any = {};
   users = [];
   msgs = '';
-  new_msgss = '';
+  new_msgss : any = {};
   show_msg_area = 1;
   display_list = 0;
   count=0;
@@ -75,11 +75,11 @@ export class AdminDisplayChatComponent implements OnInit {
           .subscribe(
             msg_data =>
             {
-              if(msg_data['datas'].length>0)
+              if(msg_data)
               {
-                this.new_messges.push(msg_data['datas']);
-						    this.new_messges = this.filter_array(msg_data['datas']);
-						    this.length = msg_data['datas'].length;
+                this.new_messges.push(msg_data);
+						    this.new_messges = this.filter_array(msg_data);
+						    this.length = 1;
 						    for (var key_messages in this.new_messges)
 						    {
 						      if(this.user_id == this.new_messges[key_messages].receiver_id){
@@ -138,11 +138,11 @@ export class AdminDisplayChatComponent implements OnInit {
           .subscribe(
             msg_data =>
             {
-              if(msg_data['datas'].length>0)
+              if(msg_data)
               {
-                this.new_messges.push(msg_data['datas']);
-                this.new_messges = this.filter_array(msg_data['datas']);
-                this.length = msg_data['datas'].length;
+                this.new_messges.push(msg_data);
+                this.new_messges = this.filter_array(msg_data);
+                this.length = 1;
                 for (var key_messages in this.new_messges)
                 {
                   if(this.user_id == this.new_messges[key_messages].sender_id){
@@ -217,8 +217,9 @@ export class AdminDisplayChatComponent implements OnInit {
     .subscribe(
       data =>
       {
-        this.new_msgss = data['datas'];
-        this.job_desc = data['datas'][0];
+        console.log(data);
+        this.new_msgss = data;
+        this.job_desc = data[0].message.job_offer;
         if(data['datas'][1]){
           if(data['datas'][1].is_company_reply==1)
           {

@@ -830,6 +830,27 @@ export class UserService {
     }));
   }
 
+  get_user_messages_comp(receiver_id: string)
+  {
+    return this.http.get(messagesURL+'conversations/'+receiver_id+'/messages/', {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error.status )
+      {
+        return throwError(new Error(error.status));
+      }
+
+    }));
+  }
+
   get_user_messages(receiver_id: string, sender_id: any)
   {
     return this.http.get(messagesURL+'conversations/messages?receiver_id='+receiver_id+'&sender_id='+sender_id, {
@@ -851,9 +872,38 @@ export class UserService {
     }));
   }
 
+  get_user_messages_only_comp()
+  {
+    return this.http.get(messagesURL+'conversations', {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) => {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error.status )
+      {
+        return throwError(error);
+      }
+
+    }));
+  }
+
   get_user_messages_only(id:any)
   {
-    return this.http.get(messagesURL+'conversations/?id='+id, {
+    let queryString = '';
+    if(id === '0' || id === 0){
+      console.log('comp/cand is calling');
+      queryString = '?user_id='+id;
+    }
+    else{
+      console.log('admin is calling');
+      queryString = '?user_id='+id+'&admin=true';
+    }
+    console.log(queryString);
+    return this.http.get(messagesURL+'conversations/'+queryString, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res)
@@ -1287,7 +1337,7 @@ export class UserService {
 
   }
 
-  send_job_offer_to_cand(receiver_id:string,msg_tag:string, message:any){
+  send_message(receiver_id:string,msg_tag:string, message:any){
     return this.http.post(messagesURL+'messages', {receiver_id:receiver_id,msg_tag:msg_tag,message:message}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
