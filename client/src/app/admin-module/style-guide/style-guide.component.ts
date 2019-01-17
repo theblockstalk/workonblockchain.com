@@ -47,5 +47,8 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
     $("#startdate_datepicker").datepicker();
 
   }
+  radioButtonChange(e) {
+    console.log(e.target.value);
+  }
 
 }

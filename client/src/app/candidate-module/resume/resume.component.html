@@ -96,16 +96,17 @@
                 <label>Years of experience</label>
               </div>
             </div>
-            <div class = "col-md-7" *ngFor="let option of commercially_worked; let i = index ">
+            <div class = "col-md-12" *ngFor="let option of commercially_worked; let i = index ">
               <p>{{option.value}}</p>
-              <div class = "form-group">
-                <!--<div class="btn-group btn-group-toggle" data-toggle="buttons">-->
-                <label class="btn btn-secondary" *ngFor="let exp of exp_year; let i_ind =index" for="rg{{option.value}}{{i_ind}}" >
-                  <input type="radio" autocomplete="off" name="radiogroup- {{ option.value}}" id="rg{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
-                  {{exp.name}}
-                </label>
-                <!--</div>-->
+              <div class="form-check form-check-inline">
+                <div *ngFor="let exp of exp_year; let i_ind =index">
+                  <input type="radio" class="d-none" id = "rg{{option.value}}{{i_ind}}" name="radiogroup- {{ option.value}}" value="{{exp.value}}" (change)="onComExpYearOptions($event , option.value)" [checked]=" expYear_db[i] === exp.value && db_valye[i] === option.value" >
+                  <label  for="rg{{option.value}}{{i_ind}}" class="border py-2 px-5">
+                    {{exp.name}}
+                  </label>
+                </div>
                 <input type="text" class="form-control" name="commercial_platforms" [(ngModel)]='commercial_expYear' style="display: none;">
+
               </div>
             </div>
           </div>

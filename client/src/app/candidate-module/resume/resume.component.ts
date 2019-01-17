@@ -100,8 +100,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
             if(data['candidate'].why_work){
               this.why_work=data['candidate'].why_work;
             }
-            if(data['candidate'].blockhain)
+            if(data['candidate'].blockchain)
             {
+              console.log(data['candidate'].blockchain.commercial_platforms);
 
               if(data['candidate'].blockchain.commercial_platforms)
               {
@@ -653,6 +654,8 @@ console.log(this.experimented_platform);
       this.referringData = { name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
     }
+    console.log(this.commercial_expYear);
+
 
   }
 
