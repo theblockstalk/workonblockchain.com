@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../user.service';
 import {User} from '../Model/user';
 import { Title, Meta } from '@angular/platform-browser';
+declare var $: any;
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void
   {
+    $('.carousel').carousel({
+      interval: 2000
+    });
     window.scrollTo(0, 0);
   }
   ngOnInit()
