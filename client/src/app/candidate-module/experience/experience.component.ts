@@ -834,8 +834,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     let endMonth = this.monthNameToNum(endmonth);
     let endDateFormat  = new Date(endyear, endMonth);
-console.log(startDateFormat) ;
-console.log(endDateFormat);
+
     if(current  === true) {
       return false;
     }
