@@ -1513,13 +1513,21 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
     )
     {
+      this.verify = true;
+    }
+    if(this.verify === true ) {
       if(typeof(this.expected_salaryyy) === 'string' )
         profileForm.value.expected_salary = parseInt(this.expected_salaryyy);
+      if(this.salary && typeof (this.salary) === 'string') {
+        profileForm.value.salary = parseInt(this.salary);
+
+      }
       this.updateProfileData(profileForm.value);
     }
     else {
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
+
 
   }
 
