@@ -1273,7 +1273,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   formal_skills_log;
   current_sal_log;
   count;
-  eduYear_verify_log;
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -1475,11 +1474,19 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
         {
 
+          let verified=0;
           if(this.compareDates(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear,this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear , this.ExperienceForm.value.ExpItems[key].currentwork)) {
             this.dateValidation = 'Date must be greater than previous date';
+            verified=1;
           }
-          else {
-            this.exp_count = parseInt(key) + 1;
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear)) {
+            verified=1;
+          }
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
+            verified=1;
+          }
+          if(verified === 0) {
+            this.exp_count = this.exp_count + 1;
           }
 
         }

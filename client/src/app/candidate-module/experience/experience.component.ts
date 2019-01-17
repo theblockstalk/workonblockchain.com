@@ -475,9 +475,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   exp_count=0;edu_count=0;
   start_date_year_log;
   end_date_year_log;
-  start_date_year_verify_log;
-  end_date_year_veirfy_log;
-  eduYear_verify_log
   experience_submit(searchForm: NgForm)
   {
     this.error_msg="";
@@ -601,10 +598,18 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.ExperienceForm.value.ExpItems[key].currentwork==false)
         {
           this.submit = 'click';
+          let verified=0;
           if(this.compareDates(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear,this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear , this.ExperienceForm.value.ExpItems[key].currentwork)) {
             this.dateValidation = 'Date must be greater than previous date';
+            verified=1;
           }
-          else {
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear)) {
+            verified=1;
+          }
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
+            verified=1;
+          }
+          if(verified === 0) {
             this.exp_count = this.exp_count + 1;
           }
 
@@ -799,6 +804,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   work_start_data(e)
   {
     this.start_month = e.target.value ;
+    this.dateVerification = '';
   }
   work_start_year(e)
   {
@@ -829,7 +835,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
     let endMonth = this.monthNameToNum(endmonth);
     let endDateFormat  = new Date(endyear, endMonth);
-
+console.log(startDateFormat) ;
+console.log(endDateFormat);
     if(current  === true) {
       return false;
     }
