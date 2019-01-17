@@ -134,7 +134,7 @@
                     <div class="invalid-feedback d-inline" #expected_validation *ngIf="companyFounded.errors && company_founded;else yearVerification">
                       Input data should be a number.
                     </div>
-                    <div class="invalid-feedback d-inline" #yearVerification *ngIf="company_funded >  currentyear">
+                    <div class="invalid-feedback d-inline" #yearVerification *ngIf="company_funded >  currentyear || company_founded < 1800">
                       {{yearValidation}}
                     </div>
 

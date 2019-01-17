@@ -44,7 +44,7 @@
                         Input data should be a number.
                       </div>
 
-                      <div class="invalid-feedback d-inline" #yearVerification *ngIf="company_funded >  currentyear">
+                      <div class="invalid-feedback d-inline" #yearVerification *ngIf="company_funded >  currentyear || company_founded < 1800">
                         {{yearValidation}}
                       </div>
                     </div>
