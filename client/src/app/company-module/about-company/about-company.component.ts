@@ -128,6 +128,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   image_log;file_size=1048576;
   currentyear;
   yearValidation;
+  yearVerification;
 
   about_company(companyForm: NgForm)
   {
