@@ -1510,6 +1510,9 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     {
       this.verify = true;
     }
+    else {
+      this.verify = false;
+    }
     if(this.verify === true ) {
       if(typeof(this.expected_salaryyy) === 'string' )
         profileForm.value.expected_salary = parseInt(this.expected_salaryyy);
