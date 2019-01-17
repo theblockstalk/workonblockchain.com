@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void
   {
     $('.carousel').carousel({
-      interval: 2000
+      interval: 3500
     });
     window.scrollTo(0, 0);
   }
