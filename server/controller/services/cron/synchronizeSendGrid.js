@@ -136,7 +136,7 @@ async function synchDatabasetoList(listId) {
                     user_created_date: userDoc.candidate.status[userDoc.candidate.status.length-1].timestamp,
                     user_id: userDoc._id.toString()
                 };
-                if (candidateDoc.marketing_emails) {
+                if (userDoc.marketing_emails) {
                     recipientUpdate.user_marketing_emails = userDoc.marketing_emails.toString();
                 }
 
