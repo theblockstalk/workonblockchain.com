@@ -97,10 +97,12 @@ export class ResumeComponent implements OnInit,AfterViewInit {
             {
               this.about_active_class = 'fa fa-check-circle text-success';
             }
+
             if(data['candidate'].why_work){
+
               this.why_work=data['candidate'].why_work;
             }
-            if(data['candidate'].blockhain)
+            if(data['candidate'].blockchain)
             {
 
               if(data['candidate'].blockchain.commercial_platforms)
