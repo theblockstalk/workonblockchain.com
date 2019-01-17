@@ -1516,13 +1516,16 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.count = 0;
     }
 
-    if(this.verify === true && this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
+    if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
       this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
     )
     {
+      this.verify = true;
+    }
+    if(this.verify === true ) {
       if(typeof(this.expected_salaryyy) === 'string' )
         profileForm.value.expected_salary = parseInt(this.expected_salaryyy);
       if(this.salary && typeof (this.salary) === 'string') {
