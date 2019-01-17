@@ -175,7 +175,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   admin_log;
   ngOnInit()
   {
-
+    this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
 
@@ -1263,10 +1263,13 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   formal_skills_log;
   current_sal_log;
   count;
+  eduYear_verify_log;
+  submit;
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
     this.count = 0;
+    this.submit = "click";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1390,7 +1393,14 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         {
           this.eduYear_log = "Please fill graduation year";
         }
-        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename && this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
+        if(this.EducationForm.value.itemRows[key].eduyear >  this.currentyear) {
+          this.eduYear_verify_log = "Date must be in the past";
+        }
+
+
+        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename &&
+          this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear &&
+          this.EducationForm.value.itemRows[key].eduyear <=  this.currentyear)
         {
 
           this.edu_count = parseInt(key) + 1;
@@ -1404,6 +1414,18 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.exp_count =0;
       for (var key in this.ExperienceForm.value.ExpItems)
       {
+        this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
+        this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
+        this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
+        if(this.ExperienceForm.value.ExpItems[key].currentwork === true)
+        {
+          this.end_date_format = Date.now();
+        }
+        else
+        {
+          this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+
+        }
         if(!this.ExperienceForm.value.ExpItems[key].companyname)
         {
           this.company_log = "Please fill company";
@@ -1446,7 +1468,13 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
           this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date &&
           this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
         {
-          this.exp_count = parseInt(key) + 1;
+
+          if(this.compareDates(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear,this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear , this.ExperienceForm.value.ExpItems[key].currentwork)) {
+            this.dateValidation = 'Date must be greater than previous date';
+          }
+          else {
+            this.exp_count = parseInt(key) + 1;
+          }
 
         }
 
@@ -1461,7 +1489,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         }
 
       }
-
 
     }
 
@@ -1702,6 +1729,50 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }
 
   }
+  verify;
+  dateValidation;
+  checkDateVerification(month,year) {
+    if(month && year) {
+      this.startmonthIndex = this.monthNameToNum(month);
+      this.start_date_format  = new Date(year, this.startmonthIndex);
+      if(this.start_date_format > new Date()) {
+        this.verify= false;
+        return true;
+      }
+      else {
+        this.verify= true;
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
+  }
 
+  compareDates(startmonth , startyear , endmonth, endyear, current) {
+    let startMonth = this.monthNameToNum(startmonth);
+    let startDateFormat  = new Date(startyear, startMonth);
 
+    let endMonth = this.monthNameToNum(endmonth);
+    let endDateFormat  = new Date(endyear, endMonth);
+
+    if(current  === true) {
+      return false;
+    }
+    else {
+      if(startDateFormat > endDateFormat && this.submit === 'click') {
+        this.dateValidation = 'Date must be greater than previous date';
+        this.verify = false;
+        return true;
+      }
+      else {
+        this.verify = true;
+        return false;
+      }
+    }
+  }
+
+  endDateYear() {
+    this.dateValidation = "";
+  }
 }
