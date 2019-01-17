@@ -204,7 +204,7 @@
 
                         </div>
                       </div>
-                      <div class = "invalid-feedback d-inline ml-3" #compareDate *ngIf="(button_status=== 'submit' &&  dateValidation != '' &&this.ExperienceForm.value.ExpItems[i].endyear && this.ExperienceForm.value.ExpItems[i].end_date)">
+                      <div class = "invalid-feedback d-inline ml-3" #compareDate *ngIf="button_status=== 'submit' &&  compareDates(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear,this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear , this.ExperienceForm.value.ExpItems[i].currentwork)">
                         {{dateValidation}}
                       </div>
                     </div>
@@ -297,12 +297,10 @@
                       <select title="(select one)" formControlName="eduyear" class='selectpicker form-control'  required name="roles"  required=""  >
                         <option class='option' *ngFor='let graduationYear of graduation_year'  [value]="graduationYear" selected>{{graduationYear}}</option>
                       </select>
-                      <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].eduyear; else educationYearVerification">
+                      <div class = "invalid-feedback d-inline" *ngIf="!this.EducationForm.value.itemRows[i].eduyear">
                         {{eduYear_log}}
                       </div>
-                      <div class = "invalid-feedback d-inline" #educationYearVerification *ngIf="this.EducationForm.value.itemRows[i].eduyear > currentyear">
-                        {{eduYear_verify_log}}
-                      </div>
+
                     </div>
                   </div>
                 </div>
