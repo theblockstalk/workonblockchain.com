@@ -97,9 +97,13 @@ export class ResumeComponent implements OnInit,AfterViewInit {
             {
               this.about_active_class = 'fa fa-check-circle text-success';
             }
-            if(data['candidate'].blockchain || data['candidate'].why_work )
-            {
+
+            if(data['candidate'].why_work){
+
               this.why_work=data['candidate'].why_work;
+            }
+            if(data['candidate'].blockchain)
+            {
 
               if(data['candidate'].blockchain.commercial_platforms)
               {
@@ -302,7 +306,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               }
             }
 
-            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day && data['candidate'].current_salary )
+            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day )
             {
               this.job_active_class = 'fa fa-check-circle text-success';
 

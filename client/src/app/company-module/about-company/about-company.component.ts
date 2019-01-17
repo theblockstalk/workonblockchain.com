@@ -6,6 +6,7 @@ import { DataService } from "../../data.service";
 import {NgForm} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {environment} from '../../../environments/environment';
+import { DatePipe } from '@angular/common';
 declare var $:any;
 import { map } from 'rxjs/operators';
 
@@ -32,7 +33,7 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   preference;
   pref_active_class;
   pref_disable;
-  constructor(private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,private datePipe: DatePipe,
               private router: Router,private http: HttpClient,
               private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
   }
@@ -45,6 +46,8 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   ngOnInit() {
 
     this.pref_disable='disabled';
+    this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if(!this.currentUser)
@@ -123,9 +126,17 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
   }
 
   image_log;file_size=1048576;
+  currentyear;
+  yearValidation;
+  yearVerification;
+
   about_company(companyForm: NgForm)
   {
     this.error_msg="";
+    if(this.company_founded){
+      this.company_founded = parseInt(this.company_founded);
+    }
+
     ////console.log(companyForm.value);
     if(!this.company_founded)
     {
@@ -146,14 +157,23 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
     }
 
+    if(this.company_founded >  this.currentyear ) {
+      this.yearValidation = "Date must be in the past"
+    }
+
+    if(this.company_founded < 1800) {
+      this.yearValidation = "Please enter value greater than 1800";
+    }
+
 
     if(!this.company_description)
     {
       this.des_log = 'Please fill company description';
 
     }
-    if(this.company_founded && this.no_of_employees && this.company_funded && this.company_description)
+    if(this.company_founded && this.company_founded > 1800 && this.no_of_employees && this.company_funded && this.company_description && this.company_founded <=  this.currentyear )
     {
+      companyForm.value.company_founded = parseInt(companyForm.value.company_founded);
       this.authenticationService.about_company(this.currentUser._creator,companyForm.value)
         .subscribe(
           data => {

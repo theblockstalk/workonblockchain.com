@@ -170,7 +170,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   formal_expYear_db=[];
   ngOnInit()
   {
-
+    this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
@@ -1277,6 +1277,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   {
     this.error_msg = "";
     this.count = 0;
+    this.submit = "click";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1400,7 +1401,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         {
           this.eduYear_log = "Please fill graduation year";
         }
-        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename && this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
+
+
+
+        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename &&
+          this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
         {
 
           this.edu_count = parseInt(key) + 1;
@@ -1414,6 +1419,18 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.exp_count =0;
       for (var key in this.ExperienceForm.value.ExpItems)
       {
+        this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
+        this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
+        this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
+        if(this.ExperienceForm.value.ExpItems[key].currentwork === true)
+        {
+          this.end_date_format = Date.now();
+        }
+        else
+        {
+          this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+
+        }
         if(!this.ExperienceForm.value.ExpItems[key].companyname)
         {
           this.company_log = "Please fill company";
@@ -1456,7 +1473,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date &&
           this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
         {
-          this.exp_count = parseInt(key) + 1;
+
+          let verified=0;
+          if(this.compareDates(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear,this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear , this.ExperienceForm.value.ExpItems[key].currentwork)) {
+            this.dateValidation = 'Date must be greater than previous date';
+            verified=1;
+          }
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear)) {
+            verified=1;
+          }
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
+            verified=1;
+          }
+          if(verified === 0) {
+            this.exp_count = this.exp_count + 1;
+          }
 
         }
 
@@ -1496,6 +1527,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
     )
     {
+      this.verify = true;
+    }
+    else {
+      this.verify = false;
+    }
+    if(this.verify === true ) {
       if(typeof(this.expected_salaryyy) === 'string' )
         profileForm.value.expected_salary = parseInt(this.expected_salaryyy);
       if(this.salary && typeof (this.salary) === 'string') {
@@ -1512,11 +1549,14 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   file_size=1048576;
   image_log;
-
+  dateValidation;
+  dateCount;
+  submit;
   updateProfileData(profileForm)
   {
     this.experiencearray=[];
     this.education_json_array=[];
+    this.submit = 'click';
     for (var key in this.ExperienceForm.value.ExpItems)
     {
       this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
@@ -1526,6 +1566,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       if(this.ExperienceForm.value.ExpItems[key].currentwork == true )
       {
         this.end_date_format = new Date();
+      }
+      else
+      {
+        this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+
       }
       this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
       this.experiencearray.push(this.experiencejson);
@@ -1585,75 +1630,78 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       profileForm.interest_area = this.selectedValue;
     }
 
-    this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
-      .subscribe(
-        data => {
-          if(data['success'] && this.currentUser)
-          {
-            let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-            let fileCount: number = inputEl.files.length;
-            let formData = new FormData();
-            if (fileCount > 0 )
+      this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
+        .subscribe(
+          data => {
+            if(data['success'] && this.currentUser)
             {
-
-              if(inputEl.files.item(0).size < this.file_size)
+              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+              let fileCount: number = inputEl.files.length;
+              let formData = new FormData();
+              if (fileCount > 0 )
               {
-                formData.append('photo', inputEl.files.item(0));
-                this.authenticationService.uploadCandImage(formData)
-                  .subscribe(
-                    data => {
-                      if (data['success']) {
-                        this.router.navigate(['/candidate_profile']);
+
+                if(inputEl.files.item(0).size < this.file_size)
+                {
+                  formData.append('photo', inputEl.files.item(0));
+                  this.authenticationService.uploadCandImage(formData)
+                    .subscribe(
+                      data => {
+                        if (data['success']) {
+                          this.router.navigate(['/candidate_profile']);
+                        }
+                      },
+                      error => {
+                        if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                          localStorage.removeItem('currentUser');
+                          localStorage.removeItem('googleUser');
+                          localStorage.removeItem('close_notify');
+                          localStorage.removeItem('linkedinUser');
+                          localStorage.removeItem('admin_log');
+                          window.location.href = '/login';
+                        }
                       }
-                    },
-                    error => {
-                      if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('googleUser');
-                        localStorage.removeItem('close_notify');
-                        localStorage.removeItem('linkedinUser');
-                        localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                      }
-                    }
-                  );
+                    );
+                }
+                else
+                {
+                  this.image_log = "Image size should be less than 1MB";
+                }
               }
               else
-              {
-                this.image_log = "Image size should be less than 1MB";
-              }
+              //window.location.href = '/candidate_profile';
+
+                this.router.navigate(['/candidate_profile']);
             }
-            else
-            //window.location.href = '/candidate_profile';
 
-              this.router.navigate(['/candidate_profile']);
-          }
+            if(data['error'])
+            {
+              this.dataservice.changeMessage(data['error']);
+            }
 
-          if(data['error'])
-          {
-            this.dataservice.changeMessage(data['error']);
-          }
+          },
+          error => {
+            this.dataservice.changeMessage(error);
+            this.log = 'Something getting wrong';
+            if(error.message === 500)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-        },
-        error => {
-          this.dataservice.changeMessage(error);
-          this.log = 'Something getting wrong';
-          if(error.message === 500)
-          {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
-          }
+          });
 
-        });
 
   }
-
+  endDateYear() {
+    this.dateValidation = "";
+  }
   commercialSkills=[];
   commercialSkillsExperienceYear=[];
 
@@ -1758,5 +1806,46 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   }
 
+  verify;
+  checkDateVerification(month,year) {
+    if(month && year) {
+      this.startmonthIndex = this.monthNameToNum(month);
+      this.start_date_format  = new Date(year, this.startmonthIndex);
+      if(this.start_date_format > new Date()) {
+        this.verify= false;
+        return true;
+      }
+      else {
+        this.verify= true;
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
+  }
+
+  compareDates(startmonth , startyear , endmonth, endyear, current) {
+    let startMonth = this.monthNameToNum(startmonth);
+    let startDateFormat  = new Date(startyear, startMonth);
+
+    let endMonth = this.monthNameToNum(endmonth);
+    let endDateFormat  = new Date(endyear, endMonth);
+
+    if(current  === true) {
+      return false;
+    }
+    else {
+      if(startDateFormat > endDateFormat && this.submit === 'click') {
+        this.dateValidation = 'Date must be greater than previous date';
+        this.verify = false;
+        return true;
+      }
+      else {
+        this.verify = true;
+        return false;
+      }
+    }
+  }
 
 }
