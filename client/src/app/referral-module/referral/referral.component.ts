@@ -52,6 +52,7 @@ export class ReferralComponent implements OnInit {
 
   ngAfterViewInit(): void {
     window['twttr'] && window['twttr'].widgets.load();
+    window.scrollTo(0, 0);
   }
 
   ngOnInit(){
@@ -175,6 +176,7 @@ export class ReferralComponent implements OnInit {
             this.ref_link_for_not_logged_user = this.email_ref_link + data['url_token'];
             this.share_url = this.ref_link_for_not_logged_user;
             this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
+            window.scrollTo(0, 180);
           }
           },
         error => {}
