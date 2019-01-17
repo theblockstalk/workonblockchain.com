@@ -139,7 +139,7 @@ export class UserService {
         {
           this.router.navigate(['/about']);
         }
-        else if(res['candidate'].locations.length < 1  || res['candidate'].roles.length < 1 || res['candidate'].interest_areas.length < 1 || !res['candidate'].expected_salary)
+        else if(!res['candidate'].locations  || !res['candidate'].roles || !res['candidate'].interest_areas|| !res['candidate'].expected_salary)
         {
 
           this.router.navigate(['/job']);

@@ -61,7 +61,7 @@ module.exports = async function (req,res) {
         }
     }
     else {
-        if(queryBody.is_approve!== -1) {
+        if(queryBody.is_approve) {
             const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approve)};
             queryString.push(isApproveFilter);
         }
