@@ -1478,7 +1478,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
         {
 
-          this.submit = 'click';
           if(this.compareDates(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear,this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear , this.ExperienceForm.value.ExpItems[key].currentwork)) {
             this.dateValidation = 'Date must be greater than previous date';
           }

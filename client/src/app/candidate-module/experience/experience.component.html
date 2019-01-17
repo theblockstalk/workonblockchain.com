@@ -151,7 +151,7 @@
                           <div class = "invalid-feedback d-inline" *ngIf="!this.ExperienceForm.value.ExpItems[i].start_date;else startDateVerification">
                             {{start_date_log}}
                           </div>
-                          <div class = "invalid-feedback d-inline" #startDateVerification *ngIf="checkDateVerification(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear)">
+                          <div class = "invalid-feedback d-inline" #startDateVerification *ngIf="button_status=== 'submit' && checkDateVerification(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear)">
                             Date must be in the past
                           </div>
                         </div>
@@ -186,7 +186,7 @@
                             {{end_date_log}}
                           </div>
 
-                          <div class = "invalid-feedback d-inline mb-1" #endDateVerification *ngIf="checkDateVerification(this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear);else compareDate">
+                          <div class = "invalid-feedback d-inline mb-1" #endDateVerification *ngIf="button_status=== 'submit' && checkDateVerification(this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear);else compareDate">
                             Date must be in the past
                           </div>
 
@@ -204,7 +204,7 @@
 
                         </div>
                       </div>
-                      <div class = "invalid-feedback d-inline ml-3" #compareDate *ngIf="(dateValidation != '' &&this.ExperienceForm.value.ExpItems[i].endyear && this.ExperienceForm.value.ExpItems[i].end_date)|| compareDates(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear,this.ExperienceForm.value.ExpItems[i].end_date , this.ExperienceForm.value.ExpItems[i].endyear , this.ExperienceForm.value.ExpItems[i].currentwork)">
+                      <div class = "invalid-feedback d-inline ml-3" #compareDate *ngIf="(button_status=== 'submit' &&  dateValidation != '' &&this.ExperienceForm.value.ExpItems[i].endyear && this.ExperienceForm.value.ExpItems[i].end_date)">
                         {{dateValidation}}
                       </div>
                     </div>
