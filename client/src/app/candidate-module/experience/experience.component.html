@@ -152,7 +152,7 @@
                             {{start_date_log}}
                           </div>
                           <div class = "invalid-feedback d-inline" #startDateVerification *ngIf="button_status=== 'submit' && checkDateVerification(this.ExperienceForm.value.ExpItems[i].start_date , this.ExperienceForm.value.ExpItems[i].startyear)">
-                            {{dateVerification}}
+                            Date must be in the past
                           </div>
                         </div>
                       </div>

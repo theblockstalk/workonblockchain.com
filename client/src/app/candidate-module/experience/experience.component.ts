@@ -804,7 +804,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   work_start_data(e)
   {
     this.start_month = e.target.value ;
-    this.dateVerification = '';
   }
   work_start_year(e)
   {
