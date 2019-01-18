@@ -61,7 +61,7 @@ module.exports.endpoint = async function (req, res) {
         else if (messageDocs[i].msg_tag === 'job_offer_rejected'){
             jobOfferStatus.push('rejected');
         }
-        else{
+        else if (messageDocs[i].msg_tag === 'job_offer'){
             jobOfferStatus.push('sent');
         }
     }

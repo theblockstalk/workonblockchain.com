@@ -2,7 +2,11 @@ const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const enumerations = require('../../../model/enumerations');
 const errors = require('../../services/errors');
+const sanitize = require('../../services/sanitize');
 const messages = require('../../../model/mongoose/messages'); // TODO need to change to messages schema
+const messageHelper = require('../messageHelpers');
+const multer = require('../../../controller/middleware/multer');
+const settings = require('../../../settings');
 
 module.exports.request = {
     type: 'post',
@@ -107,16 +111,28 @@ module.exports.endpoint = async function (req, res) {
         message: {}
     };
 
+    console.log(req);
     if (body.msg_tag === "file") {
         checkJobOfferAccepted(userType, sender_id, receiver_id);
 
+        multer.single('photo');
+        let path = '';
+        if(req.file){
+            if (settings.isLiveApplication()) {
+                path = req.file.location; // for S3 bucket
+            } else {
+                path = settings.FILE_URL+req.file.filename;
+            }
+        }
         newMessage.message.file = {
-            // file_url: TODO
+            url: path
         }
     }
     else if (body.msg_tag === "normal") {
         checkJobOfferAccepted(userType, sender_id, receiver_id);
 
+        body.message.normal.message = sanitize.sanitizeHtml(body.message.normal.message);
+        body.message.normal.message = messageHelper.replaceLineBreaksHtml(body.message.normal.message);
         newMessage.message.normal = body.message.normal;
     }
     else if (body.msg_tag === "job_offer") {
@@ -129,6 +145,8 @@ module.exports.endpoint = async function (req, res) {
         });
         if (messageDoc) errors.throwError("Job offer already sent", 400);
 
+        body.message.job_offer.description = sanitize.sanitizeHtml(body.message.job_offer.description);
+        body.message.job_offer.description = messageHelper.replaceLineBreaksHtml(body.message.job_offer.description);
         newMessage.message.job_offer = body.message.job_offer;
     }
     else if (body.msg_tag === "job_offer_accepted") {
@@ -163,6 +181,10 @@ module.exports.endpoint = async function (req, res) {
         checkMessageSenderType(userType, 'company');
         checkJobOfferAccepted(userType, sender_id, receiver_id);
 
+        if(body.message.interview_offer.description){
+            body.message.interview_offer.description = sanitize.sanitizeHtml(body.message.interview_offer.description);
+            body.message.interview_offer.description = messageHelper.replaceLineBreaksHtml(body.message.interview_offer.description);
+        }
         newMessage.message.interview_offer = body.message.interview_offer;
     }
     else if (body.msg_tag === "employment_offer") {
@@ -185,6 +207,9 @@ module.exports.endpoint = async function (req, res) {
                 errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
             }
         }
+
+        body.message.employment_offer.description = sanitize.sanitizeHtml(body.message.employment_offer.description);
+        body.message.employment_offer.description = messageHelper.replaceLineBreaksHtml(body.message.employment_offer.description);
 
         newMessage.message.employment_offer = body.message.employment_offer;
     }

@@ -1,6 +1,6 @@
 const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const Messages = require('../../../model/messages'); // TODO need to change to messages schema
+const Messages = require('../../../model/mongoose/messages');
 
 module.exports.request = {
     type: 'get',
@@ -37,10 +37,10 @@ module.exports.endpoint = async function (req, res) {
         userId = req.auth.user._id;
     }
 
-    const messageDoc = await Messages.find({
+    const messageDoc = await Messages.findAndSort({
         $or:[{receiver_id:userId},{sender_id: userId}]
-    },{_id:0,sender_id:1,receiver_id:1,msg_tag:1})
-        .sort({date_created: 'descending'}).lean();
+    });
+    //.sort({date_created: 'descending'}).lean();
     res.send({
         conversations:messageDoc
     });

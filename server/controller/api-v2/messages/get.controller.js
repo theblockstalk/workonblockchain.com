@@ -1,6 +1,6 @@
 const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const enumerations = require('../../../model/enumerations');
+const mongoose = require('mongoose');
 const errors = require('../../services/errors');
 const messages = require('../../../model/mongoose/messages'); // TODO need to change to messages schema
 
@@ -35,6 +35,21 @@ module.exports.endpoint = async function (req, res) {
     const userType = req.auth.user.type;
     const sender_id = req.auth.user._id;
     let messageDoc;
+
+    if(req.query.sender_id){
+        console.log(req.query.sender_id);
+        const count = await messages.count({
+            sender_id: mongoose.Types.ObjectId(req.query.sender_id),
+            is_read: false
+        });
+        res.send({
+            sender_id: req.query.sender_id,
+            unReadCount: count
+        });
+    }
+    else{
+        console.log('not received');
+    }
 
     checkMessageSenderType(userType, 'company');
 

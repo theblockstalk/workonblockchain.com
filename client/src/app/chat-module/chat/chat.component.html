@@ -46,8 +46,8 @@
                           <div class="meta">
                             <p *ngIf="person.initials" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.initials }}</b></p>
                             <p *ngIf="person.first_name" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.first_name }} {{ person.last_name }}</b></p>
-                            <span *ngIf="unread_msgs_info[i] && unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
-                              {{unread_msgs_info[i].number_of_unread_msgs}}
+                            <span *ngIf="person.unreadCount" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
+                              {{person.unreadCount}}
                             </span>
                           </div>
                         </ng-container>
@@ -178,14 +178,14 @@
                             <span *ngIf="msg.message.file">
                               <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
                             </span>
-                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
-                              {{msg.message.normal.message}}
-                            </span>
                             <span *ngIf="msg.message.job_offer_accepted" [innerHTML]="msg.message.job_offer_accepted.message | safeHtml">
                               {{msg.message.job_offer_accepted.message}}
                             </span>
                             <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
                               {{msg.message.job_offer_rejected.message}}
+                            </span>
+                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
+                              {{msg.message.normal.message}}
                             </span>
                           </p>
                         </li>
@@ -272,14 +272,14 @@
                             <span *ngIf="msg.message.file">
                               <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
                             </span>
-                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
-                              {{msg.message.normal.message}}
-                            </span>
                             <span *ngIf="msg.message.job_offer_accepted" [innerHTML]="msg.message.job_offer_accepted.message | safeHtml">
                               {{msg.message.job_offer_accepted.message}}
                             </span>
                             <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
                               {{msg.message.job_offer_rejected.message}}
+                            </span>
+                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
+                              {{msg.message.normal.message}}
                             </span>
                           </p>
                         </li>

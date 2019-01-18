@@ -1543,6 +1543,20 @@ export class UserService {
     }));
   }
 
+  getUnreadMessageCount(sender_id:string) {
+    return this.http.get(messagesURL+'messages?sender_id='+sender_id, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) => {
+      if (res) {
+        return res;
+      }
+    }), catchError((error: any) => {
+      if (error.status) {
+        return throwError(new Error(error.status));
+      }
+    }));
+  }
+
   getLastJobDesc() {
     return this.http.get(messagesURL+'messages/', {
       headers: new HttpHeaders().set('Authorization', this.token)

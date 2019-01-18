@@ -335,10 +335,10 @@ export class ChatComponent implements OnInit {
               this.authenticationService.get_user_messages_only_comp()
                 .subscribe(
                     msg_data => {
-                      console.log(msg_data['conversations']);
                         if(msg_data['conversations']){
                             this.new_messges.push(msg_data['conversations']);
                             this.new_messges = this.filter_array(msg_data['conversations']);
+                            console.log(this.new_messges);
                             for (var key_messages in this.new_messges) {
                                 if(this.currentUser._creator == this.new_messges[key_messages].receiver_id){
                                     //console.log('my');
@@ -351,7 +351,21 @@ export class ChatComponent implements OnInit {
                                             this.users = this.filter_array(this.users);
                                             this.count = 0;
                                             for (var key_users_new in this.users) {
-                                                //console.log(this.users[key_users_new]._creator._id);
+                                              this.authenticationService.getUnreadMessageCount(this.users[key_users_new]._creator._id)
+                                              .subscribe(
+                                                data => {
+                                                  if(this.users[key_users_new]._creator._id === data['sender_id']) {
+                                                    this.users[key_users_new].unreadCount = data['unReadCount'];
+                                                  }
+                                                  console.log(this.users);
+                                                  console.log(data);
+                                                },
+                                                error => {
+                                                  //console.log('error');
+                                                  //console.log(error);
+                                                  this.log = error;
+                                                }
+                                              );
                                                 if(this.count == 0){
                                                     if(this.users[key_users_new].first_name){
                                                         this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'');
@@ -362,7 +376,7 @@ export class ChatComponent implements OnInit {
                                                 }
                                                 this.count = this.count + 1;
                                                 //this.currentUser._creator //receiver
-                                                this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
+                                                /*this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
                                                 .subscribe(
                                                     data => {
                                                         this.unread_msgs_info.push(data);
@@ -371,7 +385,7 @@ export class ChatComponent implements OnInit {
                                                         //console.log('error');
                                                         //console.log(error);
                                                     }
-                                                );
+                                                );*/
                                             }
                                             //console.log(this.unread_msgs_info);
                                         },
@@ -501,6 +515,7 @@ export class ChatComponent implements OnInit {
 	  this.job_offer_log = '';
 	  this.file_msg = '';
 	  this.img_name = '';
+	  console.log(this.credentials);
 	  if(this.credentials.msg_body && this.credentials.id){
           //console.log(this.credentials.email);
           this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
@@ -517,18 +532,22 @@ export class ChatComponent implements OnInit {
               this.is_company_reply = 0;
               //console.log(this.job_title);
           }
-          this.authenticationService.insertMessage(this.credentials.id,this.display_name,this.credentials.email,this.credentials.msg_body,this.description,this.job_title,this.salary,this.salary_currency,this.date_of_joining,this.job_type,this.msg_tag,this.is_company_reply,this.interview_location,this.interview_time)
+          let message : any = {};
+          message.message = this.credentials.msg_body;
+          let new_offer : any = {};
+          new_offer.normal = message;
+          console.log(new_offer);
+          this.authenticationService.send_message(this.credentials.id,this.msg_tag,new_offer)
             .subscribe(
                 data => {
                     //console.log(data);
                     this.credentials.msg_body = '';
-                    this.authenticationService.get_user_messages(this.credentials.id,0)
+                    this.authenticationService.get_user_messages_comp(this.credentials.id)
                     .subscribe(
                         data => {
-                            //console.log(data['datas']);
-                            this.new_msgss = data['datas'];
-                            this.job_desc = data['datas'][0];
-
+                            //console.log(data['messages']);
+                            this.new_msgss = data['messages'];
+                            //this.job_desc = data['messages'][0];
                         },
                         error => {
                             if(error.message == 500 || error.message == 401)
@@ -569,10 +588,10 @@ export class ChatComponent implements OnInit {
     this.show_accpet_reject = 3;
     this.msg_tag = 'job_offer_rejected';
 	  this.credentials.msg_body = 'I am not interested';
-    let job_offer_accepted : any = {};
-    job_offer_accepted.message = this.credentials.msg_body;
+    let job_offer_rejected : any = {};
+    job_offer_rejected.message = this.credentials.msg_body;
     let new_offer : any = {};
-    new_offer.job_offer_accepted = job_offer_accepted;
+    new_offer.job_offer_rejected = job_offer_rejected;
     this.authenticationService.send_message(this.credentials.id,this.msg_tag,new_offer)
     .subscribe(
             data => {
@@ -582,7 +601,8 @@ export class ChatComponent implements OnInit {
 				.subscribe(
 					data => {
 						this.new_msgss = data['messages'];
-						this.job_desc = data['messages'][0];
+            //this.job_desc = data['messages'][0].message.job_offer;
+            this.company_reply = 0;
 					},
 					error => {
 						//console.log('error');
@@ -642,7 +662,7 @@ export class ChatComponent implements OnInit {
 				.subscribe(
 					data => {
 						this.new_msgss = data['messages'];
-						this.job_desc = data['messages'][0];
+            //this.job_desc = data['messages'][0].message.job_offer;
 						this.company_reply = 1;
 					},
 					error => {
@@ -709,15 +729,21 @@ export class ChatComponent implements OnInit {
       this.msg_tag = 'interview_offer';
       this.credentials.msg_body = 'You have been invited for a job interview. Please send message to rsvp.';
       this.description = '';
-      if (this.credentials.description) {
-        this.description = this.credentials.description;
-      }
       //console.log(this.credentials.msg_body);
       this.date_of_joining = interview_date;
       this.interview_location = this.credentials.location;
       this.interview_time = this.credentials.time;
-      this.authenticationService.insertMessage(this.credentials.id, this.display_name, this.credentials.email, this.credentials.msg_body, this.description, this.job_title, this.salary, this.salary_currency, this.date_of_joining, this.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-        .subscribe(
+      let interview_offer : any = {};
+      interview_offer.location = this.interview_location;
+      if (this.credentials.description) {
+        interview_offer.description = this.credentials.description;
+      }
+      interview_offer.date_time = this.date_of_joining+' '+this.interview_time+':00';
+      let new_offer : any = {};
+      new_offer.interview_offer = interview_offer;
+      console.log(new_offer);
+      this.authenticationService.send_message(this.credentials.id,this.msg_tag,new_offer)
+      .subscribe(
           data => {
             //console.log(data);
             this.date_of_joining = '';
@@ -729,11 +755,11 @@ export class ChatComponent implements OnInit {
             this.credentials.time = '';
             this.credentials.location = '';
             this.credentials.description = '';
-            this.authenticationService.get_user_messages(this.credentials.id, this.currentUser._creator)
+            this.authenticationService.get_user_messages_comp(this.credentials.id)
               .subscribe(
                 data => {
-                  this.new_msgss = data['datas'];
-                  this.job_desc = data['datas'][0];
+                  this.new_msgss = data['messages'];
+                  //this.job_desc = data['datas'][0];
                 },
                 error => {
                   if (error.message == 500 || error.message == 401) {
@@ -1064,7 +1090,7 @@ export class ChatComponent implements OnInit {
         this.authenticationService.get_user_messages_comp(this.credentials.id)
           .subscribe(
             data => {
-              //console.log(data['messages']);
+              //console.log(data['messages'][0].message);
               this.new_msgss = data['messages'];
               this.job_desc = data['messages'][0].message.job_offer;
               this.authenticationService.update_chat_msg_status(id,0)
@@ -1148,7 +1174,7 @@ export class ChatComponent implements OnInit {
           );
       //}, 7000);
 		this.unread_msgs_info = [];
-		for (var key_users_new in this.users) {
+		/*for (var key_users_new in this.users) {
 			//this.currentUser._creator //receiver
 			this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
 			.subscribe(
@@ -1169,7 +1195,7 @@ export class ChatComponent implements OnInit {
                                     }
 				}
 			);
-		}
+		}*/
 		//console.log(this.unread_msgs_info);
         this.candidate = email;
         this.credentials.email = email;
