@@ -482,7 +482,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   }
 
   findIndexToUpdateExperimented(type) {
-    ////console.FVlog("funct");
     return type == this;
   }
 
