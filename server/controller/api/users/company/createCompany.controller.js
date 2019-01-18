@@ -136,7 +136,6 @@ module.exports = async function (req, res) {
                     }
                 }
                 //end
-                console.log(employerDoc);
                 let userData = filterReturnData.removeSensativeData(companyUserCreated)
                 res.send({
                     _id:employerDoc._id,

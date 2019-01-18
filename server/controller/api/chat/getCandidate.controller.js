@@ -57,7 +57,6 @@ module.exports = async function (req, res) {
                 }
                 //query_result = filterReturnData.anonymousSearchCandidateData(query_result); //// uncomment this after chat refactor
             }
-            console.log(candidateObject);
             res.send({
                 users:candidateObject
             });

@@ -6,7 +6,6 @@ const filterReturnData = require('../filterReturnData');
 
 module.exports = async function (req,res) {
     let queryBody = req.body;
-    console.log(queryBody);
     let msgTags = queryBody.msg_tags;
 
     let companyReply;
