@@ -126,8 +126,8 @@ export class AboutComponent implements OnInit,AfterViewInit
             {
 
               this.info.contact_number = data['contact_number'];
-              this.info.github_account = data['github_account'];
-              this.info.exchange_account = data['stackexchange_account'];
+              this.info.github_account = data['candidate'].github_account;
+              this.info.exchange_account = data['candidate'].stackexchange_account;
               if(data['nationality'])
               {
                 this.info.nationality = data['nationality'];

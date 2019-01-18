@@ -1469,6 +1469,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
             this.dateValidation = 'Date must be greater than previous date';
             verified=1;
           }
+
           if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear)) {
             verified=1;
           }
@@ -1479,7 +1480,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
             this.exp_count = this.exp_count + 1;
           }
 
-
         }
 
 
@@ -1487,8 +1487,15 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].start_date &&
           this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
         {
+          let dverified=0;
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
+            dverified=1;
+          }
+          if(dverified === 0) {
+            this.exp_count = parseInt(key) + 1;
+          }
+
           this.ExperienceForm.value.ExpItems[key].enddate = new Date();
-          this.exp_count = parseInt(key) + 1;
 
         }
 
@@ -1509,7 +1516,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if((!this.salary && !this.current_currency) || (!this.salary && this.current_currency === "-1")){
       this.count = 0;
     }
-
+    console.log("language length " + this.language.length);
+    console.log("experience year length " + this.expYear.length);
+    console.log("education count " + this.edu_count);
+    console.log("education form count " + this.EducationForm.value.itemRows.length);
+    console.log("work history count " + this.exp_count);
+    console.log("work history form count " + this.ExperienceForm.value.ExpItems.length);
     if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
       this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
