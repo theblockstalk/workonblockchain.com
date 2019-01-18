@@ -1282,6 +1282,26 @@ export class UserService {
     }));
   }
 
+  update_chat_msg_status_new(sender_id: string,status:boolean){
+    return this.http.patch(messagesURL+'conversations/'+sender_id+'/messages?is_read='+status, {},{
+    //return this.http.post(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error.status )
+      {
+        return throwError(new Error(error.status));
+      }
+
+    }));
+  }
+
   update_chat_msg_status(receiver_id: string,status:number){
     return this.http.post(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
       headers: new HttpHeaders().set('Authorization', this.token)

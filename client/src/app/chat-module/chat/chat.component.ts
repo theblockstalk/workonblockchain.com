@@ -1093,7 +1093,7 @@ export class ChatComponent implements OnInit {
               //console.log(data['messages'][0].message);
               this.new_msgss = data['messages'];
               this.job_desc = data['messages'][0].message.job_offer;
-              this.authenticationService.update_chat_msg_status(id,0)
+              this.authenticationService.update_chat_msg_status_new(id,true)
                 .subscribe(
                   data => {
                     this.loading = false;

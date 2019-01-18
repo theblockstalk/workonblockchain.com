@@ -23,7 +23,9 @@ module.exports.findOneById = async function (id) {
 }
 
 module.exports.update = async function (selector, updateObj) {
-    await Messages.findOneAndUpdate(selector, updateObj, { runValidators: true });
+    console.log(selector);
+    console.log(updateObj);
+    return await Messages.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
 
 module.exports.deleteOne = async function (selector) {

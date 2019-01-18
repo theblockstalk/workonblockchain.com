@@ -95,6 +95,7 @@ const checkMessageSenderType = function (userType, expectedType) {
 }
 
 module.exports.endpoint = async function (req, res) {
+    //multer.single('file')(req, res);
     console.log('in endpoint');
 
     const body = req.body;

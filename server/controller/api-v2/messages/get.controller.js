@@ -48,14 +48,12 @@ module.exports.endpoint = async function (req, res) {
         });
     }
     else{
-        console.log('not received');
+        checkMessageSenderType(userType, 'company');
+
+        messageDoc = await messages.findLastJobOffer({
+            sender_id: sender_id,
+            msg_tag: 'job_offer'
+        });
+        res.send(messageDoc);
     }
-
-    checkMessageSenderType(userType, 'company');
-
-    messageDoc = await messages.findLastJobOffer({
-        sender_id: sender_id,
-        msg_tag: 'job_offer'
-    });
-    res.send(messageDoc);
 }
