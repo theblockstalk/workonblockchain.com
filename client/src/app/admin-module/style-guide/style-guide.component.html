@@ -843,6 +843,34 @@
   </div>
   <div class = "row">
     <div class="col-md-2">
+      <p>Auto suggestion text box</p>
+    </div>
+    <div class="col-md-7">
+      <div class="form-group">
+        <label>Text box with auto suggestion</label>
+        <div class="form-group">
+          <datalist id="countryList">
+            <option *ngFor = "let country of countries" value="{{country}}">
+
+          </datalist>
+          <input type="text" list="countryList" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValue($event)">
+          <div class="invalid-feedback d-inline" *ngIf="error">
+            {{error}}
+          </div>
+          <div *ngIf="selectedValueArray.length > 0">
+            <div class="d-inline-block p-2 border rounded mr-1 mt-2" *ngFor="let value of selectedValueArray">{{value}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Use for only upload file or photo.</li>
+      </ul>
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col-md-2">
       <p>Input type upload</p>
     </div>
     <div class="col-md-7">
