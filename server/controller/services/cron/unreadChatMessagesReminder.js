@@ -20,7 +20,7 @@ module.exports = async function () {
             else{
                 let companyDoc = await EmployerProfile.find({ _creator: userDoc._id},{"first_name":1});
                 if(companyDoc){
-                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc[0].first_name);
+                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc.first_name);
                 }
             }
         }
