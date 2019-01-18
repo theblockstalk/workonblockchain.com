@@ -703,9 +703,14 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         this.education_json_array.push(this.educationjson) ;
       }
     }
+    if(this.language.length === 0) {
+      searchForm.value.language = [];
+    }
+    else {
+      searchForm.value.language_experience_year = this.expYear;
+    }
 
-
-      this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.education_json_array , this.experiencearray , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
+      this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.education_json_array , this.experiencearray , searchForm.value.language_experience_year)
         .subscribe(
           data => {
             console.log(data);
@@ -746,7 +751,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
 
     let updateItem = this.findObjectByKey(this.expYear, 'language', value);
-    ////console.log(updateItem);
     let index = this.expYear.indexOf(updateItem);
 
     if(index > -1)
@@ -756,20 +760,19 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.value=value;
       this.referringData = { language :this.value, exp_year: e.target.value};
       this.expYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
-
-
     }
     else
     {
-      ////console.log("not exists");
       this.value=value;
       this.referringData = { language :this.value, exp_year: e.target.value};
       this.expYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
 
     }
-    //console.log(this.expYear);
+    this.expYear.sort(function(a, b){
+      if(a.language < b.language) { return -1; }
+      if(a.language > b.language) { return 1; }
+      return 0;
+    })
   }
 
   findObjectByKey(array, key, value)
