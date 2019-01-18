@@ -484,7 +484,6 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   }
 
   findIndexToUpdateExperimented(type) {
-    ////console.log("funct");
     return type == this;
   }
 
@@ -667,7 +666,7 @@ console.log(this.experimented_platform);
     this.platforms.push(this.platformreferringData);
     */
 
-    let updateItem = this.findObjectByKey(this.platforms, 'skill', value);
+    let updateItem = this.findObjectByKey(this.platforms, 'name', value);
     let index = this.platforms.indexOf(updateItem);
 
     if(index > -1)

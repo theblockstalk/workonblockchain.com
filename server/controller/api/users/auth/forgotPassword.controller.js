@@ -43,8 +43,8 @@ module.exports = async function (req,res) {
             if(userDoc.type === 'company') {
                 let name;
                 const companyDoc = await companies.findOne({_creator : userDoc._id});
-                if(companyDoc && companyDoc.length > 0 ) {
-                    name = companyDoc[0].first_name;
+                if(companyDoc ) {
+                    name = companyDoc.first_name;
                 }
 
                 forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);

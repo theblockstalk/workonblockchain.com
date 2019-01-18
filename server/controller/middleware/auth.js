@@ -1,5 +1,5 @@
 const jwtToken = require('../services/jwtToken');
-const mongooseUsers = require('../../model/users');
+const mongooseUsers = require('../../model/mongoose/users');
 const asyncMiddleware = require('./asyncMiddleware');
 const errors = require('../services/errors');
 

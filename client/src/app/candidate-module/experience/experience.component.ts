@@ -622,7 +622,14 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true
           )
         {
-          this.exp_count = this.exp_count + 1;
+          let dverified=0;
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
+            dverified=1;
+          }
+          if(dverified === 0) {
+            this.exp_count = this.exp_count + 1;
+          }
+
 
         }
 

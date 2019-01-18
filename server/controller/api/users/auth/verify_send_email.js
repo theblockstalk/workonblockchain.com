@@ -20,9 +20,9 @@ module.exports = async function verify_send_email(emailAddress, verifyEmailToken
         if(userDoc.type === 'company') {
             let name;
             const companyDoc = await companies.findOne({_creator : userDoc._id});
-            if(companyDoc && companyDoc.length > 0 ) {
-                if(companyDoc[0].first_name) {
-                    name = companyDoc[0].first_name;
+            if(companyDoc ) {
+                if(companyDoc.first_name) {
+                    name = companyDoc.first_name;
                 }
                 else {
                     name = null;

@@ -1469,6 +1469,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
             this.dateValidation = 'Date must be greater than previous date';
             verified=1;
           }
+
           if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear)) {
             verified=1;
           }
@@ -1479,7 +1480,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
             this.exp_count = this.exp_count + 1;
           }
 
-
         }
 
 
@@ -1487,8 +1487,15 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].start_date &&
           this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
         {
+          let dverified=0;
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
+            dverified=1;
+          }
+          if(dverified === 0) {
+            this.exp_count = parseInt(key) + 1;
+          }
+
           this.ExperienceForm.value.ExpItems[key].enddate = new Date();
-          this.exp_count = parseInt(key) + 1;
 
         }
 

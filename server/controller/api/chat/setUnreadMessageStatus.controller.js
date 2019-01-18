@@ -1,4 +1,4 @@
-const users = require('../../../model/users');
+const users = require('../../../model/mongoose/users');
 
 module.exports = async function (req, res) {
     const userId = req.auth.user._id;
