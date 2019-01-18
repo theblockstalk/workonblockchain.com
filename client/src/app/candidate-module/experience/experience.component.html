@@ -77,6 +77,7 @@
               <strong>Years of experience</strong>
             </div>
             <div class = "col-md-12" *ngFor="let lang_value of language; let i = index ">
+              <div class="form-group">
               <p>{{lang_value.value}}</p>
               <div class="form-check form-check-inline">
                 <div *ngFor="let exp of exp_year; let i_ind =index">
@@ -86,7 +87,7 @@
                   </label>
                 </div>
                 <input type="text" class="form-control d-none"  name="language_experience_year" [(ngModel)]='expYear' >
-
+              </div>
               </div>
             </div>
           </div>

@@ -97,6 +97,7 @@
               </div>
             </div>
             <div class = "col-md-12" *ngFor="let option of commercially_worked; let i = index ">
+              <div class="form-group">
               <p>{{option.value}}</p>
               <div class="form-check form-check-inline">
                 <div *ngFor="let exp of exp_year; let i_ind =index">
@@ -107,6 +108,7 @@
                 </div>
                 <input type="text" class="form-control d-none" name="commercial_platforms" [(ngModel)]='commercial_expYear' >
 
+              </div>
               </div>
             </div>
           </div>
@@ -141,6 +143,7 @@
               </div>
             </div>
             <div class = "col-md-12" *ngFor="let exp_value of platforms_designed;let i_index = index">
+              <div class="form-group">
               <p>{{exp_value.value}}</p>
               <div class="form-check form-check-inline">
                 <div *ngFor="let exp of exp_year; let i_ind =index">
@@ -151,7 +154,7 @@
                   </label>
                 </div>
                 <input type="text" class="form-control d-none" name="smart_contract_platforms" [(ngModel)]='platforms' >
-
+              </div>
               </div>
             </div>
           </div>
@@ -208,6 +211,7 @@
               </div>
             </div>
             <div class = "col-md-12" *ngFor="let option of commercialSkills; let i = index ">
+              <div class="form-group">
               <p>{{option.value}}</p>
               <div class="form-check form-check-inline">
                 <div *ngFor="let exp of exp_year; let i_ind =index">
@@ -217,7 +221,7 @@
                   </label>
                 </div>
                 <input type="text" class="form-control d-none" name="commercial_skills" [(ngModel)]='commercialSkillsExperienceYear' >
-
+              </div>
               </div>
             </div>
           </div>
@@ -252,6 +256,7 @@
               </div>
             </div>
             <div class = "col-md-12" *ngFor="let option of formal_skills_exp; let i = index ">
+              <div class="form-group">
               <p>{{option.value}}</p>
               <div class="form-check form-check-inline">
                 <div *ngFor="let exp of exp_year; let i_ind =index">
@@ -261,7 +266,7 @@
                   </label>
                 </div>
                 <input type="text" class="form-control d-none" name="formal_skills" [(ngModel)]='formal_skills' >
-
+              </div>
               </div>
             </div>
           </div>
