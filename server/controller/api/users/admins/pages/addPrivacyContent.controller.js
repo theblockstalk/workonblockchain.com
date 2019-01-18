@@ -5,11 +5,9 @@ const sanitize = require('../../../../services/sanitize');
 //////////inserting message in DB ////////////
 
 module.exports = async function (req,res) {
-    console.log("add content");
     let userId = req.auth.user._id;
     let queryBody = req.body;
     logger.info(req.body);
-    console.log(queryBody.page_name);
     const sanitizedHtml = sanitize.sanitizeHtml(req.unsanitizedBody.html_text);
     const pagesDoc = await Pages.findOne({ page_name: queryBody.page_name}).lean();
     if(pagesDoc) {

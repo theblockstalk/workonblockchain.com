@@ -17,7 +17,7 @@
             </div>
             <div id = "contact" class = "border-right">
               <ul class = "list-group">
-                <li *ngFor="let person of users" [ngClass]="(credentials.id == person._creator._id)?'list-group-item wob-bg-secondary3':'list-group-item list-group-item-lite position-relative'" (click)="openDialog(person.first_name,person._creator._id)">
+                <li *ngFor="let person of users" [ngClass]="(credentials.id == person._creator)?'list-group-item wob-bg-secondary3':'list-group-item list-group-item-lite position-relative'" (click)="openDialog(person.first_name,person._creator)">
                   <div class = "cont m-auto position-relative">
 										<ng-container *ngIf="user_type === 'company';else cand_image">
 											<ng-container *ngIf="person.image;else person_image">

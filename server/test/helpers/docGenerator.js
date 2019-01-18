@@ -220,7 +220,7 @@ module.exports.job = function job(){
         roles: [
             'Backend Developer', 'Fullstack Developer'
         ],
-        interest_area: [
+        interest_areas: [
             "I don't know" , 'Enterprise blockchain', 'Smart contract development'
         ]
     }
@@ -234,29 +234,17 @@ module.exports.resume = function resume(){
             { value: 'Bitcoin' },
             { value: 'Hyperledger Sawtooth' }
         ],
-        experimented_platform:[
-            {
-                _id: '5bbc37432997bf00408501b9',
-                name: 'Bitcoin',
-                value: 'Bitcoin',
-                checked: true
-            },
-            {
-                _id: '5bbc37432997bf00408501b8',
-                name: 'Hyperledger Fabric',
-                value: 'Hyperledger Fabric',
-                checked: true
-            }
-        ],
-        platforms:[
+        experimented_platforms:['Bitcoin' , 'Hyperledger Fabric' ],
+
+        smart_contract_platforms:[
             {
                 _id: '5bbc37432997bf00408501b7',
-                platform_name: 'Bitcoin',
+                name: 'Bitcoin',
                 exp_year: '0-1'
             },
             {
                 _id: '5bbc37432997bf00408501b6',
-                platform_name: 'Hyperledger Sawtooth',
+                name: 'Hyperledger Sawtooth',
                 exp_year: '1-2'
             }
         ],
@@ -309,29 +297,17 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             intro: 'I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. ',
             country: [ 'remote', 'Amsterdam' ],
             roles: [ 'Backend Developer', 'Fullstack Developer' ],
-            interest_area: ["I don't know", 'Enterprise blockchain', 'Smart contract development' ],
+            interest_areas: ["I don't know", 'Enterprise blockchain', 'Smart contract development' ],
             platforms_designed: [
                 { value: 'Bitcoin' },
                 { value: 'Hyperledger Sawtooth' }
             ],
-            experimented_platform:[
-                {
-                    _id: '5bbc37432997bf00408501b9',
-                    name: 'Bitcoin',
-                    value: 'Bitcoin',
-                    checked: true
-                },
-                {
-                    _id: '5bbc37432997bf00408501b8',
-                    name: 'Hyperledger Fabric',
-                    value: 'Hyperledger Fabric',
-                    checked: true
-                }
-            ],
-            platforms:[
+            experimented_platforms:['Bitcoin' , 'Hyperledger Fabric'],
+
+            smart_contract_platforms:[
                 {
                     _id: '5bbc37432997bf00408501b7',
-                    platform_name: 'Bitcoin',
+                    name: 'Bitcoin',
                     exp_year: '0-1'
                 },
                 {
@@ -371,13 +347,13 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             ]
 
         } ,
-        education : {
+        education : [{
             uniname: 'CUST',
             degreename: 'BSCS',
             fieldname: 'CS',
             eduyear: 2016
-        },
-        work:{
+        }],
+        work:[{
             companyname: 'MWAN',
             positionname: 'Team Lead',
             locationname: 'Tokyo Japan',
@@ -385,7 +361,7 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             startdate: '2016-02-29T19:00:00.000Z',
             enddate: '2018-10-09T07:32:38.732Z',
             currentwork: true
-        }
+        }]
     }
 }
 

@@ -1,4 +1,4 @@
-const User = require('../../../../model/users');
+const users = require('../../../../model/mongoose/users');
 const jwtToken = require('../../../services/jwtToken');
 const errors = require('../../../services/errors');
 const crypto = require('crypto');
@@ -10,13 +10,13 @@ module.exports = async function (req,res) {
 
     let payloaddata = jwtToken.verifyJwtToken(passwordHash);
     if((payloaddata.exp - payloaddata.iat) === 3600) {
-        const userDoc = await User.findOne({ forgot_password_key : passwordHash}).lean();
+        const userDoc = await users.findOne({ forgot_password_key : passwordHash});
         if(userDoc) {
             let salt = crypto.randomBytes(16).toString('base64');
             let hash = crypto.createHmac('sha512', salt);
             hash.update(queryBody.password);
             let hashedPasswordAndSalt = hash.digest('hex');
-            await User.update({ _id: userDoc._id },{ $set: {'password_hash': hashedPasswordAndSalt ,'salt' : salt } });
+            await users.update({ _id: userDoc._id },{ $set: {'password_hash': hashedPasswordAndSalt ,'salt' : salt } });
             res.send({
                 success : true ,
                 msg : 'Password reset successfully'

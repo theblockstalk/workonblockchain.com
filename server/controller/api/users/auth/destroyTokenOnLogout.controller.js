@@ -1,9 +1,8 @@
-const User = require('../../../../model/users');
+const users = require('../../../../model/mongoose/users');
 
 module.exports = async function (req,res) {
 	let userId = req.auth.user._id;
-    const token = null;
-    await User.update({ _id: userId},{ $set: {'jwt_token': token} });
+    await users.update({ _id: userId},{ $unset: {'jwt_token': 1} });
     res.send({
         success :true
     })

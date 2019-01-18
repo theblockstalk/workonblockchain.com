@@ -34,20 +34,20 @@ export class AccountSettingsComponent implements OnInit {
         .subscribe(
           data =>
           {
-            if(data['_creator'].is_unread_msgs_to_send){
-              this.info.unread_msgs_emails = data['_creator'].is_unread_msgs_to_send;
+            if(data['is_unread_msgs_to_send']){
+              this.info.unread_msgs_emails = data['is_unread_msgs_to_send'];
             }
-            if(data['_creator'].disable_account || data['marketing_emails'])
+            if(data['disable_account'] || data['marketing_emails'])
             {
               this.info.marketing = data['marketing_emails'];
-              this.info.disable_account = data['_creator'].disable_account;
+              this.info.disable_account = data['disable_account'];
             }
           });
     }
 
     else if(this.currentUser && this.currentUser.type === 'company')
     {
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
           data =>
           {

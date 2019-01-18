@@ -56,7 +56,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   ngAfterViewChecked() {
-    
+
   }
 
   locations = [
@@ -101,7 +101,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     {name:'Technical Lead', value:'Technical Lead', checked:false},
     {name:'Product Manager', value:'Product Manager', checked:false},
     {name:'Intern Developer', value:'Intern Developer', checked:false},
-    {name:'Researcher', value:'Researcher ', checked:false},
+    {name:'Researcher', value:'Researcher', checked:false},
     {name:'Mobile app developer', value:'Mobile app developer', checked:false},
     {name:'Data scientist', value:'Data scientist', checked:false},
     {name:'Security specialist ', value:'Security specialist', checked:false},
@@ -218,7 +218,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         if(a.name > b.name) { return 1; }
         return 0;
       })
-	  
+
 
       this.preferncesForm = new FormGroup({
         location: new FormControl(),
@@ -232,9 +232,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         other_technologies: new FormControl(),
         when_receive_email_notitfications: new FormControl(),
       });
-	  
-	 
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+
+
+      this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
           data =>
           {

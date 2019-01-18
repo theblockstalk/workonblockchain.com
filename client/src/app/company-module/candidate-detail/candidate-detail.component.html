@@ -26,7 +26,7 @@
                 <span *ngIf='data.first_name'><h3>{{data.first_name}} {{data.last_name}}</h3></span>
                 <span *ngIf='data.initials'><h3>{{data.initials}}</h3></span>
 
-                <span><pre>{{data.description}}</pre></span>
+                <span><pre>{{data.candidate.description}}</pre></span>
               </div>
             </div>
             <div class="col-md-6">
@@ -41,11 +41,11 @@
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-suitcase mr-2"></i></span>
-                  <span >Expected annual salary: {{data.expected_salary_currency}} {{data.expected_salary}}</span>
+                  <span >Expected annual salary: {{data.candidate.expected_salary_currency}} {{data.candidate.expected_salary}}</span>
                 </li>
                 <li class="list-group-item">
                   <span><i class="fas fa-align-justify mr-2"></i></span>
-                  <span >Availability: {{data.availability_day}}</span>
+                  <span >Availability: {{data.candidate.availability_day}}</span>
                 </li>
 
               </ul>
@@ -71,24 +71,24 @@
               <div class="form-group">
                 <label>Email address: </label>
                 <p>
-                  {{data._creator.email}}
+                  {{data.email}}
                 <p>
               </div>
             </div>
-            <div class="col-md-6 mb-3" *ngIf="data.github_account">
+            <div class="col-md-6 mb-3" *ngIf="data.candidate.github_account">
               <div class="form-group" >
                 <label>Github account url: </label>
                 <p>
-                  {{data.github_account}}
+                  {{data.candidate.github_account}}
                 <p>
               </div>
             </div>
 
-            <div class="col-md-6 mb-3" *ngIf="data.stackexchange_account">
+            <div class="col-md-6 mb-3" *ngIf="data.candidate.stackexchange_account">
               <div class="form-group" >
                 <label>Stackexchange account url:</label>
                 <p>
-                  {{data.stackexchange_account}}
+                  {{data.candidate.stackexchange_account}}
                 <p>
               </div>
             </div>
@@ -98,7 +98,7 @@
 
 
 
-        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="data.first_name && data._creator.candidate">
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="data.first_name">
           <div class="row">
             <div class="col-md-12">
               <h2>
@@ -113,7 +113,7 @@
               <div class="form-group">
                 <label>Country: </label>
                 <p>
-                  {{data._creator.candidate.base_country}}
+                  {{data.candidate.base_country}}
                 <p>
               </div>
             </div>
@@ -121,7 +121,7 @@
               <div class="form-group">
                 <label>City: </label>
                 <p>
-                  {{data._creator.candidate.base_city}}
+                  {{data.candidate.base_city}}
                 <p>
               </div>
             </div>
@@ -139,19 +139,6 @@
           </div>
 
           <div class="row mt-3">
-
-            <div class="col-md-12 mb-3">
-              <div class="form-group">
-                <label>Expected annual salary: </label>
-                <p>{{data.expected_salary_currency}} {{data.expected_salary}}</p>
-              </div>
-            </div>
-            <div class="col-md-12 mb-3">
-              <div class="form-group">
-                <label>Your availablity: </label>
-                <p>{{data.availability_day}}</p>
-              </div>
-            </div>
 
 
             <div class="col-md-12 mb-3">
@@ -180,6 +167,19 @@
               </div>
             </div>
 
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label>Expected annual salary: </label>
+                <p>{{data.candidate.expected_salary_currency}} {{data.candidate.expected_salary}}</p>
+              </div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <div class="form-group">
+                <label>Your availablity: </label>
+                <p>{{data.candidate.availability_day}}</p>
+              </div>
+            </div>
+
           </div>
 
         </section>
@@ -197,7 +197,7 @@
             <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>Why work on blockchain? </label>
-                <p>{{data.why_work}}</p>
+                <p>{{data.candidate.why_work}}</p>
               </div>
             </div>
 
@@ -206,8 +206,8 @@
                 <label>Platforms commercially worked with and developed on: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
-                    {{data.platform_name}}: {{data.exp_year}} years
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
+                    {{data.name}}: {{data.exp_year}} years
                   </div>
                 </div>
               </div>
@@ -218,8 +218,8 @@
                 <label>Platforms commercially designed and developed smart contracts on: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of platforms;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.platform_name}}.png" alt="{{data.platform_name}} Logo">
-                    {{data.platform_name}}: {{data.exp_year}} years
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
+                    {{data.name}}: {{data.exp_year}} years
                   </div>
                 </div>
               </div>
@@ -229,9 +229,9 @@
               <div class="form-group">
                 <label>Platform experimented with: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of data.experimented_platform;'>
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.value}}.png" alt="{{data.value}} Logo">
-                    {{data.value}}
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of experimented;'>
+                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data}}.png" alt="{{data}} Logo">
+                    {{data}}
                   </div>
                 </div>
               </div>
@@ -282,7 +282,7 @@
         </section>
 
 
-        <section class = "border rounded mt-4 py-3 px-5 bg-white"  *ngIf="data.work_history!=''">
+        <section class = "border rounded mt-4 py-3 px-5 bg-white"  *ngIf="data.candidate.work_history">
           <div class="row">
             <div class="col-md-12">
               <h2>
@@ -310,7 +310,7 @@
           </div>
         </section>
 
-        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="data.education_history!=''" >
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="data.candidate.education_history" >
           <div class="row">
             <div class="col-md-12">
               <h2>

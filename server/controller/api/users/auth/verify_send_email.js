@@ -1,36 +1,28 @@
-const User = require('../../../../model/users');
-const CandidateProfile = require('../../../../model/candidate_profile');
-const EmployerProfile = require('../../../../model/employer_profile');
+const users = require('../../../../model/mongoose/users');
+const companies = require('../../../../model/mongoose/company');
 const verifyEmailEmail = require('../../../services/email/emails/verifyEmail');
 const errors = require('../../../services/errors');
 
 module.exports = async function verify_send_email(emailAddress, verifyEmailToken) {
-    const userDoc = await User.findOne({ email :emailAddress }).lean();
+    const userDoc = await users.findOneByEmail(emailAddress);
     if(userDoc) {
         if(userDoc.type === 'candidate') {
             let name;
-            const candidateDoc = await CandidateProfile.find({_creator : userDoc._id}).populate('_creator').lean();
-            if(candidateDoc && candidateDoc.length > 0 ) {
-                if(candidateDoc[0].first_name) {
-                    name = candidateDoc[0].first_name;
-                }
-                else {
-                    name = null;
-                }
-                verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
-                return true;
+            if(userDoc.first_name){
+                name = userDoc.first_name;
             }
             else {
-                verifyEmailEmail.sendEmail(userDoc.email, null ,verifyEmailToken);
-                return true;
+                name = null;
             }
+            verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
+            return true;
         }
         if(userDoc.type === 'company') {
             let name;
-            const companyDoc = await EmployerProfile.find({_creator : userDoc._id}).populate('_creator').lean();
-            if(companyDoc && companyDoc.length > 0 ) {
-                if(companyDoc[0].first_name) {
-                    name = companyDoc[0].first_name;
+            const companyDoc = await companies.findOne({_creator : userDoc._id});
+            if(companyDoc ) {
+                if(companyDoc.first_name) {
+                    name = companyDoc.first_name;
                 }
                 else {
                     name = null;

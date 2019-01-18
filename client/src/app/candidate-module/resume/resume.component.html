@@ -18,19 +18,19 @@
           </li>
           <li class="nav-item">
             <a routerLink="/about" class="nav-link">
-              <i class="{{term_active_class}}"></i>
+              <i class="{{about_active_class}}"></i>
               About
             </a>
           </li>
           <li class="nav-item">
             <a routerLink="/job" class="nav-link">
-              <i class="{{active_class}}"></i>
+              <i class="{{job_active_class}}"></i>
               Jobs
             </a>
           </li>
           <li class="nav-item px-2">
             <a routerLink="/resume" class="nav-link">
-              <i class="{{exp_active_class}}"></i>
+              <i class="{{resume_active_class}}"></i>
               Blockchain
             </a>
           </li>
@@ -105,7 +105,7 @@
                   {{exp.name}}
                 </label>
                 <!--</div>-->
-                <input type="text" class="form-control" name="commercial_experience_year" [(ngModel)]='commercial_expYear' style="display: none;">
+                <input type="text" class="form-control" name="commercial_platforms" [(ngModel)]='commercial_expYear' style="display: none;">
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@
                   {{exp.name}}
                 </label>
                 <!--</div>-->
-                <input type="text" class="form-control" name="platforms" [(ngModel)]='platforms' style="display: none;">
+                <input type="text" class="form-control" name="smart_contract_platforms" [(ngModel)]='platforms' style="display: none;">
               </div>
             </div>
           </div>
@@ -165,14 +165,14 @@
                   <div class="row m-0">
                     <div class="form-check col-md-3 mb-3" *ngFor="let option of experimented">
                       <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions(option)"  />
+                        <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onExpOptions($event)"  />
                         <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.value}} Logo">
                         {{option.value}}
                       </label>
                     </div>
                   </div>
                 </div>
-                <input type="text" class="form-control" [(ngModel)]='experimented_platform' name="experimented_platform" style="display: none;">
+                <input type="text" class="form-control" [(ngModel)]='experimented_platform' name="experimented_platforms" style="display: none;">
 
               </div>
             </div>
@@ -182,7 +182,7 @@
             <div class="col-md-12">
               <h4>Blockchain skills</h4>
               <div class="form-group mt-4">
-                <label>Commercial experience in these areas </label>
+                <label>Commercial experience in these areas (optional) </label>
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-4 mb-3" *ngFor="let option of otherSkills">
@@ -225,7 +225,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Formal (university) education in these areas </label>
+                <label>Formal university education in these areas (optional) </label>
                 <div class="checkbox">
                   <div class="row m-0">
                     <div class="form-check col-md-4 mb-3" *ngFor="let option of otherFormalSkills">

@@ -2,7 +2,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
-const candidateProfile = require('../../../../model/candidate_profile');
 const docGenerator = require('../../../helpers/docGenerator');
 const candidateHelper = require('../candidate/candidateHelpers');
 const adminHelper = require('./adminHelpers');
@@ -57,21 +56,9 @@ describe('admin update candidate profile', function () {
                         {value: 'Bitcoin'},
                         {value: 'Hyperledger Sawtooth'}
                     ],
-                    experimented_platform: [
-                        {
-                            _id: '5bbc37432997bf00408501b9',
-                            name: 'Bitcoin',
-                            value: 'Bitcoin',
-                            checked: true
-                        },
-                        {
-                            _id: '5bbc37432997bf00408501b8',
-                            name: 'Hyperledger Fabric',
-                            value: 'Hyperledger Fabric',
-                            checked: true
-                        }
-                    ],
-                    platforms: [
+                    experimented_platforms: ['Bitcoin' , 'Hyperledger Fabric'],
+
+                    smart_contract_platforms: [
                         {
                             _id: '5bbc37432997bf00408501b7',
                             platform_name: 'Bitcoin',
@@ -114,13 +101,13 @@ describe('admin update candidate profile', function () {
                     ]
 
                 },
-                education: {
+                education: [{
                     uniname: 'CUST',
                     degreename: 'BSCS',
                     fieldname: 'CS',
                     eduyear: 2016
-                },
-                work: {
+                }],
+                work: [{
                     companyname: 'MWAN',
                     positionname: 'Team Lead',
                     locationname: 'Tokyo Japan',
@@ -128,47 +115,44 @@ describe('admin update candidate profile', function () {
                     startdate: '2016-02-29T19:00:00.000Z',
                     enddate: '2018-10-09T07:32:38.732Z',
                     currentwork: true
-                }
+                }]
             }
+            console.log(candidateEditProfileData);
 
             const res = await adminHelper.updateCandidateProfile(candidateEditProfileData ,candidateUserDoc.jwt_token);
             res.body.success.should.equal(true);
 
-            const candidateInfo = await candidateProfile.findOne({_creator: candidateUserDoc._id}).lean();
-
-            candidateInfo.first_name.should.equal(candidateEditProfileData.detail.first_name);
-            candidateInfo.last_name.should.equal(candidateEditProfileData.detail.last_name);
-            candidateInfo.github_account.should.equal(candidateEditProfileData.detail.github_account);
-            candidateInfo.stackexchange_account.should.equal(candidateEditProfileData.detail.exchange_account);
-            candidateInfo.contact_number.should.equal(candidateEditProfileData.detail.contact_number);
-            candidateInfo.nationality.should.equal(candidateEditProfileData.detail.nationality);
-            candidateInfo.locations.should.valueOf(candidateEditProfileData.detail.country);
-            candidateInfo.roles.should.valueOf(candidateEditProfileData.detail.roles);
-            candidateInfo.interest_area.should.valueOf(candidateEditProfileData.detail.interest_area);
-            candidateInfo.expected_salary_currency.should.equal(candidateEditProfileData.detail.base_currency);
-            candidateInfo.expected_salary.should.equal(candidateEditProfileData.detail.expected_salary);
-            candidateInfo.availability_day.should.equal(candidateEditProfileData.detail.availability_day);
-            candidateInfo.why_work.should.equal(candidateEditProfileData.detail.why_work);
-            candidateInfo.experimented_platform.should.valueOf(candidateEditProfileData.detail.experimented_platform);
-            candidateInfo.platforms.should.valueOf(candidateEditProfileData.detail.platforms);
-            candidateInfo.current_salary.should.equal(candidateEditProfileData.detail.salary);
-            candidateInfo.current_currency.should.equal(candidateEditProfileData.detail.current_currency);
-            candidateInfo.programming_languages.should.valueOf(candidateEditProfileData.detail.language_experience_year);
-            candidateInfo.education_history.should.valueOf(candidateEditProfileData.education);
-            candidateInfo.work_history.should.valueOf(candidateEditProfileData.work);
-            candidateInfo.description.should.equal(candidateEditProfileData.detail.intro);
-
             candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             const blockchainSkills = candidateUserDoc.candidate.blockchain;
+            console.log(blockchainSkills)
 
+            candidateUserDoc.first_name.should.equal(candidateEditProfileData.detail.first_name);
+            candidateUserDoc.last_name.should.equal(candidateEditProfileData.detail.last_name);
+            candidateUserDoc.candidate.github_account.should.equal(candidateEditProfileData.detail.github_account);
+            candidateUserDoc.candidate.stackexchange_account.should.equal(candidateEditProfileData.detail.exchange_account);
+            candidateUserDoc.contact_number.should.equal(candidateEditProfileData.detail.contact_number);
+            candidateUserDoc.nationality.should.equal(candidateEditProfileData.detail.nationality);
+            candidateUserDoc.candidate.locations.should.valueOf(candidateEditProfileData.detail.country);
+            candidateUserDoc.candidate.roles.should.valueOf(candidateEditProfileData.detail.roles);
+            candidateUserDoc.candidate.interest_areas.should.valueOf(candidateEditProfileData.detail.interest_area);
+            candidateUserDoc.candidate.expected_salary_currency.should.equal(candidateEditProfileData.detail.base_currency);
+            candidateUserDoc.candidate.expected_salary.should.equal(candidateEditProfileData.detail.expected_salary);
+            candidateUserDoc.candidate.availability_day.should.equal(candidateEditProfileData.detail.availability_day);
+            candidateUserDoc.candidate.why_work.should.equal(candidateEditProfileData.detail.why_work);
+            blockchainSkills.experimented_platforms.should.valueOf(candidateEditProfileData.detail.experimented_platforms);
+            blockchainSkills.smart_contract_platforms.should.valueOf(candidateEditProfileData.detail.smart_contract_platforms);
+            candidateUserDoc.candidate.current_salary.should.equal(candidateEditProfileData.detail.salary);
+            candidateUserDoc.candidate.current_currency.should.equal(candidateEditProfileData.detail.current_currency);
+            candidateUserDoc.candidate.programming_languages.should.valueOf(candidateEditProfileData.detail.language_experience_year);
+            candidateUserDoc.candidate.education_history.should.valueOf(candidateEditProfileData.education);
+            candidateUserDoc.candidate.work_history.should.valueOf(candidateEditProfileData.work);
+            candidateUserDoc.candidate.description.should.equal(candidateEditProfileData.detail.intro);
             candidateUserDoc.candidate.base_city.should.equal(candidateEditProfileData.detail.city);
             candidateUserDoc.candidate.base_country.should.equal(candidateEditProfileData.detail.base_country);
             blockchainSkills.commercial_skills[0].skill.should.equal(candidateEditProfileData.detail.commercial_skills[0].skill);
             blockchainSkills.commercial_skills[0].exp_year.should.equal(candidateEditProfileData.detail.commercial_skills[0].exp_year);
             blockchainSkills.formal_skills[0].skill.should.equal(candidateEditProfileData.detail.formal_skills[0].skill);
             blockchainSkills.formal_skills[0].exp_year.should.equal(candidateEditProfileData.detail.formal_skills[0].exp_year);
-
-
         })
     })
 });

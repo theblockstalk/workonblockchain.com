@@ -220,7 +220,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
           other_technologies: new FormControl(),
           when_receive_email_notitfications: new FormControl(),
         });
-           this.authenticationService.getCurrentCompany(this.currentUser._id)
+           this.authenticationService.getCurrentCompany(this.currentUser._creator)
             .subscribe(
                 data =>
                 {

@@ -1,5 +1,5 @@
 const settings = require('../../../../settings');
-const CandidateProfile = require('../../../../model/candidate_profile');
+const users = require('../../../../model/mongoose/users');
 const logger = require('../../../services/logger');
 const errors = require('../../../services/errors');
 
@@ -16,9 +16,9 @@ module.exports = async function (req, res) {
 
     let userId = req.auth.user._id;
 
-    const candidateDoc = await CandidateProfile.findOne({ _creator: userId }).lean();
+    const candidateDoc = await users.findOneById(userId);
     if(candidateDoc) {
-        await CandidateProfile.update({ _creator: userId },{ $set: {'image' : path } });
+        await users.update({ _id: userId },{ $set: {'image' : path } });
         res.send({
             success : true
         })

@@ -282,6 +282,7 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
           {
             this.length =0;
             this.info=[];
+            console.log(data);
             this.information = this.filter_array(data);
 
 

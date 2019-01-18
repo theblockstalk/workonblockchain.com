@@ -31,11 +31,13 @@ describe('upload company profile image', function () {
 
             const company = docGenerator.company();
             const signupRes = await companyHepler.signupCompany(company);
+            console.log(signupRes.body);
             const file = docGenerator.image();
 
             await companyHepler.image(file, signupRes.body.jwt_token);
 
             const companyDoc = await Companies.findOne({_id: signupRes.body._id}).lean();
+            console.log(companyDoc);
             assert(companyDoc.company_logo.includes(file.name));
         })
     })

@@ -28,8 +28,8 @@ describe('get current candidate info', function () {
             const userDoc = await Users.findOne({email: candidate.email}).lean();
             const candidateInfo = await candidateHelper.getCurrentCandidateInfo(userDoc._id,userDoc.jwt_token);
             const res = candidateInfo.body;
-            res._creator.email.should.equal(candidate.email);
-            res._creator.type.should.equal(candidate.type);
+            res.email.should.equal(candidate.email);
+            res.type.should.equal(candidate.type);
         })
     })
 });
