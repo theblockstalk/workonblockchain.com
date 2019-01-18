@@ -288,7 +288,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Employment availability</label>
+                  <label>Your availability</label>
                   <select title="Now" [(ngModel)]="availability_day" class="form-control selectpicker" required name="availability_day" >
                     <option *ngFor='let start_month of month' [value]="start_month" [attr.selected]="start_month === availability_day">{{start_month}}</option>
                   </select>
@@ -436,7 +436,7 @@
               <div class="col-md-12">
                 <h4>Blockchain skills</h4>
                 <div class="form-group">
-                  <label>Commercial experience in these areas </label>
+                  <label>Commercial experience in these areas (optional) </label>
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-4 mb-3" *ngFor="let option of otherSkills">
@@ -476,7 +476,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Formal (university) education in these areas </label>
+                  <label>Formal university education in these areas (optional)"</label>
                   <div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-4 mb-3" *ngFor="let option of otherFormalSkills">
