@@ -415,12 +415,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.country_log = "Please select maximum 10 locations";
     }
 
-
-    if(this.selectedcountry.length <=0)
-    {
-      this.country_log = "Please select at least one location";
-    }
-
     if(this.jobselected.length<=0)
     {
       this.roles_log = "Please select at least one role";
@@ -465,7 +459,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
 
-    if( this.count === 0 && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_not_needed === true).length > 0 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
+    if( this.count === 0 && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_not_needed === true).length > 0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
     {
       if(typeof(f.value.expected_salary) === 'string' )
         f.value.expected_salary = parseInt(f.value.expected_salary);
@@ -506,13 +500,6 @@ export class JobComponent implements OnInit,AfterViewInit {
     else{
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
-  }
-
-  logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
-    this.router.navigate(['/login']);
-
   }
 
 
