@@ -1240,7 +1240,7 @@ export class ChatComponent implements OnInit {
         formData.append('job_type', this.job_type);
         formData.append('msg_tag', this.msg_tag);
         formData.append('is_company_reply', '1');
-        //console.log(inputEl.files.item(0).size);
+        console.log(formData.get('sender_name'))
         this.authenticationService.send_file(formData)
         .subscribe(
           data => {

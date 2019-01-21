@@ -53,11 +53,32 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            //await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
             const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+            res.status.should.equal(200);
+        })
+
+    });
+
+    describe('{ msg_tag:"file" }', function () {
+
+        it('it should send a file', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const messageFileData = docGeneratorV2.messageFile();
+
+            const message = docGeneratorV2.message.file(candidateuserDoc._id);
+            const res = await messagesHelpers.sendFile(messageFileData,message, companyUserDoc.jwt_token);
             res.status.should.equal(200);
         })
 

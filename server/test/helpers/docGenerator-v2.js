@@ -31,7 +31,7 @@ function randomEnum(enums) {
 module.exports.messages = {
     job_offer: function(user_id) {
         return {
-            user_id: user_id,
+            receiver_id: user_id,
             msg_tag: 'job_offer',
             message: {
                 job_offer: {
@@ -39,9 +39,27 @@ module.exports.messages = {
                     salary: randomInteger(1),
                     salary_currency: randomEnum(enumerations.currencies),
                     type: randomEnum(enumerations.jobTypes),
+                    location : "PWD Islamabad",
                     description: randomString(100)
                 }
             }
         }
     }
+};
+
+module.exports.message = {
+    file: function(user_id) {
+        return {
+            receiver_id: user_id,
+            msg_tag: 'file'
+        }
+    }
+};
+
+module.exports.messageFile = function messageFile() {
+    return {
+        message: 'file ',
+        name: 'image.jpg',
+        path: __dirname + '/image.jpg'
+    };
 };
