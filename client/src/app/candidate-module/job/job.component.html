@@ -48,7 +48,30 @@
           <legend><i class="fas fa-briefcase mr-1"></i>Tell us more about your dream job</legend>
           <div class="form-group mt-4">
             <label>Where are you available to work?</label>
-            <div class="checkbox">
+            <div>
+              <datalist id="countryList">
+                <option *ngFor = "let country of cities" value="{{country}}">
+
+              </datalist>
+              <input type="text" list="countryList" class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+              <div class="invalid-feedback d-inline" *ngIf="error">
+                {{error}}
+              </div>
+              <div *ngIf="selectedValueArray.length > 0">
+                <div  *ngFor="let value of selectedValueArray" class="border p-3 mt-2">
+                  <h3>{{value}}</h3>
+                  <div class="form-check mt-3">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox"> I am allowed to work in this location without a sponsored visa from the company
+                    </label>
+                  </div>
+                  <a (click)="deleteExpRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
+
+                </div>
+                </div>
+
+            </div>
+            <!--<div class="checkbox">
               <div class="row m-0">
                 <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
                   <label class="form-check-label">
@@ -61,7 +84,7 @@
             <input type="text" class="form-control" [(ngModel)]='selectedcountry' name="country" style="display: none;">
             <div class = "invalid-feedback d-inline"  *ngIf="selectedcountry.length<=0">
               {{country_log}}
-            </div>
+            </div>-->
           </div>
 
 

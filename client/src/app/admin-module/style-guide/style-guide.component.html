@@ -731,6 +731,7 @@
           <option>Part time</option>
           <option>Freelance</option>
         </select>
+
       </div>
     </div>
     <div class="col-md-3">
@@ -853,7 +854,7 @@
             <option *ngFor = "let country of countries" value="{{country}}">
 
           </datalist>
-          <input type="text" list="countryList" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValue($event)">
+          <input type="text" list="countryList" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValue($event)">
           <div class="invalid-feedback d-inline" *ngIf="error">
             {{error}}
           </div>
