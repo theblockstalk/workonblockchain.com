@@ -58,17 +58,19 @@
                 {{error}}
               </div>
               <div *ngIf="selectedValueArray.length > 0">
-                <div  *ngFor="let value of selectedValueArray" class="border p-3 mt-2">
-                  <h3>{{value}}</h3>
+                <div  *ngFor="let value of selectedValueArray; let i = index" class="border p-3 mt-2">
+                  <h3 >{{value.name}}</h3>
                   <div class="form-check mt-3">
-                    <label class="form-check-label">
-                      <input class="form-check-input" type="checkbox"> I am allowed to work in this location without a sponsored visa from the company
+                    <label class="form-check-label" for="check{{i}}">
+                      <input class="form-check-input" type="checkbox" id="check{{i}}" value="{{value.name}}"   name="visa_not_needed{{i}}" (change)="updateCitiesOptions($event)" > I am allowed to work in this location without a sponsored visa from the company
                     </label>
                   </div>
                   <a (click)="deleteExpRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
 
                 </div>
-                </div>
+                <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
+
+              </div>
 
             </div>
             <!--<div class="checkbox">

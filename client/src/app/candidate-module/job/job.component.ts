@@ -417,7 +417,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   {
     this.error_msg="";
     this.count = 0;
-    //console.log(f.value);
+    console.log(f.value);
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.selectedcountry.length <=0)
@@ -536,7 +536,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   selectedValueFunction(e) {
     this.countriesModel= '';
     this.cities = [];
-    console.log(this.selectedValueArray.find(x => x === e.target.value));
     if(this.selectedValueArray.find(x => x === e.target.value)) {
       this.error = 'This location has already been selected';
       setInterval(() => {
@@ -544,9 +543,25 @@ export class JobComponent implements OnInit,AfterViewInit {
       }, 2500);
     }
     else {
-      this.selectedValueArray.push(e.target.value);
+      this.selectedValueArray.push({name: e.target.value, visa_not_needed:false});
     }
+    this.selectedValueArray.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    });
     console.log(this.selectedValueArray);
+
   }
+
+  selectedLocations;
+
+  updateCitiesOptions(e) {
+    let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
+    this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
+    this.selectedLocations = this.selectedValueArray;
+    console.log(this.selectedLocations);
+  }
+
 
 }
