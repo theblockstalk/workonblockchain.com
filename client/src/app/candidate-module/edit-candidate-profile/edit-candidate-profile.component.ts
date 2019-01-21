@@ -246,6 +246,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           {
             if(data)
             {
+              this.selectedValueArray.push({name:'Afghanistan (country)' , visa_not_needed : true} , {name:'Albania (country)' , visa_not_needed : false} )
+              this.selectedLocations = this.selectedValueArray;
               this.info.email = data['email'];
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
@@ -1032,11 +1034,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onJobSelected(e)
   {
-    //this.yearselected= event.target.value;
     if(e.target.checked)
     {
       this.jobselected.push(e.target.value);
-      ////console.log("if");
     }
     else{
 
@@ -1046,7 +1046,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
       this.jobselected.splice(index, 1);
     }
-    //this.position = event.target.value;
   }
 
   initItemRows()
@@ -1092,7 +1091,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   initExpRows()
   {
-    ////console.log(this.currentdate);
     return this._fb.group({
       companyname:[''],
       positionname:[''],
@@ -1172,7 +1170,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   {
 
     let updateItem = this.findObjectByKey(this.LangexpYear, 'language', value);
-    ////console.log(updateItem);
     let index = this.LangexpYear.indexOf(updateItem);
 
     if(index > -1)
@@ -1182,16 +1179,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.value=value;
       this.referringData = { language:this.value, exp_year: e.target.value};
       this.LangexpYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
 
     }
     else
     {
-      ////console.log("not exists");
       this.value=value;
       this.referringData = { language:this.value, exp_year: e.target.value};
       this.LangexpYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
 
     }
 
@@ -1202,7 +1196,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.value=value;
     this.referringData = { name:this.value, exp_year: e.target.value};
     this.expYearRole.push(this.referringData);
-    ////console.log(this.expYearRole);
   }
 
   work_start_data(e)
@@ -1216,15 +1209,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   onAreaSelected(e)
   {
-    //this.jobselected= e.target.value;
 
     if(e.target.checked)
     {
       this.selectedValue.push(e.target.value);
-      ////console.log("if");
     }
     else{
-      ////console.log("else");
       let updateItem = this.selectedValue.find(this.findIndexToUpdateCheck, e.target.value);
 
       let index = this.selectedValue.indexOf(updateItem);
@@ -1252,7 +1242,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   }
 
   findIndexToUpdateCheck(type) {
-    ////console.log("funct");
     return type == this;
   }
   ////////////////////////save edit profile data//////////////////////////////////
@@ -1279,6 +1268,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   current_sal_log;
   count;
   validatedLocation=[];
+  country_input_log;
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -1313,6 +1303,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(!this.info.city)
     {
       this.city_log ="Please enter base city";
+    }
+    if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
+      this.country_input_log = "Please select at least one location";
     }
 
     if(!this.selectedLocations) {
@@ -1923,7 +1916,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   selectedValueFunction(e) {
     var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
-    console.log(value2send);
     if(this.cities.find(x => x.name === e.target.value)) {
       this.countriesModel = '';
       this.cities = [];
@@ -1956,7 +1948,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
     else {
     }
-    console.log(this.selectedValueArray);
 
   }
 

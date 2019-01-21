@@ -54,8 +54,11 @@
                 <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
               </datalist>
               <input type="text" list="countryList" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
-              <div class="invalid-feedback d-inline">
+              <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                 {{error}}
+              </div>
+              <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
+                {{country_input_log}}
               </div>
 
               <div *ngIf="selectedValueArray.length > 0">
@@ -68,7 +71,7 @@
                           <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_not_needed"   name="visa_not_needed{{i}}" (change)="updateCitiesOptions($event)" > Sponsored work visa NOT required
                         </label>
                       </div>
-                      <a (click)="deleteExpRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
+                      <a (click)="deleteLocationRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
 
                     </div>
 

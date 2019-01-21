@@ -387,12 +387,15 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
   validatedLocation=[];
+  country_input_log;
   onSubmit(f: NgForm)
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.error_msg = "";
     this.count = 0;
-
+    if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
+      this.country_input_log = "Please select at least one location";
+    }
     if(!this.selectedLocations) {
       this.country_log = "Please select at least one location which you can work in without needing a visa";
     }
@@ -545,7 +548,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   selectedValueFunction(e) {
     var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
-    console.log(value2send);
     if(this.cities.find(x => x.name === e.target.value)) {
       this.countriesModel = '';
       this.cities = [];
@@ -577,26 +579,18 @@ export class JobComponent implements OnInit,AfterViewInit {
 
     }
     else {
-      console.log("do nothing");
     }
-    console.log(this.selectedValueArray);
 
   }
 
   updateCitiesOptions(e) {
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
-
-   // console.log("Before update: ", this.selectedValueArray[objIndex])
-
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
-
-    //console.log("After update: ", this.selectedValueArray[objIndex]);
     this.selectedLocations = this.selectedValueArray;
   }
 
-  deleteExpRow(i){
+  deleteLocationRow(i){
     this.selectedValueArray.splice(i, 1);
-    console.log(this.selectedValueArray);
   }
 
 }
