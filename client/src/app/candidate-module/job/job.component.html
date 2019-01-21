@@ -48,9 +48,10 @@
           <legend><i class="fas fa-briefcase mr-1"></i>Tell us more about your dream job</legend>
           <div class="form-group mt-4">
             <label>Where would you like to work? (select up to 10)</label>
+
             <div>
               <datalist id="countryList">
-                <option *ngFor = "let country of cities" value="{{country.name}}">
+                <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
               </datalist>
               <input type="text" list="countryList" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
               <div class="invalid-feedback d-inline">
@@ -61,7 +62,7 @@
                 <div class="row">
                   <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
                     <div class="border p-3 ml-2">
-                      <h3 >{{value.name}}</h3>
+                      <p><strong >{{value.name}}</strong></p>
                       <div class="form-check mt-3">
                         <label class="form-check-label" for="check{{i}}">
                           <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_not_needed"   name="visa_not_needed{{i}}" (change)="updateCitiesOptions($event)" > Sponsored work visa NOT required
