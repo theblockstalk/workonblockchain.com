@@ -138,10 +138,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                       if(option.value == key[i])
                       {
                         option.checked=true;
-
-                        //this.commercial_expYear.push(option);
                         this.expYear_db.push(key[i]);
-                        //////console.log(this.expYear_db);
 
                       }
 
@@ -194,7 +191,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                     }
 
                   }
+
                 }
+
               }
 
 
@@ -523,10 +522,35 @@ export class ResumeComponent implements OnInit,AfterViewInit {
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
-console.log(this.experimented_platform);
     if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.commercialSkills.length === this.commercialSkillsExperienceYear.length && this.formal_skills_exp.length === this.formal_skills.length)
     {
+      if(this.commercially_worked.length === 0) {
+        expForm.value.commercial_platforms = [];
+      }
+      else {
+        expForm.value.commercial_platforms = this.commercial_expYear;
+      }
+
+
+      if(this.platforms_designed.length === 0) {
+        expForm.value.smart_contract_platforms = [];
+      }
+      else {
+        expForm.value.smart_contract_platforms = this.platforms;
+      }
+      if(this.commercialSkills.length === 0) {
+        expForm.value.commercial_skills = [];
+      }
+      else {
+        expForm.value.commercial_skills = this.commercialSkillsExperienceYear;
+      }
+      if(this.formal_skills_exp.length === 0) {
+        expForm.value.formal_skills = [];
+      }
+      else {
+        expForm.value.formal_skills = this.formal_skills;
+      }
       this.authenticationService.resume(this.currentUser._creator , expForm.value)
         .subscribe(
           data => {
@@ -575,8 +599,7 @@ console.log(this.experimented_platform);
       this.commercially_worked.push(obj);
     }
 
-    console.log(this.commercially_worked);
-    console.log(this.commercial_expYear)
+
 
   }
 
@@ -654,6 +677,11 @@ console.log(this.experimented_platform);
       this.referringData = { name :this.value, exp_year: e.target.value};
       this.commercial_expYear.push(this.referringData);
     }
+    this.commercial_expYear.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    })
 
   }
 
@@ -685,7 +713,11 @@ console.log(this.experimented_platform);
       this.platforms.push(this.platformreferringData);
 
     }
-
+    this.platforms.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    })
   }
 
 
@@ -755,6 +787,11 @@ console.log(this.experimented_platform);
       this.commercialSkillsExperienceYear.push(this.referringData);
 
     }
+    this.commercialSkillsExperienceYear.sort(function(a, b){
+      if(a.skill < b.skill) { return -1; }
+      if(a.skill > b.skill) { return 1; }
+      return 0;
+    })
 
   }
 
@@ -806,7 +843,15 @@ console.log(this.experimented_platform);
 
     }
 
+    this.formal_skills.sort(function(a, b){
+      if(a.skill < b.skill) { return -1; }
+      if(a.skill > b.skill) { return 1; }
+      return 0;
+    });
+
+
   }
+
 
 
 }

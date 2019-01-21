@@ -787,13 +787,55 @@
     <div class="col-md-7">
       <div class="form-group">
         <label>When would you like to receive emails?</label>
-        <div>
+        <div class="form-check form-check-inline">
+          <div>
+            <input type="radio" id = "radio11" name="group1" class="d-none">
+            <label  for="radio11" class="border border py-2 px-lg-5 px-2">
+              0-1
+            </label>
+          </div>
+
+          <div>
+            <input type="radio" id = "radio21" name="group1" class="d-none">
+            <label  for="radio21" class="border border py-2 px-lg-5 px-2">
+              1-2
+            </label>
+          </div>
+
+          <div>
+            <input type="radio" id = "radio31" name="group1" class="d-none">
+            <label  for="radio31" class="border border py-2 px-lg-5 px-2">
+              2-4
+            </label>
+          </div>
+
+          <div>
+            <input type="radio" id = "radio41" name="group1" class="d-none">
+            <label for="radio41" class="border py-2 px-lg-5 px-2">
+              4-6
+            </label>
+          </div>
+
+          <div>
+            <input type="radio" id = "radio51" name="group1" class="d-none">
+            <label  for="radio51" class="border py-2 px-lg-5 px-2">
+              6+
+            </label>
+          </div>
+        </div>
+        <!--<div>
           <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton;" >
             <input type="radio" [checked] = "receive === when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
           </label>
-        </div>
+        </div>-->
 
       </div>
+
+
+
+      <!-- Material inline 2 -->
+
+
     </div>
     <div class="col-md-3">
       <ul>
