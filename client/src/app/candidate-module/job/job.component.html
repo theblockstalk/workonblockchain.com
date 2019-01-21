@@ -50,8 +50,7 @@
             <label>Where would you like to work? (select up to 10)</label>
             <div>
               <datalist id="countryList">
-                <option *ngFor = "let country of cities" value="{{country}}">
-
+                <option *ngFor = "let country of cities" value="{{country.name}}">
               </datalist>
               <input type="text" list="countryList" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
               <div class="invalid-feedback d-inline">
@@ -65,7 +64,7 @@
                       <h3 >{{value.name}}</h3>
                       <div class="form-check mt-3">
                         <label class="form-check-label" for="check{{i}}">
-                          <input class="form-check-input" type="checkbox" id="check{{i}}" value="{{value.name}}" [checked] ="value.visa_not_needed"  name="visa_not_needed" (change)="updateCitiesOptions($event)" > Sponsored work visa NOT required
+                          <input class="form-check-input" type="checkbox" id="check{{i}}" value="{{value._id}}" [checked] ="value.visa_not_needed"  name="visa_not_needed" (change)="updateCitiesOptions($event)" > Sponsored work visa NOT required
                         </label>
                       </div>
                       <a (click)="deleteExpRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
