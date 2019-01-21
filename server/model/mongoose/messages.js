@@ -22,9 +22,11 @@ module.exports.findOneById = async function (id) {
     return await Messages.findById(id).lean();
 }
 
+module.exports.findAndUpdate = async function (selector, updateObj) {
+    return await Messages.update(selector, updateObj, {multi: true});
+}
+
 module.exports.update = async function (selector, updateObj) {
-    console.log(selector);
-    console.log(updateObj);
     return await Messages.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
 

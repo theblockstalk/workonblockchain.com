@@ -37,18 +37,20 @@ module.exports.endpoint = async function (req, res) {
     console.log('in endpoint');
     let userId = req.auth.user._id;
 
-    const res12 = await Messages.update(
+    const updateResult = await Messages.findAndUpdate(
         {$and : [
             {
                 receiver_id: userId
             },
             {
-                sender_id: mongoose.Types.ObjectId('5c23132d1d423b1e3c35368f')
+                sender_id: mongoose.Types.ObjectId(req.params.sender_id)
             },
             {
                 is_read: false
             }
         ]},{is_read:req.query.is_read}
     );
-    console.log(res12);
+    res.send({
+        updatedCount: updateResult.nModified
+    });
 }

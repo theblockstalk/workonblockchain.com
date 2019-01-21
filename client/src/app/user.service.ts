@@ -1049,9 +1049,13 @@ export class UserService {
 
   }
 
+  //send_message(receiver_id:string,msg_tag:string, message:any){
+  //{receiver_id:receiver_id,msg_tag:msg_tag,message:message}
+  //{receiver_id:'545d456d45d56d456ds',msg_tag:'file',message:'d5d45d4'}
   send_file(formData: any)
   {
-    return this.http.post(URL+'users/insert_chat_file',formData, {
+    console.log(formData);
+    return this.http.post(messagesURL+'messages',formData, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

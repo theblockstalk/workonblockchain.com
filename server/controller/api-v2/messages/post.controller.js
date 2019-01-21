@@ -95,10 +95,12 @@ const checkMessageSenderType = function (userType, expectedType) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    //multer.single('file')(req, res);
+    //if (msg_tag === 'file')
+    multer.single('photo')(req, res);
     console.log('in endpoint');
 
     const body = req.body;
+    console.log(req.file);
 
     const userType = req.auth.user.type;
     const sender_id = req.auth.user._id;
@@ -112,7 +114,6 @@ module.exports.endpoint = async function (req, res) {
         message: {}
     };
 
-    console.log(req);
     if (body.msg_tag === "file") {
         checkJobOfferAccepted(userType, sender_id, receiver_id);
 

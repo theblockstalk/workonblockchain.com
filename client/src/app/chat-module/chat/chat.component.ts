@@ -368,10 +368,10 @@ export class ChatComponent implements OnInit {
                                               );
                                                 if(this.count == 0){
                                                     if(this.users[key_users_new].first_name){
-                                                        this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'');
+                                                        this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'',key_users_new);
                                                     }
                                                     else{
-                                                        this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'');
+                                                        this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'',key_users_new);
                                                     }
                                                 }
                                                 this.count = this.count + 1;
@@ -448,7 +448,7 @@ export class ChatComponent implements OnInit {
                                             this.count = 0;
                                             for (var key_users_new in this.users) {
                                                 if(this.count == 0){
-                                                    this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name);
+                                                    this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name,key_users_new);
                                                 }
                                                 this.count = this.count + 1;
                                                 //this.currentUser._creator //receiver
@@ -1072,7 +1072,7 @@ export class ChatComponent implements OnInit {
     }
   }*/
 
-  openDialog(email: string, id:string, selected_company_name:string){
+  openDialog(email: string, id:string, selected_company_name:string, usersIndex: string){
 	  if(selected_company_name){
 		  email = selected_company_name;
 	  }
@@ -1081,6 +1081,8 @@ export class ChatComponent implements OnInit {
       this.msgs = '';
 	  this.new_msgss = '';
 	  this.credentials.id = id;
+	  console.log("ID: " + id);
+	  console.log('User is at: '+ usersIndex);
     this.credentials.msg_body = '';
 	  this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       //console.log("show_msg_area: " + this.show_msg_area);
@@ -1097,6 +1099,9 @@ export class ChatComponent implements OnInit {
                 .subscribe(
                   data => {
                     this.loading = false;
+                    this.users[usersIndex].unreadCount = 0;
+                    console.log(data);
+                    console.log(this.users[usersIndex].unreadCount);
                     //console.log('done');
                     //console.log(data);
                   },
