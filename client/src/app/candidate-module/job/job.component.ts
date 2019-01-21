@@ -44,6 +44,20 @@ export class JobComponent implements OnInit,AfterViewInit {
   current_salary;
   error_msg;
   expected_validation;
+  selectedValueArray=[];
+  countriesModel;
+  error;
+  selectedLocations;
+  cities;
+  country_log;
+  roles_log;
+  currency_log;
+  salary_log;
+  interest_log;
+  avail_log;
+  current_sal_log;
+  current_currency_log;
+  count;
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
@@ -53,8 +67,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
-    ////console.log(this.options.name);
-
     this.resume_disable = "disabled";
     this.exp_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -91,7 +103,8 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
-
+            this.selectedValueArray.push({name:'Afghanistan (city)' , visa_not_needed : true} , {name:'Albania (country)' , visa_not_needed : false} )
+            this.selectedLocations = this.selectedValueArray;
             if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.about_active_class = 'fa fa-check-circle text-success';
@@ -144,9 +157,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
                 }
               }
-              // this.jobselected=data.roles;
-
-              //this.selectedValue = data.interest_area;
               if(data['candidate'].roles)
               {
                 for (let area of data['candidate'].roles)
@@ -154,7 +164,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
                   for(let option of this.dropdown_options)
                   {
-                    // //console.log(option);
                     if(option.value === area)
                     {
                       option.checked=true;
@@ -190,7 +199,6 @@ export class JobComponent implements OnInit,AfterViewInit {
               {
                 this.exp_disable ='';
                 this.resume_active_class='fa fa-check-circle text-success';
-                // this.router.navigate(['/resume']);
                 this.exp_class = "/experience";
               }
 
@@ -200,7 +208,6 @@ export class JobComponent implements OnInit,AfterViewInit {
               {
                 this.exp_class = "/experience";
                 this.exp_active_class = 'fa fa-check-circle text-success';
-                //this.router.navigate(['/experience']);
               }
 
             }
@@ -226,7 +233,6 @@ export class JobComponent implements OnInit,AfterViewInit {
             }
 
           });
-      //this.router.navigate(['/about']);
     }
     else
     {
@@ -333,43 +339,15 @@ export class JobComponent implements OnInit,AfterViewInit {
   month= ["Now","1 month","2 months","3 months","Longer than 3 months"]
 
 
-
-
-
-  updateCheckedOptions(e)
-  {
-    //this.interest = e.target.value;
-    if(e.target.checked)
-    {
-      this.selectedcountry.push(e.target.value);
-      ////console.log("if");
-    }
-    else{
-      let updateItem = this.selectedcountry.find(this.findIndexToUpdate, e.target.value);
-
-      let index = this.selectedcountry.indexOf(updateItem);
-
-      this.selectedcountry.splice(index, 1);
-    }
-
-
-  }
-
   onAreaSelected(e)
   {
-    //this.jobselected= e.target.value;
-
     if(e.target.checked)
     {
       this.selectedValue.push(e.target.value);
-      ////console.log("if");
     }
     else{
-      ////console.log("else");
       let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
-
       let index = this.selectedValue.indexOf(updateItem);
-
       this.selectedValue.splice(index, 1);
     }
 
@@ -377,19 +355,13 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   onJobSelected(e)
   {
-    //this.jobselected= e.target.value;
-
     if(e.target.checked)
     {
       this.jobselected.push(e.target.value);
-      ////console.log("if");
     }
     else{
-      ////console.log("else");
       let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
-
       let index = this.jobselected.indexOf(updateItem);
-
       this.jobselected.splice(index, 1);
     }
 
@@ -398,7 +370,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
 
   findIndexToUpdate(type) {
-    ////console.log("funct");
     return type == this;
   }
 
@@ -406,20 +377,41 @@ export class JobComponent implements OnInit,AfterViewInit {
   {
     this.experience_year=event.target.value;
     this.expYear.push(event.target.value);
-    ////console.log(event.target.value);
   }
 
 
-  country_log;roles_log;currency_log;salary_log;interest_log;avail_log;
-  current_sal_log; current_currency_log;
-  count;
+
+  checkValidation(value) {
+    return value.filter(i => i.visa_not_needed === true).length;
+  }
+
+  validatedLocation=[];
   onSubmit(f: NgForm)
   {
-    this.error_msg="";
-    this.count = 0;
-    console.log(f.value);
-
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    this.error_msg = "";
+    this.count = 0;
+
+    if(!this.selectedLocations) {
+      this.country_log = "Please select at least one location which you can work in without needing a visa";
+    }
+
+    if(this.selectedLocations && this.selectedLocations.length > 0) {
+      if(this.selectedLocations.filter(i => i.visa_not_needed === true).length <= 0 )
+        this.country_log = "Please select at least one location which you can work in without needing a visa";
+
+      for(let location of this.selectedLocations) {
+        if(location.name.includes('city')){
+          this.validatedLocation.push({city: location.name, visa_not_needed : location.visa_not_needed });
+        }
+        if(location.name.includes('country')){
+          this.validatedLocation.push({country: location.name, visa_not_needed : location.visa_not_needed });
+        }
+      }
+    }
+
+
     if(this.selectedcountry.length <=0)
     {
       this.country_log = "Please select at least one location";
@@ -449,15 +441,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     {
       this.avail_log = "Please select employment availability";
     }
-    /*if(!this.current_salary)
-   {
-       this.current_sal_log = "Please enter current base salary";
 
-   }
-   if(this.current_currency ==-1)
-   {
-       this.current_currency_log = "Please choose currency";
-   }*/
     if(this.current_salary && !this.current_currency ) {
       this.current_currency_log = "Please choose currency";
       this.count++;
@@ -477,7 +461,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
 
-    if( this.count === 0 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
+    if( this.count === 0 && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.filter(i => i.visa_not_needed === true).length > 0 && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
     {
       if(typeof(f.value.expected_salary) === 'string' )
         f.value.expected_salary = parseInt(f.value.expected_salary);
@@ -490,6 +474,8 @@ export class JobComponent implements OnInit,AfterViewInit {
       }
       f.value.current_salary = parseInt(f.value.current_salary);
       f.value.expected_salary = parseInt(f.value.expected_salary);
+      f.value.selectedlocations = this.validatedLocation;
+      console.log(f.value);
       this.authenticationService.job(this.currentUser._creator, f.value)
         .subscribe(
           data => {
@@ -525,22 +511,20 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   }
 
-  cities;
+
   suggestedOptions() {
-    this.cities = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+    this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
   }
 
-  selectedValueArray=[];
-  countriesModel;
-  error;
+
   selectedValueFunction(e) {
     this.countriesModel= '';
     this.cities = [];
-    if(this.selectedValueArray.find(x => x === e.target.value)) {
+    if(this.selectedValueArray.find(x => x.name === e.target.value)) {
       this.error = 'This location has already been selected';
       setInterval(() => {
         this.error = "" ;
-      }, 2500);
+      }, 3500);
     }
     else {
       this.selectedValueArray.push({name: e.target.value, visa_not_needed:false});
@@ -554,13 +538,17 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   }
 
-  selectedLocations;
-
   updateCitiesOptions(e) {
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
+    //console.log(this.selectedValueArray.findIndex((obj => obj.name.includes('city') === e.target.value.includes('city'))))
     console.log(this.selectedLocations);
+  }
+
+  deleteExpRow(i){
+    this.selectedValueArray.splice(i, 1);
+    console.log(this.selectedValueArray);
   }
 
 
