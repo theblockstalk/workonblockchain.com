@@ -96,7 +96,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   salary_log;
   interest_log;
   avail_log;
-  current_sal_logg;
   current_currency_logg;
   first_name_log;
   last_name_log;
@@ -106,6 +105,28 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   expected_validation;
   start_date_year_log;
   end_date_year_log;
+  startmonthIndex;
+  endmonthIndex;
+  start_date_format;
+  end_date_format;
+  educationjson;
+  education_json_array=[];
+  commercial_log;
+  platform_log;
+  base_country_log;
+  city_log;
+  commercial_skill_log;
+  formal_skills_log;
+  current_sal_log;
+  count;
+  submit;
+  validatedLocation=[];
+  country_input_log;
+  selectedValueArray=[];
+  countriesModel;
+  error;
+  selectedLocations;
+  cities;
 
   nationality = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
 
@@ -1249,22 +1270,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     this.start_monthh = "0"  + (this.start_monthh);
     return this.start_monthh ?  this.start_monthh : 0;
   }
-  startmonthIndex;
-  endmonthIndex;
-  start_date_format;
-  end_date_format;
-  educationjson;
-  education_json_array=[];
-  commercial_log;
-  platform_log;
-  base_country_log;
-  city_log;
-  commercial_skill_log;
-  formal_skills_log;
-  current_sal_log;
-  count;
-  eduYear_verify_log;
-  submit;
+
   candidate_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -1301,11 +1307,32 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.city_log ="Please enter base city";
     }
 
-    if(this.selectedcountry.length <=0)
-    {
-      this.country_log = "Please select at least one location";
+    if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
+      this.country_input_log = "Please select at least one location";
     }
 
+
+    if(!this.selectedLocations) {
+      this.country_log = "Please select at least one location which you can work in without needing a visa";
+    }
+
+    if(this.selectedLocations && this.selectedLocations.length > 0) {
+      if(this.selectedLocations.filter(i => i.visa_not_needed === true).length <= 0 )
+        this.country_log = "Please select at least one location which you can work in without needing a visa";
+
+      for(let location of this.selectedLocations) {
+        if(location.name.includes('city')){
+          this.validatedLocation.push({city: location._id, visa_not_needed : location.visa_not_needed });
+        }
+        if(location.name.includes('country')){
+          this.validatedLocation.push({country: location.name, visa_not_needed : location.visa_not_needed });
+        }
+      }
+    }
+
+    if(this.selectedLocations && this.selectedLocations.length > 10) {
+      this.country_log = "Please select maximum 10 locations";
+    }
     if(this.jobselected.length<=0)
     {
       this.roles_log = "Please select at least one role";
@@ -1518,7 +1545,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }
 
     if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
-      this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedcountry.length>0 && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
+      this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedLocations && this.selectedLocations.length > 0
+      && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_not_needed === true).length > 0 && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
@@ -1550,6 +1578,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   updateProfileData(profileForm)
   {
+    profileForm.selectedlocations = this.validatedLocation;
+    console.log(profileForm);
     this.experiencearray=[];
     this.education_json_array=[];
     for (var key in this.ExperienceForm.value.ExpItems)
@@ -1797,4 +1827,95 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   endDateYear() {
     this.dateValidation = "";
   }
+
+  suggestedOptions() {
+    let citiesInput = {
+      locations: [{
+        city: {
+          _id: 1234,
+          city: "London",
+          country: "United Kingdom",
+          active: true
+        }
+      },{
+        country: "Australia"
+      },{
+        country: "India"
+      },{
+        city: {
+          _id: 2345,
+          city: "Toronto",
+          country: "Canada",
+          active: true
+        }
+      }]
+    };
+
+    let citiesOptions=[];
+    for(let cities of citiesInput.locations) {
+      if(cities['city']) {
+        let cityString = cities['city'].city + " (city)";
+        let countryString = cities['city'].country + " (country)";
+        citiesOptions.push({name : countryString });
+        citiesOptions.push({_id : cities['city']._id , name : cityString});
+      }
+      else {
+        let countryString = cities['country'] + " (country)";
+        citiesOptions.push({name: countryString});
+      }
+    }
+    this.cities = citiesOptions;
+  }
+
+  selectedValueFunction(e) {
+    var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
+    if(this.cities.find(x => x.name === e.target.value)) {
+      this.countriesModel = '';
+      this.cities = [];
+      if(this.selectedValueArray.length > 10) {
+        this.error = 'You can select maximum 10 locations';
+        setInterval(() => {
+          this.error = "" ;
+        }, 5000);
+      }
+      else {
+        if(this.selectedValueArray.find(x => x.name === e.target.value)) {
+          this.error = 'This location has already been selected';
+          setInterval(() => {
+            this.error = "" ;
+          }, 4000);
+        }
+
+        else {
+          if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_not_needed:false});
+          else this.selectedValueArray.push({ name: e.target.value, visa_not_needed:false});
+        }
+        this.selectedValueArray.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        });
+      }
+
+
+    }
+    else {
+    }
+
+  }
+
+  updateCitiesOptions(e) {
+    let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
+    this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
+    this.selectedLocations = this.selectedValueArray;
+  }
+
+  deleteLocationRow(i){
+    this.selectedValueArray.splice(i, 1);
+  }
+
+  checkValidation(value) {
+    return value.filter(i => i.visa_not_needed === true).length;
+  }
+
 }
