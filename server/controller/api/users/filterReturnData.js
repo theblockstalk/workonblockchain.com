@@ -1,4 +1,4 @@
-const Chat = require('../../../model/chat');
+const Messages = require('../../../model/messages');
 
 const removeSensativeData = module.exports.removeSensativeData = function removeSensativeData(userDoc,sendOptions)
 {
@@ -68,10 +68,9 @@ const createInitials = module.exports.createInitials = function createInitials(f
 
 
 module.exports.candidateAsCompany = async function candidateAsCompany(candidateDoc, companyId) {
-    const acceptedJobOffer = await Chat.find({sender_id: candidateDoc._creator._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
+    const acceptedJobOffer = await Messages.find({sender_id: candidateDoc._creator._id, receiver_id: companyId, msg_tag: 'job_offer_accepted'})
     if (acceptedJobOffer && acceptedJobOffer.length>0)
         return removeSensativeData(candidateDoc);
-
     else
         return anonymousSearchCandidateData(candidateDoc);
 

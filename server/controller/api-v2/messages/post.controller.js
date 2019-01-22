@@ -96,13 +96,13 @@ const checkMessageSenderType = function (userType, expectedType) {
 
 module.exports.endpoint = async function (req, res) {
     //if (msg_tag === 'file')
-    //console.log(req.file);
-    await multer.single('photo')(req, res);
+    //await multer.single('photo')(req, res);
     console.log('in endpoint');
 
     const body = req.body;
+    console.log(body);
 
-    /*const userType = req.auth.user.type;
+    const userType = req.auth.user.type;
     const sender_id = req.auth.user._id;
     const receiver_id = body.receiver_id;
     let newMessage = {
@@ -112,7 +112,7 @@ module.exports.endpoint = async function (req, res) {
         is_read: false,
         date_created: Date.now(),
         message: {}
-    };*/
+    };
 
     if (body.msg_tag === "file") {
         checkJobOfferAccepted(userType, sender_id, receiver_id);

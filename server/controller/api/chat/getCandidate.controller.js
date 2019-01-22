@@ -1,6 +1,7 @@
 const users = require('../../../model/users');
 const CandidateProfile = require('../../../model/candidate_profile');
 const EmployerProfile = require('../../../model/employer_profile');
+const Messages = require('../../../model/messages');
 
 const filterReturnData = require('../users/filterReturnData');
 
@@ -37,7 +38,9 @@ module.exports = async function (req, res) {
             if (candidateProfile)
             {
                 let query_result = filterReturnData.removeSensativeData(candidateProfile);
-                if(msg_tag === 'job_offer_accepted'){}
+                const acceptedJobOffer = await Messages.find({sender_id: receiver_id, receiver_id: sender_id, msg_tag: 'job_offer_accepted'})
+                if (acceptedJobOffer && acceptedJobOffer.length>0){}
+                //if(msg_tag === 'job_offer_accepted'){}
                 else{
                     query_result = filterReturnData.anonymousSearchCandidateData(query_result);
                 }

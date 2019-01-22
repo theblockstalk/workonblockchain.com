@@ -37,6 +37,9 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
             },
             filename: function (req, file, cb) {
                 const originalname = sanitize.recursivelySanitize(file.originalname);
+                console.log(req.body);
+                console.log(file);
+                console.log('in multer');
                 cb(null, Date.now().toString() + originalname)
             }
         })
