@@ -12,17 +12,23 @@ const paramSchema = new Schema({
     sender_id: String
 })
 
+const querySchema = new Schema({
+    receiver_id: String,
+    admin: Boolean
+})
+
 module.exports.inputValidation = {
-    params: paramSchema
+    params: paramSchema,
+    query: querySchema
 };
 
 module.exports.auth = async function (req) {
     console.log('in auth');
     await auth.isValidUser(req);
 
-    // if (req.query.admin) {
-    //     await auth.isAdmin(req);
-    // }
+    if (req.query.admin) {
+        await auth.isAdmin(req);
+    }
 }
 
 function isEmpty(obj) {
@@ -37,15 +43,15 @@ module.exports.endpoint = async function (req, res) {
     console.log('in endpoint');
     //const userType = req.auth.user.type;
     let userId;
-
-    /*if(req.query.sender_id !== '0' && req.auth.user.is_admin){
-        userId = req.query.sender_id
+    if (req.query.receiver_id) {
+        userId = req.query.receiver_id;
     }
     else{
         userId = req.auth.user._id;
-    }*/
+    }
 
-    userId = req.auth.user._id;
+    console.log(userId);
+    console.log(req.query);
     const messageDocs = await Messages.find({
         $or : [
             { $and : [ { receiver_id : mongoose.Types.ObjectId(req.params.sender_id) }, { sender_id : userId } ] },

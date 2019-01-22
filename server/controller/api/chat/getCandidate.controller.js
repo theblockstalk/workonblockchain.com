@@ -38,15 +38,27 @@ module.exports = async function (req, res) {
             if (candidateProfile)
             {
                 let query_result = filterReturnData.removeSensativeData(candidateProfile);
-                const acceptedJobOffer = await Messages.find({sender_id: receiver_id, receiver_id: sender_id, msg_tag: 'job_offer_accepted'})
-                if (acceptedJobOffer && acceptedJobOffer.length>0){}
-                //if(msg_tag === 'job_offer_accepted'){}
-                else{
-                    query_result = filterReturnData.anonymousSearchCandidateData(query_result);
+                if (req.auth.user.is_admin){
+                    res.send({
+                        users:query_result
+                    });
                 }
-                res.send({
-                    users:query_result
-                });
+                else {
+                    const acceptedJobOffer = await Messages.find({
+                        sender_id: sender_id,
+                        receiver_id: receiver_id,
+                        msg_tag: 'job_offer_accepted'
+                    })
+                    console.log(acceptedJobOffer);
+                    if (acceptedJobOffer && acceptedJobOffer.length > 0) {
+                    }
+                    else {
+                        query_result = filterReturnData.anonymousSearchCandidateData(query_result);
+                    }
+                    res.send({
+                        users: query_result
+                    });
+                }
             }
             else
             {

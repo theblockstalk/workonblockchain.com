@@ -853,7 +853,10 @@ export class UserService {
 
   get_user_messages(receiver_id: string, sender_id: any)
   {
-    return this.http.get(messagesURL+'conversations/messages?receiver_id='+receiver_id+'&sender_id='+sender_id, {
+    console.log('admin is calling');
+    let queryString = '?receiver_id='+sender_id+'&admin=true';
+    //return this.http.get(messagesURL+'conversations/'+queryString, {
+    return this.http.get(messagesURL+'conversations/'+receiver_id+'/messages'+queryString , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -893,15 +896,8 @@ export class UserService {
 
   get_user_messages_only(id:any)
   {
-    let queryString = '';
-    if(id === '0' || id === 0){
-      console.log('comp/cand is calling');
-      queryString = '?user_id='+id;
-    }
-    else{
-      console.log('admin is calling');
-      queryString = '?user_id='+id+'&admin=true';
-    }
+    console.log('admin is calling');
+    let queryString = '?user_id='+id+'&admin=true';
     console.log(queryString);
     return this.http.get(messagesURL+'conversations/'+queryString, {
       headers: new HttpHeaders().set('Authorization', this.token)

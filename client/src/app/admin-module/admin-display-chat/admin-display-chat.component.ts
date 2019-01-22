@@ -75,10 +75,10 @@ export class AdminDisplayChatComponent implements OnInit {
           .subscribe(
             msg_data =>
             {
-              if(msg_data)
-              {
-                this.new_messges.push(msg_data);
-						    this.new_messges = this.filter_array(msg_data);
+              if(msg_data['conversations']){
+                this.new_messges.push(msg_data['conversations']);
+                this.new_messges = this.filter_array(msg_data['conversations']);
+                console.log(this.new_messges);
 						    this.length = 1;
 						    for (var key_messages in this.new_messges)
 						    {
@@ -90,6 +90,7 @@ export class AdminDisplayChatComponent implements OnInit {
                     .subscribe(
                       data => {
                         this.users.push(data['users']);
+                        this.users = this.filter_array(this.users);
                         this.count = 0;
                         for (var key_users_new in this.users) {
                           if(this.count == 0){
@@ -138,10 +139,10 @@ export class AdminDisplayChatComponent implements OnInit {
           .subscribe(
             msg_data =>
             {
-              if(msg_data)
-              {
-                this.new_messges.push(msg_data);
-                this.new_messges = this.filter_array(msg_data);
+              if(msg_data['conversations']){
+                this.new_messges.push(msg_data['conversations']);
+                this.new_messges = this.filter_array(msg_data['conversations']);
+                console.log(this.new_messges);
                 this.length = 1;
                 for (var key_messages in this.new_messges)
                 {
@@ -154,6 +155,7 @@ export class AdminDisplayChatComponent implements OnInit {
                       data =>
                       {
                         this.users.push(data['users']);
+                        this.users = this.filter_array(this.users);
                         this.count = 0;
                         for (var key_users_new in this.users) {
                           if(this.count === 0){
@@ -211,6 +213,7 @@ export class AdminDisplayChatComponent implements OnInit {
   }
 
   openDialog(email: string, id:string,current_compnay_name:string){
+    console.log(id);
     this.msgs = '';
     this.new_msgss = '';
     this.authenticationService.get_user_messages(id,this.user_id)
@@ -218,8 +221,8 @@ export class AdminDisplayChatComponent implements OnInit {
       data =>
       {
         console.log(data);
-        this.new_msgss = data;
-        this.job_desc = data[0].message.job_offer;
+        this.new_msgss = data['messages'];
+        this.job_desc = data['messages'][0].message.job_offer;
         if(data['datas'][1]){
           if(data['datas'][1].is_company_reply==1)
           {
