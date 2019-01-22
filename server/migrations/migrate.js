@@ -32,7 +32,8 @@ const settings = require('../settings');
 async function connectToMongo() {
     console.log('Mongodb connection string: ' + settings.MONGO_CONNECTION_STRING);
 
-    mongoose.connect(settings.MONGO_CONNECTION_STRING);
+    mongoose.connect('mongodb://localhost:27017/wob_T387');
+    //mongoose.connect(settings.MONGO_CONNECTION_STRING);
 
     return new Promise((res, rej) => {
         mongoose.connection.on('connected', () => {

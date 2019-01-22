@@ -50,13 +50,10 @@ const CandidateProfileSchema = new Schema({
     locations:
         {
             type: [{
-                city: Schema.Types.ObjectId,
-                country: enumerations.countries,
-                visa_not_needed: Boolean,
+                type: String,
+                enum: enumerations.workLocations
             }]
-
         },
-
     roles:
         {
             type: [{
