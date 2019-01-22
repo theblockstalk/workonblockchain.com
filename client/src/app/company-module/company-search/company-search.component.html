@@ -51,6 +51,15 @@
             </div>
             <hr/>
 
+            <div class = "form-group ml-4">
+              <div>
+                <p class="form-check-label" for="check">
+                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" [(ngModel)]="visa_check" id="check"  name="visa_not_needed" (ngModelChange)="searchdata('visa', $event)" > Sponsored work visa NOT required
+                </p>
+              </div>
+            </div>
+            <hr/>
+
             <div class = "form-group">
               <select title="Position" [disabled]="msg !== '' ? true : false" [(ngModel)]="role_value" name="roles" (ngModelChange)="searchdata('role', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let role of rolesData" [value]="role.value">{{role.name}}</option>

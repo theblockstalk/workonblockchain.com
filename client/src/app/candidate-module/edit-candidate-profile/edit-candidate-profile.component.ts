@@ -1323,6 +1323,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         if(location.name.includes('country')){
           this.validatedLocation.push({country: location.name, visa_not_needed : location.visa_not_needed });
         }
+        if(location.name === 'Remote') {
+          this.validatedLocation.push({country: location.name, visa_not_needed : location.visa_not_needed });
+        }
       }
     }
 
@@ -1878,6 +1881,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   suggestedOptions() {
     let citiesInput = {
       locations: [{
+        Remote: true,
+      }, {
         city: {
           _id: 1234,
           city: "London",
@@ -1900,23 +1905,27 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     let citiesOptions=[];
     for(let cities of citiesInput.locations) {
+      if(cities['Remote']) {
+        citiesOptions.push({name: 'Remote'});
+      }
       if(cities['city']) {
         let cityString = cities['city'].city + " (city)";
         let countryString = cities['city'].country + " (country)";
         citiesOptions.push({name : countryString });
         citiesOptions.push({_id : cities['city']._id , name : cityString});
       }
-      else {
+      if(cities['country']) {
         let countryString = cities['country'] + " (country)";
         citiesOptions.push({name: countryString});
       }
     }
-    this.cities = citiesOptions;
+    this.cities = this.filter_array(citiesOptions);
   }
 
   selectedValueFunction(e) {
-    var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
     if(this.cities.find(x => x.name === e.target.value)) {
+      var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
+
       this.countriesModel = '';
       this.cities = [];
       if(this.selectedValueArray.length > 10) {
@@ -1942,6 +1951,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           if(a.name > b.name) { return 1; }
           return 0;
         });
+        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))){
+          this.selectedValueArray.splice(0, 0, {name : 'Remote', visa_not_needed:false});
+          this.selectedValueArray = this.filter_array(this.selectedValueArray);
+        }
+
       }
 
 
@@ -1963,6 +1977,18 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   checkValidation(value) {
     return value.filter(i => i.visa_not_needed === true).length;
+  }
+
+  filter_array(arr)
+  {
+    var hashTable = {};
+
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+
+      return (match ? false : hashTable[key] = true);
+    });
   }
 
 }
