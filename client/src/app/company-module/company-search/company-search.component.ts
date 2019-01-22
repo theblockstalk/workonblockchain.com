@@ -55,6 +55,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   blockchain_value;
   pager: any = {};
   pagedItems: any[];
+  countries;
+  selectedValueArray=[];
+  countriesModel;
+  error;
+  cities;
 
   constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
@@ -586,7 +591,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
       .subscribe(
         dataa => {
-          console.log(dataa)
           this.candidate_data = dataa;
           this.setPage(1);
           if(this.candidate_data.length > 0) {
@@ -836,5 +840,98 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.candidate_data.length, page);
     this.pagedItems = this.candidate_data.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
+
+
+  suggestedOptions() {
+    // this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola (city)', 'Antigua & Deps (city)', 'Argentina (city)', 'Armenia (city)', 'Australia (city)', 'Austria (city)', 'Azerbaijan (city)', 'Bahamas (city)', 'Bahrain (city)', 'Bangladesh (city)', 'Barbados (city)', 'Belarus (city)', 'Belgium (city)', 'Belize (city)', 'Benin (city)', 'Bhutan (city)', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+    let citiesInput = {
+      locations: [{
+        city: {
+          _id: 1234,
+          city: "London",
+          country: "United Kingdom",
+          active: true
+        }
+      },{
+        city: {
+          _id: 2345,
+          city: "Toronto",
+          country: "Canada",
+          active: true
+        }
+      },
+        {
+          city: {
+            _id: 2345,
+            city: "Islamabad",
+            country: "Pakistan",
+            active: true
+          }
+        },
+        {
+          city: {
+            _id: 2345,
+            city: "Karachi",
+            country: "Pakistan",
+            active: true
+          }
+        }]
+    };
+
+    let citiesOptions=[];
+    for(let cities of citiesInput.locations) {
+      if(cities['city']) {
+        let cityString = cities['city'].city + " (city)";
+        let countryString = cities['city'].country + " (country)";
+        citiesOptions.push({name : countryString });
+        citiesOptions.push({_id : cities['city']._id , name : cityString});
+      }
+      else {
+
+      }
+    }
+    this.cities = citiesOptions;
+  }
+
+
+  selectedValueFunction(e) {
+    console.log(this.countriesModel);
+    var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
+    if(this.cities.find(x => x.name === e.target.value)) {
+      this.countriesModel = '';
+      this.cities = [];
+      if(this.selectedValueArray.length > 4) {
+        this.error = 'You can select maximum 5 locations';
+        setInterval(() => {
+          this.error = "" ;
+        }, 5000);
+      }
+      else {
+        if(this.selectedValueArray.find(x => x.name === e.target.value)) {
+          this.error = 'This location has already been selected';
+          setInterval(() => {
+            this.error = "" ;
+          }, 4000);
+        }
+
+        else {
+          if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_not_needed:false});
+          else this.selectedValueArray.push({ name: e.target.value, visa_not_needed:false});
+        }
+        this.selectedValueArray.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        });
+      }
+    }
+    else {
+    }
+
+  }
+
+  deleteLocationRow(i){
+    this.selectedValueArray.splice(i, 1);
   }
 }

@@ -29,10 +29,25 @@
             </div>
             <hr/>
 
-            <div class = "form-group">
+            <!--<div class = "form-group">
               <select title="Desired location" [disabled]="msg !== '' ? true : false" [(ngModel)]="location_value" name="locations" (ngModelChange)="searchdata('locations', $event)" class="selectpicker form-control" multiple data-live-search="true">
                 <option *ngFor = "let location of locationsData" [value]="location.value">{{location.name}}</option>
               </select>
+            </div>-->
+            <div class="form-group">
+              <datalist id="countryList">
+                <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
+              </datalist>
+              <input type="text" list="countryList" placeholder="Remote, Canada, London..." class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+              <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                {{error}}
+              </div>
+              <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
+                {{country_input_log}}
+              </div>
+              <div *ngIf="selectedValueArray.length > 0">
+                <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
+              </div>
             </div>
             <hr/>
 
