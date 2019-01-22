@@ -1,10 +1,10 @@
 const users = require('../model/mongoose/users');
-const candidateProfile = require('../model/mongoose/candidate');
-const Referral = require('../model/referrals');
+const cities = require('../model/cities');
 const mongoose = require('mongoose');
 const logger = require('../controller/services/logger');
 
-let totalDocsToProcess, totalModified = 0, totalProcessed = 0;
+let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
+
 const csvFilePath='C:\\Users\\DELL\\Downloads\\worldcities - processed.csv';
 const csv=require('csvtojson');
 csv()
@@ -13,9 +13,24 @@ csv()
 })
 
 module.exports.up = async function() {
-    const jsonArray=await csv().fromFile(csvFilePath);
-    console.log(jsonArray);
-    console.log("up");
+    const locationsJsonArray=await csv().fromFile(csvFilePath);
+
+    console.log("Total no location in csv: " +locationsJsonArray.length)
+    for(let location of locationsJsonArray) {
+        let data = {
+            city : location.city,
+            country : location.country,
+            active : true,
+        }
+        logger.debug("cities document: ", data);
+        let newDoc = new cities(data);
+
+        await newDoc.save();
+        totalDocsToProcess++;
+    }
+
+    console.log("No of locations added in cities collection: " + totalDocsToProcess);
+
 }
 
 module.exports.down = async function() {
