@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const logger = require('../controller/services/logger');
 
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
+let newDocs =0;
 
 const csvFilePath='C:\\Users\\DELL\\Downloads\\worldcities - processed.csv';
 const csv=require('csvtojson');
@@ -26,10 +27,15 @@ module.exports.up = async function() {
         let newDoc = new cities(data);
 
         await newDoc.save();
-        totalDocsToProcess++;
+        newDocs++;
     }
+    console.log("No of locations added in cities collection: " + newDocs);
 
-    console.log("No of locations added in cities collection: " + totalDocsToProcess);
+    totalDocsToProcess =await users.count({});
+    logger.debug(totalDocsToProcess);
+    await users.findAndIterate({type : 'candidate'}, async function(candidateDoc) {
+
+    });
 
 }
 
