@@ -96,7 +96,13 @@ const checkMessageSenderType = function (userType, expectedType) {
 
 module.exports.endpoint = async function (req, res) {
     //if (msg_tag === 'file')
-    //await multer.single('photo')(req, res);
+    multer.single('photo')(req, {}, function (err) {
+        if (err) throw err
+        console.log("fileeeeeeeeee");
+        console.log(req.file);
+        console.log(req.body);
+        // req.file, req.files...
+    });
     console.log('in endpoint');
 
     const body = req.body;
