@@ -905,55 +905,29 @@ export class ChatComponent implements OnInit {
     this.is_job_offer = 2;//2 for accepted
     this.msg_tag = 'employment_offer_accepted';
     this.credentials.msg_body = 'I accept the employment offer';
-    let formData = new FormData();
-    formData.append('photo', '');
-    formData.append('receiver_id', this.credentials.id);
-    formData.append('sender_name', this.display_name);
-    formData.append('receiver_name', this.credentials.email);
-    formData.append('message', this.credentials.msg_body);
-    formData.append('description', this.description);
-    formData.append('job_title', this.job_title);
-    formData.append('salary', this.salary);
-    formData.append('currency', this.salary_currency);
-    formData.append('date_of_joining', this.date_of_joining);
-    formData.append('job_type', this.job_type);
-    formData.append('msg_tag', this.msg_tag);
-    formData.append('is_company_reply', '1');
-    formData.append('job_offered', '2'); //2 for accepted
-    formData.append('file_to_send', '0');
-    formData.append('employment_reference_id',this.credentials.job_offer_id);
-    this.authenticationService.update_job_message(this.credentials.job_offer_id, this.is_job_offer)
+    let employment_offer_accepted : any = {};
+    employment_offer_accepted.message = this.credentials.msg_body;
+    employment_offer_accepted.employment_offer_message_id = this.credentials.job_offer_id;
+    let new_offer : any = {};
+    new_offer.employment_offer_accepted = employment_offer_accepted;
+    console.log(new_offer);
+
+    this.authenticationService.send_message(this.credentials.id,this.msg_tag,new_offer)
       .subscribe(
         data => {
           //console.log(data);
-          this.authenticationService.insert_job_message(formData)
+          this.credentials.msg_body = '';
+          this.authenticationService.get_user_messages_comp(this.credentials.id)
             .subscribe(
               data => {
-                //console.log(data);
-                this.credentials.msg_body = '';
-                this.authenticationService.get_user_messages(this.credentials.id, this.currentUser._creator)
-                  .subscribe(
-                    data => {
-                      this.new_msgss = data['datas'];
-                      this.job_desc = data['datas'][0];
-                    },
-                    error => {
-                      if (error.message == 500 || error.message == 401) {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        window.location.href = '/login';
-                      }
-                      if (error.message == 403) {
-                        // this.router.navigate(['/not_found']);
-                      }
-                    }
-                  );
+                this.new_msgss = data['messages'];
+                //this.job_desc = data['datas'][0];
               },
               error => {
                 if (error.message == 500 || error.message == 401) {
                   localStorage.setItem('jwt_not_found', 'Jwt token not found');
                   window.location.href = '/login';
                 }
-
                 if (error.message == 403) {
                   // this.router.navigate(['/not_found']);
                 }
@@ -965,6 +939,7 @@ export class ChatComponent implements OnInit {
             localStorage.setItem('jwt_not_found', 'Jwt token not found');
             window.location.href = '/login';
           }
+
           if (error.message == 403) {
             // this.router.navigate(['/not_found']);
           }
@@ -981,56 +956,29 @@ export class ChatComponent implements OnInit {
     this.is_job_offer = 3;//3 for rejected
     this.msg_tag = 'employment_offer_rejected';
     this.credentials.msg_body = 'I do not accept the employment offer';
-    let file_to_send = '';
-    let formData = new FormData();
-    formData.append('photo', '');
-    formData.append('receiver_id', this.credentials.id);
-    formData.append('sender_name', this.display_name);
-    formData.append('receiver_name', this.credentials.email);
-    formData.append('message', this.credentials.msg_body);
-    formData.append('description', this.description);
-    formData.append('job_title', this.job_title);
-    formData.append('salary', this.salary);
-    formData.append('currency', this.salary_currency);
-    formData.append('date_of_joining', this.date_of_joining);
-    formData.append('job_type', this.job_type);
-    formData.append('msg_tag', this.msg_tag);
-    formData.append('is_company_reply', '1');
-    formData.append('job_offered', '3'); //3 for rejected
-    formData.append('file_to_send', '0');
-    formData.append('employment_reference_id',this.credentials.job_offer_id);
-    this.authenticationService.update_job_message(this.credentials.job_offer_id, this.is_job_offer)
+    let employment_offer_rejected : any = {};
+    employment_offer_rejected.message = this.credentials.msg_body;
+    employment_offer_rejected.employment_offer_message_id = this.credentials.job_offer_id;
+    let new_offer : any = {};
+    new_offer.employment_offer_rejected = employment_offer_rejected;
+    console.log(new_offer);
+
+    this.authenticationService.send_message(this.credentials.id,this.msg_tag,new_offer)
       .subscribe(
         data => {
           //console.log(data);
-          this.authenticationService.insert_job_message(formData)
+          this.credentials.msg_body = '';
+          this.authenticationService.get_user_messages_comp(this.credentials.id)
             .subscribe(
               data => {
-                //console.log(data);
-                this.credentials.msg_body = '';
-                this.authenticationService.get_user_messages(this.credentials.id, this.currentUser._creator)
-                  .subscribe(
-                    data => {
-                      this.new_msgss = data['datas'];
-                      this.job_desc = data['datas'][0];
-                    },
-                    error => {
-                      if (error.message == 500 || error.message == 401) {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        window.location.href = '/login';
-                      }
-                      if (error.message == 403) {
-                        // this.router.navigate(['/not_found']);
-                      }
-                    }
-                  );
+                console.log(data);
+                this.new_msgss = data['messages'];
               },
               error => {
                 if (error.message == 500 || error.message == 401) {
                   localStorage.setItem('jwt_not_found', 'Jwt token not found');
                   window.location.href = '/login';
                 }
-
                 if (error.message == 403) {
                   // this.router.navigate(['/not_found']);
                 }
@@ -1125,6 +1073,9 @@ export class ChatComponent implements OnInit {
                     this.credentials.job_offer_id = data['messages'][key]._id;
                     //console.log(data['datas'][key]._id);
                     //console.log('job offered by company');
+                  }
+                  if (data['messages'][key].msg_tag === 'employment_offer_accepted' || data['messages'][key].msg_tag === 'employment_offer_rejected') {
+                    this.cand_job_offer = 0;
                   }
                 }
               }
