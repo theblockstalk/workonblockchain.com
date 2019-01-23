@@ -14,10 +14,19 @@ csv()
     .then((jsonObj) => {
 })
 
-function findCountry(country) {
-    return fruit.name === 'cherries';
-}
+function removeDuplicates(originalArray, prop) {
+    var newArray = [];
+    var lookupObject  = {};
 
+    for(var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for(i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+    return newArray;
+}
 
 module.exports.up = async function() {
     const locationsJsonArray=await csv().fromFile(csvFilePath);
@@ -87,6 +96,7 @@ module.exports.up = async function() {
             }
 
             if(locations && locations.length > 0) {
+                locations = removeDuplicates(locations, "country");
                 await users.update({ _id: candidateDoc._id },{ $set: {'candidate.locations' : locations} });
                 totalModified++;
             }
@@ -97,7 +107,6 @@ module.exports.up = async function() {
     console.log('Total candidate document to process: ' + totalDocsToProcess);
     console.log('Total processed document: ' + totalProcessed);
     console.log('Total modified document: ' + totalModified);
-
 }
 
 module.exports.down = async function() {
