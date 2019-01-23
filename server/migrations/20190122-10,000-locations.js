@@ -41,15 +41,17 @@ module.exports.up = async function() {
     logger.debug(totalDocsToProcess);
     await users.findAndIterate({type : 'candidate'}, async function(candidateDoc) {
         totalProcessed++;
+        let countryList = {};
+        let countries = {} ;
+        let citiesId = {};
+        let locations=[];
         if(candidateDoc.candidate.locations) {
-            /// find in cities collection
             console.log("candidate Doc id: " + candidateDoc._id);
             console.log("candidate Doc locations:  " + candidateDoc.candidate.locations);
+
+            /// find in cities collection
             const citiesDoc = await cities.find({city :  {$in: candidateDoc.candidate.locations}}).lean();
-            let locations=[];
             if(citiesDoc) {
-                //console.log("citiesDoc");
-                //console.log(citiesDoc);
                 for(let cities of citiesDoc) {
                     citiesId = {
                         city : cities._id,
@@ -57,14 +59,11 @@ module.exports.up = async function() {
                     }
                     locations.push(citiesId);
                 }
-
             }
 
             /// find in countries enumeration
             const countriesEnum = enumeration.countries;
-            let countries ;
             for(let country of candidateDoc.candidate.locations) {
-              //  console.log(country);
                 if(countriesEnum.find(x => x === country)) {
                     countries = {
                         country : country,
@@ -74,8 +73,7 @@ module.exports.up = async function() {
                 }
             }
 
-            let countryList;
-
+            //find countries in cities collection
             const citiesCountryDoc = await cities.find({country :  {$in: candidateDoc.candidate.locations}}).lean();
             if(citiesCountryDoc) {
                 for(let countries of citiesCountryDoc) {
