@@ -1,5 +1,6 @@
 const users = require('../model/mongoose/users');
 const cities = require('../model/cities');
+const enumeration =  require('../model/enumerations');
 const mongoose = require('mongoose');
 const logger = require('../controller/services/logger');
 
@@ -12,6 +13,11 @@ csv()
     .fromFile(csvFilePath)
     .then((jsonObj) => {
 })
+
+function findCountry(country) {
+    return fruit.name === 'cherries';
+}
+
 
 module.exports.up = async function() {
     const locationsJsonArray=await csv().fromFile(csvFilePath);
@@ -31,11 +37,68 @@ module.exports.up = async function() {
     }
     console.log("No of locations added in cities collection: " + newDocs);
 
-    totalDocsToProcess =await users.count({});
+    totalDocsToProcess =await users.count({type : 'candidate'});
     logger.debug(totalDocsToProcess);
     await users.findAndIterate({type : 'candidate'}, async function(candidateDoc) {
+        totalProcessed++;
+        if(candidateDoc.candidate.locations) {
+            /// find in cities collection
+            console.log("candidate Doc id: " + candidateDoc._id);
+            console.log("candidate Doc locations:  " + candidateDoc.candidate.locations);
+            const citiesDoc = await cities.find({city :  {$in: candidateDoc.candidate.locations}}).lean();
+            let locations=[];
+            if(citiesDoc) {
+                //console.log("citiesDoc");
+                //console.log(citiesDoc);
+                for(let cities of citiesDoc) {
+                    citiesId = {
+                        city : cities._id,
+                        visa_not_needed : false,
+                    }
+                    locations.push(citiesId);
+                }
 
+            }
+
+            /// find in countries enumeration
+            const countriesEnum = enumeration.countries;
+            let countries ;
+            for(let country of candidateDoc.candidate.locations) {
+              //  console.log(country);
+                if(countriesEnum.find(x => x === country)) {
+                    countries = {
+                        country : country,
+                        visa_not_needed : false,
+                    };
+                    locations.push(countries);
+                }
+            }
+
+            let countryList;
+
+            const citiesCountryDoc = await cities.find({country :  {$in: candidateDoc.candidate.locations}}).lean();
+            if(citiesCountryDoc) {
+                for(let countries of citiesCountryDoc) {
+                    countryList = {
+                        country : countries.country,
+                        visa_not_needed : false,
+                    }
+                    locations.push(countryList);
+                }
+
+            }
+
+            if(locations && locations.length > 0) {
+                await users.update({ _id: candidateDoc._id },{ $set: {'candidate.locations' : locations} });
+                totalModified++;
+            }
+
+        }
     });
+
+    console.log('Total candidate document to process: ' + totalDocsToProcess);
+    console.log('Total processed document: ' + totalProcessed);
+    console.log('Total modified document: ' + totalModified);
 
 }
 
