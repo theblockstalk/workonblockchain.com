@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const asyncMiddleware = require('./controller/middleware/asyncMiddleware');
+const sanitizer = require('./controller/middleware/sanitizer');
 
 const endpoints = [
     require('./controller/api-v2/messages/post.controller'),
@@ -12,7 +13,7 @@ const endpoints = [
 ];
 
 function isEmpty(obj) {
-    for(var key in obj) {
+    for(let key in obj) {
         if(obj.hasOwnProperty(key))
             return false;
     }
@@ -45,6 +46,8 @@ const validateInputs = function(request, inputSchemas) {
 const register = function(endpoint) {
     const path = '/v2' + endpoint.request.path;
     router[endpoint.request.type](path,
+        asyncMiddleware.thenNext(endpoint.files),
+        sanitizer.middleware,
         asyncMiddleware.thenNext(validateInputs(endpoint.request, endpoint.inputValidation)),
         asyncMiddleware.thenNext(endpoint.auth),
         asyncMiddleware(endpoint.endpoint)
