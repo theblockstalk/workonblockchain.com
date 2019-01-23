@@ -35,23 +35,15 @@ module.exports.up = async function() {
 
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
-        let countryList = {};
-        let countries = {} ;
-        let citiesId = {};
         let locations=[];
         if(userDoc.candidate.locations) {
             console.log("candidate Doc id: " + userDoc._id);
             console.log("candidate Doc locations:  " + userDoc.candidate.locations);
 
             /// find in cities collection
-
             await cities.findAndIterate({city :  {$in: userDoc.candidate.locations}}, async function(citiesDoc) {
                 if(citiesDoc) {
-                    citiesId = {
-                        city : citiesDoc._id,
-                        visa_not_needed : false,
-                    }
-                    locations.push(citiesId);
+                    locations.push({city: citiesDoc._id, visa_not_needed: false});
                 }
             });
 
