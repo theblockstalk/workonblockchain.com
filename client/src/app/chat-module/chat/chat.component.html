@@ -162,18 +162,20 @@
                               <br/>
                             </span>
                             <span *ngIf="msg.message.interview_offer" [innerHTML]="msg.message.interview_offer.description | safeHtml">
-                              {{msg.message.interview_offer.description}}
+                              <ng-container *ngIf="!msg.message.interview_offer.description;else interview_desc">
+                              </ng-container>
+                              <ng-template #interview_desc>
+                                {{msg.message.interview_offer.description}}
+                              </ng-template>
                               <br/>
                             </span>
                             <span *ngIf="msg.message.employment_offer">
-                              <b>Employment contract: </b>
-                            </span>
-                            <span *ngIf="msg.message.employment_offer">
-                              <a href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
-                            </span>
-                            <span *ngIf="msg.message.employment_offer">
-                              <a *ngIf="msg.message.employment_offer.file_url !== ''" href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
-                              <span *ngIf="msg.message.employment_offer.file_url === ''">N/A</span>
+                              <ng-container *ngIf="!msg.message.employment_offer.file_url;else employ_file_url">
+                              </ng-container>
+                              <ng-template #employ_file_url>
+                                <b>Employment contract: </b>
+                                <a href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              </ng-template>
                             </span>
                             <span *ngIf="msg.message.file">
                               <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
@@ -259,15 +261,20 @@
                               <br/>
                             </span>
                             <span *ngIf="msg.message.interview_offer" [innerHTML]="msg.message.interview_offer.description | safeHtml">
-                              {{msg.message.interview_offer.description}}
+                              <ng-container *ngIf="!msg.message.interview_offer.description;else interview_desc">
+                              </ng-container>
+                              <ng-template #interview_desc>
+                                {{msg.message.interview_offer.description}}
+                              </ng-template>
                               <br/>
                             </span>
                             <span *ngIf="msg.message.employment_offer">
-                              <b>Employment contract: </b>
-                            </span>
-                            <span *ngIf="msg.message.employment_offer">
-                              <a *ngIf="msg.message.employment_offer.file_url !== ''" href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
-                              <span *ngIf="msg.message.employment_offer.file_url === ''">N/A</span>
+                              <ng-container *ngIf="!msg.message.employment_offer.file_url;else employ_file_url">
+                              </ng-container>
+                              <ng-template #employ_file_url>
+                                <b>Employment contract: </b>
+                                <a href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              </ng-template>
                             </span>
                             <span *ngIf="msg.message.file">
                               <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->

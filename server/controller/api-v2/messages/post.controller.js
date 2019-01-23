@@ -3,7 +3,7 @@ const Schema = require('mongoose').Schema;
 const enumerations = require('../../../model/enumerations');
 const errors = require('../../services/errors');
 const sanitize = require('../../services/sanitize');
-const messages = require('../../../model/mongoose/messages'); // TODO need to change to messages schema
+const messages = require('../../../model/mongoose/messages');
 const messageHelper = require('../messageHelpers');
 const multer = require('../../../controller/middleware/multer');
 const settings = require('../../../settings');
@@ -107,22 +107,49 @@ const sendMessage = async function (newMessage) {
     return messageDoc;
 };
 
+const checkLastEmpoymentOffer = async function (sender_id,receiver_id){
+    console.log(sender_id);
+    console.log(receiver_id);
+    const lastEmploymentOfferDoc = await
+        messages.findLastJobOffer({
+            sender_id: sender_id,
+            receiver_id: receiver_id,
+            msg_tag: 'employment_offer'
+        });
+    console.log('after call');
+    console.log(lastEmploymentOfferDoc);
+    if(lastEmploymentOfferDoc)
+        errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
+
+    /*if (lastEmploymentOfferDoc) {
+        const responseToOfferDoc = await
+            messages.findOne({
+                $or: [{
+                    "message.employment_offer_accepted.employment_offer_id": lastEmploymentOfferDoc._id
+                }, {
+                    "message.employment_offer_rejected.employment_offer_id": lastEmploymentOfferDoc._id
+                }]
+            });
+        if (!responseToOfferDoc) {
+            errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
+        }
+    }*/
+}
+
 module.exports.endpoint = async function (req, res) {
     console.log('in endpoint');
     const userType = req.auth.user.type;
     const sender_id = req.auth.user._id;
     let receiver_id,newMessage;
+    let path = '';
 
     if(isEmpty(req.body)){
         console.log("fileeeeeeeeee");
         multer.single('photo')(req, {}, function (err) {
             if (err) throw err
-            console.log(req.file);
-
-            receiver_id = req.body.receiver_id;
-            if (req.body.msg_tag === "file" || req.body.msg_tag === "normal") {
-                checkJobOfferAccepted(userType, sender_id, receiver_id);
-                let path = '';
+            if(req.file){
+                console.log(req.file);
+                console.log('file is coming');
                 if (req.file) {
                     if (settings.isLiveApplication()) {
                         path = req.file.location; // for S3 bucket
@@ -130,22 +157,54 @@ module.exports.endpoint = async function (req, res) {
                         path = settings.FILE_URL + req.file.filename;
                     }
                 }
-                console.log(path);
-                newMessage = {
-                    sender_id: sender_id,
-                    receiver_id: receiver_id,
-                    msg_tag: req.body.msg_tag,
-                    is_read: false,
-                    date_created: Date.now(),
-                    message: {
-                        file: {
-                            url: path
-                        }
-                    }
-                };
-                const messageDoc = sendMessage(newMessage);
-                res.send(messageDoc);
             }
+            else{
+                console.log('no file');
+                console.log(req.body);
+            }
+
+            receiver_id = req.body.receiver_id;
+            newMessage = {
+                sender_id: sender_id,
+                receiver_id: receiver_id,
+                msg_tag: req.body.msg_tag,
+                is_read: false,
+                date_created: Date.now(),
+                message: {}
+            };
+
+            if (req.body.msg_tag === "file" || req.body.msg_tag === "normal") {
+                checkJobOfferAccepted(userType, sender_id, receiver_id);
+                console.log(path);
+                let file = {};
+                file.url = path;
+                newMessage.message.file = file;
+            }
+            else if (req.body.msg_tag === "employment_offer") {
+                checkMessageSenderType(userType, 'company');
+                checkJobOfferAccepted(userType, sender_id, receiver_id);
+                checkLastEmpoymentOffer(sender_id, receiver_id);
+                let employment_offer = {};
+
+                console.log(newMessage);
+                if(path){
+                    employment_offer.file_url = path;
+                }
+
+                req.body.description = sanitize.sanitizeHtml(req.body.description);
+                req.body.description = messageHelper.replaceLineBreaksHtml(req.body.description);
+
+                employment_offer.title = req.body.title;
+                employment_offer.salary = req.body.salary;
+                employment_offer.salary_currency = req.body.salary_currency;
+                employment_offer.type = req.body.type;
+                employment_offer.start_date = req.body.start_date;
+                employment_offer.description = req.body.description;
+                newMessage.message.employment_offer = employment_offer;
+                console.log(employment_offer);
+            }
+            const messageDoc = sendMessage(newMessage);
+            res.send(messageDoc);
         });
     }
     else{
@@ -226,36 +285,6 @@ module.exports.endpoint = async function (req, res) {
                 body.message.interview_offer.description = messageHelper.replaceLineBreaksHtml(body.message.interview_offer.description);
             }
             newMessage.message.interview_offer = body.message.interview_offer;
-        }
-        else if (body.msg_tag === "employment_offer") {
-            checkMessageSenderType(userType, 'company');
-            checkJobOfferAccepted(userType, sender_id, receiver_id);
-
-            const lastEmploymentOfferDoc = await
-            messages.findWithCursor({
-                sender_id: sender_id,
-                receiver_id: receiver_id,
-                msg_tag: 'employment_offer'
-            }).sort({date_created: -1}).limit(1).lean();
-
-            if (lastEmploymentOfferDoc) {
-                const responseToOfferDoc = await
-                messages.findOne({
-                    $or: [{
-                        "message.employment_offer_accepted.employment_offer_id": lastEmploymentOfferDoc._id
-                    }, {
-                        "message.employment_offer_rejected.employment_offer_id": lastEmploymentOfferDoc._id
-                    }]
-                });
-                if (!responseToOfferDoc) {
-                    errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
-                }
-            }
-
-            body.message.employment_offer.description = sanitize.sanitizeHtml(body.message.employment_offer.description);
-            body.message.employment_offer.description = messageHelper.replaceLineBreaksHtml(body.message.employment_offer.description);
-
-            newMessage.message.employment_offer = body.message.employment_offer;
         }
         else if (body.msg_tag === "employment_offer_accepted") {
             checkMessageSenderType(userType, 'candidate');
