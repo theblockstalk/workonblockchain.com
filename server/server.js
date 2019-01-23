@@ -29,9 +29,9 @@ try {
 
     app.use(sanitizer.middleware);
 
-    app.use(requestLogger);
     app.use(routes);
     app.use(routesV2);
+    app.use(requestLogger);
 
     app.use(errorHandler);
 

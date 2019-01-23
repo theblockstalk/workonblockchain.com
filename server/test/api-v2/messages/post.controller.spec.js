@@ -7,6 +7,7 @@ const companyHelper = require('../../api/users/company/companyHelpers');
 const candidateHelper = require('../../api/users/candidate/candidateHelpers');
 const docGeneratorV2 = require('../../helpers/docGenerator-v2');
 const users = require('../../../model/mongoose/users');
+const imageInitialize = require('../../helpers/imageInitialize');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -14,6 +15,10 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('POST /messages', function () {
+
+    beforeEach(async function () {
+        await imageInitialize.initialize();
+    })
 
     afterEach(async function () {
         console.log('dropping database');
@@ -32,12 +37,12 @@ describe('POST /messages', function () {
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const res = await messagesHelpers.post({not_a_field: "my id", msg_tag: 'job_offer'}, companyUserDoc.jwt_token);
-            res.body.message.should.equal("ValidationError: user_id: Path `user_id` is required.");
+            res.body.message.should.equal("ValidationError: receiver_id: Path `receiver_id` is required.");
             res.status.should.equal(500);
         })
 
         it('it should should fail with invalid jwtToken', async function () {
-            const res = await messagesHelpers.post({user_id: "my id", msg_tag: 'job_offer'}, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViOWQ0MGQ3MjVjZWM5MWY1YzgyNjM0ZiIsInR5cGUiOiJjYW5kaWRhdGUiLCJjcmVhdGVkX2RhdGUiOiIyMDE4LTA5LTE1VDE3OjI2OjQ3LjE4OFoiLCJpYXQiOjE1MzcwMzI0MzZ9.v1uv2zLsqhRPc0ADYqr1ZpY-MfP4sOqrwHsmk25GjN0');
+            const res = await messagesHelpers.post({receiver_id: "my id", msg_tag: 'job_offer'}, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViOWQ0MGQ3MjVjZWM5MWY1YzgyNjM0ZiIsInR5cGUiOiJjYW5kaWRhdGUiLCJjcmVhdGVkX2RhdGUiOiIyMDE4LTA5LTE1VDE3OjI2OjQ3LjE4OFoiLCJpYXQiOjE1MzcwMzI0MzZ9.v1uv2zLsqhRPc0ADYqr1ZpY-MfP4sOqrwHsmk25GjN0');
             res.body.message.should.equal("Cannot read property 'jwt_token' of null");
             res.status.should.equal(500);
         })

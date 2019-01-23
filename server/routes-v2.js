@@ -12,7 +12,7 @@ const endpoints = [
 ];
 
 function isEmpty(obj) {
-    for(var key in obj) {
+    for(let key in obj) {
         if(obj.hasOwnProperty(key))
             return false;
     }
@@ -45,6 +45,8 @@ const validateInputs = function(request, inputSchemas) {
 const register = function(endpoint) {
     const path = '/v2' + endpoint.request.path;
     router[endpoint.request.type](path,
+        asyncMiddleware.thenNext(endpoint.files),
+        sanitizer.middleware,
         asyncMiddleware.thenNext(validateInputs(endpoint.request, endpoint.inputValidation)),
         asyncMiddleware.thenNext(endpoint.auth),
         asyncMiddleware(endpoint.endpoint)
