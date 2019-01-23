@@ -1227,30 +1227,21 @@ export class ChatComponent implements OnInit {
       let fileCount: number = inputEl.files.length;
       let formData = new FormData();
       if (fileCount > 0 && inputEl.files.item(0).size < this.file_size) {
-        this.msg_tag = 'normal';
+        this.msg_tag = 'file';
         this.credentials.msg_body = '';
         formData.append('photo', inputEl.files.item(0));
         formData.append('receiver_id', this.credentials.id);
-        formData.append('sender_name', this.display_name);
-        formData.append('receiver_name', this.credentials.email);
-        formData.append('message', this.credentials.msg_body);
-        formData.append('job_title', this.job_title);
-        formData.append('salary', this.salary);
-        formData.append('date_of_joining', this.date_of_joining);
-        formData.append('job_type', this.job_type);
         formData.append('msg_tag', this.msg_tag);
-        formData.append('is_company_reply', '1');
-        console.log(formData.get('photo'))
         this.authenticationService.send_file(formData)
         .subscribe(
           data => {
             this.file_uploaded = 1;
-            this.authenticationService.get_user_messages(this.credentials.id, this.currentUser._creator)
+            this.authenticationService.get_user_messages_comp(this.credentials.id)
               .subscribe(
                 data => {
-                  //console.log(data['datas']);
-                  this.new_msgss = data['datas'];
-                  this.job_desc = data['datas'][0];
+                  console.log(data);
+                  this.new_msgss = data['messages'];
+                  //this.job_desc = data['datas'][0];
                 },
                 error => {
                   if (error.message == 500 || error.message == 401) {

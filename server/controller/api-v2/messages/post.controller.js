@@ -72,6 +72,14 @@ module.exports.auth = async function (req) {
     await auth.isValidUser(req);
 }
 
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
 const checkJobOfferAccepted = async function (userType, sender_id, receiver_id) {
     let messageDoc;
     if (userType === 'candidate') {
@@ -87,26 +95,31 @@ const checkJobOfferAccepted = async function (userType, sender_id, receiver_id) 
             msg_tag: 'job_offer_accepted'
         });
     }
-    if (messageDoc) errors.throwError("Job offer has not been accepted", 400);
+    if (!messageDoc) errors.throwError("Job offer has not been accepted", 400);
 };
 
 const checkMessageSenderType = function (userType, expectedType) {
     if (userType !== expectedType) errors.throwError("Message can only be sent by a " + expectedType, 400);
 }
 
+const sendMessage = async function (newMessage) {
+    const messageDoc = await messages.insert(newMessage);
+    return messageDoc;
+};
+
 module.exports.endpoint = async function (req, res) {
     console.log('in endpoint');
-    let file_upload;
-    console.log(req.body);
-    if(req.body === {}) {
+    const userType = req.auth.user.type;
+    const sender_id = req.auth.user._id;
+    let receiver_id,newMessage;
+
+    if(isEmpty(req.body)){
+        console.log("fileeeeeeeeee");
         multer.single('photo')(req, {}, function (err) {
             if (err) throw err
-            console.log("fileeeeeeeeee");
             console.log(req.file);
-            file_upload = 'file';
-            const userType = req.auth.user.type;
-            const sender_id = req.auth.user._id;
-            const receiver_id = req.body.receiver_id;
+
+            receiver_id = req.body.receiver_id;
             if (req.body.msg_tag === "file" || req.body.msg_tag === "normal") {
                 checkJobOfferAccepted(userType, sender_id, receiver_id);
                 let path = '';
@@ -117,7 +130,8 @@ module.exports.endpoint = async function (req, res) {
                         path = settings.FILE_URL + req.file.filename;
                     }
                 }
-                let newMessage = {
+                console.log(path);
+                newMessage = {
                     sender_id: sender_id,
                     receiver_id: receiver_id,
                     msg_tag: req.body.msg_tag,
@@ -129,23 +143,18 @@ module.exports.endpoint = async function (req, res) {
                         }
                     }
                 };
-                const messageDoc = await
-                messages.insert(newMessage);
-
+                const messageDoc = sendMessage(newMessage);
                 res.send(messageDoc);
             }
         });
     }
-
-    if(!file_upload) {
+    else{
         console.log('no file');
         const body = req.body;
         console.log(body);
 
-        const userType = req.auth.user.type;
-        const sender_id = req.auth.user._id;
-        const receiver_id = body.receiver_id;
-        let newMessage = {
+        receiver_id = body.receiver_id;
+        newMessage = {
             sender_id: sender_id,
             receiver_id: receiver_id,
             msg_tag: body.msg_tag,
@@ -287,9 +296,7 @@ module.exports.endpoint = async function (req, res) {
             newMessage.message.employment_offer_rejected = body.message.employment_offer_rejected;
         }
 
-        const messageDoc = await
-        messages.insert(newMessage);
-
+        const messageDoc = sendMessage(newMessage);
         res.send(messageDoc);
     }
 }
