@@ -3,12 +3,12 @@ const cities = require('../model/cities');
 const enumeration =  require('../model/enumerations');
 const mongoose = require('mongoose');
 const logger = require('../controller/services/logger');
+const csv=require('csvtojson');
+const csvFilePath='C:\\Users\\DELL\\Downloads\\worldcities - processed.csv';
 
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
 let newDocs =0;
 
-const csvFilePath='C:\\Users\\DELL\\Downloads\\worldcities - processed.csv';
-const csv=require('csvtojson');
 csv()
     .fromFile(csvFilePath)
     .then((jsonObj) => {
