@@ -7,26 +7,13 @@ const csv=require('csvtojson');
 const csvFilePath='C:\\Users\\DELL\\Downloads\\worldcities - processed.csv';
 
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
-let newDocs =0;
+let newDocs= 0, totalIncompleteDoc= 0;
 
 csv()
     .fromFile(csvFilePath)
     .then((jsonObj) => {
 })
 
-function removeDuplicates(originalArray, prop) {
-    let newArray = [];
-    let lookupObject  = {};
-
-    for(let i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-
-    for(i in lookupObject) {
-        newArray.push(lookupObject[i]);
-    }
-    return newArray;
-}
 
 module.exports.up = async function() {
     const locationsJsonArray=await csv().fromFile(csvFilePath);
@@ -49,18 +36,18 @@ module.exports.up = async function() {
     totalDocsToProcess =await users.count({type : 'candidate'});
     logger.debug(totalDocsToProcess);
 
-    await users.findAndIterate({type : 'candidate'}, async function(candidateDoc) {
+    await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
         let countryList = {};
         let countries = {} ;
         let citiesId = {};
         let locations=[];
-        if(candidateDoc.candidate.locations) {
-            console.log("candidate Doc id: " + candidateDoc._id);
-            console.log("candidate Doc locations:  " + candidateDoc.candidate.locations);
+        if(userDoc.candidate.locations) {
+            console.log("candidate Doc id: " + userDoc._id);
+            console.log("candidate Doc locations:  " + userDoc.candidate.locations);
 
             /// find in cities collection
-            const citiesDoc = await cities.find({city :  {$in: candidateDoc.candidate.locations}}).lean();
+            const citiesDoc = await cities.find({city :  {$in: userDoc.candidate.locations}}).lean();
             if(citiesDoc) {
                 for(let cities of citiesDoc) {
                     citiesId = {
@@ -71,41 +58,31 @@ module.exports.up = async function() {
                 }
             }
 
-            /// find in countries enumeration
-            const countriesEnum = enumeration.countries;
-            for(let country of candidateDoc.candidate.locations) {
-                if(countriesEnum.find(x => x === country)) {
-                    countries = {
-                        country : country,
-                        visa_not_needed : false,
-                    };
-                    locations.push(countries);
+            for(let loc of userDoc.candidate.locations) {
+                if(loc === 'remote') {
+                    locations.push({remote:true, visa_not_needed: false});
                 }
             }
-
-            //find countries in cities collection
-            const citiesCountryDoc = await cities.find({country :  {$in: candidateDoc.candidate.locations}}).lean();
-            if(citiesCountryDoc) {
-                for(let countries of citiesCountryDoc) {
-                    countryList = {
-                        country : countries.country,
-                        visa_not_needed : false,
-                    }
-                    locations.push(countryList);
+            const countriesEnum = enumeration.countries;
+            if(userDoc.candidate.base_country) {
+                if(countriesEnum.find(x => x === userDoc.candidate.base_country)) {
+                    locations.push({country: userDoc.candidate.base_country, visa_not_needed : true});
                 }
-
             }
 
             if(locations && locations.length > 0) {
-                locations = removeDuplicates(locations, "country");
-                await users.update({ _id: candidateDoc._id },{ $set: {'candidate.locations' : locations} });
+                await users.update({ _id: userDoc._id },{ $set: {'candidate.locations' : locations} });
                 totalModified++;
             }
 
         }
+        else {
+            totalIncompleteDoc++;
+        }
     });
 
-    console.log('Total candidate document to process: ' + totalDocsToProcess);
+    console.log('Total user document to process: ' + totalDocsToProcess);
+    console.log('Total user document with incomplete profile: ' + totalIncompleteDoc);
     console.log('Total processed document: ' + totalProcessed);
     console.log('Total modified document: ' + totalModified);
 }

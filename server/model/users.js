@@ -119,7 +119,11 @@ const UserSchema = new Schema({
                         ref: 'Cities'
                     },
                     country: enumerations.countries,
-                    visa_not_needed: Boolean,
+                    remote: Boolean,
+                    visa_not_needed: {
+                        type: Boolean,
+                        required: true,
+                    }
                 }]
             },
             roles: {
