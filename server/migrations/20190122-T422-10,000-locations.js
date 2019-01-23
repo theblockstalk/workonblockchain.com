@@ -78,5 +78,30 @@ module.exports.up = async function() {
 
 module.exports.down = async function() {
 
+    totalDocsToProcess =await users.count({type : 'candidate'});
 
+    await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
+        totalProcessed++;
+
+        console.log("candidate Doc id: " + userDoc._id);
+        logger.debug("candidate Doc locations:  ", userDoc.candidate.locations);
+
+        if(userDoc.candidate.locations) {
+            let locations = [];
+            for(let loc of userDoc.candidate.locations) {
+                if(loc.city){
+                    const cityDoc= await cities.findOneById(loc.city);
+                    locations.push(cityDoc.city);
+                }
+            }
+
+            await users.update({ _id: userDoc._id },{ $set: {'candidate.locations' : locations} });
+            totalModified++;
+
+        }
+    });
+
+    console.log('Total user document to process: ' + totalDocsToProcess);
+    console.log('Total processed document: ' + totalProcessed);
+    console.log('Total modified document: ' + totalModified);
 }
