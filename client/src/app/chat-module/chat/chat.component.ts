@@ -1299,6 +1299,7 @@ export class ChatComponent implements OnInit {
             );
         },
         error => {
+          console.log(error);
           if (error['status'] === 400) {
             this.job_offer_log_error = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
           }

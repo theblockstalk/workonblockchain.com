@@ -120,9 +120,9 @@ const checkLastEmpoymentOffer = async function (sender_id,receiver_id){
         const responseToOfferDoc = await
             messages.findOne({
                 $or: [{
-                    "message.employment_offer_accepted.employment_offer_id": lastEmploymentOfferDoc._id
+                    "message.employment_offer_accepted.employment_offer_message_id": lastEmploymentOfferDoc._id
                 }, {
-                    "message.employment_offer_rejected.employment_offer_id": lastEmploymentOfferDoc._id
+                    "message.employment_offer_rejected.employment_offer_message_id": lastEmploymentOfferDoc._id
                 }]
             });
         console.log(responseToOfferDoc);
@@ -296,14 +296,14 @@ module.exports.endpoint = async function (req, res) {
 
             let messageDoc = await
             messages.findOne({
-                _id: body.message.employment_offer_accepted.employment_offer_id
+                _id: body.message.employment_offer_accepted.employment_offer_message_id
             });
-            if (messageDoc) errors.throwError("Employment offer not found", 400);
+            if (!messageDoc) errors.throwError("Employment offer not found", 400);
 
             messageDoc = await
             messages.findOne({
                 msg_status: 'employment_offer_accepted',
-                "messages.employment_offer_accepted.employment_offer_id": body.message.employment_offer_accepted.employment_offer_id
+                "messages.employment_offer_accepted.employment_offer_message_id": body.message.employment_offer_accepted.employment_offer_message_id
             });
             if (messageDoc) errors.throwError("Employment offer has already been accepted", 400);
 
@@ -315,14 +315,14 @@ module.exports.endpoint = async function (req, res) {
 
             let messageDoc = await
             messages.findOne({
-                _id: body.message.employment_offer_rejected.employment_offer_id
+                _id: body.message.employment_offer_rejected.employment_offer_message_id
             });
-            if (messageDoc) errors.throwError("Employment offer not found", 400);
+            if (!messageDoc) errors.throwError("Employment offer not found", 400);
 
             messageDoc = await
             messages.findOne({
                 msg_status: 'employment_offer_rejected',
-                "messages.employment_offer_rejected.employment_offer_id": body.message.employment_offer_rejected.employment_offer_id
+                "messages.employment_offer_rejected.employment_offer_message_id": body.message.employment_offer_rejected.employment_offer_message_id
             });
             if (messageDoc) errors.throwError("Employment offer has already been rejected", 400);
 
