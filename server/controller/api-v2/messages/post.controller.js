@@ -95,166 +95,201 @@ const checkMessageSenderType = function (userType, expectedType) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    //if (msg_tag === 'file')
-    multer.single('photo')(req, {}, function (err) {
-        if (err) throw err
-        console.log("fileeeeeeeeee");
-        console.log(req.file);
-        console.log(req.body);
-        // req.file, req.files...
-    });
     console.log('in endpoint');
+    let file_upload;
+    console.log(req.body);
+    if(req.body === {}) {
+        multer.single('photo')(req, {}, function (err) {
+            if (err) throw err
+            console.log("fileeeeeeeeee");
+            console.log(req.file);
+            file_upload = 'file';
+            const userType = req.auth.user.type;
+            const sender_id = req.auth.user._id;
+            const receiver_id = req.body.receiver_id;
+            if (req.body.msg_tag === "file" || req.body.msg_tag === "normal") {
+                checkJobOfferAccepted(userType, sender_id, receiver_id);
+                let path = '';
+                if (req.file) {
+                    if (settings.isLiveApplication()) {
+                        path = req.file.location; // for S3 bucket
+                    } else {
+                        path = settings.FILE_URL + req.file.filename;
+                    }
+                }
+                let newMessage = {
+                    sender_id: sender_id,
+                    receiver_id: receiver_id,
+                    msg_tag: req.body.msg_tag,
+                    is_read: false,
+                    date_created: Date.now(),
+                    message: {
+                        file: {
+                            url: path
+                        }
+                    }
+                };
+                const messageDoc = await
+                messages.insert(newMessage);
 
-    const body = req.body;
-    console.log(body);
-
-    const userType = req.auth.user.type;
-    const sender_id = req.auth.user._id;
-    const receiver_id = body.receiver_id;
-    let newMessage = {
-        sender_id: sender_id,
-        receiver_id: receiver_id,
-        msg_tag: body.msg_tag,
-        is_read: false,
-        date_created: Date.now(),
-        message: {}
-    };
-
-    if (body.msg_tag === "file") {
-        checkJobOfferAccepted(userType, sender_id, receiver_id);
-        let path = '';
-        if(req.file){
-            if (settings.isLiveApplication()) {
-                path = req.file.location; // for S3 bucket
-            } else {
-                path = settings.FILE_URL+req.file.filename;
+                res.send(messageDoc);
             }
-        }
-        newMessage.message.file = {
-            url: path
-        }
+        });
     }
-    else if (body.msg_tag === "normal") {
-        checkJobOfferAccepted(userType, sender_id, receiver_id);
 
-        body.message.normal.message = sanitize.sanitizeHtml(body.message.normal.message);
-        body.message.normal.message = messageHelper.replaceLineBreaksHtml(body.message.normal.message);
-        newMessage.message.normal = body.message.normal;
-    }
-    else if (body.msg_tag === "job_offer") {
-        checkMessageSenderType(userType, 'company');
+    if(!file_upload) {
+        console.log('no file');
+        const body = req.body;
+        console.log(body);
 
-        const messageDoc = await messages.findOne({
+        const userType = req.auth.user.type;
+        const sender_id = req.auth.user._id;
+        const receiver_id = body.receiver_id;
+        let newMessage = {
             sender_id: sender_id,
             receiver_id: receiver_id,
-            msg_tag: 'job_offer'
-        });
-        if (messageDoc) errors.throwError("Job offer already sent", 400);
+            msg_tag: body.msg_tag,
+            is_read: false,
+            date_created: Date.now(),
+            message: {}
+        };
 
-        body.message.job_offer.description = sanitize.sanitizeHtml(body.message.job_offer.description);
-        body.message.job_offer.description = messageHelper.replaceLineBreaksHtml(body.message.job_offer.description);
-        newMessage.message.job_offer = body.message.job_offer;
-    }
-    else if (body.msg_tag === "job_offer_accepted") {
-        checkMessageSenderType(userType, 'candidate');
+        if (body.msg_tag === "normal") {
+            checkJobOfferAccepted(userType, sender_id, receiver_id);
 
-        const messageDoc = await messages.findOne({
-            sender_id: sender_id,
-            receiver_id: receiver_id,
-            msg_tag: 'job_offer_accepted'
-        });
-        if (messageDoc) errors.throwError("Job offer already accepted", 400);
+            body.message.normal.message = sanitize.sanitizeHtml(body.message.normal.message);
+            body.message.normal.message = messageHelper.replaceLineBreaksHtml(body.message.normal.message);
+            newMessage.message.normal = body.message.normal;
+        }
+        else if (body.msg_tag === "job_offer") {
+            checkMessageSenderType(userType, 'company');
 
-        newMessage.message.job_offer_accepted = body.message.job_offer_accepted;
-    }
-    else if (body.msg_tag === "job_offer_rejected") {
-        checkMessageSenderType(userType, 'candidate');
+            const messageDoc = await
+            messages.findOne({
+                sender_id: sender_id,
+                receiver_id: receiver_id,
+                msg_tag: 'job_offer'
+            });
+            if (messageDoc) errors.throwError("Job offer already sent", 400);
 
-        const messageDoc = await messages.findOne( { $or: [{
+            body.message.job_offer.description = sanitize.sanitizeHtml(body.message.job_offer.description);
+            body.message.job_offer.description = messageHelper.replaceLineBreaksHtml(body.message.job_offer.description);
+            newMessage.message.job_offer = body.message.job_offer;
+        }
+        else if (body.msg_tag === "job_offer_accepted") {
+            checkMessageSenderType(userType, 'candidate');
+
+            const messageDoc = await
+            messages.findOne({
                 sender_id: sender_id,
                 receiver_id: receiver_id,
                 msg_tag: 'job_offer_accepted'
-            }, {
+            });
+            if (messageDoc) errors.throwError("Job offer already accepted", 400);
+
+            newMessage.message.job_offer_accepted = body.message.job_offer_accepted;
+        }
+        else if (body.msg_tag === "job_offer_rejected") {
+            checkMessageSenderType(userType, 'candidate');
+
+            const messageDoc = await
+            messages.findOne({
+                $or: [{
+                    sender_id: sender_id,
+                    receiver_id: receiver_id,
+                    msg_tag: 'job_offer_accepted'
+                }, {
+                    sender_id: sender_id,
+                    receiver_id: receiver_id,
+                    msg_tag: 'job_offer_rejected'
+                }]
+            });
+            if (messageDoc) errors.throwError("Job offer already accepted or rejected", 400);
+
+            newMessage.message.job_offer_rejected = body.message.job_offer_rejected;
+        }
+        else if (body.msg_tag === "interview_offer") {
+            checkMessageSenderType(userType, 'company');
+            checkJobOfferAccepted(userType, sender_id, receiver_id);
+
+            if (body.message.interview_offer.description) {
+                body.message.interview_offer.description = sanitize.sanitizeHtml(body.message.interview_offer.description);
+                body.message.interview_offer.description = messageHelper.replaceLineBreaksHtml(body.message.interview_offer.description);
+            }
+            newMessage.message.interview_offer = body.message.interview_offer;
+        }
+        else if (body.msg_tag === "employment_offer") {
+            checkMessageSenderType(userType, 'company');
+            checkJobOfferAccepted(userType, sender_id, receiver_id);
+
+            const lastEmploymentOfferDoc = await
+            messages.findWithCursor({
                 sender_id: sender_id,
                 receiver_id: receiver_id,
-                msg_tag: 'job_offer_rejected'
-            }]});
-        if (messageDoc) errors.throwError("Job offer already accepted or rejected", 400);
+                msg_tag: 'employment_offer'
+            }).sort({date_created: -1}).limit(1).lean();
 
-        newMessage.message.job_offer_rejected = body.message.job_offer_rejected;
-    }
-    else if (body.msg_tag === "interview_offer") {
-        checkMessageSenderType(userType, 'company');
-        checkJobOfferAccepted(userType, sender_id, receiver_id);
-
-        if(body.message.interview_offer.description){
-            body.message.interview_offer.description = sanitize.sanitizeHtml(body.message.interview_offer.description);
-            body.message.interview_offer.description = messageHelper.replaceLineBreaksHtml(body.message.interview_offer.description);
-        }
-        newMessage.message.interview_offer = body.message.interview_offer;
-    }
-    else if (body.msg_tag === "employment_offer") {
-        checkMessageSenderType(userType, 'company');
-        checkJobOfferAccepted(userType, sender_id, receiver_id);
-
-        const lastEmploymentOfferDoc = await messages.findWithCursor({
-            sender_id: sender_id,
-            receiver_id: receiver_id,
-            msg_tag: 'employment_offer'
-        }).sort({date_created: -1}).limit(1).lean();
-
-        if (lastEmploymentOfferDoc) {
-            const responseToOfferDoc = await messages.findOne({ $or: [{
-                    "message.employment_offer_accepted.employment_offer_id": lastEmploymentOfferDoc._id
-                },{
-                    "message.employment_offer_rejected.employment_offer_id": lastEmploymentOfferDoc._id
-            }]});
-            if (!responseToOfferDoc) {
-                errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
+            if (lastEmploymentOfferDoc) {
+                const responseToOfferDoc = await
+                messages.findOne({
+                    $or: [{
+                        "message.employment_offer_accepted.employment_offer_id": lastEmploymentOfferDoc._id
+                    }, {
+                        "message.employment_offer_rejected.employment_offer_id": lastEmploymentOfferDoc._id
+                    }]
+                });
+                if (!responseToOfferDoc) {
+                    errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
+                }
             }
+
+            body.message.employment_offer.description = sanitize.sanitizeHtml(body.message.employment_offer.description);
+            body.message.employment_offer.description = messageHelper.replaceLineBreaksHtml(body.message.employment_offer.description);
+
+            newMessage.message.employment_offer = body.message.employment_offer;
+        }
+        else if (body.msg_tag === "employment_offer_accepted") {
+            checkMessageSenderType(userType, 'candidate');
+            checkJobOfferAccepted(userType, sender_id, receiver_id);
+
+            let messageDoc = await
+            messages.findOne({
+                _id: messages.employment_offer_accepted.employment_offer_id
+            });
+            if (!messageDoc) errors.throwError("Employment offer not found", 400);
+
+            messageDoc = await
+            messages.findOne({
+                msg_status: 'employment_offer_accepted',
+                "messages.employment_offer_accepted.employment_offer_id": messages.employment_offer_accepted.employment_offer_id
+            });
+            if (!messageDoc) errors.throwError("Employment offer has already been accepted", 400);
+
+            newMessage.message.employment_offer_accepted = body.message.employment_offer_accepted;
+        }
+        else if (body.msg_tag === "employment_offer_rejected") {
+            checkMessageSenderType(userType, 'candidate');
+            checkJobOfferAccepted(userType, sender_id, receiver_id);
+
+            let messageDoc = await
+            messages.findOne({
+                _id: messages.employment_offer_rejected.employment_offer_id
+            });
+            if (!messageDoc) errors.throwError("Employment offer not found", 400);
+
+            messageDoc = await
+            messages.findOne({
+                msg_status: 'employment_offer_rejected',
+                "messages.employment_offer_rejected.employment_offer_id": messages.employment_offer_rejected.employment_offer_id
+            });
+            if (!messageDoc) errors.throwError("Employment offer has already been rejected", 400);
+
+            newMessage.message.employment_offer_rejected = body.message.employment_offer_rejected;
         }
 
-        body.message.employment_offer.description = sanitize.sanitizeHtml(body.message.employment_offer.description);
-        body.message.employment_offer.description = messageHelper.replaceLineBreaksHtml(body.message.employment_offer.description);
+        const messageDoc = await
+        messages.insert(newMessage);
 
-        newMessage.message.employment_offer = body.message.employment_offer;
+        res.send(messageDoc);
     }
-    else if (body.msg_tag === "employment_offer_accepted") {
-        checkMessageSenderType(userType, 'candidate');
-        checkJobOfferAccepted(userType, sender_id, receiver_id);
-
-        let messageDoc = await messages.findOne({
-            _id: messages.employment_offer_accepted.employment_offer_id
-        });
-        if (!messageDoc) errors.throwError("Employment offer not found", 400);
-
-        messageDoc = await messages.findOne({
-            msg_status: 'employment_offer_accepted',
-            "messages.employment_offer_accepted.employment_offer_id": messages.employment_offer_accepted.employment_offer_id
-        });
-        if (!messageDoc) errors.throwError("Employment offer has already been accepted", 400);
-
-        newMessage.message.employment_offer_accepted = body.message.employment_offer_accepted;
-    }
-    else if (body.msg_tag === "employment_offer_rejected") {
-        checkMessageSenderType(userType, 'candidate');
-        checkJobOfferAccepted(userType, sender_id, receiver_id);
-
-        let messageDoc = await messages.findOne({
-            _id: messages.employment_offer_rejected.employment_offer_id
-        });
-        if (!messageDoc) errors.throwError("Employment offer not found", 400);
-
-        messageDoc = await messages.findOne({
-            msg_status: 'employment_offer_rejected',
-            "messages.employment_offer_rejected.employment_offer_id": messages.employment_offer_rejected.employment_offer_id
-        });
-        if (!messageDoc) errors.throwError("Employment offer has already been rejected", 400);
-
-        newMessage.message.employment_offer_rejected = body.message.employment_offer_rejected;
-    }
-
-    const messageDoc = await messages.insert(newMessage);
-
-    res.send(messageDoc);
 }
