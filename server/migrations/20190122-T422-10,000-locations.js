@@ -1,5 +1,5 @@
 const users = require('../model/mongoose/users');
-const cities = require('../model/cities');
+const cities = require('../model/mongoose/cities');
 const enumeration =  require('../model/enumerations');
 const mongoose = require('mongoose');
 const logger = require('../controller/services/logger');
@@ -14,7 +14,6 @@ csv()
     .then((jsonObj) => {
 })
 
-
 module.exports.up = async function() {
     const locationsJsonArray=await csv().fromFile(csvFilePath);
     console.log("Total no location in csv: " +locationsJsonArray.length)
@@ -26,9 +25,7 @@ module.exports.up = async function() {
             active : true,
         }
         logger.debug("cities document: ", data);
-        let newDoc = new cities(data);
-
-        await newDoc.save();
+        await cities.insert(data);
         newDocs++;
     }
     console.log("No of locations added in cities collection: " + newDocs);
@@ -47,16 +44,16 @@ module.exports.up = async function() {
             console.log("candidate Doc locations:  " + userDoc.candidate.locations);
 
             /// find in cities collection
-            const citiesDoc = await cities.find({city :  {$in: userDoc.candidate.locations}}).lean();
-            if(citiesDoc) {
-                for(let cities of citiesDoc) {
+
+            await cities.findAndIterate({city :  {$in: userDoc.candidate.locations}}, async function(citiesDoc) {
+                if(citiesDoc) {
                     citiesId = {
-                        city : cities._id,
+                        city : citiesDoc._id,
                         visa_not_needed : false,
                     }
                     locations.push(citiesId);
                 }
-            }
+            });
 
             for(let loc of userDoc.candidate.locations) {
                 if(loc === 'remote') {
