@@ -4,7 +4,7 @@ module.exports = function(fn) {
     }
 };
 
-module.exports.thenNext = function(fn) {
+module.exports.thenNext = function thenNext(fn) {;
     return function (req, res, next) {
         Promise.resolve(fn(req, res, next)).catch(next).then(next);
     }

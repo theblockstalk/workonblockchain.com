@@ -12,12 +12,31 @@ const endpoints = [
     require('./controller/api-v2/conversations/patch.controller')
 ];
 
-function isEmpty(obj) {
+/*function isEmpty(obj) {
     for(let key in obj) {
         if(obj.hasOwnProperty(key))
             return false;
     }
     return true;
+}*/
+
+function isEmpty(obj) {
+    for(let prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function files(files) {
+    if (files)
+    {
+        return function (req, res, next) {
+            Promise.resolve(files(req, res, next)).catch(next).then(next);
+        }
+    }
+
 }
 
 const validateInputs = function(request, inputSchemas) {
@@ -46,11 +65,11 @@ const validateInputs = function(request, inputSchemas) {
 const register = function(endpoint) {
     const path = '/v2' + endpoint.request.path;
     router[endpoint.request.type](path,
-        asyncMiddleware.thenNext(endpoint.files),
         sanitizer.middleware,
         asyncMiddleware.thenNext(validateInputs(endpoint.request, endpoint.inputValidation)),
         asyncMiddleware.thenNext(endpoint.auth),
-        asyncMiddleware(endpoint.endpoint)
+        asyncMiddleware(endpoint.endpoint),
+        asyncMiddleware.thenNext(files(endpoint.files))
     );
 };
 
