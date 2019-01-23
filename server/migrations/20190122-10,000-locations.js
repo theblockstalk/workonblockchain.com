@@ -15,10 +15,10 @@ csv()
 })
 
 function removeDuplicates(originalArray, prop) {
-    var newArray = [];
-    var lookupObject  = {};
+    let newArray = [];
+    let lookupObject  = {};
 
-    for(var i in originalArray) {
+    for(let i in originalArray) {
         lookupObject[originalArray[i][prop]] = originalArray[i];
     }
 
@@ -30,8 +30,8 @@ function removeDuplicates(originalArray, prop) {
 
 module.exports.up = async function() {
     const locationsJsonArray=await csv().fromFile(csvFilePath);
-
     console.log("Total no location in csv: " +locationsJsonArray.length)
+
     for(let location of locationsJsonArray) {
         let data = {
             city : location.city,
@@ -48,6 +48,7 @@ module.exports.up = async function() {
 
     totalDocsToProcess =await users.count({type : 'candidate'});
     logger.debug(totalDocsToProcess);
+
     await users.findAndIterate({type : 'candidate'}, async function(candidateDoc) {
         totalProcessed++;
         let countryList = {};
