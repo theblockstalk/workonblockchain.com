@@ -110,18 +110,13 @@ const sendMessage = async function (newMessage) {
 const checkLastEmpoymentOffer = async function (sender_id,receiver_id){
     console.log(sender_id);
     console.log(receiver_id);
-    const lastEmploymentOfferDoc = await
-        messages.findLastJobOffer({
+    const lastEmploymentOfferDoc = await messages.findLastJobOffer({
             sender_id: sender_id,
             receiver_id: receiver_id,
             msg_tag: 'employment_offer'
         });
-    console.log('after call');
     console.log(lastEmploymentOfferDoc);
-    if(lastEmploymentOfferDoc)
-        errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
-
-    /*if (lastEmploymentOfferDoc) {
+    if (lastEmploymentOfferDoc) {
         const responseToOfferDoc = await
             messages.findOne({
                 $or: [{
@@ -130,10 +125,14 @@ const checkLastEmpoymentOffer = async function (sender_id,receiver_id){
                     "message.employment_offer_rejected.employment_offer_id": lastEmploymentOfferDoc._id
                 }]
             });
+        console.log(responseToOfferDoc);
         if (!responseToOfferDoc) {
-            errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
+            return true;
         }
-    }*/
+        else{
+            return false;
+        }
+    }
 }
 
 module.exports.endpoint = async function (req, res) {
@@ -181,9 +180,14 @@ module.exports.endpoint = async function (req, res) {
                 newMessage.message.file = file;
             }
             else if (req.body.msg_tag === "employment_offer") {
+                console.log(path);
                 checkMessageSenderType(userType, 'company');
                 checkJobOfferAccepted(userType, sender_id, receiver_id);
-                checkLastEmpoymentOffer(sender_id, receiver_id);
+                const ressss = checkLastEmpoymentOffer(sender_id, receiver_id);
+                console.log(ressss);
+                if(ressss)
+                    errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
+
                 let employment_offer = {};
 
                 console.log(newMessage);
