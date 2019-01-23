@@ -186,6 +186,12 @@
                             <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
                               {{msg.message.job_offer_rejected.message}}
                             </span>
+                            <span *ngIf="msg.message.employment_offer_accepted" [innerHTML]="msg.message.employment_offer_accepted.message | safeHtml">
+                              {{msg.message.employment_offer_accepted.message}}
+                            </span>
+                            <span *ngIf="msg.message.employment_offer_rejected" [innerHTML]="msg.message.employment_offer_rejected.message | safeHtml">
+                              {{msg.message.employment_offer_rejected.message}}
+                            </span>
                             <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
                               {{msg.message.normal.message}}
                             </span>
@@ -284,6 +290,12 @@
                             </span>
                             <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
                               {{msg.message.job_offer_rejected.message}}
+                            </span>
+                            <span *ngIf="msg.message.employment_offer_accepted" [innerHTML]="msg.message.employment_offer_accepted.message | safeHtml">
+                              {{msg.message.employment_offer_accepted.message}}
+                            </span>
+                            <span *ngIf="msg.message.employment_offer_rejected" [innerHTML]="msg.message.employment_offer_rejected.message | safeHtml">
+                              {{msg.message.employment_offer_rejected.message}}
                             </span>
                             <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
                               {{msg.message.normal.message}}

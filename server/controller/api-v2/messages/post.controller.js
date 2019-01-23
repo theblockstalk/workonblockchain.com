@@ -190,8 +190,7 @@ module.exports.endpoint = async function (req, res) {
     else if (body.msg_tag === "job_offer_rejected") {
         checkMessageSenderType(userType, 'candidate');
 
-        const messageDoc = await
-        messages.findOne({
+        const messageDoc = await messages.findOne({
             $or: [{
                 sender_id: sender_id,
                 receiver_id: receiver_id,
@@ -218,8 +217,10 @@ module.exports.endpoint = async function (req, res) {
     }
     else if (body.msg_tag === "employment_offer") {
         checkMessageSenderType(userType, 'company');
-        await checkJobOfferAccepted(userType, sender_id, receiver_id);
-        await checkLastEmpoymentOffer(sender_id, receiver_id);
+        await
+        checkJobOfferAccepted(userType, sender_id, receiver_id);
+        await
+        checkLastEmpoymentOffer(sender_id, receiver_id);
 
         req.body.description = sanitize.sanitizeHtml(req.body.description);
         req.body.description = messageHelper.replaceLineBreaksHtml(req.body.description);
@@ -236,7 +237,7 @@ module.exports.endpoint = async function (req, res) {
 
         const path = req.file.path;
         console.log(path);
-        if (path){
+        if (path) {
             employment_offer.file_url = path;
         }
 
@@ -245,37 +246,38 @@ module.exports.endpoint = async function (req, res) {
     }
     else if (body.msg_tag === "employment_offer_accepted") {
         checkMessageSenderType(userType, 'candidate');
-        await checkJobOfferAccepted(userType, sender_id, receiver_id);
+        checkJobOfferAccepted(userType, sender_id, receiver_id);
 
         let messageDoc = await
         messages.findOne({
-            _id: messages.employment_offer_accepted.employment_offer_id
+            _id: body.message.employment_offer_accepted.employment_offer_id
         });
-        if (!messageDoc) errors.throwError("Employment offer not found", 400);
+        if (messageDoc) errors.throwError("Employment offer not found", 400);
 
-        messageDoc = await messages.findOne({
+        messageDoc = await
+        messages.findOne({
             msg_status: 'employment_offer_accepted',
-            "messages.employment_offer_accepted.employment_offer_id": messages.employment_offer_accepted.employment_offer_id
+            "messages.employment_offer_accepted.employment_offer_id": body.message.employment_offer_accepted.employment_offer_id
         });
-        if (!messageDoc) errors.throwError("Employment offer has already been accepted", 400);
+        if (messageDoc) errors.throwError("Employment offer has already been accepted", 400);
 
         newMessage.message.employment_offer_accepted = body.message.employment_offer_accepted;
     }
     else if (body.msg_tag === "employment_offer_rejected") {
         checkMessageSenderType(userType, 'candidate');
-        await checkJobOfferAccepted(userType, sender_id, receiver_id);
+        checkJobOfferAccepted(userType, sender_id, receiver_id);
 
-        let messageDoc = await messages.findOne({
-            _id: messages.employment_offer_rejected.employment_offer_id
-        });
-        if (!messageDoc) errors.throwError("Employment offer not found", 400);
-
-        messageDoc = await
+        let messageDoc = await
         messages.findOne({
-            msg_status: 'employment_offer_rejected',
-            "messages.employment_offer_rejected.employment_offer_id": messages.employment_offer_rejected.employment_offer_id
+            _id: body.message.employment_offer_rejected.employment_offer_id
         });
-        if (!messageDoc) errors.throwError("Employment offer has already been rejected", 400);
+        if (messageDoc) errors.throwError("Employment offer not found", 400);
+
+        messageDoc = await messages.findOne({
+            msg_status: 'employment_offer_rejected',
+            "messages.employment_offer_rejected.employment_offer_id": body.message.employment_offer_rejected.employment_offer_id
+        });
+        if (messageDoc) errors.throwError("Employment offer has already been rejected", 400);
 
         newMessage.message.employment_offer_rejected = body.message.employment_offer_rejected;
     }
