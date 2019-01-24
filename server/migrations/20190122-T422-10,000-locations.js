@@ -42,7 +42,7 @@ module.exports.up = async function() {
 
             /// find in cities collection
             await cities.findAndIterate({city :  {$in: userDoc.candidate.locations}}, async function(citiesDoc) {
-                    locations.push({city: citiesDoc._id, visa_not_needed: false});
+                locations.push({city: citiesDoc._id, visa_not_needed: false});
             });
 
             for(let loc of userDoc.candidate.locations) {
@@ -62,14 +62,14 @@ module.exports.up = async function() {
             //nationality
             if(userDoc.nationality) {
                 for(let loc of nationalityJsonArray) {
-                    if(loc.Nationality === userDoc.nationality) {
+                    const checkCountryExists = obj =>obj.country === loc.Country;
+                    if(loc.Nationality === userDoc.nationality && locations.some(checkCountryExists) === false) {
                         locations.push({country: loc.Country, visa_not_needed : true});
                     }
                 }
             }
 
             if(locations && locations.length > 0) {
-                locations = removeDuplicates(locations, "country");
                 await users.update({ _id: userDoc._id },{ $set: {'candidate.locations' : locations} });
                 totalModified++;
             }
@@ -89,19 +89,21 @@ module.exports.up = async function() {
 module.exports.down = async function() {
 
     totalDocsToProcess =await users.count({type : 'candidate'});
-
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
+        let locations = [];
         totalProcessed++;
 
         console.log("candidate Doc id: " + userDoc._id);
         logger.debug("candidate Doc locations:  ", userDoc.candidate.locations);
 
         if(userDoc.candidate.locations) {
-            let locations = [];
             for(let loc of userDoc.candidate.locations) {
                 if(loc.city){
                     const cityDoc= await cities.findOneById(loc.city);
                     locations.push(cityDoc.city);
+                }
+                if(loc.remote === true) {
+                    locations.push("remote");
                 }
             }
 
@@ -114,18 +116,4 @@ module.exports.down = async function() {
     console.log('Total user document to process: ' + totalDocsToProcess);
     console.log('Total processed document: ' + totalProcessed);
     console.log('Total modified document: ' + totalModified);
-}
-
-function removeDuplicates(originalArray, prop) {
-    var newArray = [];
-    var lookupObject  = {};
-
-    for(var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-
-    for(i in lookupObject) {
-        newArray.push(lookupObject[i]);
-    }
-    return newArray;
 }
