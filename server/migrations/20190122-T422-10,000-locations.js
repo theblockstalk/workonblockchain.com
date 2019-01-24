@@ -4,18 +4,14 @@ const enumeration =  require('../model/enumerations');
 const mongoose = require('mongoose');
 const logger = require('../controller/services/logger');
 const csv=require('csvtojson');
-const csvFilePath='C:\\Users\\DELL\\Downloads\\worldcities - processed.csv';
+const citiesFilePath='F:\\workonblockchain\\WOB_local\\workonblockchain.com\\server\\migrations\\cities-csv\\worldcities - processed.csv';
+const nationalityFilePath='F:\\workonblockchain\\WOB_local\\workonblockchain.com\\server\\migrations\\cities-csv\\worldcities - processed nationalities.csv';
 
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
 let newDocs= 0, totalIncompleteDoc= 0;
 
-csv()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
-})
-
 module.exports.up = async function() {
-    const locationsJsonArray=await csv().fromFile(csvFilePath);
+    const locationsJsonArray=await csv().fromFile(citiesFilePath);
     console.log("Total no location in csv: " +locationsJsonArray.length)
 
     for(let location of locationsJsonArray) {
@@ -32,6 +28,10 @@ module.exports.up = async function() {
 
     totalDocsToProcess =await users.count({type : 'candidate'});
     logger.debug(totalDocsToProcess);
+
+    //process nationality csv
+    const nationalityJsonArray=await csv().fromFile(nationalityFilePath);
+    logger.debug("nationality document Object: ", nationalityJsonArray);
 
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
@@ -52,6 +52,8 @@ module.exports.up = async function() {
                     locations.push({remote:true, visa_not_needed: false});
                 }
             }
+
+            //base_country
             const countriesEnum = enumeration.countries;
             if(userDoc.candidate.base_country) {
                 if(countriesEnum.find(x => x === userDoc.candidate.base_country)) {
@@ -59,7 +61,17 @@ module.exports.up = async function() {
                 }
             }
 
+            //nationality
+            if(userDoc.nationality) {
+                for(let loc of nationalityJsonArray) {
+                    if(loc.Nationality === userDoc.nationality) {
+                        locations.push({country: loc.Country, visa_not_needed : true});
+                    }
+                }
+            }
+
             if(locations && locations.length > 0) {
+                locations = removeDuplicates(locations, "country");
                 await users.update({ _id: userDoc._id },{ $set: {'candidate.locations' : locations} });
                 totalModified++;
             }
@@ -104,4 +116,18 @@ module.exports.down = async function() {
     console.log('Total user document to process: ' + totalDocsToProcess);
     console.log('Total processed document: ' + totalProcessed);
     console.log('Total modified document: ' + totalModified);
+}
+
+function removeDuplicates(originalArray, prop) {
+    var newArray = [];
+    var lookupObject  = {};
+
+    for(var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for(i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+    return newArray;
 }
