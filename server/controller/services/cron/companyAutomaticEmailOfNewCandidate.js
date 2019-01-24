@@ -45,12 +45,12 @@ module.exports = async function () {
 
                     let candidateList = [];
                     for ( let i = 0 ; i < candidateDocs.candidates.length; i++) {
-                        const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidateDocs.candidates[i]._creator._id;
+                        const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidateDocs.candidates[i]._id;
                         const candidateInfo = {
                             url: url,
-                            why_work: candidateDocs.candidates[i].why_work,
+                            why_work: candidateDocs.candidates[i].candidate.why_work,
                             initials: filterReturnData.createInitials(candidateDocs.candidates[i].first_name, candidateDocs.candidates[i].last_name),
-                            programming_languages: candidateDocs.candidates[i].programming_languages
+                            programming_languages: candidateDocs.candidates[i].candidate.programming_languages
                         };
                         candidateList.push(candidateInfo);
                     }
