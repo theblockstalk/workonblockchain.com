@@ -65,6 +65,69 @@ const bodySchema = new Schema({
             }),
             required: false
         },
+        job_offer_accepted: {
+            type: new Schema({
+                message: {
+                    type: String,
+                    required: true
+                }
+            }),
+            required: false
+        },
+        job_offer_rejected: {
+            type: new Schema({
+                message: {
+                    type: String,
+                    required: true
+                }
+            }),
+            required: false
+        },
+        interview_offer: {
+            type: new Schema({
+                location: {
+                    type: String,
+                    required: true
+                },
+                description: {
+                    type: String,
+                    required: true
+                },
+                date_time: {
+                    type: Date,
+                    required: true
+                }
+            }),
+            required: false
+        },
+        employment_offer_accepted: {
+            type: new Schema({
+                employment_offer_message_id: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Messages',
+                    required: false
+                },
+                message: {
+                    type: String,
+                    required: false
+                }
+            }),
+            required: false
+        },
+        employment_offer_rejected: {
+            type: new Schema({
+                employment_offer_message_id: {
+                    type: Schema.Types.ObjectId,
+                    required: true,
+                    ref: 'Messages'
+                },
+                message: {
+                    type: String,
+                    required: true
+                }
+            }),
+            required: false
+        }
     }
 });
 

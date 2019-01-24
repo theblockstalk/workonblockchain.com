@@ -366,26 +366,26 @@ export class ChatComponent implements OnInit {
                                                   this.log = error;
                                                 }
                                               );
-                                                if(this.count == 0){
-                                                    if(this.users[key_users_new].first_name){
-                                                        this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'',key_users_new);
-                                                    }
-                                                    else{
-                                                        this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'',key_users_new);
-                                                    }
-                                                }
-                                                this.count = this.count + 1;
-                                                //this.currentUser._creator //receiver
-                                                /*this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
-                                                .subscribe(
-                                                    data => {
-                                                        this.unread_msgs_info.push(data);
-                                                    },
-                                                    error => {
-                                                        //console.log('error');
-                                                        //console.log(error);
-                                                    }
-                                                );*/
+                                              if(this.count == 0){
+                                                  if(this.users[key_users_new].first_name){
+                                                      this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'',key_users_new);
+                                                  }
+                                                  else{
+                                                      this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'',key_users_new);
+                                                  }
+                                              }
+                                              this.count = this.count + 1;
+                                              //this.currentUser._creator //receiver
+                                              /*this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
+                                              .subscribe(
+                                                  data => {
+                                                      this.unread_msgs_info.push(data);
+                                                  },
+                                                  error => {
+                                                      //console.log('error');
+                                                      //console.log(error);
+                                                  }
+                                              );*/
                                             }
                                             //console.log(this.unread_msgs_info);
                                         },
@@ -447,22 +447,25 @@ export class ChatComponent implements OnInit {
                                             //console.log(this.users);
                                             this.count = 0;
                                             for (var key_users_new in this.users) {
+                                              this.authenticationService.getUnreadMessageCount(this.users[key_users_new]._creator._id)
+                                                .subscribe(
+                                                  data => {
+                                                    if(this.users[key_users_new]._creator._id === data['sender_id']) {
+                                                      this.users[key_users_new].unreadCount = data['unReadCount'];
+                                                    }
+                                                    console.log(this.users);
+                                                    console.log(data);
+                                                  },
+                                                  error => {
+                                                    //console.log('error');
+                                                    //console.log(error);
+                                                    this.log = error;
+                                                  }
+                                                );
                                                 if(this.count == 0){
                                                     this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name,key_users_new);
                                                 }
                                                 this.count = this.count + 1;
-                                                //this.currentUser._creator //receiver
-                                                this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
-                                                .subscribe(
-                                                    data => {
-                                                        //console.log(data);
-                                                        this.unread_msgs_info.push(data);
-                                                    },
-                                                    error => {
-                                                        //console.log('error');
-                                                        //console.log(error);
-                                                    }
-                                                );
                                             }
                                         },
                                         error => {

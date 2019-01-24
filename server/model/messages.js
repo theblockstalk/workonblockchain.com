@@ -113,7 +113,7 @@ const MessageSchema = new Schema({
                 },
                 description: {
                     type: String,
-                    required: false
+                    required: true
                 },
                 date_time: {
                     type: Date,

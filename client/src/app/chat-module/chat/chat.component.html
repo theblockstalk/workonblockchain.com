@@ -688,9 +688,13 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Job description:</label>
-                <p class="job_decs" [innerHTML]="job_desc.description | safeHtml">
-                  {{job_desc.description}}
-                </p>
+                <ng-container *ngIf="!job_desc.description;else no_job_desc">
+                </ng-container>
+                <ng-template #no_job_desc>
+                  <p class="job_decs" [innerHTML]="job_desc.description | safeHtml">
+                    {{job_desc.description}}
+                  </p>
+                </ng-template>
               </div>
             </div>
           </div>

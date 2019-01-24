@@ -1,6 +1,6 @@
 const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const Messages = require('../../../model/mongoose/messages');
+const messages = require('../../../model/mongoose/messages');
 const mongoose = require('mongoose');
 
 module.exports.request = {
@@ -37,7 +37,7 @@ module.exports.endpoint = async function (req, res) {
     console.log('in endpoint');
     let userId = req.auth.user._id;
 
-    const updateResult = await Messages.findAndUpdate(
+    const updateResult = await messages.findAndUpdate(
         {$and : [
             {
                 receiver_id: userId

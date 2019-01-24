@@ -1,6 +1,6 @@
 const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const Messages = require('../../../../model/messages');
+const messages = require('../../../../model/messages');
 const mongoose = require('mongoose');
 
 module.exports.request = {
@@ -52,7 +52,7 @@ module.exports.endpoint = async function (req, res) {
 
     console.log(userId);
     console.log(req.query);
-    const messageDocs = await Messages.find({
+    const messageDocs = await messages.find({
         $or : [
             { $and : [ { receiver_id : mongoose.Types.ObjectId(req.params.sender_id) }, { sender_id : userId } ] },
             { $and : [ { receiver_id : userId }, { sender_id : mongoose.Types.ObjectId(req.params.sender_id) } ] }
