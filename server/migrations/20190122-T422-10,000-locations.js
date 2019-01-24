@@ -4,8 +4,8 @@ const enumeration =  require('../model/enumerations');
 const mongoose = require('mongoose');
 const logger = require('../controller/services/logger');
 const csv=require('csvtojson');
-const citiesFilePath='F:\\workonblockchain\\WOB_local\\workonblockchain.com\\server\\migrations\\cities-csv\\worldcities - processed.csv';
-const nationalityFilePath='F:\\workonblockchain\\WOB_local\\workonblockchain.com\\server\\migrations\\cities-csv\\worldcities - processed nationalities.csv';
+const citiesFilePath= 'F:\\workonblockchain\\WOB_local\\workonblockchain.com\\server\\migrations\\cities-csv\\worldcities-processed.csv';
+const nationalityFilePath= 'F:\\workonblockchain\\WOB_local\\workonblockchain.com\\server\\migrations\\cities-csv\\worldcities-processed-nationalities.csv';
 
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
 let newDocs= 0, totalIncompleteDoc= 0;
@@ -31,7 +31,7 @@ module.exports.up = async function() {
 
     //process nationality csv
     const nationalityJsonArray=await csv().fromFile(nationalityFilePath);
-    logger.debug("nationality document Object: ", nationalityJsonArray);
+    logger.debug("Nationality document object: ", nationalityJsonArray);
 
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
         totalProcessed++;
