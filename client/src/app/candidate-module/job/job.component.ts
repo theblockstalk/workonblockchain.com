@@ -103,7 +103,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
-
+            console.log(data);
             if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.about_active_class = 'fa fa-check-circle text-success';

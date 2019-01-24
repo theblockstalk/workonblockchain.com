@@ -4,8 +4,8 @@ const enumeration =  require('../model/enumerations');
 const mongoose = require('mongoose');
 const logger = require('../controller/services/logger');
 const csv=require('csvtojson');
-const citiesFilePath= 'F:\\workonblockchain\\WOB_local\\workonblockchain.com\\server\\migrations\\cities-csv\\worldcities-processed.csv';
-const nationalityFilePath= 'F:\\workonblockchain\\WOB_local\\workonblockchain.com\\server\\migrations\\cities-csv\\worldcities-processed-nationalities.csv';
+const citiesFilePath = __dirname + '/cities-csv/worldcities-processed.csv';
+const nationalityFilePath = __dirname + '/cities-csv/worldcities-processed-nationalities.csv';
 
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
 let newDocs= 0, totalIncompleteDoc= 0;
@@ -42,9 +42,7 @@ module.exports.up = async function() {
 
             /// find in cities collection
             await cities.findAndIterate({city :  {$in: userDoc.candidate.locations}}, async function(citiesDoc) {
-                if(citiesDoc) {
                     locations.push({city: citiesDoc._id, visa_not_needed: false});
-                }
             });
 
             for(let loc of userDoc.candidate.locations) {

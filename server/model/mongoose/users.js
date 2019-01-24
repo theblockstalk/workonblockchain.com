@@ -9,15 +9,15 @@ module.exports.insert = async function insert(data) {
 }
 
 module.exports.findOne = async function findOne(selector) {
-    return await User.findOne(selector).lean();
+    return await User.findOne(selector).populate('candidate.locations.city').lean();
 }
 
 module.exports.findOneById = async function findOneById(id) {
-    return await User.findById(id).lean();
+    return await User.findById(id).populate('candidate.locations.city').lean();
 }
 
 module.exports.findOneByEmail = async function findOneByEmail(email) {
-    return await User.findOne({email: email}).lean();
+    return await User.findOne({email: email}).populate('candidate.locations.city').lean();
 }
 
 module.exports.update = async function update(selector, updateObj) {
@@ -42,7 +42,7 @@ module.exports.count = async function count(selector) {
 }
 
 module.exports.findWithCursor = async function findWithCursor(selector) {
-    return await User.find(selector).cursor();
+    return await User.find(selector).populate('candidate.locations.city').cursor();
 }
 
 module.exports.findAndIterate = async function findAndIterate(selector, fn) {
