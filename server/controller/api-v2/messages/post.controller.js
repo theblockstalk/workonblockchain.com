@@ -114,15 +114,14 @@ const checkLastEmpoymentOffer = async function (sender_id,receiver_id){
         msg_tag: 'employment_offer'
     });
     if (lastEmploymentOfferDoc) {
-        const responseToOfferDoc = await
-            messages.findOne({
-                $or: [{
-                    "message.employment_offer_accepted.employment_offer_message_id": lastEmploymentOfferDoc._id
-                }, {
-                    "message.employment_offer_rejected.employment_offer_message_id": lastEmploymentOfferDoc._id
-                }]
-            });
-        console.log(responseToOfferDoc);
+        const responseToOfferDoc = await messages.findOne({
+            $or: [{
+                "message.employment_offer_accepted.employment_offer_id": lastEmploymentOfferDoc._id
+            }, {
+                "message.employment_offer_rejected.employment_offer_id": lastEmploymentOfferDoc._id
+            }]
+        });
+
         if (!responseToOfferDoc) {
             errors.throwError("Last employment offer needs to be accepted or rejected before a new offer can be sent", 400);
         }
@@ -191,7 +190,8 @@ module.exports.endpoint = async function (req, res) {
     else if (body.msg_tag === "job_offer_rejected") {
         checkMessageSenderType(userType, 'candidate');
 
-        const messageDoc = await messages.findOne({
+        const messageDoc = await
+        messages.findOne({
             $or: [{
                 sender_id: sender_id,
                 receiver_id: receiver_id,
@@ -204,82 +204,22 @@ module.exports.endpoint = async function (req, res) {
         });
         if (messageDoc) errors.throwError("Job offer already accepted or rejected", 400);
 
-            newMessage.message.job_offer_accepted = body.message.job_offer_accepted;
-        }
-        else if (body.msg_tag === "job_offer_rejected") {
-            checkMessageSenderType(userType, 'candidate');
-
-            const messageDoc = await
-            messages.findOne({
-                $or: [{
-                    sender_id: sender_id,
-                    receiver_id: receiver_id,
-                    msg_tag: 'job_offer_accepted'
-                }, {
-                    sender_id: sender_id,
-                    receiver_id: receiver_id,
-                    msg_tag: 'job_offer_rejected'
-                }]
-            });
-            if (messageDoc) errors.throwError("Job offer already accepted or rejected", 400);
-
-            newMessage.message.job_offer_rejected = body.message.job_offer_rejected;
-        }
-        else if (body.msg_tag === "interview_offer") {
-            checkMessageSenderType(userType, 'company');
-            checkJobOfferAccepted(userType, sender_id, receiver_id);
-
-            if (body.message.interview_offer.description) {
-                body.message.interview_offer.description = sanitize.sanitizeHtml(body.message.interview_offer.description);
-                body.message.interview_offer.description = messageHelper.replaceLineBreaksHtml(body.message.interview_offer.description);
-            }
-            newMessage.message.interview_offer = body.message.interview_offer;
-        }
-        else if (body.msg_tag === "employment_offer_accepted") {
-            checkMessageSenderType(userType, 'candidate');
-            checkJobOfferAccepted(userType, sender_id, receiver_id);
-
-            let messageDoc = await
-            messages.findOne({
-                _id: body.message.employment_offer_accepted.employment_offer_message_id
-            });
-            if (!messageDoc) errors.throwError("Employment offer not found", 400);
-
-            messageDoc = await
-            messages.findOne({
-                msg_status: 'employment_offer_accepted',
-                "messages.employment_offer_accepted.employment_offer_message_id": body.message.employment_offer_accepted.employment_offer_message_id
-            });
-            if (messageDoc) errors.throwError("Employment offer has already been accepted", 400);
-
-            newMessage.message.employment_offer_accepted = body.message.employment_offer_accepted;
-        }
-        else if (body.msg_tag === "employment_offer_rejected") {
-            checkMessageSenderType(userType, 'candidate');
-            checkJobOfferAccepted(userType, sender_id, receiver_id);
-
-            let messageDoc = await
-            messages.findOne({
-                _id: body.message.employment_offer_rejected.employment_offer_message_id
-            });
-            if (!messageDoc) errors.throwError("Employment offer not found", 400);
-
-            messageDoc = await
-            messages.findOne({
-                msg_status: 'employment_offer_rejected',
-                "messages.employment_offer_rejected.employment_offer_message_id": body.message.employment_offer_rejected.employment_offer_message_id
-            });
-            if (messageDoc) errors.throwError("Employment offer has already been rejected", 400);
-
-            newMessage.message.employment_offer_rejected = body.message.employment_offer_rejected;
         newMessage.message.job_offer_rejected = body.message.job_offer_rejected;
+    }
+    else if (body.msg_tag === "interview_offer") {
+        checkMessageSenderType(userType, 'company');
+        await checkJobOfferAccepted(userType, sender_id, receiver_id);
+
+        if (body.message.interview_offer.description) {
+            body.message.interview_offer.description = sanitize.sanitizeHtml(body.message.interview_offer.description);
+            body.message.interview_offer.description = messageHelper.replaceLineBreaksHtml(body.message.interview_offer.description);
+        }
+        newMessage.message.interview_offer = body.message.interview_offer;
     }
     else if (body.msg_tag === "employment_offer") {
         checkMessageSenderType(userType, 'company');
-        await
-        checkJobOfferAccepted(userType, sender_id, receiver_id);
-        await
-        checkLastEmpoymentOffer(sender_id, receiver_id);
+        await checkJobOfferAccepted(userType, sender_id, receiver_id);
+        await checkLastEmpoymentOffer(sender_id, receiver_id);
 
         req.body.description = sanitize.sanitizeHtml(req.body.description);
         req.body.description = messageHelper.replaceLineBreaksHtml(req.body.description);
@@ -296,12 +236,48 @@ module.exports.endpoint = async function (req, res) {
 
         const path = req.file.path;
         console.log(path);
-        if (path) {
+        if (path){
             employment_offer.file_url = path;
         }
 
         newMessage.message.employment_offer = employment_offer;
         console.log(employment_offer);
+    }
+    else if (body.msg_tag === "employment_offer_accepted") {
+        checkMessageSenderType(userType, 'candidate');
+        await checkJobOfferAccepted(userType, sender_id, receiver_id);
+
+        let messageDoc = await
+        messages.findOne({
+            _id: messages.employment_offer_accepted.employment_offer_id
+        });
+        if (!messageDoc) errors.throwError("Employment offer not found", 400);
+
+        messageDoc = await messages.findOne({
+            msg_status: 'employment_offer_accepted',
+            "messages.employment_offer_accepted.employment_offer_id": messages.employment_offer_accepted.employment_offer_id
+        });
+        if (!messageDoc) errors.throwError("Employment offer has already been accepted", 400);
+
+        newMessage.message.employment_offer_accepted = body.message.employment_offer_accepted;
+    }
+    else if (body.msg_tag === "employment_offer_rejected") {
+        checkMessageSenderType(userType, 'candidate');
+        await checkJobOfferAccepted(userType, sender_id, receiver_id);
+
+        let messageDoc = await messages.findOne({
+            _id: messages.employment_offer_rejected.employment_offer_id
+        });
+        if (!messageDoc) errors.throwError("Employment offer not found", 400);
+
+        messageDoc = await
+        messages.findOne({
+            msg_status: 'employment_offer_rejected',
+            "messages.employment_offer_rejected.employment_offer_id": messages.employment_offer_rejected.employment_offer_id
+        });
+        if (!messageDoc) errors.throwError("Employment offer has already been rejected", 400);
+
+        newMessage.message.employment_offer_rejected = body.message.employment_offer_rejected;
     }
 
     const messageDoc = await messages.insert(newMessage);

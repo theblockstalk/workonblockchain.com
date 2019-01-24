@@ -29,16 +29,6 @@ function isEmpty(obj) {
     return true;
 }
 
-function files(files) {
-    if (files)
-    {
-        return function (req, res, next) {
-            Promise.resolve(files(req, res, next)).catch(next).then(next);
-        }
-    }
-
-}
-
 const validateInputs = function(request, inputSchemas) {
     console.log('in validating inputs');
     const validationTypes = ['query', 'params', 'body'];
@@ -65,11 +55,11 @@ const validateInputs = function(request, inputSchemas) {
 const register = function(endpoint) {
     const path = '/v2' + endpoint.request.path;
     router[endpoint.request.type](path,
+        asyncMiddleware.thenNext(endpoint.files),
         sanitizer.middleware,
         asyncMiddleware.thenNext(validateInputs(endpoint.request, endpoint.inputValidation)),
         asyncMiddleware.thenNext(endpoint.auth),
-        asyncMiddleware(endpoint.endpoint),
-        asyncMiddleware.thenNext(files(endpoint.files))
+        asyncMiddleware(endpoint.endpoint)
     );
 };
 
