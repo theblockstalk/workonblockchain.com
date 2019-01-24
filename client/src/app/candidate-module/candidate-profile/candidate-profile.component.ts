@@ -206,12 +206,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   }
                 }
 
-
-
-
                 this.countries = data['candidate'].locations;
                 this.countries.sort();
-                if(this.countries.indexOf("remote") > -1){
+                if (this.countries.findIndex(obj => obj.remote === true) > -1) {
                   this.countries.splice(0, 0, "remote");
                   this.countries = this.filter_array(this.countries);
                 }

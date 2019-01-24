@@ -129,7 +129,7 @@ export class JobComponent implements OnInit,AfterViewInit {
                     this.selectedValueArray.push({name: country1.country , visa_not_needed : country1.visa_not_needed});
                   }
                   if (country1.city) {
-
+                    this.selectedValueArray.push({name: country1.city , visa_not_needed : country1.visa_not_needed});
                   }
 
                 }

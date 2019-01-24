@@ -246,8 +246,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           {
             if(data)
             {
-              this.selectedValueArray.push({name:'Afghanistan (country)' , visa_not_needed : true} , {name:'Albania (country)' , visa_not_needed : false} )
-              this.selectedLocations = this.selectedValueArray;
+              console.log(data);
               this.info.email = data['email'];
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
@@ -480,20 +479,24 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas &&  data['candidate'].expected_salary && data['candidate'].availability_day && data['candidate'].expected_salary_currency)
               {
 
-                for (let country1 of data['candidate'].locations)
+                if(data['candidate'].locations)
                 {
-
-                  for(let option of this.options)
+                  for (let country1 of data['candidate'].locations)
                   {
+                    if (country1.remote === true) {
+                      this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
 
-                    if(option.value == country1)
-                    {
-                      option.checked=true;
-                      this.selectedcountry.push(country1);
+                    }
+
+                    if (country1.country) {
+                      this.selectedValueArray.push({name: country1.country , visa_not_needed : country1.visa_not_needed});
+                    }
+                    if (country1.city) {
+                      this.selectedValueArray.push({name: country1.city , visa_not_needed : country1.visa_not_needed});
                     }
 
                   }
-
+                  this.selectedLocations = this.selectedValueArray;
                 }
 
                 for(let interest of data['candidate'].interest_areas)
@@ -1274,6 +1277,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.error_msg = "";
     this.count = 0;
     this.submit = "click";
+    this.validatedLocation = [];
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1324,9 +1328,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           this.validatedLocation.push({country: location.name, visa_not_needed : location.visa_not_needed });
         }
         if(location.name === 'Remote') {
-          this.validatedLocation.push({country: location.name, visa_not_needed : location.visa_not_needed });
+          this.validatedLocation.push({remote: true, visa_not_needed : location.visa_not_needed });
         }
       }
+      profileForm.value.country = this.validatedLocation;
+
     }
 
     if(this.selectedLocations && this.selectedLocations.length > 10) {
@@ -1567,6 +1573,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         profileForm.value.salary = parseInt(this.salary);
 
       }
+
       this.updateProfileData(profileForm.value);
     }
     else {
@@ -1582,7 +1589,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   submit;
   updateProfileData(profileForm)
   {
-    profileForm.selectedlocations = this.validatedLocation;
     console.log(profileForm);
     this.experiencearray=[];
     this.education_json_array=[];
@@ -1659,6 +1665,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.selectedValue){
       profileForm.interest_area = this.selectedValue;
     }
+
+
 
       this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
         .subscribe(
