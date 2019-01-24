@@ -103,8 +103,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
-            this.selectedValueArray.push({name:'Afghanistan (country)' , visa_not_needed : true} , {name:'Albania (country)' , visa_not_needed : false} )
-            this.selectedLocations = this.selectedValueArray;
 
             if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
@@ -122,20 +120,20 @@ export class JobComponent implements OnInit,AfterViewInit {
               {
                 for (let country1 of data['candidate'].locations)
                 {
+                  if (country1.remote === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
 
-                  for(let option of this.options)
-                  {
+                  }
 
-                    if(option.value === country1)
-                    {
-                      option.checked=true;
-                      this.selectedcountry.push(country1);
-
-                    }
+                  if (country1.country) {
+                    this.selectedValueArray.push({name: country1.country , visa_not_needed : country1.visa_not_needed});
+                  }
+                  if (country1.city) {
 
                   }
 
                 }
+                this.selectedLocations = this.selectedValueArray;
               }
 
 
@@ -393,6 +391,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.error_msg = "";
     this.count = 0;
+    this.validatedLocation = [];
     if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
       this.country_input_log = "Please select at least one location";
     }
@@ -412,7 +411,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           this.validatedLocation.push({country: location.name, visa_not_needed : location.visa_not_needed });
         }
         if(location.name === 'Remote') {
-          this.validatedLocation.push({country: 'remote', visa_not_needed : location.visa_not_needed });
+          this.validatedLocation.push({remote: true, visa_not_needed : location.visa_not_needed });
         }
 
       }
@@ -479,7 +478,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       }
       f.value.current_salary = parseInt(f.value.current_salary);
       f.value.expected_salary = parseInt(f.value.expected_salary);
-      f.value.selectedlocations = this.validatedLocation;
+      f.value.country = this.validatedLocation;
       console.log(f.value);
       this.authenticationService.job(this.currentUser._creator, f.value)
         .subscribe(
@@ -538,7 +537,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
     let citiesOptions=[];
     for(let cities of citiesInput.locations) {
-      if(cities['remote']) {
+      if(cities['remote'] === true) {
         citiesOptions.push({name: 'Remote'});
       }
       if(cities['city']) {
@@ -597,7 +596,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
     else {
     }
-
+    this.selectedLocations = this.selectedValueArray;
   }
 
   updateCitiesOptions(e) {
