@@ -16,6 +16,10 @@ module.exports.findOneById = async function findOneById(id) {
     return await User.findById(id).lean();
 }
 
+module.exports.findOneByIdWithPopulate = async function findOneByIdWithPopulate(id) {
+    return await User.findById(id).populate('candidate.locations.city').lean();
+}
+
 module.exports.findOneByEmail = async function findOneByEmail(email) {
     return await User.findOne({email: email}).lean();
 }
