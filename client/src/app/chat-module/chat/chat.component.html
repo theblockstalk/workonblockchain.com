@@ -161,14 +161,16 @@
                               {{msg.message.employment_offer.description}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.message.interview_offer" [innerHTML]="msg.message.interview_offer.description | safeHtml">
+                            <ng-container *ngIf="msg.msg_tag === 'interview_offer';else no_interview_desc">
                               <ng-container *ngIf="!msg.message.interview_offer.description;else interview_desc">
+                                N/A
                               </ng-container>
                               <ng-template #interview_desc>
-                                {{msg.message.interview_offer.description}}
+                                <span [innerHTML]="msg.message.interview_offer.description | safeHtml">
+                                  {{msg.message.interview_offer.description}}
+                                </span>
                               </ng-template>
-                              <br/>
-                            </span>
+                            </ng-container>
                             <span *ngIf="msg.message.employment_offer">
                               <ng-container *ngIf="!msg.message.employment_offer.file_url;else employ_file_url">
                               </ng-container>
@@ -266,14 +268,16 @@
                               {{msg.message.employment_offer.description}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.message.interview_offer" [innerHTML]="msg.message.interview_offer.description | safeHtml">
+                            <ng-container *ngIf="msg.msg_tag === 'interview_offer';else no_interview_desc">
                               <ng-container *ngIf="!msg.message.interview_offer.description;else interview_desc">
+                                N/A
                               </ng-container>
                               <ng-template #interview_desc>
-                                {{msg.message.interview_offer.description}}
+                                <span [innerHTML]="msg.message.interview_offer.description | safeHtml">
+                                  {{msg.message.interview_offer.description}}
+                                </span>
                               </ng-template>
-                              <br/>
-                            </span>
+                            </ng-container>
                             <span *ngIf="msg.message.employment_offer">
                               <ng-container *ngIf="!msg.message.employment_offer.file_url;else employ_file_url">
                               </ng-container>

@@ -76,6 +76,7 @@ export class AdminDisplayChatComponent implements OnInit {
             msg_data =>
             {
               if(msg_data['conversations']){
+                console.log(this.user_id);
                 this.new_messges.push(msg_data['conversations']);
                 this.new_messges = this.filter_array(msg_data['conversations']);
                 console.log(this.new_messges);
@@ -86,7 +87,7 @@ export class AdminDisplayChatComponent implements OnInit {
 						        //console.log('my');
                   }
                   else{
-                    this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].msg_tag,this.type)
+                    this.authenticationService.getCandidate(this.user_id,this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].msg_tag,this.type)
                     .subscribe(
                       data => {
                         this.users.push(data['users']);
@@ -140,6 +141,7 @@ export class AdminDisplayChatComponent implements OnInit {
             msg_data =>
             {
               if(msg_data['conversations']){
+                console.log(this.user_id);
                 this.new_messges.push(msg_data['conversations']);
                 this.new_messges = this.filter_array(msg_data['conversations']);
                 console.log(this.new_messges);
@@ -150,7 +152,7 @@ export class AdminDisplayChatComponent implements OnInit {
                     //console.log('my');
                   }
                   else{
-                    this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',this.new_messges[key_messages].msg_tag,'company')
+                    this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,this.user_id,this.new_messges[key_messages].msg_tag,'company')
                     .subscribe(
                       data =>
                       {

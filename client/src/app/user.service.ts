@@ -1061,10 +1061,9 @@ export class UserService {
       }
     }), catchError((error: any) =>
     {
-      console.log(error);
       if (error.status )
       {
-        return throwError(new Error(error.status));
+        return throwError(error);
       }
 
     }));

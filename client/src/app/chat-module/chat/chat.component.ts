@@ -1249,7 +1249,7 @@ export class ChatComponent implements OnInit {
     this.is_company_reply = 1;
     this.msg_tag = 'employment_offer';
     this.is_job_offer = 1;
-    this.credentials.msg_body = 'You have been send an employment offer!';
+    this.credentials.msg_body = '';
     this.description = my_credentials.job_description;
     formData.append('receiver_id', my_credentials.id);
     formData.append('description', this.description);
@@ -1299,7 +1299,7 @@ export class ChatComponent implements OnInit {
             );
         },
         error => {
-          console.log(error);
+          this.credentials.msg_body = '';
           if (error['status'] === 400) {
             this.job_offer_log_error = 'Please ask the candidate to accept or reject the previous employment offer, then you can send a new one';
           }

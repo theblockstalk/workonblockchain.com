@@ -7,6 +7,7 @@ const filterReturnData = require('../users/filterReturnData');
 
 module.exports = async function (req, res) {
     let sender_id,receiver_id,msg_tag,user_type;
+    let is_admin = 0;
     if (req.body.sender_id === '0') { // company is calling endpoint
         sender_id = req.auth.user._id;
         receiver_id = req.body.receiver_id;
@@ -21,6 +22,8 @@ module.exports = async function (req, res) {
     }
     else { // admin is calling endpoint
         if (req.auth.user.is_admin){
+            console.log('admin is calling');
+            is_admin = 1;
             sender_id = req.body.sender_id;
             receiver_id = req.body.receiver_id;
             msg_tag = req.body.msg_tag;
@@ -28,6 +31,8 @@ module.exports = async function (req, res) {
         }
     }
     if(req.body.type === 'candidate') {
+        console.log('getting cand data');
+        console.log('is_admin: ' + is_admin);
         const userDoc = await users.findOne({
             $and: [{ _id : receiver_id }, { type : user_type }]
         }).lean();
@@ -38,15 +43,17 @@ module.exports = async function (req, res) {
             if (candidateProfile)
             {
                 let query_result = filterReturnData.removeSensativeData(candidateProfile);
-                if (req.auth.user.is_admin){
+                if (is_admin){
                     res.send({
                         users:query_result
                     });
                 }
                 else {
+                    console.log('Sender ID: '+sender_id);
+                    console.log('Receiver ID: '+receiver_id);
                     const acceptedJobOffer = await Messages.find({
-                        sender_id: sender_id,
-                        receiver_id: receiver_id,
+                        sender_id: receiver_id,
+                        receiver_id: sender_id,
                         msg_tag: 'job_offer_accepted'
                     })
                     console.log(acceptedJobOffer);
@@ -70,6 +77,8 @@ module.exports = async function (req, res) {
 		}
     }
     else{
+        console.log('getting comp data');
+        console.log('is_admin: ' + is_admin);
         const userDoc = await users.findOne({
             $and: [{ _id : sender_id }, { type : user_type }]
         }).lean();
