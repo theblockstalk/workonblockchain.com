@@ -223,12 +223,14 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
 
                   }
 
-                  if (country1.country) {
-                    this.selectedValueArray.push({name: country1.country , visa_not_needed : country1.visa_not_needed});
-                  }
-                  if (country1.city) {
-                    this.selectedValueArray.push({name: country1.city , visa_not_needed : country1.visa_not_needed});
-                  }
+                if (country1.country) {
+                      let country = country1.country + ' (country)'
+                      this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
+                    }
+                    if (country1.city) {
+                      let city = country1.city + ' (city)';
+                      this.selectedValueArray.push({name: city , visa_not_needed : country1.visa_not_needed});
+                    }
 
                 }
                 this.countries = this.selectedValueArray;

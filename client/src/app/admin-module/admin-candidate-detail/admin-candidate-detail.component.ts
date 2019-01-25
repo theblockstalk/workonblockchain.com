@@ -84,6 +84,7 @@ export class AdminCandidateDetailComponent implements OnInit {
   commercial_skills;
   formal_skills;
   created_date;
+  selectedValueArray=[];
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -134,11 +135,33 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.education_history.sort(this.education_sort_desc);
               }
 
-              this.countries = data['candidate'].locations;
-              this.countries.sort();
-              if(this.countries.indexOf("remote") > -1){
-                this.countries.splice(0, 0, "remote");
-                this.countries = this.filter_array(this.countries);
+              if(data['candidate'].locations)
+              {
+                for (let country1 of data['candidate'].locations)
+                {
+                  if (country1.remote === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+
+                  }
+
+                  if (country1.country) {
+                      let country = country1.country + ' (country)'
+                      this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
+                    }
+                    if (country1.city) {
+                      let city = country1.city + ' (city)';
+                      this.selectedValueArray.push({name: city , visa_not_needed : country1.visa_not_needed});
+                    }
+
+                }
+                this.countries = this.selectedValueArray;
+                this.countries.sort();
+                if(this.countries.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                    this.countries.splice(0, 0, remoteValue);
+                    this.countries = this.filter_array(this.countries);
+
+                }
               }
               this.interest_area =data['candidate'].interest_areas;
               this.interest_area.sort();

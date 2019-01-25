@@ -489,10 +489,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     }
 
                     if (country1.country) {
-                      this.selectedValueArray.push({name: country1.country , visa_not_needed : country1.visa_not_needed});
+                      let country = country1.country + ' (country)'
+                      this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
                     }
                     if (country1.city) {
-                      this.selectedValueArray.push({name: country1.city , visa_not_needed : country1.visa_not_needed});
+                      let city = country1.city + ' (city)';
+                      this.selectedValueArray.push({name: city , visa_not_needed : country1.visa_not_needed});
                     }
 
                   }
@@ -1333,7 +1335,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           this.validatedLocation.push({city: location._id, visa_not_needed : location.visa_not_needed });
         }
         if(location.name.includes('country')){
-          this.validatedLocation.push({country: location.name, visa_not_needed : location.visa_not_needed });
+          this.validatedLocation.push({country: location.name.split(" (")[0], visa_not_needed : location.visa_not_needed });
         }
         if(location.name === 'Remote') {
           this.validatedLocation.push({remote: true, visa_not_needed : location.visa_not_needed });
