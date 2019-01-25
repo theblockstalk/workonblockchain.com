@@ -107,6 +107,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   base_city;
   commercial_skills;
   formal_skills;
+  selectedValueArray;
   ngOnInit()
   {
     this.infoo='';
@@ -148,6 +149,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
               if(data)
               {
                 console.log(data);
+                this.selectedValueArray = [];
                 this.date_created = data['candidate'].status[data['candidate'].status.length-1].timestamp;
                 this.candidate_status = data['candidate'].status[0];
 
@@ -206,12 +208,39 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   }
                 }
 
-                this.countries = data['candidate'].locations;
+                /*this.countries = data['candidate'].locations;
                 this.countries.sort();
                 if (this.countries.findIndex(obj => obj.remote === true) > -1) {
-                  this.countries.splice(0, 0, "remote");
                   this.countries = this.filter_array(this.countries);
+                }*/
+
+                if(data['candidate'].locations)
+              {
+                for (let country1 of data['candidate'].locations)
+                {
+                  if (country1.remote === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+
+                  }
+
+                  if (country1.country) {
+                    this.selectedValueArray.push({name: country1.country , visa_not_needed : country1.visa_not_needed});
+                  }
+                  if (country1.city) {
+                    this.selectedValueArray.push({name: country1.city , visa_not_needed : country1.visa_not_needed});
+                  }
+
                 }
+                this.countries = this.selectedValueArray;
+                this.countries.sort();
+                if(this.countries.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                    this.countries.splice(0, 0, remoteValue);
+                    this.countries = this.filter_array(this.countries);
+
+                }
+              }
+              console.log(this.countries);
 
                 this.interest_area =data['candidate'].interest_areas;
                 this.interest_area.sort();

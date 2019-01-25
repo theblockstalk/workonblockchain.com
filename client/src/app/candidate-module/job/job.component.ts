@@ -133,7 +133,16 @@ export class JobComponent implements OnInit,AfterViewInit {
                   }
 
                 }
+                
+                this.selectedValueArray.sort();
+                if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+                    this.selectedValueArray.splice(0, 0, remoteValue);
+                    this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+                }
                 this.selectedLocations = this.selectedValueArray;
+                console.log(this.selectedLocations);
               }
 
 
@@ -597,12 +606,26 @@ export class JobComponent implements OnInit,AfterViewInit {
     else {
     }
     this.selectedLocations = this.selectedValueArray;
+    this.selectedLocations.sort();
+                if(this.selectedLocations.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.selectedLocations.find((obj => obj.name === 'Remote'));
+                    this.selectedLocations.splice(0, 0, remoteValue);
+                    this.selectedLocations = this.filter_array(this.selectedLocations);
+
+                }
   }
 
   updateCitiesOptions(e) {
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
+    this.selectedLocations.sort();
+                if(this.selectedLocations.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.selectedLocations.find((obj => obj.name === 'Remote'));
+                    this.selectedLocations.splice(0, 0, remoteValue);
+                    this.selectedLocations = this.filter_array(this.selectedLocations);
+
+                }
   }
 
   deleteLocationRow(i){

@@ -496,6 +496,13 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     }
 
                   }
+                   this.selectedValueArray.sort();
+                  if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+                    this.selectedValueArray.splice(0, 0, remoteValue);
+                    this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+                  }
                   this.selectedLocations = this.selectedValueArray;
                 }
 
@@ -1278,6 +1285,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.count = 0;
     this.submit = "click";
     this.validatedLocation = [];
+    console.log(profileForm.value);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1652,10 +1660,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
     else {
       profileForm.language_experience_year = this.LangexpYear;
-    }
-
-    if(this.selectedcountry){
-      profileForm.country = this.selectedcountry;
     }
 
     if(this.jobselected){
