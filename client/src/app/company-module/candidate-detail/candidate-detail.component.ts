@@ -79,6 +79,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   commercial_skills;
   formal_skills;
   message;
+  selectedValueArray=[];
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -93,6 +94,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   ngOnInit()
   {
     this.invalidMsg = '';
+    this.selectedValueArray=[];
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
@@ -163,12 +165,35 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
-              this.countries = dataa['candidate'].locations;
-              this.countries.sort();
-              if(this.countries.indexOf("remote") > -1){
-                this.countries.splice(0, 0, "remote");
-                this.countries = this.filter_array(this.countries);
+              if(dataa['candidate'].locations)
+              {
+                for (let country1 of dataa['candidate'].locations)
+                {
+                  if (country1.remote === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+
+                  }
+
+                if (country1.country) {
+                      let country = country1.country + ' (country)'
+                      this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
+                    }
+                    if (country1.city) {
+                      let city = country1.city + ' (city)';
+                      this.selectedValueArray.push({name: city , visa_not_needed : country1.visa_not_needed});
+                    }
+
+                }
+                this.countries = this.selectedValueArray;
+                this.countries.sort();
+                if(this.countries.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                    this.countries.splice(0, 0, remoteValue);
+                    this.countries = this.filter_array(this.countries);
+
+                }
               }
+              console.log(this.countries);
 
               this.interest_area =dataa['candidate'].interest_areas;
               this.interest_area.sort();

@@ -145,7 +145,7 @@
               <div class="form-group">
                 <label>Desired location: </label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of countries'> {{country.charAt(0).toUpperCase()}}{{country.slice(1)}} </div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of countries'> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}: {{country.visa_not_needed}} </div>
                 </div>
               </div>
             </div>
