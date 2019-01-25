@@ -1921,21 +1921,25 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
           if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_not_needed:false});
           else this.selectedValueArray.push({ name: e.target.value, visa_not_needed:false});
         }
-        this.selectedValueArray.sort(function(a, b){
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        });
-        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))){
-          this.selectedValueArray.splice(0, 0, {name : 'Remote', visa_not_needed:false});
-          this.selectedValueArray = this.filter_array(this.selectedValueArray);
-        }
+       
 
       }
 
 
     }
-    else {
+   if(this.selectedValueArray.length > 0) {
+    this.selectedValueArray.sort(function(a, b){
+                        if(a.name < b.name) { return -1; }
+                        if(a.name > b.name) { return 1; }
+                        return 0;
+                      })
+                if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+                    this.selectedValueArray.splice(0, 0, remoteValue);
+                    this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+                }
+                this.selectedLocations = this.selectedValueArray;
     }
 
   }

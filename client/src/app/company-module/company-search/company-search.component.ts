@@ -331,10 +331,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   this.imgPath =  data['company_logo'];
                 }
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
-                  this.saved_searches = data['saved_searches'];
-                  this.selectedValueArray.push({_id:'12341', name:'Pakistan (country)'} , {_id: '86321' ,name:'Islamabad (city)' } );
+                  
 
-                 // this.selectedValueArray =  data['saved_searches'][0].location;
+                  console.log(data['saved_searches']);
+
+                 this.selectedValueArray =  data['saved_searches'][0].location;
                   this.skill_value = data['saved_searches'][0].skills;
 
                   this.role_value = data['saved_searches'][0].position;

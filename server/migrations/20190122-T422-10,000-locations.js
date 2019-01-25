@@ -42,7 +42,7 @@ module.exports.up = async function() {
 
             /// find in cities collection
             await cities.findAndIterate({city :  {$in: userDoc.candidate.locations}}, async function(citiesDoc) {
-                locations.push({city: citiesDoc._id, visa_not_needed: false});
+                locations.push({city: citiesDoc._id, visa_not_needed: true});
             });
 
             for(let loc of userDoc.candidate.locations) {

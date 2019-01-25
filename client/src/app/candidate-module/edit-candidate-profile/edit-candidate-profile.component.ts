@@ -250,7 +250,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               this.info.email = data['email'];
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
-
                 this.info.contact_number = data['contact_number'];
                 this.info.github_account = data['candidate'].github_account;
                 this.info.exchange_account = data['candidate'].stackexchange_account;
@@ -493,7 +492,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                       this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
                     }
                     if (country1.city) {
-                      let city = country1.city + ' (city)';
+                      let city = country1.city.city + ", " + country1.city.country + ' (city)';
                       this.selectedValueArray.push({name: city , visa_not_needed : country1.visa_not_needed});
                     }
 
@@ -1923,7 +1922,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         citiesOptions.push({name: 'Remote'});
       }
       if(cities['city']) {
-        let cityString = cities['city'].city + " (city)";
+        let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
         let countryString = cities['city'].country + " (country)";
         citiesOptions.push({name : countryString });
         citiesOptions.push({_id : cities['city']._id , name : cityString});
@@ -1960,21 +1959,26 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_not_needed:false});
           else this.selectedValueArray.push({ name: e.target.value, visa_not_needed:false});
         }
-        this.selectedValueArray.sort(function(a, b){
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        });
-        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))){
-          this.selectedValueArray.splice(0, 0, {name : 'Remote', visa_not_needed:false});
-          this.selectedValueArray = this.filter_array(this.selectedValueArray);
-        }
+        
 
       }
 
 
     }
-    else {
+   
+    if(this.selectedValueArray.length > 0) {
+    this.selectedValueArray.sort(function(a, b){
+                        if(a.name < b.name) { return -1; }
+                        if(a.name > b.name) { return 1; }
+                        return 0;
+                      })
+                if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+                    this.selectedValueArray.splice(0, 0, remoteValue);
+                    this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+                }
+                this.selectedLocations = this.selectedValueArray;
     }
 
   }

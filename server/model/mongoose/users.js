@@ -24,7 +24,7 @@ module.exports.findByIdAndPopulate = async function findByIdAndPopulate(id) {
                 if(loc.city) {
                     const index = userDoc.candidate.locations.findIndex((obj => obj.city === loc.city));
                     const citiesDoc = await cities.findOneById(loc.city);
-                    userDoc.candidate.locations[index].city = citiesDoc.city;
+                    userDoc.candidate.locations[index].city = citiesDoc;
                 }
             }
         }

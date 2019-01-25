@@ -46,7 +46,7 @@
                 {{country_input_log}}
               </div>
               <div *ngIf="selectedValueArray.length > 0">
-                <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
+                <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
               </div>
             </div>
             <hr/>
