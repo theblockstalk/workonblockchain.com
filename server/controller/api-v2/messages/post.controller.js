@@ -4,6 +4,7 @@ const enumerations = require('../../../model/enumerations');
 const errors = require('../../services/errors');
 const sanitize = require('../../services/sanitize');
 const messages = require('../../../model/mongoose/messages');
+const users = require('../../../model/mongoose/users');
 const messageHelper = require('../messageHelpers');
 const multer = require('../../../controller/middleware/multer');
 const object = require('../../services/objects');
@@ -186,15 +187,16 @@ module.exports.endpoint = async function (req, res) {
     console.log('in endpoint');
     const userType = req.auth.user.type;
     const sender_id = req.auth.user._id;
-    let receiver_id, newMessage;
+    let newMessage;
 
-    receiver_id = req.body.receiver_id;
+    const receiver_id = req.body.receiver_id;
+    const timestamp = Date.now();
     newMessage = {
         sender_id: sender_id,
         receiver_id: receiver_id,
         msg_tag: req.body.msg_tag,
         is_read: false,
-        date_created: Date.now(),
+        date_created: timestamp,
         message: {}
     };
 
@@ -338,6 +340,74 @@ module.exports.endpoint = async function (req, res) {
         newMessage.message.employment_offer_rejected = body.message.employment_offer_rejected;
     }
 
+    let senderConv, senderSelect, senderUpdate;
+    if (req.auth.user.conversations) {
+        const conversations = req.auth.user.conversations;
+        senderConv = conversations.filter(item => item.user_id === receiver_id);
+        if (senderConv) {
+            senderSelect = { '_id': sender_id, 'conversations._id': senderConv._id };
+            senderUpdate = { $set: {
+                    'conversations.$.user_id': receiver_id,
+                    'conversations.$.count': senderConv.count++,
+                    'conversations.$.unread_count': 0,
+                    'conversations.$.last_message': timestamp
+            }}
+        } else {
+            senderSelect = { '_id': sender_id }
+            senderUpdate = { $push: { conversations: {
+                user_id: receiver_id,
+                count: 1,
+                unread_count: 0,
+                last_message: timestamp
+            }}}
+        }
+    }
+    else {
+        senderSelect = { '_id': sender_id }
+        senderUpdate = { $push: { conversations: {
+            user_id: receiver_id,
+            count: 1,
+            unread_count: 0,
+            last_message: timestamp
+        }}}
+    }
+
+    let receiverConv, receiverSelect, receiverUpdate;
+    const receiverUserDoc = await users.findOneById(receiver_id);
+    if (receiverUserDoc.conversations) {
+        const conversations = receiverUserDoc.conversations;
+        receiverConv = conversations.filter(item => item.user_id === sender_id);
+        if (receiverConv) {
+            receiverSelect = { '_id': receiver_id, 'conversations._id': receiverConv._id };
+            receiverUpdate = { $set: {
+                    'conversations.$.user_id': sender_id,
+                    'conversations.$.count': receiverConv.count++,
+                    'conversations.$.unread_count': receiverConv.unread_count++,
+                    'conversations.$.last_message': timestamp
+                }
+            }
+        } else {
+            receiverSelect = { '_id': receiver_id }
+            receiverUpdate = { $push: { conversations: {
+                user_id: sender_id,
+                count: 1,
+                unread_count: 0,
+                last_message: timestamp
+            }}}
+        }
+    }
+    else {
+        receiverSelect = { '_id': receiver_id }
+        receiverUpdate = { $push: { conversations: {
+            user_id: sender_id,
+            count: 1,
+            unread_count: 1,
+            last_message: timestamp
+        }}}
+    }
+
     const messageDoc = await messages.insert(newMessage);
+    await users.update(senderSelect, senderUpdate);
+    await users.update(receiverSelect, receiverUpdate);
     res.send(messageDoc);
 }
