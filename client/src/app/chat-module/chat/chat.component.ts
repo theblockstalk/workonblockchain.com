@@ -1083,8 +1083,8 @@ export class ChatComponent implements OnInit {
                 }
               }
               console.log(data['jobOffer']);
-              if(data['jobOffer'][1]){
-                if(data['jobOffer'][1] === "accepted"){
+              if(data['jobOffer']){
+                if(data['jobOffer'] === "accepted"){
                   this.company_reply = 1;
                 }
                 else{

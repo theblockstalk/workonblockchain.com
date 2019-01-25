@@ -59,18 +59,19 @@ module.exports.endpoint = async function (req, res) {
         ]
     }).sort({_id: 'ascending'}).lean();
 
-    let jobOfferStatus = [];
-    for(let i=0; i< messageDocs.length; i++){
-        if (messageDocs[i].msg_tag === 'job_offer_accepted'){
-            jobOfferStatus.push('accepted');
-        }
-        else if (messageDocs[i].msg_tag === 'job_offer_rejected'){
-            jobOfferStatus.push('rejected');
-        }
-        else if (messageDocs[i].msg_tag === 'job_offer'){
-            jobOfferStatus.push('sent');
-        }
+    let jobOfferStatus = '';
+    if (messageDocs.length === 0) {
+        errors.throwError('No messages found', 404)
     }
+    console.log(jobOfferStatus.length);
+    if(messageDocs.length >= 2 && messageDocs[1].msg_tag === 'job_offer_accepted') {
+        jobOfferStatus = 'accepted';
+    } else if (messageDocs.length >= 2 && messageDocs[1].msg_tag === 'job_offer_rejected') {
+        jobOfferStatus = 'rejected';
+    } else if(messageDocs[0].msg_tag === 'job_offer') {
+        jobOfferStatus = 'sent';
+    }
+
     console.log(jobOfferStatus);
 
     res.send({

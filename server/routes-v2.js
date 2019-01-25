@@ -12,14 +12,6 @@ const endpoints = [
     require('./controller/api-v2/conversations/patch.controller')
 ];
 
-/*function isEmpty(obj) {
-    for(let key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}*/
-
 function isEmpty(obj) {
     for(let prop in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, prop)) {

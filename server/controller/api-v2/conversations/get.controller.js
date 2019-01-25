@@ -30,7 +30,7 @@ module.exports.endpoint = async function (req, res) {
     //const userType = req.auth.user.type;
     let userId;
 
-    if(req.query.user_id && req.query.user_id !== '0'){
+    if(req.query.admin){
         userId = req.query.user_id;
     }
     else{

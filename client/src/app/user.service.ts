@@ -10,7 +10,6 @@ import { map, catchError } from 'rxjs/operators';
 import {environment} from '../environments/environment';
 
 const URL = environment.backend_url;
-const messagesURL = environment.backend_url_for_messages;
 
 @Injectable()
 export class UserService {
@@ -832,7 +831,7 @@ export class UserService {
 
   get_user_messages_comp(receiver_id: string)
   {
-    return this.http.get(messagesURL+'conversations/'+receiver_id+'/messages/', {
+    return this.http.get(URL+'v2/conversations/'+receiver_id+'/messages/', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -855,8 +854,8 @@ export class UserService {
   {
     console.log('admin is calling');
     let queryString = '?receiver_id='+sender_id+'&admin=true';
-    //return this.http.get(messagesURL+'conversations/'+queryString, {
-    return this.http.get(messagesURL+'conversations/'+receiver_id+'/messages'+queryString , {
+    //return this.http.get(URL+'v2/conversations/'+queryString, {
+    return this.http.get(URL+'v2/conversations/'+receiver_id+'/messages'+queryString , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -877,7 +876,7 @@ export class UserService {
 
   get_user_messages_only_comp()
   {
-    return this.http.get(messagesURL+'conversations', {
+    return this.http.get(URL+'v2/conversations', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res)
@@ -899,7 +898,7 @@ export class UserService {
     console.log('admin is calling');
     let queryString = '?user_id='+id+'&admin=true';
     console.log(queryString);
-    return this.http.get(messagesURL+'conversations/'+queryString, {
+    return this.http.get(URL+'v2/conversations/'+queryString, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res)
@@ -1051,7 +1050,7 @@ export class UserService {
   send_file(formData: any)
   {
     console.log(formData);
-    return this.http.post(messagesURL+'messages',formData, {
+    return this.http.post(URL+'v2/messages',formData, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1283,7 +1282,7 @@ export class UserService {
   }
 
   update_chat_msg_status_new(sender_id: string,status:boolean){
-    return this.http.patch(messagesURL+'conversations/'+sender_id+'/messages?is_read='+status, {},{
+    return this.http.patch(URL+'v2/conversations/'+sender_id+'/messages?is_read='+status, {},{
     //return this.http.post(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
@@ -1358,7 +1357,7 @@ export class UserService {
   }
 
   send_message(receiver_id:string,msg_tag:string, message:any){
-    return this.http.post(messagesURL+'messages', {receiver_id:receiver_id,msg_tag:msg_tag,message:message}, {
+    return this.http.post(URL+'v2/messages', {receiver_id:receiver_id,msg_tag:msg_tag,message:message}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1564,7 +1563,7 @@ export class UserService {
   }
 
   getUnreadMessageCount(sender_id:string) {
-    return this.http.get(messagesURL+'messages?sender_id='+sender_id, {
+    return this.http.get(URL+'v2/messages?sender_id='+sender_id, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res) {
@@ -1578,7 +1577,7 @@ export class UserService {
   }
 
   getLastJobDesc() {
-    return this.http.get(messagesURL+'messages/', {
+    return this.http.get(URL+'v2/messages/', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res) {

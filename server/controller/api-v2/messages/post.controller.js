@@ -6,8 +6,7 @@ const sanitize = require('../../services/sanitize');
 const messages = require('../../../model/mongoose/messages');
 const messageHelper = require('../messageHelpers');
 const multer = require('../../../controller/middleware/multer');
-const settings = require('../../../settings');
-const sanitizer = require('../../../controller/middleware/sanitizer');
+const object = require('../../services/objects');
 
 module.exports.request = {
     type: 'post',
@@ -138,14 +137,6 @@ module.exports.inputValidation = {
 module.exports.auth = async function (req) {
     console.log('in auth');
     await auth.isValidUser(req);
-}
-
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
 }
 
 const checkJobOfferAccepted = async function (userType, sender_id, receiver_id) {
@@ -284,20 +275,22 @@ module.exports.endpoint = async function (req, res) {
         await checkJobOfferAccepted(userType, sender_id, receiver_id);
         await checkLastEmpoymentOffer(sender_id, receiver_id);
 
-        req.body.description = sanitize.sanitizeHtml(req.body.description);
-        req.body.description = messageHelper.replaceLineBreaksHtml(req.body.description);
-
         let employment_offer = {
             title: req.body.title,
             salary: req.body.salary,
             salary_currency: req.body.salary_currency,
             type: req.body.type,
-            start_date: req.body.start_date,
-            description: req.body.description
+            start_date: req.body.start_date
         };
+        if(req.body.description){
+            req.body.description = sanitize.sanitizeHtml(req.body.description);
+            req.body.description = messageHelper.replaceLineBreaksHtml(req.body.description);
+            employment_offer.description = req.body.description;
+        }
+
         console.log(newMessage);
 
-        if(!isEmpty(req.file)){
+        if(!object.isEmpty(req.file)){
             const path = req.file.path;
             console.log(path);
             if (path) {
