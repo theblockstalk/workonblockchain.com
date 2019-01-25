@@ -1,7 +1,6 @@
 const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const messages = require('../../../model/mongoose/messages');
-const mongoose = require('mongoose');
+const users = require('../../../model/mongoose/users');
 
 module.exports.request = {
     type: 'patch',
@@ -36,21 +35,10 @@ function isEmpty(obj) {
 module.exports.endpoint = async function (req, res) {
     console.log('in endpoint');
     let userId = req.auth.user._id;
+    let senderId = req.params.sender_id;
 
-    const updateResult = await messages.findAndUpdate(
-        {$and : [
-            {
-                receiver_id: userId
-            },
-            {
-                sender_id: mongoose.Types.ObjectId(req.params.sender_id)
-            },
-            {
-                is_read: false
-            }
-        ]},{is_read:req.query.is_read}
-    );
-    res.send({
-        updatedCount: updateResult.nModified
+    await users.update({ '_id': userId, 'conversations.user_id': senderId}, {
+        $set: { 'conversations.$.unread_count': 0 }
     });
+    res.send();
 }

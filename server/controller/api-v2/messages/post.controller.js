@@ -195,7 +195,6 @@ module.exports.endpoint = async function (req, res) {
         sender_id: sender_id,
         receiver_id: receiver_id,
         msg_tag: req.body.msg_tag,
-        is_read: false,
         date_created: timestamp,
         message: {}
     };
