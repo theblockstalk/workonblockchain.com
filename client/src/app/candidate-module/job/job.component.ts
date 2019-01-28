@@ -118,7 +118,6 @@ export class JobComponent implements OnInit,AfterViewInit {
             {
               if(data['candidate'].locations)
               {
-                console.log(data['candidate'].locations)
                 for (let country1 of data['candidate'].locations)
                 {
                   if (country1['remote'] === true) {
@@ -132,7 +131,7 @@ export class JobComponent implements OnInit,AfterViewInit {
                   }
                   if (country1['city']) {
                     let city = country1['city'].city + ' (city)';
-                    this.selectedValueArray.push({name: city , visa_not_needed : country1.visa_not_needed});
+                    this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
                   }
                 }
 
@@ -571,45 +570,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
         });
 
-    /*var regex1 = new RegExp('foo');
-    var regex2 = new RegExp('fioo', 'i');
-
-    console.log(regex1.test('Football'));
-// expected output: false
-
-    console.log(regex2.ignoreCase);
-// expected output: true
-
-    console.log(regex2.test('Football'));*/
-
-    //console.log(/rem/.test("remote"));
-    //console.log(/remote/i.test("remote"));
-    //console.log(/Remote/i.test("remote"));
-
-    /*let citiesInput = {
-      locations: [{
-        remote: true,
-      }, {
-        city: {
-          _id: 1234,
-          city: "London",
-          country: "Pakistan",
-          active: true
-        }
-      },{
-        country: "Australia"
-      },{
-        country: "India"
-      },{
-        city: {
-          _id: 2345,
-          city: "Toronto",
-          country: "Pakistan",
-          active: true
-        }
-      }]
-    };*/
-
 
   }
 
@@ -664,6 +624,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
+    console.log(this.selectedLocations)
 
   }
 
@@ -671,8 +632,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     this.selectedValueArray.splice(i, 1);
   }
 
-  filter_array(arr)
-  {
+  filter_array(arr) {
     var hashTable = {};
 
     return arr.filter(function (el) {
