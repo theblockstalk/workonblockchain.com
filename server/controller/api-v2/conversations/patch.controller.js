@@ -10,12 +10,8 @@ module.exports.request = {
 const paramSchema = new Schema({
     sender_id: String
 });
-const querySchema = new Schema({
-    is_read: Boolean
-})
 
 module.exports.inputValidation = {
-    query: querySchema,
     params: paramSchema
 };
 
@@ -38,7 +34,10 @@ module.exports.endpoint = async function (req, res) {
     let senderId = req.params.sender_id;
 
     await users.update({ '_id': userId, 'conversations.user_id': senderId}, {
-        $set: { 'conversations.$.unread_count': 0 }
+        $set: {
+            'conversations.$.unread_count': 0
+            //'conversations.$.count': 0
+        }
     });
-    res.send();
+    res.send(true);
 }

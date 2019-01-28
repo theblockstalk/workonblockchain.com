@@ -164,11 +164,13 @@ const UserSchema = new Schema({
         },
         count: {
             type: Number,
-            required: true
+            required: true,
+            default:false
         },
         unread_count: {
             type: Number,
-            required: true
+            required: true,
+            default:false
         },
         last_message: {
             type: Date,

@@ -956,13 +956,13 @@ export class ChatComponent implements OnInit {
               console.log(data['messages']);
               this.new_msgss = data['messages'];
               this.job_desc = data['messages'][0].message.job_offer;
-              /*this.authenticationService.update_chat_msg_status_new(id,true)
+              this.authenticationService.update_chat_msg_status_new(id)
                 .subscribe(
                   data => {
                     this.loading = false;
-                    this.users[usersIndex].unreadCount = 0;
+                    this.users[usersIndex].count = 0;
                     console.log(data);
-                    console.log(this.users[usersIndex].unreadCount);
+                    console.log(this.users[usersIndex].count);
                     //console.log('done');
                     //console.log(data);
                   },
@@ -976,7 +976,7 @@ export class ChatComponent implements OnInit {
                       // this.router.navigate(['/not_found']);
                     }
                   }
-                );*/
+                );
               if (this.currentUser.type === 'candidate') {
                 this.cand_job_offer = 0;
                 for (var key in data['messages']) {
@@ -993,17 +993,14 @@ export class ChatComponent implements OnInit {
                 }
               }
               console.log(data['jobOffer']);
-              if(data['jobOffer']){
-                if(data['jobOffer'] === "accepted"){
-                  this.company_reply = 1;
-                }
-                else{
-                  this.company_reply = 0;
-                }
+              if(data['jobOffer'] && data['jobOffer'] === "accepted"){
+                this.company_reply = 1;
               }
               else{
+                console.log('else');
                 this.company_reply = 0;
                 if (this.currentUser.type == 'candidate') {
+                  console.log('candidate');
                   this.cand_offer = 1;
                   this.credentials.msg_body = '';
                 }

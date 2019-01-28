@@ -1281,8 +1281,8 @@ export class UserService {
     }));
   }
 
-  update_chat_msg_status_new(sender_id: string,status:boolean){
-    return this.http.patch(URL+'v2/conversations/'+sender_id+'/messages?is_read='+status, {},{
+  update_chat_msg_status_new(sender_id: string){
+    return this.http.patch(URL+'v2/conversations/'+sender_id+'/messages', {},{
     //return this.http.post(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>

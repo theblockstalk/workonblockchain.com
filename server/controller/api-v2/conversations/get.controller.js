@@ -43,11 +43,9 @@ module.exports.endpoint = async function (req, res) {
     userDoc = await users.findOneById(userId);
     let conversations = userDoc.conversations;
     conversations.sort(function(a, b){
-        if(a.last_message < b.last_message) { return -1; }
-        if(a.last_message > b.last_message) { return 1; }
-        return 0;
+        return a.last_message < b.last_message;
     });
-    console.log(conversations);
+
     for(i=0;i<conversations.length;i++){
         console.log(conversations[i].last_message);
         if(req.auth.user.type === 'company') {
@@ -82,6 +80,7 @@ module.exports.endpoint = async function (req, res) {
         }
     }
 
+    console.log(conversations);
     console.log('in get');
 
     res.send({
