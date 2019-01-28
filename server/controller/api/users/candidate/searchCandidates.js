@@ -117,6 +117,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                         {description : {'$regex' : search.word, $options: 'i'}}] };
                 candidateQuery.push(wordSearch);
             }
+            console.log(search.locations)
             if (search.locations && search.locations.length > 0 ) {
                 const locationFilter = {"candidate.locations": {$in: search.locations}};
                 candidateQuery.push(locationFilter);

@@ -38,7 +38,7 @@
               <datalist id="countryList">
                 <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
               </datalist>
-              <input type="text" list="countryList" placeholder="Desired location" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+              <input type="text" list="countryList" autocomplete="off" [disabled]="msg !== '' ? true : false" placeholder="Desired location" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
               <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                 {{error}}
               </div>
@@ -46,7 +46,7 @@
                 {{country_input_log}}
               </div>
               <div *ngIf="selectedValueArray.length > 0">
-                <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
+                <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
               </div>
             </div>
             <hr/>
@@ -54,7 +54,7 @@
             <div class = "form-group ml-4">
               <div>
                 <p class="form-check-label" for="check">
-                  <input class="form-check-input" type="checkbox" [(ngModel)]="visa_check" id="check"  name="visa_not_needed" (ngModelChange)="searchdata('visa', $event)" > Show results that may require a sponsored work visa
+                  <input class="form-check-input" type="checkbox" [disabled]="msg !== '' ? true : false" [(ngModel)]="visa_check" id="check"  name="visa_not_needed" (ngModelChange)="searchdata('visa', $event)" > Show results that may require a sponsored work visa
                 </p>
               </div>
             </div>

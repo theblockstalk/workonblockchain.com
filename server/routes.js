@@ -112,7 +112,7 @@ router.put('/users/welcome/resume', auth.isLoggedIn, asyncMiddleware(candidateWi
 router.put('/users/welcome/exp', auth.isLoggedIn, asyncMiddleware(candidateWizardExperience));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
-router.post('/users/auto_suggest/:query_input' , asyncMiddleware(autoSuggestLocations));
+router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));
 
 // Companies
 router.post('/users/create_employer',  asyncMiddleware(companyRegister));

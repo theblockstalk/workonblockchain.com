@@ -1,10 +1,12 @@
 const cities = require('../../../../model/mongoose/cities');
 const enumerations = require('../../../../model/enumerations');
+const logger = require('../../../services/logger');
+
 module.exports = async function (req, res) {
     console.log("endpoint");
-    console.log(req.params);
-    let queryInput = req.params.query_input;
-    let regex = new RegExp(queryInput, 'i');
+    let queryInput = req.body;
+    logger.info(queryInput);
+    let regex = new RegExp(queryInput.autosuggest, 'i');
     let outputOptions = [];
 
     if(regex.test('Remote') || regex.test('Global')) {
@@ -14,24 +16,29 @@ module.exports = async function (req, res) {
     let citiesDoc = await cities.findAndLimit2({city: {$regex: regex}});
     if(citiesDoc) {
         for(let cityLoc of citiesDoc) {
-            console.log(typeof cityLoc._id);
             outputOptions.push({city : cityLoc});
         }
 
-        for(let countryLoc of citiesDoc) {
-            outputOptions.push({country : countryLoc.country});
+        if(queryInput.countries === true) {
+            for(let countryLoc of citiesDoc) {
+                outputOptions.push({country : countryLoc.country});
+            }
         }
+
 
     }
 
-    const countriesEnum = enumerations.countries;
-    let count = 0;
-    for(let countryEnum of countriesEnum) {
-        if(regex.test(countryEnum) && count < 2) {
-            outputOptions.push({country : countryEnum});
-            count++;
+    if(queryInput.countries === true) {
+        const countriesEnum = enumerations.countries;
+        let count = 0;
+        for(let countryEnum of countriesEnum) {
+            if(regex.test(countryEnum) && count < 2) {
+                outputOptions.push({country : countryEnum});
+                count++;
+            }
         }
     }
+
 
     res.send({
         locations: outputOptions
