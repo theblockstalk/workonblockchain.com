@@ -175,7 +175,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             filteredResult.push(candidates);
             totalProccessed++;
         }
-    });
+    })
 
     if(filteredResult && filteredResult.length > 0) {
         return {
