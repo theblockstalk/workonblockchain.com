@@ -35,12 +35,88 @@ describe('cron', function () {
             const company = docGenerator.company();
             const companyTnCWizard = docGenerator.companyTnCWizard();
             const companyAbout = docGenerator.companyAbout();
-            const companyPrefernces = docGenerator.companySavedSearches();
-            await companyHelper.signupCompanyAndCompleteProfile(company, companyTnCWizard, companyAbout, companyPrefernces);
+            const searchPreferences = {
+                saved_searches: [{
+                    location: [
+                        job.country[0]
+                    ],
+                    job_type: [
+                        "Part time"
+                    ],
+                    position: [
+                        job.roles[0]
+                    ],
+                    current_currency: job.base_currency,
+                    current_salary: job.expected_salary,
+                    skills: [
+                        experience.language_exp[0].language
+                    ],
+                    availability_day: job.availability_day,
+                    when_receive_email_notitfications: "Daily"
+                }]
+            };
+            await companyHelper.signupCompanyAndCompleteProfile(company, companyTnCWizard, companyAbout, searchPreferences);
 
             await companyEmail();
+
+            const userCompanyDoc = await users.findOneByEmail(company.email);
+            const companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+
+            const userCandidateDoc = await users.findOneByEmail(candidate.email);
+            companyDoc.candidates_sent_by_email.length.should.equal(1);
+            companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
         })
 
-        it('should not send a candidate if they have already been sent')
+        it('should not send a candidate if they have already been sent', async function () {
+
+            const candidate = docGenerator.candidate();
+            const profileData = docGenerator.profileData();
+            const job = docGenerator.job();
+            const resume = docGenerator.resume();
+            const experience = docGenerator.experience();
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+
+            const company = docGenerator.company();
+            const companyTnCWizard = docGenerator.companyTnCWizard();
+            const companyAbout = docGenerator.companyAbout();
+            const searchPreferences = {
+                saved_searches: [{
+                    location: [
+                        job.country[0]
+                    ],
+                    job_type: [
+                        "Part time"
+                    ],
+                    position: [
+                        job.roles[0]
+                    ],
+                    current_currency: job.base_currency,
+                    current_salary: job.expected_salary,
+                    skills: [
+                        experience.language_exp[0].language
+                    ],
+                    availability_day: job.availability_day,
+                    when_receive_email_notitfications: "Daily"
+                }]
+            };
+            await companyHelper.signupCompanyAndCompleteProfile(company, companyTnCWizard, companyAbout, searchPreferences);
+
+            await companyEmail();
+
+            const userCompanyDoc = await users.findOneByEmail(company.email);
+            await companies.update({_creator: userCompanyDoc._id}, {$unset: {last_email_sent: 1}})
+            let companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+
+            let userCandidateDoc = await users.findOneByEmail(candidate.email);
+            companyDoc.candidates_sent_by_email.length.should.equal(1);
+            companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
+
+            await companyEmail();
+
+            companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+
+            companyDoc.candidates_sent_by_email.length.should.equal(1);
+            companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
+        })
     })
 });
