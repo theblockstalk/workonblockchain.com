@@ -14,6 +14,7 @@ module.exports = async function (req, res) {
     let citiesDoc = await cities.find({city: {$regex: new RegExp(queryInput, "i")}});
     if(citiesDoc) {
         for(let cityLoc of citiesDoc) {
+            console.log(typeof cityLoc._id);
             outputOptions.push({city : cityLoc});
         }
 

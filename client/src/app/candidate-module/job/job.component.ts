@@ -118,28 +118,29 @@ export class JobComponent implements OnInit,AfterViewInit {
             {
               if(data['candidate'].locations)
               {
+                console.log(data['candidate'].locations)
                 for (let country1 of data['candidate'].locations)
                 {
-                  if (country1.remote === true) {
+                  if (country1['remote'] === true) {
                     this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
 
                   }
 
-                 if (country1.country) {
-                      let country = country1.country + ' (country)'
-                      this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
-                    }
-                    if (country1.city) {
-                      let city = country1.city + ' (city)';
-                      this.selectedValueArray.push({name: city , visa_not_needed : country1.visa_not_needed});
-                    }
+                  if (country1['country']) {
+                    let country = country1['country'] + ' (country)'
+                    this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
+                  }
+                  if (country1['city']) {
+                    let city = country1['city'].city + ' (city)';
+                    this.selectedValueArray.push({name: city , visa_not_needed : country1.visa_not_needed});
+                  }
                 }
 
                 this.selectedValueArray.sort();
                 if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                    let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                    this.selectedValueArray.splice(0, 0, remoteValue);
-                    this.selectedValueArray = this.filter_array(this.selectedValueArray);
+                  let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+                  this.selectedValueArray.splice(0, 0, remoteValue);
+                  this.selectedValueArray = this.filter_array(this.selectedValueArray);
 
                 }
                 this.selectedLocations = this.selectedValueArray;
@@ -409,15 +410,15 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.country_log = "Please select at least one location which you can work in without needing a visa";
     }
 
+    console.log(this.selectedLocations.length);
     if(this.selectedLocations && this.selectedLocations.length > 0) {
       if(this.selectedLocations.filter(i => i.visa_not_needed === true).length <= 0 )
         this.country_log = "Please select at least one location which you can work in without needing a visa";
-
       for(let location of this.selectedLocations) {
-        if(location.name.includes('city')){
+        if(location.name.includes('city')) {
           this.validatedLocation.push({city: location._id, visa_not_needed : location.visa_not_needed });
         }
-        if(location.name.includes('country')){
+        if(location.name.includes('country')) {
           this.validatedLocation.push({country: location.name.split(" (")[0], visa_not_needed : location.visa_not_needed });
         }
         if(location.name === 'Remote') {
@@ -525,6 +526,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       .subscribe(
         data => {
           if(data) {
+            console.log(data);
             let citiesInput = data;
             let citiesOptions=[];
             for(let cities of citiesInput['locations']) {
@@ -546,7 +548,6 @@ export class JobComponent implements OnInit,AfterViewInit {
               }
             }
             this.cities = this.filter_array(citiesOptions);
-            console.log(this.cities);
           }
 
         },
@@ -619,7 +620,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
       this.countriesModel = '';
       this.cities = [];
-      if(this.selectedValueArray.length > 10) {
+      if(this.selectedValueArray.length > 9) {
         this.error = 'You can select maximum 10 locations';
         setInterval(() => {
           this.error = "" ;
@@ -644,18 +645,18 @@ export class JobComponent implements OnInit,AfterViewInit {
 
     }
     if(this.selectedValueArray.length > 0) {
-    this.selectedValueArray.sort(function(a, b){
-                        if(a.name < b.name) { return -1; }
-                        if(a.name > b.name) { return 1; }
-                        return 0;
-                      })
-                if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                    let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                    this.selectedValueArray.splice(0, 0, remoteValue);
-                    this.selectedValueArray = this.filter_array(this.selectedValueArray);
+      this.selectedValueArray.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+      if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+        let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+        this.selectedValueArray.splice(0, 0, remoteValue);
+        this.selectedValueArray = this.filter_array(this.selectedValueArray);
 
-                }
-                this.selectedLocations = this.selectedValueArray;
+      }
+      this.selectedLocations = this.selectedValueArray;
     }
   }
 

@@ -52,7 +52,7 @@
             <div>
               <datalist id="countryList">
                 <select>
-                  <option *ngFor = "let country of cities"  value="{{country.name}}">
+                  <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
                 </select>
               </datalist>
 
