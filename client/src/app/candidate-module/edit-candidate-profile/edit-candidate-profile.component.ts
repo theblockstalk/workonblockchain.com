@@ -931,7 +931,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.commercial_expYear.push(this.referringData);
 
     }
-
+    this.commercial_expYear.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    })
 
   }
 
@@ -957,7 +961,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.platformreferringData = { name:this.value, exp_year: e.target.value};
       this.platforms.push(this.platformreferringData);
     }
-
+    this.platforms.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    })
 
   }
 
@@ -1166,10 +1174,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
   deleteRow(index: number)
   {
-
-    // control refers to your formarray
     const control = <FormArray>this.EducationForm.controls['itemRows'];
-    // remove the chosen row
     control.removeAt(index);
   }
 
@@ -1201,7 +1206,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     }
 
-
+    this.LangexpYear.sort(function(a, b){
+      if(a.language < b.language) { return -1; }
+      if(a.language > b.language) { return 1; }
+      return 0;
+    });
   }
   onRoleYearOptions(e, value)
   {
@@ -1797,7 +1806,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.commercialSkillsExperienceYear.push(this.referringData);
 
     }
-
+    this.commercialSkillsExperienceYear.sort(function(a, b){
+      if(a.skill < b.skill) { return -1; }
+      if(a.skill > b.skill) { return 1; }
+      return 0;
+    })
   }
 
   formal_skills_exp=[];
@@ -1848,7 +1861,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.formal_skills.push(this.referringData);
 
     }
-
+    this.formal_skills.sort(function(a, b){
+      if(a.skill < b.skill) { return -1; }
+      if(a.skill > b.skill) { return 1; }
+      return 0;
+    })
   }
 
   verify;
