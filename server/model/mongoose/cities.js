@@ -13,7 +13,7 @@ module.exports.findOne = async function findOne(selector) {
 }
 
 
-module.exports.find = async function find(selector) {
+module.exports.findAndLimit2 = async function findAndLimit2(selector) {
     return await Cities.find(selector).limit(2).lean();
 }
 
