@@ -7,6 +7,7 @@ const users = require('../../../model/mongoose/users');
 const docGenerator = require('../../helpers/docGenerator');
 const companyHelper = require('../../api/users/company/companyHelpers');
 const candidateHelper = require('../../api/users/candidate/candidateHelpers');
+const companyEmail = require('../../../controller/services/cron/companyAutomaticEmailOfNewCandidate');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -32,7 +33,12 @@ describe('cron', function () {
             await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const company = docGenerator.company();
-            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyTnCWizard = docGenerator.companyTnCWizard();
+            const companyAbout = docGenerator.companyAbout();
+            const companyPrefernces = docGenerator.companySavedSearches();
+            await companyHelper.signupCompanyAndCompleteProfile(company, companyTnCWizard, companyAbout, companyPrefernces);
+
+            await companyEmail();
         })
 
         it('should not send a candidate if they have already been sent')
