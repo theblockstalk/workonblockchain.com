@@ -3,6 +3,7 @@ const Chat = require('../../../../model/chat');
 const logger = require('../../../services/logger');
 const currency = require('../../../services/currency');
 const errors = require('../../../services/errors');
+const cities = require('../../../../model/mongoose/cities');
 
 
 const salaryFactor = 1.1;
@@ -107,6 +108,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             candidateQuery.push({ "_id":  userDoc._id});
         }
         if (search) {
+            console.log("if");
             if(search.name) {
                 const nameSearch = { $or: [{ first_name: {'$regex' : search.name, $options: 'i'}},
                         {last_name : {'$regex' : search.name, $options: 'i'}}] };
@@ -119,8 +121,30 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             }
             console.log(search.locations)
             if (search.locations && search.locations.length > 0 ) {
-                const locationFilter = {"candidate.locations": {$in: search.locations}};
-                candidateQuery.push(locationFilter);
+                let locationsQuery = [];
+                let locationsCityQuery=[];
+                let locationsCountryQuery = [];
+                console.log(search.locations.find(x => x.name === "Remote"));
+                for(let loc of search.locations) {
+                        const cityDoc = await cities.findOneById(loc._id);
+                        if(cityDoc) {
+                            locationsCityQuery.push(cityDoc._id);
+                            locationsCountryQuery.push(cityDoc.country);
+                        }
+                }
+                if(locationsCityQuery.length > 0 ) {
+                    locationsQuery.push({ "candidate.locations.city": {$in: locationsCityQuery}});
+                    locationsQuery.push({"candidate.locations.country" : {$in: locationsCountryQuery}});
+
+                }
+                if(search.locations.find(x => x.name === "Remote")) {
+                    locationsQuery.push({"candidate.locations.remote" : true});
+                }
+
+                candidateQuery.push({
+                    $or:locationsQuery
+                });
+
             }
 
             if (search.positions && search.positions.length > 0  ) {
