@@ -336,67 +336,21 @@ export class ChatComponent implements OnInit {
                 .subscribe(
                     msg_data => {
                         if(msg_data['conversations']){
-                            this.new_messges.push(msg_data['conversations']);
-                            this.new_messges = this.filter_array(msg_data['conversations']);
-                            console.log(this.new_messges);
-                            for (var key_messages in this.new_messges) {
-                                if(this.currentUser._creator == this.new_messges[key_messages].receiver_id){
-                                    //console.log('my');
-                                }
-                                else{
-                                    this.authenticationService.getCandidate('0',this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].msg_tag,'candidate')
-                                    .subscribe(
-                                        data => {
-                                            this.users.push(data['users']);
-                                            this.users = this.filter_array(this.users);
-                                            this.count = 0;
-                                            for (var key_users_new in this.users) {
-                                              this.authenticationService.getUnreadMessageCount(this.users[key_users_new]._creator._id)
-                                              .subscribe(
-                                                data => {
-                                                  if(this.users[key_users_new]._creator._id === data['sender_id']) {
-                                                    this.users[key_users_new].unreadCount = data['unReadCount'];
-                                                  }
-                                                  console.log(this.users);
-                                                  console.log(data);
-                                                },
-                                                error => {
-                                                  //console.log('error');
-                                                  //console.log(error);
-                                                  this.log = error;
-                                                }
-                                              );
-                                              if(this.count == 0){
-                                                  if(this.users[key_users_new].first_name){
-                                                      this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'',key_users_new);
-                                                  }
-                                                  else{
-                                                      this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'',key_users_new);
-                                                  }
-                                              }
-                                              this.count = this.count + 1;
-                                              //this.currentUser._creator //receiver
-                                              /*this.authenticationService.get_unread_msgs_of_user(this.users[key_users_new]._creator._id)
-                                              .subscribe(
-                                                  data => {
-                                                      this.unread_msgs_info.push(data);
-                                                  },
-                                                  error => {
-                                                      //console.log('error');
-                                                      //console.log(error);
-                                                  }
-                                              );*/
-                                            }
-                                            //console.log(this.unread_msgs_info);
-                                        },
-                                        error => {
-                                            //console.log('error');
-                                            //console.log(error);
-                                            this.log = error;
-                                        }
-                                    );
-                                }
+                          this.new_messges.push(msg_data['conversations']);
+                          this.new_messges = this.filter_array(msg_data['conversations']);
+                          console.log(this.new_messges);
+                          this.users = this.new_messges;
+                          for (var key_users_new in this.users) {
+                            if(this.count == 0){
+                              if(this.users[key_users_new].first_name){
+                                this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new].user_id,'',key_users_new);
+                              }
+                              else{
+                                this.openDialog(this.users[key_users_new].initials,this.users[key_users_new].user_id,'',key_users_new);
+                              }
                             }
+                            this.count = this.count + 1;
+                          }
                         }
 						else{
                             //this.msg='You have not chatted yet';
@@ -429,61 +383,17 @@ export class ChatComponent implements OnInit {
                         this.loading = false;
                         console.log(msg_data['conversations']);
                         if(msg_data['conversations']){
-                            //console.log('this.currentUser._creator: '+this.currentUser._creator);
-                            this.new_messges.push(msg_data['conversations']);
-                            this.new_messges = this.filter_array(msg_data['conversations']);
-                            //console.log(this.new_messges);
-                            for (var key_messages in this.new_messges) {
-                                //console.log('length: '+this.new_messges.length);
-                                if(this.currentUser._creator == this.new_messges[key_messages].sender_id){
-                                    //console.log('my');
-                                }
-                                else{
-                                    this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,'0',this.new_messges[key_messages].msg_tag,'company')
-                                    .subscribe(
-                                        data => {
-                                            this.users.push(data['users']);
-                                            this.users = this.filter_array(this.users);
-                                            //console.log(this.users);
-                                            this.count = 0;
-                                            for (var key_users_new in this.users) {
-                                              this.authenticationService.getUnreadMessageCount(this.users[key_users_new]._creator._id)
-                                                .subscribe(
-                                                  data => {
-                                                    if(this.users[key_users_new]._creator._id === data['sender_id']) {
-                                                      this.users[key_users_new].unreadCount = data['unReadCount'];
-                                                    }
-                                                    console.log(this.users);
-                                                    console.log(data);
-                                                  },
-                                                  error => {
-                                                    //console.log('error');
-                                                    //console.log(error);
-                                                    this.log = error;
-                                                  }
-                                                );
-                                                if(this.count == 0){
-                                                    this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name,key_users_new);
-                                                }
-                                                this.count = this.count + 1;
-                                            }
-                                        },
-                                        error => {
-                                            if(error.message == 500 || error.message == 401)
-                                            {
-                                                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                                                window.location.href = '/login';
-                                            }
-
-                                            if(error.message == 403)
-                                            {
-                                                // this.router.navigate(['/not_found']);
-                                            }
-                                            this.log = error;
-                                        }
-                                    );
-                                }
+                          //console.log('this.currentUser._creator: '+this.currentUser._creator);
+                          this.new_messges.push(msg_data['conversations']);
+                          this.new_messges = this.filter_array(msg_data['conversations']);
+                          this.users = this.new_messges;
+                          console.log(this.users);
+                          for (var key_users_new in this.users) {
+                            if(this.count == 0){
+                              this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].company_name,key_users_new);
                             }
+                            this.count = this.count + 1;
+                          }
                         }
 						else{
 							//this.msg='You have not chatted yet';
@@ -1043,10 +953,10 @@ export class ChatComponent implements OnInit {
         this.authenticationService.get_user_messages_comp(this.credentials.id)
           .subscribe(
             data => {
-              //console.log(data['messages'][0].message);
+              console.log(data['messages']);
               this.new_msgss = data['messages'];
               this.job_desc = data['messages'][0].message.job_offer;
-              this.authenticationService.update_chat_msg_status_new(id,true)
+              /*this.authenticationService.update_chat_msg_status_new(id,true)
                 .subscribe(
                   data => {
                     this.loading = false;
@@ -1066,7 +976,7 @@ export class ChatComponent implements OnInit {
                       // this.router.navigate(['/not_found']);
                     }
                   }
-                );
+                );*/
               if (this.currentUser.type === 'candidate') {
                 this.cand_job_offer = 0;
                 for (var key in data['messages']) {

@@ -343,7 +343,9 @@ module.exports.endpoint = async function (req, res) {
     if (req.auth.user.conversations) {
         const conversations = req.auth.user.conversations;
         senderConv = conversations.filter(item => item.user_id === receiver_id);
-        if (senderConv) {
+        console.log(senderConv.length);
+        if (senderConv && senderConv.length>0) {
+            console.log('in if 1st if');
             senderSelect = { '_id': sender_id, 'conversations._id': senderConv._id };
             senderUpdate = { $set: {
                     'conversations.$.user_id': receiver_id,
@@ -351,7 +353,9 @@ module.exports.endpoint = async function (req, res) {
                     'conversations.$.unread_count': 0,
                     'conversations.$.last_message': timestamp
             }}
-        } else {
+        }
+        else {
+            console.log('in else');
             senderSelect = { '_id': sender_id }
             senderUpdate = { $push: { conversations: {
                 user_id: receiver_id,
@@ -376,7 +380,8 @@ module.exports.endpoint = async function (req, res) {
     if (receiverUserDoc.conversations) {
         const conversations = receiverUserDoc.conversations;
         receiverConv = conversations.filter(item => item.user_id === sender_id);
-        if (receiverConv) {
+        if (receiverConv && receiverConv.length>0) {
+            console.log('in if 2nd');
             receiverSelect = { '_id': receiver_id, 'conversations._id': receiverConv._id };
             receiverUpdate = { $set: {
                     'conversations.$.user_id': sender_id,
@@ -385,7 +390,9 @@ module.exports.endpoint = async function (req, res) {
                     'conversations.$.last_message': timestamp
                 }
             }
-        } else {
+        }
+        else {
+            console.log('in else 2nd');
             receiverSelect = { '_id': receiver_id }
             receiverUpdate = { $push: { conversations: {
                 user_id: sender_id,

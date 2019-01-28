@@ -50,8 +50,8 @@ module.exports.endpoint = async function (req, res) {
         userId = req.auth.user._id;
     }
 
-    console.log(userId);
-    console.log(req.query);
+    console.log('sender: ' + userId);
+    console.log('receiver: ' + req.params.sender_id);
     const messageDocs = await messages.find({
         $or : [
             { $and : [ { receiver_id : mongoose.Types.ObjectId(req.params.sender_id) }, { sender_id : userId } ] },
@@ -63,7 +63,7 @@ module.exports.endpoint = async function (req, res) {
     if (messageDocs.length === 0) {
         errors.throwError('No messages found', 404)
     }
-    console.log(jobOfferStatus.length);
+    console.log(messageDocs);
     if(messageDocs.length >= 2 && messageDocs[1].msg_tag === 'job_offer_accepted') {
         jobOfferStatus = 'accepted';
     } else if (messageDocs.length >= 2 && messageDocs[1].msg_tag === 'job_offer_rejected') {

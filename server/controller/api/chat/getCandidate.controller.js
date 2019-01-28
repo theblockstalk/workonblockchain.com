@@ -2,6 +2,7 @@ const users = require('../../../model/users');
 const CandidateProfile = require('../../../model/candidate_profile');
 const EmployerProfile = require('../../../model/employer_profile');
 const Messages = require('../../../model/messages');
+const errors = require('../../services/errors');
 
 const filterReturnData = require('../users/filterReturnData');
 
@@ -55,7 +56,7 @@ module.exports = async function (req, res) {
                         sender_id: receiver_id,
                         receiver_id: sender_id,
                         msg_tag: 'job_offer_accepted'
-                    })
+                    });
                     console.log(acceptedJobOffer);
                     if (acceptedJobOffer && acceptedJobOffer.length > 0) {
                     }
