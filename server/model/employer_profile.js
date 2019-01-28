@@ -124,6 +124,18 @@ const CompanyProfileSchema = new Schema({
 
         })]
     },
+    candidates_sent_by_email: [{
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        sent: {
+            type: Date,
+            required: true
+        }
+    }]
+
     last_email_sent: {
         type: Date
     },

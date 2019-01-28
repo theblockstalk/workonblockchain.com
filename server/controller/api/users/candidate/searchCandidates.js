@@ -98,9 +98,10 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         userQuery._id = {$in : userIdsDistinct};
     }
 
-    if (filters.firstApprovedDate) {
-        userQuery.first_approved_date = { $gte : filters.firstApprovedDate}
+    if (filters.blacklist) {
+        userQuery._id = {$nin: filters.blacklist};
     }
+
     await users.findAndIterate(userQuery, async function(userDoc) {
         let candidateQuery = [];
         if(userDoc) {
