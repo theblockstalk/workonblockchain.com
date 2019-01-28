@@ -157,3 +157,10 @@ module.exports.image = async function image(file, jwtToken) {
     return res;
 
 }
+
+const autoSuggestOptions = module.exports.autoSuggestOptions = async function autoSuggestOptions(queryInput) {
+    const res = await chai.request(server)
+        .post('/users/auto_suggest/' + queryInput);
+    res.should.have.status(200);
+    return res;
+}

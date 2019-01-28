@@ -33,11 +33,9 @@ module.exports = async function (req, res) {
         }
     }
 
-     const citiesInput = {
-      locations: outputOptions
-    };
-
-    res.send(citiesInput);
+    res.send({
+        locations: outputOptions
+    });
 
 
 }
