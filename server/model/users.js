@@ -156,6 +156,25 @@ const UserSchema = new Schema({
 			}
         }
     },
+    conversations: [new Schema({
+        user_id: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required:true
+        },
+        count: {
+            type: Number,
+            required: true
+        },
+        unread_count: {
+            type: Number,
+            required: true
+        },
+        last_message: {
+            type: Date,
+            required: true
+        }
+    })],
 	first_approved_date:{
 		type: Date
 	},

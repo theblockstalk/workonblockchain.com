@@ -24,7 +24,7 @@ const MessageSchema = new Schema({
         enum: enumerations.chatMsgTypes,
         required: true
     },
-    is_read:
+    is_read: // DELETE ME!!
     {
         type:Boolean,
         required:true,
