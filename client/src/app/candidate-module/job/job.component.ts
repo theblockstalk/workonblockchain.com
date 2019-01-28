@@ -134,7 +134,7 @@ export class JobComponent implements OnInit,AfterViewInit {
                       this.selectedValueArray.push({name: city , visa_not_needed : country1.visa_not_needed});
                     }
                 }
-                
+
                 this.selectedValueArray.sort();
                 if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
                     let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
@@ -521,7 +521,71 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   suggestedOptions() {
     // this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola (city)', 'Antigua & Deps (city)', 'Argentina (city)', 'Armenia (city)', 'Australia (city)', 'Austria (city)', 'Azerbaijan (city)', 'Bahamas (city)', 'Bahrain (city)', 'Bangladesh (city)', 'Barbados (city)', 'Belarus (city)', 'Belgium (city)', 'Belize (city)', 'Benin (city)', 'Bhutan (city)', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
-    let citiesInput = {
+    this.authenticationService.autoSuggestOptions(this.countriesModel)
+      .subscribe(
+        data => {
+          if(data) {
+            let citiesInput = data;
+            let citiesOptions=[];
+            for(let cities of citiesInput['locations']) {
+              if(cities['remote'] === true) {
+                citiesOptions.push({name: 'Remote'});
+              }
+              if(cities['city']) {
+                let cityString = cities['city'].city + " (city)";
+                citiesOptions.push({_id : cities['city']._id , name : cityString});
+              }
+              if(cities['city']&& cities['city'].country) {
+                let countryString = cities['city'].country + " (country)";
+                citiesOptions.push({name : countryString });
+
+              }
+              if(cities['country']) {
+                let countryString = cities['country'] + " (country)";
+                citiesOptions.push({name: countryString});
+              }
+            }
+            this.cities = this.filter_array(citiesOptions);
+            console.log(this.cities);
+          }
+
+        },
+        error=>
+        {
+          if(error['message'] === 500 || error['message'] === 401)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+
+          if(error.message === 403)
+          {
+            this.router.navigate(['/not_found']);
+          }
+
+        });
+
+    /*var regex1 = new RegExp('foo');
+    var regex2 = new RegExp('fioo', 'i');
+
+    console.log(regex1.test('Football'));
+// expected output: false
+
+    console.log(regex2.ignoreCase);
+// expected output: true
+
+    console.log(regex2.test('Football'));*/
+
+    //console.log(/rem/.test("remote"));
+    //console.log(/remote/i.test("remote"));
+    //console.log(/Remote/i.test("remote"));
+
+    /*let citiesInput = {
       locations: [{
         remote: true,
       }, {
@@ -543,25 +607,9 @@ export class JobComponent implements OnInit,AfterViewInit {
           active: true
         }
       }]
-    };
+    };*/
 
-    let citiesOptions=[];
-    for(let cities of citiesInput.locations) {
-      if(cities['remote'] === true) {
-        citiesOptions.push({name: 'Remote'});
-      }
-      if(cities['city']) {
-        let cityString = cities['city'].city + " (city)";
-        let countryString = cities['city'].country + " (country)";
-        citiesOptions.push({name : countryString });
-        citiesOptions.push({_id : cities['city']._id , name : cityString});
-      }
-      if(cities['country']) {
-        let countryString = cities['country'] + " (country)";
-        citiesOptions.push({name: countryString});
-      }
-    }
-    this.cities = this.filter_array(citiesOptions);
+
   }
 
   selectedValueFunction(e) {
@@ -590,7 +638,7 @@ export class JobComponent implements OnInit,AfterViewInit {
           else this.selectedValueArray.push({ name: e.target.value, visa_not_needed:false});
         }
 
-                      
+
       }
 
 
@@ -615,7 +663,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
-  
+
   }
 
   deleteLocationRow(i){

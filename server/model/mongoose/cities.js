@@ -12,6 +12,11 @@ module.exports.findOne = async function findOne(selector) {
     return await Cities.findOne(selector).lean();
 }
 
+
+module.exports.find = async function findOne(selector) {
+    return await Cities.find(selector).limit(2).lean();
+}
+
 module.exports.findOneById = async function findOneById(id) {
     return await Cities.findById(id).lean();
 }
