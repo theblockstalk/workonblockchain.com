@@ -134,7 +134,7 @@ const CompanyProfileSchema = new Schema({
             type: Date,
             required: true
         }
-    }]
+    }],
 
     last_email_sent: {
         type: Date
