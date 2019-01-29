@@ -1,5 +1,6 @@
 let User = require('../users');
 let cities = require('./cities');
+
 module.exports.insert = async function insert(data) {
     let newDoc = new User(data);
 

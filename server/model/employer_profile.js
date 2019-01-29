@@ -71,11 +71,13 @@ const CompanyProfileSchema = new Schema({
                         ref: 'Cities'
                     },
                     remote: Boolean,
-                    visa_not_needed: {
-                        type: Boolean,
-                        required: true,
-                    }
+
                 }]
+            },
+            visa_not_needed: {
+                type: Boolean,
+                default:false,
+                required: true,
             },
             job_type: {
                 type: [{

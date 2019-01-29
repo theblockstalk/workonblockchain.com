@@ -335,7 +335,29 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
                   console.log(data['saved_searches']);
 
-                 this.selectedValueArray =  data['saved_searches'][0].location;
+                  if(data['saved_searches'][0].location)
+                  {
+                    console.log(data['saved_searches'][0].location)
+                    for (let country1 of data['saved_searches'][0].location)
+                    {
+                      if (country1['remote'] === true) {
+                        this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                      }
+
+                      if (country1['city']) {
+                        let city = country1['city'].city + ", " + country1['city'].country;
+                        this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
+                      }
+                    }
+
+                    this.selectedValueArray.sort();
+                    if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+                      let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+                      this.selectedValueArray.splice(0, 0, remoteValue);
+                      this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+                    }
+                  }
                   this.skill_value = data['saved_searches'][0].skills;
 
                   this.role_value = data['saved_searches'][0].position;
@@ -853,7 +875,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 citiesOptions.push({name: 'Remote'});
               }
               if(cities['city']) {
-                let cityString = cities['city'].city + " (city)";
+                let cityString = cities['city'].city + ", " + cities['city'].country;
                 citiesOptions.push({_id : cities['city']._id , name : cityString});
               }
               /*if(cities['city']&& cities['city'].country) {

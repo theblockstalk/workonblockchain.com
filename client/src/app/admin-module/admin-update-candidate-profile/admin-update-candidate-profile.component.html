@@ -168,7 +168,7 @@
                     <datalist id="countryList">
                       <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
                     </datalist>
-                    <input type="text" list="countryList" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
