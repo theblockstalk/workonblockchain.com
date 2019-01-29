@@ -483,17 +483,17 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                   for (let country1 of data['candidate'].locations)
                   {
                     if (country1['remote'] === true) {
-                      this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                      this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1['visa_not_needed']});
 
                     }
 
                     if (country1['country']) {
                       let country = country1['country'] + ' (country)'
-                      this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
+                      this.selectedValueArray.push({name:  country , visa_not_needed : country1['visa_not_needed']});
                     }
                     if (country1['city']) {
-                      let city = country1['city'].city + ' (city)';
-                      this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
+                      let city = country1['city'].city + ", " + country1['city'].country + " (city)";
+                      this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1['visa_not_needed']});
                     }
                   }
 
@@ -1927,7 +1927,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                 citiesOptions.push({name: 'Remote'});
               }
               if(cities['city']) {
-                let cityString = cities['city'].city + " (city)";
+                let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
                 citiesOptions.push({_id : cities['city']._id , name : cityString});
               }
               if(cities['city']&& cities['city'].country) {
