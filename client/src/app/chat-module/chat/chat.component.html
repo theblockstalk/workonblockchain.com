@@ -46,8 +46,8 @@
                           <div class="meta">
                             <p *ngIf="person.initials" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.initials }}</b></p>
                             <p *ngIf="person.first_name" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.first_name }} {{ person.last_name }}</b></p>
-                            <span *ngIf="person.count" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
-                              <b>{{person.count}}</b>
+                            <span *ngIf="person.unread_count" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
+                              <b>{{person.unread_count}}</b>
                             </span>
                           </div>
                         </ng-container>
@@ -60,8 +60,8 @@
                           </ng-template>
                           <div class="meta">
                             <p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.company_name }}</b></p>
-                            <span *ngIf="person.count" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
-                              <b>{{person.count}}</b>
+                            <span *ngIf="person.unread_count" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
+                              <b>{{person.unread_count}}</b>
                             </span>
                           </div>
                         </ng-template>

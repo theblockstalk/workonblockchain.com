@@ -960,9 +960,9 @@ export class ChatComponent implements OnInit {
                 .subscribe(
                   data => {
                     this.loading = false;
-                    this.users[usersIndex].count = 0;
+                    this.users[usersIndex].unread_count = 0;
                     console.log(data);
-                    console.log(this.users[usersIndex].count);
+                    console.log(this.users[usersIndex].unread_count);
                     //console.log('done');
                     //console.log(data);
                   },

@@ -8,6 +8,7 @@ const users = require('../../../model/mongoose/users');
 const messageHelper = require('../messageHelpers');
 const multer = require('../../../controller/middleware/multer');
 const object = require('../../services/objects');
+const mongoose = require('mongoose');
 
 module.exports.request = {
     type: 'post',
@@ -343,13 +344,26 @@ module.exports.endpoint = async function (req, res) {
     if (req.auth.user.conversations) {
         const conversations = req.auth.user.conversations;
         console.log('receiver_id: ' + receiver_id);
-        console.log('sender_id: ' + sender_id);
-        console.log(conversations);
-        //process.exit();
-        senderConv = conversations.filter(item => item.user_id === receiver_id);
+        console.log('conversations: ' + conversations[0].user_id);
+        console.log(conversations[0].user_id ===  mongoose.Types.ObjectId(receiver_id));
+        process.exit();
+        senderConv = conversations.filter(item => item.user_id ===  mongoose.Types.ObjectId(receiver_id));
 
-        if (senderConv.length === 0) {
+        if (senderConv) {
             console.log('in if 1st if');
+            senderSelect = { '_id': sender_id, 'conversations._id': senderConv._id };
+            if(!senderConv.count){
+                senderConv.count = 0;
+            }
+            senderUpdate = { $set: {
+                'conversations.$.user_id': receiver_id,
+                'conversations.$.count': senderConv.count++,
+                'conversations.$.unread_count': 0,
+                'conversations.$.last_message': timestamp
+            }}
+        }
+        else {
+            console.log('in else');
             senderSelect = { '_id': sender_id }
             senderUpdate = { $push: { conversations: {
                 user_id: receiver_id,
@@ -357,16 +371,6 @@ module.exports.endpoint = async function (req, res) {
                 unread_count: 0,
                 last_message: timestamp
             }}}
-        }
-        else {
-            console.log('in else');
-            senderSelect = { '_id': sender_id, 'conversations._id': senderConv._id };
-            senderUpdate = { $set: {
-                'conversations.$.user_id': receiver_id,
-                'conversations.$.count': senderConv.count++,
-                'conversations.$.unread_count': 0,
-                'conversations.$.last_message': timestamp
-            }}
         }
     }
     else {
@@ -381,13 +385,43 @@ module.exports.endpoint = async function (req, res) {
 
     let receiverConv, receiverSelect, receiverUpdate;
     const receiverUserDoc = await users.findOneById(receiver_id);
-    console.log(receiverUserDoc.conversations);
     if (receiverUserDoc.conversations) {
         const conversations = receiverUserDoc.conversations;
+        console.log('sender');
+        console.log(sender_id);
+        console.log(conversations[0].user_id);
+        console.log(conversations[0].user_id === sender_id);
+        console.log(conversations[1].user_id === sender_id);
+        process.exit();
+        /*for(let conversation of conversations) {
+            console.log(conversation.user_id);
+            if(conversation.user_id === sender_id)console.log('matched');
+            else console.log('no match');
+        }*/
         receiverConv = conversations.filter(item => item.user_id === sender_id);
+        console.log('receiver');
         console.log(receiverConv);
-        if (receiverConv.length === 0) {
+
+        if (receiverConv) {
             console.log('in if 2nd');
+            receiverSelect = {'_id': receiver_id, 'conversations._id': receiverConv._id};
+            if(!receiverConv.count){
+                receiverConv.count = 0;
+            }
+            if(!receiverConv.unread_count){
+                receiverConv.unread_count = 0;
+            }
+            receiverUpdate = {
+                $set: {
+                    'conversations.$.user_id': sender_id,
+                    'conversations.$.count': receiverConv.count++,
+                    'conversations.$.unread_count': receiverConv.unread_count++,
+                    'conversations.$.last_message': timestamp
+                }
+            }
+        }
+        else {
+            console.log('in else 2nd');
             receiverSelect = { '_id': receiver_id }
             receiverUpdate = { $push: { conversations: {
                 user_id: sender_id,
@@ -395,17 +429,6 @@ module.exports.endpoint = async function (req, res) {
                 unread_count: 0,
                 last_message: timestamp
             }}}
-        }
-        else {
-            console.log('in else 2nd');
-            receiverSelect = { '_id': receiver_id, 'conversations._id': receiverConv._id };
-            receiverUpdate = { $set: {
-                'conversations.$.user_id': sender_id,
-                'conversations.$.count': receiverConv.count++,
-                'conversations.$.unread_count': receiverConv.unread_count++,
-                'conversations.$.last_message': timestamp
-            }
-            }
         }
     }
     else {
