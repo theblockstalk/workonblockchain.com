@@ -376,6 +376,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   country_input_log;
   country_log;
   candidate_prefernces() {
+    console.log(this.preferncesForm);
     this.error_msg = "";
     this.validatedLocation = [];
     if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
@@ -401,9 +402,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.country_log = "Please select maximum 10 locations";
     }
 
-    /*if(!this.preferncesForm.value.location || this.preferncesForm.value.location.length === 0 ) {
-      this.location_log = "Please select where are you hiring";
-    }*/
+
     if(!this.preferncesForm.value.job_type || this.preferncesForm.value.job_type.length === 0) {
       this.job_type_log = "Please select position types";
     }
@@ -567,9 +566,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
     if(this.cities.find(x => x.name === e.target.value)) {
       var value2send=document.querySelector("#countryList option[value='"+this.preferncesForm.value.location+"']")['dataset'].value;
-      this.preferncesForm = this._fb.group({
-        location: [],
-      });
       this.cities = [];
       if(this.selectedValueArray.length > 4) {
         this.error = 'You can select maximum 5 locations';
@@ -608,6 +604,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
       }
       this.selectedLocations = this.selectedValueArray;
+      this.preferncesForm.get('location').setValue('');
     }
   }
 

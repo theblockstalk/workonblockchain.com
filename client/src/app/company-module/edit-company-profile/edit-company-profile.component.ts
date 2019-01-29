@@ -276,6 +276,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
       this.preferncesForm = new FormGroup({
         location: new FormControl(),
+        visa_not_needed : new FormControl(),
         job_type: new FormControl(),
         position: new FormControl(),
         availability_day: new FormControl(),
@@ -337,6 +338,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
                 location: [],
+                visa_not_needed : [data['saved_searches'][0].visa_not_needed],
                 job_type: [data['saved_searches'][0].job_type],
                 position: [data['saved_searches'][0].position],
                 availability_day: [data['saved_searches'][0].availability_day],
@@ -358,7 +360,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   }
 
                   if (country1['city']) {
-                    let city = country1['city'].city + ", " + country1['city'].country + " (city)";
+                    let city = country1['city'].city + ", " + country1['city'].country;
                     this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
                   }
                 }
@@ -505,14 +507,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.country_input_log = "Please select at least one location";
     }
     if(!this.selectedLocations) {
-      this.country_log = "Please select at least one location which you can work in without needing a visa";
+      this.country_log = "Please select at least one location";
     }
     console.log(this.selectedLocations.length);
     if(this.selectedLocations && this.selectedLocations.length > 0) {
-      if(this.selectedLocations.filter(i => i.visa_not_needed === true).length <= 0 )
-        this.country_log = "Please select at least one location which you can work in without needing a visa";
       for(let location of this.selectedLocations) {
-        if(location.name.includes('city')) {
+        if(location.name.includes(', ')) {
           this.validatedLocation.push({city: location._id, visa_not_needed : location.visa_not_needed });
         }
         if(location.name === 'Remote') {
@@ -525,6 +525,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(this.selectedLocations && this.selectedLocations.length > 10) {
       this.country_log = "Please select maximum 10 locations";
     }
+
     if(!this.preferncesForm.value.job_type || this.preferncesForm.value.job_type.length === 0) {
       this.job_type_log = "Please select position types";
     }
@@ -551,8 +552,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees && this.company_funded && this.company_description &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode &&
-      this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 10 &&
-      this.selectedLocations.filter(i => i.visa_not_needed === true).length > 0 &&
+      this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5 &&
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
       this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
@@ -676,7 +676,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 citiesOptions.push({name: 'Remote'});
               }
               if(cities['city']) {
-                let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
+                let cityString = cities['city'].city + ", " + cities['city'].country;
                 citiesOptions.push({_id : cities['city']._id , name : cityString});
               }
             }
@@ -711,11 +711,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
     if(this.cities.find(x => x.name === e.target.value)) {
       var value2send=document.querySelector("#countryList option[value='"+this.preferncesForm.value.location+"']")['dataset'].value;
-
-      this.preferncesForm.value.location = '';
+      /*this.preferncesForm = this._fb.group({
+        location: [],
+      });*/
       this.cities = [];
-      if(this.selectedValueArray.length > 9) {
-        this.error = 'You can select maximum 10 locations';
+      if(this.selectedValueArray.length > 4) {
+        this.error = 'You can select maximum 5 locations';
         setInterval(() => {
           this.error = "" ;
         }, 5000);
@@ -751,6 +752,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
       }
       this.selectedLocations = this.selectedValueArray;
+      console.log(this.selectedLocations);
+      this.preferncesForm.get('location').setValue('');
     }
   }
 
@@ -776,10 +779,5 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       return (match ? false : hashTable[key] = true);
     });
   }
-
-  checkValidation(value) {
-    return value.filter(i => i.visa_not_needed === true).length;
-  }
-
 
 }

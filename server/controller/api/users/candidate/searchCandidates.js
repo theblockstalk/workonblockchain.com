@@ -147,7 +147,6 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                 const locationRemoteFilter = {"candidate.locations.remote" : true};
                 locationsQuery.push(locationRemoteFilter);
             }
-
             userQuery.push({
                 $or:locationsQuery
             });
