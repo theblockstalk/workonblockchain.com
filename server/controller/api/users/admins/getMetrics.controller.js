@@ -41,7 +41,7 @@ module.exports = async function (req, res) {
             aggregateField(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);
             aggregateField(aggregatedData.availabilityDay, candidate.availability_day, enumerations.workAvailability);
             aggregateField(aggregatedData.baseCountry, candidate.base_country, enumerations.countries);
-            aggregateObjArrayAggregate(aggregatedData.locations, candidate.locations, locationList , "city", "country");
+            //aggregateObjArrayAggregate(aggregatedData.locations, candidate.locations , "city", "country", "remote");
             aggregateArray(aggregatedData.roles, candidate.roles, enumerations.workRoles);
             aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
             aggregateArray(aggregatedData.blockchain.experimented, candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);

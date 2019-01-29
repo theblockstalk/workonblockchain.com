@@ -127,22 +127,26 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                 }
             }
             if(citiesArray.length > 0 && search.visa_not_needed ) {
-                locationsQuery.push({
-                    $and: [
-                        {"candidate.locations.city": {$in: citiesArray}},
-                        {"candidate.locatons.visa_not_needed": true}]
-                })
+                if(search.visa_not_needed) {
+                    locationsQuery.push({
+                        $and: [
+                            {"candidate.locations.city": {$in: citiesArray}},
+                            {"candidate.locatons.visa_not_needed": true}]
+                    })
 
-                locationsQuery.push({
-                    $and: [
-                        {"candidate.locations.country": {$in: countriesArray}},
-                        {"candidate.locations.visa_not_needed": true}]
-                })
+                    locationsQuery.push({
+                        $and: [
+                            {"candidate.locations.country": {$in: countriesArray}},
+                            {"candidate.locations.visa_not_needed": true}]
+                    })
+                }
+                else {
+                    locationsQuery.push({ "candidate.locations.city": {$in: citiesArray}});
+                    locationsQuery.push({"candidate.locations.country" : {$in: countriesArray}});
+                }
+
             }
-            else {
-                locationsQuery.push({ "candidate.locations.city": {$in: citiesArray}});
-                locationsQuery.push({"candidate.locations.country" : {$in: countriesArray}});
-            }
+
             if(search.locations.find(x => x.name === "Remote")) {
                 const locationRemoteFilter = {"candidate.locations.remote" : true};
                 locationsQuery.push(locationRemoteFilter);

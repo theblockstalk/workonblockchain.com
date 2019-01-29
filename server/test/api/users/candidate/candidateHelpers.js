@@ -158,9 +158,11 @@ module.exports.image = async function image(file, jwtToken) {
 
 }
 
-const autoSuggestOptions = module.exports.autoSuggestOptions = async function autoSuggestOptions(queryInput) {
+const autoSuggestOptions = module.exports.autoSuggestOptions = async function autoSuggestOptions(queryInput, jwtToken) {
     const res = await chai.request(server)
-        .post('/users/auto_suggest/' + queryInput);
+        .post('/users/auto_suggest/'+ {} )
+        .set('Authorization', jwtToken)
+        .send(queryInput);
     res.should.have.status(200);
     return res;
 }

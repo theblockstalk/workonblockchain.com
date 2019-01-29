@@ -5,6 +5,7 @@ const server = require('../../../../server');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
 const candidateHelper = require('./candidateHelpers');
+const docGenerator = require('../../../helpers/docGenerator');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -20,7 +21,10 @@ describe('Auto suggest cities options', function () {
 
     describe('Post /users/auto_suggest/:query_input' ,() => {
         it('it should send match options', async () =>{
-        const autoSuggestOptions = await candidateHelper.autoSuggestOptions("rem");
+        const candidate = docGenerator.candidate();
+        const candidateRes = await candidateHelper.signupCandidate(candidate);
+console.log(candidateRes.body)
+        const autoSuggestOptions = await candidateHelper.autoSuggestOptions({'autosuggest' : "rem", countries:true} , candidateRes.body.jwt_token );
         console.log(autoSuggestOptions.body)
         })
     })

@@ -24,7 +24,7 @@ module.exports.findOneByUserId = async function findOneByUserId(id) {
 module.exports.findOneAndPopulate = async function findOneAndPopulate(id) {
     let companyDoc = await Company.findOne({_creator: id}).populate('_creator').lean();
     if(companyDoc) {
-        if(companyDoc.saved_searches[0].location) {
+        if(companyDoc.saved_searches[0] && companyDoc.saved_searches[0].location) {
             for(let loc of companyDoc.saved_searches[0].location) {
                 if(loc.city) {
                     const index = companyDoc.saved_searches[0].location.findIndex((obj => obj.city === loc.city));
