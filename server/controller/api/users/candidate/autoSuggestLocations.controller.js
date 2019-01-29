@@ -5,7 +5,6 @@ const logger = require('../../../services/logger');
 module.exports = async function (req, res) {
     console.log("endpoint");
     let queryInput = req.body;
-    logger.info(queryInput);
     let regex = new RegExp(queryInput.autosuggest, 'i');
     let outputOptions = [];
 
