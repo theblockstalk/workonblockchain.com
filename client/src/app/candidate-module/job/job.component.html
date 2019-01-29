@@ -50,10 +50,9 @@
             <label>Where would you like to work? (select up to 10)</label>
 
             <div>
+
               <datalist id="countryList">
-                <select>
                   <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
-                </select>
               </datalist>
 
               <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">

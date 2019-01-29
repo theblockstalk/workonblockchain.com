@@ -1889,20 +1889,16 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
             let citiesOptions=[];
             for(let cities of citiesInput['locations']) {
               if(cities['remote'] === true) {
-                citiesOptions.push({name: 'Remote'});
+                citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
               }
               if(cities['city']) {
                 let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
                 citiesOptions.push({_id : cities['city']._id , name : cityString});
               }
-              if(cities['city']&& cities['city'].country) {
-                let countryString = cities['city'].country + " (country)";
-                citiesOptions.push({name : countryString });
-
-              }
-              if(cities['country']) {
+              if(cities['country'] ) {
                 let countryString = cities['country'] + " (country)";
-                citiesOptions.push({name: countryString});
+                if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
+                  citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
               }
             }
             this.cities = this.filter_array(citiesOptions);

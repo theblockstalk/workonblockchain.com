@@ -24,9 +24,7 @@ module.exports = async function (req, res) {
             }
         }
 
-
     }
-
     if(queryInput.countries === true) {
         const countriesEnum = enumerations.countries;
         let count = 0;
