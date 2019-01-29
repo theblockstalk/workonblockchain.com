@@ -43,7 +43,25 @@ module.exports.up = async function() {
 
             /// find in cities collection
             await cities.findAndIterate({city :  {$in: userDoc.candidate.locations}}, async function(citiesDoc) {
-                locations.push({city: citiesDoc._id, visa_not_needed: true});
+                if(userDoc.candidate.locations.find(x => x === 'London')) {
+                    if(citiesDoc.city === 'London' && citiesDoc.country === 'United Kingdom') {
+                        locations.push({city: citiesDoc._id, visa_not_needed: true});
+                    }
+                }
+                else if(userDoc.candidate.locations.find(x => x === 'Barcelona')) {
+                    if(citiesDoc.city === 'Barcelona' && citiesDoc.country === 'Spain') {
+                        locations.push({city: citiesDoc._id, visa_not_needed: true});
+                    }
+                }
+                else if(userDoc.candidate.locations.find(x => x === 'Los Angeles')) {
+                    if(citiesDoc.city === 'Los Angeles' && citiesDoc.country === 'United States') {
+                        locations.push({city: citiesDoc._id, visa_not_needed: true});
+                    }
+                }
+                else {
+                    locations.push({city: citiesDoc._id, visa_not_needed: true});
+                }
+
             });
 
             for(let loc of userDoc.candidate.locations) {
@@ -90,16 +108,33 @@ module.exports.up = async function() {
             if(companyDoc.saved_searches && companyDoc.saved_searches.length > 0) {
                 console.log("company Doc searched locations:  " + companyDoc.saved_searches[0].location);
                 await cities.findAndIterate({city :  {$in: companyDoc.saved_searches[0].location}}, async function(citiesDoc) {
-                    locations.push({city: citiesDoc._id, visa_not_needed: true});
+                    if(companyDoc.saved_searches[0].location.find(x => x === 'London')) {
+                        if(citiesDoc.city === 'London' && citiesDoc.country === 'United Kingdom') {
+                            locations.push({city: citiesDoc._id});
+                        }
+                    }
+                    else if(companyDoc.saved_searches[0].location.find(x => x === 'Barcelona')) {
+                        if(citiesDoc.city === 'Barcelona' && citiesDoc.country === 'Spain') {
+                            locations.push({city: citiesDoc._id});
+                        }
+                    }
+                    else if(companyDoc.saved_searches[0].location.find(x => x === 'Los Angeles')) {
+                        if(citiesDoc.city === 'Los Angeles' && citiesDoc.country === 'United States') {
+                            locations.push({city: citiesDoc._id});
+                        }
+                    }
+                    else {
+                        locations.push({city: citiesDoc._id});
+                    }
                 });
 
                 for(let loc of companyDoc.saved_searches[0].location) {
                     if(loc === 'remote') {
-                        locations.push({remote:true, visa_not_needed: false});
+                        locations.push({remote:true});
                     }
                 }
                 if(locations && locations.length > 0) {
-                    await companies.update({ _id: companyDoc._id },{ $set: {'saved_searches.0.location' : locations} });
+                    await companies.update({ _id: companyDoc._id },{ $set: {'saved_searches.0.location' : locations , 'visa_not_needed' : false} });
                     totalCompanyModified++;
                 }
             }

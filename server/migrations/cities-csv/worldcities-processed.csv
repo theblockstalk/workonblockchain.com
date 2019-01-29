@@ -1,4 +1,4 @@
-city,country
+City,Country
 Meymaneh,Afghanistan
 Mazar-e Sharif,Afghanistan
 Lashkar Gah,Afghanistan
@@ -12,24 +12,24 @@ Gardiz,Afghanistan
 Balkh,Afghanistan
 Baghlan,Afghanistan
 Tirana,Albania
-Shkodër,Albania
+Shkoder,Albania
 Elbasan,Albania
-Durrës,Albania
+Durres,Albania
 Touggourt,Algeria
 Tlimcen,Algeria
 Tizi-Ouzou,Algeria
 Tiarat,Algeria
-Tébessa,Algeria
+Tebessa,Algeria
 Souk Ahras,Algeria
 Skikda,Algeria
 Sidi bel Abbes,Algeria
-Sétif,Algeria
-Saïda,Algeria
+Setif,Algeria
+Saida,Algeria
 Oum el Bouaghi,Algeria
 Ouargla,Algeria
 Oran,Algeria
 Mostaganem,Algeria
-Médéa,Algeria
+Medea,Algeria
 Mascara,Algeria
 M'sila,Algeria
 Laghouat,Algeria
@@ -40,12 +40,12 @@ El Oued,Algeria
 Djelfa,Algeria
 Constantine,Algeria
 Chlef,Algeria
-Bouïra,Algeria
-Bordj Bou Arréridj,Algeria
+Bouira,Algeria
+Bordj Bou Arreridj,Algeria
 Blida,Algeria
 Biskra,Algeria
-Béjaïa,Algeria
-Béchar,Algeria
+Bejaia,Algeria
+Bechar,Algeria
 Batna,Algeria
 Annaba,Algeria
 Algiers,Algeria
@@ -57,7 +57,7 @@ Lobito,Angola
 Kuito,Angola
 Huambo,Angola
 Benguela,Angola
-Tucumán,Argentina
+Tucuman,Argentina
 Tandil,Argentina
 Santiago del Estero,Argentina
 Santa Rosa,Argentina
@@ -65,28 +65,28 @@ Santa Fe,Argentina
 San Salvador de Jujuy,Argentina
 San Rafael,Argentina
 San Nicolas,Argentina
-San Martín,Argentina
+San Martin,Argentina
 San Luis,Argentina
 San Juan,Argentina
 Salta,Argentina
 Rosario,Argentina
-Río Cuarto,Argentina
+Rio Cuarto,Argentina
 Resistencia,Argentina
 Posadas,Argentina
-Paraná,Argentina
-Neuquén,Argentina
+Parana,Argentina
+Neuquen,Argentina
 Mendoza,Argentina
 Mar del Plata,Argentina
 La Rioja,Argentina
 La Plata,Argentina
 Formosa,Argentina
 Corrientes,Argentina
-Córdoba,Argentina
+Cordoba,Argentina
 Concordia,Argentina
 Comodoro Rivadavia,Argentina
 Catamarca,Argentina
 Buenos Aires,Argentina
-Bahía Blanca,Argentina
+Bahia Blanca,Argentina
 Yerevan,Armenia
 Vanadzor,Armenia
 Gyumri,Armenia
@@ -146,7 +146,7 @@ Barysaw,Belarus
 Baranavichy,Belarus
 Babruysk,Belarus
 Namur,Belgium
-Liège,Belgium
+Liege,Belgium
 Gent,Belgium
 Charleroi,Belgium
 Brussels,Belgium
@@ -162,7 +162,7 @@ Sucre,Bolivia
 Santa Cruz,Bolivia
 Santa Ana,Bolivia
 Quillacollo,Bolivia
-Potosí,Bolivia
+Potosi,Bolivia
 Oruro,Bolivia
 La Paz,Bolivia
 Cochabamba,Bolivia
@@ -175,40 +175,40 @@ Banja Luka,Bosnia Herzegovina
 Gaborone,Botswana
 Xapeco,Brazil
 Volta Redonda,Brazil
-Vitória da Conquista,Brazil
-Vitória,Brazil
+Vitoria da Conquista,Brazil
+Vitoria,Brazil
 Vila Velha,Brazil
 Vila Velha,Brazil
-Várzea Grande,Brazil
+Varzea Grande,Brazil
 Uruguaiana,Brazil
-Uberlândia,Brazil
+Uberlandia,Brazil
 Uberaba,Brazil
 Timon,Brazil
 Teresina,Brazil
-Teófilo Otoni,Brazil
-Taubaté,Brazil
+Teofilo Otoni,Brazil
+Taubate,Brazil
 Sorocaba,Brazil
 Sobral,Brazil
 Sete Lagoas,Brazil
-São Paulo,Brazil
-São Luís,Brazil
-São José dos Pinhais,Brazil
-São José dos Campos,Brazil
-São José do Rio Preto,Brazil
-São Carlos,Brazil
+Sao Paulo,Brazil
+Sao Luis,Brazil
+Sao Jose dos Pinhais,Brazil
+Sao Jose dos Campos,Brazil
+Sao Jose do Rio Preto,Brazil
+Sao Carlos,Brazil
 Santos,Brazil
-Santo André,Brazil
-Santarém,Brazil
+Santo Andre,Brazil
+Santarem,Brazil
 Santa Maria,Brazil
 Santa Cruz do Sul,Brazil
 Salvador,Brazil
-Rondonópolis,Brazil
+Rondonopolis,Brazil
 Rio Largo,Brazil
 Rio Grande,Brazil
 Rio de Janeiro,Brazil
 Rio Claro,Brazil
 Rio Branco,Brazil
-Ribeirão Preto,Brazil
+Ribeirao Preto,Brazil
 Recife,Brazil
 Presidente Prudente,Brazil
 Pouso Alegre,Brazil
@@ -216,67 +216,67 @@ Porto Velho,Brazil
 Porto Seguro,Brazil
 Porto Alegre,Brazil
 Ponta Grossa,Brazil
-Poços de Caldas,Brazil
+Pocos de Caldas,Brazil
 Piracicaba,Brazil
 Pindamonhangaba,Brazil
-Petrópolis,Brazil
+Petropolis,Brazil
 Petrolina,Brazil
 Pelotas,Brazil
 Passo Fundo,Brazil
-Parnaíba,Brazil
-Paranaguá,Brazil
+Parnaiba,Brazil
+Paranagua,Brazil
 Palmas,Brazil
 Olinda,Brazil
 Novo Hamburgo,Brazil
-Nova Iguaçu,Brazil
+Nova Iguacu,Brazil
 Nova Friburgo,Brazil
-Niterói,Brazil
+Niteroi,Brazil
 Natal,Brazil
 Natal,Brazil
-Mossoró,Brazil
+Mossoro,Brazil
 Montes Claros,Brazil
-Maringá,Brazil
-Marília,Brazil
-Marabá,Brazil
+Maringa,Brazil
+Marilia,Brazil
+Maraba,Brazil
 Manaus,Brazil
-Maceió,Brazil
-Macapá,Brazil
-Macaé,Brazil
+Maceio,Brazil
+Macapa,Brazil
+Macae,Brazil
 Londrina,Brazil
 Linhares,Brazil
 Limeira,Brazil
 Lajes,Brazil
-Jundiaí,Brazil
+Jundiai,Brazil
 Juiz de Fora,Brazil
 Juazeiro do Norte,Brazil
 Joinville,Brazil
-João Pessoa,Brazil
-Jequié,Brazil
-Jaú,Brazil
-Jaraguá do Sul,Brazil
+Joao Pessoa,Brazil
+Jequie,Brazil
+Jau,Brazil
+Jaragua do Sul,Brazil
 Jaboatao,Brazil
 Itu,Brazil
 Itapetininga,Brazil
-Itajaí,Brazil
+Itajai,Brazil
 Itabuna,Brazil
 Ipatinga,Brazil
 Imperatriz,Brazil
-Ilhéus,Brazil
-Guaratinguetá,Brazil
+Ilheus,Brazil
+Guaratingueta,Brazil
 Guarapuava,Brazil
 Governador Valadares,Brazil
-Goiânia,Brazil
+Goiania,Brazil
 Garanhuns,Brazil
 Franca,Brazil
-Foz do Iguaçu,Brazil
+Foz do Iguacu,Brazil
 Fortaleza,Brazil
-Florianópolis,Brazil
+Florianopolis,Brazil
 Feira de Santana,Brazil
 Dourados,Brazil
-Divinópolis,Brazil
+Divinopolis,Brazil
 Curitiba,Brazil
-Cuiabá,Brazil
-Criciúma,Brazil
+Cuiaba,Brazil
+Criciuma,Brazil
 Crato,Brazil
 Crato,Brazil
 Conselheiro Lafaiete,Brazil
@@ -295,24 +295,24 @@ Campina Grande,Brazil
 Cachoeiro de Itapemirim,Brazil
 Cabo Frio,Brazil
 Cabo de Santo Agostinho,Brazil
-Brasília,Brazil
-Bragança Paulista,Brazil
+Brasilia,Brazil
+Braganca Paulista,Brazil
 Botucatu,Brazil
 Boa Vista,Brazil
 Blumenau,Brazil
 Belo Horizonte,Brazil
-Belém,Brazil
+Belem,Brazil
 Bauru,Brazil
 Barretos,Brazil
 Barreiras,Brazil
 Barra Mansa,Brazil
 Barbacena,Brazil
-Bagé,Brazil
+Bage,Brazil
 Arapiraca,Brazil
-Araçatuba,Brazil
+Aracatuba,Brazil
 Aracaju,Brazil
 Apucarana,Brazil
-Anápolis,Brazil
+Anapolis,Brazil
 Americana,Brazil
 Alagoinhas,Brazil
 Bandar Seri Begawan,Brunei
@@ -331,13 +331,13 @@ Phnom Penh,Cambodia
 Battambang,Cambodia
 Yaounde,Cameroon
 Nkongsamba,Cameroon
-Ngaoundéré,Cameroon
+Ngaoundere,Cameroon
 Maroua,Cameroon
 Limbe,Cameroon
 Kumbo,Cameroon
 Kumba,Cameroon
 Garoua,Cameroon
-Edéa,Cameroon
+Edea,Cameroon
 Douala,Cameroon
 Bertoua,Cameroon
 Bamenda,Cameroon
@@ -346,7 +346,7 @@ Winnipeg,Canada
 Windsor,Canada
 Victoria,Canada
 Vancouver,Canada
-Trois-Rivières,Canada
+Trois-Rivieres,Canada
 Toronto,Canada
 Sudbury,Canada
 St. John's,Canada
@@ -354,10 +354,10 @@ Sherbrooke,Canada
 Saskatoon,Canada
 Sarnia,Canada
 Regina,Canada
-Québec,Canada
+Quebec,Canada
 Ottawa,Canada
 Oshawa,Canada
-Montréal,Canada
+Montreal,Canada
 London,Canada
 Kitchener,Canada
 Kingston,Canada
@@ -374,9 +374,9 @@ Sarh,Chad
 Ndjamena,Chad
 Moundou,Chad
 Bongor,Chad
-Abéché,Chad
-Viña del Mar,Chile
-Valparaíso,Chile
+Abeche,Chad
+Vina del Mar,Chile
+Valparaiso,Chile
 Valdivia,Chile
 Temuco,Chile
 Talcahuano,Chile
@@ -391,11 +391,11 @@ Osorno,Chile
 Los Angeles,Chile
 La Serena,Chile
 Iquique,Chile
-Curicó,Chile
+Curico,Chile
 Coquimbo,Chile
-Copiapó,Chile
-Concepción,Chile
-Chillán,Chile
+Copiapo,Chile
+Concepcion,Chile
+Chillan,Chile
 Calama,Chile
 Arica,Chile
 Antofagasta,Chile
@@ -480,7 +480,7 @@ Weihai,China
 Weifang,China
 Wanzhou,China
 Wafangdian,China
-Ürümqi,China
+Urumqi,China
 Ulanhot,China
 Turpan,China
 Tongren,China
@@ -720,27 +720,27 @@ Aksu,China
 Villavicencio,Colombia
 Valledupar,Colombia
 Tunja,Colombia
-Tuluá,Colombia
+Tulua,Colombia
 Soledad,Colombia
 Sogamoso,Colombia
 Sincelejo,Colombia
 Santa Marta,Colombia
 Riohacha,Colombia
-Popayán,Colombia
+Popayan,Colombia
 Pereira,Colombia
 Pasto,Colombia
 Neiva,Colombia
-Montería,Colombia
-Medellín,Colombia
+Monteria,Colombia
+Medellin,Colombia
 Manizales,Colombia
-Magangué,Colombia
+Magangue,Colombia
 Ipiales,Colombia
-Ibagué,Colombia
+Ibague,Colombia
 Girardot,Colombia
 Florencia,Colombia
 Duitama,Colombia
-Cúcuta,Colombia
-Ciénaga,Colombia
+Cucuta,Colombia
+Cienaga,Colombia
 Cartago,Colombia
 Cartagena,Colombia
 Cali,Colombia
@@ -787,7 +787,7 @@ Bukavu,Congo {Democratic Rep}
 Boma,Congo {Democratic Rep}
 Beni,Congo {Democratic Rep}
 Bandundu,Congo {Democratic Rep}
-San José,Costa Rica
+San Jose,Costa Rica
 Cartago,Costa Rica
 Alajuela,Costa Rica
 Zagreb,Croatia
@@ -795,23 +795,23 @@ Split,Croatia
 Rijeka,Croatia
 Santiago de Cuba,Cuba
 Santa Clara,Cuba
-Sancti Spíritus,Cuba
+Sancti Spiritus,Cuba
 Pinar del Rio,Cuba
 Palma Soriano,Cuba
 Matanzas,Cuba
 Manzanillo,Cuba
 Las Tunas,Cuba
-Holguín,Cuba
+Holguin,Cuba
 Havana,Cuba
-Guantánamo,Cuba
+Guantanamo,Cuba
 Cienfuegos,Cuba
-Ciego de Ávila,Cuba
-Camagüey,Cuba
+Ciego de Avila,Cuba
+Camaguey,Cuba
 Bayamo,Cuba
 Willemstad,Curacao
 Nicosia,Cyprus
 Lemosos,Cyprus
-Zlín,Czech Republic
+Zlin,Czech Republic
 Prague,Czech Republic
 Pizen,Czech Republic
 Pardubice,Czech Republic
@@ -820,21 +820,21 @@ Olomouc,Czech Republic
 Liberec,Czech Republic
 Brno,Czech Republic
 Odense,Denmark
-København,Denmark
-Århus,Denmark
+Kobenhavn,Denmark
+Arhus,Denmark
 Aalborg,Denmark
 Djibouti,Djibouti
 Santo Domingo,Dominican Republic
 Santiago,Dominican Republic
-San Pedro de Macorís,Dominican Republic
-San Francisco de Macorís,Dominican Republic
-San Cristóbal,Dominican Republic
+San Pedro de Macoris,Dominican Republic
+San Francisco de Macoris,Dominican Republic
+San Cristobal,Dominican Republic
 Puerto Plata,Dominican Republic
 La Vega,Dominican Republic
 La Romana,Dominican Republic
 Higuey,Dominican Republic
 Dili,East Timor
-Sangolquí,Ecuador
+Sangolqui,Ecuador
 Riobamba,Ecuador
 Quito,Ecuador
 Portoviejo,Ecuador
@@ -861,7 +861,7 @@ Luxor,Egypt
 Kom Ombo,Egypt
 Kafr el Sheikh,Egypt
 Isna,Egypt
-Ismaïlia,Egypt
+Ismailia,Egypt
 Hurghada,Egypt
 Girga,Egypt
 El Minya,Egypt
@@ -870,7 +870,7 @@ El Giza,Egypt
 El Faiyum,Egypt
 El Arish,Egypt
 Dumyat,Egypt
-Damanhûr,Egypt
+Damanhur,Egypt
 Cairo,Egypt
 Bur Said,Egypt
 Beni Suef,Egypt
@@ -913,14 +913,14 @@ Tours,France
 Toulouse,France
 Toulon,France
 Strasbourg,France
-Saint-Étienne,France
+Saint-Etienne,France
 Rouen,France
 Rennes,France
 Reims,France
 Perpignan,France
 Paris,France
-Orléans,France
-Nîmes,France
+Orleans,France
+Nimes,France
 Nice,France
 Nantes,France
 Nancy,France
@@ -941,7 +941,7 @@ Caen,France
 Brest,France
 Bordeaux,France
 Biarritz,France
-Besançon,France
+Besancon,France
 Annecy,France
 Angers,France
 Amiens,France
@@ -954,24 +954,24 @@ Tbilisi,Georgia
 Rustavi,Georgia
 Kutaisi,Georgia
 Batumi,Georgia
-Würzburg,Germany
+Wurzburg,Germany
 Wuppertal,Germany
 Wiesbaden,Germany
 Ulm,Germany
 Stuttgart,Germany
-Saarbrücken,Germany
+Saarbrucken,Germany
 Rostock,Germany
 Regensburg,Germany
 Potsdam,Germany
-Osnabrück,Germany
+Osnabruck,Germany
 Oldenburg,Germany
-Nürnberg,Germany
-Münster,Germany
+Nurnberg,Germany
+Munster,Germany
 Munich,Germany
 Mannheim,Germany
 Mainz,Germany
 Magdeburg,Germany
-Lübeck,Germany
+Lubeck,Germany
 Leipzig,Germany
 Koblenz,Germany
 Kiel,Germany
@@ -982,14 +982,14 @@ Ingolstadt,Germany
 Heidelberg,Germany
 Hannover,Germany
 Hamburg,Germany
-Göttingen,Germany
+Gottingen,Germany
 Gera,Germany
-Fürth,Germany
+Furth,Germany
 Freiburg,Germany
 Frankfurt,Germany
 Essen,Germany
 Erfurt,Germany
-Düsseldorf,Germany
+Dusseldorf,Germany
 Duisburg,Germany
 Dresden,Germany
 Dortmund,Germany
@@ -1024,36 +1024,36 @@ Quetzaltenango,Guatemala
 Guatemala,Guatemala
 Escuintla,Guatemala
 El Progreso,Guatemala
-Nzérékoré,Guinea
-Labé,Guinea
+Nzerekore,Guinea
+Labe,Guinea
 Kindia,Guinea
 Kankan,Guinea
 Gueckedou,Guinea
 Conakry,Guinea
-Boké,Guinea
+Boke,Guinea
 Bissau,Guinea-Bissau
 Georgetown,Guyana
 Port-au-Prince,Haiti
 Les Cayes,Haiti
-Gonaïves,Haiti
-Cap-Haïtien,Haiti
+Gonaives,Haiti
+Cap-Haitien,Haiti
 Tegucigalpa,Honduras
 San Pedro Sula,Honduras
 La Ceiba,Honduras
 Hong Kong,Hong Kong
 Szombathely,Hungary
 Szolnok,Hungary
-Székesfehérvár,Hungary
+Szekesfehervar,Hungary
 Szeged,Hungary
-Pécs,Hungary
-Nyíregyháza,Hungary
+Pecs,Hungary
+Nyiregyhaza,Hungary
 Miskolc,Hungary
-Kecskemét,Hungary
-Kaposvár,Hungary
-Győr,Hungary
+Kecskemet,Hungary
+Kaposvar,Hungary
+Gyor,Hungary
 Debrecen,Hungary
 Budapest,Hungary
-Reykjavík,Iceland
+Reykjavik,Iceland
 Warangal,India
 Vizianagaram,India
 Vishakhapatnam,India
@@ -1453,14 +1453,14 @@ Barletta,Italy
 Bari,Italy
 Ancona,Italy
 Yamoussoukro,Ivory Coast
-Soubré,Ivory Coast
+Soubre,Ivory Coast
 San-Pedro,Ivory Coast
 Man,Ivory Coast
 Korhogo,Ivory Coast
 Gagnoa,Ivory Coast
 Divo,Ivory Coast
 Daloa,Ivory Coast
-Bouaké,Ivory Coast
+Bouake,Ivory Coast
 Abidjan,Ivory Coast
 Abengourou,Ivory Coast
 Spanish Town,Jamaica
@@ -1485,11 +1485,11 @@ Sendai,Japan
 Sasebo,Japan
 Sapporo,Japan
 Sakata,Japan
-Ōtsu,Japan
+Otsu,Japan
 Otaru,Japan
-Ōsaka,Japan
+Osaka,Japan
 Okayama,Japan
-Ōita,Japan
+Oita,Japan
 Obihiro,Japan
 Niigata,Japan
 Naha,Japan
@@ -1509,12 +1509,12 @@ Kyoto,Japan
 Kushiro,Japan
 Kure,Japan
 Kumamoto,Japan
-Kōriyama,Japan
-Kōfu,Japan
-Kōchi,Japan
-Kōbe,Japan
+Koriyama,Japan
+Kofu,Japan
+Kochi,Japan
+Kobe,Japan
 Kitami,Japan
-Kitakyūshū,Japan
+Kitakyushu,Japan
 Kawasaki,Japan
 Kawagoe,Japan
 Kanazawa,Japan
@@ -1524,7 +1524,7 @@ Hiroshima,Japan
 Hirosaki,Japan
 Hamamatsu,Japan
 Hakodate,Japan
-Hachiōji,Japan
+Hachioji,Japan
 Hachinohe,Japan
 Gifu,Japan
 Fukushima,Japan
@@ -1637,9 +1637,9 @@ Al Marj,Libya
 Al Khums,Libya
 Ajdabiya,Libya
 Vilnius,Lithuania
-Šiauliai,Lithuania
-Panevežys,Lithuania
-Klaipėda,Lithuania
+Siauliai,Lithuania
+Panevezys,Lithuania
+Klaipeda,Lithuania
 Kaunas,Lithuania
 Luxembourg,Luxembourg
 Tetovo,Macedonia
@@ -1680,9 +1680,9 @@ Butterworth,Malaysia
 Bintulu,Malaysia
 Batu Pahat,Malaysia
 Alor Setar,Malaysia
-Malé,Maldives
+Male,Maldives
 Sikasso,Mali
-Ségou,Mali
+Segou,Mali
 Mopti,Mali
 Koutiala,Mali
 Gao,Mali
@@ -1699,24 +1699,24 @@ Xalapa,Mexico
 Villahermosa,Mexico
 Veracruz,Mexico
 Uruapan,Mexico
-Tuxtla Gutiérrez,Mexico
+Tuxtla Gutierrez,Mexico
 Tuxpam,Mexico
-Torreón,Mexico
+Torreon,Mexico
 Toluca,Mexico
 Tlaxcala,Mexico
 Tijuana,Mexico
-Teziutlán,Mexico
+Teziutlan,Mexico
 Tepic,Mexico
 Tehuacan,Mexico
 Tapachula,Mexico
 Tampico,Mexico
-San Luis Potosí,Mexico
-San Juan del Río,Mexico
+San Luis Potosi,Mexico
+San Juan del Rio,Mexico
 San Cristobal de Las Casas,Mexico
 Saltillo,Mexico
 Salamanca,Mexico
 Reynosa,Mexico
-Querétaro,Mexico
+Queretaro,Mexico
 Puerto Vallarta,Mexico
 Puebla,Mexico
 Poza Rica de Hidalgo,Mexico
@@ -1731,17 +1731,17 @@ Navajoa,Mexico
 Morelia,Mexico
 Monterrey,Mexico
 Monclova,Mexico
-Minatitlán,Mexico
+Minatitlan,Mexico
 Mexico City,Mexico
 Mexicali,Mexico
-Mérida,Mexico
-Mazatlán,Mexico
-Mazatlán,Mexico
+Merida,Mexico
+Mazatlan,Mexico
+Mazatlan,Mexico
 Matamoros,Mexico
 Manzanillo,Mexico
 Los Mochis,Mexico
-León,Mexico
-Lázaro Cárdenas,Mexico
+Leon,Mexico
+Lazaro Cardenas,Mexico
 La Paz,Mexico
 Irapuato,Mexico
 Iguala,Mexico
@@ -1750,34 +1750,34 @@ Hermosillo,Mexico
 Guaymas,Mexico
 Guanajuato,Mexico
 Guadalajara,Mexico
-Gómez Palacio,Mexico
+Gomez Palacio,Mexico
 Fresnillo,Mexico
 Escuintla,Mexico
 Ensenada,Mexico
 Durango,Mexico
 Delicias,Mexico
-Culiacán,Mexico
+Culiacan,Mexico
 Cuernavaca,Mexico
-Córdoba,Mexico
+Cordoba,Mexico
 Colima,Mexico
 Coatzacoalcos,Mexico
 Ciudad Victoria,Mexico
 Ciudad Valles,Mexico
 Ciudad Obregon,Mexico
 Ciudad Madero,Mexico
-Ciudad Juárez,Mexico
+Ciudad Juarez,Mexico
 Ciudad del Carmen,Mexico
 Chilpancingo,Mexico
 Chihuahua,Mexico
 Chetumal,Mexico
 Celaya,Mexico
-Cancún,Mexico
+Cancun,Mexico
 Campeche,Mexico
 Aguascalientes,Mexico
 Acapulco,Mexico
 Tiraspol,Moldova
-Chișinău,Moldova
-Bălți,Moldova
+Chisinau,Moldova
+Balti,Moldova
 Ulaanbaatar,Mongolia
 Podgorica,Montenegro
 Taza,Morocco
@@ -1863,9 +1863,9 @@ Auckland,New Zealand
 Matagalpa,Nicaragua
 Masaya,Nicaragua
 Managua,Nicaragua
-León,Nicaragua
+Leon,Nicaragua
 Granada‎,Nicaragua
-Estelí,Nicaragua
+Esteli,Nicaragua
 Chinandega,Nicaragua
 Zinder,Niger
 Tahoua,Niger
@@ -1928,7 +1928,7 @@ Trondheim,Norway
 Stavanger,Norway
 Oslo,Norway
 Bergen,Norway
-Bærum,Norway
+Barum,Norway
 Suhar,Oman
 Salalah,Oman
 Muscat,Oman
@@ -1971,14 +1971,14 @@ Bahawalpur,Pakistan
 Abbottabad,Pakistan
 Panama City,Panama
 David,Panama
-Colón,Panama
+Colon,Panama
 Port Moresby,Papua New Guinea
 Lae,Papua New Guinea
 San Lorenzo,Paraguay
 Pedro Juan Caballero,Paraguay
-Encarnación,Paraguay
+Encarnacion,Paraguay
 Ciudad del Este,Paraguay
-Asunción,Paraguay
+Asuncion,Paraguay
 Tumbes,Peru
 Trujillo,Peru
 Tacna,Peru
@@ -1990,7 +1990,7 @@ Lima,Peru
 Juliaca,Peru
 Iquitos,Peru
 Ica,Peru
-Huánuco,Peru
+Huanuco,Peru
 Huancayo,Peru
 Cusco,Peru
 Chincha Alta,Peru
@@ -2032,29 +2032,29 @@ Batangas,Philippines
 Baguio City,Philippines
 Bacolod,Philippines
 Angeles,Philippines
-Zielona Góra,Poland
-Wrocław,Poland
+Zielona Gora,Poland
+WrocLaw,Poland
 Warsaw,Poland
 Szczecin,Poland
-Rzeszów,Poland
-Poznań,Poland
+Rzeszow,Poland
+Poznan,Poland
 Opole,Poland
 Olsztyn,Poland
 Lublin,Poland
-Łódź,Poland
-Kraków,Poland
+Lodz,Poland
+Krakow,Poland
 Koszalin,Poland
 Kielce,Poland
 Katowice,Poland
-Grudziądz,Poland
+Grudziadz,Poland
 Gliwice,Poland
 Gdynia,Poland
-Gdańsk,Poland
-Elbląg,Poland
+Gdansk,Poland
+Elblag,Poland
 Bytom,Poland
 Bydgoszcz,Poland
-Białystok,Poland
-Setúbal,Portugal
+BiaLystok,Poland
+Setubal,Portugal
 Porto,Portugal
 Lisbon,Portugal
 Funchal,Portugal
@@ -2062,29 +2062,29 @@ Coimbra,Portugal
 Braga,Portugal
 Doha,Qatar
 Tirgu Mures,Romania
-Timișoara,Romania
+Timisoara,Romania
 Suceava,Romania
 Sibiu,Romania
 Satu Mare,Romania
 Rimnicu Vilcea,Romania
-Ploiești,Romania
-Pitești,Romania
+Ploiesti,Romania
+Pitesti,Romania
 Piatra-Neamt,Romania
 Oradea,Romania
-Iași,Romania
-Galați,Romania
-Focșani,Romania
+Iasi,Romania
+Galati,Romania
+Focsani,Romania
 Drobeta-Turnu Severin,Romania
 Craiova,Romania
-Constanța,Romania
+Constanta,Romania
 Cluj-Napoca,Romania
-Buzău,Romania
+Buzau,Romania
 Bucharest,Romania
-Brașov,Romania
-Brăila,Romania
-Botoșani,Romania
+Brasov,Romania
+Braila,Romania
+Botosani,Romania
 Baia Mare,Romania
-Bacău,Romania
+Bacau,Romania
 Arad,Romania
 Zlatoust,Russian Federation
 Yuzhno Sakhalinsk,Russian Federation
@@ -2268,21 +2268,21 @@ Al Hillah,Saudi Arabia
 Ad Damman,Saudi Arabia
 Abha,Saudi Arabia
 Ziguinchor,Senegal
-Thiès,Senegal
+Thies,Senegal
 Kaolack,Senegal
 Diourbel,Senegal
 Dakar,Senegal
 Subotica,Serbia
 Novi Sad,Serbia
-Niš,Serbia
+Nis,Serbia
 Kragujevac,Serbia
-Čačak,Serbia
+Cacak,Serbia
 Belgrade,Serbia
 Kenema,Sierra Leone
 Freetown,Sierra Leone
 Bo,Sierra Leone
 Singapore,Singapore
-Košice,Slovakia
+Kosice,Slovakia
 Bratislava,Slovakia
 Maribor,Slovenia
 Ljubljana,Slovenia
@@ -2335,7 +2335,7 @@ Tarragona,Spain
 Seville,Spain
 Santander,Spain
 Santa Cruz de Tenerife,Spain
-San Sebastián,Spain
+San Sebastian,Spain
 Salamanca,Spain
 Pamplona,Spain
 Palma,Spain
@@ -2343,27 +2343,27 @@ Oviedo,Spain
 Ourense,Spain
 Murcia,Spain
 Melilla,Spain
-Mataró,Spain
+Mataro,Spain
 Marbella,Spain
-Málaga,Spain
+Malaga,Spain
 Madrid,Spain
-Logroño,Spain
-León,Spain
+Logrono,Spain
+Leon,Spain
 Las Palmas,Spain
-La Coruña,Spain
-Jaén,Spain
+La Coruna,Spain
+Jaen,Spain
 Huelva,Spain
 Granada‎,Spain
-Gijón,Spain
-Córdoba,Spain
+Gijon,Spain
+Cordoba,Spain
 Castello,Spain
 Cartagena,Spain
-Cádiz,Spain
+Cadiz,Spain
 Burgos,Spain
 Bilbao,Spain
 Barcelona,Spain
 Badajoz,Spain
-Almería,Spain
+Almeria,Spain
 Alicante,Spain
 Algeciras,Spain
 Albacete,Spain
@@ -2394,15 +2394,15 @@ El Manaqil,Sudan
 El Fasher,Sudan
 EdDamer,Sudan
 Atbara,Sudan
-Ad Damazīn,Sudan
+Ad DamazIn,Sudan
 Paramaribo,Suriname
 Manzini,Swaziland
-Västerås,Sweden
+Vasteras,Sweden
 Uppsala,Sweden
 Stockholm,Sweden
-Malmö,Sweden
-Göteborg,Sweden
-Zürich,Switzerland
+Malmo,Sweden
+Goteborg,Sweden
+Zurich,Switzerland
 Luzern,Switzerland
 Lugano,Switzerland
 Lausanne,Switzerland
@@ -2493,9 +2493,9 @@ Chiang Rai,Thailand
 Chiang Mai,Thailand
 Bangkok,Thailand
 Ayutthaya,Thailand
-Sokodé,Togo
-Lomé,Togo
-Kpalimé,Togo
+Sokode,Togo
+Lome,Togo
+Kpalime,Togo
 San Fernando,Trinidad & Tobago
 Port-of-Spain,Trinidad & Tobago
 Zarzis,Tunisia
@@ -2505,59 +2505,59 @@ Sfax,Tunisia
 Qairouan,Tunisia
 Nabeul,Tunisia
 Gafsa,Tunisia
-Gabès,Tunisia
+Gabes,Tunisia
 Bizerte,Tunisia
 Zonguldak,Turkey
 Van,Turkey
-Uşak,Turkey
+Usak,Turkey
 Trabzon,Turkey
 Tokat,Turkey
-Tekirdağ,Turkey
+Tekirdag,Turkey
 Tarsus,Turkey
 Sivas,Turkey
 Siirt,Turkey
-Şanlıurfa,Turkey
+SanlIurfa,Turkey
 Samsun,Turkey
 Rize,Turkey
 Ordu,Turkey
 Nusaybin,Turkey
 Manisa,Turkey
 Malatya,Turkey
-Kütahya,Turkey
+Kutahya,Turkey
 Konya,Turkey
-Kırıkkale,Turkey
+KIrIkkale,Turkey
 Kayseri,Turkey
 Karaman,Turkey
-Karabük,Turkey
-Kahramanmaraş,Turkey
-İzmit,Turkey
-İzmir,Turkey
+Karabuk,Turkey
+Kahramanmaras,Turkey
+Izmit,Turkey
+Izmir,Turkey
 Istanbul,Turkey
 Isparta,Turkey
-İskenderun,Turkey
+Iskenderun,Turkey
 Hatay,Turkey
 Gaziantep,Turkey
-Eskişehir,Turkey
+Eskisehir,Turkey
 Erzurum,Turkey
 Erzincan,Turkey
-Elâzığ,Turkey
+ElazIg,Turkey
 Edirne,Turkey
-Diyarbakır,Turkey
+DiyarbakIr,Turkey
 Denizli,Turkey
 Corum,Turkey
 Bursa,Turkey
 Batman,Turkey
-Balıkesir,Turkey
-Aydın,Turkey
+BalIkesir,Turkey
+AydIn,Turkey
 Antalya,Turkey
 Ankara,Turkey
 Afyon,Turkey
-Adıyaman,Turkey
-Adapazarı,Turkey
+AdIyaman,Turkey
+AdapazarI,Turkey
 Adana,Turkey
-Türkmenabat,Turkmenistan
+Turkmenabat,Turkmenistan
 Mary,Turkmenistan
-Daşoguz,Turkmenistan
+Dasoguz,Turkmenistan
 Balkanabat,Turkmenistan
 Ashgabat,Turkmenistan
 Tororo,Uganda
@@ -3105,25 +3105,25 @@ Andijon,Uzbekistan
 Valera,Venezuela
 Valencia,Venezuela
 San Fernando de Apure,Venezuela
-San Cristóbal,Venezuela
+San Cristobal,Venezuela
 Punto Fijo,Venezuela
 Puerto la Cruz,Venezuela
 Puerto Cabello,Venezuela
 Porlamar,Venezuela
 Ocumare del Tuy,Venezuela
 Merida,Venezuela
-Maturín,Venezuela
+Maturin,Venezuela
 Maracay,Venezuela
 Maracaibo,Venezuela
-Maiquetía,Venezuela
+Maiquetia,Venezuela
 Los Teques,Venezuela
 Guanare,Venezuela
 El Tigre,Venezuela
-Cumaná,Venezuela
+Cumana,Venezuela
 Coro,Venezuela
 Ciudad Guayana,Venezuela
-Ciudad Bolívar,Venezuela
-Carúpano,Venezuela
+Ciudad Bolivar,Venezuela
+Carupano,Venezuela
 Carora,Venezuela
 Caracas,Venezuela
 Calabozo,Venezuela
@@ -3134,30 +3134,30 @@ Barcelona,Venezuela
 Anaco,Venezuela
 Acarigua,Venezuela
 Vung Tau,Vietnam
-Vĩnh Long,Vietnam
+VInh Long,Vietnam
 Vinh,Vietnam
-Việt Trì,Vietnam
+Viet Tri,Vietnam
 Tra Vinh,Vietnam
 Thu Dau Mot,Vietnam
-Thanh Hóa,Vietnam
-Thái Nguyên,Vietnam
-Thái Bình,Vietnam
-Tây Ninh,Vietnam
+Thanh Hoa,Vietnam
+Thai Nguyen,Vietnam
+Thai Binh,Vietnam
+Tay Ninh,Vietnam
 Tan An,Vietnam
-Sơn Tây,Vietnam
-Sóc Trăng,Vietnam
-Rạch Giá,Vietnam
+Son Tay,Vietnam
+Soc Trang,Vietnam
+Rach Gia,Vietnam
 Qui Nhon,Vietnam
-Quảng Ngãi,Vietnam
+Quang Ngai,Vietnam
 Play Ku,Vietnam
 Phan Thiet,Vietnam
 Phan Rang,Vietnam
-Ninh Bình,Vietnam
+Ninh Binh,Vietnam
 Nha Trang,Vietnam
-Nam Định,Vietnam
-Mỹ Tho,Vietnam
+Nam DInh,Vietnam
+My Tho,Vietnam
 Long Xuyen,Vietnam
-Lạng Sơn,Vietnam
+Lang Son,Vietnam
 Kon Tum,Vietnam
 Hue,Vietnam
 Hong Gai,Vietnam
@@ -3165,19 +3165,19 @@ Hoa Binh,Vietnam
 Ho Chi Minh City,Vietnam
 Hanoi,Vietnam
 Haiphong,Vietnam
-Hà Tĩnh,Vietnam
-Đồng Hới,Vietnam
+Ha TInh,Vietnam
+Dong Hoi,Vietnam
 Da Nang,Vietnam
 Da Lat,Vietnam
-Cao Lãnh,Vietnam
+Cao Lanh,Vietnam
 Can Tho,Vietnam
 Cam Ranh,Vietnam
-Cẩm Phả,Vietnam
-Cà Mau,Vietnam
+Cam Pha,Vietnam
+Ca Mau,Vietnam
 Buon Me Thuot,Vietnam
-Biên Hòa,Vietnam
-Bạc Liêu,Vietnam
-Zabīd,Yemen
+Bien Hoa,Vietnam
+Bac Lieu,Vietnam
+ZabId,Yemen
 Taizz,Yemen
 Sanaa,Yemen
 Sadah,Yemen
@@ -3201,3 +3201,5 @@ Harare,Zimbabwe
 Gweru,Zimbabwe
 Chitungwiza,Zimbabwe
 Bulawayo,Zimbabwe
+Copenhagen,Denmark
+Zug,Switzerland

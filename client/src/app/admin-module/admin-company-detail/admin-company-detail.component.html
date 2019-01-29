@@ -223,11 +223,18 @@
                       <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
                     </div>
                     <div *ngIf="country.type === 'city'">
-                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}{{country.visa_not_needed}}
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
                     </div>
 
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class = "col-md-12" >
+              <div class="form-group">
+                <label>Show results that may require a sponsored work visa</label>
+                <p *ngIf="saved_searche[0].visa_not_needed === true;">Yes<p>
+                <p *ngIf="saved_searche[0].visa_not_needed === false;">No </p>
               </div>
 
             </div>
