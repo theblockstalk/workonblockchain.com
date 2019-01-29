@@ -11,7 +11,7 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('forgot password email of candidate or company', function () {
+describe('Auto suggest cities options', function () {
 
     afterEach(async () => {
         console.log('dropping database');

@@ -426,7 +426,7 @@ module.exports.prefilledProfileData = function prefilledProfileData() {
 module.exports.companySavedSearches = function companySavedSearches() {
     return {
         saved_searches : [{
-            location: ['remote'],
+            location: [{'remote':true}],
             job_type : ['Part time'],
             position : ['Backend Developer', 'Fullstack Developer'],
             current_currency : '$ USD',

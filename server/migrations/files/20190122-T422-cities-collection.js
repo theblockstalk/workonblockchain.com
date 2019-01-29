@@ -108,23 +108,17 @@ module.exports.up = async function() {
             if(companyDoc.saved_searches && companyDoc.saved_searches.length > 0) {
                 console.log("company Doc searched locations:  " + companyDoc.saved_searches[0].location);
                 await cities.findAndIterate({city :  {$in: companyDoc.saved_searches[0].location}}, async function(citiesDoc) {
-                    if(companyDoc.saved_searches[0].location.find(x => x === 'London')) {
-                        if(citiesDoc.city === 'London' && citiesDoc.country === 'United Kingdom') {
-                            locations.push({city: citiesDoc._id});
-                        }
+                    if(citiesDoc.city === 'London') {
+                        if (citiesDoc.country === 'United Kingdom') locations.push({city: citiesDoc._id, visa_not_needed: true});
                     }
-                    else if(companyDoc.saved_searches[0].location.find(x => x === 'Barcelona')) {
-                        if(citiesDoc.city === 'Barcelona' && citiesDoc.country === 'Spain') {
-                            locations.push({city: citiesDoc._id});
-                        }
+                    else if(citiesDoc.city === 'Barcelona') {
+                        if (citiesDoc.country === 'Spain') locations.push({city: citiesDoc._id, visa_not_needed: true});
                     }
-                    else if(companyDoc.saved_searches[0].location.find(x => x === 'Los Angeles')) {
-                        if(citiesDoc.city === 'Los Angeles' && citiesDoc.country === 'United States') {
-                            locations.push({city: citiesDoc._id});
-                        }
+                    else if(citiesDoc.city === 'Los Angeles') {
+                        if (citiesDoc.country === 'United States') locations.push({city: citiesDoc._id, visa_not_needed: true});
                     }
                     else {
-                        locations.push({city: citiesDoc._id});
+                        locations.push({city: citiesDoc._id, visa_not_needed: true});
                     }
                 });
 
