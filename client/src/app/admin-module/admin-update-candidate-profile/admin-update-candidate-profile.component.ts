@@ -496,17 +496,17 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
                   for (let country1 of data['candidate'].locations)
                   {
                     if (country1['remote'] === true) {
-                      this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                      this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1['visa_not_needed']});
 
                     }
 
                     if (country1['country']) {
                       let country = country1['country'] + ' (country)'
-                      this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
+                      this.selectedValueArray.push({name:  country , visa_not_needed : country1['visa_not_needed']});
                     }
                     if (country1['city']) {
                       let city = country1['city'].city + ", " + country1['city'].country + ' (city)';
-                      this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
+                      this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1['visa_not_needed']});
                     }
                   }
 
