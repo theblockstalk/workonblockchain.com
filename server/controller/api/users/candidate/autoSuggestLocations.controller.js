@@ -39,7 +39,7 @@ module.exports = async function (req, res) {
         }
     }
 
-
+console.log(outputOptions)
     res.send({
         locations: outputOptions
     });

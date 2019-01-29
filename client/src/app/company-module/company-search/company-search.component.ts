@@ -856,7 +856,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 let cityString = cities['city'].city + " (city)";
                 citiesOptions.push({_id : cities['city']._id , name : cityString});
               }
-              if(cities['city']&& cities['city'].country) {
+              /*if(cities['city']&& cities['city'].country) {
                 let countryString = cities['city'].country + " (country)";
                 citiesOptions.push({name : countryString });
 
@@ -864,7 +864,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               if(cities['country']) {
                 let countryString = cities['country'] + " (country)";
                 citiesOptions.push({name: countryString});
-              }
+              }*/
             }
             this.cities = this.filter_array(citiesOptions);
           }
@@ -937,6 +937,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   deleteLocationRow(i){
     this.selectedValueArray.splice(i, 1);
+    this.searchdata('locations' , this.selectedValueArray);
   }
 
   filter_array(arr)

@@ -111,34 +111,48 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             console.log("if");
             if(search.name) {
                 const nameSearch = { $or: [{ first_name: {'$regex' : search.name, $options: 'i'}},
-                        {last_name : {'$regex' : search.name, $options: 'i'}}] };
+                    {last_name : {'$regex' : search.name, $options: 'i'}}] };
                 candidateQuery.push(nameSearch);
             }
             if(search.word) {
                 const wordSearch = { $or: [{ 'candidate.why_work': {'$regex' : search.word, $options: 'i'}},
-                        {description : {'$regex' : search.word, $options: 'i'}}] };
+                    {description : {'$regex' : search.word, $options: 'i'}}] };
                 candidateQuery.push(wordSearch);
             }
             console.log(search.locations)
             if (search.locations && search.locations.length > 0 ) {
                 let locationsQuery = [];
-                let locationsCityQuery=[];
-                let locationsCountryQuery = [];
-                console.log(search.locations.find(x => x.name === "Remote"));
+                let citiesArray=[];
+                let countriesArray = [];
                 for(let loc of search.locations) {
-                        const cityDoc = await cities.findOneById(loc._id);
-                        if(cityDoc) {
-                            locationsCityQuery.push(cityDoc._id);
-                            locationsCountryQuery.push(cityDoc.country);
-                        }
+                    const cityDoc = await cities.findOneById(loc._id);
+                    if(cityDoc) {
+                        citiesArray.push(String(cityDoc._id));
+                        countriesArray.push(cityDoc.country);
+                    }
                 }
-                if(locationsCityQuery.length > 0 ) {
-                    locationsQuery.push({ "candidate.locations.city": {$in: locationsCityQuery}});
-                    locationsQuery.push({"candidate.locations.country" : {$in: locationsCountryQuery}});
+                if(citiesArray.length > 0 && search.visa_not_needed ) {
+                    locationsQuery.push({
+                        $and: [
+                            {"candidate.locations.city": {$in: citiesArray}},
+                            {"candidate.locatons.visa_not_needed": true}]
+                    })
 
+                    locationsQuery.push({
+                        $and: [
+                            {"candidate.locations.country": {$in: countriesArray}},
+                            {"candidate.locations.visa_not_needed": true}]
+                    })
+                }
+                else {
+                    console.log("cities array");
+                    console.log(citiesArray);
+                    locationsQuery.push({ "candidate.locations.city": {$in: citiesArray}});
+                    locationsQuery.push({"candidate.locations.country" : {$in: countriesArray}});
                 }
                 if(search.locations.find(x => x.name === "Remote")) {
-                    locationsQuery.push({"candidate.locations.remote" : true});
+                    const locationRemoteFilter = {"candidate.locations.remote" : true};
+                    locationsQuery.push(locationRemoteFilter);
                 }
 
                 candidateQuery.push({
