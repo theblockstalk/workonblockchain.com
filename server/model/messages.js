@@ -24,13 +24,6 @@ const MessageSchema = new Schema({
         enum: enumerations.chatMsgTypes,
         required: true
     },
-    is_read: // DELETE ME!!
-    {
-        type:Boolean,
-        required:true,
-        default:false
-
-    },
     date_created:
     {
         type: Date,

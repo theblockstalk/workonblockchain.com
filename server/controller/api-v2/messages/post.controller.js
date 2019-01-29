@@ -343,21 +343,16 @@ module.exports.endpoint = async function (req, res) {
     let senderConv, senderSelect, senderUpdate;
     if (req.auth.user.conversations) {
         const conversations = req.auth.user.conversations;
-        console.log('receiver_id: ' + receiver_id);
-        console.log('conversations: ' + conversations[0].user_id);
-        console.log(conversations[0].user_id ===  mongoose.Types.ObjectId(receiver_id));
-        process.exit();
-        senderConv = conversations.filter(item => item.user_id ===  mongoose.Types.ObjectId(receiver_id));
+        console.log('sender');
+        senderConv = conversations.filter(item => String(item.user_id) ===  receiver_id);
 
-        if (senderConv) {
+        if (senderConv && senderConv.length > 0) {
             console.log('in if 1st if');
-            senderSelect = { '_id': sender_id, 'conversations._id': senderConv._id };
-            if(!senderConv.count){
-                senderConv.count = 0;
-            }
+            let count = senderConv[0].count + 1;
+            senderSelect = { '_id': sender_id, 'conversations._id': senderConv[0]._id };
             senderUpdate = { $set: {
                 'conversations.$.user_id': receiver_id,
-                'conversations.$.count': senderConv.count++,
+                'conversations.$.count': count,
                 'conversations.$.unread_count': 0,
                 'conversations.$.last_message': timestamp
             }}
@@ -387,35 +382,19 @@ module.exports.endpoint = async function (req, res) {
     const receiverUserDoc = await users.findOneById(receiver_id);
     if (receiverUserDoc.conversations) {
         const conversations = receiverUserDoc.conversations;
-        console.log('sender');
-        console.log(sender_id);
-        console.log(conversations[0].user_id);
-        console.log(conversations[0].user_id === sender_id);
-        console.log(conversations[1].user_id === sender_id);
-        process.exit();
-        /*for(let conversation of conversations) {
-            console.log(conversation.user_id);
-            if(conversation.user_id === sender_id)console.log('matched');
-            else console.log('no match');
-        }*/
-        receiverConv = conversations.filter(item => item.user_id === sender_id);
+        receiverConv = conversations.filter(item => String(item.user_id) === String(sender_id));
         console.log('receiver');
-        console.log(receiverConv);
 
-        if (receiverConv) {
+        if (receiverConv && receiverConv.length>0) {
             console.log('in if 2nd');
-            receiverSelect = {'_id': receiver_id, 'conversations._id': receiverConv._id};
-            if(!receiverConv.count){
-                receiverConv.count = 0;
-            }
-            if(!receiverConv.unread_count){
-                receiverConv.unread_count = 0;
-            }
+            let count = receiverConv[0].count + 1;
+            let unread_count = receiverConv[0].unread_count + 1;
+            receiverSelect = {'_id': receiver_id, 'conversations._id': receiverConv[0]._id};
             receiverUpdate = {
                 $set: {
                     'conversations.$.user_id': sender_id,
-                    'conversations.$.count': receiverConv.count++,
-                    'conversations.$.unread_count': receiverConv.unread_count++,
+                    'conversations.$.count': count,
+                    'conversations.$.unread_count': unread_count,
                     'conversations.$.last_message': timestamp
                 }
             }
