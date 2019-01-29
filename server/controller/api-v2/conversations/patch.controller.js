@@ -36,7 +36,6 @@ module.exports.endpoint = async function (req, res) {
     await users.update({ '_id': userId, 'conversations.user_id': senderId}, {
         $set: {
             'conversations.$.unread_count': 0
-            //'conversations.$.count': 0
         }
     });
     res.send(true);

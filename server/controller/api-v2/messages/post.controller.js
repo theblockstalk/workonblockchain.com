@@ -5,10 +5,8 @@ const errors = require('../../services/errors');
 const sanitize = require('../../services/sanitize');
 const messages = require('../../../model/mongoose/messages');
 const users = require('../../../model/mongoose/users');
-const messageHelper = require('../messageHelpers');
 const multer = require('../../../controller/middleware/multer');
 const object = require('../../services/objects');
-const mongoose = require('mongoose');
 
 module.exports.request = {
     type: 'post',
@@ -212,7 +210,7 @@ module.exports.endpoint = async function (req, res) {
         await checkJobOfferAccepted(userType, sender_id, receiver_id);
 
         body.message.normal.message = sanitize.sanitizeHtml(body.message.normal.message);
-        body.message.normal.message = messageHelper.replaceLineBreaksHtml(body.message.normal.message);
+        body.message.normal.message = object.replaceLineBreaksHtml(body.message.normal.message);
         newMessage.message.normal = body.message.normal;
     }
     else if (body.msg_tag === "job_offer") {
@@ -227,7 +225,7 @@ module.exports.endpoint = async function (req, res) {
         if (messageDoc) errors.throwError("Job offer already sent", 400);
 
         body.message.job_offer.description = sanitize.sanitizeHtml(body.message.job_offer.description);
-        body.message.job_offer.description = messageHelper.replaceLineBreaksHtml(body.message.job_offer.description);
+        body.message.job_offer.description = object.replaceLineBreaksHtml(body.message.job_offer.description);
         newMessage.message.job_offer = body.message.job_offer;
     }
     else if (body.msg_tag === "job_offer_accepted") {
@@ -268,7 +266,7 @@ module.exports.endpoint = async function (req, res) {
 
         if (body.message.interview_offer.description) {
             body.message.interview_offer.description = sanitize.sanitizeHtml(body.message.interview_offer.description);
-            body.message.interview_offer.description = messageHelper.replaceLineBreaksHtml(body.message.interview_offer.description);
+            body.message.interview_offer.description = object.replaceLineBreaksHtml(body.message.interview_offer.description);
         }
         newMessage.message.interview_offer = body.message.interview_offer;
     }
@@ -286,7 +284,7 @@ module.exports.endpoint = async function (req, res) {
         };
         if(req.body.description){
             req.body.description = sanitize.sanitizeHtml(req.body.description);
-            req.body.description = messageHelper.replaceLineBreaksHtml(req.body.description);
+            req.body.description = object.replaceLineBreaksHtml(req.body.description);
             employment_offer.description = req.body.description;
         }
 
@@ -343,7 +341,6 @@ module.exports.endpoint = async function (req, res) {
     let senderConv, senderSelect, senderUpdate;
     if (req.auth.user.conversations) {
         const conversations = req.auth.user.conversations;
-        console.log('sender');
         senderConv = conversations.filter(item => String(item.user_id) ===  receiver_id);
 
         if (senderConv && senderConv.length > 0) {

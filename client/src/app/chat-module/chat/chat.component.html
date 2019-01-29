@@ -34,7 +34,7 @@
                 </div>
                 <div id = "contact" class = "border-right">
                   <ul class = "list-group">
-                    <li *ngFor="let person of users;let i = index" [ngClass]="(credentials.id == person.user_id)?'list-group-item wob-bg-secondary3':'list-group-item list-group-item-lite position-relative'" (click)="openDialog(person.first_name,person.user_id,person.company_name,i)" style= "overflow:hidden;">
+                    <li *ngFor="let person of users;let i = index" [ngClass]="(credentials.id == person.user_id)?'list-group-item wob-bg-secondary3':'list-group-item list-group-item-lite position-relative'" (click)="openDialog(person.name,person.user_id,person.name,i)" style= "overflow:hidden;">
                       <div class = "cont m-auto position-relative">
                         <ng-container *ngIf="currentUser.type == 'company';else cand_image">
                           <ng-container *ngIf="person.image;else person_image">
@@ -44,22 +44,21 @@
                             <img src="/assets/profile/profile-image.png" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
                           </ng-template>
                           <div class="meta">
-                            <p *ngIf="person.initials" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.initials }}</b></p>
-                            <p *ngIf="person.first_name" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.first_name }} {{ person.last_name }}</b></p>
+                            <p *ngIf="person.name" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.name }}</b></p>
                             <span *ngIf="person.unread_count" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
                               <b>{{person.unread_count}}</b>
                             </span>
                           </div>
                         </ng-container>
                         <ng-template #cand_image>
-                          <ng-container *ngIf="person.company_logo;else company_image">
-                            <img src="{{person.company_logo}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
+                          <ng-container *ngIf="person.image;else company_image">
+                            <img src="{{person.image}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
                           </ng-container>
                           <ng-template #company_image>
                             <img src="/assets/profile/profile-image.png" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
                           </ng-template>
                           <div class="meta">
-                            <p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.company_name }}</b></p>
+                            <p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.name }}</b></p>
                             <span *ngIf="person.unread_count" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
                               <b>{{person.unread_count}}</b>
                             </span>

@@ -106,7 +106,7 @@ const MessageSchema = new Schema({
                 },
                 description: {
                     type: String,
-                    required: true
+                    required: false
                 },
                 date_time: {
                     type: Date,
@@ -145,7 +145,8 @@ const MessageSchema = new Schema({
                 },
                 file_url: {
                     type: String,
-                    validate: regexes.url
+                    validate: regexes.url,
+                    required: false
                 }
             }),
             required: false
@@ -173,7 +174,7 @@ const MessageSchema = new Schema({
                 },
                 message: {
                     type: String,
-                    required: true
+                    required: false
                 }
             }),
             required: false

@@ -50,27 +50,31 @@ module.exports.endpoint = async function (req, res) {
         });
 
         for (i = 0; i < conversations.length; i++) {
-            console.log(req.auth.user.type);
-            if (req.auth.user.type === 'company') {
+            console.log(userDoc.type);
+            if (userDoc.type === 'company') {
                 console.log("user_id: " + conversations[i].user_id);
                 const candidateProfile = await
                 candidate.findOne({
                     "_creator": conversations[i].user_id
                 });
                 let query_result = filterReturnData.removeSensativeData(candidateProfile);
-                const acceptedJobOffer = await
-                messages.findOne({
-                    sender_id: conversations[i].user_id,
-                    receiver_id: userId,
-                    msg_tag: 'job_offer_accepted'
-                });
-                if (acceptedJobOffer) {
-                    conversations[i].first_name = query_result.first_name;
-                    conversations[i].last_name = query_result.last_name;
+                if(req.query.admin){
+                    conversations[i].name = query_result.first_name +' '+ query_result.last_name;
                 }
                 else {
-                    query_result = filterReturnData.anonymousSearchCandidateData(query_result);
-                    conversations[i].initials = query_result.initials;
+                    const acceptedJobOffer = await
+                    messages.findOne({
+                        sender_id: conversations[i].user_id,
+                        receiver_id: userId,
+                        msg_tag: 'job_offer_accepted'
+                    });
+                    if (acceptedJobOffer) {
+                        conversations[i].name = query_result.first_name + ' ' + query_result.last_name;
+                    }
+                    else {
+                        query_result = filterReturnData.anonymousSearchCandidateData(query_result);
+                        conversations[i].name = query_result.initials;
+                    }
                 }
                 conversations[i].image = query_result.image;
             }
@@ -81,8 +85,8 @@ module.exports.endpoint = async function (req, res) {
                     "_creator": conversations[i].user_id
                 });
                 console.log(conversations[i].user_id);
-                conversations[i].company_name = companyProfile.company_name;
-                conversations[i].company_logo = companyProfile.company_logo;
+                conversations[i].name = companyProfile.company_name;
+                conversations[i].image = companyProfile.company_logo;
             }
         }
     }

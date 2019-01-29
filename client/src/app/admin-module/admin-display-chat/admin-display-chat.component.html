@@ -17,7 +17,7 @@
             </div>
             <div id = "contact" class = "border-right">
               <ul class = "list-group">
-                <li *ngFor="let person of users" [ngClass]="(credentials.id == person._creator._id)?'list-group-item wob-bg-secondary3':'list-group-item list-group-item-lite position-relative'" (click)="openDialog(person.first_name,person._creator._id)">
+                <li *ngFor="let person of users" [ngClass]="(credentials.id == person.user_id)?'list-group-item wob-bg-secondary3':'list-group-item list-group-item-lite position-relative'" (click)="openDialog(person.name,person.user_id)">
                   <div class = "cont m-auto position-relative">
 										<ng-container *ngIf="user_type === 'company';else cand_image">
 											<ng-container *ngIf="person.image;else person_image">
@@ -28,8 +28,8 @@
 											</ng-template>
 										</ng-container>
 										<ng-template #cand_image>
-											<ng-container *ngIf="person.company_logo;else company_image">
-												<img src="{{person.company_logo}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
+											<ng-container *ngIf="person.image;else company_image">
+												<img src="{{person.image}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
 											</ng-container>
 											<ng-template #company_image>
 												<img src="/assets/profile/profile-image.png" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
@@ -37,9 +37,8 @@
 
 										</ng-template>
 										<div class="meta">
-											<p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;" *ngIf="user_type == 'company' && person.first_name">{{ person.first_name }} {{ person.last_name }}</p>
-											<p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;" *ngIf="user_type == 'company' && person.initials">{{ person.initials }}</p>
-											<p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;" *ngIf="user_type == 'candidate'">{{ person.company_name }}</p>
+											<p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;" *ngIf="user_type == 'company'">{{ person.name }}</p>
+											<p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;" *ngIf="user_type == 'candidate'">{{ person.name }}</p>
 										</div>
                   </div>
                 </li>

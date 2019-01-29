@@ -2,7 +2,7 @@ const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const mongoose = require('mongoose');
 const errors = require('../../services/errors');
-const messages = require('../../../model/mongoose/messages'); // TODO need to change to messages schema
+const messages = require('../../../model/mongoose/messages');
 
 module.exports.request = {
     type: 'get',
@@ -20,10 +20,6 @@ module.exports.inputValidation = {
 module.exports.auth = async function (req) {
     console.log('in auth');
     await auth.isValidUser(req);
-
-    // if (req.query.admin) {
-    //     await auth.isAdmin(req);
-    // }
 }
 
 const checkMessageSenderType = function (userType, expectedType) {
@@ -36,24 +32,11 @@ module.exports.endpoint = async function (req, res) {
     const sender_id = req.auth.user._id;
     let messageDoc;
 
-    if(req.query.sender_id){
-        console.log(req.query.sender_id);
-        const count = await messages.count({
-            sender_id: mongoose.Types.ObjectId(req.query.sender_id),
-            is_read: false
-        });
-        res.send({
-            sender_id: req.query.sender_id,
-            unReadCount: count
-        });
-    }
-    else{
-        checkMessageSenderType(userType, 'company');
+    checkMessageSenderType(userType, 'company');
 
-        messageDoc = await messages.findLastJobOffer({
-            sender_id: sender_id,
-            msg_tag: 'job_offer'
-        });
-        res.send(messageDoc);
-    }
+    messageDoc = await messages.findLastJobOffer({
+        sender_id: sender_id,
+        msg_tag: 'job_offer'
+    });
+    res.send(messageDoc);
 }

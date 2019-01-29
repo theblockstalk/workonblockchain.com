@@ -853,7 +853,7 @@ export class UserService {
   get_user_messages(receiver_id: string, sender_id: any)
   {
     console.log('admin is calling');
-    let queryString = '?receiver_id='+sender_id+'&admin=true';
+    let queryString = '?user_id='+sender_id+'&admin=true';
     //return this.http.get(URL+'v2/conversations/'+queryString, {
     return this.http.get(URL+'v2/conversations/'+receiver_id+'/messages'+queryString , {
       headers: new HttpHeaders().set('Authorization', this.token)

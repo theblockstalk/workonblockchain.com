@@ -80,37 +80,14 @@ export class AdminDisplayChatComponent implements OnInit {
                 this.new_messges.push(msg_data['conversations']);
                 this.new_messges = this.filter_array(msg_data['conversations']);
                 console.log(this.new_messges);
+                this.users = this.new_messges;
 						    this.length = 1;
-						    for (var key_messages in this.new_messges)
-						    {
-						      if(this.user_id == this.new_messges[key_messages].receiver_id){
-						        //console.log('my');
+                for (var key_users_new in this.users) {
+                  if(this.count == 0){
+                    this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'');
                   }
-                  else{
-                    this.authenticationService.getCandidate(this.user_id,this.new_messges[key_messages].receiver_id,this.new_messges[key_messages].msg_tag,this.type)
-                    .subscribe(
-                      data => {
-                        this.users.push(data['users']);
-                        this.users = this.filter_array(this.users);
-                        this.count = 0;
-                        for (var key_users_new in this.users) {
-                          if(this.count == 0){
-                            if(this.users[key_users_new].first_name){
-                              this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new]._creator._id,'');
-                            }
-                            else{
-                              this.openDialog(this.users[key_users_new].initials,this.users[key_users_new]._creator._id,'');
-                            }
-                          }
-                          this.count = this.count + 1;
-                        }
-                      },
-                      error => {
-                        this.log = error;
-                      }
-                    );
-                  }
-						    }
+                  this.count = this.count + 1;
+                }
               }
               else
               {
@@ -118,6 +95,9 @@ export class AdminDisplayChatComponent implements OnInit {
 					    }
 					  },
             error => {
+              if(error.status === 400){
+                this.length = 0;
+              }
               if(error.status === 500 || error.status === 401)
               {
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
@@ -145,39 +125,13 @@ export class AdminDisplayChatComponent implements OnInit {
                 this.new_messges.push(msg_data['conversations']);
                 this.new_messges = this.filter_array(msg_data['conversations']);
                 console.log(this.new_messges);
+                this.users = this.new_messges;
                 this.length = 1;
-                for (var key_messages in this.new_messges)
-                {
-                  if(this.user_id == this.new_messges[key_messages].sender_id){
-                    //console.log('my');
+                for (var key_users_new in this.users) {
+                  if(this.count === 0){
+                    this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name);
                   }
-                  else{
-                    this.authenticationService.getCandidate(this.new_messges[key_messages].sender_id,this.user_id,this.new_messges[key_messages].msg_tag,'company')
-                    .subscribe(
-                      data =>
-                      {
-                        this.users.push(data['users']);
-                        this.users = this.filter_array(this.users);
-                        this.count = 0;
-                        for (var key_users_new in this.users) {
-                          if(this.count === 0){
-                            this.openDialog('',this.users[key_users_new]._creator._id,this.users[key_users_new].company_name);
-                          }
-                          this.count = this.count + 1;
-                        }
-                      },
-                      error => {
-                        if(error.message === 500 || error.message === 401)
-                        {
-                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                          window.location.href = '/login';
-                        }
-                        if(error.message === 403)
-                        {}
-                        this.log = error;
-                      }
-                    );
-							    }
+                  this.count = this.count + 1;
                 }
               }
               else
@@ -186,6 +140,9 @@ export class AdminDisplayChatComponent implements OnInit {
               }
             },
             error => {
+              if(error.status === 400){
+                this.length = 0;
+              }
               if(error.status === 500 || error.status === 401)
               {
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');

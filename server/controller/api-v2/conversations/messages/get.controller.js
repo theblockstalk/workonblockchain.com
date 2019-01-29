@@ -2,6 +2,7 @@ const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const messages = require('../../../../model/messages');
 const mongoose = require('mongoose');
+const errors = require('../../../services/errors');
 
 module.exports.request = {
     type: 'get',
@@ -13,7 +14,7 @@ const paramSchema = new Schema({
 })
 
 const querySchema = new Schema({
-    receiver_id: String,
+    user_id: String,
     admin: Boolean
 })
 
@@ -31,20 +32,11 @@ module.exports.auth = async function (req) {
     }
 }
 
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
-
 module.exports.endpoint = async function (req, res) {
     console.log('in endpoint');
-    //const userType = req.auth.user.type;
     let userId;
-    if (req.query.receiver_id) {
-        userId = req.query.receiver_id;
+    if (req.query.user_id) {
+        userId = req.query.user_id;
     }
     else{
         userId = req.auth.user._id;
@@ -63,7 +55,6 @@ module.exports.endpoint = async function (req, res) {
     if (messageDocs.length === 0) {
         errors.throwError('No messages found', 404)
     }
-    console.log(messageDocs);
     if(messageDocs.length >= 2 && messageDocs[1].msg_tag === 'job_offer_accepted') {
         jobOfferStatus = 'accepted';
     } else if (messageDocs.length >= 2 && messageDocs[1].msg_tag === 'job_offer_rejected') {
@@ -71,8 +62,6 @@ module.exports.endpoint = async function (req, res) {
     } else if(messageDocs[0].msg_tag === 'job_offer') {
         jobOfferStatus = 'sent';
     }
-
-    console.log(jobOfferStatus);
 
     res.send({
         messages:messageDocs,

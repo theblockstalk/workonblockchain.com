@@ -332,7 +332,8 @@ export class ChatComponent implements OnInit {
               //console.log('company');
               this.display_list = 1;
               this.loading = true;
-              this.authenticationService.get_user_messages_only_comp()
+              //setInterval(() => {
+                this.authenticationService.get_user_messages_only_comp()
                 .subscribe(
                     msg_data => {
                         if(msg_data['conversations']){
@@ -342,12 +343,7 @@ export class ChatComponent implements OnInit {
                           this.users = this.new_messges;
                           for (var key_users_new in this.users) {
                             if(this.count == 0){
-                              if(this.users[key_users_new].first_name){
-                                this.openDialog(this.users[key_users_new].first_name,this.users[key_users_new].user_id,'',key_users_new);
-                              }
-                              else{
-                                this.openDialog(this.users[key_users_new].initials,this.users[key_users_new].user_id,'',key_users_new);
-                              }
+                              this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'',key_users_new);
                             }
                             this.count = this.count + 1;
                           }
@@ -375,8 +371,10 @@ export class ChatComponent implements OnInit {
                         }
                     }
                 );
+              //},7000);
             }
             else{
+              //setInterval(() => {
                 this.authenticationService.get_user_messages_only_comp()
                 .subscribe(
                     msg_data => {
@@ -390,7 +388,7 @@ export class ChatComponent implements OnInit {
                           console.log(this.users);
                           for (var key_users_new in this.users) {
                             if(this.count == 0){
-                              this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].company_name,key_users_new);
+                              this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name,key_users_new);
                             }
                             this.count = this.count + 1;
                           }
@@ -420,6 +418,7 @@ export class ChatComponent implements OnInit {
                 );
                 this.display_list = 0;
                 //console.log('candidate');
+              //},7000);
             }
 
     }
