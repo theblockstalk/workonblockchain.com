@@ -66,9 +66,15 @@ const CompanyProfileSchema = new Schema({
         type:[new Schema({
             location: {
                 type: [{
-                    type: String,
-                    required : true,
-                    enum: enumerations.workLocations
+                    city: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Cities'
+                    },
+                    remote: Boolean,
+                    visa_not_needed: {
+                        type: Boolean,
+                        required: true,
+                    }
                 }]
             },
             job_type: {

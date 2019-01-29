@@ -1,14 +1,15 @@
-const users = require('../model/mongoose/users');
-const cities = require('../model/mongoose/cities');
-const enumeration =  require('../model/enumerations');
+const users = require('../../model/mongoose/users');
+const cities = require('../../model/mongoose/cities');
+const companies = require('../../model/mongoose/company');
+const enumeration =  require('../../model/enumerations');
 const mongoose = require('mongoose');
-const logger = require('../controller/services/logger');
+const logger = require('../../controller/services/logger');
 const csv=require('csvtojson');
-const citiesFilePath = __dirname + '/cities-csv/worldcities-processed.csv';
-const nationalityFilePath = __dirname + '/cities-csv/worldcities-processed-nationalities.csv';
+const citiesFilePath = __dirname + '/../cities-csv/worldcities-processed.csv';
+const nationalityFilePath = __dirname + '/../cities-csv/worldcities-processed-nationalities.csv';
 
-let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0;
-let newDocs= 0, totalIncompleteDoc= 0;
+let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0, totalCompanyProcessed=0, totalCompanyModified=0;
+let totalCompanyIncompleteDoc=0, newDocs= 0, totalIncompleteDoc= 0;
 
 module.exports.up = async function() {
     const locationsJsonArray=await csv().fromFile(citiesFilePath);
@@ -80,10 +81,43 @@ module.exports.up = async function() {
         }
     });
 
+    await users.findAndIterate({type : 'company'}, async function(userDoc) {
+        totalCompanyProcessed++;
+        let locations=[];
+        const companyDoc = await companies.findOne({_creator : userDoc._id});
+        if(companyDoc) {
+            console.log("Company Doc id: " + companyDoc._id);
+            if(companyDoc.saved_searches && companyDoc.saved_searches.length > 0) {
+                console.log("company Doc searched locations:  " + companyDoc.saved_searches[0].location);
+                await cities.findAndIterate({city :  {$in: companyDoc.saved_searches[0].location}}, async function(citiesDoc) {
+                    locations.push({city: citiesDoc._id, visa_not_needed: true});
+                });
+
+                for(let loc of companyDoc.saved_searches[0].location) {
+                    if(loc === 'remote') {
+                        locations.push({remote:true, visa_not_needed: false});
+                    }
+                }
+                if(locations && locations.length > 0) {
+                    await companies.update({ _id: companyDoc._id },{ $set: {'saved_searches.0.location' : locations} });
+                    totalCompanyModified++;
+                }
+            }
+            else {
+                totalCompanyIncompleteDoc++;
+            }
+        }
+
+
+    });
+
     console.log('Total user document to process: ' + totalDocsToProcess);
     console.log('Total user document with incomplete profile: ' + totalIncompleteDoc);
-    console.log('Total processed document: ' + totalProcessed);
-    console.log('Total modified document: ' + totalModified);
+    console.log('Total user processed document: ' + totalProcessed);
+    console.log('Total user modified document: ' + totalModified);
+    console.log('Total company processed document: ' + totalCompanyProcessed);
+    console.log('Total company document with incomplete profile: ' + totalCompanyIncompleteDoc);
+    console.log('Total company modified document: ' + totalCompanyModified);
 }
 
 module.exports.down = async function() {
@@ -107,13 +141,40 @@ module.exports.down = async function() {
                 }
             }
 
+            console.log("candidate locations: " +locations);
             await users.update({ _id: userDoc._id },{ $set: {'candidate.locations' : locations} });
             totalModified++;
 
         }
     });
 
+    await users.findAndIterate({type : 'company'}, async function(userDoc) {
+        let locations = [];
+        totalCompanyProcessed++;
+
+        console.log("company user Doc id: " + userDoc._id);
+        const companyDoc = await companies.findOne({_creator : userDoc._id});
+
+        if(companyDoc && companyDoc.saved_searches && companyDoc.saved_searches.length > 0) {
+            for(let loc of companyDoc.saved_searches[0].location) {
+                if(loc.city){
+                    const cityDoc= await cities.findOneById(loc.city);
+                    locations.push(cityDoc.city);
+                }
+                if(loc.remote === true) {
+                    locations.push("remote");
+                }
+            }
+            console.log("saved searches location: " +locations);
+            await companies.update({ _id: companyDoc._id },{ $set: {'saved_searches.0.location' : locations} });
+            totalCompanyModified++;
+
+        }
+    });
+
     console.log('Total user document to process: ' + totalDocsToProcess);
-    console.log('Total processed document: ' + totalProcessed);
-    console.log('Total modified document: ' + totalModified);
+    console.log('Total user processed document: ' + totalProcessed);
+    console.log('Total user modified document: ' + totalModified);
+    console.log('Total company processed document: ' + totalCompanyProcessed);
+    console.log('Total company modified document: ' + totalCompanyModified);
 }
