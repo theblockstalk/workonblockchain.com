@@ -58,6 +58,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   current_sal_log;
   current_currency_log;
   count;
+  emptyInput;
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
