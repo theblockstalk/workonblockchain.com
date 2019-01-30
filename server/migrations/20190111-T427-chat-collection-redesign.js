@@ -1,7 +1,7 @@
 const messages = require('../model/mongoose/messages');
 const Chat = require('../model/chat');
 const logger = require('../controller/services/logger');
-
+const users = require('../model/mongoose/users');
 
 let totalDocsToProcess, totalProcessed = 0, totalModified = 0;
 
@@ -32,7 +32,6 @@ module.exports.up = async function() {
             sender_id: chatDoc.sender_id,
             receiver_id: chatDoc.receiver_id,
             msg_tag: chatDoc.msg_tag,
-            is_read: chatDoc.is_read,
             date_created: chatDoc.date_created,
         };
 
@@ -116,8 +115,96 @@ module.exports.up = async function() {
             }
         }
         if (newMessageDoc) {
+            let senderConv, senderSelect, senderUpdate;
+            const timestamp = Date.now();
+
+            const userDoc = await users.findOneById(chatDoc.sender_id);
+            if (userDoc.conversations && userDoc.conversations.length>0) {
+                const conversations = userDoc.conversations;
+                senderConv = conversations.filter(item => String(item.user_id) ===  String(chatDoc.receiver_id));
+                if (senderConv && senderConv.length > 0) {
+                    let count = senderConv[0].count + 1;
+                    senderSelect = { '_id': chatDoc.sender_id, 'conversations._id': senderConv[0]._id };
+                    senderUpdate = { $set: {
+                        'conversations.$.user_id': chatDoc.receiver_id,
+                        'conversations.$.count': count,
+                        'conversations.$.unread_count': 0,
+                        'conversations.$.last_message': timestamp
+                    }}
+                }
+                else{
+                    senderSelect = { '_id': chatDoc.sender_id }
+                    senderUpdate = { $push: { conversations: {
+                        user_id: chatDoc.receiver_id,
+                        count: 1,
+                        unread_count: 0,
+                        last_message: timestamp
+                    }}}
+                }
+            }
+            else{
+                senderSelect = { '_id': chatDoc.sender_id }
+                senderUpdate = { $push: { conversations: {
+                    user_id: chatDoc.receiver_id,
+                    count: 1,
+                    unread_count: 0,
+                    last_message: timestamp
+                }}}
+            }
+
+            let receiverConv, receiverSelect, receiverUpdate;
+            const receiverUserDoc = await users.findOneById(chatDoc.receiver_id);
+            if (receiverUserDoc.conversations && receiverUserDoc.conversations.length>0) {
+                const conversations = receiverUserDoc.conversations;
+                receiverConv = conversations.filter(item => String(item.user_id) === String(chatDoc.sender_id));
+                if (receiverConv && receiverConv.length>0) {
+                    let count = receiverConv[0].count + 1;
+                    let unread_count = 0;
+                    if(chatDoc.is_read === 0){
+                        unread_count = receiverConv[0].unread_count + 1;
+                    }
+                    receiverSelect = {'_id': chatDoc.receiver_id, 'conversations._id': receiverConv[0]._id};
+                    receiverUpdate = {
+                        $set: {
+                            'conversations.$.user_id': chatDoc.sender_id,
+                            'conversations.$.count': count,
+                            'conversations.$.unread_count': unread_count,
+                            'conversations.$.last_message': timestamp
+                        }
+                    }
+                }
+                else {
+                    let unread_count = 0;
+                    if(chatDoc.is_read === 0){
+                        unread_count = 1;
+                    }
+                    receiverSelect = { '_id': chatDoc.receiver_id }
+                    receiverUpdate = { $push: { conversations: {
+                        user_id: chatDoc.sender_id,
+                        count: 1,
+                        unread_count: unread_count,
+                        last_message: timestamp
+                    }}}
+                }
+            }
+            else{
+                let unread_count = 0;
+                if(chatDoc.is_read === 0){
+                    unread_count = 1;
+                }
+                receiverSelect = { '_id': chatDoc.receiver_id }
+                receiverUpdate = { $push: { conversations: {
+                    user_id: chatDoc.sender_id,
+                    count: 1,
+                    unread_count: unread_count,
+                    last_message: timestamp
+                }}}
+            }
+
             logger.debug("message doc added", newMessageDoc);
             const newDocs = await messages.insert(newMessageDoc);
+            await users.update(senderSelect, senderUpdate);
+            await users.update(receiverSelect, receiverUpdate);
             if (newDocs) totalModified++;
         }
     }
