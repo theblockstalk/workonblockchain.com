@@ -218,7 +218,7 @@ module.exports.job = function job(){
         current_currency: '£ GBP',
         availability_day: '1 month',
         country: [
-            {remote:true , visa_not_needed: false}, {country: 'Afghanistan' , visa_not_needed : false},
+            {country: 'Afghanistan' , visa_not_needed : false} , {remote:true , visa_not_needed: false},
             {_id : '5c4aa17468cc293450c14c04' , visa_not_needed : true }
         ],
         roles: [
