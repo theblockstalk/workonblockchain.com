@@ -40,5 +40,6 @@
   "slack": {
     "username": "STAGING bug reporter",
     "channel": "#1_server_bugs_staging"
-  }
+  },
+  "throttleTime" : 600
 }

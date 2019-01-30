@@ -4,7 +4,7 @@ const sgMail = require('@sendgrid/mail');
 const sgClient = require('@sendgrid/client');
 const time = require('../time');
 
-const throttleTimeMs = 400;
+const throttleTimeMs = settings.throttleTime;
 const environmentName = "wob_" + settings.ENVIRONMENT + "_environment";
 
 if (settings.isLiveApplication()) {

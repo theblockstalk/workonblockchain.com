@@ -4,9 +4,11 @@ let config;
 if (process.env.NODE_ENV === 'production') {
     settings.ENVIRONMENT = 'production';
     config = require('./config/production.json');
+    settings.throttleTime = config.throttleTime;
 } else if (process.env.NODE_ENV === 'staging') {
     settings.ENVIRONMENT = 'staging';
     config = require('./config/staging.json');
+    settings.throttleTime = config.throttleTime;
 } else if (process.env.NODE_ENV === 'migrate') {
     settings.ENVIRONMENT = 'migrate';
     config = require('./config/default.json');
