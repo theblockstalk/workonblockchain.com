@@ -893,7 +893,10 @@
         <label>Text box with auto suggestion</label>
         <div class="form-group">
           <datalist id="countryList">
-            <option *ngFor = "let country of countries" value="{{country}}">
+            <select class="form-control">
+              <option *ngFor = "let country of countries" value="{{country}}">
+
+            </select>
 
           </datalist>
           <input type="text" list="countryList" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValue($event)">
