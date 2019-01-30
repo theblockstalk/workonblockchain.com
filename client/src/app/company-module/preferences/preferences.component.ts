@@ -44,6 +44,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   selectedValueArray=[];
   error;
   selectedLocations;
+  emptyInput;
 
   constructor(private _fb: FormBuilder,private route: ActivatedRoute, private http: HttpClient, private router: Router, private authenticationService: UserService) {
   }

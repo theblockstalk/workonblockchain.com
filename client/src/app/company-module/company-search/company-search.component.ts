@@ -59,6 +59,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   countriesModel;
   error;
   cities;
+  emptyInput;
 
   constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
