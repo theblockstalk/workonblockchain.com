@@ -1980,7 +1980,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
-    console.log(this.selectedLocations)
 
   }
 

@@ -538,13 +538,12 @@ export class JobComponent implements OnInit,AfterViewInit {
                 citiesOptions.push({_id : cities['city']._id , name : cityString});
               }
               if(cities['country'] ) {
-                let countryString = cities['country'] + " (country)";
+                let countryString = cities['country']  + " (country)";
                 if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
                   citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
               }
             }
             this.cities = this.filter_array(citiesOptions);
-            console.log(this.cities);
           }
 
         },
