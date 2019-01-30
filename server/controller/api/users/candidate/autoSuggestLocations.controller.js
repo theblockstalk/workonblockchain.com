@@ -3,7 +3,6 @@ const enumerations = require('../../../../model/enumerations');
 const logger = require('../../../services/logger');
 
 module.exports = async function (req, res) {
-    console.log("endpoint");
     let queryInput = req.body;
     let regex = new RegExp(queryInput.autosuggest, 'i');
     let outputOptions = [];

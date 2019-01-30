@@ -294,9 +294,9 @@
                 <div class="form-group">
                   <label>Where are you hiring?</label>
                   <div>
-                    <datalist id="countryList">
+                    <datalist id="countryList" *ngIf="cities && cities.length > 0">
                       <select class="form-control">
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
+                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text="{{preferncesForm.value.location}}">
                       </option>
                       </select>
                     </datalist>

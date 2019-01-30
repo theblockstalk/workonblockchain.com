@@ -123,7 +123,6 @@ export class AdminCandidateDetailComponent implements OnInit {
                 $("#status_reason_deferred").css("display", "block");
               }
               this.info.push(data);
-              console.log(this.info);
               this.verify =data['is_verify'];
               if(data['candidate'].work_history) {
                 this.work_history = data['candidate'].work_history;
@@ -137,41 +136,51 @@ export class AdminCandidateDetailComponent implements OnInit {
 
               if(data['candidate'].locations)
               {
+                let citiesArray = [];
+                let countriesArray = [];
                 for (let country1 of data['candidate'].locations)
                 {
                   let locObject : any = {}
-                  if (country1.remote === true) {
-                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                  if (country1['remote'] === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1['visa_not_needed']});
+                  }
+
+                  if (country1['country']) {
+                    locObject.name = country1['country'];
+                    locObject.type = 'country';
+                    if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                    countriesArray.push(locObject);
+                    countriesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
+                  }
+                  if (country1['city']) {
+                    let city = country1['city'].city + ", " + country1['city'].country;
+                    locObject.name = city;
+                    locObject.type = 'city';
+                    if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                    citiesArray.push(locObject);
+                    citiesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
 
                   }
 
-                if (country1.country) {
-                      locObject.name = country1.country;
-                      locObject.type = 'country';
-                      if(country1.visa_not_needed === false) locObject.visa_not_needed = ": visa required";
-                      this.selectedValueArray.push(locObject);
-                    }
-                    if (country1.city) {
-                      let city = country1.city.city + ", " + country1.city.country;
-                      locObject.name = city;
-                      locObject.type = 'city';
-                      if(country1.visa_not_needed === false) locObject.visa_not_needed = ": visa required";
-                      this.selectedValueArray.push(locObject);
-                    }
-
                 }
-                this.countries = this.selectedValueArray;
-            this.countries.sort(function(a, b){
-                        if(a.name < b.name) { return -1; }
-                        if(a.name > b.name) { return 1; }
-                        return 0;
-                      })
+
+                this.countries = citiesArray.concat(countriesArray);
+                this.countries = this.countries.concat(this.selectedValueArray);
                 if(this.countries.find((obj => obj.name === 'Remote'))) {
-                    let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
-                    this.countries.splice(0, 0, remoteValue);
-                    this.countries = this.filter_array(this.countries);
+                  let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                  this.countries.splice(0, 0, remoteValue);
+                  this.countries = this.filter_array(this.countries);
 
                 }
+
               }
               this.interest_area =data['candidate'].interest_areas;
               this.interest_area.sort();

@@ -165,10 +165,10 @@
                 <div class="form-group">
                   <label>Where would you like to work? (select up to 10)</label>
                   <div>
-                    <datalist id="countryList">
+                    <datalist id="countryList" *ngIf="cities && cities.length > 0">
                       <select class="form-control">
 
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
+                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}">
                       </option>
                       </select>
                     </datalist>

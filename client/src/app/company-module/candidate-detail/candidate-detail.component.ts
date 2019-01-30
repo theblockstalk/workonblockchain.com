@@ -167,43 +167,52 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
               this.first_name = dataa['initials'];
               if(dataa['candidate'].locations)
               {
+                let citiesArray = [];
+                let countriesArray = [];
                 for (let country1 of dataa['candidate'].locations)
                 {
-                  let locObject : any = {};
-                  if (country1.remote === true) {
-                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                  let locObject : any = {}
+                  if (country1['remote'] === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1['visa_not_needed']});
+                  }
+
+                  if (country1['country']) {
+                    locObject.name = country1['country'];
+                    locObject.type = 'country';
+                    if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                    countriesArray.push(locObject);
+                    countriesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
+                  }
+                  if (country1['city']) {
+                    let city = country1['city'].city + ", " + country1['city'].country;
+                    locObject.name = city;
+                    locObject.type = 'city';
+                    if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                    citiesArray.push(locObject);
+                    citiesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
 
                   }
 
-                if (country1.country) {
-                      locObject.name = country1.country;
-                      locObject.type = 'country';
-                      if(country1.visa_not_needed === false) locObject.visa_not_needed = ": visa required";
-                      this.selectedValueArray.push(locObject);
-                    }
-                    if (country1.city) {
-                      let city = country1.city.city + ", " + country1.city.country;
-                      locObject.name = city;
-                      locObject.type = 'city';
-                      if(country1.visa_not_needed === false) locObject.visa_not_needed = ": visa required";
-                      this.selectedValueArray.push(locObject);
-                    }
+                }
+
+                this.countries = citiesArray.concat(countriesArray);
+                this.countries = this.countries.concat(this.selectedValueArray);
+                if(this.countries.find((obj => obj.name === 'Remote'))) {
+                  let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                  this.countries.splice(0, 0, remoteValue);
+                  this.countries = this.filter_array(this.countries);
 
                 }
-                this.countries = this.selectedValueArray;
-                this.countries.sort(function(a, b){
-                        if(a.name < b.name) { return -1; }
-                        if(a.name > b.name) { return 1; }
-                        return 0;
-                      })
-                if(this.countries.find((obj => obj.name === 'Remote'))) {
-                    let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
-                    this.countries.splice(0, 0, remoteValue);
-                    this.countries = this.filter_array(this.countries);
-                    
-                }
+
               }
-              console.log(this.countries);
 
               this.interest_area =dataa['candidate'].interest_areas;
               this.interest_area.sort();
@@ -300,7 +309,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           },
           error => {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              //console.log(error['error']['message']);
               this.router.navigate(['/not_found']);
             }
 
@@ -407,13 +415,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.authenticationService.insertMessage(this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
                   .subscribe(
                     data => {
-                      ////console.log(data);
                       this.job_offer_msg_success = 'Message has been successfully sent';
                       this.router.navigate(['/chat']);
                     },
                     error => {
-                      ////console.log('error');
-                      ////console.log(error);
                       //this.log = error;
                     }
                   );

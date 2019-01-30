@@ -126,7 +126,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                     countriesArray.push(cityDoc.country);
                 }
             }
-            if(citiesArray.length > 0 && search.visa_not_needed ) {
+            if(citiesArray.length > 0 ) {
                 if(search.visa_not_needed) {
                     locationsQuery.push({
                         $and: [
@@ -151,9 +151,11 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                 const locationRemoteFilter = {"candidate.locations.remote" : true};
                 locationsQuery.push(locationRemoteFilter);
             }
-            userQuery.push({
-                $or:locationsQuery
-            });
+            if(locationsQuery && locationsQuery.length > 0) {
+                userQuery.push({
+                    $or:locationsQuery
+                });
+            }
 
         }
 
