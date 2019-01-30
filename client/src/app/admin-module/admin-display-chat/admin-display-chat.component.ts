@@ -239,11 +239,10 @@ export class AdminDisplayChatComponent implements OnInit {
   get_user_type()
   {
     if(this.user_type == 'company'){
-      this.authenticationService.getCandidate(this.user_id,'0','job_offer_accepted',this.user_type)
+      this.authenticationService.getCurrentCompany(this.user_id)
 			.subscribe(
 			  data =>
         {
-			    data = data['users'];
 					if(data['company_logo']!='')
 					{
 						this.profile_pic = data['company_logo'];
