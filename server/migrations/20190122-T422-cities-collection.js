@@ -1,12 +1,12 @@
-const users = require('../../model/mongoose/users');
-const cities = require('../../model/mongoose/cities');
-const companies = require('../../model/mongoose/company');
-const enumeration =  require('../../model/enumerations');
+const users = require('../model/mongoose/users');
+const cities = require('../model/mongoose/cities');
+const companies = require('../model/mongoose/company');
+const enumeration =  require('../model/enumerations');
 const mongoose = require('mongoose');
-const logger = require('../../controller/services/logger');
+const logger = require('../controller/services/logger');
 const csv=require('csvtojson');
-const citiesFilePath = __dirname + '/../cities-csv/worldcities-processed.csv';
-const nationalityFilePath = __dirname + '/../cities-csv/worldcities-processed-nationalities.csv';
+const citiesFilePath = __dirname + '/files/T422-cities-collection.csv';
+const nationalityFilePath = __dirname + '/files/T422-nationality-to-country-mappig.csv';
 
 let totalDocsToProcess=0, totalModified = 0, totalProcessed = 0, totalCompanyProcessed=0, totalCompanyModified=0;
 let totalCompanyIncompleteDoc=0, newDocs= 0, totalIncompleteDoc= 0;
@@ -17,8 +17,8 @@ module.exports.up = async function() {
 
     for(let location of locationsJsonArray) {
         let data = {
-            city : location.city,
-            country : location.country,
+            city : location.City,
+            country : location.Country,
             active : true,
         }
         logger.debug("cities document: ", data);
