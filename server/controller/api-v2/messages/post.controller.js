@@ -216,8 +216,7 @@ module.exports.endpoint = async function (req, res) {
     else if (body.msg_tag === "job_offer") {
         checkMessageSenderType(userType, 'company');
 
-        const messageDoc = await
-        messages.findOne({
+        const messageDoc = await messages.findOne({
             sender_id: sender_id,
             receiver_id: receiver_id,
             msg_tag: 'job_offer'
@@ -231,8 +230,7 @@ module.exports.endpoint = async function (req, res) {
     else if (body.msg_tag === "job_offer_accepted") {
         checkMessageSenderType(userType, 'candidate');
 
-        const messageDoc = await
-        messages.findOne({
+        const messageDoc = await messages.findOne({
             sender_id: sender_id,
             receiver_id: receiver_id,
             msg_tag: 'job_offer_accepted'
@@ -244,8 +242,7 @@ module.exports.endpoint = async function (req, res) {
     else if (body.msg_tag === "job_offer_rejected") {
         checkMessageSenderType(userType, 'candidate');
 
-        const messageDoc = await
-        messages.findOne({
+        const messageDoc = await messages.findOne({
             $or: [{
                 sender_id: sender_id,
                 receiver_id: receiver_id,
@@ -305,8 +302,7 @@ module.exports.endpoint = async function (req, res) {
         checkMessageSenderType(userType, 'candidate');
         await checkJobOfferAccepted(userType, sender_id, receiver_id);
 
-        let messageDoc = await
-        messages.findOne({
+        let messageDoc = await messages.findOne({
             _id: req.body.message.employment_offer_accepted.employment_offer_message_id
         });
         if (!messageDoc) errors.throwError("Employment offer not found", 400);
@@ -328,8 +324,7 @@ module.exports.endpoint = async function (req, res) {
         });
         if (!messageDoc) errors.throwError("Employment offer not found", 400);
 
-        messageDoc = await
-        messages.findOne({
+        messageDoc = await messages.findOne({
             msg_status: 'employment_offer_rejected',
             "messages.employment_offer_rejected.employment_offer_message_id": req.body.message.employment_offer_rejected.employment_offer_message_id
         });
