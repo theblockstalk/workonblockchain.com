@@ -107,6 +107,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   base_city;
   commercial_skills;
   formal_skills;
+  selectedValueArray;
   ngOnInit()
   {
     this.infoo='';
@@ -147,6 +148,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
             data => {
               if(data)
               {
+                console.log(data);
+                this.selectedValueArray = [];
                 this.date_created = data['candidate'].status[data['candidate'].status.length-1].timestamp;
                 this.candidate_status = data['candidate'].status[0];
 
@@ -205,15 +208,51 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   }
                 }
 
-
-
-
-                this.countries = data['candidate'].locations;
+                /*this.countries = data['candidate'].locations;
                 this.countries.sort();
-                if(this.countries.indexOf("remote") > -1){
-                  this.countries.splice(0, 0, "remote");
+                if (this.countries.findIndex(obj => obj.remote === true) > -1) {
                   this.countries = this.filter_array(this.countries);
+                }*/
+
+                if(data['candidate'].locations)
+              {
+                for (let country1 of data['candidate'].locations)
+                {
+                  let locObject : any = {}
+                  if (country1['remote'] === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1['visa_not_needed']});
+
+                  }
+
+                if (country1['country']) {
+                      locObject.name = country1['country'];
+                      locObject.type = 'country';
+                      if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                      this.selectedValueArray.push(locObject);
+                    }
+                    if (country1['city']) {
+                      let city = country1['city'].city + ", " + country1['city'].country;
+                      locObject.name = city;
+                      locObject.type = 'city';
+                      if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                      this.selectedValueArray.push(locObject);
+                    }
+
                 }
+                this.countries = this.selectedValueArray;
+                this.countries.sort(function(a, b){
+                        if(a.name < b.name) { return -1; }
+                        if(a.name > b.name) { return 1; }
+                        return 0;
+                      })
+                if(this.countries.find((obj => obj.name === 'Remote'))) {
+                    let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                    this.countries.splice(0, 0, remoteValue);
+                    this.countries = this.filter_array(this.countries);
+
+                }
+              }
+              //console.log(this.countries);
 
                 this.interest_area =data['candidate'].interest_areas;
                 this.interest_area.sort();

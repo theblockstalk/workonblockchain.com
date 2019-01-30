@@ -1,4 +1,5 @@
 let User = require('../users');
+let cities = require('./cities');
 
 module.exports.insert = async function insert(data) {
     let newDoc = new User(data);
@@ -14,6 +15,24 @@ module.exports.findOne = async function findOne(selector) {
 
 module.exports.findOneById = async function findOneById(id) {
     return await User.findById(id).lean();
+}
+
+module.exports.findByIdAndPopulate = async function findByIdAndPopulate(id) {
+   let userDoc = await User.findById(id).lean();
+   if(userDoc) {
+        if(userDoc.candidate.locations) {
+            for(let loc of userDoc.candidate.locations) {
+                if(loc.city) {
+                    const index = userDoc.candidate.locations.findIndex((obj => obj.city === loc.city));
+                    const citiesDoc = await cities.findOneById(loc.city);
+                    userDoc.candidate.locations[index].city = citiesDoc;
+                }
+            }
+        }
+   }
+
+   return userDoc;    
+
 }
 
 module.exports.findOneByEmail = async function findOneByEmail(email) {

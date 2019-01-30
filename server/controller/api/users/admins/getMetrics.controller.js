@@ -28,7 +28,8 @@ module.exports = async function (req, res) {
 
     let programmingLanguagesCount = {}, programmingLanguagesAggregate = {};
     let blockchainCommercialCount = {}, blockchainCommercialAggregate = {};
-    let blockchainSmartCount = {}, blockchainSmartAggregate = {};
+    let blockchainSmartCount = {}, blockchainSmartAggregate = {} ;
+    let locationsCount = {} , locationAggregate = {};
 
     let candidate;
     await users.findAndIterate({type : 'candidate'}, async function(userDoc) {
@@ -41,7 +42,9 @@ module.exports = async function (req, res) {
             aggregateField(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);
             aggregateField(aggregatedData.availabilityDay, candidate.availability_day, enumerations.workAvailability);
             aggregateField(aggregatedData.baseCountry, candidate.base_country, enumerations.countries);
-            aggregateArray(aggregatedData.locations, candidate.locations, locationList);
+            aggregateObjArray(locationsCount, candidate.locations, enumerations.countries, "country");
+            aggregateObjArrayAggregate(locationAggregate, candidate.locations, enumerations.countries, "country", "visa_not_needed");
+            //aggregateArray(aggregatedData.locations, candidate.locations, locationList);
             aggregateArray(aggregatedData.roles, candidate.roles, enumerations.workRoles);
             aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
             aggregateArray(aggregatedData.blockchain.experimented, candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);
@@ -57,6 +60,7 @@ module.exports = async function (req, res) {
 
     });
 
+    countAndAggregate(aggregatedData.locations, locationsCount, locationAggregate);
     countAndAggregate(aggregatedData.programmingLanguages, programmingLanguagesCount, programmingLanguagesAggregate);
     countAndAggregate(aggregatedData.blockchain.commercial, blockchainCommercialCount, blockchainCommercialAggregate);
     countAndAggregate(aggregatedData.blockchain.smartContract, blockchainSmartCount, blockchainSmartAggregate);

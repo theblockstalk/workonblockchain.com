@@ -137,7 +137,10 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
         },
 
         saved_searches : [{
-            location: ['Amsterdam'],
+            location: [
+                {remote:true , visa_not_needed: false},
+                {_id : '5c4aa17468cc293450c14c04' , visa_not_needed : true }
+            ],
             job_type : ['Full time'],
             position : ['UI Developer', 'Fullstack Developer'],
             current_currency : '$ USD',
@@ -215,7 +218,8 @@ module.exports.job = function job(){
         current_currency: '£ GBP',
         availability_day: '1 month',
         country: [
-            'remote', 'Amsterdam', 'Berlin'
+            {country: 'Afghanistan' , visa_not_needed : false} , {remote:true , visa_not_needed: false},
+            {_id : '5c4aa17468cc293450c14c04' , visa_not_needed : true }
         ],
         roles: [
             'Backend Developer', 'Fullstack Developer'
@@ -295,7 +299,10 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             availability_day: '1 month',
             why_work: 'I want to work. I want to work. I want to work. I want to work.I want to work. I want to work. I want to work.',
             intro: 'I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. ',
-            country: [ 'remote', 'Amsterdam' ],
+            country: [
+                {remote:true , visa_not_needed: false}, {country: 'Afghanistan' , visa_not_needed : false},
+                {city : '5c4aa17468cc293450c14c04' , visa_not_needed : true }
+            ],
             roles: [ 'Backend Developer', 'Fullstack Developer' ],
             interest_areas: ["I don't know", 'Enterprise blockchain', 'Smart contract development' ],
             platforms_designed: [
@@ -426,7 +433,7 @@ module.exports.prefilledProfileData = function prefilledProfileData() {
 module.exports.companySavedSearches = function companySavedSearches() {
     return {
         saved_searches : [{
-            location: ['remote'],
+            location: [{'remote':true}],
             job_type : ['Part time'],
             position : ['Backend Developer', 'Fullstack Developer'],
             current_currency : '$ USD',

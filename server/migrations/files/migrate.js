@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'migrate';
 
 const mongoose = require('mongoose');
-const settings = require('../settings');
+const settings = require('../../settings');
 
 (async function run() {
     try {

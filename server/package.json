@@ -20,6 +20,7 @@
     "chai-http": "^4.2.0",
     "cors": "^2.8.4",
     "cron": "^1.4.0",
+    "csvtojson": "^2.0.8",
     "date-and-time": "^0.6.2",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",

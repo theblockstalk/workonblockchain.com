@@ -163,8 +163,47 @@
             <div class="row mt-4">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Where are you available to work?</label>
-                  <div class="checkbox">
+                  <label>Where would you like to work? (select up to 10)</label>
+                  <div>
+                    <datalist id="countryList">
+                      <select class="form-control">
+
+                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}">
+                      </option>
+                      </select>
+                    </datalist>
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                      {{error}}
+                    </div>
+                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
+                      {{country_input_log}}
+                    </div>
+
+                    <div *ngIf="selectedValueArray.length > 0">
+                      <div class="row">
+                        <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
+                          <div class="border p-3 ml-2">
+                            <p><strong >{{value.name}}</strong></p>
+                            <div class="form-check mt-3">
+                              <label class="form-check-label" for="check{{i}}">
+                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_not_needed"   name="visa_not_needed{{i}}" (change)="updateCitiesOptions($event)" > Sponsored work visa IS NOT required
+                              </label>
+                            </div>
+                            <a (click)="deleteLocationRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
+
+                          </div>
+
+                        </div>
+                      </div>
+                      <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations) <= 0">
+                        {{country_log}}
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--<div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
                         <label class="form-check-label">
@@ -177,7 +216,7 @@
                   <input type="text" class="form-control d-none" [(ngModel)]='selectedcountry' name="country" >
                   <div class = "invalid-feedback d-inline" *ngIf="selectedcountry.length<=0">
                     {{country_log}}
-                  </div>
+                  </div>-->
                 </div>
               </div>
 

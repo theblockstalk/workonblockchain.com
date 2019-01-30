@@ -4,6 +4,7 @@ const filterReturnData = require('../filterReturnData');
 
 module.exports.update = async function update(candidateUserId, queryBody, educationHistory, workHistory, requestUserId) {
     const candidateDoc = await users.findOneById(candidateUserId);
+    console.log(queryBody);
     let updateCandidateUser = {};
     let unset = {};
     if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;

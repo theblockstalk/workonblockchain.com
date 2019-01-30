@@ -82,7 +82,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   expected_validation;
   currentyear;
   yearValidation;
-  yearVerification;
+  cities;
+  selectedValueArray=[];
+  error;
+  selectedLocations;
 
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
@@ -273,6 +276,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
       this.preferncesForm = new FormGroup({
         location: new FormControl(),
+        visa_not_needed : new FormControl(),
         job_type: new FormControl(),
         position: new FormControl(),
         availability_day: new FormControl(),
@@ -333,7 +337,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               }, 500);
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
-                location: [data['saved_searches'][0].location],
+                location: [],
+                visa_not_needed : [data['saved_searches'][0].visa_not_needed],
                 job_type: [data['saved_searches'][0].job_type],
                 position: [data['saved_searches'][0].position],
                 availability_day: [data['saved_searches'][0].availability_day],
@@ -345,14 +350,30 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 when_receive_email_notitfications: [data['saved_searches'][0].when_receive_email_notitfications],
               });
 
-              if(data['saved_searches'][0].location && data['saved_searches'][0].location.length >0){
-                for (let locations of data['saved_searches'][0].location) {
-                  for(let option of this.locations) {
-                    if(option.name === locations ) {
-                      this.locationSelected.push(option.name);
-                    }
+              if(data['saved_searches'][0].location)
+              {
+                console.log(data['saved_searches'][0].location)
+                for (let country1 of data['saved_searches'][0].location)
+                {
+                  if (country1['remote'] === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                  }
+
+                  if (country1['city']) {
+                    let city = country1['city'].city + ", " + country1['city'].country;
+                    this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
                   }
                 }
+
+                this.selectedValueArray.sort();
+                if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+                  let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+                  this.selectedValueArray.splice(0, 0, remoteValue);
+                  this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+                }
+                this.selectedLocations = this.selectedValueArray;
+                console.log(this.selectedLocations);
               }
 
               if(data['saved_searches'][0].job_type && data['saved_searches'][0].job_type.length > 0){
@@ -425,7 +446,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }
 
   }
-
+  validatedLocation;
+  country_input_log;
+  country_log;
   company_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -479,9 +502,30 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(!this.company_description) {
       this.des_log = 'Please fill Company Description';
     }
-    if(!this.preferncesForm.value.location || this.preferncesForm.value.location.length === 0 ) {
-      this.location_log = "Please select where are you hiring";
+    this.validatedLocation = [];
+    if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
+      this.country_input_log = "Please select at least one location";
     }
+    if(!this.selectedLocations) {
+      this.country_log = "Please select at least one location";
+    }
+    console.log(this.selectedLocations.length);
+    if(this.selectedLocations && this.selectedLocations.length > 0) {
+      for(let location of this.selectedLocations) {
+        if(location.name.includes(', ')) {
+          this.validatedLocation.push({city: location._id, visa_not_needed : location.visa_not_needed });
+        }
+        if(location.name === 'Remote') {
+          this.validatedLocation.push({remote: true, visa_not_needed : location.visa_not_needed });
+        }
+
+      }
+    }
+
+    if(this.selectedLocations && this.selectedLocations.length > 10) {
+      this.country_log = "Please select maximum 10 locations";
+    }
+
     if(!this.preferncesForm.value.job_type || this.preferncesForm.value.job_type.length === 0) {
       this.job_type_log = "Please select position types";
     }
@@ -508,11 +552,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees && this.company_funded && this.company_description &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode &&
-      this.preferncesForm.value.location && this.preferncesForm.value.location.length > 0 &&
+      this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5 &&
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
       this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications)  {
+      this.preferncesForm.value.location = this.validatedLocation;
       this.saved_searches.push(this.preferncesForm.value);
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
@@ -617,5 +662,122 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }
   }
 
+  suggestedOptions() {
+    // this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola (city)', 'Antigua & Deps (city)', 'Argentina (city)', 'Armenia (city)', 'Australia (city)', 'Austria (city)', 'Azerbaijan (city)', 'Bahamas (city)', 'Bahrain (city)', 'Bangladesh (city)', 'Barbados (city)', 'Belarus (city)', 'Belgium (city)', 'Belize (city)', 'Benin (city)', 'Bhutan (city)', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+    this.authenticationService.autoSuggestOptions(this.preferncesForm.value.location , false)
+      .subscribe(
+        data => {
+          if(data) {
+            console.log(data);
+            let citiesInput = data;
+            let citiesOptions=[];
+            for(let cities of citiesInput['locations']) {
+              if(cities['remote'] === true) {
+                citiesOptions.push({name: 'Remote'});
+              }
+              if(cities['city']) {
+                let cityString = cities['city'].city + ", " + cities['city'].country;
+                citiesOptions.push({_id : cities['city']._id , name : cityString});
+              }
+            }
+            this.cities = this.filter_array(citiesOptions);
+          }
+
+        },
+        error=>
+        {
+          if(error['message'] === 500 || error['message'] === 401)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+
+          if(error.message === 403)
+          {
+            this.router.navigate(['/not_found']);
+          }
+
+        });
+
+
+  }
+
+  selectedValueFunction(e) {
+
+    if(this.cities.find(x => x.name === e.target.value)) {
+      var value2send=document.querySelector("#countryList option[value='"+this.preferncesForm.value.location+"']")['dataset'].value;
+      /*this.preferncesForm = this._fb.group({
+        location: [],
+      });*/
+      this.cities = [];
+      if(this.selectedValueArray.length > 4) {
+        this.error = 'You can select maximum 5 locations';
+        setInterval(() => {
+          this.error = "" ;
+        }, 5000);
+      }
+      else {
+        if(this.selectedValueArray.find(x => x.name === e.target.value)) {
+          this.error = 'This location has already been selected';
+          setInterval(() => {
+            this.error = "" ;
+          }, 4000);
+        }
+
+        else {
+          if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_not_needed:false});
+          else this.selectedValueArray.push({ name: e.target.value, visa_not_needed:false});
+        }
+
+
+      }
+
+
+    }
+    if(this.selectedValueArray.length > 0) {
+      this.selectedValueArray.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+      if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+        let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+        this.selectedValueArray.splice(0, 0, remoteValue);
+        this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+      }
+      this.selectedLocations = this.selectedValueArray;
+      console.log(this.selectedLocations);
+      this.preferncesForm.get('location').setValue('');
+    }
+  }
+
+  updateCitiesOptions(e) {
+    let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
+    this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
+    this.selectedLocations = this.selectedValueArray;
+    console.log(this.selectedLocations)
+
+  }
+
+  deleteLocationRow(i){
+    this.selectedValueArray.splice(i, 1);
+  }
+
+  filter_array(arr) {
+    var hashTable = {};
+
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+
+      return (match ? false : hashTable[key] = true);
+    });
+  }
 
 }

@@ -34,6 +34,7 @@ const candidateWizardJob = require('./controller/api/users/candidate/wizard/job.
 const candidateWizardResume = require('./controller/api/users/candidate/wizard/resume.controller');
 const candidateWizardTnC = require('./controller/api/users/candidate/wizard/termsAndConditions.controller');
 const candidateWizardPrefilledProfile = require('./controller/api/users/candidate/wizard/prefilledProfile.controller');
+const autoSuggestLocations = require('./controller/api/users/candidate/autoSuggestLocations.controller');
 
 // Companies
 const companyRegister = require('./controller/api/users/company/createCompany.controller');
@@ -111,6 +112,7 @@ router.put('/users/welcome/resume', auth.isLoggedIn, asyncMiddleware(candidateWi
 router.put('/users/welcome/exp', auth.isLoggedIn, asyncMiddleware(candidateWizardExperience));
 router.post('/users/image', auth.isLoggedIn, multer.single('photo'), asyncMiddleware(candidateImage));
 router.put('/users/update_profile', auth.isLoggedIn, asyncMiddleware(candidateUpdate));
+router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddleware(autoSuggestLocations));
 
 // Companies
 router.post('/users/create_employer',  asyncMiddleware(companyRegister));
