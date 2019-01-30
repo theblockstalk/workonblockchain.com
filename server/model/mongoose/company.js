@@ -31,7 +31,7 @@ module.exports.deleteOne = async function deleteOne(selector) {
 module.exports.count = async function count(selector) {
     return new Promise((resolve, reject) => {
         try {
-            Candidate.count(selector, (err1, result) => {
+            Company.count(selector, (err1, result) => {
                 if (err1) reject(err1);
                 resolve(result);
             })
