@@ -104,7 +104,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
-            console.log(data);
             if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
             {
               this.about_active_class = 'fa fa-check-circle text-success';
@@ -144,7 +143,6 @@ export class JobComponent implements OnInit,AfterViewInit {
 
                 }
                 this.selectedLocations = this.selectedValueArray;
-                console.log(this.selectedLocations);
               }
 
 
@@ -410,7 +408,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.country_log = "Please select at least one location which you can work in without needing a visa";
     }
 
-    console.log(this.selectedLocations.length);
     if(this.selectedLocations && this.selectedLocations.length > 0) {
       if(this.selectedLocations.filter(i => i.visa_not_needed === true).length <= 0 )
         this.country_log = "Please select at least one location which you can work in without needing a visa";
@@ -490,7 +487,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       f.value.current_salary = parseInt(f.value.current_salary);
       f.value.expected_salary = parseInt(f.value.expected_salary);
       f.value.country = this.validatedLocation;
-      console.log(f.value);
       this.authenticationService.job(this.currentUser._creator, f.value)
         .subscribe(
           data => {
@@ -526,7 +522,6 @@ export class JobComponent implements OnInit,AfterViewInit {
       .subscribe(
         data => {
           if(data) {
-            console.log(data);
             let citiesInput = data;
             let citiesOptions=[];
             for(let cities of citiesInput['locations']) {
@@ -621,7 +616,6 @@ export class JobComponent implements OnInit,AfterViewInit {
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
-    console.log(this.selectedLocations)
 
   }
 

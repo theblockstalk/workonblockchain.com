@@ -247,7 +247,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
           {
             if(data)
             {
-              console.log(data);
               this.info.email = data['email'];
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
@@ -506,7 +505,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
                   }
                   this.selectedLocations = this.selectedValueArray;
-                  console.log(this.selectedLocations);
                 }
 
                 for(let interest of data['candidate'].interest_areas)
@@ -1297,7 +1295,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.count = 0;
     this.submit = "click";
     this.validatedLocation = [];
-    console.log(profileForm.value);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1610,7 +1607,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   submit;
   updateProfileData(profileForm)
   {
-    console.log(profileForm);
     this.experiencearray=[];
     this.education_json_array=[];
     this.submit = 'click';
@@ -1921,7 +1917,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         .subscribe(
           data => {
             if(data) {
-              console.log(data);
               let citiesInput = data;
               let citiesOptions=[];
               for(let cities of citiesInput['locations']) {
@@ -2008,7 +2003,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.selectedLocations = this.selectedValueArray;
 
       this.countriesModel = '';
-      console.log(this.cities);
     }
   }
 
@@ -2016,7 +2010,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
-    console.log(this.selectedLocations)
 
   }
 

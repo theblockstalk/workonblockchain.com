@@ -213,7 +213,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 }
 
               }
-              console.log(this.countries);
 
               this.interest_area =dataa['candidate'].interest_areas;
               this.interest_area.sort();
@@ -310,7 +309,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           },
           error => {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              //console.log(error['error']['message']);
               this.router.navigate(['/not_found']);
             }
 
@@ -417,13 +415,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.authenticationService.insertMessage(this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
                   .subscribe(
                     data => {
-                      ////console.log(data);
                       this.job_offer_msg_success = 'Message has been successfully sent';
                       this.router.navigate(['/chat']);
                     },
                     error => {
-                      ////console.log('error');
-                      ////console.log(error);
                       //this.log = error;
                     }
                   );

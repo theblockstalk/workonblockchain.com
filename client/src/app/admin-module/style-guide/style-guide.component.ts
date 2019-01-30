@@ -58,7 +58,6 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   selectedValue(e) {
     this.countriesModel= '';
     this.countries = [];
-    console.log(this.selectedValueArray.find(x => x === e.target.value));
     if(this.selectedValueArray.find(x => x === e.target.value)) {
       this.error = 'You selected this already';
       setInterval(() => {
@@ -68,6 +67,5 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
     else {
       this.selectedValueArray.push(e.target.value);
     }
-    console.log(this.selectedValueArray);
   }
 }

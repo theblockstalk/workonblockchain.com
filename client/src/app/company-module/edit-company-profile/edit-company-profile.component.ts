@@ -354,7 +354,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
               if(data['saved_searches'][0].location)
               {
-                console.log(data['saved_searches'][0].location)
                 for (let country1 of data['saved_searches'][0].location)
                 {
                   if (country1['remote'] === true) {
@@ -375,7 +374,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
                 }
                 this.selectedLocations = this.selectedValueArray;
-                console.log(this.selectedLocations);
               }
 
               if(data['saved_searches'][0].job_type && data['saved_searches'][0].job_type.length > 0){
@@ -511,7 +509,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(!this.selectedLocations) {
       this.country_log = "Please select at least one location";
     }
-    console.log(this.selectedLocations.length);
     if(this.selectedLocations && this.selectedLocations.length > 0) {
       for(let location of this.selectedLocations) {
         if(location.name.includes(', ')) {
@@ -670,7 +667,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       .subscribe(
         data => {
           if(data) {
-            console.log(data);
             let citiesInput = data;
             let citiesOptions=[];
             for(let cities of citiesInput['locations']) {
@@ -754,7 +750,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
       }
       this.selectedLocations = this.selectedValueArray;
-      console.log(this.selectedLocations);
       this.preferncesForm.get('location').setValue('');
     }
   }
@@ -763,7 +758,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
-    console.log(this.selectedLocations)
 
   }
 

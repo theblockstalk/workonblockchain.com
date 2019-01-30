@@ -123,7 +123,6 @@ export class AdminCandidateDetailComponent implements OnInit {
                 $("#status_reason_deferred").css("display", "block");
               }
               this.info.push(data);
-              console.log(this.info);
               this.verify =data['is_verify'];
               if(data['candidate'].work_history) {
                 this.work_history = data['candidate'].work_history;

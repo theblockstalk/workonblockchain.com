@@ -278,7 +278,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
               if(data['saved_searches'][0].location)
               {
-                console.log(data['saved_searches'][0].location)
                 for (let country1 of data['saved_searches'][0].location)
                 {
                   if (country1['remote'] === true) {
@@ -299,7 +298,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
                 }
                 this.selectedLocations = this.selectedValueArray;
-                console.log(this.selectedLocations);
               }
               for (let job_types of data['saved_searches'][0].job_type) {
                 for(let option of this.job_types) {
@@ -377,7 +375,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   country_input_log;
   country_log;
   candidate_prefernces() {
-    console.log(this.preferncesForm);
     this.error_msg = "";
     this.validatedLocation = [];
     if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
@@ -386,7 +383,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.selectedLocations) {
       this.country_log = "Please select at least one location";
     }
-    console.log(this.selectedLocations.length);
     if(this.selectedLocations && this.selectedLocations.length > 0) {
       for(let location of this.selectedLocations) {
         if(location.name.includes(', ')) {
@@ -432,7 +428,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.preferncesForm.value.when_receive_email_notitfications) {
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
-      console.log(this.preferncesForm.value)
       this.saved_searches.push(this.preferncesForm.value);
       this.authenticationService.candidate_prefernece(this.saved_searches)
         .subscribe(
@@ -524,7 +519,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       .subscribe(
         data => {
           if(data) {
-            console.log(data);
             let citiesInput = data;
             let citiesOptions=[];
             for(let cities of citiesInput['locations']) {
@@ -613,7 +607,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
     this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
-    console.log(this.selectedLocations)
 
   }
 

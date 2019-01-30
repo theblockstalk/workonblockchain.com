@@ -259,7 +259,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
           {
             if(data)
             {
-              console.log(data);
               this.info.email = data['email'];
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
@@ -519,7 +518,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
                   }
                   this.selectedLocations = this.selectedValueArray;
-                  console.log(this.selectedLocations);
                 }
 
                 for(let interest of data['candidate'].interest_areas)
@@ -1074,7 +1072,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(e.target.checked)
     {
       this.jobselected.push(e.target.value);
-      ////console.log("if");
     }
     else{
 
@@ -1130,7 +1127,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   initExpRows()
   {
-    ////console.log(this.currentdate);
     return this._fb.group({
       companyname:[''],
       positionname:[''],
@@ -1210,7 +1206,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   {
 
     let updateItem = this.findObjectByKey(this.LangexpYear, 'language', value);
-    ////console.log(updateItem);
     let index = this.LangexpYear.indexOf(updateItem);
 
     if(index > -1)
@@ -1220,16 +1215,12 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       this.value=value;
       this.referringData = { language:this.value, exp_year: e.target.value};
       this.LangexpYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
-
     }
     else
     {
-      ////console.log("not exists");
       this.value=value;
       this.referringData = { language:this.value, exp_year: e.target.value};
       this.LangexpYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
 
     }
 
@@ -1240,7 +1231,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     this.value=value;
     this.referringData = { name:this.value, exp_year: e.target.value};
     this.expYearRole.push(this.referringData);
-    ////console.log(this.expYearRole);
   }
 
   work_start_data(e)
@@ -1259,10 +1249,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(e.target.checked)
     {
       this.selectedValue.push(e.target.value);
-      ////console.log("if");
     }
     else{
-      ////console.log("else");
       let updateItem = this.selectedValue.find(this.findIndexToUpdateCheck, e.target.value);
 
       let index = this.selectedValue.indexOf(updateItem);
@@ -1290,7 +1278,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   }
 
   findIndexToUpdateCheck(type) {
-    ////console.log("funct");
     return type == this;
   }
   ////////////////////////save edit profile data//////////////////////////////////
@@ -1309,7 +1296,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     this.count = 0;
     this.submit = "click";
     this.validatedLocation = [];
-    console.log(profileForm.value);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(!this.info.first_name)
     {
@@ -1621,7 +1607,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   updateProfileData(profileForm)
   {
     profileForm.selectedlocations = this.validatedLocation;
-    console.log(profileForm);
     this.experiencearray=[];
     this.education_json_array=[];
     for (var key in this.ExperienceForm.value.ExpItems)
@@ -1885,7 +1870,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       .subscribe(
         data => {
           if(data) {
-            console.log(data);
             let citiesInput = data;
             let citiesOptions=[];
             for(let cities of citiesInput['locations']) {
