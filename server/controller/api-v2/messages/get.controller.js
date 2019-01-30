@@ -34,7 +34,7 @@ module.exports.endpoint = async function (req, res) {
 
     checkMessageSenderType(userType, 'company');
 
-    messageDoc = await messages.findLastJobOffer({
+    messageDoc = await messages.find({
         sender_id: sender_id,
         msg_tag: 'job_offer'
     });

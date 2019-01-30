@@ -50,38 +50,33 @@ module.exports.endpoint = async function (req, res) {
         });
 
         for (i = 0; i < conversations.length; i++) {
-            console.log(userDoc.type);
-            if (userDoc.type === 'company') {
+            const conversationUser = await users.findOneById(conversations[i].user_id);
+            if (conversationUser.type === 'candidate') {
                 console.log("user_id: " + conversations[i].user_id);
-                const candidateProfile = await
-                candidate.findOne({
+                const candidateProfile = await candidate.findOne({
                     "_creator": conversations[i].user_id
                 });
-                let query_result = filterReturnData.removeSensativeData(candidateProfile);
                 if(req.query.admin){
-                    conversations[i].name = query_result.first_name +' '+ query_result.last_name;
+                    conversations[i].name = candidateProfile.first_name +' '+ candidateProfile.last_name;
                 }
                 else {
-                    const acceptedJobOffer = await
-                    messages.findOne({
+                    const acceptedJobOffer = await messages.findOne({
                         sender_id: conversations[i].user_id,
                         receiver_id: userId,
                         msg_tag: 'job_offer_accepted'
                     });
                     if (acceptedJobOffer) {
-                        conversations[i].name = query_result.first_name + ' ' + query_result.last_name;
+                        conversations[i].name = candidateProfile.first_name + ' ' + candidateProfile.last_name;
                     }
                     else {
-                        query_result = filterReturnData.anonymousSearchCandidateData(query_result);
-                        conversations[i].name = query_result.initials;
+                        conversations[i].name = filterReturnData.createInitials(candidateProfile.first_name,candidateProfile.last_name);
                     }
                 }
-                conversations[i].image = query_result.image;
+                conversations[i].image = candidateProfile.image;
             }
             else {
                 console.log('in cand');
-                const companyProfile = await
-                company.findOne({
+                const companyProfile = await company.findOne({
                     "_creator": conversations[i].user_id
                 });
                 console.log(conversations[i].user_id);
