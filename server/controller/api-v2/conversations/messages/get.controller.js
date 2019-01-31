@@ -24,7 +24,6 @@ module.exports.inputValidation = {
 };
 
 module.exports.auth = async function (req) {
-    console.log('in auth');
     await auth.isValidUser(req);
 
     if (req.query.admin) {
@@ -33,7 +32,6 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    console.log('in endpoint');
     let userId;
     if (req.query.user_id) {
         userId = req.query.user_id;
@@ -42,8 +40,6 @@ module.exports.endpoint = async function (req, res) {
         userId = req.auth.user._id;
     }
 
-    console.log('sender: ' + userId);
-    console.log('receiver: ' + req.params.sender_id);
     const messageDocs = await messages.find({
         $or : [
             { $and : [ { receiver_id : mongoose.Types.ObjectId(req.params.sender_id) }, { sender_id : userId } ] },

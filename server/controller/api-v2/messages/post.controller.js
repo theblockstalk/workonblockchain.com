@@ -135,7 +135,6 @@ module.exports.inputValidation = {
 };
 
 module.exports.auth = async function (req) {
-    console.log('in auth');
     await auth.isValidUser(req);
 }
 
@@ -162,7 +161,7 @@ const checkMessageSenderType = function (userType, expectedType) {
 }
 
 const checkLastEmpoymentOffer = async function (sender_id,receiver_id){
-    const lastEmploymentOfferDoc = await messages.findLastJobOffer({
+    const lastEmploymentOfferDoc = await messages.find({
         sender_id: sender_id,
         receiver_id: receiver_id,
         msg_tag: 'employment_offer'
@@ -183,7 +182,6 @@ const checkLastEmpoymentOffer = async function (sender_id,receiver_id){
 }
 
 module.exports.endpoint = async function (req, res) {
-    console.log('in endpoint');
     const userType = req.auth.user.type;
     const sender_id = req.auth.user._id;
     let newMessage;
@@ -285,18 +283,14 @@ module.exports.endpoint = async function (req, res) {
             employment_offer.description = req.body.description;
         }
 
-        console.log(newMessage);
-
         if(!object.isEmpty(req.file)){
             const path = req.file.path;
-            console.log(path);
             if (path) {
                 employment_offer.file_url = path;
             }
         }
 
         newMessage.message.employment_offer = employment_offer;
-        console.log(employment_offer);
     }
     else if (body.msg_tag === "employment_offer_accepted") {
         checkMessageSenderType(userType, 'candidate');
@@ -339,7 +333,6 @@ module.exports.endpoint = async function (req, res) {
         senderConv = conversations.filter(item => String(item.user_id) ===  receiver_id);
 
         if (senderConv && senderConv.length > 0) {
-            console.log('in if 1st if');
             let count = senderConv[0].count + 1;
             senderSelect = { '_id': sender_id, 'conversations._id': senderConv[0]._id };
             senderUpdate = { $set: {
@@ -350,7 +343,6 @@ module.exports.endpoint = async function (req, res) {
             }}
         }
         else {
-            console.log('in else');
             senderSelect = { '_id': sender_id }
             senderUpdate = { $push: { conversations: {
                 user_id: receiver_id,
@@ -375,10 +367,8 @@ module.exports.endpoint = async function (req, res) {
     if (receiverUserDoc.conversations) {
         const conversations = receiverUserDoc.conversations;
         receiverConv = conversations.filter(item => String(item.user_id) === String(sender_id));
-        console.log('receiver');
 
         if (receiverConv && receiverConv.length>0) {
-            console.log('in if 2nd');
             let count = receiverConv[0].count + 1;
             let unread_count = receiverConv[0].unread_count + 1;
             receiverSelect = {'_id': receiver_id, 'conversations._id': receiverConv[0]._id};
@@ -392,7 +382,6 @@ module.exports.endpoint = async function (req, res) {
             }
         }
         else {
-            console.log('in else 2nd');
             receiverSelect = { '_id': receiver_id }
             receiverUpdate = { $push: { conversations: {
                 user_id: sender_id,

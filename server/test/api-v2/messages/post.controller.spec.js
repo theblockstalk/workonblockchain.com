@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
-const messagesHelpers = require('./helpers');
+const messagesHelpers = require('../helpers');
 const docGenerator = require('../../helpers/docGenerator');
 const companyHelper = require('../../api/users/company/companyHelpers');
 const candidateHelper = require('../../api/users/candidate/candidateHelpers');
@@ -22,6 +22,7 @@ describe('POST /messages', function () {
 
     afterEach(async function () {
         console.log('dropping database');
+        this.timeout(1000);
         await mongo.drop();
     })
 
@@ -51,6 +52,63 @@ describe('POST /messages', function () {
 
     describe('{ msg_tag:"job_offer" }', function () {
 
+        it('it should send job offer', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+            res.status.should.equal(200);
+        })
+
+    });
+
+    describe('{ msg_tag:"job_offer_accepted" }', function () {
+
+        it('it should accept job offer', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            const res = await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
+            res.status.should.equal(200);
+        })
+
+    });
+
+    describe('{ msg_tag:"job_offer_rejected" }', function () {
+
+        it('it should reject job offer', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const jobOfferRejected = docGeneratorV2.messages.job_offer_rejected(companyUserDoc._id);
+            const res = await messagesHelpers.post(jobOfferRejected, candidateuserDoc.jwt_token);
+            res.status.should.equal(200);
+        })
+
+    });
+
+    describe('{ msg_tag:"normal" }', function () {
+
         it('it should send a message', async function () {
 
             const company = docGenerator.company();
@@ -58,11 +116,128 @@ describe('POST /messages', function () {
             const companyUserDoc = await users.findOneByEmail(company.email);
 
             const candidate = docGenerator.candidate();
-            //await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
-            const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
+
+            const normal = docGeneratorV2.messages.normal(companyUserDoc._id);
+            const res = await messagesHelpers.post(normal, candidateuserDoc.jwt_token);
+            res.status.should.equal(200);
+        })
+
+    });
+
+    describe('{ msg_tag:"interview_offer" }', function () {
+
+        it('it should send interview offer', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
+
+            const interviewOffer = docGeneratorV2.messages.interview_offer(candidateuserDoc._id);
+            const res = await messagesHelpers.post(interviewOffer, companyUserDoc.jwt_token);
+            res.status.should.equal(200);
+        })
+
+    });
+
+    describe('{ msg_tag:"employment_offer" }', function () {
+
+        it('it should send employment offer', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
+
+            const messageFileData = docGeneratorV2.messageFile();
+            const employmentOffer = docGeneratorV2.messages.employment_offer(candidateuserDoc._id);
+            const res = await messagesHelpers.sendFile(messageFileData,employmentOffer, companyUserDoc.jwt_token);
+            res.status.should.equal(200);
+        })
+
+    });
+
+    describe('{ msg_tag:"employment_offer_accepted" }', function () {
+
+        it('it should accept employment offer', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
+
+            const messageFileData = docGeneratorV2.messageFile();
+            const employmentOffer = docGeneratorV2.messages.employment_offer(candidateuserDoc._id);
+            const messageDoc = await messagesHelpers.sendFile(messageFileData,employmentOffer, companyUserDoc.jwt_token);
+
+            let employmentOfferAccepted = docGeneratorV2.messages.employment_offer_accepted(companyUserDoc._id);
+            employmentOfferAccepted.message.employment_offer_accepted.employment_offer_message_id = messageDoc.body._id;
+            const res = await messagesHelpers.post(employmentOfferAccepted, candidateuserDoc.jwt_token);
+            res.status.should.equal(200);
+        })
+
+    });
+
+    describe('{ msg_tag:"employment_offer_rejected" }', function () {
+
+        it('it should reject employment offer', async function () {
+
+            const company = docGenerator.company();
+            await companyHelper.signupVerifiedApprovedCompany(company);
+            const companyUserDoc = await users.findOneByEmail(company.email);
+
+            const candidate = docGenerator.candidate();
+            await candidateHelper.signupVerifiedApprovedCandidate(candidate);
+            const candidateuserDoc = await users.findOneByEmail(candidate.email);
+
+            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
+
+            const messageFileData = docGeneratorV2.messageFile();
+            const employmentOffer = docGeneratorV2.messages.employment_offer(candidateuserDoc._id);
+            const messageDoc = await messagesHelpers.sendFile(messageFileData,employmentOffer, companyUserDoc.jwt_token);
+
+            const employmentOfferReject = docGeneratorV2.messages.employment_offer_rejected(companyUserDoc._id);
+            employmentOfferReject.message.employment_offer_rejected.employment_offer_message_id = messageDoc.body._id;
+            const res = await messagesHelpers.post(employmentOfferReject, candidateuserDoc.jwt_token);
             res.status.should.equal(200);
         })
 
@@ -80,9 +255,14 @@ describe('POST /messages', function () {
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
             const candidateuserDoc = await users.findOneByEmail(candidate.email);
 
-            const messageFileData = docGeneratorV2.messageFile();
+            const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
+            await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
 
-            const message = docGeneratorV2.message.file(candidateuserDoc._id);
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(candidateuserDoc._id);
+            await messagesHelpers.post(jobOfferAccepted, companyUserDoc.jwt_token);
+
+            const messageFileData = docGeneratorV2.messageFile();
+            const message = docGeneratorV2.messages.file(candidateuserDoc._id);
             const res = await messagesHelpers.sendFile(messageFileData,message, companyUserDoc.jwt_token);
             res.status.should.equal(200);
         })

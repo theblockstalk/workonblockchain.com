@@ -16,7 +16,6 @@ module.exports.inputValidation = {
 };
 
 module.exports.auth = async function (req) {
-    console.log('in auth');
     await auth.isValidUser(req);
 }
 
@@ -29,7 +28,6 @@ function isEmpty(obj) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    console.log('in endpoint');
     let userId = req.auth.user._id;
     let senderId = req.params.sender_id;
 

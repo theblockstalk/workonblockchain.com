@@ -22,7 +22,6 @@ module.exports.inputValidation = {
 };
 
 module.exports.auth = async function (req) {
-    console.log('in auth');
     await auth.isValidUser(req);
 
     if (req.query.admin) {
@@ -31,7 +30,6 @@ module.exports.auth = async function (req) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    console.log('in endpoint');
     let userId, userDoc;
 
     if (req.query.admin) {
@@ -52,7 +50,6 @@ module.exports.endpoint = async function (req, res) {
         for (i = 0; i < conversations.length; i++) {
             const conversationUser = await users.findOneById(conversations[i].user_id);
             if (conversationUser.type === 'candidate') {
-                console.log("user_id: " + conversations[i].user_id);
                 const candidateProfile = await candidate.findOne({
                     "_creator": conversations[i].user_id
                 });
@@ -75,11 +72,9 @@ module.exports.endpoint = async function (req, res) {
                 conversations[i].image = candidateProfile.image;
             }
             else {
-                console.log('in cand');
                 const companyProfile = await company.findOne({
                     "_creator": conversations[i].user_id
                 });
-                console.log(conversations[i].user_id);
                 conversations[i].name = companyProfile.company_name;
                 conversations[i].image = companyProfile.company_logo;
             }

@@ -18,7 +18,6 @@ module.exports.inputValidation = {
 };
 
 module.exports.auth = async function (req) {
-    console.log('in auth');
     await auth.isValidUser(req);
 }
 
@@ -27,7 +26,6 @@ const checkMessageSenderType = function (userType, expectedType) {
 }
 
 module.exports.endpoint = async function (req, res) {
-    console.log('in endpoint LastJobOffer');
     const userType = req.auth.user.type;
     const sender_id = req.auth.user._id;
     let messageDoc;
