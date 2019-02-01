@@ -50,9 +50,7 @@ const companySearchVerifiedCandidates = require('./controller/api/users/company/
 const candidateVerifiedCandidateDetail = require('./controller/api/users/company/searchCandidates/getVerifiedCandidateDetail.controller');
 
 // Chat
-const chatGetCandidate = require('./controller/api/chat/getCandidate.controller');
 const updateExplanationPopupStatus = require('./controller/api/chat/updateExplanationPopupStatus.controller');
-
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
@@ -116,7 +114,6 @@ router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(com
 router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail));
 
 // Chat
-router.post('/users/get_candidate', auth.isValidUser, asyncMiddleware(chatGetCandidate));
 router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, asyncMiddleware(adminChatSetUnreadMsgStatus));
 router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));
 
