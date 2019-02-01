@@ -165,7 +165,7 @@
                         <div class="col-md-8">
                           <div class="form-group">
                             <label><h4>Bio</h4></label>
-                            <pre>{{data.description}}</pre>
+                            <pre>{{data.candidate.description}}</pre>
                           </div>
                         </div>
 
@@ -274,7 +274,8 @@
                   <label for="validationCustom02">Employment type</label>
                   <div class="form-check" *ngFor="let options of job_type">
                     <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
-                    <label class="form-check-label" for="{{options}}" >{{options}}
+                    <label class="form-check-label" for="{{options}}" style="color: black; background-color: #fff; border-color: #fff;">
+                      {{options}}
                     </label>
                   </div>
                   <div class = "invalid-feedback d-inline"  *ngIf="employment_log">

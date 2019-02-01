@@ -155,7 +155,7 @@
                     <div *ngIf="country.type === 'city'">
                       <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}{{country.visa_not_needed}}
                     </div>
-                    
+
                     </div>
                 </div>
               </div>
@@ -396,7 +396,8 @@
               <label>Job type</label>
               <div class="form-check" *ngFor="let options of job_type">
                 <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
-                <label class="form-check-label" for="{{options}}" >{{options}}
+                <label class="form-check-label" for="{{options}}" style="color: black; background-color: #fff; border-color: #fff;">
+                  {{options}}
                 </label>
               </div>
               <div class = "invalid-feedback d-inline"  *ngIf="employment_log">

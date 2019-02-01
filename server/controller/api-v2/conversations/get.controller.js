@@ -50,11 +50,8 @@ module.exports.endpoint = async function (req, res) {
         for (i = 0; i < conversations.length; i++) {
             const conversationUser = await users.findOneById(conversations[i].user_id);
             if (conversationUser.type === 'candidate') {
-                const candidateProfile = await candidate.findOne({
-                    "_creator": conversations[i].user_id
-                });
                 if(req.query.admin){
-                    conversations[i].name = candidateProfile.first_name +' '+ candidateProfile.last_name;
+                    conversations[i].name = conversationUser.first_name +' '+ conversationUser.last_name;
                 }
                 else {
                     const acceptedJobOffer = await messages.findOne({
@@ -63,13 +60,13 @@ module.exports.endpoint = async function (req, res) {
                         msg_tag: 'job_offer_accepted'
                     });
                     if (acceptedJobOffer) {
-                        conversations[i].name = candidateProfile.first_name + ' ' + candidateProfile.last_name;
+                        conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
                     }
                     else {
-                        conversations[i].name = filterReturnData.createInitials(candidateProfile.first_name,candidateProfile.last_name);
+                        conversations[i].name = filterReturnData.createInitials(conversationUser.first_name,conversationUser.last_name);
                     }
                 }
-                conversations[i].image = candidateProfile.image;
+                conversations[i].image = conversationUser.image;
             }
             else {
                 const companyProfile = await company.findOne({

@@ -681,10 +681,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         data => {
           let job_offer = data['message'].job_offer;
           setTimeout(() => {
-            $('.selectpicker').selectpicker();
-          }, 300);
-
-          setTimeout(() => {
             $('.selectpicker').selectpicker('refresh');
           }, 900);
           this.credentials.job_title = job_offer.title;
@@ -768,7 +764,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         job_offer.description = this.credentials.job_desc;
         let new_offer : any = {};
         new_offer.job_offer = job_offer;
-
         this.authenticationService.send_message(this.user_id.id, 'job_offer',new_offer)
         .subscribe(
           data => {

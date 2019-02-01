@@ -1,8 +1,5 @@
 const users = require('../../../model/mongoose/users');
 const EmployerProfile = require('../../../model/employer_profile');
-const Messages = require('../../../model/messages');
-const errors = require('../../services/errors');
-
 const filterReturnData = require('../users/filterReturnData');
 const errors = require('../../services/errors');
 
