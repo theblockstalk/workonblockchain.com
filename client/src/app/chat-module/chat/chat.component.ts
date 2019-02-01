@@ -157,271 +157,190 @@ export class ChatComponent implements OnInit {
 	  };
 
 	  this.loading = true;
-      this.count=0;
-      //this.msg='';
-      //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      //for live
-      //this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
-      this.file_url = URL;//'http://localhost/workonblockchain.com/server/uploads/';
-      if(this.currentUser){
-        if(this.currentUser.type == 'candidate'){
-          //this.currentUser._creator = this.currentUser._id;
-            this.authenticationService.getById(this.currentUser._id)
-            .subscribe(
-                data => {
-                    //data[0]._creator.is_approved = 1;
-                    //data[0].disable_account == false;
-          					this.profile_pic = data['image'];
-                    this.display_name = data['first_name'] +' '+ data['last_name'];
-                    /*if(data._creator.is_approved == 0 || data._creator.disable_account == true){
-                        this.approved_user = 0;
-					}
-                    else{
-                        this.approved_user = 1;
-                    }
-                    */
-                    if(!data['first_approved_date'])
-                    {
-                          this.disabled = true;
-                          this.msg = "You can access this page when your account has been approved by an admin.";
-                          this.log='';
-                    }
-                    else if(data['disable_account'] == true)
-                    {
-                        this.disabled = true;
-                        this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
-                        this.log='';
-
-                    }
-                    else
-                    {
-                      this.authenticationService.get_page_content('Candidate chat popup message')
-                        .subscribe(
-                          data => {
-                            if(data)
-                            {
-                              this.candidateMsgTitle = data[0]['page_title'];
-                              this.candidateMsgContent = data[0]['page_content'];
-
-                            }
-                          }
-                        );
-                      if(data['viewed_explanation_popup'] === false || !data['viewed_explanation_popup']){
-                        $("#popModal").modal("show");
-                      }
-                      this.msg='';
-                      this.display_msgs();
-                    }
-                },
-                error => {
-                    if(error['message'] === 500 || error['message'] === 401)
-                        {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            window.location.href = '/login';
-                        }
-
-                        if(error['message'] === 403)
-                        {
-                            // this.router.navigate(['/not_found']);
-                        }
-                }
-            );
-        }
-        else{
-            this.authenticationService.getCurrentCompany(this.currentUser._creator)
-            .subscribe(
-                data => {
-                    //data[0]._creator.is_approved = 1;
-                    //data[0].disable_account == false;
-                    this.profile_pic = data['company_logo'];
-                    this.display_name = data['company_name'];
-					          //console.log(data);
-                    /*if(data._creator.is_approved == 0 || data._creator.disable_account == true){
-                        this.approved_user = 0;
-                    }
-                    else{
-                        this.approved_user = 1;
-                    }*/
-                    this.is_approved = data['_creator'].is_approved;
-                    this.approved_user = data['_creator'].is_approved;
-                    if(data['_creator'].is_approved === 0 )
-                    {
-                        //console.log("if");
-                        this.disabled = true;
-                        this.msg = "You can access this page when your account has been approved by an admin.";
-                        this.log='';
-                    }
-                    else if(data['_creator'].disable_account == true)
-                    {
-                        //console.log("if else");
-                        this.disabled = true;
-                        this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
-                        this.log='';
-
-                    }
-                    else
-                    {
-                      this.authenticationService.get_page_content('Company chat popup message')
-                        .subscribe(
-                          data => {
-                            if (data) {
-                              this.companyMsgTitle = data[0]['page_title'];
-                              this.companyMsgContent = data[0]['page_content'];
-                            }
-                          }
-                        );
-                      if(data['_creator'].viewed_explanation_popup === false || !data['_creator'].viewed_explanation_popup){
-                        $("#popModal").modal("show");
-                      }
-                      //console.log("else");
-                      this.msg='';
-                      this.display_msgs();
-                    }
-                },
-                error => {
-                   if(error['message'] === 500 || error['message'] === 401)
-                        {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            window.location.href = '/login';
-                        }
-
-                        if(error['message'] === 403)
-                        {
-                            // this.router.navigate(['/not_found']);
-                        }
-                }
-            );
-        }
-       /* if(this.approved_user == 0){
-			this.loading = false;
-            //console.log('not allowed');
-        }
-        else{
-
-        }*/
-      }
-      else{
-          this.router.navigate(['/not_found']);
-      }
-  }
-
-
-
-    display_msgs()
-    {
-        this.msg='';
-        this.loading = false;
-            //console.log('allowed');
-            if(this.currentUser.type=="company"){
-              //console.log('company');
-              this.display_list = 1;
-              /*this.authenticationService.getCandidate(this.type)
-                .subscribe(
-                    data => {
-                        //console.log('data');
-                        this.users = data['users'];
-                    },
-                    error => {
-                        //console.log('error');
-                        //console.log(error);
-                        this.log = error;
-                    }
-                );*/
-              //below code for only contacted candidates
-              //console.log('company');
-              this.display_list = 1;
-              this.loading = true;
-              //setInterval(() => {
-                this.authenticationService.get_user_messages_only_comp()
-                .subscribe(
-                    msg_data => {
-                        if(msg_data['conversations']){
-                          this.new_messges.push(msg_data['conversations']);
-                          this.new_messges = this.filter_array(msg_data['conversations']);
-                          console.log(this.new_messges);
-                          this.users = this.new_messges;
-                          for (var key_users_new in this.users) {
-                            if(this.count == 0){
-                              this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'',key_users_new);
-                            }
-                            this.count = this.count + 1;
-                          }
-                        }
-						else{
-                            //this.msg='You have not chatted yet';
-							//this.msg='You have not chatted yet';
-						}
-                    },
-                    error => {
-                        if(error.status === 500 || error.status === 401)
-                        {
-                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                          localStorage.removeItem('currentUser');
-                          localStorage.removeItem('googleUser');
-                          localStorage.removeItem('close_notify');
-                          localStorage.removeItem('linkedinUser');
-                          localStorage.removeItem('admin_log');
-                          window.location.href = '/login';
-                        }
-
-                        if(error.status === 404)
-                        {
-                          this.log = error.error.message;
-                        }
-                    }
-                );
-              //},7000);
+    this.count=0;
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.file_url = URL;
+    if(this.currentUser){
+      if(this.currentUser.type == 'candidate'){
+        this.authenticationService.getById(this.currentUser._id)
+        .subscribe(
+          data => {
+            this.profile_pic = data['image'];
+            this.display_name = data['first_name'] +' '+ data['last_name'];
+            if(!data['first_approved_date']){
+              this.disabled = true;
+              this.msg = "You can access this page when your account has been approved by an admin.";
+              this.log='';
+            }
+            else if(data['disable_account'] == true)
+            {
+              this.disabled = true;
+              this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
+              this.log='';
             }
             else{
-              //setInterval(() => {
-                this.authenticationService.get_user_messages_only_comp()
+                this.authenticationService.get_page_content('Candidate chat popup message')
                 .subscribe(
-                    msg_data => {
-                        this.loading = false;
-                        console.log(msg_data['conversations']);
-                        if(msg_data['conversations']){
-                          //console.log('this.currentUser._creator: '+this.currentUser._creator);
-                          this.new_messges.push(msg_data['conversations']);
-                          this.new_messges = this.filter_array(msg_data['conversations']);
-                          this.users = this.new_messges;
-                          console.log(this.users);
-                          for (var key_users_new in this.users) {
-                            if(this.count == 0){
-                              this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name,key_users_new);
-                            }
-                            this.count = this.count + 1;
-                          }
-                        }
+                  data => {
+                    if(data){
+                      this.candidateMsgTitle = data[0]['page_title'];
+                      this.candidateMsgContent = data[0]['page_content'];
+                    }
+                  }
+                );
+                if(data['viewed_explanation_popup'] === false || !data['viewed_explanation_popup']){
+                  $("#popModal").modal("show");
+                }
+                this.msg='';
+                this.display_msgs();
+            }
+          },
+          error => {
+            if(error['message'] === 500 || error['message'] === 401){
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              window.location.href = '/login';
+            }
+            if(error['message'] === 403){}
+          }
+        );
+      }
+      else{
+        this.authenticationService.getCurrentCompany(this.currentUser._creator)
+        .subscribe(
+          data => {
+            this.profile_pic = data['company_logo'];
+            this.display_name = data['company_name'];
+            this.is_approved = data['_creator'].is_approved;
+            this.approved_user = data['_creator'].is_approved;
+            if(data['_creator'].is_approved === 0 ){
+              this.disabled = true;
+              this.msg = "You can access this page when your account has been approved by an admin.";
+              this.log='';
+            }
+            else if(data['_creator'].disable_account == true){
+              this.disabled = true;
+              this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
+              this.log='';
+            }
+            else{
+              this.authenticationService.get_page_content('Company chat popup message')
+              .subscribe(
+                data => {
+                  if (data) {
+                    this.companyMsgTitle = data[0]['page_title'];
+                    this.companyMsgContent = data[0]['page_content'];
+                  }
+                }
+              );
+              if(data['_creator'].viewed_explanation_popup === false || !data['_creator'].viewed_explanation_popup){
+                $("#popModal").modal("show");
+              }
+              this.msg='';
+              this.display_msgs();
+            }
+          },
+          error => {
+            if(error['message'] === 500 || error['message'] === 401){
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              window.location.href = '/login';
+            }
+            if(error['message'] === 403){}
+          }
+        );
+      }
+    }
+    else{
+      this.router.navigate(['/not_found']);
+    }
+  }
+
+  display_msgs(){
+    this.msg='';
+    this.loading = false;
+    if(this.currentUser.type=="company"){
+      this.display_list = 1;
+      this.display_list = 1;
+      this.loading = true;
+      //setInterval(() => {
+        this.authenticationService.get_user_messages_only_comp()
+        .subscribe(
+          msg_data => {
+            if(msg_data['conversations']){
+              this.new_messges.push(msg_data['conversations']);
+              this.new_messges = this.filter_array(msg_data['conversations']);
+              console.log(this.new_messges);
+              this.users = this.new_messges;
+              for (var key_users_new in this.users) {
+                if(this.count == 0){
+                  this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'',key_users_new);
+                }
+                this.count = this.count + 1;
+              }
+            }
+						else{
+              //this.msg='You have not chatted yet';
+						}
+					},
+            error => {
+            if(error.status === 500 || error.status === 401){
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+            if(error.status === 404){
+              this.log = error.error.message;
+            }
+          }
+        );
+      //},7000);
+    }
+    else{
+      //setInterval(() => {
+        this.authenticationService.get_user_messages_only_comp()
+        .subscribe(
+          msg_data => {
+            this.loading = false;
+            console.log(msg_data['conversations']);
+            if(msg_data['conversations']){
+              this.new_messges.push(msg_data['conversations']);
+              this.new_messges = this.filter_array(msg_data['conversations']);
+              this.users = this.new_messges;
+              console.log(this.users);
+              for (var key_users_new in this.users) {
+                if(this.count == 0){
+                  this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name,key_users_new);
+                }
+                this.count = this.count + 1;
+              }
+            }
 						else{
 							//this.msg='You have not chatted yet';
-                            //this.msg='';
 						}
-                    },
-                    error => {
-                        if(error.status === 500 || error.status === 401)
-                        {
-                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                          localStorage.removeItem('currentUser');
-                          localStorage.removeItem('googleUser');
-                          localStorage.removeItem('close_notify');
-                          localStorage.removeItem('linkedinUser');
-                          localStorage.removeItem('admin_log');
-                          window.location.href = '/login';
-                        }
-
-                        if(error.status === 404)
-                        {
-                          this.log = error.error.message;
-                        }
-                    }
-                );
-                this.display_list = 0;
-                //console.log('candidate');
-              //},7000);
+					},
+          error => {
+            if(error.status === 500 || error.status === 401){
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
             }
-
+            if(error.status === 404){
+              this.log = error.error.message;
+            }
+          }
+        );
+        this.display_list = 0;
+      //},7000);
     }
+  }
+
   send_message(msgForm : NgForm){
 	  this.interview_log = '';
 	  this.job_offer_log = '';
@@ -429,66 +348,49 @@ export class ChatComponent implements OnInit {
 	  this.img_name = '';
 	  console.log(this.credentials);
 	  if(this.credentials.msg_body && this.credentials.id){
-          //console.log(this.credentials.email);
-          this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
-          //console.log(this.msgs);
-          this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-          //sender_id,receiver_id,sender_name,receiver_name,msg
-          this.msg_tag = 'normal';
-          this.is_company_reply = 1;
-          if(this.first_message == 1){
-              this.job_title = 'Team Lead';
-              this.salary = '60000';
-              this.date_of_joining = '10-07-2018';
-              this.msg_tag = 'job_offer';
-              this.is_company_reply = 0;
-              //console.log(this.job_title);
-          }
-          let message : any = {};
-          message.message = this.credentials.msg_body;
-          let new_offer : any = {};
-          new_offer.normal = message;
-          console.log(new_offer);
-          this.authenticationService.send_message(this.credentials.id,this.msg_tag,new_offer)
-            .subscribe(
-                data => {
-                    //console.log(data);
-                    this.credentials.msg_body = '';
-                    this.authenticationService.get_user_messages_comp(this.credentials.id)
-                    .subscribe(
-                        data => {
-                            //console.log(data['messages']);
-                            this.new_msgss = data['messages'];
-                            //this.job_desc = data['messages'][0];
-                        },
-                        error => {
-                            if(error.message == 500 || error.message == 401)
-                        {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            window.location.href = '/login';
-                        }
-
-                        if(error.message == 403)
-                        {
-                            // this.router.navigate(['/not_found']);
-                        }
-                        }
-                    );
-                },
-                error => {
-                   if(error.message == 500 || error.message == 401)
-                        {
-                            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                            window.location.href = '/login';
-                        }
-
-                        if(error.message == 403)
-                        {
-                            // this.router.navigate(['/not_found']);
-                        }
-                }
-            );
+	    this.msgs = this.msgs+ "\n"+ this.credentials.msg_body;
+	    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+	    this.msg_tag = 'normal';
+	    this.is_company_reply = 1;
+	    if(this.first_message == 1){
+	      this.job_title = 'Team Lead';
+        this.salary = '60000';
+        this.date_of_joining = '10-07-2018';
+        this.msg_tag = 'job_offer';
+        this.is_company_reply = 0;
       }
+      let message : any = {};
+	    message.message = this.credentials.msg_body;
+	    let new_offer : any = {};
+	    new_offer.normal = message;
+	    console.log(new_offer);
+	    this.authenticationService.send_message(this.credentials.id,this.msg_tag,new_offer)
+      .subscribe(
+        data => {
+          this.credentials.msg_body = '';
+          this.authenticationService.get_user_messages_comp(this.credentials.id)
+          .subscribe(
+            data => {
+              this.new_msgss = data['messages'];
+            },
+            error => {
+              if(error.message == 500 || error.message == 401){
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                window.location.href = '/login';
+              }
+              if(error.message == 403){}
+            }
+          );
+        },
+        error => {
+          if(error.message == 500 || error.message == 401){
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            window.location.href = '/login';
+          }
+          if(error.message == 403){}
+        }
+      );
+    }
   }
 
   reject_offer(msgForm : NgForm){
