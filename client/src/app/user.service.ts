@@ -812,7 +812,6 @@ export class UserService {
 
   get_user_messages(receiver_id: string, sender_id: any)
   {
-    console.log('admin is calling');
     let queryString = '?user_id='+sender_id+'&admin=true';
     //return this.http.get(URL+'v2/conversations/'+queryString, {
     return this.http.get(URL+'v2/conversations/'+receiver_id+'/messages'+queryString , {
@@ -855,9 +854,7 @@ export class UserService {
 
   get_user_messages_only(id:any)
   {
-    console.log('admin is calling');
     let queryString = '?user_id='+id+'&admin=true';
-    console.log(queryString);
     return this.http.get(URL+'v2/conversations/'+queryString, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
@@ -1006,7 +1003,6 @@ export class UserService {
 
   send_file(formData: any)
   {
-    console.log(formData);
     return this.http.post(URL+'v2/messages',formData, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>

@@ -332,13 +332,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   this.imgPath =  data['company_logo'];
                 }
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
-
-
-                  console.log(data['saved_searches']);
-
                   if(data['saved_searches'][0].location)
                   {
-                    console.log(data['saved_searches'][0].location)
                     for (let country1 of data['saved_searches'][0].location)
                     {
                       if (country1['remote'] === true) {
@@ -421,7 +416,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   updateCitiesOptions(e) {
-    console.log(e.target.checked);
   }
   /*locationChanged(data)
   {
@@ -468,7 +462,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           queryBody.current_salary  = this.salary;
           queryBody.current_currency = this.currencyChange;
         }
-        console.log(queryBody)
         this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data => {
@@ -522,7 +515,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.not_found = '';
       let queryBody : any = {};
       if(this.searchWord) queryBody.word = this.searchWord;
-      console.log(this.selectedValueArray);
       if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
       if(this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
       if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.role_value;
@@ -540,7 +532,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
-      console.log(queryBody);
       this.authenticationService.filterSearch(queryBody )
         .subscribe(
           data =>
@@ -844,7 +835,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       .subscribe(
         data => {
           if(data) {
-            console.log(data);
             let citiesInput = data;
             let citiesOptions=[];
             for(let cities of citiesInput['locations']) {

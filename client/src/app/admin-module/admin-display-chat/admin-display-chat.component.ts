@@ -45,8 +45,7 @@ export class AdminDisplayChatComponent implements OnInit {
   display_name;
   new_messges = [];
 
-  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
-  {
+  constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router) {
     this.route.queryParams.subscribe(params => {
       this.user_id = params['user'];
       this.user_type = params['type'];
@@ -61,25 +60,19 @@ export class AdminDisplayChatComponent implements OnInit {
     document.getElementsByTagName("head")[0].appendChild(styles);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
-    if(this.user_id && this.admin_log && this.currentUser)
-    {
-      if(this.admin_log.is_admin == 1)
-      {
+    if(this.user_id && this.admin_log && this.currentUser){
+      if(this.admin_log.is_admin == 1){
         this.get_user_type();
-        //this.user_type = 'company';
         this.count=0;
         if(this.user_type=="company"){
           this.display_list = 1;
           this.display_list = 1;
           this.authenticationService.get_user_messages_only(this.user_id)
           .subscribe(
-            msg_data =>
-            {
+            msg_data =>{
               if(msg_data['conversations']){
-                console.log(this.user_id);
                 this.new_messges.push(msg_data['conversations']);
                 this.new_messges = this.filter_array(msg_data['conversations']);
-                console.log(this.new_messges);
                 this.users = this.new_messges;
 						    this.length = 1;
                 for (var key_users_new in this.users) {
@@ -89,8 +82,7 @@ export class AdminDisplayChatComponent implements OnInit {
                   this.count = this.count + 1;
                 }
               }
-              else
-              {
+              else{
                 this.length = 0;
 					    }
 					  },
@@ -98,8 +90,7 @@ export class AdminDisplayChatComponent implements OnInit {
               if(error.status === 400){
                 this.length = 0;
               }
-              if(error.status === 500 || error.status === 401)
-              {
+              if(error.status === 500 || error.status === 401){
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('googleUser');
@@ -108,8 +99,7 @@ export class AdminDisplayChatComponent implements OnInit {
                 localStorage.removeItem('admin_log');
                 window.location.href = '/login';
               }
-              if(error.status === 404)
-              {
+              if(error.status === 404){
                 this.log = error.error.message;
               }
             }
@@ -118,13 +108,10 @@ export class AdminDisplayChatComponent implements OnInit {
         else{
           this.authenticationService.get_user_messages_only(this.user_id)
           .subscribe(
-            msg_data =>
-            {
+            msg_data =>{
               if(msg_data['conversations']){
-                console.log(this.user_id);
                 this.new_messges.push(msg_data['conversations']);
                 this.new_messges = this.filter_array(msg_data['conversations']);
-                console.log(this.new_messges);
                 this.users = this.new_messges;
                 this.length = 1;
                 for (var key_users_new in this.users) {
@@ -134,8 +121,7 @@ export class AdminDisplayChatComponent implements OnInit {
                   this.count = this.count + 1;
                 }
               }
-              else
-              {
+              else{
                 this.length = 0;
               }
             },
@@ -143,8 +129,7 @@ export class AdminDisplayChatComponent implements OnInit {
               if(error.status === 400){
                 this.length = 0;
               }
-              if(error.status === 500 || error.status === 401)
-              {
+              if(error.status === 500 || error.status === 401){
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('googleUser');
@@ -153,8 +138,7 @@ export class AdminDisplayChatComponent implements OnInit {
                 localStorage.removeItem('admin_log');
                 window.location.href = '/login';
               }
-              if(error.status === 404)
-              {
+              if(error.status === 404){
                 this.log = error.error.message;
               }
             }
@@ -165,34 +149,28 @@ export class AdminDisplayChatComponent implements OnInit {
       else
         this.router.navigate(['/not_found']);
     }
-    else
-    {
+    else{
       this.router.navigate(['/not_found']);
     }
   }
 
   openDialog(email: string, id:string,current_compnay_name:string){
-    console.log(id);
     this.msgs = '';
     this.new_msgss = '';
     this.authenticationService.get_user_messages(id,this.user_id)
     .subscribe(
-      data =>
-      {
-        console.log(data);
+      data =>{
         this.new_msgss = data['messages'];
         this.job_desc = data['messages'][0].message.job_offer;
         if(data['datas'][1]){
-          if(data['datas'][1].is_company_reply==1)
-          {
+          if(data['datas'][1].is_company_reply==1){
             this.company_reply = 1;
           }
           else{
               this.company_reply = 0;
           }
         }
-        else
-        {
+        else{
           this.company_reply = 0;
           if(this.user_type=='candidate'){
             this.cand_offer = 1;
@@ -220,15 +198,12 @@ export class AdminDisplayChatComponent implements OnInit {
           this.credentials.msg_body = "Hi ! join us";
         }
       },
-      error =>
-      {
-        if(error.message === 500 || error.message === 401)
-        {
+      error =>{
+        if(error.message === 500 || error.message === 401){
           localStorage.setItem('jwt_not_found', 'Jwt token not found');
           window.location.href = '/login';
         }
-        if(error.message === 403)
-        {}
+        if(error.message === 403){}
       }
     );
     this.candidate = email;
@@ -236,48 +211,37 @@ export class AdminDisplayChatComponent implements OnInit {
     this.credentials.id = id;
   }
 
-  get_user_type()
-  {
+  get_user_type() {
     if(this.user_type == 'company'){
       this.authenticationService.getCurrentCompany(this.user_id)
 			.subscribe(
-			  data =>
-        {
-					if(data['company_logo']!='')
-					{
+			  data =>{
+			    if(data['company_logo']!=''){
 						this.profile_pic = data['company_logo'];
 					}
 					this.display_name = data['company_name'];
 					this.user_type = data['_creator'].type;
 					this.email  = data['_creator'].email;
 				},
-        error =>
-        {
-          if(error.message === 500 || error.message === 401)
-					{
+        error =>{
+          if(error.message === 500 || error.message === 401){
 						localStorage.setItem('jwt_not_found', 'Jwt token not found');
 						window.location.href = '/login';
 					}
-					if(error.message === 403)
-					{}
+					if(error.message === 403){}
         }
 			);
 		}
 		else{
 			this.authenticationService.getById(this.user_id)
 			.subscribe(
-				data =>
-        {
-
-				  if(data['error'])
-				  {
+				data =>{
+				  if(data['error']){
 				    this.log= "Something Went Wrong";
 						localStorage.removeItem('company_type');
 					}
-					else
-					{
-					  if(data['image']!='')
-						{
+					else{
+					  if(data['image']!=''){
 							this.profile_pic = data['image'];
 						}
 						this.display_name = data['first_name'] +' '+data['last_name'];
@@ -289,8 +253,7 @@ export class AdminDisplayChatComponent implements OnInit {
 		}
   }
 
-	filter_array(arr)
-  {
+	filter_array(arr) {
     let hashTable = {};
     return arr.filter(function (el) {
       let key = JSON.stringify(el);
