@@ -274,7 +274,7 @@
                   <label for="validationCustom02">Employment type</label>
                   <div class="form-check" *ngFor="let options of job_type">
                     <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
-                    <label class="form-check-label my-label-style" for="{{options}}">
+                    <label class="form-check-label simple-radio-button" for="{{options}}">
                       {{options}}
                     </label>
                   </div>
