@@ -14,7 +14,7 @@ module.exports.findOne = async function findOne(selector) {
 
 
 module.exports.findAndLimit2 = async function findAndLimit2(selector) {
-    return await Cities.find(selector).limit(2).lean();
+    return await Cities.find(selector).limit(4).lean();
 }
 
 module.exports.findOneById = async function findOneById(id) {

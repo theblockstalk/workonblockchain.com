@@ -70,9 +70,9 @@
               <div *ngIf="selectedValueArray.length > 0">
                 <div class="row">
                   <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
-                    <div class="border p-3 ml-2">
+                    <div class="border p-3 ml-2" >
                       <p><strong >{{value.name}}</strong></p>
-                      <div class="form-check mt-3">
+                      <div class="form-check mt-3" *ngIf="value.name !== 'Remote'">
                         <label class="form-check-label" for="check{{i}}">
                           <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_not_needed"   name="visa_not_needed{{i}}" (change)="updateCitiesOptions($event)" > Sponsored work visa IS NOT required
                         </label>
