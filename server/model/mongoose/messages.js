@@ -10,10 +10,6 @@ module.exports.find = async function (selector) {
     return await Messages.findOne(selector).sort({date_created: 'descending'}).lean();
 }
 
-module.exports.findAndSort = async function (selector) {
-    return await Messages.find(selector,{_id:0,sender_id:1,receiver_id:1,msg_tag:1}).sort({date_created: 'descending'}).lean();
-}
-
 module.exports.findOne = async function (selector) {
     return await Messages.findOne(selector).lean();
 }
