@@ -753,26 +753,6 @@ export class UserService {
     }));
   }
 
-  getCandidate(sender_id:string,receiver_id:string,msg_tag:string,type: string)
-  {
-    return this.http.post(URL+'users/get_candidate', {type:type,sender_id:sender_id,receiver_id:receiver_id,msg_tag:msg_tag}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
   getCurrentCompany(_id: string)
   {
     return this.http.get(URL+'users/current_company/' +_id, {
@@ -804,26 +784,6 @@ export class UserService {
         }
 
         else return throwError(new Error(error));
-      }
-
-    }));
-  }
-
-  insertMessage(receiver_id:string,sender_name:string,receiver_name:string,message:string,description:string,job_title:string,salary:string,currency:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,interview_location:string,interview_time:string)
-  {
-    return this.http.post(URL+'users/insert_message', {receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,interview_location:interview_location,interview_time:interview_time}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
       }
 
     }));
@@ -1044,9 +1004,6 @@ export class UserService {
 
   }
 
-  //send_message(receiver_id:string,msg_tag:string, message:any){
-  //{receiver_id:receiver_id,msg_tag:msg_tag,message:message}
-  //{receiver_id:'545d456d45d56d456ds',msg_tag:'file',message:'d5d45d4'}
   send_file(formData: any)
   {
     console.log(formData);
@@ -1063,46 +1020,6 @@ export class UserService {
       if (error.status )
       {
         return throwError(error);
-      }
-
-    }));
-  }
-
-  insert_job_message(formData: any)
-  {
-    return this.http.post(URL+'users/insert_message_job',formData,{
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
-  update_job_message(id:string,status:number)
-  {
-    return this.http.post(URL+'users/update_job_message', {id:id,status:status}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
       }
 
     }));
@@ -1283,7 +1200,6 @@ export class UserService {
 
   update_chat_msg_status_new(sender_id: string){
     return this.http.patch(URL+'v2/conversations/'+sender_id+'/messages', {},{
-    //return this.http.post(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1395,26 +1311,6 @@ export class UserService {
     }));
   }
 
-  get_unread_msgs_of_user(sender_id:string){
-    return this.http.post(URL+'users/get_unread_msgs_of_user', {sender_id:sender_id}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
-
   account_settings(user_id: string, status: any)
   {
     return this.http.post(URL+'users/account_settings', {user_id:user_id,status:status} , {
@@ -1447,8 +1343,6 @@ export class UserService {
 
   destroyToken(_id:string)
   {
-    //console.log(this.token);
-
     return this.http.post(URL+'users/destroy_token', {id:_id} , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
@@ -1476,46 +1370,6 @@ export class UserService {
 
     }));
 
-  }
-
-
-  update_is_company_reply_status(status:number)
-  {
-    return this.http.post(URL+'users/update_is_company_reply_status', {status:status}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
-  get_employment_offer_info(receiver_id:string,msg_tag:string){
-    return this.http.post(URL+'users/get_employ_offer', {receiver_id:receiver_id,msg_tag:msg_tag}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(error);
-      }
-
-    }));
   }
 
   updateExplanationPopupStatus(status:any){
