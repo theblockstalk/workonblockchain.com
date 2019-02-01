@@ -84,19 +84,6 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
-    this.isUserAuthenticated = this._linkedInService.isUserAuthenticated$;
-    let count = 0;
-    this._linkedInService.isUserAuthenticated$.subscribe({
-      next: (state) => {
-        if(state === true && count===0) {
-          this.rawApiCall();
-          count++;
-
-        }
-        this.isUserAuthenticatedEmittedValue = true;
-      }
-    });
-
     $(function(){
       var hash = window.location.hash;
       hash && $('div.nav a[href="' + hash + '"]').tab('show');
@@ -116,7 +103,6 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this.dataservice.currentMessage.subscribe(message => this.message = message);
     setInterval(() => {
       this.message = "" ;
-      this.log='';
     }, 13000);
   }
   log = '';
@@ -298,57 +284,24 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this._linkedInService.login().subscribe({
       next: (state) =>
       {
-        const url =`/people/~:(${this.basicProfileFields.join(',')})?format=json'`;
-        this._linkedInService.raw(url).asObservable().subscribe({
-          next: (data) => {
-            localStorage.setItem('linkedinUser', JSON.stringify(data));
-            if(data)
-            {
-              this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-              this.credentials.email= this.linkedinUser.emailAddress;
-              this.credentials.password= '';
-              this.credentials.type="candidate";
-              this.credentials.social_type='LINKEDIN';
-              this.credentials.linkedin_id = this.linkedinUser.id;
-              if(this.linkedinUser.emailAddress)
-              {
-                this.authenticationService.create(this.credentials)
-                  .subscribe(
-                    data => {
-                      this.credentials.email = '';
-
-                      localStorage.setItem('currentUser', JSON.stringify(data));
-                      window.location.href = '/terms-and-condition';
-
-                    },
-                    error => {
-                      this.loading = false;
-                      if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                        this.log = error['error']['message'];
-                      }
-                      else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                        this.log = error['error']['message'];
-                      }
-                      else {
-                        this.log = 'Something getting wrong';
-                      }
-
-                    });
-              }
-              else
-              {
-                this.log = 'Something getting wrong';
-              }
-            }
-          },
-          error: (err) => {
-          },
-          complete: () => {
-          }
-        });
+        console.log("state");
       },
       complete: () => {
         // Completed
+        console.log("complete");
+      }
+    });
+
+    this.isUserAuthenticated = this._linkedInService.isUserAuthenticated$;
+    let count = 0;
+    this._linkedInService.isUserAuthenticated$.subscribe({
+      next: (state) => {
+        if(state === true && count===0) {
+          this.rawApiCall();
+          count++;
+
+        }
+        this.isUserAuthenticatedEmittedValue = true;
       }
     });
   }
