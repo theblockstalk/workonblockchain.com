@@ -26,6 +26,7 @@
     "fromAddress": "staging.contact@workonblockchain.com",
     "fromName": "STAGING - Work on Blockchain"
   },
+  "throttleTime" : 600,
   "currencyRatesUSD": {
     "GBP": 1.28,
     "Euro": 1.14
@@ -40,6 +41,5 @@
   "slack": {
     "username": "STAGING bug reporter",
     "channel": "#1_server_bugs_staging"
-  },
-  "throttleTime" : 600
+  }
 }

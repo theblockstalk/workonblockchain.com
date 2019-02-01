@@ -26,6 +26,7 @@
     "fromAddress": "no-reply@workonblockchain.com",
     "fromName": "Work on Blockchain"
   },
+  "throttleTime" : 600,
   "currencyRatesUSD": {
     "GBP": 1.28,
     "Euro": 1.14
@@ -39,6 +40,5 @@
   "slack": {
     "username": "PRODUCTION bug reporter",
     "channel": "#1_server_bugs_prod"
-  },
-  "throttleTime" : 600
+  }
 }
