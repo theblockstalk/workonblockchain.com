@@ -1,10 +1,10 @@
-const users = require('../../../model/users');
-const CandidateProfile = require('../../../model/candidate_profile');
+const users = require('../../../model/mongoose/users');
 const EmployerProfile = require('../../../model/employer_profile');
 const Messages = require('../../../model/messages');
 const errors = require('../../services/errors');
 
 const filterReturnData = require('../users/filterReturnData');
+const errors = require('../../services/errors');
 
 module.exports = async function (req, res) {
     let sender_id,receiver_id,msg_tag,user_type;
@@ -36,63 +36,57 @@ module.exports = async function (req, res) {
         console.log('is_admin: ' + is_admin);
         const userDoc = await users.findOne({
             $and: [{ _id : receiver_id }, { type : user_type }]
-        }).lean();
+        });
         if(userDoc){
-            const candidateProfile = await CandidateProfile.findOne({
-                "_creator": userDoc._id
-            }).populate('_creator').lean();
-            if (candidateProfile)
-            {
-                let query_result = filterReturnData.removeSensativeData(candidateProfile);
-                if (is_admin){
-                    res.send({
-                        users:query_result
-                    });
-                }
-                else {
-                    console.log('Sender ID: '+sender_id);
-                    console.log('Receiver ID: '+receiver_id);
-                    const acceptedJobOffer = await Messages.find({
-                        sender_id: receiver_id,
-                        receiver_id: sender_id,
-                        msg_tag: 'job_offer_accepted'
-                    });
-                    console.log(acceptedJobOffer);
-                    if (acceptedJobOffer && acceptedJobOffer.length > 0) {
-                    }
-                    else {
-                        query_result = filterReturnData.anonymousSearchCandidateData(query_result);
-                    }
-                    res.send({
-                        users: query_result
-                    });
+            let candidateObject= {}  //// remove this after chat refactor
+            //let query_result = filterReturnData.removeSensativeData(userDoc); //// uncomment this after chat refactor
+            if(is_company_reply === 1){
+                candidateObject = {
+                    '_creator' : {
+                        _id : userDoc._id,
+                        email : userDoc.email,
+                        type : userDoc.type,
+                    },
+                    'first_name' : userDoc.first_name,
+                    'last_name' : userDoc.last_name
                 }
             }
-            else
-            {
-                errors.throwError('User not found', 404);
+            else{
+                candidateObject = {
+                    '_creator'  : {
+                        _id : userDoc._id,
+                        email : userDoc.email,
+                        type : userDoc.type,
+                    },
+                    'initials' : filterReturnData.createInitials(userDoc.first_name,userDoc.last_name)
+
+                }
+                //query_result = filterReturnData.anonymousSearchCandidateData(query_result); //// uncomment this after chat refactor
             }
+            res.send({
+                users:candidateObject
+            });
         }
         else{
             errors.throwError('User not found', 404);
-		}
+        }
     }
     else{
         console.log('getting comp data');
         console.log('is_admin: ' + is_admin);
         const userDoc = await users.findOne({
             $and: [{ _id : sender_id }, { type : user_type }]
-        }).lean();
+        });
         if(userDoc) {
             const companyProfile = await EmployerProfile.findOne({
                 "_creator": userDoc._id
             }).populate('_creator').lean();
             if (companyProfile)
             {
-                let query_result = filterReturnData.removeSensativeData(companyProfile);
-                query_result = filterReturnData.anonymousCandidateData(query_result);
+                //let query_result = filterReturnData.removeSensativeData(companyProfile);
+                //query_result = filterReturnData.anonymousCandidateData(query_result);
                 res.send({
-                    users:query_result
+                    users:companyProfile
                 });
             }
             else
@@ -103,5 +97,5 @@ module.exports = async function (req, res) {
         else{
             errors.throwError('User not found', 404);
         }
-	}
+    }
 };

@@ -161,13 +161,13 @@ export class ChatComponent implements OnInit {
       //this.msg='';
       //this.approved_user = 1;//use this when code ready this.currentUser.is_approved
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      //console.log(this.currentUser);
       //for live
       //this.file_url = 'http://workonblockchainuploads.mwancloud.com/';
       this.file_url = URL;//'http://localhost/workonblockchain.com/server/uploads/';
       if(this.currentUser){
         if(this.currentUser.type == 'candidate'){
-            this.authenticationService.getById(this.currentUser._creator)
+          //this.currentUser._creator = this.currentUser._id;
+            this.authenticationService.getById(this.currentUser._id)
             .subscribe(
                 data => {
                     //data[0]._creator.is_approved = 1;
@@ -181,13 +181,13 @@ export class ChatComponent implements OnInit {
                         this.approved_user = 1;
                     }
                     */
-                    if(!data['_creator'].first_approved_date)
+                    if(!data['first_approved_date'])
                     {
                           this.disabled = true;
                           this.msg = "You can access this page when your account has been approved by an admin.";
                           this.log='';
                     }
-                    else if(data['_creator'].disable_account == true)
+                    else if(data['disable_account'] == true)
                     {
                         this.disabled = true;
                         this.msg = "You can access this feature when your profile has been enabled. Go to setting and enable your profile";
@@ -207,7 +207,7 @@ export class ChatComponent implements OnInit {
                             }
                           }
                         );
-                      if(data['_creator'].viewed_explanation_popup === false || !data['_creator'].viewed_explanation_popup){
+                      if(data['viewed_explanation_popup'] === false || !data['viewed_explanation_popup']){
                         $("#popModal").modal("show");
                       }
                       this.msg='';

@@ -1,22 +1,27 @@
-const CandidateProfile = require('../../../../../model/candidate_profile');
-const User = require('../../../../../model/users');
+const users = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
+const filterReturnData = require('../../filterReturnData');
 
 module.exports = async function (req,res) {
 	let userId = req.auth.user._id;
-    const candidateDoc = await CandidateProfile.findOne({ _creator: userId}).lean();
+    const candidateUserDoc = await users.findOneById(userId);
 
-    if(candidateDoc) {
+    if(candidateUserDoc) {
         const queryBody = req.body;
-        let candidateUpdate = {}
-        if (queryBody.language_exp) candidateUpdate.programming_languages = queryBody.language_exp;
-        if (queryBody.education) candidateUpdate.education_history = queryBody.education;
-        if (queryBody.work) candidateUpdate.work_history = queryBody.work;
-        if (queryBody.detail.intro) candidateUpdate.description = queryBody.detail.intro;
+        let candidateUpdate = {};
+        let unset = {};
+        if (queryBody.language_exp && queryBody.language_exp.length > 0) candidateUpdate['candidate.programming_languages'] = queryBody.language_exp;
+        else unset['candidate.programming_languages'] = 1;
 
-        await CandidateProfile.update({ _id: candidateDoc._id },{ $set: candidateUpdate });
+        if (queryBody.education && queryBody.education.length > 0) candidateUpdate['candidate.education_history'] = queryBody.education;
+        else unset['candidate.education_history'] = 1;
 
-        await User.update({ _id: userId },
+        if (queryBody.work && queryBody.work.length > 0) candidateUpdate['candidate.work_history'] = queryBody.work;
+        else unset['candidate.work_history'] = 1;
+
+        if (queryBody.detail.intro) candidateUpdate['candidate.description'] = queryBody.detail.intro;
+
+        await users.update({ _id: userId },
             {
                 $push: {
                     'candidate.status' : {
@@ -25,9 +30,14 @@ module.exports = async function (req,res) {
                         timestamp: new Date()}],
                         $position: 0
                     }
-                }
+                },
+                $set: candidateUpdate
             }
         );
+
+        if (!filterReturnData.isEmptyObject(unset)) {
+            await users.update({ _id: userId},{$unset: unset});
+        }
         res.send({
             success : true
         })

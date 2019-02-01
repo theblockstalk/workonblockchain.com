@@ -3,7 +3,6 @@ const chaiHttp = require('chai-http');
 const server = require('../../../../../server');
 const mongo = require('../../../../helpers/mongo');
 const Users = require('../../../../../model/users');
-const candidateProfile = require('../../../../../model/candidate_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
 const candidateHelper = require('../candidateHelpers');
 const candidateWizardHelper = require('./candidateWizardHelpers');
@@ -32,16 +31,14 @@ describe('add initial info of candidate', function () {
 
             const res = await candidateWizardHelper.about(candidateProfileInfo,userDoc.jwt_token);
             res.body.success.should.equal(true);
-
-            const newCandidateInfo = await candidateProfile.findOne({_creator: userDoc._id}).lean();
-            newCandidateInfo.first_name.should.equal(candidateProfileInfo.first_name);
-            newCandidateInfo.last_name.should.equal(candidateProfileInfo.last_name);
-            newCandidateInfo.github_account.should.equal(candidateProfileInfo.github_account);
-            newCandidateInfo.stackexchange_account.should.equal(candidateProfileInfo.exchange_account);
-            newCandidateInfo.contact_number.should.equal(candidateProfileInfo.contact_number);
-            newCandidateInfo.nationality.should.equal(candidateProfileInfo.nationality);
-
             userDoc = await Users.findOne({email: candidate.email}).lean();
+
+            userDoc.first_name.should.equal(candidateProfileInfo.first_name);
+            userDoc.last_name.should.equal(candidateProfileInfo.last_name);
+            userDoc.candidate.github_account.should.equal(candidateProfileInfo.github_account);
+            userDoc.candidate.stackexchange_account.should.equal(candidateProfileInfo.exchange_account);
+            userDoc.contact_number.should.equal(candidateProfileInfo.contact_number);
+            userDoc.nationality.should.equal(candidateProfileInfo.nationality);
             userDoc.candidate.base_city.should.equal(candidateProfileInfo.city);
             userDoc.candidate.base_country.should.equal(candidateProfileInfo.country);
         })

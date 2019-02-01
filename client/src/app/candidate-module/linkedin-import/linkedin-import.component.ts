@@ -54,7 +54,7 @@ export class LinkedinImportComponent implements OnInit {
           data =>
           {
 
-            if(data['terms_id'])
+            if(data['candidate'].terms_id)
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
@@ -67,14 +67,14 @@ export class LinkedinImportComponent implements OnInit {
               this.link= "/job";
             }
 
-            if(data['locations'] && data['roles'] && data['interest_area'] && data['expected_salary'] && data['availability_day'] && data['current_salary'] )
+            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas && data['candidate'].expected_salary && data['candidate'].availability_day && data['candidate'].current_salary )
             {
               this.resume_disable = '';
               this.job_active_class = 'fa fa-check-circle text-success';
               this.resume_class="/resume";
             }
 
-            if(data['why_work'] )
+            if(data['candidate'].why_work )
             {
               this.exp_disable = '';
               this.resume_class="/resume";
@@ -82,7 +82,7 @@ export class LinkedinImportComponent implements OnInit {
               this.resume_active_class='fa fa-check-circle text-success';
             }
 
-            if( data['programming_languages'].length>0  &&data['description'])
+            if(data['candidate'].description)
             {
               this.exp_class = "/experience";
               this.exp_active_class = 'fa fa-check-circle text-success';

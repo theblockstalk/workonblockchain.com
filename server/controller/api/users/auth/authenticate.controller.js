@@ -1,6 +1,5 @@
-const User = require('../../../../model/users');
-const CandidateProfile = require('../../../../model/candidate_profile');
-const EmployerProfile = require('../../../../model/employer_profile');
+const users = require('../../../../model/mongoose/users');
+const companies = require('../../../../model/mongoose/company');
 const jwtToken = require('../../../services/jwtToken');
 const crypto = require('crypto');
 const errors = require('../../../services/errors');
@@ -9,18 +8,17 @@ module.exports = async function (req, res) {
 
     let queryBody = req.body;
     if(queryBody.linkedin_id) {
-        let userDoc =  await User.findOne({email : queryBody.email }).lean();
+        let userDoc =  await users.findOneByEmail(queryBody.email);
         if(userDoc && userDoc.social_type === 'LINKEDIN' && !userDoc.linkedin_id){
-            await User.update({_id: userDoc._id}, {$set: {'linkedin_id': queryBody.linkedin_id}});
+            await users.update({_id: userDoc._id}, {$set: {'linkedin_id': queryBody.linkedin_id}});
         }
-        userDoc =  await User.findOne({linkedin_id : queryBody.linkedin_id }).lean();
+        userDoc =  await users.findOne({linkedin_id : queryBody.linkedin_id });
         if(userDoc && userDoc.social_type === 'LINKEDIN' && userDoc.linkedin_id) {
             let jwtUserToken = jwtToken.createJwtToken(userDoc);
-            await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
-            const candidateDoc = await  CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
+            await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
             res.send({
-                _id:candidateDoc._id,
-                _creator: userDoc._id,
+                _id:userDoc._id,
+                _creator: userDoc._id, //remove this after chat refactor
                 email: userDoc.email,
                 email_hash: userDoc.email_hash,
                 is_admin:userDoc.is_admin,
@@ -32,13 +30,12 @@ module.exports = async function (req, res) {
         else {
             errors.throwError("User not found" , 404)
         }
-
-
     }
+
 
     else
     {
-        let userDoc =  await User.findOne({email : queryBody.email }).lean();
+        let userDoc =  await users.findOneByEmail( queryBody.email);
         if(userDoc) {
             let hash = crypto.createHmac('sha512', userDoc.salt);
             hash.update(queryBody.password);
@@ -48,11 +45,10 @@ module.exports = async function (req, res) {
             {
                 if(userDoc.type === 'candidate') {
                     let jwtUserToken = jwtToken.createJwtToken(userDoc);
-                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
-                    const candidateDoc = await CandidateProfile.findOne({ _creator:  userDoc._id }).lean();
+                    await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
                     res.send({
-                        _id: candidateDoc._id,
-                        _creator: userDoc._id,
+                        _id: userDoc._id,
+                        _creator : userDoc._id, // remove this after chat refactor
                         email: userDoc.email,
                         email_hash: userDoc.email_hash,
                         is_admin: userDoc.is_admin,
@@ -64,8 +60,8 @@ module.exports = async function (req, res) {
 
                 if(userDoc.type === 'company') {
                     let jwtUserToken = jwtToken.createJwtToken(userDoc);
-                    await User.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
-                    const companyDoc = await EmployerProfile.findOne({ _creator:  userDoc._id }).lean();
+                    await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+                    const companyDoc = await companies.findOne({ _creator:  userDoc._id });
                     res.send({
                         _id: companyDoc._id,
                         _creator: userDoc._id,

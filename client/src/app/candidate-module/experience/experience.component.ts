@@ -74,17 +74,20 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   }
   message;
   current_work_check=[];
+
   ngOnInit()
   {
     this.salary='';
     this.current_currency =-1;
     this.jobData = [];
     this.eduData=[];
+
     // this.dataservice.currentMessage.subscribe(message => this.message = message);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.shown=true;
-    //this.currentdate = this.datePipe.transform(this.today, 'MMM');
-    //this.currentyear = this.datePipe.transform(this.today, 'yyyy');
+    this.currentdate = this.datePipe.transform(this.today, 'MMMM');
+    this.currentyear = this.datePipe.transform(this.today, 'yyyy');
+
     this.EducationForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
     });
@@ -109,38 +112,37 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           data => {
             //console.log(data.education_history_history);
 
-            if(data['terms_id'])
+            if(data['candidate'].terms_id)
             {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
-            if(data['description'])
+            if(data['candidate'].description)
             {
 
               this.exp_active_class = 'fa fa-check-circle text-success';
             }
-            if(data['locations'] && data['roles'] && data['interest_area'] || data['expected_salary'] || data['availability_day'])
+            if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day)
             {
               this.active_class='fa fa-check-circle text-success';
               // this.job_active_class = 'fa fa-check-circle text-success';
 
             }
-            if(data['work_history'] || data['education_history'] || data['programming_languages'])
+            if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
             {
 
-              if(data['work_history'].length>0)
+              if(data['candidate'].work_history.length>0)
               {
-                this.jobData = data['work_history'];
+                this.jobData = data['candidate'].work_history;
                 // console.log(this.jobData);
                 //console.log(this.jobData.startdate);
                 // console.log(this.datePipe.transform(((this.jobData.startdate)+1), 'MMMM'));
 
 
-                for(let data1 of data['work_history'])
+                for(let data1 of data['candidate'].work_history)
                 {
                   //this.companyname = data1.companyname;
                   this.current_work_check.push(data1.currentwork);
-
 
                 }
 
@@ -151,10 +153,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                   )
                 });
               }
-              if(data['education_history'].length>0)
+              if(data['candidate'].education_history.length>0)
               {
 
-                this.eduData = data['education_history'];
+                this.eduData = data['candidate'].education_history;
                 this.EducationForm = this._fb.group({
                   itemRows: this._fb.array(
                     this.education_data()
@@ -164,10 +166,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
               }
               //this.exp_data.push(data.experience_roles) ;
               ////console.log(data.experience_roles.length);
-              if(data['programming_languages'])
+              if(data['candidate'].programming_languages)
               {
-                this.expYear = data['programming_languages'];
-                for (let key of data['programming_languages'])
+                this.expYear = data['candidate'].programming_languages;
+                for (let key of data['candidate'].programming_languages)
                 {
                   for(var i in key)
                   {
@@ -211,18 +213,12 @@ export class ExperienceComponent implements OnInit , AfterViewInit
               }
 
 
-              this.salary = data['current_salary'];
-              this.Intro =data['description'];
-              if(data['current_currency'])
-              {
-                this.current_currency =data['current_currency'];
-              }
-              // this.current_currency =-1;
+              this.Intro =data['candidate'].description;
 
             }
 
 
-            if(!data['why_work'])
+            if(!data['candidate'].why_work)
             {
               this.router.navigate(['/resume']);
             }
@@ -258,7 +254,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.authenticationService.get_page_content('Candidate popup message')
         .subscribe(
           data => {
-            if(data)
+            if(data && data[0])
             {
               this.candidateMsgTitle= data[0]['page_title'];
               this.candidateMsgBody = data[0]['page_content'];
@@ -322,6 +318,11 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       {name:'Database Administrator', value:'Database Administrator', checked:false},
       {name:'Security Engineer', value:'Security Engineer', checked:false},
       {name:'Frontend Developer', value:'Frontend Developer', checked:false},
+    ]
+
+  graduation_year=
+    [
+      2023,2022,2021,2020,2019,2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998,1997,1996,1995,1994
     ]
 
   year=
@@ -420,6 +421,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       $('.selectpicker').selectpicker();
       $('.selectpicker').selectpicker('refresh');
     }, 100);
+
     const control = <FormArray>this.ExperienceForm.controls['ExpItems'];
     control.push(this.initExpRows());
   }
@@ -479,6 +481,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     this.edu_count=0;
     this.exp_count =0;
     this.button_status = 'submit';
+    this.dateValidation= '';
 
 
     if(this.expYear.length !== this.language.length)
@@ -516,7 +519,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         {
           this.eduYear_log = "Please fill graduation year";
         }
-        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename && this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
+
+        if(this.EducationForm.value.itemRows[key].uniname && this.EducationForm.value.itemRows[key].degreename &&
+          this.EducationForm.value.itemRows[key].fieldname && this.EducationForm.value.itemRows[key].eduyear)
         {
 
           this.edu_count = this.edu_count + 1;
@@ -530,6 +535,20 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
       for (var key in this.ExperienceForm.value.ExpItems)
       {
+        this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
+        this.endmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].end_date);
+        this.start_date_format  = new Date(this.ExperienceForm.value.ExpItems[key].startyear, this.startmonthIndex);
+        if(this.ExperienceForm.value.ExpItems[key].currentwork === true)
+        {
+          this.end_date_format = this.today;
+        }
+        else
+        {
+          this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+
+        }
+
+
         if(!this.ExperienceForm.value.ExpItems[key].companyname)
         {
           this.company_log = "Please fill company";
@@ -557,6 +576,8 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           this.start_date_year_log = "Please fill start date year";
         }
 
+
+
         if(!this.ExperienceForm.value.ExpItems[key].end_date && this.ExperienceForm.value.ExpItems[key].currentwork === false)
         {
           this.end_date_log = "Please fill end date month";
@@ -568,21 +589,47 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         }
 
 
+
+
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&this.ExperienceForm.value.ExpItems[key].positionname &&
           this.ExperienceForm.value.ExpItems[key].locationname && this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
-          this.ExperienceForm.value.ExpItems[key].startyear && this.ExperienceForm.value.ExpItems[key].end_date &&
-          this.ExperienceForm.value.ExpItems[key].endyear && this.ExperienceForm.value.ExpItems[key].currentwork==false)
+          this.ExperienceForm.value.ExpItems[key].startyear &&
+          this.ExperienceForm.value.ExpItems[key].end_date && this.ExperienceForm.value.ExpItems[key].endyear &&
+          this.ExperienceForm.value.ExpItems[key].currentwork==false)
         {
-          this.exp_count = this.exp_count + 1;
+          this.submit = 'click';
+          let verified=0;
+          if(this.compareDates(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear,this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear , this.ExperienceForm.value.ExpItems[key].currentwork)) {
+            this.dateValidation = 'Date must be greater than previous date';
+            verified=1;
+          }
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].end_date , this.ExperienceForm.value.ExpItems[key].endyear)) {
+            verified=1;
+          }
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
+            verified=1;
+          }
+          if(verified === 0) {
+            this.exp_count = this.exp_count + 1;
+          }
+
 
         }
 
 
         if(this.ExperienceForm.value.ExpItems[key].companyname && this.ExperienceForm.value.ExpItems[key].positionname && this.ExperienceForm.value.ExpItems[key].positionname !== "" &&
           this.ExperienceForm.value.ExpItems[key].locationname &&this.ExperienceForm.value.ExpItems[key].locationname !== "" && this.ExperienceForm.value.ExpItems[key].start_date &&
-          this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true)
+          this.ExperienceForm.value.ExpItems[key].startyear &&  this.ExperienceForm.value.ExpItems[key].currentwork==true
+          )
         {
-          this.exp_count = this.exp_count + 1;
+          let dverified=0;
+          if(this.checkDateVerification(this.ExperienceForm.value.ExpItems[key].start_date , this.ExperienceForm.value.ExpItems[key].startyear)) {
+            dverified=1;
+          }
+          if(dverified === 0) {
+            this.exp_count = this.exp_count + 1;
+          }
+
 
         }
 
@@ -597,7 +644,16 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     console.log("education form count " + this.EducationForm.value.itemRows.length);
     console.log("work history count " + this.exp_count);
     console.log("work history form count " + this.ExperienceForm.value.ExpItems.length);
-    if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length )
+
+    if(this.expYear.length === this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length) {
+      this.verify = true;
+    }
+
+    else {
+      this.verify = false;
+    }
+
+    if(this.verify === true )
     {
       this.submit_info(searchForm);
 
@@ -615,12 +671,17 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   start_date_format;
   end_date_format;
   educationjson; education_json_array=[];
+  dateValidation;
+  count;
+  submit;
   submit_info(searchForm )
   {
     this.experiencearray=[];
     this.education_json_array=[];
     this.log='';
-
+    this.count = 0;
+    this.dateValidation = '';
+    this.submit = "click";
 
     if(this.ExperienceForm.value.ExpItems)
     {
@@ -636,6 +697,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         else
         {
           this.end_date_format = new Date(this.ExperienceForm.value.ExpItems[key].endyear, this.endmonthIndex);
+
         }
         this.experiencejson = {companyname : this.ExperienceForm.value.ExpItems[key].companyname , positionname : this.ExperienceForm.value.ExpItems[key].positionname,locationname : this.ExperienceForm.value.ExpItems[key].locationname,description : this.ExperienceForm.value.ExpItems[key].description,startdate : this.start_date_format,enddate : this.end_date_format , currentwork : this.ExperienceForm.value.ExpItems[key].currentwork};
         this.experiencearray.push(this.experiencejson);
@@ -653,33 +715,38 @@ export class ExperienceComponent implements OnInit , AfterViewInit
         this.education_json_array.push(this.educationjson) ;
       }
     }
+    if(this.language.length === 0) {
+      searchForm.value.language = [];
+    }
+    else {
+      searchForm.value.language_experience_year = this.expYear;
+    }
+
+      this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.education_json_array , this.experiencearray , searchForm.value.language_experience_year)
+        .subscribe(
+          data => {
+            console.log(data);
+            if(data)
+            {
+
+              $("#popModal").modal({
+                backdrop: 'static',
+                keyboard: true,
+                show: true
+              });
+
+              //this.router.navigate(['/candidate_profile']);
+            }
 
 
-    this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.education_json_array , this.experiencearray , searchForm.value.language_experience_year, searchForm.value. role_experience_year)
-      .subscribe(
-        data => {
-          if(data)
-          {
 
-            $("#popModal").modal({
-              backdrop: 'static',
-              keyboard: true,
-              show: true
-            });
+          },
+          error => {
+            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+              this.router.navigate(['/not_found']);
+            }
 
-            //this.router.navigate(['/candidate_profile']);
-          }
-
-
-
-        },
-        error => {
-          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-            this.router.navigate(['/not_found']);
-          }
-
-        });
-
+          });
 
   }
 
@@ -696,7 +763,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
 
     let updateItem = this.findObjectByKey(this.expYear, 'language', value);
-    ////console.log(updateItem);
     let index = this.expYear.indexOf(updateItem);
 
     if(index > -1)
@@ -706,20 +772,19 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.value=value;
       this.referringData = { language :this.value, exp_year: e.target.value};
       this.expYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
-
-
     }
     else
     {
-      ////console.log("not exists");
       this.value=value;
       this.referringData = { language :this.value, exp_year: e.target.value};
       this.expYear.push(this.referringData);
-      ////console.log(this.LangexpYear);
 
     }
-    //console.log(this.expYear);
+    this.expYear.sort(function(a, b){
+      if(a.language < b.language) { return -1; }
+      if(a.language > b.language) { return 1; }
+      return 0;
+    })
   }
 
   findObjectByKey(array, key, value)
@@ -753,5 +818,50 @@ export class ExperienceComponent implements OnInit , AfterViewInit
   work_start_year(e)
   {
     this.start_year= e.target.value;
+  }
+  verify;
+  checkDateVerification(month,year) {
+    if(month && year) {
+      this.startmonthIndex = this.monthNameToNum(month);
+      this.start_date_format  = new Date(year, this.startmonthIndex);
+      if(this.start_date_format > new Date() ) {
+        this.verify= false;
+        return true;
+      }
+      else {
+        this.verify= true;
+        return false;
+      }
+    }
+    else {
+      return false;
+    }
+  }
+
+  compareDates(startmonth , startyear , endmonth, endyear, current) {
+    let startMonth = this.monthNameToNum(startmonth);
+    let startDateFormat  = new Date(startyear, startMonth);
+
+    let endMonth = this.monthNameToNum(endmonth);
+    let endDateFormat  = new Date(endyear, endMonth);
+
+    if(current  === true) {
+      return false;
+    }
+    else {
+      if(startDateFormat > endDateFormat && this.submit === 'click') {
+        this.dateValidation = 'Date must be greater than previous date';
+        this.verify = false;
+        return true;
+      }
+      else {
+        this.verify = true;
+        return false;
+      }
+    }
+  }
+
+  endDateYear() {
+    this.dateValidation= '';
   }
 }

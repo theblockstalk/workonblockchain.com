@@ -51,7 +51,7 @@ export class TermsWizardComponent implements OnInit {
           }
         }
       );
-      this.authenticationService.getCurrentCompany(this.currentUser._id)
+      this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
           data =>
           {

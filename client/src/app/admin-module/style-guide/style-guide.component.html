@@ -731,6 +731,7 @@
           <option>Part time</option>
           <option>Freelance</option>
         </select>
+
       </div>
     </div>
     <div class="col-md-3">
@@ -787,13 +788,55 @@
     <div class="col-md-7">
       <div class="form-group">
         <label>When would you like to receive emails?</label>
-        <div>
+        <div class="form-check form-check-inline">
+          <div>
+            <input type="radio" id = "radio11" name="group1" class="d-none">
+            <label  for="radio11" class="border border py-2 px-lg-5 px-2">
+              0-1
+            </label>
+          </div>
+
+          <div>
+            <input type="radio" id = "radio21" name="group1" class="d-none">
+            <label  for="radio21" class="border border py-2 px-lg-5 px-2">
+              1-2
+            </label>
+          </div>
+
+          <div>
+            <input type="radio" id = "radio31" name="group1" class="d-none">
+            <label  for="radio31" class="border border py-2 px-lg-5 px-2">
+              2-4
+            </label>
+          </div>
+
+          <div>
+            <input type="radio" id = "radio41" name="group1" class="d-none">
+            <label for="radio41" class="border py-2 px-lg-5 px-2">
+              4-6
+            </label>
+          </div>
+
+          <div>
+            <input type="radio" id = "radio51" name="group1" class="d-none">
+            <label  for="radio51" class="border py-2 px-lg-5 px-2">
+              6+
+            </label>
+          </div>
+        </div>
+        <!--<div>
           <label class="btn btn-secondary" *ngFor="let receive of email_notificaiton;" >
             <input type="radio" [checked] = "receive === when_receive_email_notitfications" value = {{receive}} id="radio - {{receive}}">{{receive}}
           </label>
-        </div>
+        </div>-->
 
       </div>
+
+
+
+      <!-- Material inline 2 -->
+
+
     </div>
     <div class="col-md-3">
       <ul>
@@ -838,6 +881,38 @@
     <div class="col-md-3">
       <ul>
         <li>single select with search.</li>
+      </ul>
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col-md-2">
+      <p>Auto suggestion text box</p>
+    </div>
+    <div class="col-md-7">
+      <div class="form-group">
+        <label>Text box with auto suggestion</label>
+        <div class="form-group">
+
+          <datalist id="countryList">
+            <select class="form-control">
+              <option *ngFor = "let country of countries" value="{{country}}">
+
+            </select>
+
+          </datalist>
+          <input type="text" list="countryList" autocomplete="off" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValue($event)">
+          <div class="invalid-feedback d-inline" *ngIf="error">
+            {{error}}
+          </div>
+          <div *ngIf="selectedValueArray.length > 0">
+            <div class="d-inline-block p-2 border rounded mr-1 mt-2" *ngFor="let value of selectedValueArray">{{value}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Use for auto suggested valus only</li>
       </ul>
     </div>
   </div>
@@ -1048,6 +1123,26 @@
     <div class="col-md-3">
       <ul>
         <li>List field values</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class = "row">
+    <div class="col-md-2">
+      <p>Textarea value</p>
+    </div>
+    <div class="col-md-7">
+      <div class="form-group">
+        <label>Why work on blockchain?</label>
+        <pre>My dream is to become an expert in Financial Technology.
+I believe the blockchain technology is the future and I would like to learn in FinTech to achieve my goal.
+
+Moreover, I think blockchain can solve many problems and my eager to work with cutting edge technology make me very interested in working in blockchain space.</pre>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li>Paragraph text field value</li>
       </ul>
     </div>
   </div>

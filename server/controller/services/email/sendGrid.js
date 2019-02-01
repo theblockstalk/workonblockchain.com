@@ -25,13 +25,11 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
         dynamic_template_data: sendGridOptions.templateData
     };
 
-    logger.debug('Sending message with Sendgrid', msg);
-
     try {
         await sgMail.send(msg);
         logger.debug('Sucessfully sent to ' + sendGridOptions.personalizations[0].to.email);
     } catch (error) {
-        logger.error('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, error);
+        logger.error('There was an error sending the message to ' + sendGridOptions.personalizations[0].to.email, error, {message: msg});
     }
 }
 

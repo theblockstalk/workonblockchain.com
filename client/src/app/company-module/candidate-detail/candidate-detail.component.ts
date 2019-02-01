@@ -79,6 +79,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   commercial_skills;
   formal_skills;
   message;
+  selectedValueArray=[];
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -93,12 +94,16 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   ngOnInit()
   {
     this.invalidMsg = '';
+    this.selectedValueArray=[];
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
       this.authenticationService.getLastJobDesc()
         .subscribe(
           data => {
+            setTimeout(() => {
+              $('.selectpicker').selectpicker('refresh');
+            }, 900);
             let job_offer = data['message'].job_offer;
             this.credentials.job_title = job_offer.title;
             this.credentials.salary = job_offer.salary;
@@ -106,7 +111,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             this.credentials.location = job_offer.location;
             this.credentials.job_type = job_offer.type;
             this.credentials.job_desc = job_offer.description;
-
           },
           error => {
             if (error['message'] === 500 || error['message'] === 401) {
@@ -144,41 +148,74 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
         .subscribe(
           dataa => {
             if (dataa) {
-              this.history = dataa['work_history'];
-              this.history.sort(this.date_sort_desc);
-              this.education = dataa['education_history'];
-              this.education.sort(this.education_sort_desc);
+              if(dataa['candidate'].work_history) {
+                this.history = dataa['candidate'].work_history;
+                this.history.sort(this.date_sort_desc);
+              }
+
+              if(dataa['candidate'].education_history) {
+                this.education = dataa['candidate'].education_history;
+                this.education.sort(this.education_sort_desc);
+              }
+
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
-              this.countries = dataa['locations'];
-              this.countries.sort();
-              if(this.countries.indexOf("remote") > -1){
-                this.countries.splice(0, 0, "remote");
-                this.countries = this.filter_array(this.countries);
+              if(dataa['candidate'].locations)
+              {
+                let citiesArray = [];
+                let countriesArray = [];
+                for (let country1 of dataa['candidate'].locations)
+                {
+                  let locObject : any = {}
+                  if (country1['remote'] === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1['visa_not_needed']});
+                  }
+
+                  if (country1['country']) {
+                    locObject.name = country1['country'];
+                    locObject.type = 'country';
+                    if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                    countriesArray.push(locObject);
+                    countriesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
+                  }
+                  if (country1['city']) {
+                    let city = country1['city'].city + ", " + country1['city'].country;
+                    locObject.name = city;
+                    locObject.type = 'city';
+                    if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                    citiesArray.push(locObject);
+                    citiesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
+
+                  }
+
+                }
+
+                this.countries = citiesArray.concat(countriesArray);
+                this.countries = this.countries.concat(this.selectedValueArray);
+                if(this.countries.find((obj => obj.name === 'Remote'))) {
+                  let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                  this.countries.splice(0, 0, remoteValue);
+                  this.countries = this.filter_array(this.countries);
+
+                }
+
               }
 
-              this.interest_area =dataa['interest_area'];
+              this.interest_area =dataa['candidate'].interest_areas;
               this.interest_area.sort();
-              this.roles  = dataa['roles'];
+              this.roles  = dataa['candidate'].roles;
               this.roles.sort();
-              this.commercial = dataa['commercial_platform'];
-              if(this.commercial && this.commercial.length>0){
-                this.commercial.sort(function(a, b){
-                  if(a.platform_name < b.platform_name) { return -1; }
-                  if(a.platform_name > b.platform_name) { return 1; }
-                  return 0;
-                })
-              }
-              this.experimented = dataa['experimented_platform'];
-              if(this.experimented && this.experimented.length>0){
-                this.experimented.sort(function(a, b){
-                  if(a.name < b.name) { return -1; }
-                  if(a.name > b.name) { return 1; }
-                  return 0;
-                })
-              }
 
-              this.languages= dataa['programming_languages'];
+
+              this.languages= dataa['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
                 this.languages.sort(function(a, b){
                   if(a.language < b.language) { return -1; }
@@ -187,38 +224,86 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 })
               }
 
-              this.platforms=dataa['platforms'];
-              if(this.platforms && this.platforms.length>0){
-                this.platforms.sort(function(a, b){
-                  if(a.platform_name < b.platform_name) { return -1; }
-                  if(a.platform_name > b.platform_name) { return 1; }
-                  return 0;
-                })
-              }
-              if(dataa['_creator'].candidate && dataa['_creator'].candidate.blockchain && dataa['_creator'].candidate.blockchain.commercial_skills && dataa['_creator'].candidate.blockchain.commercial_skills.length > 0)
-              {
-                this.commercial_skills = dataa['_creator']['candidate'].blockchain.commercial_skills;
-                this.commercial_skills.sort(function(a, b){
-                  if(a.skill < b.skill) { return -1; }
-                  if(a.skill > b.skill) { return 1; }
-                  return 0;
-                })
+              if(dataa['candidate'] && dataa['candidate'].blockchain) {
+                if (dataa['candidate'].blockchain.commercial_skills) {
+                  this.commercial_skills = dataa['candidate'].blockchain.commercial_skills;
+                  this.commercial_skills.sort(function (a, b) {
+                    if (a.skill < b.skill) {
+                      return -1;
+                    }
+                    if (a.skill > b.skill) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                }
+
+                if (dataa['candidate'].blockchain.formal_skills) {
+                  this.formal_skills = dataa['candidate'].blockchain.formal_skills;
+                  this.formal_skills.sort(function (a, b) {
+                    if (a.skill < b.skill) {
+                      return -1;
+                    }
+                    if (a.skill > b.skill) {
+                      return 1;
+                    }
+                    return 0;
+                  });
+                }
+
+                if (dataa['candidate'].blockchain.commercial_platforms) {
+                  this.commercial = dataa['candidate'].blockchain.commercial_platforms;
+                  if (this.commercial && this.commercial.length > 0) {
+                    this.commercial.sort(function (a, b) {
+                      if (a.platform_name < b.platform_name) {
+                        return -1;
+                      }
+                      if (a.platform_name > b.platform_name) {
+                        return 1;
+                      }
+                      return 0;
+                    });
+                  }
+                }
+
+                if (dataa['candidate'].blockchain.experimented_platforms) {
+                  this.experimented = dataa['candidate'].blockchain.experimented_platforms;
+                  if (this.experimented && this.experimented.length > 0) {
+                    this.experimented.sort(function (a, b) {
+                      if (a < b) {
+                        return -1;
+                      }
+                      if (a > b) {
+                        return 1;
+                      }
+                      return 0;
+                    });
+                  }
+                }
+
+                if (dataa['candidate'].blockchain.smart_contract_platforms) {
+                  this.platforms = dataa['candidate'].blockchain.smart_contract_platforms;
+                  if (this.platforms && this.platforms.length > 0) {
+                    this.platforms.sort(function (a, b) {
+                      if (a.platform_name < b.platform_name) {
+                        return -1;
+                      }
+                      if (a.platform_name > b.platform_name) {
+                        return 1;
+                      }
+                      return 0;
+                    })
+
+
+                  }
+
+                }
               }
 
-              if(dataa['_creator'].candidate && dataa['_creator'].candidate.blockchain && dataa['_creator'].candidate.blockchain.formal_skills && dataa['_creator'].candidate.blockchain.formal_skills.length > 0)
-              {
-                this.formal_skills = dataa['_creator'].candidate.blockchain.formal_skills;
-                this.formal_skills.sort(function(a, b){
-                  if(a.skill < b.skill) { return -1; }
-                  if(a.skill > b.skill) { return 1; }
-                  return 0;
-                })
-              }
             }
           },
           error => {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              //console.log(error['error']['message']);
               this.router.navigate(['/not_found']);
             }
 

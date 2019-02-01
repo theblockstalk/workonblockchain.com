@@ -15,7 +15,7 @@
               <img *ngIf="imgPath" src = "{{imgPath}}" style="width: 120px;height: 120px;" class = "img-responsive border rounded-circle" alt = "profile-img"/>
               <div class="mt-3">
                 <span><h2>{{company_name}}</h2></span>
-                <span><p>{{company_description}}</p></span>
+                <span><pre>{{company_description}}</pre></span>
               </div>
             </div>
             <div class="col-md-5">
@@ -154,15 +154,36 @@
             </div>
           </div>
 
-          <div class="row mt-3">
-            <div class="col-md-12 mb-3">
+          <div class="row mt-4" *ngIf="countries">
+            <div class = "col-md-12" >
               <div class="form-group">
                 <label>Where are you hiring:</label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let location of saved_searche[0].location"> {{location}}</div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of countries'>
+                    <div *ngIf="country.name === 'Remote'">
+                      <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'city'">
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+
+                  </div>
                 </div>
               </div>
+
             </div>
+
+            <div class = "col-md-12" >
+              <div class="form-group">
+                <label>Show results that may require a sponsored work visa</label>
+                <p *ngIf="saved_searche[0].visa_not_needed === true;">Yes<p>
+                <p *ngIf="saved_searche[0].visa_not_needed === false;">No </p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row mt-3">
             <div class="col-md-12 mb-3">
               <div class="form-group">
                 <label>What position type are you looking for:</label>

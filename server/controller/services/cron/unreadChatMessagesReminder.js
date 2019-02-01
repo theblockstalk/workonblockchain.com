@@ -1,6 +1,5 @@
-const users = require('../../../model/users');
-const CandidateProfile = require('../../../model/candidate_profile');
-const EmployerProfile = require('../../../model/employer_profile');
+const users = require('../../../model/mongoose/users');
+const companies = require('../../../model/mongoose/company');
 const chat = require('../../../model/chat');
 
 const chatReminderEmail = require('../email/emails/chatReminder');
@@ -16,16 +15,12 @@ module.exports = async function () {
 
         if(userDoc){
             if(userDoc.type === 'candidate'){
-                let candidateDoc = await CandidateProfile.find({ _creator: userDoc._id},{"first_name":1});
-
-                if(candidateDoc) {
-                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, candidateDoc[0].first_name);
-                }
+                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, userDoc.first_name);
             }
             else{
-                let companyDoc = await EmployerProfile.find({ _creator: userDoc._id},{"first_name":1});
+                let companyDoc = await companies.findOne({ _creator: userDoc._id},{"first_name":1});
                 if(companyDoc){
-                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc[0].first_name);
+                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc.first_name);
                 }
             }
         }

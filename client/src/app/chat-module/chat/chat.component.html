@@ -101,7 +101,7 @@
                 <div class="message p-2" #scrollMe [scrollTop]="scrollMe.scrollHeight">
                   <ul class = "ul_pd">
                     <div *ngFor="let msg of new_msgss">
-                      <ng-container *ngIf="msg.sender_id == currentUser._creator;else second">
+                      <ng-container *ngIf="msg.sender_id === currentUser._creator;else second">
                         <li class="sent mb-5 col-md-12">
                           <p class = "p-2 send_p job-description rounded d-inline-block">
                             <span *ngIf="msg.message.job_offer">

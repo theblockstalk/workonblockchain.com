@@ -4,7 +4,6 @@ const crypto = require('crypto');
 const server = require('../../../../server');
 const mongo = require('../../../helpers/mongo');
 const Users = require('../../../../model/users');
-const Candidates = require('../../../../model/candidate_profile');
 const docGenerator = require('../../../helpers/docGenerator');
 const imageInitialize = require('../../../helpers/imageInitialize');
 const candidateHepler = require('./candidateHelpers');
@@ -36,8 +35,8 @@ describe('upload profile image', function () {
 
             await candidateHepler.image(file, signupRes.body.jwt_token);
 
-            const candidateDoc = await Candidates.findOne({_id: signupRes.body._id}).lean();
-            assert(candidateDoc.image.includes(file.name));
+            const candidateUserDoc = await Users.findOne({_id: signupRes.body._id}).lean();
+            assert(candidateUserDoc.image.includes(file.name));
         })
     })
 });

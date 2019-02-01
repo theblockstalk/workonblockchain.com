@@ -268,6 +268,7 @@ export class AdminDisplayChatComponent implements OnInit {
 			.subscribe(
 				data =>
         {
+
 				  if(data['error'])
 				  {
 				    this.log= "Something Went Wrong";
@@ -280,8 +281,8 @@ export class AdminDisplayChatComponent implements OnInit {
 							this.profile_pic = data['image'];
 						}
 						this.display_name = data['first_name'] +' '+data['last_name'];
-						this.user_type = data['_creator'].type;
-						this.email  = data['_creator'].email;
+						this.user_type = data['type'];
+						this.email  = data['email'];
 					}
 				}
 			);

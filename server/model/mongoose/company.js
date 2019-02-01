@@ -1,4 +1,5 @@
 let Company = require('../employer_profile');
+let cities = require('./cities');
 
 module.exports.insert = async function insert(data) {
     let newDoc = new Company(data);
@@ -9,15 +10,33 @@ module.exports.insert = async function insert(data) {
 }
 
 module.exports.findOne = async function findOne(selector) {
-    return await Company.findOne(selector).lean();
+    return await Company.findOne(selector).populate('_creator').lean();
 }
 
 module.exports.findOneById = async function findOneById(id) {
-    return await Company.findById(id).lean();
+    return await Company.findById(id).populate('_creator').lean();
 }
 
 module.exports.findOneByUserId = async function findOneByUserId(id) {
-    return await Company.findOne({_creator: id}).lean();
+    return await Company.findOne({_creator: id}).populate('_creator').lean();
+}
+
+module.exports.findOneAndPopulate = async function findOneAndPopulate(id) {
+    let companyDoc = await Company.findOne({_creator: id}).populate('_creator').lean();
+    if(companyDoc) {
+        if(companyDoc.saved_searches[0] && companyDoc.saved_searches[0].location) {
+            for(let loc of companyDoc.saved_searches[0].location) {
+                if(loc.city) {
+                    const index = companyDoc.saved_searches[0].location.findIndex((obj => obj.city === loc.city));
+                    const citiesDoc = await cities.findOneById(loc.city);
+                    companyDoc.saved_searches[0].location[index].city = citiesDoc;
+                }
+            }
+        }
+    }
+
+    return companyDoc;
+
 }
 
 module.exports.update = async function update(selector, updateObj) {
@@ -42,7 +61,7 @@ module.exports.count = async function count(selector) {
 }
 
 module.exports.findWithCursor = async function findWithCursor(selector) {
-    return await Company.find(selector).cursor();
+    return await Company.find(selector).populate('_creator').cursor();
 }
 
 module.exports.findAndIterate = async function findAndIterate(selector, fn) {

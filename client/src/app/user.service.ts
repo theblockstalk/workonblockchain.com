@@ -128,7 +128,7 @@ export class UserService {
     {
       if (res)
       {
-        if(!res['terms_id'])
+        if(!res['candidate'].terms_id)
         {
           this.router.navigate(['/terms-and-condition']);
 
@@ -138,17 +138,17 @@ export class UserService {
         {
           this.router.navigate(['/about']);
         }
-        else if(res['locations'].length < 1  || res['roles'].length < 1 || res['interest_area'].length < 1 || !res['expected_salary'])
+        else if(!res['candidate'].locations  || !res['candidate'].roles || !res['candidate'].interest_areas|| !res['candidate'].expected_salary)
         {
 
           this.router.navigate(['/job']);
         }
-        else if(!res['why_work'] )
+        else if(!res['candidate'].why_work)
         {
           this.router.navigate(['/resume']);
         }
 
-        else if(!res['description'])
+        else if(!res['candidate'].description)
         {
           this.router.navigate(['/experience']);
 
@@ -482,10 +482,10 @@ export class UserService {
 
   }
 
-  experience(user_id: string,detail : any ,  exp : any , history : any,language_roles :any , platform_exp : any )
+  experience(user_id: string,detail : any ,  exp : any , history : any,language_roles :any )
   {
 
-    return this.http.put(URL+'users/welcome/exp' , { detail :detail , education: exp  , work : history ,  language_exp : language_roles , platform_exp : platform_exp } , {
+    return this.http.put(URL+'users/welcome/exp' , { detail :detail , education: exp  , work : history ,  language_exp : language_roles  } , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1659,6 +1659,36 @@ export class UserService {
         }
         else return throwError(error);
       }
+    }));
+  }
+
+  autoSuggestOptions(queryInput:any, country : boolean) {
+    let input = {'autosuggest' :queryInput , 'countries' : country };
+    return this.http.post(URL+'users/auto_suggest/'+{}, input ,{
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error)
+      {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
+      }
+
     }));
   }
 

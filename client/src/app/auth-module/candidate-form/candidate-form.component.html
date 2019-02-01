@@ -30,6 +30,7 @@
               <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
               <label>Password</label>
               <input type="password" class="form-control" #uname="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control"  id="password-field" name="password"  [(ngModel)]="credentials.password">
+              <small id="emailHelp" class="form-text text-muted">8 or more characters with letters, numbers and symbols</small>
               <div *ngIf="pass_log" class="invalid-feedback d-inline">{{pass_log}}</div>
               <div *ngIf="uname.errors && button_status" class="invalid-feedback d-inline">
                 Password must contain a minimum of 8 characters including a number and lower and upper case letter.
@@ -108,7 +109,7 @@
             <div class="form-group">
               <span><i class="fas fa-building mr-1" aria-hidden="true"></i></span>
               <label>Company website</label>
-              <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" name="company_website" [(ngModel)]="credentials.company_website">
+              <input type="text" #website="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" placeholder="https://www.google.com/" name="company_website" [(ngModel)]="credentials.company_website">
               <div class="invalid-feedback d-inline" *ngIf="!credentials.company_website">
                 {{companyWebsiteLog}}
               </div>
@@ -155,6 +156,7 @@
               <label>Password</label>
               <div class = "show_pass"><i toggle="#password-field1" class="" aria-hidden="true" ></i></div>
               <input type="password" #upass="ngModel" maxlength="35" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{8,}$" class="form-control" id="password-field1" name="password" [(ngModel)]="credentials.password">
+              <small id="emailHelp" class="form-text text-muted">8 or more characters with letters, numbers and symbols</small>
               <div class="invalid-feedback d-inline" *ngIf="!credentials.password">
                 {{companyPasswordLog}}
               </div>

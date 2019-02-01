@@ -4,8 +4,6 @@ const crypto = require('crypto');
 const server = require('../../../../../../server');
 const mongo = require('../../../../helpers/mongo');
 const Users = require('../../../../../model/users');
-const Companies = require('../../../../../model/employer_profile');
-const Candidates = require('../../../../../model/candidate_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
 const companyHelper = require('../companyHelpers');
 const candidateHelper = require('../../candidate/candidateHelpers');
@@ -39,12 +37,13 @@ describe('search candidates as company', function () {
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            let candidateData = await Candidates.findOne({_creator: candidateUserDoc._id}).lean();
-
+            console.log(candidateUserDoc.candidate);
+            const locations = [{name : 'Remote' , visa_not_needed: false},
+                {_id : '5c4aa17468cc293450c14c04' , visa_not_needed : true }];
             const params = {
-                positions: candidateData.roles,
-                locations: candidateData.locations,
-                availability_day: candidateData.availability_day,
+                positions: candidateUserDoc.candidate.roles,
+                locations: locations,
+                availability_day: candidateUserDoc.candidate.availability_day,
             }
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
@@ -52,7 +51,7 @@ describe('search candidates as company', function () {
             filterRes.status.should.equal(200);
 
             let userDoc = await Users.findOne({email: candidate.email}).lean();
-            filterRes.body[0]._creator._id.should.equal(userDoc._id.toString());
+            filterRes.body[0]._id.should.equal(userDoc._id.toString());
 
         })
 
@@ -70,11 +69,10 @@ describe('search candidates as company', function () {
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            let candidateData = await Candidates.findOne({_creator: candidateUserDoc._id}).lean();
 
             const params = {
-                current_currency: candidateData.expected_salary_currency,
-                current_salary: candidateData.expected_salary*2
+                current_currency: candidateUserDoc.candidate.expected_salary_currency,
+                current_salary: candidateUserDoc.candidate.expected_salary*2
             };
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
@@ -82,7 +80,7 @@ describe('search candidates as company', function () {
             filterRes.status.should.equal(200);
 
             let userDoc = await Users.findOne({email: candidate.email}).lean();
-            filterRes.body[0]._creator._id.should.equal(userDoc._id.toString());
+            filterRes.body[0]._id.should.equal(userDoc._id.toString());
 
         })
 
@@ -100,11 +98,10 @@ describe('search candidates as company', function () {
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            let candidateData = await Candidates.findOne({_creator: candidateUserDoc._id}).lean();
 
             const params = {
-                current_currency: candidateData.expected_salary_currency,
-                current_salary: candidateData.expected_salary*0.5
+                current_currency: candidateUserDoc.candidate.expected_salary_currency,
+                current_salary: candidateUserDoc.candidate.expected_salary*0.5
             }
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();
@@ -126,10 +123,8 @@ describe('search candidates as company', function () {
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            let candidateData = await Candidates.findOne({_creator: candidateUserDoc._id}).lean();
 
-            console.log(candidateData.expected_salary_currency, candidateData.expected_salary);
-            let gbp = currency.convert(candidateData.expected_salary_currency, "£ GBP", candidateData.expected_salary);
+            let gbp = currency.convert(candidateUserDoc.candidate.expected_salary_currency, "£ GBP", candidateUserDoc.candidate.expected_salary);
             console.log(gbp);
             const params = {
                 current_currency: "£ GBP",
@@ -155,10 +150,9 @@ describe('search candidates as company', function () {
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            let candidateData = await Candidates.findOne({_creator: candidateUserDoc._id}).lean();
 
-            console.log(candidateData.expected_salary_currency, candidateData.expected_salary);
-            let gbp = currency.convert(candidateData.expected_salary_currency, "£ GBP", candidateData.expected_salary);
+            console.log(candidateUserDoc.candidate.expected_salary_currency, candidateUserDoc.candidate.expected_salary);
+            let gbp = currency.convert(candidateUserDoc.candidate.expected_salary_currency, "£ GBP", candidateUserDoc.candidate.expected_salary);
             console.log(gbp);
             const params = {
                 current_currency: "£ GBP",

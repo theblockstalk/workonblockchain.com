@@ -41,6 +41,8 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   other_technologies;
   avail_day;
   saved_searche;
+  selectedValueArray = [];
+  countries;
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
         private router: Router,
         private authenticationService: UserService) { }
@@ -220,7 +222,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
           other_technologies: new FormControl(),
           when_receive_email_notitfications: new FormControl(),
         });
-           this.authenticationService.getCurrentCompany(this.currentUser._id)
+           this.authenticationService.getCurrentCompany(this.currentUser._creator)
             .subscribe(
                 data =>
                 {
@@ -284,7 +286,37 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
                     }
                     if(data['saved_searches']) {
                       this.saved_searche = data['saved_searches'];
+                      if(data['saved_searches'][0].location)
+                      {
+                        for (let country1 of data['saved_searches'][0].location)
+                        {
+                          let locObject : any = {}
+                          if (country1['remote'] === true) {
+                            this.selectedValueArray.push({name: 'Remote'});
 
+                          }
+
+                          if (country1['city']) {
+                            let city = country1['city'].city + ", " + country1['city'].country;
+                            locObject.name = city;
+                            locObject.type = 'city';
+                            this.selectedValueArray.push(locObject);
+                          }
+
+                        }
+                        this.countries = this.selectedValueArray;
+                        this.countries.sort(function(a, b){
+                          if(a.name < b.name) { return -1; }
+                          if(a.name > b.name) { return 1; }
+                          return 0;
+                        })
+                        if(this.countries.find((obj => obj.name === 'Remote'))) {
+                          let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                          this.countries.splice(0, 0, remoteValue);
+                          this.countries = this.filter_array(this.countries);
+
+                        }
+                      }
                     }
 
                   }
@@ -436,5 +468,16 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
     else {
       return;
     }
+  }
+
+  filter_array(arr) {
+    var hashTable = {};
+
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+
+      return (match ? false : hashTable[key] = true);
+    });
   }
 }

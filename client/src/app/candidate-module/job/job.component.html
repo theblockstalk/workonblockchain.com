@@ -47,8 +47,50 @@
         <div class="col-md-12">
           <legend><i class="fas fa-briefcase mr-1"></i>Tell us more about your dream job</legend>
           <div class="form-group mt-4">
-            <label>Where are you available to work?</label>
-            <div class="checkbox">
+            <label>Where would you like to work? (select up to 10)</label>
+
+            <div>
+
+              <datalist id="countryList" *ngIf ="cities && cities.length > 0">
+                <select class="form-control">
+
+                <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}" >
+                  </option>
+                </select>
+              </datalist>
+
+              <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+              <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                {{error}}
+              </div>
+              <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
+                {{country_input_log}}
+              </div>
+
+              <div *ngIf="selectedValueArray.length > 0">
+                <div class="row">
+                  <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
+                    <div class="border p-3 ml-2">
+                      <p><strong >{{value.name}}</strong></p>
+                      <div class="form-check mt-3">
+                        <label class="form-check-label" for="check{{i}}">
+                          <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_not_needed"   name="visa_not_needed{{i}}" (change)="updateCitiesOptions($event)" > Sponsored work visa IS NOT required
+                        </label>
+                      </div>
+                      <a (click)="deleteLocationRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
+
+                    </div>
+
+                  </div>
+                </div>
+                <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
+                <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations) <= 0">
+                  {{country_log}}
+                </div>
+              </div>
+
+            </div>
+            <!--<div class="checkbox">
               <div class="row m-0">
                 <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
                   <label class="form-check-label">
@@ -61,7 +103,7 @@
             <input type="text" class="form-control" [(ngModel)]='selectedcountry' name="country" style="display: none;">
             <div class = "invalid-feedback d-inline"  *ngIf="selectedcountry.length<=0">
               {{country_log}}
-            </div>
+            </div>-->
           </div>
 
 
@@ -119,12 +161,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Current annual salary (optional)</label>
-                <input type="text" class="form-control" #base_validation="ngModel"  pattern="^[0-9]*$" required id="" placeholder="10000" name="current_salary"  [(ngModel)]="current_salary">
+                <input type="text" class="form-control" #base_validation="ngModel" pattern="^[0-9]*$" placeholder="10000" #salary_field name="current_salary" [(ngModel)]="current_salary">
                 <small id="emailHelp" class="form-text text-muted">
                   This information is never shown to companies. It is used by us to help us help you set your expected salary.
                 </small>
-                <div class = "invalid-feedback d-inline" *ngIf="(!current_salary && current_currency) ">
+                <div class = "invalid-feedback d-inline" expected_validation *ngIf="(!current_salary && current_currency) ">
                   {{current_sal_log}}
+                </div>
+                <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="base_validation.errors && current_salary">
+                  Current annual salary should be a number.
                 </div>
               </div>
 
@@ -158,7 +203,7 @@
                     </div>
                   </div>
                 </div>
-                <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_area" style="display: none;">
+                <input type="text" class="form-control" [(ngModel)]='selectedValue' name="interest_areas" style="display: none;">
                 <div class = "invalid-feedback d-inline"  *ngIf="selectedValue.length <=0">
                   {{interest_log}}
                 </div>
@@ -170,6 +215,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Employment availability</label>
+
                 <select title="(select one)" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
                   <option class='option' *ngFor='let start_month of month' [attr.selected]  [value]="start_month" selected>{{start_month}}</option>
                 </select>

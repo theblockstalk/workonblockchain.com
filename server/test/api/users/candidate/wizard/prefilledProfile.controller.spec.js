@@ -2,7 +2,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../../../helpers/mongo');
 const Users = require('../../../../../model/users');
-const candidateProfile = require('../../../../../model/candidate_profile');
 const docGenerator = require('../../../../helpers/docGenerator');
 const candidateHelper = require('../candidateHelpers');
 const candidateWizardHelper = require('./candidateWizardHelpers');
@@ -23,18 +22,16 @@ describe('prefilled profile of candidate', function () {
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
 
-            const userDoc = await Users.findOne({email: candidate.email}).lean();
+            let userDoc = await Users.findOne({email: candidate.email}).lean();
             const prefilledProfileData = docGenerator.prefilledProfileData();
             const res = await candidateWizardHelper.prefilledProfile(prefilledProfileData,userDoc.jwt_token);
 
-            res.body.success.should.equal(true);
-
-            const candidateDoc = await candidateProfile.findOne({_creator : userDoc._id}).lean();
-            candidateDoc.first_name.should.equal(prefilledProfileData.basics.first_name);
-            candidateDoc.last_name.should.equal(prefilledProfileData.basics.last_name);
-            candidateDoc.description.should.equal(prefilledProfileData.basics.summary);
-            candidateDoc.education_history[0].uniname.should.equal(prefilledProfileData.educationHistory.uniname);
-            candidateDoc.work_history[0].companyname.should.equal(prefilledProfileData.workHistory.companyname);
+            userDoc = await Users.findOne({email: candidate.email}).lean();
+            userDoc.first_name.should.equal(prefilledProfileData.basics.first_name);
+            userDoc.last_name.should.equal(prefilledProfileData.basics.last_name);
+            userDoc.candidate.description.should.equal(prefilledProfileData.basics.summary);
+            userDoc.candidate.education_history.uniname.should.equal(prefilledProfileData.educationHistory.uniname);
+            userDoc.candidate.work_history.companyname.should.equal(prefilledProfileData.workHistory.companyname);
 
 
         })
