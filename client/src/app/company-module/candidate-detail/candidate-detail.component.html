@@ -396,7 +396,7 @@
               <label>Job type</label>
               <div class="form-check" *ngFor="let options of job_type">
                 <input type="radio" id="{{options}}" class="form-check-input" name="optradio"  [(ngModel)]="credentials.job_type" [value]="options">
-                <label class="form-check-label" for="{{options}}" style="color: black; background-color: #fff; border-color: #fff;">
+                <label class="form-check-label my-label-style" for="{{options}}">
                   {{options}}
                 </label>
               </div>
