@@ -70,15 +70,21 @@
               <div *ngIf="selectedValueArray.length > 0">
                 <div class="row">
                   <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
-                    <div class="border p-3 ml-2" >
-                      <p><strong >{{value.name}}</strong></p>
-                      <div class="form-check mt-3" *ngIf="value.name !== 'Remote'">
-                        <label class="form-check-label" for="check{{i}}">
-                          <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
-                        </label>
+                    <div class="border px-1 py-3 ml-2 row">
+                      <div class = "col-8">
+                        <label >{{value.name}}</label>
                       </div>
-                      <a (click)="deleteLocationRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
+                      <div class = "col-4 text-right">
+                        <a (click)="deleteLocationRow(i)" class = "btn btn-dark px-2 pb-1 pt-0 text-white font-weight-bold rounded">x</a>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-check" *ngIf="value.name !== 'Remote'">
+                          <label class="form-check-label" for="check{{i}}">
+                            <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                          </label>
+                        </div>
 
+                      </div>
                     </div>
 
                   </div>
