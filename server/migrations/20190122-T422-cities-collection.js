@@ -128,7 +128,7 @@ module.exports.up = async function() {
                     }
                 }
                 if(locations && locations.length > 0) {
-                    await companies.update({ _id: companyDoc._id },{ $set: {'saved_searches.0.location' : locations , 'visa_needed' : false} });
+                    await companies.update({ _id: companyDoc._id },{ $set: {'saved_searches.0.location' : locations , 'saved_searches.0.visa_needed' : false} });
                     totalCompanyModified++;
                 }
             }
