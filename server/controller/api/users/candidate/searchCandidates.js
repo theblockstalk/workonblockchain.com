@@ -99,6 +99,10 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
 
     }
 
+    if (filters.blacklist) {
+        userQuery._id = {$nin: filters.blacklist};
+    }
+
     if (filters.firstApprovedDate) {
         const approvedDateFilter = {"first_approved_date" : { $gte : filters.firstApprovedDate}};
         userQuery.push(approvedDateFilter);

@@ -32,12 +32,13 @@ module.exports.signupVerifiedApprovedCompany = async function signupVerifiedAppr
     await userHelpers.verifyEmail(company.email);
     await userHelpers.approve(company.email);
 }
-module.exports.signupCompanyAndCompleteProfile = async function signupCompanyAndCompleteProfile(company, companyTnCWizard , aboutData) {
+module.exports.signupCompanyAndCompleteProfile = async function signupCompanyAndCompleteProfile(company, companyTnCWizard , aboutData, searchPrefernces) {
     const res = await signupCompany(company);
     await userHelpers.verifyEmail(company.email);
     await userHelpers.approve(company.email);
     await companyWizardHelpers.SummaryTnC(companyTnCWizard.termsID,companyTnCWizard, res.body.jwt_token);
     await companyWizardHelpers.companyAboutWizard(aboutData, res.body.jwt_token);
+    await companyWizardHelpers.companySavedSearchesWizard(searchPrefernces, res.body.jwt_token);
 }
 
 const getCompanies = module.exports.getCompanies = async function getCompanies(jwtToken){
