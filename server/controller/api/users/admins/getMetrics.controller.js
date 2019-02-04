@@ -43,7 +43,7 @@ module.exports = async function (req, res) {
             aggregateField(aggregatedData.availabilityDay, candidate.availability_day, enumerations.workAvailability);
             aggregateField(aggregatedData.baseCountry, candidate.base_country, enumerations.countries);
             aggregateObjArray(locationsCount, candidate.locations, enumerations.countries, "country");
-            aggregateObjArrayAggregate(locationAggregate, candidate.locations, enumerations.countries, "country", "visa_not_needed");
+            aggregateObjArrayAggregate(locationAggregate, candidate.locations, enumerations.countries, "country", "visa_needed");
             //aggregateArray(aggregatedData.locations, candidate.locations, locationList);
             aggregateArray(aggregatedData.roles, candidate.roles, enumerations.workRoles);
             aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);

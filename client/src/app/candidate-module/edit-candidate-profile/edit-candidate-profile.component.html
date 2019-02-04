@@ -187,7 +187,7 @@
                             <p><strong >{{value.name}}</strong></p>
                             <div class="form-check mt-3">
                               <label class="form-check-label" for="check{{i}}">
-                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Sponsored work visa IS NOT required
+                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
                               </label>
                             </div>
                             <a (click)="deleteLocationRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>

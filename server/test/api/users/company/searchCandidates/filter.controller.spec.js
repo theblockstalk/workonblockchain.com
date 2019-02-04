@@ -38,8 +38,8 @@ describe('search candidates as company', function () {
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             console.log(candidateUserDoc.candidate);
-            const locations = [{name : 'Remote' , visa_not_needed: false},
-                {_id : '5c4aa17468cc293450c14c04' , visa_not_needed : true }];
+            const locations = [{name : 'Remote' , visa_needed: false},
+                {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }];
             const params = {
                 positions: candidateUserDoc.candidate.roles,
                 locations: locations,
