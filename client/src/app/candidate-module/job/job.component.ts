@@ -121,17 +121,17 @@ export class JobComponent implements OnInit,AfterViewInit {
                 for (let country1 of data['candidate'].locations)
                 {
                   if (country1['remote'] === true) {
-                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                    this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
 
                   }
 
                   if (country1['country']) {
                     let country = country1['country'] + ' (country)'
-                    this.selectedValueArray.push({name:  country , visa_not_needed : country1.visa_not_needed});
+                    this.selectedValueArray.push({name:  country , visa_needed : country1.visa_needed});
                   }
                   if (country1['city']) {
                     let city = country1['city'].city + ", " + country1['city'].country + " (city)";
-                    this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
+                    this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
                   }
                 }
 
@@ -390,7 +390,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
 
   checkValidation(value) {
-    return value.filter(i => i.visa_not_needed === true).length;
+    return value.filter(i => i.visa_needed === true).length;
   }
 
   validatedLocation=[];
@@ -409,17 +409,17 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
     if(this.selectedLocations && this.selectedLocations.length > 0) {
-      if(this.selectedLocations.filter(i => i.visa_not_needed === true).length <= 0 )
+      if(this.selectedLocations.filter(i => i.visa_needed === true).length <= 0 )
         this.country_log = "Please select at least one location which you can work in without needing a visa";
       for(let location of this.selectedLocations) {
         if(location.name.includes('city')) {
-          this.validatedLocation.push({city: location._id, visa_not_needed : location.visa_not_needed });
+          this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
         }
         if(location.name.includes('country')) {
-          this.validatedLocation.push({country: location.name.split(" (")[0], visa_not_needed : location.visa_not_needed });
+          this.validatedLocation.push({country: location.name.split(" (")[0], visa_needed : location.visa_needed });
         }
         if(location.name === 'Remote') {
-          this.validatedLocation.push({remote: true, visa_not_needed : location.visa_not_needed });
+          this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
         }
 
       }
@@ -473,7 +473,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
 
-    if( this.count === 0 && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_not_needed === true).length > 0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
+    if( this.count === 0 && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_needed === true).length > 0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
     {
       if(typeof(f.value.expected_salary) === 'string' )
         f.value.expected_salary = parseInt(f.value.expected_salary);
@@ -587,8 +587,8 @@ export class JobComponent implements OnInit,AfterViewInit {
         }
 
         else {
-          if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_not_needed:false});
-          else this.selectedValueArray.push({ name: e.target.value, visa_not_needed:false});
+          if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_needed:false});
+          else this.selectedValueArray.push({ name: e.target.value, visa_needed:false});
         }
 
 
@@ -614,7 +614,7 @@ export class JobComponent implements OnInit,AfterViewInit {
 
   updateCitiesOptions(e) {
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
-    this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
+    this.selectedValueArray[objIndex].visa_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
 
   }
@@ -635,3 +635,4 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
 
 }
+
