@@ -109,16 +109,16 @@ module.exports.up = async function() {
                 console.log("company Doc searched locations:  " + companyDoc.saved_searches[0].location);
                 await cities.findAndIterate({city :  {$in: companyDoc.saved_searches[0].location}}, async function(citiesDoc) {
                     if(citiesDoc.city === 'London') {
-                        if (citiesDoc.country === 'United Kingdom') locations.push({city: citiesDoc._id, visa_needed: true});
+                        if (citiesDoc.country === 'United Kingdom') locations.push({city: citiesDoc._id});
                     }
                     else if(citiesDoc.city === 'Barcelona') {
-                        if (citiesDoc.country === 'Spain') locations.push({city: citiesDoc._id, visa_needed: true});
+                        if (citiesDoc.country === 'Spain') locations.push({city: citiesDoc._id});
                     }
                     else if(citiesDoc.city === 'Los Angeles') {
-                        if (citiesDoc.country === 'United States') locations.push({city: citiesDoc._id, visa_needed: true});
+                        if (citiesDoc.country === 'United States') locations.push({city: citiesDoc._id});
                     }
                     else {
-                        locations.push({city: citiesDoc._id, visa_needed: true});
+                        locations.push({city: citiesDoc._id});
                     }
                 });
 
