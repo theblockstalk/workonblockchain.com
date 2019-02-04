@@ -127,7 +127,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                 }
             }
             if(citiesArray.length > 0 ) {
-                if(search.visa_not_needed) {
+                if(search.visa_needed) {
                     locationsQuery.push({
                         $and: [
                             {"candidate.locations.city": {$in: citiesArray}},
