@@ -122,31 +122,44 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             for(let loc of search.locations) {
                 const cityDoc = await cities.findOneById(loc._id);
                 if(cityDoc) {
-                    citiesArray.push(String(cityDoc._id));
+                    citiesArray.push(cityDoc._id.toString());
                     countriesArray.push(cityDoc.country);
                 }
             }
             if(citiesArray.length > 0 ) {
-                if(search.visa_needed) {
-                    locationsQuery.push({
-                        $and: [
-                            {"candidate.locations.city": {$in: citiesArray}},
-                            {"candidate.locatons.visa_needed": true}]
-                    })
-
-                    locationsQuery.push({
-                        $and: [
-                            {"candidate.locations.country": {$in: countriesArray}},
-                            {"candidate.locations.visa_needed": true}]
-                    })
+                countriesArray = removeDups(countriesArray);
+                if (search.visa_needed) {
+                    locationsQuery.push({"candidate.locations.city": {$in: citiesArray}});
+                    locationsQuery.push({"candidate.locations.country": {$in: countriesArray}});
                 }
                 else {
-                    locationsQuery.push({ "candidate.locations.city": {$in: citiesArray}});
-                    locationsQuery.push({"candidate.locations.country" : {$in: countriesArray}});
+                    for (let city of citiesArray) {
+                        const cityQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    city: city,
+                                    visa_needed: false
+                                }
+                            }
+                        }
+                        locationsQuery.push(cityQuery)
+                    }
+
+                    for (let country of countriesArray) {
+                        const countryQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    country: country,
+                                    visa_needed: false
+                                }
+                            }
+                        }
+                        locationsQuery.push(countryQuery)
+                    }
+
                 }
 
             }
-
             if(search.locations.find(x => x.name === "Remote")) {
                 const locationRemoteFilter = {"candidate.locations.remote" : true};
                 locationsQuery.push(locationRemoteFilter);
@@ -237,4 +250,14 @@ function salary_converter(salary_value, currency1, currency2)
     array.push(value2);
 
     return array;
+}
+
+function removeDups(names) {
+    let unique = {};
+    names.forEach(function(i) {
+        if(!unique[i]) {
+            unique[i] = true;
+        }
+    });
+    return Object.keys(unique);
 }
