@@ -168,8 +168,8 @@
                     <datalist id="countryList" *ngIf="cities && cities.length > 0">
                       <select class="form-control">
 
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}">
-                      </option>
+                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}">
+                        </option>
                       </select>
                     </datalist>
                     <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
@@ -187,7 +187,7 @@
                             <p><strong >{{value.name}}</strong></p>
                             <div class="form-check mt-3">
                               <label class="form-check-label" for="check{{i}}">
-                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_not_needed"   name="visa_not_needed{{i}}" (change)="updateCitiesOptions($event)" > Sponsored work visa IS NOT required
+                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Sponsored work visa IS NOT required
                               </label>
                             </div>
                             <a (click)="deleteLocationRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
@@ -609,7 +609,7 @@
               </div>
               <div class = "col-md-12" *ngFor="let lang_value of language; let i = index ">
                 <div class = "form-group">
-                <p>{{lang_value.value}}</p>
+                  <p>{{lang_value.value}}</p>
                   <div class="form-check form-check-inline">
                     <div *ngFor="let exp of exp_year; let i_ind =index">
                       <input type="radio" class="d-none" name="radiogrop- {{ lang_value.value}}" [checked]="lang_expYear_db[i] === exp.value && lang_db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onLangExpYearOptions($event , lang_value.value)" id= "radiogrop{{lang_value.value}}{{i_ind}}" >

@@ -221,13 +221,13 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   {
                     let locObject : any = {}
                     if (country1['remote'] === true) {
-                      this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1['visa_not_needed']});
+                      this.selectedValueArray.push({name: 'Remote' , visa_needed : country1['visa_not_needed']});
                     }
 
                     if (country1['country']) {
                       locObject.name = country1['country'];
                       locObject.type = 'country';
-                      if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                      if(country1['visa_needed'] === true) locObject.visa_needed = ": visa required";
                       countriesArray.push(locObject);
                       countriesArray.sort(function(a, b){
                         if(a.name < b.name) { return -1; }
@@ -239,7 +239,7 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                       let city = country1['city'].city + ", " + country1['city'].country;
                       locObject.name = city;
                       locObject.type = 'city';
-                      if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                      if(country1['visa_needed'] === true) locObject.visa_needed = ": visa required";
                       citiesArray.push(locObject);
                       citiesArray.sort(function(a, b){
                         if(a.name < b.name) { return -1; }
