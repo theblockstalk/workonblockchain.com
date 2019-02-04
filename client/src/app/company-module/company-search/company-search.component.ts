@@ -342,12 +342,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     for (let country1 of data['saved_searches'][0].location)
                     {
                       if (country1['remote'] === true) {
-                        this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                        this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
                       }
 
                       if (country1['city']) {
                         let city = country1['city'].city + ", " + country1['city'].country;
-                        this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
+                        this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
                       }
                     }
 
@@ -360,7 +360,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     }
                   }
                   this.skill_value = data['saved_searches'][0].skills;
-
+                  this.visa_check = data['saved_searches'][0].visa_needed;
                   this.role_value = data['saved_searches'][0].position;
                   if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
                     this.blockchain_value = data['saved_searches'][0].blockchain;
@@ -434,8 +434,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   skillChanged(data)
   {
     this.not_found = '';
-      this.skill_value = data.value;
-      this.searchdata('skill' , this.skill_value);
+    this.skill_value = data.value;
+    this.searchdata('skill' , this.skill_value);
 
   }
 
@@ -470,21 +470,21 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
         console.log(queryBody)
         this.authenticationService.filterSearch(queryBody)
-        .subscribe(
-          data => {
-            this.candidate_data = data;
-            this.responseMsg = "response";
-            if (this.candidate_data.length <= 0) {
-              this.not_found = 'No candidates matched this search criteria';
-            }
-            if(this.candidate_data.length > 0) {
-              this.not_found='';
-            }
-          },
-          error =>
-          {
-            if(error['message'] === 500)
+          .subscribe(
+            data => {
+              this.candidate_data = data;
+              this.responseMsg = "response";
+              if (this.candidate_data.length <= 0) {
+                this.not_found = 'No candidates matched this search criteria';
+              }
+              if(this.candidate_data.length > 0) {
+                this.not_found='';
+              }
+            },
+            error =>
             {
+              if(error['message'] === 500)
+              {
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('googleUser');
@@ -493,10 +493,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 localStorage.removeItem('admin_log');
                 window.location.href = '/login';
               }
-            if(error['message'] === 403)
-            {
-              this.router.navigate(['/not_found']);
-            }
+              if(error['message'] === 403)
+              {
+                this.router.navigate(['/not_found']);
+              }
 
             }
           );
@@ -528,7 +528,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.role_value;
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.availabilityChange ) queryBody.availability_day = this.availabilityChange;
-      if(this.visa_check) queryBody.visa_not_needed = this.visa_check;
+      if(this.visa_check) queryBody.visa_needed = this.visa_check;
       if(this.salary && this.currencyChange) {
         setTimeout(() => {
           $('.selectpicker').selectpicker();
@@ -712,125 +712,125 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       );
   }
 
-    date_of_joining;
-    msg_tag;
-    is_company_reply = 0;
-    msg_body;
-    description;
-    job_title_log;
-    location_log;
-    salary_log;
-    salary_currency_log;
-    employment_log;
-    job_desc_log;
-    job_offer_log_success;
-    job_offer_log_erorr;
+  date_of_joining;
+  msg_tag;
+  is_company_reply = 0;
+  msg_body;
+  description;
+  job_title_log;
+  location_log;
+  salary_log;
+  salary_currency_log;
+  employment_log;
+  job_desc_log;
+  job_offer_log_success;
+  job_offer_log_erorr;
 
-    send_job_offer(msgForm : NgForm){
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.job_title_log = '';
-        this.location_log = '';
-        this.salary_log = '';
-        this.salary_currency_log = '';
-        this.employment_log = '';
-        this.job_desc_log = '';
-        this.job_offer_log_success = '';
-        this.job_offer_log_erorr = '';
+  send_job_offer(msgForm : NgForm){
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.job_title_log = '';
+    this.location_log = '';
+    this.salary_log = '';
+    this.salary_currency_log = '';
+    this.employment_log = '';
+    this.job_desc_log = '';
+    this.job_offer_log_success = '';
+    this.job_offer_log_erorr = '';
 
-        if(!this.credentials.job_title){
-          this.job_title_log = 'Please enter job title';
-        }
-        if(!this.credentials.location){
-          this.location_log = 'Please enter location';
-        }
-        if(!this.credentials.salary){
-          this.salary_log = 'Please enter salary';
-        }
-        if(!this.credentials.currency){
-          this.salary_currency_log = 'Please select currency';
-        }
-        if(!this.credentials.job_type){
-          this.employment_log = 'Please select employment type';
-        }
-        if(!this.credentials.job_desc){
-          this.job_desc_log = 'Please enter job description';
-        }
+    if(!this.credentials.job_title){
+      this.job_title_log = 'Please enter job title';
+    }
+    if(!this.credentials.location){
+      this.location_log = 'Please enter location';
+    }
+    if(!this.credentials.salary){
+      this.salary_log = 'Please enter salary';
+    }
+    if(!this.credentials.currency){
+      this.salary_currency_log = 'Please select currency';
+    }
+    if(!this.credentials.job_type){
+      this.employment_log = 'Please select employment type';
+    }
+    if(!this.credentials.job_desc){
+      this.job_desc_log = 'Please enter job description';
+    }
 
-        if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
-          if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
-            this.authenticationService.get_job_desc_msgs(this.user_id.id, 'job_offer')
-              .subscribe(
-                data => {
-                  this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
-                },
-                error => {
-                  if (error['status'] === 500 || error['status'] === 401) {
-                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                    localStorage.removeItem('currentUser');
-                    localStorage.removeItem('googleUser');
-                    localStorage.removeItem('close_notify');
-                    localStorage.removeItem('linkedinUser');
-                    localStorage.removeItem('admin_log');
-                    window.location.href = '/login';
-                  }
+    if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
+      if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
+        this.authenticationService.get_job_desc_msgs(this.user_id.id, 'job_offer')
+          .subscribe(
+            data => {
+              this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
+            },
+            error => {
+              if (error['status'] === 500 || error['status'] === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
 
-                  if (error['status'] === 404) {
-                    this.date_of_joining = '10-07-2018';
-                    this.msg_tag = 'job_offer';
-                    this.is_company_reply = 0;
-                    this.msg_body = '';
-                    this.description = this.credentials.job_desc;
-                    this.interview_location = this.credentials.location;
-                    this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-                      .subscribe(
-                        data => {
-                          this.job_offer_log_success = 'Message successfully sent';
-                          this.credentials.job_title = '';
-                          this.credentials.salary = '';
-                          this.credentials.currency = '';
-                          this.credentials.location = '';
-                          this.credentials.job_type = '';
-                          this.credentials.job_desc = '';
-                          $("#jobDescriptionModal").modal("hide");
-                          this.router.navigate(['/chat']);
-                        },
-                        error => {
-                          if (error.status === 404) {
-                            this.date_of_joining = '10-07-2018';
-                            this.msg_tag = 'job_offer';
-                            this.is_company_reply = 0;
-                            this.msg_body = '';
-                            this.description = this.credentials.job_desc;
-                            this.interview_location = this.credentials.location;
-                            this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-                              .subscribe(
-                                data => {
-                                  this.job_offer_log_success = 'Message successfully sent';
-                                  this.credentials.job_title = '';
-                                  this.credentials.salary = '';
-                                  this.credentials.currency = '';
-                                  this.credentials.location = '';
-                                  this.credentials.job_type = '';
-                                  this.credentials.job_desc = '';
-                                  $("#jobDescriptionModal").modal("hide");
-                                  this.router.navigate(['/chat']);
-                                },
-                                error => {
+              if (error['status'] === 404) {
+                this.date_of_joining = '10-07-2018';
+                this.msg_tag = 'job_offer';
+                this.is_company_reply = 0;
+                this.msg_body = '';
+                this.description = this.credentials.job_desc;
+                this.interview_location = this.credentials.location;
+                this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
+                  .subscribe(
+                    data => {
+                      this.job_offer_log_success = 'Message successfully sent';
+                      this.credentials.job_title = '';
+                      this.credentials.salary = '';
+                      this.credentials.currency = '';
+                      this.credentials.location = '';
+                      this.credentials.job_type = '';
+                      this.credentials.job_desc = '';
+                      $("#jobDescriptionModal").modal("hide");
+                      this.router.navigate(['/chat']);
+                    },
+                    error => {
+                      if (error.status === 404) {
+                        this.date_of_joining = '10-07-2018';
+                        this.msg_tag = 'job_offer';
+                        this.is_company_reply = 0;
+                        this.msg_body = '';
+                        this.description = this.credentials.job_desc;
+                        this.interview_location = this.credentials.location;
+                        this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
+                          .subscribe(
+                            data => {
+                              this.job_offer_log_success = 'Message successfully sent';
+                              this.credentials.job_title = '';
+                              this.credentials.salary = '';
+                              this.credentials.currency = '';
+                              this.credentials.location = '';
+                              this.credentials.job_type = '';
+                              this.credentials.job_desc = '';
+                              $("#jobDescriptionModal").modal("hide");
+                              this.router.navigate(['/chat']);
+                            },
+                            error => {
 
-                                }
-                              );
-                          }
-                        }
-                      );
-                  }
-                }
-              );
-          }
-          else {
-            this.salary_log = 'Salary should be a number';
-            this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
-          }
-        }
+                            }
+                          );
+                      }
+                    }
+                  );
+              }
+            }
+          );
+      }
+      else {
+        this.salary_log = 'Salary should be a number';
+        this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
+      }
+    }
     else{
       this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
@@ -879,15 +879,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 let cityString = cities['city'].city + ", " + cities['city'].country;
                 citiesOptions.push({_id : cities['city']._id , name : cityString});
               }
-              /*if(cities['city']&& cities['city'].country) {
-                let countryString = cities['city'].country + " (country)";
-                citiesOptions.push({name : countryString });
 
-              }
-              if(cities['country']) {
-                let countryString = cities['country'] + " (country)";
-                citiesOptions.push({name: countryString});
-              }*/
             }
             this.cities = this.filter_array(citiesOptions);
           }

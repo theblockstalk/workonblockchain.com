@@ -227,7 +227,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
       this.preferncesForm = new FormGroup({
         location: new FormControl(),
-        visa_not_needed: new FormControl(),
+        visa_needed: new FormControl(),
         job_type: new FormControl(),
         position: new FormControl(),
         availability_day: new FormControl(),
@@ -256,7 +256,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
                 location: [],
-                visa_not_needed: [data['saved_searches'][0].visa_not_needed],
+                visa_needed: [data['saved_searches'][0].visa_needed],
                 job_type: [data['saved_searches'][0].job_type],
                 position: [data['saved_searches'][0].position],
                 availability_day: [data['saved_searches'][0].availability_day],
@@ -281,12 +281,12 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 for (let country1 of data['saved_searches'][0].location)
                 {
                   if (country1['remote'] === true) {
-                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                    this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
                   }
 
                   if (country1['city']) {
                     let city = country1['city'].city + ", " + country1['city'].country;
-                    this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
+                    this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
                   }
                 }
 
@@ -386,10 +386,10 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(this.selectedLocations && this.selectedLocations.length > 0) {
       for(let location of this.selectedLocations) {
         if(location.name.includes(', ')) {
-          this.validatedLocation.push({city: location._id, visa_not_needed : location.visa_not_needed });
+          this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
         }
         if(location.name === 'Remote') {
-          this.validatedLocation.push({remote: true, visa_not_needed : location.visa_not_needed });
+          this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
         }
 
       }
@@ -577,8 +577,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         }
 
         else {
-          if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_not_needed:false});
-          else this.selectedValueArray.push({ name: e.target.value, visa_not_needed:false});
+          if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_needed:false});
+          else this.selectedValueArray.push({ name: e.target.value, visa_needed:false});
         }
 
 
@@ -605,7 +605,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   updateCitiesOptions(e) {
     let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
-    this.selectedValueArray[objIndex].visa_not_needed = e.target.checked;
+    this.selectedValueArray[objIndex].visa_needed = e.target.checked;
     this.selectedLocations = this.selectedValueArray;
 
   }
@@ -626,7 +626,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   checkValidation(value) {
-    return value.filter(i => i.visa_not_needed === true).length;
+    return value.filter(i => i.visa_needed === true).length;
   }
 
 
