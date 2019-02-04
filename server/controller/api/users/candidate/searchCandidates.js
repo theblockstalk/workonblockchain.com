@@ -131,13 +131,13 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                     locationsQuery.push({
                         $and: [
                             {"candidate.locations.city": {$in: citiesArray}},
-                            {"candidate.locatons.visa_not_needed": true}]
+                            {"candidate.locatons.visa_needed": true}]
                     })
 
                     locationsQuery.push({
                         $and: [
                             {"candidate.locations.country": {$in: countriesArray}},
-                            {"candidate.locations.visa_not_needed": true}]
+                            {"candidate.locations.visa_needed": true}]
                     })
                 }
                 else {
