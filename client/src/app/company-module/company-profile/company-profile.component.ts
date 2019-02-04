@@ -286,7 +286,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
                     }
                     if(data['saved_searches']) {
                       this.saved_searche = data['saved_searches'];
-                      console.log(this.saved_searche);
                       if(data['saved_searches'][0].location)
                       {
                         for (let country1 of data['saved_searches'][0].location)
