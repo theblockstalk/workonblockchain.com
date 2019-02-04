@@ -193,9 +193,6 @@ export class AdminCandidateDetailComponent implements OnInit {
                     if(loc.visa_needed === false)
                       this.noVisaArray.push(loc);
                   }
-                  console.log(this.countries);
-                  console.log(this.visaRequiredArray);
-                  console.log(this.noVisaArray);
                 }
 
               }
