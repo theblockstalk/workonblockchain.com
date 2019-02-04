@@ -196,7 +196,7 @@
                         </div>
                       </div>
                       <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
-                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations) <= 0">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations)">
                         {{country_log}}
                       </div>
                     </div>

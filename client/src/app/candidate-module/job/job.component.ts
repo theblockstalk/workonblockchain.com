@@ -390,7 +390,8 @@ export class JobComponent implements OnInit,AfterViewInit {
 
 
   checkValidation(value) {
-    return value.filter(i => i.visa_needed === true).length;
+    if(value.filter(i => i.visa_needed === true).length === this.selectedLocations.length) return true;
+    else return false;
   }
 
   validatedLocation=[];
@@ -409,7 +410,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
     if(this.selectedLocations && this.selectedLocations.length > 0) {
-      if(this.selectedLocations.filter(i => i.visa_needed === true).length <= 0 )
+      if(this.selectedLocations.filter(i => i.visa_needed === true).length === this.selectedLocations.length)
         this.country_log = "Please select at least one location which you can work in without needing a visa";
       for(let location of this.selectedLocations) {
         if(location.name.includes('city')) {
@@ -473,7 +474,7 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
 
 
-    if( this.count === 0 && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_needed === true).length > 0 && this.jobselected.length>0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
+    if( this.count === 0 && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_needed === true).length < this.selectedLocations.length && this.jobselected.length > 0 && this.base_currency && this.salary && this.selectedValue.length > 0 && this.availability_day)
     {
       if(typeof(f.value.expected_salary) === 'string' )
         f.value.expected_salary = parseInt(f.value.expected_salary);

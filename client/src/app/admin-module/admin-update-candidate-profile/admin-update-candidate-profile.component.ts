@@ -1335,7 +1335,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     }
 
     if(this.selectedLocations && this.selectedLocations.length > 0) {
-      if(this.selectedLocations.filter(i => i.visa_needed === true).length <= 0 )
+      if(this.selectedLocations.filter(i => i.visa_needed === true).length === this.selectedLocations.length)
         this.country_log = "Please select at least one location which you can work in without needing a visa";
 
       for(let location of this.selectedLocations) {
@@ -1573,7 +1573,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
     if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
       this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedLocations && this.selectedLocations.length > 0
-      && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_needed === true).length > 0 && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
+      && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_needed === true).length < this.selectedLocations.length && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
       this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
       && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
       && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
@@ -1860,7 +1860,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
   }
 
   checkValidation(value) {
-    return value.filter(i => i.visa_needed === true).length;
+    if(value.filter(i => i.visa_needed === true).length === this.selectedLocations.length) return true;
+    else return false;
   }
 
 
