@@ -297,17 +297,17 @@
                 <label>Desired location: </label>
                 <div>
                   <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of countries'>
-                      <div *ngIf="country.name === 'Remote'">
+                    <div *ngIf="country.name === 'Remote'">
                       <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
                     </div>
-                     <div *ngIf="country.type === 'country'">
-                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}{{country.visa_not_needed}}
+                    <div *ngIf="country.type === 'country'">
+                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}{{country.visa_needed}}
                     </div>
                     <div *ngIf="country.type === 'city'">
-                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}{{country.visa_not_needed}}
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}{{country.visa_needed}}
                     </div>
-                    
-                    </div>
+
+                  </div>
                 </div>
               </div>
             </div>

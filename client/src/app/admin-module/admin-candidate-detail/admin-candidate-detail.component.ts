@@ -142,13 +142,13 @@ export class AdminCandidateDetailComponent implements OnInit {
                 {
                   let locObject : any = {}
                   if (country1['remote'] === true) {
-                    this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1['visa_not_needed']});
+                    this.selectedValueArray.push({name: 'Remote' , visa_needed : country1['visa_needed']});
                   }
 
                   if (country1['country']) {
                     locObject.name = country1['country'];
                     locObject.type = 'country';
-                    if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                    if(country1['visa_needed'] === true) locObject.visa_needed = ": visa required";
                     countriesArray.push(locObject);
                     countriesArray.sort(function(a, b){
                       if(a.name < b.name) { return -1; }
@@ -160,7 +160,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                     let city = country1['city'].city + ", " + country1['city'].country;
                     locObject.name = city;
                     locObject.type = 'city';
-                    if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
+                    if(country1['visa_needed'] === true) locObject.visa_needed = ": visa required";
                     citiesArray.push(locObject);
                     citiesArray.sort(function(a, b){
                       if(a.name < b.name) { return -1; }
@@ -308,7 +308,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                         this.referred_name = refData['refDoc'].email;
                       }
 
-                          },
+                    },
                     error => {
                       if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
                       {
@@ -405,25 +405,25 @@ export class AdminCandidateDetailComponent implements OnInit {
 
   saveApproveData(id:any, set_status:string, reason:string) {
     this.authenticationService.approve_candidate(id, set_status, reason)
-    .subscribe(
-      data => {
-        if (data['success'] === true) {
-          this.candidate_status.status = set_status;
-          this.candidate_status.reason = reason;
-          this.success = 'Candidate status changed successfully';
-        }
-      },
-      error => {
-        if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-          this.error = error['error']['message'];
-        }
-        if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-          this.error = error['error']['message'];
-        }
-        else {
-          this.error = "Something getting wrong";
-        }
-      });
+      .subscribe(
+        data => {
+          if (data['success'] === true) {
+            this.candidate_status.status = set_status;
+            this.candidate_status.reason = reason;
+            this.success = 'Candidate status changed successfully';
+          }
+        },
+        error => {
+          if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.error = error['error']['message'];
+          }
+          if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.error = error['error']['message'];
+          }
+          else {
+            this.error = "Something getting wrong";
+          }
+        });
   }
 
   filter_array(arr) {
