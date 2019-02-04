@@ -20,7 +20,10 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   user;googleUser;email;linkedinUser;message;
   terms;
   code;ref_msg;
+  public isUserAuthenticatedEmittedValue = false;
+  public isUserAuthenticated;
 
+  private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
 
   credentials: any = {};
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
@@ -100,7 +103,6 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this.dataservice.currentMessage.subscribe(message => this.message = message);
     setInterval(() => {
       this.message = "" ;
-      this.log='';
     }, 13000);
   }
   log = '';
@@ -109,6 +111,64 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   pass_log='';
   button_status;
   emailname;
+
+  public rawApiCall() {
+    let url =`/people/~:(${this.basicProfileFields.join(',')})?format=json'`;
+    this._linkedInService.raw(url)
+      .asObservable()
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          localStorage.setItem('linkedinUser', JSON.stringify(data));
+          if(data)
+          {
+            console.log("if");
+            this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
+            this.credentials.email= this.linkedinUser.emailAddress;
+            this.credentials.password= '';
+            this.credentials.type="candidate";
+            this.credentials.social_type='LINKEDIN';
+            this.credentials.linkedin_id = this.linkedinUser.id;
+            console.log(this.credentials);
+            if(this.linkedinUser.emailAddress)
+            {
+              this.authenticationService.create(this.credentials)
+                .subscribe(
+                  data => {
+                    this.credentials.email = '';
+
+                    localStorage.setItem('currentUser', JSON.stringify(data));
+                    window.location.href = '/terms-and-condition';
+
+                  },
+                  error => {
+                    this.loading = false;
+                    if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                      this.log = error['error']['message'];
+                    }
+                    else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                      this.log = error['error']['message'];
+                    }
+                    else {
+                      this.log = 'Something getting wrong';
+                    }
+
+                  });
+            }
+            else
+            {
+              this.log = 'Something getting wrong';
+            }
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('RAW API call completed');
+        }
+      });
+  }
 
   signup_candidate(loginForm: NgForm)
   {
@@ -224,57 +284,24 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this._linkedInService.login().subscribe({
       next: (state) =>
       {
-        const url = '/people/~:(id,picture-url,location,industry,positions,specialties,summary,email-address )?format=json';
-        this._linkedInService.raw(url).asObservable().subscribe({
-          next: (data) => {
-            localStorage.setItem('linkedinUser', JSON.stringify(data));
-            if(data)
-            {
-              this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-              this.credentials.email= this.linkedinUser.emailAddress;
-              this.credentials.password= '';
-              this.credentials.type="candidate";
-              this.credentials.social_type='LINKEDIN';
-              this.credentials.linkedin_id = this.linkedinUser.id;
-              if(this.linkedinUser.emailAddress)
-              {
-                this.authenticationService.create(this.credentials)
-                  .subscribe(
-                    data => {
-                      this.credentials.email = '';
-
-                      localStorage.setItem('currentUser', JSON.stringify(data));
-                      window.location.href = '/terms-and-condition';
-
-                    },
-                    error => {
-                      this.loading = false;
-                      if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                        this.log = error['error']['message'];
-                      }
-                      else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                        this.log = error['error']['message'];
-                      }
-                      else {
-                        this.log = 'Something getting wrong';
-                      }
-
-                    });
-              }
-              else
-              {
-                this.log = 'Something getting wrong';
-              }
-            }
-          },
-          error: (err) => {
-          },
-          complete: () => {
-          }
-        });
+        console.log("state");
       },
       complete: () => {
         // Completed
+        console.log("complete");
+      }
+    });
+
+    this.isUserAuthenticated = this._linkedInService.isUserAuthenticated$;
+    let count = 0;
+    this._linkedInService.isUserAuthenticated$.subscribe({
+      next: (state) => {
+        if(state === true && count===0) {
+          this.rawApiCall();
+          count++;
+
+        }
+        this.isUserAuthenticatedEmittedValue = true;
       }
     });
   }
