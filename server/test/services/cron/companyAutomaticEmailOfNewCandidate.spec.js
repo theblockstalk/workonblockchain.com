@@ -114,8 +114,7 @@ describe('cron', function () {
             await companyEmail();
 
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
-
-            companyDoc.candidates_sent_by_email.length.should.equal(1);
+            companyDoc.candidates_sent_by_email.length.should.equal(2);
             companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
         })
     })
