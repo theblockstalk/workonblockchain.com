@@ -108,6 +108,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   commercial_skills;
   formal_skills;
   selectedValueArray;
+  visaRequiredArray = [];
+  noVisaArray = [];
   ngOnInit()
   {
     this.infoo='';
@@ -221,13 +223,14 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                   {
                     let locObject : any = {}
                     if (country1['remote'] === true) {
-                      this.selectedValueArray.push({name: 'Remote' , visa_needed : country1['visa_not_needed']});
+                      this.selectedValueArray.push({name: 'Remote' , visa_needed : false});
                     }
 
                     if (country1['country']) {
                       locObject.name = country1['country'];
                       locObject.type = 'country';
-                      if(country1['visa_needed'] === true) locObject.visa_needed = ": visa required";
+                      if(country1['visa_needed'] === true) locObject.visa_needed = true;
+                      else locObject.visa_needed = false;
                       countriesArray.push(locObject);
                       countriesArray.sort(function(a, b){
                         if(a.name < b.name) { return -1; }
@@ -239,7 +242,8 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                       let city = country1['city'].city + ", " + country1['city'].country;
                       locObject.name = city;
                       locObject.type = 'city';
-                      if(country1['visa_needed'] === true) locObject.visa_needed = ": visa required";
+                      if(country1['visa_needed'] === true) locObject.visa_needed = true;
+                      else locObject.visa_needed = false;
                       citiesArray.push(locObject);
                       citiesArray.sort(function(a, b){
                         if(a.name < b.name) { return -1; }
@@ -258,6 +262,19 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     this.countries.splice(0, 0, remoteValue);
                     this.countries = this.filter_array(this.countries);
 
+                  }
+
+                  if(this.countries && this.countries.length > 0) {
+
+                    for(let loc of this.countries) {
+                      if(loc.visa_needed === true)
+                        this.visaRequiredArray.push(loc);
+                      if(loc.visa_needed === false)
+                        this.noVisaArray.push(loc);
+                    }
+                    console.log(this.countries);
+                    console.log(this.visaRequiredArray);
+                    console.log(this.noVisaArray);
                   }
 
                 }
