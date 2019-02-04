@@ -74,10 +74,9 @@ const CompanyProfileSchema = new Schema({
 
                 }]
             },
-            visa_not_needed: {
+            visa_needed: {
                 type: Boolean,
                 default:false,
-                required: true,
             },
             job_type: {
                 type: [{

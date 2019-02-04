@@ -11,7 +11,7 @@ module.exports = async function (req, res) {
         outputOptions.push({remote : true});
     }
 
-    let citiesDoc = await cities.findAndLimit2({city: {$regex: regex}});
+    let citiesDoc = await cities.findAndLimit4({city: {$regex: regex}});
     if(citiesDoc) {
         for(let cityLoc of citiesDoc) {
             outputOptions.push({city : cityLoc});

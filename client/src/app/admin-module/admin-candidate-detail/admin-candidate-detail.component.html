@@ -291,27 +291,44 @@
             </div>
           </div>
 
-          <div class="row mt-3">
-            <div class="col-md-12 mb-3">
-              <div class="form-group">
-                <label>Desired location: </label>
+          <div class="row mt-4">
+            <div class = "col-md-12" >
+              <div class="form-group" *ngIf="noVisaArray && noVisaArray.length > 0">
+                <label>Desired location:</label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of countries'>
-                      <div *ngIf="country.name === 'Remote'">
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of noVisaArray'>
+                    <div *ngIf="country.name === 'Remote'">
                       <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
                     </div>
-                     <div *ngIf="country.type === 'country'">
-                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}{{country.visa_not_needed}}
+                    <div *ngIf="country.type === 'country' ">
+                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
                     </div>
                     <div *ngIf="country.type === 'city'">
-                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}{{country.visa_not_needed}}
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
                     </div>
-                    
-                    </div>
+
+                  </div>
                 </div>
               </div>
+
+              <div class="form-group" *ngIf="visaRequiredArray && visaRequiredArray.length > 0" >
+                <label>Desired locations (work visa required):</label>
+                <div>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of visaRequiredArray'>
+                    <div *ngIf="country.type === 'country'" >
+                      <i class="fas fa-flag"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+                    <div *ngIf="country.type === 'city'">
+                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
+
 
 
           <div class="row">
