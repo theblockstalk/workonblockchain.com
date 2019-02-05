@@ -28,6 +28,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   user;data;result;googleUser;linkedinUser;
   code; ref_msg;
   button_status = '';
+  public isUserAuthenticatedEmittedValue = false;
+  public isUserAuthenticated;
+  private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
 
   message:string;
   error;
@@ -51,8 +54,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.message = "" ;
       this.error = '';
       this.forgetMessage='';
+    }, 15000);
+
+    setInterval(() => {
       this.log='';
-    }, 12000);
+    }, 30000);
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     this.password_message = JSON.parse(localStorage.getItem('password_change_msg'));
@@ -192,67 +198,22 @@ export class LoginComponent implements OnInit, OnDestroy {
     this._linkedInService.login().subscribe({
       next: (state) =>
       {
-        const url = '/people/~:(id,picture-url,location,industry,positions,specialties,summary,email-address)?format=json';
-        this._linkedInService.raw(url).asObservable().subscribe({
-          next: (data) => {
-            //console.log(data);
-            localStorage.setItem('linkedinUser', JSON.stringify(data));
-            if(data)
-            {
-              this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-
-              this.credentials.email = this.linkedinUser.emailAddress;
-              this.credentials.password= '';
-              this.credentials.type="candidate";
-              this.credentials.social_type='LINKEDIN';
-              this.credentials.linkedin_id = this.linkedinUser.id;
-
-
-              if(this.linkedinUser.emailAddress)
-              {
-                this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, this.credentials.linkedin_id)
-                  .subscribe(
-                    user => {
-
-                      window.location.href = '/candidate_profile';
-
-                    },
-                    error => {
-                      if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                        this.password_message = '';
-                        this.log = error['error']['message'];
-                      }
-                      else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                        this.password_message = '';
-                        this.log = error['error']['message'];
-                      }
-                      else {
-                        this.log = 'Something getting wrong';
-                      }
-
-                    });
-              }
-
-              else
-              {
-                this.log = 'Something getting wrong';
-              }
-            }
-            else
-            {
-              this.router.navigate(['/login']);
-            }
-          },
-          error: (err) => {
-            //console.log(err);
-          },
-          complete: () => {
-            //console.log('RAW API call completed');
-          }
-        });
+        
       },
       complete: () => {
         // Completed
+      }
+    });
+    this.isUserAuthenticated = this._linkedInService.isUserAuthenticated$;
+    let count = 0;
+    this._linkedInService.isUserAuthenticated$.subscribe({
+      next: (state) => {
+        if(state === true && count===0) {
+          this.rawApiCall();
+          count++;
+
+        }
+        this.isUserAuthenticatedEmittedValue = true;
       }
     });
   }
@@ -296,6 +257,65 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     }
 
+  }
+
+  public rawApiCall() {
+    let url =`/people/~:(${this.basicProfileFields.join(',')})?format=json'`;
+    this._linkedInService.raw(url)
+      .asObservable()
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          localStorage.setItem('linkedinUser', JSON.stringify(data));
+          if(data)
+          {
+            this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
+
+            this.credentials.email = this.linkedinUser.emailAddress;
+            this.credentials.password= '';
+            this.credentials.type="candidate";
+            this.credentials.social_type='LINKEDIN';
+            this.credentials.linkedin_id = this.linkedinUser.id;
+
+
+            if(this.linkedinUser.emailAddress)
+            {
+              this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, this.credentials.linkedin_id)
+                .subscribe(
+                  user => {
+
+                    window.location.href = '/candidate_profile';
+
+                  },
+                  error => {
+                    if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                      this.password_message = '';
+                      this.log = error['error']['message'];
+                    }
+                    else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                      this.password_message = '';
+                      this.log = error['error']['message'];
+                    }
+                    else {
+                      this.log = 'Something getting wrong';
+                    }
+                    console.log(this.log)
+                  });
+            }
+
+            else
+            {
+              this.log = 'Something getting wrong';
+            }
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('RAW API call completed');
+        }
+      });
   }
 
 

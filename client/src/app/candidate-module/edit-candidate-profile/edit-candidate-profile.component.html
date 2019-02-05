@@ -55,7 +55,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Stackexchange account URL (optional)</label>
-                  <input type="text" #stackaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="exchange_account" [(ngModel)]="info.exchange_account" placeholder="https://stackexchange.com/users/12345/username">
+                  <input type="text" #stackaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="exchange_account" [(ngModel)]="info.exchange_account" placeholder="https://stackexchange.com/users/12345/username">
                   <div class = "invalid-feedback d-inline" *ngIf="info.exchange_account && stackaccount.errors">
                     Enter url in proper format
                   </div>
@@ -64,7 +64,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Github account URL (optional)</label>
-                  <input type="text" #gitaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="github_account" [(ngModel)]="info.github_account" placeholder="https://github.com/username">
+                  <input type="text" #gitaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="github_account" [(ngModel)]="info.github_account" placeholder="https://github.com/username">
                   <div class = "invalid-feedback d-inline" *ngIf="gitaccount.errors">
                     Enter url in proper format
                   </div>
@@ -163,8 +163,53 @@
             <div class="row mt-4">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label>Where are you available to work?</label>
-                  <div class="checkbox">
+                  <label>Where would you like to work? (select up to 10)</label>
+                  <div>
+                    <datalist id="countryList" *ngIf="cities && cities.length > 0">
+                      <select class="form-control">
+
+                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}">
+                        </option>
+                      </select>
+                    </datalist>
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                      {{error}}
+                    </div>
+                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
+                      {{country_input_log}}
+                    </div>
+
+                    <div *ngIf="selectedValueArray.length > 0">
+                      <div class="row">
+                        <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
+                          <div class="border px-1 py-3 ml-2 row">
+                            <div class = "col-8">
+                            <label >{{value.name}}</label>
+                            </div>
+                            <div class = "col-4 text-right">
+                              <a (click)="deleteLocationRow(i)" class = "btn btn-dark px-2 pb-1 pt-0 text-white font-weight-bold rounded">x</a>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check" *ngIf="value.name !== 'Remote'">
+                                <label class="form-check-label" for="check{{i}}">
+                                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                                </label>
+                              </div>
+
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations)">
+                        {{country_log}}
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--<div class="checkbox">
                     <div class="row m-0">
                       <div class="form-check col-md-3 mb-3" *ngFor="let option of options">
                         <label class="form-check-label">
@@ -177,7 +222,7 @@
                   <input type="text" class="form-control d-none" [(ngModel)]='selectedcountry' name="country" >
                   <div class = "invalid-feedback d-inline" *ngIf="selectedcountry.length<=0">
                     {{country_log}}
-                  </div>
+                  </div>-->
                 </div>
               </div>
 
@@ -570,7 +615,7 @@
               </div>
               <div class = "col-md-12" *ngFor="let lang_value of language; let i = index ">
                 <div class = "form-group">
-                <p>{{lang_value.value}}</p>
+                  <p>{{lang_value.value}}</p>
                   <div class="form-check form-check-inline">
                     <div *ngFor="let exp of exp_year; let i_ind =index">
                       <input type="radio" class="d-none" name="radiogrop- {{ lang_value.value}}" [checked]="lang_expYear_db[i] === exp.value && lang_db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onLangExpYearOptions($event , lang_value.value)" id= "radiogrop{{lang_value.value}}{{i_ind}}" >

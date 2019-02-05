@@ -1,4 +1,5 @@
 let Company = require('../employer_profile');
+let cities = require('./cities');
 
 module.exports.insert = async function insert(data) {
     let newDoc = new Company(data);
@@ -20,6 +21,24 @@ module.exports.findOneByUserId = async function findOneByUserId(id) {
     return await Company.findOne({_creator: id}).populate('_creator').lean();
 }
 
+module.exports.findOneAndPopulate = async function findOneAndPopulate(id) {
+    let companyDoc = await Company.findOne({_creator: id}).populate('_creator').lean();
+    if(companyDoc) {
+        if(companyDoc.saved_searches && companyDoc.saved_searches[0] && companyDoc.saved_searches[0].location) {
+            for(let loc of companyDoc.saved_searches[0].location) {
+                if(loc.city) {
+                    const index = companyDoc.saved_searches[0].location.findIndex((obj => obj.city === loc.city));
+                    const citiesDoc = await cities.findOneById(loc.city);
+                    companyDoc.saved_searches[0].location[index].city = citiesDoc;
+                }
+            }
+        }
+    }
+
+    return companyDoc;
+
+}
+
 module.exports.update = async function update(selector, updateObj) {
     await Company.findOneAndUpdate(selector, updateObj, { runValidators: true });
 }
@@ -31,7 +50,7 @@ module.exports.deleteOne = async function deleteOne(selector) {
 module.exports.count = async function count(selector) {
     return new Promise((resolve, reject) => {
         try {
-            Candidate.count(selector, (err1, result) => {
+            Company.count(selector, (err1, result) => {
                 if (err1) reject(err1);
                 resolve(result);
             })
