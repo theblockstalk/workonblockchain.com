@@ -10,7 +10,7 @@ module.exports = async function(req, res) {
     }
     else {
         let token = crypto.getRandomString(10);
-        token = token.replace('+', '1').replace('-',2).replace('/',3).replace('*',4);
+        token = token.replace('+', '1').replace('-',2).replace('/',3).replace('*',4).replace('#',5);
         const newDoc = await mongooseReferral.insert({
             email : req.body.email,
             url_token : token,
