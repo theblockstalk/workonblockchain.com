@@ -21,8 +21,8 @@ module.exports.up = async function() {
             country : location.Country,
             active : true,
         }
-       // logger.debug("cities document: ", data);
-        //await cities.insert(data);
+        logger.debug("cities document: ", data);
+        await cities.insert(data);
         newDocs++;
     }
     console.log("No of locations added in cities collection: " + newDocs);
