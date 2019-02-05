@@ -196,7 +196,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         if (search.blockchains && search.blockchains.length > 0 ) {
             const platformFilter = {
                 $or: [
-                    {"candidate.commercial_platforms.name": {$in: search.blockchains}},
+                    {"candidate.blockchain.commercial_platforms.name": {$in: search.blockchains}},
                     {"candidate.blockchain.smart_contract_platforms.name": {$in: search.blockchains}}
                 ]
             };
