@@ -67,6 +67,5 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
     else {
       this.selectedValueArray.push(e.target.value);
     }
-    console.log(this.selectedValueArray);
   }
 }
