@@ -114,7 +114,10 @@ const UserSchema = new Schema({
             },
             locations: {
                 type: [{
-                    city: String,
+                    city: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Cities'
+                    },
                     country: enumerations.countries,
                     remote: Boolean,
                     visa_needed: {

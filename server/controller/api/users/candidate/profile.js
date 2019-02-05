@@ -1,6 +1,7 @@
 const users = require('../../../../model/mongoose/users');
 const errors = require('../../../services/errors');
 const filterReturnData = require('../filterReturnData');
+const mongoose = require('mongoose');
 
 module.exports.update = async function update(candidateUserId, queryBody, educationHistory, workHistory, requestUserId) {
     const candidateDoc = await users.findOneById(candidateUserId);
@@ -17,7 +18,15 @@ module.exports.update = async function update(candidateUserId, queryBody, educat
 
     if (queryBody.contact_number) updateCandidateUser.contact_number = queryBody.contact_number;
     if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
-    if (queryBody.country) updateCandidateUser['candidate.locations'] = queryBody.country;
+    if (queryBody.country) {
+        for(let loc of queryBody.country) {
+            if(loc.city) {
+                const index = queryBody.country.findIndex((obj => obj.city === loc.city));
+                queryBody.country[index].city = mongoose.Types.ObjectId(loc.city);
+            }
+        }
+        updateCandidateUser['candidate.locations'] = queryBody.country;
+    }
     if (queryBody.roles) updateCandidateUser['candidate.roles'] = queryBody.roles;
     if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
     if (queryBody.base_currency) updateCandidateUser['candidate.expected_salary_currency'] = queryBody.base_currency;
