@@ -15,8 +15,10 @@ module.exports.up = async function() {
         const userDoc = await users.findOneByEmail(candidate.email);
         if(userDoc) {
             await companies.update({_creator: userDoc._id}, {$push: {
-                'candidates_sent_by_email.user': candidate.candidate,
-                'candidates_sent_by_email.sent': candidate.date,
+                'candidates_sent_by_email': {
+                    user: candidate.candidate,
+                    sent: candidate.date
+                }
             }});
             totalProcessed++;
         }
@@ -28,9 +30,9 @@ module.exports.up = async function() {
 }
 
 module.exports.down = async function() {
-    totalDocsToProcess =await companies.count({candidates_sent_by_email: { $exists: true, $ne: [] } });
+    totalDocsToProcess =await companies.count({candidates_sent_by_email: { $exists: true } });
     logger.debug(totalDocsToProcess);
-    await companies.update({candidates_sent_by_email: { $exists: true, $ne: [] } }, {$unset: {candidates_sent_by_email: 1}});
+    await companies.update({candidates_sent_by_email: { $exists: true } }, {$unset: {candidates_sent_by_email: 1}});
 
     console.log('Total company document to process: ' + totalDocsToProcess);
     console.log('Total processed document: ' + totalDocsToProcess);
