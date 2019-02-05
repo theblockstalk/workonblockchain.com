@@ -45,21 +45,21 @@ module.exports.up = async function() {
             await cities.findAndIterate({city :  {$in: userDoc.candidate.locations}}, async function(citiesDoc) {
                 if(userDoc.candidate.locations.find(x => x === 'London')) {
                     if(citiesDoc.city === 'London' && citiesDoc.country === 'United Kingdom') {
-                        locations.push({city: citiesDoc._id.toString(), visa_needed: true});
+                        locations.push({city: citiesDoc._id, visa_needed: true});
                     }
                 }
                 else if(userDoc.candidate.locations.find(x => x === 'Barcelona')) {
                     if(citiesDoc.city === 'Barcelona' && citiesDoc.country === 'Spain') {
-                        locations.push({city: citiesDoc._id.toString(), visa_needed: true});
+                        locations.push({city: citiesDoc._id, visa_needed: true});
                     }
                 }
                 else if(userDoc.candidate.locations.find(x => x === 'Los Angeles')) {
                     if(citiesDoc.city === 'Los Angeles' && citiesDoc.country === 'United States') {
-                        locations.push({city: citiesDoc._id.toString(), visa_needed: true});
+                        locations.push({city: citiesDoc._id, visa_needed: true});
                     }
                 }
                 else {
-                    locations.push({city: citiesDoc._id.toString(), visa_needed: true});
+                    locations.push({city: citiesDoc._id, visa_needed: true});
                 }
 
             });
@@ -110,16 +110,16 @@ module.exports.up = async function() {
                 console.log("company Doc searched locations:  " + companyDoc.saved_searches[0].location);
                 await cities.findAndIterate({city :  {$in: companyDoc.saved_searches[0].location}}, async function(citiesDoc) {
                     if(citiesDoc.city === 'London') {
-                        if (citiesDoc.country === 'United Kingdom') locations.push({city: citiesDoc._id.toString()});
+                        if (citiesDoc.country === 'United Kingdom') locations.push({city: citiesDoc._id});
                     }
                     else if(citiesDoc.city === 'Barcelona') {
-                        if (citiesDoc.country === 'Spain') locations.push({city: citiesDoc._id.toString()});
+                        if (citiesDoc.country === 'Spain') locations.push({city: citiesDoc._id});
                     }
                     else if(citiesDoc.city === 'Los Angeles') {
-                        if (citiesDoc.country === 'United States') locations.push({city: citiesDoc._id.toString()});
+                        if (citiesDoc.country === 'United States') locations.push({city: citiesDoc._id});
                     }
                     else {
-                        locations.push({city: citiesDoc._id.toString()});
+                        locations.push({city: citiesDoc._id});
                     }
                 });
 

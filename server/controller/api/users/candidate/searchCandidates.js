@@ -126,7 +126,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             for(let loc of search.locations) {
                 const cityDoc = await cities.findOneById(loc._id);
                 if(cityDoc) {
-                    citiesArray.push(cityDoc._id.toString());
+                    citiesArray.push(cityDoc._id);
                     countriesArray.push(cityDoc.country);
                 }
             }
