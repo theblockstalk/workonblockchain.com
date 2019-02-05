@@ -1630,7 +1630,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
-
+console.log(profileForm);
     if(this.commercially_worked.length === 0) {
       profileForm.commercial_platforms = [];
     }
