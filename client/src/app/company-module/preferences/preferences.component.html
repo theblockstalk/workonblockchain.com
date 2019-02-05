@@ -34,32 +34,64 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Where are you hiring?</label>
-                  <select multiple id="locations" formControlName = "location" title="(select multiple)" class="form-control selectpicker" required>
+                  <div>
+                    <datalist id="countryList" *ngIf="cities && cities.length >0">
+                      <select class="form-control">
+                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text="{{preferncesForm.value.location}}">{{country.name}}
+                      </option>
+                      </select>
+                    </datalist>
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control" formControlName = "location" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                      {{error}}
+                    </div>
+                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
+                      {{country_input_log}}
+                    </div>
+
+                    <div *ngIf="selectedValueArray.length > 0">
+                      <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
+
+                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations">
+                        {{country_log}}
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--<select multiple id="locations" formControlName = "location" title="(select multiple)" class="form-control selectpicker" required>
                     <option *ngFor='let location of locations;let i = index' [value]="location.value">{{location.name}}</option>
 
                   </select>
                   <div class="invalid-feedback d-inline" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
                     {{location_log}}
+                  </div>-->
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class = "form-group">
+                  <label class="invisible">Show results that may require a sponsored work visa</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
+                    <label class="form-check-label" for="defaultCheck1">
+                      Show results that may require a sponsored work visa
+                    </label>
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6">
                 <div class="form-group">
-
                   <label>What position types are you looking for?</label>
                   <select multiple formControlName="job_type"  title="(select multiple)" class="form-control selectpicker" required>
                     <option *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
-
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.job_type || preferncesForm.value.job_type.length === 0 ">
                     {{job_type_log}}
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                 <label>What roles are you hiring for?</label>
@@ -87,9 +119,7 @@
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>What blockchain technology experience do they need? (optional)</label>
@@ -108,9 +138,7 @@
                   </select>
                 </div>
               </div>
-            </div>
 
-            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Other technologies or requirements? (optional)</label>
@@ -131,15 +159,13 @@
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="row">
               <div class="col-md-12">
                   <div class = "form-group w-100">
                     <label>When would you like to receive emails with candidates that match your search?</label>
                     <div class="form-check form-check-inline">
                       <div *ngFor="let receive of email_notificaiton; let i_ind =index">
-                        <input type="radio" id="radio - {{receive}}" name="email - {{receive}}" class="d-none" formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}}>
+                        <input type="radio" id="radio - {{receive}}" name="when_receive_email_notitfications" class="d-none" formControlName="when_receive_email_notitfications" [checked] = "receive === preferncesForm.value.when_receive_email_notitfications" value = {{receive}}>
                         <label  for="radio - {{receive}}" class="border border py-2 px-lg-5 px-2">
                           {{receive}}
                         </label>

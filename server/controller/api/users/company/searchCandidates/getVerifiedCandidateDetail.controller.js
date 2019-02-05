@@ -7,7 +7,7 @@ module.exports = async  function (req, res) {
     let userId = req.auth.user._id;
     let queryBody = req.body;
 
-    const candidateDoc = await users.findOneById({_id : queryBody._id});
+    const candidateDoc = await users.findByIdAndPopulate(queryBody._id);
     if(candidateDoc ) {
         const filterData = await filterReturnData.candidateAsCompany(candidateDoc,userId);
         res.send(filterData);

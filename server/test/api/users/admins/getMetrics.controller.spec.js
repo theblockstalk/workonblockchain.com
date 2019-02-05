@@ -54,8 +54,8 @@ describe('admin get metrics', function () {
             aggregrated.baseCountry[profileData.country].should.equal(1);
             aggregrated.expectedSalaryUSD.min.should.equal(job.expected_salary*settings.CURRENCY_RATES_USD.Euro);
             aggregrated.interestAreas[job.interest_areas[0]].should.equal(1);
-            aggregrated.locations[job.country[0]].should.equal(1);
-            aggregrated.locations[job.country[1]].should.equal(1);
+            aggregrated.locations[job.country[0].country].count.should.equal(1);
+            aggregrated.locations[job.country[0].country].aggregate[job.country[0].visa_needed].should.equal(1);
             aggregrated.roles[job.roles[0]].should.equal(1);
             aggregrated.programmingLanguages[experience.language_exp[0].language].count.should.equal(1);
             aggregrated.programmingLanguages[experience.language_exp[0].language].aggregate[experience.language_exp[0].exp_year].should.equal(1);

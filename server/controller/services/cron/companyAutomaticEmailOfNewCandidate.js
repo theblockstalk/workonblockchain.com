@@ -21,16 +21,21 @@ module.exports = async function () {
         }
         else if(userDoc) {
             logger.debug("Checking company " + companyDoc.company_name + " with user_id " + userDoc._id);
-            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(Date.now() - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
+            const timestamp = Date.now();
+            if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(timestamp - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
 
                 const savedSearch = companyDoc.saved_searches[0];
+                let blacklist = [];
+                for (let candidateSent of companyDoc.candidates_sent_by_email) {
+                    blacklist.push(candidateSent.user);
+                }
                 let candidateDocs
                 try {
                     candidateDocs = await candidateSearch.candidateSearch({
                         is_verify: 1,
                         status: 'approved',
                         disable_account: false,
-                        firstApprovedDate: companyDoc.last_email_sent
+                        blacklist: blacklist
                     }, {
                         skills: savedSearch.skills,
                         locations: savedSearch.location,
@@ -44,15 +49,21 @@ module.exports = async function () {
                     });
 
                     let candidateList = [];
+                    let candidateLog = [];
                     for ( let i = 0 ; i < candidateDocs.candidates.length; i++) {
-                        const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidateDocs.candidates[i]._creator._id;
+                        const candidate = candidateDocs.candidates[i];
+                        const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidate._id;
                         const candidateInfo = {
                             url: url,
-                            why_work: candidateDocs.candidates[i].why_work,
-                            initials: filterReturnData.createInitials(candidateDocs.candidates[i].first_name, candidateDocs.candidates[i].last_name),
-                            programming_languages: candidateDocs.candidates[i].programming_languages
+                            why_work: candidate.candidate.why_work,
+                            initials: filterReturnData.createInitials(candidate.first_name, candidate.last_name),
+                            programming_languages: candidate.candidate.programming_languages
                         };
                         candidateList.push(candidateInfo);
+                        candidateLog.push({
+                            user: candidate._id,
+                            sent: timestamp
+                        })
                     }
 
                     let candidates;
@@ -64,7 +75,10 @@ module.exports = async function () {
                             candidates = {"count" : 'More than 10' , "list" : candidateList.slice(0, 10)};
                         }
                         await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
-                        await company.update({_creator : companyDoc._creator} , {$set : {'last_email_sent' : new Date()}});
+                        await company.update({_creator : companyDoc._creator} , {
+                            $set : {'last_email_sent' : timestamp},
+                            $push: {'candidates_sent_by_email': candidateLog}
+                        });
                     }
                     else {
                         logger.debug("Candidate list is empty");

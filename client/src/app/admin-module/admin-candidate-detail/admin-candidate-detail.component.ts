@@ -84,6 +84,9 @@ export class AdminCandidateDetailComponent implements OnInit {
   commercial_skills;
   formal_skills;
   created_date;
+  selectedValueArray=[];
+  visaRequiredArray = [];
+  noVisaArray = [];
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -122,7 +125,6 @@ export class AdminCandidateDetailComponent implements OnInit {
                 $("#status_reason_deferred").css("display", "block");
               }
               this.info.push(data);
-              console.log(this.info);
               this.verify =data['is_verify'];
               if(data['candidate'].work_history) {
                 this.work_history = data['candidate'].work_history;
@@ -134,11 +136,65 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.education_history.sort(this.education_sort_desc);
               }
 
-              this.countries = data['candidate'].locations;
-              this.countries.sort();
-              if(this.countries.indexOf("remote") > -1){
-                this.countries.splice(0, 0, "remote");
-                this.countries = this.filter_array(this.countries);
+              if(data['candidate'].locations)
+              {
+                let citiesArray = [];
+                let countriesArray = [];
+                for (let country1 of data['candidate'].locations)
+                {
+                  let locObject : any = {}
+                  if (country1['remote'] === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_needed : false});
+                  }
+
+                  if (country1['country']) {
+                    locObject.name = country1['country'];
+                    locObject.type = 'country';
+                    if(country1['visa_needed'] === true) locObject.visa_needed = true;
+                    else locObject.visa_needed = false;
+                    countriesArray.push(locObject);
+                    countriesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
+                  }
+                  if (country1['city']) {
+                    let city = country1['city'].city + ", " + country1['city'].country;
+                    locObject.name = city;
+                    locObject.type = 'city';
+                    if(country1['visa_needed'] === true) locObject.visa_needed = true;
+                    else locObject.visa_needed = false;
+                    citiesArray.push(locObject);
+                    citiesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
+
+                  }
+
+                }
+
+                this.countries = citiesArray.concat(countriesArray);
+                this.countries = this.countries.concat(this.selectedValueArray);
+                if(this.countries.find((obj => obj.name === 'Remote'))) {
+                  let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                  this.countries.splice(0, 0, remoteValue);
+                  this.countries = this.filter_array(this.countries);
+
+                }
+
+                if(this.countries && this.countries.length > 0) {
+
+                  for(let loc of this.countries) {
+                    if(loc.visa_needed === true)
+                      this.visaRequiredArray.push(loc);
+                    if(loc.visa_needed === false)
+                      this.noVisaArray.push(loc);
+                  }
+                }
+
               }
               this.interest_area =data['candidate'].interest_areas;
               this.interest_area.sort();
@@ -266,7 +322,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                         this.referred_name = refData['refDoc'].email;
                       }
 
-                          },
+                    },
                     error => {
                       if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
                       {
@@ -363,25 +419,25 @@ export class AdminCandidateDetailComponent implements OnInit {
 
   saveApproveData(id:any, set_status:string, reason:string) {
     this.authenticationService.approve_candidate(id, set_status, reason)
-    .subscribe(
-      data => {
-        if (data['success'] === true) {
-          this.candidate_status.status = set_status;
-          this.candidate_status.reason = reason;
-          this.success = 'Candidate status changed successfully';
-        }
-      },
-      error => {
-        if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-          this.error = error['error']['message'];
-        }
-        if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-          this.error = error['error']['message'];
-        }
-        else {
-          this.error = "Something getting wrong";
-        }
-      });
+      .subscribe(
+        data => {
+          if (data['success'] === true) {
+            this.candidate_status.status = set_status;
+            this.candidate_status.reason = reason;
+            this.success = 'Candidate status changed successfully';
+          }
+        },
+        error => {
+          if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.error = error['error']['message'];
+          }
+          if (error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.error = error['error']['message'];
+          }
+          else {
+            this.error = "Something getting wrong";
+          }
+        });
   }
 
   filter_array(arr) {

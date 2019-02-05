@@ -37,9 +37,12 @@ describe('search candidates as company', function () {
             const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
+            console.log(candidateUserDoc.candidate);
+            const locations = [{name : 'Remote' , visa_needed: false},
+                {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }];
             const params = {
                 positions: candidateUserDoc.candidate.roles,
-                locations: candidateUserDoc.candidate.locations,
+                locations: locations,
                 availability_day: candidateUserDoc.candidate.availability_day,
             }
 

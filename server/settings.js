@@ -48,6 +48,9 @@ if (isLiveApplication()) {
         API_KEY: config.sendGrid.apiKey
     };
 
+    settings.throttleTime = config.sendGrid.throttleTime;
+
+
     settings.SLACK = {
         WEBHOOK: process.env.SLACK_WEBHOOK,
         USERNAME: config.slack.username,

@@ -11,9 +11,6 @@ module.exports = async function verify_send_email(emailAddress, verifyEmailToken
             if(userDoc.first_name){
                 name = userDoc.first_name;
             }
-            else {
-                name = null;
-            }
             verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
             return true;
         }
@@ -23,9 +20,6 @@ module.exports = async function verify_send_email(emailAddress, verifyEmailToken
             if(companyDoc ) {
                 if(companyDoc.first_name) {
                     name = companyDoc.first_name;
-                }
-                else {
-                    name = null;
                 }
                 verifyEmailEmail.sendEmail(userDoc.email, name ,verifyEmailToken);
                 return true;
