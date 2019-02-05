@@ -45,21 +45,21 @@ module.exports.up = async function() {
             await cities.findAndIterate({city :  {$in: userDoc.candidate.locations}}, async function(citiesDoc) {
                 if(userDoc.candidate.locations.find(x => x === 'London')) {
                     if(citiesDoc.city === 'London' && citiesDoc.country === 'United Kingdom') {
-                        locations.push({city: citiesDoc._id, visa_needed: true});
+                        locations.push({city: citiesDoc._id.toString(), visa_needed: true});
                     }
                 }
                 else if(userDoc.candidate.locations.find(x => x === 'Barcelona')) {
                     if(citiesDoc.city === 'Barcelona' && citiesDoc.country === 'Spain') {
-                        locations.push({city: citiesDoc._id, visa_needed: true});
+                        locations.push({city: citiesDoc._id.toString(), visa_needed: true});
                     }
                 }
                 else if(userDoc.candidate.locations.find(x => x === 'Los Angeles')) {
                     if(citiesDoc.city === 'Los Angeles' && citiesDoc.country === 'United States') {
-                        locations.push({city: citiesDoc._id, visa_needed: true});
+                        locations.push({city: citiesDoc._id.toString(), visa_needed: true});
                     }
                 }
                 else {
-                    locations.push({city: citiesDoc._id, visa_needed: true});
+                    locations.push({city: citiesDoc._id.toString(), visa_needed: true});
                 }
 
             });
@@ -89,6 +89,7 @@ module.exports.up = async function() {
             }
 
             if(locations && locations.length > 0) {
+                console.log("locations: " + locations);
                 await users.update({ _id: userDoc._id },{ $set: {'candidate.locations' : locations} });
                 totalModified++;
             }
@@ -109,16 +110,16 @@ module.exports.up = async function() {
                 console.log("company Doc searched locations:  " + companyDoc.saved_searches[0].location);
                 await cities.findAndIterate({city :  {$in: companyDoc.saved_searches[0].location}}, async function(citiesDoc) {
                     if(citiesDoc.city === 'London') {
-                        if (citiesDoc.country === 'United Kingdom') locations.push({city: citiesDoc._id});
+                        if (citiesDoc.country === 'United Kingdom') locations.push({city: citiesDoc._id.toString()});
                     }
                     else if(citiesDoc.city === 'Barcelona') {
-                        if (citiesDoc.country === 'Spain') locations.push({city: citiesDoc._id});
+                        if (citiesDoc.country === 'Spain') locations.push({city: citiesDoc._id.toString()});
                     }
                     else if(citiesDoc.city === 'Los Angeles') {
-                        if (citiesDoc.country === 'United States') locations.push({city: citiesDoc._id});
+                        if (citiesDoc.country === 'United States') locations.push({city: citiesDoc._id.toString()});
                     }
                     else {
-                        locations.push({city: citiesDoc._id});
+                        locations.push({city: citiesDoc._id.toString()});
                     }
                 });
 
@@ -162,7 +163,7 @@ module.exports.down = async function() {
         if(userDoc.candidate.locations) {
             for(let loc of userDoc.candidate.locations) {
                 if(loc.city){
-                    const cityDoc= await cities.findOneById(loc.city);
+                    const cityDoc= await cities.findOneById(mongoose.Types.ObjectId(loc.city));
                     locations.push(cityDoc.city);
                 }
                 if(loc.remote === true) {
@@ -187,7 +188,7 @@ module.exports.down = async function() {
         if(companyDoc && companyDoc.saved_searches && companyDoc.saved_searches.length > 0) {
             for(let loc of companyDoc.saved_searches[0].location) {
                 if(loc.city){
-                    const cityDoc= await cities.findOneById(loc.city);
+                    const cityDoc= await cities.findOneById(mongoose.Types.ObjectId(loc.city));
                     locations.push(cityDoc.city);
                 }
                 if(loc.remote === true) {

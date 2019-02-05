@@ -54,7 +54,7 @@
               <datalist id="countryList" *ngIf ="cities && cities.length > 0">
                 <select class="form-control">
 
-                <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}" >
+                <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}" >{{country.name}}
                   </option>
                 </select>
               </datalist>
@@ -75,7 +75,7 @@
                         <label >{{value.name}}</label>
                       </div>
                       <div class = "col-4 text-right">
-                        <a (click)="deleteLocationRow(i)" class = "btn btn-dark px-2 pb-1 pt-0 text-white font-weight-bold rounded">x</a>
+                        <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
                       </div>
                       <div class="col-12">
                         <div class="form-check" *ngIf="value.name !== 'Remote'">
