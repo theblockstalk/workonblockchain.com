@@ -36,6 +36,7 @@ export class ReferralComponent implements OnInit {
   terms_log = '';
   log_success = '';
   twitterText;
+  button_status;
 
   constructor(
     private authenticationService: UserService,private titleService: Title,private newMeta: Meta
@@ -130,14 +131,16 @@ export class ReferralComponent implements OnInit {
 
   }
 
-  send_email() {
-    if(this.credentials.email && this.email_subject && this.mail_body){
+  send_email(emailForm : NgForm) {
+    this.button_status="submit";
+    if(emailForm.valid === true && this.credentials.email && this.email_subject && this.mail_body){
       this.log = '';
       this.log_success = 'Sending your Email';
       this.authenticationService.send_refreal(this.credentials.email, this.email_subject, this.mail_body,this.share_url,this.first_name,this.last_name)
       .subscribe(
         data => {
           this.log_success = data['msg'];
+          this.credentials.email = '';
         },
         error => {
           if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
@@ -166,8 +169,9 @@ export class ReferralComponent implements OnInit {
   }
 
   get_ref_link(refrealForm : NgForm){
+    this.button_status="submit";
     this.terms_log = '';
-    if(refrealForm.value.email && refrealForm.value.terms) {
+    if(refrealForm.valid === true &&  refrealForm.value.email && refrealForm.value.terms) {
       this.termscondition = refrealForm.value.terms;
       this.authenticationService.getRefCode(refrealForm.value.email)
       .subscribe(
