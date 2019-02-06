@@ -54,7 +54,7 @@ module.exports.startCron = function startCron() {
         logger.debug('Cron jobs', {
             unreadMessagesJob: unreadMessagesJob,
             syncSendgridJob: syncSendgrid,
-            autoNotification : autoNotificationEmail
+            // autoNotification : autoNotificationEmail
         });
 
         logger.info('Cron jobs started');
