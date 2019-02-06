@@ -37,7 +37,8 @@ module.exports = async function (req, res) {
                 }
             );
         if (status === 'approved') {
-            candidateApprovedEmail.sendEmail(userDoc.email, userDoc.first_name, userDoc.disable_account);
+            // candidateApprovedEmail.sendEmail(userDoc.email, userDoc.first_name, userDoc.disable_account);
+            // Jack dissabled this as Antonio is emailing all users
         }
         res.send({
             success: true
