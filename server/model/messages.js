@@ -71,7 +71,7 @@ const MessageSchema = new Schema({
                 },
                 location: {
                     type: String,
-                    required: true
+                    required: false
                 },
                 description: {
                     type: String,
