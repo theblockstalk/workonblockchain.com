@@ -24,8 +24,10 @@
   },
   "sendGrid": {
     "fromAddress": "no-reply@workonblockchain.com",
-    "fromName": "Work on Blockchain"
+    "fromName": "Work on Blockchain",
+    "throttleTime" : 600
   },
+
   "currencyRatesUSD": {
     "GBP": 1.28,
     "Euro": 1.14

@@ -48,13 +48,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   @ViewChild("myckeditor") ckeditor: any;
   job_offer_log;
   saved_searches;
-  location_value = '';
   skill_value= '';
   location;
   role_value;
   blockchain_value;
   pager: any = {};
   pagedItems: any[];
+  countries;
+  selectedValueArray=[];
+  countriesModel;
+  error;
+  cities;
+  emptyInput;
 
   constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
@@ -327,10 +332,30 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   this.imgPath =  data['company_logo'];
                 }
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
-                  this.saved_searches = data['saved_searches'];
-                  this.location_value = data['saved_searches'][0].location;
-                  this.skill_value = data['saved_searches'][0].skills;
+                  if(data['saved_searches'][0].location)
+                  {
+                    for (let country1 of data['saved_searches'][0].location)
+                    {
+                      if (country1['remote'] === true) {
+                        this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
+                      }
 
+                      if (country1['city']) {
+                        let city = country1['city'].city + ", " + country1['city'].country;
+                        this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
+                      }
+                    }
+
+                    this.selectedValueArray.sort();
+                    if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+                      let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+                      this.selectedValueArray.splice(0, 0, remoteValue);
+                      this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+                    }
+                  }
+                  this.skill_value = data['saved_searches'][0].skills;
+                  this.visa_check = data['saved_searches'][0].visa_needed;
                   this.role_value = data['saved_searches'][0].position;
                   if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
                     this.blockchain_value = data['saved_searches'][0].blockchain;
@@ -390,19 +415,21 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  locationChanged(data)
+  updateCitiesOptions(e) {
+  }
+  /*locationChanged(data)
   {
     this.not_found = '';
       this.location_value = data.value;
       this.searchdata('location' , this.location_value);
 
-  }
+  }*/
 
   skillChanged(data)
   {
     this.not_found = '';
-      this.skill_value = data.value;
-      this.searchdata('skill' , this.skill_value);
+    this.skill_value = data.value;
+    this.searchdata('skill' , this.skill_value);
 
   }
 
@@ -413,25 +440,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.searchdata('blockchain' , this.selecteddd);
   }
 
-  filter_array(arr)
-  {
-    var hashTable = {};
-
-    return arr.filter(function (el) {
-      var key = JSON.stringify(el);
-      var match = Boolean(hashTable[key]);
-
-      return (match ? false : hashTable[key] = true);
-    });
-  }
 
   selectedObj;countryChange;availabilityChange;salary;currencyChange;
   information;
   not_found;
   salarysearchdata(key , value) {
     this.not_found = '';
-    console.log(this.salary);
-    console.log(this.currencyChange);
     if (this.salary) {
       if (this.currencyChange) {
         this.searchdata(key, value);
@@ -440,7 +454,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         let queryBody : any = {};
         if(this.searchWord) queryBody.word = this.searchWord;
         if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
-        if(this.location_value && this.location_value.length > 0) queryBody.locations = this.location_value;
+        if(this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
         if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.select_value;
         if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.selecteddd;
         if(this.availabilityChange) queryBody.availability_day = this.availabilityChange;
@@ -448,23 +462,22 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           queryBody.current_salary  = this.salary;
           queryBody.current_currency = this.currencyChange;
         }
-        console.log(queryBody)
         this.authenticationService.filterSearch(queryBody)
-        .subscribe(
-          data => {
-            this.candidate_data = data;
-            this.responseMsg = "response";
-            if (this.candidate_data.length <= 0) {
-              this.not_found = 'No candidates matched this search criteria';
-            }
-            if(this.candidate_data.length > 0) {
-              this.not_found='';
-            }
-          },
-          error =>
-          {
-            if(error['message'] === 500)
+          .subscribe(
+            data => {
+              this.candidate_data = data;
+              this.responseMsg = "response";
+              if (this.candidate_data.length <= 0) {
+                this.not_found = 'No candidates matched this search criteria';
+              }
+              if(this.candidate_data.length > 0) {
+                this.not_found='';
+              }
+            },
+            error =>
             {
+              if(error['message'] === 500)
+              {
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('googleUser');
@@ -473,17 +486,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 localStorage.removeItem('admin_log');
                 window.location.href = '/login';
               }
-            if(error['message'] === 403)
-            {
-              this.router.navigate(['/not_found']);
-            }
+              if(error['message'] === 403)
+              {
+                this.router.navigate(['/not_found']);
+              }
 
             }
           );
       }
     }
   }
-
+  visa_check;
   searchdata(key , value)
   {
 
@@ -493,7 +506,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.responseMsg = "";
     this.not_found='';
 
-    if(!this.searchWord && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.location_value &&  !this.currencyChange &&  !this.availabilityChange )
+    if(!this.searchWord && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange &&  !this.availabilityChange )
     {
       this.getVerrifiedCandidate();
     }
@@ -503,10 +516,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       let queryBody : any = {};
       if(this.searchWord) queryBody.word = this.searchWord;
       if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
-      if(this.location_value && this.location_value.length > 0) queryBody.locations = this.location_value;
+      if(this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
       if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.role_value;
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.availabilityChange ) queryBody.availability_day = this.availabilityChange;
+      if(this.visa_check) queryBody.visa_needed = this.visa_check;
       if(this.salary && this.currencyChange) {
         setTimeout(() => {
           $('.selectpicker').selectpicker();
@@ -557,11 +571,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.info = [];
     this.searchWord = '';
     this.skill_value = '';
-    this.location_value = '';
+    this.selectedValueArray = [];
     this.role_value = '';
     this.blockchain_value = '';
     this.currencyChange = '';
     this.availabilityChange = '';
+    this.visa_check = false;
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.getVerrifiedCandidate();
@@ -586,7 +601,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.authenticationService.getVerrifiedCandidate(this.currentUser._creator)
       .subscribe(
         dataa => {
-          console.log(dataa)
           this.candidate_data = dataa;
           this.setPage(1);
           if(this.candidate_data.length > 0) {
@@ -689,125 +703,125 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       );
   }
 
-    date_of_joining;
-    msg_tag;
-    is_company_reply = 0;
-    msg_body;
-    description;
-    job_title_log;
-    location_log;
-    salary_log;
-    salary_currency_log;
-    employment_log;
-    job_desc_log;
-    job_offer_log_success;
-    job_offer_log_erorr;
+  date_of_joining;
+  msg_tag;
+  is_company_reply = 0;
+  msg_body;
+  description;
+  job_title_log;
+  location_log;
+  salary_log;
+  salary_currency_log;
+  employment_log;
+  job_desc_log;
+  job_offer_log_success;
+  job_offer_log_erorr;
 
-    send_job_offer(msgForm : NgForm){
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.job_title_log = '';
-        this.location_log = '';
-        this.salary_log = '';
-        this.salary_currency_log = '';
-        this.employment_log = '';
-        this.job_desc_log = '';
-        this.job_offer_log_success = '';
-        this.job_offer_log_erorr = '';
+  send_job_offer(msgForm : NgForm){
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.job_title_log = '';
+    this.location_log = '';
+    this.salary_log = '';
+    this.salary_currency_log = '';
+    this.employment_log = '';
+    this.job_desc_log = '';
+    this.job_offer_log_success = '';
+    this.job_offer_log_erorr = '';
 
-        if(!this.credentials.job_title){
-          this.job_title_log = 'Please enter job title';
-        }
-        if(!this.credentials.location){
-          this.location_log = 'Please enter location';
-        }
-        if(!this.credentials.salary){
-          this.salary_log = 'Please enter salary';
-        }
-        if(!this.credentials.currency){
-          this.salary_currency_log = 'Please select currency';
-        }
-        if(!this.credentials.job_type){
-          this.employment_log = 'Please select employment type';
-        }
-        if(!this.credentials.job_desc){
-          this.job_desc_log = 'Please enter job description';
-        }
+    if(!this.credentials.job_title){
+      this.job_title_log = 'Please enter job title';
+    }
+    if(!this.credentials.location){
+      this.location_log = 'Please enter location';
+    }
+    if(!this.credentials.salary){
+      this.salary_log = 'Please enter salary';
+    }
+    if(!this.credentials.currency){
+      this.salary_currency_log = 'Please select currency';
+    }
+    if(!this.credentials.job_type){
+      this.employment_log = 'Please select employment type';
+    }
+    if(!this.credentials.job_desc){
+      this.job_desc_log = 'Please enter job description';
+    }
 
-        if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
-          if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
-            this.authenticationService.get_job_desc_msgs(this.user_id.id, 'job_offer')
-              .subscribe(
-                data => {
-                  this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
-                },
-                error => {
-                  if (error['status'] === 500 || error['status'] === 401) {
-                    localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                    localStorage.removeItem('currentUser');
-                    localStorage.removeItem('googleUser');
-                    localStorage.removeItem('close_notify');
-                    localStorage.removeItem('linkedinUser');
-                    localStorage.removeItem('admin_log');
-                    window.location.href = '/login';
-                  }
+    if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
+      if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
+        this.authenticationService.get_job_desc_msgs(this.user_id.id, 'job_offer')
+          .subscribe(
+            data => {
+              this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
+            },
+            error => {
+              if (error['status'] === 500 || error['status'] === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
 
-                  if (error['status'] === 404) {
-                    this.date_of_joining = '10-07-2018';
-                    this.msg_tag = 'job_offer';
-                    this.is_company_reply = 0;
-                    this.msg_body = '';
-                    this.description = this.credentials.job_desc;
-                    this.interview_location = this.credentials.location;
-                    this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-                      .subscribe(
-                        data => {
-                          this.job_offer_log_success = 'Message successfully sent';
-                          this.credentials.job_title = '';
-                          this.credentials.salary = '';
-                          this.credentials.currency = '';
-                          this.credentials.location = '';
-                          this.credentials.job_type = '';
-                          this.credentials.job_desc = '';
-                          $("#jobDescriptionModal").modal("hide");
-                          this.router.navigate(['/chat']);
-                        },
-                        error => {
-                          if (error.status === 404) {
-                            this.date_of_joining = '10-07-2018';
-                            this.msg_tag = 'job_offer';
-                            this.is_company_reply = 0;
-                            this.msg_body = '';
-                            this.description = this.credentials.job_desc;
-                            this.interview_location = this.credentials.location;
-                            this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-                              .subscribe(
-                                data => {
-                                  this.job_offer_log_success = 'Message successfully sent';
-                                  this.credentials.job_title = '';
-                                  this.credentials.salary = '';
-                                  this.credentials.currency = '';
-                                  this.credentials.location = '';
-                                  this.credentials.job_type = '';
-                                  this.credentials.job_desc = '';
-                                  $("#jobDescriptionModal").modal("hide");
-                                  this.router.navigate(['/chat']);
-                                },
-                                error => {
+              if (error['status'] === 404) {
+                this.date_of_joining = '10-07-2018';
+                this.msg_tag = 'job_offer';
+                this.is_company_reply = 0;
+                this.msg_body = '';
+                this.description = this.credentials.job_desc;
+                this.interview_location = this.credentials.location;
+                this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
+                  .subscribe(
+                    data => {
+                      this.job_offer_log_success = 'Message successfully sent';
+                      this.credentials.job_title = '';
+                      this.credentials.salary = '';
+                      this.credentials.currency = '';
+                      this.credentials.location = '';
+                      this.credentials.job_type = '';
+                      this.credentials.job_desc = '';
+                      $("#jobDescriptionModal").modal("hide");
+                      this.router.navigate(['/chat']);
+                    },
+                    error => {
+                      if (error.status === 404) {
+                        this.date_of_joining = '10-07-2018';
+                        this.msg_tag = 'job_offer';
+                        this.is_company_reply = 0;
+                        this.msg_body = '';
+                        this.description = this.credentials.job_desc;
+                        this.interview_location = this.credentials.location;
+                        this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
+                          .subscribe(
+                            data => {
+                              this.job_offer_log_success = 'Message successfully sent';
+                              this.credentials.job_title = '';
+                              this.credentials.salary = '';
+                              this.credentials.currency = '';
+                              this.credentials.location = '';
+                              this.credentials.job_type = '';
+                              this.credentials.job_desc = '';
+                              $("#jobDescriptionModal").modal("hide");
+                              this.router.navigate(['/chat']);
+                            },
+                            error => {
 
-                                }
-                              );
-                          }
-                        }
-                      );
-                  }
-                }
-              );
-          }
-          else {
-            this.salary_log = 'Salary should be a number';
-            this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
-          }
-        }
+                            }
+                          );
+                      }
+                    }
+                  );
+              }
+            }
+          );
+      }
+      else {
+        this.salary_log = 'Salary should be a number';
+        this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
+      }
+    }
     else{
       this.job_offer_log = 'One or more fields need to be completed. Please scroll up to see which ones.';
     }
@@ -836,5 +850,110 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.candidate_data.length, page);
     this.pagedItems = this.candidate_data.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
+
+
+  suggestedOptions() {
+    // this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola (city)', 'Antigua & Deps (city)', 'Argentina (city)', 'Armenia (city)', 'Australia (city)', 'Austria (city)', 'Azerbaijan (city)', 'Bahamas (city)', 'Bahrain (city)', 'Bangladesh (city)', 'Barbados (city)', 'Belarus (city)', 'Belgium (city)', 'Belize (city)', 'Benin (city)', 'Bhutan (city)', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+    this.authenticationService.autoSuggestOptions(this.countriesModel, false)
+      .subscribe(
+        data => {
+          if(data) {
+            let citiesInput = data;
+            let citiesOptions=[];
+            for(let cities of citiesInput['locations']) {
+              if(cities['remote'] === true) {
+                citiesOptions.push({name: 'Remote'});
+              }
+              if(cities['city']) {
+                let cityString = cities['city'].city + ", " + cities['city'].country;
+                citiesOptions.push({_id : cities['city']._id , name : cityString});
+              }
+
+            }
+            this.cities = this.filter_array(citiesOptions);
+          }
+
+        },
+        error=>
+        {
+          if(error['message'] === 500 || error['message'] === 401)
+          {
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+
+          if(error.message === 403)
+          {
+            this.router.navigate(['/not_found']);
+          }
+
+        });
+
+
+  }
+
+
+  selectedValueFunction(e) {
+    if(this.cities.find(x => x.name === e.target.value)) {
+      var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
+
+      this.countriesModel = '';
+      this.cities = [];
+      if(this.selectedValueArray.length > 4) {
+        this.error = 'You can select maximum 5 locations';
+        setInterval(() => {
+          this.error = "" ;
+        }, 5000);
+      }
+      else {
+        if(this.selectedValueArray.find(x => x.name === e.target.value)) {
+          this.error = 'This location has already been selected';
+          setInterval(() => {
+            this.error = "" ;
+          }, 4000);
+        }
+
+        else {
+          if(value2send) this.selectedValueArray.push({_id:value2send , name: e.target.value});
+          else this.selectedValueArray.push({ name: e.target.value});
+        }
+        this.selectedValueArray.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        });
+        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))){
+          this.selectedValueArray.splice(0, 0, {name : 'Remote'});
+          this.selectedValueArray = this.filter_array(this.selectedValueArray);
+        }
+        this.searchdata('locations' , this.selectedValueArray);
+      }
+    }
+    else {
+    }
+
+  }
+
+  deleteLocationRow(i){
+    this.selectedValueArray.splice(i, 1);
+    this.searchdata('locations' , this.selectedValueArray);
+  }
+
+  filter_array(arr)
+  {
+    var hashTable = {};
+
+    return arr.filter(function (el) {
+      var key = JSON.stringify(el);
+      var match = Boolean(hashTable[key]);
+
+      return (match ? false : hashTable[key] = true);
+    });
   }
 }

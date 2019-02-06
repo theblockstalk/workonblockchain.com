@@ -39,6 +39,8 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   roles;
   expected_salary;
   email;
+  visaRequiredArray= [];
+  noVisaArray = [];
   currency = ["£ GBP" ,"€ EUR" , "$ USD"];
 
   ckeConfig: any;
@@ -79,6 +81,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   commercial_skills;
   formal_skills;
   message;
+  selectedValueArray=[];
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
@@ -93,6 +96,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   ngOnInit()
   {
     this.invalidMsg = '';
+    this.selectedValueArray=[];
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     localStorage.removeItem('previousUrl');
     if(this.currentUser && this.user_id && this.currentUser.type === 'company') {
@@ -163,11 +167,63 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
-              this.countries = dataa['candidate'].locations;
-              this.countries.sort();
-              if(this.countries.indexOf("remote") > -1){
-                this.countries.splice(0, 0, "remote");
-                this.countries = this.filter_array(this.countries);
+              if(dataa['candidate'].locations)
+              {
+                let citiesArray = [];
+                let countriesArray = [];
+                for (let country1 of dataa['candidate'].locations)
+                {
+                  let locObject : any = {}
+                  if (country1['remote'] === true) {
+                    this.selectedValueArray.push({name: 'Remote' , visa_needed : false});
+                  }
+
+                  if (country1['country']) {
+                    locObject.name = country1['country'];
+                    locObject.type = 'country';
+                    if(country1['visa_needed'] === true) locObject.visa_needed = true;
+                    else locObject.visa_needed = false;
+                    countriesArray.push(locObject);
+                    countriesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
+                  }
+                  if (country1['city']) {
+                    let city = country1['city'].city + ", " + country1['city'].country;
+                    locObject.name = city;
+                    locObject.type = 'city';
+                    if(country1['visa_needed'] === true) locObject.visa_needed = true;
+                    else locObject.visa_needed = false;
+                    citiesArray.push(locObject);
+                    citiesArray.sort(function(a, b){
+                      if(a.name < b.name) { return -1; }
+                      if(a.name > b.name) { return 1; }
+                      return 0;
+                    });
+
+                  }
+
+                }
+
+                this.countries = citiesArray.concat(countriesArray);
+                this.countries = this.countries.concat(this.selectedValueArray);
+                if(this.countries.find((obj => obj.name === 'Remote'))) {
+                  let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+                  this.countries.splice(0, 0, remoteValue);
+                  this.countries = this.filter_array(this.countries);
+                }
+                if(this.countries && this.countries.length > 0) {
+
+                  for(let loc of this.countries) {
+                    if(loc.visa_needed === true)
+                      this.visaRequiredArray.push(loc);
+                    if(loc.visa_needed === false)
+                      this.noVisaArray.push(loc);
+                  }
+                }
+
               }
 
               this.interest_area =dataa['candidate'].interest_areas;
@@ -265,7 +321,6 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
           },
           error => {
             if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              //console.log(error['error']['message']);
               this.router.navigate(['/not_found']);
             }
 
@@ -372,13 +427,10 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                 this.authenticationService.insertMessage(this.credentials.user_id, this.company_name, this.full_name, this.msg_body, this.job_description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
                   .subscribe(
                     data => {
-                      ////console.log(data);
                       this.job_offer_msg_success = 'Message has been successfully sent';
                       this.router.navigate(['/chat']);
                     },
                     error => {
-                      ////console.log('error');
-                      ////console.log(error);
                       //this.log = error;
                     }
                   );

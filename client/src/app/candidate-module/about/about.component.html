@@ -70,7 +70,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="githubURL">Github account URL (optional)</label>
-                <input type="text" #gitaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="githubURL" placeholder="https://github.com/username"  name="github_account" [(ngModel)]="info.github_account">
+                <input type="text" #gitaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" id="githubURL" placeholder="https://github.com/username"  name="github_account" [(ngModel)]="info.github_account">
                 <div class = "invalid-feedback d-inline"  *ngIf="gitaccount.errors">
                   Enter url in proper format.
                 </div>
@@ -79,7 +79,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="stackURL">Stackexchange account URL (optional)</label>
-                <input type="text" #stackaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" id="stackURL" placeholder="https://stackexchange.com/users/12345/username" name="exchange_account" [(ngModel)]="info.exchange_account">
+                <input type="text" #stackaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" id="stackURL" placeholder="https://stackexchange.com/users/12345/username" name="exchange_account" [(ngModel)]="info.exchange_account">
                 <div class = "invalid-feedback d-inline"  *ngIf="stackaccount.errors">
                   Enter url in proper format.
                 </div>

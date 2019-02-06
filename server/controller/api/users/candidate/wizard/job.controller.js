@@ -1,6 +1,7 @@
 const users = require('../../../../../model/mongoose/users');
 const errors = require('../../../../services/errors');
 const filterReturnData = require('../../filterReturnData');
+const mongoose = require('mongoose');
 
 module.exports = async function (req,res)
 {
@@ -11,7 +12,15 @@ module.exports = async function (req,res)
         const queryBody = req.body;
         let candidateUpdate = {};
         let unset = {};
-        if (queryBody.country) candidateUpdate['candidate.locations'] = queryBody.country;
+        if (queryBody.country) {
+            for(let loc of queryBody.country) {
+                if(loc.city) {
+                    const index = queryBody.country.findIndex((obj => obj.city === loc.city));
+                    queryBody.country[index].city = mongoose.Types.ObjectId(loc.city);
+                }
+            }
+            candidateUpdate['candidate.locations'] = queryBody.country;
+        }
         if (queryBody.roles) candidateUpdate['candidate.roles'] = queryBody.roles;
         if (queryBody.interest_areas) candidateUpdate['candidate.interest_areas'] = queryBody.interest_areas;
         if (queryBody.base_currency) candidateUpdate['candidate.expected_salary_currency'] = queryBody.base_currency;
