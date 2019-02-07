@@ -2,7 +2,7 @@ const company = require('../../../model/mongoose/company');
 const users = require('../../../model/mongoose/users');
 
 const candidateSearch = require('../../../controller/api/users/candidate/searchCandidates');
-const autoNotificationEmail = require('../email/emails/companyAutoNotification');
+// const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
 const settings = require('../../../settings');
 const logger = require('../logger');
@@ -74,13 +74,13 @@ module.exports = async function () {
                         else {
                             candidates = {"count" : 'More than 10' , "list" : candidateList.slice(0, 10)};
                         }
-                        logger.debug("Company saved searches: ", savedSearch);
-                        logger.debug("Candidate list : ", candidateList);
-                        /*await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
-                        await company.update({_creator : companyDoc._creator} , {
-                            $set : {'last_email_sent' : timestamp},
-                            $push: {'candidates_sent_by_email': candidateLog}
-                        });*/
+                        logger.error("Company preferences", savedSearch);
+                        logger.error("Search results", candidates);
+                        // await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
+                        // await company.update({_creator : companyDoc._creator} , {
+                        //     $set : {'last_email_sent' : timestamp},
+                        //     $push: {'candidates_sent_by_email': candidateLog}
+                        // });
                     }
                     else {
                         logger.debug("Candidate list is empty");
