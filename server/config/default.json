@@ -18,7 +18,6 @@
     "GBP": 1.28,
     "Euro": 1.14
   },
-  "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
     "unreadMessagesTick": "0-59 * * * *",
     "syncSendgrid": "0-59 * * * *",
