@@ -136,7 +136,7 @@
                   <select title="Please choose base country" class="form-control selectpicker" required name="base_country" [(ngModel)]="info.base_country">
                     <option *ngFor='let options of countries'  [value]="options" [attr.selected]="options === info.base_country ? true : null ">{{options}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="info.base_country">
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.base_country">
                     {{base_country_log}}
                   </div>
                 </div>

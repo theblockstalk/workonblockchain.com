@@ -164,7 +164,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
                 }
 
             }
-            if(search.locations.find(x => x.name === "Remote")) {
+            if(search.locations.find(x => x.remote === true)) {
                 const locationRemoteFilter = {"candidate.locations.remote" : true};
                 locationsQuery.push(locationRemoteFilter);
             }
