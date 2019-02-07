@@ -10,6 +10,7 @@ module.exports = async function(req, res) {
     }
     else {
         let token = crypto.getRandomString(10);
+        token = token.replace('+', 1).replace('-',2).replace('/',3).replace('*',4).replace('#',5).replace('=',6);
         const uniqueToken = await isPrime(token);
         if(uniqueToken) {
             const newDoc = await mongooseReferral.insert({
@@ -26,7 +27,7 @@ async function isPrime(token){
     const newDoc = await mongooseReferral.findOne({url_token : token});
     if(newDoc) {
         let newToken = crypto.getRandomString(10);
-        newToken = newToken.replace('+', '1').replace('-',2).replace('/',3).replace('*',4).replace('#',5).replace('=',6);
+        newToken = newToken.replace('+', 1).replace('-',2).replace('/',3).replace('*',4).replace('#',5).replace('=',6);
         return isPrime(newToken);
     }
     else{
