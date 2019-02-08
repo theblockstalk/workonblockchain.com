@@ -2,7 +2,7 @@ const company = require('../../../model/mongoose/company');
 const users = require('../../../model/mongoose/users');
 
 const candidateSearch = require('../../../controller/api/users/candidate/searchCandidates');
-// const autoNotificationEmail = require('../email/emails/companyAutoNotification');
+const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
 const settings = require('../../../settings');
 const logger = require('../logger');
@@ -76,11 +76,11 @@ module.exports = async function () {
                         }
                         logger.error("Company preferences", savedSearch);
                         logger.error("Search results", candidates);
-                        // await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
-                        // await company.update({_creator : companyDoc._creator} , {
-                        //     $set : {'last_email_sent' : timestamp},
-                        //     $push: {'candidates_sent_by_email': candidateLog}
-                        // });
+                        await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
+                        await company.update({_creator : companyDoc._creator} , {
+                            $set : {'last_email_sent' : timestamp},
+                            $push: {'candidates_sent_by_email': candidateLog}
+                        });
                     }
                     else {
                         logger.debug("Candidate list is empty");

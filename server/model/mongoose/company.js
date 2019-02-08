@@ -39,8 +39,13 @@ module.exports.findOneAndPopulate = async function findOneAndPopulate(id) {
 
 }
 
-module.exports.update = async function update(selector, updateObj) {
+module.exports.update = async function (selector, updateObj) {
     await Company.findOneAndUpdate(selector, updateObj, { runValidators: true });
+}
+
+
+module.exports.updateMany = async function (selector, updateObj) {
+    await Company.updateMany(selector, updateObj, { runValidators: true });
 }
 
 module.exports.deleteOne = async function deleteOne(selector) {
