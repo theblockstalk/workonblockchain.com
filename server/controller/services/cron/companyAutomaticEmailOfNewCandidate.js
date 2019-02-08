@@ -2,7 +2,7 @@ const company = require('../../../model/mongoose/company');
 const users = require('../../../model/mongoose/users');
 
 const candidateSearch = require('../../../controller/api/users/candidate/searchCandidates');
-const autoNotificationEmail = require('../email/emails/companyAutoNotification');
+// const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
 const settings = require('../../../settings');
 const logger = require('../logger');
