@@ -75,7 +75,7 @@ module.exports = async function () {
                             candidates = {"count" : 'More than 10' , "list" : candidateList.slice(0, 10)};
                         }
                         logger.debug("Company preferences", savedSearch);
-                        logger.debug("Search results", candidateDocs.slice(0, 10));
+                        logger.debug("Search results", candidateDocs);
                         // await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
                         // await company.update({_creator : companyDoc._creator} , {
                         //     $set : {'last_email_sent' : timestamp},
