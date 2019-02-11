@@ -45,8 +45,8 @@ module.exports = async function (req, res) {
             aggregateObjArray(locationsCount, candidate.locations, enumerations.countries, "country");
             aggregateObjArrayAggregate(locationAggregate, candidate.locations, enumerations.countries, "country", "visa_needed");
             //aggregateArray(aggregatedData.locations, candidate.locations, locationList);
-            aggregateArray(aggregatedData.roles, candidate.roles, enumerations.workRoles);
-            aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
+            if(candidate.roles) aggregateArray(aggregatedData.roles, candidate.roles, enumerations.workRoles);
+            if(candidate.interest_areas)aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
             if(candidate.blockchain && candidate.blockchain.experimented_platforms) {
                 aggregateArray(aggregatedData.blockchain.experimented, candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);
             }
