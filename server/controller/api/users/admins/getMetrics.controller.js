@@ -47,18 +47,18 @@ module.exports = async function (req, res) {
             //aggregateArray(aggregatedData.locations, candidate.locations, locationList);
             aggregateArray(aggregatedData.roles, candidate.roles, enumerations.workRoles);
             aggregateArray(aggregatedData.interestAreas, candidate.interest_areas, enumerations.workBlockchainInterests);
-            if(candidate.blockchain.experimented_platforms) {
+            if(candidate.blockchain && candidate.blockchain.experimented_platforms) {
                 aggregateArray(aggregatedData.blockchain.experimented, candidate.blockchain.experimented_platforms, enumerations.blockchainPlatforms);
             }
             if(candidate.programming_languages) {
                 aggregateObjArray(programmingLanguagesCount, candidate.programming_languages, enumerations.programmingLanguages, "language");
                 aggregateObjArrayAggregate(programmingLanguagesAggregate, candidate.programming_languages, enumerations.programmingLanguages, "language", "exp_year");
             }
-            if(candidate.blockchain.commercial_platforms) {
+            if(candidate.blockchain && candidate.blockchain.commercial_platforms) {
                 aggregateObjArray(blockchainCommercialCount, candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name");
                 aggregateObjArrayAggregate(blockchainCommercialAggregate, candidate.blockchain.commercial_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
             }
-            if(candidate.blockchain.smart_contract_platforms) {
+            if(candidate.blockchain && candidate.blockchain.smart_contract_platforms) {
                 aggregateObjArray(blockchainSmartCount, candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name");
                 aggregateObjArrayAggregate(blockchainSmartAggregate, candidate.blockchain.smart_contract_platforms, enumerations.blockchainPlatforms, "name", "exp_year");
             }
