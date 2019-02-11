@@ -20,6 +20,7 @@ module.exports = async function(req, res) {
                 token = token.replace('+', 1).replace('-',2).replace('/',3).replace('*',4).replace('#',5).replace('=',6);
                 newDoc = await mongooseReferral.findOne({url_token : token});
                 if(newDoc) {
+                    uniqueToken = false;
                     continue;
                 }
             }
