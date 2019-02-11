@@ -515,45 +515,54 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   suggestedOptions() {
     // this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola (city)', 'Antigua & Deps (city)', 'Argentina (city)', 'Armenia (city)', 'Australia (city)', 'Austria (city)', 'Azerbaijan (city)', 'Bahamas (city)', 'Bahrain (city)', 'Bangladesh (city)', 'Barbados (city)', 'Belarus (city)', 'Belgium (city)', 'Belize (city)', 'Benin (city)', 'Bhutan (city)', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
-    this.authenticationService.autoSuggestOptions(this.preferncesForm.value.location , false)
-      .subscribe(
-        data => {
-          if(data) {
-            let citiesInput = data;
-            let citiesOptions=[];
-            for(let cities of citiesInput['locations']) {
-              if(cities['remote'] === true) {
-                citiesOptions.push({name: 'Remote'});
+    const letters = /^[a-zA-Z ]*$/;
+    if(this.preferncesForm.value.location.match(letters))
+    {
+      this.error='';
+      this.authenticationService.autoSuggestOptions(this.preferncesForm.value.location , false)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({name: 'Remote'});
+                }
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country;
+                  citiesOptions.push({_id : cities['city']._id , name : cityString});
+                }
               }
-              if(cities['city']) {
-                let cityString = cities['city'].city + ", " + cities['city'].country;
-                citiesOptions.push({_id : cities['city']._id , name : cityString});
-              }
+              this.cities = this.filter_array(citiesOptions);
             }
-            this.cities = this.filter_array(citiesOptions);
-          }
 
-        },
-        error=>
-        {
-          if(error['message'] === 500 || error['message'] === 401)
+          },
+          error=>
           {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
-          }
+            if(error['message'] === 500 || error['message'] === 401)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-          if(error.message === 403)
-          {
-            this.router.navigate(['/not_found']);
-          }
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-        });
-
+          });
+    }
+    else
+    {
+      this.cities = [];
+      this.error = "Please enter only alphabet";
+    }
 
   }
 
