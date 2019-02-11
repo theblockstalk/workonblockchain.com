@@ -1520,8 +1520,7 @@ export class UserService {
       {
         if (error )
         {
-          console.log(error);
-          return throwError(new Error(error));
+          return throwError(error);
         }
 
       }));

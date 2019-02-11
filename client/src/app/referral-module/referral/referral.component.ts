@@ -182,9 +182,12 @@ export class ReferralComponent implements OnInit {
             this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
             window.scrollTo(0, 180);
           }
-          },
-        error => {}
-
+        },
+        error => {
+          if(error['status'] === 400){
+            this.terms_log = 'Unable to generate referral link';
+          }
+        }
       );
     }
     else{
