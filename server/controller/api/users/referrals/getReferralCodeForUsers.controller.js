@@ -11,23 +11,22 @@ module.exports = async function(req, res) {
     else {
         let token = crypto.getRandomString(10);
         token = token.replace('+', 1).replace('-',2).replace('/',3).replace('*',4).replace('#',5).replace('=',6);
-        let newDoc = await mongooseReferral.findOne({url_token : token});
-        let uniqueToken = true;
+        let newDoc, i=0, totalIterations = 3;
+        newDoc = await mongooseReferral.findOne({url_token : token});
         if(newDoc) {
-            for(let i=0;i<1;i++){
-                uniqueToken = true;
+            let newDocs;
+            while(!newDocs && i < totalIterations){
+                i++;
                 token = crypto.getRandomString(10);
                 token = token.replace('+', 1).replace('-',2).replace('/',3).replace('*',4).replace('#',5).replace('=',6);
-                newDoc = await mongooseReferral.findOne({url_token : token});
-                if(newDoc) {
-                    uniqueToken = false;
-                    continue;
-                }
+                newDocs = await mongooseReferral.findOne({url_token : token});
             }
         }
-        if(uniqueToken === false){
+
+        if(i === totalIterations){
             errors.throwError("Unable to generate referral code" , 400)
         }
+
         const newInsertDoc = await mongooseReferral.insert({
             email: req.body.email,
             url_token: token,
