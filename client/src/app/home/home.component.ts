@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe(params => {
       console.log(params['code']);
       localStorage.setItem('ref_code', params['code']);
+      console.log(JSON.parse(localStorage.getItem('ref_code')));
     });
   }
   ngAfterViewInit(): void
