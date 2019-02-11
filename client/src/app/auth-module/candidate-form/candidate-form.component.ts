@@ -34,9 +34,10 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private titleService: Title,private newMeta: Meta
   ) {
     this.titleService.setTitle('Work on Blockchain | Signup developer or company');
-    this.route.queryParams.subscribe(params => {
+    this.code = JSON.parse(localStorage.getItem('ref_code'));
+    /*this.route.queryParams.subscribe(params => {
       this.code = params['code'];
-    });
+    });*/
 
     if (this.code) {
       this.authenticationService.getByRefrenceCode(this.code)

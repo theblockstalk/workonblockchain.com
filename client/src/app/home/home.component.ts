@@ -18,6 +18,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
                private router: Router,
                private authenticationService: UserService,private titleService: Title,private newMeta: Meta) {
     this.titleService.setTitle('Work on Blockchain | A recruitment hiring platform for blockchain developers');
+    this.route.queryParams.subscribe(params => {
+      console.log(params['code']);
+      localStorage.setItem('ref_code', params['code']);
+    });
   }
   ngAfterViewInit(): void
   {
