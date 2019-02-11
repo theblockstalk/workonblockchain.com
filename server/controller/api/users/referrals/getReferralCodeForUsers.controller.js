@@ -11,19 +11,16 @@ module.exports = async function(req, res) {
     else {
         let token = crypto.getRandomString(10);
         token = token.replace('+', 1).replace('-',2).replace('/',3).replace('*',4).replace('#',5).replace('=',6);
-        let newDoc, i=0, totalIterations = 3;
+        let newDoc, i=0, newDocs;
         newDoc = await mongooseReferral.findOne({url_token : token});
-        if(newDoc) {
-            let newDocs;
-            while(!newDocs && i < totalIterations){
-                i++;
-                token = crypto.getRandomString(10);
-                token = token.replace('+', 1).replace('-',2).replace('/',3).replace('*',4).replace('#',5).replace('=',6);
-                newDocs = await mongooseReferral.findOne({url_token : token});
-            }
+        while(newDocs && i < 3){
+            i++;
+            token = crypto.getRandomString(10);
+            token = token.replace('+', 1).replace('-',2).replace('/',3).replace('*',4).replace('#',5).replace('=',6);
+            newDocs = await mongooseReferral.findOne({url_token : token});
         }
 
-        if(i === totalIterations){
+        if (newDoc){
             errors.throwError("Unable to generate referral code" , 400)
         }
 
