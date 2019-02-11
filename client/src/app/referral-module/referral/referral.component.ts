@@ -7,7 +7,7 @@ import {ProfileDetail} from '../../Model/ProfileDetail';
 import { HttpClient } from '@angular/common/http';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
-const URL = environment.frontend_url;
+let URL = environment.frontend_url;
 declare var $: any;
 
 @Component({
@@ -19,7 +19,7 @@ export class ReferralComponent implements OnInit {
   currentUser: User;
   @ViewChild('element') element: ElementRef;
   credentials: any = {};
-  email_ref_link = URL + 'refer?code=';
+  email_ref_link = URL.replace(/\/$/, "") + '?code=';
   log = '';
   title = 'My Ref Page';
   ref_link = '';
