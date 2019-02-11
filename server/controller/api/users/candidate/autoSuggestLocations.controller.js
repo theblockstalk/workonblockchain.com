@@ -42,7 +42,3 @@ module.exports = async function (req, res) {
     });
 
 }
-
-function quote(str) {
-    return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-};
