@@ -1918,6 +1918,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     const letters = /^[a-zA-Z ]*$/;
     if(this.countriesModel.match(letters))
     {
+      this.error='';
       if(this.countriesModel && this.countriesModel !== '') {
         this.authenticationService.autoSuggestOptions(this.countriesModel, true)
           .subscribe(

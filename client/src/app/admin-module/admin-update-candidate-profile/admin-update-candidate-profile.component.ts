@@ -1874,6 +1874,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     const letters = /^[a-zA-Z ]*$/;
     if(this.countriesModel.match(letters))
     {
+      this.error='';
       this.authenticationService.autoSuggestOptions(this.countriesModel, true)
         .subscribe(
           data => {
