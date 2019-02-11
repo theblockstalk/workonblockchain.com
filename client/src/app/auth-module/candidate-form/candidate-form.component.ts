@@ -34,8 +34,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private titleService: Title,private newMeta: Meta
   ) {
     this.titleService.setTitle('Work on Blockchain | Signup developer or company');
-    //this.code = JSON.parse(localStorage.getItem('ref_code'));
-    //console.log(this.code);
+    this.code = localStorage.getItem('ref_code');
+    console.log(this.code);
     /*this.route.queryParams.subscribe(params => {
       this.code = params['code'];
     });*/
@@ -86,9 +86,6 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
-    this.code = JSON.parse(localStorage.getItem('ref_code'));
-    console.log(this.code);
-    console.log('i am here');
     $(function(){
       var hash = window.location.hash;
       hash && $('div.nav a[href="' + hash + '"]').tab('show');
