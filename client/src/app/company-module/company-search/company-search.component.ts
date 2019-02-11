@@ -342,7 +342,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
                       if (country1['city']) {
                         let city = country1['city'].city + ", " + country1['city'].country;
-                        this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
+                        this.selectedValueArray.push({city:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
                       }
                     }
 
@@ -867,7 +867,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               }
               if(cities['city']) {
                 let cityString = cities['city'].city + ", " + cities['city'].country;
-                citiesOptions.push({_id : cities['city']._id , name : cityString});
+                citiesOptions.push({city : cities['city']._id , name : cityString});
               }
 
             }
@@ -920,7 +920,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
 
         else {
-          if(value2send) this.selectedValueArray.push({_id:value2send , name: e.target.value});
+          if(value2send) this.selectedValueArray.push({city:value2send , name: e.target.value});
           else this.selectedValueArray.push({ name: e.target.value});
         }
         this.selectedValueArray.sort(function(a, b){

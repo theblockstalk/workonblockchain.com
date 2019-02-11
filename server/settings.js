@@ -77,7 +77,6 @@ settings.CRON = {
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;
 
 settings.CURRENCY_RATES_USD = config.currencyRatesUSD;
-settings.COMPANY_EMAIL_BLACKLIST = config.companyEmailBlacklist;
 
 let port;
 if (port = process.env.PORT) {

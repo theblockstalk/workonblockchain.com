@@ -7,7 +7,6 @@ module.exports = async function (req, res) {
     if(String(myUserDoc._id) === req.params._id || myUserDoc.is_admin === 1) {
         const candidateDoc = await users.findByIdAndPopulate(req.params._id);
         if(candidateDoc) {
-            console.log(candidateDoc.candidate.locations)
             const filterData = filterReturnData.removeSensativeData(candidateDoc);
             res.send(filterData);
         }

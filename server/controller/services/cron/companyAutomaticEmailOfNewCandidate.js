@@ -24,7 +24,7 @@ module.exports = async function () {
             const timestamp = Date.now();
             if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(timestamp - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
 
-                const savedSearch = companyDoc.saved_searches[0];
+                const savedSearch = companyDoc.saved_searches[0].toObject();
                 let blacklist = [];
                 for (let candidateSent of companyDoc.candidates_sent_by_email) {
                     blacklist.push(candidateSent.user);
@@ -74,8 +74,8 @@ module.exports = async function () {
                         else {
                             candidates = {"count" : 'More than 10' , "list" : candidateList.slice(0, 10)};
                         }
-                        logger.error("Company preferences", savedSearch);
-                        logger.error("Search results", candidates);
+                        logger.debug("Company preferences", savedSearch);
+                        logger.debug("Search results", candidateDocs);
                         // await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
                         // await company.update({_creator : companyDoc._creator} , {
                         //     $set : {'last_email_sent' : timestamp},

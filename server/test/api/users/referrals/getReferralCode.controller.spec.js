@@ -27,11 +27,11 @@ describe('get info of user who refereed a person', function () {
             //creating a candidate
             const candidate = docGenerator.candidate();
             await candidateHelper.signupVerifiedApprovedCandidate(candidate);
-            const refDoc = await Refrreal.findOne({email: candidate.email}).lean();
+            const referreInfo = await referralsHelper.getRefCode(candidate.email);
 
-            const referralInfo = await referralsHelper.getRefreeInfo(refDoc.url_token);
+            const referralInfo = await referralsHelper.getRefreeInfo(referreInfo.body.url_token);
             const res = referralInfo.body;
-            res.email.should.equal(refDoc.email);
+            res.email.should.equal(referreInfo.body.email);
         })
     })
 });

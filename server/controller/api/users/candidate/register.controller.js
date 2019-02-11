@@ -63,19 +63,6 @@ module.exports = async function (req, res) {
         if(referralDoc) {
             url_token = referralDoc.url_token;
         }
-        else {
-            let new_salt = crypto.randomBytes(16).toString('base64');
-            let new_hash = crypto.createHmac('sha512', new_salt);
-            url_token = new_hash.digest('hex');
-            url_token = url_token.substr(url_token.length - 10);
-
-            let document = {
-                email : userParam.email,
-                url_token : url_token,
-                date_created: new Date(),
-            };
-            referral.insert(document);
-        }
 
         res.send
         ({
