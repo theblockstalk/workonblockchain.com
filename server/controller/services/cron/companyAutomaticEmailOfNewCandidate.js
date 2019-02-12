@@ -45,7 +45,7 @@ module.exports = async function () {
                             current_currency: savedSearch.current_currency,
                             current_salary: savedSearch.current_salary
                         },
-                        availability_day: savedSearch.availability_day
+
                     });
 
                     let candidateList = [];

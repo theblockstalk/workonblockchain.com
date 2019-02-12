@@ -14,7 +14,6 @@ module.exports = async  function (req,res)
     if (queryBody.visa_needed) search.visa_needed = queryBody.visa_needed;
     if (queryBody.positions) search.positions = queryBody.positions;
     if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
-    if (queryBody.availability_day) search.availability_day = queryBody.availability_day;
     if (queryBody.current_currency && queryBody.current_salary) {
         search.salary = {
             current_currency: queryBody.current_currency,
