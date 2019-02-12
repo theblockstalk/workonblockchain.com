@@ -20,11 +20,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.titleService.setTitle('Work on Blockchain | A recruitment hiring platform for blockchain developers');
     this.route.queryParams.subscribe(params => {
       let ref_code = params['code'];
-      console.log(ref_code);
       if(ref_code) {
         localStorage.setItem('ref_code', ref_code);
       }
-      console.log('after setting');
     });
   }
   ngAfterViewInit(): void

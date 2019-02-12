@@ -35,16 +35,11 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   ) {
     this.titleService.setTitle('Work on Blockchain | Signup developer or company');
     this.code = localStorage.getItem('ref_code');
-    console.log(this.code);
-    /*this.route.queryParams.subscribe(params => {
-      this.code = params['code'];
-    });*/
 
     if (this.code) {
       this.authenticationService.getByRefrenceCode(this.code)
         .subscribe(
           data => {
-            console.log(data);
             if (data) {
               if (data && data['name']) {
                 this.ref_msg = data['name'] + ' thinks you should join workonblockchain.com';
@@ -124,18 +119,15 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       .asObservable()
       .subscribe({
         next: (data) => {
-          console.log(data);
           localStorage.setItem('linkedinUser', JSON.stringify(data));
           if(data)
           {
-            console.log("if");
             this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
             this.credentials.email= this.linkedinUser.emailAddress;
             this.credentials.password= '';
             this.credentials.type="candidate";
             this.credentials.social_type='LINKEDIN';
             this.credentials.linkedin_id = this.linkedinUser.id;
-            console.log(this.credentials);
             if(this.linkedinUser.emailAddress)
             {
               this.authenticationService.create(this.credentials)
@@ -168,10 +160,10 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           }
         },
         error: (err) => {
-          console.log(err);
+          //console.log(err);
         },
         complete: () => {
-          console.log('RAW API call completed');
+          //console.log('RAW API call completed');
         }
       });
   }
@@ -290,11 +282,11 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this._linkedInService.login().subscribe({
       next: (state) =>
       {
-        console.log("state");
+        //console.log("state");
       },
       complete: () => {
         // Completed
-        console.log("complete");
+        //console.log("complete");
       }
     });
 
