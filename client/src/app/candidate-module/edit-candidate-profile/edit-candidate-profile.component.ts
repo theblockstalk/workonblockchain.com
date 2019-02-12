@@ -753,7 +753,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   availability = [
     {name: "Now" , value: "Now" },
     {name: "1 month notice period" , value: "1 month" },
-    {name: "2 months notice period", value: "2 month" },
+    {name: "2 months notice period", value: "2 months" },
     {name: "3 months notice period", value: "3 months" },
     {name: "3+ months notice period", value: "Longer than 3 months" }
   ]
