@@ -118,10 +118,15 @@ pre {
   white-space:pre-wrap;
 }
 
-
 .form-check input[type="radio"]:checked+label {
   color: #fff;
   background-color: #537284;
   border-color:#537284;
+}
+
+.simple-radio-button{
+  color: black !important;
+  background-color: #fff !important;
+  border-color: #fff !important;
 }
 

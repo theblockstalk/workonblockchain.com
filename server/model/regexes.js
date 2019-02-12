@@ -1,7 +1,7 @@
 // Source: https://www.regextester.com/93652
 const settings = require('../settings');
 if (settings.isLiveApplication())
-    module.exports.url = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$/
+    module.exports.url = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
 else
     module.exports.url = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?(localhost\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
 

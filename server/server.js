@@ -11,6 +11,7 @@ const sanitizer = require('./controller/middleware/sanitizer');
 const requestLogger = require('./controller/middleware/requestLogger');
 const errorHandler = require('./controller/middleware/errorHandler');
 const routes = require('./routes');
+const routesV2 = require('./routes-v2');
 const cron = require('./cron');
 
 let app = express();
@@ -28,8 +29,9 @@ try {
 
     app.use(sanitizer.middleware);
 
-    app.use(requestLogger);
     app.use(routes);
+    app.use(routesV2);
+    app.use(requestLogger);
 
     app.use(errorHandler);
 

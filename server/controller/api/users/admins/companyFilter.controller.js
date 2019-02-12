@@ -1,5 +1,5 @@
 const EmployerProfile = require('../../../../model/employer_profile');
-const Chat = require('../../../../model/chat');
+const messages = require('../../../../model/messages');
 const errors = require('../../../services/errors');
 
 const filterReturnData = require('../filterReturnData');
@@ -12,9 +12,9 @@ module.exports = async function (req,res) {
     let userIds= [];
     let queryString = [];
     if(queryBody.msg_tags) {
-        const chatDoc = await Chat.find({msg_tag : {$in: queryBody.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
-        if(chatDoc && chatDoc.length > 0) {
-            for (detail of chatDoc) {
+        const messageDoc = await messages.find({msg_tag : {$in: queryBody.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
+        if(messageDoc && messageDoc.length > 0) {
+            for (detail of messageDoc) {
                 userIds.push(detail.sender_id);
                 userIds.push(detail.receiver_id);
             }

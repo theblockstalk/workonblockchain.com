@@ -1,5 +1,5 @@
 const users = require('../../../../model/mongoose/users');
-const Chat = require('../../../../model/chat');
+const messages = require('../../../../model/messages');
 const logger = require('../../../services/logger');
 const currency = require('../../../services/currency');
 const errors = require('../../../services/errors');
@@ -86,13 +86,13 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     if (filters.disable_account === true || filters.disable_account === false) userQuery.push({"disable_account" :  filters.disable_account});
     if (filters.msg_tags) {
         let userIds = [];
-        const chatDocs = await Chat.find({msg_tag : {$in: filters.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
-        if (!chatDocs) {
+        const messageDocs = await messages.find({msg_tag : {$in: filters.msg_tags}}, {sender_id: 1, receiver_id: 1}).lean();
+        if (!messageDocs) {
             errors.throwError("No users matched the search", 404);
         }
-        for (chatDoc of chatDocs) {
-            userIds.push(chatDoc.sender_id.toString());
-            userIds.push(chatDoc.receiver_id.toString());
+        for (messageDoc of messageDocs) {
+            userIds.push(messageDoc.sender_id.toString());
+            userIds.push(messageDoc.receiver_id.toString());
         }
         const userIdsDistinct = makeDistinctSet(userIds);
         userQuery.push({_id : {$in : userIdsDistinct}});

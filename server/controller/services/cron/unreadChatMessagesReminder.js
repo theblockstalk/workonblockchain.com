@@ -8,24 +8,17 @@ const logger = require('../logger');
 module.exports = async function () {
     logger.debug('Running unread chat messages cron');
 
-    const unreadReceiverIds = await chat.distinct("receiver_id", {is_read: 0});
+    let userDoc = await users.find({ "conversations": {"$elemMatch":{"unread_count":{$gte:1}}}, is_unread_msgs_to_send: true});
 
-    for(let i=0; i < unreadReceiverIds.length; i++){
-        let userDoc = await users.findOne({ _id: unreadReceiverIds[i], is_unread_msgs_to_send: true}, {"email":1,"type":1,"disable_account":1});
-
-        if(userDoc){
-            if(userDoc.type === 'candidate'){
-                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, userDoc.first_name);
-            }
-            else{
-                let companyDoc = await companies.findOne({ _creator: userDoc._id},{"first_name":1});
-                if(companyDoc){
-                    chatReminderEmail.sendEmail(userDoc.email, userDoc.disable_account, companyDoc.first_name);
-                }
-            }
+    for(let i=0; i < userDoc.length; i++){
+        if(userDoc[i].type === 'candidate'){
+            chatReminderEmail.sendEmail(userDoc[i].email, userDoc[i].disable_account, userDoc[i].first_name);
         }
         else{
-            logger.debug("nothing to do");
+            let companyDoc = await companies.findOne({ _creator: userDoc[i]._id},{"first_name":1});
+            if(companyDoc){
+                chatReminderEmail.sendEmail(userDoc[i].email, userDoc[i].disable_account, companyDoc.first_name);
+            }
         }
     }
     logger.info('Unread chat messages email script was executed', {timestamp: Date.now()});

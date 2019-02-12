@@ -50,25 +50,11 @@ const companySearchVerifiedCandidates = require('./controller/api/users/company/
 const candidateVerifiedCandidateDetail = require('./controller/api/users/company/searchCandidates/getVerifiedCandidateDetail.controller');
 
 // Chat
-const chatGetCandidate = require('./controller/api/chat/getCandidate.controller');
-const chatGetMessages = require('./controller/api/chat/getMessages.controller');
-const chatGetUnreadUser = require('./controller/api/chat/getUnreadMessagesUser.controller');
-const chatGetUserMsgs = require('./controller/api/chat/getUserMessages.controller');
-const chatInsertMessage = require('./controller/api/chat/insertMessage.controller');
-const chatInsertMessageJob = require('./controller/api/chat/insertMessageJob.controller');
-const chatInsertFile = require('./controller/api/chat/insertChatFile.controller');
-const chatUpdateJobMessage = require('./controller/api/chat/updateJobMessage.controller');
-const chatUpdateIsCompanyReplyStatus = require('./controller/api/chat/updateIsCompanyReplyStatus.controller');
-const chatGetEmployOffer = require('./controller/api/chat/chatGetEmployOffer.controller');
-const chatGetLastJobDescription = require('./controller/api/chat/getLastJobDescription.controller');
 const updateExplanationPopupStatus = require('./controller/api/chat/updateExplanationPopupStatus.controller');
-
 
 // Admin
 const adminAddPrivacyContent = require('./controller/api/users/admins/pages/addPrivacyContent.controller');
-const adminChatGetJobDescMsg = require('./controller/api/chat/getJobDescMessage.controller');
 const adminChatSetUnreadMsgStatus = require('./controller/api/chat/setUnreadMessageStatus.controller');
-const adminChatUpdateMsgStatus = require('./controller/api/chat/updateChatMessageStatus.controller');
 const adminApproveUser = require('./controller/api/users/admins/approveUser.controller');
 const adminCandidateFilter = require('./controller/api/users/admins/candidateFilter.controller');
 const adminComanyFilter = require('./controller/api/users/admins/companyFilter.controller');
@@ -128,19 +114,6 @@ router.post('/users/verified_candidate',auth.isValidCompany, asyncMiddleware(com
 router.post('/users/candidate_detail',auth.isValidCompany,asyncMiddleware(candidateVerifiedCandidateDetail));
 
 // Chat
-router.post('/users/insert_message', auth.isValidUser, asyncMiddleware(chatInsertMessage));
-router.post('/users/get_candidate', auth.isValidUser, asyncMiddleware(chatGetCandidate));
-router.post('/users/get_messages',auth.isValidUser, asyncMiddleware(chatGetMessages));
-router.post('/users/get_user_messages',auth.isValidUser, asyncMiddleware(chatGetUserMsgs));
-router.post('/users/insert_chat_file',auth.isValidUser, multer.single('photo'), asyncMiddleware(chatInsertFile));
-router.post('/users/insert_message_job',auth.isValidUser,multer.single('photo'), asyncMiddleware(chatInsertMessageJob));
-router.post('/users/update_job_message', auth.isValidCandidate, asyncMiddleware(chatUpdateJobMessage));
-router.post('/users/get_unread_msgs_of_user',auth.isValidUser, asyncMiddleware(chatGetUnreadUser));
-router.post('/users/update_is_company_reply_status', auth.isValidCandidate, asyncMiddleware(chatUpdateIsCompanyReplyStatus));
-router.post('/users/get_employ_offer',auth.isValidUser, asyncMiddleware(chatGetEmployOffer));
-router.post('/users/get_last_job_desc_msg' , auth.isValidUser , asyncMiddleware(chatGetLastJobDescription));
-router.post('/users/update_chat_msg_status' , auth.isValidUser , asyncMiddleware(adminChatUpdateMsgStatus));
-router.post('/users/get_job_desc_msgs' ,auth.isValidUser, asyncMiddleware(adminChatGetJobDescMsg));
 router.post('/users/set_unread_msgs_emails_status',auth.isLoggedIn, asyncMiddleware(adminChatSetUnreadMsgStatus));
 router.post('/users/updatePopupStatus', auth.isLoggedIn, asyncMiddleware(updateExplanationPopupStatus));
 

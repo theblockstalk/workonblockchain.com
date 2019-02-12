@@ -11,7 +11,6 @@ import {environment} from '../environments/environment';
 
 const URL = environment.backend_url;
 
-
 @Injectable()
 export class UserService {
 
@@ -754,26 +753,6 @@ export class UserService {
     }));
   }
 
-  getCandidate(sender_id:string,receiver_id:string,is_company_reply:number,type: string)
-  {
-    return this.http.post(URL+'users/get_candidate', {type:type,sender_id:sender_id,receiver_id:receiver_id,is_company_reply:is_company_reply}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
   getCurrentCompany(_id: string)
   {
     return this.http.get(URL+'users/current_company/' +_id, {
@@ -810,12 +789,13 @@ export class UserService {
     }));
   }
 
-  insertMessage(receiver_id:string,sender_name:string,receiver_name:string,message:string,description:string,job_title:string,salary:string,currency:string,date_of_joining:string,job_type:string,msg_tag:string,is_company_reply:number,interview_location:string,interview_time:string)
+  get_user_messages_comp(receiver_id: string)
   {
-    return this.http.post(URL+'users/insert_message', {receiver_id:receiver_id,sender_name:sender_name,receiver_name:receiver_name,message:message,description:description,job_title:job_title,salary:salary,currency:currency,date_of_joining:date_of_joining,job_type:job_type,msg_tag:msg_tag,is_company_reply:is_company_reply,interview_location:interview_location,interview_time:interview_time}, {
+    return this.http.get(URL+'v2/conversations/'+receiver_id+'/messages/', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
+
       if (res)
       {
         return res;
@@ -832,7 +812,9 @@ export class UserService {
 
   get_user_messages(receiver_id: string, sender_id: any)
   {
-    return this.http.post(URL+'users/get_messages', {receiver_id:receiver_id,sender_id:sender_id}, {
+    let queryString = '?user_id='+sender_id+'&admin=true';
+    //return this.http.get(URL+'v2/conversations/'+queryString, {
+    return this.http.get(URL+'v2/conversations/'+receiver_id+'/messages'+queryString , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -851,12 +833,31 @@ export class UserService {
     }));
   }
 
+  get_user_messages_only_comp()
+  {
+    return this.http.get(URL+'v2/conversations', {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) => {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error.status )
+      {
+        return throwError(error);
+      }
+
+    }));
+  }
+
   get_user_messages_only(id:any)
   {
-    return this.http.post(URL+'users/get_user_messages', {id:id}, {
+    let queryString = '?user_id='+id+'&admin=true';
+    return this.http.get(URL+'v2/conversations/'+queryString, {
       headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
+    }).pipe(map((res: Response) => {
       if (res)
       {
         return res;
@@ -1002,7 +1003,7 @@ export class UserService {
 
   send_file(formData: any)
   {
-    return this.http.post(URL+'users/insert_chat_file',formData, {
+    return this.http.post(URL+'v2/messages',formData, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1014,47 +1015,7 @@ export class UserService {
     {
       if (error.status )
       {
-        return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
-  insert_job_message(formData: any)
-  {
-    return this.http.post(URL+'users/insert_message_job',formData,{
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
-  update_job_message(id:string,status:number)
-  {
-    return this.http.post(URL+'users/update_job_message', {id:id,status:status}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
+        return throwError(error);
       }
 
     }));
@@ -1233,6 +1194,25 @@ export class UserService {
     }));
   }
 
+  update_chat_msg_status_new(sender_id: string){
+    return this.http.patch(URL+'v2/conversations/'+sender_id+'/messages', {},{
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error.status )
+      {
+        return throwError(new Error(error.status));
+      }
+
+    }));
+  }
+
   update_chat_msg_status(receiver_id: string,status:number){
     return this.http.post(URL+'users/update_chat_msg_status', {receiver_id:receiver_id,status:status}, {
       headers: new HttpHeaders().set('Authorization', this.token)
@@ -1288,8 +1268,8 @@ export class UserService {
 
   }
 
-  get_job_desc_msgs(receiver_id:string,msg_tag:string){
-    return this.http.post(URL+'users/get_job_desc_msgs', {receiver_id:receiver_id,msg_tag:msg_tag}, {
+  send_message(receiver_id:string,msg_tag:string, message:any){
+    return this.http.post(URL+'v2/messages', {receiver_id:receiver_id,msg_tag:msg_tag,message:message}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
@@ -1327,26 +1307,6 @@ export class UserService {
     }));
   }
 
-  get_unread_msgs_of_user(sender_id:string){
-    return this.http.post(URL+'users/get_unread_msgs_of_user', {sender_id:sender_id}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
-
   account_settings(user_id: string, status: any)
   {
     return this.http.post(URL+'users/account_settings', {user_id:user_id,status:status} , {
@@ -1379,8 +1339,6 @@ export class UserService {
 
   destroyToken(_id:string)
   {
-    //console.log(this.token);
-
     return this.http.post(URL+'users/destroy_token', {id:_id} , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
@@ -1408,46 +1366,6 @@ export class UserService {
 
     }));
 
-  }
-
-
-  update_is_company_reply_status(status:number)
-  {
-    return this.http.post(URL+'users/update_is_company_reply_status', {status:status}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(new Error(error.status));
-      }
-
-    }));
-  }
-
-  get_employment_offer_info(receiver_id:string,msg_tag:string){
-    return this.http.post(URL+'users/get_employ_offer', {receiver_id:receiver_id,msg_tag:msg_tag}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error.status )
-      {
-        return throwError(error);
-      }
-
-    }));
   }
 
   updateExplanationPopupStatus(status:any){
@@ -1494,8 +1412,22 @@ export class UserService {
     }));
   }
 
+  getUnreadMessageCount(sender_id:string) {
+    return this.http.get(URL+'v2/messages?sender_id='+sender_id, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) => {
+      if (res) {
+        return res;
+      }
+    }), catchError((error: any) => {
+      if (error.status) {
+        return throwError(new Error(error.status));
+      }
+    }));
+  }
+
   getLastJobDesc() {
-    return this.http.post(URL + 'users/get_last_job_desc_msg', {}, {
+    return this.http.get(URL+'v2/messages/', {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) => {
       if (res) {

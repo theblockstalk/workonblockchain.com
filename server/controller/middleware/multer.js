@@ -43,4 +43,26 @@ if (settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging')
     });
 }
 
+const uploadOneFile = async function (req, name) {
+    await new Promise(function (res, rej) {
+        try {
+            appMulter.single(name)(req, {}, function (err) {
+                if (err) rej(err);
+                res();
+            })
+        }
+        catch (err) {
+            rej(err);
+        }
+    });
+    if (req.file) {
+        if (settings.isLiveApplication()) {
+            req.file.path =  req.file.location; // for S3 bucket
+        } else {
+            req.file.path = settings.FILE_URL + req.file.filename;
+        }
+    }
+}
+
 module.exports = appMulter;
+module.exports.uploadOneFile = uploadOneFile;

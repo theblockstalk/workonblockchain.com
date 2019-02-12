@@ -101,7 +101,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       "Now","1 month","2 months","3 months","Longer than 3 months"
     ]
 
-  job_type = ["Part Time", "Full Time"];
+  job_type = ["Part time", "Full time"];
 
   skillsData=
     [
@@ -670,19 +670,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.authenticationService.getLastJobDesc()
       .subscribe(
         data => {
-          setTimeout(() => {
-            $('.selectpicker').selectpicker();
-          }, 300);
-
+          let job_offer = data['message'].job_offer;
           setTimeout(() => {
             $('.selectpicker').selectpicker('refresh');
           }, 900);
-          this.credentials.job_title = data['job_title'];
-          this.credentials.salary = data['salary'];
-          this.credentials.currency = data['salary_currency'];
-          this.credentials.location = data['interview_location'];
-          this.credentials.job_type = data['job_type'];
-          this.credentials.job_desc = data['description'];
+          this.credentials.job_title = job_offer.title;
+          this.credentials.salary = job_offer.salary;
+          this.credentials.currency = job_offer.salary_currency;
+          this.credentials.location = job_offer.location;
+          this.credentials.job_type = job_offer.type;
+          this.credentials.job_desc = job_offer.description;
 
         },
         error => {
@@ -749,73 +746,52 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     if(this.credentials.job_title && this.credentials.location && this.credentials.currency && this.credentials.job_type && this.credentials.job_desc) {
       if (this.credentials.salary && Number(this.credentials.salary) && (Number(this.credentials.salary)) > 0 && this.credentials.salary % 1 === 0) {
-        this.authenticationService.get_job_desc_msgs(this.user_id.id, 'job_offer')
-          .subscribe(
-            data => {
+        let job_offer : any = {};
+        job_offer.title = this.credentials.job_title;
+        job_offer.salary = this.credentials.salary;
+        job_offer.salary_currency = this.credentials.currency;
+        job_offer.type = this.credentials.job_type;
+        job_offer.location = this.credentials.location;
+        job_offer.description = this.credentials.job_desc;
+        let new_offer : any = {};
+        new_offer.job_offer = job_offer;
+        this.authenticationService.send_message(this.user_id.id, 'job_offer',new_offer)
+        .subscribe(
+          data => {
+            this.job_offer_log_success = 'Message successfully sent';
+            this.credentials.job_title = '';
+            this.credentials.salary = '';
+            this.credentials.currency = '';
+            this.credentials.location = '';
+            this.credentials.job_type = '';
+            this.credentials.job_desc = '';
+            $("#jobDescriptionModal").modal("hide");
+            this.router.navigate(['/chat']);
+          },
+          error => {
+            if (error['status'] === 400) {
               this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
-            },
-            error => {
-              if (error['status'] === 500 || error['status'] === 401) {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
-
-              if (error['status'] === 404) {
-                this.date_of_joining = '10-07-2018';
-                this.msg_tag = 'job_offer';
-                this.is_company_reply = 0;
-                this.msg_body = '';
-                this.description = this.credentials.job_desc;
-                this.interview_location = this.credentials.location;
-                this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-                  .subscribe(
-                    data => {
-                      this.job_offer_log_success = 'Message successfully sent';
-                      this.credentials.job_title = '';
-                      this.credentials.salary = '';
-                      this.credentials.currency = '';
-                      this.credentials.location = '';
-                      this.credentials.job_type = '';
-                      this.credentials.job_desc = '';
-                      $("#jobDescriptionModal").modal("hide");
-                      this.router.navigate(['/chat']);
-                    },
-                    error => {
-                      if (error.status === 404) {
-                        this.date_of_joining = '10-07-2018';
-                        this.msg_tag = 'job_offer';
-                        this.is_company_reply = 0;
-                        this.msg_body = '';
-                        this.description = this.credentials.job_desc;
-                        this.interview_location = this.credentials.location;
-                        this.authenticationService.insertMessage(this.user_id.id, this.display_name, this.user_id.name, this.msg_body, this.description, this.credentials.job_title, this.credentials.salary, this.credentials.currency, this.date_of_joining, this.credentials.job_type, this.msg_tag, this.is_company_reply, this.interview_location, this.interview_time)
-                          .subscribe(
-                            data => {
-                              this.job_offer_log_success = 'Message successfully sent';
-                              this.credentials.job_title = '';
-                              this.credentials.salary = '';
-                              this.credentials.currency = '';
-                              this.credentials.location = '';
-                              this.credentials.job_type = '';
-                              this.credentials.job_desc = '';
-                              $("#jobDescriptionModal").modal("hide");
-                              this.router.navigate(['/chat']);
-                            },
-                            error => {
-
-                            }
-                          );
-                      }
-                    }
-                  );
-              }
             }
-          );
+            if (error['status'] === 500 || error['status'] === 401) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+            if (error['status'] === 404) {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
+          }
+        );
       }
       else {
         this.salary_log = 'Salary should be a number';
