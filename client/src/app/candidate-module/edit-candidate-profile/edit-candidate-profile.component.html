@@ -136,7 +136,7 @@
                   <select title="Please choose base country" class="form-control selectpicker" required name="base_country" [(ngModel)]="info.base_country">
                     <option *ngFor='let options of countries'  [value]="options" [attr.selected]="options === info.base_country ? true : null ">{{options}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline" *ngIf="info.base_country">
+                  <div class = "invalid-feedback d-inline" *ngIf="!info.base_country">
                     {{base_country_log}}
                   </div>
                 </div>
@@ -168,8 +168,8 @@
                     <datalist id="countryList" *ngIf="cities && cities.length > 0">
                       <select class="form-control">
 
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}">
-                      </option>
+                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}">{{country.name}}
+                        </option>
                       </select>
                     </datalist>
                     <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
@@ -183,21 +183,27 @@
                     <div *ngIf="selectedValueArray.length > 0">
                       <div class="row">
                         <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
-                          <div class="border p-3 ml-2">
-                            <p><strong >{{value.name}}</strong></p>
-                            <div class="form-check mt-3">
-                              <label class="form-check-label" for="check{{i}}">
-                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_not_needed"   name="visa_not_needed{{i}}" (change)="updateCitiesOptions($event)" > Sponsored work visa IS NOT required
-                              </label>
+                          <div class="border px-1 py-3 ml-2 row">
+                            <div class = "col-8">
+                            <label >{{value.name}}</label>
                             </div>
-                            <a (click)="deleteLocationRow(i)" class = "btn btn-danger text-white mt-3">Remove</a>
+                            <div class = "col-4 text-right">
+                              <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                            </div>
+                            <div class="col-12">
+                              <div class="form-check" *ngIf="value.name !== 'Remote'">
+                                <label class="form-check-label" for="check{{i}}">
+                                  <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                                </label>
+                              </div>
 
+                            </div>
                           </div>
 
                         </div>
                       </div>
                       <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
-                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations) <= 0">
+                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations)">
                         {{country_log}}
                       </div>
                     </div>
@@ -609,7 +615,7 @@
               </div>
               <div class = "col-md-12" *ngFor="let lang_value of language; let i = index ">
                 <div class = "form-group">
-                <p>{{lang_value.value}}</p>
+                  <p>{{lang_value.value}}</p>
                   <div class="form-check form-check-inline">
                     <div *ngFor="let exp of exp_year; let i_ind =index">
                       <input type="radio" class="d-none" name="radiogrop- {{ lang_value.value}}" [checked]="lang_expYear_db[i] === exp.value && lang_db_valye[i] === lang_value.value" value="{{exp.value}}" (change)="onLangExpYearOptions($event , lang_value.value)" id= "radiogrop{{lang_value.value}}{{i_ind}}" >

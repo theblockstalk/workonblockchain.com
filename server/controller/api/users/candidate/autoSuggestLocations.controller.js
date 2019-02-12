@@ -4,14 +4,16 @@ const logger = require('../../../services/logger');
 
 module.exports = async function (req, res) {
     let queryInput = req.body;
-    let regex = new RegExp(queryInput.autosuggest, 'i');
+    const filteredExp = queryInput.autosuggest.replace(/[#^*~?{}|&;$%',.-_@"<>()+]/g, "");
+    logger.debug("filtered Regular Exp: ", filteredExp);
+    let regex = new RegExp(filteredExp, 'i');
     let outputOptions = [];
 
     if(regex.test('Remote') || regex.test('Global')) {
         outputOptions.push({remote : true});
     }
 
-    let citiesDoc = await cities.findAndLimit2({city: {$regex: regex}});
+    let citiesDoc = await cities.findAndLimit4({city: {$regex: regex}});
     if(citiesDoc) {
         for(let cityLoc of citiesDoc) {
             outputOptions.push({city : cityLoc});
@@ -38,6 +40,5 @@ module.exports = async function (req, res) {
     res.send({
         locations: outputOptions
     });
-
 
 }

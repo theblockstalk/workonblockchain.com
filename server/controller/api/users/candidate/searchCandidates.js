@@ -99,6 +99,10 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
 
     }
 
+    if (filters.blacklist) {
+        userQuery._id = {$nin: filters.blacklist};
+    }
+
     if (filters.firstApprovedDate) {
         const approvedDateFilter = {"first_approved_date" : { $gte : filters.firstApprovedDate}};
         userQuery.push(approvedDateFilter);
@@ -120,34 +124,47 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             let citiesArray=[];
             let countriesArray = [];
             for(let loc of search.locations) {
-                const cityDoc = await cities.findOneById(loc._id);
+                const cityDoc = await cities.findOneById(loc.city);
                 if(cityDoc) {
-                    citiesArray.push(String(cityDoc._id));
+                    citiesArray.push(cityDoc._id);
                     countriesArray.push(cityDoc.country);
                 }
             }
             if(citiesArray.length > 0 ) {
-                if(search.visa_not_needed) {
-                    locationsQuery.push({
-                        $and: [
-                            {"candidate.locations.city": {$in: citiesArray}},
-                            {"candidate.locatons.visa_not_needed": true}]
-                    })
-
-                    locationsQuery.push({
-                        $and: [
-                            {"candidate.locations.country": {$in: countriesArray}},
-                            {"candidate.locations.visa_not_needed": true}]
-                    })
+                countriesArray = removeDups(countriesArray);
+                if (search.visa_needed) {
+                    locationsQuery.push({"candidate.locations.city": {$in: citiesArray}});
+                    locationsQuery.push({"candidate.locations.country": {$in: countriesArray}});
                 }
                 else {
-                    locationsQuery.push({ "candidate.locations.city": {$in: citiesArray}});
-                    locationsQuery.push({"candidate.locations.country" : {$in: countriesArray}});
+                    for (let city of citiesArray) {
+                        const cityQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    city: city,
+                                    visa_needed: false
+                                }
+                            }
+                        }
+                        locationsQuery.push(cityQuery)
+                    }
+
+                    for (let country of countriesArray) {
+                        const countryQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    country: country,
+                                    visa_needed: false
+                                }
+                            }
+                        }
+                        locationsQuery.push(countryQuery)
+                    }
+
                 }
 
             }
-
-            if(search.locations.find(x => x.name === "Remote")) {
+            if(search.locations.find(x => x.remote === true)) {
                 const locationRemoteFilter = {"candidate.locations.remote" : true};
                 locationsQuery.push(locationRemoteFilter);
             }
@@ -179,7 +196,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
         if (search.blockchains && search.blockchains.length > 0 ) {
             const platformFilter = {
                 $or: [
-                    {"candidate.commercial_platforms.name": {$in: search.blockchains}},
+                    {"candidate.blockchain.commercial_platforms.name": {$in: search.blockchains}},
                     {"candidate.blockchain.smart_contract_platforms.name": {$in: search.blockchains}}
                 ]
             };
@@ -237,4 +254,14 @@ function salary_converter(salary_value, currency1, currency2)
     array.push(value2);
 
     return array;
+}
+
+function removeDups(names) {
+    let unique = {};
+    names.forEach(function(i) {
+        if(!unique[i]) {
+            unique[i] = true;
+        }
+    });
+    return Object.keys(unique);
 }

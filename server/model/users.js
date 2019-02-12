@@ -120,7 +120,7 @@ const UserSchema = new Schema({
                     },
                     country: enumerations.countries,
                     remote: Boolean,
-                    visa_not_needed: {
+                    visa_needed: {
                         type: Boolean,
                         required: true,
                     }

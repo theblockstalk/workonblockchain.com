@@ -24,13 +24,13 @@
   },
   "sendGrid": {
     "fromAddress": "staging.contact@workonblockchain.com",
-    "fromName": "STAGING - Work on Blockchain"
+    "fromName": "STAGING - Work on Blockchain",
+    "throttleTime" : 600
   },
   "currencyRatesUSD": {
     "GBP": 1.28,
     "Euro": 1.14
   },
-  "companyEmailBlacklist": ["gmail.com" , "hotmail.com" , "yahoo.com"],
   "cron": {
     "unreadMessagesTick": "00 12 * * 1-7",
     "autoNotification" : "00 9 * * 1-7",

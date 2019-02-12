@@ -74,10 +74,9 @@ const CompanyProfileSchema = new Schema({
 
                 }]
             },
-            visa_not_needed: {
+            visa_needed: {
                 type: Boolean,
                 default:false,
-                required: true,
             },
             job_type: {
                 type: [{
@@ -132,6 +131,18 @@ const CompanyProfileSchema = new Schema({
 
         })]
     },
+    candidates_sent_by_email: [{
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        sent: {
+            type: Date,
+            required: true
+        }
+    }],
+
     last_email_sent: {
         type: Date
     },

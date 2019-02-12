@@ -48,6 +48,9 @@ if (isLiveApplication()) {
         API_KEY: config.sendGrid.apiKey
     };
 
+    settings.throttleTime = config.sendGrid.throttleTime;
+
+
     settings.SLACK = {
         WEBHOOK: process.env.SLACK_WEBHOOK,
         USERNAME: config.slack.username,
@@ -74,7 +77,6 @@ settings.CRON = {
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;
 
 settings.CURRENCY_RATES_USD = config.currencyRatesUSD;
-settings.COMPANY_EMAIL_BLACKLIST = config.companyEmailBlacklist;
 
 let port;
 if (port = process.env.PORT) {

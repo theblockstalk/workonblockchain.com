@@ -294,10 +294,9 @@
                 <div class="form-group">
                   <label>Where are you hiring?</label>
                   <div>
-                    <datalist id="countryList" *ngIf="cities && cities.length > 0">
+                    <datalist id="countryList" *ngIf="cities && cities.length >0">
                       <select class="form-control">
-                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text="{{preferncesForm.value.location}}">
-                      </option>
+                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text="{{preferncesForm.value.location}}">{{country.name}} </option>
                       </select>
                     </datalist>
                     <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control" formControlName = "location" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
@@ -331,7 +330,7 @@
                 <div class = "form-group">
                   <label class="invisible">Show results that may require a sponsored work visa</label>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_not_needed" id="check"  name="visa_not_needed" >
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  name="visa_needed" >
                     <label class="form-check-label" for="defaultCheck1">
                       Show results that may require a sponsored work visa
                     </label>

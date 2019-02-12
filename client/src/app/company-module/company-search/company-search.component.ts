@@ -337,12 +337,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     for (let country1 of data['saved_searches'][0].location)
                     {
                       if (country1['remote'] === true) {
-                        this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1.visa_not_needed});
+                        this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
                       }
 
                       if (country1['city']) {
                         let city = country1['city'].city + ", " + country1['city'].country;
-                        this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_not_needed : country1.visa_not_needed});
+                        this.selectedValueArray.push({city:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
                       }
                     }
 
@@ -355,7 +355,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                     }
                   }
                   this.skill_value = data['saved_searches'][0].skills;
-
+                  this.visa_check = data['saved_searches'][0].visa_needed;
                   this.role_value = data['saved_searches'][0].position;
                   if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
                     this.blockchain_value = data['saved_searches'][0].blockchain;
@@ -428,8 +428,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   skillChanged(data)
   {
     this.not_found = '';
-      this.skill_value = data.value;
-      this.searchdata('skill' , this.skill_value);
+    this.skill_value = data.value;
+    this.searchdata('skill' , this.skill_value);
 
   }
 
@@ -463,21 +463,21 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           queryBody.current_currency = this.currencyChange;
         }
         this.authenticationService.filterSearch(queryBody)
-        .subscribe(
-          data => {
-            this.candidate_data = data;
-            this.responseMsg = "response";
-            if (this.candidate_data.length <= 0) {
-              this.not_found = 'No candidates matched this search criteria';
-            }
-            if(this.candidate_data.length > 0) {
-              this.not_found='';
-            }
-          },
-          error =>
-          {
-            if(error['message'] === 500)
+          .subscribe(
+            data => {
+              this.candidate_data = data;
+              this.responseMsg = "response";
+              if (this.candidate_data.length <= 0) {
+                this.not_found = 'No candidates matched this search criteria';
+              }
+              if(this.candidate_data.length > 0) {
+                this.not_found='';
+              }
+            },
+            error =>
             {
+              if(error['message'] === 500)
+              {
                 localStorage.setItem('jwt_not_found', 'Jwt token not found');
                 localStorage.removeItem('currentUser');
                 localStorage.removeItem('googleUser');
@@ -486,10 +486,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 localStorage.removeItem('admin_log');
                 window.location.href = '/login';
               }
-            if(error['message'] === 403)
-            {
-              this.router.navigate(['/not_found']);
-            }
+              if(error['message'] === 403)
+              {
+                this.router.navigate(['/not_found']);
+              }
 
             }
           );
@@ -520,7 +520,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.role_value;
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.availabilityChange ) queryBody.availability_day = this.availabilityChange;
-      if(this.visa_check) queryBody.visa_not_needed = this.visa_check;
+      if(this.visa_check) queryBody.visa_needed = this.visa_check;
       if(this.salary && this.currencyChange) {
         setTimeout(() => {
           $('.selectpicker').selectpicker();
@@ -700,19 +700,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       );
   }
 
-    date_of_joining;
-    msg_tag;
-    is_company_reply = 0;
-    msg_body;
-    description;
-    job_title_log;
-    location_log;
-    salary_log;
-    salary_currency_log;
-    employment_log;
-    job_desc_log;
-    job_offer_log_success;
-    job_offer_log_erorr;
+  date_of_joining;
+  msg_tag;
+  is_company_reply = 0;
+  msg_body;
+  description;
+  job_title_log;
+  location_log;
+  salary_log;
+  salary_currency_log;
+  employment_log;
+  job_desc_log;
+  job_offer_log_success;
+  job_offer_log_erorr;
 
   send_job_offer(msgForm : NgForm){
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -843,17 +843,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               }
               if(cities['city']) {
                 let cityString = cities['city'].city + ", " + cities['city'].country;
-                citiesOptions.push({_id : cities['city']._id , name : cityString});
+                citiesOptions.push({city : cities['city']._id , name : cityString});
               }
-              /*if(cities['city']&& cities['city'].country) {
-                let countryString = cities['city'].country + " (country)";
-                citiesOptions.push({name : countryString });
 
-              }
-              if(cities['country']) {
-                let countryString = cities['country'] + " (country)";
-                citiesOptions.push({name: countryString});
-              }*/
             }
             this.cities = this.filter_array(citiesOptions);
           }
@@ -904,7 +896,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
 
         else {
-          if(value2send) this.selectedValueArray.push({_id:value2send , name: e.target.value});
+          if(value2send) this.selectedValueArray.push({city:value2send , name: e.target.value});
           else this.selectedValueArray.push({ name: e.target.value});
         }
         this.selectedValueArray.sort(function(a, b){

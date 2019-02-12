@@ -10,7 +10,14 @@ module.exports = async  function (req,res)
     let search = {};
     if (queryBody.word) search.word = queryBody.word;
     if (queryBody.skills) search.skills = queryBody.skills;
-    if (queryBody.locations) search.locations = queryBody.locations;
+    if (queryBody.locations) {
+        if(queryBody.locations.find((obj => obj.name === 'Remote'))) {
+            const index = queryBody.locations.findIndex((obj => obj.name === 'Remote'));
+            queryBody.locations[index] = {remote : true};
+        }
+        search.locations = queryBody.locations;
+    }
+    if (queryBody.visa_needed) search.visa_needed = queryBody.visa_needed;
     if (queryBody.positions) search.positions = queryBody.positions;
     if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
     if (queryBody.availability_day) search.availability_day = queryBody.availability_day;

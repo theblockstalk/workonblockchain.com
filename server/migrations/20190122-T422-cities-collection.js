@@ -45,28 +45,28 @@ module.exports.up = async function() {
             await cities.findAndIterate({city :  {$in: userDoc.candidate.locations}}, async function(citiesDoc) {
                 if(userDoc.candidate.locations.find(x => x === 'London')) {
                     if(citiesDoc.city === 'London' && citiesDoc.country === 'United Kingdom') {
-                        locations.push({city: citiesDoc._id, visa_not_needed: true});
+                        locations.push({city: citiesDoc._id, visa_needed: true});
                     }
                 }
                 else if(userDoc.candidate.locations.find(x => x === 'Barcelona')) {
                     if(citiesDoc.city === 'Barcelona' && citiesDoc.country === 'Spain') {
-                        locations.push({city: citiesDoc._id, visa_not_needed: true});
+                        locations.push({city: citiesDoc._id, visa_needed: true});
                     }
                 }
                 else if(userDoc.candidate.locations.find(x => x === 'Los Angeles')) {
                     if(citiesDoc.city === 'Los Angeles' && citiesDoc.country === 'United States') {
-                        locations.push({city: citiesDoc._id, visa_not_needed: true});
+                        locations.push({city: citiesDoc._id, visa_needed: true});
                     }
                 }
                 else {
-                    locations.push({city: citiesDoc._id, visa_not_needed: true});
+                    locations.push({city: citiesDoc._id, visa_needed: true});
                 }
 
             });
 
             for(let loc of userDoc.candidate.locations) {
                 if(loc === 'remote') {
-                    locations.push({remote:true, visa_not_needed: false});
+                    locations.push({remote:true, visa_needed: false});
                 }
             }
 
@@ -74,7 +74,7 @@ module.exports.up = async function() {
             const countriesEnum = enumeration.countries;
             if(userDoc.candidate.base_country) {
                 if(countriesEnum.find(x => x === userDoc.candidate.base_country)) {
-                    locations.push({country: userDoc.candidate.base_country, visa_not_needed : true});
+                    locations.push({country: userDoc.candidate.base_country, visa_needed : false});
                 }
             }
 
@@ -83,12 +83,13 @@ module.exports.up = async function() {
                 for(let loc of nationalityJsonArray) {
                     const checkCountryExists = obj =>obj.country === loc.Country;
                     if(loc.Nationality === userDoc.nationality && locations.some(checkCountryExists) === false) {
-                        locations.push({country: loc.Country, visa_not_needed : true});
+                        locations.push({country: loc.Country, visa_needed : false});
                     }
                 }
             }
 
             if(locations && locations.length > 0) {
+                console.log("locations: " + locations);
                 await users.update({ _id: userDoc._id },{ $set: {'candidate.locations' : locations} });
                 totalModified++;
             }
@@ -109,16 +110,16 @@ module.exports.up = async function() {
                 console.log("company Doc searched locations:  " + companyDoc.saved_searches[0].location);
                 await cities.findAndIterate({city :  {$in: companyDoc.saved_searches[0].location}}, async function(citiesDoc) {
                     if(citiesDoc.city === 'London') {
-                        if (citiesDoc.country === 'United Kingdom') locations.push({city: citiesDoc._id, visa_not_needed: true});
+                        if (citiesDoc.country === 'United Kingdom') locations.push({city: citiesDoc._id});
                     }
                     else if(citiesDoc.city === 'Barcelona') {
-                        if (citiesDoc.country === 'Spain') locations.push({city: citiesDoc._id, visa_not_needed: true});
+                        if (citiesDoc.country === 'Spain') locations.push({city: citiesDoc._id});
                     }
                     else if(citiesDoc.city === 'Los Angeles') {
-                        if (citiesDoc.country === 'United States') locations.push({city: citiesDoc._id, visa_not_needed: true});
+                        if (citiesDoc.country === 'United States') locations.push({city: citiesDoc._id});
                     }
                     else {
-                        locations.push({city: citiesDoc._id, visa_not_needed: true});
+                        locations.push({city: citiesDoc._id});
                     }
                 });
 
@@ -128,7 +129,7 @@ module.exports.up = async function() {
                     }
                 }
                 if(locations && locations.length > 0) {
-                    await companies.update({ _id: companyDoc._id },{ $set: {'saved_searches.0.location' : locations , 'visa_not_needed' : false} });
+                    await companies.update({ _id: companyDoc._id },{ $set: {'saved_searches.0.location' : locations , 'saved_searches.0.visa_needed' : false} });
                     totalCompanyModified++;
                 }
             }
@@ -162,7 +163,7 @@ module.exports.down = async function() {
         if(userDoc.candidate.locations) {
             for(let loc of userDoc.candidate.locations) {
                 if(loc.city){
-                    const cityDoc= await cities.findOneById(loc.city);
+                    const cityDoc= await cities.findOneById(mongoose.Types.ObjectId(loc.city));
                     locations.push(cityDoc.city);
                 }
                 if(loc.remote === true) {
@@ -187,7 +188,7 @@ module.exports.down = async function() {
         if(companyDoc && companyDoc.saved_searches && companyDoc.saved_searches.length > 0) {
             for(let loc of companyDoc.saved_searches[0].location) {
                 if(loc.city){
-                    const cityDoc= await cities.findOneById(loc.city);
+                    const cityDoc= await cities.findOneById(mongoose.Types.ObjectId(loc.city));
                     locations.push(cityDoc.city);
                 }
                 if(loc.remote === true) {

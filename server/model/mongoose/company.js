@@ -24,7 +24,7 @@ module.exports.findOneByUserId = async function findOneByUserId(id) {
 module.exports.findOneAndPopulate = async function findOneAndPopulate(id) {
     let companyDoc = await Company.findOne({_creator: id}).populate('_creator').lean();
     if(companyDoc) {
-        if(companyDoc.saved_searches[0] && companyDoc.saved_searches[0].location) {
+        if(companyDoc.saved_searches && companyDoc.saved_searches[0] && companyDoc.saved_searches[0].location) {
             for(let loc of companyDoc.saved_searches[0].location) {
                 if(loc.city) {
                     const index = companyDoc.saved_searches[0].location.findIndex((obj => obj.city === loc.city));
@@ -39,8 +39,13 @@ module.exports.findOneAndPopulate = async function findOneAndPopulate(id) {
 
 }
 
-module.exports.update = async function update(selector, updateObj) {
+module.exports.update = async function (selector, updateObj) {
     await Company.findOneAndUpdate(selector, updateObj, { runValidators: true });
+}
+
+
+module.exports.updateMany = async function (selector, updateObj) {
+    await Company.updateMany(selector, updateObj, { runValidators: true });
 }
 
 module.exports.deleteOne = async function deleteOne(selector) {
@@ -50,7 +55,7 @@ module.exports.deleteOne = async function deleteOne(selector) {
 module.exports.count = async function count(selector) {
     return new Promise((resolve, reject) => {
         try {
-            Candidate.count(selector, (err1, result) => {
+            Company.count(selector, (err1, result) => {
                 if (err1) reject(err1);
                 resolve(result);
             })
