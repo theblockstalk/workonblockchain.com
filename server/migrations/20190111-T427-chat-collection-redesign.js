@@ -34,10 +34,10 @@ module.exports.up = async function() {
             msg_tag: chatDoc.msg_tag,
             date_created: chatDoc.date_created,
         };
+        if(chatDoc.job_type === 'Part Time') chatDoc.job_type = 'Part time';
+        if(chatDoc.job_type === 'Full Time') chatDoc.job_type = 'Full time';
 
         if(chatDoc.msg_tag === 'job_offer'){
-            if(chatDoc.job_type === 'Part Time') chatDoc.job_type = 'Part time';
-            if(chatDoc.job_type === 'Full Time') chatDoc.job_type = 'Full time';
             newMessageDoc.message = {
                 job_offer:{
                     title: chatDoc.job_title,
@@ -76,8 +76,6 @@ module.exports.up = async function() {
             }
         }
         else if(chatDoc.msg_tag === 'employment_offer'){
-            if(chatDoc.job_type === 'Part Time') chatDoc.job_type = 'Part time';
-            if(chatDoc.job_type === 'Full Time') chatDoc.job_type = 'Full time';
             newMessageDoc.message = {
                 employment_offer:{
                     title: chatDoc.job_title,
