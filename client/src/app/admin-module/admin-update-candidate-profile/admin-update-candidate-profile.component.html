@@ -335,7 +335,7 @@
                 <div class="form-group">
                   <label>Your availability</label>
                   <select title="Now" [(ngModel)]="availability_day" class="form-control selectpicker" required name="availability_day" >
-                    <option *ngFor='let start_month of month' [value]="start_month" [attr.selected]="start_month === availability_day">{{start_month}}</option>
+                    <option *ngFor='let month of availability' [value]="month.value" [attr.selected]="month.value === availability_day">{{month.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!availability_day">
                     {{avail_log}}

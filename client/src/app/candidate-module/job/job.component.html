@@ -223,7 +223,7 @@
                 <label>Employment availability</label>
 
                 <select title="(select one)" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
-                  <option class='option' *ngFor='let start_month of month' [attr.selected]  [value]="start_month" selected>{{start_month}}</option>
+                  <option class='option' *ngFor='let month of availability' [attr.selected]  [value]="month.value" selected>{{month.name}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="!availability_day">
                   {{avail_log}}

@@ -167,6 +167,11 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
               this.cand_data.push(dataa);
               this.first_name = dataa['initials'];
+              if(dataa['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
+              else if(dataa['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
+              else if(dataa['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
+              else if(dataa['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
+              else this.availability_day =dataa['candidate'].availability_day;
               if(dataa['candidate'].locations)
               {
                 let citiesArray = [];

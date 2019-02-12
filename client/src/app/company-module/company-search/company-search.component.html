@@ -84,14 +84,6 @@
                 </select>
 
               </div>
-              <hr/>
-
-              <div class="form-group">
-                <select title="Availability" [disabled]="msg !== '' ? true : false" class="selectpicker form-control" [(ngModel)]="availabilityChange" name="availability" (ngModelChange)="searchdata('avail' , $event)">
-                  <option class='option' *ngFor='let start_month of month'  [value]="start_month" selected>{{start_month}}</option>
-                </select>
-              </div>
-
 
             </div>
             <div class = "form-group float-right mt-2">

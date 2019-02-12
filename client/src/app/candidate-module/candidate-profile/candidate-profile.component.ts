@@ -281,7 +281,12 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                 this.interest_area.sort();
                 this.roles  = data['candidate'].roles;
                 this.roles.sort();
-                this.availability_day =data['candidate'].availability_day;
+                if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
+                else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
+                else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
+                else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
+                else this.availability_day =data['candidate'].availability_day;
+
                 this.why_work = data['candidate'].why_work;
                 if(data['candidate'].blockchain) {
                   if(data['candidate'].blockchain.commercial_platforms) {

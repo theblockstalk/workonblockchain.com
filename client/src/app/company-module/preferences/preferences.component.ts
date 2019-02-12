@@ -17,7 +17,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   location_log;
   job_type_log;
   position_log;
-  availability_day_log;
   current_currency_log;
   current_salary_log;
   blockchain_log;
@@ -38,7 +37,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   blockchainSelected = [];
   languageSelected = [];
   other_technologies;
-  avail_day;
   pref_active_class;
   cities;
   selectedValueArray=[];
@@ -113,14 +111,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   ];
 
   currency = ["£ GBP" ,"€ EUR" , "$ USD"];
-
-  availability = [
-    {name : "Now" , value : "Now"},
-    {name : "1 month" , value : "1 month"},
-    {name : "2 months" , value : "2 months"},
-    {name : "3 months" , value : "3 months"},
-    {name : "Longer than 3 months" , value : "Longer than 3 months"},
-  ]
 
   blockchain = [
     {name:'Bitcoin', value:'Bitcoin', checked:false},
@@ -230,7 +220,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         visa_needed: new FormControl(),
         job_type: new FormControl(),
         position: new FormControl(),
-        availability_day: new FormControl(),
         current_currency: new FormControl(),
         current_salary: new FormControl(),
         blockchain: new FormControl(),
@@ -259,7 +248,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 visa_needed: [data['saved_searches'][0].visa_needed],
                 job_type: [data['saved_searches'][0].job_type],
                 position: [data['saved_searches'][0].position],
-                availability_day: [data['saved_searches'][0].availability_day],
                 current_currency: [data['saved_searches'][0].current_currency],
                 current_salary: [data['saved_searches'][0].current_salary],
                 blockchain: [data['saved_searches'][0].blockchain],
@@ -406,9 +394,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
       this.position_log = "Please select roles";
     }
-    if(!this.preferncesForm.value.availability_day) {
-      this.availability_day_log = "Please select your availability day";
-    }
+
     if(!this.preferncesForm.value.current_currency) {
       this.current_currency_log = "Please select available annual salary and currency";
     }
@@ -423,8 +409,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     }
     if(this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5  &&
       this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
-      this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
-      this.preferncesForm.value.availability_day && this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
+      this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0  &&
+      this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications) {
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);

@@ -126,6 +126,12 @@ export class AdminCandidateDetailComponent implements OnInit {
               }
               this.info.push(data);
               this.verify =data['is_verify'];
+              if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
+              else if(data['candidate'].availability_day === '2 months') this.availability_day = '2 months notice period';
+              else if(data['candidate'].availability_day === '3 months') this.availability_day = '3 months notice period';
+              else if(data['candidate'].availability_day === 'Longer than 3 months') this.availability_day = '3+ months notice period';
+              else this.availability_day =data['candidate'].availability_day;
+
               if(data['candidate'].work_history) {
                 this.work_history = data['candidate'].work_history;
                 this.work_history.sort(this.date_sort_desc);
