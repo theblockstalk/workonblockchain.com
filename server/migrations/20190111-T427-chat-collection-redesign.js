@@ -34,6 +34,10 @@ module.exports.up = async function() {
             msg_tag: chatDoc.msg_tag,
             date_created: chatDoc.date_created,
         };
+        if(chatDoc.job_type) {
+            if (chatDoc.job_type === 'Part Time') chatDoc.job_type = 'Part time';
+            if (chatDoc.job_type === 'Full Time') chatDoc.job_type = 'Full time';
+        }
 
         if(chatDoc.msg_tag === 'job_offer'){
             newMessageDoc.message = {
