@@ -11,6 +11,7 @@ module.exports = async function (req, res) {
 
     if(refDoc){
         const userDoc = await users.findOneByEmail(refDoc.email);
+        console.log(userDoc);
 
         if(userDoc){
             if(userDoc.type === 'candidate'){

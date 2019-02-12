@@ -44,6 +44,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       this.authenticationService.getByRefrenceCode(this.code)
         .subscribe(
           data => {
+            console.log(data);
             if (data) {
               if (data && data['name']) {
                 this.ref_msg = data['name'] + ' thinks you should join workonblockchain.com';
