@@ -11,7 +11,6 @@ module.exports = async function (req, res) {
 
     if(refDoc){
         const userDoc = await users.findOneByEmail(refDoc.email);
-        console.log(userDoc);
 
         if(userDoc){
             if(userDoc.type === 'candidate'){
@@ -31,17 +30,23 @@ module.exports = async function (req, res) {
             }
             if(userDoc.type === 'company'){
                 const employerDoc = await employerProfile.findOne({_creator : userDoc._id});
+                let discount;
+                if(refDoc.discount){
+                    discount = refDoc.discount;
+                }
                 if(employerDoc.first_name){
                     res.send({
                         email : userDoc.email,
                         name : employerDoc.first_name,
-                        referred_id : refDoc._id
+                        referred_id : refDoc._id,
+                        discount: discount
                     });
                 }
 				else{
 					res.send({
                         email : refDoc.email,
-                        referred_id : refDoc._id
+                        referred_id : refDoc._id,
+                        discount: discount
                     });
 				}
             }
