@@ -41,20 +41,16 @@ module.exports.endpoint = async function (req, res) {
 
     userDoc = await users.findOneById(userId);
     let conversations = [];
-    if(userDoc.conversations) {
+    if(userDoc.conversations && userDoc.conversations.length>0) {
         conversations = userDoc.conversations;
-
         if (conversations && conversations.length > 0) {
             conversations.sort(function (a, b) {
                 return a.last_message < b.last_message;
             });
+            logger.debug('converstaions', {conversations:conversations,'userID':userDoc._id});
 
             for (i = 0; i < conversations.length; i++) {
-                const conversationUser = await
-                users.findOneById(conversations[i].user_id);
-                //conversations[i].push({name: 'Remote' , visa_needed : false});
-                conversations[i].name = '';
-                conversations[i].image = '';
+                const conversationUser = await users.findOneById(conversations[i].user_id);
                 if (conversationUser.type === 'candidate') {
                     if (req.query.admin) {
                         conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
