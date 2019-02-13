@@ -40,7 +40,8 @@ module.exports.endpoint = async function (req, res) {
     }
 
     userDoc = await users.findOneById(userId);
-    let conversations = userDoc.conversations;
+    let conversations = [];
+    conversations = userDoc.conversations;
 
     if (conversations && conversations.length > 0) {
         conversations.sort(function (a, b) {
@@ -67,8 +68,8 @@ module.exports.endpoint = async function (req, res) {
                         else {
                             conversations[i].name = filterReturnData.createInitials(conversationUser.first_name, conversationUser.last_name);
                         }
+                        conversations[i].image = conversationUser.image;
                     }
-                    conversations[i].image = conversationUser.image;
                 }
             }
             else {
