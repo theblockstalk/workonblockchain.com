@@ -2,6 +2,7 @@ const messages = require('../model/mongoose/messages');
 const Chat = require('../model/chat');
 const logger = require('../controller/services/logger');
 const users = require('../model/mongoose/users');
+const mongoose = require('mongoose');
 
 let totalDocsToProcess, totalProcessed = 0, totalModified = 0;
 
@@ -15,7 +16,7 @@ module.exports.up = async function() {
     totalDocsToProcess = await Chat.find({}).countDocuments();
     logger.debug(totalDocsToProcess);
 
-    const chatCursor = await Chat.find({}).cursor();
+    const chatCursor = await Chat.find({}).sort({ date_created: 1 }).cursor();
     let chatDoc = await chatCursor.next();
 
     for ( null ; chatDoc !== null; chatDoc = await chatCursor.next()) {
@@ -120,7 +121,7 @@ module.exports.up = async function() {
         }
         if (newMessageDoc) {
             let senderConv, senderSelect, senderUpdate;
-            const timestamp = Date.now();
+            const timestamp = chatDoc.date_created;
 
             const userDoc = await users.findOneById(chatDoc.sender_id);
             if (userDoc.conversations && userDoc.conversations.length>0) {
@@ -212,6 +213,54 @@ module.exports.up = async function() {
             if (newDocs) totalModified++;
         }
     }
+
+    console.log("Checking conversations");
+    await users.findAndIterate({conversations: {$exists: true}}, async function(userDoc) {
+        console.log("User: " + userDoc._id)
+        const conversations = userDoc.conversations;
+        if (conversations.length === 0) throw new Error("Empty conversations doc created");
+
+        let i = 0;
+        for (let conversation of conversations) {
+            console.log("  Conversation[" + i + "]: " + conversation._id);
+            console.log("    " + JSON.stringify(conversation, null, 1));
+            const chatQuery = { $or : [
+                    { $and : [ { receiver_id : mongoose.Types.ObjectId(userDoc._id) }, { sender_id : conversation.user_id } ] },
+                    { $and : [ { receiver_id : conversation.user_id }, { sender_id : mongoose.Types.ObjectId(userDoc._id) } ] }
+                ]};
+            let chatDocs = await Chat.find(chatQuery).lean();
+            if (chatDocs) {
+                if(!(chatDocs instanceof Array)) chatDocs = [chatDocs]
+                console.log("      " + JSON.stringify(chatDocs, null, 1))
+                let count = 0, unread_count = 0, last_message = new Date("2000-01-01");
+                for (let chatDoc of chatDocs) {
+                    if (chatDoc.date_created > last_message) last_message = chatDoc.date_created;
+                    if (chatDoc.is_read !== 1 && chatDoc.receiver_id.toString() === userDoc._id.toString()) unread_count++;
+                    count++;
+                }
+                if (conversation.count !== count) throw new Error("count not the same for conversation")
+                if (conversation.last_message.toString() !== last_message.toString()) throw new Error("last_message not the same for conversation")
+                if (conversation.unread_count !== unread_count) throw new Error("unread_count not the same for conversation")
+            } else {
+                throw new Error("Expected to find chats")
+            }
+
+            let messageDocs = await messages.findMany(chatQuery);
+            if (messageDocs) {
+                if(!(messageDocs instanceof Array)) messageDocs = [messageDocs]
+                console.log("      " + JSON.stringify(messageDocs, null, 1))
+                let count = 0, unread_count = 0, last_message = new Date("2000-01-01");
+                for (let messageDoc of messageDocs) {
+                    if (messageDoc.date_created > last_message) last_message = messageDoc.date_created;
+                    count++;
+                }
+                if (conversation.count !== count) throw new Error("count not the same for conversation")
+                if (conversation.last_message.toString() !== last_message.toString()) throw new Error("last_message not the same for conversation")
+            } else {
+                throw new Error("Expected to find messages")
+            }
+        }
+    })
 }
 
 // This function will undo the migration
@@ -223,6 +272,7 @@ module.exports.down = async function() {
     const userCursor = await users.findWithCursor({});
     let userDoc = await userCursor.next();
 
+    // await users.update()
     for ( null ; userDoc !== null; userDoc = await userCursor.next()) {
         if(userDoc.conversations) {
             let updateObj = {

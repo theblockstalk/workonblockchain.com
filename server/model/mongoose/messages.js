@@ -6,6 +6,10 @@ module.exports.insert = async function (data) {
     return newDoc._doc;
 }
 
+module.exports.findMany = async function (selector) {
+    return await Messages.find(selector).sort({date_created: 'descending'}).lean();
+}
+
 module.exports.find = async function (selector) {
     return await Messages.findOne(selector).sort({date_created: 'descending'}).lean();
 }
