@@ -91,7 +91,7 @@ module.exports.endpoint = async function (req, res) {
         }
     }
 
-    if(conversations) {
+    if(conversations.length>0) {
         res.send({
             conversations: conversations
         });
