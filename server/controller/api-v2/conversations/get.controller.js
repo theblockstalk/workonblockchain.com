@@ -6,6 +6,7 @@ const messages = require('../../../model/mongoose/messages');
 const filterReturnData = require('../../../controller/api/users/filterReturnData');
 const company = require('../../../model/mongoose/company');
 const errors = require('../../services/errors');
+const logger = require('../../services/logger');
 
 module.exports.request = {
     type: 'get',
