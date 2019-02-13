@@ -40,45 +40,54 @@ module.exports.endpoint = async function (req, res) {
     }
 
     userDoc = await users.findOneById(userId);
-    let conversations = userDoc.conversations;
+    let conversations = [];
+    if(userDoc.conversations && userDoc.conversations.length>0) {
+        conversations = userDoc.conversations;
+        if (conversations && conversations.length > 0) {
+            conversations.sort(function (a, b) {
+                return a.last_message < b.last_message;
+            });
+            logger.debug('converstaions', {conversations:conversations,'userID':userDoc._id});
 
-    if (conversations && conversations.length > 0) {
-        conversations.sort(function (a, b) {
-            return a.last_message < b.last_message;
-        });
-
-        for (i = 0; i < conversations.length; i++) {
-            const conversationUser = await users.findOneById(conversations[i].user_id);
-            if (conversationUser.type === 'candidate') {
-                if(req.query.admin){
-                    conversations[i].name = conversationUser.first_name +' '+ conversationUser.last_name;
-                }
-                else {
-                    const acceptedJobOffer = await messages.findOne({
-                        sender_id: conversations[i].user_id,
-                        receiver_id: userId,
-                        msg_tag: 'job_offer_accepted'
-                    });
-                    if (acceptedJobOffer) {
+            for (i = 0; i < conversations.length; i++) {
+                const conversationUser = await users.findOneById(conversations[i].user_id);
+                if (conversationUser.type === 'candidate') {
+                    if (req.query.admin) {
                         conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
                     }
                     else {
-                        conversations[i].name = filterReturnData.createInitials(conversationUser.first_name,conversationUser.last_name);
+                        if (conversations[i]) {
+                            const acceptedJobOffer = await
+                            messages.findOne({
+                                sender_id: conversations[i].user_id,
+                                receiver_id: userId,
+                                msg_tag: 'job_offer_accepted'
+                            });
+                            if (acceptedJobOffer) {
+                                conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
+                            }
+                            else {
+                                conversations[i].name = filterReturnData.createInitials(conversationUser.first_name, conversationUser.last_name);
+                            }
+                            conversations[i].image = conversationUser.image;
+                        }
                     }
                 }
-                conversations[i].image = conversationUser.image;
-            }
-            else {
-                const companyProfile = await company.findOne({
-                    "_creator": conversations[i].user_id
-                });
-                conversations[i].name = companyProfile.company_name;
-                conversations[i].image = companyProfile.company_logo;
+                else {
+                    if (conversations[i]) {
+                        const companyProfile = await
+                        company.findOne({
+                            "_creator": conversations[i].user_id
+                        });
+                        conversations[i].name = companyProfile.company_name;
+                        conversations[i].image = companyProfile.company_logo;
+                    }
+                }
             }
         }
     }
 
-    if(conversations) {
+    if(conversations.length>0) {
         res.send({
             conversations: conversations
         });
