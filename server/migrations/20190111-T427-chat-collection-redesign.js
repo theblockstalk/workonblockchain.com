@@ -214,16 +214,15 @@ module.exports.up = async function() {
         }
     }
 
-    console.log("Checking conversations");
+    logger.debug("Checking conversations");
     await users.findAndIterate({conversations: {$exists: true}}, async function(userDoc) {
-        console.log("User: " + userDoc._id)
+        logger.debug("User " + userDoc._id)
         const conversations = userDoc.conversations;
         if (conversations.length === 0) throw new Error("Empty conversations doc created");
 
         let i = 0;
         for (let conversation of conversations) {
-            console.log("  Conversation[" + i + "]: " + conversation._id);
-            console.log("    " + JSON.stringify(conversation, null, 1));
+            logger.debug("Conversation[" + i + "]: " + conversation._id);
             const chatQuery = { $or : [
                     { $and : [ { receiver_id : mongoose.Types.ObjectId(userDoc._id) }, { sender_id : conversation.user_id } ] },
                     { $and : [ { receiver_id : conversation.user_id }, { sender_id : mongoose.Types.ObjectId(userDoc._id) } ] }
@@ -231,7 +230,7 @@ module.exports.up = async function() {
             let chatDocs = await Chat.find(chatQuery).lean();
             if (chatDocs) {
                 if(!(chatDocs instanceof Array)) chatDocs = [chatDocs]
-                console.log("      " + JSON.stringify(chatDocs, null, 1))
+
                 let count = 0, unread_count = 0, last_message = new Date("2000-01-01");
                 for (let chatDoc of chatDocs) {
                     if (chatDoc.date_created > last_message) last_message = chatDoc.date_created;
@@ -247,9 +246,8 @@ module.exports.up = async function() {
 
             let messageDocs = await messages.findMany(chatQuery);
             if (messageDocs) {
-                if(!(messageDocs instanceof Array)) messageDocs = [messageDocs]
-                console.log("      " + JSON.stringify(messageDocs, null, 1))
-                let count = 0, unread_count = 0, last_message = new Date("2000-01-01");
+                if(!(messageDocs instanceof Array)) messageDocs = [messageDocs];
+                let count = 0, last_message = new Date("2000-01-01");
                 for (let messageDoc of messageDocs) {
                     if (messageDoc.date_created > last_message) last_message = messageDoc.date_created;
                     count++;
