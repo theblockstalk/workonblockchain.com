@@ -50,6 +50,8 @@ module.exports.endpoint = async function (req, res) {
 
         for (i = 0; i < conversations.length; i++) {
             const conversationUser = await users.findOneById(conversations[i].user_id);
+            conversations[i].name = '';
+            conversations[i].image = '';
             if (conversationUser.type === 'candidate') {
                 if(req.query.admin){
                     conversations[i].name = conversationUser.first_name +' '+ conversationUser.last_name;
