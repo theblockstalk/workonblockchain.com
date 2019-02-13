@@ -678,7 +678,12 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Location:</label>
-                <p>{{job_desc.location}}</p>
+                <ng-container *ngIf="!job_desc.location;else no_job_loc">
+                  <p>N/A</p>
+                </ng-container>
+                <ng-template #no_job_loc>
+                  <p>{{job_desc.location}}</p>
+                </ng-template>
               </div>
             </div>
           </div>

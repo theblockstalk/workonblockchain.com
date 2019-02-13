@@ -253,81 +253,91 @@ export class ChatComponent implements OnInit {
       this.display_list = 1;
       this.display_list = 1;
       this.loading = true;
+      this.get_messages_for_company();
       setInterval(() => {
-        this.authenticationService.get_user_messages_only_comp()
-        .subscribe(
-          msg_data => {
-            if(msg_data['conversations']){
-              this.new_messges.push(msg_data['conversations']);
-              this.new_messges = this.filter_array(msg_data['conversations']);
-              this.users = this.new_messges;
-              for (var key_users_new in this.users) {
-                if(this.count == 0){
-                  this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'',key_users_new);
-                }
-                this.count = this.count + 1;
-              }
-            }
-						else{
-              //this.msg='You have not chatted yet';
-						}
-					},
-            error => {
-            if(error.status === 500 || error.status === 401){
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-            if(error.status === 404){
-              this.log = error.error.message;
-            }
-          }
-        );
+        this.get_messages_for_company();
       },7000);
     }
     else{
+      this.get_messages_for_candidate();
       setInterval(() => {
-        this.authenticationService.get_user_messages_only_comp()
-        .subscribe(
-          msg_data => {
-            this.loading = false;
-            if(msg_data['conversations']){
-              this.new_messges.push(msg_data['conversations']);
-              this.new_messges = this.filter_array(msg_data['conversations']);
-              this.users = this.new_messges;
-              for (var key_users_new in this.users) {
-                if(this.count == 0){
-                  this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name,key_users_new);
-                }
-                this.count = this.count + 1;
-              }
-            }
-						else{
-							//this.msg='You have not chatted yet';
-						}
-					},
-          error => {
-            if(error.status === 500 || error.status === 401){
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-            if(error.status === 404){
-              this.log = error.error.message;
-            }
-          }
-        );
-        this.display_list = 0;
+        this.get_messages_for_candidate();
       },7000);
     }
+  }
+
+  get_messages_for_candidate(){
+    this.authenticationService.get_user_messages_only_comp()
+      .subscribe(
+        msg_data => {
+          this.loading = false;
+          if(msg_data['conversations']){
+            this.new_messges.push(msg_data['conversations']);
+            this.new_messges = this.filter_array(msg_data['conversations']);
+            this.users = this.new_messges;
+            for (var key_users_new in this.users) {
+              if(this.count == 0){
+                this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name,key_users_new);
+              }
+              this.count = this.count + 1;
+            }
+          }
+          else{
+            //this.msg='You have not chatted yet';
+          }
+        },
+        error => {
+          if(error.status === 500 || error.status === 401){
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+          if(error.status === 404){
+            this.log = error.error.message;
+          }
+        }
+      );
+    this.display_list = 0;
+  }
+
+  get_messages_for_company(){
+    this.authenticationService.get_user_messages_only_comp()
+      .subscribe(
+        msg_data => {
+          if(msg_data['conversations']){
+            this.new_messges.push(msg_data['conversations']);
+            this.new_messges = this.filter_array(msg_data['conversations']);
+            this.users = this.new_messges;
+            for (var key_users_new in this.users) {
+              if(this.count == 0){
+                this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'',key_users_new);
+              }
+              this.count = this.count + 1;
+            }
+          }
+          else{
+            //this.msg='You have not chatted yet';
+          }
+        },
+        error => {
+          if(error.status === 500 || error.status === 401){
+            localStorage.setItem('jwt_not_found', 'Jwt token not found');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('googleUser');
+            localStorage.removeItem('close_notify');
+            localStorage.removeItem('linkedinUser');
+            localStorage.removeItem('admin_log');
+            window.location.href = '/login';
+          }
+          if(error.status === 404){
+            this.log = error.error.message;
+          }
+        }
+      );
   }
 
   send_message(msgForm : NgForm){
