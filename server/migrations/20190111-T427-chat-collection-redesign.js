@@ -212,6 +212,37 @@ module.exports.up = async function() {
             if (newDocs) totalModified++;
         }
     }
+
+    // Check conversations
+    await users.findAndIterate({conversations: {$exists: true}}, asnc function(userDoc) {
+        const conversations = userDoc.conversations;
+        if (conversations.length === 0) throw new Error("Empty conversations doc created");
+
+        for (let conversation of conversatins) {
+            const chatQuery = { $or : [
+                    { $and : [ { receiver_id : mongoose.Types.ObjectId(userDoc._id) }, { sender_id : conversation.user_id } ] },
+                    { $and : [ { receiver_id : conversation.user_id }, { sender_id : mongoose.Types.ObjectId(userDoc._id) } ] }
+                ]};
+            const messageDocs = await messages.find(chatQuery);
+            let count = 0, unread_count = 0, last_message = new Date("2000-01-01");
+            for (let messageDoc of messageDocs) {
+                if (messageDoc.date_created > last_message) last_message = messageDoc.date_created;
+                count++;
+            }
+            if (conversation.count !== count) throw new Error("count not the same for conversation " + conversation._id " for user " userDoc._id)
+            if (conversation.last_message !== last_message) throw new Error("last_message not the same for conversation " + conversation._id " for user " userDoc._id)
+            const chatDocs = await Chat.find(chatQuery).lean();
+            count = 0, unread_count = 0, last_message = new Date("2000-01-01");
+            for (let chatDoc of chatDocs) {
+                if (chatDoc.date_created > last_message) last_message = chatDoc.date_created;
+                if (chatDoc.is_read !== 1) unread_count++;
+                count++;
+            }
+            if (conversation.count !== count) throw new Error("count not the same for conversation " + conversation._id " for user " userDoc._id)
+            if (conversation.last_message !== last_message) throw new Error("last_message not the same for conversation " + conversation._id " for user " userDoc._id)
+            if (conversation.unread_count !== unread_count) throw new Error("unread_count not the same for conversation " + conversation._id " for user " userDoc._id)
+        }
+    })
 }
 
 // This function will undo the migration
