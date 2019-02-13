@@ -41,47 +41,51 @@ module.exports.endpoint = async function (req, res) {
 
     userDoc = await users.findOneById(userId);
     let conversations = [];
-    conversations = userDoc.conversations;
+    if(userDoc.conversations) {
+        conversations = userDoc.conversations;
 
-    if (conversations && conversations.length > 0) {
-        conversations.sort(function (a, b) {
-            return a.last_message < b.last_message;
-        });
+        if (conversations && conversations.length > 0) {
+            conversations.sort(function (a, b) {
+                return a.last_message < b.last_message;
+            });
 
-        for (i = 0; i < conversations.length; i++) {
-            const conversationUser = await users.findOneById(conversations[i].user_id);
-            conversations[i].name = '';
-            conversations[i].image = '';
-            if (conversationUser.type === 'candidate') {
-                if(req.query.admin){
-                    conversations[i].name = conversationUser.first_name +' '+ conversationUser.last_name;
+            for (i = 0; i < conversations.length; i++) {
+                const conversationUser = await
+                users.findOneById(conversations[i].user_id);
+                //conversations[i].push({name: 'Remote' , visa_needed : false});
+                conversations[i].name = '';
+                conversations[i].image = '';
+                if (conversationUser.type === 'candidate') {
+                    if (req.query.admin) {
+                        conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
+                    }
+                    else {
+                        if (conversations[i]) {
+                            const acceptedJobOffer = await
+                            messages.findOne({
+                                sender_id: conversations[i].user_id,
+                                receiver_id: userId,
+                                msg_tag: 'job_offer_accepted'
+                            });
+                            if (acceptedJobOffer) {
+                                conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
+                            }
+                            else {
+                                conversations[i].name = filterReturnData.createInitials(conversationUser.first_name, conversationUser.last_name);
+                            }
+                            conversations[i].image = conversationUser.image;
+                        }
+                    }
                 }
                 else {
                     if (conversations[i]) {
-                        const acceptedJobOffer = await
-                        messages.findOne({
-                            sender_id: conversations[i].user_id,
-                            receiver_id: userId,
-                            msg_tag: 'job_offer_accepted'
+                        const companyProfile = await
+                        company.findOne({
+                            "_creator": conversations[i].user_id
                         });
-                        if (acceptedJobOffer) {
-                            conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
-                        }
-                        else {
-                            conversations[i].name = filterReturnData.createInitials(conversationUser.first_name, conversationUser.last_name);
-                        }
-                        conversations[i].image = conversationUser.image;
+                        conversations[i].name = companyProfile.company_name;
+                        conversations[i].image = companyProfile.company_logo;
                     }
-                }
-            }
-            else {
-                if (conversations[i]) {
-                    const companyProfile = await
-                    company.findOne({
-                        "_creator": conversations[i].user_id
-                    });
-                    conversations[i].name = companyProfile.company_name;
-                    conversations[i].image = companyProfile.company_logo;
                 }
             }
         }
