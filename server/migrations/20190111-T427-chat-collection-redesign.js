@@ -217,4 +217,20 @@ module.exports.up = async function() {
 // This function will undo the migration
 module.exports.down = async function() {
     await messages.deleteOne({});
+    totalDocsToProcess = await users.count({});
+    logger.debug(totalDocsToProcess);
+
+    const userCursor = await users.findWithCursor({});
+    let userDoc = await userCursor.next();
+
+    for ( null ; userDoc !== null; userDoc = await userCursor.next()) {
+        if(userDoc.conversations) {
+            let updateObj = {
+                $unset: { conversations: 1}
+            };
+
+            logger.debug("user doc update", updateObj);
+            const update = await users.update({_id: userDoc._id}, updateObj);
+        }
+    }
 }

@@ -54,26 +54,32 @@ module.exports.endpoint = async function (req, res) {
                     conversations[i].name = conversationUser.first_name +' '+ conversationUser.last_name;
                 }
                 else {
-                    const acceptedJobOffer = await messages.findOne({
-                        sender_id: conversations[i].user_id,
-                        receiver_id: userId,
-                        msg_tag: 'job_offer_accepted'
-                    });
-                    if (acceptedJobOffer) {
-                        conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
+                    if (conversations[i]) {
+                        const acceptedJobOffer = await
+                        messages.findOne({
+                            sender_id: conversations[i].user_id,
+                            receiver_id: userId,
+                            msg_tag: 'job_offer_accepted'
+                        });
+                        if (acceptedJobOffer) {
+                            conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
+                        }
+                        else {
+                            conversations[i].name = filterReturnData.createInitials(conversationUser.first_name, conversationUser.last_name);
+                        }
                     }
-                    else {
-                        conversations[i].name = filterReturnData.createInitials(conversationUser.first_name,conversationUser.last_name);
-                    }
+                    conversations[i].image = conversationUser.image;
                 }
-                conversations[i].image = conversationUser.image;
             }
             else {
-                const companyProfile = await company.findOne({
-                    "_creator": conversations[i].user_id
-                });
-                conversations[i].name = companyProfile.company_name;
-                conversations[i].image = companyProfile.company_logo;
+                if (conversations[i]) {
+                    const companyProfile = await
+                    company.findOne({
+                        "_creator": conversations[i].user_id
+                    });
+                    conversations[i].name = companyProfile.company_name;
+                    conversations[i].image = companyProfile.company_logo;
+                }
             }
         }
     }
