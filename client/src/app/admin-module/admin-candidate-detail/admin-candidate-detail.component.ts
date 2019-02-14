@@ -297,7 +297,6 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.authenticationService.getReferenceDetail(data['referred_email'])
                   .subscribe(
                     refData => {
-
                       if(refData['candidateDoc']){
                         if(refData['candidateDoc']['first_name'] && refData['candidateDoc']['last_name'])
                           this.referred_name = refData['candidateDoc']['first_name'] + " " + refData['candidateDoc']['last_name'];
@@ -306,7 +305,7 @@ export class AdminCandidateDetailComponent implements OnInit {
 
 
                         this.detail_link = '/admin-candidate-detail';
-                        this.referred_link = refData['candidateDoc']._creator;
+                        this.referred_link = refData['candidateDoc']._id;
                       }
                       else if(refData['companyDoc']){
                         if(refData['companyDoc'].first_name && refData['companyDoc'].last_name)
@@ -315,7 +314,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                           this.referred_name = refData['companyDoc']._id ;
 
                         this.detail_link = '/admin-company-detail';
-                        this.referred_link = refData['companyDoc']._creator;
+                        this.referred_link = refData['companyDoc']._creator._id;
                       }
                       else
                       {

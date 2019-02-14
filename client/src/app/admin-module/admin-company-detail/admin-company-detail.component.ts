@@ -102,12 +102,12 @@ export class AdminCompanyDetailComponent implements OnInit {
                       if (refData['candidateDoc']) {
                         this.referred_name = refData['candidateDoc'].first_name + " " + refData['candidateDoc'].last_name;
                         this.detail_link = '/admin-candidate-detail';
-                        this.referred_link = refData['candidateDoc']._creator;
+                        this.referred_link = refData['candidateDoc']._id;
                       }
                       else if (refData['companyDoc']) {
                         this.referred_name = refData['companyDoc'].first_name + " " + refData['companyDoc'].last_name;
                         this.detail_link = '/admin-company-detail';
-                        this.referred_link = refData['companyDoc']._creator;
+                        this.referred_link = refData['companyDoc']._creator._id;
                       }
                       else {
                         this.referred_name = refData['refDoc'].email;

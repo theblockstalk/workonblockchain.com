@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-6">
               <ul class="list-group list-group-flush float-right">
-                <li *ngIf="referred_name !== ''">
+                <li class="list-group-item" *ngIf="referred_name !== ''">
                   <span ><i class="fas fa-user mr-2"></i> </span>
                   <ng-container *ngIf="referred_link ; else noLink">
                   <span >Refered By: <a  [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
