@@ -141,6 +141,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
                     this.credentials.email = '';
 
                     localStorage.setItem('currentUser', JSON.stringify(data));
+                    localStorage.removeItem('ref_code');
                     window.location.href = '/terms-and-condition';
 
                   },
@@ -213,6 +214,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           data =>
           {
             localStorage.setItem('currentUser', JSON.stringify(data));
+            localStorage.removeItem('ref_code');
             window.location.href = '/terms-and-condition';
           },
           error =>
@@ -255,8 +257,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           .subscribe(
             data => {
               this.credentials.email= '';
-
               localStorage.setItem('currentUser', JSON.stringify(data));
+              localStorage.removeItem('ref_code');
               window.location.href = '/terms-and-condition';
 
             },
@@ -389,6 +391,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           data =>
           {
             localStorage.setItem('currentUser', JSON.stringify(data));
+            localStorage.removeItem('ref_code');
             window.location.href = '/company_wizard';
           },
           error =>
