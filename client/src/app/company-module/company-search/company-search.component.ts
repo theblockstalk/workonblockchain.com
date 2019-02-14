@@ -362,7 +362,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   }
                   this.salary = data['saved_searches'][0].current_salary;
                   this.currencyChange = data['saved_searches'][0].current_currency;
-                  this.availabilityChange = data['saved_searches'][0].availability_day;
                   this.searchdata('filter' , data['saved_searches'][0]);
                 }
                 else {
@@ -441,7 +440,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
 
-  selectedObj;countryChange;availabilityChange;salary;currencyChange;
+  selectedObj;countryChange;salary;currencyChange;
   information;
   not_found;
   salarysearchdata(key , value) {
@@ -457,7 +456,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
         if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.select_value;
         if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.selecteddd;
-        if(this.availabilityChange) queryBody.availability_day = this.availabilityChange;
         if(this.salary && this.currencyChange) {
           queryBody.current_salary  = this.salary;
           queryBody.current_currency = this.currencyChange;
@@ -506,7 +504,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.responseMsg = "";
     this.not_found='';
 
-    if(!this.searchWord && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange &&  !this.availabilityChange )
+    if(!this.searchWord && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
     {
       this.getVerrifiedCandidate();
     }
@@ -519,7 +517,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
       if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.role_value;
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
-      if(this.availabilityChange ) queryBody.availability_day = this.availabilityChange;
       if(this.visa_check) queryBody.visa_needed = this.visa_check;
       if(this.salary && this.currencyChange) {
         setTimeout(() => {
@@ -575,7 +572,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.role_value = '';
     this.blockchain_value = '';
     this.currencyChange = '';
-    this.availabilityChange = '';
     this.visa_check = false;
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');

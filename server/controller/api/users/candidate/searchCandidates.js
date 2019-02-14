@@ -207,20 +207,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             const skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
             userQuery.push(skillsFilter);
         }
-        if (search.availability_day && search.availability_day !== -1 && search.availability_day !== 'Longer than 3 months') {
-            let dayArray;
-            if (search.availability_day === 'Now') {
-                dayArray = ['Now'];
-            } else if (search.availability_day === '1 month') {
-                dayArray = ['Now', '1 month'];
-            } else if (search.availability_day === '2 months') {
-                dayArray = ['Now', '1 month', '2 months'];
-            } else if (search.availability_day === '3 months') {
-                dayArray = ['Now', '1 month', '2 months', '3 months'];
-            }
-            const availabilityFilter = {"candidate.availability_day": {$in: dayArray}};
-            userQuery.push(availabilityFilter);
-        }
+
     }
     const searchQuery = {$and: userQuery};
     await users.findAndIterate(searchQuery, async function(userDoc) {

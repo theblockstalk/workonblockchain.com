@@ -146,20 +146,6 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>When do you need hires to start?</label>
-                  <select title="(select one)" formControlName = "availability_day" class="form-control selectpicker">
-                    <option *ngFor='let avail of availability'  [attr.selected] = "preferncesForm.value.availability_day === avail.name ? true : null " >{{avail.name}}</option>
-
-                  </select>
-
-                  <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.availability_day">
-                    {{availability_day_log}}
-                  </div>
-                </div>
-              </div>
-
               <div class="col-md-12">
                   <div class = "form-group w-100">
                     <label>When would you like to receive emails with candidates that match your search?</label>

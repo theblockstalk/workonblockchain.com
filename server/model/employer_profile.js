@@ -93,11 +93,6 @@ const CompanyProfileSchema = new Schema({
                     enum: enumerations.workRoles
                 }]
             },
-            availability_day: {
-                type:String,
-                required : true,
-                enum: enumerations.workAvailability
-            },
             current_currency: {
                 type: String,
                 required : true,
