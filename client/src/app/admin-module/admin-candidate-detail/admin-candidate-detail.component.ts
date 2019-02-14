@@ -196,10 +196,11 @@ export class AdminCandidateDetailComponent implements OnInit {
                 }
 
               }
+
               this.interest_area =data['candidate'].interest_areas;
-              this.interest_area.sort();
+              if(this.interest_area) this.interest_area.sort();
               this.roles  = data['candidate'].roles;
-              this.roles.sort();
+              if(this.roles) this.roles.sort();
 
               this.languages= data['candidate'].programming_languages;
               if(this.languages && this.languages.length>0){
@@ -297,6 +298,7 @@ export class AdminCandidateDetailComponent implements OnInit {
                 this.authenticationService.getReferenceDetail(data['referred_email'])
                   .subscribe(
                     refData => {
+                      console.log(refData)
                       if(refData['candidateDoc']){
                         if(refData['candidateDoc']['first_name'] && refData['candidateDoc']['last_name'])
                           this.referred_name = refData['candidateDoc']['first_name'] + " " + refData['candidateDoc']['last_name'];
