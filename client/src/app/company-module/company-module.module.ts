@@ -14,6 +14,7 @@ import { EditCompanyProfileComponent } from './edit-company-profile/edit-company
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 import { PreferencesComponent } from './preferences/preferences.component';
 import {PagerService} from '../pager.service';
+import { CompanyVerifyEmailComponent } from './company-verify-email/company-verify-email.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {PagerService} from '../pager.service';
     CompanyProfileComponent,
     EditCompanyProfileComponent,
     CandidateDetailComponent,
-    PreferencesComponent
+    PreferencesComponent,
+    CompanyVerifyEmailComponent
   ],
   providers : [PagerService]
 })

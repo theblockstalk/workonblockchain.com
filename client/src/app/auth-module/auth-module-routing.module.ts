@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, CanActivate } from '@angular/router';
 import { LoginResolver } from '../is-loggedin.resolver';
 import { CandidateFormComponent } from './candidate-form/candidate-form.component';
 import { LoginComponent } from './login/login.component';
@@ -10,6 +10,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {ReferRedirectResolver} from './refer-redirect-resolver';
+import {VerifyEmailMiddleware} from './verify-email-middleware';
 
 const routes: Routes = [
   { path : 'signup', component: CandidateFormComponent , resolve: {LoginResolver }},
@@ -17,9 +18,9 @@ const routes: Routes = [
   { path : 'forgot_password', component: ForgotPasswordComponent},
   { path : 'reset_password', component: ResetPasswordComponent},
   { path : 'refer', component: CandidateFormComponent, resolve: {ReferRedirectResolver}},
-  { path : 'account-settings' , component: AccountSettingsComponent},
-  { path : 'change-password' , component: ChangePasswordComponent},
-  { path : 'verify_email', component: VerifyEmailComponent},
+  { path : 'account-settings' , component: AccountSettingsComponent , canActivate: [VerifyEmailMiddleware]},
+  { path : 'change-password' , component: ChangePasswordComponent, canActivate: [VerifyEmailMiddleware]},
+  { path : 'verify_email', component: VerifyEmailComponent },
   { path : 'not_found' , component: NotFoundComponent},
 
 

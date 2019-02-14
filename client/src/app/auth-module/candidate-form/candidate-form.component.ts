@@ -213,7 +213,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           data =>
           {
             localStorage.setItem('currentUser', JSON.stringify(data));
-            window.location.href = '/terms-and-condition';
+            window.location.href = '/candidate-verify-email';
           },
           error =>
           {

@@ -7,6 +7,7 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
 import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { CompanyVerifyEmailComponent } from './company-verify-email/company-verify-email.component';
 
 const routes: Routes = [
   {path : 'about_comp' , component: AboutCompanyComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path : 'edit_company_profile' , component: EditCompanyProfileComponent},
   {path : 'candidate-detail' , component: CandidateDetailComponent},
   {path : 'preferences' , component: PreferencesComponent},
+  {path :  'company-verify-email', component: CompanyVerifyEmailComponent}
 
 ];
 
