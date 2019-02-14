@@ -8,73 +8,11 @@ const cities = require('../../../../model/mongoose/cities');
 
 const salaryFactor = 1.1;
 
-/*
-inputSchema = {
-    filers: {
-        is_verify: {
-            type: Number,
-            enum: [0, 1],
-        },
-        status: {
-            type: String,
-            enum: enumerations.candidateStatus
-        },
-        disable_account: Boolean,
-        msg_tags: {
-            type: String,
-            enum: enumerations.chatMsgTypes
-        },
-        onlyAfterDate: Date
-    },
-    search: {
-        name: String,
-        word: String,
-        locations: [{
-            type: String,
-            enum: enumerations.workLocations
-        }],
-        positions: [{
-            type: String,
-            enum: enumerations.workRoles
-        }],
-        blockchains: [{
-            type: String,
-            enum: enumerations.blockchainPlatforms
-        }],
-        skills: [{
-            type: String,
-            enum: enumerations.programmingLanguages
-        }],
-        salary: {
-            type: {
-                current_currency: {
-                    type: String,
-                    enum: enumerations.currencies
-                },
-                current_salary: Number
-            }
-        },
-        availability_day: {
-            type: String,
-            enum: enumerations.workAvailability
-        }
-    }
-};
-
-outputSchema = {
-    count: Number
-    candidates: [
-        type: candidateDoc
-    ]
-};
-*/
-
-module.exports.candidateSearch = async function candidateSearch(filters, search) {
+module.exports.candidateSearch = async function (filters, search, orderPreferences) {
     logger.debug("Doing new candidate search", {
         filters: filters,
         search: search
     });
-
 
     let userQuery= [];
     let filteredResult = [];
@@ -193,27 +131,34 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             userQuery.push(currencyFiler);
         }
 
-        if (search.blockchains && search.blockchains.length > 0 ) {
-            const platformFilter = {
-                $or: [
-                    {"candidate.blockchain.commercial_platforms.name": {$in: search.blockchains}},
-                    {"candidate.blockchain.smart_contract_platforms.name": {$in: search.blockchains}}
-                ]
-            };
-            userQuery.push(platformFilter);
-        }
-
         if (search.skills && search.skills.length > 0) {
             const skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
             userQuery.push(skillsFilter);
         }
 
     }
+
+    let sort;
+    if (orderPreferences) {
+        if (orderPreferences.blockchains && orderPreferences.blockchains.length > 0 ) {
+            const platformFilter = {
+                $or: [
+                    {"candidate.blockchain.commercial_platforms.name": {$in: orderPreferences.blockchains}},
+                    {"candidate.blockchain.smart_contract_platforms.name": {$in: orderPreferences.blockchains}}
+                ]
+            };
+            sort = platformFilter;
+        }
+    }
+
     const searchQuery = {$and: userQuery};
-    await users.findAndIterate(searchQuery, async function(userDoc) {
+    let cursor = users.findWithCursor(searchQuery);
+    let userDocs = await cursor.sort(sort).toArray();
+
+    for (let userDoc of userDocs) {
         filteredResult.push(userDoc);
         totalProccessed++;
-    });
+    }
 
     if(filteredResult && filteredResult.length > 0) {
         return {

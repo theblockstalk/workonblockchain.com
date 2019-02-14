@@ -7,7 +7,7 @@ module.exports = async  function (req,res)
 {
     let userId = req.auth.user._id;
     let queryBody = req.body;
-    let search = {};
+    let search = {}, order = {};
     if (queryBody.word) search.word = queryBody.word;
     if (queryBody.skills) search.skills = queryBody.skills;
     if (queryBody.locations) {
@@ -19,7 +19,6 @@ module.exports = async  function (req,res)
     }
     if (queryBody.visa_needed) search.visa_needed = queryBody.visa_needed;
     if (queryBody.positions) search.positions = queryBody.positions;
-    if (queryBody.blockchains) search.blockchains = queryBody.blockchains;
     if (queryBody.current_currency && queryBody.current_salary) {
         search.salary = {
             current_currency: queryBody.current_currency,
@@ -27,11 +26,13 @@ module.exports = async  function (req,res)
         }
     }
 
+    if (queryBody.blockchains) order.blockchains = queryBody.blockchains;
+
     let candidateDocs = await candidateSearch.candidateSearch({
         is_verify: 1,
         status: 'approved',
         disable_account: false
-    }, search);
+    }, search, order);
 
     let filterArray = [];
     for(let candidateDetail of candidateDocs.candidates) {

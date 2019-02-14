@@ -35,17 +35,17 @@ module.exports = async function () {
                         is_verify: 1,
                         status: 'approved',
                         disable_account: false,
-                        blacklist: blacklist
+                        blacklist: blacklis
                     }, {
                         skills: savedSearch.skills,
                         locations: savedSearch.location,
                         positions: savedSearch.position,
-                        blockchains: savedSearch.blockchain,
                         salary: {
                             current_currency: savedSearch.current_currency,
                             current_salary: savedSearch.current_salary
-                        },
-
+                        }
+                    }, {
+                        blockchains: savedSearch.blockchain,
                     });
 
                     let candidateList = [];
