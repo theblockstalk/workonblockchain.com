@@ -102,7 +102,7 @@
                   <ul class = "ul_pd">
                     <div *ngFor="let msg of new_msgss">
                       <ng-container *ngIf="msg.sender_id === currentUser._creator;else second">
-                        <li class="sent mb-5 col-md-12">
+                        <li class="sent mb-3 col-md-12">
                           <p class = "p-2 send_p job-description rounded d-inline-block">
                             <span *ngIf="msg.message.job_offer">
                               <b>Job title:</b>
@@ -131,12 +131,12 @@
                             </span>
                             <span *ngIf="msg.message.employment_offer">
                               <b>Start date:</b>
-                              {{msg.message.employment_offer.start_date | date: 'MM/dd/yyyy'}}
+                              {{msg.message.employment_offer.start_date | date : 'dd'}} {{msg.message.employment_offer.start_date | date : 'MMM'}} {{msg.message.employment_offer.start_date | date : 'yyyy'}} {{msg.message.employment_offer.start_date | date : 'HH:mm'}}
                               <br/>
                             </span>
                             <span *ngIf="msg.message.interview_offer">
                               <b>Interview date & time:</b>
-                              {{msg.message.interview_offer.date_time | date: 'MM/dd/yyyy HH:mm'}}
+                              {{msg.message.interview_offer.date_time | date : 'dd'}} {{msg.message.interview_offer.date_time | date : 'MMM'}} {{msg.message.interview_offer.date_time | date : 'yyyy'}} {{msg.message.interview_offer.date_time | date : 'HH:mm'}}
                               <br/>
                             </span>
                             <span *ngIf="msg.message.interview_offer">
@@ -199,11 +199,12 @@
                           </p>
                         </li>
                         <div class="chat_company">
-                          {{msg.date_created | date: 'MM/dd/yyyy HH:mm'}}
+                          {{msg.date_created | date : 'dd'}} {{msg.date_created | date : 'MMM'}} {{msg.date_created | date : 'yyyy'}} {{msg.date_created | date : 'HH:mm'}}
+
                         </div>
                       </ng-container>
                       <ng-template #second>
-                        <li class="replies mb-5 col-md-12">
+                        <li class="replies mb-3 col-md-12">
                           <div class="arrow-up"></div>
                           <p class = "p-2 rec_p rounded text-light d-inline-block wob-bg-primary1">
                             <span *ngIf="msg.message.job_offer">
@@ -248,7 +249,7 @@
                             </span>
                             <span *ngIf="msg.message.interview_offer">
                               <b>Interview date & time:</b>
-                              {{msg.message.interview_offer.date_time | date: 'MM/dd/yyyy HH:mm'}}
+                              {{msg.message.interview_offer.date_time | date : 'dd'}} {{msg.message.interview_offer.date_time | date : 'MMM'}} {{msg.message.interview_offer.date_time | date : 'yyyy'}} {{msg.message.interview_offer.date_time | date : 'HH:mm'}}
                               <br/>
                             </span>
                             <span *ngIf="msg.message.interview_offer">
@@ -306,7 +307,8 @@
                           </p>
                         </li>
                         <div class="chat_user">
-                          {{msg.date_created | date: 'MM/dd/yyyy HH:mm'}}
+                          {{msg.date_created | date : 'dd'}} {{msg.date_created | date : 'MMM'}} {{msg.date_created | date : 'yyyy'}} {{msg.date_created | date : 'HH:mm'}}
+
                         </div>
                       </ng-template>
                     </div>
@@ -315,7 +317,7 @@
                 </div>
                 <ng-container *ngIf="cand_offer == 1;else no_offer">
                   <ng-container *ngIf="show_accpet_reject == 0;else no_show">
-                    <div class="message-input">
+                    <div class="message-input" [ngClass]="currentUser.type === 'candidate'? 'message-bottom' : ''">
                       <div class = "offers">
                         <form (submit)="accept_offer(msgForm)" #msgForm = ngForm style="display:inline;">
                           <input type="hidden" name="email" [(ngModel)]="credentials.email"/>
@@ -342,7 +344,7 @@
                 <ng-template #no_offer>
                 </ng-template>
                 <ng-container *ngIf="company_reply == 1;else no_reply">
-                  <div class="message-input">
+                  <div class="message-input" [ngClass]="currentUser.type === 'candidate'? 'message-bottom' : ''">
                     <ng-container *ngIf="currentUser.type == 'company';else no_offers">
                       <div class = "offers">
                         <span class = "">
@@ -446,6 +448,7 @@
                     <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
                   </div>
                   <div class = "invalid-feedback d-inline"  *ngIf="date_log">
+                    {{date_log}}
                     {{date_log}}
                   </div>
                 </div>
