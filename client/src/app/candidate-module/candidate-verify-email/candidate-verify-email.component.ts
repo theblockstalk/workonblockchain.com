@@ -30,7 +30,7 @@ export class CandidateVerifyEmailComponent implements OnInit {
             console.log(data)
             if(data['success'] === true)
             {
-              this.success_msg = "Please check your email to verify your account" ;
+              this.success_msg = "Please check your email to verify your account." ;
               setInterval(() => {
                 this.success_msg = "" ;
               }, 5000);
