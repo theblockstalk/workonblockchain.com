@@ -40,11 +40,6 @@ describe('POST /messages', function () {
             let res = await messagesHelpers.post({not_a_field: "my id", msg_tag: 'job_offer'}, companyUserDoc.jwt_token);
             res.body.message.should.equal("ValidationError: receiver_id: Path `receiver_id` is required.");
             res.status.should.equal(500);
-
-            let jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
-            jobOffer.not_a_field = "I am not allowed";
-            res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
-            res.status.should.equal(500);
         })
 
         it('it should should fail with invalid jwtToken', async function () {
