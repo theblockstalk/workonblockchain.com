@@ -77,15 +77,9 @@ export class ReferralComponent implements OnInit {
           data => {
             if(data) {
               this.verify  = data['is_verify'];
-              if(data['first_name'] && data['last_name']){
-                this.first_name = data['first_name'];
-                this.last_name = data['last_name'];
-                this.display_name = data['first_name'] +' '+ data['last_name'];
-              }
-              else {
-                this.first_name = 'workonblockchain';
-                this.display_name= 'workonblockchain'
-              }
+              this.first_name = data['first_name'];
+              this.last_name = data['last_name'];
+              this.display_name = data['first_name'] +' '+ data['last_name'];
 
               this.authenticationService.getRefCode(data['email'])
                 .subscribe(
