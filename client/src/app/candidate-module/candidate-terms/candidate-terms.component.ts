@@ -98,7 +98,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                     this.termscondition = false;
                   }
 
-                  if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
+                  if(data['contact_number']  && data['nationality'])
                   {
                       this.job_disable = "";
                       this.about_active_class = 'fa fa-check-circle text-success';
