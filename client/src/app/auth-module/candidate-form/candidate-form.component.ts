@@ -22,6 +22,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   code;ref_msg;
   public isUserAuthenticatedEmittedValue = false;
   public isUserAuthenticated;
+  first_name_log;
+  last_name_log;
 
   private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
 
@@ -183,6 +185,14 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.email_log="Please enter email address";
     }
+    if(!this.credentials.first_name)
+    {
+      this.first_name_log="Please enter first name";
+    }
+    if(!this.credentials.last_name)
+    {
+      this.last_name_log="Please enter last name";
+    }
     else
     {
       this.email_log="";
@@ -205,7 +215,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.pass_log="";
     }
-    if(loginForm.valid === true && this.credentials.email && this.credentials.password && this.credentials.confirm_password && this.credentials.password == this.credentials.confirm_password)
+    if(loginForm.valid === true && this.credentials.first_name && this.credentials.last_name && this.credentials.email && this.credentials.password && this.credentials.confirm_password && this.credentials.password == this.credentials.confirm_password)
     {
 
       this.authenticationService.create(this.credentials)

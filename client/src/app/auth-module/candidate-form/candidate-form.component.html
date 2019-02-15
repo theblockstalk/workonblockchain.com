@@ -26,6 +26,20 @@
                 Enter email in correct format like myemail@gmail.com.
               </div>
             </div>
+            <div class="form-group">
+              <label for="firstName">First name</label>
+              <input type="text" class="form-control" required id="firstName" placeholder="John" name="first_name" [(ngModel)]="credentials.first_name">
+              <div class = "invalid-feedback d-inline"  *ngIf="!credentials.first_name">
+                {{first_name_log}}
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last name</label>
+              <input type="text" class="form-control" required id="lastName" placeholder="Smith"  name="last_name" [(ngModel)]="credentials.last_name">
+              <div class = "invalid-feedback d-inline"  *ngIf="!credentials.last_name">
+                {{last_name_log}}
+              </div>
+            </div>
             <div class = "form-group">
               <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
               <label>Password</label>
