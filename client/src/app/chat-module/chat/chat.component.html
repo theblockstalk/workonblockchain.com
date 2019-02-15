@@ -102,7 +102,7 @@
                   <ul class = "ul_pd">
                     <div *ngFor="let msg of new_msgss">
                       <ng-container *ngIf="msg.sender_id === currentUser._creator;else second">
-                        <li class="sent mb-5 col-md-12">
+                        <li class="sent mb-3 col-md-12">
                           <p class = "p-2 send_p job-description rounded d-inline-block">
                             <span *ngIf="msg.message.job_offer">
                               <b>Job title:</b>
@@ -204,7 +204,7 @@
                         </div>
                       </ng-container>
                       <ng-template #second>
-                        <li class="replies mb-5 col-md-12">
+                        <li class="replies mb-3 col-md-12">
                           <div class="arrow-up"></div>
                           <p class = "p-2 rec_p rounded text-light d-inline-block wob-bg-primary1">
                             <span *ngIf="msg.message.job_offer">
@@ -317,7 +317,7 @@
                 </div>
                 <ng-container *ngIf="cand_offer == 1;else no_offer">
                   <ng-container *ngIf="show_accpet_reject == 0;else no_show">
-                    <div class="message-input">
+                    <div class="message-input" [ngClass]="currentUser.type === 'candidate'? 'message-bottom' : ''">
                       <div class = "offers">
                         <form (submit)="accept_offer(msgForm)" #msgForm = ngForm style="display:inline;">
                           <input type="hidden" name="email" [(ngModel)]="credentials.email"/>
@@ -344,7 +344,7 @@
                 <ng-template #no_offer>
                 </ng-template>
                 <ng-container *ngIf="company_reply == 1;else no_reply">
-                  <div class="message-input">
+                  <div class="message-input" [ngClass]="currentUser.type === 'candidate'? 'message-bottom' : ''">
                     <ng-container *ngIf="currentUser.type == 'company';else no_offers">
                       <div class = "offers">
                         <span class = "">
