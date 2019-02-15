@@ -130,7 +130,6 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           if(data)
           {
             this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-            console.log(this.linkedinUser);
             this.credentials.email= this.linkedinUser.emailAddress;
             this.credentials.password= '';
             this.credentials.type="candidate";
@@ -263,7 +262,6 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       if(this.result)
       {
         this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-        console.log(this.googleUser)
         this.credentials.email= this.googleUser.email;
         this.credentials.password= '';
         this.credentials.type="candidate";

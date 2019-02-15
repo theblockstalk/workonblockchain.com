@@ -67,7 +67,9 @@ module.exports = async function (req, res) {
         let jwtUserToken = jwtToken.createJwtToken(candidateUserCreated);
         let verifyEmailToken = jwtToken.createJwtToken(candidateUserCreated, signOptions);
         await users.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken , 'verify_email_key' : verifyEmailToken }});
-        verify_send_email(candidateUserCreated.email, verifyEmailToken);
+        if(candidateUserCreated.social_type !== 'LINKEDIN' && candidateUserCreated.social_type !== 'GOOGLE') {
+            verify_send_email(candidateUserCreated.email, verifyEmailToken);
+        }
 
         const referralDoc = await referral.findOneByEmail( userParam.email );
         if(referralDoc) {
