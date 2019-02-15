@@ -94,8 +94,7 @@ export class AboutComponent implements OnInit,AfterViewInit
 
         this.img_src = last;
       }
-      this.info.first_name= this.googleUser.firstName;
-      this.info.last_name = this.googleUser.lastName;
+
     }
 
     if(!this.currentUser)
@@ -139,9 +138,6 @@ export class AboutComponent implements OnInit,AfterViewInit
               if(data['candidate'] && data['candidate'].base_city){
                 this.info.city = data['candidate'].base_city;
               }
-
-              this.info.first_name =data['first_name'];
-              this.info.last_name =data['last_name'];
 
               if(data['image'] != null )
               {
@@ -221,14 +217,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     if (this.referred_id) {
       this.info.referred_id = this.referred_id;
     }
-    if (!this.info.first_name) {
-      this.first_name_log = "Please enter first name";
 
-    }
-    if (!this.info.last_name) {
-      this.last_name_log = "Please enter last name";
-
-    }
     if (!this.info.contact_number) {
       this.contact_name_log = "Please enter contact number";
     }
@@ -242,7 +231,7 @@ export class AboutComponent implements OnInit,AfterViewInit
     if (!this.info.city) {
       this.city_log = "Please enter base city";
     }
-    if (this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality && this.info.city && this.info.country) {
+    if ( this.info.contact_number && this.info.nationality && this.info.city && this.info.country) {
       this.authenticationService.about(this.currentUser._creator, this.info)
         .subscribe(
           data => {

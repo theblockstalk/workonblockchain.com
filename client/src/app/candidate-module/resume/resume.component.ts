@@ -93,7 +93,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
-            if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
+            if(data['contact_number']  && data['nationality'])
             {
               this.about_active_class = 'fa fa-check-circle text-success';
             }

@@ -6,9 +6,9 @@ const filterReturnData = require('../filterReturnData');
 
 module.exports = async function (req,res) {
     let queryBody = req.body;
-    let msgTags = queryBody.msg_tags;
+    if(queryBody.account_status === 'true') queryBody.disable_account = true;
+    else queryBody.disable_account = false;
 
-    let companyReply;
     let userIds= [];
     let queryString = [];
     if(queryBody.msg_tags) {
@@ -24,6 +24,17 @@ module.exports = async function (req,res) {
                 const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approve)};
                 queryString.push(isApproveFilter);
             }
+            if(queryBody.verify_status) {
+                const isApproveFilter = {"users.is_verify" : parseInt(queryBody.verify_status)};
+                queryString.push(isApproveFilter);
+            }
+
+            if(queryBody.disable_account) {
+                const isApproveFilter = {"users.disable_account" : parseInt(queryBody.disable_account)};
+                queryString.push(isApproveFilter);
+            }
+
+
             if(queryBody.word) {
                 const nameFilter = { company_name : {'$regex' : queryBody.word, $options: 'i' } };
                 queryString.push(nameFilter);
@@ -64,6 +75,16 @@ module.exports = async function (req,res) {
             const isApproveFilter = {"users.is_approved" : parseInt(queryBody.is_approve)};
             queryString.push(isApproveFilter);
         }
+        if(queryBody.verify_status) {
+            const isApproveFilter = {"users.is_verify" : parseInt(queryBody.verify_status)};
+            queryString.push(isApproveFilter);
+        }
+
+        if(queryBody.disable_account) {
+            const isApproveFilter = {"users.disable_account" : parseInt(queryBody.disable_account)};
+            queryString.push(isApproveFilter);
+        }
+
         if(queryBody.word) {
             const nameFilter = { company_name : {'$regex' : queryBody.word, $options: 'i' } };
             queryString.push(nameFilter);

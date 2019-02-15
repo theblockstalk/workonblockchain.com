@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, CanActivate } from '@angular/router';
 
 import { CandidateTermsComponent } from './candidate-terms/candidate-terms.component';
 import { LinkedinImportComponent } from './linkedin-import/linkedin-import.component';
@@ -10,16 +10,19 @@ import { ExperienceComponent } from './experience/experience.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import { EditCandidateProfileComponent } from './edit-candidate-profile/edit-candidate-profile.component';
 import {ProfileResolver} from '../incomplete-profile.resolver';
+import { CandidateVerifyEmailComponent } from './candidate-verify-email/candidate-verify-email.component';
+import {VerifyEmailMiddleware} from '../../app/auth-module/verify-email-middleware';
 
 const routes: Routes = [
-  { path: 'terms-and-condition', component: CandidateTermsComponent},
-  { path: 'prefill-profile', component: LinkedinImportComponent},
-  { path: 'about', component: AboutComponent},
-  { path: 'job', component: JobComponent},
-  { path: 'resume', component: ResumeComponent},
-  { path: 'experience', component: ExperienceComponent},
-  { path: 'candidate_profile', component: CandidateProfileComponent , resolve: {ProfileResolver}},
-  {path : 'edit_profile' , component: EditCandidateProfileComponent },
+  { path: 'terms-and-condition', component: CandidateTermsComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: 'prefill-profile', component: LinkedinImportComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: 'about', component: AboutComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: 'job', component: JobComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: 'resume', component: ResumeComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: 'experience', component: ExperienceComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: 'candidate_profile', component: CandidateProfileComponent ,  canActivate : [VerifyEmailMiddleware], resolve: {ProfileResolver}},
+  { path: 'edit_profile' , component: EditCandidateProfileComponent, canActivate : [VerifyEmailMiddleware] },
+  { path: 'candidate-verify-email' , component: CandidateVerifyEmailComponent}
 ];
 
 @NgModule({

@@ -14,6 +14,7 @@ import { ExperienceComponent } from './experience/experience.component';
 import { CandidateProfileComponent } from './candidate-profile/candidate-profile.component';
 import { EditCandidateProfileComponent } from './edit-candidate-profile/edit-candidate-profile.component';
 import {ProfileResolver} from '../incomplete-profile.resolver';
+import { CandidateVerifyEmailComponent } from './candidate-verify-email/candidate-verify-email.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import {ProfileResolver} from '../incomplete-profile.resolver';
     ResumeComponent,
     ExperienceComponent,
     CandidateProfileComponent,
-    EditCandidateProfileComponent
+    EditCandidateProfileComponent,
+    CandidateVerifyEmailComponent
   ],
   providers:
     [
