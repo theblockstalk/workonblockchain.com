@@ -6,7 +6,6 @@ const filterReturnData = require('../filterReturnData');
 
 module.exports = async function (req,res) {
     let queryBody = req.body;
-    console.log(queryBody);
     if(queryBody.account_status === 'true') queryBody.disable_account = true;
     else queryBody.disable_account = false;
 

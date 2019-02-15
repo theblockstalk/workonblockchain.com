@@ -11,7 +11,6 @@ const welcomeEmail = require('../../../services/email/emails/welcomeEmail');
 module.exports = async function (req, res) {
 
     let userParam = req.body;
-    console.log(userParam);
 
     if(userParam.linkedin_id) {
         const candidateUserDoc = await users.findOne({ linkedin_id: userParam.linkedin_id });
