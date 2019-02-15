@@ -15,63 +15,66 @@ export class VerifyEmailMiddleware implements CanActivate {
   }
 
   canActivate(): boolean{
-    if(this.currentUser.type === 'candidate') {
-      this.authenticationService.getById(this.currentUser._id)
-        .subscribe(
-          data =>
-          {
-            if(data) {
-              if(data['is_verify'] === 1) {
-                return true;
-              }
-              else {
-                this.router.navigate(['/candidate-verify-email']);
-                return false;
-              }
-            }
-          },
-          error =>
-          {
-
-          });
-    }
-    else if(this.currentUser.type === 'company') {
-      this.authenticationService.getCurrentCompany(this.currentUser._creator)
-        .subscribe(
-          data =>
-          {
-            if(data) {
-              if (data['_creator'].is_verify === 1) {
-                return true;
-              }
-              else {
-                this.router.navigate(['/company-verify-email']);
-                return false;
-              }
-            }
-          },
-          error =>
-          {
-            if(error['message'] === 500 || error['message'] === 401)
+    if(this.currentUser) {
+      if(this.currentUser.type === 'candidate') {
+        this.authenticationService.getById(this.currentUser._id)
+          .subscribe(
+            data =>
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-
-            if(error['message'] === 403)
+              if(data) {
+                if(data['is_verify'] === 1) {
+                  return true;
+                }
+                else {
+                  this.router.navigate(['/candidate-verify-email']);
+                  return false;
+                }
+              }
+            },
+            error =>
             {
-              // this.router.navigate(['/not_found']);
-            }
-          });
+
+            });
+      }
+      else if(this.currentUser.type === 'company') {
+        this.authenticationService.getCurrentCompany(this.currentUser._creator)
+          .subscribe(
+            data =>
+            {
+              if(data) {
+                if (data['_creator'].is_verify === 1) {
+                  return true;
+                }
+                else {
+                  this.router.navigate(['/company-verify-email']);
+                  return false;
+                }
+              }
+            },
+            error =>
+            {
+              if(error['message'] === 500 || error['message'] === 401)
+              {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+
+              if(error['message'] === 403)
+              {
+                // this.router.navigate(['/not_found']);
+              }
+            });
+      }
+      else {
+
+      }
     }
-    else {
-      return false;
-    }
+
     return true;
   }
 }
