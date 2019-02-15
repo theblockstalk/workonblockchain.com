@@ -130,11 +130,14 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           if(data)
           {
             this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
+            console.log(this.linkedinUser);
             this.credentials.email= this.linkedinUser.emailAddress;
             this.credentials.password= '';
             this.credentials.type="candidate";
             this.credentials.social_type='LINKEDIN';
             this.credentials.linkedin_id = this.linkedinUser.id;
+            this.credentials.first_name = this.linkedinUser.firstName;
+            this.credentials.last_name = this.linkedinUser.lastName;
             if(this.linkedinUser.emailAddress)
             {
               this.authenticationService.create(this.credentials)
@@ -260,10 +263,13 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       if(this.result)
       {
         this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
+        console.log(this.googleUser)
         this.credentials.email= this.googleUser.email;
         this.credentials.password= '';
         this.credentials.type="candidate";
         this.credentials.social_type=this.googleUser.provider;
+        this.credentials.first_name = this.googleUser.firstName;
+        this.credentials.last_name = this.googleUser.lastName;
         this.authenticationService.create(this.credentials)
           .subscribe(
             data => {
