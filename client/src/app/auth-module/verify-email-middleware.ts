@@ -41,7 +41,7 @@ export class VerifyEmailMiddleware implements CanActivate {
           data =>
           {
             if(data) {
-              if (data['is_verify'] === 1) {
+              if (data['_creator'].is_verify === 1) {
                 return true;
               }
               else {

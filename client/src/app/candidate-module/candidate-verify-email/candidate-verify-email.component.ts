@@ -17,7 +17,7 @@ export class CandidateVerifyEmailComponent implements OnInit {
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if(this.currentUser) {}
-    else  this.router.navigate(['/not_found']);
+    else  this.router.navigate(['/candidate-verify-email']);
   }
   verify_client()
   {
@@ -31,7 +31,9 @@ export class CandidateVerifyEmailComponent implements OnInit {
             if(data['success'] === true)
             {
               this.success_msg = "Please check your email to verify your account" ;
-
+              setInterval(() => {
+                this.success_msg = "" ;
+              }, 5000);
             }
             else
             {

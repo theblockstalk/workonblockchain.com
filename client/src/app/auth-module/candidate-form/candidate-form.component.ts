@@ -407,7 +407,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           {
             localStorage.setItem('currentUser', JSON.stringify(data));
             localStorage.removeItem('ref_code');
-            window.location.href = '/company_wizard';
+            window.location.href = '/company-verify-email';
           },
           error =>
           {
