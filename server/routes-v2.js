@@ -9,7 +9,7 @@ const endpoints = [
     require('./controller/api-v2/messages/get.controller'),
     require('./controller/api-v2/conversations/get.controller'),
     require('./controller/api-v2/conversations/messages/get.controller'),
-    require('./controller/api-v2/conversations/patch.controller')
+    require('./controller/api-v2/conversations/messages/patch.controller')
 ];
 
 function isEmpty(obj) {

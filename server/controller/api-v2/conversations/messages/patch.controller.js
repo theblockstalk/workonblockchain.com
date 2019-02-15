@@ -1,6 +1,6 @@
-const auth = require('../../middleware/auth-v2');
+const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const users = require('../../../model/mongoose/users');
+const users = require('../../../../model/mongoose/users');
 
 module.exports.request = {
     type: 'patch',
