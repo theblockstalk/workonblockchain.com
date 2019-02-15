@@ -4,6 +4,7 @@ const jwtToken = require('../../../services/jwtToken');
 const referral = require('../../../../model/mongoose/referral');
 const errors = require('../../../services/errors');
 const verify_send_email = require('../auth/verify_send_email');
+const welcomeEmail = require('../../../services/email/emails/welcomeEmail');
 
 ///////to create new candidate////////////////////////////
 
@@ -67,7 +68,13 @@ module.exports = async function (req, res) {
         let jwtUserToken = jwtToken.createJwtToken(candidateUserCreated);
         let verifyEmailToken = jwtToken.createJwtToken(candidateUserCreated, signOptions);
         await users.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken , 'verify_email_key' : verifyEmailToken }});
-        if(candidateUserCreated.social_type !== 'LINKEDIN' && candidateUserCreated.social_type !== 'GOOGLE') {
+
+        //sending email for social register
+        if(candidateUserCreated.social_type === 'GOOGLE' || candidateUserCreated.social_type === 'LINKEDIN'){
+            let data = {fname : candidateUserCreated.first_name , email : candidateUserCreated.email};
+            welcomeEmail.sendEmail(data, candidateUserCreated.disable_account);
+        }
+        else {
             verify_send_email(candidateUserCreated.email, verifyEmailToken);
         }
 
