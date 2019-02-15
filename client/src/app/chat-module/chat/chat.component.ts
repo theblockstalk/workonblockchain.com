@@ -282,7 +282,7 @@ export class ChatComponent implements OnInit {
               }
               if(this.users[0].unread_count > 0) {
                 console.log("if");
-                this.openDialog('',this.users[0].user_id,this.users[0].name,0);
+                this.openDialog('',this.users[0].user_id,this.users[0].name,'0');
               }
               this.count = this.count + 1;
             }
@@ -330,7 +330,7 @@ export class ChatComponent implements OnInit {
             }
             console.log(this.users[0].unread_count);
             if(this.users[0].unread_count > 0) {
-              this.openDialog(this.users[0].name,this.users[0].user_id,'',0);
+              this.openDialog(this.users[0].name,this.users[0].user_id,'','0');
             }
 
           }
