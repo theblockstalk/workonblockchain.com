@@ -267,6 +267,7 @@ export class ChatComponent implements OnInit {
   }
 
   get_messages_for_candidate(){
+    let new_msgs = this.new_msgss;
     this.authenticationService.get_user_messages_only_comp()
       .subscribe(
         msg_data => {
@@ -277,19 +278,31 @@ export class ChatComponent implements OnInit {
             this.new_messges = this.filter_array(msg_data['conversations']);
             this.users = this.new_messges;
             for (var key_users_new in this.users) {
+
               if(this.count === 0){
                 this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name,key_users_new);
               }
-              if(this.users[0].unread_count > 0) {
-                console.log("if");
-                this.openDialog('',this.users[0].user_id,this.users[0].name,'0');
+              if(this.users[key_users_new].unread_count > 0) {
+                if(this.users[key_users_new].user_id === new_msgs[0].sender_id) {
+                  this.users[key_users_new].unread_count = 0;
+                  this.authenticationService.get_user_messages_comp(new_msgs[0].sender_id)
+                    .subscribe(
+                      data => {
+                        this.new_msgss = data['messages'];
+                      },
+                      error => {
+                        if(error.message === 500 || error.message === 401){
+                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                          window.location.href = '/login';
+                        }
+                        if(error.message === 403){}
+                      }
+                    );
+                }
               }
+
               this.count = this.count + 1;
             }
-
-            console.log(this.users[0].unread_count)
-
-
           }
           else{
             //this.msg='You have not chatted yet';
@@ -314,6 +327,7 @@ export class ChatComponent implements OnInit {
   }
 
   get_messages_for_company(){
+    let new_msgs = this.new_msgss;
     this.authenticationService.get_user_messages_only_comp()
       .subscribe(
         msg_data => {
@@ -325,12 +339,25 @@ export class ChatComponent implements OnInit {
               if(this.count === 0){
                 this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'',key_users_new);
               }
-
+              if(this.users[key_users_new].unread_count > 0) {
+                if(this.users[key_users_new].user_id === new_msgs[0].receiver_id) {
+                  this.users[key_users_new].unread_count = 0;
+                  this.authenticationService.get_user_messages_comp(new_msgs[0].receiver_id)
+                    .subscribe(
+                      data => {
+                        this.new_msgss = data['messages'];
+                      },
+                      error => {
+                        if(error.message === 500 || error.message === 401){
+                          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                          window.location.href = '/login';
+                        }
+                        if(error.message === 403){}
+                      }
+                    );
+                }
+              }
               this.count = this.count + 1;
-            }
-            console.log(this.users[0].unread_count);
-            if(this.users[0].unread_count > 0) {
-              this.openDialog(this.users[0].name,this.users[0].user_id,'','0');
             }
 
           }
