@@ -155,5 +155,7 @@ pre {
   margin: auto;
 }
 
-
+.carousel-caption{
+  display:none !important;
+}
 
