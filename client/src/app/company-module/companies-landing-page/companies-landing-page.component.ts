@@ -13,6 +13,9 @@ export class CompaniesLandingPageComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
+    $('.carousel').carousel({
+      interval: 3500
+    });
     $('#text').html($('.active > .carousel-caption').html());
     $('.slide').on('slid.bs.carousel', function () {
       $('#text').html($('.active > .carousel-caption').html());

@@ -299,3 +299,6 @@
 
 }
 
+.carousel-caption{
+  display:none !important;
+}
