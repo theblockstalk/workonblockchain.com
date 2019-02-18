@@ -46,3 +46,11 @@ module.exports.approveCandidate = async function approveCandidate(email) {
         'first_approved_date': new Date()
     });
 }
+
+module.exports.getStatistics = async function getStatistics() {
+    const res = await chai.request(server)
+        .get('/users/statistics')
+        .send();
+    res.should.have.status(200);
+    return res;
+}

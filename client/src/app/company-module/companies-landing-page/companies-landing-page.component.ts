@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import {UserService} from '../../user.service';
 
 declare var $: any;
 
@@ -10,7 +11,9 @@ declare var $: any;
 })
 export class CompaniesLandingPageComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authenticationService: UserService) { }
+  approvedUsers;
+  blockchainExperienceUsers;
 
   ngOnInit() {
     $('.carousel').carousel({
@@ -20,6 +23,15 @@ export class CompaniesLandingPageComponent implements OnInit {
     $('.slide').on('slid.bs.carousel', function () {
       $('#text').html($('.active > .carousel-caption').html());
     });
+    this.authenticationService.get_users_statistics()
+      .subscribe(
+        data => {
+          if(data)
+          {
+            this.approvedUsers = data['approvedUsers'];
+            this.blockchainExperienceUsers = data['blockchainExperienceUsers'];
+          }
+        });
   }
 
   internalRoute(page,dst){
