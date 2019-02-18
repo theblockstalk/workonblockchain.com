@@ -928,6 +928,9 @@ export class ChatComponent implements OnInit {
           this.credentials.start_date = '';
           this.credentials.job_description = '';
           this.img_name = '';
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh');
+          }, 900);
           $("#Modal").modal("hide");
           this.authenticationService.get_user_messages_comp(this.credentials.id)
             .subscribe(
