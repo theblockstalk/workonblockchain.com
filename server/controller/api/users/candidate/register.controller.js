@@ -3,6 +3,8 @@ const crypto = require('crypto');
 const jwtToken = require('../../../services/jwtToken');
 const referral = require('../../../../model/mongoose/referral');
 const errors = require('../../../services/errors');
+const verify_send_email = require('../auth/verify_send_email');
+const welcomeEmail = require('../../../services/email/emails/welcomeEmail');
 
 ///////to create new candidate////////////////////////////
 
@@ -44,6 +46,8 @@ module.exports = async function (req, res) {
         created_date: new Date(),
         referred_email : userParam.referred_email,
         linkedin_id : userParam.linkedin_id,
+        first_name: userParam.first_name,
+        last_name: userParam.last_name,
         candidate: {
             status: [{
                 status: 'created',
@@ -57,8 +61,22 @@ module.exports = async function (req, res) {
     let url_token;
 
     if(candidateUserCreated) {
+        let signOptions = {
+            expiresIn:  "1h",
+        };
         let jwtUserToken = jwtToken.createJwtToken(candidateUserCreated);
-        await users.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken}});
+        let verifyEmailToken = jwtToken.createJwtToken(candidateUserCreated, signOptions);
+        await users.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken , 'verify_email_key' : verifyEmailToken }});
+
+        //sending email for social register
+        if(candidateUserCreated.social_type === 'GOOGLE' || candidateUserCreated.social_type === 'LINKEDIN'){
+            let data = {fname : candidateUserCreated.first_name , email : candidateUserCreated.email};
+            welcomeEmail.sendEmail(data, candidateUserCreated.disable_account);
+        }
+        else {
+            verify_send_email(candidateUserCreated.email, verifyEmailToken);
+        }
+
         const referralDoc = await referral.findOneByEmail( userParam.email );
         if(referralDoc) {
             url_token = referralDoc.url_token;

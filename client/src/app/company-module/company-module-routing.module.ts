@@ -7,15 +7,20 @@ import { CompanyProfileComponent } from './company-profile/company-profile.compo
 import { EditCompanyProfileComponent } from './edit-company-profile/edit-company-profile.component';
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { CompanyVerifyEmailComponent } from './company-verify-email/company-verify-email.component';
+import {VerifyEmailMiddleware} from '../../app/auth-module/verify-email-middleware';
+import { CompaniesLandingPageComponent } from './companies-landing-page/companies-landing-page.component';
 
 const routes: Routes = [
-  {path : 'about_comp' , component: AboutCompanyComponent},
-  { path: 'company_wizard', component: TermsWizardComponent},
-  {path : 'candidate-search' , component: CompanySearchComponent},
-  {path : 'company_profile' , component: CompanyProfileComponent},
-  {path : 'edit_company_profile' , component: EditCompanyProfileComponent},
-  {path : 'candidate-detail' , component: CandidateDetailComponent},
-  {path : 'preferences' , component: PreferencesComponent},
+  {path : 'about_comp' , component: AboutCompanyComponent, canActivate : [VerifyEmailMiddleware]},
+  { path: 'company_wizard', component: TermsWizardComponent, canActivate : [VerifyEmailMiddleware]},
+  {path : 'candidate-search' , component: CompanySearchComponent, canActivate : [VerifyEmailMiddleware]},
+  {path : 'company_profile' , component: CompanyProfileComponent, canActivate : [VerifyEmailMiddleware]},
+  {path : 'edit_company_profile' , component: EditCompanyProfileComponent, canActivate : [VerifyEmailMiddleware]},
+  {path : 'candidate-detail' , component: CandidateDetailComponent, canActivate : [VerifyEmailMiddleware]},
+  {path : 'preferences' , component: PreferencesComponent, canActivate : [VerifyEmailMiddleware]},
+  {path : 'company-verify-email', component: CompanyVerifyEmailComponent},
+  {path : 'companies', component: CompaniesLandingPageComponent}
 
 ];
 

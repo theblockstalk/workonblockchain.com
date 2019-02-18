@@ -9,6 +9,10 @@ module.exports.insert = async function insert(data) {
     return newDoc._doc;
 }
 
+module.exports.find = async function find(selector) {
+    return await User.find(selector).lean();
+}
+
 module.exports.findOne = async function findOne(selector) {
     return await User.findOne(selector).lean();
 }
@@ -20,7 +24,7 @@ module.exports.findOneById = async function findOneById(id) {
 module.exports.findByIdAndPopulate = async function findByIdAndPopulate(id) {
    let userDoc = await User.findById(id).lean();
    if(userDoc) {
-        if(userDoc.candidate.locations) {
+        if(userDoc.candidate && userDoc.candidate.locations) {
             for(let loc of userDoc.candidate.locations) {
                 if(loc.city) {
                     const index = userDoc.candidate.locations.findIndex((obj => obj.city === loc.city));

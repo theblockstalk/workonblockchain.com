@@ -7,7 +7,7 @@ import {ProfileDetail} from '../../Model/ProfileDetail';
 import { HttpClient } from '@angular/common/http';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
-const URL = environment.frontend_url;
+let URL = environment.frontend_url;
 declare var $: any;
 
 @Component({
@@ -19,7 +19,7 @@ export class ReferralComponent implements OnInit {
   currentUser: User;
   @ViewChild('element') element: ElementRef;
   credentials: any = {};
-  email_ref_link = URL + 'refer?code=';
+  email_ref_link = URL.replace(/\/$/, "") + '?code=';
   log = '';
   title = 'My Ref Page';
   ref_link = '';
@@ -37,6 +37,7 @@ export class ReferralComponent implements OnInit {
   log_success = '';
   twitterText;
   button_status;
+  verify;
 
   constructor(
     private authenticationService: UserService,private titleService: Title,private newMeta: Meta
@@ -75,9 +76,11 @@ export class ReferralComponent implements OnInit {
         .subscribe(
           data => {
             if(data) {
+              this.verify  = data['is_verify'];
               this.first_name = data['first_name'];
               this.last_name = data['last_name'];
               this.display_name = data['first_name'] +' '+ data['last_name'];
+
               this.authenticationService.getRefCode(data['email'])
                 .subscribe(
                   data => {
@@ -104,6 +107,7 @@ export class ReferralComponent implements OnInit {
         .subscribe(
           data => {
             if(data) {
+              this.verify  = data['is_verify'];
               this.first_name = data['first_name'];
               this.last_name = data['last_name'];
               this.display_name = data['first_name']+ ' '+ data['last_name'];

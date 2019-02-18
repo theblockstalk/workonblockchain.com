@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-6">
               <ul class="list-group list-group-flush float-right">
-                <li *ngIf="referred_name !== ''">
+                <li class="list-group-item" *ngIf="referred_name !== ''">
                   <span ><i class="fas fa-user mr-2"></i> </span>
                   <ng-container *ngIf="referred_link ; else noLink">
                   <span >Refered By: <a  [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
@@ -293,14 +293,7 @@
               </div>
             </div>
 
-            <div class="col-md-12 mb-3">
-              <div class="form-group">
-                <label>When do you want to start hire working:</label>
-                <p>
-                  {{saved_searche[0].availability_day}}
-                </p>
-              </div>
-            </div>
+
             <div class="col-md-12" >
               <div class="form-group">
                 <label>When would you like to receive emails with candidates that match your search?</label>

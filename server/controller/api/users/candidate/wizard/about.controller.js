@@ -1,7 +1,5 @@
 const users = require('../../../../../model/mongoose/users');
 const referral = require('../../../../../model/mongoose/referral');
-const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
-const verify_send_email = require('../../auth/verify_send_email');
 const jwtToken = require('../../../../services/jwtToken');
 const errors = require('../../../../services/errors');
 
@@ -64,24 +62,7 @@ module.exports = async function (req, res) {
             }
 
         }
-        //sending email for social register
-        if(myUserDoc.social_type === 'GOOGLE' || myUserDoc.social_type === 'LINKEDIN'){
-            let data = {fname : queryBody.first_name , email : myUserDoc.email}
-            welcomeEmail.sendEmail(data, myUserDoc.disable_account);
-        }
-        else {
-            let signOptions = {
-                expiresIn:  "1h",
-            };
-            let verifyEmailToken = jwtToken.createJwtToken(myUserDoc, signOptions);
-            var set =
-                {
-                    verify_email_key: verifyEmailToken,
 
-                };
-            await users.update({ _id: myUserDoc._id },{ $set: set });
-            verify_send_email(myUserDoc.email, verifyEmailToken);
-        }
 
         res.send({
             success: true

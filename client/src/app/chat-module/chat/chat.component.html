@@ -1,10 +1,5 @@
 <section class="wob-bg-primary2 mt-5">
-  <ng-container *ngIf="file_uploaded === 0;else no_section" >
-    <div class="col-md-12 text-center" >
-      <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif">
-    </div>
-  </ng-container>
-  <ng-template #no_section>
+
     <div class="container">
       <div class="row">
         <div class = "col-md-12">
@@ -34,7 +29,7 @@
                 </div>
                 <div id = "contact" class = "border-right">
                   <ul class = "list-group">
-                    <li *ngFor="let person of users;let i = index" [ngClass]="(credentials.id == person._creator._id)?'list-group-item wob-bg-secondary3':'list-group-item list-group-item-lite position-relative'" (click)="openDialog(person.first_name,person._creator._id,person.company_name)" style= "overflow:hidden;">
+                    <li *ngFor="let person of users;let i = index" [ngClass]="(credentials.id == person.user_id)?'list-group-item wob-bg-secondary3':'list-group-item list-group-item-lite position-relative'" (click)="openDialog(person.name,person.user_id,person.name,i)" style= "overflow:hidden;">
                       <div class = "cont m-auto position-relative">
                         <ng-container *ngIf="currentUser.type == 'company';else cand_image">
                           <ng-container *ngIf="person.image;else person_image">
@@ -44,24 +39,23 @@
                             <img src="/assets/profile/profile-image.png" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
                           </ng-template>
                           <div class="meta">
-                            <p *ngIf="person.initials" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.initials }}</b></p>
-                            <p *ngIf="person.first_name" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.first_name }} {{ person.last_name }}</b></p>
-                            <span *ngIf="unread_msgs_info[i] && unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
-                              {{unread_msgs_info[i].number_of_unread_msgs}}
+                            <p *ngIf="person.name" class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.name }}</b></p>
+                            <span *ngIf="person.unread_count" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
+                              <b>{{person.unread_count}}</b>
                             </span>
                           </div>
                         </ng-container>
                         <ng-template #cand_image>
-                          <ng-container *ngIf="person.company_logo;else company_image">
-                            <img src="{{person.company_logo}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
+                          <ng-container *ngIf="person.image;else company_image">
+                            <img src="{{person.image}}" alt="Profile pic" class = "float-left rounded-circle mr-2" style = "width:40px;">
                           </ng-container>
                           <ng-template #company_image>
                             <img src="/assets/profile/profile-image.png" alt="" class = "float-left rounded-circle mr-2" style = "width:40px;">
                           </ng-template>
                           <div class="meta">
-                            <p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.company_name }}</b></p>
-                            <span *ngIf="unread_msgs_info[i].sender_id == person._creator._id && unread_msgs_info[i].number_of_unread_msgs" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
-                              <b>{{unread_msgs_info[i].number_of_unread_msgs}}</b>
+                            <p class = "text-capitalize float-left ml-2 ml-md-" style = "line-height:35px;"><b>{{ person.name }}</b></p>
+                            <span *ngIf="person.unread_count" class = "rounded-circle badge badge-danger position-absolute mt-2" style = "right:0px; font-size: 13px;">
+                              <b>{{person.unread_count}}</b>
                             </span>
                           </div>
                         </ng-template>
@@ -76,8 +70,8 @@
                     <ul class="cand_info-ul">
                       <ng-container *ngIf="currentUser.type == 'company';else cand">
                         <ng-container *ngIf="job_desc;else no_job_desc">
-                          <li>Job type: {{job_desc.job_type}}</li>
-                          <li>Job title: {{job_desc.job_title}}</li>
+                          <li>Job type: {{job_desc.type}}</li>
+                          <li>Job title: {{job_desc.title}}</li>
                           <li>Salary: {{job_desc.salary_currency}} {{job_desc.salary}}</li>
                         </ng-container>
                         <ng-template #no_job_desc>
@@ -87,8 +81,8 @@
                         </ng-template>
                       </ng-container>
                       <ng-template #cand>
-                        <li>Job title: {{job_desc.job_title}}</li>
-                        <li class="text-capitalize">Job Type : {{job_desc.job_type}}</li>
+                        <li>Job title: {{job_desc.title}}</li>
+                        <li>Job type : {{job_desc.type}}</li>
                         <li>Salary: {{job_desc.salary_currency}} {{job_desc.salary}}</li>
                       </ng-template>
                     </ul>
@@ -98,148 +92,238 @@
                     <a *ngIf="(currentUser.type === 'company')" [routerLink]="['/candidate-detail']" [queryParams]="{user: credentials.id }" class="btn btn-warning float-right text-light">View candidate profile</a>
                   </div>
                 </div>
-
+                <ng-container *ngIf="file_uploaded === 0;else no_section" >
+                  <div class="col-md-12 text-center" >
+                    <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif">
+                  </div>
+                </ng-container>
+                <ng-template #no_section>
                 <div class="message p-2" #scrollMe [scrollTop]="scrollMe.scrollHeight">
                   <ul class = "ul_pd">
                     <div *ngFor="let msg of new_msgss">
                       <ng-container *ngIf="msg.sender_id === currentUser._creator;else second">
-                        <li class="sent mb-5 col-md-12">
+                        <li class="sent mb-3 col-md-12">
                           <p class = "p-2 send_p job-description rounded d-inline-block">
-                            <span *ngIf="msg.job_title !== ''">
+                            <span *ngIf="msg.message.job_offer">
                               <b>Job title:</b>
-                              {{msg.job_title}}
+                              {{msg.message.job_offer.title}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.salary">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Job title:</b>
+                              {{msg.message.employment_offer.title}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer">
                               <b>Salary:</b>
-                              {{msg.salary_currency}} {{msg.salary}}
+                              {{msg.message.job_offer.salary}} {{msg.message.job_offer.salary_currency}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.job_type !== ''">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Salary:</b>
+                              {{msg.message.employment_offer.salary}} {{msg.message.employment_offer.salary_currency}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer">
                               <b>Job type:</b>
-                              {{msg.job_type}}
+                              {{msg.message.job_offer.type}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.msg_tag == 'employment_offer'">
-                              <b>Joining date:</b>
-                              {{msg.date_of_joining | date: 'MM/dd/yyyy'}}
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Start date:</b>
+                              {{msg.message.employment_offer.start_date | date : 'dd'}} {{msg.message.employment_offer.start_date | date : 'MMM'}} {{msg.message.employment_offer.start_date | date : 'yyyy'}} {{msg.message.employment_offer.start_date | date : 'HH:mm'}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_date_time">
+                            <span *ngIf="msg.message.interview_offer">
                               <b>Interview date & time:</b>
-                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm'}}
+                              {{msg.message.interview_offer.date_time | date : 'dd'}} {{msg.message.interview_offer.date_time | date : 'MMM'}} {{msg.message.interview_offer.date_time | date : 'yyyy'}} {{msg.message.interview_offer.date_time | date : 'HH:mm'}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_location && msg.msg_tag == 'interview_offer'">
+                            <span *ngIf="msg.message.interview_offer">
                               <b>Interview location:</b>
-                              {{msg.interview_location}}
+                              {{msg.message.interview_offer.location}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_location && msg.msg_tag == 'job_offer'">
+                            <span *ngIf="msg.message.job_offer">
                               <b>Location:</b>
-                              {{msg.interview_location}}
+                              {{msg.message.job_offer.location}}
                               <br/>
                             </span>
-                            <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+                            <span *ngIf="msg.message.job_offer || msg.message.employment_offer || msg.message.interview_offer">
                               <b>Description:</b><br>
                             </span>
-                            <span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
-                              {{msg.description}}
+                            <span *ngIf="msg.message.job_offer" [innerHTML]="msg.message.job_offer.description | safeHtml">
+                              {{msg.message.job_offer.description}}
                               <br/>
                             </span>
-                            <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
-                              {{msg.message}}
+                            <span *ngIf="msg.message.employment_offer" [innerHTML]="msg.message.employment_offer.description | safeHtml">
+                              {{msg.message.employment_offer.description}}
+                              <br/>
                             </span>
-                            <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
-                              <b>Employment contract: </b>
+                            <ng-container *ngIf="msg.msg_tag === 'interview_offer';else no_interview_desc">
+                              <ng-container *ngIf="!msg.message.interview_offer.description;else interview_desc">
+                                N/A
+                              </ng-container>
+                              <ng-template #interview_desc>
+                                <span [innerHTML]="msg.message.interview_offer.description | safeHtml">
+                                  {{msg.message.interview_offer.description}}
+                                </span>
+                              </ng-template>
+                            </ng-container>
+                            <span *ngIf="msg.message.employment_offer">
+                              <ng-container *ngIf="!msg.message.employment_offer.file_url;else employ_file_url">
+                              </ng-container>
+                              <ng-template #employ_file_url>
+                                <b>Employment contract: </b>
+                                <a href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              </ng-template>
                             </span>
-                            <span *ngIf="msg.file_name">
-                              <a href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                            <span *ngIf="msg.message.file">
+                              <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                            </span>
+                            <span *ngIf="msg.message.job_offer_accepted" [innerHTML]="msg.message.job_offer_accepted.message | safeHtml">
+                              {{msg.message.job_offer_accepted.message}}
+                            </span>
+                            <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
+                              {{msg.message.job_offer_rejected.message}}
+                            </span>
+                            <span *ngIf="msg.message.employment_offer_accepted" [innerHTML]="msg.message.employment_offer_accepted.message | safeHtml">
+                              {{msg.message.employment_offer_accepted.message}}
+                            </span>
+                            <span *ngIf="msg.message.employment_offer_rejected" [innerHTML]="msg.message.employment_offer_rejected.message | safeHtml">
+                              {{msg.message.employment_offer_rejected.message}}
+                            </span>
+                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
+                              {{msg.message.normal.message}}
                             </span>
                           </p>
                         </li>
                         <div class="chat_company">
-                          {{msg.date_created | date: 'MM/dd/yyyy HH:mm'}}
+                          {{msg.date_created | date : 'dd'}} {{msg.date_created | date : 'MMM'}} {{msg.date_created | date : 'yyyy'}} {{msg.date_created | date : 'HH:mm'}}
+
                         </div>
                       </ng-container>
                       <ng-template #second>
-                        <li class="replies mb-5 col-md-12">
+                        <li class="replies mb-3 col-md-12">
                           <div class="arrow-up"></div>
                           <p class = "p-2 rec_p rounded text-light d-inline-block wob-bg-primary1">
-                            <span *ngIf="msg.job_title !== ''">
+                            <span *ngIf="msg.message.job_offer">
                               <b>Job title:</b>
-                              {{msg.job_title}}
+                              {{msg.message.job_offer.title}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.salary">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Job title:</b>
+                              {{msg.message.employment_offer.title}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer">
                               <b>Salary:</b>
-                              {{msg.salary_currency}} {{msg.salary}}
+                              {{msg.message.job_offer.salary_currency}} {{msg.message.job_offer.salary}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.job_type !== ''">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Salary:</b>
+                              {{msg.message.employment_offer.salary_currency}} {{msg.message.employment_offer.salary}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer">
                               <b>Job type:</b>
-                              {{msg.job_type}}
+                              {{msg.message.job_offer.type}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.msg_tag == 'employment_offer'">
-                              <b>Joining date:</b>
-                              {{msg.date_of_joining | date: 'MM/dd/yyyy'}}
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Job type:</b>
+                              {{msg.message.employment_offer.type}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.interview_date_time">
-                              <b>Interview date & time:</b>
-                              {{msg.interview_date_time | date: 'MM/dd/yyyy HH:mm'}}
-                              <br/>
-                            </span>
-                            <span *ngIf="msg.interview_location && msg.msg_tag === 'interview_offer'">
-                              <b>Interview location:</b>
-                              {{msg.interview_location}}
-                              <br/>
-                            </span>
-                            <span *ngIf="msg.interview_location && msg.msg_tag === 'job_offer'">
+                            <span *ngIf="msg.message.job_offer">
                               <b>Location:</b>
-                              {{msg.interview_location}}
+                              {{msg.message.job_offer.location}}
                               <br/>
                             </span>
-                            <span *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
+                            <span *ngIf="msg.message.employment_offer">
+                              <b>Joining date:</b>
+                              {{msg.message.employment_offer.start_date | date: 'MM/dd/yyyy'}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.interview_offer">
+                              <b>Interview date & time:</b>
+                              {{msg.message.interview_offer.date_time | date : 'dd'}} {{msg.message.interview_offer.date_time | date : 'MMM'}} {{msg.message.interview_offer.date_time | date : 'yyyy'}} {{msg.message.interview_offer.date_time | date : 'HH:mm'}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.interview_offer">
+                              <b>Interview location:</b>
+                              {{msg.message.interview_offer.location}}
+                              <br/>
+                            </span>
+                            <span *ngIf="msg.message.job_offer || msg.message.employment_offer || msg.message.interview_offer">
                               <b>Description:</b><br>
                             </span>
-                            <span [innerHTML]="msg.description | safeHtml" *ngIf="(msg.msg_tag == 'employment_offer' || msg.msg_tag == 'job_offer' || msg.msg_tag == 'interview_offer') && msg.description !== ''">
-                              {{msg.description}}
+                            <span *ngIf="msg.message.job_offer" [innerHTML]="msg.message.job_offer.description | safeHtml">
+                              {{msg.message.job_offer.description}}
                               <br/>
                             </span>
-                            <span *ngIf="msg.date_of_joining && msg.file_name !== ''">
-                              <b>Employment contract: </b>
-                            </span>
-                            <span *ngIf="msg.file_name">
-                              <a href="{{msg.file_name}}" style="word-wrap: break-word;" target="_blank">{{msg.file_name.substr(msg.file_name.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                            <span *ngIf="msg.message.employment_offer" [innerHTML]="msg.message.employment_offer.description | safeHtml">
+                              {{msg.message.employment_offer.description}}
                               <br/>
                             </span>
-                            <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.msg_tag == 'employment_offer'">
-                              {{msg.message}}
-                              <br/>
+                            <ng-container *ngIf="msg.msg_tag === 'interview_offer';else no_interview_desc">
+                              <ng-container *ngIf="!msg.message.interview_offer.description;else interview_desc">
+                                N/A
+                              </ng-container>
+                              <ng-template #interview_desc>
+                                <span [innerHTML]="msg.message.interview_offer.description | safeHtml">
+                                  {{msg.message.interview_offer.description}}
+                                </span>
+                              </ng-template>
+                            </ng-container>
+                            <span *ngIf="msg.message.employment_offer">
+                              <ng-container *ngIf="!msg.message.employment_offer.file_url;else employ_file_url">
+                              </ng-container>
+                              <ng-template #employ_file_url>
+                                <b>Employment contract: </b>
+                                <a href="{{msg.message.employment_offer.file_url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.employment_offer.file_url.substr(msg.message.employment_offer.file_url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                              </ng-template>
                             </span>
-                            <span [innerHTML]="msg.message | safeHtml" *ngIf="msg.job_title == ''">
-                              {{msg.message}}
+                            <span *ngIf="msg.message.file">
+                              <a href="{{msg.message.file.url}}" style="word-wrap: break-word;" target="_blank">{{msg.message.file.url.substr(msg.message.file.url.lastIndexOf('/') + 1)}}</a> <!-- for local you can use 53 instead of 70 -->
+                            </span>
+                            <span *ngIf="msg.message.job_offer_accepted" [innerHTML]="msg.message.job_offer_accepted.message | safeHtml">
+                              {{msg.message.job_offer_accepted.message}}
+                            </span>
+                            <span *ngIf="msg.message.job_offer_rejected" [innerHTML]="msg.message.job_offer_rejected.message | safeHtml">
+                              {{msg.message.job_offer_rejected.message}}
+                            </span>
+                            <span *ngIf="msg.message.employment_offer_accepted" [innerHTML]="msg.message.employment_offer_accepted.message | safeHtml">
+                              {{msg.message.employment_offer_accepted.message}}
+                            </span>
+                            <span *ngIf="msg.message.employment_offer_rejected" [innerHTML]="msg.message.employment_offer_rejected.message | safeHtml">
+                              {{msg.message.employment_offer_rejected.message}}
+                            </span>
+                            <span *ngIf="msg.message.normal" [innerHTML]="msg.message.normal.message | safeHtml">
+                              {{msg.message.normal.message}}
                             </span>
                           </p>
                         </li>
                         <div class="chat_user">
-                          {{msg.date_created | date: 'MM/dd/yyyy HH:mm'}}
+                          {{msg.date_created | date : 'dd'}} {{msg.date_created | date : 'MMM'}} {{msg.date_created | date : 'yyyy'}} {{msg.date_created | date : 'HH:mm'}}
+
                         </div>
                       </ng-template>
                     </div>
                     <div class = "offers_b"></div>
                   </ul>
                 </div>
+                </ng-template>
                 <ng-container *ngIf="cand_offer == 1;else no_offer">
                   <ng-container *ngIf="show_accpet_reject == 0;else no_show">
                     <div class="message-input">
                       <div class = "offers">
                         <form (submit)="accept_offer(msgForm)" #msgForm = ngForm style="display:inline;">
-                          <input type="hidden" name="email" id="email" [(ngModel)]="credentials.email"/>
-                          <input type="hidden" name="id" id="id" [(ngModel)]="credentials.id"/>
-                          <input type="hidden" placeholder="Write your message..." name="msg_body" id="comment" [(ngModel)]="credentials.msg_body"/>
+                          <input type="hidden" name="email" [(ngModel)]="credentials.email"/>
+                          <input type="hidden" name="id" [(ngModel)]="credentials.id"/>
+                          <input type="hidden" placeholder="Write your message..." name="msg_body" [(ngModel)]="credentials.msg_body"/>
                           <span class = "offers_btn">
                             <button type="submit" class = "btn btn-warning mb-1 text-light">Accept offer</button>
                           </span>
@@ -261,7 +345,7 @@
                 <ng-template #no_offer>
                 </ng-template>
                 <ng-container *ngIf="company_reply == 1;else no_reply">
-                  <div class="message-input">
+                  <div class="message-input" >
                     <ng-container *ngIf="currentUser.type == 'company';else no_offers">
                       <div class = "offers">
                         <span class = "">
@@ -335,10 +419,9 @@
       <div *ngIf="file_msg!=''" class = "col-md-12">
         <h4 class="alert alert-danger">
           {{file_msg}}
-          </h4>
+        </h4>
       </div>
     </div>
-  </ng-template>
 </section>
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -354,7 +437,7 @@
           <ng-container *ngIf="interview_log;else no_modal">
           </ng-container>
           <ng-template #no_modal>
-		    </ng-template>
+          </ng-template>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -365,6 +448,7 @@
                     <span class="input-group-text"><i class="fas fa-calendar" aria-hidden="true"></i></span>
                   </div>
                   <div class = "invalid-feedback d-inline"  *ngIf="date_log">
+                    {{date_log}}
                     {{date_log}}
                   </div>
                 </div>
@@ -436,7 +520,7 @@
           <ng-container *ngIf="job_offer_log;else no_modal">
           </ng-container>
           <ng-template #no_modal>
-		      </ng-template>
+          </ng-template>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -450,8 +534,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Employment type</label>
-                <select class="form-control selectpicker" name="employment_type" [(ngModel)]="credentials.employment_type">
-                  <option value="-1" disabled selected hidden>(select one)</option>
+                <select class="form-control selectpicker" name="employment_type" title="(select one)" [(ngModel)]="credentials.employment_type">
                   <option *ngFor='let type of employment_type_select' [value]="type" [attr.selected]="type === credentials.employment_type? true : null">{{type}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="employment_type_log">
@@ -476,8 +559,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="invisible">Currency </label>
-                <select class="form-control selectpicker" name="currency" [(ngModel)]="credentials.currency" id="sel1">
-                  <option value="-1" disabled selected hidden>Currency</option>
+                <select class="form-control selectpicker" name="currency" title="Currency" [(ngModel)]="credentials.currency" id="sel1">
                   <option *ngFor='let yearly_salary_curency of salary_currency_select' [value]="yearly_salary_curency" [attr.selected]="yearly_salary_curency === credentials.currency? true : null">{{yearly_salary_curency}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="salary_currency_log">
@@ -571,18 +653,18 @@
         <h4 class="modal-title text-center">Job description</h4>
       </div>
       <div class="modal-body">
-        <ng-container *ngIf="new_msgss;else no_job_desc_popup">
+        <ng-container *ngIf="job_desc;else no_job_desc_popup">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label>Job title:</label>
-                <p>{{new_msgss[0].job_title}}</p>
+                <p>{{job_desc.title}}</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Job type:</label>
-                <p>{{new_msgss[0].job_type}}</p>
+                <p>{{job_desc.type}}</p>
               </div>
             </div>
           </div>
@@ -591,13 +673,18 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Salary:</label>
-                <p>{{new_msgss[0].salary_currency}} {{new_msgss[0].salary}}</p>
+                <p>{{job_desc.salary_currency}} {{job_desc.salary}}</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Location:</label>
-                <p>{{new_msgss[0].interview_location}}</p>
+                <ng-container *ngIf="!job_desc.location;else no_job_loc">
+                  <p>N/A</p>
+                </ng-container>
+                <ng-template #no_job_loc>
+                  <p>{{job_desc.location}}</p>
+                </ng-template>
               </div>
             </div>
           </div>
@@ -606,9 +693,13 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Job description:</label>
-                <p class="job_decs" [innerHTML]="new_msgss[0].description | safeHtml">
-                  {{new_msgss[0].description}}
-                </p>
+                <ng-container *ngIf="!job_desc.description;else no_job_desc">
+                </ng-container>
+                <ng-template #no_job_desc>
+                  <p class="job_decs" [innerHTML]="job_desc.description | safeHtml">
+                    {{job_desc.description}}
+                  </p>
+                </ng-template>
               </div>
             </div>
           </div>

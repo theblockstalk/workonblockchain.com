@@ -49,7 +49,7 @@ only to be applied to the chat page*/
   position: relative;
   float: right;
   margin-right: 15px;
-  top: -60px;
+  top: -25px;
   font-size: 10px;
 }
 
@@ -67,7 +67,7 @@ only to be applied to the chat page*/
   position: relative;
   float: left;
   margin-left: 5px;
-  top: -60px;
+  top: -25px;
   font-size: 10px;
 }
 
@@ -198,9 +198,6 @@ input[type=file] {
     height: 8rem !important;
   }
 
-  .message-input {
-    bottom:62px !important;
-  }
 }
 
 @media (max-width: 992px){

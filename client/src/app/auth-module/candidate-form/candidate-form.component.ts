@@ -22,6 +22,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   code;ref_msg;
   public isUserAuthenticatedEmittedValue = false;
   public isUserAuthenticated;
+  first_name_log;
+  last_name_log;
 
   private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
 
@@ -34,17 +36,23 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private titleService: Title,private newMeta: Meta
   ) {
     this.titleService.setTitle('Work on Blockchain | Signup developer or company');
-    this.route.queryParams.subscribe(params => {
-      this.code = params['code'];
-    });
+    this.code = localStorage.getItem('ref_code');
 
     if (this.code) {
       this.authenticationService.getByRefrenceCode(this.code)
         .subscribe(
           data => {
             if (data) {
-              if (data && data['name']) {
-                this.ref_msg = data['name'] + ' thinks you should join workonblockchain.com';
+              if (data ) {
+                if(data['name']) {
+                  this.ref_msg = data['name'] + ' thinks you should join workonblockchain.com';
+                  if(data['discount']){
+                    this.ref_msg = this.ref_msg +'. Congratulations, you will receive a '+data['discount']+'% discount off our fee when you make a hire!';
+                  }
+                }
+                else {
+                  this.ref_msg = 'You have been referred to workonblockchain.com';
+                }
               }
               this.credentials.referred_email = data['email'];
             }
@@ -118,18 +126,17 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       .asObservable()
       .subscribe({
         next: (data) => {
-          console.log(data);
           localStorage.setItem('linkedinUser', JSON.stringify(data));
           if(data)
           {
-            console.log("if");
             this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
             this.credentials.email= this.linkedinUser.emailAddress;
             this.credentials.password= '';
             this.credentials.type="candidate";
             this.credentials.social_type='LINKEDIN';
             this.credentials.linkedin_id = this.linkedinUser.id;
-            console.log(this.credentials);
+            this.credentials.first_name = this.linkedinUser.firstName;
+            this.credentials.last_name = this.linkedinUser.lastName;
             if(this.linkedinUser.emailAddress)
             {
               this.authenticationService.create(this.credentials)
@@ -138,6 +145,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
                     this.credentials.email = '';
 
                     localStorage.setItem('currentUser', JSON.stringify(data));
+                    localStorage.removeItem('ref_code');
                     window.location.href = '/terms-and-condition';
 
                   },
@@ -162,10 +170,10 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           }
         },
         error: (err) => {
-          console.log(err);
+          //console.log(err);
         },
         complete: () => {
-          console.log('RAW API call completed');
+          //console.log('RAW API call completed');
         }
       });
   }
@@ -179,6 +187,14 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     if(!this.credentials.email)
     {
       this.email_log="Please enter email address";
+    }
+    if(!this.credentials.first_name)
+    {
+      this.first_name_log="Please enter first name";
+    }
+    if(!this.credentials.last_name)
+    {
+      this.last_name_log="Please enter last name";
     }
     else
     {
@@ -202,7 +218,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.pass_log="";
     }
-    if(loginForm.valid === true && this.credentials.email && this.credentials.password && this.credentials.confirm_password && this.credentials.password == this.credentials.confirm_password)
+    if(loginForm.valid === true && this.credentials.first_name && this.credentials.last_name && this.credentials.email && this.credentials.password && this.credentials.confirm_password && this.credentials.password == this.credentials.confirm_password)
     {
 
       this.authenticationService.create(this.credentials)
@@ -210,7 +226,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           data =>
           {
             localStorage.setItem('currentUser', JSON.stringify(data));
-            window.location.href = '/terms-and-condition';
+            localStorage.removeItem('ref_code');
+            window.location.href = '/candidate-verify-email';
+
           },
           error =>
           {
@@ -248,12 +266,14 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
         this.credentials.password= '';
         this.credentials.type="candidate";
         this.credentials.social_type=this.googleUser.provider;
+        this.credentials.first_name = this.googleUser.firstName;
+        this.credentials.last_name = this.googleUser.lastName;
         this.authenticationService.create(this.credentials)
           .subscribe(
             data => {
               this.credentials.email= '';
-
               localStorage.setItem('currentUser', JSON.stringify(data));
+              localStorage.removeItem('ref_code');
               window.location.href = '/terms-and-condition';
 
             },
@@ -284,11 +304,11 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this._linkedInService.login().subscribe({
       next: (state) =>
       {
-        console.log("state");
+        //console.log("state");
       },
       complete: () => {
         // Completed
-        console.log("complete");
+        //console.log("complete");
       }
     });
 
@@ -386,7 +406,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           data =>
           {
             localStorage.setItem('currentUser', JSON.stringify(data));
-            window.location.href = '/company_wizard';
+            localStorage.removeItem('ref_code');
+            window.location.href = '/company-verify-email';
           },
           error =>
           {
