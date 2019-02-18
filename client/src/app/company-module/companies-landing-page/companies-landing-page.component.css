@@ -137,39 +137,6 @@
   }
 }
 
-.coursal-compnay .row{
-  top: 20px;
-  -webkit-box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
-  box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
-}
-
-#text{
-  width: 275px;
-  height: 183px;
-  margin: auto;
-}
-
-#text .car-content{
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
-}
-
-#text .car-content img{
-  width: 100%;
-  margin: auto;
-}
-
-.carousel-caption{
-  display:none !important;
-}
-
-
-.carousel-caption{
-  display:none !important;
-}
-
 .hire_button {
   font-size : 20px;
 }
