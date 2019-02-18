@@ -317,7 +317,7 @@
                 </div>
                 <ng-container *ngIf="cand_offer == 1;else no_offer">
                   <ng-container *ngIf="show_accpet_reject == 0;else no_show">
-                    <div class="message-input" [ngClass]="currentUser.type === 'candidate'? 'message-bottom' : ''">
+                    <div class="message-input">
                       <div class = "offers">
                         <form (submit)="accept_offer(msgForm)" #msgForm = ngForm style="display:inline;">
                           <input type="hidden" name="email" [(ngModel)]="credentials.email"/>
@@ -344,7 +344,7 @@
                 <ng-template #no_offer>
                 </ng-template>
                 <ng-container *ngIf="company_reply == 1;else no_reply">
-                  <div class="message-input" [ngClass]="currentUser.type === 'candidate'? 'message-bottom' : ''">
+                  <div class="message-input" >
                     <ng-container *ngIf="currentUser.type == 'company';else no_offers">
                       <div class = "offers">
                         <span class = "">
