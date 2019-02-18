@@ -856,10 +856,10 @@ export class ChatComponent implements OnInit {
       this.authenticationService.send_file(formData)
         .subscribe(
           data => {
-            this.file_uploaded = 1;
             this.authenticationService.get_user_messages_comp(this.credentials.id)
               .subscribe(
                 data => {
+                  this.file_uploaded = 1;
                   this.new_msgss = data['messages'];
                 },
                 error => {
