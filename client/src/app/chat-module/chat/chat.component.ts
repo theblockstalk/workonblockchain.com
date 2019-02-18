@@ -840,6 +840,7 @@ export class ChatComponent implements OnInit {
 
   file_name;
   upload_file() {
+    this.file_uploaded = 0;
     this.interview_log = '';
     this.job_offer_log = '';
     this.file_msg = '';
@@ -855,6 +856,7 @@ export class ChatComponent implements OnInit {
       this.authenticationService.send_file(formData)
         .subscribe(
           data => {
+            this.file_uploaded = 1;
             this.authenticationService.get_user_messages_comp(this.credentials.id)
               .subscribe(
                 data => {
