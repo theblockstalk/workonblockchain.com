@@ -285,7 +285,9 @@ export class ChatComponent implements OnInit {
               if(this.users[key_users_new].unread_count > 0) {
                 if(this.users[key_users_new].user_id === new_msgs[0].sender_id) {
                   this.users[key_users_new].unread_count = 0;
-                  this.authenticationService.get_user_messages_comp(new_msgs[0].sender_id)
+                  this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name,key_users_new);
+
+                  /*this.authenticationService.get_user_messages_comp(new_msgs[0].sender_id)
                     .subscribe(
                       data => {
                         this.new_msgss = data['messages'];
@@ -297,7 +299,7 @@ export class ChatComponent implements OnInit {
                         }
                         if(error.message === 403){}
                       }
-                    );
+                    );*/
                 }
               }
 
@@ -342,7 +344,9 @@ export class ChatComponent implements OnInit {
               if(this.users[key_users_new].unread_count > 0) {
                 if(this.users[key_users_new].user_id === new_msgs[0].receiver_id) {
                   this.users[key_users_new].unread_count = 0;
-                  this.authenticationService.get_user_messages_comp(new_msgs[0].receiver_id)
+                  this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'',key_users_new);
+
+                  /*this.authenticationService.get_user_messages_comp(new_msgs[0].receiver_id)
                     .subscribe(
                       data => {
                         this.new_msgss = data['messages'];
@@ -354,7 +358,7 @@ export class ChatComponent implements OnInit {
                         }
                         if(error.message === 403){}
                       }
-                    );
+                    );*/
                 }
               }
               this.count = this.count + 1;
