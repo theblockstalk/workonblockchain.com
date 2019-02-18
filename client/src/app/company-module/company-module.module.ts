@@ -15,6 +15,7 @@ import { CandidateDetailComponent } from './candidate-detail/candidate-detail.co
 import { PreferencesComponent } from './preferences/preferences.component';
 import {PagerService} from '../pager.service';
 import { CompanyVerifyEmailComponent } from './company-verify-email/company-verify-email.component';
+import { CompaniesLandingPageComponent } from './companies-landing-page/companies-landing-page.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { CompanyVerifyEmailComponent } from './company-verify-email/company-veri
     EditCompanyProfileComponent,
     CandidateDetailComponent,
     PreferencesComponent,
-    CompanyVerifyEmailComponent
+    CompanyVerifyEmailComponent,
+    CompaniesLandingPageComponent
   ],
   providers : [PagerService]
 })
