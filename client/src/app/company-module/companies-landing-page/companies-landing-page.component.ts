@@ -29,7 +29,7 @@ export class CompaniesLandingPageComponent implements OnInit {
           if(data)
           {
             this.approvedUsers = data['approvedUsers'];
-            this.blockchainExperienceUsers = data['blockchainExperienceUsers'];
+            this.blockchainExperienceUsers = Math.floor((data['blockchainExperienceUsers'] / data['approvedUsers'])*100) + "%";
           }
         });
   }
