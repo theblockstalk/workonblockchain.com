@@ -317,7 +317,7 @@
                 </div>
                 <ng-container *ngIf="cand_offer == 1;else no_offer">
                   <ng-container *ngIf="show_accpet_reject == 0;else no_show">
-                    <div class="message-input" [ngClass]="currentUser.type === 'candidate'? 'message-bottom' : ''">
+                    <div class="message-input">
                       <div class = "offers">
                         <form (submit)="accept_offer(msgForm)" #msgForm = ngForm style="display:inline;">
                           <input type="hidden" name="email" [(ngModel)]="credentials.email"/>
@@ -344,7 +344,7 @@
                 <ng-template #no_offer>
                 </ng-template>
                 <ng-container *ngIf="company_reply == 1;else no_reply">
-                  <div class="message-input" [ngClass]="currentUser.type === 'candidate'? 'message-bottom' : ''">
+                  <div class="message-input" >
                     <ng-container *ngIf="currentUser.type == 'company';else no_offers">
                       <div class = "offers">
                         <span class = "">
@@ -534,8 +534,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Employment type</label>
-                <select class="form-control selectpicker" name="employment_type" [(ngModel)]="credentials.employment_type">
-                  <option value="-1" disabled selected hidden>(select one)</option>
+                <select class="form-control selectpicker" name="employment_type" title="(select one)" [(ngModel)]="credentials.employment_type">
                   <option *ngFor='let type of employment_type_select' [value]="type" [attr.selected]="type === credentials.employment_type? true : null">{{type}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="employment_type_log">
@@ -560,8 +559,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="invisible">Currency </label>
-                <select class="form-control selectpicker" name="currency" [(ngModel)]="credentials.currency" id="sel1">
-                  <option value="-1" disabled selected hidden>Currency</option>
+                <select class="form-control selectpicker" name="currency" title="Currency" [(ngModel)]="credentials.currency" id="sel1">
                   <option *ngFor='let yearly_salary_curency of salary_currency_select' [value]="yearly_salary_curency" [attr.selected]="yearly_salary_curency === credentials.currency? true : null">{{yearly_salary_curency}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="salary_currency_log">

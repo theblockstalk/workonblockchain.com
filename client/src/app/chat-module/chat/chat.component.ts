@@ -267,6 +267,7 @@ export class ChatComponent implements OnInit {
   }
 
   get_messages_for_candidate(){
+    let new_msgs = this.new_msgss;
     this.authenticationService.get_user_messages_only_comp()
       .subscribe(
         msg_data => {
@@ -277,19 +278,20 @@ export class ChatComponent implements OnInit {
             this.new_messges = this.filter_array(msg_data['conversations']);
             this.users = this.new_messges;
             for (var key_users_new in this.users) {
+
               if(this.count === 0){
                 this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name,key_users_new);
               }
-              if(this.users[0].unread_count > 0) {
-                console.log("if");
-                this.openDialog('',this.users[0].user_id,this.users[0].name,'0');
+              if(this.users[key_users_new].unread_count > 0) {
+                if(this.users[key_users_new].user_id === new_msgs[0].sender_id) {
+                  this.users[key_users_new].unread_count = 0;
+                  this.openDialog('',this.users[key_users_new].user_id,this.users[key_users_new].name,key_users_new);
+
+                }
               }
+
               this.count = this.count + 1;
             }
-
-            console.log(this.users[0].unread_count)
-
-
           }
           else{
             //this.msg='You have not chatted yet';
@@ -314,6 +316,7 @@ export class ChatComponent implements OnInit {
   }
 
   get_messages_for_company(){
+    let new_msgs = this.new_msgss;
     this.authenticationService.get_user_messages_only_comp()
       .subscribe(
         msg_data => {
@@ -325,12 +328,13 @@ export class ChatComponent implements OnInit {
               if(this.count === 0){
                 this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'',key_users_new);
               }
-
+              if(this.users[key_users_new].unread_count > 0) {
+                if(this.users[key_users_new].user_id === new_msgs[0].receiver_id) {
+                  this.users[key_users_new].unread_count = 0;
+                  this.openDialog(this.users[key_users_new].name,this.users[key_users_new].user_id,'',key_users_new);
+                }
+              }
               this.count = this.count + 1;
-            }
-            console.log(this.users[0].unread_count);
-            if(this.users[0].unread_count > 0) {
-              this.openDialog(this.users[0].name,this.users[0].user_id,'','0');
             }
 
           }
@@ -836,7 +840,6 @@ export class ChatComponent implements OnInit {
 
   file_name;
   upload_file() {
-    this.file_uploaded = 0;
     this.interview_log = '';
     this.job_offer_log = '';
     this.file_msg = '';
@@ -852,7 +855,6 @@ export class ChatComponent implements OnInit {
       this.authenticationService.send_file(formData)
         .subscribe(
           data => {
-            this.file_uploaded = 1;
             this.authenticationService.get_user_messages_comp(this.credentials.id)
               .subscribe(
                 data => {
@@ -926,6 +928,9 @@ export class ChatComponent implements OnInit {
           this.credentials.start_date = '';
           this.credentials.job_description = '';
           this.img_name = '';
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh');
+          }, 900);
           $("#Modal").modal("hide");
           this.authenticationService.get_user_messages_comp(this.credentials.id)
             .subscribe(
