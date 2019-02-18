@@ -1,10 +1,5 @@
 <section class="wob-bg-primary2 mt-5">
-  <ng-container *ngIf="file_uploaded === 0;else no_section" >
-    <div class="col-md-12 text-center" >
-      <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif">
-    </div>
-  </ng-container>
-  <ng-template #no_section>
+
     <div class="container">
       <div class="row">
         <div class = "col-md-12">
@@ -97,7 +92,12 @@
                     <a *ngIf="(currentUser.type === 'company')" [routerLink]="['/candidate-detail']" [queryParams]="{user: credentials.id }" class="btn btn-warning float-right text-light">View candidate profile</a>
                   </div>
                 </div>
-
+                <ng-container *ngIf="file_uploaded === 0;else no_section" >
+                  <div class="col-md-12 text-center" >
+                    <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif">
+                  </div>
+                </ng-container>
+                <ng-template #no_section>
                 <div class="message p-2" #scrollMe [scrollTop]="scrollMe.scrollHeight">
                   <ul class = "ul_pd">
                     <div *ngFor="let msg of new_msgss">
@@ -315,6 +315,7 @@
                     <div class = "offers_b"></div>
                   </ul>
                 </div>
+                </ng-template>
                 <ng-container *ngIf="cand_offer == 1;else no_offer">
                   <ng-container *ngIf="show_accpet_reject == 0;else no_show">
                     <div class="message-input">
@@ -421,7 +422,6 @@
         </h4>
       </div>
     </div>
-  </ng-template>
 </section>
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
