@@ -136,3 +136,11 @@
     top: 15px;
   }
 }
+
+.carousel-caption{
+  display:none !important;
+}
+
+.hire_button {
+  font-size : 20px;
+}

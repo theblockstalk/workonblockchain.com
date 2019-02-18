@@ -66,6 +66,7 @@ const adminRunCron = require('./controller/api/users/admins/runCronJob.controlle
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
+const getStatistics = require('./controller/api/users/statistics.controller');
 
 router.get('/', healthCheck);
 
@@ -130,5 +131,7 @@ router.get('/users/run_cron/:cron_name', auth.isAdmin, asyncMiddleware(adminRunC
 
 // Pages
 router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent));
+router.get('/users/statistics' , asyncMiddleware(getStatistics));
+
 
 module.exports = router;
