@@ -5,11 +5,17 @@ const employerProfile = require('../../../../model/mongoose/company');
 const errors = require('../../../services/errors');
 
 module.exports = async function (req, res) {
+    let discount;
+
     const refDoc = await referral.findOne({
         url_token:req.body.code
     });
 
     if(refDoc){
+        if(refDoc.discount){
+            discount = refDoc.discount;
+        }
+
         const userDoc = await users.findOneByEmail(refDoc.email);
 
         if(userDoc){
@@ -18,22 +24,21 @@ module.exports = async function (req, res) {
                     res.send({
                         email : userDoc.email,
                         name : userDoc.first_name,
-                        referred_id : refDoc._id
+                        referred_id : refDoc._id,
+                        discount: discount
                     });
                 }
 				else{
 					res.send({
                         email : refDoc.email,
-                        referred_id : refDoc._id
+                        referred_id : refDoc._id,
+                        discount: discount
                     });
 				}
             }
             if(userDoc.type === 'company'){
                 const employerDoc = await employerProfile.findOne({_creator : userDoc._id});
-                let discount;
-                if(refDoc.discount){
-                    discount = refDoc.discount;
-                }
+
                 if(employerDoc.first_name){
                     res.send({
                         email : userDoc.email,
@@ -55,7 +60,8 @@ module.exports = async function (req, res) {
         {
             res.send({
                 email: refDoc.email,
-                referred_id : refDoc._id
+                referred_id : refDoc._id,
+                discount: discount
             });
         }
     }
