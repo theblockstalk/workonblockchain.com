@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 
 declare var $: any;
@@ -9,11 +9,24 @@ declare var $: any;
   templateUrl: './companies-landing-page.component.html',
   styleUrls: ['./companies-landing-page.component.css']
 })
-export class CompaniesLandingPageComponent implements OnInit {
+export class CompaniesLandingPageComponent implements OnInit, AfterViewInit {
 
-  constructor(private router: Router, private authenticationService: UserService) { }
   approvedUsers;
   blockchainExperienceUsers;
+
+  constructor(private route: ActivatedRoute,private router: Router, private authenticationService: UserService) {
+    this.route.queryParams.subscribe(params => {
+      let ref_code = params['code'];
+      if(ref_code) {
+        localStorage.setItem('ref_code', ref_code);
+      }
+    });
+  }
+
+  ngAfterViewInit(): void
+  {
+    window.scrollTo(0, 0);
+  }
 
   ngOnInit() {
     $('.carousel').carousel({
