@@ -27,7 +27,6 @@ module.exports = async function (req, res) {
                 if(employerDoc.first_name) outputParams.name = employerDoc.first_name;
             }
         }
-        console.log(outputParams);
         res.send(outputParams);
     }
     else{
