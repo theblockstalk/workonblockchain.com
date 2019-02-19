@@ -138,7 +138,8 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
 
     }
 
-    let sort;
+    let sort={};
+    console.log(orderPreferences);
     if (orderPreferences) {
         if (orderPreferences.blockchains && orderPreferences.blockchains.length > 0 ) {
             const platformFilter = {
@@ -152,8 +153,11 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     }
 
     const searchQuery = {$and: userQuery};
-    let cursor = users.findWithCursor(searchQuery);
+    let cursor = await users.find(searchQuery);
     let userDocs = await cursor.sort(sort).toArray();
+    console.log(userDocs);
+    /*let userDoc = await cursor.next();
+    let userDocs = await userDoc.sort({_id : 1}).toArray();
 
     for (let userDoc of userDocs) {
         filteredResult.push(userDoc);
@@ -168,7 +172,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     }
     else {
         errors.throwError("No candidates matched this search criteria", 404);
-    }
+    }*/
 }
 
 function makeDistinctSet(array) {
