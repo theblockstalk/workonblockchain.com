@@ -1,5 +1,4 @@
 const users = require('../../../../model/mongoose/users');
-const Users = require('../../../../model/users');
 const messages = require('../../../../model/messages');
 const logger = require('../../../services/logger');
 const currency = require('../../../services/currency');
