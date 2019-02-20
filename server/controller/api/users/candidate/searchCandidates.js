@@ -1,4 +1,5 @@
 const users = require('../../../../model/mongoose/users');
+const Users = require('../../../../model/users');
 const messages = require('../../../../model/messages');
 const logger = require('../../../services/logger');
 const currency = require('../../../services/currency');
@@ -118,6 +119,15 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             const rolesFilter = {"candidate.roles": {$in: search.positions}};
             userQuery.push(rolesFilter);
         }
+        if (search.blockchains && search.blockchains.length > 0 ) {
+            const platformFilter = {
+                $or: [
+                    {"candidate.blockchain.commercial_platforms.name": {$in: search.blockchains}},
+                    {"candidate.blockchain.smart_contract_platforms.name": {$in: search.blockchains}}
+                ]
+            };
+            userQuery.push(platformFilter);
+        }
 
         if (search.salary && search.salary.current_currency && search.salary.current_salary) {
             const curr = search.salary.current_currency;
@@ -138,41 +148,61 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
 
     }
 
-    let sort={};
+    let sort;
     console.log(orderPreferences);
     if (orderPreferences) {
         if (orderPreferences.blockchains && orderPreferences.blockchains.length > 0 ) {
-            const platformFilter = {
+            sort= true;
+        }
+    }
+
+
+    let searchQuery = {$and: userQuery};
+    const userDocs = await users.find(searchQuery);
+    if(userDocs && userDocs.length > 0) {
+        if(sort) {
+            const orderBy1 = {
                 $or: [
                     {"candidate.blockchain.commercial_platforms.name": {$in: orderPreferences.blockchains}},
                     {"candidate.blockchain.smart_contract_platforms.name": {$in: orderPreferences.blockchains}}
                 ]
             };
-            sort = platformFilter;
+            userQuery.push(orderBy1);
+            searchQuery = {$and: userQuery};
+            const userDocsOrderBy = await users.find(searchQuery);
+            let sortedDocs = userDocsOrderBy.concat(userDocs.filter(ele => !userDocsOrderBy.includes(ele)));//userDocsOrderBy.concat(userDocs);
+            sortedDocs = removeDuplicates(sortedDocs , '_id');
+            return {
+                count: sortedDocs.length,
+                candidates: sortedDocs
+            };
         }
-    }
+        else {
+            return {
+                count: userDocs.length,
+                candidates: userDocs
+            };
+        }
 
-    const searchQuery = {$and: userQuery};
-    let cursor = await users.find(searchQuery);
-    let userDocs = await cursor.sort(sort).toArray();
-    console.log(userDocs);
-    /*let userDoc = await cursor.next();
-    let userDocs = await userDoc.sort({_id : 1}).toArray();
-
-    for (let userDoc of userDocs) {
-        filteredResult.push(userDoc);
-        totalProccessed++;
-    }
-
-    if(filteredResult && filteredResult.length > 0) {
-        return {
-            count: totalProccessed,
-            candidates: filteredResult
-        };
     }
     else {
         errors.throwError("No candidates matched this search criteria", 404);
-    }*/
+    }
+
+}
+
+//Remove duplicates from an array of objects
+function removeDuplicates(originalArray, prop) {
+    var newArray = [];
+    var lookupObject  = {};
+
+    for(var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+    for(i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+    return newArray;
 }
 
 function makeDistinctSet(array) {
@@ -192,6 +222,7 @@ function salary_converter(salary_value, currency1, currency2)
     return array;
 }
 
+//Remove duplicates from one dimension array
 function removeDups(names) {
     let unique = {};
     names.forEach(function(i) {

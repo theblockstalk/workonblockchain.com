@@ -533,6 +533,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         .subscribe(
           data =>
           {
+            /*for(let b of data) {
+              console.log("dataaa");
+              if(b.candidate && b.candidate.blockchain && b.candidate.blockchain.commercial_platforms)
+                console.log(b.candidate.blockchain.commercial_platforms);
+              if(b.candidate && b.candidate.blockchain && b.candidate.blockchain.smart_contract_platforms)
+              console.log(b.candidate.blockchain.smart_contract_platforms);
+
+            }*/
             this.candidate_data = data;
             this.setPage(1);
             if(this.candidate_data.length > 0) {
