@@ -149,22 +149,22 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     }
 
     let sort;
-    console.log(orderPreferences);
-    if (orderPreferences) {
-        if (orderPreferences.blockchains && orderPreferences.blockchains.length > 0 ) {
-            sort= true;
+
+    if(orderPreferences) {
+        if (orderPreferences.blockchainOrder && orderPreferences.blockchainOrder.length > 0 ) {
+            sort = true;
         }
     }
-
 
     let searchQuery = {$and: userQuery};
     const userDocs = await users.find(searchQuery);
     if(userDocs && userDocs.length > 0) {
         if(sort) {
+            console.log("sort")
             const orderBy1 = {
                 $or: [
-                    {"candidate.blockchain.commercial_platforms.name": {$in: orderPreferences.blockchains}},
-                    {"candidate.blockchain.smart_contract_platforms.name": {$in: orderPreferences.blockchains}}
+                    {"candidate.blockchain.commercial_platforms.name": {$in: orderPreferences.blockchainOrder}},
+                    {"candidate.blockchain.smart_contract_platforms.name": {$in: orderPreferences.blockchainOrder}}
                 ]
             };
             userQuery.push(orderBy1);

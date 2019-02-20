@@ -495,6 +495,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
   visa_check;
+  blockchain_order;
   searchdata(key , value)
   {
 
@@ -518,6 +519,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.role_value;
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.visa_check) queryBody.visa_needed = this.visa_check;
+      if(this.blockchain_order) queryBody.blockchainOrder = this.blockchain_order;
       if(this.salary && this.currencyChange) {
         setTimeout(() => {
           $('.selectpicker').selectpicker();
@@ -529,7 +531,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
-      this.authenticationService.filterSearch(queryBody )
+      this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data =>
           {

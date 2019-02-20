@@ -27,7 +27,7 @@ module.exports = async  function (req,res)
         }
     }
 
-    if (queryBody.blockchains) order.blockchains = queryBody.blockchains;
+    if (queryBody.blockchainOrder) order.blockchainOrder = queryBody.blockchainOrder;
 
     let candidateDocs = await candidateSearch.candidateSearch({
         is_verify: 1,
