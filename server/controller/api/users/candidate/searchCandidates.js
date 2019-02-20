@@ -159,17 +159,16 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     const userDocs = await users.find(searchQuery);
     if(userDocs && userDocs.length > 0) {
         if(sort) {
-            console.log("sort")
-            const orderBy1 = {
+            const orderBy = {
                 $or: [
                     {"candidate.blockchain.commercial_platforms.name": {$in: orderPreferences.blockchainOrder}},
                     {"candidate.blockchain.smart_contract_platforms.name": {$in: orderPreferences.blockchainOrder}}
                 ]
             };
-            userQuery.push(orderBy1);
+            userQuery.push(orderBy);
             searchQuery = {$and: userQuery};
             const userDocsOrderBy = await users.find(searchQuery);
-            let sortedDocs = userDocsOrderBy.concat(userDocs.filter(ele => !userDocsOrderBy.includes(ele)));//userDocsOrderBy.concat(userDocs);
+            let sortedDocs = userDocsOrderBy.concat(userDocs);
             sortedDocs = removeDuplicates(sortedDocs , '_id');
             return {
                 count: sortedDocs.length,
