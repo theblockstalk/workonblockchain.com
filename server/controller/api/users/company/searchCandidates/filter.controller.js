@@ -7,7 +7,7 @@ module.exports = async  function (req,res)
 {
     let userId = req.auth.user._id;
     let queryBody = req.body;
-    let search = {};
+    let search = {}, order = {};
     if (queryBody.word) search.word = queryBody.word;
     if (queryBody.skills) search.skills = queryBody.skills;
     if (queryBody.locations) {
@@ -27,11 +27,13 @@ module.exports = async  function (req,res)
         }
     }
 
+    if (queryBody.blockchainOrder) order.blockchainOrder = queryBody.blockchainOrder;
+
     let candidateDocs = await candidateSearch.candidateSearch({
         is_verify: 1,
         status: 'approved',
         disable_account: false
-    }, search);
+    }, search, order);
 
     let filterArray = [];
     for(let candidateDetail of candidateDocs.candidates) {
