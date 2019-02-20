@@ -61,6 +61,8 @@
                 <select title="Commercial blockchain experience" [disabled]="msg !== '' ? true : false" [(ngModel)]="blockchain_value" name="blockchains" (ngModelChange)="searchdata('blockchain', $event)" class="selectpicker form-control" multiple data-live-search="true">
                   <option *ngFor = "let blockchain of blockchainData" [value]="blockchain.value">{{blockchain.name}}</option>
                 </select>
+                <small class="ml-3 text-secondary" >Only select this if essential for the job</small>
+
               </div>
               <hr/>
 
