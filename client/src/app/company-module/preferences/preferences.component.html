@@ -98,6 +98,7 @@
                   <select multiple formControlName="blockchain" title="Commercial blockchain experience" class="form-control selectpicker">
                     <option *ngFor='let blockchain of blockchain' [selected] = "blockchainSelectedOptions(blockchain.name)"  [value]="blockchain.value" >{{blockchain.name}}</option>
                   </select>
+                  <small class="text-secondary" >Only select this if essential for the job</small>
 
                 </div>
               </div>
@@ -107,7 +108,7 @@
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
                     <label class="form-check-label" for="defaultCheck1">
-                      Show results that may require a sponsored work visa
+                      Show candidates that require a work visa
                     </label>
                   </div>
                 </div>
