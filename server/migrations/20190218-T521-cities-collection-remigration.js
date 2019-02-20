@@ -11,14 +11,14 @@ module.exports.up = async function() {
 
     await users.findAndIterate({type : 'candidate', "candidate.locations.city": { $exists: true}}, async function(userDoc) {
         totalProcessed++;
-        console.log("000user id: " + userDoc._id);
+        console.log("user id: " + userDoc._id);
         const locations = userDoc.candidate.locations;
-        console.log("  111locations:  " + JSON.stringify(locations, null, 1));
+        console.log("locations before:  " + JSON.stringify(locations, null, 1));
 
         let locationCountries = locations.map(function(location) {
             if (location.country && location.visa_needed === false) return location.country;
         });
-        console.log("  122countries: " + locationCountries);
+        console.log("countries without need for visa: " + locationCountries);
 
         let updated = false;
         for (let location of locations) {
@@ -26,7 +26,7 @@ module.exports.up = async function() {
                 const city = await cities.findOneById(location.city);
                 console.log("  133city: " + location.city + ", " + city.city + ", " + city.country);
                 if (location.visa_needed && locationCountries.includes(city.country)) {
-                    console.log("  222", JSON.stringify({
+                    console.log(SON.stringify({
                             _id: userDoc._id,
                             "candidate.locations.city": location.city
                         }, null, 1),
@@ -41,7 +41,7 @@ module.exports.up = async function() {
             }
         }
         let userAfter = await users.findOneById(userDoc._id);
-        console.log("  333locations after:  " + JSON.stringify(userAfter.candidate.locations, null, 1));
+        console.log("locations after:  " + JSON.stringify(userAfter.candidate.locations, null, 1));
 
         if (updated) totalModified++;
     });
