@@ -44,12 +44,13 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
               if (data ) {
                 if(data['name']) {
                   this.ref_msg = data['name'] + ' thinks you should join workonblockchain.com';
-                  if(data['discount']){
-                    this.ref_msg = this.ref_msg +'. Congratulations, you will receive a '+data['discount']+'% discount off our fee when you make a hire!';
-                  }
                 }
                 else {
                   this.ref_msg = 'You have been referred to workonblockchain.com';
+                }
+
+                if(data['discount']){
+                  this.ref_msg = this.ref_msg +'. Congratulations, you will receive a '+data['discount']+'% discount off our fee when you make a hire!';
                 }
               }
               this.credentials.referred_email = data['email'];
