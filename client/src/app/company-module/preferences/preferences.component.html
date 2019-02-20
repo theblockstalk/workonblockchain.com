@@ -38,7 +38,7 @@
             <div class="row">
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple formControlName="job_type"  title="Position type(optional)" class="form-control selectpicker" required>
+                  <select multiple formControlName="job_type"  title="Position type (optional)" class="form-control selectpicker" required>
                     <option *ngFor='let job_type of job_types' [selected] = "jobTypesSelectedOptions(job_type)" [value]="job_type">{{job_type}}</option>
                   </select>
 
@@ -117,7 +117,7 @@
 
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple formControlName="skills" title="Skills(optional)" class="form-control selectpicker">
+                  <select multiple formControlName="skills" title="Skills (optional)" class="form-control selectpicker">
                     <option class='option' *ngFor='let language of language_opt' [selected] = "languageSelectedOptions(language.name)"  [value]="language.value" >{{language.name}}</option>
                   </select>
                 </div>
@@ -147,7 +147,7 @@
 
               <div class="col-md-6 my-2">
                 <div class="form-group">
-                  <label>Other requirements(optional): </label>
+                  <label>Other requirements (optional): </label>
                   <input type="text" formControlName="other_technologies" [value] ="preferncesForm.value.other_technologies"  class="form-control">
                 </div>
               </div>
