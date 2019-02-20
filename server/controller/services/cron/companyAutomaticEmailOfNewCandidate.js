@@ -35,7 +35,7 @@ module.exports = async function () {
                         is_verify: 1,
                         status: 'approved',
                         disable_account: false,
-                        blacklist: blacklis
+                        blacklist: blacklist
                     }, {
                         skills: savedSearch.skills,
                         locations: savedSearch.location,
