@@ -24,9 +24,9 @@ module.exports.up = async function() {
         for (let location of locations) {
             if (location.city) {
                 const city = await cities.findOneById(location.city);
-                console.log("  133city: " + location.city + ", " + city.city + ", " + city.country);
+                console.log("city: " + location.city + ", " + city.city + ", " + city.country);
                 if (location.visa_needed && locationCountries.includes(city.country)) {
-                    console.log(SON.stringify({
+                    console.log(JSON.stringify({
                             _id: userDoc._id,
                             "candidate.locations.city": location.city
                         }, null, 1),
