@@ -907,7 +907,7 @@ export class UserService {
 
   edit_company_profile(detail :any , preferences : any  )
   {
-    return this.http.put(URL+'users/update_company_profile', {info : detail , saved_searches : preferences }, {
+    return this.http.patch(URL+'v2/users/'+ this.currentUser._creator +'/companies', {info : detail , saved_searches : preferences }, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {
