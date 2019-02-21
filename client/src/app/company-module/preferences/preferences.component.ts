@@ -35,6 +35,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   jobTypesSelected = [];
   index;
   blockchainSelected = [];
+  order_preferences= [];
   languageSelected = [];
   other_technologies;
   pref_active_class;
@@ -226,6 +227,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         skills: new FormControl(),
         other_technologies: new FormControl(),
         when_receive_email_notitfications: new FormControl(),
+        order_preferences: new FormControl(),
       });
 
 
@@ -254,6 +256,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 skills: [data['saved_searches'][0].skills],
                 other_technologies: [data['saved_searches'][0].other_technologies],
                 when_receive_email_notitfications: [data['saved_searches'][0].when_receive_email_notitfications],
+                order_preferences: [data['saved_searches'][0].order_preferences],
               });
 
               /*for (let locations of data['saved_searches'][0].location) {
@@ -311,6 +314,16 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 }
               }
 
+              if(data['saved_searches'][0].order_preferences && data['saved_searches'][0].order_preferences.length > 0) {
+                for(let blockchains of data['saved_searches'][0].blockchain) {
+                  for(let option of this.blockchain) {
+                    if(option.name === blockchains) {
+                      this.order_preferences.push(option.name);
+                    }
+                  }
+                }
+              }
+
               if(data['saved_searches'][0].skills && data['saved_searches'][0].skills.length > 0) {
                 for(let skills of data['saved_searches'][0].skills) {
                   for(let option of this.language_opt) {
@@ -362,6 +375,16 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   validatedLocation=[];
   country_input_log;
   country_log;
+
+  checkNumber(salary) {
+    if(!Number(this.preferncesForm.value.current_salary)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+
+  }
   candidate_prefernces() {
     this.error_msg = "";
     this.validatedLocation = [];
@@ -387,10 +410,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.country_log = "Please select maximum 10 locations";
     }
 
-
-    if(!this.preferncesForm.value.job_type || this.preferncesForm.value.job_type.length === 0) {
-      this.job_type_log = "Please select position types";
-    }
     if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
       this.position_log = "Please select roles";
     }
@@ -401,14 +420,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.preferncesForm.value.current_salary) {
       this.current_currency_log = "Please select available annual salary and currency";
     }
-    if(!Number(this.preferncesForm.value.current_salary)){
+    if(this.preferncesForm.value.current_salary && !Number(this.preferncesForm.value.current_salary)){
       this.current_currency_log = "Salary should be a number";
     }
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
-    if(this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5  &&
-      this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
+    if(this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0  &&
       this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications) {
@@ -483,6 +501,17 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       return;
     }
   }
+
+  blockchainOrderSelectedOptions(blockchainName) {
+    this.index = this.order_preferences.indexOf(blockchainName);
+    if(this.index > -1) {
+      return 'selected';
+    }
+    else {
+      return;
+    }
+  }
+
   languageSelectedOptions(lang) {
     this.index = this.languageSelected.indexOf(lang);
     if(this.index > -1) {
