@@ -122,6 +122,12 @@ const CompanyProfileSchema = new Schema({
                 type : String ,
                 required : true,
                 enum : enumerations.email_notificaiton
+            },
+            order_preferences : {
+                type: [{
+                    type: String,
+                    enum: enumerations.blockchainPlatforms
+                }]
             }
 
         })]

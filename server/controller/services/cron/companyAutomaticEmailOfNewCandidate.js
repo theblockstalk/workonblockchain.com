@@ -44,9 +44,8 @@ module.exports = async function () {
                         salary: {
                             current_currency: savedSearch.current_currency,
                             current_salary: savedSearch.current_salary
-                        },
-
-                    });
+                        }
+                    }, {blockchainOrder: savedSearch.order_preferences });
 
                     let candidateList = [];
                     let candidateLog = [];

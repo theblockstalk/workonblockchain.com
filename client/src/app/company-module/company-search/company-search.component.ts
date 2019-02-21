@@ -495,6 +495,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
   visa_check;
+  blockchain_order;
   searchdata(key , value)
   {
 
@@ -518,6 +519,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.role_value;
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.visa_check) queryBody.visa_needed = this.visa_check;
+      if(this.blockchain_order) queryBody.blockchainOrder = this.blockchain_order;
       if(this.salary && this.currencyChange) {
         setTimeout(() => {
           $('.selectpicker').selectpicker();
@@ -529,7 +531,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
-      this.authenticationService.filterSearch(queryBody )
+      this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data =>
           {
@@ -826,89 +828,91 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
   suggestedOptions() {
-    // this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola (city)', 'Antigua & Deps (city)', 'Argentina (city)', 'Armenia (city)', 'Australia (city)', 'Austria (city)', 'Azerbaijan (city)', 'Bahamas (city)', 'Bahrain (city)', 'Bangladesh (city)', 'Barbados (city)', 'Belarus (city)', 'Belgium (city)', 'Belize (city)', 'Benin (city)', 'Bhutan (city)', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
-    this.authenticationService.autoSuggestOptions(this.countriesModel, false)
-      .subscribe(
-        data => {
-          if(data) {
-            let citiesInput = data;
-            let citiesOptions=[];
-            for(let cities of citiesInput['locations']) {
-              if(cities['remote'] === true) {
-                citiesOptions.push({name: 'Remote'});
-              }
-              if(cities['city']) {
-                let cityString = cities['city'].city + ", " + cities['city'].country;
-                citiesOptions.push({city : cities['city']._id , name : cityString});
-              }
+    if(this.countriesModel !== '') {
+      this.authenticationService.autoSuggestOptions(this.countriesModel, false)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({name: 'Remote'});
+                }
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country;
+                  citiesOptions.push({city : cities['city']._id , name : cityString});
+                }
 
+              }
+              this.cities = this.filter_array(citiesOptions);
             }
-            this.cities = this.filter_array(citiesOptions);
-          }
 
-        },
-        error=>
-        {
-          if(error['message'] === 500 || error['message'] === 401)
+          },
+          error=>
           {
-            localStorage.setItem('jwt_not_found', 'Jwt token not found');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('googleUser');
-            localStorage.removeItem('close_notify');
-            localStorage.removeItem('linkedinUser');
-            localStorage.removeItem('admin_log');
-            window.location.href = '/login';
-          }
+            if(error['message'] === 500 || error['message'] === 401)
+            {
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-          if(error.message === 403)
-          {
-            this.router.navigate(['/not_found']);
-          }
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-        });
-
-
+          });
+    }
   }
 
 
   selectedValueFunction(e) {
-    if(this.cities.find(x => x.name === e.target.value)) {
-      var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
+    if(this.cities) {
+      if(this.cities.find(x => x.name === e)) {
+        var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
 
-      this.countriesModel = '';
-      this.cities = [];
-      if(this.selectedValueArray.length > 4) {
-        this.error = 'You can select maximum 5 locations';
-        setInterval(() => {
-          this.error = "" ;
-        }, 5000);
-      }
-      else {
-        if(this.selectedValueArray.find(x => x.name === e.target.value)) {
-          this.error = 'This location has already been selected';
+        this.countriesModel = '';
+        this.cities = [];
+        if(this.selectedValueArray.length > 4) {
+          this.error = 'You can select maximum 5 locations';
           setInterval(() => {
             this.error = "" ;
-          }, 4000);
+          }, 5000);
         }
-
         else {
-          if(value2send) this.selectedValueArray.push({city:value2send , name: e.target.value});
-          else this.selectedValueArray.push({ name: e.target.value});
+          if(this.selectedValueArray.find(x => x.name === e)) {
+            this.error = 'This location has already been selected';
+            setInterval(() => {
+              this.error = "" ;
+            }, 4000);
+          }
+
+          else {
+            if(value2send) this.selectedValueArray.push({city:value2send , name: e});
+            else this.selectedValueArray.push({ name: e});
+          }
+          this.selectedValueArray.sort(function(a, b){
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+          });
+          if(this.selectedValueArray.find((obj => obj.name === 'Remote'))){
+            this.selectedValueArray.splice(0, 0, {name : 'Remote'});
+            this.selectedValueArray = this.filter_array(this.selectedValueArray);
+          }
+          this.searchdata('locations' , this.selectedValueArray);
         }
-        this.selectedValueArray.sort(function(a, b){
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        });
-        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))){
-          this.selectedValueArray.splice(0, 0, {name : 'Remote'});
-          this.selectedValueArray = this.filter_array(this.selectedValueArray);
-        }
-        this.searchdata('locations' , this.selectedValueArray);
+      }
+      else {
       }
     }
-    else {
-    }
+
 
   }
 
