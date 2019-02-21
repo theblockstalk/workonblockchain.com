@@ -31,7 +31,6 @@ import { AdminTermsConditionEditorComponent } from './admin-terms-condition-edit
 export class AdminEditorModuleModule {
   constructor(private scriptService : ScriptService) {
     this.scriptService.load('ckeditor').then(data => {
-      //console.log('script loaded ', data);
     }).catch(error => console.log(error));
   }
 }

@@ -173,10 +173,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           }
         },
         error: (err) => {
-          //console.log(err);
         },
         complete: () => {
-          //console.log('RAW API call completed');
         }
       });
   }
@@ -307,11 +305,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this._linkedInService.login().subscribe({
       next: (state) =>
       {
-        //console.log("state");
       },
       complete: () => {
         // Completed
-        //console.log("complete");
       }
     });
 

@@ -259,7 +259,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
           {
             if(data)
             {
-              console.log(data);
               this.info.email = data['email'];
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
@@ -1300,7 +1299,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   candidate_profile(profileForm: NgForm)
   {
-    console.log(profileForm.value);
     this.error_msg = "";
     this.count = 0;
     this.submit = "click";
@@ -1396,8 +1394,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
-    console.log(this.commercially_worked);
-    console.log(this.commercial_expYear);
+
     if(this.commercially_worked.length !== this.commercial_expYear.length )
     {
       this.commercial_log = "Please fill year of experience";
@@ -1640,7 +1637,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
-    console.log(profileForm);
     if(this.commercially_worked.length === 0) {
       profileForm.commercial_platforms = [];
     }

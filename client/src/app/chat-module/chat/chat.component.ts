@@ -272,7 +272,6 @@ export class ChatComponent implements OnInit {
       .subscribe(
         msg_data => {
           this.loading = false;
-          console.log(msg_data['conversations']);
           if(msg_data['conversations']){
             this.new_messges.push(msg_data['conversations']);
             this.new_messges = this.filter_array(msg_data['conversations']);
@@ -388,7 +387,6 @@ export class ChatComponent implements OnInit {
               .subscribe(
                 data => {
                   this.new_msgss = data['messages'];
-                  console.log(this.new_msgss);
                 },
                 error => {
                   if(error.message == 500 || error.message == 401){
@@ -755,7 +753,6 @@ export class ChatComponent implements OnInit {
   }
 
   openDialog(email: string, id:string, selected_company_name:string, usersIndex: string){
-    console.log("open dialog");
     if(selected_company_name){
       email = selected_company_name;
     }
@@ -769,8 +766,6 @@ export class ChatComponent implements OnInit {
       .subscribe(
         data => {
           this.new_msgss = data['messages'];
-          console.log("msgs");
-          console.log(this.new_msgss);
           this.job_desc = data['messages'][0].message.job_offer;
           this.authenticationService.update_chat_msg_status_new(id)
             .subscribe(
