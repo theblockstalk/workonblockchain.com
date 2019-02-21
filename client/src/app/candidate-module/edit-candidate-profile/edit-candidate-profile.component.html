@@ -165,14 +165,14 @@
                 <div class="form-group">
                   <label>Where would you like to work? (select up to 10)</label>
                   <div>
-                    <datalist id="countryList" *ngIf="cities && cities.length > 0">
+                    <datalist id="countryList">
                       <select class="form-control">
 
                         <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}">{{country.name}}
                         </option>
                       </select>
                     </datalist>
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
