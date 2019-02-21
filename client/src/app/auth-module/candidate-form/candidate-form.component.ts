@@ -128,7 +128,6 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       .asObservable()
       .subscribe({
         next: (data) => {
-          console.log(data);
           localStorage.setItem('linkedinUser', JSON.stringify(data));
           if(data)
           {
