@@ -56,17 +56,25 @@ module.exports = async function (req, res) {
             }]
         }
     }
+    console.log(userParam);
     const candidateUserCreated = await users.insert(newUserDoc);
 
     let url_token;
-
+    let updateCandidate = {};
     if(candidateUserCreated) {
+
         let signOptions = {
             expiresIn:  "1h",
         };
         let jwtUserToken = jwtToken.createJwtToken(candidateUserCreated);
         let verifyEmailToken = jwtToken.createJwtToken(candidateUserCreated, signOptions);
-        await users.update({_id: candidateUserCreated._id}, {$set: {'jwt_token': jwtUserToken , 'verify_email_key' : verifyEmailToken }});
+        updateCandidate['jwt_token'] = jwtUserToken;
+        updateCandidate['verify_email_key'] = verifyEmailToken;
+        if(candidateUserCreated.social_type === 'LINKEDIN') {
+            if(userParam.linkedin_account) updateCandidate['candidate.linkedin_account'] = userParam.linkedin_account;
+        }
+
+        await users.update({_id: candidateUserCreated._id}, {$set: updateCandidate});
 
         //sending email for social register
         if(candidateUserCreated.social_type === 'GOOGLE' || candidateUserCreated.social_type === 'LINKEDIN'){
