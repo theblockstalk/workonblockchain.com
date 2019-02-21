@@ -251,8 +251,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
                 this.info.contact_number = data['contact_number'];
-                this.info.github_account = data['candidate'].github_account;
-                this.info.exchange_account = data['candidate'].stackexchange_account;
+                if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
+                if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
+                if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
+                if(data['candidate'].medium_account) this.info.medium_account = data['candidate'].medium_account;
                 this.info.nationality = data['nationality'];
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
