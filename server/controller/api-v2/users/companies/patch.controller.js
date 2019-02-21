@@ -9,12 +9,12 @@ module.exports.request = {
     type: 'patch',
     path: '/users/:user_id/companies'
 };
-const paramSchema = new Schema({
+const querySchema = new Schema({
     user_id: String
 });
 
 module.exports.inputValidation = {
-    params: paramSchema
+    query: querySchema
 };
 
 const bodySchema = new Schema({
