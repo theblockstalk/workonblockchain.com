@@ -1,40 +1,173 @@
 const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
+const enumerations = require('../../../../model/enumerations');
+const regexes = require('../../../../model/regexes');
+
 const companies = require('../../../../model/mongoose/company');
 
 module.exports.request = {
     type: 'patch',
     path: '/users/:user_id/companies'
 };
+const paramSchema = new Schema({
+    user_id: String
+});
+
+module.exports.inputValidation = {
+    params: paramSchema
+};
+
+const bodySchema = new Schema({
+    terms_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'pages_content'
+    },
+    first_name: {
+        type:String
+    },
+    last_name: {
+        type:String
+    },
+    job_title: {
+        type:String
+    },
+    company_name: {
+        type:String
+    },
+    company_website: {
+        type:String,
+        validate: regexes.url
+    },
+    company_phone: {
+        type:String
+    },
+    company_country: {
+        type: String,
+        enum: enumerations.countries
+    },
+    company_city: {
+        type:String
+    },
+    company_postcode: {
+        type:String
+    },
+    company_founded: {
+        type:Number,
+        min: 1800
+    },
+    no_of_employees: {
+        type:Number,
+        min: 1
+    },
+    company_funded: {
+        type:String
+    },
+    company_logo: {
+        type: String,
+        validate: regexes.url
+    },
+    company_description: {
+        type: String,
+        maxlength: 3000
+    },
+
+    saved_searches: {
+        type:[new Schema({
+            search_name: String,
+            location: {
+                type: [{
+                    city: {
+                        type : Schema.Types.ObjectId,
+                        ref: 'Cities'
+                    },
+                    remote: Boolean,
+
+                }]
+            },
+            visa_needed: {
+                type: Boolean,
+                default:false,
+            },
+            job_type: {
+                type: [{
+                    type: String,
+                    required : true,
+                    enum: enumerations.jobTypes
+                }]
+
+            },
+            position: {
+                type: [{
+                    type: String,
+                    required : true,
+                    enum: enumerations.workRoles
+                }]
+            },
+            current_currency: {
+                type: String,
+                required : true,
+                enum: enumerations.currencies
+            },
+            current_salary: {
+                type:Number,
+                required : true,
+                min: 0
+            },
+            blockchain: {
+                type: [{
+                    type: String,
+                    enum: enumerations.blockchainPlatforms
+                }]
+            },
+            skills: {
+                type: [{
+                    type: String,
+                    enum: enumerations.programmingLanguages
+                }]
+            },
+            residence_country: {
+                type: String,
+                enum: enumerations.countries
+
+            },
+            other_technologies : {
+                type : String
+            },
+
+            order_preferences : {
+                type: [{
+                    type: String,
+                    enum: enumerations.blockchainPlatforms
+                }]
+            }
+
+        })]
+    },
+    when_receive_email_notitfications : {
+        type : String ,
+        required : true,
+        enum : enumerations.email_notificaiton
+    },
+});
+
+module.exports.inputValidation = {
+    body: bodySchema
+};
 
 module.exports.auth = async function (req) {
-    await auth.isValidUser(req);
+    console.log("auth validation");
+    await auth.isValidCompany(req);
 }
 
+
 module.exports.endpoint = async function (req, res) {
+    console.log("company endpoint");
     let userId = req.auth.user._id;
     const employerDoc = await companies.findOne({ _creator: userId });
 
     if(employerDoc){
         const queryBody = req.body;
-        let employerUpdate = {}
-
-        if (queryBody.info.first_name) employerUpdate.first_name = queryBody.info.first_name;
-        if (queryBody.info.last_name) employerUpdate.last_name = queryBody.info.last_name;
-        if (queryBody.info.job_title) employerUpdate.job_title = queryBody.info.job_title;
-        if (queryBody.info.company_name) employerUpdate.company_name = queryBody.info.company_name;
-        if (queryBody.info.company_website) employerUpdate.company_website = queryBody.info.company_website;
-        if (queryBody.info.phone_number) employerUpdate.company_phone = queryBody.info.phone_number;
-        if (queryBody.info.country) employerUpdate.company_country = queryBody.info.country;
-        if (queryBody.info.city) employerUpdate.company_city = queryBody.info.city;
-        if (queryBody.info.postal_code) employerUpdate.company_postcode = queryBody.info.postal_code;
-        if (queryBody.info.company_founded) employerUpdate.company_founded = queryBody.info.company_founded;
-        if (queryBody.info.no_of_employees) employerUpdate.no_of_employees = queryBody.info.no_of_employees;
-        if (queryBody.info.company_funded) employerUpdate.company_funded = queryBody.info.company_funded;
-        if (queryBody.info.company_description) employerUpdate.company_description = queryBody.info.company_description;
-        if (queryBody.saved_searches && queryBody.saved_searches.length > 0) employerUpdate.saved_searches = queryBody.saved_searches;
-
-        await companies.update({ _creator: userId },{ $set: employerUpdate });
+        console.log(queryBody);
 
         res.send(true);
     }

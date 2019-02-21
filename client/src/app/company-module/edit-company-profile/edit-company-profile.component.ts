@@ -558,9 +558,15 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm.value.when_receive_email_notitfications)  {
       this.preferncesForm.value.location = this.validatedLocation;
       this.saved_searches.push(this.preferncesForm.value);
+      let queryBody = {};
+      queryBody['first_name'] = this.first_name;
+      queryBody['last_name'] = this.last_name;
+      queryBody['job_title'] = this.job_title;
+
+      console.log(queryBody);
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
-      this.authenticationService.edit_company_profile(profileForm.value , this.saved_searches)
+      this.authenticationService.edit_company_profile(queryBody)
         .subscribe(
           data => {
             if(data && this.currentUser)
