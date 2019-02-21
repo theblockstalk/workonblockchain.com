@@ -71,8 +71,8 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="githubURL">Linkedin account URL (optional)</label>
-                <input type="text" #linkedinaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://github.com/username"  name="linkedin_account" [(ngModel)]="info.linkedin_account">
+                <label >Linkedin account URL (optional)</label>
+                <input type="text" #linkedinaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://linkedin.com/in/username"  name="linkedin_account" [(ngModel)]="info.linkedin_account">
                 <div class = "invalid-feedback d-inline"  *ngIf="linkedinaccount.errors">
                   Enter url in proper format.
                 </div>
@@ -80,8 +80,8 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="stackURL">Medium account URL (optional)</label>
-                <input type="text" #mediumaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://stackexchange.com/users/12345/username" name="medium_account" [(ngModel)]="info.medium_account">
+                <label >Medium account URL (optional)</label>
+                <input type="text" #mediumaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://medium.com/username" name="medium_account" [(ngModel)]="info.medium_account">
                 <div class = "invalid-feedback d-inline"  *ngIf="mediumaccount.errors">
                   Enter url in proper format.
                 </div>
