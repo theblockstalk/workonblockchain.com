@@ -92,6 +92,25 @@
                 <p>
               </div>
             </div>
+
+            <div class="col-md-6 mb-3" *ngIf="data.candidate.linkedin_account">
+              <div class="form-group" >
+                <label>Linkedin account url: </label>
+                <p>
+                  {{data.candidate.linkedin_account}}
+                <p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="data.candidate.medium_account">
+              <div class="form-group" >
+                <label>Medium account url:</label>
+                <p>
+                  {{data.candidate.medium_account}}
+                <p>
+              </div>
+            </div>
+
           </div>
 
         </section>
