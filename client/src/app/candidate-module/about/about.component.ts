@@ -109,7 +109,6 @@ export class AboutComponent implements OnInit,AfterViewInit
         .subscribe(
           data =>
           {
-            console.log(data);
             if(data['refered_id']) //&& !data.first_name && !data.last_name)
             {
               this.referred_id = data['refered_id'];
