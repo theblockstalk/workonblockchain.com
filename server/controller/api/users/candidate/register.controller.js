@@ -56,7 +56,6 @@ module.exports = async function (req, res) {
             }]
         }
     }
-    console.log(userParam);
     const candidateUserCreated = await users.insert(newUserDoc);
 
     let url_token;
