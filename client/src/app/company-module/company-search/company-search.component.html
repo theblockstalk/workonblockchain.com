@@ -29,7 +29,7 @@
                 <datalist id="countryList">
                   <option *ngFor = "let country of cities" [attr.data-value]="country.city" value="{{country.name}}">
                 </datalist>
-                <input type="text" list="countryList" autocomplete="off" [disabled]="msg !== '' ? true : false" placeholder="Location" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+                <input type="text" list="countryList" autocomplete="off" [disabled]="msg !== '' ? true : false" placeholder="Location" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                 <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                   {{error}}
                 </div>

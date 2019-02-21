@@ -58,14 +58,14 @@ export class StyleGuideComponent implements OnInit ,AfterViewInit {
   selectedValue(e) {
     this.countriesModel= '';
     this.countries = [];
-    if(this.selectedValueArray.find(x => x === e.target.value)) {
+    if(this.selectedValueArray.find(x => x === e)) {
       this.error = 'You selected this already';
       setInterval(() => {
         this.error = "" ;
       }, 2500);
     }
     else {
-      this.selectedValueArray.push(e.target.value);
+      this.selectedValueArray.push(e);
     }
   }
 }

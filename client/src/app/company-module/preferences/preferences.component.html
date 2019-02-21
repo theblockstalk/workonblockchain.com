@@ -60,13 +60,14 @@
               <div class="col-md-6 mt-2">
                 <div class="form-group">
                   <div>
-                    <datalist id="countryList" *ngIf="cities && cities.length >0">
+                    <datalist id="countryList">
                       <select class="form-control">
                         <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text="{{preferncesForm.value.location}}">{{country.name}}
                         </option>
                       </select>
                     </datalist>
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>

@@ -198,9 +198,9 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
       this.authenticationService.get_page_content('Company popup message')
         .subscribe(
           data => {
-            if(data)
+            if(data && data[0])
             {
-              this.companyMsgTitle= data[0]['page_title'];
+              this.companyMsgTitle = data[0]['page_title'];
               this.companyMsgBody = data[0]['page_content'];
             }
           });
