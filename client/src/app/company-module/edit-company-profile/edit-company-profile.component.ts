@@ -537,10 +537,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
       }
 
-      let inputQuery = {};
-      //inputQuery['inputParams'] = {'saved_searches': this.preferncesForm.value.prefItems, 'first_name': this.first_name };
+      for (var i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
+        this.appendArray(formData, this.preferncesForm.value.prefItems[i], 'saved_searches');
+      }
 
-      //formData.append('inputParams', inputQuery['inputParams'])  ;
+      formData.getAll('saved_searches');
+
       formData.append('first_name' , this.first_name);
       formData.append('last_name' , this.last_name);
       formData.append('job_title' , this.job_title);
@@ -554,8 +556,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       formData.append('no_of_employees', this.no_of_employees) ;
       formData.append('company_funded', this.company_funded) ;
       formData.append('company_description', this.company_description) ;
-      //formData.append('saved_searches', this.saved_searches) ;
-      console.log(this.preferncesForm.value.prefItems);
       formData.append('when_receive_email_notitfications', this.when_receive_email_notitfications) ;
 
       this.authenticationService.edit_company_profile(formData)
@@ -563,7 +563,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           data => {
             if(data && this.currentUser)
             {
-              //this.router.navigate(['/company_profile']);
+              this.router.navigate(['/company_profile']);
             }
 
           },
@@ -583,6 +583,24 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     else {
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
+  }
+
+  appendArray(form_data, values, name){
+    if(!values && name)
+      form_data.append(name, '');
+    else{
+      if(typeof values == 'object'){
+        for(let key in values){
+          if(typeof values[key] == 'object')
+            this.appendArray(form_data, values[key], name + '[' + key + ']');
+          else
+            form_data.append(name + '[' + key + ']', values[key]);
+        }
+      }else
+        form_data.append(name, values);
+    }
+
+    return form_data;
   }
 
   suggestedOptions() {

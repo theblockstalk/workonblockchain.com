@@ -15,10 +15,6 @@ const paramSchema = new Schema({
 });
 
 const bodySchema = new Schema({
-    terms_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'pages_content'
-    },
     first_name: {
         type:String
     },
@@ -168,8 +164,7 @@ module.exports.endpoint = async function (req, res) {
     if(employerDoc){
         const queryBody = req.body;
         let employerUpdate = {};
-
-        if(req.file.path) employerUpdate.company_logo = req.file.path;
+        if(req.file && req.file.path) employerUpdate.company_logo = req.file.path;
 
         if (queryBody.first_name) employerUpdate.first_name = queryBody.first_name;
         if (queryBody.last_name) employerUpdate.last_name = queryBody.last_name;
@@ -184,7 +179,7 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.no_of_employees) employerUpdate.no_of_employees = queryBody.no_of_employees;
         if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
         if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
-        if (queryBody.saved_searches && queryBody.saved_searches.length > 0) employerUpdate.saved_searches = queryBody.saved_searches;
+        if (queryBody.saved_searches) employerUpdate.saved_searches = queryBody.saved_searches;
         if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
 
         await companies.update({ _creator: userId },{ $set: employerUpdate });
