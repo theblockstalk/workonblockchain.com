@@ -2,6 +2,7 @@ const auth = require('../../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
+const multer = require('../../../../controller/middleware/multer');
 
 const companies = require('../../../../model/mongoose/company');
 
@@ -12,10 +13,6 @@ module.exports.request = {
 const paramSchema = new Schema({
     user_id: String
 });
-
-module.exports.inputValidation = {
-    params: paramSchema
-};
 
 const bodySchema = new Schema({
     terms_id: {
@@ -145,14 +142,18 @@ const bodySchema = new Schema({
     },
     when_receive_email_notitfications : {
         type : String ,
-        required : true,
         enum : enumerations.email_notificaiton
     },
 });
 
 module.exports.inputValidation = {
+    params: paramSchema,
     body: bodySchema
 };
+
+module.exports.files = async function(req) {
+    await multer.uploadOneFile(req, "company_logo");
+}
 
 module.exports.auth = async function (req) {
     console.log("auth validation");
@@ -166,6 +167,7 @@ module.exports.endpoint = async function (req, res) {
     const employerDoc = await companies.findOne({ _creator: userId });
 
     if(employerDoc){
+        console.log("if");
         const queryBody = req.body;
         console.log(queryBody);
 

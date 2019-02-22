@@ -453,6 +453,13 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   country_log;
   company_profile(profileForm: NgForm)
   {
+    let input = new FormData();
+// Add your values in here
+    input.append("id",'id', "idddddd");
+    input.append("name", "invoice file");
+
+    console.log(input.getAll("name"));
+
     this.error_msg = "";
     if(this.company_founded){
       this.company_founded = parseInt(this.company_founded);
@@ -548,7 +555,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.email_notification_log = "Please select when you want to receive email notification";
     }
 
-    if(this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees && this.company_funded && this.company_description &&
+    if(this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
+      && this.company_funded && this.company_description &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode &&
       this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5 &&
@@ -558,43 +566,45 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.preferncesForm.value.when_receive_email_notitfications)  {
       this.preferncesForm.value.location = this.validatedLocation;
       this.saved_searches.push(this.preferncesForm.value);
-      let queryBody = {};
-      queryBody['first_name'] = this.first_name;
-      queryBody['last_name'] = this.last_name;
-      queryBody['job_title'] = this.job_title;
-
-      console.log(queryBody);
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
-      this.authenticationService.edit_company_profile(queryBody)
+      let formData = new FormData();
+      let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
+      if (inputEl && inputEl.files && inputEl.files.length > 0)
+      {
+        if(inputEl.files.item(0).size < this.file_size)
+        {
+          formData.append('company_logo', inputEl.files.item(0));
+        }
+        else
+        {
+          this.image_log = "Image size should be less than 1MB";
+        }
+
+      }
+      formData.append('first_name' , this.first_name);
+      formData.append('last_name' , this.last_name);
+      formData.append('job_title' , this.job_title);
+      formData.append('company_name', this.company_name);
+      formData.append('company_website', this.company_website) ;
+      formData.append('company_phone', this.company_phone) ;
+      formData.append('company_country', this.company_country) ;
+      formData.append('company_city', this.company_city) ;
+      formData.append('company_postcode', this.company_postcode ) ;
+      formData.append('company_founded', this.company_founded) ;
+      formData.append('no_of_employees', this.no_of_employees) ;
+      formData.append('company_funded', this.company_funded) ;
+      formData.append('company_description', this.company_description) ;
+      formData.append('saved_searches', JSON.stringify(this.saved_searches)) ;
+      formData.append('when_receive_email_notitfications', this.preferncesForm.value.when_receive_email_notitfications) ;
+      console.log(formData.getAll('first_name'));
+
+      this.authenticationService.edit_company_profile(formData)
         .subscribe(
           data => {
             if(data && this.currentUser)
             {
-              let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
-              if (inputEl && inputEl.files && inputEl.files.length > 0)
-              {
-                let formData = new FormData();
-                if(inputEl.files.item(0).size < this.file_size)
-                {
-
-                  formData.append('photo', inputEl.files.item(0));
-
-                  this.authenticationService.company_image(formData)
-                    .subscribe(
-                      imageRes => {
-                      this.router.navigate(['/company_profile']);
-                    });
-                }
-                else
-                {
-                  this.image_log = "Image size should be less than 1MB";
-                }
-
-              }
-              else
-                this.router.navigate(['/company_profile']);
-
+              //this.router.navigate(['/company_profile']);
             }
 
           },
