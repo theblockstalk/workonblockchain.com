@@ -46,38 +46,38 @@ module.exports = async function () {
                             current_currency: savedSearch.current_currency,
                             current_salary: savedSearch.current_salary
                         }
-                    }, {blockchainOrder: savedSearch.order_preferences });
+                    }, {
+                        blockchainOrder: savedSearch.order_preferences
+                    });
 
-                    let candidateList = [];
-                    for ( let i = 0 ; i < candidateDocs.candidates.length; i++) {
-                        const candidate = candidateDocs.candidates[i];
-                        const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidate._id;
-                        const candidateInfo = {
-                            url: url,
-                            why_work: candidate.candidate.why_work,
-                            initials: filterReturnData.createInitials(candidate.first_name, candidate.last_name),
-                            programming_languages: candidate.candidate.programming_languages
-                        };
-                        candidateList.push(candidateInfo);
-                    }
+                    const candidateCount = candidateDocs.candidates.length >= 10 ? 10 : candidateDocs.candidates.length;
 
                     let candidates;
-                    if(candidateDocs.count > 0) {
-                        let finalCandidateList;
-                        if(candidateDocs.count  <= 10) {
-                            finalCandidateList = candidateList;
-                            candidates = {"count" : candidateDocs.count  , "list" : finalCandidateList};
-                        }
-                        else {
-                            finalCandidateList = candidateList.slice(0, 10);
-                            candidates = {"count" : 'More than 10' , "list" : finalCandidateList};
-                        }
-                        let candidateLog = finalCandidateList.map( function (candidate) {
-                            return {
+                    if(candidateCount > 0) {
+                        let candidateList = [], candidateLog = [];
+
+                        for ( let i = 0 ; i < candidateCount; i++) {
+                            const candidate = candidateDocs.candidates[i];
+                            const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidate._id;
+                            const candidateInfo = {
+                                url: url,
+                                why_work: candidate.candidate.why_work,
+                                initials: filterReturnData.createInitials(candidate.first_name, candidate.last_name),
+                                programming_languages: candidate.candidate.programming_languages
+                            };
+                            candidateList.push(candidateInfo);
+                            candidateLog.push({
                                 user: candidate._id,
                                 sent: timestamp
-                            }
-                        })
+                            })
+                        }
+
+                        if(candidateCount  <= 10) {
+                            candidates = {"count" : candidateDocs.count  , "list" : candidateList};
+                        }
+                        else {
+                            candidates = {"count" : 'More than 10' , "list" : candidateList};
+                        }
                         
                         logger.debug("Company preferences", savedSearch);
                         logger.debug("Search results", candidateDocs);
