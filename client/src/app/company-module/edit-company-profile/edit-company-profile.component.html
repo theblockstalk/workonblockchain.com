@@ -315,7 +315,7 @@
                     <div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
                       <div class="row">
                         <div class="col-md-12">
-                          <h3 class="pt-2 mb-3"> Job search {{i+1}}</h3>
+                          <h4 class="pt-2 mb-3"> Job search {{i+1}}</h4>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
@@ -360,7 +360,7 @@
                                 </select>
                               </datalist>
 
-                              <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                              <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions(i)" (ngModelChange)="selectedValueFunction($event, i)">
                               <div class="invalid-feedback d-inline" *ngIf="error">
                                 {{error}}
                               </div>

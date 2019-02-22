@@ -186,7 +186,7 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.saved_searches) employerUpdate.saved_searches = queryBody.saved_searches;
         if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
 
-        await companies.update({ _creator: userId },{ $set: employerUpdate });
+        await companies.update({ _creator: userId },{ $set: employerUpdate});
 
         res.send(true);
     }

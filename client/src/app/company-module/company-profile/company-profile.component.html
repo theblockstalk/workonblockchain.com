@@ -168,7 +168,7 @@
 
 
           <div class="row mt-3">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" *ngIf="saved_searche[0].job_type && saved_searche[0].job_type.length > 0">
               <div class="form-group">
                 <label>Type:</label>
                 <div>
@@ -200,6 +200,13 @@
 
                   </div>
                 </div>
+                <div *ngIf="saved_searche[0].visa_needed && saved_searche[0].visa_needed === true;">
+                  <div class="form-group mt-3">
+                    <p>Show candidates that require a work visa</p>
+
+                  </div>
+
+                </div>
               </div>
 
             </div>
@@ -217,13 +224,6 @@
             </div>
 
 
-            <div class = "col-md-12" *ngIf="saved_searche[0].visa_needed && saved_searche[0].visa_needed === true;">
-              <div class="form-group">
-                <p>Show candidates that require a work visa</p>
-
-              </div>
-
-            </div>
             <div class="col-md-6 mb-3" *ngIf = "saved_searche[0].skills && saved_searche[0].skills.length > 0">
               <div class="form-group">
                 <label>Skills:</label>

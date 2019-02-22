@@ -220,7 +220,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     return this._fb.group({
       search_name: [''],
       location: [''],
-      visa_needed : [''],
+      visa_needed : [false],
       job_type: [''],
       position: [''],
       current_currency: [''],
@@ -237,10 +237,11 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   {
     console.log(this.prefData);
     return this.prefData
-      .map(i => this._fb.group({ residence_country: i.residence_country, search_name: i.search_name, location: this.selectedLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ residence_country: i.residence_country, search_name: i.search_name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
-  selectedLocation(location){
+  selectedCompanyLocation(location) {
+  console.log(location);
     if(location) {
       for (let country1 of location)
       {
@@ -259,16 +260,15 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
         this.selectedValueArray.splice(0, 0, remoteValue);
         this.selectedValueArray = this.filter_array(this.selectedValueArray);
-        this.selectedLocations = this.selectedValueArray;
       }
+      this.selectedLocations = this.selectedValueArray;
+
       return '';
     }
     else {
       return '';
     }
   }
-
-
 
   deletePrefRow(index: number)
   {
@@ -518,9 +518,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode )  {
-      this.preferncesForm.value.location = this.validatedLocation;
-      this.saved_searches.push(this.preferncesForm.value);
-      this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       profileForm.value.company_founded = parseInt(profileForm.value.company_founded);
       let formData = new FormData();
       let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#profile');
@@ -537,11 +534,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
       }
 
-      for (var i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
-        this.appendArray(formData, this.preferncesForm.value.prefItems[i], 'saved_searches');
-      }
+      if(this.preferncesForm.value.prefItems && this.preferncesForm.value.prefItems.length > 0) {
+        for (var i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
+          this.preferncesForm.value.prefItems[i].location = this.validatedLocation;
+          this.preferncesForm.value.prefItems[i].current_salary = Number(this.preferncesForm.value.prefItems[i].current_salary);
+          this.appendArray(formData, this.preferncesForm.value.prefItems[i], 'saved_searches');
+        }
 
-      formData.getAll('saved_searches');
+      }
 
       formData.append('first_name' , this.first_name);
       formData.append('last_name' , this.last_name);
@@ -603,10 +603,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     return form_data;
   }
 
-  suggestedOptions() {
-    if(this.preferncesForm.value.location !== '') {
+  suggestedOptions(index) {
+      if(this.preferncesForm.value.prefItems[index].location !== '') {
         this.error='';
-        this.authenticationService.autoSuggestOptions(this.preferncesForm.value.location , true)
+        this.authenticationService.autoSuggestOptions(this.preferncesForm.value.prefItems[index].location , true)
           .subscribe(
             data => {
               if(data) {
@@ -644,14 +644,17 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
               }
 
             });
-    }
+      }
+
+
   }
 
-  selectedValueFunction(e) {
+  selectedValueFunction(e, index) {
     if(this.cities) {
       if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.preferncesForm.value.location+"']")['dataset'].value;
-        this.preferncesForm.get('location').setValue('');
+        console.log(this.preferncesForm.value.prefItems);
+        var value2send=document.querySelector("#countryList option[value='"+this.preferncesForm.value.prefItems[index].location+"']")['dataset'].value;
+        this.preferncesForm.value.prefItems[index].location = '';
         this.cities = [];
         if(this.selectedValueArray.length > 4) {
           this.error = 'You can select maximum 5 locations';
