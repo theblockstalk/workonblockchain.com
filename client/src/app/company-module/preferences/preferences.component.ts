@@ -250,6 +250,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
+                search_name: [data['saved_searches'][0].search_name],
                 location: [],
                 visa_needed: [data['saved_searches'][0].visa_needed],
                 job_type: [data['saved_searches'][0].job_type],
@@ -440,6 +441,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications && this.preferncesForm.value.residence_country) {
       this.preferncesForm.value.location = this.validatedLocation;
+      this.preferncesForm.value.search_name = "Saved search 1";
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.saved_searches.push(this.preferncesForm.value);
       this.authenticationService.candidate_prefernece(this.saved_searches)

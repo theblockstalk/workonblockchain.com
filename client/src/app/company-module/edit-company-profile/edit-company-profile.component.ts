@@ -1,11 +1,10 @@
-import { Component, OnInit,ElementRef, Input  , AfterViewInit , AfterViewChecked} from '@angular/core';
+import { Component, OnInit, ElementRef , AfterViewInit , AfterViewChecked} from '@angular/core';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DataService } from "../../data.service";
-import {NgForm ,FormGroup , FormControl, FormBuilder} from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { DataService } from '../../data.service';
+import {NgForm , FormGroup , FormBuilder, FormArray} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
 declare var $:any;
@@ -67,16 +66,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   error_msg;
   about_active_class;
   companyMsgTitle;
-  positionSelected = [];
   current_salary;
-  locationSelected = [];
-  jobTypesSelected = [];
   index;
-  blockchainSelected = [];
-  languageSelected = [];
   other_technologies;
   avail_day;
-  pref_active_class;
   when_receive_email_notitfications;
   expected_validation;
   currentyear;
@@ -86,8 +79,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   error;
   selectedLocations;
   emptyInput;
-  yearVerification;
-  order_preferences=[];
+  when_receive_email_notitfication;
+
 
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
@@ -202,9 +195,11 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   email_notificaiton = ['Never' , 'Daily' , '3 days' , 'Weekly'];
 
-  constructor(private route: ActivatedRoute, private _fb: FormBuilder ,private datePipe: DatePipe,
-              private router: Router,private http: HttpClient,
-              private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
+  residenceCountries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+  prefData;
+
+  constructor(private _fb: FormBuilder ,private datePipe: DatePipe,
+              private router: Router,private authenticationService: UserService,private dataservice: DataService,private el: ElementRef) {
   }
 
   ngAfterViewInit() {
@@ -221,8 +216,72 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   }
 
+  initPrefRows()
+  {
+    return this._fb.group({
+      search_name: [''],
+      location: [''],
+      visa_needed : [''],
+      job_type: [''],
+      position: [''],
+      current_currency: [''],
+      current_salary: [''],
+      blockchain: [''],
+      skills: [''],
+      other_technologies: [''],
+      when_receive_email_notitfications:[''],
+      order_preferences: [''],
+      residence_country: ['']
+    });
+  }
+
+  private preferncesFormData(): FormGroup[]
+  {
+    console.log(this.prefData);
+    return this.prefData
+      .map(i => this._fb.group({ when_receive_email_notitfications:i.when_receive_email_notitfications, residence_country: i.residence_country, search_name: i.search_name, location: this.selectedLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+  }
+
+  selectedLocation(location){
+    console.log(location);
+    if(location) {
+      for (let country1 of location)
+      {
+        if (country1['remote'] === true) {
+          this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
+        }
+
+        if (country1['city']) {
+          let city = country1['city'].city + ", " + country1['city'].country;
+          this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
+        }
+      }
+
+      this.selectedValueArray.sort();
+      if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+        let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+        this.selectedValueArray.splice(0, 0, remoteValue);
+        this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+      }
+      return '';
+    }
+    else {
+      return '';
+    }
+  }
+
+
+
+  deletePrefRow(index: number)
+  {
+    const control = <FormArray>this.preferncesForm.controls['prefItems'];
+    control.removeAt(index);
+  }
+
   ngOnInit()
   {
+    this.prefData=[];
     this.company_country=-1;
     this.currentyear = this.datePipe.transform(Date.now(), 'yyyy');
 
@@ -268,18 +327,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         return 0;
       })
 
-      this.preferncesForm = new FormGroup({
-        location: new FormControl(),
-        visa_needed : new FormControl(),
-        job_type: new FormControl(),
-        position: new FormControl(),
-        current_currency: new FormControl(),
-        current_salary: new FormControl(),
-        blockchain: new FormControl(),
-        skills: new FormControl(),
-        other_technologies: new FormControl(),
-        when_receive_email_notitfications: new FormControl(),
-        order_preferences: new FormControl(),
+
+
+      this.preferncesForm = this._fb.group({
+        prefItems: this._fb.array([this.initPrefRows()])
       });
       this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
@@ -288,6 +339,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
             if(data)
             {
               this.email = data['_creator'].email;
+              this.when_receive_email_notitfication = data['when_receive_email_notitfications'];
             }
             if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
             {
@@ -329,94 +381,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                 $('.selectpicker').selectpicker();
                 $('.selectpicker').selectpicker('refresh');
               }, 500);
-              this.pref_active_class = 'fa fa-check-circle text-success';
+              this.prefData = data['saved_searches'];
               this.preferncesForm = this._fb.group({
-                location: [],
-                visa_needed : [data['saved_searches'][0].visa_needed],
-                job_type: [data['saved_searches'][0].job_type],
-                position: [data['saved_searches'][0].position],
-                current_currency: [data['saved_searches'][0].current_currency],
-                current_salary: [data['saved_searches'][0].current_salary],
-                blockchain: [data['saved_searches'][0].blockchain],
-                skills: [data['saved_searches'][0].skills],
-                other_technologies: [data['saved_searches'][0].other_technologies],
-                when_receive_email_notitfications: [data['saved_searches'][0].when_receive_email_notitfications],
-                order_preferences: [data['saved_searches'][0].order_preferences],
+                prefItems: this._fb.array(
+                  this.preferncesFormData()
+                )
               });
-
-              if(data['saved_searches'][0].location)
-              {
-                for (let country1 of data['saved_searches'][0].location)
-                {
-                  if (country1['remote'] === true) {
-                    this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
-                  }
-
-                  if (country1['city']) {
-                    let city = country1['city'].city + ", " + country1['city'].country;
-                    this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
-                  }
-                }
-
-                this.selectedValueArray.sort();
-                if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                  let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                  this.selectedValueArray.splice(0, 0, remoteValue);
-                  this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
-                }
-                this.selectedLocations = this.selectedValueArray;
-              }
-
-              if(data['saved_searches'][0].job_type && data['saved_searches'][0].job_type.length > 0){
-                for (let job_types of data['saved_searches'][0].job_type) {
-                  for(let option of this.job_types) {
-                    if(option === job_types ) {
-                      this.jobTypesSelected.push(option);
-                    }
-                  }
-                }
-              }
-
-              if(data['saved_searches'][0].order_preferences && data['saved_searches'][0].order_preferences.length > 0) {
-                for(let blockchains of data['saved_searches'][0].blockchain) {
-                  for(let option of this.blockchain) {
-                    if(option.name === blockchains) {
-                      this.order_preferences.push(option.name);
-                    }
-                  }
-                }
-              }
-
-              if(data['saved_searches'][0].position && data['saved_searches'][0].position.length >0){
-                for (let positions of data['saved_searches'][0].position) {
-                  for(let option of this.roles) {
-                    if(option.name === positions ) {
-                      this.positionSelected.push(option.name);
-                    }
-                  }
-                }
-              }
-
-              if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
-                for(let blockchains of data['saved_searches'][0].blockchain) {
-                  for(let option of this.blockchain) {
-                    if(option.name === blockchains) {
-                      this.blockchainSelected.push(option.name);
-                    }
-                  }
-                }
-              }
-
-              if(data['saved_searches'][0].skills && data['saved_searches'][0].skills.length > 0) {
-                for(let skills of data['saved_searches'][0].skills) {
-                  for(let option of this.language_opt) {
-                    if(option.name === skills) {
-                      this.languageSelected.push(option.name);
-                    }
-                  }
-                }
-              }
 
             }
           },
@@ -453,13 +423,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   country_log;
   company_profile(profileForm: NgForm)
   {
-    let input = new FormData();
-// Add your values in here
-    input.append("id",'id', "idddddd");
-    input.append("name", "invoice file");
-
-    console.log(input.getAll("name"));
-
     this.error_msg = "";
     if(this.company_founded){
       this.company_founded = parseInt(this.company_founded);
@@ -626,59 +589,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     }
   }
 
-  locationSelectedOptions(name) {
-    this.index = this.locationSelected.indexOf(name);
-    if(this.index  > -1) {
-      return 'selected';
-    }
-    else {
-      return ;
-      return ;
-    }
-
-  }
-
-  jobTypesSelectedOptions(type) {
-    this.index = this.jobTypesSelected.indexOf(type);
-    if(this.index > -1) {
-      return 'selected';
-    }
-    else {
-      return;
-    }
-  }
-
-  positionSelectedOptions(position) {
-    this.index = this.positionSelected.indexOf(position);
-    if(this.index > -1) {
-      return 'selected';
-    }
-    else {
-      return;
-    }
-  }
-
-  blockchainSelectedOptions(blockchainName) {
-    this.index = this.blockchainSelected.indexOf(blockchainName);
-    if(this.index > -1) {
-      return 'selected';
-    }
-    else {
-      return;
-    }
-  }
-  languageSelectedOptions(lang) {
-    this.index = this.languageSelected.indexOf(lang);
-    if(this.index > -1) {
-      return 'selected';
-    }
-    else {
-      return;
-    }
-  }
-
   suggestedOptions() {
-    // this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola (city)', 'Antigua & Deps (city)', 'Argentina (city)', 'Armenia (city)', 'Australia (city)', 'Austria (city)', 'Azerbaijan (city)', 'Bahamas (city)', 'Bahrain (city)', 'Bangladesh (city)', 'Barbados (city)', 'Belarus (city)', 'Belgium (city)', 'Belize (city)', 'Benin (city)', 'Bhutan (city)', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
     if(this.preferncesForm.value.location !== '') {
         this.error='';
         this.authenticationService.autoSuggestOptions(this.preferncesForm.value.location , true)
@@ -723,7 +634,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   selectedValueFunction(e) {
-
     if(this.cities) {
       if(this.cities.find(x => x.name === e)) {
         var value2send=document.querySelector("#countryList option[value='"+this.preferncesForm.value.location+"']")['dataset'].value;
@@ -799,14 +709,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   }
 
-  blockchainOrderSelectedOptions(blockchainName) {
-    this.index = this.order_preferences.indexOf(blockchainName);
-    if(this.index > -1) {
-      return 'selected';
-    }
-    else {
-      return;
-    }
+  get DynamicWorkFormControls()
+  {
+    return <FormArray>this['preferncesForm'].get('prefItems');
   }
 
 }
