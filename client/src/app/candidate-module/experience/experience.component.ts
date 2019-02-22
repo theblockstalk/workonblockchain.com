@@ -110,7 +110,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.authenticationService.getById(this.currentUser._id)
         .subscribe(
           data => {
-            //console.log(data.education_history_history);
 
             if(data['candidate'].terms_id)
             {
@@ -125,7 +124,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
             if(data['candidate'].locations && data['candidate'].roles && data['candidate'].interest_areas || data['candidate'].expected_salary || data['candidate'].availability_day)
             {
               this.active_class='fa fa-check-circle text-success';
-              // this.job_active_class = 'fa fa-check-circle text-success';
 
             }
             if(data['candidate'].work_history || data['candidate'].education_history || data['candidate'].programming_languages)
@@ -134,14 +132,9 @@ export class ExperienceComponent implements OnInit , AfterViewInit
               if(data['candidate'].work_history.length>0)
               {
                 this.jobData = data['candidate'].work_history;
-                // console.log(this.jobData);
-                //console.log(this.jobData.startdate);
-                // console.log(this.datePipe.transform(((this.jobData.startdate)+1), 'MMMM'));
-
 
                 for(let data1 of data['candidate'].work_history)
                 {
-                  //this.companyname = data1.companyname;
                   this.current_work_check.push(data1.currentwork);
 
                 }
@@ -164,8 +157,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                 });
 
               }
-              //this.exp_data.push(data.experience_roles) ;
-              ////console.log(data.experience_roles.length);
+
               if(data['candidate'].programming_languages)
               {
                 this.expYear = data['candidate'].programming_languages;
@@ -184,7 +176,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                         this.db_valye.push(key[i]);
                         this.db_lang= ({value: key[i]});
                         this.language.push(this.db_lang);
-                        //this.language_exp.push(key[i]);
                       }
                       else
                       {
@@ -199,11 +190,7 @@ export class ExperienceComponent implements OnInit , AfterViewInit
                       if(option.value == key[i])
                       {
                         option.checked=true;
-
-                        //this.expYear.push(option);
                         this.expYear_db.push(key[i]);
-                        ////console.log(this.expYear_db);
-
                       }
 
                     }
@@ -340,7 +327,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     {
       this.language.splice(index, 1);
       let updateItem2 = this.findObjectByKey(this.expYear, 'language', obj.value);
-      ////console.log(updateItem2);
       let index2 = this.expYear.indexOf(updateItem2);
 
       if(index2 > -1)
@@ -355,9 +341,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       obj.checked =true;
       this.language.push(obj);
     }
-
-    // //console.log(this.language);
-    ////console.log(this.expYear);
 
   }
 
@@ -725,7 +708,6 @@ export class ExperienceComponent implements OnInit , AfterViewInit
       this.authenticationService.experience(this.currentUser._creator, searchForm.value, this.education_json_array , this.experiencearray , searchForm.value.language_experience_year)
         .subscribe(
           data => {
-            console.log(data);
             if(data)
             {
 
@@ -789,13 +771,10 @@ export class ExperienceComponent implements OnInit , AfterViewInit
 
   findObjectByKey(array, key, value)
   {
-    // //console.log(array.length);
     for (var i = 0; i < array.length; i++)
     {
-      // //console.log(array[i][key]);
       if (array[i][key] === value)
       {
-        // //console.log( array[i]);
         return array[i];
       }
 

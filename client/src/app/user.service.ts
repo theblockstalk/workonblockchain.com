@@ -640,7 +640,6 @@ export class UserService {
 
   verify_email(email_hash: string)
   {
-    //console.log(email_hash);
     return this.http.put(URL+'users/emailVerify/'+ email_hash , '').pipe(map((res: Response) =>
     {
       if (res)
@@ -983,7 +982,6 @@ export class UserService {
     {
       if (error )
       {
-        //console.log(error);
         if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
         {
           localStorage.setItem('jwt_not_found', 'Jwt token not found');
@@ -1029,7 +1027,6 @@ export class UserService {
 
       if (data)
       {
-        ////console.log(data);
         return data;
       }
 
@@ -1038,8 +1035,7 @@ export class UserService {
   //////////////call admin functions//////////////////
   aprrove_user(user_id:string , detail :number )
   {
-    ////console.log(user_id);
-    // //console.log(detail);
+
     return this.http.put(URL+'users/approve/' + user_id, {is_approve : detail}, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
@@ -1113,7 +1109,6 @@ export class UserService {
       }
     }), catchError((error: any) =>
     {
-      console.log(error);
       if (error)
       {
         if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
@@ -1405,7 +1400,6 @@ export class UserService {
         return res;
       }
     }), catchError((error: any) => {
-      //console.log(error.status);
       if (error.status) {
         return throwError(new Error(error.status));
       }
