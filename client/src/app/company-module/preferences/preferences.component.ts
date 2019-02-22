@@ -52,16 +52,18 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     window.scrollTo(0, 0);
 	setTimeout(() => {
       $('.selectpicker').selectpicker();
-    }, 900);
+    }, 300);
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 1000);
+    }, 900);
   }
 
   ngAfterViewChecked() {
 
   }
+
+  residenceCountries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
   locations = [
     {country_code:'000' , name:'Remote', value:'remote', checked:false},
@@ -228,6 +230,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         other_technologies: new FormControl(),
         when_receive_email_notitfications: new FormControl(),
         order_preferences: new FormControl(),
+        residence_country: new FormControl(),
       });
 
 
@@ -235,6 +238,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         .subscribe(
           data =>
           {
+            console.log(data);
             if(data['terms_id'])
             {
               this.terms_active_class = 'fa fa-check-circle text-success';
@@ -255,8 +259,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 blockchain: [data['saved_searches'][0].blockchain],
                 skills: [data['saved_searches'][0].skills],
                 other_technologies: [data['saved_searches'][0].other_technologies],
-                when_receive_email_notitfications: [data['saved_searches'][0].when_receive_email_notitfications],
+                when_receive_email_notitfications: [data['when_receive_email_notitfications']],
                 order_preferences: [data['saved_searches'][0].order_preferences],
+                residence_country: [data['saved_searches'][0].residence_country],
               });
 
               /*for (let locations of data['saved_searches'][0].location) {
@@ -375,6 +380,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   validatedLocation=[];
   country_input_log;
   country_log;
+  residence_country_log;
 
   checkNumber(salary) {
     if(!Number(this.preferncesForm.value.current_salary)) {
@@ -426,10 +432,13 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
+    if(!this.preferncesForm.value.residence_country) {
+      this.residence_country_log = "Please select residence country";
+    }
     if(this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0  &&
       this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
-      this.preferncesForm.value.when_receive_email_notitfications) {
+      this.preferncesForm.value.when_receive_email_notitfications && this.preferncesForm.value.residence_country) {
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.saved_searches.push(this.preferncesForm.value);
