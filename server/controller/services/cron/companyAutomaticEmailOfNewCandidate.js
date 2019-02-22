@@ -39,7 +39,7 @@ module.exports = async function () {
                     }, {
                         skills: savedSearch.skills,
                         locations: savedSearch.location,
-                        locations: savedSearch.visa_needed,
+                        visa_needed: savedSearch.visa_needed,
                         positions: savedSearch.position,
                         blockchains: savedSearch.blockchain,
                         salary: {
