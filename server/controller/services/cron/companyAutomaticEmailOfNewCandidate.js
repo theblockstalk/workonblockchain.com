@@ -72,7 +72,7 @@ module.exports = async function () {
                             finalCandidateList = candidateList.slice(0, 10);
                             candidates = {"count" : 'More than 10' , "list" : finalCandidateList};
                         }
-                        let candidateLog = finalCandidateList.map( function (candidate) {
+                        const candidateLog = finalCandidateList.map( function (candidate) {
                             return {
                                 user: candidate._id,
                                 sent: timestamp
@@ -81,6 +81,7 @@ module.exports = async function () {
                         
                         logger.debug("Company preferences", savedSearch);
                         logger.debug("Search results", candidateDocs);
+                        logger.debug("Send to log", { log: candidateLog} )
                         await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
                         await company.update({_creator : companyDoc._creator} , {
                             $set : {'last_email_sent' : timestamp},
