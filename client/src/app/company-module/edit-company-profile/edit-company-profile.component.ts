@@ -70,7 +70,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   index;
   other_technologies;
   avail_day;
-  when_receive_email_notitfications;
   expected_validation;
   currentyear;
   yearValidation;
@@ -79,7 +78,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   error;
   selectedLocations;
   emptyInput;
-  when_receive_email_notitfication;
+  when_receive_email_notitfications;
 
 
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
@@ -229,7 +228,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       blockchain: [''],
       skills: [''],
       other_technologies: [''],
-      when_receive_email_notitfications:[''],
       order_preferences: [''],
       residence_country: ['']
     });
@@ -239,11 +237,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   {
     console.log(this.prefData);
     return this.prefData
-      .map(i => this._fb.group({ when_receive_email_notitfications:i.when_receive_email_notitfications, residence_country: i.residence_country, search_name: i.search_name, location: this.selectedLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ residence_country: i.residence_country, search_name: i.search_name, location: this.selectedLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
   selectedLocation(location){
-    console.log(location);
     if(location) {
       for (let country1 of location)
       {
@@ -262,7 +259,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
         this.selectedValueArray.splice(0, 0, remoteValue);
         this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
+        this.selectedLocations = this.selectedValueArray;
       }
       return '';
     }
@@ -327,8 +324,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         return 0;
       })
 
-
-
       this.preferncesForm = this._fb.group({
         prefItems: this._fb.array([this.initPrefRows()])
       });
@@ -339,7 +334,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
             if(data)
             {
               this.email = data['_creator'].email;
-              this.when_receive_email_notitfication = data['when_receive_email_notitfications'];
+              this.when_receive_email_notitfications = data['when_receive_email_notitfications'];
             }
             if(data['company_founded'] && data['no_of_employees'] && data['company_funded'] && data['company_description'])
             {
@@ -475,6 +470,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.des_log = 'Please fill Company Description';
     }
     this.validatedLocation = [];
+    if(this.selectedValueArray) this.selectedValueArray = this.selectedLocations;
     if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
       this.country_input_log = "Please select at least one location";
     }
@@ -514,19 +510,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.current_currency_log = "Salary should be a number";
     }
 
-    if(!this.preferncesForm.value.when_receive_email_notitfications) {
+    if(!this.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
 
     if(this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
-      && this.company_funded && this.company_description &&
+      && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
-      this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode &&
-      this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5 &&
-      this.preferncesForm.value.job_type &&  this.preferncesForm.value.job_type.length > 0 &&
-      this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 &&
-      this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
-      this.preferncesForm.value.when_receive_email_notitfications)  {
+      this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode )  {
       this.preferncesForm.value.location = this.validatedLocation;
       this.saved_searches.push(this.preferncesForm.value);
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
@@ -545,6 +536,11 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         }
 
       }
+
+      let inputQuery = {};
+      //inputQuery['inputParams'] = {'saved_searches': this.preferncesForm.value.prefItems, 'first_name': this.first_name };
+
+      //formData.append('inputParams', inputQuery['inputParams'])  ;
       formData.append('first_name' , this.first_name);
       formData.append('last_name' , this.last_name);
       formData.append('job_title' , this.job_title);
@@ -558,9 +554,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       formData.append('no_of_employees', this.no_of_employees) ;
       formData.append('company_funded', this.company_funded) ;
       formData.append('company_description', this.company_description) ;
-      formData.append('saved_searches', JSON.stringify(this.saved_searches)) ;
-      formData.append('when_receive_email_notitfications', this.preferncesForm.value.when_receive_email_notitfications) ;
-      console.log(formData.getAll('first_name'));
+      //formData.append('saved_searches', this.saved_searches) ;
+      console.log(this.preferncesForm.value.prefItems);
+      formData.append('when_receive_email_notitfications', this.when_receive_email_notitfications) ;
 
       this.authenticationService.edit_company_profile(formData)
         .subscribe(

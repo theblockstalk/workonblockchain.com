@@ -156,7 +156,6 @@ module.exports.files = async function(req) {
 }
 
 module.exports.auth = async function (req) {
-    console.log("auth validation");
     await auth.isValidCompany(req);
 }
 
@@ -167,9 +166,28 @@ module.exports.endpoint = async function (req, res) {
     const employerDoc = await companies.findOne({ _creator: userId });
 
     if(employerDoc){
-        console.log("if");
         const queryBody = req.body;
-        console.log(queryBody);
+        let employerUpdate = {};
+
+        if(req.file.path) employerUpdate.company_logo = req.file.path;
+
+        if (queryBody.first_name) employerUpdate.first_name = queryBody.first_name;
+        if (queryBody.last_name) employerUpdate.last_name = queryBody.last_name;
+        if (queryBody.job_title) employerUpdate.job_title = queryBody.job_title;
+        if (queryBody.company_name) employerUpdate.company_name = queryBody.company_name;
+        if (queryBody.company_website) employerUpdate.company_website = queryBody.company_website;
+        if (queryBody.phone_number) employerUpdate.company_phone = queryBody.phone_number;
+        if (queryBody.country) employerUpdate.company_country = queryBody.country;
+        if (queryBody.city) employerUpdate.company_city = queryBody.city;
+        if (queryBody.postal_code) employerUpdate.company_postcode = queryBody.postal_code;
+        if (queryBody.company_founded) employerUpdate.company_founded = queryBody.company_founded;
+        if (queryBody.no_of_employees) employerUpdate.no_of_employees = queryBody.no_of_employees;
+        if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
+        if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
+        if (queryBody.saved_searches && queryBody.saved_searches.length > 0) employerUpdate.saved_searches = queryBody.saved_searches;
+        if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
+
+        await companies.update({ _creator: userId },{ $set: employerUpdate });
 
         res.send(true);
     }
