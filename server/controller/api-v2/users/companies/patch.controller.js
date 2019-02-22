@@ -15,10 +15,6 @@ const paramSchema = new Schema({
 });
 
 const bodySchema = new Schema({
-    terms_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'pages_content'
-    },
     first_name: {
         type:String
     },
