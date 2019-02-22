@@ -49,7 +49,6 @@ module.exports = async function () {
                     }, {blockchainOrder: savedSearch.order_preferences });
 
                     let candidateList = [];
-                    let candidateLog = [];
                     for ( let i = 0 ; i < candidateDocs.candidates.length; i++) {
                         const candidate = candidateDocs.candidates[i];
                         const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidate._id;
@@ -60,27 +59,33 @@ module.exports = async function () {
                             programming_languages: candidate.candidate.programming_languages
                         };
                         candidateList.push(candidateInfo);
-                        candidateLog.push({
-                            user: candidate._id,
-                            sent: timestamp
-                        })
                     }
 
                     let candidates;
                     if(candidateDocs.count > 0) {
+                        let finalCandidateList;
                         if(candidateDocs.count  <= 10) {
-                            candidates = {"count" : candidateDocs.count  , "list" : candidateList};
+                            finalCandidateList = candidateList;
+                            candidates = {"count" : candidateDocs.count  , "list" : finalCandidateList};
                         }
                         else {
-                            candidates = {"count" : 'More than 10' , "list" : candidateList.slice(0, 10)};
+                            finalCandidateList = candidateList.slice(0, 10);
+                            candidates = {"count" : 'More than 10' , "list" : finalCandidateList};
                         }
+                        let candidateLog = finalCandidateList.map( function (candidate) {
+                            return {
+                                user: candidate._id,
+                                sent: timestamp
+                            }
+                        })
+                        
                         logger.debug("Company preferences", savedSearch);
                         logger.debug("Search results", candidateDocs);
                         await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
-                        // await company.update({_creator : companyDoc._creator} , {
-                        //     $set : {'last_email_sent' : timestamp},
-                        //     $push: {'candidates_sent_by_email': candidateLog}
-                        // });
+                        await company.update({_creator : companyDoc._creator} , {
+                            $set : {'last_email_sent' : timestamp},
+                            $push: {'candidates_sent_by_email': candidateLog}
+                        });
                     }
                     else {
                         logger.debug("Candidate list is empty");
