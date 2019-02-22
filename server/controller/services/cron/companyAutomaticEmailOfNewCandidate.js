@@ -2,7 +2,7 @@ const company = require('../../../model/mongoose/company');
 const users = require('../../../model/mongoose/users');
 
 const candidateSearch = require('../../../controller/api/users/candidate/searchCandidates');
-// const autoNotificationEmail = require('../email/emails/companyAutoNotification');
+const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
 const settings = require('../../../settings');
 const logger = require('../logger');
@@ -39,6 +39,7 @@ module.exports = async function () {
                     }, {
                         skills: savedSearch.skills,
                         locations: savedSearch.location,
+                        locations: savedSearch.visa_needed,
                         positions: savedSearch.position,
                         blockchains: savedSearch.blockchain,
                         salary: {
@@ -75,7 +76,7 @@ module.exports = async function () {
                         }
                         logger.debug("Company preferences", savedSearch);
                         logger.debug("Search results", candidateDocs);
-                        // await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
+                        await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
                         // await company.update({_creator : companyDoc._creator} , {
                         //     $set : {'last_email_sent' : timestamp},
                         //     $push: {'candidates_sent_by_email': candidateLog}
