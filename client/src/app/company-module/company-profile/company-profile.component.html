@@ -166,10 +166,10 @@
           </div>
           <hr class="bg-dark" />
 
-          <div *ngFor="let searches of saved_searche; let i of index ">
+          <div *ngFor="let searches of saved_searche; let i = index ">
           <div class="row">
             <div class="col-md-12">
-              <h3 class="pt-2 mb-3"> Job search {{i}}</h3>
+              <h3 class="pt-2 mb-3"> Job search {{i+1}}</h3>
             </div>
           </div>
 
@@ -199,11 +199,11 @@
               </div>
             </div>
 
-            <div class = "col-md-6 mb-3" *ngIf="countries" >
+            <div class = "col-md-6 mb-3" *ngIf="searches.location" >
               <div class="form-group">
                 <label>Location:</label>
                 <div>
-                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of countries'>
+                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of getLocation(searches.location)'>
                     <div *ngIf="country.name === 'Remote'">
                       <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
                     </div>
