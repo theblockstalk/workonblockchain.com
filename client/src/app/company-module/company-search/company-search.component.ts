@@ -215,6 +215,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
   skill;
+  searchName=[];
   ngOnInit()
   {
     this.credentials.currency = -1;
@@ -332,6 +333,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   this.imgPath =  data['company_logo'];
                 }
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
+                  console.log(data['saved_searches']);
+                  this.searchName.push(data['saved_searches'][0].search_name);
                   if(data['saved_searches'][0].location)
                   {
                     for (let country1 of data['saved_searches'][0].location)
@@ -362,6 +365,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   }
                   this.salary = data['saved_searches'][0].current_salary;
                   this.currencyChange = data['saved_searches'][0].current_currency;
+                  this.blockchain_order = data['saved_searches'][0].order_preferences;
+
                   this.searchdata('filter' , data['saved_searches'][0]);
                 }
                 else {
