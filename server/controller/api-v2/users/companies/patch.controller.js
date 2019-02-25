@@ -84,7 +84,6 @@ const bodySchema = new Schema({
             job_type: {
                 type: [{
                     type: String,
-                    required : true,
                     enum: enumerations.jobTypes
                 }]
 
@@ -92,18 +91,15 @@ const bodySchema = new Schema({
             position: {
                 type: [{
                     type: String,
-                    required : true,
                     enum: enumerations.workRoles
                 }]
             },
             current_currency: {
                 type: String,
-                required : true,
                 enum: enumerations.currencies
             },
             current_salary: {
                 type:Number,
-                required : true,
                 min: 0
             },
             blockchain: {

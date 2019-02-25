@@ -538,6 +538,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         for (var i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
           this.preferncesForm.value.prefItems[i].location = this.validatedLocation;
           this.preferncesForm.value.prefItems[i].current_salary = Number(this.preferncesForm.value.prefItems[i].current_salary);
+          console.log(this.preferncesForm.value.prefItems[i].visa_needed)
+          if(!this.preferncesForm.value.prefItems[i].visa_needed ||this.preferncesForm.value.prefItems[i].visa_needed === '') this.preferncesForm.value.prefItems[i].visa_needed = false;
           this.appendArray(formData, this.preferncesForm.value.prefItems[i], 'saved_searches');
         }
 

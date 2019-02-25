@@ -219,6 +219,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
 
       this.preferncesForm = new FormGroup({
+        search_name :  new FormControl(),
         location: new FormControl(),
         visa_needed: new FormControl(),
         job_type: new FormControl(),

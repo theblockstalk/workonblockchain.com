@@ -116,7 +116,7 @@
 
             <div class="row my-3">
               <div class="col-md-12">
-                <button  type="button" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save new search</button>
+                <button  type="button" (click)="saveNewSearchPopup()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save new search</button>
               </div>
             </div>
 
@@ -345,4 +345,188 @@
       </div>
     </div>
   </div>
+
+  <!-- Save new search popup -->
+
+  <div class="modal fade w-100" id="saveNewSearch" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog 1-100" role="document">
+      <div class="modal-content w-100">
+        <div class="modal-header bg-primary">
+          <h2 class="modal-title text-center mo">Saved search
+          </h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form  [formGroup]="preferncesForm" (ngSubmit)="savedNewSearch()">
+        <div class="modal-body">
+
+            <div class="row">
+              <div class="col-md-6">
+                <input type="text" formControlName="search_name"  class="form-control" placeholder="Saved search name">
+
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="pt-2 "><i class="fas fa-user" aria-hidden="true"></i> Job requirements</h4>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mt-2">
+                <div class="form-group">
+                  <select multiple formControlName="job_type"  title="Position type" class="form-control selectpicker" required>
+                    <option *ngFor='let job_type of job_types'  [value]="job_type">{{job_type}}</option>
+                  </select>
+
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-2">
+                <div class="form-group">
+                  <select multiple formControlName="position" title="Role" class="form-control selectpicker">
+                    <option *ngFor='let role of rolesData'   [value]="role.value">{{role.name}}</option>
+
+                  </select>
+                  <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
+                    {{position_log}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-2">
+                <div class="form-group">
+                  <div>
+                    <datalist id="countryList">
+                      <select class="form-control">
+                        <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text="{{preferncesForm.value.location}}">{{country.name}}
+                        </option>
+                      </select>
+                    </datalist>
+
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                    <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                      {{error}}
+                    </div>
+                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
+                      {{country_input_log}}
+                    </div>
+
+                    <div *ngIf="selectedValueArray.length > 0">
+                      <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
+
+                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations">
+                        {{country_log}}
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-2">
+                <div class="form-group">
+                  <select multiple formControlName="blockchain" title="Commercial blockchain experience" class="form-control selectpicker">
+                    <option *ngFor='let blockchain of blockchainData'  [value]="blockchain.value" >{{blockchain.name}}</option>
+                  </select>
+                  <small class="text-secondary" >Only select this if essential for the job</small>
+
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class = "form-group">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
+                    <label class="form-check-label" for="defaultCheck1">
+                      Show candidates that require a work visa
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-md-6 mt-2">
+                <div class="form-group">
+                  <select multiple formControlName="skills" title="Skills" class="form-control selectpicker">
+                    <option class='option' *ngFor='let language of skillsData' [value]="language.value" >{{language.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-group">
+                  <select class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
+                    <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!preferncesForm.value.residence_country">
+                    {{residence_country_log}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-2">
+                <div class = "form-group w-auto">
+
+                  <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left mt-3" placeholder="Salary">
+
+                  <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "current_currency" >
+                    <option  *ngFor='let base_currency of currency' >{{base_currency}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary  " >
+                    {{current_currency_log}}
+                  </div>
+
+                  <div class = "invalid-feedback d-inline float-left" *ngIf="preferncesForm.value.current_currency && preferncesForm.value.current_salary && checkNumber(preferncesForm.value.current_salary)  " >
+                    {{current_currency_log}}
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row my-2">
+              <div class="col-md-12">
+                <h4 class="pt-2"><i class="fas fa-align-justify"></i> Job preferences</h4>
+                <small class="text-center" >This will determine the order of the candidates but not filter any candidates</small>
+
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <select multiple formControlName="order_preferences" title="Commercial blockchain experience" class="form-control selectpicker">
+                    <option *ngFor='let blockchain of blockchainData' [value]="blockchain.value" >{{blockchain.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <button type="submit" class="btn btn-mo btn-primary" >Save</button>
+
+          </div>
+          <div class="row">
+            <div class="col-md-12 text-success mt-1" *ngIf="successful_msg && successful_msg !== '';else errorMsg" >
+              {{successful_msg}}
+            </div>
+            <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="new_error_msg && new_error_msg !== ''" >
+              {{new_error_msg}}
+            </div>
+          </div>
+        </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+
 </section>

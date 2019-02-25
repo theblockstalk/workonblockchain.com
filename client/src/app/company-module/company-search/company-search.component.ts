@@ -1,7 +1,6 @@
 import { Component, OnInit,ViewChild ,ElementRef,AfterViewInit } from '@angular/core';
 import {UserService} from '../../user.service';
-import {NgForm} from '@angular/forms';
-import { Select2OptionData } from 'ng2-select2';
+import {NgForm, FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 declare var $:any;
@@ -14,6 +13,7 @@ import {PagerService} from '../../pager.service';
 })
 export class CompanySearchComponent implements OnInit,AfterViewInit {
   currentUser: User;
+  preferncesForm : FormGroup;
   log;
   info=[];
   length;
@@ -61,7 +61,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   cities;
   emptyInput;
 
-  constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
 
   commercially=
@@ -122,32 +122,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
     ]
-
-  locationsData = [
-    {country_code:'000' , name:'Remote', value:'remote', checked:false},
-    {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-    {country_code:'001' ,name:'London', value:'London', checked:false},
-    {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-    {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-    {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-    {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-    {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-    {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-    {country_code: '002' ,name:'New York', value:'New York', checked:false},
-    {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-    {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-    {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-    {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-    {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-    {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-    {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-    {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-    {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-    {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-    {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-    {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-
-  ]
+  residenceCountries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+  job_types = ['Full time' , 'Part time' , 'Freelance' ];
 
   rolesData =
     [
@@ -220,6 +196,21 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   ngOnInit()
   {
     this.credentials.currency = -1;
+    this.preferncesForm = new FormGroup({
+      search_name: new FormControl(),
+      location: new FormControl(),
+      visa_needed: new FormControl(),
+      job_type: new FormControl(),
+      position: new FormControl(),
+      current_currency: new FormControl(),
+      current_salary: new FormControl(),
+      blockchain: new FormControl(),
+      skills: new FormControl(),
+      other_technologies: new FormControl(),
+      order_preferences: new FormControl(),
+      residence_country: new FormControl(),
+    });
+
     this.success_msg = '';
     this.ckeConfig = {
       allowedContent: false,
@@ -249,15 +240,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
-      })
-      this.locationsData.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
-        }
-        else {
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        }
       })
 
       this.rolesData.sort(function(a, b){
@@ -473,11 +455,20 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   blockchain_order;
   search_name;
   fillFields(searches, name) {
+    this.selectedValueArray = [];
     for(let key of searches) {
-      console.log(key);
       if(key['search_name'] === name) {
         console.log("if");
+        console.log(key);
         this.search_name = name;
+        setTimeout(() => {
+          $('.selectpicker').selectpicker();
+        }, 300);
+
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh');
+        }, 900);
+
         if(key['location'])
         {
           for (let country1 of key['location'])
@@ -500,15 +491,28 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
           }
         }
-        this.skill_value = key['skills'];
-        this.visa_check = key['visa_needed'];
-        this.role_value = key['position'];
+        if(key['skills']) this.skill_value = key['skills'];
+        else this.skill_value = '';
+
+        if(key['visa_needed']) this.visa_check = key['visa_needed'];
+        else this.visa_check = false;
+
+        if(key['position']) this.role_value = key['position'];
+        else this.role_value = [];
+
         if(key['blockchain'] && key['blockchain'].length > 0) {
           this.blockchain_value = key['blockchain'];
         }
-        this.salary = key['current_salary'];
-        this.currencyChange = key['current_currency'];
-        this.blockchain_order = key['order_preferences'];
+        else this.blockchain_value = [];
+
+        if(key['current_salary']) this.salary = key['current_salary'];
+        else this.salary = '';
+
+        if(key['current_currency']) this.currencyChange = key['current_currency'];
+        else this.currencyChange = [];
+
+        if(key['order_preferences']) this.blockchain_order = key['order_preferences'];
+        else this.blockchain_order = [];
       }
     }
   }
@@ -542,13 +546,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.visa_check) queryBody.visa_needed = this.visa_check;
       if(this.blockchain_order) queryBody.blockchainOrder = this.blockchain_order;
       if(this.salary && this.currencyChange) {
-        setTimeout(() => {
-          $('.selectpicker').selectpicker();
-        }, 300);
 
-        setTimeout(() => {
-          $('.selectpicker').selectpicker('refresh');
-        }, 900);
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
@@ -653,6 +651,92 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       setInterval(() => {
         this.error_msg = "" ;
       }, 5000);
+    }
+
+  }
+
+  saveNewSearchPopup() {
+    $('#saveNewSearch').modal('show');
+
+  }
+
+  successful_msg;
+  new_error_msg;
+  savedNewSearch(){
+    let queryBody : any = {};
+    if(this.preferncesForm.value.search_name) queryBody.search_name = this.preferncesForm.value.search_name;
+    if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
+    if(this.selectedValueArray && this.selectedValueArray.length > 0) {
+      let validatedLocation =[];
+      for(let location of this.selectedValueArray) {
+        if(location.name.includes(', ')) {
+          validatedLocation.push({city: location.city});
+        }
+        if(location.name === 'Remote') {
+          validatedLocation.push({remote: true });
+        }
+      }
+      queryBody.location = this.filter_array(validatedLocation);
+    }
+    if(this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 ) queryBody.position = this.preferncesForm.value.position;
+    if(this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0) queryBody.blockchain = this.preferncesForm.value.blockchain;
+    if(this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
+    if(this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
+    if(this.preferncesForm.value.salary && this.preferncesForm.value.currencyChange) {
+      queryBody.current_salary  = this.preferncesForm.value.current_salary;
+      queryBody.current_currency = this.preferncesForm.value.current_currency;
+    }
+    let index = this.savedSearches.findIndex((obj => obj.search_name === this.preferncesForm.value.search_name));
+    console.log(index);
+
+    if(index < 0 && this.preferncesForm.value.search_name) {
+      this.savedSearches.push(queryBody);
+      console.log(this.savedSearches);
+      this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
+        .subscribe(
+          data => {
+            if(data && this.currentUser)
+            {
+              this.successful_msg = "Successfully added new search";
+              this.preferncesForm = this._fb.group({
+                search_name: [''],
+                location: [],
+                visa_needed: [false],
+                job_type: [],
+                position: [],
+                current_currency: [],
+                current_salary: [''],
+                blockchain: [],
+                skills: [],
+                other_technologies: [''],
+                order_preferences: [],
+                residence_country: [''],
+              });
+              setInterval(() => {
+                this.success_msg = "" ;
+              }, 5000);
+            }
+
+          },
+          error => {
+
+          });
+    }
+    else {
+        this.new_error_msg = "Search name already exists.";
+      setInterval(() => {
+        this.new_error_msg = "" ;
+      }, 5000);
+    }
+
+  }
+
+  checkNumber(salary) {
+    if(!Number(this.preferncesForm.value.current_salary)) {
+      return true;
+    }
+    else {
+      return false;
     }
 
   }
@@ -903,8 +987,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
   suggestedOptions() {
-    if(this.countriesModel !== '') {
-      this.authenticationService.autoSuggestOptions(this.countriesModel, false)
+    if(this.countriesModel !== '' || this.preferncesForm.value.location !== '') {
+      let searchText;
+      if(this.countriesModel) searchText = this.countriesModel;
+      if(this.preferncesForm.value.location) searchText = this.preferncesForm.value.location
+      this.authenticationService.autoSuggestOptions(searchText, false)
         .subscribe(
           data => {
             if(data) {
@@ -950,7 +1037,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   selectedValueFunction(e) {
     if(this.cities) {
       if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
+        var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
 
         this.countriesModel = '';
         this.cities = [];
