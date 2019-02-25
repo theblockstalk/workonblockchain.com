@@ -23,7 +23,6 @@ import { ReferralComponent } from './referral/referral.component';
 export class ReferralModuleModule {
   constructor(private scriptService : ScriptService) {
     this.scriptService.load('twitterWidget').then(data => {
-      //console.log('script loaded ', data);
     }).catch(error => console.log(error));
   }
 }

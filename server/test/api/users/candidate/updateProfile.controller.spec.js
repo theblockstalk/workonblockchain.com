@@ -40,6 +40,8 @@ describe('update candidate profile', function () {
             candidateUserDoc.last_name.should.equal(candidateEditProfileData.detail.last_name);
             candidateUserDoc.candidate.github_account.should.equal(candidateEditProfileData.detail.github_account);
             candidateUserDoc.candidate.stackexchange_account.should.equal(candidateEditProfileData.detail.exchange_account);
+            candidateUserDoc.candidate.linkedin_account.should.equal(candidateEditProfileData.detail.linkedin_account);
+            candidateUserDoc.candidate.medium_account.should.equal(candidateEditProfileData.detail.medium_account);
             candidateUserDoc.contact_number.should.equal(candidateEditProfileData.detail.contact_number);
             candidateUserDoc.nationality.should.equal(candidateEditProfileData.detail.nationality);
             candidateUserDoc.candidate.locations.should.valueOf(candidateEditProfileData.detail.country);

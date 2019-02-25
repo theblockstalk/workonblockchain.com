@@ -724,13 +724,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   findObjectByKey(array, key, value)
   {
-    // ////console.log(array.length);
     for (var i = 0; i < array.length; i++)
     {
-      // ////console.log(array[i][key]);
       if (array[i][key] === value)
       {
-        // ////console.log( array[i]);
         return array[i];
       }
 

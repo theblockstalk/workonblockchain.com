@@ -66,11 +66,8 @@ export class AdminFaqEditorComponent implements OnInit {
                 data => {
                    if(data)
                    {
-                       ////console.log(data);
                         this.page_title = data[0]['page_title'];
                        this.editor_content = data[0]['page_content'];
-                       ////console.log(this.editor_content);
-
                    }
                  },
 
@@ -106,7 +103,6 @@ export class AdminFaqEditorComponent implements OnInit {
     success; error;
    editor(editorForm: NgForm)
    {
-       //console.log(editorForm.value);
 	   if(editorForm.value.page_title && editorForm.value.html_text){
 		   this.editor_text = this.editor_content;
 		   this.authenticationService.pages_content(editorForm.value)
@@ -116,7 +112,6 @@ export class AdminFaqEditorComponent implements OnInit {
 			   if(data)
 			   {
 				   this.success = "Content Successfully Updated";
-				   //this.dataservice.changeMessage("Content Successfully Updated");
 			   }
 			   else
 			   {

@@ -23,11 +23,9 @@ export class CompanyVerifyEmailComponent implements OnInit {
   {
     if(this.currentUser.email)
     {
-      console.log("if");
       this.authenticationService.verify_client(this.currentUser.email)
         .subscribe(
           data => {
-            console.log(data)
             if(data['success'] === true)
             {
               this.success_msg = "Please check your email to verify your account." ;

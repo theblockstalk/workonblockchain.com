@@ -112,6 +112,14 @@ const UserSchema = new Schema({
                 type:String,
                 validate: regexes.url
             },
+            linkedin_account: {
+                type:String,
+                validate: regexes.url
+            },
+            medium_account: {
+                type:String,
+                validate: regexes.url
+            },
             locations: {
                 type: [{
                     city: {

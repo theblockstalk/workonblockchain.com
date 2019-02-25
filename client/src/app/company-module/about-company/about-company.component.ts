@@ -60,8 +60,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
         .subscribe(
           data =>
           {
-
-            ////console.log(data);
             if(data['company_founded'] || data['no_of_employees'] || data['company_funded'] || data['company_description'] ||data['company_logo'])
             {
               this.company_founded=data['company_founded'];
@@ -79,7 +77,6 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
 
               }
               this.preference  = '/preferences';
-              //this.router.navigate(['/login']);
             }
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
 
@@ -137,11 +134,9 @@ export class AboutCompanyComponent implements OnInit,AfterViewInit {
       this.company_founded = parseInt(this.company_founded);
     }
 
-    ////console.log(companyForm.value);
     if(!this.company_founded)
     {
       this.founded_log = 'Please fill when was the company founded';
-      ////console.log(this.founded_log);
     }
 
     if(!this.no_of_employees)

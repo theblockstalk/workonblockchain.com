@@ -119,10 +119,10 @@ export class ReferralComponent implements OnInit {
                     this.email_subject = this.first_name+this.email_subject;
                     this.share_url = this.ref_link;
                     this.text = this.twitterText + this.share_url;
-                    //this.text = 'Sign up to Work on Blockchain by clicking here ' + this.share_url + ' and have companies apply to you! Follow @work_blockchain #workonblockchain #blockchain #hiring #talent' ;
+
                   },
                   error => {
-                    //console.log(error);
+
                   });
             }
 

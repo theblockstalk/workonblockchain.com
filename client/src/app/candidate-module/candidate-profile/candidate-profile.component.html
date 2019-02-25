@@ -90,9 +90,26 @@
                   <p>
                 </div>
               </div>
-            </div>
-            <div class="row mt-4" *ngIf="stack">
-              <div class = "col-md-6">
+
+              <div class = "col-md-6" *ngIf="linkedin_account">
+                <div class="form-group">
+                  <label> Linkedin account URL:</label>
+                  <p>
+                    {{linkedin_account}}
+                  <p>
+                </div>
+              </div>
+
+              <div class = "col-md-6" *ngIf="medium_account">
+                <div class="form-group">
+                  <label> Medium account URL:</label>
+                  <p>
+                    {{medium_account}}
+                  <p>
+                </div>
+              </div>
+
+              <div class = "col-md-6" *ngIf="stack">
                 <div class="form-group">
                   <label> Stackexchange account URL:</label>
                   <p>
@@ -100,6 +117,7 @@
                   <p>
                 </div>
               </div>
+
             </div>
           </section>
 
