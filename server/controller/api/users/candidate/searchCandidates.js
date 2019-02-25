@@ -145,6 +145,11 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             userQuery.push(skillsFilter);
         }
 
+        if (search.residence_country) {
+            const residenceCountryFilter = {"candidate.base_country": search.residence_country};
+            userQuery.push(residenceCountryFilter);
+        }
+
     }
 
     let orderBy;

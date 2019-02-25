@@ -497,9 +497,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
         if(key['order_preferences']) this.blockchain_order = key['order_preferences'];
         else this.blockchain_order = [];
+
+        if(key['residence_country']) this.residence_country = key['residence_country'];
+        else this.residence_country = '';
       }
     }
   }
+  residence_country;
   searchdata(key , value)
   {
     this.success_msg = '';
@@ -514,7 +518,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.responseMsg = "";
     this.not_found='';
 
-    if(!this.searchWord && !this.blockchain_order && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
+    if(!this.searchWord && !this.residence_country && !this.blockchain_order && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
     {
       this.getVerrifiedCandidate();
     }
@@ -529,6 +533,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.visa_check) queryBody.visa_needed = this.visa_check;
       if(this.blockchain_order) queryBody.blockchainOrder = this.blockchain_order;
+      if(this.residence_country) queryBody.residence_country = this.residence_country;
       if(this.salary && this.currencyChange) {
 
         queryBody.current_salary  = this.salary;
@@ -608,6 +613,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchain = this.blockchain_value;
     if(this.visa_check) queryBody.visa_needed = this.visa_check;
     if(this.blockchain_order) queryBody.order_preferences = this.blockchain_order;
+    if(this.residence_country ) queryBody.residence_country = this.residence_country;
     if(this.salary && this.currencyChange) {
       queryBody.current_salary  = this.salary;
       queryBody.current_currency = this.currencyChange;
@@ -619,6 +625,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           data => {
             if(data && this.currentUser)
             {
+              this.savedSearches= [];
               this.success_msg = 'Successfully update';
               if(data['saved_searches'] && data['saved_searches'].length > 0) {
                 console.log(data['saved_searches']);
@@ -675,6 +682,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if(this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0) queryBody.blockchain = this.preferncesForm.value.blockchain;
     if(this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
     if(this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
+    if(this.preferncesForm.value.residence_country) queryBody.residence_country = this.preferncesForm.value.residence_country;
     if(this.preferncesForm.value.salary && this.preferncesForm.value.currencyChange) {
       queryBody.current_salary  = this.preferncesForm.value.current_salary;
       queryBody.current_currency = this.preferncesForm.value.current_currency;
@@ -697,6 +705,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             data => {
               if(data && this.currentUser)
               {
+                this.savedSearches= [];
+
                 this.successful_msg = "Successfully added new search";
                 this.preferncesForm = this._fb.group({
                   search_name: [''],

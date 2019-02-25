@@ -75,7 +75,11 @@
               </div>
               <hr/>
 
-
+                <div class="form-group">
+                  <select class="form-control selectpicker" title="Residence country" [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" >
+                    <option *ngFor='let country of residenceCountries'  [value]="country" [attr.selected] = "country === residence_country ? true : null" >{{country}}</option>
+                  </select>
+                </div>
 
               <div class = "form-group">
 

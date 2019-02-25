@@ -7,6 +7,7 @@ module.exports = async  function (req,res)
 {
     let userId = req.auth.user._id;
     let queryBody = req.body;
+    console.log(queryBody);
     let search = {}, order = {};
     if (queryBody.word) search.word = queryBody.word;
     if (queryBody.skills) search.skills = queryBody.skills;
@@ -26,6 +27,7 @@ module.exports = async  function (req,res)
             current_salary: queryBody.current_salary
         }
     }
+    if(queryBody.residence_country) search.residence_country = queryBody.residence_country;
 
     if (queryBody.blockchainOrder) order.blockchainOrder = queryBody.blockchainOrder;
 
