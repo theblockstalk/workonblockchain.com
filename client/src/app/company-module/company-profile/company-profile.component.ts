@@ -41,6 +41,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   saved_searche;
   selectedValueArray = [];
   countries;
+  when_receive_email_notitfications;
   constructor( private route: ActivatedRoute, private _fb: FormBuilder ,
                private router: Router,
                private authenticationService: UserService) { }
@@ -137,6 +138,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               this.company_founded =data['company_founded'];
               this.company_funded=data['company_funded'];
               this.no_of_employees=data['no_of_employees'];
+              this.when_receive_email_notitfications = data['when_receive_email_notitfications'];
               if(data['company_logo'] != null )
               {
                 this.imgPath =  data['company_logo'];
@@ -147,6 +149,7 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
               }
               if(data['saved_searches']) {
                 this.saved_searche = data['saved_searches'];
+                console.log(this.saved_searche);
                 if(data['saved_searches'][0].location)
                 {
                   for (let country1 of data['saved_searches'][0].location)
