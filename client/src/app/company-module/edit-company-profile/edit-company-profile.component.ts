@@ -236,12 +236,11 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ residence_country: i.residence_country, search_name: i.search_name, location: [i.location] , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ residence_country: i.residence_country, search_name: i.search_name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
-  selectedCompanyLocation(location, index) {
-    console.log("index");
-    console.log(index);
+  selectedCompanyLocation(location) {
+    this.selectedValueArray=[];
     if(location && location.length > 0) {
       for (let country1 of location)
       {
@@ -261,10 +260,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         this.selectedValueArray.splice(0, 0, remoteValue);
         this.selectedValueArray = this.filter_array(this.selectedValueArray);
       }
-      this.selectedLocations = this.selectedValueArray;
-      console.log(this.selectedLocations);
+      this.locationArray.push(this.selectedValueArray);
+      console.log(this.locationArray);
 
-      console.log(this.preferncesForm.value.prefItems[0].location);
+      //console.log(this.preferncesForm.value.prefItems[0].location);
       //this.preferncesForm.value.prefItems[index].location = this.selectedLocations;
 
       return '';
@@ -280,6 +279,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     control.removeAt(index);
   }
 
+  locationArray = [];
   ngOnInit()
   {
     this.prefData=[];
@@ -389,12 +389,11 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
               for(let i = 0 ; i < this.preferncesForm.value.prefItems.length ; i++ ){
                 for(let key of this.preferncesForm.value.prefItems) {
-
-                  this.preferncesForm.value.prefItems[i].loc = key['location'];
+                  //this.locationArray.push(key['location']);
                 }
               }
 
-              console.log(this.preferncesForm.value.prefItems);
+              //console.log(this.locationArray);
               /*for(let key of this.preferncesForm.value.prefItems) {
                 console.log(key);
                 this.preferncesForm.value.prefItems['loc'] = key['location'];
@@ -490,45 +489,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     if(!this.company_description) {
       this.des_log = 'Please fill Company Description';
     }
-    this.validatedLocation = [];
-    if(this.selectedValueArray) this.selectedValueArray = this.selectedLocations;
-    if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
-      this.country_input_log = "Please select at least one location";
-    }
-    if(!this.selectedLocations) {
-      this.country_log = "Please select at least one location";
-    }
-    if(this.selectedLocations && this.selectedLocations.length > 0) {
-      for(let location of this.selectedLocations) {
-        if(location.name.includes(', ')) {
-          this.validatedLocation.push({city: location._id, visa_needed : location.visa_needed });
-        }
-        if(location.name === 'Remote') {
-          this.validatedLocation.push({remote: true, visa_needed : location.visa_needed });
-        }
-
-      }
-    }
 
     if(this.selectedLocations && this.selectedLocations.length > 10) {
       this.country_log = "Please select maximum 10 locations";
-    }
-
-    if(!this.preferncesForm.value.job_type || this.preferncesForm.value.job_type.length === 0) {
-      this.job_type_log = "Please select position types";
-    }
-    if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
-      this.position_log = "Please select what roles are you looking";
-    }
-
-    if(!this.preferncesForm.value.current_currency) {
-      this.current_currency_log = "Please select available annual salary and currency";
-    }
-    if(!this.preferncesForm.value.current_salary) {
-      this.current_currency_log = "Please select available annual salary and currency";
-    }
-    if(this.preferncesForm.value.current_salary && !Number(this.preferncesForm.value.current_salary)){
-      this.current_currency_log = "Salary should be a number";
     }
 
     if(!this.when_receive_email_notitfications) {
@@ -580,12 +543,27 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
       let saved_searches = [];
       if(this.preferncesForm.value.prefItems && this.preferncesForm.value.prefItems.length > 0){
+        let i=0;
         for(let key of this.preferncesForm.value.prefItems) {
           console.log(key);
           let searchQuery : any = {};
+          let validLocation = [];
+          if(i < this.preferncesForm.value.prefItems.length) {
+            for(let location of this.locationArray[i]) {
+              if(location.name.includes(', ')) {
+                validLocation.push({city: location._id, visa_needed : location.visa_needed });
+              }
+              if(location.name === 'Remote') {
+                validLocation.push({remote: true, visa_needed : location.visa_needed });
+              }
+
+            }
+            searchQuery.location = validLocation;
+
+          }
+
           if(key['search_name']) searchQuery.search_name = key['search_name'];
           if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
-          if(key['location']) searchQuery.location = key['location'];
           if(key['job_type']) searchQuery.job_type = key['job_type'];
           if(key['position']) searchQuery.position = key['position'];
           if(key['current_currency']) searchQuery.current_currency = key['current_currency'];
@@ -596,6 +574,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
           if(key['order_preferences']) searchQuery.order_preferences = key['order_preferences'];
           saved_searches.push(searchQuery);
+          i++;
         }
       }
       profileForm.value.saved_searches = saved_searches;
@@ -673,28 +652,21 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   }
 
-  selectedValueFunction(e, index) {
+  selectedValueFunction(locValue, index) {
     if(this.cities) {
-      if(this.cities.find(x => x.name === e)) {
+      if(this.cities.find(x => x.name === locValue)) {
+        var value2send=document.querySelector("#countryList option[value='"+ locValue +"']")['dataset'].value;
         console.log(index);
         console.log(this.preferncesForm.value.prefItems);
-      for(let key of this.preferncesForm.value.prefItems) {
-        console.log(key['loc']);
-      }
-       // this.preferncesForm.value.prefItems[index].loc.push(e);
-        //console.log(this.preferncesForm.value.prefItems[index].loc);
-
-       /* var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
-        //this.preferncesForm.value.prefItems[index].location = '';
-        this.cities = [];
-        if(this.preferncesForm.value.prefItems[index].location.length > 4) {
+        console.log(this.locationArray[index]);
+        if(this.locationArray[index].length > 4) {
           this.error = 'You can select maximum 5 locations';
           setInterval(() => {
             this.error = "" ;
           }, 5000);
         }
         else {
-          if(this.preferncesForm.value.prefItems[index].location.find(x => x.name === e)) {
+          if(this.locationArray[index].find(x => x.name === locValue)) {
             this.error = 'This location has already been selected';
             setInterval(() => {
               this.error = "" ;
@@ -702,25 +674,25 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           }
 
           else {
-            if(value2send) this.preferncesForm.value.prefItems[index].location.push({_id:value2send ,  name: e, visa_needed:false});
-            else this.preferncesForm.value.prefItems[index].location.push({ name: e, visa_needed:false});
+            if(value2send) this.locationArray[index].push({_id:value2send ,  name: locValue, visa_needed:false});
+            else this.locationArray[index].push({ name: locValue, visa_needed:false});
           }
-        }*/
-      }
-      /*if(this.preferncesForm.value.prefItems[index].location.length > 0) {
-        this.preferncesForm.value.prefItems[index].location.sort(function(a, b){
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        })
-        if(this.preferncesForm.value.prefItems[index].location.find((obj => obj.name === 'Remote'))) {
-          let remoteValue = this.preferncesForm.value.prefItems[index].location.find((obj => obj.name === 'Remote'));
-          this.preferncesForm.value.prefItems[index].location.splice(0, 0, remoteValue);
-          this.preferncesForm.value.prefItems[index].location = this.filter_array(this.preferncesForm.value.prefItems[index].location);
-
         }
-//        this.preferncesForm.value.prefItems[index].location = this.selectedLocations;
-      } */
+
+        if(this.locationArray[index].length > 0) {
+          this.locationArray[index].sort(function(a, b){
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+          })
+          if(this.locationArray[index].find((obj => obj.name === 'Remote'))) {
+            let remoteValue = this.locationArray[index].find((obj => obj.name === 'Remote'));
+            this.locationArray[index].splice(0, 0, remoteValue);
+            this.locationArray[index] = this.filter_array(this.locationArray[index]);
+
+          }
+        }
+      }
     }
 
   }

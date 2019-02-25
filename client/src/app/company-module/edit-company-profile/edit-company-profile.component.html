@@ -365,14 +365,14 @@
                                 {{error}}
                               </div>
 
-                              <!-- <div *ngIf="preferncesForm.value.prefItems[i].location && preferncesForm.value.prefItems[i].location.length > 0">
-                                <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of preferncesForm.value.prefItems[i].location; let loc_i = index">{{value.city.city}}, {{value.city.country}} <a (click)="deleteLocationRow(loc_i , i)"><i class="fas fa-times text-white"></i></a></span>
+                              <div *ngIf="locationArray[i] && locationArray[i].length > 0">
+                                <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of locationArray[i]; let loc_i = index">{{value.name}} <a (click)="deleteLocationRow(loc_i , i)"><i class="fas fa-times text-white"></i></a></span>
 
                                 <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations">
                                   {{country_log}}
                                 </div>
                               </div>
--->
+
                             </div>
 
                           </div>
