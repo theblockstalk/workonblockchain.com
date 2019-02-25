@@ -13,7 +13,6 @@ import {environment} from '../../../environments/environment';
 import { LinkedInService } from '../../linkedin-api';
 
 const URL = environment.backend_url;
-//console.log(URL);
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -184,10 +183,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       {
         this.router.navigate(['/login']);
       }
-      //this.router.navigate(['/candidate_profile']);
 
     });
-    //console.log(this.result);
 
 
   }
@@ -198,7 +195,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this._linkedInService.login().subscribe({
       next: (state) =>
       {
-        
+
       },
       complete: () => {
         // Completed
@@ -228,7 +225,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.authenticationService.forgot_password(this.credentials.email)
         .subscribe(
           data => {
-            //console.log(data);
 
             this.dataservice.changeMessage("Please check your email to reset the password.");
             this.router.navigate(["/login"]);
@@ -265,7 +261,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       .asObservable()
       .subscribe({
         next: (data) => {
-          console.log(data);
           localStorage.setItem('linkedinUser', JSON.stringify(data));
           if(data)
           {
@@ -299,7 +294,6 @@ export class LoginComponent implements OnInit, OnDestroy {
                     else {
                       this.log = 'Something getting wrong';
                     }
-                    console.log(this.log)
                   });
             }
 
@@ -310,7 +304,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           }
         },
         error: (err) => {
-          console.log(err);
         },
         complete: () => {
           console.log('RAW API call completed');

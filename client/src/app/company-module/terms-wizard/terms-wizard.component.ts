@@ -55,7 +55,6 @@ export class TermsWizardComponent implements OnInit {
         .subscribe(
           data =>
           {
-            ////console.log(data);
             this.marketing_emails = data['marketing_emails'];
             if(data['terms_id'])
             {

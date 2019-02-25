@@ -37,6 +37,8 @@ describe('add initial info of candidate', function () {
             userDoc.last_name.should.equal(candidateProfileInfo.last_name);
             userDoc.candidate.github_account.should.equal(candidateProfileInfo.github_account);
             userDoc.candidate.stackexchange_account.should.equal(candidateProfileInfo.exchange_account);
+            userDoc.candidate.linkedin_account.should.equal(candidateProfileInfo.linkedin_account);
+            userDoc.candidate.medium_account.should.equal(candidateProfileInfo.medium_account);
             userDoc.contact_number.should.equal(candidateProfileInfo.contact_number);
             userDoc.nationality.should.equal(candidateProfileInfo.nationality);
             userDoc.candidate.base_city.should.equal(candidateProfileInfo.city);

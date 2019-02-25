@@ -16,6 +16,12 @@ module.exports.update = async function update(candidateUserId, queryBody, educat
     if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
     else unset['candidate.stackexchange_account'] = 1;
 
+    if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
+    else unset['candidate.linkedin_account'] = 1;
+
+    if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
+    else unset['candidate.medium_account'] = 1;
+
     if (queryBody.contact_number) updateCandidateUser.contact_number = queryBody.contact_number;
     if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
     if (queryBody.country) {

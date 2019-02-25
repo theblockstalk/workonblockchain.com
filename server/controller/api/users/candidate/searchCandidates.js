@@ -38,7 +38,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     }
 
     if (filters.blacklist) {
-        userQuery._id = {$nin: filters.blacklist};
+        userQuery.push({_id: {$nin: filters.blacklist}});
     }
 
     if (filters.firstApprovedDate) {

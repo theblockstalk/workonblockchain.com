@@ -224,30 +224,44 @@
                 <p>
               </div>
             </div>
-          </div>
-
-          <div class="row mt-3" *ngIf="data.candidate.github_account || data.candidate.stackexchange_account" >
-            <div class="col-md-6 mb-3">
-              <div class="form-group" *ngIf="data.candidate.github_account">
-
+            <div class="col-md-6 mb-3" *ngIf="data.candidate.github_account">
+              <div class="form-group" >
                 <label>Github account url: </label>
                 <p>
                   {{data.candidate.github_account}}
                 <p>
               </div>
             </div>
-          </div>
 
-          <div class="row mt-3" *ngIf="data.github_account || data.stackexchange_account" >
-            <div class="col-md-6 mb-3">
-              <div class="form-group" *ngIf="data.candidate.stackexchange_account">
+            <div class="col-md-6 mb-3" *ngIf="data.candidate.stackexchange_account">
+              <div class="form-group" >
                 <label>Stackexchange account url:</label>
                 <p>
                   {{data.candidate.stackexchange_account}}
                 <p>
               </div>
             </div>
+
+            <div class="col-md-6 mb-3" *ngIf="data.candidate.linkedin_account">
+              <div class="form-group" >
+                <label>Linkedin account url:</label>
+                <p>
+                  {{data.candidate.linkedin_account}}
+                <p>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="data.candidate.medium_account">
+              <div class="form-group" >
+                <label>Medium account url:</label>
+                <p>
+                  {{data.candidate.medium_account}}
+                <p>
+              </div>
+            </div>
           </div>
+
+
 
         </section>
 

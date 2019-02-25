@@ -74,7 +74,6 @@ export class CompanyProfileComponent implements OnInit ,  AfterViewInit {
   url;
   ngOnInit()
   {
-    // //console.log(this.htmlContent);
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
