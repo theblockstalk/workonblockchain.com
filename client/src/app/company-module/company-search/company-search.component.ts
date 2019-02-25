@@ -216,9 +216,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
   skill;
   searchName=[];
+  savedSearches;
   ngOnInit()
   {
     this.credentials.currency = -1;
+    this.success_msg = '';
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
@@ -334,45 +336,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 }
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
                   console.log(data['saved_searches']);
-                  this.searchName.push(data['saved_searches'][0].search_name);
-                  if(data['saved_searches'][0].location)
-                  {
-                    for (let country1 of data['saved_searches'][0].location)
-                    {
-                      if (country1['remote'] === true) {
-                        this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
-                      }
-
-                      if (country1['city']) {
-                        let city = country1['city'].city + ", " + country1['city'].country;
-                        this.selectedValueArray.push({city:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
-                      }
-                    }
-
-                    this.selectedValueArray.sort();
-                    if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                      let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                      this.selectedValueArray.splice(0, 0, remoteValue);
-                      this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
-                    }
+                  this.savedSearches = data['saved_searches'];
+                  for(let i=0; i < data['saved_searches'].length; i++) {
+                    this.searchName.push(data['saved_searches'][i].search_name);
                   }
-                  this.skill_value = data['saved_searches'][0].skills;
-                  this.visa_check = data['saved_searches'][0].visa_needed;
-                  this.role_value = data['saved_searches'][0].position;
-                  if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
-                    this.blockchain_value = data['saved_searches'][0].blockchain;
-                  }
-                  this.salary = data['saved_searches'][0].current_salary;
-                  this.currencyChange = data['saved_searches'][0].current_currency;
-                  this.blockchain_order = data['saved_searches'][0].order_preferences;
 
-                  this.searchdata('filter' , data['saved_searches'][0]);
                 }
-                else {
                   this.getVerrifiedCandidate();
-
-                }
 
               }
             }
@@ -501,16 +471,62 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
   visa_check;
   blockchain_order;
+  search_name;
+  fillFields(searches, name) {
+    for(let key of searches) {
+      console.log(key);
+      if(key['search_name'] === name) {
+        console.log("if");
+        this.search_name = name;
+        if(key['location'])
+        {
+          for (let country1 of key['location'])
+          {
+            if (country1['remote'] === true) {
+              this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
+            }
+
+            if (country1['city']) {
+              let city = country1['city'].city + ", " + country1['city'].country;
+              this.selectedValueArray.push({city:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
+            }
+          }
+
+          this.selectedValueArray.sort();
+          if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+            let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+            this.selectedValueArray.splice(0, 0, remoteValue);
+            this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+          }
+        }
+        this.skill_value = key['skills'];
+        this.visa_check = key['visa_needed'];
+        this.role_value = key['position'];
+        if(key['blockchain'] && key['blockchain'].length > 0) {
+          this.blockchain_value = key['blockchain'];
+        }
+        this.salary = key['current_salary'];
+        this.currencyChange = key['current_currency'];
+        this.blockchain_order = key['order_preferences'];
+      }
+    }
+  }
   searchdata(key , value)
   {
-
+    this.success_msg = '';
+    if(key === 'searchName') {
+      console.log(value);
+      this.error_msg = '';
+      this.fillFields(this.savedSearches, value);
+    }
     this.log='';
     this.candidate_data='';
     this.verify_msg = "";
     this.responseMsg = "";
     this.not_found='';
 
-    if(!this.searchWord && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
+    if(!this.searchWord && !this.blockchain_order && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
     {
       this.getVerrifiedCandidate();
     }
@@ -583,10 +599,64 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.getVerrifiedCandidate();
+  }
+
+
+  success_msg;
+  error_msg;
+  errorMsg;
+  savedSearch() {
+    let queryBody : any = {};
+    let index = this.savedSearches.findIndex((obj => obj.search_name === this.search_name));
+    if(this.search_name) queryBody.search_name = this.search_name;
+    if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
+    if(this.selectedValueArray && this.selectedValueArray.length > 0) {
+        let validatedLocation =[];
+        for(let location of this.selectedValueArray) {
+          if(location.name.includes(', ')) {
+            validatedLocation.push({city: location.city});
+          }
+          if(location.name === 'Remote') {
+            validatedLocation.push({remote: true });
+          }
+        }
+      queryBody.location = this.filter_array(validatedLocation);
+    }
+    if(this.role_value && this.role_value.length > 0 ) queryBody.position = this.role_value;
+    if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchain = this.blockchain_value;
+    if(this.visa_check) queryBody.visa_needed = this.visa_check;
+    if(this.blockchain_order) queryBody.order_preferences = this.blockchain_order;
+    if(this.salary && this.currencyChange) {
+      queryBody.current_salary  = this.salary;
+      queryBody.current_currency = this.currencyChange;
+    }
+    this.savedSearches[index] = queryBody;
+    if(this.search_name) {
+      this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
+        .subscribe(
+          data => {
+            if(data && this.currentUser)
+            {
+              this.success_msg = 'Successfully update';
+              setInterval(() => {
+                this.success_msg = "" ;
+              }, 5000);
+            }
+
+          },
+          error => {
+
+          });
+    }
+    else {
+      this.error_msg = 'Please first select saved search';
+      setInterval(() => {
+        this.error_msg = "" ;
+      }, 5000);
+    }
 
   }
 
-  cand_data=[];
   response;
   count;
   candidate_data;

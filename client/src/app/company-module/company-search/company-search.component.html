@@ -13,7 +13,7 @@
             <div class="wob-bg-primary2 p-2 border">
               <h4 class="pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved searches</h4>
               <div class = "form-group mt-3">
-                <select title="1:saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="search_name" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
+                <select title="1: saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="search_name" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
                   <option *ngFor = "let name of searchName" [value]="name">{{name}}</option>
                 </select>
               </div>
@@ -98,10 +98,30 @@
                 </select>
               </div>
             </div>
-            <div class = "form-group float-right mt-3">
-              <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary">Reset</button>
+
+            <div class="row my-3">
+              <div class="col-md-8">
+                <button  type="button" (click)="savedSearch()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save search</button>
+              </div>
+              <div class="col-md-4">
+                <button (click)="reset()" type="button" [disabled]="msg !== '' ? true : false" class="btn btn-secondary w-100">Reset</button>
+              </div>
+              <div class="col-md-12 text-success mt-1" *ngIf="success_msg && success_msg !== '';else errorMsg" >
+                {{success_msg}}
+              </div>
+              <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="error_msg && error_msg !== ''" >
+                {{error_msg}}
+              </div>
             </div>
+
+            <div class="row my-3">
+              <div class="col-md-12">
+                <button  type="button" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save new search</button>
+              </div>
+            </div>
+
           </div>
+
           <ng-container *ngIf="responseMsg === '' ; else candidateInfo"  >
             <div class="col-md-9 text-center" >
               <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif" class="loading-image">
