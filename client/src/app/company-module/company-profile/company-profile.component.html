@@ -199,7 +199,7 @@
               </div>
             </div>
 
-            <div class = "col-md-6 mb-3" *ngIf="searches.location" >
+            <div class = "col-md-6 mb-3" *ngIf="searches.location && searches.location.length > 0" >
               <div class="form-group">
                 <label>Location:</label>
                 <div>
@@ -245,7 +245,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" *ngIf="searches.current_curreny && searches.current_salary">
               <div class="form-group">
                 <label>Salary:</label>
                 <p>
