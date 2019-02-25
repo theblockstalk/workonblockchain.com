@@ -442,8 +442,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.selectedValueArray = [];
     for(let key of searches) {
       if(key['search_name'] === name) {
-        console.log("if");
-        console.log(key);
         this.search_name = name;
         setTimeout(() => {
           $('.selectpicker').selectpicker();
