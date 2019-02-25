@@ -159,6 +159,7 @@ module.exports.endpoint = async function (req, res) {
 
     if(employerDoc){
         const queryBody = req.body;
+        console.log(queryBody);
         let employerUpdate = {};
         if(req.file && req.file.path) employerUpdate.company_logo = req.file.path;
 

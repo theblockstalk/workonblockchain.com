@@ -365,15 +365,14 @@
                                 {{error}}
                               </div>
 
-
-                              <div *ngIf="selectedLocations && selectedLocations.length > 0">
-                                <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedLocations; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
+                              <!-- <div *ngIf="preferncesForm.value.prefItems[i].location && preferncesForm.value.prefItems[i].location.length > 0">
+                                <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of preferncesForm.value.prefItems[i].location; let loc_i = index">{{value.city.city}}, {{value.city.country}} <a (click)="deleteLocationRow(loc_i , i)"><i class="fas fa-times text-white"></i></a></span>
 
                                 <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations">
                                   {{country_log}}
                                 </div>
                               </div>
-
+-->
                             </div>
 
                           </div>
@@ -459,14 +458,16 @@
                         </div>
                       </div>
 
-                      <div class="row my-3">
+                      <div class="row my-3" *ngIf="i>0">
                         <div class="col-md-12">
                           <div class = "form-group text-right">
-                            <a (click)="deletePrefRow(i)" class = "btn btn-danger text-white">Remove</a>
+                            <a (click)="deletePrefRow(i)" class = "btn btn-danger text-white" >Remove</a>
                           </div>
                         </div>
                       </div>
-                </div>
+                      <hr *ngIf="i < (this.preferncesForm.value.prefItems.length - 1)" class="bg-dark"/>
+
+                    </div>
               </div>
             </div>
 

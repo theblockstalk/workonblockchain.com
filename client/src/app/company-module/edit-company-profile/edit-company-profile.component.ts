@@ -235,23 +235,23 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   private preferncesFormData(): FormGroup[]
   {
-    console.log(this.prefData);
     return this.prefData
-      .map(i => this._fb.group({ residence_country: i.residence_country, search_name: i.search_name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ residence_country: i.residence_country, search_name: i.search_name, location: [i.location] , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
-  selectedCompanyLocation(location) {
-  console.log(location);
-    if(location) {
+  selectedCompanyLocation(location, index) {
+    console.log("index");
+    console.log(index);
+    if(location && location.length > 0) {
       for (let country1 of location)
       {
         if (country1['remote'] === true) {
-          this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
+          this.selectedValueArray.push({name: 'Remote' });
         }
 
         if (country1['city']) {
           let city = country1['city'].city + ", " + country1['city'].country;
-          this.selectedValueArray.push({_id:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
+          this.selectedValueArray.push({_id:country1['city']._id ,name: city });
         }
       }
 
@@ -262,6 +262,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         this.selectedValueArray = this.filter_array(this.selectedValueArray);
       }
       this.selectedLocations = this.selectedValueArray;
+      console.log(this.selectedLocations);
+
+      console.log(this.preferncesForm.value.prefItems[0].location);
+      //this.preferncesForm.value.prefItems[index].location = this.selectedLocations;
 
       return '';
     }
@@ -382,6 +386,23 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   this.preferncesFormData()
                 )
               });
+
+              for(let i = 0 ; i < this.preferncesForm.value.prefItems.length ; i++ ){
+                for(let key of this.preferncesForm.value.prefItems) {
+
+                  this.preferncesForm.value.prefItems[i].loc = key['location'];
+                }
+              }
+
+              console.log(this.preferncesForm.value.prefItems);
+              /*for(let key of this.preferncesForm.value.prefItems) {
+                console.log(key);
+                this.preferncesForm.value.prefItems['loc'] = key['location'];
+                console.log(key['location']);
+              }*/
+              /*this.preferncesForm = this._fb.group({
+                location: [],
+              });*/
 
             }
           },
@@ -526,6 +547,29 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         if(inputEl.files.item(0).size < this.file_size)
         {
           formData.append('company_logo', inputEl.files.item(0));
+          this.authenticationService.edit_company_profile(formData)
+            .subscribe(
+              data => {
+                if(data && this.currentUser)
+                {
+                  //this.router.navigate(['/company_profile']);
+                }
+
+              },
+              error => {
+                if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                  this.dataservice.changeMessage(error['error']['message']);
+                }
+                else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+                  this.dataservice.changeMessage(error['error']['message']);
+                }
+                else {
+                  this.dataservice.changeMessage("Something getting wrong");
+                }
+
+              });
+
+
         }
         else
         {
@@ -534,33 +578,29 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
       }
 
-      if(this.preferncesForm.value.prefItems && this.preferncesForm.value.prefItems.length > 0) {
-        for (var i = 0; i < this.preferncesForm.value.prefItems.length; i++) {
-          this.preferncesForm.value.prefItems[i].location = this.validatedLocation;
-          this.preferncesForm.value.prefItems[i].current_salary = Number(this.preferncesForm.value.prefItems[i].current_salary);
-          console.log(this.preferncesForm.value.prefItems[i].visa_needed)
-          if(!this.preferncesForm.value.prefItems[i].visa_needed ||this.preferncesForm.value.prefItems[i].visa_needed === '') this.preferncesForm.value.prefItems[i].visa_needed = false;
-          this.appendArray(formData, this.preferncesForm.value.prefItems[i], 'saved_searches');
+      let saved_searches = [];
+      if(this.preferncesForm.value.prefItems && this.preferncesForm.value.prefItems.length > 0){
+        for(let key of this.preferncesForm.value.prefItems) {
+          console.log(key);
+          let searchQuery : any = {};
+          if(key['search_name']) searchQuery.search_name = key['search_name'];
+          if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
+          if(key['location']) searchQuery.location = key['location'];
+          if(key['job_type']) searchQuery.job_type = key['job_type'];
+          if(key['position']) searchQuery.position = key['position'];
+          if(key['current_currency']) searchQuery.current_currency = key['current_currency'];
+          if(key['current_salary']) searchQuery.current_salary = Number(key['current_salary']);
+          if(key['blockchain']) searchQuery.blockchain = key['blockchain'];
+          if(key['skills']) searchQuery.skills = key['skills'];
+          if(key['residence_country']) searchQuery.residence_country = key['residence_country'];
+          if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
+          if(key['order_preferences']) searchQuery.order_preferences = key['order_preferences'];
+          saved_searches.push(searchQuery);
         }
-
       }
+      profileForm.value.saved_searches = saved_searches;
 
-      formData.append('first_name' , this.first_name);
-      formData.append('last_name' , this.last_name);
-      formData.append('job_title' , this.job_title);
-      formData.append('company_name', this.company_name);
-      formData.append('company_website', this.company_website) ;
-      formData.append('company_phone', this.company_phone) ;
-      formData.append('company_country', this.company_country) ;
-      formData.append('company_city', this.company_city) ;
-      formData.append('company_postcode', this.company_postcode ) ;
-      formData.append('company_founded', this.company_founded) ;
-      formData.append('no_of_employees', this.no_of_employees) ;
-      formData.append('company_funded', this.company_funded) ;
-      formData.append('company_description', this.company_description) ;
-      formData.append('when_receive_email_notitfications', this.when_receive_email_notitfications) ;
-
-      this.authenticationService.edit_company_profile(formData)
+      this.authenticationService.edit_company_profile(profileForm.value)
         .subscribe(
           data => {
             if(data && this.currentUser)
@@ -585,24 +625,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     else {
       this.error_msg = "One or more fields need to be completed. Please scroll up to see which ones.";
     }
-  }
-
-  appendArray(form_data, values, name){
-    if(!values && name)
-      form_data.append(name, '');
-    else{
-      if(typeof values == 'object'){
-        for(let key in values){
-          if(typeof values[key] == 'object')
-            this.appendArray(form_data, values[key], name + '[' + key + ']');
-          else
-            form_data.append(name + '[' + key + ']', values[key]);
-        }
-      }else
-        form_data.append(name, values);
-    }
-
-    return form_data;
   }
 
   suggestedOptions(index) {
@@ -654,18 +676,25 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   selectedValueFunction(e, index) {
     if(this.cities) {
       if(this.cities.find(x => x.name === e)) {
+        console.log(index);
         console.log(this.preferncesForm.value.prefItems);
-        var value2send=document.querySelector("#countryList option[value='"+this.preferncesForm.value.prefItems[index].location+"']")['dataset'].value;
-        this.preferncesForm.value.prefItems[index].location = '';
+      for(let key of this.preferncesForm.value.prefItems) {
+        console.log(key['loc']);
+      }
+       // this.preferncesForm.value.prefItems[index].loc.push(e);
+        //console.log(this.preferncesForm.value.prefItems[index].loc);
+
+       /* var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
+        //this.preferncesForm.value.prefItems[index].location = '';
         this.cities = [];
-        if(this.selectedValueArray.length > 4) {
+        if(this.preferncesForm.value.prefItems[index].location.length > 4) {
           this.error = 'You can select maximum 5 locations';
           setInterval(() => {
             this.error = "" ;
           }, 5000);
         }
         else {
-          if(this.selectedValueArray.find(x => x.name === e)) {
+          if(this.preferncesForm.value.prefItems[index].location.find(x => x.name === e)) {
             this.error = 'This location has already been selected';
             setInterval(() => {
               this.error = "" ;
@@ -673,38 +702,32 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           }
 
           else {
-            if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e, visa_needed:false});
-            else this.selectedValueArray.push({ name: e, visa_needed:false});
+            if(value2send) this.preferncesForm.value.prefItems[index].location.push({_id:value2send ,  name: e, visa_needed:false});
+            else this.preferncesForm.value.prefItems[index].location.push({ name: e, visa_needed:false});
           }
-        }
+        }*/
       }
-      if(this.selectedValueArray.length > 0) {
-        this.selectedValueArray.sort(function(a, b){
+      /*if(this.preferncesForm.value.prefItems[index].location.length > 0) {
+        this.preferncesForm.value.prefItems[index].location.sort(function(a, b){
           if(a.name < b.name) { return -1; }
           if(a.name > b.name) { return 1; }
           return 0;
         })
-        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-          let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-          this.selectedValueArray.splice(0, 0, remoteValue);
-          this.selectedValueArray = this.filter_array(this.selectedValueArray);
+        if(this.preferncesForm.value.prefItems[index].location.find((obj => obj.name === 'Remote'))) {
+          let remoteValue = this.preferncesForm.value.prefItems[index].location.find((obj => obj.name === 'Remote'));
+          this.preferncesForm.value.prefItems[index].location.splice(0, 0, remoteValue);
+          this.preferncesForm.value.prefItems[index].location = this.filter_array(this.preferncesForm.value.prefItems[index].location);
 
         }
-        this.selectedLocations = this.selectedValueArray;
-      }
+//        this.preferncesForm.value.prefItems[index].location = this.selectedLocations;
+      } */
     }
 
   }
 
-  updateCitiesOptions(e) {
-    let objIndex = this.selectedValueArray.findIndex((obj => obj.name === e.target.value));
-    this.selectedValueArray[objIndex].visa_needed = e.target.checked;
-    this.selectedLocations = this.selectedValueArray;
 
-  }
-
-  deleteLocationRow(i){
-    this.selectedValueArray.splice(i, 1);
+  deleteLocationRow(locationIndex, index){
+    this.preferncesForm.value.prefItems[index].location.splice(locationIndex, 1);
   }
 
   filter_array(arr) {
