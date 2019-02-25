@@ -180,7 +180,8 @@ module.exports.endpoint = async function (req, res) {
 
         await companies.update({ _creator: userId },{ $set: employerUpdate});
 
-        res.send(true);
+        const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
+        res.send(updatedEmployerDoc);
     }
 
     else {

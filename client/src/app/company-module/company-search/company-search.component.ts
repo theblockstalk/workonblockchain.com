@@ -299,23 +299,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               else
               {
                 this.disabled = false;
-                this.first_name=data['first_name'];
-                this.last_name=data['last_name'];
-                this.company_name=data['company_name'];
-                this.job_title=data['job_title'];
-                this.company_website=data['company_website'];
-                this.company_phone =data['company_phone'];
-                this.company_country =data['company_country'];
-                this.company_city=data['company_city'];
-                this.company_postcode=data['company_postcode'];
-                this.company_description=data['company_description'];
-                this.company_founded =data['company_founded'];
-                this.company_funded=data['company_funded'];
-                this.no_of_employees=data['no_of_employees'];
-                if(data['company_logo'] != null )
-                {
-                  this.imgPath =  data['company_logo'];
-                }
+
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
                   console.log(data['saved_searches']);
                   this.savedSearches = data['saved_searches'];
@@ -636,6 +620,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             if(data && this.currentUser)
             {
               this.success_msg = 'Successfully update';
+              if(data['saved_searches'] && data['saved_searches'].length > 0) {
+                console.log(data['saved_searches']);
+                this.savedSearches = data['saved_searches'];
+                for(let i=0; i < data['saved_searches'].length; i++) {
+                  this.searchName.push(data['saved_searches'][i].search_name);
+                }
+
+              }
+
               setInterval(() => {
                 this.success_msg = "" ;
               }, 5000);
@@ -686,47 +679,65 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.current_salary  = this.preferncesForm.value.current_salary;
       queryBody.current_currency = this.preferncesForm.value.current_currency;
     }
-    let index = this.savedSearches.findIndex((obj => obj.search_name === this.preferncesForm.value.search_name));
-    console.log(index);
 
-    if(index < 0 && this.preferncesForm.value.search_name) {
-      this.savedSearches.push(queryBody);
-      console.log(this.savedSearches);
-      this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
-        .subscribe(
-          data => {
-            if(data && this.currentUser)
-            {
-              this.successful_msg = "Successfully added new search";
-              this.preferncesForm = this._fb.group({
-                search_name: [''],
-                location: [],
-                visa_needed: [false],
-                job_type: [],
-                position: [],
-                current_currency: [],
-                current_salary: [''],
-                blockchain: [],
-                skills: [],
-                other_technologies: [''],
-                order_preferences: [],
-                residence_country: [''],
-              });
-              setInterval(() => {
-                this.success_msg = "" ;
-              }, 5000);
-            }
-
-          },
-          error => {
-
-          });
-    }
-    else {
-        this.new_error_msg = "Search name already exists.";
+    if(!this.preferncesForm.value.search_name) {
+      this.new_error_msg = "Please enter saved search name";
       setInterval(() => {
         this.new_error_msg = "" ;
       }, 5000);
+    }
+    else {
+      let index = this.savedSearches.findIndex((obj => obj.search_name === this.preferncesForm.value.search_name));
+
+      if(index < 0 && this.preferncesForm.value.search_name) {
+        this.savedSearches.push(queryBody);
+        console.log(this.savedSearches);
+        this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
+          .subscribe(
+            data => {
+              if(data && this.currentUser)
+              {
+                this.successful_msg = "Successfully added new search";
+                this.preferncesForm = this._fb.group({
+                  search_name: [''],
+                  location: [],
+                  visa_needed: [false],
+                  job_type: [],
+                  position: [],
+                  current_currency: [],
+                  current_salary: [''],
+                  blockchain: [],
+                  skills: [],
+                  other_technologies: [''],
+                  order_preferences: [],
+                  residence_country: [''],
+                });
+                if(data['saved_searches'] && data['saved_searches'].length > 0) {
+                  console.log(data['saved_searches']);
+                  this.savedSearches = data['saved_searches'];
+                  for(let i=0; i < data['saved_searches'].length; i++) {
+                    this.searchName.push(data['saved_searches'][i].search_name);
+                  }
+
+                }
+
+                setInterval(() => {
+                  this.success_msg = "" ;
+                }, 5000);
+              }
+
+            },
+            error => {
+
+            });
+      }
+      else {
+        this.new_error_msg = "Search name already exists.";
+        setInterval(() => {
+          this.new_error_msg = "" ;
+        }, 5000);
+      }
+
     }
 
   }
