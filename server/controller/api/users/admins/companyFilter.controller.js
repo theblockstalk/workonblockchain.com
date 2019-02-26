@@ -6,6 +6,8 @@ const filterReturnData = require('../filterReturnData');
 
 module.exports = async function (req,res) {
     let queryBody = req.body;
+    console.log("query body");
+    console.log(queryBody);
     if(queryBody.account_status === 'true') queryBody.disable_account = true;
     else queryBody.disable_account = false;
 
@@ -18,6 +20,7 @@ module.exports = async function (req,res) {
                 userIds.push(detail.sender_id);
                 userIds.push(detail.receiver_id);
             }
+            console.log(userIds);
             const msgTagFilter = {"_creator" : {$in : userIds}};
             queryString.push(msgTagFilter);
             if(queryBody.is_approve) {
@@ -39,6 +42,7 @@ module.exports = async function (req,res) {
                 const nameFilter = { company_name : {'$regex' : queryBody.word, $options: 'i' } };
                 queryString.push(nameFilter);
             }
+            console.log(queryString);
             if(queryString.length > 0) {
                 var object = queryString.reduce((a, b) => Object.assign(a, b), {})
                 const searchQuery = {$match: object};
@@ -86,10 +90,10 @@ module.exports = async function (req,res) {
         }
 
         if(queryBody.word) {
-            const nameFilter = { company_name : {'$regex' : queryBody.word, $options: 'i' } };
+            const nameFilter = { "company_name" : {'$regex' : queryBody.word, $options: 'i' } };
             queryString.push(nameFilter);
         }
-
+console.log(queryString);
         if(queryString.length>0) {
             var object = queryString.reduce((a, b) => Object.assign(a, b), {})
 

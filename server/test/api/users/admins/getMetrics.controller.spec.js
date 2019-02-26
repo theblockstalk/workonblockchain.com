@@ -31,16 +31,11 @@ describe('admin get metrics', function () {
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
             await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
-            const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
-            const company = docGenerator.company();
-            const companyTnCWizard = docGenerator.companyTnCWizard();
-            const companyAbout = docGenerator.companyAbout();
-            const companyPref = docGenerator.companySavedSearches();
-            await companyHelper.signupCompanyAndCompleteProfile(company,companyTnCWizard,companyAbout,companyPref);
-            await userHelper.makeAdmin(company.email);
-            const companyUserDoc = await Users.findOne({email: company.email}).lean();
+        await userHelper.makeAdmin(candidate.email);
 
-            const metricsRes = await adminHelper.getMetrics(companyUserDoc.jwt_token);
+        const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
+
+            const metricsRes = await adminHelper.getMetrics(candidateUserDoc.jwt_token);
             const metrics = metricsRes.body;
             metrics.candidates.should.equal(1);
             metrics.emailVerified.should.equal(1);
