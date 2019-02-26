@@ -5,6 +5,7 @@ const candidateSearch = require('../../../controller/api/users/candidate/searchC
 const autoNotificationEmail = require('../email/emails/companyAutoNotification');
 
 const settings = require('../../../settings');
+const objects = require('../objects');
 const logger = require('../logger');
 const filterReturnData = require('../../api/users/filterReturnData');
 
@@ -71,7 +72,7 @@ module.exports = async function () {
                     }
                 }
 
-                searchCandidates = candidateSearch.removeDuplicates(searchCandidates, '_id');
+                searchCandidates = objects.removeDuplicates(searchCandidates, '_id');
 
                 const candidateCount = searchCandidates.length >= 10 ? 10 : searchCandidates.length
 

@@ -43,7 +43,7 @@
                   {{error}}
                 </div>
 
-                <div *ngIf="selectedValueArray.length > 0">
+                <div *ngIf="name && selectedValueArray.length > 0">
                   <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
                 </div>
               </div>
@@ -351,7 +351,7 @@
   <!-- Save new search popup -->
 
   <div class="modal fade w-100" id="saveNewSearch" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog 1-100" role="document">
+    <div class="modal-dialog modal-lg 1-100" role="document">
       <div class="modal-content w-100">
         <div class="modal-header bg-primary">
           <h2 class="modal-title text-center mo">Saved search
@@ -417,7 +417,7 @@
                       {{country_input_log}}
                     </div>
 
-                    <div *ngIf="preferncesForm.value.location &&selectedValueArray.length > 0">
+                    <div *ngIf="selectedValueArray.length > 0">
                       <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
 
                       <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations">
@@ -509,20 +509,17 @@
               </div>
             </div>
         </div>
-        <div class="modal-footer">
-          <div class="row">
-            <button type="submit" class="btn btn-mo btn-primary" >Save</button>
-
-          </div>
-          <div class="row">
-            <div class="col-md-12 text-success mt-1" *ngIf="successful_msg && successful_msg !== '';else errorMsg" >
+          <div class="modal-footer row">
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-mo btn-primary float-right" >Save</button>
+            </div>
+            <div class="col-md-12 text-success mt-1 text-right" *ngIf="successful_msg && successful_msg !== '';else errorMsg" >
               {{successful_msg}}
             </div>
-            <div class="col-md-12 invalid-feedback d-inline mt-1" #errorMsg *ngIf="new_error_msg && new_error_msg !== ''" >
+            <div class="col-md-12 invalid-feedback d-inline mt-1 text-right" #errorMsg *ngIf="new_error_msg && new_error_msg !== ''" >
               {{new_error_msg}}
             </div>
           </div>
-        </div>
         </form>
 
       </div>

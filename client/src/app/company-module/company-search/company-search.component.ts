@@ -627,12 +627,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               this.savedSearches= [];
               this.success_msg = 'Successfully update';
               if(data['saved_searches'] && data['saved_searches'].length > 0) {
-                console.log(data['saved_searches']);
                 this.savedSearches = data['saved_searches'];
+                this.searchName = [];
                 for(let i=0; i < data['saved_searches'].length; i++) {
                   this.searchName.push(data['saved_searches'][i].name);
                 }
-
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 300);
               }
 
               setInterval(() => {
@@ -679,11 +681,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.location = this.filter_array(validatedLocation);
     }
     if(this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 ) queryBody.position = this.preferncesForm.value.position;
+    if(this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0 ) queryBody.job_type = this.preferncesForm.value.job_type;
     if(this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0) queryBody.blockchain = this.preferncesForm.value.blockchain;
     if(this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
     if(this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
     if(this.preferncesForm.value.residence_country) queryBody.residence_country = this.preferncesForm.value.residence_country;
-    if(this.preferncesForm.value.salary && this.preferncesForm.value.currencyChange) {
+    if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
       queryBody.current_salary  = this.preferncesForm.value.current_salary;
       queryBody.current_currency = this.preferncesForm.value.current_currency;
     }
@@ -725,9 +728,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
                   console.log(data['saved_searches']);
                   this.savedSearches = data['saved_searches'];
+                  this.searchName=[];
                   for(let i=0; i < data['saved_searches'].length; i++) {
                     this.searchName.push(data['saved_searches'][i].name);
                   }
+
+                  setTimeout(() => {
+                    $('.selectpicker').selectpicker('refresh');
+                  }, 300);
 
                 }
 
@@ -1061,6 +1069,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
 
         this.countriesModel = '';
+        if(this.preferncesForm) this.preferncesForm.get('location').setValue('');
+
         this.cities = [];
         if(this.selectedValueArray.length > 4) {
           this.error = 'You can select maximum 5 locations';

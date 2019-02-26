@@ -4,6 +4,7 @@ const logger = require('../../../services/logger');
 const currency = require('../../../services/currency');
 const errors = require('../../../services/errors');
 const cities = require('../../../../model/mongoose/cities');
+const objects = require('../../../services/objects');
 
 
 const salaryFactor = 1.1;
@@ -173,7 +174,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             searchQuery = {$and: userQuery};
             const userDocsOrderBy = await users.find(searchQuery);
             let sortedDocs = userDocsOrderBy.concat(userDocs);
-            sortedDocs = removeDuplicates(sortedDocs , '_id');
+            sortedDocs = objects.removeDuplicates(sortedDocs , '_id');
             return {
                 count: sortedDocs.length,
                 candidates: sortedDocs
@@ -191,20 +192,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         errors.throwError("No candidates matched this search criteria", 404);
     }
 
-}
-
-//Remove duplicates from an array of objects
-const removeDuplicates = module.exports.removeDuplicates = function removeDuplicates(originalArray, prop) {
-    var newArray = [];
-    var lookupObject  = {};
-
-    for(var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-    for(i in lookupObject) {
-        newArray.push(lookupObject[i]);
-    }
-    return newArray;
 }
 
 function makeDistinctSet(array) {
