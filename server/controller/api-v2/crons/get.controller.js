@@ -1,4 +1,4 @@
-const auth = require('../../../middleware/auth-v2');
+const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
 const errors = require('../../services/errors');
 const cronSyncSendgrid = require('../../services/cron/synchronizeSendGrid');

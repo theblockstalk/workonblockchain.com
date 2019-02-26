@@ -41,8 +41,7 @@ module.exports = async function (companyId) {
                 }
                 let candidateDocs;
                 let foundCandidate = [];
-                for (let savedSearch of companyDoc.saved_searches.length) {
-                    let savedSearch = savedSearch.toObject();
+                for (let savedSearch of companyDoc.saved_searches) {
                     try {
 
                         candidateDocs = await

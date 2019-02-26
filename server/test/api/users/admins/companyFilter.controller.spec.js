@@ -32,7 +32,8 @@ describe('admin search company by filter', function () {
             const company = docGenerator.company();
             const companyTnCWizard = docGenerator.companyTnCWizard();
             const companyAbout = docGenerator.companyAbout();
-            const companyRes = await companyHelper.signupCompanyAndCompleteProfile(company,companyTnCWizard,companyAbout);
+            const companyPref = docGenerator.companySavedSearches();
+            const companyRes = await companyHelper.signupCompanyAndCompleteProfile(company,companyTnCWizard,companyAbout,companyPref);
             await userHelper.makeAdmin(company.email);
             const companyUserDoc = await Users.findOne({email: company.email}).lean();
 
