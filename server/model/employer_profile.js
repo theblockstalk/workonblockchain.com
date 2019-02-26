@@ -129,7 +129,6 @@ const CompanyProfileSchema = new Schema({
             },
             when_receive_email_notitfications : { //DELETE ME
                 type : String ,
-                required : true,
                 enum : enumerations.email_notificaiton
             },
             order_preferences : {
