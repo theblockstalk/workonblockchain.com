@@ -153,13 +153,11 @@ module.exports.auth = async function (req) {
 
 
 module.exports.endpoint = async function (req, res) {
-    console.log("company endpoint");
     let userId = req.auth.user._id;
     const employerDoc = await companies.findOne({ _creator: userId });
 
     if(employerDoc){
         const queryBody = req.body;
-        console.log(queryBody);
         let employerUpdate = {};
         if(req.file && req.file.path) employerUpdate.company_logo = req.file.path;
 
