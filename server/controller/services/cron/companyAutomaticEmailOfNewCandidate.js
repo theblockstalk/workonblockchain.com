@@ -15,7 +15,7 @@ module.exports = async function (companyId) {
     let companySelector;
 
     if (companyId) {
-        companySelector = {_id: companyId}
+        companySelector = {_creator: companyId}
     } else {
         let userIds = await users.find({type: 'company', disable_account: false, is_approved: 1}, {_id: 1});
         companySelector = {_creator : {$in : userIds},
