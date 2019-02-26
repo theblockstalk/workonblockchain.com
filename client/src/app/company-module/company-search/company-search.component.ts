@@ -446,11 +446,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         this.name = name;
         setTimeout(() => {
           $('.selectpicker').selectpicker();
-        }, 300);
+        }, 200);
 
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh');
-        }, 900);
+        }, 300);
 
         if(key['location'])
         {
