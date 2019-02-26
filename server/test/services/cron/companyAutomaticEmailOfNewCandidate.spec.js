@@ -47,7 +47,9 @@ describe('cron', function () {
             await companyEmail();
 
             const userCompanyDoc = await users.findOneByEmail(company.email);
-            companyDoc = await companies.findOne({_creator: updateRes.body._creator});
+            companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+            console.log("company doc");
+            console.log(companyDoc);
 
             const userCandidateDoc = await users.findOneByEmail(candidate.email);
             companyDoc.candidates_sent_by_email.length.should.equal(1);
