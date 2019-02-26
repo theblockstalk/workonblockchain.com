@@ -261,14 +261,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         this.selectedValueArray = this.filter_array(this.selectedValueArray);
       }
       this.locationArray.push(this.selectedValueArray);
-      console.log(this.locationArray);
-
-      //console.log(this.preferncesForm.value.prefItems[0].location);
-      //this.preferncesForm.value.prefItems[index].location = this.selectedLocations;
-
       return '';
     }
     else {
+      this.locationArray.push([]);
       return '';
     }
   }
@@ -386,22 +382,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
                   this.preferncesFormData()
                 )
               });
-
-              for(let i = 0 ; i < this.preferncesForm.value.prefItems.length ; i++ ){
-                for(let key of this.preferncesForm.value.prefItems) {
-                  //this.locationArray.push(key['location']);
-                }
-              }
-
-              //console.log(this.locationArray);
-              /*for(let key of this.preferncesForm.value.prefItems) {
-                console.log(key);
-                this.preferncesForm.value.prefItems['loc'] = key['location'];
-                console.log(key['location']);
-              }*/
-              /*this.preferncesForm = this._fb.group({
-                location: [],
-              });*/
 
             }
           },
@@ -545,7 +525,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       if(this.preferncesForm.value.prefItems && this.preferncesForm.value.prefItems.length > 0){
         let i=0;
         for(let key of this.preferncesForm.value.prefItems) {
-          console.log(key);
           let searchQuery : any = {};
           let validLocation = [];
           if(i < this.preferncesForm.value.prefItems.length) {
@@ -578,7 +557,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         }
       }
       profileForm.value.saved_searches = saved_searches;
-      console.log(profileForm.value);
 
       this.authenticationService.edit_company_profile(profileForm.value)
         .subscribe(
@@ -653,13 +631,13 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
   }
 
+
   selectedValueFunction(locValue, index) {
     if(this.cities) {
       if(this.cities.find(x => x.name === locValue)) {
         var value2send=document.querySelector("#countryList option[value='"+ locValue +"']")['dataset'].value;
-        console.log(index);
-        console.log(this.preferncesForm.value.prefItems);
-        console.log(this.locationArray[index]);
+        ((this.preferncesForm.get('prefItems') as FormArray).at(index) as FormGroup).get('location').patchValue('');
+        this.cities = [];
         if(this.locationArray[index].length > 4) {
           this.error = 'You can select maximum 5 locations';
           setInterval(() => {
