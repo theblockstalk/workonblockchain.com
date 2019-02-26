@@ -169,7 +169,7 @@
           <div *ngFor="let searches of saved_searche; let i = index ">
           <div class="row">
             <div class="col-md-12">
-              <h3 class="pt-2 mb-3"> Job search {{i+1}}</h3>
+              <h3 class="pt-2 mb-3"> Job search {{i+1}}: {{searches.name}}</h3>
             </div>
           </div>
 
@@ -189,7 +189,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" *ngIf="searches.position && searches.position.length > 0">
               <div class="form-group">
                 <label>Role:</label>
                 <div>
@@ -245,6 +245,14 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-6 mb-3" *ngIf = "searches.residence_country">
+              <div class="form-group">
+                <label>Residence country:</label>
+                <p> {{searches.residence_country}}</p>
+              </div>
+            </div>
+
+
             <div class="col-md-6 mb-3" *ngIf="searches.current_curreny && searches.current_salary">
               <div class="form-group">
                 <label>Salary:</label>

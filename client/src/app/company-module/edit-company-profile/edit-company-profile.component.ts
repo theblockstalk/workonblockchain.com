@@ -218,7 +218,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   initPrefRows()
   {
     return this._fb.group({
-      search_name: [''],
+      name: [''],
       location: [''],
       visa_needed : [false],
       job_type: [''],
@@ -236,7 +236,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ residence_country: i.residence_country, search_name: i.search_name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ residence_country: i.residence_country, name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -562,7 +562,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
           }
 
-          if(key['search_name']) searchQuery.search_name = key['search_name'];
+          if(key['name']) searchQuery.name = key['name'];
           if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
           if(key['job_type']) searchQuery.job_type = key['job_type'];
           if(key['position']) searchQuery.position = key['position'];
@@ -578,6 +578,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         }
       }
       profileForm.value.saved_searches = saved_searches;
+      console.log(profileForm.value);
 
       this.authenticationService.edit_company_profile(profileForm.value)
         .subscribe(

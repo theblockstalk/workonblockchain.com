@@ -50,7 +50,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
-	setTimeout(() => {
+    setTimeout(() => {
       $('.selectpicker').selectpicker();
     }, 300);
 
@@ -194,9 +194,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       })
 
       this.job_types.sort(function(a, b){
-          if(a < b) { return -1; }
-          if(a > b) { return 1; }
-          return 0;
+        if(a < b) { return -1; }
+        if(a > b) { return 1; }
+        return 0;
       })
 
       this.roles.sort(function(a, b){
@@ -219,7 +219,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
 
       this.preferncesForm = new FormGroup({
-        search_name :  new FormControl(),
+        name :  new FormControl(),
         location: new FormControl(),
         visa_needed: new FormControl(),
         job_type: new FormControl(),
@@ -251,7 +251,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
-                search_name: [data['saved_searches'][0].search_name],
+                name: [data['saved_searches'][0].name],
                 location: [],
                 visa_needed: [data['saved_searches'][0].visa_needed],
                 job_type: [data['saved_searches'][0].job_type],
@@ -340,7 +340,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                   }
                 }
               }
-			}
+            }
 
           },
           error =>
@@ -442,7 +442,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications && this.preferncesForm.value.residence_country) {
       this.preferncesForm.value.location = this.validatedLocation;
-      this.preferncesForm.value.search_name = "Saved search 1";
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.saved_searches.push(this.preferncesForm.value);
       this.authenticationService.candidate_prefernece(this.saved_searches)
@@ -543,45 +542,45 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   suggestedOptions() {
     if(this.preferncesForm.value.location !== '') {
-        this.error='';
-        this.authenticationService.autoSuggestOptions(this.preferncesForm.value.location , true)
-          .subscribe(
-            data => {
-              if(data) {
-                let citiesInput = data;
-                let citiesOptions=[];
-                for(let cities of citiesInput['locations']) {
-                  if(cities['remote'] === true) {
-                    citiesOptions.push({name: 'Remote'});
-                  }
-                  if(cities['city']) {
-                    let cityString = cities['city'].city + ", " + cities['city'].country;
-                    citiesOptions.push({_id : cities['city']._id , name : cityString});
-                  }
+      this.error='';
+      this.authenticationService.autoSuggestOptions(this.preferncesForm.value.location , true)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({name: 'Remote'});
                 }
-                this.cities = this.filter_array(citiesOptions);
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country;
+                  citiesOptions.push({_id : cities['city']._id , name : cityString});
+                }
               }
+              this.cities = this.filter_array(citiesOptions);
+            }
 
-            },
-            error=>
+          },
+          error=>
+          {
+            if(error['message'] === 500 || error['message'] === 401)
             {
-              if(error['message'] === 500 || error['message'] === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-              if(error.message === 403)
-              {
-                this.router.navigate(['/not_found']);
-              }
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-            });
+          });
     }
   }
 

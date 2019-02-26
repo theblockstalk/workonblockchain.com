@@ -194,7 +194,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
 }
 
 //Remove duplicates from an array of objects
-function removeDuplicates(originalArray, prop) {
+const removeDuplicates = module.exports.removeDuplicates = function removeDuplicates(originalArray, prop) {
     var newArray = [];
     var lookupObject  = {};
 

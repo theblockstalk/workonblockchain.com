@@ -197,7 +197,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   {
     this.credentials.currency = -1;
     this.preferncesForm = new FormGroup({
-      search_name: new FormControl(),
+      name: new FormControl(),
       location: new FormControl(),
       visa_needed: new FormControl(),
       job_type: new FormControl(),
@@ -304,11 +304,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   console.log(data['saved_searches']);
                   this.savedSearches = data['saved_searches'];
                   for(let i=0; i < data['saved_searches'].length; i++) {
-                    this.searchName.push(data['saved_searches'][i].search_name);
+                    this.searchName.push(data['saved_searches'][i].name);
                   }
 
                 }
-                  this.getVerrifiedCandidate();
+                this.getVerrifiedCandidate();
 
               }
             }
@@ -437,12 +437,13 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
   visa_check;
   blockchain_order;
-  search_name;
+  name;
+
   fillFields(searches, name) {
     this.selectedValueArray = [];
     for(let key of searches) {
-      if(key['search_name'] === name) {
-        this.search_name = name;
+      if(key['name'] === name) {
+        this.name = name;
         setTimeout(() => {
           $('.selectpicker').selectpicker();
         }, 300);
@@ -592,19 +593,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   errorMsg;
   savedSearch() {
     let queryBody : any = {};
-    let index = this.savedSearches.findIndex((obj => obj.search_name === this.search_name));
-    if(this.search_name) queryBody.search_name = this.search_name;
+    let index = this.savedSearches.findIndex((obj => obj.name === this.name));
+    if(this.name) queryBody.name = this.name;
     if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
     if(this.selectedValueArray && this.selectedValueArray.length > 0) {
-        let validatedLocation =[];
-        for(let location of this.selectedValueArray) {
-          if(location.name.includes(', ')) {
-            validatedLocation.push({city: location.city});
-          }
-          if(location.name === 'Remote') {
-            validatedLocation.push({remote: true });
-          }
+      let validatedLocation =[];
+      for(let location of this.selectedValueArray) {
+        if(location.name.includes(', ')) {
+          validatedLocation.push({city: location.city});
         }
+        if(location.name === 'Remote') {
+          validatedLocation.push({remote: true });
+        }
+      }
       queryBody.location = this.filter_array(validatedLocation);
     }
     if(this.role_value && this.role_value.length > 0 ) queryBody.position = this.role_value;
@@ -617,7 +618,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.current_currency = this.currencyChange;
     }
     this.savedSearches[index] = queryBody;
-    if(this.search_name) {
+    if(this.name) {
       this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
         .subscribe(
           data => {
@@ -629,7 +630,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 console.log(data['saved_searches']);
                 this.savedSearches = data['saved_searches'];
                 for(let i=0; i < data['saved_searches'].length; i++) {
-                  this.searchName.push(data['saved_searches'][i].search_name);
+                  this.searchName.push(data['saved_searches'][i].name);
                 }
 
               }
@@ -654,6 +655,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   saveNewSearchPopup() {
+
     $('#saveNewSearch').modal('show');
 
   }
@@ -662,7 +664,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   new_error_msg;
   savedNewSearch(){
     let queryBody : any = {};
-    if(this.preferncesForm.value.search_name) queryBody.search_name = this.preferncesForm.value.search_name;
+    if(this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
     if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
     if(this.selectedValueArray && this.selectedValueArray.length > 0) {
       let validatedLocation =[];
@@ -686,16 +688,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.current_currency = this.preferncesForm.value.current_currency;
     }
 
-    if(!this.preferncesForm.value.search_name) {
+    if(!this.preferncesForm.value.name) {
       this.new_error_msg = "Please enter saved search name";
       setInterval(() => {
         this.new_error_msg = "" ;
       }, 5000);
     }
     else {
-      let index = this.savedSearches.findIndex((obj => obj.search_name === this.preferncesForm.value.search_name));
+      let index = this.savedSearches.findIndex((obj => obj.name === this.preferncesForm.value.name));
 
-      if(index < 0 && this.preferncesForm.value.search_name) {
+      if(index < 0 && this.preferncesForm.value.name) {
         this.savedSearches.push(queryBody);
         console.log(this.savedSearches);
         this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
@@ -707,7 +709,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
                 this.successful_msg = "Successfully added new search";
                 this.preferncesForm = this._fb.group({
-                  search_name: [''],
+                  name: [''],
                   location: [],
                   visa_needed: [false],
                   job_type: [],
@@ -724,7 +726,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   console.log(data['saved_searches']);
                   this.savedSearches = data['saved_searches'];
                   for(let i=0; i < data['saved_searches'].length; i++) {
-                    this.searchName.push(data['saved_searches'][i].search_name);
+                    this.searchName.push(data['saved_searches'][i].name);
                   }
 
                 }
@@ -932,42 +934,42 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         let new_offer : any = {};
         new_offer.job_offer = job_offer;
         this.authenticationService.send_message(this.user_id.id, 'job_offer',new_offer)
-        .subscribe(
-          data => {
-            this.job_offer_log_success = 'Message successfully sent';
-            this.credentials.job_title = '';
-            this.credentials.salary = '';
-            this.credentials.currency = '';
-            this.credentials.location = '';
-            this.credentials.job_type = '';
-            this.credentials.job_desc = '';
-            $("#jobDescriptionModal").modal("hide");
-            this.router.navigate(['/chat']);
-          },
-          error => {
-            if (error['status'] === 400) {
-              this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
+          .subscribe(
+            data => {
+              this.job_offer_log_success = 'Message successfully sent';
+              this.credentials.job_title = '';
+              this.credentials.salary = '';
+              this.credentials.currency = '';
+              this.credentials.location = '';
+              this.credentials.job_type = '';
+              this.credentials.job_desc = '';
+              $("#jobDescriptionModal").modal("hide");
+              this.router.navigate(['/chat']);
+            },
+            error => {
+              if (error['status'] === 400) {
+                this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
+              }
+              if (error['status'] === 500 || error['status'] === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+              if (error['status'] === 404) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
             }
-            if (error['status'] === 500 || error['status'] === 401) {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-            if (error['status'] === 404) {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-          }
-        );
+          );
       }
       else {
         this.salary_log = 'Salary should be a number';

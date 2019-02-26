@@ -13,7 +13,7 @@
             <div class="wob-bg-primary2 p-2 border">
               <h4 class="pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved searches</h4>
               <div class = "form-group mt-3">
-                <select title="1: saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="search_name" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
+                <select title="1: saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="name" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
                   <option *ngFor = "let name of searchName" [value]="name">{{name}}</option>
                 </select>
               </div>
@@ -42,9 +42,7 @@
                 <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                   {{error}}
                 </div>
-                <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
-                  {{country_input_log}}
-                </div>
+
                 <div *ngIf="selectedValueArray.length > 0">
                   <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
                 </div>
@@ -367,7 +365,7 @@
 
             <div class="row">
               <div class="col-md-6">
-                <input type="text" formControlName="search_name"  class="form-control" placeholder="Saved search name">
+                <input type="text" formControlName="name"  class="form-control" placeholder="Saved search name">
 
               </div>
             </div>

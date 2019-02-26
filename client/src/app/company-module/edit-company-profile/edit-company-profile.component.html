@@ -294,7 +294,7 @@
                       <h4><i class="fas fa-envelope "></i> Notifications</h4>
                       <div class="form-check form-check-inline mt-2">
                         <div *ngFor="let receive of email_notificaiton; let i_ind =index">
-                          <input type="radio" id="radio - {{receive}}"  class="d-none" name="when_receive_email_notitfication" [(ngModel)]="when_receive_email_notitfications" [checked] = "receive === when_receive_email_notitfications" value = {{receive}}>
+                          <input type="radio" id="radio - {{receive}}"  class="d-none" name="when_receive_email_notitfications" [(ngModel)]="when_receive_email_notitfications" [checked] = "receive === when_receive_email_notitfications" value = {{receive}}>
                           <label  for="radio - {{receive}}" class="border border py-2 px-lg-5 px-2">
                             {{receive}}
                           </label>
@@ -319,7 +319,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
-                            <input type="text" formControlName="search_name"  [value] = "preferncesForm.value.prefItems[i].search_name"  class="form-control" placeholder="Saved search name">
+                            <input type="text" formControlName="name"  [value] = "preferncesForm.value.prefItems[i].name"  class="form-control" placeholder="Saved search name">
                           </div>
                         </div>
                       </div>
