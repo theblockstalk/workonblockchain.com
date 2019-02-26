@@ -9,14 +9,24 @@ const objects = require('../objects');
 const logger = require('../logger');
 const filterReturnData = require('../../api/users/filterReturnData');
 
-module.exports = async function () {
+module.exports = async function (companyId) {
     logger.debug('Running candidate auto-notification for company cron');
-    let userIds = await users.find({type: 'company', disable_account: false, is_approved: 1}, {_id: 1});
 
-    await company.findAndIterate({_creator : {$in : userIds},
-        saved_searches: { $exists: true, $ne : [] },
-        when_receive_email_notitfications: {$ne: "Never"}
-    }, async function (companyDoc) {
+    let companySelector;
+
+    if (companyId) {
+        companySelector = {_id: companyId}
+    } else {
+        let userIds = await users.find({type: 'company', disable_account: false, is_approved: 1}, {_id: 1});
+        companySelector = {_creator : {$in : userIds},
+            saved_searches: { $exists: true, $ne : [] },
+            when_receive_email_notitfications: {$ne: "Never"}
+        }
+    }
+
+    logger.debug("Company selector", {selector: companySelector});
+
+    await company.findAndIterate(companySelector, async function (companyDoc) {
         const userDoc = await users.findOne({_id : companyDoc._creator});
         if(userDoc && (userDoc.is_approved !== 1 || userDoc.disable_account) ) {
             logger.debug("Company is disabled, or not approved");
