@@ -12,7 +12,8 @@ module.exports = async function () {
     logger.debug('Running candidate auto-notification for company cron');
 
     await company.findAndIterate({
-        saved_searches: { $exists: true, $ne : [] }
+        saved_searches: { $exists: true, $ne : [] },
+        when_receive_email_notitfications: {$ne: "Never"}
     }, async function (companyDoc) {
         const userDoc = await users.findOne({_id : companyDoc._creator});
         if(userDoc && (userDoc.is_approved !== 1 || userDoc.disable_account) ) {
