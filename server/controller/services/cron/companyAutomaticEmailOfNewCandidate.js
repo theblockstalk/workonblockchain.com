@@ -11,8 +11,9 @@ const filterReturnData = require('../../api/users/filterReturnData');
 
 module.exports = async function () {
     logger.debug('Running candidate auto-notification for company cron');
+    let userIds = await users.find({type: 'company', disable_account: false, is_approved: 1}, {_id: 1});
 
-    await company.findAndIterate({
+    await company.findAndIterate({_creator : {$in : userIds},
         saved_searches: { $exists: true, $ne : [] },
         when_receive_email_notitfications: {$ne: "Never"}
     }, async function (companyDoc) {
@@ -24,15 +25,14 @@ module.exports = async function () {
             logger.debug("Checking company " + companyDoc.company_name + " with user_id " + userDoc._id);
             const timestamp = Date.now();
             if(!companyDoc.last_email_sent || companyDoc.last_email_sent  <  new Date(timestamp - convertToDays(companyDoc.saved_searches[0].when_receive_email_notitfications) * 24*60*60*1000)) {
-
                 let blacklist = [];
                 for (let candidateSent of companyDoc.candidates_sent_by_email) {
                     blacklist.push(candidateSent.user);
                 }
                 let candidateDocs;
-                let searchCandidates= [];
-                for (let i=0; i < companyDoc.saved_searches.length; i++) {
-                    let savedSearch = companyDoc.saved_searches[i].toObject();
+                let foundCandidate = [];
+                for (let savedSearch of companyDoc.saved_searches.length) {
+                    let savedSearch = savedSearch.toObject();
                     try {
 
                         candidateDocs = await
@@ -55,8 +55,8 @@ module.exports = async function () {
                             blockchainOrder: savedSearch.order_preferences
                         });
                         if (candidateDocs) {
-                            for (let i = 0; i < candidateDocs.candidates.length; i++) {
-                                searchCandidates.push(candidateDocs.candidates[i]);
+                            for (let candidate of  candidateDocs.candidates) {
+                                foundCandidate.push(candidate);
                             }
                         }
                     }
@@ -72,16 +72,16 @@ module.exports = async function () {
                     }
                 }
 
-                searchCandidates = objects.removeDuplicates(searchCandidates, '_id');
+                foundCandidate = objects.removeDuplicates(foundCandidate, '_id');
 
-                const candidateCount = searchCandidates.length >= 10 ? 10 : searchCandidates.length
+                const candidateCount = foundCandidate.length >= 10 ? 10 : foundCandidate.length
 
                 let candidates;
                 if(candidateCount > 0) {
                     let candidateList = [], candidateLog = [];
 
                     for ( let i = 0 ; i < candidateCount; i++) {
-                        const candidate = searchCandidates[i];
+                        const candidate = foundCandidate[i];
                         const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidate._id;
                         const candidateInfo = {
                             url: url,
@@ -97,13 +97,13 @@ module.exports = async function () {
                     }
                     console.log("candidateList")
                     if(candidateCount  <= 10) {
-                        candidates = {"count" : searchCandidates.length  , "list" : candidateList};
+                        candidates = {"count" : foundCandidate.length  , "list" : candidateList};
                     }
                     else {
                         candidates = {"count" : 'More than 10' , "list" : candidateList};
                     }
                     logger.debug("Company preferences", companyDoc.saved_searches);
-                    logger.debug("Search results", searchCandidates);
+                    logger.debug("Search results", foundCandidate);
                     await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
                     await company.update({_creator : companyDoc._creator} , {
                         $set : {'last_email_sent' : timestamp},
