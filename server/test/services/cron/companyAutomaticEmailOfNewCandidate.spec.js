@@ -40,6 +40,28 @@ describe('cron', function () {
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
             const updatedData = await docGeneratorV2.companyUpdateProfile();
+            updatedData.saved_searches = [{
+                location: [
+                    job.country[0]
+                ],
+                job_type: [
+                    "Part time"
+                ],
+                position: [
+                    job.roles[0]
+                ],
+                current_currency: job.base_currency,
+                current_salary: job.expected_salary,
+                skills: [
+                    experience.language_exp[0].language
+                ],
+                availability_day: job.availability_day,
+            }];
+
+            console.log("updated data 1");
+
+            console.log(updatedData);
+
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
@@ -70,6 +92,27 @@ describe('cron', function () {
             let companyDoc = await users.findOneByEmail(company.email);
 
             const updatedData = await docGeneratorV2.companyUpdateProfile();
+            updatedData.saved_searches = [{
+                location: [
+                    job.country[0]
+                ],
+                job_type: [
+                    "Part time"
+                ],
+                position: [
+                    job.roles[0]
+                ],
+                current_currency: job.base_currency,
+                current_salary: job.expected_salary,
+                skills: [
+                    experience.language_exp[0].language
+                ],
+                availability_day: job.availability_day,
+            }];
+            console.log("updated data");
+
+            console.log(updatedData);
+
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
