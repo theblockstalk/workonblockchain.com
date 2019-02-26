@@ -148,7 +148,7 @@ module.exports.files = async function(req) {
 }
 
 module.exports.auth = async function (req) {
-    await auth.isValidCompany(req);
+    await auth.isLoggedIn(req);
 }
 
 

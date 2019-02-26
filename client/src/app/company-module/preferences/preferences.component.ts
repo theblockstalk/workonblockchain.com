@@ -394,6 +394,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   }
   candidate_prefernces() {
+    this.saved_searches = [];
     this.error_msg = "";
     this.validatedLocation = [];
     if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
@@ -444,11 +445,15 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.saved_searches.push(this.preferncesForm.value);
-      this.authenticationService.candidate_prefernece(this.saved_searches)
+
+      let inputQuery : any ={};
+      inputQuery.when_receive_email_notitfications = this.preferncesForm.value.when_receive_email_notitfications;
+      inputQuery.saved_searches = this.saved_searches;
+      this.authenticationService.edit_company_profile(inputQuery)
         .subscribe(
           data =>
           {
-            if(data['success'] === true) {
+            if(data) {
               $('#whatHappensNextModal').modal('show');
             }
           },
