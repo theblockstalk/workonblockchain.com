@@ -62,7 +62,6 @@ const adminAddNewPagesContent = require('./controller/api/users/admins/pages/add
 const adminEditCandidateProfile = require('./controller/api/users/admins/updateCandidateProfile.controller');
 const adminGetMetrics = require('./controller/api/users/admins/getMetrics.controller');
 const adminChangeCandidateStatus = require('./controller/api/users/admins/changeCandidateStatus.controller');
-const adminRunCron = require('./controller/api/users/admins/runCronJob.controller');
 
 // Pages
 const pagesGetContent = require('./controller/api/pages/getContent.controller');
@@ -127,7 +126,6 @@ router.put('/users/add_terms_and_conditions_content' , auth.isAdmin , asyncMiddl
 router.post('/users/update_candidate_profile', auth.isAdmin , asyncMiddleware(adminEditCandidateProfile));
 router.get('/users/get_metrics', auth.isAdmin, asyncMiddleware(adminGetMetrics));
 router.put('/users/change_candidate_status/:_id', auth.isAdmin  , asyncMiddleware(adminChangeCandidateStatus));
-router.get('/users/run_cron/:cron_name', auth.isAdmin, asyncMiddleware(adminRunCron));
 
 // Pages
 router.get('/users/get_pages_content/:title', asyncMiddleware(pagesGetContent));
