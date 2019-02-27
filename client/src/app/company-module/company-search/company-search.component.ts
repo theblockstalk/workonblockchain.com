@@ -299,12 +299,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               else
               {
                 this.disabled = false;
-
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
                   this.savedSearches = data['saved_searches'];
                   for(let i=0; i < data['saved_searches'].length; i++) {
                     this.searchName.push(data['saved_searches'][i].name);
                   }
+                  setTimeout(() => {
+                    $('.selectpicker').selectpicker('refresh');
+                  }, 300);
 
                 }
                 this.getVerrifiedCandidate();
