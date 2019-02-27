@@ -1062,7 +1062,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
-
+  newSearchLocation;
   selectedValueFunction(e) {
     if(this.cities) {
       if(this.cities.find(x => x.name === e)) {
@@ -1099,6 +1099,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.selectedValueArray.splice(0, 0, {name : 'Remote'});
             this.selectedValueArray = this.filter_array(this.selectedValueArray);
           }
+          this.newSearchLocation  = this.selectedValueArray;
           this.searchdata('locations' , this.selectedValueArray);
         }
       }

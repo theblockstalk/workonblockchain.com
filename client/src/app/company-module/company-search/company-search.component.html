@@ -417,8 +417,8 @@
                       {{country_input_log}}
                     </div>
 
-                    <div *ngIf="selectedValueArray.length > 0">
-                      <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
+                    <div *ngIf="newSearchLocation.length > 0">
+                      <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of newSearchLocation; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
 
                       <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations">
                         {{country_log}}
@@ -431,11 +431,11 @@
               </div>
 
               <div class="col-md-6 mt-2">
+                <small class="text-secondary" >Only select this if essential for the job</small>
                 <div class="form-group">
                   <select multiple formControlName="blockchain" title="Commercial blockchain experience" class="form-control selectpicker">
                     <option *ngFor='let blockchain of blockchainData'  [value]="blockchain.value" >{{blockchain.name}}</option>
                   </select>
-                  <small class="text-secondary" >Only select this if essential for the job</small>
 
                 </div>
               </div>
