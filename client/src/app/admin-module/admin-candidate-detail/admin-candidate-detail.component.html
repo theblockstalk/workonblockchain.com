@@ -164,6 +164,10 @@
                       <select class="form-control selectpicker" title= "Select reason" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
                         <option *ngFor='let status of set_candidate_status_rejected' [value]="status.value" selected>{{status.name}}</option>
                       </select>
+                      <div class="text-danger" *ngIf = "status_error && !status_reason_rejected">
+                        {{status_error}}
+                      </div>
+
                     </div>
                   </div>
                   <div class="col-md-4" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
@@ -172,8 +176,13 @@
                       <select class="form-control selectpicker" title="Select reason" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
                         <option *ngFor='let status of set_candidate_status_deferred' [value]="status.value" selected>{{status.name}}</option>
                       </select>
+                      <div class="text-danger" *ngIf = "status_error && !status_reason_deferred">
+                        {{status_error}}
+                      </div>
+
                     </div>
                   </div>
+
                 </div>
 
             </div>

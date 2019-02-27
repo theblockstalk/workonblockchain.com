@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, OnInit,ElementRef, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -11,7 +11,7 @@ declare var $: any;
   templateUrl: './admin-candidate-detail.component.html',
   styleUrls: ['./admin-candidate-detail.component.css']
 })
-export class AdminCandidateDetailComponent implements OnInit {
+export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   @ViewChild("myckeditor") ckeditor: any;
   ckeConfig: any;
 
@@ -89,6 +89,21 @@ export class AdminCandidateDetailComponent implements OnInit {
   selectedValueArray=[];
   visaRequiredArray = [];
   noVisaArray = [];
+
+  ngAfterViewInit(): void
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+    }, 300);
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
+    window.scrollTo(0, 0);
+
+  }
+
+
   ngOnInit()
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -110,9 +125,6 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.referred_link = "";
     this.referred_name = "";
     this.error = "";
-    this.set_status = -1;
-    this.status_reason_rejected = -1;
-    this.status_reason_deferred = -1;
 
 
     if(this.user_id && this.admin_log && this.currentUser)
@@ -383,11 +395,7 @@ export class AdminCandidateDetailComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit(){
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh');
-    }, 200);
-  }
+
 
   changeStatus(event){
     if(event === 'Rejected' || event === 'rejected'){
@@ -398,48 +406,52 @@ export class AdminCandidateDetailComponent implements OnInit {
       $("#sel1-reason-rejected").css('display', 'none');
       $("#sel1-reason-deferred").css('display', 'block');
     }
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 200);
   }
 
   is_approve;is_approved;
   error;
   success;
+  status_error;
   approveClick(event , approveForm: NgForm) {
     this.error = '';
     this.success = '';
-    let reason = '';
-    console.log(approveForm.value);
-   /* if (approveForm.value.set_status === -1 || approveForm.value.set_status === 'wizard completed' || approveForm.value.set_status === 'created') {
-      this.error = 'Please select a status';
+    if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.email_text) {
+      this.error = 'Please fill at least one field';
     }
-    else if (approveForm.value.status_reason_rejected === -1 || approveForm.value.status_reason_deferred === -1) {
-      this.error = 'Please select a reason';
-    }
-    else{
+    else {
+      console.log("else");
       if (approveForm.value.set_status === "Rejected" || approveForm.value.set_status === "rejected") {
         if (approveForm.value.status_reason_rejected) {
-          this.saveApproveData(approveForm.value.id, approveForm.value.set_status, approveForm.value.status_reason_rejected);
+          this.saveApproveData(approveForm.value);
         }
         else {
-          this.error = 'Please select a reason';
+          this.status_error = 'Please select a reason';
+          this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
       }
       else if (approveForm.value.set_status === "Deferred" || approveForm.value.set_status === "deferred") {
         if (approveForm.value.status_reason_deferred) {
-          this.saveApproveData(approveForm.value.id, approveForm.value.set_status, approveForm.value.status_reason_deferred);
+          this.saveApproveData(approveForm.value);
         }
         else {
-          this.error = 'Please select a reason';
+          this.status_error = 'Please select a reason';
+          this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
       }
       else {
-        this.saveApproveData(approveForm.value.id, approveForm.value.set_status, '');
+        this.saveApproveData(approveForm.value);
       }
-    }*/
+    }
+
   }
 
-  saveApproveData(id:any, set_status:string, reason:string) {
+  saveApproveData(approveForm) {
+    console.log(approveForm);
 
-    this.authenticationService.approve_candidate(id, set_status, reason)
+    /*this.authenticationService.approve_candidate(id, set_status, reason)
       .subscribe(
         data => {
           if (data['success'] === true) {
@@ -458,7 +470,7 @@ export class AdminCandidateDetailComponent implements OnInit {
           else {
             this.error = "Something getting wrong";
           }
-        });
+        });*/
   }
 
   filter_array(arr) {
