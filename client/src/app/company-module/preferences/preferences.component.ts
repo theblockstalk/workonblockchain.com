@@ -564,6 +564,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 }
               }
               this.cities = this.filter_array(citiesOptions);
+              console.log(this.cities);
             }
 
           },

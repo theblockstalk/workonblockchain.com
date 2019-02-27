@@ -409,20 +409,14 @@
                       </select>
                     </datalist>
 
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Location" class="form-control" formControlName = "location" (input)="suggestedOptions()" (ngModelChange)="newSearchSelectedValueFunction($event)">
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
-                    <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
-                      {{country_input_log}}
-                    </div>
 
                     <div *ngIf="newSearchLocation.length > 0">
-                      <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of newSearchLocation; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
+                      <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of newSearchLocation; let i = index">{{value.name}} <a (click)="deleteNewLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
 
-                      <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations">
-                        {{country_log}}
-                      </div>
                     </div>
 
                   </div>
@@ -431,11 +425,11 @@
               </div>
 
               <div class="col-md-6 mt-2">
-                <small class="text-secondary" >Only select this if essential for the job</small>
                 <div class="form-group">
                   <select multiple formControlName="blockchain" title="Commercial blockchain experience" class="form-control selectpicker">
                     <option *ngFor='let blockchain of blockchainData'  [value]="blockchain.value" >{{blockchain.name}}</option>
                   </select>
+                  <small class="text-secondary" >Only select this if essential for the job</small>
 
                 </div>
               </div>

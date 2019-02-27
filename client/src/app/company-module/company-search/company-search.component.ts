@@ -668,9 +668,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     let queryBody : any = {};
     if(this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
     if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
-    if(this.selectedValueArray && this.selectedValueArray.length > 0) {
+    if(this.newSearchLocation && this.newSearchLocation.length > 0) {
       let validatedLocation =[];
-      for(let location of this.selectedValueArray) {
+      for(let location of this.newSearchLocation) {
         if(location.name.includes(', ')) {
           validatedLocation.push({city: location.city});
         }
@@ -709,7 +709,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               if(data && this.currentUser)
               {
                 this.savedSearches= [];
-
                 this.successful_msg = "Successfully added new search";
                 this.preferncesForm = this._fb.group({
                   name: [''],
@@ -725,6 +724,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   order_preferences: [],
                   residence_country: [''],
                 });
+                this.newSearchLocation = [];
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
                   console.log(data['saved_searches']);
                   this.savedSearches = data['saved_searches'];
@@ -1062,13 +1062,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
-  newSearchLocation;
+  newSearchLocation = [];
   selectedValueFunction(e) {
     if(this.cities) {
       if(this.cities.find(x => x.name === e)) {
         var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
 
         this.countriesModel = '';
+
         if(this.preferncesForm) this.preferncesForm.get('location').setValue('');
 
         this.cities = [];
@@ -1110,8 +1111,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  deleteLocationRow(i){
-    this.selectedValueArray.splice(i, 1);
+  deleteLocationRow(index){
+    this.selectedValueArray.splice(index, 1);
     this.searchdata('locations' , this.selectedValueArray);
   }
 
@@ -1126,4 +1127,55 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       return (match ? false : hashTable[key] = true);
     });
   }
+
+  newSearchSelectedValueFunction(e) {
+    if(this.cities) {
+      if(this.cities.find(x => x.name === e)) {
+        var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
+
+        this.countriesModel = '';
+        this.preferncesForm.get('location').setValue('');
+
+        this.cities = [];
+        if(this.newSearchLocation.length > 4) {
+          this.error = 'You can select maximum 5 locations';
+          setInterval(() => {
+            this.error = "" ;
+          }, 5000);
+        }
+        else {
+          if(this.newSearchLocation.find(x => x.name === e)) {
+            this.error = 'This location has already been selected';
+            setInterval(() => {
+              this.error = "" ;
+            }, 4000);
+          }
+
+          else {
+            if(value2send) this.newSearchLocation.push({city:value2send , name: e});
+            else this.newSearchLocation.push({ name: e});
+          }
+          this.newSearchLocation.sort(function(a, b){
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+          });
+          if(this.newSearchLocation.find((obj => obj.name === 'Remote'))){
+            this.newSearchLocation.splice(0, 0, {name : 'Remote'});
+            this.newSearchLocation = this.filter_array(this.newSearchLocation);
+          }
+          //this.searchdata('locations' , this.selectedValueArray);
+        }
+      }
+      else {
+      }
+    }
+
+
+  }
+
+  deleteNewLocationRow(index) {
+    this.newSearchLocation.splice(index, 1);
+  }
+
 }
