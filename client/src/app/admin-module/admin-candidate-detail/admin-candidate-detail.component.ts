@@ -124,7 +124,7 @@ export class AdminCandidateDetailComponent implements OnInit {
             data => {
 
               this.candidate_status = data['candidate'].status[0];
-              if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
+              /*if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
               }
               else{
                 this.set_status = this.candidate_status.status;
@@ -136,7 +136,7 @@ export class AdminCandidateDetailComponent implements OnInit {
               if(this.set_status === 'Deferred' || this.set_status === 'deferred'){
                 this.status_reason_deferred = this.candidate_status.reason;
                 $("#status_reason_deferred").css("display", "block");
-              }
+              }*/
               this.info.push(data);
               this.verify =data['is_verify'];
               if(data['candidate'].availability_day === '1 month') this.availability_day = '1 month notice period';
@@ -407,7 +407,8 @@ export class AdminCandidateDetailComponent implements OnInit {
     this.error = '';
     this.success = '';
     let reason = '';
-    if (approveForm.value.set_status === -1 || approveForm.value.set_status === 'wizard completed' || approveForm.value.set_status === 'created') {
+    console.log(approveForm.value);
+   /* if (approveForm.value.set_status === -1 || approveForm.value.set_status === 'wizard completed' || approveForm.value.set_status === 'created') {
       this.error = 'Please select a status';
     }
     else if (approveForm.value.status_reason_rejected === -1 || approveForm.value.status_reason_deferred === -1) {
@@ -433,10 +434,11 @@ export class AdminCandidateDetailComponent implements OnInit {
       else {
         this.saveApproveData(approveForm.value.id, approveForm.value.set_status, '');
       }
-    }
+    }*/
   }
 
   saveApproveData(id:any, set_status:string, reason:string) {
+
     this.authenticationService.approve_candidate(id, set_status, reason)
       .subscribe(
         data => {

@@ -147,11 +147,10 @@
                 <input type="hidden" name="id" [ngModel]="data._id">
                 <!--New code for 23-Nov-2018-->
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Change status: </label>
-                      <select class="form-control status_select w-50" [disabled]="data.is_verify === 0 ? true : false" id="status_selector" [(ngModel)]="set_status" (ngModelChange) = "changeStatus($event)" name="set_status">
-                        <option value="-1" disabled selected hidden >Select status</option>
+                      <select class="form-control selectpicker" title="Select status" [disabled]="data.is_verify === 0 ? true : false" id="status_selector" [(ngModel)]="set_status" (ngModelChange) = "changeStatus($event)" name="set_status">
                         <option *ngFor='let status of set_candidate_status' [value]="status.value" >{{status.name}}</option>
                       </select>
                     </div>
@@ -159,20 +158,18 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
+                  <div class="col-md-4" id="sel1-reason-rejected" *ngIf = "(set_status === 'Rejected' || set_status === 'rejected')">
                     <div class="form-group">
                       <label>Reason: </label>
-                      <select class="form-control w-50" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
-                        <option value="-1" disabled selected hidden >Select reason</option>
+                      <select class="form-control selectpicker" title= "Select reason" [(ngModel)]="status_reason_rejected" name="status_reason_rejected">
                         <option *ngFor='let status of set_candidate_status_rejected' [value]="status.value" selected>{{status.name}}</option>
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-6" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
+                  <div class="col-md-4" id="sel1-reason-deferred" *ngIf = "(set_status === 'Deferred' || set_status === 'deferred')">
                     <div class="form-group">
                       <label>Reason: </label>
-                      <select class="form-control w-50" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
-                        <option value="-1" disabled selected hidden >Select reason</option>
+                      <select class="form-control selectpicker" title="Select reason" [(ngModel)]="status_reason_deferred" name="status_reason_deferred">
                         <option *ngFor='let status of set_candidate_status_deferred' [value]="status.value" selected>{{status.name}}</option>
                       </select>
                     </div>
@@ -186,7 +183,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Add note:</label>
-                <textarea rows="5" id="comment" maxlength="2000" class="form-control" ></textarea>
+                <textarea rows="5" id="comment" maxlength="2000" class="form-control" name="note" [(ngModel)]="note" ></textarea>
               </div>
             </div>
           </div>
@@ -195,7 +192,7 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Send email:</label>
-                  <ckeditor  [config]="ckeConfig" debounce="500" >
+                  <ckeditor  [config]="ckeConfig" debounce="500" name="email_text" [(ngModel)]="email_text" >
                   </ckeditor>
                 </div>
               </div>
