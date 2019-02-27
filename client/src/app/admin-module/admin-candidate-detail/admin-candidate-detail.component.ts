@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, Input } from '@angular/core';
+import { Component, OnInit,ElementRef, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
@@ -12,6 +12,8 @@ declare var $: any;
   styleUrls: ['./admin-candidate-detail.component.css']
 })
 export class AdminCandidateDetailComponent implements OnInit {
+  @ViewChild("myckeditor") ckeditor: any;
+  ckeConfig: any;
 
   id;user_id;
   first_name;last_name;description;companyname;degreename;
@@ -91,6 +93,17 @@ export class AdminCandidateDetailComponent implements OnInit {
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
+
+    this.ckeConfig = {
+      allowedContent: false,
+      extraPlugins: 'divarea',
+      forcePasteAsPlainText: true,
+      height: '15rem',
+      minHeight: '10rem',
+      // removePlugins :'elementspath,save,image,flash,iframe,link,smiley,tabletools,find,pagebreak,templates,about,maximize,showblocks,newpage,language',
+      // removeButtons : 'Subscript,Superscript,Copy,Cut,Paste,Undo,Redo,Print,Form,TextField,Textarea,Button,SelectAll,NumberedList,BulletedList,CreateDiv,Table,PasteText,PasteFromWord,Select,HiddenField',
+    };
+
     this.credentials.user_id = this.user_id;
 
     this.response = "";
