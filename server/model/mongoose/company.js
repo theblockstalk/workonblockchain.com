@@ -79,6 +79,6 @@ module.exports.findAndIterate = async function findAndIterate(selector, fn) {
     let doc = await cursor.next();
 
     for (null; doc !== null; doc = await cursor.next()) {
-        await fn(doc);
+        await fn(doc.toObject());
     }
 }
