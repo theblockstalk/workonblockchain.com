@@ -301,7 +301,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 this.disabled = false;
 
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
-                  console.log(data['saved_searches']);
                   this.savedSearches = data['saved_searches'];
                   for(let i=0; i < data['saved_searches'].length; i++) {
                     this.searchName.push(data['saved_searches'][i].name);
@@ -507,7 +506,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   {
     this.success_msg = '';
     if(key === 'searchName') {
-      console.log(value);
       this.error_msg = '';
       this.fillFields(this.savedSearches, value);
     }
@@ -702,7 +700,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
       if(index < 0 && this.preferncesForm.value.name) {
         this.savedSearches.push(queryBody);
-        console.log(this.savedSearches);
         this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
           .subscribe(
             data => {
@@ -726,7 +723,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 });
                 this.newSearchLocation = [];
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
-                  console.log(data['saved_searches']);
                   this.savedSearches = data['saved_searches'];
                   this.searchName=[];
                   for(let i=0; i < data['saved_searches'].length; i++) {

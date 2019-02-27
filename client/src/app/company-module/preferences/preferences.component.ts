@@ -239,7 +239,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         .subscribe(
           data =>
           {
-            console.log(data);
             if(data['terms_id'])
             {
               this.terms_active_class = 'fa fa-check-circle text-success';
@@ -564,7 +563,6 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 }
               }
               this.cities = this.filter_array(citiesOptions);
-              console.log(this.cities);
             }
 
           },
