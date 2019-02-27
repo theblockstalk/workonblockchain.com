@@ -113,7 +113,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       allowedContent: false,
       extraPlugins: 'divarea',
       forcePasteAsPlainText: true,
-      height: '15rem',
+      height: '12rem',
       minHeight: '10rem',
       // removePlugins :'elementspath,save,image,flash,iframe,link,smiley,tabletools,find,pagebreak,templates,about,maximize,showblocks,newpage,language',
       // removeButtons : 'Subscript,Superscript,Copy,Cut,Paste,Undo,Redo,Print,Form,TextField,Textarea,Button,SelectAll,NumberedList,BulletedList,CreateDiv,Table,PasteText,PasteFromWord,Select,HiddenField',
