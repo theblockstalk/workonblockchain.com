@@ -181,7 +181,7 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
         company_funded:"i have no idea",
         company_description:"Global blockchain agnostic hiring platform for developers.",
 
-        when_receive_email_notitfications : 'Never',
+        when_receive_email_notitfications : 'Daily',
 
         saved_searches : [{
             location: [

@@ -58,10 +58,6 @@ describe('cron', function () {
                 availability_day: job.availability_day,
             }];
 
-            console.log("updated data 1");
-
-            console.log(updatedData);
-
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
@@ -70,8 +66,6 @@ describe('cron', function () {
 
             const userCompanyDoc = await users.findOneByEmail(company.email);
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
-            console.log("company doc");
-            console.log(companyDoc);
 
             const userCandidateDoc = await users.findOneByEmail(candidate.email);
             companyDoc.candidates_sent_by_email.length.should.equal(1);
@@ -109,9 +103,6 @@ describe('cron', function () {
                 ],
                 availability_day: job.availability_day,
             }];
-            console.log("updated data");
-
-            console.log(updatedData);
 
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
