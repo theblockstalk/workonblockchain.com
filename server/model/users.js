@@ -281,7 +281,7 @@ const UserSchema = new Schema({
                     })],
                 }
             },
-            status:{
+            status:{ //DELETE ME
                 type:[{
                     status: {
                         type: String,
@@ -297,7 +297,33 @@ const UserSchema = new Schema({
                         required:true,
                     }
                 }]
+            },
+            history : {
+                type : [{
+                    status:{
+                        type:[{
+                            status: {
+                                type: String,
+                                enum: enumerations.candidateStatus,
+                                required:true,
+                            },
+                            reason: {
+                                type: String,
+                                enum: enumerations.statusReasons
+                            },
+                            timestamp: {
+                                type: Date,
+                                required:true,
+                            }
+                        }],
+                        required: false
+                    },
+                    note : String,
+                    email_text : String
+                }]
+
             }
+
         }
     },
     conversations: [new Schema({
