@@ -258,8 +258,8 @@ describe('POST /messages', function () {
             const jobOffer = docGeneratorV2.messages.job_offer(candidateuserDoc._id);
             await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
 
-            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(candidateuserDoc._id);
-            await messagesHelpers.post(jobOfferAccepted, companyUserDoc.jwt_token);
+            const jobOfferAccepted = docGeneratorV2.messages.job_offer_accepted(companyUserDoc._id);
+            await messagesHelpers.post(jobOfferAccepted, candidateuserDoc.jwt_token);
 
             const messageFileData = docGeneratorV2.messageFile();
             const message = docGeneratorV2.messages.file(candidateuserDoc._id);

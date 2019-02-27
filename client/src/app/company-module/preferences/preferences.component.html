@@ -31,6 +31,13 @@
         <form  [formGroup]="preferncesForm" (ngSubmit)="candidate_prefernces()">
           <section class = "p-2" id = "information">
             <div class="row">
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <input type="text" formControlName="name"  [value] = "preferncesForm.value.name"  class="form-control" placeholder="Saved search name">
+                  </div>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-md-12">
                 <h4 class="pt-2 mb-3"><i class="fas fa-user" aria-hidden="true"></i> Job requirements</h4>
               </div>
@@ -123,14 +130,23 @@
                   </select>
                 </div>
               </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <select class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
+                    <option *ngFor='let country of residenceCountries'  [value]="country" [attr.selected]="country === preferncesForm.value.residence_country ? true : null" >{{country}}</option>
+                  </select>
+                  <div class = "invalid-feedback d-inline"  *ngIf="!preferncesForm.value.residence_country">
+                    {{residence_country_log}}
+                  </div>
+                </div>
+              </div>
 
-
-              <div class="col-md-6 mt-2">
+              <div class="col-md-6 mt-4">
                 <div class = "form-group w-auto">
 
-                  <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left" placeholder="Salary">
+                  <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left mt-3" placeholder="Salary">
 
-                  <select title="Currency" class="selectpicker form-control w-50 position-relative" formControlName = "current_currency" >
+                  <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "current_currency" >
                     <option  *ngFor='let base_currency of currency' [attr.selected] = "preferncesForm.value.current_currency === base_currency ? true : null " >{{base_currency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary  " >
