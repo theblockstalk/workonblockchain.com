@@ -24,8 +24,8 @@ describe('admin search candidate by filter', function () {
 
     afterEach(async () => {
         console.log('dropping database');
-        await mongo.drop();
-    })
+    await mongo.drop();
+})
 
     describe('POST /users/admin_candidate_filter', () => {
 
@@ -40,31 +40,31 @@ describe('admin search candidate by filter', function () {
         await userHelper.approve(company.email);
 
         await userHelper.makeAdmin(company.email);
-            const companyUserDoc = await Users.findOneByEmail(company.email);
+        const companyUserDoc = await Users.findOneByEmail(company.email);
 
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
-            const candidate = docGenerator.candidate();
-            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
-            await userHelper.makeAdmin(candidate.email);
-            const candidateUserDoc = await Users.findOneByEmail(candidate.email);
+        const profileData = docGenerator.profileData();
+        const job = docGenerator.job();
+        const resume = docGenerator.resume();
+        const experience = docGenerator.experience();
+        const candidate = docGenerator.candidate();
+        const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+        await userHelper.makeAdmin(candidate.email);
+        const candidateUserDoc = await Users.findOneByEmail(candidate.email);
 
-            const jobOffer = docGeneratorV2.messages.job_offer(candidateUserDoc._id);
-            const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
+        const jobOffer = docGeneratorV2.messages.job_offer(candidateUserDoc._id);
+        const res = await messagesHelpers.post(jobOffer, companyUserDoc.jwt_token);
 
-            const messageDoc = await messages.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
-            const data = {
-                msg_tags : [messageDoc.msg_tag],
-                is_approve : candidateUserDoc.candidate.status[0].status,
-                word : candidate.first_name
-            }
-            const candidateFilterRes = await adminHelper.candidateFilter(data , candidateUserDoc.jwt_token);
-            candidateFilterRes.body[0].first_name.should.equal(candidate.first_name);
-            candidateUserDoc.candidate.status[0].status.should.equal('approved');
-            messageDoc.msg_tag.should.valueOf(data.msg_tags);
+        const messageDoc = await messages.findOne({sender_id: companyUserDoc._id,receiver_id: candidateUserDoc._id}).lean();
+        const data = {
+            msg_tags : [messageDoc.msg_tag],
+            is_approve : candidateUserDoc.candidate.status[0].status,
+            word : candidate.first_name
+        }
+        const candidateFilterRes = await adminHelper.candidateFilter(data , candidateUserDoc.jwt_token);
+        candidateFilterRes.body[0].first_name.should.equal(candidate.first_name);
+        candidateUserDoc.candidate.status[0].status.should.equal('approved');
+        messageDoc.msg_tag.should.valueOf(data.msg_tags);
 
-        })
     })
+})
 });

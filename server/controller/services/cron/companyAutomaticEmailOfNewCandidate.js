@@ -104,7 +104,6 @@ module.exports = async function (companyId) {
                             sent: timestamp
                         })
                     }
-                    console.log("candidateList")
                     if(candidateCount  <= 10) {
                         candidates = {"count" : foundCandidate.length  , "list" : candidateList};
                     }
