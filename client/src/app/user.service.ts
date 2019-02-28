@@ -1451,37 +1451,6 @@ export class UserService {
 
       }));
   }
-
-  approve_candidate(user_id:string , status :string, reason: string)
-  {
-    return this.http.put(URL+'users/change_candidate_status/' + user_id, {status : status,reason:reason}, {
-      headers: new HttpHeaders().set('Authorization', this.token)
-    }).pipe(map((res: Response) =>
-    {
-      if (res)
-      {
-        return res;
-      }
-    }), catchError((error: any) =>
-    {
-      if (error)
-      {
-        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
-        {
-          localStorage.setItem('jwt_not_found', 'Jwt token not found');
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('googleUser');
-          localStorage.removeItem('close_notify');
-          localStorage.removeItem('linkedinUser');
-          localStorage.removeItem('admin_log');
-          window.location.href = '/login';
-        }
-        else return throwError(error);
-      }
-
-    }));
-  }
-
   uploadCandImage(detail: any) {
     return this.http.post(URL + 'users/image', detail, {
       headers: new HttpHeaders().set('Authorization', this.token)
@@ -1540,5 +1509,36 @@ export class UserService {
     return this.http.get(URL+'users/statistics');
 
   }
+
+  candidate_status_history(user_id: string,queryInput:any )
+  {
+    return this.http.post(URL+'v2/users/'+ user_id +'/candidates/status/' , queryInput, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error)
+      {
+        if(error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false)
+        {
+          localStorage.setItem('jwt_not_found', 'Jwt token not found');
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('googleUser');
+          localStorage.removeItem('close_notify');
+          localStorage.removeItem('linkedinUser');
+          localStorage.removeItem('admin_log');
+          window.location.href = '/login';
+        }
+        else return throwError(error);
+      }
+
+    }));
+  }
+
 
 }

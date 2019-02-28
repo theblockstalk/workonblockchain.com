@@ -451,14 +451,18 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   saveApproveData(approveForm) {
     console.log(approveForm);
 
-    /*this.authenticationService.approve_candidate(id, set_status, reason)
+    let queryInput : any = {};
+    queryInput.note = approveForm.note;
+    queryInput.email_text = approveForm.email_text;
+    console.log(queryInput);
+
+    let history = [];
+    history.push(queryInput);
+    console.log(history);
+    this.authenticationService.candidate_status_history(approveForm.id, history)
       .subscribe(
         data => {
-          if (data['success'] === true) {
-            this.candidate_status.status = set_status;
-            this.candidate_status.reason = reason;
-            this.success = 'Candidate status changed successfully';
-          }
+
         },
         error => {
           if (error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
@@ -470,7 +474,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           else {
             this.error = "Something getting wrong";
           }
-        });*/
+        });
   }
 
   filter_array(arr) {
