@@ -64,6 +64,10 @@ const CompanyProfileSchema = new Schema({
 
     saved_searches: {
         type:[new Schema({
+            name: {
+                type: String,
+                required: true
+            },
             location: {
                 type: [{
                     city: {
@@ -115,12 +119,17 @@ const CompanyProfileSchema = new Schema({
                     enum: enumerations.programmingLanguages
                 }]
             },
+            residence_country: {
+                type: [{
+                    type: String,
+                    enum: enumerations.countries
+                }]
+            },
             other_technologies : {
                 type : String
             },
-            when_receive_email_notitfications : {
+            when_receive_email_notitfications : { //DELETE ME
                 type : String ,
-                required : true,
                 enum : enumerations.email_notificaiton
             },
             order_preferences : {
@@ -131,6 +140,10 @@ const CompanyProfileSchema = new Schema({
             }
 
         })]
+    },
+    when_receive_email_notitfications : {
+        type : String ,
+        enum : enumerations.email_notificaiton
     },
     candidates_sent_by_email: [{
         user: {

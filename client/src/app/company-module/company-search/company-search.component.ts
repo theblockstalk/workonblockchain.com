@@ -1,7 +1,6 @@
 import { Component, OnInit,ViewChild ,ElementRef,AfterViewInit } from '@angular/core';
 import {UserService} from '../../user.service';
-import {NgForm} from '@angular/forms';
-import { Select2OptionData } from 'ng2-select2';
+import {NgForm, FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import {User} from '../../Model/user';
 import { Router, ActivatedRoute } from '@angular/router';
 declare var $:any;
@@ -14,6 +13,7 @@ import {PagerService} from '../../pager.service';
 })
 export class CompanySearchComponent implements OnInit,AfterViewInit {
   currentUser: User;
+  preferncesForm : FormGroup;
   log;
   info=[];
   length;
@@ -60,8 +60,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   error;
   cities;
   emptyInput;
+  errorMsg;
 
-  constructor(private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
 
   commercially=
@@ -93,7 +94,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   currency=
     [
-      "£ GBP" ,"€ EUR" , "$ USD"
+      "Currency", "£ GBP" ,"€ EUR" , "$ USD"
     ]
 
   month=
@@ -122,32 +123,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
     ]
-
-  locationsData = [
-    {country_code:'000' , name:'Remote', value:'remote', checked:false},
-    {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-    {country_code:'001' ,name:'London', value:'London', checked:false},
-    {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-    {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-    {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-    {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-    {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-    {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-    {country_code: '002' ,name:'New York', value:'New York', checked:false},
-    {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-    {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-    {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-    {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-    {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-    {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-    {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-    {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-    {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-    {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-    {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-    {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-
-  ]
+  residenceCountries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+  job_types = ['Full time' , 'Part time' , 'Freelance' ];
 
   rolesData =
     [
@@ -215,9 +192,26 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
   skill;
+  searchName=[];
+  savedSearches;
   ngOnInit()
   {
-    this.credentials.currency = -1;
+    this.preferncesForm = new FormGroup({
+      name: new FormControl(),
+      location: new FormControl(),
+      visa_needed: new FormControl(),
+      job_type: new FormControl(),
+      position: new FormControl(),
+      current_currency: new FormControl(),
+      current_salary: new FormControl(),
+      blockchain: new FormControl(),
+      skills: new FormControl(),
+      other_technologies: new FormControl(),
+      order_preferences: new FormControl(),
+      residence_country: new FormControl(),
+    });
+
+    this.success_msg = '';
     this.ckeConfig = {
       allowedContent: false,
       extraPlugins: 'divarea',
@@ -246,15 +240,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(a.name < b.name) { return -1; }
         if(a.name > b.name) { return 1; }
         return 0;
-      })
-      this.locationsData.sort(function(a, b){
-        if(b.name === 'Remote' || a.name === 'Remote') {
-        }
-        else {
-          if(a.name < b.name) { return -1; }
-          if(a.name > b.name) { return 1; }
-          return 0;
-        }
       })
 
       this.rolesData.sort(function(a, b){
@@ -314,60 +299,17 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               else
               {
                 this.disabled = false;
-                this.first_name=data['first_name'];
-                this.last_name=data['last_name'];
-                this.company_name=data['company_name'];
-                this.job_title=data['job_title'];
-                this.company_website=data['company_website'];
-                this.company_phone =data['company_phone'];
-                this.company_country =data['company_country'];
-                this.company_city=data['company_city'];
-                this.company_postcode=data['company_postcode'];
-                this.company_description=data['company_description'];
-                this.company_founded =data['company_founded'];
-                this.company_funded=data['company_funded'];
-                this.no_of_employees=data['no_of_employees'];
-                if(data['company_logo'] != null )
-                {
-                  this.imgPath =  data['company_logo'];
-                }
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
-                  if(data['saved_searches'][0].location)
-                  {
-                    for (let country1 of data['saved_searches'][0].location)
-                    {
-                      if (country1['remote'] === true) {
-                        this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
-                      }
-
-                      if (country1['city']) {
-                        let city = country1['city'].city + ", " + country1['city'].country;
-                        this.selectedValueArray.push({city:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
-                      }
-                    }
-
-                    this.selectedValueArray.sort();
-                    if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                      let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                      this.selectedValueArray.splice(0, 0, remoteValue);
-                      this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
-                    }
+                  this.savedSearches = data['saved_searches'];
+                  for(let i=0; i < data['saved_searches'].length; i++) {
+                    this.searchName.push(data['saved_searches'][i].name);
                   }
-                  this.skill_value = data['saved_searches'][0].skills;
-                  this.visa_check = data['saved_searches'][0].visa_needed;
-                  this.role_value = data['saved_searches'][0].position;
-                  if(data['saved_searches'][0].blockchain && data['saved_searches'][0].blockchain.length > 0) {
-                    this.blockchain_value = data['saved_searches'][0].blockchain;
-                  }
-                  this.salary = data['saved_searches'][0].current_salary;
-                  this.currencyChange = data['saved_searches'][0].current_currency;
-                  this.searchdata('filter' , data['saved_searches'][0]);
-                }
-                else {
-                  this.getVerrifiedCandidate();
+                  setTimeout(() => {
+                    $('.selectpicker').selectpicker('refresh');
+                  }, 300);
 
                 }
+                this.getVerrifiedCandidate();
 
               }
             }
@@ -416,13 +358,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   updateCitiesOptions(e) {
   }
-  /*locationChanged(data)
-  {
-    this.not_found = '';
-      this.location_value = data.value;
-      this.searchdata('location' , this.location_value);
-
-  }*/
 
   skillChanged(data)
   {
@@ -432,7 +367,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  blockchainItems;
+
   blockchainchanged(data)
   {
     this.not_found = '';
@@ -440,74 +375,118 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
 
-  selectedObj;countryChange;salary;currencyChange;
+  salary;currencyChange;
   information;
   not_found;
-  salarysearchdata(key , value) {
-    this.not_found = '';
-    if (this.salary) {
-      if (this.currencyChange) {
-        this.searchdata(key, value);
-      }
-      else {
-        let queryBody : any = {};
-        if(this.searchWord) queryBody.word = this.searchWord;
-        if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
-        if(this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
-        if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.select_value;
-        if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.selecteddd;
-        if(this.salary && this.currencyChange) {
-          queryBody.current_salary  = this.salary;
-          queryBody.current_currency = this.currencyChange;
-        }
-        this.authenticationService.filterSearch(queryBody)
-          .subscribe(
-            data => {
-              this.candidate_data = data;
-              this.responseMsg = "response";
-              if (this.candidate_data.length <= 0) {
-                this.not_found = 'No candidates matched this search criteria';
-              }
-              if(this.candidate_data.length > 0) {
-                this.not_found='';
-              }
-            },
-            error =>
-            {
-              if(error['message'] === 500)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
-              if(error['message'] === 403)
-              {
-                this.router.navigate(['/not_found']);
-              }
+  visa_check;
+  blockchain_order;
+  name;
 
+  fillFields(searches, name) {
+    this.selectedValueArray = [];
+    for(let key of searches) {
+      if(key['name'] === name) {
+        this.name = name;
+        setTimeout(() => {
+          $('.selectpicker').selectpicker();
+        }, 200);
+
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh');
+        }, 300);
+
+        if(key['location'])
+        {
+          for (let country1 of key['location'])
+          {
+            if (country1['remote'] === true) {
+              this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
             }
-          );
+
+            if (country1['city']) {
+              let city = country1['city'].city + ", " + country1['city'].country;
+              this.selectedValueArray.push({city:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
+            }
+          }
+
+          this.selectedValueArray.sort();
+          if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+            let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+            this.selectedValueArray.splice(0, 0, remoteValue);
+            this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+          }
+        }
+        if(key['skills']) this.skill_value = key['skills'];
+        else this.skill_value = '';
+
+        if(key['visa_needed']) this.visa_check = key['visa_needed'];
+        else this.visa_check = false;
+
+        if(key['position']) this.role_value = key['position'];
+        else this.role_value = [];
+
+        if(key['blockchain'] && key['blockchain'].length > 0) {
+          this.blockchain_value = key['blockchain'];
+        }
+        else this.blockchain_value = [];
+
+        if(key['current_salary']) this.salary = key['current_salary'];
+        else this.salary = '';
+
+        if(key['current_currency']) this.currencyChange = key['current_currency'];
+        else this.currencyChange = [];
+
+        if(key['order_preferences']) this.blockchain_order = key['order_preferences'];
+        else this.blockchain_order = [];
+
+        if(key['residence_country'] && key['residence_country'].length > 0 ) this.residence_country = key['residence_country'];
+        else this.residence_country = '';
       }
     }
   }
-  visa_check;
-  blockchain_order;
+  residence_country;
+  residence_log;
   searchdata(key , value)
   {
-
+    this.success_msg = '';
+    if(key === 'searchName') {
+      this.error_msg = '';
+      this.fillFields(this.savedSearches, value);
+    }
     this.log='';
     this.candidate_data='';
     this.verify_msg = "";
     this.responseMsg = "";
     this.not_found='';
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
+    if(this.selectedValueArray && this.selectedValueArray.length > 0) this.newSearchLocation = this.filter_array(this.selectedValueArray);
 
-    if(!this.searchWord && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
+    this.preferncesForm = this._fb.group({
+      name: [],
+      location: [],
+      visa_needed: [this.visa_check],
+      job_type: [],
+      position: [this.role_value],
+      current_currency: [this.currencyChange],
+      current_salary: [this.salary],
+      blockchain: [this.blockchain_value],
+      skills: [this.skill_value],
+      other_technologies: [],
+      order_preferences: [this.blockchain_order],
+      residence_country: [this.residence_country],
+    });
+
+
+    if(!this.searchWord && !this.residence_country && !this.blockchain_order && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
     {
       this.getVerrifiedCandidate();
+    }
+
+    else if (this.residence_country && this.residence_country.length > 50) {
+      this.residence_log = "Please select maximum 50 countries";
     }
 
     else {
@@ -520,14 +499,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.visa_check) queryBody.visa_needed = this.visa_check;
       if(this.blockchain_order) queryBody.blockchainOrder = this.blockchain_order;
-      if(this.salary && this.currencyChange) {
-        setTimeout(() => {
-          $('.selectpicker').selectpicker();
-        }, 300);
-
-        setTimeout(() => {
-          $('.selectpicker').selectpicker('refresh');
-        }, 900);
+      if(this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
+      if(this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
@@ -561,9 +534,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
-  actionType;
-
-
   reset()
   {
     this.salary = '';
@@ -578,10 +548,189 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.getVerrifiedCandidate();
+  }
+
+
+  success_msg;
+  error_msg;
+  savedSearch() {
+    let queryBody : any = {};
+    let index = this.savedSearches.findIndex((obj => obj.name === this.name));
+    if(this.name) queryBody.name = this.name;
+    if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
+    if(this.selectedValueArray && this.selectedValueArray.length > 0) {
+      let validatedLocation =[];
+      for(let location of this.selectedValueArray) {
+        if(location.name.includes(', ')) {
+          validatedLocation.push({city: location.city});
+        }
+        if(location.name === 'Remote') {
+          validatedLocation.push({remote: true });
+        }
+      }
+      queryBody.location = this.filter_array(validatedLocation);
+    }
+    if(this.role_value && this.role_value.length > 0 ) queryBody.position = this.role_value;
+    if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchain = this.blockchain_value;
+    if(this.visa_check) queryBody.visa_needed = this.visa_check;
+    if(this.blockchain_order) queryBody.order_preferences = this.blockchain_order;
+    if(this.residence_country ) queryBody.residence_country = this.residence_country;
+    if(this.salary && this.currencyChange) {
+      queryBody.current_salary  = this.salary;
+      queryBody.current_currency = this.currencyChange;
+    }
+    this.savedSearches[index] = queryBody;
+    if(this.name) {
+      this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
+        .subscribe(
+          data => {
+            if(data && this.currentUser)
+            {
+              this.savedSearches= [];
+              this.success_msg = 'Successfully updated';
+              if(data['saved_searches'] && data['saved_searches'].length > 0) {
+                this.savedSearches = data['saved_searches'];
+                this.searchName = [];
+                for(let i=0; i < data['saved_searches'].length; i++) {
+                  this.searchName.push(data['saved_searches'][i].name);
+                }
+                setTimeout(() => {
+                  $('.selectpicker').selectpicker('refresh');
+                }, 300);
+              }
+
+              setInterval(() => {
+                this.success_msg = "" ;
+              }, 5000);
+            }
+
+          },
+          error => {
+
+          });
+    }
+    else {
+      this.error_msg = 'Please first select saved search';
+      setInterval(() => {
+        this.error_msg = "" ;
+      }, 9000);
+    }
 
   }
 
-  cand_data=[];
+  successful_msg;
+  new_error_msg;
+  residence_country_log;
+  savedNewSearch(){
+    let queryBody : any = {};
+    if(this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
+    if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
+    if(this.newSearchLocation && this.newSearchLocation.length > 0) {
+      let validatedLocation =[];
+      for(let location of this.newSearchLocation) {
+        if(location.name.includes(', ')) {
+          validatedLocation.push({city: location.city});
+        }
+        if(location.name === 'Remote') {
+          validatedLocation.push({remote: true });
+        }
+      }
+      queryBody.location = this.filter_array(validatedLocation);
+    }
+    if(this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0 ) queryBody.position = this.preferncesForm.value.position;
+    if(this.preferncesForm.value.job_type && this.preferncesForm.value.job_type.length > 0 ) queryBody.job_type = this.preferncesForm.value.job_type;
+    if(this.preferncesForm.value.blockchain && this.preferncesForm.value.blockchain.length > 0) queryBody.blockchain = this.preferncesForm.value.blockchain;
+    if(this.preferncesForm.value.visa_needed) queryBody.visa_needed = this.preferncesForm.value.visa_needed;
+    if(this.preferncesForm.value.order_preferences) queryBody.order_preferences = this.preferncesForm.value.order_preferences;
+    if(this.preferncesForm.value.residence_country) queryBody.residence_country = this.preferncesForm.value.residence_country;
+    if(this.preferncesForm.value.current_salary && this.preferncesForm.value.current_currency) {
+      queryBody.current_salary  = this.preferncesForm.value.current_salary;
+      queryBody.current_currency = this.preferncesForm.value.current_currency;
+    }
+
+    let residenceCount = 0;
+    if(!this.preferncesForm.value.name) {
+      this.new_error_msg = "Please enter saved search name";
+      residenceCount = 1;
+      setInterval(() => {
+        this.new_error_msg = "" ;
+      }, 5000);
+    }
+    if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
+      this.residence_country_log = "Please select maximum 50 countries";
+      residenceCount = 1;
+    }
+
+    if(residenceCount === 0) {
+      let index = this.savedSearches.findIndex((obj => obj.name === this.preferncesForm.value.name));
+
+      if(index < 0 && this.preferncesForm.value.name) {
+        this.savedSearches.push(queryBody);
+        this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
+          .subscribe(
+            data => {
+              if(data && this.currentUser)
+              {
+                this.savedSearches= [];
+                this.name = this.preferncesForm.value.name;
+                this.searchdata('name' , this.name);
+                $('#saveNewSearch').modal('hide');
+                this.preferncesForm = this._fb.group({
+                  name: [''],
+                  location: [],
+                  visa_needed: [false],
+                  job_type: [],
+                  position: [],
+                  current_currency: [],
+                  current_salary: [''],
+                  blockchain: [],
+                  skills: [],
+                  other_technologies: [''],
+                  order_preferences: [],
+                  residence_country: [''],
+                });
+                this.newSearchLocation = [];
+                if(data['saved_searches'] && data['saved_searches'].length > 0) {
+                  this.savedSearches = data['saved_searches'];
+                  this.searchName=[];
+                  for(let i=0; i < data['saved_searches'].length; i++) {
+                    this.searchName.push(data['saved_searches'][i].name);
+                  }
+
+                  setTimeout(() => {
+                    $('.selectpicker').selectpicker('refresh');
+                  }, 300);
+
+                }
+
+              }
+
+            },
+            error => {
+
+            });
+      }
+      else {
+        this.new_error_msg = "Search name already exists.";
+        setInterval(() => {
+          this.new_error_msg = "" ;
+        }, 5000);
+      }
+
+    }
+
+  }
+
+  checkNumber(salary) {
+    if(!Number(this.preferncesForm.value.current_salary)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+
+  }
+
   response;
   count;
   candidate_data;
@@ -754,42 +903,42 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         let new_offer : any = {};
         new_offer.job_offer = job_offer;
         this.authenticationService.send_message(this.user_id.id, 'job_offer',new_offer)
-        .subscribe(
-          data => {
-            this.job_offer_log_success = 'Message successfully sent';
-            this.credentials.job_title = '';
-            this.credentials.salary = '';
-            this.credentials.currency = '';
-            this.credentials.location = '';
-            this.credentials.job_type = '';
-            this.credentials.job_desc = '';
-            $("#jobDescriptionModal").modal("hide");
-            this.router.navigate(['/chat']);
-          },
-          error => {
-            if (error['status'] === 400) {
-              this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
+          .subscribe(
+            data => {
+              this.job_offer_log_success = 'Message successfully sent';
+              this.credentials.job_title = '';
+              this.credentials.salary = '';
+              this.credentials.currency = '';
+              this.credentials.location = '';
+              this.credentials.job_type = '';
+              this.credentials.job_desc = '';
+              $("#jobDescriptionModal").modal("hide");
+              this.router.navigate(['/chat']);
+            },
+            error => {
+              if (error['status'] === 400) {
+                this.job_offer_log_erorr = 'You have already sent a job description to this candidate';
+              }
+              if (error['status'] === 500 || error['status'] === 401) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+              if (error['status'] === 404) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
             }
-            if (error['status'] === 500 || error['status'] === 401) {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-            if (error['status'] === 404) {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
-          }
-        );
+          );
       }
       else {
         this.salary_log = 'Salary should be a number';
@@ -828,8 +977,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
   suggestedOptions() {
-    if(this.countriesModel !== '') {
-      this.authenticationService.autoSuggestOptions(this.countriesModel, false)
+    if(this.countriesModel !== '' || this.preferncesForm.value.location !== '') {
+      let searchText;
+      if(this.countriesModel) searchText = this.countriesModel;
+      if(this.preferncesForm.value.location) searchText = this.preferncesForm.value.location
+      this.authenticationService.autoSuggestOptions(searchText, false)
         .subscribe(
           data => {
             if(data) {
@@ -871,13 +1023,16 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
-
+  newSearchLocation = [];
   selectedValueFunction(e) {
     if(this.cities) {
       if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
+        var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
 
         this.countriesModel = '';
+
+        if(this.preferncesForm) this.preferncesForm.get('location').setValue('');
+
         this.cities = [];
         if(this.selectedValueArray.length > 4) {
           this.error = 'You can select maximum 5 locations';
@@ -906,6 +1061,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             this.selectedValueArray.splice(0, 0, {name : 'Remote'});
             this.selectedValueArray = this.filter_array(this.selectedValueArray);
           }
+          this.newSearchLocation  = this.selectedValueArray;
           this.searchdata('locations' , this.selectedValueArray);
         }
       }
@@ -916,8 +1072,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  deleteLocationRow(i){
-    this.selectedValueArray.splice(i, 1);
+  deleteLocationRow(index){
+    this.selectedValueArray.splice(index, 1);
     this.searchdata('locations' , this.selectedValueArray);
   }
 
@@ -932,4 +1088,55 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       return (match ? false : hashTable[key] = true);
     });
   }
+
+  newSearchSelectedValueFunction(e) {
+    if(this.cities) {
+      if(this.cities.find(x => x.name === e)) {
+        var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
+
+        this.countriesModel = '';
+        this.preferncesForm.get('location').setValue('');
+
+        this.cities = [];
+        if(this.newSearchLocation.length > 4) {
+          this.error = 'You can select maximum 5 locations';
+          setInterval(() => {
+            this.error = "" ;
+          }, 5000);
+        }
+        else {
+          if(this.newSearchLocation.find(x => x.name === e)) {
+            this.error = 'This location has already been selected';
+            setInterval(() => {
+              this.error = "" ;
+            }, 4000);
+          }
+
+          else {
+            if(value2send) this.newSearchLocation.push({city:value2send , name: e});
+            else this.newSearchLocation.push({ name: e});
+          }
+          this.newSearchLocation.sort(function(a, b){
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+          });
+          if(this.newSearchLocation.find((obj => obj.name === 'Remote'))){
+            this.newSearchLocation.splice(0, 0, {name : 'Remote'});
+            this.newSearchLocation = this.filter_array(this.newSearchLocation);
+          }
+          //this.searchdata('locations' , this.selectedValueArray);
+        }
+      }
+      else {
+      }
+    }
+
+
+  }
+
+  deleteNewLocationRow(index) {
+    this.newSearchLocation.splice(index, 1);
+  }
+
 }

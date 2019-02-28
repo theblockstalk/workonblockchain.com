@@ -1,6 +1,5 @@
 const users = require('../../../model/mongoose/users');
 const companies = require('../../../model/mongoose/company');
-const chat = require('../../../model/chat');
 
 const chatReminderEmail = require('../email/emails/chatReminder');
 const logger = require('../logger');
