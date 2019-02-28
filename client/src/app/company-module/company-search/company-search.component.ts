@@ -623,7 +623,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   residence_country_log;
   savedNewSearch(){
     let queryBody : any = {};
-    console.log(this.preferncesForm.value);
     if(this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
     if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
     if(this.newSearchLocation && this.newSearchLocation.length > 0) {
