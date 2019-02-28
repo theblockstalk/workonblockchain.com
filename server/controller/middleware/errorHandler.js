@@ -10,8 +10,15 @@ module.exports = function middleware(err, req, res, next) {
         url: req.url,
         method: req.method,
         code: err.code,
-        requestID: requestID
+        requestID: requestID,
+        request: {}
     };
+    if (req.params) bug.request.params = req.params;
+    if (req.query) bug.request.params = req.query;
+    if (req.body) {
+        if (req.body.password) delete req.body.password;
+        bug.request.params = req.body
+    }
 
     if(err instanceof ApplicationError) {
         logger.warn(err.message, bug);
