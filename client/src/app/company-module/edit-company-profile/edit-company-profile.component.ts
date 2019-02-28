@@ -494,7 +494,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           !this.preferncesForm.value.prefItems[i].skills && !this.preferncesForm.value.prefItems[i].residence_country &&
           !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency &&
           !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].order_preferences) {
-          this.search_log = 'Please fill atleast one field in job search '+ i;
+          this.search_log = 'Please fill atleast one field in job search';
           console.log(this.locationArray[i]);
           count = 1;
         }

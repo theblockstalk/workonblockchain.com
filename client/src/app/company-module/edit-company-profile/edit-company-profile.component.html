@@ -468,15 +468,16 @@
                       </div>
                     </div>
                   </div>
-                  <hr *ngIf="i < (this.preferncesForm.value.prefItems.length - 1)" class="bg-dark"/>
                   <div class="row" *ngIf="!this.preferncesForm.value.prefItems[i].job_type && !this.preferncesForm.value.prefItems[i].position && !this.locationArray[i] && !this.preferncesForm.value.prefItems[i].blockchain && !this.preferncesForm.value.prefItems[i].visa_needed && !this.preferncesForm.value.prefItems[i].skills && !this.preferncesForm.value.prefItems[i].residence_country && !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency && !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].order_preferences">
                     <div class="col-md-12 text-right">
-                      <div class = "invalid-feedback d-inline" >
+                      <div class = "invalid-feedback d-inline">
                         {{search_log}}
                       </div>
 
                     </div>
                   </div>
+                  <hr *ngIf="i < (this.preferncesForm.value.prefItems.length - 1)" class="bg-dark"/>
+
                 </div>
               </div>
 
