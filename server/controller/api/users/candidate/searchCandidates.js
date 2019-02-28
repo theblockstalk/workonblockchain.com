@@ -4,6 +4,7 @@ const logger = require('../../../services/logger');
 const currency = require('../../../services/currency');
 const errors = require('../../../services/errors');
 const cities = require('../../../../model/mongoose/cities');
+const objects = require('../../../services/objects');
 
 
 const salaryFactor = 1.1;
@@ -71,8 +72,29 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             if(citiesArray.length > 0 ) {
                 countriesArray = removeDups(countriesArray);
                 if (search.visa_needed) {
-                    locationsQuery.push({"candidate.locations.city": {$in: citiesArray}});
-                    locationsQuery.push({"candidate.locations.country": {$in: countriesArray}});
+                    for (let city of citiesArray) {
+                        const cityQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    city: city,
+                                    visa_needed: true
+                                }
+                            }
+                        }
+                        locationsQuery.push(cityQuery)
+                    }
+
+                    for (let country of countriesArray) {
+                        const countryQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    country: country,
+                                    visa_needed: true
+                                }
+                            }
+                        }
+                        locationsQuery.push(countryQuery)
+                    }
                 }
                 else {
                     for (let city of citiesArray) {
@@ -145,6 +167,11 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             userQuery.push(skillsFilter);
         }
 
+        if (search.residence_country && search.residence_country.length > 0) {
+            const residenceCountryFilter = {"candidate.base_country": {$in: search.residence_country}};
+            userQuery.push(residenceCountryFilter);
+        }
+
     }
 
     let orderBy;
@@ -168,7 +195,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             searchQuery = {$and: userQuery};
             const userDocsOrderBy = await users.find(searchQuery);
             let sortedDocs = userDocsOrderBy.concat(userDocs);
-            sortedDocs = removeDuplicates(sortedDocs , '_id');
+            sortedDocs = objects.removeDuplicates(sortedDocs , '_id');
             return {
                 count: sortedDocs.length,
                 candidates: sortedDocs
@@ -186,20 +213,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         errors.throwError("No candidates matched this search criteria", 404);
     }
 
-}
-
-//Remove duplicates from an array of objects
-function removeDuplicates(originalArray, prop) {
-    var newArray = [];
-    var lookupObject  = {};
-
-    for(var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-    for(i in lookupObject) {
-        newArray.push(lookupObject[i]);
-    }
-    return newArray;
 }
 
 function makeDistinctSet(array) {

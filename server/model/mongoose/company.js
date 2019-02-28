@@ -24,14 +24,19 @@ module.exports.findOneByUserId = async function findOneByUserId(id) {
 module.exports.findOneAndPopulate = async function findOneAndPopulate(id) {
     let companyDoc = await Company.findOne({_creator: id}).populate('_creator').lean();
     if(companyDoc) {
-        if(companyDoc.saved_searches && companyDoc.saved_searches[0] && companyDoc.saved_searches[0].location) {
-            for(let loc of companyDoc.saved_searches[0].location) {
-                if(loc.city) {
-                    const index = companyDoc.saved_searches[0].location.findIndex((obj => obj.city === loc.city));
-                    const citiesDoc = await cities.findOneById(loc.city);
-                    companyDoc.saved_searches[0].location[index].city = citiesDoc;
+        if(companyDoc.saved_searches ) {
+            for(let i =0; i < companyDoc.saved_searches.length ; i++) {
+                if(companyDoc.saved_searches[i].location && companyDoc.saved_searches[i].location.length > 0) {
+                    for(let loc of companyDoc.saved_searches[i].location) {
+                        if(loc.city) {
+                            const index = companyDoc.saved_searches[i].location.findIndex((obj => obj.city === loc.city));
+                            const citiesDoc = await cities.findOneById(loc.city);
+                            companyDoc.saved_searches[i].location[index].city = citiesDoc;
+                        }
+                    }
                 }
             }
+
         }
     }
 
@@ -74,6 +79,6 @@ module.exports.findAndIterate = async function findAndIterate(selector, fn) {
     let doc = await cursor.next();
 
     for (null; doc !== null; doc = await cursor.next()) {
-        await fn(doc);
+        await fn(doc.toObject());
     }
 }
