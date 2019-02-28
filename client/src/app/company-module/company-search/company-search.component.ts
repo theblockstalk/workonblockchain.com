@@ -93,7 +93,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   currency=
     [
-      "£ GBP" ,"€ EUR" , "$ USD"
+      "Currency", "£ GBP" ,"€ EUR" , "$ USD"
     ]
 
   month=
@@ -195,7 +195,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   savedSearches;
   ngOnInit()
   {
-    this.credentials.currency = -1;
     this.preferncesForm = new FormGroup({
       name: new FormControl(),
       location: new FormControl(),
@@ -358,13 +357,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   updateCitiesOptions(e) {
   }
-  /*locationChanged(data)
-  {
-    this.not_found = '';
-      this.location_value = data.value;
-      this.searchdata('location' , this.location_value);
-
-  }*/
 
   skillChanged(data)
   {
@@ -374,7 +366,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  blockchainItems;
+
   blockchainchanged(data)
   {
     this.not_found = '';
@@ -382,60 +374,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
 
-  selectedObj;countryChange;salary;currencyChange;
+  salary;currencyChange;
   information;
   not_found;
-  salarysearchdata(key , value) {
-    this.not_found = '';
-    if (this.salary) {
-      if (this.currencyChange) {
-        this.searchdata(key, value);
-      }
-      else {
-        let queryBody : any = {};
-        if(this.searchWord) queryBody.word = this.searchWord;
-        if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
-        if(this.selectedValueArray && this.selectedValueArray.length > 0) queryBody.locations = this.filter_array(this.selectedValueArray);
-        if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.select_value;
-        if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.selecteddd;
-        if(this.salary && this.currencyChange) {
-          queryBody.current_salary  = this.salary;
-          queryBody.current_currency = this.currencyChange;
-        }
-        this.authenticationService.filterSearch(queryBody)
-          .subscribe(
-            data => {
-              this.candidate_data = data;
-              this.responseMsg = "response";
-              if (this.candidate_data.length <= 0) {
-                this.not_found = 'No candidates matched this search criteria';
-              }
-              if(this.candidate_data.length > 0) {
-                this.not_found='';
-              }
-            },
-            error =>
-            {
-              if(error['message'] === 500)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
-              if(error['message'] === 403)
-              {
-                this.router.navigate(['/not_found']);
-              }
-
-            }
-          );
-      }
-    }
-  }
   visa_check;
   blockchain_order;
   name;
@@ -500,10 +441,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
         if(key['residence_country']) this.residence_country = key['residence_country'];
         else this.residence_country = '';
+
       }
     }
   }
   residence_country;
+  residence_log;
   searchdata(key , value)
   {
     this.success_msg = '';
@@ -516,10 +459,34 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.verify_msg = "";
     this.responseMsg = "";
     this.not_found='';
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 500);
+    if(this.selectedValueArray && this.selectedValueArray.length > 0) this.newSearchLocation = this.filter_array(this.selectedValueArray);
+
+    this.preferncesForm = this._fb.group({
+      name: [],
+      location: [],
+      visa_needed: [this.visa_check],
+      job_type: [],
+      position: [this.role_value],
+      current_currency: [this.currencyChange],
+      current_salary: [this.salary],
+      blockchain: [this.blockchain_value],
+      skills: [this.skill_value],
+      other_technologies: [],
+      order_preferences: [this.blockchain_order],
+      residence_country: [this.residence_country],
+    });
+
 
     if(!this.searchWord && !this.residence_country && !this.blockchain_order && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
     {
       this.getVerrifiedCandidate();
+    }
+
+    else if (this.residence_country && this.residence_country.length > 50) {
+      this.residence_log = "Please select maximum 50 countries";
     }
 
     else {
@@ -532,9 +499,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.visa_check) queryBody.visa_needed = this.visa_check;
       if(this.blockchain_order) queryBody.blockchainOrder = this.blockchain_order;
-      if(this.residence_country) queryBody.residence_country = this.residence_country;
-      if(this.salary && this.currencyChange) {
-
+      if(this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
+      if(this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
@@ -568,9 +534,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
   }
 
-  actionType;
-
-
   reset()
   {
     this.salary = '';
@@ -590,7 +553,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   success_msg;
   error_msg;
-  errorMsg;
   savedSearch() {
     let queryBody : any = {};
     let index = this.savedSearches.findIndex((obj => obj.name === this.name));
@@ -625,7 +587,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             if(data && this.currentUser)
             {
               this.savedSearches= [];
-              this.success_msg = 'Successfully update';
+              this.success_msg = 'Successfully updated';
               if(data['saved_searches'] && data['saved_searches'].length > 0) {
                 this.savedSearches = data['saved_searches'];
                 this.searchName = [];
@@ -656,14 +618,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-  saveNewSearchPopup() {
-
-    $('#saveNewSearch').modal('show');
-
-  }
-
   successful_msg;
   new_error_msg;
+  residence_country_log;
   savedNewSearch(){
     let queryBody : any = {};
     if(this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
@@ -691,13 +648,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.current_currency = this.preferncesForm.value.current_currency;
     }
 
+    let residenceCount = 0;
     if(!this.preferncesForm.value.name) {
       this.new_error_msg = "Please enter saved search name";
       setInterval(() => {
         this.new_error_msg = "" ;
       }, 5000);
     }
-    else {
+    if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
+      this.residence_country_log = "Please select maximum 50 countries";
+      residenceCount = 1;
+    }
+
+    if(residenceCount === 0) {
       let index = this.savedSearches.findIndex((obj => obj.name === this.preferncesForm.value.name));
 
       if(index < 0 && this.preferncesForm.value.name) {
@@ -708,7 +671,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               if(data && this.currentUser)
               {
                 this.savedSearches= [];
-                this.successful_msg = "Successfully added new search";
+                this.name = this.preferncesForm.value.name;
+                this.searchdata('name' , this.name);
+                $('#saveNewSearch').modal('hide');
                 this.preferncesForm = this._fb.group({
                   name: [''],
                   location: [],
@@ -737,9 +702,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
                 }
 
-                setInterval(() => {
-                  this.success_msg = "" ;
-                }, 5000);
               }
 
             },
