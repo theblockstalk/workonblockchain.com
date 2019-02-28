@@ -195,6 +195,7 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
             blockchain : ['Ripple' , 'Stellar'],
             skills : ['C#'],
             availability_day : '1 month' ,
+            residence_country : ['Pakistan']
         }]
 
     }
