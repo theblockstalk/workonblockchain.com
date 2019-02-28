@@ -416,6 +416,8 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   validatedLocation;
   country_input_log;
   country_log;
+  search_log;
+  search_name_log;
   company_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -478,7 +480,30 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.email_notification_log = "Please select when you want to receive email notification";
     }
 
-    if(this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
+    let count = 0;
+    if(this.preferncesForm.value.prefItems.length > 0) {
+      for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
+        if(!this.preferncesForm.value.prefItems[i].name) {
+          this.search_name_log = 'Please enter search name';
+          count = 1;
+
+        }
+        else if(!this.preferncesForm.value.prefItems[i].job_type && !this.preferncesForm.value.prefItems[i].position && !this.locationArray[i] &&
+          !this.preferncesForm.value.prefItems[i].blockchain && !this.preferncesForm.value.prefItems[i].visa_needed &&
+          !this.preferncesForm.value.prefItems[i].skills && !this.preferncesForm.value.prefItems[i].residence_country &&
+          !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency &&
+          !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].order_preferences) {
+          this.search_log = 'Please fill atleast one field in job search '+ i;
+          console.log(this.locationArray[i]);
+          count = 1;
+        }
+        else {
+
+        }
+      }
+    }
+
+    if(count === 0 &&this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode )  {
@@ -638,6 +663,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         var value2send=document.querySelector("#countryList option[value='"+ locValue +"']")['dataset'].value;
         ((this.preferncesForm.get('prefItems') as FormArray).at(index) as FormGroup).get('location').patchValue('');
         this.cities = [];
+        if(!this.locationArray[index]) this.locationArray[index] = [];
         if(this.locationArray[index].length > 4) {
           this.error = 'You can select maximum 5 locations';
           setInterval(() => {
@@ -705,6 +731,16 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   get DynamicWorkFormControls()
   {
     return <FormArray>this['preferncesForm'].get('prefItems');
+  }
+
+  addNewSearch()
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+    const control = <FormArray>this.preferncesForm.controls['prefItems'];
+    control.push(this.initPrefRows());
   }
 
 }
