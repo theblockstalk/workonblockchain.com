@@ -132,10 +132,10 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <select class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
+                  <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
                     <option *ngFor='let country of residenceCountries'  [value]="country" [attr.selected]="country === preferncesForm.value.residence_country ? true : null" >{{country}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!preferncesForm.value.residence_country">
+                  <div class = "invalid-feedback d-inline"  *ngIf="!preferncesForm.value.residence_country || (preferncesForm.value.residence_country && (preferncesForm.value.residence_country.length === 0 || preferncesForm.value.residence_country.length > 50))">
                     {{residence_country_log}}
                   </div>
                 </div>
@@ -259,7 +259,7 @@
         <div [innerHTML]="companyMsgBody | safeHtml" *ngIf="companyMsgBody"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" (click) = redirectToCompany() class="btn btn-mo model-btn" data-dismiss="modal">Got it</button>
+        <button type="button" (click) = redirectToCompany() class="btn btn-mo model-btn btn-primary" data-dismiss="modal">Got it</button>
       </div>
     </div>
   </div>

@@ -43,7 +43,7 @@
                   {{error}}
                 </div>
 
-                <div *ngIf="name && selectedValueArray.length > 0">
+                <div *ngIf="selectedValueArray.length > 0">
                   <span class="badge badge-pill badge-primary mr-1" *ngFor="let value of selectedValueArray; let i = index">{{value.name}} <a (click)="deleteLocationRow(i)"><i class="fas fa-times text-white"></i></a></span>
                 </div>
               </div>
@@ -74,16 +74,20 @@
               <hr/>
 
                 <div class="form-group">
-                  <select class="form-control selectpicker" title="Residence country" [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" >
-                    <option *ngFor='let country of residenceCountries'  [value]="country" [attr.selected] = "country === residence_country ? true : null" >{{country}}</option>
+                  <select class="form-control selectpicker" title="Residence country" [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
+                    <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
                   </select>
+                  <div class="invalid-feedback d-inline" *ngIf="residence_country && residence_country.length > 50">
+                    {{residence_log}}
+                  </div>
+
                 </div>
 
               <div class = "form-group">
 
-                <input type="number" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="salarysearchdata('salary' , $event)" placeholder="Salary">
+                <input type="number" [disabled]="msg !== '' ? true : false"  class="form-control w-50 float-left" [(ngModel)]="salary" name="salary" (ngModelChange)="searchdata('salary' , $event)" placeholder="Salary">
 
-                <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="salarysearchdata('currency' , $event)">
+                <select title="Currency" [disabled]="msg !== '' ? true : false" class="selectpicker form-control w-50 position-relative" [(ngModel)]="currencyChange" name="currency" (ngModelChange)="searchdata('currency' , $event)">
                   <option *ngFor='let current_currency of currency' [attr.selected] = "currencyChange === current_currency ? true : null" >{{current_currency}}</option>
                 </select>
 
@@ -118,7 +122,7 @@
 
             <div class="row my-3">
               <div class="col-md-12">
-                <button  type="button" (click)="saveNewSearchPopup()" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save new search</button>
+                <button  type="button" data-toggle="modal" data-target="#saveNewSearch" [disabled]="msg !== '' ? true : false" class="btn btn-primary w-100">Save new search</button>
               </div>
             </div>
 
@@ -381,7 +385,7 @@
               <div class="col-md-6 mt-2">
                 <div class="form-group">
                   <select multiple formControlName="job_type"  title="Position type" class="form-control selectpicker" required>
-                    <option *ngFor='let job_type of job_types'  [value]="job_type">{{job_type}}</option>
+                    <option *ngFor='let job_type of job_types'  [value]="job_type" selected>{{job_type}}</option>
                   </select>
 
                 </div>
@@ -390,7 +394,7 @@
               <div class="col-md-6 mt-2">
                 <div class="form-group">
                   <select multiple formControlName="position" title="Role" class="form-control selectpicker">
-                    <option *ngFor='let role of rolesData'   [value]="role.value">{{role.name}}</option>
+                    <option *ngFor='let role of rolesData'   [value]="role.value" selected>{{role.name}}</option>
 
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.position || preferncesForm.value.position.length === 0">
@@ -448,17 +452,17 @@
 
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select multiple formControlName="skills" title="Skills" class="form-control selectpicker">
+                  <select multiple formControlName="skills" title="Skills" class="form-control selectpicker language">
                     <option class='option' *ngFor='let language of skillsData' [value]="language.value" >{{language.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
+                  <select class="multiple form-control selectpicker" title="Residence country" required  formControlName="residence_country">
                     <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!preferncesForm.value.residence_country">
+                  <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
                     {{residence_country_log}}
                   </div>
                 </div>
@@ -506,9 +510,6 @@
           <div class="modal-footer row">
             <div class="col-md-12">
               <button type="submit" class="btn btn-mo btn-primary float-right" >Save</button>
-            </div>
-            <div class="col-md-12 text-success mt-1 text-right" *ngIf="successful_msg && successful_msg !== '';else errorMsg" >
-              {{successful_msg}}
             </div>
             <div class="col-md-12 invalid-feedback d-inline mt-1 text-right" #errorMsg *ngIf="new_error_msg && new_error_msg !== ''" >
               {{new_error_msg}}

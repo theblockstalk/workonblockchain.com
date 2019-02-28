@@ -131,7 +131,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     {name:'Security specialist ', value:'Security specialist', checked:false},
   ];
 
-  currency = ["£ GBP" ,"€ EUR" , "$ USD"];
+  currency = ["Currency", "£ GBP" ,"€ EUR" , "$ USD"];
 
   blockchain = [
     {name:'Bitcoin', value:'Bitcoin', checked:false},
@@ -236,7 +236,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ residence_country: i.residence_country, name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -416,6 +416,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   validatedLocation;
   country_input_log;
   country_log;
+  search_log;
+  search_name_log;
+  residence_log;
   company_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -478,7 +481,32 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       this.email_notification_log = "Please select when you want to receive email notification";
     }
 
-    if(this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
+    let count = 0;
+    if(this.preferncesForm.value.prefItems.length > 0) {
+      for(let i=0 ; i<this.preferncesForm.value.prefItems.length; i++) {
+        if(!this.preferncesForm.value.prefItems[i].name) {
+          this.search_name_log = 'Please enter search name';
+          count = 1;
+
+        }
+        else if(!this.preferncesForm.value.prefItems[i].job_type && !this.preferncesForm.value.prefItems[i].position && !this.locationArray[i] &&
+          !this.preferncesForm.value.prefItems[i].blockchain && !this.preferncesForm.value.prefItems[i].visa_needed &&
+          !this.preferncesForm.value.prefItems[i].skills && !this.preferncesForm.value.prefItems[i].residence_country &&
+          !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency &&
+          !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].order_preferences) {
+          this.search_log = 'Please fill atleast one field in job search';
+          count = 1;
+        }
+        else if(this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length > 50) {
+          this.residence_log = "Please select maximum 50 countries";
+        }
+        else {
+
+        }
+      }
+    }
+
+    if(count === 0 &&this.company_founded && this.company_founded > 1800 && this.company_founded <=  this.currentyear && this.no_of_employees
       && this.company_funded && this.company_description && this.when_receive_email_notitfications &&
       this.first_name && this.last_name && this.job_title && this.company_name && this.company_website &&
       this.company_phone && this.company_country !== -1 && this.company_city && this.company_postcode )  {
@@ -545,8 +573,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
           if(key['job_type']) searchQuery.job_type = key['job_type'];
           if(key['position']) searchQuery.position = key['position'];
-          if(key['current_currency']) searchQuery.current_currency = key['current_currency'];
-          if(key['current_salary']) searchQuery.current_salary = Number(key['current_salary']);
+          if(key['current_currency'] !== 'Currency' && key['current_salary']) {
+            searchQuery.current_currency = key['current_currency'];
+            searchQuery.current_salary = Number(key['current_salary']);
+          }
           if(key['blockchain']) searchQuery.blockchain = key['blockchain'];
           if(key['skills']) searchQuery.skills = key['skills'];
           if(key['residence_country']) searchQuery.residence_country = key['residence_country'];
@@ -638,6 +668,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         var value2send=document.querySelector("#countryList option[value='"+ locValue +"']")['dataset'].value;
         ((this.preferncesForm.get('prefItems') as FormArray).at(index) as FormGroup).get('location').patchValue('');
         this.cities = [];
+        if(!this.locationArray[index]) this.locationArray[index] = [];
         if(this.locationArray[index].length > 4) {
           this.error = 'You can select maximum 5 locations';
           setInterval(() => {
@@ -678,7 +709,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
 
   deleteLocationRow(locationIndex, index){
-    this.preferncesForm.value.prefItems[index].location.splice(locationIndex, 1);
+    this.locationArray[index].splice(locationIndex, 1);
   }
 
   filter_array(arr) {
@@ -705,6 +736,16 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   get DynamicWorkFormControls()
   {
     return <FormArray>this['preferncesForm'].get('prefItems');
+  }
+
+  addNewSearch()
+  {
+    setTimeout(() => {
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+    const control = <FormArray>this.preferncesForm.controls['prefItems'];
+    control.push(this.initPrefRows());
   }
 
 }

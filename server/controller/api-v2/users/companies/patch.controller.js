@@ -115,9 +115,10 @@ const bodySchema = new Schema({
                 }]
             },
             residence_country: {
-                type: String,
-                enum: enumerations.countries
-
+                type : [{
+                    type: String,
+                    enum: enumerations.countries
+                }]
             },
             other_technologies : {
                 type : String

@@ -53,6 +53,8 @@ describe('update profile as company', function () {
         companyUpdatedDoc.saved_searches[0].skills.should.valueOf(updatedData.saved_searches[0].skills);
         companyUpdatedDoc.saved_searches[0].position.should.valueOf(updatedData.saved_searches[0].position);
         companyUpdatedDoc.saved_searches[0].blockchain.should.valueOf(updatedData.saved_searches[0].blockchain);
+        companyUpdatedDoc.saved_searches[0].residence_country.should.valueOf(updatedData.saved_searches[0].residence_country);
+
     })
 })
 });

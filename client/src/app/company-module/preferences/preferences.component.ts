@@ -434,7 +434,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
-    if(!this.preferncesForm.value.residence_country) {
+    if(!this.preferncesForm.value.residence_country || (this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length === 0)) {
       this.residence_country_log = "Please select residence country";
     }
     if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
@@ -445,7 +445,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0  &&
       this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications && this.preferncesForm.value.residence_country &&
-      this.preferncesForm.value.residence_country.length < 50) {
+      this.preferncesForm.value.residence_country.length > 0 && this.preferncesForm.value.residence_country.length < 50) {
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.saved_searches.push(this.preferncesForm.value);
