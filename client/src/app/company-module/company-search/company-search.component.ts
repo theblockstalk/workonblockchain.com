@@ -614,7 +614,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.error_msg = 'Please first select saved search';
       setInterval(() => {
         this.error_msg = "" ;
-      }, 5000);
+      }, 9000);
     }
 
   }
