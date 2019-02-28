@@ -545,6 +545,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.blockchain_value = '';
     this.currencyChange = '';
     this.visa_check = false;
+    this.residence_country = [];
+    this.blockchain_order = [];
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.getVerrifiedCandidate();
