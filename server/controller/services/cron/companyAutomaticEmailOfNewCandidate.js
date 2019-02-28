@@ -39,8 +39,11 @@ module.exports = async function (companyId) {
                 for (let candidateSent of companyDoc.candidates_sent_by_email) {
                     blacklist.push(candidateSent.user);
                 }
+
+                logger.debug("Company preferences", companyDoc.saved_searches);
+
                 let candidateDocs;
-                let foundCandidate = [];
+                let foundCandidates = [];
                 for (let savedSearch of companyDoc.saved_searches) {
                     try {
 
@@ -56,6 +59,7 @@ module.exports = async function (companyId) {
                             visa_needed: savedSearch.visa_needed,
                             positions: savedSearch.position,
                             blockchains: savedSearch.blockchain,
+                            residence_country: savedSearch.residence_country,
                             salary: {
                                 current_currency: savedSearch.current_currency,
                                 current_salary: savedSearch.current_salary
@@ -64,8 +68,9 @@ module.exports = async function (companyId) {
                             blockchainOrder: savedSearch.order_preferences
                         });
                         if (candidateDocs) {
+                            logger.debug("Candidate ids in search", candidateDocs.candidates.map( (candidate) => candidate._id));
                             for (let candidate of  candidateDocs.candidates) {
-                                foundCandidate.push(candidate);
+                                foundCandidates.push(candidate);
                             }
                         }
                     }
@@ -81,16 +86,17 @@ module.exports = async function (companyId) {
                     }
                 }
 
-                foundCandidate = objects.removeDuplicates(foundCandidate, '_id');
+                foundCandidates = objects.removeDuplicates(foundCandidates, '_id');
+                logger.debug("All candidate ids found in search", foundCandidates.map( (candidate) => candidate._id));
 
-                const candidateCount = foundCandidate.length >= 10 ? 10 : foundCandidate.length
+                const candidateCount = foundCandidates.length >= 10 ? 10 : foundCandidates.length
 
                 let candidates;
                 if(candidateCount > 0) {
                     let candidateList = [], candidateLog = [];
 
                     for ( let i = 0 ; i < candidateCount; i++) {
-                        const candidate = foundCandidate[i];
+                        const candidate = foundCandidates[i];
                         const url = settings.CLIENT.URL + 'candidate-detail?user=' + candidate._id;
                         const candidateInfo = {
                             url: url,
@@ -105,13 +111,11 @@ module.exports = async function (companyId) {
                         })
                     }
                     if(candidateCount  <= 10) {
-                        candidates = {"count" : foundCandidate.length  , "list" : candidateList};
+                        candidates = {"count" : candidateCount  , "list" : candidateList};
                     }
                     else {
                         candidates = {"count" : 'More than 10' , "list" : candidateList};
                     }
-                    logger.debug("Company preferences", companyDoc.saved_searches);
-                    logger.debug("Search results", foundCandidate);
                     await autoNotificationEmail.sendEmail(userDoc.email , companyDoc.first_name , companyDoc.company_name,candidates,userDoc.disable_account);
                     await company.update({_creator : companyDoc._creator} , {
                         $set : {'last_email_sent' : timestamp},
@@ -150,4 +154,3 @@ const convertToDays = module.exports.convertToDays = function convertToDays(when
             break;
     }
 };
-
