@@ -440,9 +440,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(key['order_preferences']) this.blockchain_order = key['order_preferences'];
         else this.blockchain_order = [];
 
-        if(key['residence_country']) this.residence_country = key['residence_country'];
+        if(key['residence_country'] && key['residence_country'].length > 0 ) this.residence_country = key['residence_country'];
         else this.residence_country = '';
-
       }
     }
   }
@@ -624,6 +623,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   residence_country_log;
   savedNewSearch(){
     let queryBody : any = {};
+    console.log(this.preferncesForm.value);
     if(this.preferncesForm.value.name) queryBody.name = this.preferncesForm.value.name;
     if(this.preferncesForm.value.skills && this.preferncesForm.value.skills.length > 0) queryBody.skills = this.preferncesForm.value.skills;
     if(this.newSearchLocation && this.newSearchLocation.length > 0) {
@@ -652,6 +652,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     let residenceCount = 0;
     if(!this.preferncesForm.value.name) {
       this.new_error_msg = "Please enter saved search name";
+      residenceCount = 1;
       setInterval(() => {
         this.new_error_msg = "" ;
       }, 5000);
