@@ -495,7 +495,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           !this.preferncesForm.value.prefItems[i].current_salary && !this.preferncesForm.value.prefItems[i].current_currency &&
           !this.preferncesForm.value.prefItems[i].other_technologies && !this.preferncesForm.value.prefItems[i].order_preferences) {
           this.search_log = 'Please fill atleast one field in job search';
-          console.log(this.locationArray[i]);
           count = 1;
         }
         else if(this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length > 50) {
@@ -588,7 +587,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         }
       }
       profileForm.value.saved_searches = saved_searches;
-      console.log(profileForm);
 
       this.authenticationService.edit_company_profile(profileForm.value)
         .subscribe(
