@@ -410,9 +410,13 @@
 
                     <div class="col-md-6 mt-2">
                       <div class="form-group">
-                        <select class="form-control selectpicker" title="Residence country"  formControlName="residence_country">
-                          <option *ngFor='let country of residenceCountries'  [value]="country" [attr.selected]="country === preferncesForm.value.prefItems[i].residence_country ? true : null" >{{country}}</option>
+                        <select multiple class="form-control selectpicker" title="Residence country"  formControlName="residence_country">
+                          <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
                         </select>
+                        <div class = "invalid-feedback d-inline" *ngIf="preferncesForm.value.prefItems[i].residence_country && preferncesForm.value.prefItems[i].residence_country.length > 50" >
+                          {{residence_log}}
+                        </div>
+
 
                       </div>
                     </div>
@@ -428,7 +432,6 @@
 
                       </div>
                     </div>
-
 
 
                     <div class="col-md-6 my-2">

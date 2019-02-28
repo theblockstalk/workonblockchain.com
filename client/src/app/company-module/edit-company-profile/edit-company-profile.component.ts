@@ -131,7 +131,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
     {name:'Security specialist ', value:'Security specialist', checked:false},
   ];
 
-  currency = ["£ GBP" ,"€ EUR" , "$ USD"];
+  currency = ["Currency", "£ GBP" ,"€ EUR" , "$ USD"];
 
   blockchain = [
     {name:'Bitcoin', value:'Bitcoin', checked:false},
@@ -236,7 +236,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ residence_country: i.residence_country, name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -418,6 +418,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   country_log;
   search_log;
   search_name_log;
+  residence_log;
   company_profile(profileForm: NgForm)
   {
     this.error_msg = "";
@@ -497,6 +498,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           console.log(this.locationArray[i]);
           count = 1;
         }
+        else if(this.preferncesForm.value.prefItems[i].residence_country && this.preferncesForm.value.prefItems[i].residence_country.length > 50) {
+          this.residence_log = "Please select maximum 50 countries";
+        }
         else {
 
         }
@@ -570,8 +574,10 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
           if(key['job_type']) searchQuery.job_type = key['job_type'];
           if(key['position']) searchQuery.position = key['position'];
-          if(key['current_currency']) searchQuery.current_currency = key['current_currency'];
-          if(key['current_salary']) searchQuery.current_salary = Number(key['current_salary']);
+          if(key['current_currency'] !== 'Currency' && key['current_salary']) {
+            searchQuery.current_currency = key['current_currency'];
+            searchQuery.current_salary = Number(key['current_salary']);
+          }
           if(key['blockchain']) searchQuery.blockchain = key['blockchain'];
           if(key['skills']) searchQuery.skills = key['skills'];
           if(key['residence_country']) searchQuery.residence_country = key['residence_country'];
@@ -582,6 +588,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         }
       }
       profileForm.value.saved_searches = saved_searches;
+      console.log(profileForm);
 
       this.authenticationService.edit_company_profile(profileForm.value)
         .subscribe(
@@ -704,7 +711,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
 
   deleteLocationRow(locationIndex, index){
-    this.preferncesForm.value.prefItems[index].location.splice(locationIndex, 1);
+    this.locationArray[index].splice(locationIndex, 1);
   }
 
   filter_array(arr) {
