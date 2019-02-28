@@ -977,10 +977,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
   suggestedOptions() {
-    if(this.countriesModel !== '' || this.preferncesForm.value.location !== '') {
+    if((this.countriesModel && this.countriesModel !== '') || (this.preferncesForm.value.location && this.preferncesForm.value.location !== '')) {
       let searchText;
       if(this.countriesModel) searchText = this.countriesModel;
-      if(this.preferncesForm.value.location) searchText = this.preferncesForm.value.location
+      if(this.preferncesForm.value.location) searchText = this.preferncesForm.value.location;
       this.authenticationService.autoSuggestOptions(searchText, false)
         .subscribe(
           data => {
