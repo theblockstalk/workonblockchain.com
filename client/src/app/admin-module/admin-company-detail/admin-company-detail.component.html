@@ -226,6 +226,7 @@
           </div>
           <hr class="bg-dark" />
 
+
           <div *ngFor="let searches of data.saved_searches; let i = index ">
             <div class="row">
               <div class="col-md-12">
@@ -259,8 +260,8 @@
                 </div>
               </div>
 
-              <div class = "col-md-6 mb-3" *ngIf="searches.location && searches.location.length > 0" >
-                <div class="form-group">
+              <div class = "col-md-6 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
+                <div class="form-group" *ngIf="searches.location && searches.location.length > 0">
                   <label>Location:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of getLocation(searches.location)'>
@@ -273,15 +274,15 @@
 
                     </div>
                   </div>
-                  <div *ngIf="searches.visa_needed && searches.visa_needed === true;">
-                    <div class="form-group mt-3">
-                      <p>Only show candidates that require a work visa</p>
+               </div>
 
-                    </div>
+                <div class="form-group" *ngIf="searches.visa_needed && searches.visa_needed === true;">
+                  <div class="form-group mt-3">
+                    <p>Only show candidates that require a work visa</p>
 
                   </div>
-                </div>
 
+                </div>
               </div>
 
               <div class="col-md-6 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
@@ -305,15 +306,17 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 mb-3" *ngIf = "searches.residence_country">
+              <div class="col-md-6 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
                 <div class="form-group">
                   <label>Residence country:</label>
-                  <p> {{searches.residence_country}}</p>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let residence of searches.residence_country"> {{residence}}</div>
+                  </div>
                 </div>
               </div>
 
 
-              <div class="col-md-6 mb-3" *ngIf="searches.current_curreny && searches.current_salary">
+              <div class="col-md-6 mb-3" *ngIf="searches.current_currency && searches.current_salary">
                 <div class="form-group">
                   <label>Salary:</label>
                   <p>
@@ -349,6 +352,7 @@
             <hr *ngIf="i < (data.saved_searches.length - 1)" class="bg-dark"/>
 
           </div>
+
 
         </section>
 
