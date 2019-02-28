@@ -556,16 +556,19 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           let searchQuery : any = {};
           let validLocation = [];
           if(i < this.preferncesForm.value.prefItems.length) {
-            for(let location of this.locationArray[i]) {
-              if(location.name.includes(', ')) {
-                validLocation.push({city: location._id, visa_needed : location.visa_needed });
+            if(this.locationArray[i]) {
+              for(let location of this.locationArray[i]) {
+                if(location.name.includes(', ')) {
+                  validLocation.push({city: location._id, visa_needed : location.visa_needed });
+                }
+                if(location.name === 'Remote') {
+                  validLocation.push({remote: true, visa_needed : location.visa_needed });
+                }
+
               }
-              if(location.name === 'Remote') {
-                validLocation.push({remote: true, visa_needed : location.visa_needed });
-              }
+              searchQuery.location = validLocation;
 
             }
-            searchQuery.location = validLocation;
 
           }
 
