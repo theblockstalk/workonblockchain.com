@@ -53,7 +53,7 @@
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" [disabled]="msg !== '' ? true : false" [(ngModel)]="visa_check" id="check"  name="visa_needed" (ngModelChange)="searchdata('visa', $event)">
                   <label class="form-check-label" for="defaultCheck1">
-                    Show candidates that require a work visa
+                    Only show candidates that require a work visa
                   </label>
                 </div>
               </div>
@@ -443,7 +443,7 @@
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" formControlName="visa_needed" id="check"  >
                     <label class="form-check-label" for="defaultCheck1">
-                      Show candidates that require a work visa
+                      Only show candidates that require a work visa
                     </label>
                   </div>
                 </div>
