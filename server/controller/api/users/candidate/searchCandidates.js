@@ -72,8 +72,29 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
             if(citiesArray.length > 0 ) {
                 countriesArray = removeDups(countriesArray);
                 if (search.visa_needed) {
-                    locationsQuery.push({"candidate.locations.city": {$in: citiesArray}});
-                    locationsQuery.push({"candidate.locations.country": {$in: countriesArray}});
+                    for (let city of citiesArray) {
+                        const cityQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    city: city,
+                                    visa_needed: true
+                                }
+                            }
+                        }
+                        locationsQuery.push(cityQuery)
+                    }
+
+                    for (let country of countriesArray) {
+                        const countryQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    country: country,
+                                    visa_needed: true
+                                }
+                            }
+                        }
+                        locationsQuery.push(countryQuery)
+                    }
                 }
                 else {
                     for (let city of citiesArray) {

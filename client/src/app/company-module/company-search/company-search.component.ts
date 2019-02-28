@@ -545,6 +545,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.blockchain_value = '';
     this.currencyChange = '';
     this.visa_check = false;
+    this.residence_country = [];
+    this.blockchain_order = [];
+    this.name = '';
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.getVerrifiedCandidate();
@@ -977,10 +980,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
 
   suggestedOptions() {
-    if(this.countriesModel !== '' || this.preferncesForm.value.location !== '') {
+    if((this.countriesModel && this.countriesModel !== '') || (this.preferncesForm.value.location && this.preferncesForm.value.location !== '')) {
       let searchText;
       if(this.countriesModel) searchText = this.countriesModel;
-      if(this.preferncesForm.value.location) searchText = this.preferncesForm.value.location
+      if(this.preferncesForm.value.location) searchText = this.preferncesForm.value.location;
       this.authenticationService.autoSuggestOptions(searchText, false)
         .subscribe(
           data => {
