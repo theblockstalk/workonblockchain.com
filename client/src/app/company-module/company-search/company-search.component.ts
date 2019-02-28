@@ -60,6 +60,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   error;
   cities;
   emptyInput;
+  errorMsg;
 
   constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
 
@@ -613,7 +614,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       this.error_msg = 'Please first select saved search';
       setInterval(() => {
         this.error_msg = "" ;
-      }, 5000);
+      }, 9000);
     }
 
   }
