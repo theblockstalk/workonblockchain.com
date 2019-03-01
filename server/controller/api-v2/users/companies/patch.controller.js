@@ -198,7 +198,6 @@ module.exports.endpoint = async function (req, res) {
                 }
             }
             employerUpdate.saved_searches = queryBody.saved_searches;
-            // TODO: need to check that the timestamps are updated!
         }
 
         await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});

@@ -129,7 +129,7 @@ describe('cron', function () {
         it('should not only send to candidates after saved search update', async function () {
 
             let candidate = [], profileData= [], job = [], resume = [], experience = [];
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < 5; i++) {
                 candidate.push(docGenerator.candidate());
                 profileData.push(docGenerator.profileData());
                 job.push(docGenerator.job());
@@ -157,10 +157,11 @@ describe('cron', function () {
                 skills: [
                     experience[0].language_exp[0].language
                 ],
-                availability_day: job[0].availability_day,
+                availability_day: job[0].availability_day
             }];
 
-            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
+            const jwtToken = companyDoc.jwt_token;
+            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
 
@@ -180,6 +181,21 @@ describe('cron', function () {
 
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
             companyDoc.candidates_sent_by_email.length.should.equal(3);
+
+            let newSavedSearch = companyDoc.saved_searches;
+            newSavedSearch.position = [
+                job[1].roles[0]
+            ];
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[3], job[1], resume[3] ,experience[0]);
+
+            await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , {saved_searches : companyDoc.saved_searches});
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[4], profileData[4], job[1], resume[4] ,experience[0]);
+
+            await companyEmail();
+
+            companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+            companyDoc.candidates_sent_by_email.length.should.equal(4);
 
         })
     })
