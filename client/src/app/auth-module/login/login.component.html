@@ -4,77 +4,88 @@
       <div class="col">
       </div>
       <div class="col-8 bg-white p-4 border">
-        <div class = "row">
-          <div class="col-md-12 ">
-            <h3 class="text-center">Login</h3>
+        <ng-container *ngIf="response === 'process';else loginForm" >
+          <div class="text-center" >
+            <img src="/assets/profile/Loading_icon.gif" alt="Loading Gif">
           </div>
-        </div>
-        <div class = "row">
-          <div class="col-md-12">
-            <div class="alert alert-success" role="alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
-            <div class="alert alert-success" role="alert" *ngIf="message && !error">{{message}}</div>
-            <div class="alert alert-success" role="alert" *ngIf="password_message && !message ">{{password_message}}</div>
-            <div class="alert alert-danger" role="alert" *ngIf="error && !message ">{{error}}</div>
-            <h5 class="alert alert-danger" role="alert" *ngIf = "log">{{log}}</h5>
-            <h5 class="alert alert-danger" role="alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on <a (click)="reset_passsword()" class = "">here</a> to reset it.</h5>
+
+        </ng-container>
+
+        <ng-template #loginForm>
+          <div class = "row">
+            <div class="col-md-12 ">
+              <h3 class="text-center">Login</h3>
+            </div>
           </div>
-        </div>
-        <form (submit)="login(loginForm)" #loginForm = ngForm>
-          <div class = "row ">
+          <div class = "row">
             <div class="col-md-12">
-              <div class="form-group">
-                <span><i class="fas fa-envelope mr-1" aria-hidden="true"></i></span>
-                <label for="exampleInputEmail">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail" placeholder="email@example.com" name="name" required [(ngModel)]="credentials.email" aria-describedby="emailHelp" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
-                <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
-                  Enter email in correct format like myemail@gmail.com.
+              <div class="alert alert-success" role="alert" *ngIf="forgetMessage ">{{forgetMessage}}</div>
+              <div class="alert alert-success" role="alert" *ngIf="message && !error">{{message}}</div>
+              <div class="alert alert-success" role="alert" *ngIf="password_message && !message ">{{password_message}}</div>
+              <div class="alert alert-danger" role="alert" *ngIf="error && !message ">{{error}}</div>
+              <h5 class="alert alert-danger" role="alert" *ngIf = "log">{{log}}</h5>
+              <h5 class="alert alert-danger" role="alert" *ngIf = "reset">Your email or password is incorrect. If you don't remember your password, please click on <a (click)="reset_passsword()" class = "">here</a> to reset it.</h5>
+            </div>
+          </div>
+          <form (submit)="login(loginForm)" #loginForm = ngForm>
+            <div class = "row ">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <span><i class="fas fa-envelope mr-1" aria-hidden="true"></i></span>
+                  <label for="exampleInputEmail">Email address</label>
+                  <input type="email" class="form-control" id="exampleInputEmail" placeholder="email@example.com" name="name" required [(ngModel)]="credentials.email" aria-describedby="emailHelp" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
+                  <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
+                    Enter email in correct format like myemail@gmail.com.
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class = "row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
-                <label for="exampleInputPassword">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword"  name="password" required [(ngModel)]="credentials.password">
+            <div class = "row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <span><i class="fas fa-lock mr-1" aria-hidden="true"></i></span>
+                  <label for="exampleInputPassword">Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword"  name="password" required [(ngModel)]="credentials.password">
+                </div>
               </div>
             </div>
-          </div>
-          <div class = "row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <input type="submit" class="form-control btn btn-secondary" value = "Log in" [disabled]="!loginForm.valid ">
+            <div class = "row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="submit" class="form-control btn btn-secondary" value = "Log in" [disabled]="!loginForm.valid ">
+                </div>
               </div>
             </div>
-          </div>
-          <div class = "row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <a  class = "btn btn-block btn-social btn-linkedin text-center" (click)="subscribeToLogin()" >
-                  <i class="fab fa-linkedin" aria-hidden="true"></i>
-                  Log in with LinkedIn
-                </a>
+            <div class = "row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <a  class = "btn btn-block btn-social btn-linkedin text-center" (click)="subscribeToLogin()" >
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                    Log in with LinkedIn
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-          <div class = "row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <a  class = "btn btn-block btn-social btn-google text-center" (click)="signInWithGoogle()">
-                  <i class="fab fa-google" aria-hidden="true"></i>
-                  Log in with Google
-                </a>
+            <div class = "row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <a  class = "btn btn-block btn-social btn-google text-center" (click)="signInWithGoogle()">
+                    <i class="fab fa-google" aria-hidden="true"></i>
+                    Log in with Google
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <a routerLink = "/forgot_password" >Forgot your password?</a> <br/>
-              <a routerLink = "/signup" >Sign Up</a>
+            <div class="row">
+              <div class="col-md-12">
+                <a routerLink = "/forgot_password" >Forgot your password?</a> <br/>
+                <a routerLink = "/signup" >Sign Up</a>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+
+        </ng-template>
+
       </div>
       <div class="col">
       </div>

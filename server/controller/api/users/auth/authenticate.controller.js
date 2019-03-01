@@ -12,6 +12,13 @@ module.exports = async function (req, res) {
         if(userDoc && userDoc.social_type === 'LINKEDIN' && !userDoc.linkedin_id){
             await users.update({_id: userDoc._id}, {$set: {'linkedin_id': queryBody.linkedin_id}});
         }
+        else if(userDoc && userDoc.social_type === '') {
+            errors.throwError("You created account with custom signup. Please try to login with that." , 404)
+        }
+        else if(userDoc && userDoc.social_type === 'GOOGLE') {
+            errors.throwError("You created account with google signup. Please try to login with that." , 404)
+        }
+        else {}
         userDoc =  await users.findOne({linkedin_id : queryBody.linkedin_id });
         if(userDoc && userDoc.social_type === 'LINKEDIN' && userDoc.linkedin_id) {
             let jwtUserToken = jwtToken.createJwtToken(userDoc);

@@ -42,8 +42,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   password_message;
+  response;
   ngOnInit()
   {
+    this.response = "empty";
     this.newMeta.updateTag({ name: 'description', content: 'Login developers' });
     this.newMeta.updateTag({ name: 'keywords', content: 'login blockchain recruitment developers workonblockchain.com' });
     this.dataservice.forgetMessage.subscribe(message => this.forgetMessage = message);
@@ -56,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }, 15000);
 
     setInterval(() => {
-      this.log='';
+      //this.log='';
     }, 30000);
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
@@ -75,6 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.button_status="submit";
     this.message='';
     this.type='candidate';
+    this.response = 'process';
 
     if(this.credentials.email && this.credentials.password)
     {
@@ -83,6 +86,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           user => {
 
             if(user['type'] === 'company') {
+              this.response = 'data';
               this.previousUrl = localStorage.getItem('previousUrl');
 
               if(this.previousUrl) {
@@ -106,6 +110,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
           },
           error => {
+            this.response = 'error';
             if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
               this.password_message = '';
               this.log = error['error']['message'];
@@ -137,6 +142,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   signInWithGoogle()
   {
     this.message='';
+    this.response = 'process';
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
     this.authService.authState.subscribe((user) =>
     {
@@ -158,12 +164,13 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authenticationService.candidate_login(this.credentials.email, this.credentials.password , null)
           .subscribe(
             user => {
-
+              this.response='data';
               window.location.href = '/candidate_profile';
               //this.router.navigate(['/login']);
 
             },
             error => {
+              this.response = 'error';
               if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                 this.password_message = '';
                 this.log = error['error']['message'];
@@ -192,6 +199,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   public subscribeToLogin()
   {
     this.message='';
+    this.response = 'process';
     this._linkedInService.login().subscribe({
       next: (state) =>
       {
@@ -278,11 +286,12 @@ export class LoginComponent implements OnInit, OnDestroy {
               this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, this.credentials.linkedin_id)
                 .subscribe(
                   user => {
-
+                    this.response = 'data';
                     window.location.href = '/candidate_profile';
 
                   },
                   error => {
+                    this.response = 'error';
                     if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
                       this.password_message = '';
                       this.log = error['error']['message'];
