@@ -310,16 +310,16 @@ const UserSchema = new Schema({
                             reason: {
                                 type: String,
                                 enum: enumerations.statusReasons
-                            },
-                            timestamp: {
-                                type: Date,
-                                required:true,
                             }
                         }],
                         required: false
                     },
                     note : String,
-                    email_text : String
+                    email_text : String,
+                    timestamp: {
+                        type: Date,
+                        required:true,
+                    }
                 }]
 
             }

@@ -1,4 +1,4 @@
-Sconst emails = require('../emails');
+const emails = require('../emails');
 
 module.exports.sendEmail = function sendEmail(email,name,email_text,isAccountDisabed) {
     const sendTo = {

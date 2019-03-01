@@ -450,7 +450,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
   saveApproveData(approveForm) {
     console.log(approveForm);
-
     let queryInput : any = {};
     if(approveForm.note)queryInput['note'] = approveForm.note;
     if(approveForm.email_text) queryInput['email_text'] = approveForm.email_text;
@@ -461,6 +460,8 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.authenticationService.candidate_status_history(approveForm.id, queryInput)
       .subscribe(
         data => {
+          this.info = [];
+          this.info.push(data);
 
         },
         error => {

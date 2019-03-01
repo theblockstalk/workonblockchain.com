@@ -63,9 +63,9 @@ module.exports.endpoint = async function (req, res) {
             let status = {};
             if(queryInput.status) status.status = queryInput.status;
             if(queryInput.reason) status.reason = queryInput.reason;
-            status.timestamp = new Date();
             history['status'] = status;
         }
+        history['timestamp'] = new Date();
 
         if(!userDoc.first_approved_date) set.first_approved_date = new Date();
         await users.update({_id: userId}, {
