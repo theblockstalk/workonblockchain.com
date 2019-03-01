@@ -34,14 +34,14 @@ module.exports.endpoint = async function (req, res) {
 
     if (req.query.admin) {
         userId = req.query.user_id;
+        userDoc = await users.findOneById(userId);
     }
     else {
         userId = req.auth.user._id;
+        userDoc = req.auth.user;
     }
-
-    userDoc = await users.findOneById(userId);
-    let conversations = [];
-    conversations = userDoc.conversations;
+    
+    let conversations = userDoc.conversations;
     if (conversations && conversations.length > 0) {
         conversations.sort(function (a, b) {
             return a.last_message < b.last_message;

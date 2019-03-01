@@ -176,6 +176,8 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.no_of_employees) employerUpdate.no_of_employees = queryBody.no_of_employees;
         if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
         if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
+        if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
+
         if (queryBody.saved_searches) {
             let patchSearches = queryBody.saved_searches;
             let currentSearches = employerDoc.saved_searches;
@@ -198,9 +200,8 @@ module.exports.endpoint = async function (req, res) {
             employerUpdate.saved_searches = queryBody.saved_searches;
             // TODO: need to check that the timestamps are updated!
         }
-        if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
 
-        await companies.update({ _creator: userId },{ $set: employerUpdate});
+        await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
         res.send(updatedEmployerDoc);
