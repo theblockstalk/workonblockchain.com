@@ -40,7 +40,7 @@ module.exports.endpoint = async function (req, res) {
         userId = req.auth.user._id;
         userDoc = req.auth.user;
     }
-    
+
     let conversations = userDoc.conversations;
     if (conversations && conversations.length > 0) {
         conversations.sort(function (a, b) {
