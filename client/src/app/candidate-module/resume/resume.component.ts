@@ -93,7 +93,7 @@ export class ResumeComponent implements OnInit,AfterViewInit {
               this.term_active_class='fa fa-check-circle text-success';
               this.term_link = '/terms-and-condition';
             }
-            if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
+            if(data['contact_number']  && data['nationality'])
             {
               this.about_active_class = 'fa fa-check-circle text-success';
             }
@@ -724,13 +724,10 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
   findObjectByKey(array, key, value)
   {
-    // ////console.log(array.length);
     for (var i = 0; i < array.length; i++)
     {
-      // ////console.log(array[i][key]);
       if (array[i][key] === value)
       {
-        // ////console.log( array[i]);
         return array[i];
       }
 

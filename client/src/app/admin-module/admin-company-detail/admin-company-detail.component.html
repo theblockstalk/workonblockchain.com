@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-6">
               <ul class="list-group list-group-flush float-right">
-                <li *ngIf="referred_name !== ''">
+                <li class="list-group-item" *ngIf="referred_name !== ''">
                   <span ><i class="fas fa-user mr-2"></i> </span>
                   <ng-container *ngIf="referred_link ; else noLink">
                   <span >Refered By: <a  [routerLink]="[detail_link]" target="_blank" [queryParams]="{user: referred_link }">{{referred_name}}</a>
@@ -204,113 +204,158 @@
           </div>
         </section>
 
-        <section class = "bg-white border rounded my-4 py-3 px-5" *ngIf = "saved_searche && saved_searche.length > 0">
+        <section class = "bg-white border rounded mt-4 py-3 px-5" *ngIf = "data.saved_searches && data.saved_searches.length > 0">
           <div class="row">
             <div class="col-md-6">
               <h2>
-                <i class="fas fa-user"></i>
-                Candidate preferences
+                <i class="fas fa-search" aria-hidden="true"></i>
+                Saved searches
               </h2>
             </div>
           </div>
-          <div class="row mt-4" >
-            <div class = "col-md-12" >
-              <div class="form-group">
-                <label>Where are you hiring:</label>
-                <div *ngIf="countries">
-                  <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of countries'>
-                    <div *ngIf="country.name === 'Remote'">
-                      <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                    </div>
-                    <div *ngIf="country.type === 'city'">
-                      <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
-                    </div>
 
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class = "col-md-12" >
-              <div class="form-group">
-                <label>Show results that may require a sponsored work visa</label>
-                <p *ngIf="saved_searche[0].visa_needed === true;">Yes<p>
-                <p *ngIf="!saved_searche[0].visa_needed ||  saved_searche[0].visa_needed=== false;">No </p>
-              </div>
-
-            </div>
-          </div>
 
           <div class="row mt-3">
-            <div class="col-md-12 mb-3">
-              <div class="form-group">
-                <label>What position type are you looking for:</label>
-                <div>
-                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let type of saved_searche[0].job_type"> {{type}}</div>
+            <div class="col-md-12">
+              <h4><i class="fas fa-envelope "></i> Notifications</h4>
+
+            </div>
+            <div class="col-md-12">
+              {{data.when_receive_email_notitfications}}
+            </div>
+          </div>
+          <hr class="bg-dark" />
+
+
+          <div *ngFor="let searches of data.saved_searches; let i = index ">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="pt-2 mb-3"> Job search {{i+1}}: {{searches.name}}</h3>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="pt-2 "><i class="fas fa-user" aria-hidden="true"></i> Job requirements</h4>
+              </div>
+            </div>
+
+
+            <div class="row mt-3">
+              <div class="col-md-6 mb-3" *ngIf="searches.job_type && searches.job_type.length > 0">
+                <div class="form-group">
+                  <label>Type:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let type of searches.job_type"> {{type}}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-12 mb-3">
-              <div class="form-group">
-                <label>What role are you looking for:</label>
-                <div>
-                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let position of saved_searche[0].position"> {{position}}</div>
+              <div class="col-md-6 mb-3" *ngIf="searches.position && searches.position.length > 0">
+                <div class="form-group">
+                  <label>Role:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let position of searches.position"> {{position}}</div>
+                  </div>
+
                 </div>
               </div>
-            </div>
-            <div class="col-md-12 mb-3">
-              <div class="form-group">
-                <label>Available annual salary and currency:</label>
-                <p>
-                  {{saved_searche[0].current_currency}} {{saved_searche[0].current_salary}}
-                <p>
+
+              <div class = "col-md-6 mb-3" *ngIf="searches.location  || searches.visa_needed === true " >
+                <div class="form-group" *ngIf="searches.location && searches.location.length > 0">
+                  <label>Location:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let country of getLocation(searches.location)'>
+                      <div *ngIf="country.name === 'Remote'">
+                        <i class="fas fa-laptop"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+                      <div *ngIf="country.type === 'city'">
+                        <i class="fas fa-city"></i> {{country.name.charAt(0).toUpperCase()}}{{country.name.slice(1)}}
+                      </div>
+
+                    </div>
+                  </div>
+               </div>
+
+                <div class="form-group" *ngIf="searches.visa_needed && searches.visa_needed === true;">
+                  <div class="form-group mt-3">
+                    <p>Only show candidates that require a work visa</p>
+
+                  </div>
+
+                </div>
               </div>
+
+              <div class="col-md-6 mb-3" *ngIf="searches.blockchain && searches.blockchain.length >0">
+                <div class="form-group">
+                  <label>Commercial blockchain experience:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let blockchain of searches.blockchain">
+                      <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{blockchain}}.png" alt="{{blockchain}} Logo">
+                      {{blockchain}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-md-6 mb-3" *ngIf = "searches.skills && searches.skills.length > 0">
+                <div class="form-group">
+                  <label>Skills:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let lang of searches.skills"> {{lang}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3" *ngIf = "searches.residence_country && searches.residence_country.length > 0">
+                <div class="form-group">
+                  <label>Residence country:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let residence of searches.residence_country"> {{residence}}</div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-md-6 mb-3" *ngIf="searches.current_currency && searches.current_salary">
+                <div class="form-group">
+                  <label>Salary:</label>
+                  <p>
+                    {{searches.current_currency}} {{searches.current_salary}}
+                  <p>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-3" *ngIf="searches.other_technologies">
+                <div class="form-group">
+                  <label>Other requirements:</label>
+                  <p>
+                    {{searches.other_technologies}}
+                  </p>
+                </div>
+              </div>
+
             </div>
-            <div class="col-md-12 mb-3" >
-              <div class="form-group">
-                <label>What blockchain technology experience do they need:</label>
-                <div>
-                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let blockchain of saved_searche[0].blockchain">
-                    <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{blockchain}}.png" alt="{{blockchain}} Logo">
-                    {{blockchain}}
+
+            <div class="row" *ngIf="searches.order_preferences && searches.order_preferences.length > 0">
+              <div class="col-md-12">
+                <h4 class="pt-2 "><i class="fas fa-align-justify"></i> Job preferences</h4>
+              </div>
+              <div class="col-md-12 mt-3">
+                <div class="form-group">
+                  <label>Commercial blockchain experience:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor= "let pref of searches.order_preferences"> {{pref}}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-12 mb-3" >
-              <div class="form-group">
-                <label>What programming languages do they need to know:</label>
-                <div>
-                  <div class="d-inline-block p-2 border rounded mr-1" *ngFor= "let lang of saved_searche[0].skills"> {{lang}}</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-12 mb-3" >
-              <div class="form-group">
-                <label>Other technologies or requirements?</label>
-                <p>
-                  {{saved_searche[0].other_technologies}}
-                </p>
-              </div>
-            </div>
+            <hr *ngIf="i < (data.saved_searches.length - 1)" class="bg-dark"/>
 
-            <div class="col-md-12 mb-3">
-              <div class="form-group">
-                <label>When do you want to start hire working:</label>
-                <p>
-                  {{saved_searche[0].availability_day}}
-                </p>
-              </div>
-            </div>
-            <div class="col-md-12" >
-              <div class="form-group">
-                <label>When would you like to receive emails with candidates that match your search?</label>
-                <p>
-                  {{saved_searche[0].when_receive_email_notitfications}}
-                <p>
-              </div>
-            </div>
           </div>
+
+
         </section>
+
       </div>
     </div>
   </div>

@@ -23,7 +23,7 @@ describe('search candidates as company', function () {
 
     describe('POST /users/filter', function() {
 
-        it('it should return the candidate with position, location and availability search', async function () {
+        it('it should return the candidate with position and location ', async function () {
 
             const company = docGenerator.company();
             const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
@@ -43,7 +43,6 @@ describe('search candidates as company', function () {
             const params = {
                 positions: candidateUserDoc.candidate.roles,
                 locations: locations,
-                availability_day: candidateUserDoc.candidate.availability_day,
             }
 
             const comapnyUserDoc = await Users.findOne({email: company.email}).lean();

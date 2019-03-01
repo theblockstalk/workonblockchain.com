@@ -27,8 +27,6 @@ describe('prefilled profile of candidate', function () {
             const res = await candidateWizardHelper.prefilledProfile(prefilledProfileData,userDoc.jwt_token);
 
             userDoc = await Users.findOne({email: candidate.email}).lean();
-            userDoc.first_name.should.equal(prefilledProfileData.basics.first_name);
-            userDoc.last_name.should.equal(prefilledProfileData.basics.last_name);
             userDoc.candidate.description.should.equal(prefilledProfileData.basics.summary);
             userDoc.candidate.education_history.uniname.should.equal(prefilledProfileData.educationHistory.uniname);
             userDoc.candidate.work_history.companyname.should.equal(prefilledProfileData.workHistory.companyname);

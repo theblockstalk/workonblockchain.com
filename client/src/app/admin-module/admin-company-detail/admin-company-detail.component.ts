@@ -27,6 +27,7 @@ export class AdminCompanyDetailComponent implements OnInit {
   admin_log;
   imgPath;
 
+
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
     this.route.queryParams.subscribe(params => {
@@ -61,40 +62,6 @@ export class AdminCompanyDetailComponent implements OnInit {
               this.info.push(data);
               this.approve = data['_creator'].is_approved;
               this.verify =data['_creator'].is_verify;
-              if(data['saved_searches'].length > 0) {
-                this.saved_searche = data['saved_searches'];
-                if(data['saved_searches'][0].location)
-                {
-                  for (let country1 of data['saved_searches'][0].location)
-                  {
-                    let locObject : any = {}
-                    if (country1['remote'] === true) {
-                      this.selectedValueArray.push({name: 'Remote' , visa_not_needed : country1['visa_not_needed']});
-
-                    }
-                    if (country1['city']) {
-                      let city = country1['city'].city + ", " + country1['city'].country;
-                      locObject.name = city;
-                      locObject.type = 'city';
-                      if(country1['visa_not_needed'] === false) locObject.visa_not_needed = ": visa required";
-                      this.selectedValueArray.push(locObject);
-                    }
-
-                  }
-                  this.countries = this.selectedValueArray;
-                  this.countries.sort(function(a, b){
-                    if(a.name < b.name) { return -1; }
-                    if(a.name > b.name) { return 1; }
-                    return 0;
-                  })
-                  if(this.countries.find((obj => obj.name === 'Remote'))) {
-                    let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
-                    this.countries.splice(0, 0, remoteValue);
-                    this.countries = this.filter_array(this.countries);
-
-                  }
-                }
-              }
               if(data['_creator'].referred_email) {
                 this.authenticationService.getReferenceDetail(data['_creator'].referred_email)
                   .subscribe(
@@ -102,12 +69,12 @@ export class AdminCompanyDetailComponent implements OnInit {
                       if (refData['candidateDoc']) {
                         this.referred_name = refData['candidateDoc'].first_name + " " + refData['candidateDoc'].last_name;
                         this.detail_link = '/admin-candidate-detail';
-                        this.referred_link = refData['candidateDoc']._creator;
+                        this.referred_link = refData['candidateDoc']._id;
                       }
                       else if (refData['companyDoc']) {
                         this.referred_name = refData['companyDoc'].first_name + " " + refData['companyDoc'].last_name;
                         this.detail_link = '/admin-company-detail';
-                        this.referred_link = refData['companyDoc']._creator;
+                        this.referred_link = refData['companyDoc']._creator._id;
                       }
                       else {
                         this.referred_name = refData['refDoc'].email;
@@ -256,4 +223,40 @@ export class AdminCompanyDetailComponent implements OnInit {
       return (match ? false : hashTable[key] = true);
     });
   }
+
+  getLocation(location) {
+    this.selectedValueArray = [];
+    for (let country1 of location)
+    {
+      let locObject : any = {}
+      if (country1['remote'] === true) {
+        this.selectedValueArray.push({name: 'Remote'});
+
+      }
+
+      if (country1['city']) {
+        let city = country1['city'].city + ", " + country1['city'].country;
+        locObject.name = city;
+        locObject.type = 'city';
+        this.selectedValueArray.push(locObject);
+      }
+
+    }
+    this.countries = this.selectedValueArray;
+    this.countries.sort(function(a, b){
+      if(a.name < b.name) { return -1; }
+      if(a.name > b.name) { return 1; }
+      return 0;
+    })
+    if(this.countries.find((obj => obj.name === 'Remote'))) {
+      let remoteValue = this.countries.find((obj => obj.name === 'Remote'));
+      this.countries.splice(0, 0, remoteValue);
+      this.countries = this.filter_array(this.countries);
+
+    }
+
+    return this.countries;
+
+  }
+
 }

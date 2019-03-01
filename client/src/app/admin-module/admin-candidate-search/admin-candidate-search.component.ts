@@ -78,6 +78,8 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
     this.length='';
     this.log='';
     this.response='';
+    this.candidate_status = 1;
+    this.candidate_status_account = false;
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));

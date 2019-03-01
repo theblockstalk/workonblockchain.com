@@ -54,6 +54,15 @@
             <div class = "row">
               <div class="col-md-6">
                 <div class="form-group">
+                  <label>Github account URL (optional)</label>
+                  <input type="text" #gitaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="github_account" [(ngModel)]="info.github_account" placeholder="https://github.com/username">
+                  <div class = "invalid-feedback d-inline" *ngIf="gitaccount.errors">
+                    Enter url in proper format
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
                   <label>Stackexchange account URL (optional)</label>
                   <input type="text" #stackaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="exchange_account" [(ngModel)]="info.exchange_account" placeholder="https://stackexchange.com/users/12345/username">
                   <div class = "invalid-feedback d-inline" *ngIf="info.exchange_account && stackaccount.errors">
@@ -61,12 +70,24 @@
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Github account URL (optional)</label>
-                  <input type="text" #gitaccount="ngModel" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$" class="form-control" name="github_account" [(ngModel)]="info.github_account" placeholder="https://github.com/username">
-                  <div class = "invalid-feedback d-inline" *ngIf="gitaccount.errors">
-                    Enter url in proper format
+                  <label >Linkedin account URL (optional)</label>
+                  <input type="text" #linkedinaccount="ngModel" class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://linkedin.com/in/username"  name="linkedin_account" [(ngModel)]="info.linkedin_account">
+                  <div class = "invalid-feedback d-inline"  *ngIf="linkedinaccount.errors">
+                    Enter url in proper format.
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label >Medium account URL (optional)</label>
+                  <input type="text" #mediumaccount="ngModel"  class="form-control" pattern="^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,10}(:[0-9]{1,5})?(\/.*)?$"  placeholder="https://medium.com/username" name="medium_account" [(ngModel)]="info.medium_account">
+                  <div class = "invalid-feedback d-inline"  *ngIf="mediumaccount.errors">
+                    Enter url in proper format.
                   </div>
                 </div>
               </div>
@@ -165,14 +186,14 @@
                 <div class="form-group">
                   <label>Where would you like to work? (select up to 10)</label>
                   <div>
-                    <datalist id="countryList" *ngIf="cities && cities.length > 0">
+                    <datalist id="countryList">
                       <select class="form-control">
 
                         <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}">{{country.name}}
                         </option>
                       </select>
                     </datalist>
-                    <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+                    <input type="text" list="countryList" autocomplete="off" placeholder="Remote, Canada, London..." class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
                     <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                       {{error}}
                     </div>
@@ -335,7 +356,7 @@
                 <div class="form-group">
                   <label>Your availability</label>
                   <select title="Now" [(ngModel)]="availability_day" class="form-control selectpicker" required name="availability_day" >
-                    <option *ngFor='let start_month of month' [value]="start_month" [attr.selected]="start_month === availability_day">{{start_month}}</option>
+                    <option *ngFor='let month of availability' [value]="month.value" [attr.selected]="month.value === availability_day">{{month.name}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline" *ngIf="!availability_day">
                     {{avail_log}}

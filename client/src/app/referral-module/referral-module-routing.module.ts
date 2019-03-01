@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, CanActivate } from '@angular/router';
 
 import { ReferralComponent } from './referral/referral.component';
+import {VerifyEmailMiddleware} from '../../app/auth-module/verify-email-middleware';
 
 const routes: Routes = [
-  { path: 'referral', component: ReferralComponent},
+  { path: 'referral', component: ReferralComponent, canActivate: [VerifyEmailMiddleware]},
 ];
 
 @NgModule({

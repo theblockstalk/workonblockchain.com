@@ -38,7 +38,6 @@ module.exports.signupCompanyAndCompleteProfile = async function signupCompanyAnd
     await userHelpers.approve(company.email);
     await companyWizardHelpers.SummaryTnC(companyTnCWizard.termsID,companyTnCWizard, res.body.jwt_token);
     await companyWizardHelpers.companyAboutWizard(aboutData, res.body.jwt_token);
-    await companyWizardHelpers.companySavedSearchesWizard(searchPrefernces, res.body.jwt_token);
 }
 
 const getCompanies = module.exports.getCompanies = async function getCompanies(jwtToken){

@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, CanActivate } from '@angular/router';
 import { ChatComponent } from './chat/chat.component';
+import {VerifyEmailMiddleware} from '../../app/auth-module/verify-email-middleware';
 
 const routes: Routes = [
-  { path: 'chat', component: ChatComponent},
+  { path: 'chat', component: ChatComponent, canActivate: [VerifyEmailMiddleware]},
 ];
 
 @NgModule({

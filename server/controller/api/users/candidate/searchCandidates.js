@@ -4,77 +4,16 @@ const logger = require('../../../services/logger');
 const currency = require('../../../services/currency');
 const errors = require('../../../services/errors');
 const cities = require('../../../../model/mongoose/cities');
+const objects = require('../../../services/objects');
 
 
 const salaryFactor = 1.1;
 
-/*
-inputSchema = {
-    filers: {
-        is_verify: {
-            type: Number,
-            enum: [0, 1],
-        },
-        status: {
-            type: String,
-            enum: enumerations.candidateStatus
-        },
-        disable_account: Boolean,
-        msg_tags: {
-            type: String,
-            enum: enumerations.chatMsgTypes
-        },
-        onlyAfterDate: Date
-    },
-    search: {
-        name: String,
-        word: String,
-        locations: [{
-            type: String,
-            enum: enumerations.workLocations
-        }],
-        positions: [{
-            type: String,
-            enum: enumerations.workRoles
-        }],
-        blockchains: [{
-            type: String,
-            enum: enumerations.blockchainPlatforms
-        }],
-        skills: [{
-            type: String,
-            enum: enumerations.programmingLanguages
-        }],
-        salary: {
-            type: {
-                current_currency: {
-                    type: String,
-                    enum: enumerations.currencies
-                },
-                current_salary: Number
-            }
-        },
-        availability_day: {
-            type: String,
-            enum: enumerations.workAvailability
-        }
-    }
-};
-
-outputSchema = {
-    count: Number
-    candidates: [
-        type: candidateDoc
-    ]
-};
-*/
-
-module.exports.candidateSearch = async function candidateSearch(filters, search) {
+module.exports.candidateSearch = async function (filters, search, orderPreferences) {
     logger.debug("Doing new candidate search", {
         filters: filters,
         search: search
     });
-
 
     let userQuery= [];
     let filteredResult = [];
@@ -100,7 +39,7 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
     }
 
     if (filters.blacklist) {
-        userQuery._id = {$nin: filters.blacklist};
+        userQuery.push({_id: {$nin: filters.blacklist}});
     }
 
     if (filters.firstApprovedDate) {
@@ -133,8 +72,29 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             if(citiesArray.length > 0 ) {
                 countriesArray = removeDups(countriesArray);
                 if (search.visa_needed) {
-                    locationsQuery.push({"candidate.locations.city": {$in: citiesArray}});
-                    locationsQuery.push({"candidate.locations.country": {$in: countriesArray}});
+                    for (let city of citiesArray) {
+                        const cityQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    city: city,
+                                    visa_needed: true
+                                }
+                            }
+                        }
+                        locationsQuery.push(cityQuery)
+                    }
+
+                    for (let country of countriesArray) {
+                        const countryQuery = {
+                            "candidate.locations": {
+                                $elemMatch: {
+                                    country: country,
+                                    visa_needed: true
+                                }
+                            }
+                        }
+                        locationsQuery.push(countryQuery)
+                    }
                 }
                 else {
                     for (let city of citiesArray) {
@@ -180,6 +140,15 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             const rolesFilter = {"candidate.roles": {$in: search.positions}};
             userQuery.push(rolesFilter);
         }
+        if (search.blockchains && search.blockchains.length > 0 ) {
+            const platformFilter = {
+                $or: [
+                    {"candidate.blockchain.commercial_platforms.name": {$in: search.blockchains}},
+                    {"candidate.blockchain.smart_contract_platforms.name": {$in: search.blockchains}}
+                ]
+            };
+            userQuery.push(platformFilter);
+        }
 
         if (search.salary && search.salary.current_currency && search.salary.current_salary) {
             const curr = search.salary.current_currency;
@@ -193,50 +162,57 @@ module.exports.candidateSearch = async function candidateSearch(filters, search)
             userQuery.push(currencyFiler);
         }
 
-        if (search.blockchains && search.blockchains.length > 0 ) {
-            const platformFilter = {
-                $or: [
-                    {"candidate.blockchain.commercial_platforms.name": {$in: search.blockchains}},
-                    {"candidate.blockchain.smart_contract_platforms.name": {$in: search.blockchains}}
-                ]
-            };
-            userQuery.push(platformFilter);
-        }
-
         if (search.skills && search.skills.length > 0) {
             const skillsFilter = {"candidate.programming_languages.language": {$in: search.skills}};
             userQuery.push(skillsFilter);
         }
-        if (search.availability_day && search.availability_day !== -1 && search.availability_day !== 'Longer than 3 months') {
-            let dayArray;
-            if (search.availability_day === 'Now') {
-                dayArray = ['Now'];
-            } else if (search.availability_day === '1 month') {
-                dayArray = ['Now', '1 month'];
-            } else if (search.availability_day === '2 months') {
-                dayArray = ['Now', '1 month', '2 months'];
-            } else if (search.availability_day === '3 months') {
-                dayArray = ['Now', '1 month', '2 months', '3 months'];
-            }
-            const availabilityFilter = {"candidate.availability_day": {$in: dayArray}};
-            userQuery.push(availabilityFilter);
+
+        if (search.residence_country && search.residence_country.length > 0) {
+            const residenceCountryFilter = {"candidate.base_country": {$in: search.residence_country}};
+            userQuery.push(residenceCountryFilter);
+        }
+
+    }
+
+    let orderBy;
+
+    if(orderPreferences) {
+        if (orderPreferences.blockchainOrder && orderPreferences.blockchainOrder.length > 0 ) {
+            orderBy = {
+                $or: [
+                    {"candidate.blockchain.commercial_platforms.name": {$in: orderPreferences.blockchainOrder}},
+                    {"candidate.blockchain.smart_contract_platforms.name": {$in: orderPreferences.blockchainOrder}}
+                ]
+            };
         }
     }
-    const searchQuery = {$and: userQuery};
-    await users.findAndIterate(searchQuery, async function(userDoc) {
-        filteredResult.push(userDoc);
-        totalProccessed++;
-    });
 
-    if(filteredResult && filteredResult.length > 0) {
-        return {
-            count: totalProccessed,
-            candidates: filteredResult
-        };
+    let searchQuery = {$and: userQuery};
+    const userDocs = await users.find(searchQuery);
+    if(userDocs && userDocs.length > 0) {
+        if(orderBy) {
+            userQuery.push(orderBy);
+            searchQuery = {$and: userQuery};
+            const userDocsOrderBy = await users.find(searchQuery);
+            let sortedDocs = userDocsOrderBy.concat(userDocs);
+            sortedDocs = objects.removeDuplicates(sortedDocs , '_id');
+            return {
+                count: sortedDocs.length,
+                candidates: sortedDocs
+            };
+        }
+        else {
+            return {
+                count: userDocs.length,
+                candidates: userDocs
+            };
+        }
+
     }
     else {
         errors.throwError("No candidates matched this search criteria", 404);
     }
+
 }
 
 function makeDistinctSet(array) {
@@ -256,6 +232,7 @@ function salary_converter(salary_value, currency1, currency2)
     return array;
 }
 
+//Remove duplicates from one dimension array
 function removeDups(names) {
     let unique = {};
     names.forEach(function(i) {

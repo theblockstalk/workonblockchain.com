@@ -20,10 +20,13 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   user;googleUser;email;linkedinUser;message;
   terms;
   code;ref_msg;
+  ref_discount_msg;
   public isUserAuthenticatedEmittedValue = false;
   public isUserAuthenticated;
+  first_name_log;
+  last_name_log;
 
-  private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
+  private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'public-profile-url', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
 
   credentials: any = {};
   countries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
@@ -34,17 +37,24 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private titleService: Title,private newMeta: Meta
   ) {
     this.titleService.setTitle('Work on Blockchain | Signup developer or company');
-    this.route.queryParams.subscribe(params => {
-      this.code = params['code'];
-    });
+    this.code = localStorage.getItem('ref_code');
 
     if (this.code) {
       this.authenticationService.getByRefrenceCode(this.code)
         .subscribe(
           data => {
             if (data) {
-              if (data && data['name']) {
-                this.ref_msg = data['name'] + ' thinks you should join workonblockchain.com';
+              if (data ) {
+                if(data['name']) {
+                  this.ref_msg = data['name'] + ' thinks you should join workonblockchain.com';
+                }
+                else {
+                  this.ref_msg = 'You have been referred to workonblockchain.com';
+                }
+
+                if(data['discount']){
+                  this.ref_discount_msg = '. Congratulations, you will receive a '+data['discount']+'% discount off our fee when you make a hire!';
+                }
               }
               this.credentials.referred_email = data['email'];
             }
@@ -118,18 +128,18 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       .asObservable()
       .subscribe({
         next: (data) => {
-          console.log(data);
           localStorage.setItem('linkedinUser', JSON.stringify(data));
           if(data)
           {
-            console.log("if");
             this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
             this.credentials.email= this.linkedinUser.emailAddress;
             this.credentials.password= '';
             this.credentials.type="candidate";
             this.credentials.social_type='LINKEDIN';
             this.credentials.linkedin_id = this.linkedinUser.id;
-            console.log(this.credentials);
+            this.credentials.first_name = this.linkedinUser.firstName;
+            this.credentials.last_name = this.linkedinUser.lastName;
+            this.credentials.linkedin_account = this.linkedinUser.publicProfileUrl;
             if(this.linkedinUser.emailAddress)
             {
               this.authenticationService.create(this.credentials)
@@ -138,6 +148,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
                     this.credentials.email = '';
 
                     localStorage.setItem('currentUser', JSON.stringify(data));
+                    localStorage.removeItem('ref_code');
                     window.location.href = '/terms-and-condition';
 
                   },
@@ -162,10 +173,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           }
         },
         error: (err) => {
-          console.log(err);
         },
         complete: () => {
-          console.log('RAW API call completed');
         }
       });
   }
@@ -179,6 +188,14 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     if(!this.credentials.email)
     {
       this.email_log="Please enter email address";
+    }
+    if(!this.credentials.first_name)
+    {
+      this.first_name_log="Please enter first name";
+    }
+    if(!this.credentials.last_name)
+    {
+      this.last_name_log="Please enter last name";
     }
     else
     {
@@ -202,7 +219,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     {
       this.pass_log="";
     }
-    if(loginForm.valid === true && this.credentials.email && this.credentials.password && this.credentials.confirm_password && this.credentials.password == this.credentials.confirm_password)
+    if(loginForm.valid === true && this.credentials.first_name && this.credentials.last_name && this.credentials.email && this.credentials.password && this.credentials.confirm_password && this.credentials.password == this.credentials.confirm_password)
     {
 
       this.authenticationService.create(this.credentials)
@@ -210,7 +227,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           data =>
           {
             localStorage.setItem('currentUser', JSON.stringify(data));
-            window.location.href = '/terms-and-condition';
+            localStorage.removeItem('ref_code');
+            window.location.href = '/candidate-verify-email';
+
           },
           error =>
           {
@@ -248,12 +267,14 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
         this.credentials.password= '';
         this.credentials.type="candidate";
         this.credentials.social_type=this.googleUser.provider;
+        this.credentials.first_name = this.googleUser.firstName;
+        this.credentials.last_name = this.googleUser.lastName;
         this.authenticationService.create(this.credentials)
           .subscribe(
             data => {
               this.credentials.email= '';
-
               localStorage.setItem('currentUser', JSON.stringify(data));
+              localStorage.removeItem('ref_code');
               window.location.href = '/terms-and-condition';
 
             },
@@ -284,11 +305,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     this._linkedInService.login().subscribe({
       next: (state) =>
       {
-        console.log("state");
       },
       complete: () => {
         // Completed
-        console.log("complete");
       }
     });
 
@@ -386,7 +405,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
           data =>
           {
             localStorage.setItem('currentUser', JSON.stringify(data));
-            window.location.href = '/company_wizard';
+            localStorage.removeItem('ref_code');
+            window.location.href = '/company-verify-email';
           },
           error =>
           {

@@ -118,41 +118,6 @@ module.exports.companyAbout = function companyAbout(){
 }
 
 
-module.exports.companyUpdateProfile = function companyUpdateProfile(){
-    return {
-        info : {
-            first_name: "Sara",
-            last_name: "khan",
-            job_title: "Developer",
-            company_name: "Mwan Mobile",
-            company_website: "www.mwanmobile.com",
-            phone_number: "090078601",
-            country: "Pakistan",
-            postal_code: "44000",
-            city: "rawalpindi",
-            company_founded:2013,
-            no_of_employees:8,
-            company_funded:"i have no idea",
-            company_description:"Global blockchain agnostic hiring platform for developers."
-        },
-
-        saved_searches : [{
-            location: [
-                {remote:true , visa_needed: false},
-                {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }
-            ],
-            job_type : ['Full time'],
-            position : ['UI Developer', 'Fullstack Developer'],
-            current_currency : '$ USD',
-            current_salary : 2000,
-            blockchain : ['Ripple' , 'Stellar'],
-            skills : ['C#'],
-            availability_day : '1 month' ,
-            when_receive_email_notitfications : 'Never'
-        }]
-
-    }
-}
 
 module.exports.referredEmailDocs = function referredEmailDocs(){
     return {
@@ -168,6 +133,8 @@ module.exports.profileData = function profileData(){
         last_name : 'Hussain',
         github_account : 'fb.com',
         exchange_account : 'fb.com',
+        linkedin_account : 'http://linkedin.com/in/sadia',
+        medium_account : 'http://medium.com/sadia',
         contact_number : '65464655',
         nationality : 'Pakistani',
         country : 'Pakistan',
@@ -289,6 +256,8 @@ module.exports.editCandidateProfile = function editCandidateProfile(){
             contact_number: '+92654654654',
             exchange_account: 'sadia_exchange.com',
             github_account: 'fb.com',
+            linkedin_account : 'http://linkedin.com/in/sadia_abbas',
+            medium_account : 'http://medium.com/sadia_abbas',
             nationality: 'Pakistani',
             base_country : 'Pakistan',
             city : 'Islamabad',

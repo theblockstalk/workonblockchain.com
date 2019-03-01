@@ -17,13 +17,11 @@ export class ResetPasswordComponent implements OnInit {
   constructor(private route: ActivatedRoute, private http: HttpClient,
               private router: Router,
               private authenticationService: UserService,private dataservice: DataService) {
-    /*this.hash = route.snapshot.params['hash'];
-      ////console.log(this.hash);*/
+
 
     this.route.queryParams.subscribe(params =>
     {
       this.hash = params['hash'];
-      ////console.log(this.hash); // Print the parameter to the console.
     });
 
   }

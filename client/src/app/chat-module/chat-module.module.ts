@@ -27,7 +27,6 @@ import { ChatModuleRoutingModule } from './chat-module-routing.module';
 export class ChatModuleModule {
   constructor(private scriptService : ScriptService) {
     this.scriptService.load('ckeditor').then(data => {
-      //console.log('script loaded ', data);
     }).catch(error => console.log(error));
   }
 }

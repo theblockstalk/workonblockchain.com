@@ -33,6 +33,20 @@
                 <option class='option' *ngFor='let options of admin_check'  [value]="options.name" selected>{{options.value}}</option>
               </select>
             </div>
+            <hr/>
+
+            <div class = "form-group">
+              <select title="Email verification" class="selectpicker form-control " name="candidate_status" [(ngModel)]="candidate_status" (ngModelChange)="search_account_status($event)" >
+                <option *ngFor='let options of admin_checks_email_verify'  [value]="options.value" selected>{{options.name}}</option>
+              </select>
+            </div>
+            <hr/>
+
+            <div class = "form-group">
+              <select title="Account enabled" class="selectpicker form-control " name="candidate_status_account" [(ngModel)]="candidate_status_account" (ngModelChange)="search_candidate_account_status($event)" >
+                <option class='option' *ngFor='let options of admin_checks_candidate_account'  [value]="options.value" selected>{{options.name}}</option>
+              </select>
+            </div>
 
           </div>
           <div class = "form-group float-right mt-2">

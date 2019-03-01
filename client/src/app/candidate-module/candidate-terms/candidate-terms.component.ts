@@ -56,9 +56,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
       this.resume_disable = "disabled";
       this.exp_disable = "disabled";
       this.prefill_disable = "disabled";
-      //console.log(this.termscondition);
        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-       //console.log(this.currentUser);
 
       if(this.currentUser && this.currentUser.type=='candidate')
        {
@@ -73,7 +71,6 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                         if(data)
                         {
                           this.terms_id = data['_id'];
-                          //console.log(this.editor_content);
                         }
                       }
                     );
@@ -98,7 +95,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                     this.termscondition = false;
                   }
 
-                  if(data['contact_number']  && data['nationality'] && data['first_name'] && data['last_name'])
+                  if(data['contact_number']  && data['nationality'])
                   {
                       this.job_disable = "";
                       this.about_active_class = 'fa fa-check-circle text-success';
@@ -164,7 +161,6 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
   terms_log;
   terms_and_condition(termsForm: NgForm)
   {
-    //console.log(termsForm.value);
 
       if(this.termscondition == false)
       {

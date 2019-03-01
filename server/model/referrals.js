@@ -16,6 +16,10 @@ const ReferralsSchema = new Schema({
         lowercase: true,
         required:true
     },
+    discount : {
+        type: Number,
+        required : false
+    },
     date_created: {
         type: Date
     }

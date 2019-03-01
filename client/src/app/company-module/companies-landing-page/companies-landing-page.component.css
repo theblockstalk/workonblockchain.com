@@ -1,0 +1,142 @@
+.lead-bnr{
+  background-image: url('/assets/images/companies/lead-banner-bg.png');
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.sec-b .number{
+  font-size: 92px;
+  font-weight: 600;
+}
+
+
+.sec-b .text{
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.com_features .fu-list{
+  border-radius: 20px;
+}
+
+.com_features .fu-list p{
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.com_features .fu-list p i{
+  font-size: 25px;
+  margin-right: 10px;
+  color: #006df0;
+}
+
+.stepss{
+  position: relative;
+}
+
+.stepss::after{
+  content: '';
+  background-image: url('/assets/images/companies/arrows-b.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  position: absolute;
+  top: 48px;
+  width: 60%;
+  height: 55px;
+  margin-left: 10px;
+}
+
+.com_card{
+  width: 270px;
+  margin: auto;
+}
+
+.co_comp .card_body .bg-grey{
+  background: #e5e5e5;
+}
+
+.co_comp .card_body .bg-warning{
+  font-size: 20px;
+}
+
+.card_body .f-1{
+  font-size: 45px;
+}
+
+.card_body .f-2{
+  font-size: 55px;
+  font-weight: bold;
+}
+
+.card_body .f-3{
+  font-size: 25px;
+}
+
+.com_card .card-logo{
+  width: 90%;
+  margin: auto;
+  position: relative;
+  top: 15px;
+  font-size: 20px;
+  border: 1px;
+  border-style: dashed;
+}
+
+.card_wob{
+  background: #005694;
+  width: 350px;
+
+}
+
+.a_c{
+  position: relative;
+  top: 105px;
+  height: 430px;
+}
+
+.vs p{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 59%;
+  left: 50%;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+@media (max-width: 1200px){
+  .stepss::after{
+    width: 55%;
+  }
+}
+
+@media (max-width: 992px){
+  .stepss::after{
+    display: none;
+  }
+}
+
+@media (max-width: 767px){
+
+  .lead-bnr{
+    background-size:cover;
+  }
+  .com_card, .card_wob{
+    width: 100%;
+  }
+
+  .a_c{
+    top:0px;
+  }
+
+  .vs p{
+    position:relative;
+    text-align: center;
+    top: 15px;
+  }
+}
+
+.hire_button {
+  font-size : 20px;
+}

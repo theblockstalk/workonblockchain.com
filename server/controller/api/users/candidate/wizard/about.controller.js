@@ -1,7 +1,5 @@
 const users = require('../../../../../model/mongoose/users');
 const referral = require('../../../../../model/mongoose/referral');
-const welcomeEmail = require('../../../../services/email/emails/welcomeEmail');
-const verify_send_email = require('../../auth/verify_send_email');
 const jwtToken = require('../../../../services/jwtToken');
 const errors = require('../../../../services/errors');
 
@@ -21,6 +19,8 @@ module.exports = async function (req, res) {
         if (queryBody.last_name) candidateUpdate.last_name = queryBody.last_name;
         if (queryBody.github_account) candidateUpdate['candidate.github_account'] = queryBody.github_account;
         if (queryBody.exchange_account) candidateUpdate['candidate.stackexchange_account'] = queryBody.exchange_account;
+        if (queryBody.linkedin_account) candidateUpdate['candidate.linkedin_account'] = queryBody.linkedin_account;
+        if (queryBody.medium_account) candidateUpdate['candidate.medium_account'] = queryBody.medium_account;
         if (queryBody.contact_number) candidateUpdate.contact_number = queryBody.contact_number;
         if (queryBody.nationality) candidateUpdate.nationality = queryBody.nationality;
         if (queryBody.city) candidateUpdate['candidate.base_city'] = queryBody.city;
@@ -64,24 +64,7 @@ module.exports = async function (req, res) {
             }
 
         }
-        //sending email for social register
-        if(myUserDoc.social_type === 'GOOGLE' || myUserDoc.social_type === 'LINKEDIN'){
-            let data = {fname : queryBody.first_name , email : myUserDoc.email}
-            welcomeEmail.sendEmail(data, myUserDoc.disable_account);
-        }
-        else {
-            let signOptions = {
-                expiresIn:  "1h",
-            };
-            let verifyEmailToken = jwtToken.createJwtToken(myUserDoc, signOptions);
-            var set =
-                {
-                    verify_email_key: verifyEmailToken,
 
-                };
-            await users.update({ _id: myUserDoc._id },{ $set: set });
-            verify_send_email(myUserDoc.email, verifyEmailToken);
-        }
 
         res.send({
             success: true

@@ -899,7 +899,7 @@
             </select>
 
           </datalist>
-          <input type="text" list="countryList" autocomplete="off" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValue($event)">
+          <input type="text" list="countryList" autocomplete="off" class="form-control" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValue($event)">
           <div class="invalid-feedback d-inline" *ngIf="error">
             {{error}}
           </div>

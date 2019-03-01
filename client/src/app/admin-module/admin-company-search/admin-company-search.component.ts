@@ -31,6 +31,8 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
   response;
   pager: any = {};
   pagedItems: any[];
+  candidate_status;
+  candidate_status_account;
   msgTagsOptions =
     [
       {value:'normal', name:'Normal' , checked:false},
@@ -42,6 +44,16 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
       {value:'employment_offer_accepted', name:'Employment offer accepted' , checked:false},
       {value:'employment_offer_rejected', name:'Employment offer rejected' , checked:false},
     ];
+
+  admin_checks_email_verify = [
+    {value:1, name:'Verified'},
+    {value:0, name:'Not Verified'}
+  ];
+
+  admin_checks_candidate_account = [
+    {value:false, name:'Enabled'},
+    {value:true, name:'Disabled'}
+  ];
 
   constructor(private pagerService: PagerService , private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
   ngAfterViewInit(): void
@@ -56,6 +68,8 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.length='';
     this.log='';
     this.response = '';
+    this.candidate_status = 1;
+    this.candidate_status_account = false;
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.admin_log = JSON.parse(localStorage.getItem('admin_log'));
@@ -137,7 +151,6 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
 
   }
 
-
   messagetag_changed(data)
   {
     this.search(data);
@@ -149,6 +162,19 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
     this.search(this.approve);
 
   }
+
+  search_account_status(event)
+  {
+    this.candidate_status = event;
+    this.search(this.candidate_status);
+  }
+
+  search_candidate_account_status(event)
+  {
+    this.candidate_status_account = event;
+    this.search(this.candidate_status_account);
+  }
+
 
   filter_array(arr)
   {
@@ -180,6 +206,8 @@ export class AdminCompanySearchComponent implements OnInit,AfterViewInit {
       if(this.approve) queryBody.is_approve = this.approve;
       if(this.msgtags && this.msgtags.length > 0) queryBody.msg_tags = this.msgtags;
       if(this.searchWord && this.searchWord.length > 0) queryBody.word = this.searchWord;
+      if(this.candidate_status) queryBody.verify_status = this.candidate_status;
+      if(this.candidate_status_account) queryBody.account_status = this.candidate_status_account;
 
       this.authenticationService.admin_company_filter(queryBody)
         .subscribe(

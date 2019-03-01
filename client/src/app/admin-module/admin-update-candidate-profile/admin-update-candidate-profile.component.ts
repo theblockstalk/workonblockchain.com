@@ -259,14 +259,15 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
           {
             if(data)
             {
-              console.log(data);
               this.info.email = data['email'];
               if(data['contact_number']  || data['nationality'] || data['first_name'] || data['last_name'] || data['candidate'])
               {
 
                 this.info.contact_number = data['contact_number'];
-                this.info.github_account = data['candidate'].github_account;
-                this.info.exchange_account = data['candidate'].stackexchange_account;
+                if(data['candidate'].github_account) this.info.github_account = data['candidate'].github_account;
+                if(data['candidate'].stackexchange_account) this.info.exchange_account = data['candidate'].stackexchange_account;
+                if(data['candidate'].linkedin_account) this.info.linkedin_account = data['candidate'].linkedin_account;
+                if(data['candidate'].medium_account) this.info.medium_account = data['candidate'].medium_account;
                 this.info.nationality = data['nationality'];
                 this.info.first_name =data['first_name'];
                 this.info.last_name =data['last_name'];
@@ -764,8 +765,13 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
       "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994"
     ]
 
-  month= ["Now","1 month","2 months","3 months","Longer than 3 months"]
-
+  availability = [
+    {name: "Now" , value: "Now" },
+    {name: "1 month notice period" , value: "1 month" },
+    {name: "2 months notice period", value: "2 months" },
+    {name: "3 months notice period", value: "3 months" },
+    {name: "3+ months notice period", value: "Longer than 3 months" }
+  ]
 
   commercially=
     [
@@ -1293,7 +1299,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   candidate_profile(profileForm: NgForm)
   {
-    console.log(profileForm.value);
     this.error_msg = "";
     this.count = 0;
     this.submit = "click";
@@ -1389,8 +1394,7 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
-    console.log(this.commercially_worked);
-    console.log(this.commercial_expYear);
+
     if(this.commercially_worked.length !== this.commercial_expYear.length )
     {
       this.commercial_log = "Please fill year of experience";
@@ -1633,7 +1637,6 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         ,fieldname : this.EducationForm.value.itemRows[key].fieldname , eduyear : this.EducationForm.value.itemRows[key].eduyear  };
       this.education_json_array.push(this.educationjson) ;
     }
-    console.log(profileForm);
     if(this.commercially_worked.length === 0) {
       profileForm.commercial_platforms = [];
     }
@@ -1870,109 +1873,102 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
 
   suggestedOptions() {
     // this.cities = ['Afghanistan (city)', 'Albania (country)', 'Algeria (city)', 'Andorra (country)', 'Angola (city)', 'Antigua & Deps (city)', 'Argentina (city)', 'Armenia (city)', 'Australia (city)', 'Austria (city)', 'Azerbaijan (city)', 'Bahamas (city)', 'Bahrain (city)', 'Bangladesh (city)', 'Barbados (city)', 'Belarus (city)', 'Belgium (city)', 'Belize (city)', 'Benin (city)', 'Bhutan (city)', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
-
-    const letters = /^[a-zA-Z ,()]*$/;
-    if(this.countriesModel.match(letters))
-    {
-      this.error='';
-      this.authenticationService.autoSuggestOptions(this.countriesModel, true)
-        .subscribe(
-          data => {
-            if(data) {
-              let citiesInput = data;
-              let citiesOptions=[];
-              for(let cities of citiesInput['locations']) {
-                if(cities['remote'] === true) {
-                  citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
+    if(this.countriesModel !== '') {
+        this.error='';
+        this.authenticationService.autoSuggestOptions(this.countriesModel , true)
+          .subscribe(
+            data => {
+              if(data) {
+                let citiesInput = data;
+                let citiesOptions=[];
+                for(let cities of citiesInput['locations']) {
+                  if(cities['remote'] === true) {
+                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: 'Remote'});
+                  }
+                  if(cities['city']) {
+                    let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
+                    citiesOptions.push({_id : cities['city']._id , name : cityString});
+                  }
+                  if(cities['country'] ) {
+                    let countryString = cities['country']  + " (country)";
+                    if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
+                      citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
+                  }
                 }
-                if(cities['city']) {
-                  let cityString = cities['city'].city + ", " + cities['city'].country + " (city)";
-                  citiesOptions.push({_id : cities['city']._id , name : cityString});
-                }
-                if(cities['country'] ) {
-                  let countryString = cities['country'] + " (country)";
-                  if(citiesOptions.findIndex((obj => obj.name === countryString)) === -1)
-                    citiesOptions.push({_id:Math.floor((Math.random() * 100000) + 1), name: countryString});
-                }
+                this.cities = this.filter_array(citiesOptions);
               }
-              this.cities = this.filter_array(citiesOptions);
-            }
 
-          },
-          error=>
-          {
-            if(error['message'] === 500 || error['message'] === 401)
+            },
+            error=>
             {
-              localStorage.setItem('jwt_not_found', 'Jwt token not found');
-              localStorage.removeItem('currentUser');
-              localStorage.removeItem('googleUser');
-              localStorage.removeItem('close_notify');
-              localStorage.removeItem('linkedinUser');
-              localStorage.removeItem('admin_log');
-              window.location.href = '/login';
-            }
+              if(error['message'] === 500 || error['message'] === 401)
+              {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
 
-            if(error.message === 403)
-            {
-              this.router.navigate(['/not_found']);
-            }
+              if(error.message === 403)
+              {
+                this.router.navigate(['/not_found']);
+              }
 
-          });
+            });
     }
-    else
-    {
-      this.cities = [];
-      this.error = "Please enter only alphabet";
-    }
-
-
   }
 
   selectedValueFunction(e) {
 
-    if(this.cities.find(x => x.name === e.target.value)) {
-      var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
+    if(this.cities) {
+      if(this.cities.find(x => x.name === e)) {
+        var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
 
-      this.countriesModel = '';
-      this.cities = [];
-      if(this.selectedValueArray.length > 9) {
-        this.error = 'You can select maximum 10 locations';
-        setInterval(() => {
-          this.error = "" ;
-        }, 5000);
-      }
-      else {
-        if(this.selectedValueArray.find(x => x.name === e.target.value)) {
-          this.error = 'This location has already been selected';
+        this.countriesModel = '';
+        this.cities = [];
+        if(this.selectedValueArray.length > 9) {
+          this.error = 'You can select maximum 10 locations';
           setInterval(() => {
             this.error = "" ;
-          }, 4000);
+          }, 5000);
         }
-
         else {
-          if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e.target.value, visa_needed:false});
-          else this.selectedValueArray.push({ name: e.target.value, visa_needed:false});
+          if(this.selectedValueArray.find(x => x.name === e)) {
+            this.error = 'This location has already been selected';
+            setInterval(() => {
+              this.error = "" ;
+            }, 4000);
+          }
+
+          else {
+            if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e, visa_needed:false});
+            else this.selectedValueArray.push({ name: e, visa_needed:false});
+          }
+
+
         }
 
 
       }
+      if(this.selectedValueArray.length > 0) {
+        this.selectedValueArray.sort(function(a, b){
+          if(a.name < b.name) { return -1; }
+          if(a.name > b.name) { return 1; }
+          return 0;
+        })
+        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+          let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+          this.selectedValueArray.splice(0, 0, remoteValue);
+          this.selectedValueArray = this.filter_array(this.selectedValueArray);
 
-
-    }
-    if(this.selectedValueArray.length > 0) {
-      this.selectedValueArray.sort(function(a, b){
-        if(a.name < b.name) { return -1; }
-        if(a.name > b.name) { return 1; }
-        return 0;
-      })
-      if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-        let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-        this.selectedValueArray.splice(0, 0, remoteValue);
-        this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
+        }
+        this.selectedLocations = this.selectedValueArray;
       }
-      this.selectedLocations = this.selectedValueArray;
     }
+
   }
 
   updateCitiesOptions(e) {

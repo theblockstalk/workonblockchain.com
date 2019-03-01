@@ -51,15 +51,15 @@
 
             <div>
 
-              <datalist id="countryList" *ngIf ="cities && cities.length > 0">
+              <datalist id="countryList">
                 <select class="form-control">
 
-                <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}" >{{country.name}}
+                  <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}" >{{country.name}}
                   </option>
                 </select>
               </datalist>
 
-              <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (change)="selectedValueFunction($event)">
+              <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
               <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
                 {{error}}
               </div>
@@ -223,7 +223,7 @@
                 <label>Employment availability</label>
 
                 <select title="(select one)" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
-                  <option class='option' *ngFor='let start_month of month' [attr.selected]  [value]="start_month" selected>{{start_month}}</option>
+                  <option class='option' *ngFor='let month of availability' [attr.selected]  [value]="month.value" selected>{{month.name}}</option>
                 </select>
                 <div class = "invalid-feedback d-inline"  *ngIf="!availability_day">
                   {{avail_log}}
