@@ -382,6 +382,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   country_input_log;
   country_log;
   residence_country_log;
+  name_log;
 
   checkNumber(salary) {
     if(!Number(this.preferncesForm.value.current_salary)) {
@@ -418,6 +419,10 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.country_log = "Please select maximum 10 locations";
     }
 
+    if(!this.preferncesForm.value.name) {
+      this.name_log = "Please enter saved search name";
+    }
+
     if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
       this.position_log = "Please select roles";
     }
@@ -441,7 +446,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.residence_country_log = "Please select maximum 50 countries";
 
     }
-    if(this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
+    if(this.preferncesForm.value.name && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0  &&
       this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
       this.preferncesForm.value.when_receive_email_notitfications && this.preferncesForm.value.residence_country &&
