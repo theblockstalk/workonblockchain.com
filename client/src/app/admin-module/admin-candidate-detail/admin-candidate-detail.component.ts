@@ -452,14 +452,13 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     console.log(approveForm);
 
     let queryInput : any = {};
-    queryInput.note = approveForm.note;
-    queryInput.email_text = approveForm.email_text;
-    console.log(queryInput);
+    if(approveForm.note)queryInput['note'] = approveForm.note;
+    if(approveForm.email_text) queryInput['email_text'] = approveForm.email_text;
+    if(approveForm.set_status) queryInput['status'] = approveForm.set_status;
+    if(approveForm.status_reason_rejected) queryInput['reason'] = approveForm.status_reason_rejected;
+    if(approveForm.status_reason_deferred) queryInput['reason'] = approveForm.status_reason_deferred;
 
-    let history = [];
-    history.push(queryInput);
-    console.log(history);
-    this.authenticationService.candidate_status_history(approveForm.id, history)
+    this.authenticationService.candidate_status_history(approveForm.id, queryInput)
       .subscribe(
         data => {
 
