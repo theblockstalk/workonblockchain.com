@@ -53,6 +53,7 @@ module.exports.endpoint = async function (req, res) {
             if (conversationUser.type === 'candidate') {
                 if (req.query.admin) {
                     conversations[i].name = conversationUser.first_name + ' ' + conversationUser.last_name;
+                    conversations[i].image = conversationUser.image;
                 }
                 else {
                     const acceptedJobOffer = await messages.findOne({
