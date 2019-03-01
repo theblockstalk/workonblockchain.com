@@ -125,5 +125,62 @@ describe('cron', function () {
             companyDoc.candidates_sent_by_email.length.should.equal(1);
             companyDoc.candidates_sent_by_email[0].user.toString().should.equal(userCandidateDoc._id.toString());
         })
+
+        it('should not only send to candidates after saved search update', async function () {
+
+            let candidate = [], profileData= [], job = [], resume = [], experience = [];
+            for (let i = 0; i < 4; i++) {
+                candidate.push(docGenerator.candidate());
+                profileData.push(docGenerator.profileData());
+                job.push(docGenerator.job());
+                resume.push(docGenerator.resume());
+                experience.push(docGenerator.experience());
+            }
+
+            const company = docGeneratorV2.company();
+            await companiesHelperV2.signupCompany(company);
+            let companyDoc = await users.findOneByEmail(company.email);
+
+            const updatedData = await docGeneratorV2.companyUpdateProfile();
+            updatedData.saved_searches = [{
+                location: [
+                    job[0].country[0]
+                ],
+                job_type: [
+                    "Part time"
+                ],
+                position: [
+                    job[0].roles[0]
+                ],
+                current_currency: job[0].base_currency,
+                current_salary: job[0].expected_salary,
+                skills: [
+                    experience[0].language_exp[0].language
+                ],
+                availability_day: job[0].availability_day,
+            }];
+
+            const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
+            await userHelper.verifyEmail(updateRes.body._creator.email);
+            await userHelper.approve(updateRes.body._creator.email);
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[0], profileData[0], job[0], resume[0] ,experience[0]);
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[1], profileData[1], job[0], resume[1] ,experience[0]);
+
+            await companyEmail();
+
+            let userCompanyDoc = await users.findOneByEmail(company.email);
+            companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+            companyDoc.candidates_sent_by_email.length.should.equal(2);
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[2], profileData[2], job[0], resume[2] ,experience[0]);
+
+            await companyEmail();
+
+            companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
+            companyDoc.candidates_sent_by_email.length.should.equal(3);
+
+        })
     })
 });
