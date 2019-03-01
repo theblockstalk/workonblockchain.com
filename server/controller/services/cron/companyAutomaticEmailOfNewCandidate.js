@@ -46,7 +46,6 @@ module.exports = async function (companyId) {
                 let foundCandidates = [];
                 for (let savedSearch of companyDoc.saved_searches) {
                     try {
-
                         candidateDocs = await candidateSearch.candidateSearch({
                             is_verify: 1,
                             status: 'approved',
