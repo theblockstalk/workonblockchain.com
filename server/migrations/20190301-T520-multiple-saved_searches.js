@@ -1,3 +1,4 @@
+const users = require('../model/mongoose/users');
 const companies = require('../model/mongoose/company');
 const logger = require('../controller/services/logger');
 
@@ -15,6 +16,16 @@ module.exports.up = async function() {
         let timestamp = new Date();
         for (let search of saved_searches) {
             if (!search.timestamp) search.timestamp = timestamp;
+            if(search.position) {
+                let roles = [];
+                for (let roleValue of search.position ) {
+                    if(roleValue === 'Researcher ') roles.push('Researcher');
+                    else roles.push(roleValue);
+                }
+
+                search.position = roles;
+            }
+
         }
         let set = {$set : {saved_searches: saved_searches}};
         logger.debug("set object" , set);
