@@ -213,7 +213,9 @@
               </div>
               <div class="col-md-5">
                 <div class = "form-group">
-                  <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn-primary float-right" *ngIf = "(data.is_verify === 1)" >Done</button>
+                  <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn-primary float-right" *ngIf = "!email_text" >Done</button>
+                  <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn-primary float-right" *ngIf = "email_text" >Send</button>
+
                 </div>
 
               </div>
