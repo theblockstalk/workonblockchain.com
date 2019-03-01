@@ -33,8 +33,6 @@ describe('cron', function () {
             const job = docGenerator.job();
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
-
 
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
@@ -61,6 +59,8 @@ describe('cron', function () {
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             await companyEmail();
 
@@ -79,7 +79,6 @@ describe('cron', function () {
             const job = docGenerator.job();
             const resume = docGenerator.resume();
             const experience = docGenerator.experience();
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
@@ -107,6 +106,8 @@ describe('cron', function () {
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, companyDoc.jwt_token , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
+
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
 
             await companyEmail();
 
