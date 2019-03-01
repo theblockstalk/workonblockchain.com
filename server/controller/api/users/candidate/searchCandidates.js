@@ -15,13 +15,12 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         search: search
     });
 
-    let userQuery= [];
-    let filteredResult = [];
-    let totalProccessed = 0;
+    let userQuery = [];
     userQuery.push({"type" : 'candidate'});
 
     if (filters.is_verify === 1 || filters.is_verify === 0) userQuery.push({"is_verify" : filters.is_verify});
     if (filters.status && filters.status !== -1) userQuery.push({'candidate.status.0.status' : filters.status});
+    if (filters.updatedAfter) userQuery.push({'candidate.status.0.timestamp' : {$gte: filters.updatedAfter}});
     if (filters.disable_account === true || filters.disable_account === false) userQuery.push({"disable_account" :  filters.disable_account});
     if (filters.msg_tags) {
         let userIds = [];

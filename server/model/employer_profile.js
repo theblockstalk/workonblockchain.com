@@ -137,8 +137,11 @@ const CompanyProfileSchema = new Schema({
                     type: String,
                     enum: enumerations.blockchainPlatforms
                 }]
+            },
+            timestamp : {
+                type : Date,
+                required: true
             }
-
         })]
     },
     when_receive_email_notitfications : {

@@ -1,10 +1,10 @@
-
+const random = require('./random');
 
 module.exports.candidate = function candidate() {
     return {
         first_name: "Tayyab",
         last_name: "Hussain",
-        email: "tayyab@mail.com",
+        email: random.email(),
         password: "Password1",
         type: "candidate",
         social_type : ""
@@ -15,7 +15,7 @@ module.exports.company = function company() {
     return {
         first_name: "Salman",
         last_name: "Safdar",
-        email: "salman@email.com",
+        email: random.email(),
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
