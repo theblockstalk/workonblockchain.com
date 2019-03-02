@@ -183,26 +183,31 @@ module.exports.endpoint = async function (req, res) {
             let currentSearches = employerDoc.saved_searches;
             const timestamp = new Date();
             for (let patchSearch of patchSearches) {
-                const currentSearch = currentSearches.filter( function (currentSearch) {
-					if(patchSearch._id) {
-						if(currentSearch._id.toString() === patchSearch._id.toString())
-						return currentSearch;
-					}
-                });
-				console.log("search");
-				console.log(currentSearch[0]);
-				console.log(patchSearch);
+                if(currentSearches) {
+
+                    const currentSearch = currentSearches.filter( function (currentSearch) {
+					   if(patchSearch._id) {
+						  if(currentSearch._id.toString() === patchSearch._id.toString())
+						      return currentSearch;
+					   }
+                    });
 						
-				if (currentSearch && currentSearch.length === 1) {
-                    if (!objects.compareObjects(currentSearch[0], patchSearch)) {
-                        // This is a modified search
-                        patchSearch.timestamp = timestamp;
-                    }
+				    if (currentSearch && currentSearch.length === 1) {
+                        if (!objects.compareObjects(currentSearch[0], patchSearch)) {
+                            // This is a modified search
+                            patchSearch.timestamp = timestamp;
+                        }
 					
-                } else {
+                    } else {
                     // This is a new search
                     patchSearch.timestamp = timestamp;
+                    }
                 }
+                else {
+                     patchSearch.timestamp = timestamp;
+
+                }
+
             }
             employerUpdate.saved_searches = queryBody.saved_searches;
         }

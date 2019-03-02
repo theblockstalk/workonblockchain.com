@@ -251,7 +251,6 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         }
 
         if (country1['city']) {
-			console.log(country1);
           let city = country1['city'].city + ", " + country1['city'].country;
           this.selectedValueArray.push({_id:country1['_id'] ,city:country1['city']._id ,name: city });
         }

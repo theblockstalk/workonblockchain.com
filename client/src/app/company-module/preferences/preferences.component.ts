@@ -234,7 +234,21 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         residence_country: new FormControl(),
       });
 
-
+		this.preferncesForm = this._fb.group({
+                  name: [''],
+                  location: [],
+                  visa_needed: [false],
+                  job_type: [],
+                  position: [],
+                  current_currency: [],
+                  current_salary: [''],
+                  blockchain: [],
+                  skills: [],
+                  other_technologies: [''],
+				  when_receive_email_notitfications: [''],
+                  order_preferences: [],
+                  residence_country: [],
+                });
       this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
           data =>
@@ -439,21 +453,24 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
-    if(!this.preferncesForm.value.residence_country || (this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length === 0)) {
-      this.residence_country_log = "Please select residence country";
-    }
+	let count = 0;
     if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
       this.residence_country_log = "Please select maximum 50 countries";
+	  count=1;
 
     }
-    if(this.preferncesForm.value.name && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
+    if(count === 0 &&this.preferncesForm.value.name && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0  &&
       this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
-      this.preferncesForm.value.when_receive_email_notitfications && this.preferncesForm.value.residence_country &&
-      this.preferncesForm.value.residence_country.length > 0 && this.preferncesForm.value.residence_country.length < 50) {
+      this.preferncesForm.value.when_receive_email_notitfications ) {
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
       this.saved_searches.push(this.preferncesForm.value);
+		if(!this.preferncesForm.value.job_type) this.preferncesForm.value.job_type = [];
+		if(!this.preferncesForm.value.blockchain) this.preferncesForm.value.blockchain = [];
+		if(!this.preferncesForm.value.skills) this.preferncesForm.value.skills = [];
+		if(!this.preferncesForm.value.order_preferences) this.preferncesForm.value.order_preferences = [];
+		if(!this.preferncesForm.value.residence_country) this.preferncesForm.value.residence_country = [];
 
       let inputQuery : any ={};
       inputQuery.when_receive_email_notitfications = this.preferncesForm.value.when_receive_email_notitfications;
