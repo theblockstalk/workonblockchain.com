@@ -197,6 +197,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   ngOnInit()
   {
     this.preferncesForm = new FormGroup({
+	  _id: new FormControl(),
       name: new FormControl(),
       location: new FormControl(),
       visa_needed: new FormControl(),
@@ -209,6 +210,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       other_technologies: new FormControl(),
       order_preferences: new FormControl(),
       residence_country: new FormControl(),
+	  timestamp: new FormControl()
     });
 
     this.success_msg = '';
@@ -400,12 +402,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
           for (let country1 of key['location'])
           {
             if (country1['remote'] === true) {
-              this.selectedValueArray.push({name: 'Remote' , visa_needed : country1.visa_needed});
+              this.selectedValueArray.push({_id:country1['_id'], name: 'Remote'});
             }
 
             if (country1['city']) {
               let city = country1['city'].city + ", " + country1['city'].country;
-              this.selectedValueArray.push({city:country1['city']._id ,name: city , visa_needed : country1.visa_needed});
+              this.selectedValueArray.push({_id:country1['_id'], city:country1['city']._id ,name: city });
             }
           }
 
@@ -419,6 +421,18 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         }
         if(key['skills']) this.skill_value = key['skills'];
         else this.skill_value = '';
+		
+		if(key['_id']) this._id = key['_id'];
+        else this._id = '';
+		
+		if(key['timestamp']) this.timestamp = key['timestamp'];
+        else this.timestamp = '';
+		
+		if(key['job_type']) this.pref_job_type = key['job_type'];
+        else this.pref_job_type = [];
+		
+		if(key['other_technologies']) this.other_technologies = key['other_technologies'];
+        else this.other_technologies = '';
 
         if(key['visa_needed']) this.visa_check = key['visa_needed'];
         else this.visa_check = false;
@@ -556,33 +570,61 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
   success_msg;
   error_msg;
+  _id;
+  timestamp;
+  pref_job_type;
+  other_technologies;
   savedSearch() {
     let queryBody : any = {};
     let index = this.savedSearches.findIndex((obj => obj.name === this.name));
-    if(this.name) queryBody.name = this.name;
+	if(this.visa_check) queryBody.visa_needed = this.visa_check;
+	else queryBody.visa_needed = false;
+	if(this.pref_job_type) queryBody.job_type = this.pref_job_type;
+    if(this.role_value && this.role_value.length > 0 ) queryBody.position = this.role_value;
+    if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchain = this.blockchain_value;
     if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
-    if(this.selectedValueArray && this.selectedValueArray.length > 0) {
+    if(this.residence_country ) queryBody.residence_country = this.residence_country;
+    if(this.blockchain_order) queryBody.order_preferences = this.blockchain_order;
+	if(this._id) queryBody._id = this._id;
+	if(this.selectedValueArray && this.selectedValueArray.length > 0) {
       let validatedLocation =[];
       for(let location of this.selectedValueArray) {
         if(location.name.includes(', ')) {
-          validatedLocation.push({city: location.city});
+          validatedLocation.push({_id: location._id ,city: location.city});
         }
         if(location.name === 'Remote') {
-          validatedLocation.push({remote: true });
+          validatedLocation.push({_id:location._id, remote: true });
         }
       }
       queryBody.location = this.filter_array(validatedLocation);
     }
-    if(this.role_value && this.role_value.length > 0 ) queryBody.position = this.role_value;
-    if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchain = this.blockchain_value;
-    if(this.visa_check) queryBody.visa_needed = this.visa_check;
-    if(this.blockchain_order) queryBody.order_preferences = this.blockchain_order;
-    if(this.residence_country ) queryBody.residence_country = this.residence_country;
-    if(this.salary && this.currencyChange) {
-      queryBody.current_salary  = this.salary;
-      queryBody.current_currency = this.currencyChange;
+	console.log(queryBody);
+    if(this.name) queryBody.name = this.name;
+	 if(this.salary && this.currencyChange) {
+		queryBody.current_currency = this.currencyChange;
+		queryBody.current_salary  = this.salary;
     }
+	if(this.other_technologies) queryBody.other_technologies = this.other_technologies;
+	if(this.timestamp) queryBody.timestamp = this.timestamp;
+    
+   
     this.savedSearches[index] = queryBody;
+    for(let searches of this.savedSearches) {
+    console.log(searches);
+      if(searches['location']) {
+        let cities = [];
+        let cityCheck= false;
+        for(let city of searches['location']) 
+        {
+          if(city['city']._id) {
+            cityCheck=true;
+            cities.push({_id:city['_id'] , city: city['city']._id});
+          }
+        }
+        if(cityCheck === true) searches['location'] = cities;
+      }
+    }
+    console.log(this.savedSearches);
     if(this.name) {
       this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
         .subscribe(
@@ -596,6 +638,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 this.searchName = [];
                 for(let i=0; i < data['saved_searches'].length; i++) {
                   this.searchName.push(data['saved_searches'][i].name);
+                  if(data['saved_searches'][i].name === this.name) this.timestamp = data['saved_searches'][i].timestamp;
                 }
                 setTimeout(() => {
                   $('.selectpicker').selectpicker('refresh');
@@ -992,11 +1035,11 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               let citiesOptions=[];
               for(let cities of citiesInput['locations']) {
                 if(cities['remote'] === true) {
-                  citiesOptions.push({name: 'Remote'});
+                  citiesOptions.push({_id: cities['_id'], name: 'Remote'});
                 }
                 if(cities['city']) {
                   let cityString = cities['city'].city + ", " + cities['city'].country;
-                  citiesOptions.push({city : cities['city']._id , name : cityString});
+                  citiesOptions.push({_id:cities['_id'] ,city : cities['city']._id , name : cityString});
                 }
 
               }

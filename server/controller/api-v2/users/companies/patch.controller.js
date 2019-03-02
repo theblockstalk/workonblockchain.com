@@ -189,6 +189,9 @@ module.exports.endpoint = async function (req, res) {
 						return currentSearch;
 					}
                 });
+				console.log("search");
+				console.log(currentSearch[0]);
+				console.log(patchSearch);
 						
 				if (currentSearch && currentSearch.length === 1) {
                     if (!objects.compareObjects(currentSearch[0], patchSearch)) {
