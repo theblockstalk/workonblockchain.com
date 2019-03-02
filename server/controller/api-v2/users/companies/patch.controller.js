@@ -184,14 +184,18 @@ module.exports.endpoint = async function (req, res) {
             const timestamp = new Date();
             for (let patchSearch of patchSearches) {
                 const currentSearch = currentSearches.filter( function (currentSearch) {
-                    return currentSearch._id.toString() === patchSearch._id.toString()
+					if(patchSearch._id) {
+						if(currentSearch._id.toString() === patchSearch._id.toString())
+						return currentSearch;
+					}
                 });
-
-                if (currentSearch && currentSearch.length === 1) {
-                    if (!objects.compareObjects(currentSearch, patchSearch)) {
+						
+				if (currentSearch && currentSearch.length === 1) {
+                    if (!objects.compareObjects(currentSearch[0], patchSearch)) {
                         // This is a modified search
                         patchSearch.timestamp = timestamp;
                     }
+					
                 } else {
                     // This is a new search
                     patchSearch.timestamp = timestamp;
@@ -199,7 +203,7 @@ module.exports.endpoint = async function (req, res) {
             }
             employerUpdate.saved_searches = queryBody.saved_searches;
         }
-
+		
         await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);

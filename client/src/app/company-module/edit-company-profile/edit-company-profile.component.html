@@ -313,6 +313,9 @@
             <div [formGroup]="preferncesForm">
               <div formArrayName="prefItems">
                 <div *ngFor="let itemrow of DynamicWorkFormControls.controls ; let i=index" [formGroupName]="i">
+				   <input type="text" formControlName="_id" [value] = "preferncesForm.value.prefItems[i]._id"  class="form-control d-none">
+				   <input type="text" formControlName="timestamp"  [value] = "preferncesForm.value.prefItems[i].timestamp"  class="form-control d-none">
+
                   <div class="row">
                     <div class="col-md-12">
                       <h4 class="pt-2 mb-3"> Job search {{i+1}}</h4>
@@ -358,7 +361,7 @@
                         <div>
                           <datalist id="countryList" >
                             <select class="form-control">
-                              <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text="{{preferncesForm.value.prefItems[i].location}}">{{country.name}}
+                              <option *ngFor = "let country of cities" [attr.data-value]="country.city" value="{{country.name}}" text="{{preferncesForm.value.prefItems[i].location}}">{{country.name}}
                               </option>
                             </select>
                           </datalist>
