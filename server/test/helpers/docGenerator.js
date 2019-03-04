@@ -181,7 +181,7 @@ module.exports.experience = function experience(){
 module.exports.job = function job(){
     return {
         expected_salary: random.integer(10, 100000),
-        base_currency: random.enum(enumerations.currencies),
+        base_currency: '€ EUR',
         current_salary: random.integer(10000, 100000),
         current_currency: random.enum(enumerations.currencies),
         availability_day: random.enum(enumerations.workAvailability),
