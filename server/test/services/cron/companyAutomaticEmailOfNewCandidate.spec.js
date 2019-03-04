@@ -18,6 +18,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('cron', function () {
+    this.timeout(5000);
 
     afterEach(async function () {
         console.log('dropping database');
@@ -183,12 +184,12 @@ describe('cron', function () {
             companyDoc.candidates_sent_by_email.length.should.equal(3);
 
             let newSavedSearch = companyDoc.saved_searches;
-            newSavedSearch.position = [
+            newSavedSearch[0].position = [
                 job[1].roles[0]
             ];
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[3], job[1], resume[3] ,experience[0]);
 
-            await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , {saved_searches : companyDoc.saved_searches});
+            await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , {saved_searches : newSavedSearch});
 
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[4], profileData[4], job[1], resume[4] ,experience[0]);
 
