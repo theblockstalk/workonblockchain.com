@@ -7,7 +7,7 @@ module.exports = async function (req, res) {
     let filteredUsers = [];
     const userDoc =await Users.findAndIterate({type: 'company'} , async function(companyUserDoc) {
         const empoyerProfile = await companies.findOne({_creator : companyUserDoc._id});
-        filterReturnData.removeSensativeData(empoyerProfile._creator);
+        if(empoyerProfile) filterReturnData.removeSensativeData(empoyerProfile._creator);
         filteredUsers.push(empoyerProfile);
     });
 
