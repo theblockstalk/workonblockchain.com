@@ -153,7 +153,7 @@
                 <input type="hidden" name="email"  [ngModel]="data.email">
                 <input type="hidden" name="name"  [ngModel]="data.first_name">
                 <input type="hidden" name="is_verify" [ngModel]="data.is_verify">
-                <input type="hidden" name="id" [ngModel]="data._id">
+                <input type="hidden" name="id" [ngModel]="_id">
                 <!--New code for 23-Nov-2018-->
                 <div class="row">
                   <div class="col-md-4">
@@ -222,8 +222,8 @@
               </div>
               <div class="col-md-5">
                 <div class = "form-group">
-                  <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn-primary float-right" *ngIf = "!email_text" >Done</button>
-                  <button type="submit" (click) = "approveClick($event , approve_form)"  class = "btn btn-primary float-right" *ngIf = "email_text" >Send</button>
+                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "!email_text" >Done</button>
+                  <button type="submit" (click) = "approveClick(approve_form)"  class = "btn btn-primary float-right" *ngIf = "email_text" >Send</button>
 
                 </div>
 
@@ -296,7 +296,7 @@
             </div>
 
             <div class="col-md-12">
-              <hr *ngIf="i < (data.candidate.history.length - 1)" class="bg-dark" />
+              <hr *ngIf="i < (data.candidate.history.length - 1)"  />
 
             </div>
 

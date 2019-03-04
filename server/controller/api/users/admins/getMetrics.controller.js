@@ -36,7 +36,7 @@ module.exports = async function (req, res) {
         candidate = userDoc.candidate;
         if (userDoc.is_verify) emailVerified++;
         if (userDoc.disable_account) dissabled++;
-        if (candidate.status[0].status === 'approved' && !userDoc.disable_account) {
+        if (candidate.history[0].status.status === 'approved' && !userDoc.disable_account) {
             approved++;
             if (candidate.expected_salary && candidate.expected_salary_currency) salaryList(salaryArray, candidate.expected_salary, candidate.expected_salary_currency)
             aggregateField(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);

@@ -90,6 +90,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   visaRequiredArray = [];
   noVisaArray = [];
   candidateHistory;
+  _id;
 
   ngAfterViewInit(): void
   {
@@ -135,6 +136,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
         this.authenticationService.getById(this.user_id)
           .subscribe(
             data => {
+              this._id  = data['_id'];
 
               this.candidateHistory = data['candidate'].history
               let statusCount = 0;
@@ -423,14 +425,16 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   error;
   success;
   status_error;
-  approveClick(event , approveForm: NgForm) {
+  approveClick(approveForm: NgForm) {
     this.error = '';
     this.success = '';
+    console.log(this.email_text);
+    console.log(approveForm.value);
     if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.email_text) {
       this.error = 'Please fill at least one field';
     }
+
     else {
-      console.log("else");
       if (approveForm.value.set_status === "Rejected" || approveForm.value.set_status === "rejected") {
         if (approveForm.value.status_reason_rejected) {
           this.saveApproveData(approveForm.value);
@@ -451,6 +455,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       }
       else {
         this.saveApproveData(approveForm.value);
+        approveForm.resetForm();
       }
     }
 
@@ -460,7 +465,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status;
   reason;
   saveApproveData(approveForm) {
-    console.log(approveForm);
+    console.log(approveForm)
     let queryInput : any = {};
 
     if(approveForm.note)queryInput['note'] = approveForm.note;
@@ -469,10 +474,14 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     if(approveForm.status_reason_rejected) queryInput['reason'] = approveForm.status_reason_rejected;
     if(approveForm.status_reason_deferred) queryInput['reason'] = approveForm.status_reason_deferred;
 
-    this.authenticationService.candidate_status_history(approveForm.id, queryInput)
+    console.log(queryInput);
+
+    this.authenticationService.candidate_status_history(this._id, queryInput)
       .subscribe(
         data => {
-          this.candidateHistory = data['candidate'].history
+          console.log(data);
+          this.candidateHistory = data['candidate'].history;
+          this._id  = data['_id'];
           let statusCount = 0;
           for(let history of this.candidateHistory) {
             if(statusCount === 0 && history.status) {
@@ -481,13 +490,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
             }
           }
 
-          this.note = '';
-          this.email_text = '';
-          this.set_status = '';
-          this.status_reason_deferred = '';
-          this.status_reason_rejected = '';
           $('.selectpicker').val('default');
           $('.selectpicker').selectpicker('refresh');
+          this.success = "Successfully updated";
 
         },
         error => {
