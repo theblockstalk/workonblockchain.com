@@ -21,7 +21,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     userQuery.push({"type" : 'candidate'});
 
     if (filters.is_verify === 1 || filters.is_verify === 0) userQuery.push({"is_verify" : filters.is_verify});
-    if (filters.status && filters.status !== -1) userQuery.push({'candidate.status.0.status' : filters.status});
+    if (filters.status && filters.status !== -1) userQuery.push({'candidate.history.0.status.status' : filters.status});
     if (filters.disable_account === true || filters.disable_account === false) userQuery.push({"disable_account" :  filters.disable_account});
     if (filters.msg_tags) {
         let userIds = [];
