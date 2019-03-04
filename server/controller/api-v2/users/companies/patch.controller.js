@@ -186,10 +186,10 @@ module.exports.endpoint = async function (req, res) {
                 if(currentSearches) {
 
                     const currentSearch = currentSearches.filter( function (currentSearch) {
-					   if(patchSearch._id) {
-						  if(currentSearch._id.toString() === patchSearch._id.toString())
-						      return currentSearch;
-					   }
+                        if(patchSearch._id) {
+                            if(currentSearch._id.toString() === patchSearch._id.toString())
+                                return currentSearch;
+                        }
                     });
 
                     if (currentSearch && currentSearch.length === 1) {
@@ -197,21 +197,21 @@ module.exports.endpoint = async function (req, res) {
                             // This is a modified search
                             patchSearch.timestamp = timestamp;
                         }
-					
+
                     } else {
-                    // This is a new search
-                    patchSearch.timestamp = timestamp;
+                        // This is a new search
+                        patchSearch.timestamp = timestamp;
                     }
                 }
                 else {
-                     patchSearch.timestamp = timestamp;
+                    patchSearch.timestamp = timestamp;
 
                 }
 
             }
             employerUpdate.saved_searches = queryBody.saved_searches;
         }
-		
+
         await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
