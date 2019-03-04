@@ -62,13 +62,22 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   emptyInput;
   errorMsg;
   query_val : any = {};
+  query_value : any = {};
+  no_value = false;
 
   constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) {
-    this.query_val = JSON.parse(localStorage.getItem('url-param'));
+    this.route.queryParams.subscribe(params => {
+      this.query_value = JSON.parse(params.queryBody);
+      if(this.query_value) {
+        this.no_value = true;
+        this.query_val = this.query_value;
+      }
+    });
     if(this.query_val) {
-      //console.log(this.query_val);
+      if(this.query_val.searchName){
+        this.name = this.query_val.searchName;
+      }
       if(this.query_val.skills){
-        //console.log('in if');
         this.skill_value = this.query_val.skills;
         this.searchdata('skill' , this.query_val.skills);
       }
@@ -350,8 +359,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   }, 300);
 
                 }
-                if(!this.query_val) {
-                  console.log('in ngonit if');
+                if(!this.no_value) {
                   this.getVerrifiedCandidate();
                 }
               }
@@ -492,12 +500,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   residence_log;
   searchdata(key , value)
   {
-    //console.log('in searchdata');
-    //console.log(key);
-    //console.log(value);
     this.success_msg = '';
     if(key === 'searchName') {
-      console.log('in if of searchName');
       this.error_msg = '';
       this.fillFields(this.savedSearches, value);
     }
@@ -529,7 +533,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     if(!this.searchWord && !this.residence_country && !this.blockchain_order && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
     {
-      console.log('in searchWord if');
       this.getVerrifiedCandidate();
     }
 
@@ -552,15 +555,19 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
-      localStorage.setItem('url-param', queryBody);
-      localStorage.setItem('url-param', JSON.stringify(queryBody));
+      let newQueryBody : any = {};
+      newQueryBody = queryBody;
+      if(key === 'searchName') {
+        newQueryBody.searchName = value;
+      }
+      this.router.navigate(['candidate-search'], {
+        queryParams: {queryBody: JSON.stringify(newQueryBody)}
+      });
 
       this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data =>
           {
-            console.log(queryBody);
-            console.log('in filterSearch');
             this.candidate_data = data;
             this.setPage(1);
             if(this.candidate_data.length > 0) {
@@ -603,7 +610,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.name = '';
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
-    localStorage.removeItem('url-param');
+    this.router.navigate(['candidate-search'], {});
     this.getVerrifiedCandidate();
   }
 
@@ -796,7 +803,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   programming_languages;
   getVerrifiedCandidate()
   {
-    console.log('in getVerrifiedCandidate');
     this.log='';
     this.candidate_data='';
     this.verify_msg = "verified candidate";
