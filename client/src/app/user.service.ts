@@ -873,10 +873,10 @@ export class UserService {
 
   /////candidate edit profile
 
-  edit_candidate_profile(user_id: string, detail: any,  edu :any , history:any )
+  edit_candidate_profile(user_id : any,queryBody: any, admin: boolean  )
   {
 
-    return this.http.put(URL+'users/update_profile' , { detail: detail, education: edu  , work : history} , {
+    return this.http.patch(URL+'v2/users/' +user_id+ '/candidates?admin='+admin , queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

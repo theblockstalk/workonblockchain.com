@@ -1686,9 +1686,43 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       profileForm.interest_area = this.selectedValue;
     }
 
+    let inputQuery:any ={};
+
+    console.log(profileForm);
+    if(this.info.first_name) inputQuery.first_name = this.info.first_name;
+    if(this.info.last_name) inputQuery.last_name = this.info.last_name;
+    if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
+    if(this.info.github_account) inputQuery.github_account = this.info.github_account;
+    if(this.info.exchange_account) inputQuery.exchange_account = this.info.exchange_account;
+    if(this.info.linkedin_account) inputQuery.linkedin_account = this.info.linkedin_account;
+    if(this.info.medium_account) inputQuery.medium_account = this.info.medium_account;
+    if(this.info.nationality) inputQuery.nationality = this.info.nationality;
+    if(this.info.Intro) inputQuery.description = this.info.Intro;
+    if(this.info.base_country) inputQuery.base_country = this.info.base_country;
+    if(this.info.city) inputQuery.base_city = this.info.city;
+    if(this.validatedLocation) inputQuery.locations = this.validatedLocation;
+    if(this.jobselected) inputQuery.roles = this.jobselected;
+    if(this.expected_salaryyy) inputQuery.expected_salary = this.expected_salaryyy;
+    if(this.base_currency) inputQuery.expected_salary_currency = this.base_currency;
+    if(this.current_currency) inputQuery.current_currency = this.current_currency;
+    if(this.salary) inputQuery.current_salary = this.salary;
+    if(this.selectedValue) inputQuery.interest_areas = this.selectedValue;
+    if(this.availability_day) inputQuery.availability_day = this.availability_day;
+    if(this.why_work) inputQuery.why_work = this.why_work;
+    if(profileForm.commercial_platforms) inputQuery.commercial_platforms = profileForm.commercial_platforms;
+    if(this.experimented_platform) inputQuery.experimented_platforms = this.experimented_platform;
+    if(profileForm.smart_contract_platforms) inputQuery.smart_contract_platforms = profileForm.smart_contract_platforms;
+    if(profileForm.commercial_skills) inputQuery.commercial_skills = profileForm.commercial_skills;
+    if(profileForm.formal_skills) inputQuery.smart_contract_platforms = profileForm.formal_skills;
+    if(profileForm.smart_contract_platforms) inputQuery.formal_skills = profileForm.smart_contract_platforms;
+    if(profileForm.language_experience_year) inputQuery.programming_languages = profileForm.language_experience_year;
+    if(this.education_json_array) inputQuery.education_history = this.education_json_array;
+    if(this.experiencearray) inputQuery.work_history = this.experiencearray;
+
+    inputQuery.status = 'updated';
 
 
-    this.authenticationService.edit_candidate_profile(this.currentUser._creator,profileForm,this.education_json_array , this.experiencearray)
+    this.authenticationService.edit_candidate_profile(this.currentUser._creator, inputQuery , false)
       .subscribe(
         data => {
           if(data['success'] && this.currentUser)

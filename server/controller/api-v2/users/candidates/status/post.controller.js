@@ -47,6 +47,7 @@ module.exports.inputValidation = {
 
 module.exports.auth = async function (req) {
     await auth.isAdmin(req);
+
 }
 
 module.exports.endpoint = async function (req, res) {

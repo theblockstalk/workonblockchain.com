@@ -5,6 +5,7 @@ const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
 
 const users = require('../../../../model/mongoose/users');
+const filterReturnData = require('../../../api/users/filterReturnData');
 
 module.exports.request = {
     type: 'patch',
@@ -12,6 +13,10 @@ module.exports.request = {
 };
 const paramSchema = new Schema({
     user_id: String
+});
+
+const querySchema = new Schema({
+    admin: Boolean
 });
 
 const bodySchema = new Schema({
@@ -263,6 +268,7 @@ const bodySchema = new Schema({
 
 module.exports.inputValidation = {
     params: paramSchema,
+    query: querySchema,
     body: bodySchema
 };
 
@@ -272,14 +278,22 @@ module.exports.files = async function(req) {
 
 module.exports.auth = async function (req) {
     await auth.isLoggedIn(req);
+
+    if (req.query.admin) {
+        await auth.isAdmin(req);
+    }
 }
 
 
 module.exports.endpoint = async function (req, res) {
-    let userId = req.auth.user._id;
-    let requestId = req.params.user_id;
+    let userId;
+    if (req.query.admin) {
+        userId = req.params.user_id;
+    }
+    else {
+        userId = req.auth.user._id;
+    }
     let queryBody = req.body;
-    console.log(queryBody);
     let updateCandidateUser = {};
     let unset = {};
     if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;
@@ -298,18 +312,18 @@ module.exports.endpoint = async function (req, res) {
 
     if (queryBody.contact_number) updateCandidateUser.contact_number = queryBody.contact_number;
     if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
-    if (queryBody.country) {
-        for(let loc of queryBody.country) {
+    if (queryBody.locations) {
+        for(let loc of queryBody.locations) {
             if(loc.city) {
-                const index = queryBody.country.findIndex((obj => obj.city === loc.city));
-                queryBody.country[index].city = mongoose.Types.ObjectId(loc.city);
+                const index = queryBody.locations.findIndex((obj => obj.city === loc.city));
+                queryBody.locations[index].city = mongoose.Types.ObjectId(loc.city);
             }
         }
-        updateCandidateUser['candidate.locations'] = queryBody.country;
+        updateCandidateUser['candidate.locations'] = queryBody.locations;
     }
     if (queryBody.roles) updateCandidateUser['candidate.roles'] = queryBody.roles;
     if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
-    if (queryBody.base_currency) updateCandidateUser['candidate.expected_salary_currency'] = queryBody.base_currency;
+    if (queryBody.expected_salary_currency) updateCandidateUser['candidate.expected_salary_currency'] = queryBody.expected_salary_currency;
     if (queryBody.expected_salary) updateCandidateUser['candidate.expected_salary'] = queryBody.expected_salary;
     if (queryBody.availability_day) updateCandidateUser['candidate.availability_day'] = queryBody.availability_day;
     if (queryBody.why_work) updateCandidateUser['candidate.why_work'] = queryBody.why_work;
@@ -319,42 +333,47 @@ module.exports.endpoint = async function (req, res) {
     else unset['candidate.blockchain.experimented_platforms'] = 1;
     if (queryBody.smart_contract_platforms && queryBody.smart_contract_platforms.length > 0) updateCandidateUser['candidate.blockchain.smart_contract_platforms'] = queryBody.smart_contract_platforms;
     else unset['candidate.blockchain.smart_contract_platforms'] = 1;
-    if (queryBody.salary ) updateCandidateUser['candidate.current_salary'] = queryBody.salary;
+    if (queryBody.current_salary ) updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
     else unset['candidate.current_salary'] = 1;
     if (queryBody.current_currency && queryBody.current_currency !== "-1") updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
     else unset['candidate.current_currency'] = 1;
-    if (queryBody.language_experience_year && queryBody.language_experience_year.length > 0) updateCandidateUser['candidate.programming_languages'] = queryBody.language_experience_year;
+    if (queryBody.programming_languages && queryBody.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = queryBody.programming_languages;
     else unset['candidate.programming_languages'] = 1;
-    if (queryBody.intro) updateCandidateUser['candidate.description'] = queryBody.intro;
-    if (queryBody.educationHistory && queryBody.educationHistory.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.educationHistory;
+    if (queryBody.description) updateCandidateUser['candidate.description'] = queryBody.description;
+    if (queryBody.education_history && queryBody.education_history.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.education_history;
     else unset['candidate.education_history'] = 1;
-    if (queryBody.workHistory && queryBody.workHistory.length > 0) updateCandidateUser['candidate.work_history'] = workHistory;
+    if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
     else unset['candidate.work_history'] = 1;
     if(queryBody.commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
     else unset['candidate.blockchain.commercial_skills'] = 1;
     if(queryBody.formal_skills && queryBody.formal_skills.length > 0 ) updateCandidateUser['candidate.blockchain.formal_skills'] = queryBody.formal_skills;
     else unset['candidate.blockchain.formal_skills'] = 1;
-    if(queryBody.city) updateCandidateUser['candidate.base_city'] = queryBody.city;
+    if(queryBody.base_city) updateCandidateUser['candidate.base_city'] = queryBody.base_city;
     if(queryBody.base_country) updateCandidateUser['candidate.base_country'] = queryBody.base_country;
     if(queryBody.status) {
-        /*let status = {status: 'updated'};
-        if (requestId && requestId !== userId) {
-            status = {status: 'updated by admin'};
-        }
+        let history= {};
+        history['status'] = {status : queryBody.status};
+        history['timestamp'] = new Date();
         await users.update({ _id: userId }, {
                 $set: updateCandidateUser,
                 $push: {
                     'candidate.history' : {
-                        $each: [{ history: status,
-                            timestamp: new Date()}],
+                        $each: [history],
                         $position: 0
                     }
                 }
-            }
-        );*/
+        });
+
+    }
+    else {
+        await users.update({ _id: userId},{$set: updateCandidateUser});
+
     }
 
     if (!filterReturnData.isEmptyObject(unset)) {
         await users.update({ _id: userId},{$unset: unset});
     }
+
+    const updatedProfile = await users.find({_id: userId});
+    res.send(updatedProfile);
 }
