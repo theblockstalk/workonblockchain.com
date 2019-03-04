@@ -61,13 +61,47 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   cities;
   emptyInput;
   errorMsg;
+  query_val : any = {};
 
   constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) {
-    let query_val = JSON.parse(localStorage.getItem('url-param'));
-    console.log(query_val);
-    if(query_val.skills){
-      this.skill_value = query_val.skills;
-      this.searchdata('skill' , query_val.skills);
+    this.query_val = JSON.parse(localStorage.getItem('url-param'));
+    if(this.query_val) {
+      //console.log(this.query_val);
+      if(this.query_val.skills){
+        //console.log('in if');
+        this.skill_value = this.query_val.skills;
+        this.searchdata('skill' , this.query_val.skills);
+      }
+      if(this.query_val.locations){
+        this.selectedValueArray = this.query_val.locations;
+        this.searchdata('locations' , this.query_val.locations);
+      }
+      if(this.query_val.visa_needed){
+        this.visa_check = this.query_val.visa_needed;
+        this.searchdata('visa' , this.query_val.visa_needed);
+      }
+      if(this.query_val.positions){
+        this.role_value = this.query_val.positions;
+        this.searchdata('role' , this.query_val.positions);
+      }
+      if(this.query_val.blockchains){
+        this.blockchain_value = this.query_val.blockchains;
+        this.searchdata('blockchain' , this.query_val.blockchains);
+      }
+      if(this.query_val.residence_country){
+        this.residence_country = this.query_val.residence_country;
+        this.searchdata('residence' , this.query_val.residence_country);
+      }
+      if(this.query_val.current_salary && this.query_val.current_currency){
+        this.salary = this.query_val.current_salary;
+        this.currencyChange = this.query_val.current_currency;
+        this.searchdata('salary' , this.query_val.current_salary);
+        this.searchdata('currency' , this.query_val.current_currency);
+      }
+      if(this.query_val.blockchainOrder){
+        this.blockchain_order = this.query_val.blockchainOrder;
+        this.searchdata('order_preferences' , this.query_val.blockchainOrder);
+      }
     }
   }
 
@@ -316,8 +350,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   }, 300);
 
                 }
-                this.getVerrifiedCandidate();
-
+                if(!this.query_val) {
+                  console.log('in ngonit if');
+                  this.getVerrifiedCandidate();
+                }
               }
             }
 
@@ -456,11 +492,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   residence_log;
   searchdata(key , value)
   {
-    console.log('in searchdata');
-    console.log(key);
-    console.log(value);
+    //console.log('in searchdata');
+    //console.log(key);
+    //console.log(value);
     this.success_msg = '';
     if(key === 'searchName') {
+      console.log('in if of searchName');
       this.error_msg = '';
       this.fillFields(this.savedSearches, value);
     }
@@ -492,6 +529,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
     if(!this.searchWord && !this.residence_country && !this.blockchain_order && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
     {
+      console.log('in searchWord if');
       this.getVerrifiedCandidate();
     }
 
@@ -514,7 +552,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
-      console.log(queryBody);
       localStorage.setItem('url-param', queryBody);
       localStorage.setItem('url-param', JSON.stringify(queryBody));
 
@@ -522,7 +559,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         .subscribe(
           data =>
           {
-            console.log(data);
+            console.log(queryBody);
+            console.log('in filterSearch');
             this.candidate_data = data;
             this.setPage(1);
             if(this.candidate_data.length > 0) {
@@ -565,6 +603,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.name = '';
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
+    localStorage.removeItem('url-param');
     this.getVerrifiedCandidate();
   }
 
@@ -757,6 +796,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   programming_languages;
   getVerrifiedCandidate()
   {
+    console.log('in getVerrifiedCandidate');
     this.log='';
     this.candidate_data='';
     this.verify_msg = "verified candidate";
