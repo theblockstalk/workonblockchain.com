@@ -79,20 +79,29 @@
               <div class="form-group mb-1">
                 <label>Current status:</label>
               </div>
-              <div *ngIf="candidate_status.status === 'Approved' || candidate_status.status === 'approved' || candidate_status.status === 'created' || candidate_status.status === 'wizard completed' || candidate_status.status === 'updated' || candidate_status.status === 'updated by admin'" class="text-capitalize alert alert-success d-inline-block p-2 border rounded">
+
+              <label *ngIf="candidate_status.status === 'approved' || candidate_status.status === 'created' || candidate_status.status === 'wizard completed' || candidate_status.status === 'updated' || candidate_status.status === 'updated by admin'" class="border border-success p-2 text-success rounded font-weight-normal">
                 {{candidate_status.status}}
-              </div>
-              <div *ngIf="candidate_status.status === 'Rejected' || candidate_status.status === 'rejected'" class="ml-1 text-capitalize alert alert-danger d-inline-block p-2 border rounded">{{candidate_status.status}}</div>
-              <div *ngIf="candidate_status.status === 'Deferred' || candidate_status.status === 'deferred' || candidate_status.status === 'Other' || candidate_status.status === 'other'" class="ml-1 text-capitalize alert alert-warning d-inline-block p-2 border rounded">{{candidate_status.status}}</div>
+              </label>
+              <label *ngIf="candidate_status.status === 'other'" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                {{candidate_status.status}}
+              </label>
+              <label *ngIf="candidate_status.status === 'rejected'" class="border border-danger p-2 text-danger rounded font-weight-normal">
+                {{candidate_status.status}}: {{candidate_status.reason}}
+              </label>
+              <label *ngIf="candidate_status.status === 'deferred'" class="border border-warning p-2 text-warning rounded font-weight-normal">
+                {{candidate_status.status}}: {{candidate_status.reason}}
+              </label>
+
             </div>
-            <div class = "col-md-6" *ngIf="candidate_status.reason">
+            <!--<div class = "col-md-6" *ngIf="candidate_status.reason">
               <div class="form-group">
                 <label>Reason:</label>
                 <p>
                   {{candidate_status.reason}}
                 </p>
               </div>
-            </div>
+            </div>  -->
 
             <div class = "col-md-6">
               <div class="form-group">
@@ -236,7 +245,7 @@
 
         </section>
 
-        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="data.candidate.history">
+        <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="candidateHistory">
           <div class="row">
             <div class="col-md-12">
               <h2>
@@ -246,7 +255,7 @@
             </div>
           </div>
 
-          <div class="row mt-4" *ngFor="let history of data.candidate.history; let i=index">
+          <div class="row mt-4" *ngFor="let history of candidateHistory; let i=index">
             <div class="col-md-6">
               <div class="form-group">
                 <label >{{history.timestamp | date : 'dd'}} {{history.timestamp | date : 'MMM'}} {{history.timestamp | date : 'yyyy'}} {{history.timestamp | date : 'HH:mm'}}</label>

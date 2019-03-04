@@ -89,6 +89,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   selectedValueArray=[];
   visaRequiredArray = [];
   noVisaArray = [];
+  candidateHistory;
 
   ngAfterViewInit(): void
   {
@@ -135,7 +136,14 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           .subscribe(
             data => {
 
-              this.candidate_status = data['candidate'].status[0];
+              this.candidateHistory = data['candidate'].history
+              let statusCount = 0;
+              for(let history of this.candidateHistory) {
+                if(statusCount === 0 && history.status) {
+                  this.candidate_status = history.status;
+                  statusCount = 1;
+                }
+              }
               /*if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
               }
               else{
@@ -447,10 +455,14 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     }
 
   }
-
+  note;
+  email_text;
+  status;
+  reason;
   saveApproveData(approveForm) {
     console.log(approveForm);
     let queryInput : any = {};
+
     if(approveForm.note)queryInput['note'] = approveForm.note;
     if(approveForm.email_text) queryInput['email_text'] = approveForm.email_text;
     if(approveForm.set_status) queryInput['status'] = approveForm.set_status;
@@ -460,8 +472,22 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.authenticationService.candidate_status_history(approveForm.id, queryInput)
       .subscribe(
         data => {
-          this.info = [];
-          this.info.push(data);
+          this.candidateHistory = data['candidate'].history
+          let statusCount = 0;
+          for(let history of this.candidateHistory) {
+            if(statusCount === 0 && history.status) {
+              this.candidate_status = history.status;
+              statusCount = 1;
+            }
+          }
+
+          this.note = '';
+          this.email_text = '';
+          this.set_status = '';
+          this.status_reason_deferred = '';
+          this.status_reason_rejected = '';
+          $('.selectpicker').val('default');
+          $('.selectpicker').selectpicker('refresh');
 
         },
         error => {
