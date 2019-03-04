@@ -1688,7 +1688,6 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     let inputQuery:any ={};
 
-    console.log(profileForm);
     if(this.info.first_name) inputQuery.first_name = this.info.first_name;
     if(this.info.last_name) inputQuery.last_name = this.info.last_name;
     if(this.info.contact_number) inputQuery.contact_number = this.info.contact_number;
