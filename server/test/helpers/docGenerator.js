@@ -1,4 +1,5 @@
 const random = require('./random');
+const enumerations = require('../../model/enumerations');
 
 module.exports.candidate = function candidate() {
     return {
@@ -179,17 +180,17 @@ module.exports.experience = function experience(){
 
 module.exports.job = function job(){
     return {
-        expected_salary: 50000,
-        base_currency: '€ EUR',
-        current_salary: 20000,
-        current_currency: '£ GBP',
-        availability_day: '1 month',
+        expected_salary: random.integer(10, 100000),
+        base_currency: random.enum(enumerations.currencies),
+        current_salary: random.integer(10000, 100000),
+        current_currency: random.enum(enumerations.currencies),
+        availability_day: random.enum(enumerations.workAvailability),
         country: [
             {country: 'Afghanistan' , visa_needed : false} , {remote:true , visa_needed: false},
             {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }
         ],
         roles: [
-            'Backend Developer', 'Fullstack Developer'
+            random.enum(enumerations.workRoles), random.enum(enumerations.workRoles)
         ],
         interest_areas: [
             "I don't know" , 'Enterprise blockchain', 'Smart contract development'

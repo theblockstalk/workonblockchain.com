@@ -124,7 +124,7 @@ module.exports.company = function company() {
     return {
         first_name: "Salman",
         last_name: "Safdar",
-        email: "salman@email.com",
+        email: random.email(),
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
