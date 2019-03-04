@@ -12,6 +12,11 @@
           <div class = "col-md-3 ">
             <div class="wob-bg-primary2 p-2 border">
               <h4 class="pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved searches</h4>
+              <input type="text" [(ngModel)]="_id" name="_id"  class="form-control">
+              <input type="text" [(ngModel)]="timestamp"  name = "timestamp"  class="form-control d-none">
+              <input type="text" [(ngModel)]="pref_job_type" name="pref_job_type"  class="form-control d-none">
+              <input type="text" [(ngModel)]="other_technologies" name="other_technologies"  class="form-control d-none">
+
               <div class = "form-group mt-3">
                 <select title="1: saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="name" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
                   <option *ngFor = "let name of searchName" [value]="name">{{name}}</option>
@@ -73,15 +78,15 @@
               </div>
               <hr/>
 
-                <div class="form-group">
-                  <select class="form-control selectpicker" title="Residence country" [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
-                    <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
-                  </select>
-                  <div class="invalid-feedback d-inline" *ngIf="residence_country && residence_country.length > 50">
-                    {{residence_log}}
-                  </div>
-
+              <div class="form-group">
+                <select class="form-control selectpicker" title="Residence country" [(ngModel)]="residence_country" name="residence_country" (ngModelChange)="searchdata('residence', $event)" multiple data-live-search="true" >
+                  <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
+                </select>
+                <div class="invalid-feedback d-inline" *ngIf="residence_country && residence_country.length > 50">
+                  {{residence_log}}
                 </div>
+
+              </div>
 
               <div class = "form-group">
 
@@ -365,7 +370,7 @@
           </button>
         </div>
         <form  [formGroup]="preferncesForm" (ngSubmit)="savedNewSearch()">
-        <div class="modal-body">
+          <div class="modal-body">
 
             <div class="row">
               <div class="col-md-6">
@@ -506,7 +511,7 @@
                 </div>
               </div>
             </div>
-        </div>
+          </div>
           <div class="modal-footer row">
             <div class="col-md-12">
               <button type="submit" class="btn btn-mo btn-primary float-right" >Save</button>
