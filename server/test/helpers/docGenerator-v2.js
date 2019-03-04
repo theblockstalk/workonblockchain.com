@@ -1,32 +1,5 @@
-const crypto = require('crypto');
 const enumerations = require('../../model/enumerations');
-
-function randomString(length = 10) {
-    return crypto.randomBytes(Math.ceil(length / 2))
-        .toString('hex')
-        .slice(0, length);
-};
-
-function randomEmail() {
-    return randomString() + '@example.com';
-}
-
-function randomBoolean() {
-    if (Math.random() > 0.5) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function randomInteger(min = 0, max = 10000) {
-    return Math.floor((max - min)*Math.random()) - min;
-}
-
-function randomEnum(enums) {
-    const keyNo = Math.floor(Math.random() * enums.length);
-    return enums[keyNo];
-}
+const random = require('./random');
 
 module.exports.messages = {
     job_offer: function(user_id) {
@@ -35,12 +8,12 @@ module.exports.messages = {
             msg_tag: 'job_offer',
             message: {
                 job_offer: {
-                    title: randomString(),
-                    salary: randomInteger(1),
-                    salary_currency: randomEnum(enumerations.currencies),
-                    type: randomEnum(enumerations.jobTypes),
+                    title: random.string(),
+                    salary: random.integer(1),
+                    salary_currency: random.enum(enumerations.currencies),
+                    type: random.enum(enumerations.jobTypes),
                     location : "PWD Islamabad",
-                    description: randomString(100)
+                    description: random.string(100)
                 }
             }
         }
@@ -97,12 +70,12 @@ module.exports.messages = {
             msg_tag: 'employment_offer',
             message: {
                 employment_offer: {
-                    title: randomString(),
-                    salary: randomInteger(1),
-                    salary_currency: randomEnum(enumerations.currencies),
-                    type: randomEnum(enumerations.jobTypes),
+                    title: random.string(),
+                    salary: random.integer(1),
+                    salary_currency: random.enum(enumerations.currencies),
+                    type: random.enum(enumerations.jobTypes),
                     start_date: Date.now(),
-                    description: randomString(100)
+                    description: random.string(100)
                 }
             }
         }
@@ -113,8 +86,8 @@ module.exports.messages = {
             msg_tag: 'employment_offer_accepted',
             message: {
                 employment_offer_accepted: {
-                    employment_offer_message_id: randomString(),
-                    message: randomString(100)
+                    employment_offer_message_id: random.string(),
+                    message: random.string(100)
                 }
             }
         }
@@ -125,8 +98,8 @@ module.exports.messages = {
             msg_tag: 'employment_offer_rejected',
             message: {
                 employment_offer_rejected: {
-                    employment_offer_message_id: randomString(),
-                    message: randomString(100)
+                    employment_offer_message_id: random.string(),
+                    message: random.string(100)
                 }
             }
         }
@@ -151,7 +124,7 @@ module.exports.company = function company() {
     return {
         first_name: "Salman",
         last_name: "Safdar",
-        email: "salman@email.com",
+        email: random.email(),
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
@@ -200,5 +173,3 @@ module.exports.companyUpdateProfile = function companyUpdateProfile(){
 
     }
 }
-
-

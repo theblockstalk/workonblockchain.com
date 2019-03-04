@@ -1,12 +1,10 @@
 const sanitize = require('../services/sanitize');
+const objects = require('../services/objects');
 
-function copyObject(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
 
 module.exports.middleware = function middleware(req, res, next) {
     if (req.body) {
-        req.unsanitizedBody = copyObject(req.body);
+        req.unsanitizedBody = objects.copyObject(req.body);
         sanitize.recursivelySanitize(req.body);
     }
     if (req.params) {
