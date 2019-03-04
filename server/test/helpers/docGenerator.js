@@ -183,7 +183,7 @@ module.exports.job = function job(){
         expected_salary: random.integer(10, 100000),
         base_currency: '€ EUR',
         current_salary: random.integer(10000, 100000),
-        current_currency: random.enum(enumerations.currencies),
+        current_currency: '€ EUR',
         availability_day: random.enum(enumerations.workAvailability),
         country: [
             {country: 'Afghanistan' , visa_needed : false} , {remote:true , visa_needed: false},
