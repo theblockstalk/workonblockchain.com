@@ -187,6 +187,7 @@ describe('cron', function () {
             newSavedSearch[0].position = [
                 job[1].roles[0]
             ];
+            
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[3], job[1], resume[3] ,experience[0]);
 
             await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , {saved_searches : newSavedSearch});
