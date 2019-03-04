@@ -62,7 +62,14 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   emptyInput;
   errorMsg;
 
-  constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) { }
+  constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) {
+    let query_val = JSON.parse(localStorage.getItem('url-param'));
+    console.log(query_val);
+    if(query_val.skills){
+      this.skill_value = query_val.skills;
+      this.searchdata('skill' , query_val.skills);
+    }
+  }
 
 
   commercially=
@@ -449,6 +456,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   residence_log;
   searchdata(key , value)
   {
+    console.log('in searchdata');
+    console.log(key);
+    console.log(value);
     this.success_msg = '';
     if(key === 'searchName') {
       this.error_msg = '';
@@ -504,10 +514,15 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
+      console.log(queryBody);
+      localStorage.setItem('url-param', queryBody);
+      localStorage.setItem('url-param', JSON.stringify(queryBody));
+
       this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data =>
           {
+            console.log(data);
             this.candidate_data = data;
             this.setPage(1);
             if(this.candidate_data.length > 0) {
