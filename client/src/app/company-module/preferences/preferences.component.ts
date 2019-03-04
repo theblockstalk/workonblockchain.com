@@ -234,21 +234,21 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         residence_country: new FormControl(),
       });
 
-		this.preferncesForm = this._fb.group({
-                  name: [''],
-                  location: [],
-                  visa_needed: [false],
-                  job_type: [],
-                  position: [],
-                  current_currency: [],
-                  current_salary: [''],
-                  blockchain: [],
-                  skills: [],
-                  other_technologies: [''],
-				  when_receive_email_notitfications: [''],
-                  order_preferences: [],
-                  residence_country: [],
-                });
+      this.preferncesForm = this._fb.group({
+        name: [''],
+        location: [],
+        visa_needed: [false],
+        job_type: [],
+        position: [],
+        current_currency: [],
+        current_salary: [''],
+        blockchain: [],
+        skills: [],
+        other_technologies: [''],
+        when_receive_email_notitfications: [''],
+        order_preferences: [],
+        residence_country: [],
+      });
       this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
           data =>
@@ -278,6 +278,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 order_preferences: [data['saved_searches'][0].order_preferences],
                 residence_country: [data['saved_searches'][0].residence_country],
               });
+
 
               /*for (let locations of data['saved_searches'][0].location) {
                 for(let option of this.locations) {
@@ -453,10 +454,10 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
-	let count = 0;
+    let count = 0;
     if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
       this.residence_country_log = "Please select maximum 50 countries";
-	  count=1;
+      count=1;
 
     }
     if(count === 0 &&this.preferncesForm.value.name && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
@@ -465,16 +466,32 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.preferncesForm.value.when_receive_email_notitfications ) {
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
-      this.saved_searches.push(this.preferncesForm.value);
-		if(!this.preferncesForm.value.job_type) this.preferncesForm.value.job_type = [];
-		if(!this.preferncesForm.value.blockchain) this.preferncesForm.value.blockchain = [];
-		if(!this.preferncesForm.value.skills) this.preferncesForm.value.skills = [];
-		if(!this.preferncesForm.value.order_preferences) this.preferncesForm.value.order_preferences = [];
-		if(!this.preferncesForm.value.residence_country) this.preferncesForm.value.residence_country = [];
+      if(!this.preferncesForm.value.job_type) this.preferncesForm.value.job_type = [];
+      if(!this.preferncesForm.value.blockchain) this.preferncesForm.value.blockchain = [];
+      if(!this.preferncesForm.value.skills) this.preferncesForm.value.skills = [];
+      if(!this.preferncesForm.value.order_preferences) this.preferncesForm.value.order_preferences = [];
+      if(!this.preferncesForm.value.residence_country) this.preferncesForm.value.residence_country = [];
 
       let inputQuery : any ={};
       inputQuery.when_receive_email_notitfications = this.preferncesForm.value.when_receive_email_notitfications;
+
+      let searchInput : any = {};
+      if(this.preferncesForm.value.location) searchInput.location = this.preferncesForm.value.location
+      if(this.preferncesForm.value.name) searchInput.name = this.preferncesForm.value.name
+      if(this.preferncesForm.value.visa_needed) searchInput.visa_needed = this.preferncesForm.value.visa_needed
+      if(this.preferncesForm.value.job_type) searchInput.job_type = this.preferncesForm.value.job_type
+      if(this.preferncesForm.value.position) searchInput.position = this.preferncesForm.value.position
+      if(this.preferncesForm.value.current_currency) searchInput.current_currency = this.preferncesForm.value.current_currency
+      if(this.preferncesForm.value.current_salary) searchInput.current_salary = this.preferncesForm.value.current_salary
+      if(this.preferncesForm.value.blockchain) searchInput.blockchain = this.preferncesForm.value.blockchain
+      if(this.preferncesForm.value.skills) searchInput.skills = this.preferncesForm.value.skills
+      if(this.preferncesForm.value.other_technologies) searchInput.other_technologies = this.preferncesForm.value.other_technologies
+      if(this.preferncesForm.value.order_preferences) searchInput.order_preferences = this.preferncesForm.value.order_preferences
+      if(this.preferncesForm.value.residence_country) searchInput.residence_country = this.preferncesForm.value.residence_country
+      this.saved_searches.push(searchInput);
+
       inputQuery.saved_searches = this.saved_searches;
+
       this.authenticationService.edit_company_profile(inputQuery)
         .subscribe(
           data =>

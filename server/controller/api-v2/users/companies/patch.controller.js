@@ -191,8 +191,8 @@ module.exports.endpoint = async function (req, res) {
 						      return currentSearch;
 					   }
                     });
-						
-				    if (currentSearch && currentSearch.length === 1) {
+
+                    if (currentSearch && currentSearch.length === 1) {
                         if (!objects.compareObjects(currentSearch[0], patchSearch)) {
                             // This is a modified search
                             patchSearch.timestamp = timestamp;

@@ -218,9 +218,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   initPrefRows()
   {
     return this._fb.group({
-	  _id :[],
-      name: [''],
+      _id :[],
       location: [''],
+      name: [''],
       visa_needed : [false],
       job_type: [''],
       position: [''],
@@ -231,7 +231,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       other_technologies: [''],
       order_preferences: [''],
       residence_country: [''],
-	  timestamp:[]
+      timestamp:[]
     });
   }
 
@@ -557,17 +557,18 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         for(let key of this.preferncesForm.value.prefItems) {
           let searchQuery : any = {};
           let validLocation = [];
-         
+
           if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
-		  else searchQuery.visa_needed = false;
+          else searchQuery.visa_needed = false;
           if(key['job_type']) searchQuery.job_type = key['job_type'];
           if(key['position']) searchQuery.position = key['position'];
           if(key['blockchain']) searchQuery.blockchain = key['blockchain'];
           if(key['skills']) searchQuery.skills = key['skills'];
           if(key['residence_country']) searchQuery.residence_country = key['residence_country'];
           if(key['order_preferences']) searchQuery.order_preferences = key['order_preferences'];
-		  if(key['_id']) searchQuery._id = key['_id'];
-		   if(i < this.preferncesForm.value.prefItems.length) {
+          if(key['_id']) searchQuery._id = key['_id'];
+
+          if(i < this.preferncesForm.value.prefItems.length) {
             if(this.locationArray[i]) {
               for(let location of this.locationArray[i]) {
                 if(location.name.includes(', ')) {
@@ -584,13 +585,14 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
 
           }
           if(key['name']) searchQuery.name = key['name'];
+
           if(key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchQuery.current_currency = key['current_currency'];
             searchQuery.current_salary = Number(key['current_salary']);
           }
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
           saved_searches.push(searchQuery);
-		            if(key['timestamp']) searchQuery.timestamp = key['timestamp'];
+          if(key['timestamp']) searchQuery.timestamp = key['timestamp'];
 
           i++;
         }
@@ -625,47 +627,47 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   suggestedOptions(index) {
-      if(this.preferncesForm.value.prefItems[index].location !== '') {
-        this.error='';
-        this.authenticationService.autoSuggestOptions(this.preferncesForm.value.prefItems[index].location , true)
-          .subscribe(
-            data => {
-              if(data) {
-                let citiesInput = data;
-                let citiesOptions=[];
-                for(let cities of citiesInput['locations']) {
-                  if(cities['remote'] === true) {
-                    citiesOptions.push({name: 'Remote'});
-                  }
-                  if(cities['city']) {
-                    let cityString = cities['city'].city + ", " + cities['city'].country;
-                    citiesOptions.push({city : cities['city']._id , name : cityString});
-                  }
+    if(this.preferncesForm.value.prefItems[index].location !== '') {
+      this.error='';
+      this.authenticationService.autoSuggestOptions(this.preferncesForm.value.prefItems[index].location , true)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({name: 'Remote'});
                 }
-                this.cities = this.filter_array(citiesOptions);
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country;
+                  citiesOptions.push({city : cities['city']._id , name : cityString});
+                }
               }
+              this.cities = this.filter_array(citiesOptions);
+            }
 
-            },
-            error=>
+          },
+          error=>
+          {
+            if(error['message'] === 500 || error['message'] === 401)
             {
-              if(error['message'] === 500 || error['message'] === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-              if(error.message === 403)
-              {
-                this.router.navigate(['/not_found']);
-              }
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-            });
-      }
+          });
+    }
 
 
   }
