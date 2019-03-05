@@ -13,26 +13,34 @@ module.exports.up = async function() {
     let candDoc = await candCursor.next();
 
     for ( null ; candDoc !== null; candDoc = await candCursor.next()) {
-        console.log(candDoc.candidate.blockchain.commercial_platforms.length);
-        console.log(candDoc.candidate.blockchain.smart_contract_platforms.length);
-        /*for(let i=0;i<candDoc.candidate.blockchain.commercial_platforms.length;i++){
-            for(let j=0;j<candDoc.candidate.blockchain.smart_contract_platforms.length;j++){
-                if(candDoc.candidate.blockchain.commercial_platforms[i].name === candDoc.candidate.blockchain.smart_contract_platforms[j].name){
-                    //console.log(candDoc.candidate.blockchain.commercial_platforms[i].name);
-                    //console.log(candDoc.candidate.blockchain.smart_contract_platforms[j].name);
-                    //console.log('matched');
-                    //process.exit();
+        let platforms = candDoc.candidate.blockchain.commercial_platforms;
+        for(let j=0;j<candDoc.candidate.blockchain.smart_contract_platforms.length;j++){
+            if(platforms.find(tech => tech.name === candDoc.candidate.blockchain.smart_contract_platforms[j].name)){
+                let same = candDoc.candidate.blockchain.smart_contract_platforms[j];
+                //console.log(same);
+                //console.log(platforms);
+                for(let i=0;i<platforms.length;i++){
+                    if(platforms[i].name === same.name && platforms[i].exp_year === same.exp_year){
+                        console.log('same expr');
+                    }
+                    else if(platforms[i].exp_year === '2-4'){
+                        console.log('2-4');
+                    }
+                    else{
+
+                    }
                 }
-                else{
-                    //console.log(candDoc.candidate.blockchain.commercial_platforms[i].name);
-                    //console.log(candDoc.candidate.blockchain.smart_contract_platforms[j].name);
-                    console.log('not matched');
-                }
+                console.log(candDoc.candidate.blockchain.smart_contract_platforms[j]);
             }
-        }*/
+            else{
+                //platforms.push(candDoc.candidate.blockchain.smart_contract_platforms[j]);
+                //console.log(candDoc.candidate.blockchain.smart_contract_platforms[j]);
+            }
+        }
+        //console.log(platforms);
+        process.exit();
         //console.log(candDoc.candidate.blockchain.commercial_platforms[0]);
         //console.log(candDoc.candidate.blockchain.smart_contract_platforms[0]);
-
     }
 }
 
