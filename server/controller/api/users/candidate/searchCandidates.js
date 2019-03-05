@@ -21,7 +21,7 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
     if (filters.is_verify === 1 || filters.is_verify === 0) userQuery.push({"is_verify" : filters.is_verify});
 
     if (filters.status && filters.status !== -1) userQuery.push({'candidate.latest_status.status' : filters.status}); //not sure about this
-    if (filters.updatedAfter) userQuery.push({'candidate.history.0.timestamp' : {$gte: filters.updatedAfter}});
+    if (filters.updatedAfter) userQuery.push({'candidate.latest_status.timestamp' : {$gte: filters.updatedAfter}});
 
     if (filters.disable_account === true || filters.disable_account === false) userQuery.push({"disable_account" :  filters.disable_account});
     if (filters.msg_tags) {
@@ -188,8 +188,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         }
     }
 
-    console.log("user query");
-    console.log(userQuery);
     let searchQuery = {$and: userQuery};
     const userDocs = await users.find(searchQuery);
     if(userDocs && userDocs.length > 0) {

@@ -244,6 +244,20 @@ const bodySchema = new Schema({
                     }
                 }]
 
+            },
+            latest_status : {
+                status: {
+                    type: String,
+                    enum: enumerations.candidateStatus,
+                },
+                reason: {
+                    type: String,
+                    enum: enumerations.statusReasons
+                },
+                timestamp: {
+                    type: Date,
+                }
+
             }
 
         }
