@@ -273,7 +273,7 @@ module.exports.inputValidation = {
 };
 
 module.exports.files = async function(req) {
-    await multer.uploadOneFile(req, "company_logo");
+    await multer.uploadOneFile(req, "image");
 }
 
 module.exports.auth = async function (req) {
@@ -287,31 +287,31 @@ module.exports.auth = async function (req) {
 
 module.exports.endpoint = async function (req, res) {
     let userId;
+    let queryBody = req.body;
+    let updateCandidateUser = {};
+    let unset = {};
+
     if (req.query.admin) {
         userId = req.params.user_id;
     }
     else {
         userId = req.auth.user._id;
     }
-    let queryBody = req.body;
-    let updateCandidateUser = {};
-    let unset = {};
+    console.log("user id");
+    console.log(userId);
+
+    if(req.file && req.file.path) updateCandidateUser.image = req.file.path;
+
     if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;
     if (queryBody.last_name) updateCandidateUser.last_name = queryBody.last_name;
-    if (queryBody.github_account) updateCandidateUser['candidate.github_account'] = queryBody.github_account;
-    else unset['candidate.github_account'] = 1;
-
-    if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
-    else unset['candidate.stackexchange_account'] = 1;
-
-    if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
-    else unset['candidate.linkedin_account'] = 1;
-
-    if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
-    else unset['candidate.medium_account'] = 1;
-
     if (queryBody.contact_number) updateCandidateUser.contact_number = queryBody.contact_number;
     if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
+    if(queryBody.base_city) updateCandidateUser['candidate.base_city'] = queryBody.base_city;
+    if(queryBody.base_country) updateCandidateUser['candidate.base_country'] = queryBody.base_country;
+    if (queryBody.github_account) updateCandidateUser['candidate.github_account'] = queryBody.github_account;
+    if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
+    if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
+    if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
     if (queryBody.locations) {
         for(let loc of queryBody.locations) {
             if(loc.city) {
@@ -322,34 +322,22 @@ module.exports.endpoint = async function (req, res) {
         updateCandidateUser['candidate.locations'] = queryBody.locations;
     }
     if (queryBody.roles) updateCandidateUser['candidate.roles'] = queryBody.roles;
-    if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
     if (queryBody.expected_salary_currency) updateCandidateUser['candidate.expected_salary_currency'] = queryBody.expected_salary_currency;
     if (queryBody.expected_salary) updateCandidateUser['candidate.expected_salary'] = queryBody.expected_salary;
+    if (queryBody.current_currency && queryBody.current_currency !== "-1") updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
+    if (queryBody.current_salary ) updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
     if (queryBody.availability_day) updateCandidateUser['candidate.availability_day'] = queryBody.availability_day;
     if (queryBody.why_work) updateCandidateUser['candidate.why_work'] = queryBody.why_work;
-    if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) updateCandidateUser['candidate.blockchain.commercial_platforms'] = queryBody.commercial_platforms;
-    else unset['candidate.blockchain.commercial_platforms'] = 1;
-    if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
-    else unset['candidate.blockchain.experimented_platforms'] = 1;
-    if (queryBody.smart_contract_platforms && queryBody.smart_contract_platforms.length > 0) updateCandidateUser['candidate.blockchain.smart_contract_platforms'] = queryBody.smart_contract_platforms;
-    else unset['candidate.blockchain.smart_contract_platforms'] = 1;
-    if (queryBody.current_salary ) updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
-    else unset['candidate.current_salary'] = 1;
-    if (queryBody.current_currency && queryBody.current_currency !== "-1") updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
-    else unset['candidate.current_currency'] = 1;
     if (queryBody.programming_languages && queryBody.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = queryBody.programming_languages;
-    else unset['candidate.programming_languages'] = 1;
     if (queryBody.description) updateCandidateUser['candidate.description'] = queryBody.description;
     if (queryBody.education_history && queryBody.education_history.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.education_history;
-    else unset['candidate.education_history'] = 1;
     if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
-    else unset['candidate.work_history'] = 1;
+    if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
+    if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) updateCandidateUser['candidate.blockchain.commercial_platforms'] = queryBody.commercial_platforms;
+    if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
+    if (queryBody.smart_contract_platforms && queryBody.smart_contract_platforms.length > 0) updateCandidateUser['candidate.blockchain.smart_contract_platforms'] = queryBody.smart_contract_platforms;
     if(queryBody.commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
-    else unset['candidate.blockchain.commercial_skills'] = 1;
     if(queryBody.formal_skills && queryBody.formal_skills.length > 0 ) updateCandidateUser['candidate.blockchain.formal_skills'] = queryBody.formal_skills;
-    else unset['candidate.blockchain.formal_skills'] = 1;
-    if(queryBody.base_city) updateCandidateUser['candidate.base_city'] = queryBody.base_city;
-    if(queryBody.base_country) updateCandidateUser['candidate.base_country'] = queryBody.base_country;
     if(queryBody.status) {
         let history= {};
         history['status'] = {status : queryBody.status};

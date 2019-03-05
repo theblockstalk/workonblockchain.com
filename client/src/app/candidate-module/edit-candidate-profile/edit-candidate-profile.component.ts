@@ -1617,6 +1617,41 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     this.experiencearray=[];
     this.education_json_array=[];
     this.submit = 'click';
+    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
+    let fileCount: number = inputEl.files.length;
+    let formData = new FormData();
+    if (fileCount > 0 )
+    {
+
+      if(inputEl.files.item(0).size < this.file_size)
+      {
+        formData.append('image', inputEl.files.item(0));
+        this.authenticationService.edit_candidate_profile(this.currentUser._creator , formData, false)
+          .subscribe(
+            data => {
+              if (data) {
+                console.log(data);
+                //this.router.navigate(['/candidate_profile']);
+              }
+            },
+            error => {
+              if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
+                localStorage.setItem('jwt_not_found', 'Jwt token not found');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('googleUser');
+                localStorage.removeItem('close_notify');
+                localStorage.removeItem('linkedinUser');
+                localStorage.removeItem('admin_log');
+                window.location.href = '/login';
+              }
+            }
+          );
+      }
+      else
+      {
+        this.image_log = "Image size should be less than 1MB";
+      }
+    }
     for (var key in this.ExperienceForm.value.ExpItems)
     {
       this.startmonthIndex = this.monthNameToNum(this.ExperienceForm.value.ExpItems[key].start_date);
@@ -1712,63 +1747,21 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.experimented_platform) inputQuery.experimented_platforms = this.experimented_platform;
     if(profileForm.smart_contract_platforms) inputQuery.smart_contract_platforms = profileForm.smart_contract_platforms;
     if(profileForm.commercial_skills) inputQuery.commercial_skills = profileForm.commercial_skills;
-    if(profileForm.formal_skills) inputQuery.smart_contract_platforms = profileForm.formal_skills;
-    if(profileForm.smart_contract_platforms) inputQuery.formal_skills = profileForm.smart_contract_platforms;
+    if(profileForm.smart_contract_platforms) inputQuery.smart_contract_platforms = profileForm.smart_contract_platforms;
+    if(profileForm.formal_skills) inputQuery.formal_skills = profileForm.formal_skills;
     if(profileForm.language_experience_year) inputQuery.programming_languages = profileForm.language_experience_year;
     if(this.education_json_array) inputQuery.education_history = this.education_json_array;
     if(this.experiencearray) inputQuery.work_history = this.experiencearray;
 
     inputQuery.status = 'updated';
 
-
+    console.log(inputQuery);
     this.authenticationService.edit_candidate_profile(this.currentUser._creator, inputQuery , false)
       .subscribe(
         data => {
-          if(data['success'] && this.currentUser)
+          if(data && this.currentUser)
           {
-            let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#aa');
-            let fileCount: number = inputEl.files.length;
-            let formData = new FormData();
-            if (fileCount > 0 )
-            {
-
-              if(inputEl.files.item(0).size < this.file_size)
-              {
-                formData.append('photo', inputEl.files.item(0));
-                this.authenticationService.uploadCandImage(formData)
-                  .subscribe(
-                    data => {
-                      if (data['success']) {
-                        this.router.navigate(['/candidate_profile']);
-                      }
-                    },
-                    error => {
-                      if (error['status'] === 401 && error['error']['message'] === 'Jwt token not found' && error['error']['requestID'] && error['error']['success'] === false) {
-                        localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                        localStorage.removeItem('currentUser');
-                        localStorage.removeItem('googleUser');
-                        localStorage.removeItem('close_notify');
-                        localStorage.removeItem('linkedinUser');
-                        localStorage.removeItem('admin_log');
-                        window.location.href = '/login';
-                      }
-                    }
-                  );
-              }
-              else
-              {
-                this.image_log = "Image size should be less than 1MB";
-              }
-            }
-            else
-            //window.location.href = '/candidate_profile';
-
-              this.router.navigate(['/candidate_profile']);
-          }
-
-          if(data['error'])
-          {
-            this.dataservice.changeMessage(data['error']);
+            this.router.navigate(['/candidate_profile']);
           }
 
         },
