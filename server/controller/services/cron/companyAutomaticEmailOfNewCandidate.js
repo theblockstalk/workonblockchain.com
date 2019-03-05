@@ -46,13 +46,12 @@ module.exports = async function (companyId) {
                 let foundCandidates = [];
                 for (let savedSearch of companyDoc.saved_searches) {
                     try {
-
-                        candidateDocs = await
-                        candidateSearch.candidateSearch({
+                        candidateDocs = await candidateSearch.candidateSearch({
                             is_verify: 1,
                             status: 'approved',
                             disable_account: false,
-                            blacklist: blacklist
+                            blacklist: blacklist,
+                            updatedAfter: savedSearch.timestamp
                         }, {
                             skills: savedSearch.skills,
                             locations: savedSearch.location,
@@ -110,7 +109,7 @@ module.exports = async function (companyId) {
                             sent: timestamp
                         })
                     }
-                    if(candidateCount  <= 10) {
+                    if(foundCandidates.length  <= 10) {
                         candidates = {"count" : candidateCount  , "list" : candidateList};
                     }
                     else {

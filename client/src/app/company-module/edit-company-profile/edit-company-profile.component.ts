@@ -218,8 +218,9 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   initPrefRows()
   {
     return this._fb.group({
-      name: [''],
+      _id :[],
       location: [''],
+      name: [''],
       visa_needed : [false],
       job_type: [''],
       position: [''],
@@ -229,14 +230,15 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       skills: [''],
       other_technologies: [''],
       order_preferences: [''],
-      residence_country: ['']
+      residence_country: [''],
+      timestamp:[]
     });
   }
 
   private preferncesFormData(): FormGroup[]
   {
     return this.prefData
-      .map(i => this._fb.group({ residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
+      .map(i => this._fb.group({ timestamp:i.timestamp,_id: i._id, residence_country: [i.residence_country], name: i.name, location: this.selectedCompanyLocation(i.location) , visa_needed : i.visa_needed, job_type: [i.job_type], position: [i.position], current_currency: i.current_currency, current_salary: i.current_salary, blockchain: [i.blockchain], skills: [i.skills], other_technologies: i.other_technologies, order_preferences: [i.order_preferences] } ));
   }
 
   selectedCompanyLocation(location) {
@@ -245,12 +247,12 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
       for (let country1 of location)
       {
         if (country1['remote'] === true) {
-          this.selectedValueArray.push({name: 'Remote' });
+          this.selectedValueArray.push({_id:country1['_id'] ,name: 'Remote' });
         }
 
         if (country1['city']) {
           let city = country1['city'].city + ", " + country1['city'].country;
-          this.selectedValueArray.push({_id:country1['city']._id ,name: city });
+          this.selectedValueArray.push({_id:country1['_id'] ,city:country1['city']._id ,name: city });
         }
       }
 
@@ -555,14 +557,25 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
         for(let key of this.preferncesForm.value.prefItems) {
           let searchQuery : any = {};
           let validLocation = [];
+
+          if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
+          else searchQuery.visa_needed = false;
+          if(key['job_type']) searchQuery.job_type = key['job_type'];
+          if(key['position']) searchQuery.position = key['position'];
+          if(key['blockchain']) searchQuery.blockchain = key['blockchain'];
+          if(key['skills']) searchQuery.skills = key['skills'];
+          if(key['residence_country']) searchQuery.residence_country = key['residence_country'];
+          if(key['order_preferences']) searchQuery.order_preferences = key['order_preferences'];
+          if(key['_id']) searchQuery._id = key['_id'];
+
           if(i < this.preferncesForm.value.prefItems.length) {
             if(this.locationArray[i]) {
               for(let location of this.locationArray[i]) {
                 if(location.name.includes(', ')) {
-                  validLocation.push({city: location._id, visa_needed : location.visa_needed });
+                  validLocation.push({_id:location._id,  city: location.city, visa_needed : location.visa_needed });
                 }
                 if(location.name === 'Remote') {
-                  validLocation.push({remote: true, visa_needed : location.visa_needed });
+                  validLocation.push({_id:location._id, remote: true, visa_needed : location.visa_needed });
                 }
 
               }
@@ -571,21 +584,16 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
             }
 
           }
-
           if(key['name']) searchQuery.name = key['name'];
-          if(key['visa_needed']) searchQuery.visa_needed = key['visa_needed'];
-          if(key['job_type']) searchQuery.job_type = key['job_type'];
-          if(key['position']) searchQuery.position = key['position'];
+
           if(key['current_currency'] !== 'Currency' && key['current_salary']) {
             searchQuery.current_currency = key['current_currency'];
             searchQuery.current_salary = Number(key['current_salary']);
           }
-          if(key['blockchain']) searchQuery.blockchain = key['blockchain'];
-          if(key['skills']) searchQuery.skills = key['skills'];
-          if(key['residence_country']) searchQuery.residence_country = key['residence_country'];
           if(key['other_technologies']) searchQuery.other_technologies = key['other_technologies'];
-          if(key['order_preferences']) searchQuery.order_preferences = key['order_preferences'];
           saved_searches.push(searchQuery);
+          if(key['timestamp']) searchQuery.timestamp = key['timestamp'];
+
           i++;
         }
       }
@@ -619,47 +627,47 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
   }
 
   suggestedOptions(index) {
-      if(this.preferncesForm.value.prefItems[index].location !== '') {
-        this.error='';
-        this.authenticationService.autoSuggestOptions(this.preferncesForm.value.prefItems[index].location , true)
-          .subscribe(
-            data => {
-              if(data) {
-                let citiesInput = data;
-                let citiesOptions=[];
-                for(let cities of citiesInput['locations']) {
-                  if(cities['remote'] === true) {
-                    citiesOptions.push({name: 'Remote'});
-                  }
-                  if(cities['city']) {
-                    let cityString = cities['city'].city + ", " + cities['city'].country;
-                    citiesOptions.push({_id : cities['city']._id , name : cityString});
-                  }
+    if(this.preferncesForm.value.prefItems[index].location !== '') {
+      this.error='';
+      this.authenticationService.autoSuggestOptions(this.preferncesForm.value.prefItems[index].location , true)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({name: 'Remote'});
                 }
-                this.cities = this.filter_array(citiesOptions);
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country;
+                  citiesOptions.push({city : cities['city']._id , name : cityString});
+                }
               }
+              this.cities = this.filter_array(citiesOptions);
+            }
 
-            },
-            error=>
+          },
+          error=>
+          {
+            if(error['message'] === 500 || error['message'] === 401)
             {
-              if(error['message'] === 500 || error['message'] === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-              if(error.message === 403)
-              {
-                this.router.navigate(['/not_found']);
-              }
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-            });
-      }
+          });
+    }
 
 
   }
@@ -687,7 +695,7 @@ export class EditCompanyProfileComponent implements OnInit , AfterViewInit, Afte
           }
 
           else {
-            if(value2send) this.locationArray[index].push({_id:value2send ,  name: locValue, visa_needed:false});
+            if(value2send) this.locationArray[index].push({city:value2send ,  name: locValue, visa_needed:false});
             else this.locationArray[index].push({ name: locValue, visa_needed:false});
           }
         }

@@ -32,9 +32,12 @@
           <section class = "p-2" id = "information">
             <div class="row">
               <div class="col-md-6">
-                  <div class="form-group">
-                    <input type="text" formControlName="name"  [value] = "preferncesForm.value.name"  class="form-control" placeholder="Saved search name">
-                  </div>
+                <div class="form-group">
+                  <input type="text" formControlName="name"  [value] = "preferncesForm.value.name"  class="form-control" placeholder="Saved search name">
+                </div>
+                <div class = "invalid-feedback d-inline" *ngIf="!preferncesForm.value.name">
+                  {{name_log}}
+                </div>
               </div>
             </div>
             <div class="row">
@@ -91,13 +94,7 @@
                     </div>
 
                   </div>
-                  <!--<select multiple id="locations" formControlName = "location" title="(select multiple)" class="form-control selectpicker" required>
-                    <option *ngFor='let location of locations;let i = index' [value]="location.value">{{location.name}}</option>
 
-                  </select>
-                  <div class="invalid-feedback d-inline" *ngIf="!preferncesForm.value.location || preferncesForm.value.location.length === 0">
-                    {{location_log}}
-                  </div>-->
                 </div>
               </div>
 
@@ -135,7 +132,7 @@
                   <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
                     <option *ngFor='let country of residenceCountries'  [value]="country" [attr.selected]="country === preferncesForm.value.residence_country ? true : null" >{{country}}</option>
                   </select>
-                  <div class = "invalid-feedback d-inline"  *ngIf="!preferncesForm.value.residence_country || (preferncesForm.value.residence_country && (preferncesForm.value.residence_country.length === 0 || preferncesForm.value.residence_country.length > 50))">
+                  <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
                     {{residence_country_log}}
                   </div>
                 </div>
