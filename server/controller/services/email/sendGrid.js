@@ -72,7 +72,18 @@ module.exports.removeEmailEnvironment = function removeEmailEnvironment(email) {
     return name + "@" + domain;
 };
 
-module.exports.getAllLists = async function getAllLists() {
+module.exports.getList = async function getList() {
+    let lists = await getAllLists();
+    console.log(lists);
+
+    for (const list of lists.lists) {
+        if (list.name === listName) {
+            return list;
+        }
+    }
+}
+
+async function getAllLists(){
     const request = {
         method: 'GET',
         url: '/v3/contactdb/lists'

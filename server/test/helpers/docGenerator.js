@@ -416,3 +416,10 @@ module.exports.companySavedSearches = function companySavedSearches() {
     }
 }
 
+module.exports.subscribe = function subscribe() {
+    return {
+        first_name: "Tayyab",
+        last_name: "Hussain",
+        email: "tayyab@email.com"
+    }
+}
