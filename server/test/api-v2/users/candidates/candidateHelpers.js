@@ -17,10 +17,8 @@ const signupCandidate = module.exports.signupCandidate = async function signupCa
 
 module.exports.candidateProfile = async function candidateProfile(candidate, profileData) {
     const res = await signupCandidate(candidate);
-    console.log(res.body);
     await userHelpers.verifyEmail(candidate.email);
     await candidateProfilePatch(res.body._id, res.body.jwt_token, profileData);
-    await userHelpers.approveCandidate(candidate.email);
 }
 
 

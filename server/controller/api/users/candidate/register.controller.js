@@ -49,13 +49,15 @@ module.exports = async function (req, res) {
         first_name: userParam.first_name,
         last_name: userParam.last_name,
         candidate: {
-            status: [{
-                status: 'created',
-                status_updated: new Date(),
-                timestamp: new Date()
+            history: [{
+               status : {
+                    status: 'created'
+               },
+                timestamp : new Date()
             }]
         }
     }
+
     const candidateUserCreated = await users.insert(newUserDoc);
 
     let url_token;

@@ -20,7 +20,7 @@ const anonymosUserFields = ['candidate', 'image', 'initials', 'nationality', '_i
 const anonymosCandidateFields = ['locations', 'roles', 'expected_salary_currency', 'expected_salary', 'interest_areas',
     'availability_day', 'why_work', 'commercial_platforms', 'blockchain', 'experimented_platforms', 'smart_contract_platforms' , 'commercial_skills',
     'formal_skills' , 'current_currency', 'current_salary', 'programming_languages', 'education_history', 'work_history', 'description',
-    'nationality' , 'status'];
+    'nationality' , 'status', 'history'];
 
 const anonymousSearchCandidateData = module.exports.anonymousSearchCandidateData = function anonymousSearchCandidateData(userDoc) {
 

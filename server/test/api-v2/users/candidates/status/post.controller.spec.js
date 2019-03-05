@@ -36,6 +36,7 @@ describe('admin changes status of a candidate', function () {
         const profileData = docGenerator.candidateProfile();
         await candidateHelper.candidateProfile(candidate, profileData);
         const candidateDoc = await users.findOne({email: candidate.email}).lean();
+        console.log(candidateDoc);
 
         //approve candidate
         const inputQuery = docGenerator.changeCandidateStatus();
@@ -43,6 +44,8 @@ describe('admin changes status of a candidate', function () {
         const candidateUserDoc = approveUser.body;
         candidateUserDoc.candidate.history[0].status.status.should.equal(inputQuery.status);
         candidateUserDoc.candidate.history[1].status.status.should.equal('wizard completed');
+        candidateUserDoc.candidate.history[0].note.should.equal(inputQuery.note);
+        candidateUserDoc.candidate.history[0].email_text.should.equal(inputQuery.email_text);
 
     })
 })

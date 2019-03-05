@@ -197,7 +197,7 @@ module.exports.candidateProfile = function candidateProfile(){
         base_country : 'Pakistan',
         base_city : 'Islamabad',
         expected_salary: 1400,
-        expected_salary_currency: '$ USD ',
+        expected_salary_currency: '$ USD',
         current_salary: 23000,
         current_currency: '£ GBP',
         availability_day: '1 month',
