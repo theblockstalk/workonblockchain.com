@@ -1,4 +1,5 @@
 const auth = require('../../../middleware/auth-v2');
+const mongoose = require('mongoose');
 const Schema = require('mongoose').Schema;
 const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
