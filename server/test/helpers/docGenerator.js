@@ -1,10 +1,11 @@
-
+const random = require('./random');
+const enumerations = require('../../model/enumerations');
 
 module.exports.candidate = function candidate() {
     return {
         first_name: "Tayyab",
         last_name: "Hussain",
-        email: "tayyab@mail.com",
+        email: random.email(),
         password: "Password1",
         type: "candidate",
         social_type : ""
@@ -15,7 +16,7 @@ module.exports.company = function company() {
     return {
         first_name: "Salman",
         last_name: "Safdar",
-        email: "salman@email.com",
+        email: random.email(),
         job_title: "Designer",
         company_name: "My Company",
         company_website: "my-web.com",
@@ -118,41 +119,6 @@ module.exports.companyAbout = function companyAbout(){
 }
 
 
-module.exports.companyUpdateProfile = function companyUpdateProfile(){
-    return {
-        info : {
-            first_name: "Sara",
-            last_name: "khan",
-            job_title: "Developer",
-            company_name: "Mwan Mobile",
-            company_website: "www.mwanmobile.com",
-            phone_number: "090078601",
-            country: "Pakistan",
-            postal_code: "44000",
-            city: "rawalpindi",
-            company_founded:2013,
-            no_of_employees:8,
-            company_funded:"i have no idea",
-            company_description:"Global blockchain agnostic hiring platform for developers."
-        },
-
-        saved_searches : [{
-            location: [
-                {remote:true , visa_needed: false},
-                {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }
-            ],
-            job_type : ['Full time'],
-            position : ['UI Developer', 'Fullstack Developer'],
-            current_currency : '$ USD',
-            current_salary : 2000,
-            blockchain : ['Ripple' , 'Stellar'],
-            skills : ['C#'],
-            availability_day : '1 month' ,
-            when_receive_email_notitfications : 'Never'
-        }]
-
-    }
-}
 
 module.exports.referredEmailDocs = function referredEmailDocs(){
     return {
@@ -214,17 +180,17 @@ module.exports.experience = function experience(){
 
 module.exports.job = function job(){
     return {
-        expected_salary: 50000,
+        expected_salary: random.integer(10, 100000),
         base_currency: '€ EUR',
-        current_salary: 20000,
-        current_currency: '£ GBP',
-        availability_day: '1 month',
+        current_salary: random.integer(10000, 100000),
+        current_currency: '€ EUR',
+        availability_day: random.enum(enumerations.workAvailability),
         country: [
             {country: 'Afghanistan' , visa_needed : false} , {remote:true , visa_needed: false},
             {_id : '5c4aa17468cc293450c14c04' , visa_needed : true }
         ],
         roles: [
-            'Backend Developer', 'Fullstack Developer'
+            random.enum(enumerations.workRoles), random.enum(enumerations.workRoles)
         ],
         interest_areas: [
             "I don't know" , 'Enterprise blockchain', 'Smart contract development'

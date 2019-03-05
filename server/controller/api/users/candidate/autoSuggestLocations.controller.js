@@ -1,11 +1,9 @@
 const cities = require('../../../../model/mongoose/cities');
 const enumerations = require('../../../../model/enumerations');
-const logger = require('../../../services/logger');
 
 module.exports = async function (req, res) {
     let queryInput = req.body;
     const filteredExp = queryInput.autosuggest.replace(/[#^*~?{}|&;$%',.-_@"<>()+]/g, "");
-    logger.debug("filtered Regular Exp: ", filteredExp);
     let regex = new RegExp(filteredExp, 'i');
     let outputOptions = [];
 

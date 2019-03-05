@@ -50,18 +50,20 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   ngAfterViewInit() {
     window.scrollTo(0, 0);
-	setTimeout(() => {
+    setTimeout(() => {
       $('.selectpicker').selectpicker();
-    }, 900);
+    }, 300);
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh');
-    }, 1000);
+    }, 900);
   }
 
   ngAfterViewChecked() {
 
   }
+
+  residenceCountries = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua & Deps', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Central African Rep', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Congo {Democratic Rep}', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland {Republic}', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea North', 'Korea South', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar, {Burma}', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russian Federation', 'Rwanda', 'St Kitts & Nevis', 'St Lucia', 'Saint Vincent & the Grenadines', 'Samoa', 'San Marino', 'Sao Tome & Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Togo', 'Tonga', 'Trinidad & Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
 
   locations = [
     {country_code:'000' , name:'Remote', value:'remote', checked:false},
@@ -192,9 +194,9 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       })
 
       this.job_types.sort(function(a, b){
-          if(a < b) { return -1; }
-          if(a > b) { return 1; }
-          return 0;
+        if(a < b) { return -1; }
+        if(a > b) { return 1; }
+        return 0;
       })
 
       this.roles.sort(function(a, b){
@@ -217,6 +219,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
 
       this.preferncesForm = new FormGroup({
+        name :  new FormControl(),
         location: new FormControl(),
         visa_needed: new FormControl(),
         job_type: new FormControl(),
@@ -228,9 +231,24 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
         other_technologies: new FormControl(),
         when_receive_email_notitfications: new FormControl(),
         order_preferences: new FormControl(),
+        residence_country: new FormControl(),
       });
 
-
+      this.preferncesForm = this._fb.group({
+        name: [''],
+        location: [],
+        visa_needed: [false],
+        job_type: [],
+        position: [],
+        current_currency: [],
+        current_salary: [''],
+        blockchain: [],
+        skills: [],
+        other_technologies: [''],
+        when_receive_email_notitfications: [''],
+        order_preferences: [],
+        residence_country: [],
+      });
       this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
           data =>
@@ -246,6 +264,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
             if(data['saved_searches'] && data['saved_searches'].length > 0) {
               this.pref_active_class = 'fa fa-check-circle text-success';
               this.preferncesForm = this._fb.group({
+                name: [data['saved_searches'][0].name],
                 location: [],
                 visa_needed: [data['saved_searches'][0].visa_needed],
                 job_type: [data['saved_searches'][0].job_type],
@@ -255,9 +274,11 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                 blockchain: [data['saved_searches'][0].blockchain],
                 skills: [data['saved_searches'][0].skills],
                 other_technologies: [data['saved_searches'][0].other_technologies],
-                when_receive_email_notitfications: [data['saved_searches'][0].when_receive_email_notitfications],
+                when_receive_email_notitfications: [data['when_receive_email_notitfications']],
                 order_preferences: [data['saved_searches'][0].order_preferences],
+                residence_country: [data['saved_searches'][0].residence_country],
               });
+
 
               /*for (let locations of data['saved_searches'][0].location) {
                 for(let option of this.locations) {
@@ -333,7 +354,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
                   }
                 }
               }
-			}
+            }
 
           },
           error =>
@@ -375,6 +396,8 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
   validatedLocation=[];
   country_input_log;
   country_log;
+  residence_country_log;
+  name_log;
 
   checkNumber(salary) {
     if(!Number(this.preferncesForm.value.current_salary)) {
@@ -386,6 +409,7 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   }
   candidate_prefernces() {
+    this.saved_searches = [];
     this.error_msg = "";
     this.validatedLocation = [];
     if(!this.selectedValueArray || this.selectedValueArray.length <= 0) {
@@ -410,6 +434,10 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
       this.country_log = "Please select maximum 10 locations";
     }
 
+    if(!this.preferncesForm.value.name) {
+      this.name_log = "Please enter saved search name";
+    }
+
     if(!this.preferncesForm.value.position || this.preferncesForm.value.position.length === 0) {
       this.position_log = "Please select roles";
     }
@@ -426,18 +454,49 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
     if(!this.preferncesForm.value.when_receive_email_notitfications) {
       this.email_notification_log = "Please select when you want to receive email notification";
     }
-    if(this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
+    let count = 0;
+    if(this.preferncesForm.value.residence_country && this.preferncesForm.value.residence_country.length > 50) {
+      this.residence_country_log = "Please select maximum 50 countries";
+      count=1;
+
+    }
+    if(count === 0 &&this.preferncesForm.value.name && this.selectedLocations && this.selectedLocations.length > 0 && this.selectedLocations.length <= 5   &&
       this.preferncesForm.value.position && this.preferncesForm.value.position.length > 0  &&
       this.preferncesForm.value.current_currency && Number(this.preferncesForm.value.current_salary) &&
-      this.preferncesForm.value.when_receive_email_notitfications) {
+      this.preferncesForm.value.when_receive_email_notitfications ) {
       this.preferncesForm.value.location = this.validatedLocation;
       this.preferncesForm.value.current_salary = Number(this.preferncesForm.value.current_salary);
-      this.saved_searches.push(this.preferncesForm.value);
-      this.authenticationService.candidate_prefernece(this.saved_searches)
+      if(!this.preferncesForm.value.job_type) this.preferncesForm.value.job_type = [];
+      if(!this.preferncesForm.value.blockchain) this.preferncesForm.value.blockchain = [];
+      if(!this.preferncesForm.value.skills) this.preferncesForm.value.skills = [];
+      if(!this.preferncesForm.value.order_preferences) this.preferncesForm.value.order_preferences = [];
+      if(!this.preferncesForm.value.residence_country) this.preferncesForm.value.residence_country = [];
+
+      let inputQuery : any ={};
+      inputQuery.when_receive_email_notitfications = this.preferncesForm.value.when_receive_email_notitfications;
+
+      let searchInput : any = {};
+      if(this.preferncesForm.value.location) searchInput.location = this.preferncesForm.value.location
+      if(this.preferncesForm.value.name) searchInput.name = this.preferncesForm.value.name
+      if(this.preferncesForm.value.visa_needed) searchInput.visa_needed = this.preferncesForm.value.visa_needed
+      if(this.preferncesForm.value.job_type) searchInput.job_type = this.preferncesForm.value.job_type
+      if(this.preferncesForm.value.position) searchInput.position = this.preferncesForm.value.position
+      if(this.preferncesForm.value.current_currency) searchInput.current_currency = this.preferncesForm.value.current_currency
+      if(this.preferncesForm.value.current_salary) searchInput.current_salary = this.preferncesForm.value.current_salary
+      if(this.preferncesForm.value.blockchain) searchInput.blockchain = this.preferncesForm.value.blockchain
+      if(this.preferncesForm.value.skills) searchInput.skills = this.preferncesForm.value.skills
+      if(this.preferncesForm.value.other_technologies) searchInput.other_technologies = this.preferncesForm.value.other_technologies
+      if(this.preferncesForm.value.order_preferences) searchInput.order_preferences = this.preferncesForm.value.order_preferences
+      if(this.preferncesForm.value.residence_country) searchInput.residence_country = this.preferncesForm.value.residence_country
+      this.saved_searches.push(searchInput);
+
+      inputQuery.saved_searches = this.saved_searches;
+
+      this.authenticationService.edit_company_profile(inputQuery)
         .subscribe(
           data =>
           {
-            if(data['success'] === true) {
+            if(data) {
               $('#whatHappensNextModal').modal('show');
             }
           },
@@ -531,45 +590,45 @@ export class PreferencesComponent implements OnInit, AfterViewInit, AfterViewChe
 
   suggestedOptions() {
     if(this.preferncesForm.value.location !== '') {
-        this.error='';
-        this.authenticationService.autoSuggestOptions(this.preferncesForm.value.location , true)
-          .subscribe(
-            data => {
-              if(data) {
-                let citiesInput = data;
-                let citiesOptions=[];
-                for(let cities of citiesInput['locations']) {
-                  if(cities['remote'] === true) {
-                    citiesOptions.push({name: 'Remote'});
-                  }
-                  if(cities['city']) {
-                    let cityString = cities['city'].city + ", " + cities['city'].country;
-                    citiesOptions.push({_id : cities['city']._id , name : cityString});
-                  }
+      this.error='';
+      this.authenticationService.autoSuggestOptions(this.preferncesForm.value.location , true)
+        .subscribe(
+          data => {
+            if(data) {
+              let citiesInput = data;
+              let citiesOptions=[];
+              for(let cities of citiesInput['locations']) {
+                if(cities['remote'] === true) {
+                  citiesOptions.push({name: 'Remote'});
                 }
-                this.cities = this.filter_array(citiesOptions);
+                if(cities['city']) {
+                  let cityString = cities['city'].city + ", " + cities['city'].country;
+                  citiesOptions.push({_id : cities['city']._id , name : cityString});
+                }
               }
+              this.cities = this.filter_array(citiesOptions);
+            }
 
-            },
-            error=>
+          },
+          error=>
+          {
+            if(error['message'] === 500 || error['message'] === 401)
             {
-              if(error['message'] === 500 || error['message'] === 401)
-              {
-                localStorage.setItem('jwt_not_found', 'Jwt token not found');
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('googleUser');
-                localStorage.removeItem('close_notify');
-                localStorage.removeItem('linkedinUser');
-                localStorage.removeItem('admin_log');
-                window.location.href = '/login';
-              }
+              localStorage.setItem('jwt_not_found', 'Jwt token not found');
+              localStorage.removeItem('currentUser');
+              localStorage.removeItem('googleUser');
+              localStorage.removeItem('close_notify');
+              localStorage.removeItem('linkedinUser');
+              localStorage.removeItem('admin_log');
+              window.location.href = '/login';
+            }
 
-              if(error.message === 403)
-              {
-                this.router.navigate(['/not_found']);
-              }
+            if(error.message === 403)
+            {
+              this.router.navigate(['/not_found']);
+            }
 
-            });
+          });
     }
   }
 
