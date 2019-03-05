@@ -15,11 +15,25 @@ module.exports.up = async function() {
         let set = {};
         let unset = {};
         let statusHistory = [];
-        for(let status of userDoc.candidate.status) {
-            statusHistory.push({status : status})
+        for(let userStatus of userDoc.candidate.status) {
+            let status = {};
+            if(userStatus.status) status.status = userStatus.status;
+            if(userStatus.reason) status.reason = userStatus.reason;
+
+            statusHistory.push({status : status, timestamp: new Date()})
         }
         set['candidate.history'] = statusHistory;
+
+        let latestStatus = {};
+        if(statusHistory[0].status.status) latestStatus.status = statusHistory[0].status.status;
+        if(statusHistory[0].status.reason) latestStatus.reason = statusHistory[0].status.reason;
+        latestStatus.timestamp = new Date();
+        set['candidate.latest_status'] = latestStatus;
+
         unset['candidate.status'] = 1;
+
+        logger.debug("set object: " , set);
+
         await users.update({_id : userDoc._id},{$set : set, $unset: unset});
         totalModified++;
 
@@ -47,6 +61,10 @@ module.exports.down = async function() {
         }
         set['candidate.status'] = statusHistory;
         unset['candidate.history'] = 1;
+        unset['candidate.latest_status'] = 1;
+
+        logger.debug("set object: " , set);
+
         await users.update({_id : userDoc._id},{$set : set, $unset: unset});
         totalModified++;
 
