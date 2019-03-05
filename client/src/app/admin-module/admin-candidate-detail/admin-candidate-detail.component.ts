@@ -137,15 +137,10 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           .subscribe(
             data => {
               this._id  = data['_id'];
+              this.candidateHistory = data['candidate'].history;
+              this.candidate_status = data['candidate'].latest_status;
+              this.created_date = data['candidate'].history[data['candidate'].history.length-1].timestamp;
 
-              this.candidateHistory = data['candidate'].history
-              let statusCount = 0;
-              for(let history of this.candidateHistory) {
-                if(statusCount === 0 && history.status) {
-                  this.candidate_status = history.status;
-                  statusCount = 1;
-                }
-              }
               /*if(this.candidate_status.status === 'created' || this.candidate_status.status === 'wizard completed' || this.candidate_status.status === 'updated' || this.candidate_status.status === 'updated by admin'){
               }
               else{
@@ -465,7 +460,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status;
   reason;
   saveApproveData(approveForm) {
-    console.log(approveForm)
     let queryInput : any = {};
 
     if(approveForm.note)queryInput['note'] = approveForm.note;
@@ -474,12 +468,10 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     if(approveForm.status_reason_rejected) queryInput['reason'] = approveForm.status_reason_rejected;
     if(approveForm.status_reason_deferred) queryInput['reason'] = approveForm.status_reason_deferred;
 
-    console.log(queryInput);
 
     this.authenticationService.candidate_status_history(this._id, queryInput)
       .subscribe(
         data => {
-          console.log(data);
           this.candidateHistory = data['candidate'].history;
           this._id  = data['_id'];
           let statusCount = 0;

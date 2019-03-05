@@ -122,7 +122,6 @@ async function synchDatabasetoList(listId) {
         }
 
         if (userDoc.type === "candidate") {
-
             const recipientUpdate = {
                 email: userDoc.email,
                 user_type: "candidate",
@@ -134,7 +133,7 @@ async function synchDatabasetoList(listId) {
                 user_status: userDoc.candidate.latest_status.status,
                 user_email_verified: userDoc.is_verify,
                 user_terms_id: userDoc.candidate.terms_id,
-                user_created_date: userDoc.candidate.status[userDoc.candidate.status.length-1].timestamp, //TODO
+                user_created_date: userDoc.candidate.history[userDoc.candidate.history.length-1].timestamp,
                 user_id: userDoc._id.toString()
             };
             if (userDoc.marketing_emails) {

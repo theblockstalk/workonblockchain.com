@@ -281,8 +281,6 @@ module.exports.endpoint = async function (req, res) {
     else {
         userId = req.auth.user._id;
     }
-    console.log("user id");
-    console.log(userId);
 
     if(req.file && req.file.path) updateCandidateUser.image = req.file.path;
 

@@ -709,9 +709,11 @@ export class ExperienceComponent implements OnInit , AfterViewInit
     if(this.expYear) inputQuery.programming_languages = this.expYear;
     if(this.education_json_array) inputQuery.education_history =  this.education_json_array;
     if(this.experiencearray) inputQuery.work_history =  this.experiencearray;
+    if(this.Intro) inputQuery.description =  this.Intro;
+
     inputQuery.status = 'wizard completed';
 
-      this.authenticationService.edit_candidate_profile(this.currentUser._creator, inputQuery , false)
+      this.authenticationService.edit_candidate_profile(this.currentUser._creator, inputQuery, false)
         .subscribe(
           data => {
             if(data)

@@ -873,10 +873,13 @@ export class UserService {
 
   /////candidate edit profile
 
-  edit_candidate_profile(user_id : any,queryBody: any, admin: boolean  )
+  edit_candidate_profile(user_id : any,queryBody: any, admin:boolean)
   {
+    let urlString;
+    if(admin === true) urlString = URL+'v2/users/' +user_id+ '/candidates?admin='+ true;
+    else urlString = URL+'v2/users/' +user_id+ '/candidates';
 
-    return this.http.patch(URL+'v2/users/' +user_id+ '/candidates?admin='+admin , queryBody , {
+    return this.http.patch( urlString, queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

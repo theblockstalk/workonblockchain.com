@@ -1755,8 +1755,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
     inputQuery.status = 'updated';
 
-    console.log(inputQuery);
-    this.authenticationService.edit_candidate_profile(this.currentUser._creator, inputQuery , false)
+    this.authenticationService.edit_candidate_profile(this.currentUser._creator, inputQuery, false)
       .subscribe(
         data => {
           if(data && this.currentUser)
