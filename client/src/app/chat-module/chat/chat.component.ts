@@ -253,16 +253,16 @@ export class ChatComponent implements OnInit {
       this.display_list = 1;
       this.display_list = 1;
       this.loading = true;
-      this.get_messages_for_company();
-      setInterval(() => {
+      //this.get_messages_for_company();
+      //setInterval(() => {
         this.get_messages_for_company();
-      },7000);
+      //},7000);
     }
     else{
-      this.get_messages_for_candidate();
-      setInterval(() => {
+      //this.get_messages_for_candidate();
+      //setInterval(() => {
         this.get_messages_for_candidate();
-      },7000);
+      //},7000);
     }
   }
 
