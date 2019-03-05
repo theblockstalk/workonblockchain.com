@@ -13,9 +13,26 @@ module.exports.up = async function() {
     let candDoc = await candCursor.next();
 
     for ( null ; candDoc !== null; candDoc = await candCursor.next()) {
-        console.log(candDoc.candidate.blockchain.commercial_platforms);
-        console.log(candDoc.candidate.blockchain.smart_contract_platforms);
-        process.exit();
+        console.log(candDoc.candidate.blockchain.commercial_platforms.length);
+        console.log(candDoc.candidate.blockchain.smart_contract_platforms.length);
+        /*for(let i=0;i<candDoc.candidate.blockchain.commercial_platforms.length;i++){
+            for(let j=0;j<candDoc.candidate.blockchain.smart_contract_platforms.length;j++){
+                if(candDoc.candidate.blockchain.commercial_platforms[i].name === candDoc.candidate.blockchain.smart_contract_platforms[j].name){
+                    //console.log(candDoc.candidate.blockchain.commercial_platforms[i].name);
+                    //console.log(candDoc.candidate.blockchain.smart_contract_platforms[j].name);
+                    //console.log('matched');
+                    //process.exit();
+                }
+                else{
+                    //console.log(candDoc.candidate.blockchain.commercial_platforms[i].name);
+                    //console.log(candDoc.candidate.blockchain.smart_contract_platforms[j].name);
+                    console.log('not matched');
+                }
+            }
+        }*/
+        //console.log(candDoc.candidate.blockchain.commercial_platforms[0]);
+        //console.log(candDoc.candidate.blockchain.smart_contract_platforms[0]);
+
     }
 }
 

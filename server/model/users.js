@@ -238,47 +238,35 @@ const UserSchema = new Schema({
                                 type: String,
                                 enum: enumerations.experienceYears
                             }
-                        }]
+                        }],
+                        description_blockchain_technologies:{
+                            type: String
+                        }
                     },
                     experimented_platforms: {
                         type: [{
                             type: String,
                             enum: enumerations.blockchainPlatforms
-                        }]
+                        }],
+                        description_blockchain_experimented_with:{
+                            type: String
+                        }
                     },
-                    smart_contract_platforms: {
+                    commercial_skills : {
                         type: [{
-                            name: {
+                            skill: {
                                 type: String,
-                                enum: enumerations.blockchainPlatforms
+                                enum: enumerations.otherSkills
                             },
                             exp_year: {
                                 type: String,
-                                enum: enumerations.experienceYears
+                                enum: enumerations.exp_years
                             }
-                        }]
-                    },
-                    commercial_skills : [new Schema({
-                        skill: {
-                            type: String,
-                            enum: enumerations.otherSkills
-                        },
-                        exp_year: {
-                            type: String,
-                            enum: enumerations.exp_years
+                        }],
+                        description_blockchain_skills:{
+                            type: String
                         }
-                    })],
-
-                    formal_skills : [new Schema({
-                        skill: {
-                            type: String,
-                            enum: enumerations.otherSkills
-                        },
-                        exp_year: {
-                            type: String,
-                            enum: enumerations.exp_years
-                        }
-                    })],
+                    }
                 }
             },
             status:{
