@@ -322,6 +322,22 @@ const UserSchema = new Schema({
                     }
                 }]
 
+            },
+            latest_status : {
+                status: {
+                    type: String,
+                    enum: enumerations.candidateStatus,
+                    required:true,
+                },
+                reason: {
+                    type: String,
+                    enum: enumerations.statusReasons
+                },
+                timestamp: {
+                    type: Date,
+                    required:true,
+                }
+
             }
 
         }
