@@ -37,7 +37,13 @@ module.exports.approveCandidate = async function approveCandidate(email) {
     history['status'] = newStatus;
     history['timestamp'] = new Date();
 
+    let latestStatus = {};
+    latestStatus.status = newStatus.status;
+    latestStatus.timestamp = new Date();
+
+
     await Users.update({email: email}, {
+        $set : {'candidate.latest_status' : latestStatus},
         $push: {
             'candidate.history': {
                 $each: [history],

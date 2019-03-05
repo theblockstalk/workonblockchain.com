@@ -37,6 +37,20 @@ const bodySchema = new Schema({
             note : String,
             email_text : String
         }]
+    },
+    latest_status : {
+        status: {
+            type: String,
+            enum: enumerations.candidateStatus,
+        },
+        reason: {
+            type: String,
+            enum: enumerations.statusReasons
+        },
+        timestamp: {
+            type: Date,
+        }
+
     }
 });
 
@@ -65,6 +79,11 @@ module.exports.endpoint = async function (req, res) {
             if(queryInput.status) status.status = queryInput.status;
             if(queryInput.reason) status.reason = queryInput.reason;
             history['status'] = status;
+
+            let latestStatus = {};
+            latestStatus = status;
+            latestStatus.timestamp = new Date();
+            set['candidate.latest_status'] = latestStatus;
         }
         history['timestamp'] = new Date();
 

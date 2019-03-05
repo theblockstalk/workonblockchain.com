@@ -54,7 +54,11 @@ module.exports = async function (req, res) {
                     status: 'created'
                },
                 timestamp : new Date()
-            }]
+            }],
+            latest_status : {
+                status : 'created',
+                timestamp : new Date()
+            }
         }
     }
 

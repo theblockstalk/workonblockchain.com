@@ -138,6 +138,8 @@ describe('admin update candidate profile', function () {
         blockchainSkills.commercial_skills[0].exp_year.should.equal(candidateEditProfileData.commercial_skills[0].exp_year);
         blockchainSkills.formal_skills[0].skill.should.equal(candidateEditProfileData.formal_skills[0].skill);
         blockchainSkills.formal_skills[0].exp_year.should.equal(candidateEditProfileData.formal_skills[0].exp_year);
+        candidateUserDoc.candidate.latest_status.status.should.equal(candidateEditProfileData.status);
+
     })
 })
 });

@@ -326,6 +326,12 @@ module.exports.endpoint = async function (req, res) {
         let history= {};
         history['status'] = {status : queryBody.status};
         history['timestamp'] = new Date();
+
+        let latestStatus = {};
+        latestStatus.status = queryBody.status;
+        latestStatus.timestamp = new Date();
+        updateCandidateUser['candidate.latest_status'] = latestStatus;
+
         await users.update({ _id: userId }, {
                 $set: updateCandidateUser,
                 $push: {

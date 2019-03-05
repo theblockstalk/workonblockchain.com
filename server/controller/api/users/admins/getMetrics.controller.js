@@ -36,14 +36,8 @@ module.exports = async function (req, res) {
         candidate = userDoc.candidate;
         if (userDoc.is_verify) emailVerified++;
         if (userDoc.disable_account) dissabled++;
-        let candidateStatus;
-        let candidateHistory = userDoc.candidate.history;
-        for(let history of candidateHistory) {
-            if(!candidateStatus) {
-                candidateStatus = history.status;
-            }
-        }
-        if (candidateStatus.status === 'approved' && !userDoc.disable_account) {
+
+        if (userDoc.candidate.latest_status.status === 'approved' && !userDoc.disable_account) {
             approved++;
             if (candidate.expected_salary && candidate.expected_salary_currency) salaryList(salaryArray, candidate.expected_salary, candidate.expected_salary_currency)
             aggregateField(aggregatedData.nationality, userDoc.nationality, enumerations.nationalities);
