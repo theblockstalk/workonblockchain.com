@@ -72,9 +72,8 @@ module.exports.removeEmailEnvironment = function removeEmailEnvironment(email) {
     return name + "@" + domain;
 };
 
-module.exports.getList = async function getList() {
+module.exports.getList = async function getList(listName) {
     let lists = await getAllLists();
-    console.log(lists);
 
     for (const list of lists.lists) {
         if (list.name === listName) {
