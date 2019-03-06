@@ -19,6 +19,14 @@ module.exports = async function (req, res) {
             errors.throwError(errorMsg , 400)
         }
     }
+
+    if(userParam.google_id) {
+        const candidateUserDoc = await users.findOne({ google_id: userParam.google_id });
+        if (candidateUserDoc) {
+            let errorMsg = 'Email "' + userParam.email + '" is already taken';
+            errors.throwError(errorMsg , 400)
+        }
+    }
     const userDoc = await users.findOneByEmail(userParam.email);
     if (userDoc )
     {

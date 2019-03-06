@@ -304,9 +304,9 @@ export class UserService {
     return this.http.delete(URL+'users/' + _id);
   }
 
-  candidate_login(username: string, password: string, linkedin_id : any)
+  candidate_login(queryInput : any)
   {
-    return this.http.post(URL+'users/authenticate', { email: username, password: password , linkedin_id  : linkedin_id })
+    return this.http.post(URL+'users/authenticate', queryInput)
       .pipe(map(user => {
         if (user)
         {

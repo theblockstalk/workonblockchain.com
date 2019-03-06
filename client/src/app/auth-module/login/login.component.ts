@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     if(this.credentials.email && this.credentials.password)
     {
-      this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, null)
+      this.authenticationService.candidate_login(this.credentials)
         .subscribe(
           user => {
 
@@ -162,7 +162,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.credentials.google_id = this.googleUser.id;
         this.credentials.social_type='GOOGLE';
 
-        this.authenticationService.candidate_login(this.credentials.email, this.credentials.password , this.credentials.google_id)
+        this.authenticationService.candidate_login(this.credentials)
           .subscribe(
             user => {
               this.response='data';
@@ -284,7 +284,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
             if(this.linkedinUser.emailAddress)
             {
-              this.authenticationService.candidate_login(this.credentials.email, this.credentials.password, this.credentials.linkedin_id)
+              this.authenticationService.candidate_login(this.credentials)
                 .subscribe(
                   user => {
                     this.response = 'data';

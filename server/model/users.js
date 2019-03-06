@@ -32,6 +32,9 @@ const UserSchema = new Schema({
     linkedin_id : {
         type: String
     },
+    google_id : {
+        type: String
+    },
     password_hash: {
         type:String,
         required:true
