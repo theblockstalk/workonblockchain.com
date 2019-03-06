@@ -17,9 +17,9 @@ module.exports.up = async function() {
         for(let j=0;j<candDoc.candidate.blockchain.smart_contract_platforms.length;j++){
             if(platforms.find(tech => tech.name === candDoc.candidate.blockchain.smart_contract_platforms[j].name)){
                 let same = candDoc.candidate.blockchain.smart_contract_platforms[j];
-                //console.log(same);
+                console.log(same);
                 //console.log(platforms);
-                for(let i=0;i<platforms.length;i++){
+                /*for(let i=0;i<platforms.length;i++){
                     if(platforms[i].name === same.name && platforms[i].exp_year === same.exp_year){
                         console.log('same expr');
                     }
@@ -29,12 +29,12 @@ module.exports.up = async function() {
                     else{
 
                     }
-                }
-                console.log(candDoc.candidate.blockchain.smart_contract_platforms[j]);
+                }*/
+                //console.log(candDoc.candidate.blockchain.smart_contract_platforms[j]);
             }
             else{
-                //platforms.push(candDoc.candidate.blockchain.smart_contract_platforms[j]);
-                //console.log(candDoc.candidate.blockchain.smart_contract_platforms[j]);
+                //platforms.push(candDoc.candidate.blockchain.commercial_platforms[j]);
+                console.log(candDoc.candidate.blockchain.smart_contract_platforms[j]);
             }
         }
         //console.log(platforms);
