@@ -442,26 +442,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
         if(key['location'])
         {
-          for (let country1 of key['location'])
-          {
-            if (country1['remote'] === true) {
-              this.selectedValueArray.push({_id:country1['_id'], name: 'Remote'});
-            }
-
-            if (country1['city']) {
-              let city = country1['city'].city + ", " + country1['city'].country;
-              this.selectedValueArray.push({_id:country1['_id'], city:country1['city']._id ,name: city });
-            }
-          }
-
-          this.selectedValueArray.sort();
-          if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-
-            let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-            this.selectedValueArray.splice(0, 0, remoteValue);
-            this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
-          }
+          this.prefillLocationFEFormat(key['location']);
         }
         if(key['skills']) this.skill_value = key['skills'];
         else this.skill_value = '';
@@ -521,6 +502,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       $('.selectpicker').selectpicker('refresh');
     }, 500);
     if(this.selectedValueArray && this.selectedValueArray.length > 0) this.newSearchLocation = this.filter_array(this.selectedValueArray);
+    if(this.newSearchLocation && this.newSearchLocation.length > 0) this.selectedValueArray = this.filter_array(this.newSearchLocation);
+
 
     this.preferncesForm = this._fb.group({
       name: [],
@@ -556,7 +539,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.role_value && this.role_value.length > 0 ) queryBody.positions = this.role_value;
       if(this.blockchain_value && this.blockchain_value.length > 0) queryBody.blockchains = this.blockchain_value;
       if(this.visa_check) queryBody.visa_needed = this.visa_check;
-      if(this.blockchain_order) queryBody.blockchainOrder = this.blockchain_order;
+      if(this.blockchain_order && this.blockchain_order.length > 0) queryBody.blockchainOrder = this.blockchain_order;
       if(this.residence_country && this.residence_country.length > 0) queryBody.residence_country = this.residence_country;
       if(this.salary && this.currencyChange && this.currencyChange !== 'Currency') {
         queryBody.current_salary  = this.salary;
@@ -608,6 +591,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.searchWord = '';
     this.skill_value = '';
     this.selectedValueArray = [];
+    this.newSearchLocation = [];
     this.role_value = '';
     this.blockchain_value = '';
     this.currencyChange = '';
@@ -706,27 +690,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   this.searchName.push(data['saved_searches'][i].name);
                   if(data['saved_searches'][i].name === this.name) this.timestamp = data['saved_searches'][i].timestamp;
                   if(data['saved_searches'][i].location && data['saved_searches'][i].location.length > 0) {
-                    this.selectedValueArray=[];
-                    for (let country1 of data['saved_searches'][i].location)
-                    {
-                      if (country1['remote'] === true) {
-                        this.selectedValueArray.push({_id:country1['_id'], name: 'Remote'});
-                      }
-
-                      if (country1['city']) {
-                        let city = country1['city'].city + ", " + country1['city'].country;
-                        this.selectedValueArray.push({_id:country1['_id'], city:country1['city']._id ,name: city });
-                      }
-                    }
-
-                    this.selectedValueArray.sort();
-                    if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                      let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                      this.selectedValueArray.splice(0, 0, remoteValue);
-                      this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
-                    }
+                    this.prefillLocationFEFormat(data['saved_searches'][i].location);
                   }
+
                 }
                 setTimeout(() => {
                   $('.selectpicker').selectpicker('refresh');
@@ -750,6 +716,29 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }, 9000);
     }
 
+  }
+
+  prefillLocationFEFormat(location) {
+    this.selectedValueArray=[];
+    for (let country1 of location)
+    {
+      if (country1['remote'] === true) {
+        this.selectedValueArray.push({_id:country1['_id'], name: 'Remote'});
+      }
+
+      if (country1['city']) {
+        let city = country1['city'].city + ", " + country1['city'].country;
+        this.selectedValueArray.push({_id:country1['_id'], city:country1['city']._id ,name: city });
+      }
+    }
+
+    this.selectedValueArray.sort();
+    if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
+      let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
+      this.selectedValueArray.splice(0, 0, remoteValue);
+      this.selectedValueArray = this.filter_array(this.selectedValueArray);
+
+    }
   }
 
   successful_msg;
@@ -826,23 +815,9 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 this.savedSearches= [];
                 this.name = this.preferncesForm.value.name;
 
-                this.searchdata('name' , this.name);
+                this.searchdata('searchName' , this.name);
                 $('#saveNewSearch').modal('hide');
-                this.preferncesForm = this._fb.group({
-                  name: [''],
-                  location: [],
-                  visa_needed: [false],
-                  job_type: [],
-                  position: [],
-                  current_currency: [],
-                  current_salary: [''],
-                  blockchain: [],
-                  skills: [],
-                  other_technologies: [''],
-                  order_preferences: [],
-                  residence_country: [],
-                });
-                this.newSearchLocation = [];
+
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
                   this.savedSearches = data['saved_searches'];
                   this.searchName = [];
@@ -855,26 +830,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                       this.other_technologies = data['saved_searches'][i].other_technologies;
 
                       if(data['saved_searches'][i].location && data['saved_searches'][i].location.length > 0) {
-                        this.selectedValueArray=[];
-                        for (let country1 of data['saved_searches'][i].location)
-                        {
-                          if (country1['remote'] === true) {
-                            this.selectedValueArray.push({_id:country1['_id'], name: 'Remote'});
-                          }
-
-                          if (country1['city']) {
-                            let city = country1['city'].city + ", " + country1['city'].country;
-                            this.selectedValueArray.push({_id:country1['_id'], city:country1['city']._id ,name: city });
-                          }
-                        }
-
-                        this.selectedValueArray.sort();
-                        if(this.selectedValueArray.find((obj => obj.name === 'Remote'))) {
-                          let remoteValue = this.selectedValueArray.find((obj => obj.name === 'Remote'));
-                          this.selectedValueArray.splice(0, 0, remoteValue);
-                          this.selectedValueArray = this.filter_array(this.selectedValueArray);
-
-                        }
+                        this.prefillLocationFEFormat(data['saved_searches'][i].location);
                       }
 
                     }
@@ -1306,9 +1262,10 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
             return 0;
           });
           if(this.newSearchLocation.find((obj => obj.name === 'Remote'))){
-            this.newSearchLocation.splice(0, 0, {name : 'Remote'});
+            this.newSearchLocation.splice(0, 0, this.newSearchLocation.find(x => x.name === 'Remote'));
             this.newSearchLocation = this.filter_array(this.newSearchLocation);
           }
+          this.selectedValueArray = this.newSearchLocation;
           //this.searchdata('locations' , this.selectedValueArray);
         }
       }
