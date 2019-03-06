@@ -61,56 +61,66 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   cities;
   emptyInput;
   errorMsg;
-  query_val : any = {};
-  query_value : any = {};
+  urlParameters : any = {};
+  url_params : any = {};
   no_value = false;
 
   constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) {
     this.route.queryParams.subscribe(params => {
-      this.query_value = JSON.parse(params.queryBody);
-      if(this.query_value) {
+      this.url_params = JSON.parse(params.queryBody);
+      if(this.url_params) {
         this.no_value = true;
-        this.query_val = this.query_value;
+        this.urlParameters = this.url_params;
       }
     });
-    if(this.query_val) {
-      if(this.query_val.searchName){
-        this.name = this.query_val.searchName;
+    let query = '';
+    let queryData;
+    if(this.urlParameters) {
+      if(this.urlParameters.searchName){
+        this.name = this.urlParameters.searchName;
       }
-      if(this.query_val.skills){
-        this.skill_value = this.query_val.skills;
-        this.searchdata('skill' , this.query_val.skills);
+      if(this.urlParameters.skills){
+        this.skill_value = this.urlParameters.skills;
+        query = 'skill';
+        queryData = this.urlParameters.skills;
       }
-      if(this.query_val.locations){
-        this.selectedValueArray = this.query_val.locations;
-        this.searchdata('locations' , this.query_val.locations);
+      if(this.urlParameters.locations){
+        this.selectedValueArray = this.urlParameters.locations;
+        query = 'locations';
+        queryData = this.urlParameters.locations;
       }
-      if(this.query_val.visa_needed){
-        this.visa_check = this.query_val.visa_needed;
-        this.searchdata('visa' , this.query_val.visa_needed);
+      if(this.urlParameters.visa_needed){
+        this.visa_check = this.urlParameters.visa_needed;
+        query = 'visa';
+        queryData = this.urlParameters.visa_needed;
       }
-      if(this.query_val.positions){
-        this.role_value = this.query_val.positions;
-        this.searchdata('role' , this.query_val.positions);
+      if(this.urlParameters.positions){
+        this.role_value = this.urlParameters.positions;
+        query = 'role';
+        queryData = this.urlParameters.positions;
       }
-      if(this.query_val.blockchains){
-        this.blockchain_value = this.query_val.blockchains;
-        this.searchdata('blockchain' , this.query_val.blockchains);
+      if(this.urlParameters.blockchains){
+        this.blockchain_value = this.urlParameters.blockchains;
+        query = 'blockchain';
+        queryData = this.urlParameters.blockchains;
       }
-      if(this.query_val.residence_country){
-        this.residence_country = this.query_val.residence_country;
-        this.searchdata('residence' , this.query_val.residence_country);
+      if(this.urlParameters.residence_country){
+        this.residence_country = this.urlParameters.residence_country;
+        query = 'residence';
+        queryData = this.urlParameters.residence_country;
       }
-      if(this.query_val.current_salary && this.query_val.current_currency){
-        this.salary = this.query_val.current_salary;
-        this.currencyChange = this.query_val.current_currency;
-        this.searchdata('salary' , this.query_val.current_salary);
-        this.searchdata('currency' , this.query_val.current_currency);
+      if(this.urlParameters.current_salary && this.urlParameters.current_currency){
+        this.salary = this.urlParameters.current_salary;
+        this.currencyChange = this.urlParameters.current_currency;
+        this.searchdata('salary' , this.urlParameters.current_salary);
+        this.searchdata('currency' , this.urlParameters.current_currency);
       }
-      if(this.query_val.blockchainOrder){
-        this.blockchain_order = this.query_val.blockchainOrder;
-        this.searchdata('order_preferences' , this.query_val.blockchainOrder);
+      if(this.urlParameters.blockchainOrder){
+        this.blockchain_order = this.urlParameters.blockchainOrder;
+        query = 'order_preferences';
+        queryData = this.urlParameters.blockchainOrder;
       }
+      this.searchdata(query , queryData);
     }
   }
 
