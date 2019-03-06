@@ -46,6 +46,7 @@ module.exports = async function (req, res) {
         created_date: new Date(),
         referred_email : userParam.referred_email,
         linkedin_id : userParam.linkedin_id,
+        google_id : userParam.google_id,
         first_name: userParam.first_name,
         last_name: userParam.last_name,
         candidate: {
