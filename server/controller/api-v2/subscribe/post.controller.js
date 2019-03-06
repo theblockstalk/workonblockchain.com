@@ -36,7 +36,7 @@ module.exports.endpoint = async function (req, res) {
             first_name: req.body.first_name,
             last_name: req.body.last_name
         };
-        await updateSendGridRecipient(listId, recipientUpdate);
+        
         const updateResponse = await sendgrid.updateRecipient(recipientUpdate);
         if (updateResponse.error_count > 0) {
             throw new Error(JSON.stringify({
