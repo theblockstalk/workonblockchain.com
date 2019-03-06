@@ -61,7 +61,7 @@ module.exports.up = async function() {
         }
 
         unset['candidate.blockchain.smart_contract_platforms'] =1;
-        set['candidate.blockchain.description_commercial_platforms'] = 'some random desc';
+        set['candidate.blockchain.description_commercial_platforms'] = '';
 
         let updateObj;
         if (!isEmptyObject(set) && !isEmptyObject(unset)) {
