@@ -47,8 +47,9 @@ module.exports.endpoint = async function (req, res) {
         }
         const recipientId = updateResponse.persisted_recipients[0];
         await sendGrid.addRecipientToList(listId, recipientId);
+        res.send();
     }
     else{
-        res.send()
+        res.send();
     }
 }
