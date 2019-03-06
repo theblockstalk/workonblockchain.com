@@ -462,8 +462,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     if(this.newSearchLocation && this.newSearchLocation.length > 0) this.selectedValueArray = this.filter_array(this.newSearchLocation);
 
 
-    console.log(this.newSearchLocation);
-    console.log(this.selectedValueArray);
     this.preferncesForm = this._fb.group({
       name: [],
       location: [],
@@ -490,7 +488,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }
 
     else {
-      console.log('else');
       this.not_found = '';
       let queryBody : any = {};
       if(this.searchWord) queryBody.word = this.searchWord;
@@ -505,7 +502,6 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         queryBody.current_salary  = this.salary;
         queryBody.current_currency = this.currencyChange;
       }
-      console.log(queryBody);
       this.authenticationService.filterSearch(queryBody)
         .subscribe(
           data =>
