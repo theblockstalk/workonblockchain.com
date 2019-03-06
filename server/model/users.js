@@ -238,19 +238,19 @@ const UserSchema = new Schema({
                                 type: String,
                                 enum: enumerations.experienceYears
                             }
-                        }],
-                        description_blockchain_technologies:{
-                            type: String
-                        }
+                        }]
+                    },
+                    description_commercial_platforms:{
+                        type: String
                     },
                     experimented_platforms: {
                         type: [{
                             type: String,
                             enum: enumerations.blockchainPlatforms
                         }],
-                        description_blockchain_experimented_with:{
-                            type: String
-                        }
+                    },
+                    description_experimented_platforms:{
+                        type: String
                     },
                     commercial_skills : {
                         type: [{
@@ -263,10 +263,10 @@ const UserSchema = new Schema({
                                 enum: enumerations.exp_years
                             }
                         }],
-                        description_blockchain_skills:{
-                            type: String
-                        }
-                    }
+                    },
+                    description_commercial_skills:{
+                        type: String
+                    },
                 }
             },
             status:{
