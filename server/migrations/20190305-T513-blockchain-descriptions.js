@@ -1,16 +1,8 @@
 const logger = require('../controller/services/logger');
 const users = require('../model/mongoose/users');
-const mongoose = require('mongoose');
+const object = require('../controller/services/objects');
 
 let totalDocsToProcess, totalProcessed = 0, totalModified = 0;
-function isEmptyObject(obj) {
-    for(let prop in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-            return false;
-        }
-    }
-    return true;
-}
 
 function compareYears(expYr1, expYr2) {
     let same_years = expYr1.split('-');
@@ -79,11 +71,11 @@ module.exports.up = async function() {
         };
 
         let updateObj;
-        if (!isEmptyObject(set) && !isEmptyObject(unset)) {
+        if (!object.isEmpty(set) && !object.isEmpty(unset)) {
             updateObj = {$set: set, $unset: unset}
-        } else if (!isEmptyObject(set)) {
+        } else if (!object.isEmpty(set)) {
             updateObj = {$set: set};
-        } else if (!isEmptyObject(unset)) {
+        } else if (!object.isEmpty(unset)) {
             updateObj = {$unset: unset};
         }
 
