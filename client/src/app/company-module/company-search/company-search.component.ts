@@ -62,66 +62,48 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   emptyInput;
   errorMsg;
   urlParameters : any = {};
-  url_params : any = {};
   no_value = false;
 
   constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) {
     this.route.queryParams.subscribe(params => {
-      this.url_params = JSON.parse(params.queryBody);
-      if(this.url_params) {
-        this.no_value = true;
-        this.urlParameters = this.url_params;
+      if(params['queryBody']) {
+        this.urlParameters = JSON.parse(params['queryBody']);
+        if(this.urlParameters) {
+          this.no_value = true;
+          if(this.urlParameters.searchName){
+            this.name = this.urlParameters.searchName;
+          }
+          if(this.urlParameters.skills){
+            this.skill_value = this.urlParameters.skills;
+          }
+          if(this.urlParameters.locations){
+            this.selectedValueArray = this.urlParameters.locations;
+          }
+          if(this.urlParameters.visa_needed){
+            this.visa_check = this.urlParameters.visa_needed;
+          }
+          if(this.urlParameters.positions){
+            this.role_value = this.urlParameters.positions;
+          }
+          if(this.urlParameters.blockchains){
+            this.blockchain_value = this.urlParameters.blockchains;
+          }
+          if(this.urlParameters.residence_country){
+            this.residence_country = this.urlParameters.residence_country;
+          }
+          if(this.urlParameters.current_salary && this.urlParameters.current_currency){
+            this.salary = this.urlParameters.current_salary;
+            this.currencyChange = this.urlParameters.current_currency;
+          }
+          if(this.urlParameters.blockchainOrder){
+            this.blockchain_order = this.urlParameters.blockchainOrder;
+          }
+          this.searchdata("urlQuery" , this.urlParameters);
+        }
       }
+
     });
-    let query = '';
-    let queryData;
-    if(this.urlParameters) {
-      if(this.urlParameters.searchName){
-        this.name = this.urlParameters.searchName;
-      }
-      if(this.urlParameters.skills){
-        this.skill_value = this.urlParameters.skills;
-        query = 'skill';
-        queryData = this.urlParameters.skills;
-      }
-      if(this.urlParameters.locations){
-        this.selectedValueArray = this.urlParameters.locations;
-        query = 'locations';
-        queryData = this.urlParameters.locations;
-      }
-      if(this.urlParameters.visa_needed){
-        this.visa_check = this.urlParameters.visa_needed;
-        query = 'visa';
-        queryData = this.urlParameters.visa_needed;
-      }
-      if(this.urlParameters.positions){
-        this.role_value = this.urlParameters.positions;
-        query = 'role';
-        queryData = this.urlParameters.positions;
-      }
-      if(this.urlParameters.blockchains){
-        this.blockchain_value = this.urlParameters.blockchains;
-        query = 'blockchain';
-        queryData = this.urlParameters.blockchains;
-      }
-      if(this.urlParameters.residence_country){
-        this.residence_country = this.urlParameters.residence_country;
-        query = 'residence';
-        queryData = this.urlParameters.residence_country;
-      }
-      if(this.urlParameters.current_salary && this.urlParameters.current_currency){
-        this.salary = this.urlParameters.current_salary;
-        this.currencyChange = this.urlParameters.current_currency;
-        this.searchdata('salary' , this.urlParameters.current_salary);
-        this.searchdata('currency' , this.urlParameters.current_currency);
-      }
-      if(this.urlParameters.blockchainOrder){
-        this.blockchain_order = this.urlParameters.blockchainOrder;
-        query = 'order_preferences';
-        queryData = this.urlParameters.blockchainOrder;
-      }
-      this.searchdata(query , queryData);
-    }
+
   }
 
 
