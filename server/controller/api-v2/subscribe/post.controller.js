@@ -36,8 +36,8 @@ module.exports.endpoint = async function (req, res) {
             first_name: req.body.first_name,
             last_name: req.body.last_name
         };
-        
-        const updateResponse = await sendgrid.updateRecipient(recipientUpdate);
+
+        const updateResponse = await sendGrid.updateRecipient(recipientUpdate);
         if (updateResponse.error_count > 0) {
             throw new Error(JSON.stringify({
                 message: "Error updating subscriber",
@@ -46,7 +46,7 @@ module.exports.endpoint = async function (req, res) {
             }, null, 1))
         }
         const recipientId = updateResponse.persisted_recipients[0];
-        await sendgrid.addRecipientToList(listId, recipientId);
+        await sendGrid.addRecipientToList(listId, recipientId);
     }
     else{
         res.send()
