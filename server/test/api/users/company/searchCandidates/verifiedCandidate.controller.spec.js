@@ -39,7 +39,7 @@ describe('verified candidates as company', function () {
             let userDoc = await Users.findOne({email: company.email}).lean();
             const filterRes = await companyHelper.verifiedCandidate(userDoc.jwt_token);
             filterRes.body[0].is_verify.should.equal(1);
-            //filterRes.body[0].candidate.history[0].status.status.should.equal('approved'); Uncomment after fix search candidate
+            filterRes.body[0].candidate.latest_status.status.should.equal('approved');
             filterRes.body[0].disable_account.should.equal(false);
             filterRes.body[0].type.should.equal("candidate");
         })

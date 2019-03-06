@@ -158,9 +158,9 @@ describe('cron', function () {
             await userHelper.verifyEmail(updateRes.body._creator.email);
             await userHelper.approve(updateRes.body._creator.email);
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate[0], profileData[1]);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[0], profileData[0]);
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate[1], profileData[2]);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[1], profileData[0]);
 
             await companyEmail();
 
@@ -168,7 +168,7 @@ describe('cron', function () {
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
             companyDoc.candidates_sent_by_email.length.should.equal(2);
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate[2], profileData[3]);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[2], profileData[0]);
 
             await companyEmail();
 
@@ -180,11 +180,11 @@ describe('cron', function () {
                 profileData[1].roles[0]
             ];
             
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[4]);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[0]);
 
             await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , {saved_searches : newSavedSearch});
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate[4], profileData[5]);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[4], profileData[0]);
 
             await companyEmail();
 

@@ -196,18 +196,18 @@ module.exports.candidateProfile = function candidateProfile(){
         nationality: 'Pakistani',
         base_country : 'Pakistan',
         base_city : 'Islamabad',
-        expected_salary: 1400,
+        expected_salary: random.integer(10, 100000),
         expected_salary_currency: '$ USD',
-        current_salary: 23000,
+        current_salary: random.integer(10000, 100000),
         current_currency: '£ GBP',
-        availability_day: '1 month',
+        availability_day: random.enum(enumerations.workAvailability),
         why_work: 'I want to work. I want to work. I want to work. I want to work.I want to work. I want to work. I want to work.',
         description: 'I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. ',
         locations: [
             {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
             {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
         ],
-        roles: [ 'Backend Developer', 'Fullstack Developer' ],
+        roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
         interest_areas: ["I don't know", 'Enterprise blockchain', 'Smart contract development' ],
 
         experimented_platforms:['Bitcoin' , 'Hyperledger Fabric'],
