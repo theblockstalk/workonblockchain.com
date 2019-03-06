@@ -155,7 +155,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       if(this.result)
       {
         this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-        console.log(this.googleUser);
         this.credentials.email= this.googleUser.email;
         this.credentials.password= '';
         this.credentials.type="candidate";
