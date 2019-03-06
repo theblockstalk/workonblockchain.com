@@ -12,6 +12,36 @@ function isEmptyObject(obj) {
     return true;
 }
 
+function compareYears(expYr1, expYr2) {
+    let same_years = expYr1.split('-');
+    let years = expYr2.split('-');
+    return same_years[0] > years[0];
+}
+
+function aggregateArray (array, platformArray, propertyName) {
+    for (let platform of platformArray) {
+        let index = array.findIndex( (arrayVal) => arrayVal[propertyName] === platform[propertyName]);
+        if (index !== -1) {
+            if (compareYears(platform.exp_year, array[index].exp_year)) {
+                array[index].exp_year = platform.exp_year
+            }
+        } else {
+            if(propertyName === 'name') {
+                array.push({
+                    name: platform[propertyName],
+                    exp_year: platform.exp_year
+                });
+            }
+            else{
+                array.push({
+                    skill: platform[propertyName],
+                    exp_year: platform.exp_year
+                });
+            }
+        }
+    }
+}
+
 // This function will perform the migration
 module.exports.up = async function() {
     let unset = {};
@@ -19,49 +49,34 @@ module.exports.up = async function() {
     totalDocsToProcess = await users.count({type:'candidate'});
     logger.debug(totalDocsToProcess);
 
-    const candCursor = await users.findWithCursor({type:'candidate'});
-    let candDoc = await candCursor.next();
-
-    for ( null ; candDoc !== null; candDoc = await candCursor.next()) {
-        let platforms = candDoc.candidate.blockchain.commercial_platforms;
-        for(let j=0;j<candDoc.candidate.blockchain.smart_contract_platforms.length;j++){
-            if(platforms.find(tech => tech.name === candDoc.candidate.blockchain.smart_contract_platforms[j].name)){
-                let same = candDoc.candidate.blockchain.smart_contract_platforms[j];
-                for(let i=0;i<platforms.length;i++){
-                    if(platforms[i].name === same.name && platforms[i].exp_year === same.exp_year){
-                        console.log('same exp_year');
-                    }
-                    else if(platforms[i].name === same.name){
-                        let same_years = same.exp_year.split('-');
-                        console.log(same_years);
-                        let years = platforms[i].exp_year.split('-');
-                        console.log(years);
-                        if(same_years[0] > years[0]){
-                            platforms[i].exp_year = same.exp_year;
-                            console.log(same);
-                            console.log('same_years is big');
-                        }
-                        else{
-                            console.log(platforms[i]);
-                            console.log('platforms years is big');
-                        }
-                    }
-                    else{
-                        console.log('nothing');
-                    }
-                }
-            }
-            else{
-                //these will be pushed in platforms
-                platforms.push(candDoc.candidate.blockchain.smart_contract_platforms[j]);
-                console.log('diff');
-                set['candidate.blockchain.commercial_platforms'] = platforms;
-                console.log(set);
-            }
+    await users.findAndIterate({type:'candidate'}, async function(candDoc) {
+        //let platforms = candDoc.candidate.blockchain.commercial_platforms;
+        let technologies = [], skills = [];
+        if (candDoc.candidate.blockchain.commercial_platforms) {
+            aggregateArray(technologies, candDoc.candidate.blockchain.commercial_platforms,"name");
         }
-
-        unset['candidate.blockchain.smart_contract_platforms'] =1;
-        set['candidate.blockchain.description_commercial_platforms'] = '';
+        if (candDoc.candidate.blockchain.smart_contract_platforms) {
+            aggregateArray(technologies, candDoc.candidate.blockchain.smart_contract_platforms, "name");
+        }
+        if (candDoc.candidate.blockchain.commercial_skills) {
+            aggregateArray(skills, candDoc.candidate.blockchain.commercial_skills, "skill");
+        }
+        if (candDoc.candidate.blockchain.formal_skills) {
+            aggregateArray(skills, candDoc.candidate.blockchain.formal_skills, "skill");
+        }
+        console.log(technologies);
+        console.log(skills);
+        set = {
+            "candidate.blockchain.commercial_platforms": technologies,
+            "candidate.blockchain.description_commercial_platforms": '',
+            "candidate.blockchain.description_experimented_platforms": '',
+            "candidate.blockchain.commercial_skills": skills,
+            "candidate.blockchain.description_commercial_skills": ''
+        };
+        unset = {
+            "candidate.blockchain.smart_contract_platforms": 1,
+            "candidate.blockchain.formal_skills": 1
+        };
 
         let updateObj;
         if (!isEmptyObject(set) && !isEmptyObject(unset)) {
@@ -77,7 +92,7 @@ module.exports.up = async function() {
             await users.update({ _id: candDoc._id }, updateObj);
             totalModified++;
         }
-    }
+    });
 }
 
 // This function will undo the migration
