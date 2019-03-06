@@ -155,13 +155,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       if(this.result)
       {
         this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
+        console.log(this.googleUser);
         this.credentials.email= this.googleUser.email;
         this.credentials.password= '';
         this.credentials.type="candidate";
-
+        this.credentials.google_id = this.googleUser.id;
         this.credentials.social_type='GOOGLE';
 
-        this.authenticationService.candidate_login(this.credentials.email, this.credentials.password , null)
+        this.authenticationService.candidate_login(this.credentials.email, this.credentials.password , this.credentials.google_id)
           .subscribe(
             user => {
               this.response='data';

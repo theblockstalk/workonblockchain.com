@@ -269,6 +269,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
         this.credentials.social_type=this.googleUser.provider;
         this.credentials.first_name = this.googleUser.firstName;
         this.credentials.last_name = this.googleUser.lastName;
+        this.credentials.google_id = this.googleUser.id;
+        console.log(this.googleUser);
         this.authenticationService.create(this.credentials)
           .subscribe(
             data => {
