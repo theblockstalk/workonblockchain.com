@@ -28,9 +28,7 @@ module.exports.inputValidation = {
 
 module.exports.endpoint = async function (req, res) {
     if (settings.isLiveApplication()) {
-        let added = 0, updated = 0, errors = 0;
-        const list = await
-        sendGrid.getList('subscribers');
+        const list = await sendGrid.getList('subscribers');
         const listId = list.id;
 
         const recipientUpdate = {
@@ -38,10 +36,8 @@ module.exports.endpoint = async function (req, res) {
             first_name: req.body.first_name,
             last_name: req.body.last_name
         };
-        await
-        updateSendGridRecipient(listId, recipientUpdate);
-        const updateResponse = await
-        sendgrid.updateRecipient(recipientUpdate);
+        await updateSendGridRecipient(listId, recipientUpdate);
+        const updateResponse = await sendgrid.updateRecipient(recipientUpdate);
         if (updateResponse.error_count > 0) {
             throw new Error(JSON.stringify({
                 message: "Error updating subscriber",
@@ -50,8 +46,7 @@ module.exports.endpoint = async function (req, res) {
             }, null, 1))
         }
         const recipientId = updateResponse.persisted_recipients[0];
-        await
-        sendgrid.addRecipientToList(listId, recipientId);
+        await sendgrid.addRecipientToList(listId, recipientId);
     }
     else{
         res.send()
