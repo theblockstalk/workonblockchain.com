@@ -53,21 +53,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   subscribe_modal_show(subscribeForm: NgForm) {
     this.button_status="submit";
-    console.log(this.credentials);
     $("#subscribeModal").modal("show");
   }
 
   subscribe(subForm: NgForm) {
     this.button_status="submit";
-    console.log(this.credentials);
     this.log_success = '';
     this.log_error = '';
     if(this.credentials.first_name && this.credentials.last_name && this.credentials.email && this.credentials.notice){
-      console.log('good');
       this.authenticationService.add_to_subscribe_list(this.credentials.first_name,this.credentials.last_name,this.credentials.email)
       .subscribe(
         data => {
-          console.log(data);
           this.log_success = 'Successfully added';
         },
         error => {
