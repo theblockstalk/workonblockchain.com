@@ -197,7 +197,7 @@ module.exports.candidateProfile = function candidateProfile(){
         base_country : 'Pakistan',
         base_city : 'Islamabad',
         expected_salary: random.integer(10, 100000),
-        expected_salary_currency: '$ USD',
+        expected_salary_currency: '€ EUR',
         current_salary: random.integer(10000, 100000),
         current_currency: '£ GBP',
         availability_day: random.enum(enumerations.workAvailability),
