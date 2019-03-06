@@ -38,8 +38,7 @@ async function apiRequest(request) {
     logger.debug('Sendgrid API request', request);
 
     if (settings.isLiveApplication()) {
-        [response, body] = await
-        sgClient.request(request);
+        [response, body] = await sgClient.request(request);
 
         if (response.statusCode < 200 || response.statusCode >= 300) {
             logger.error("Sendgrid API request failed", response);
@@ -72,9 +71,8 @@ module.exports.removeEmailEnvironment = function removeEmailEnvironment(email) {
     return name + "@" + domain;
 };
 
-module.exports.getList = async function getList() {
+module.exports.getList = async function getList(listName) {
     let lists = await getAllLists();
-    console.log(lists);
 
     for (const list of lists.lists) {
         if (list.name === listName) {
