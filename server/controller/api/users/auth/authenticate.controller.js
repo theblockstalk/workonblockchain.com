@@ -9,18 +9,38 @@ module.exports = async function (req, res) {
     let queryBody = req.body;
     if(queryBody.linkedin_id) {
         let userDoc =  await users.findOneByEmail(queryBody.email);
-        if(userDoc && userDoc.social_type === 'LINKEDIN' && !userDoc.linkedin_id){
+        if(userDoc  && !userDoc.linkedin_id){
             await users.update({_id: userDoc._id}, {$set: {'linkedin_id': queryBody.linkedin_id}});
         }
-        else if(userDoc && userDoc.social_type === '') {
-            errors.throwError("You created account with custom signup. Please try to login with that." , 404)
-        }
-        else if(userDoc && userDoc.social_type === 'GOOGLE') {
-            errors.throwError("You created account with google signup. Please try to login with that." , 404)
-        }
-        else {}
+
         userDoc =  await users.findOne({linkedin_id : queryBody.linkedin_id });
-        if(userDoc && userDoc.social_type === 'LINKEDIN' && userDoc.linkedin_id) {
+        if(userDoc && userDoc.linkedin_id) {
+            let jwtUserToken = jwtToken.createJwtToken(userDoc);
+            await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+            res.send({
+                _id:userDoc._id,
+                _creator: userDoc._id, //remove this after chat refactor
+                email: userDoc.email,
+                email_hash: userDoc.email_hash,
+                is_admin:userDoc.is_admin,
+                type:userDoc.type,
+                is_approved : userDoc.is_approved,
+                jwt_token: jwtUserToken
+            });
+        }
+        else {
+            errors.throwError("User not found" , 404)
+        }
+    }
+
+    else if(queryBody.google_id) {
+        let userDoc =  await users.findOneByEmail(queryBody.email);
+        if(userDoc  && !userDoc.google_id){
+            await users.update({_id: userDoc._id}, {$set: {'google_id': queryBody.google_id}});
+        }
+
+        userDoc =  await users.findOne({google_id : queryBody.google_id });
+        if(userDoc && userDoc.google_id) {
             let jwtUserToken = jwtToken.createJwtToken(userDoc);
             await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
             res.send({
