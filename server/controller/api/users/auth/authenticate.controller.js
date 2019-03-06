@@ -7,7 +7,6 @@ const errors = require('../../../services/errors');
 module.exports = async function (req, res) {
 
     let queryBody = req.body;
-    console.log(queryBody);
 
     if(queryBody.linkedin_id) {
         let userDoc =  await users.findOneByEmail(queryBody.email);
