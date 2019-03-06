@@ -48,7 +48,7 @@ describe('admin get metrics', function () {
         should.not.exist(aggregrated.nationality.Australian);
         aggregrated.availabilityDay[profileData.availability_day].should.equal(1);
         aggregrated.baseCountry[profileData.base_country].should.equal(1);
-        //aggregrated.expectedSalaryUSD.min.should.equal(profileData.expected_salary*settings.CURRENCY_RATES_USD.Euro);
+        aggregrated.expectedSalaryUSD.min.should.equal(profileData.expected_salary*settings.CURRENCY_RATES_USD.Euro);
         aggregrated.interestAreas[profileData.interest_areas[0]].should.equal(1);
         aggregrated.locations[profileData.locations[1].country].count.should.equal(1);
         aggregrated.locations[profileData.locations[1].country].aggregate[profileData.locations[1].visa_needed].should.equal(1);

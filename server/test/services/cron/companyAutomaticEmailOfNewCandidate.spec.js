@@ -128,27 +128,7 @@ describe('cron', function () {
             for (let i = 0; i < 5; i++) {
                 candidate.push(docGenerator.candidate());
                 profileData.push(docGeneratorV2.candidateProfile());
-                profileData[i].programming_languages = profileData[0].programming_languages;
-                profileData[i].education_history = profileData[0].education_history;
-                profileData[i].work_history = profileData[0].work_history;
-                profileData[i].description = profileData[0].description;
             }
-
-            profileData[1].expected_salary = profileData[0].expected_salary;
-            profileData[1].availability_day = profileData[0].availability_day;
-            profileData[1].roles = profileData[0].roles;
-
-            profileData[2].expected_salary = profileData[0].expected_salary;
-            profileData[2].availability_day = profileData[0].availability_day;
-            profileData[2].roles = profileData[0].roles;
-
-            profileData[3].expected_salary = profileData[1].expected_salary;
-            profileData[3].availability_day = profileData[1].availability_day;
-            profileData[3].roles = profileData[1].roles;
-
-            profileData[4].expected_salary = profileData[1].expected_salary;
-            profileData[4].availability_day = profileData[1].availability_day;
-            profileData[4].roles = profileData[1].roles;
 
 
             const company = docGeneratorV2.company();
@@ -173,7 +153,8 @@ describe('cron', function () {
                 ],
                 availability_day: profileData[0].availability_day,
             }];
-
+            console.log(profileData[0].expected_salary);
+            console.log(profileData[1].expected_salary);
             const jwtToken = companyDoc.jwt_token;
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
@@ -181,7 +162,7 @@ describe('cron', function () {
 
             await candidateHelper.signupCandidateAndCompleteProfile(candidate[0], profileData[0]);
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate[1], profileData[1]);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[1], profileData[0]);
 
             await companyEmail();
 
@@ -189,7 +170,7 @@ describe('cron', function () {
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
             companyDoc.candidates_sent_by_email.length.should.equal(2);
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate[2], profileData[2]);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[2], profileData[0]);
 
             await companyEmail();
 
@@ -201,10 +182,10 @@ describe('cron', function () {
                 profileData[1].roles[0]
             ];
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[3]);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[3], profileData[1]);
             await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , {saved_searches : newSavedSearch});
 
-            await candidateHelper.signupCandidateAndCompleteProfile(candidate[4], profileData[4]);
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate[4], profileData[1]);
             await companyEmail();
 
             companyDoc = await companies.findOne({_creator: userCompanyDoc._id});
