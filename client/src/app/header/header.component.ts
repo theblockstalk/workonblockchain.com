@@ -146,48 +146,7 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  verify_client()
-  {
-    this.success_msg='';
-    this.msg='';
 
-    localStorage.setItem('close_notify', JSON.stringify(this.close));
-    if(this.currentUser.email)
-    {
-      this.authenticationService.verify_client(this.currentUser.email)
-        .subscribe(
-          data => {
-            if(data['success'] === true)
-            {
-              this.success_msg = "Please check your email to verify your account" ;
-
-              setInterval(() => {
-                this.success_msg = "not verify" ;
-
-              }, 12000);
-
-            }
-
-            else
-            {
-              this.dataservice.changeMessage(data['error']);
-              this.log= data['error'];
-
-
-            }
-
-          },
-          error => {
-            this.dataservice.changeMessage(error);
-
-          });
-
-    }
-    else
-    {
-
-    }
-  }
   close;
   close_notify()
   {
