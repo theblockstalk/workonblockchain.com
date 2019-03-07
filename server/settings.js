@@ -58,7 +58,8 @@ if (isLiveApplication()) {
     }
 
     settings.AMPLITUDE = {
-        API_KEY: process.env.AMPLITUDE_API_KEY
+        API_KEY: process.env.AMPLITUDE_API_KEY,
+        SECRET_API_KEY: process.env.AMPLITUDE_SECRET_API_KEY
     }
 } else if (settings.ENVIRONMENT === 'migrate') {
     settings.MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
@@ -96,5 +97,6 @@ settings.SERVER = {
 settings.CLIENT = {
     URL: config.client.url
 };
+
 
 module.exports = settings;

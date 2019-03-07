@@ -1,6 +1,28 @@
 const Amplitude = require('amplitude');
 const settings = require('../../settings');
+const logger = require('./logger');
 
-const amplitude = new Amplitude('api-token');
+const amplitude = new Amplitude(settings.AMPLITUDE.API_KEY, { secretKey: settings.AMPLITUDE.SECRET_API_KEY });
 
-module.exports = amplitude;
+module.exports.track = async function (data) {
+    await new Promise( function(res, rej) {
+        try {
+            amplitude.track(data).then( function (result) {
+                res();
+            }).catch( function (error) {
+                logger.error("Amplitude error", {error: error});
+                res();
+            })
+        } catch (error) {
+            rej(error);
+        }
+    })
+}
+
+module.exports.identify = async function (data) {
+    // amplitude.identify(data)
+}
+
+// module.exports.userSearch =
+
+// module.exports.userActivity =
