@@ -46,17 +46,6 @@ const amplitudeTrack = function (request) {
         event_properties: {}
     };
 
-    function castTokenToInt(token) {
-        const charsToConsider = 10;
-        let numberStr = '';
-        for (let i = 0; i < charsToConsider; i++) {
-            const code = token.charCodeAt(i);
-            numberStr += code.toString();
-        }
-        let str = numberStr.substring(0,15)
-        return parseInt(str);
-    }
-
     const blacklist = ['/'];
 
     if (blacklist.includes(request.path)) {
@@ -67,12 +56,11 @@ const amplitudeTrack = function (request) {
         return function (req) {
             if (req.auth && req.auth.user) {
                 data.user_id = req.auth.user._id.toString();
+                // data.session_id = req.auth.user.session.timestamp; // TODO
+                data.session_id = 1000; // TODO
             } else {
                 data.user_id = "anonimous"
-            }
-            if (req.headers && req.headers.authorization) {
-                const token = req.headers.authorization;
-                data.session_id = castTokenToInt(token);
+                data.session_id = -1;
             }
             if (req.query && !objects.isEmpty(req.query)) data.event_properties.query = req.query;
             if (req.body && !objects.isEmpty(req.body)) {
