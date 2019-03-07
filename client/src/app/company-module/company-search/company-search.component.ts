@@ -281,20 +281,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     {
       $('.selectpicker').selectpicker('refresh');
 
-      this.preferncesForm = this._fb.group({
-        name: [],
-        location: [],
-        visa_needed: [this.visa_check],
-        job_type: [],
-        position: [this.role_value],
-        current_currency: [this.currencyChange],
-        current_salary: [this.salary],
-        blockchain: [this.blockchain_value],
-        skills: [this.skill_value],
-        other_technologies: [],
-        order_preferences: [this.blockchain_order],
-        residence_country: [this.residence_country],
-      });
+     this.populatePopupFields();
 
       this.skillsData.sort(function(a, b){
         if(a.name < b.name) { return -1; }
@@ -405,6 +392,23 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   }
 
   rolesItems;
+
+  populatePopupFields(){
+    this.preferncesForm = this._fb.group({
+      name: [],
+      location: [],
+      visa_needed: [this.visa_check],
+      job_type: [],
+      position: [this.role_value],
+      current_currency: [this.currencyChange],
+      current_salary: [this.salary],
+      blockchain: [this.blockchain_value],
+      skills: [this.skill_value],
+      other_technologies: [],
+      order_preferences: [this.blockchain_order],
+      residence_country: [this.residence_country],
+    });
+  }
 
   positionchanged(data)
   {
@@ -524,20 +528,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     }, 500);
     if(this.selectedValueArray && this.selectedValueArray.length > 0) this.newSearchLocation = this.filter_array(this.selectedValueArray);
 
-    this.preferncesForm = this._fb.group({
-      name: [],
-      location: [],
-      visa_needed: [this.visa_check],
-      job_type: [],
-      position: [this.role_value],
-      current_currency: [this.currencyChange],
-      current_salary: [this.salary],
-      blockchain: [this.blockchain_value],
-      skills: [this.skill_value],
-      other_technologies: [],
-      order_preferences: [this.blockchain_order],
-      residence_country: [this.residence_country],
-    });
+    this.populatePopupFields();
 
 
     if(!this.searchWord && !this.residence_country && !this.blockchain_order && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
