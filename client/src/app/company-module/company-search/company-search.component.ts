@@ -656,7 +656,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
       queryBody.location = this.filter_array(validatedLocation);
     }
-    if(this.name) queryBody.name = this.name;
+    if(this.saveSearchName) queryBody.name = this.saveSearchName;
 
     if(this.salary && this.currencyChange) {
       queryBody.current_currency = this.currencyChange;
@@ -668,7 +668,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.savedSearches[index] = queryBody;
     if(this.saveSearchName) {
     for(let searches of this.savedSearches) {
-      if(searches['name'] !== this.name) {
+      if(searches['name'] !== this.saveSearchName) {
         if(searches['location'] && searches['location'].length > 0 ) {
           let cities = [];
           let cityCheck= false;
@@ -700,7 +700,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 this.searchName = [];
                 for(let i=0; i < data['saved_searches'].length; i++) {
                   this.searchName.push(data['saved_searches'][i].name);
-                  if(data['saved_searches'][i].name === this.name) this.timestamp = data['saved_searches'][i].timestamp;
+                  if(data['saved_searches'][i].name === this.saveSearchName) this.timestamp = data['saved_searches'][i].timestamp;
                   if(data['saved_searches'][i].location && data['saved_searches'][i].location.length > 0) {
                     this.prefillLocationFEFormat(data['saved_searches'][i].location);
                   }
@@ -827,8 +827,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                 this.savedSearches= [];
                 this.saveSearchName = this.preferncesForm.value.name;
                 this.searchdata('name' , this.saveSearchName);
-                this.name = this.preferncesForm.value.name;
-                this.searchdata('searchName' , this.name);
+                this.saveSearchName = this.preferncesForm.value.name;
+                this.searchdata('searchName' , this.saveSearchName);
                 $('#saveNewSearch').modal('hide');
 
                 if(data['saved_searches'] && data['saved_searches'].length > 0) {
@@ -836,7 +836,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
                   this.searchName = [];
                   for(let i=0; i < data['saved_searches'].length; i++) {
                     this.searchName.push(data['saved_searches'][i].name);
-                    if(this.name === data['saved_searches'][i].name) {
+                    if(this.saveSearchName === data['saved_searches'][i].name) {
                       this._id = data['saved_searches'][i]._id;
                       this.timestamp = data['saved_searches'][i].timestamp;
                       this.pref_job_type = data['saved_searches'][i].job_type;
