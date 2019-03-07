@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = require('mongoose').Schema;
 const express = require('express');
 const router = express.Router();
 const asyncMiddleware = require('./controller/middleware/asyncMiddleware');
@@ -27,14 +28,47 @@ const validateInputs = function(request, inputSchemas) {
         'body': inputSchemas.body ? mongoose.model(modelName + "-body", inputSchemas.body) : null
     };
 
+    const checkForUnwantedProperties = function (obj, schema) {
+        let schemaObj;
+        if (obj instanceof Array) {
+            schemaObj = schema.type[0];
+            for (let val of obj) {
+                checkForUnwantedProperties(val, schemaObj)
+            }
+        } else if (obj instanceof  Object) {
+            if (schema instanceof Schema) {
+                schemaObj = schema.obj;
+
+                for (let key in obj) {
+                    if (key !== '_id' && !schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema ' + JSON.stringify(schemaObj))
+                    checkForUnwantedProperties(obj[key], schemaObj[key]);
+                }
+            } else {
+                schemaObj = schema;
+
+                for (let key in obj) {
+                    if (!schemaObj[key]) throw new Error('Key ' + key + ' could not be found in schema ' + JSON.stringify(schemaObj))
+                    checkForUnwantedProperties(obj[key], schemaObj[key].type);
+                }
+            }
+        }
+    };
+
+    const validateObject = function (input, type) {
+        // check object matches schema
+        const doc = new models[type](input);
+        const error = doc.validateSync();
+        if (error) throw new Error(error);
+
+        // check object does not contain any other properties
+        checkForUnwantedProperties(input, inputSchemas[type]);
+    };
+
     return function (req) {
         for (const type of validationTypes) {
             const input = req[type];
             if (input && !objects.isEmpty(input)) {
-                console.log('validating ' + type, input);
-                const doc = new models[type](input);
-                const error = doc.validateSync();
-                if (error) throw new Error(error);
+                validateObject(input, type)
             }
         }
     }

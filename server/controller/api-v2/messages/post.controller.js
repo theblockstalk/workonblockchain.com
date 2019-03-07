@@ -52,6 +52,10 @@ const bodySchema = new Schema({
                     enum: enumerations.currencies,
                     required: true
                 },
+                location: {
+                    type: String,
+                    required: false
+                },
                 type: {
                     type: String,
                     enum: enumerations.jobTypes,
