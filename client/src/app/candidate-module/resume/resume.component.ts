@@ -36,6 +36,9 @@ export class ResumeComponent implements OnInit,AfterViewInit {
   formal_expYear_db=[];
   formalSkillDb;
   about_active_class;
+  description_commercial_platforms;
+  description_experimented_platforms;
+  description_commercial_skills;
 
   constructor(private route: ActivatedRoute, private http: HttpClient,
               private router: Router,
@@ -509,21 +512,21 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       this.commercial_skill_log = "Please fill year of experience";
     }
 
-    if(this.formal_skills_exp.length !== this.formal_skills.length)
+    /*if(this.formal_skills_exp.length !== this.formal_skills.length)
     {
       this.formal_skills_log = "Please fill year of experience";
-    }
-    if(this.platforms_designed.length !== this.platforms.length)
+    }*/
+    /*if(this.platforms_designed.length !== this.platforms.length)
     {
       this.platform_log = "Please fill year of experience";
-    }
+    }*/
 
     if(!this.why_work)
     {
       this.why_work_log = "Please fill why do you want to work on blockchain?";
     }
-    if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
-      && this.commercialSkills.length === this.commercialSkillsExperienceYear.length && this.formal_skills_exp.length === this.formal_skills.length)
+    if(this.why_work && this.commercially_worked.length === this.commercial_expYear.length
+      && this.commercialSkills.length === this.commercialSkillsExperienceYear.length)
     {
       if(this.commercially_worked.length === 0) {
         expForm.value.commercial_platforms = [];
@@ -533,24 +536,44 @@ export class ResumeComponent implements OnInit,AfterViewInit {
       }
 
 
-      if(this.platforms_designed.length === 0) {
+      /*if(this.platforms_designed.length === 0) {
         expForm.value.smart_contract_platforms = [];
       }
       else {
         expForm.value.smart_contract_platforms = this.platforms;
-      }
+      }*/
       if(this.commercialSkills.length === 0) {
         expForm.value.commercial_skills = [];
       }
       else {
         expForm.value.commercial_skills = this.commercialSkillsExperienceYear;
       }
-      if(this.formal_skills_exp.length === 0) {
+      /*if(this.formal_skills_exp.length === 0) {
         expForm.value.formal_skills = [];
       }
       else {
         expForm.value.formal_skills = this.formal_skills;
+      }*/
+
+      console.log(this.description_commercial_platforms);
+      console.log(this.description_experimented_platforms);
+      console.log(this.description_commercial_skills);
+
+      expForm.value.description_commercial_platforms = '';
+      if(this.description_commercial_platforms){
+        expForm.value.description_commercial_platforms = this.description_commercial_platforms;
       }
+
+      expForm.value.description_experimented_platforms = '';
+      if(this.description_experimented_platforms){
+        expForm.value.description_experimented_platforms = this.description_experimented_platforms;
+      }
+
+      expForm.value.description_commercial_skills = '';
+      if(this.description_commercial_skills){
+        expForm.value.description_commercial_skills = this.description_commercial_skills;
+      }
+
       this.authenticationService.resume(this.currentUser._creator , expForm.value)
         .subscribe(
           data => {

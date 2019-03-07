@@ -291,8 +291,11 @@
 
             <div class="row" *ngIf = "commercial && commercial.length > 0">
               <div class="col-md-12">
+                <h4>Technologies</h4>
+              </div>
+              <div class="col-md-12 py-3">
                 <div class="form-group">
-                  <label>Platforms commercially worked with and developed on:</label>
+                  <label>Commercial experience:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial;'>
                       <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
@@ -300,30 +303,30 @@
                     </div>
                   </div>
                 </div>
-
+                <div *ngIf = "description_commercial_platforms">
+                  {{description_commercial_platforms}}
+                </div>
               </div>
             </div>
 
-            <div class="row" *ngIf = "platforms && platforms.length > 0">
+            <!--<div class="row" *ngIf = "platforms && platforms.length > 0">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Platforms commercially designed and developed smart contracts on:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of platforms;'>
-
                       <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data.name}}.png" alt="{{data.name}} Logo">
                       {{data.name}}: {{data.exp_year}} years
                     </div>
                   </div>
                 </div>
-
               </div>
-            </div>
+            </div>-->
 
-            <div class="row">
+            <div class="row py-3">
               <div class="col-md-12" *ngIf = "experimented && experimented.length > 0 ">
                 <div class="form-group">
-                  <label>Platform experimented with:</label>
+                  <label>Experimented with:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of experimented;'>
                       <img class="mb-1 ml-1" src = "/assets/images/all_icons/{{data}}.png" alt="{{data}} Logo">
@@ -331,33 +334,36 @@
                     </div>
                   </div>
                 </div>
-
-              </div>
-            </div>
-
-            <div class="row" *ngIf = "commercial_skills && commercial_skills.length > 0">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Commercial experience in these areas:</label>
-                  <div>
-                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial_skills;'>{{data.skill}}: {{data.exp_year}} years</div>
-
-                  </div>
+                <div *ngIf = "description_experimented_platforms">
+                  {{description_experimented_platforms}}
                 </div>
               </div>
             </div>
 
-            <div class="row" *ngIf = "formal_skills && formal_skills.length > 0">
+            <div class="row py-3" *ngIf = "commercial_skills && commercial_skills.length > 0">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Skills:</label>
+                  <div>
+                    <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of commercial_skills;'>{{data.skill}}: {{data.exp_year}} years</div>
+                  </div>
+                </div>
+                <div *ngIf = "description_commercial_skills">
+                  {{description_commercial_skills}}
+                </div>
+              </div>
+            </div>
+
+            <!--<div class="row" *ngIf = "formal_skills && formal_skills.length > 0">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Formal (university) education in these areas:</label>
                   <div>
                     <div class="d-inline-block p-2 border rounded mr-1 mt-1" *ngFor='let data of formal_skills;'>{{data.skill}}: {{data.exp_year}} years</div>
-
                   </div>
                 </div>
               </div>
-            </div>
+            </div>-->
           </section>
 
           <section class = "border rounded mt-4 py-3 px-5 bg-white" *ngIf="languages && languages.length>0">
