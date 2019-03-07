@@ -106,13 +106,16 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
             setTimeout(() => {
               $('.selectpicker').selectpicker('refresh');
             }, 900);
-            let job_offer = data['message'].job_offer;
-            this.credentials.job_title = job_offer.title;
-            this.credentials.salary = job_offer.salary;
-            this.credentials.currency = job_offer.salary_currency;
-            this.credentials.location = job_offer.location;
-            this.credentials.job_type = job_offer.type;
-            this.credentials.job_desc = job_offer.description;
+            if(data && data['message']) {
+              let job_offer = data['message'].job_offer;
+              this.credentials.job_title = job_offer.title;
+              this.credentials.salary = job_offer.salary;
+              this.credentials.currency = job_offer.salary_currency;
+              this.credentials.location = job_offer.location;
+              this.credentials.job_type = job_offer.type;
+              this.credentials.job_desc = job_offer.description;
+            }
+
           },
           error => {
             if (error['message'] === 500 || error['message'] === 401) {
