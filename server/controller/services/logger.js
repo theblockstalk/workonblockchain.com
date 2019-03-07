@@ -23,7 +23,6 @@ if (settings.isLiveApplication()) {
     })
 }
 
-
 let winstonLogger;
 
 if (settings.ENVIRONMENT === 'production') {

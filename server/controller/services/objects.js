@@ -1,10 +1,11 @@
 module.exports.isEmpty = function (obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
+    for(let prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
             return false;
+        }
     }
     return true;
-};
+}
 
 module.exports.replaceLineBreaksHtml = function (html) {
     let new_html = html.replace(/\r\n|\n\r/g, '\n').replace(/\n\n/g, '\n').replace(/\n/g, '<br />');
