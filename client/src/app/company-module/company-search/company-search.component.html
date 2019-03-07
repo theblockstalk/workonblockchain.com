@@ -459,8 +459,8 @@
               </div>
               <div class="col-md-6 mt-2">
                 <div class="form-group">
-                  <select class="multiple form-control selectpicker" title="Residence country" required  formControlName="residence_country">
-                    <option *ngFor='let country of residenceCountries'  [value]="country" selected>{{country}}</option>
+                  <select multiple class="form-control selectpicker" title="Residence country" required  formControlName="residence_country">
+                    <option *ngFor='let country of residenceCountries'  [value]="country" >{{country}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline"  *ngIf="preferncesForm.value.residence_country && preferncesForm.value.residence_country.length > 50">
                     {{residence_country_log}}
@@ -474,7 +474,7 @@
                   <input type="text" formControlName="current_salary"  [value] = "preferncesForm.value.current_salary"  class="form-control w-50 float-left mt-3" placeholder="Salary">
 
                   <select title="Currency" class="selectpicker form-control w-50 position-relative mt-3" formControlName = "current_currency" >
-                    <option  *ngFor='let base_currency of currency' selected>{{base_currency}}</option>
+                    <option  *ngFor='let base_currency of currency' [attr.selected]=" base_currency=== preferncesForm.value.current_currency?true:null">{{base_currency}}</option>
                   </select>
                   <div class = "invalid-feedback d-inline float-left" *ngIf="!preferncesForm.value.current_currency || !preferncesForm.value.current_salary  " >
                     {{current_currency_log}}
@@ -501,7 +501,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <select multiple formControlName="order_preferences" title="Commercial blockchain experience" class="form-control selectpicker">
-                    <option *ngFor='let blockchain of blockchainData' [value]="blockchain.value" selected>{{blockchain.name}}</option>
+                    <option *ngFor='let blockchain of blockchainData' [value]="blockchain.value" >{{blockchain.name}}</option>
                   </select>
                 </div>
               </div>
