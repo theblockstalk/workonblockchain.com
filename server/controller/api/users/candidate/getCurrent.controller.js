@@ -5,9 +5,14 @@ const errors = require('../../../services/errors');
 module.exports = async function (req, res) {
     const myUserDoc = req.auth.user;
     if(String(myUserDoc._id) === req.params._id || myUserDoc.is_admin === 1) {
-        const candidateDoc = await users.findByIdAndPopulate(req.params._id);
-        if(candidateDoc) {
-            const filterData = filterReturnData.removeSensativeData(candidateDoc);
+        const userDoc = await users.findByIdAndPopulate(req.params._id);
+        if(userDoc) {
+            const filterData = filterReturnData.removeSensativeData(userDoc);
+            let hash = crypto.createHmac('sha512', userDoc.salt);
+            hash.update('');
+            let hashedPasswordAndSalt = hash.digest('hex');
+            if (hashedPasswordAndSalt === userDoc.password_hash) filterData.password = false;
+
             res.send(filterData);
         }
         else {

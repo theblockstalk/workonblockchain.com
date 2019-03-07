@@ -52,7 +52,6 @@ module.exports = async function (req, res) {
                     response._id = companyDoc._id;
                     response.created_date = userDoc.created_date;
                 }
-
             }
             else
             {
