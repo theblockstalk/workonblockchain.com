@@ -32,10 +32,10 @@ const bodySchema = new Schema({
         type:String,
         validate: regexes.url
     },
-    company_phone: {
+    company_phone: { //this needs to be fixed
         type:String
     },
-    company_country: {
+    company_country: { //this needs to be fixed
         type: String,
         enum: enumerations.countries
     },
@@ -168,8 +168,8 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.job_title) employerUpdate.job_title = queryBody.job_title;
         if (queryBody.company_name) employerUpdate.company_name = queryBody.company_name;
         if (queryBody.company_website) employerUpdate.company_website = queryBody.company_website;
-        if (queryBody.phone_number) employerUpdate.company_phone = queryBody.phone_number;
-        if (queryBody.country) employerUpdate.company_country = queryBody.country;
+        if (queryBody.phone_number) employerUpdate.company_phone = queryBody.phone_number; //this needs to be fixed
+        if (queryBody.country) employerUpdate.company_country = queryBody.country; //this needs to be fixed
         if (queryBody.city) employerUpdate.company_city = queryBody.city;
         if (queryBody.postal_code) employerUpdate.company_postcode = queryBody.postal_code;
         if (queryBody.company_founded) employerUpdate.company_founded = queryBody.company_founded;
