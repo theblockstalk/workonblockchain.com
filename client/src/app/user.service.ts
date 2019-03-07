@@ -1541,4 +1541,21 @@ export class UserService {
 
   }
 
+  add_to_subscribe_list(first_name:string, last_name:string, email:string){
+    return this.http.post(URL+'v2/subscribers', {first_name:first_name,last_name:last_name,email:email}).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error.status )
+      {
+        return throwError(error);
+      }
+
+    }));
+  }
+
 }
