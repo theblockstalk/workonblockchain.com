@@ -43,11 +43,6 @@ module.exports.candidateSearch = async function (filters, search, orderPreferenc
         userQuery.push({_id: {$nin: filters.blacklist}});
     }
 
-    if (filters.firstApprovedDate) {
-        const approvedDateFilter = {"first_approved_date" : { $gte : filters.firstApprovedDate}};
-        userQuery.push(approvedDateFilter);
-    }
-
     if (search) {
         if(search.name) {
             const nameSearch = { $or: [{ first_name: {'$regex' : search.name, $options: 'i'}},

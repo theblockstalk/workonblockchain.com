@@ -30,10 +30,7 @@ const bodySchema = new Schema({
         enum: enumerations.statusReasons
     },
     note : String,
-    email_html : String,
-    timestamp: {
-        type: Date,
-    }
+    email_html : String
 });
 
 module.exports.inputValidation = {
@@ -68,7 +65,7 @@ module.exports.endpoint = async function (req, res) {
         }
         let set = {};
         if(queryInput.note) history.note = queryInput.note;
-        if(queryInput.email_html) history.email_html = sanitize.sanitizeHtml(queryInput.email_html);
+        if(queryInput.email_html) history.email_html = queryInput.email_html;
         if(queryInput.status) {
             let status = {
                 status : queryInput.status
@@ -94,7 +91,7 @@ module.exports.endpoint = async function (req, res) {
         });
 
         if(queryInput.email_html) {
-            candidateHistoryEmail.sendEmail(userDoc.email, userDoc.first_name, queryInput.email_html, userDoc.disable_account);
+            candidateHistoryEmail.sendEmail(userDoc.email, userDoc.first_name, sanitize.sanitizeHtml(queryInput.email_html), userDoc.disable_account);
         }
 
         userDoc = await users.findOneById(userId);
