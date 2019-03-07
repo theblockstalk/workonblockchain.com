@@ -42,6 +42,7 @@ const validateInputs = function(request, inputSchemas) {
 
 const amplitudeTrack = function (request) {
     let data = {
+        event_type: request.type.toUpperCase() + ' ' + request.path,
         event_properties: {}
     };
 
@@ -50,20 +51,31 @@ const amplitudeTrack = function (request) {
         return 1234;
     }
 
-    return function (req) {
-        if (req.auth.user) {
-            data.user_id = req.auth.user._id.toString();
-        } else {
-            data.user_id = "anonimous"
+    const blacklist = ['/'];
+
+    if (blacklist.includes(request.path)) {
+        return function (req) {
+            return;
         }
-        if (req.headers && req.headers.authorization) {
-            const token = req.headers.authorization;
-            data.session_id = token;
+    } else {
+        return function (req) {
+            if (req.auth && req.auth.user) {
+                data.user_id = req.auth.user._id.toString();
+            } else {
+                data.user_id = "anonimous"
+            }
+            if (req.headers && req.headers.authorization) {
+                const token = req.headers.authorization;
+                data.session_id = convertToken(token);
+            }
+            if (req.query && !objects.isEmpty(req.query)) data.event_properties.query = req.query;
+            if (req.body && !objects.isEmpty(req.body)) {
+                data.event_properties.body = req.body;
+                delete data.event_properties.password;
+            }
+            if (req.params && !objects.isEmpty(req.params)) data.event_properties.params = req.params;
+            amplitude.track(data);
         }
-        if (req.query) data.event_properties.query = req.query;
-        if (req.body) data.event_properties.body = req.body;
-        if (req.query) data.event_properties.params = req.params;
-        amplitude.track(data);
     }
 };
 

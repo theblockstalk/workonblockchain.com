@@ -2,7 +2,12 @@ const Amplitude = require('amplitude');
 const settings = require('../../settings');
 const logger = require('./logger');
 
-const amplitude = new Amplitude(settings.AMPLITUDE.API_KEY, { secretKey: settings.AMPLITUDE.SECRET_API_KEY });
+let amplitude;
+if (settings.AMPLITUDE.SECRET_API_KEY) {
+    amplitude = new Amplitude(settings.AMPLITUDE.API_KEY, { secretKey: settings.AMPLITUDE.SECRET_API_KEY });
+} else {
+    amplitude = new Amplitude(settings.AMPLITUDE.API_KEY);
+}
 
 module.exports.track = async function (data) {
     await new Promise( function(res, rej) {
