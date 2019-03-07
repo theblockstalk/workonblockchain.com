@@ -129,7 +129,7 @@ describe('cron', function () {
                 candidate.push(docGenerator.candidate());
                 profileData.push(docGeneratorV2.candidateProfile());
             }
-            
+
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
