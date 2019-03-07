@@ -36,6 +36,7 @@ module.exports = async function (req, res) {
     let hash = crypto.createHmac('sha512', salt);
     hash.update(userParam.password);
     let hashedPasswordAndSalt = hash.digest('hex');
+    let timestamp = new Date();
     let newUserDoc = {
         email: userParam.email,
         password_hash: hashedPasswordAndSalt,
@@ -53,11 +54,11 @@ module.exports = async function (req, res) {
                status : {
                     status: 'created'
                },
-                timestamp : new Date()
+                timestamp : timestamp
             }],
             latest_status : {
                 status : 'created',
-                timestamp : new Date()
+                timestamp : timestamp
             }
         }
     }

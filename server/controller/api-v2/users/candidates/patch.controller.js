@@ -39,10 +39,6 @@ const bodySchema = new Schema({
                 type: String,
                 enum: enumerations.countries
             },
-            terms_id: {
-                type: Schema.Types.ObjectId,
-                ref: 'pages_content'
-            },
             github_account: {
                 type:String,
                 validate: regexes.url
@@ -219,47 +215,7 @@ const bodySchema = new Schema({
                         }
                     })],
                 }
-            },
-            history : {
-                type : [{
-                    status:{
-                        type:[{
-                            status: {
-                                type: String,
-                                enum: enumerations.candidateStatus,
-                                required:true,
-                            },
-                            reason: {
-                                type: String,
-                                enum: enumerations.statusReasons
-                            }
-                        }],
-                        required: false
-                    },
-                    note : String,
-                    email_text : String,
-                    timestamp: {
-                        type: Date,
-                        required:true,
-                    }
-                }]
-
-            },
-            latest_status : {
-                status: {
-                    type: String,
-                    enum: enumerations.candidateStatus,
-                },
-                reason: {
-                    type: String,
-                    enum: enumerations.statusReasons
-                },
-                timestamp: {
-                    type: Date,
-                }
-
             }
-
         }
     }
 });
@@ -287,7 +243,6 @@ module.exports.endpoint = async function (req, res) {
     let userId;
     let queryBody = req.body;
     let updateCandidateUser = {};
-    let unset = {};
 
     if (req.query.admin) {
         userId = req.params.user_id;
@@ -334,36 +289,10 @@ module.exports.endpoint = async function (req, res) {
     if (queryBody.smart_contract_platforms && queryBody.smart_contract_platforms.length > 0) updateCandidateUser['candidate.blockchain.smart_contract_platforms'] = queryBody.smart_contract_platforms;
     if(queryBody.commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
     if(queryBody.formal_skills && queryBody.formal_skills.length > 0 ) updateCandidateUser['candidate.blockchain.formal_skills'] = queryBody.formal_skills;
-    if(queryBody.status) {
-        let history= {};
-        history['status'] = {status : queryBody.status};
-        history['timestamp'] = new Date();
 
-        let latestStatus = {};
-        latestStatus.status = queryBody.status;
-        latestStatus.timestamp = new Date();
-        updateCandidateUser['candidate.latest_status'] = latestStatus;
+    await users.update({ _id: userId},{$set: updateCandidateUser});
 
-        await users.update({ _id: userId }, {
-                $set: updateCandidateUser,
-                $push: {
-                    'candidate.history' : {
-                        $each: [history],
-                        $position: 0
-                    }
-                }
-        });
-
-    }
-    else {
-        await users.update({ _id: userId},{$set: updateCandidateUser});
-
-    }
-
-    if (!filterReturnData.isEmptyObject(unset)) {
-        await users.update({ _id: userId},{$unset: unset});
-    }
-
-    const updatedProfile = await users.find({_id: userId});
-    res.send(updatedProfile);
+    const updatedProfile = await users.findOneById(userId);
+    const filterData = filterReturnData.removeSensativeData(updatedProfile);
+    res.send(filterData);
 }

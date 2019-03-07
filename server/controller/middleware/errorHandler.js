@@ -17,7 +17,7 @@ module.exports = function middleware(err, req, res, next) {
     if (req.query) bug.request.params = req.query;
     if (req.body) {
         if (req.body.password) delete req.body.password;
-        bug.request.params = req.body;
+        bug.request.body = req.body;
     }
 
     if(err instanceof ApplicationError) {

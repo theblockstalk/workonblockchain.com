@@ -267,15 +267,14 @@ module.exports.candidateProfile = function candidateProfile(){
             startdate: '2016-02-29T19:00:00.000Z',
             enddate: '2018-10-09T07:32:38.732Z',
             currentwork: true
-        }],
-        status : 'wizard completed'
+        }]
     }
 }
 
 module.exports.changeCandidateStatus = function changeCandidateStatus(){
     return {
         note : 'Note for this profile',
-        email_text : 'Hi, i have just approved your profile',
+        email_html : '<p>Hi, i have just approved your profile</p>',
         status : 'approved'
     }
 }

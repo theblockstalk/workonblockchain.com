@@ -13,7 +13,7 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('admin update candidate profile', function () {
+describe('update candidate profile', function () {
 
     afterEach(async () => {
         console.log('dropping database');
@@ -106,12 +106,11 @@ describe('admin update candidate profile', function () {
                 startdate: '2016-02-29T19:00:00.000Z',
                 enddate: '2018-10-09T07:32:38.732Z',
                 currentwork: true
-            }],
-            status : 'updated'
+            }]
         }
 
         const res = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
-        candidateUserDoc = res.body[0];
+        candidateUserDoc = res.body;
         const blockchainSkills = candidateUserDoc.candidate.blockchain;
         candidateUserDoc.candidate.github_account.should.equal(candidateEditProfileData.github_account);
         candidateUserDoc.candidate.stackexchange_account.should.equal(candidateEditProfileData.exchange_account);
@@ -138,7 +137,6 @@ describe('admin update candidate profile', function () {
         blockchainSkills.commercial_skills[0].exp_year.should.equal(candidateEditProfileData.commercial_skills[0].exp_year);
         blockchainSkills.formal_skills[0].skill.should.equal(candidateEditProfileData.formal_skills[0].skill);
         blockchainSkills.formal_skills[0].exp_year.should.equal(candidateEditProfileData.formal_skills[0].exp_year);
-        candidateUserDoc.candidate.latest_status.status.should.equal(candidateEditProfileData.status);
 
     })
 })

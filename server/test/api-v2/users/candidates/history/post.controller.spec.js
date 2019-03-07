@@ -43,9 +43,8 @@ describe('admin changes status of a candidate', function () {
         const candidateUserDoc = approveUser.body;
 
         candidateUserDoc.candidate.history[0].status.status.should.equal(inputQuery.status);
-        candidateUserDoc.candidate.history[1].status.status.should.equal('wizard completed');
         candidateUserDoc.candidate.history[0].note.should.equal(inputQuery.note);
-        candidateUserDoc.candidate.history[0].email_text.should.equal(inputQuery.email_text);
+        candidateUserDoc.candidate.history[0].email_html.should.equal(inputQuery.email_html);
         candidateUserDoc.candidate.latest_status.status.should.equal(inputQuery.status);
 
     })

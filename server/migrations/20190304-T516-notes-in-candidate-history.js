@@ -20,14 +20,14 @@ module.exports.up = async function() {
             if(userStatus.status) status.status = userStatus.status;
             if(userStatus.reason) status.reason = userStatus.reason;
 
-            statusHistory.push({status : status, timestamp: new Date()})
+            statusHistory.push({status : status, timestamp: userStatus.timestamp})
         }
         set['candidate.history'] = statusHistory;
 
         let latestStatus = {};
         if(statusHistory[0].status.status) latestStatus.status = statusHistory[0].status.status;
         if(statusHistory[0].status.reason) latestStatus.reason = statusHistory[0].status.reason;
-        latestStatus.timestamp = new Date();
+        latestStatus.timestamp = statusHistory[0].status.timestamp;
         set['candidate.latest_status'] = latestStatus;
 
         unset['candidate.status'] = 1;

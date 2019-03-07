@@ -1711,14 +1711,25 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
     if(this.education_json_array) inputQuery.education_history = this.education_json_array;
     if(this.experiencearray) inputQuery.work_history = this.experiencearray;
 
-    inputQuery.status = 'updated by admin';
 
     this.authenticationService.edit_candidate_profile(this.user_id, inputQuery , true)
       .subscribe(
         data => {
           if(data && this.currentUser)
           {
-            this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.user_id } });
+            let queryInput : any = {};
+            queryInput.status = 'updated by admin';
+
+            this.authenticationService.candidate_status_history(this.user_id, queryInput, true)
+              .subscribe(
+                data => {
+                  if(data) {
+                    this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.user_id } });
+                  }
+                },
+                error => {
+
+                });
           }
 
         },

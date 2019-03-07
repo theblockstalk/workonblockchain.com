@@ -463,13 +463,13 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     let queryInput : any = {};
 
     if(approveForm.note)queryInput['note'] = approveForm.note;
-    if(approveForm.email_text) queryInput['email_text'] = approveForm.email_text;
+    if(approveForm.email_text) queryInput['email_html'] = approveForm.email_text;
     if(approveForm.set_status) queryInput['status'] = approveForm.set_status;
     if(approveForm.status_reason_rejected) queryInput['reason'] = approveForm.status_reason_rejected;
     if(approveForm.status_reason_deferred) queryInput['reason'] = approveForm.status_reason_deferred;
 
 
-    this.authenticationService.candidate_status_history(this._id, queryInput)
+    this.authenticationService.candidate_status_history(this._id, queryInput, true)
       .subscribe(
         data => {
           this.candidateHistory = data['candidate'].history;
@@ -485,6 +485,9 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           $('.selectpicker').val('default');
           $('.selectpicker').selectpicker('refresh');
           this.success = "Successfully updated";
+          setTimeout(() => {
+            this.success = '';
+          }, 1000);
 
         },
         error => {

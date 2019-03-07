@@ -1513,9 +1513,13 @@ export class UserService {
 
   }
 
-  candidate_status_history(user_id: string,queryInput:any )
+  candidate_status_history(user_id: string,queryInput:any , admin:boolean)
   {
-    return this.http.post(URL+'v2/users/'+ user_id +'/candidates/status/' , queryInput, {
+    let urlString;
+    if(admin === true) urlString = URL+'v2/users/'+ user_id +'/candidates/status?admin='+ true;
+    else urlString = URL+'v2/users/'+ user_id +'/candidates/status';
+
+    return this.http.post(urlString , queryInput, {
       headers: new HttpHeaders().set('Authorization', this.token)
     }).pipe(map((res: Response) =>
     {

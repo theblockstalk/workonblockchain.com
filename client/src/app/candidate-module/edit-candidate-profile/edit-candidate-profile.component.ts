@@ -1753,14 +1753,24 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.education_json_array) inputQuery.education_history = this.education_json_array;
     if(this.experiencearray) inputQuery.work_history = this.experiencearray;
 
-    inputQuery.status = 'updated';
-
     this.authenticationService.edit_candidate_profile(this.currentUser._creator, inputQuery, false)
       .subscribe(
         data => {
           if(data && this.currentUser)
           {
-            this.router.navigate(['/candidate_profile']);
+            let queryInput : any = {};
+            queryInput.status = 'updated';
+
+            this.authenticationService.candidate_status_history(this.currentUser._creator, queryInput, false)
+              .subscribe(
+                data => {
+                  if(data) {
+                    this.router.navigate(['/candidate_profile']);
+                  }
+                },
+                error => {
+
+                });
           }
 
         },
