@@ -129,8 +129,7 @@ describe('cron', function () {
                 candidate.push(docGenerator.candidate());
                 profileData.push(docGeneratorV2.candidateProfile());
             }
-
-
+            
             const company = docGeneratorV2.company();
             await companiesHelperV2.signupCompany(company);
             let companyDoc = await users.findOneByEmail(company.email);
@@ -153,8 +152,7 @@ describe('cron', function () {
                 ],
                 availability_day: profileData[0].availability_day,
             }];
-            console.log(profileData[0].expected_salary);
-            console.log(profileData[1].expected_salary);
+
             const jwtToken = companyDoc.jwt_token;
             const updateRes = await companiesHelperV2.companyProfileData(companyDoc._creator, jwtToken , updatedData);
             await userHelper.verifyEmail(updateRes.body._creator.email);
