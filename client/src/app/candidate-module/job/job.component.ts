@@ -59,6 +59,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   current_currency_log;
   count;
   emptyInput;
+  position_type = ['Full time', 'Part time'];
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
