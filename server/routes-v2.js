@@ -64,7 +64,7 @@ const amplitudeTrack = function (request) {
             }
             if (req.query && !objects.isEmpty(req.query)) data.event_properties.query = req.query;
             if (req.body && !objects.isEmpty(req.body)) {
-                data.event_properties.body = objects.copyObject(req.body);
+                data.event_properties.body = objects.copyAndFlattenArrays(req.body);
                 delete data.event_properties.body.password;
             }
             if (req.params && !objects.isEmpty(req.params)) data.event_properties.params = req.params;

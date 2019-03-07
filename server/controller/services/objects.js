@@ -31,6 +31,26 @@ module.exports.copyObject = function (obj) {
     return JSON.parse(JSON.stringify(obj));
 };
 
+const recursivelyFlattenArrays = function (obj) {
+    if (obj instanceof Array) {
+        return JSON.stringify(obj);
+    } else if (obj instanceof  Object) {
+        for (let key in obj) {
+            obj[key] = recursivelyFlattenArrays(obj[key]);
+        }
+        return obj;
+    } else {
+        return  obj;
+    }
+};
+
+module.exports.copyAndFlattenArrays = function(obj) {
+    let newObj = this.copyObject(obj);
+
+    recursivelyFlattenArrays(newObj);
+    return newObj;
+};
+
 module.exports.compareObjects = function (obj1, obj2) {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
 };
