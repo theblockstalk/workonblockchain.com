@@ -37,24 +37,24 @@ module.exports.startCron = function startCron() {
             timeZone: 'CET'
         });
 
-         const autoNotificationEmail = new CronJob({
-             cronTime: settings.CRON.AUTO_NOTIFICATION,
-             onTick: function() {
-                 Promise.resolve(autoNotification()).catch(function (error) {
-                     logger.error(error.message, {
-                         stack: error.stack,
-                         name: error.name
-                     });
-                 });
-             },
-             start: true,
-             timeZone: 'CET'
-         });
+         // const autoNotificationEmail = new CronJob({
+         //     cronTime: settings.CRON.AUTO_NOTIFICATION,
+         //     onTick: function() {
+         //         Promise.resolve(autoNotification()).catch(function (error) {
+         //             logger.error(error.message, {
+         //                 stack: error.stack,
+         //                 name: error.name
+         //             });
+         //         });
+         //     },
+         //     start: true,
+         //     timeZone: 'CET'
+         // });
 
         logger.debug('Cron jobs', {
             unreadMessagesJob: unreadMessagesJob,
             syncSendgridJob: syncSendgrid,
-             autoNotification : autoNotificationEmail
+            // autoNotification : autoNotificationEmail
         });
 
         logger.info('Cron jobs started');

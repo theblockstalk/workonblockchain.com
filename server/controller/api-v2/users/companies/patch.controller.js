@@ -3,6 +3,7 @@ const Schema = require('mongoose').Schema;
 const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
+const objects = require('../../../services/objects');
 
 const companies = require('../../../../model/mongoose/company');
 
@@ -175,15 +176,47 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.no_of_employees) employerUpdate.no_of_employees = queryBody.no_of_employees;
         if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;
         if (queryBody.company_description) employerUpdate.company_description = queryBody.company_description;
-        if (queryBody.saved_searches) employerUpdate.saved_searches = queryBody.saved_searches;
         if (queryBody.when_receive_email_notitfications) employerUpdate.when_receive_email_notitfications = queryBody.when_receive_email_notitfications;
 
-        await companies.update({ _creator: userId },{ $set: employerUpdate});
+        if (queryBody.saved_searches) {
+            let patchSearches = queryBody.saved_searches;
+            let currentSearches = employerDoc.saved_searches;
+            const timestamp = new Date();
+            for (let patchSearch of patchSearches) {
+                if(currentSearches) {
+
+                    const currentSearch = currentSearches.filter( function (currentSearch) {
+                        if(patchSearch._id) {
+                            if(currentSearch._id.toString() === patchSearch._id.toString())
+                                return currentSearch;
+                        }
+                    });
+
+                    if (currentSearch && currentSearch.length === 1) {
+                        if (!objects.compareObjects(currentSearch[0], patchSearch)) {
+                            // This is a modified search
+                            patchSearch.timestamp = timestamp;
+                        }
+
+                    } else {
+                        // This is a new search
+                        patchSearch.timestamp = timestamp;
+                    }
+                }
+                else {
+                    patchSearch.timestamp = timestamp;
+
+                }
+
+            }
+            employerUpdate.saved_searches = queryBody.saved_searches;
+        }
+
+        await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 
         const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
         res.send(updatedEmployerDoc);
     }
-
     else {
         errors.throwError("Company account not found", 404);
     }
