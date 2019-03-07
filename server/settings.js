@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'production') {
     config = require('./config/default.json');
 }
 
-const isLiveApplication = settings.isLiveApplication = function isLiveApplication() {
+const isLiveApplication = settings.isLiveApplication = function () {
     return settings.ENVIRONMENT === 'production' || settings.ENVIRONMENT === 'staging'
 }
 
@@ -55,6 +55,10 @@ if (isLiveApplication()) {
         WEBHOOK: process.env.SLACK_WEBHOOK,
         USERNAME: config.slack.username,
         CHANNEL: config.slack.channel
+    }
+
+    settings.AMPLITUDE = {
+        API_KEY: process.env.AMPLITUDE_API_KEY
     }
 } else if (settings.ENVIRONMENT === 'migrate') {
     settings.MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
