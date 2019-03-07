@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongo = require('../../helpers/mongo');
-const subHelpers = require('../subscribe/subscribe-helpers');
+const subHelpers = require('../subscribers/subscribers-helpers');
 const docGenerator = require('../../helpers/docGenerator');
 
 const assert = chai.assert;
@@ -9,7 +9,7 @@ const expect = chai.expect;
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('POST /subscribe', function () {
+describe('POST /subscribers', function () {
 
     afterEach(async function () {
         console.log('dropping database');
