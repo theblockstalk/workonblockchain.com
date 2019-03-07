@@ -8,6 +8,7 @@ const companies = require('../../../../model/mongoose/company');
 module.exports = async function (req,res) {
 
     let queryBody = req.params;
+    let name;
 
     const userDoc  = await users.findOneByEmail( queryBody.email );
     if(userDoc) {
@@ -17,30 +18,21 @@ module.exports = async function (req,res) {
         let forgotPasswordToken = jwtToken.createJwtToken(userDoc , signOptions);
         await users.update({ _id: userDoc._id },{ $set: {'forgot_password_key': forgotPasswordToken } });
         if(userDoc.type === 'candidate') {
-            let name;
             const candidateDoc = await users.findOneById( userDoc._id);
             if(candidateDoc && candidateDoc.first_name) {
                 name = candidateDoc.first_name;
-
             }
-
-            forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);
-            res.send({
-                success : true
-            })
         }
         if(userDoc.type === 'company') {
-            let name;
             const companyDoc = await companies.findOne({_creator : userDoc._id});
             if(companyDoc ) {
                 name = companyDoc.first_name;
             }
-
-            forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);
-            res.send({
-                success : true
-            })
         }
+        forgotPasswordEmail.sendEmail(userDoc.email, name, forgotPasswordToken);
+        res.send({
+            success : true
+        })
     }
     else {
         errors.throwError("User not found", 404);
