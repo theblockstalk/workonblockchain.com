@@ -46,9 +46,15 @@ const amplitudeTrack = function (request) {
         event_properties: {}
     };
 
-    function convertToken(token) {
-        console.log(token);
-        return 1234;
+    function castTokenToInt(token) {
+        const charsToConsider = 10;
+        let numberStr = '';
+        for (let i = 0; i < charsToConsider; i++) {
+            const code = token.charCodeAt(i);
+            numberStr += code.toString();
+        }
+        let str = numberStr.substring(0,15)
+        return parseInt(str);
     }
 
     const blacklist = ['/'];
@@ -66,12 +72,12 @@ const amplitudeTrack = function (request) {
             }
             if (req.headers && req.headers.authorization) {
                 const token = req.headers.authorization;
-                data.session_id = convertToken(token);
+                data.session_id = castTokenToInt(token);
             }
             if (req.query && !objects.isEmpty(req.query)) data.event_properties.query = req.query;
             if (req.body && !objects.isEmpty(req.body)) {
-                data.event_properties.body = req.body;
-                delete data.event_properties.password;
+                data.event_properties.body = objects.copyObject(req.body);
+                delete data.event_properties.body.password;
             }
             if (req.params && !objects.isEmpty(req.params)) data.event_properties.params = req.params;
             amplitude.track(data);
