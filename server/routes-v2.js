@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const asyncMiddleware = require('./controller/middleware/asyncMiddleware');
 const sanitizer = require('./controller/middleware/sanitizer');
+const objects = require('./controller/services/objects');
+const amplitude = require('./controller/services/amplitude');
 
 const endpoints = [
     require('./controller/api-v2/messages/post.controller'),
@@ -14,15 +16,6 @@ const endpoints = [
     require('./controller/api-v2/users/companies/patch.controller'),
     require('./controller/api-v2/crons/get.controller'),
 ];
-
-function isEmpty(obj) {
-    for(let prop in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-            return false;
-        }
-    }
-    return true;
-}
 
 const validateInputs = function(request, inputSchemas) {
     console.log('in validating inputs');
@@ -37,13 +30,40 @@ const validateInputs = function(request, inputSchemas) {
     return function (req) {
         for (const type of validationTypes) {
             const input = req[type];
-            if (input && !isEmpty(input)) {
+            if (input && !objects.isEmpty(input)) {
                 console.log('validating ' + type, input);
                 const doc = new models[type](input);
                 const error = doc.validateSync();
                 if (error) throw new Error(error);
             }
         }
+    }
+};
+
+const amplitudeTrack = function (request) {
+    let data = {
+        event_properties: {}
+    };
+
+    function convertToken(token) {
+        console.log(token);
+        return 1234;
+    }
+
+    return function (req) {
+        if (req.auth.user) {
+            data.user_id = req.auth.user._id.toString();
+        } else {
+            data.user_id = "anonimous"
+        }
+        if (req.headers && req.headers.authorization) {
+            const token = req.headers.authorization;
+            data.session_id = token;
+        }
+        if (req.query) data.event_properties.query = req.query;
+        if (req.body) data.event_properties.body = req.body;
+        if (req.query) data.event_properties.params = req.params;
+        amplitude.track(data);
     }
 };
 
@@ -54,6 +74,7 @@ const register = function(endpoint) {
         sanitizer.middleware,
         asyncMiddleware.thenNext(validateInputs(endpoint.request, endpoint.inputValidation)),
         asyncMiddleware.thenNext(endpoint.auth),
+        asyncMiddleware.thenNext(amplitudeTrack(endpoint.request)),
         asyncMiddleware(endpoint.endpoint)
     );
 };
