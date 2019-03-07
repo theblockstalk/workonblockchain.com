@@ -11,7 +11,7 @@ const filterReturnData = require('../../../../api/users/filterReturnData');
 
 module.exports.request = {
     type: 'post',
-    path: '/users/:user_id/candidates/status'
+    path: '/users/:user_id/candidates/history'
 };
 const paramSchema = new Schema({
     user_id: String
