@@ -42,47 +42,41 @@ module.exports.up = async function() {
     logger.debug(totalDocsToProcess);
 
     await users.findAndIterate({type:'candidate'}, async function(candDoc) {
-        //let platforms = candDoc.candidate.blockchain.commercial_platforms;
-        let technologies = [], skills = [];
-        if (candDoc.candidate.blockchain.commercial_platforms) {
-            aggregateArray(technologies, candDoc.candidate.blockchain.commercial_platforms,"name");
-        }
-        if (candDoc.candidate.blockchain.smart_contract_platforms) {
-            aggregateArray(technologies, candDoc.candidate.blockchain.smart_contract_platforms, "name");
-        }
-        if (candDoc.candidate.blockchain.commercial_skills) {
-            aggregateArray(skills, candDoc.candidate.blockchain.commercial_skills, "skill");
-        }
-        if (candDoc.candidate.blockchain.formal_skills) {
-            aggregateArray(skills, candDoc.candidate.blockchain.formal_skills, "skill");
-        }
-        console.log(technologies);
-        console.log(skills);
-        set = {
-            "candidate.blockchain.commercial_platforms": technologies,
-            "candidate.blockchain.description_commercial_platforms": '',
-            "candidate.blockchain.description_experimented_platforms": '',
-            "candidate.blockchain.commercial_skills": skills,
-            "candidate.blockchain.description_commercial_skills": ''
-        };
-        unset = {
-            "candidate.blockchain.smart_contract_platforms": 1,
-            "candidate.blockchain.formal_skills": 1
-        };
+        if(candDoc.candidate.blockchain) {
+            let technologies = [], skills = [];
+            if (candDoc.candidate.blockchain.commercial_platforms) {
+                aggregateArray(technologies, candDoc.candidate.blockchain.commercial_platforms, "name");
+            }
+            if (candDoc.candidate.blockchain.smart_contract_platforms) {
+                aggregateArray(technologies, candDoc.candidate.blockchain.smart_contract_platforms, "name");
+            }
+            if (candDoc.candidate.blockchain.commercial_skills) {
+                aggregateArray(skills, candDoc.candidate.blockchain.commercial_skills, "skill");
+            }
+            if (candDoc.candidate.blockchain.formal_skills) {
+                aggregateArray(skills, candDoc.candidate.blockchain.formal_skills, "skill");
+            }
+            console.log(technologies);
+            console.log(skills);
+            set = {
+                "candidate.blockchain.commercial_platforms": technologies,
+                "candidate.blockchain.description_commercial_platforms": '',
+                "candidate.blockchain.description_experimented_platforms": '',
+                "candidate.blockchain.commercial_skills": skills,
+                "candidate.blockchain.description_commercial_skills": ''
+            };
+            unset = {
+                "candidate.blockchain.smart_contract_platforms": 1,
+                "candidate.blockchain.formal_skills": 1
+            };
 
-        let updateObj;
-        if (!object.isEmpty(set) && !object.isEmpty(unset)) {
-            updateObj = {$set: set, $unset: unset}
-        } else if (!object.isEmpty(set)) {
-            updateObj = {$set: set};
-        } else if (!object.isEmpty(unset)) {
-            updateObj = {$unset: unset};
-        }
+            let updateObj = {$set: set, $unset: unset};
 
-        if (updateObj) {
-            logger.debug("migrate user doc: ", set);
-            await users.update({ _id: candDoc._id }, updateObj);
-            totalModified++;
+            if (updateObj) {
+                logger.debug("migrate user doc: ", set);
+                await users.update({_id: candDoc._id}, updateObj);
+                totalModified++;
+            }
         }
     });
 }
