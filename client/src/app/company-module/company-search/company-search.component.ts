@@ -481,6 +481,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
 
         if(key['residence_country'] && key['residence_country'].length > 0 ) this.residence_country = key['residence_country'];
         else this.residence_country = '';
+        $('.selectpicker').selectpicker('refresh');
+
       }
     }
   }
@@ -520,6 +522,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       residence_country: [this.residence_country],
     });
 
+    $('.selectpicker').selectpicker('refresh');
 
     if(!this.searchWord && !this.residence_country && !this.blockchain_order && !this.role_value && !this.blockchain_value  && !this.salary  && !this.skill_value &&  !this.selectedValueArray &&  !this.currencyChange  )
     {
