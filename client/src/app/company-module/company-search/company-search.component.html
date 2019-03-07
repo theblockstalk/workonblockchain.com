@@ -13,7 +13,7 @@
             <div class="wob-bg-primary2 p-2 border">
               <h4 class="pt-2 px-2 mb-0"><i class="fas fa-search"></i> Saved searches</h4>
               <div class = "form-group mt-3">
-                <select title="1: saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="name" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
+                <select title="1: saved search" [disabled]="msg !== '' ? true : false" [(ngModel)]="saveSearchName" name="searchName" (ngModelChange)="searchdata('searchName', $event)" class="selectpicker form-control">
                   <option *ngFor = "let name of searchName" [value]="name">{{name}}</option>
                 </select>
               </div>

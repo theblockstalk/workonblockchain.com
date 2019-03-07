@@ -63,6 +63,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   errorMsg;
   urlParameters : any = {};
   no_value = false;
+  saveSearchName;
 
   constructor(private _fb: FormBuilder , private pagerService: PagerService, private authenticationService: UserService,private route: ActivatedRoute,private router: Router) {
     this.route.queryParams.subscribe(params => {
@@ -71,7 +72,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
         if(this.urlParameters) {
           this.no_value = true;
           if(this.urlParameters.searchName){
-            this.name = this.urlParameters.searchName;
+            this.saveSearchName = this.urlParameters.searchName;
           }
           if(this.urlParameters.skills){
             this.skill_value = this.urlParameters.skills;
@@ -423,13 +424,12 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   not_found;
   visa_check;
   blockchain_order;
-  name;
 
   fillFields(searches, name) {
     this.selectedValueArray = [];
     for(let key of searches) {
       if(key['name'] === name) {
-        this.name = name;
+        this.saveSearchName = name;
         setTimeout(() => {
           $('.selectpicker').selectpicker();
         }, 200);
@@ -549,8 +549,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       }
       let newQueryBody : any = {};
       newQueryBody = queryBody;
-      if(key === 'searchName') {
-        newQueryBody.searchName = value;
+      if(this.saveSearchName) {
+        newQueryBody.searchName = this.saveSearchName;
       }
       this.router.navigate(['candidate-search'], {
         queryParams: {queryBody: JSON.stringify(newQueryBody)}
@@ -599,7 +599,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
     this.visa_check = false;
     this.residence_country = [];
     this.blockchain_order = [];
-    this.name = '';
+    this.saveSearchName = '';
     $('.selectpicker').val('default');
     $('.selectpicker').selectpicker('refresh');
     this.router.navigate(['candidate-search'], {});
@@ -611,8 +611,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
   error_msg;
   savedSearch() {
     let queryBody : any = {};
-    let index = this.savedSearches.findIndex((obj => obj.name === this.name));
-    if(this.name) queryBody.name = this.name;
+    let index = this.savedSearches.findIndex((obj => obj.name === this.saveSearchName));
+    if(this.saveSearchName) queryBody.name = this.saveSearchName;
     if(this.skill_value && this.skill_value.length > 0) queryBody.skills = this.skill_value;
     if(this.selectedValueArray && this.selectedValueArray.length > 0) {
       let validatedLocation =[];
@@ -636,7 +636,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       queryBody.current_currency = this.currencyChange;
     }
     this.savedSearches[index] = queryBody;
-    if(this.name) {
+    if(this.saveSearchName) {
       this.authenticationService.edit_company_profile({'saved_searches' : this.savedSearches})
         .subscribe(
           data => {
@@ -728,8 +728,8 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
               if(data && this.currentUser)
               {
                 this.savedSearches= [];
-                this.name = this.preferncesForm.value.name;
-                this.searchdata('name' , this.name);
+                this.saveSearchName = this.preferncesForm.value.name;
+                this.searchdata('name' , this.saveSearchName);
                 $('#saveNewSearch').modal('hide');
                 this.preferncesForm = this._fb.group({
                   name: [''],
