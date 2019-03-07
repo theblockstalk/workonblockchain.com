@@ -570,6 +570,7 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       if(this.saveSearchName) {
         newQueryBody.searchName = this.saveSearchName;
       }
+
       this.router.navigate(['candidate-search'], {
         queryParams: {queryBody: JSON.stringify(newQueryBody)}
       });
