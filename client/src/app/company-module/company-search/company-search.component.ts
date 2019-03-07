@@ -254,6 +254,24 @@ export class CompanySearchComponent implements OnInit,AfterViewInit {
       residence_country: new FormControl(),
     });
 
+    console.log(this.currencyChange);
+    console.log(this.residence_country);
+
+    this.preferncesForm = this._fb.group({
+      name: [],
+      location: [],
+      visa_needed: [this.visa_check],
+      job_type: [],
+      position: [this.role_value],
+      current_currency: [this.currencyChange],
+      current_salary: [this.salary],
+      blockchain: [this.blockchain_value],
+      skills: [this.skill_value],
+      other_technologies: [],
+      order_preferences: [this.blockchain_order],
+      residence_country: [this.residence_country],
+    });
+
     this.success_msg = '';
     this.ckeConfig = {
       allowedContent: false,
