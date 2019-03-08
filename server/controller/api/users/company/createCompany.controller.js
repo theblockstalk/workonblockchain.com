@@ -37,7 +37,7 @@ module.exports = async function (req, res) {
             type: queryBody.type,
             jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
             created_date: timestamp,
-            referred_email : queryBody.referred_email
+            referred_email : queryBody.referred_email,
             session_started: timestamp
         };
         const companyUserCreated  =  await Users.insert(newCompanyDoc);
