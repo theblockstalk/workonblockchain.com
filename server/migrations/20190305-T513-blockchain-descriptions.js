@@ -38,50 +38,65 @@ function aggregateArray (array, platformArray, propertyName) {
 module.exports.up = async function() {
     let unset = {};
     let set = {};
-    totalDocsToProcess = await users.count({type:'candidate'});
+    totalDocsToProcess = await users.count({type:'candidate',"candidate.blockchain": {$exists: true}});
     logger.debug(totalDocsToProcess);
 
-    await users.findAndIterate({type:'candidate'}, async function(candDoc) {
-        if(candDoc.candidate.blockchain) {
-            let technologies = [], skills = [];
-            if (candDoc.candidate.blockchain.commercial_platforms) {
-                aggregateArray(technologies, candDoc.candidate.blockchain.commercial_platforms, "name");
-            }
-            if (candDoc.candidate.blockchain.smart_contract_platforms) {
-                aggregateArray(technologies, candDoc.candidate.blockchain.smart_contract_platforms, "name");
-            }
-            if (candDoc.candidate.blockchain.commercial_skills) {
-                aggregateArray(skills, candDoc.candidate.blockchain.commercial_skills, "skill");
-            }
-            if (candDoc.candidate.blockchain.formal_skills) {
-                aggregateArray(skills, candDoc.candidate.blockchain.formal_skills, "skill");
-            }
-            console.log(technologies);
-            console.log(skills);
-            set = {
-                "candidate.blockchain.commercial_platforms": technologies,
-                "candidate.blockchain.description_commercial_platforms": '',
-                "candidate.blockchain.description_experimented_platforms": '',
-                "candidate.blockchain.commercial_skills": skills,
-                "candidate.blockchain.description_commercial_skills": ''
-            };
-            unset = {
-                "candidate.blockchain.smart_contract_platforms": 1,
-                "candidate.blockchain.formal_skills": 1
-            };
+    await users.findAndIterate({type:'candidate',"candidate.blockchain": {$exists: true}}, async function(candDoc) {
+        let technologies = [], skills = [];
+        if (candDoc.candidate.blockchain.commercial_platforms) {
+            aggregateArray(technologies, candDoc.candidate.blockchain.commercial_platforms, "name");
+        }
+        if (candDoc.candidate.blockchain.smart_contract_platforms) {
+            aggregateArray(technologies, candDoc.candidate.blockchain.smart_contract_platforms, "name");
+        }
+        if (candDoc.candidate.blockchain.commercial_skills) {
+            aggregateArray(skills, candDoc.candidate.blockchain.commercial_skills, "skill");
+        }
+        if (candDoc.candidate.blockchain.formal_skills) {
+            aggregateArray(skills, candDoc.candidate.blockchain.formal_skills, "skill");
+        }
+        console.log(technologies);
+        console.log(skills);
+        set = {
+            "candidate.blockchain.commercial_platforms": technologies,
+            "candidate.blockchain.description_commercial_platforms": '',
+            "candidate.blockchain.description_experimented_platforms": '',
+            "candidate.blockchain.commercial_skills": skills,
+            "candidate.blockchain.description_commercial_skills": ''
+        };
+        unset = {
+            "candidate.blockchain.smart_contract_platforms": 1,
+            "candidate.blockchain.formal_skills": 1
+        };
 
-            let updateObj = {$set: set, $unset: unset};
+        let updateObj = {$set: set, $unset: unset};
 
-            if (updateObj) {
-                logger.debug("migrate user doc: ", set);
-                await users.update({_id: candDoc._id}, updateObj);
-                totalModified++;
-            }
+        if (updateObj) {
+            logger.debug("migrate user doc: ", set);
+            await users.update({_id: candDoc._id}, updateObj);
+            totalModified++;
         }
     });
 }
 
 // This function will undo the migration
 module.exports.down = async function() {
-    console.log('undoing migration');
+    let unset = {};
+    let set = {};
+    totalDocsToProcess = await users.count({type:'candidate',"candidate.blockchain": {$exists: true}});
+    logger.debug(totalDocsToProcess);
+
+    await users.findAndIterate({type:'candidate',"candidate.blockchain": {$exists: true}}, async function(candDoc) {
+        unset = {
+            "candidate.blockchain.description_commercial_platforms": 1,
+            "candidate.blockchain.description_experimented_platforms": 1,
+            "candidate.blockchain.description_commercial_skills": 1
+        };
+        let updateObj = {$unset: unset};
+        if (updateObj) {
+            logger.debug("migrate user doc: ", set);
+            await users.update({_id: candDoc._id}, updateObj);
+            totalModified++;
+        }
+    });
 }
