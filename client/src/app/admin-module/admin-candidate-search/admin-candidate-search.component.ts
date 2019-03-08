@@ -152,67 +152,6 @@ export class AdminCandidateSearchComponent implements OnInit,AfterViewInit {
 
   is_approve;
   error;
-  approveClick(event , approveForm: NgForm)
-  {
-    this.error = '';
-    let reason = '';
-    if(event.srcElement.innerHTML ==='Active' )
-    {
-      this.is_approve = 'approved';
-    }
-    else if(event.srcElement.innerHTML === 'Inactive')
-    {
-      this.is_approve = 'rejected';
-      reason = 'garbage';
-    }
-
-    this.authenticationService.approve_candidate(approveForm.value.id ,this.is_approve,reason)
-      .subscribe(
-        data =>
-        {
-
-          if(data['success'] === true )
-          {
-
-            if(event.srcElement.innerHTML ==='Active' )
-            {
-              event.srcElement.innerHTML="Inactive";
-            }
-            else if(event.srcElement.innerHTML ==='Inactive')
-            {
-              event.srcElement.innerHTML="Active";
-            }
-          }
-          if(data['is_approved'] ===0)
-          {
-            if(event.srcElement.innerHTML ==='Active' )
-            {
-              event.srcElement.innerHTML="Inactive";
-            }
-            else if(event.srcElement.innerHTML ==='Inactive')
-            {
-              event.srcElement.innerHTML="Active";
-            }
-          }
-
-        },
-
-        error=>
-        {
-          if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-          {
-            this.error = error['error']['message'];
-          }
-          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
-          {
-            this.error = error['error']['message'];
-          }
-          else {
-            this.error = "Something getting wrong";
-          }
-        });
-  }
-
 
   onSearchName(f: NgForm)
   {

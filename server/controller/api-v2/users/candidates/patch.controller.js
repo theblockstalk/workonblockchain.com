@@ -1,20 +1,27 @@
+const auth = require('../../../middleware/auth-v2');
 const mongoose = require('mongoose');
-const regexes = require('./regexes');
-const enumerations = require('./enumerations');
+const Schema = require('mongoose').Schema;
+const enumerations = require('../../../../model/enumerations');
+const regexes = require('../../../../model/regexes');
+const multer = require('../../../../controller/middleware/multer');
 
-const Schema = mongoose.Schema;
+const users = require('../../../../model/mongoose/users');
+const filterReturnData = require('../../../api/users/filterReturnData');
+const objects = require('../../../services/objects');
 
-const UserSchema = new Schema({
-    email: {
-        type:String,
-        validate: regexes.email,
-        lowercase: true,
-        required:true
-    },
-    marketing_emails: {
-        type:Boolean,
-        default:false
-    },
+module.exports.request = {
+    type: 'patch',
+    path: '/users/:user_id/candidates'
+};
+const paramSchema = new Schema({
+    user_id: String
+});
+
+const querySchema = new Schema({
+    admin: Boolean
+});
+
+const bodySchema = new Schema({
     first_name: String,
     last_name: String,
     contact_number: String,
@@ -26,83 +33,12 @@ const UserSchema = new Schema({
         type: String,
         validate: regexes.url
     },
-    sendgrid_id: {
-        type: String
-    },
-    linkedin_id : {
-        type: String
-    },
-    password_hash: {
-        type:String,
-        required:true
-    },
-    salt: {
-        type: String,
-        required: true
-    },
-    type: {
-        type:String,
-        enum: ['candidate', 'company'],
-        required:true
-    },
-    is_verify: {
-        type:Number, // 0 = false, 1 = true
-        enum: [0, 1],
-        default:0
-    },
-    social_type: {
-        type:String,
-        enum: ['GOOGLE', 'LINKEDIN', '']
-    },
-    is_approved: {
-        type:Number, // 0 = false, 1 = true
-        enum: [0, 1],
-        required:true,
-        default:0
-    },
-    jwt_token: {
-        type:String,
-    },
-    verify_email_key: {
-        type:String, // This is a hash
-    },
-    forgot_password_key: {
-        type:String, // This is a hash
-    },
-    referred_email : {
-        type:String
-    },
-    is_admin: {
-        type:Number, // 0 = false, 1 = true
-        enum: [0, 1],
-        required:true,
-        default:0
-    },
-    is_unread_msgs_to_send: {
-        type:Boolean,
-        default:true
-    },
-    disable_account: {
-        type:Boolean,
-        default:false
-    },
-    dissable_account_timestamp: {
-        type:Date
-    },
-    viewed_explanation_popup: {
-        type:Boolean,
-        default:false
-    },
     candidate: {
         type: {
             base_city: String,
             base_country: {
                 type: String,
                 enum: enumerations.countries
-            },
-            terms_id: {
-                type: Schema.Types.ObjectId,
-                ref: 'pages_content'
             },
             github_account: {
                 type:String,
@@ -280,97 +216,117 @@ const UserSchema = new Schema({
                         }
                     })],
                 }
-            },
-            status:{ //DELETE ME
-                type:[{
-                    status: {
-                        type: String,
-                        enum: enumerations.candidateStatus,
-                        required:true,
-                    },
-                    reason: {
-                        type: String,
-                        enum: enumerations.statusReasons
-                    },
-                    timestamp: {
-                        type: Date,
-                        required:true,
-                    }
-                }]
-            },
-            history : {
-                type : [{
-                    status:{
-                        type:[{
-                            status: {
-                                type: String,
-                                enum: enumerations.candidateStatus,
-                                required:true,
-                            },
-                            reason: {
-                                type: String,
-                                enum: enumerations.statusReasons
-                            }
-                        }],
-                        required: false
-                    },
-                    note : String,
-                    email_html : String,
-                    email_subject : String,
-                    timestamp: {
-                        type: Date,
-                        required:true,
-                    }
-                }]
-
-            },
-            latest_status : {
-                status: {
-                    type: String,
-                    enum: enumerations.candidateStatus,
-                    required:true,
-                },
-                reason: {
-                    type: String,
-                    enum: enumerations.statusReasons
-                },
-                timestamp: {
-                    type: Date,
-                    required:true,
-                }
-
             }
-
         }
-    },
-    conversations: [new Schema({
-        user_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required:true
-        },
-        count: {
-            type: Number,
-            required: true,
-            default:0
-        },
-        unread_count: {
-            type: Number,
-            required: true,
-            default:0
-        },
-        last_message: {
-            type: Date,
-            required: true
-        }
-    })],
-    first_approved_date:{
-        type: Date
-    },
-    created_date: {
-        type: Date
     }
-
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports.inputValidation = {
+    params: paramSchema,
+    query: querySchema,
+    body: bodySchema
+};
+
+module.exports.files = async function(req) {
+    await multer.uploadOneFile(req, "image");
+}
+
+module.exports.auth = async function (req) {
+    await auth.isLoggedIn(req);
+
+    if (req.query.admin) {
+        await auth.isAdmin(req);
+    }
+}
+
+
+module.exports.endpoint = async function (req, res) {
+    let userId;
+    let queryBody = req.body;
+    let updateCandidateUser = {};
+    let userDoc = req.auth.user;
+
+    if (req.query.admin) {
+        userId = req.params.user_id;
+    }
+    else {
+        userId = req.auth.user._id;
+    }
+
+    if(req.file && req.file.path) updateCandidateUser.image = req.file.path;
+
+    if (queryBody.first_name) updateCandidateUser.first_name = queryBody.first_name;
+    if (queryBody.last_name) updateCandidateUser.last_name = queryBody.last_name;
+    if (queryBody.contact_number) updateCandidateUser.contact_number = queryBody.contact_number;
+    if (queryBody.nationality) updateCandidateUser.nationality = queryBody.nationality;
+    if(queryBody.base_city) updateCandidateUser['candidate.base_city'] = queryBody.base_city;
+    if(queryBody.base_country) updateCandidateUser['candidate.base_country'] = queryBody.base_country;
+    if (queryBody.github_account) updateCandidateUser['candidate.github_account'] = queryBody.github_account;
+    if (queryBody.exchange_account) updateCandidateUser['candidate.stackexchange_account'] = queryBody.exchange_account;
+    if (queryBody.linkedin_account) updateCandidateUser['candidate.linkedin_account'] = queryBody.linkedin_account;
+    if (queryBody.medium_account) updateCandidateUser['candidate.medium_account'] = queryBody.medium_account;
+    if (queryBody.locations) {
+        for(let loc of queryBody.locations) {
+            if(loc.city) {
+                const index = queryBody.locations.findIndex((obj => obj.city === loc.city));
+                queryBody.locations[index].city = mongoose.Types.ObjectId(loc.city);
+            }
+        }
+        updateCandidateUser['candidate.locations'] = queryBody.locations;
+    }
+    if (queryBody.roles) updateCandidateUser['candidate.roles'] = queryBody.roles;
+    if (queryBody.expected_salary_currency) updateCandidateUser['candidate.expected_salary_currency'] = queryBody.expected_salary_currency;
+    if (queryBody.expected_salary) updateCandidateUser['candidate.expected_salary'] = queryBody.expected_salary;
+    if (queryBody.current_currency && queryBody.current_currency !== "-1") updateCandidateUser['candidate.current_currency'] = queryBody.current_currency;
+    if (queryBody.current_salary ) updateCandidateUser['candidate.current_salary'] = queryBody.current_salary;
+    if (queryBody.availability_day) updateCandidateUser['candidate.availability_day'] = queryBody.availability_day;
+    if (queryBody.why_work) updateCandidateUser['candidate.why_work'] = queryBody.why_work;
+    if (queryBody.programming_languages && queryBody.programming_languages.length > 0) updateCandidateUser['candidate.programming_languages'] = queryBody.programming_languages;
+    if (queryBody.description) updateCandidateUser['candidate.description'] = queryBody.description;
+    if (queryBody.education_history && queryBody.education_history.length > 0) updateCandidateUser['candidate.education_history'] = queryBody.education_history;
+    if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
+    if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
+    if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) updateCandidateUser['candidate.blockchain.commercial_platforms'] = queryBody.commercial_platforms;
+    if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
+    if (queryBody.smart_contract_platforms && queryBody.smart_contract_platforms.length > 0) updateCandidateUser['candidate.blockchain.smart_contract_platforms'] = queryBody.smart_contract_platforms;
+    if(queryBody.commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
+    if(queryBody.formal_skills && queryBody.formal_skills.length > 0 ) updateCandidateUser['candidate.blockchain.formal_skills'] = queryBody.formal_skills;
+
+
+    const candidateHistory = userDoc.candidate.history;
+    let timestamp = new Date();
+    let history = {
+        timestamp : timestamp
+    }
+    if(req.query.admin) {
+        history.status = { status: 'updated by admin' };
+    }
+    else {
+        let wizardStatus = candidateHistory.filter( (history) => history.status.status === 'wizard completed');
+        if (wizardStatus.length === 0 && queryBody.description) {
+            history.status = { status: 'wizard completed' };
+        }
+        else {
+            history.status = { status: 'updated' };
+        }
+    }
+
+    let latestStatus = objects.copyObject(history.status);
+    latestStatus.timestamp = timestamp;
+    updateCandidateUser['candidate.latest_status'] = latestStatus;
+
+
+    await users.update({_id: userId}, {
+        $push: {
+            'candidate.history': {
+                $each: [history],
+                $position: 0
+            }
+        },
+        $set : updateCandidateUser
+    });
+
+
+    const filterData = filterReturnData.removeSensativeData(userDoc);
+    res.send(filterData);
+}
