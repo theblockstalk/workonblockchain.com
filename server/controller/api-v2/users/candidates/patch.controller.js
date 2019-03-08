@@ -292,43 +292,40 @@ module.exports.endpoint = async function (req, res) {
     if(queryBody.commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
     if(queryBody.formal_skills && queryBody.formal_skills.length > 0 ) updateCandidateUser['candidate.blockchain.formal_skills'] = queryBody.formal_skills;
 
-    await users.update({ _id: userId},{$set: updateCandidateUser});
 
-    if(queryBody.description) {
-        const candidateHistory = userDoc.candidate.history;
-        let timestamp = new Date();
-        let history = {
-            timestamp : timestamp
-        }
-        let set = {};
-        if(req.query.admin) {
-            history.status = { status: 'updated by admin' };
+    const candidateHistory = userDoc.candidate.history;
+    let timestamp = new Date();
+    let history = {
+        timestamp : timestamp
+    }
+    if(req.query.admin) {
+        history.status = { status: 'updated by admin' };
+    }
+    else {
+        let wizardStatus = candidateHistory.filter( (history) => history.status.status === 'wizard completed');
+        if (wizardStatus.length === 0 && queryBody.description) {
+            history.status = { status: 'wizard completed' };
         }
         else {
-            let wizardStatus = candidateHistory.filter( (history) => history.status.status === 'wizard completed');
-            if (wizardStatus.length === 0 && queryBody.description) {
-                history.status = { status: 'wizard completed' };
-            }
-            else {
-                history.status = { status: 'updated' };
-            }
+            history.status = { status: 'updated' };
         }
-
-        let latestStatus = objects.copyObject(history.status);
-        latestStatus.timestamp = timestamp;
-        set['candidate.latest_status'] = latestStatus;
-
-
-        await users.update({_id: userId}, {
-            $push: {
-                'candidate.history': {
-                    $each: [history],
-                    $position: 0
-                }
-            },
-            $set : set
-        });
     }
+
+    let latestStatus = objects.copyObject(history.status);
+    latestStatus.timestamp = timestamp;
+    updateCandidateUser['candidate.latest_status'] = latestStatus;
+
+
+    await users.update({_id: userId}, {
+        $push: {
+            'candidate.history': {
+                $each: [history],
+                $position: 0
+            }
+        },
+        $set : updateCandidateUser
+    });
+
 
     const filterData = filterReturnData.removeSensativeData(userDoc);
     res.send(filterData);
