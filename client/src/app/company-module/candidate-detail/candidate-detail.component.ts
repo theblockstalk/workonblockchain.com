@@ -42,6 +42,9 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
   visaRequiredArray= [];
   noVisaArray = [];
   currency = ["£ GBP" ,"€ EUR" , "$ USD"];
+  description_commercial_platforms;
+  description_experimented_platforms;
+  description_commercial_skills;
 
   ckeConfig: any;
   @ViewChild("myckeditor") ckeditor: any;
@@ -255,7 +258,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   })
                 }
 
-                if (dataa['candidate'].blockchain.formal_skills) {
+                /*if (dataa['candidate'].blockchain.formal_skills) {
                   this.formal_skills = dataa['candidate'].blockchain.formal_skills;
                   this.formal_skills.sort(function (a, b) {
                     if (a.skill < b.skill) {
@@ -266,7 +269,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                     }
                     return 0;
                   });
-                }
+                }*/
 
                 if (dataa['candidate'].blockchain.commercial_platforms) {
                   this.commercial = dataa['candidate'].blockchain.commercial_platforms;
@@ -298,7 +301,19 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
                   }
                 }
 
-                if (dataa['candidate'].blockchain.smart_contract_platforms) {
+                if(dataa['candidate'].blockchain.description_commercial_platforms) {
+                  this.description_commercial_platforms = dataa['candidate'].blockchain.description_commercial_platforms;
+                }
+
+                if(dataa['candidate'].blockchain.description_experimented_platforms) {
+                  this.description_experimented_platforms = dataa['candidate'].blockchain.description_experimented_platforms;
+                }
+
+                if(dataa['candidate'].blockchain.description_commercial_skills) {
+                  this.description_commercial_skills = dataa['candidate'].blockchain.description_commercial_skills;
+                }
+
+                /*if (dataa['candidate'].blockchain.smart_contract_platforms) {
                   this.platforms = dataa['candidate'].blockchain.smart_contract_platforms;
                   if (this.platforms && this.platforms.length > 0) {
                     this.platforms.sort(function (a, b) {
@@ -314,7 +329,7 @@ export class CandidateDetailComponent implements OnInit, AfterViewInit   {
 
                   }
 
-                }
+                }*/
               }
 
             }

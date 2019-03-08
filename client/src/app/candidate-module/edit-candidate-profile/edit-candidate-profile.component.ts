@@ -111,6 +111,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
   selectedLocations;
   cities;
   emptyInput;
+  description_commercial_platforms;
+  description_experimented_platforms;
+  description_commercial_skills;
 
   nationality = ['Afghan', 'Albanian', 'Algerian', 'American', 'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian', 'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini', 'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian', 'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian', 'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian', 'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian', 'Canadian', 'Cape Verdean', 'Central African', 'Chadian', 'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese', 'Congolese', 'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish', 'Djibouti', 'Dominican', 'Dominican', 'Dutch', 'Dutchman', 'Dutchwoman', 'East Timorese', 'Ecuadorean', 'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean', 'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French', 'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek', 'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean', 'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian', 'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian', 'Iraqi', 'Irish', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican', 'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan', 'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian', 'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian', 'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian', 'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian', 'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan', 'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican', 'Namibian', 'Nauruan', 'Nepalese', 'Netherlander', 'New Zealander', 'Ni-Vanuatu', 'Nicaraguan', 'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish', 'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian', 'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish', 'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan', 'Saint Lucian', 'Salvadoran', 'Samoan', 'San Marinese', 'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian', 'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian', 'Slovenian', 'Solomon Islander', 'Somali', 'South African', 'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer', 'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik', 'Tanzanian', 'Thai', 'Togolese', 'Tongan', 'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan', 'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan', 'Vietnamese', 'Welsh', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'];
 
@@ -324,7 +327,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                   }
                 }
 
-                if(data['candidate'].blockchain.formal_skills )
+                if(data['candidate'].blockchain.description_commercial_skills)
+                {
+                  this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
+                }
+
+                /*if(data['candidate'].blockchain.formal_skills )
                 {
                   this.formal_skills = data['candidate'].blockchain.formal_skills;
                   for (let key of data['candidate'].blockchain.formal_skills)
@@ -364,7 +372,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
                     }
                   }
-                }
+                }*/
 
                 if(data['candidate'].blockchain.commercial_platforms)
                 {
@@ -410,7 +418,12 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
                 }
 
-                if(data['candidate'].blockchain.smart_contract_platforms)
+                if(data['candidate'].blockchain.description_commercial_platforms)
+                {
+                  this.description_commercial_platforms = data['candidate'].blockchain.description_commercial_platforms;
+                }
+
+                /*if(data['candidate'].blockchain.smart_contract_platforms)
                 {
                   this.platforms = data['candidate'].blockchain.smart_contract_platforms;
                   for (let key of data['candidate'].blockchain.smart_contract_platforms)
@@ -454,7 +467,7 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
 
                     }
                   }
-                }
+                }*/
 
                 if(data['candidate'].blockchain.experimented_platforms)
                 {
@@ -474,6 +487,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
                     }
 
                   }
+                }
+
+                if(data['candidate'].blockchain.description_experimented_platforms)
+                {
+                  this.description_experimented_platforms = data['candidate'].blockchain.description_experimented_platforms;
                 }
               }
 
@@ -1399,10 +1417,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     {
       this.commercial_log = "Please fill year of experience";
     }
-    if(this.platforms_designed.length !== this.platforms.length)
+    /*if(this.platforms_designed.length !== this.platforms.length)
     {
       this.platform_log = "Please fill year of experience";
-    }
+    }*/
 
 
     if(this.LangexpYear.length !==  this.language.length)
@@ -1421,10 +1439,10 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
       this.commercial_skill_log = "Please fill year of experience";
     }
 
-    if(this.formal_skills_exp.length !== this.formal_skills.length)
+    /*if(this.formal_skills_exp.length !== this.formal_skills.length)
     {
       this.formal_skills_log = "Please fill year of experience";
-    }
+    }*/
 
 
     if(this.EducationForm.value.itemRows.length >= 1)
@@ -1581,9 +1599,9 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.count === 0 && this.info.first_name && this.info.last_name && this.info.contact_number && this.info.nationality &&
       this.info.city && this.info.base_country  && this.expected_salaryyy && this.selectedLocations && this.selectedLocations.length > 0
       && this.selectedLocations.length <= 10 && this.selectedLocations.filter(i => i.visa_needed === true).length < this.selectedLocations.length && this.jobselected.length>0 && this.base_currency && this.selectedValue.length > 0 && this.availability_day &&
-      this.why_work && this.commercially_worked.length === this.commercial_expYear.length && this.platforms_designed.length === this.platforms.length
-      && this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
-      && this.formal_skills_exp.length === this.formal_skills.length && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
+      this.why_work && this.commercially_worked.length === this.commercial_expYear.length &&
+      this.language &&this.LangexpYear.length ===  this.language.length && this.Intro && this.edu_count === this.EducationForm.value.itemRows.length && this.exp_count === this.ExperienceForm.value.ExpItems.length
+      && this.commercialSkills.length === this.commercialSkillsExperienceYear.length
     )
     {
       this.verify = true;
@@ -1652,23 +1670,42 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     }
 
 
-    if(this.platforms_designed.length === 0) {
+    /*if(this.platforms_designed.length === 0) {
       profileForm.smart_contract_platforms = [];
     }
     else {
       profileForm.smart_contract_platforms = this.platforms;
-    }
+    }*/
     if(this.commercialSkills.length === 0) {
       profileForm.commercial_skills = [];
     }
     else {
       profileForm.commercial_skills = this.commercialSkillsExperienceYear;
     }
-    if(this.formal_skills_exp.length === 0) {
+    /*if(this.formal_skills_exp.length === 0) {
       profileForm.formal_skills = [];
     }
     else {
       profileForm.formal_skills = this.formal_skills;
+    }*/
+
+    console.log(this.description_commercial_platforms);
+    console.log(this.description_experimented_platforms);
+    console.log(this.description_commercial_skills);
+
+    profileForm.description_commercial_platforms = '';
+    if(this.description_commercial_platforms){
+      profileForm.description_commercial_platforms = this.description_commercial_platforms;
+    }
+
+    profileForm.description_experimented_platforms = '';
+    if(this.description_experimented_platforms){
+      profileForm.description_experimented_platforms = this.description_experimented_platforms;
+    }
+
+    profileForm.description_commercial_skills = '';
+    if(this.description_commercial_skills){
+      profileForm.description_commercial_skills = this.description_commercial_skills;
     }
 
     if(this.language.length === 0) {

@@ -151,6 +151,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                 }
               }
 
+              if(data['candidate'].blockchain.description_commercial_platforms)
+              {
+                this.description_commercial_platforms = data['candidate'].blockchain.description_commercial_platforms;
+              }
+
               if(data['candidate'].blockchain.smart_contract_platforms)
               {
                 this.platforms = data['candidate'].blockchain.smart_contract_platforms;
@@ -220,6 +225,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
                 }
               }
 
+              if(data['candidate'].blockchain.description_experimented_platforms)
+              {
+                this.description_experimented_platforms = data['candidate'].blockchain.description_experimented_platforms;
+              }
+
 
             }
 
@@ -263,6 +273,11 @@ export class ResumeComponent implements OnInit,AfterViewInit {
 
                 }
               }
+            }
+
+            if(data['candidate'].blockchain.description_commercial_skills)
+            {
+              this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
             }
 
 
