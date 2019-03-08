@@ -1,11 +1,11 @@
 const emails = require('../emails');
 const settings = require('../../../../settings');
 
-module.exports.sendEmail = function sendEmail(email,name,email_text,isAccountDisabed) {
+module.exports.sendEmail = function sendEmail(email,name,subject,email_text,isAccountDisabed) {
     const sendTo = {
         email:email
     };
-    const subject = "Your account has been approved!";
+    const subject = subject;
 
     const sendToArray = [sendTo];
 

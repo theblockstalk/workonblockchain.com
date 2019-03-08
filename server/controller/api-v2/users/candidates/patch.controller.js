@@ -301,13 +301,20 @@ module.exports.endpoint = async function (req, res) {
             timestamp : timestamp
         }
         let set = {};
-        let wizardStatus = candidateHistory.filter( (history) => history.status.status === 'wizard completed');
-        if (wizardStatus.length === 0 && updatedProfile.candidate.description) {
-            history.status = { status: 'wizard completed' };
-        } else {
-            history.status = { status: 'updated' };
+        if(req.query.admin) {
+            history.status = { status: 'updated by admin' };
         }
-        let latestStatus = history.status;
+        else {
+            let wizardStatus = candidateHistory.filter( (history) => history.status.status === 'wizard completed');
+            if (wizardStatus.length === 0 && updatedProfile.candidate.description) {
+                history.status = { status: 'wizard completed' };
+            }
+            else {
+                history.status = { status: 'updated' };
+            }
+        }
+
+        let latestStatus = objects.copyObject(history.status);;
         latestStatus.timestamp = timestamp;
         set['candidate.latest_status'] = latestStatus;
 

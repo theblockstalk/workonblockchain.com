@@ -1717,19 +1717,8 @@ export class AdminUpdateCandidateProfileComponent implements OnInit,AfterViewIni
         data => {
           if(data && this.currentUser)
           {
-            let queryInput : any = {};
-            queryInput.status = 'updated by admin';
+            this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.user_id } });
 
-            this.authenticationService.candidate_status_history(this.user_id, queryInput, true)
-              .subscribe(
-                data => {
-                  if(data) {
-                    this.router.navigate(['/admin-candidate-detail'], { queryParams: { user: this.user_id } });
-                  }
-                },
-                error => {
-
-                });
           }
 
         },

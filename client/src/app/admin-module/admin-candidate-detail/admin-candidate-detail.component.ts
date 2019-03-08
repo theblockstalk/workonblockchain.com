@@ -48,6 +48,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     {value:'not responded', name:'Not Responded'},
     {value:'other', name:'Other'}
   ];
+  email_subject;
 
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
@@ -425,7 +426,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.success = '';
     console.log(this.email_text);
     console.log(approveForm.value);
-    if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.email_text) {
+    if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.email_text && !approveForm.value.email_subject) {
       this.error = 'Please fill at least one field';
     }
 
@@ -448,6 +449,15 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
       }
+      else if(approveForm.value.email_text && !approveForm.value.email_subject) {
+        this.error = 'Please enter email subject too.';
+
+      }
+
+      else if(!approveForm.value.email_text && approveForm.value.email_subject) {
+        this.error = 'Please enter email body too.';
+
+      }
       else {
         this.saveApproveData(approveForm.value);
         approveForm.resetForm();
@@ -464,6 +474,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
 
     if(approveForm.note)queryInput['note'] = approveForm.note;
     if(approveForm.email_text) queryInput['email_html'] = approveForm.email_text;
+    if(approveForm.email_subject) queryInput['email_subject'] = approveForm.email_subject;
     if(approveForm.set_status) queryInput['status'] = approveForm.set_status;
     if(approveForm.status_reason_rejected) queryInput['reason'] = approveForm.status_reason_rejected;
     if(approveForm.status_reason_deferred) queryInput['reason'] = approveForm.status_reason_deferred;
