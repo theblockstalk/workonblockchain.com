@@ -15,7 +15,8 @@ module.exports = async function (req, res) {
         userDoc =  await users.findOne({linkedin_id : queryBody.linkedin_id });
         if(userDoc && userDoc.social_type === 'LINKEDIN' && userDoc.linkedin_id) {
             let jwtUserToken = jwtToken.createJwtToken(userDoc);
-            await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+            await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken,
+                    session_started: new Date()}});
             res.send({
                 _id:userDoc._id,
                 _creator: userDoc._id, //remove this after chat refactor
@@ -45,7 +46,8 @@ module.exports = async function (req, res) {
             {
                 if(userDoc.type === 'candidate') {
                     let jwtUserToken = jwtToken.createJwtToken(userDoc);
-                    await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+                    await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken,
+                            session_started: new Date()}});
                     res.send({
                         _id: userDoc._id,
                         _creator : userDoc._id, // remove this after chat refactor
@@ -60,7 +62,8 @@ module.exports = async function (req, res) {
 
                 if(userDoc.type === 'company') {
                     let jwtUserToken = jwtToken.createJwtToken(userDoc);
-                    await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken}});
+                    await users.update({_id: userDoc._id}, {$set: {'jwt_token': jwtUserToken,
+                            session_started: new Date()}});
                     const companyDoc = await companies.findOne({ _creator:  userDoc._id });
                     res.send({
                         _id: companyDoc._id,

@@ -61,7 +61,10 @@ const UserSchema = new Schema({
         default:0
     },
     jwt_token: {
-        type:String,
+        type:String
+    },
+    session_started: {
+        type: Date
     },
     verify_email_key: {
         type:String, // This is a hash

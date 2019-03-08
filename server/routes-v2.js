@@ -42,13 +42,11 @@ const validateInputs = function(request, inputSchemas) {
 
 const amplitudeTrack = function (request) {
     let data = {
-        event_type: request.type.toUpperCase() + ' ' + request.path,
+        event_type: request.path + ' - ' + request.type.toUpperCase(),
         event_properties: {}
     };
 
-    const blacklist = ['/'];
-
-    if (blacklist.includes(request.path)) {
+    if (request.path === '/') {
         return function (req) {
             return;
         }
@@ -56,8 +54,7 @@ const amplitudeTrack = function (request) {
         return function (req) {
             if (req.auth && req.auth.user) {
                 data.user_id = req.auth.user._id.toString();
-                // data.session_id = req.auth.user.session.timestamp; // TODO
-                data.session_id = 1000; // TODO
+                data.session_id = req.auth.user.session_started.getTime();
             } else {
                 data.user_id = "anonimous"
                 data.session_id = -1;

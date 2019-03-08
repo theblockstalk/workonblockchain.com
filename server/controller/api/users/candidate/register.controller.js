@@ -36,6 +36,7 @@ module.exports = async function (req, res) {
     let hash = crypto.createHmac('sha512', salt);
     hash.update(userParam.password);
     let hashedPasswordAndSalt = hash.digest('hex');
+    const timestamp = new Date();
     let newUserDoc = {
         email: userParam.email,
         password_hash: hashedPasswordAndSalt,
@@ -43,7 +44,7 @@ module.exports = async function (req, res) {
         type: userParam.type,
         social_type: userParam.social_type,
         is_verify:is_verify,
-        created_date: new Date(),
+        created_date: timestamp,
         referred_email : userParam.referred_email,
         linkedin_id : userParam.linkedin_id,
         first_name: userParam.first_name,
@@ -51,10 +52,10 @@ module.exports = async function (req, res) {
         candidate: {
             status: [{
                 status: 'created',
-                status_updated: new Date(),
-                timestamp: new Date()
+                status_updated: timestamp,
+                timestamp: timestamp
             }]
-        }
+        },
     }
     const candidateUserCreated = await users.insert(newUserDoc);
 
@@ -73,7 +74,7 @@ module.exports = async function (req, res) {
             if(userParam.linkedin_account) updateCandidate['candidate.linkedin_account'] = userParam.linkedin_account;
         }
 
-        await users.update({_id: candidateUserCreated._id}, {$set: updateCandidate});
+        await users.update({_id: candidateUserCreated._id}, {$set: updateCandidate, session_started: timestamp});
 
         //sending email for social register
         if(candidateUserCreated.social_type === 'GOOGLE' || candidateUserCreated.social_type === 'LINKEDIN'){
@@ -92,7 +93,6 @@ module.exports = async function (req, res) {
         res.send
         ({
             _id: candidateUserCreated._id,
-            _creator : candidateUserCreated._id, // remove this after chat refactor
             type:candidateUserCreated.type,
             email: candidateUserCreated.email,
             ref_link: url_token,

@@ -29,15 +29,16 @@ module.exports = async function (req, res) {
         let hashedPasswordAndSalt = hash.digest('hex');
 
         let random = crypto.randomBytes(16).toString('base64');
+        const timestamp = new Date();
         let newCompanyDoc = {
             email: queryBody.email,
             password_hash: hashedPasswordAndSalt,
             salt : salt,
             type: queryBody.type,
             jwt_token:jwt.sign({ sub: random }, settings.EXPRESS_JWT_SECRET),
-            created_date: new Date(),
+            created_date: timestamp,
             referred_email : queryBody.referred_email
-
+            session_started: timestamp
         };
         const companyUserCreated  =  await Users.insert(newCompanyDoc);
         if(companyUserCreated)
