@@ -39,7 +39,7 @@ describe('update candidate profile', function () {
             base_country: 'Pakistan',
             base_city: 'Islamabad',
             expected_salary: 1400,
-            expected_salary_currency: '$ USD ',
+            expected_salary_currency: '$ USD',
             current_salary: 23000,
             current_currency: '£ GBP',
             availability_day: '1 month',
@@ -110,7 +110,7 @@ describe('update candidate profile', function () {
         }
 
         const res = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
-        candidateUserDoc = res.body;
+        candidateUserDoc = await users.findOne({email: candidate.email}).lean();
         const blockchainSkills = candidateUserDoc.candidate.blockchain;
         candidateUserDoc.candidate.github_account.should.equal(candidateEditProfileData.github_account);
         candidateUserDoc.candidate.stackexchange_account.should.equal(candidateEditProfileData.exchange_account);
