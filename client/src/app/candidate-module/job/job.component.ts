@@ -17,7 +17,6 @@ export class JobComponent implements OnInit,AfterViewInit {
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService) { }
   info: any = {};
   country ='';
-  roles='';
   interest_area='';
   expected_salary='';
   checked_country='';
@@ -59,7 +58,14 @@ export class JobComponent implements OnInit,AfterViewInit {
   current_currency_log;
   count;
   emptyInput;
+  validatedLocation=[];
+  country_input_log;
   position_type = ['Full time', 'Part time'];
+  work_type = [
+    {name:'empolyee (full/part time)', value:'employee', checked:false},
+    {name:'contractor/freelancer',value:'contractor', checked:false},
+    {name:'temporary volunteer', value: 'volunteer' ,checked:false}
+    ];
   ngAfterViewInit(): void
   {
     window.scrollTo(0, 0);
@@ -69,7 +75,7 @@ export class JobComponent implements OnInit,AfterViewInit {
   }
   ngOnInit()
   {
-    this.resume_disable = "disabled";
+    /*this.resume_disable = "disabled";
     this.exp_disable = "disabled";
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -248,67 +254,14 @@ export class JobComponent implements OnInit,AfterViewInit {
       this.router.navigate(['/not_found']);
     }
 
-
+*/
   }
 
-  currency=
-    [
+  currency= [
       "£ GBP" ,"€ EUR" , "$ USD"
     ]
 
-  experience=
-    [
-
-      {name:'0-1', value:'0-1', checked:false},
-      {name:'1-2', value:'1-2', checked:false},
-      {name:'2-4', value:'2-4', checked:false},
-      {name:'4-6', value:'4-6', checked:false},
-      {name:'6+', value:'6+', checked:false}
-    ]
-
-  countries =
-    [
-      {id:'000' , value:''},
-      {id:'001' , value:'France'},
-      {id:'002' , value:'United Kingdom'},
-      {id:'003' , value:'Ireland'},
-      {id:'004' , value:'Netherlands'},
-      {id:'005' , value:'Germany'},
-      {id:'006' , value:'Israel'},
-      {id:'007' , value:'Spain'},
-
-    ]
-
-
-  options =
-    [
-      {country_code:'000' , name:'Remote', value:'remote', checked:false},
-      {country_code:'001' ,name:'Paris', value:'Paris', checked:false},
-      {country_code:'001' ,name:'London', value:'London', checked:false},
-      {country_code: '001' ,name:'Dublin', value:'Dublin', checked:false},
-      {country_code: '001' ,name:'Amsterdam', value:'Amsterdam', checked:false},
-      {country_code: '001' ,name:'Berlin', value:'Berlin', checked:false},
-      {country_code: '001' ,name:'Barcelona', value:'Barcelona', checked:false},
-      {country_code: '002' ,name:'Munich', value:'Munich', checked:false},
-      {country_code: '002' ,name:'San Francisco', value:'San Francisco', checked:false},
-      {country_code: '002' ,name:'New York', value:'New York', checked:false},
-      {country_code: '002' ,name:'Los Angeles', value:'Los Angeles', checked:false},
-      {country_code: '002' ,name:'Boston', value:'Boston', checked:false},
-      {country_code: '003' ,name:'Chicago', value:'Chicago', checked:false},
-      {country_code: '004' ,name:'Austin', value:'Austin', checked:false},
-      {country_code: '004' ,name:'Zug', value:'Zug', checked:false},
-      {country_code: '004' ,name:'Zurich', value:'Zurich', checked:false},
-      {country_code: '004' ,name:'Edinburgh', value:'Edinburgh', checked:false},
-      {country_code: '004' ,name:'Copenhagen', value:'Copenhagen', checked:false},
-      {country_code: '004' ,name:'Stockholm', value:'Stockholm', checked:false},
-      {country_code: '004' ,name:'Madrid', value:'Madrid', checked:false},
-      {country_code: '004' ,name:'Toronto', value:'Toronto', checked:false},
-      {country_code: '004' ,name:'Sydney', value:'Sydney', checked:false},
-
-    ]
-
-  dropdown_options =
-    [
+  roles = [
       {name:'Backend Developer', value:'Backend Developer', checked:false},
       {name:'Frontend Developer', value:'Frontend Developer', checked:false},
       {name:'UI Developer', value:'UI Developer', checked:false},
@@ -329,23 +282,7 @@ export class JobComponent implements OnInit,AfterViewInit {
       {name:'Security specialist ', value:'Security specialist', checked:false},
     ]
 
-  area_interested=
-    [
-      {name:'Enterprise blockchain', value:'Enterprise blockchain', checked:false},
-      {name:'Public blockchain', value:'Public blockchain', checked:false},
-      {name:'Blockchain infrastructure', value:'Blockchain infrastructure', checked:false},
-      {name:'Smart contract development', value:'Smart contract development', checked:false},
-      {name:'Decentralized applications (dapps)', value:'Decentralized applications (dapps)', checked:false},
-      {name:"I don't know", value:"I don't know", checked:false},
-    ]
-
-
-
-  year=
-    [
-      "2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991"
-    ]
-  availability = [
+  employement_availability = [
     {name: "Now" , value: "Now" },
     {name: "1 month notice period" , value: "1 month" },
     {name: "2 months notice period", value: "2 months" },
@@ -353,57 +290,41 @@ export class JobComponent implements OnInit,AfterViewInit {
     {name: "3+ months notice period", value: "Longer than 3 months" }
   ]
 
-  onAreaSelected(e)
-  {
-    if(e.target.checked)
-    {
-      this.selectedValue.push(e.target.value);
+  onJobSelected(e, type) {
+    console.log(type);
+    if(type === 'employee') {
+      if(this.employee.roles) this.jobselected = this.employee.roles;
     }
-    else{
-      let updateItem = this.selectedValue.find(this.findIndexToUpdate, e.target.value);
-      let index = this.selectedValue.indexOf(updateItem);
-      this.selectedValue.splice(index, 1);
-    }
-
-  }
-
-  onJobSelected(e)
-  {
-    if(e.target.checked)
-    {
+    if(e.target.checked) {
       this.jobselected.push(e.target.value);
     }
-    else{
+    else {
       let updateItem = this.jobselected.find(this.findIndexToUpdate, e.target.value);
       let index = this.jobselected.indexOf(updateItem);
       this.jobselected.splice(index, 1);
     }
-
+    if(type === 'employee') {
+      this.employee.roles=  this.jobselected;
+    }
   }
-
-
 
   findIndexToUpdate(type) {
     return type == this;
   }
 
-  onExperienceChange(event)
-  {
+  onExperienceChange(event) {
     this.experience_year=event.target.value;
     this.expYear.push(event.target.value);
   }
-
-
 
   checkValidation(value) {
     if(value.filter(i => i.visa_needed === true).length === this.selectedLocations.length) return true;
     else return false;
   }
 
-  validatedLocation=[];
-  country_input_log;
-  onSubmit(f: NgForm)
-  {
+  onSubmit(f: NgForm) {
+    console.log(f.value);
+    console.log(this.employee);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.error_msg = "";
     this.count = 0;
@@ -522,11 +443,13 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
   }
 
-
-  suggestedOptions() {
-    if(this.countriesModel !== '') {
+  suggestedOptions(inputData) {
+    console.log("option function");
+    this.cities=[];
+    console.log(this.employementLoc);
+    if(this.employementLoc !== '') {
         this.error='';
-        this.authenticationService.autoSuggestOptions(this.countriesModel , true)
+        this.authenticationService.autoSuggestOptions(this.employementLoc , true)
           .subscribe(
             data => {
               if(data) {
@@ -547,6 +470,9 @@ export class JobComponent implements OnInit,AfterViewInit {
                   }
                 }
                 this.cities = this.filter_array(citiesOptions);
+
+                this.employee.location = this.cities;
+
               }
 
             },
@@ -572,13 +498,24 @@ export class JobComponent implements OnInit,AfterViewInit {
     }
   }
 
-  selectedValueFunction(e) {
-
+  employementLoc;
+  selectedValueFunction(e , type) {
+    console.log("selected function");
+    console.log(this.employementLoc);
+    this.selectedValueArray=[];
+    if(type === 'employee') {
+      this.employementLoc = e;
+      this.employee.country = '';
+      this.cities = this.employee['location'];
+      if(this.employee['selectedLocation']) this.selectedValueArray = this.employee['selectedLocation'];
+    }
+    console.log(this.employementLoc);
+    //console.log(this.selectedValueArray);
     if(this.cities) {
+      //console.log(this.cities);
       if(this.cities.find(x => x.name === e)) {
-        var value2send=document.querySelector("#countryList option[value='"+this.countriesModel+"']")['dataset'].value;
-
-        this.countriesModel = '';
+        var value2send=document.querySelector("#countryList option[value='"+e+"']")['dataset'].value;
+        console.log("cities if");
         this.cities = [];
         if(this.selectedValueArray.length > 9) {
           this.error = 'You can select maximum 10 locations';
@@ -598,10 +535,7 @@ export class JobComponent implements OnInit,AfterViewInit {
             if(value2send) this.selectedValueArray.push({_id:value2send ,  name: e, visa_needed:false});
             else this.selectedValueArray.push({ name: e, visa_needed:false});
           }
-
-
         }
-
 
       }
       if(this.selectedValueArray.length > 0) {
@@ -615,6 +549,11 @@ export class JobComponent implements OnInit,AfterViewInit {
           this.selectedValueArray.splice(0, 0, remoteValue);
           this.selectedValueArray = this.filter_array(this.selectedValueArray);
 
+        }
+
+        if(type === 'employee') {
+          this.employee['location'] = [];
+          this.employee.selectedLocation = this.selectedValueArray;
         }
         this.selectedLocations = this.selectedValueArray;
       }
@@ -642,6 +581,34 @@ export class JobComponent implements OnInit,AfterViewInit {
 
       return (match ? false : hashTable[key] = true);
     });
+  }
+
+  selected_work_type=[];
+  employeeCheck=false;
+  contractor=false;
+  volunteer=false;
+  employee: any = {};
+  workTypeChange(event) {
+
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 300);
+    if(event.target.checked)
+    {
+      this.selected_work_type.push(event.target.value);
+    }
+    else{
+      let updateItem = this.selected_work_type.find(this.findIndexToUpdate, event.target.value);
+      let index = this.selected_work_type.indexOf(updateItem);
+      this.selected_work_type.splice(index, 1);
+    }
+
+    if(this.selected_work_type.indexOf('employee') > -1) this.employeeCheck = true;
+    else this.employeeCheck = false;
+    if(this.selected_work_type.indexOf('contractor') > -1) this.contractor = true;
+    else this.contractor = false;
+    if(this.selected_work_type.indexOf('volunteer') > -1) this.volunteer = true;
+    else this.volunteer = false;
   }
 
 }

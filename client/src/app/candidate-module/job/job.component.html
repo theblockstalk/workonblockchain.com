@@ -51,7 +51,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Current annual salary (optional):</label>
-                <input type="text" class="form-control" #base_validation="ngModel" pattern="^[0-9]*$" placeholder="10000" #salary_field name="current_salary" [(ngModel)]="current_salary">
+                <input type="text" class="form-control" #base_validation="ngModel" pattern="^[0-9]*$" placeholder="" #salary_field name="current_salary" [(ngModel)]="current_salary">
                 <small id="emailHelp" class="form-text text-muted">
                   This information is never shown to companies. It is used by us to help us help you set your expected salary.
                 </small>
@@ -106,29 +106,11 @@
                 </div>
                 <div class="checkbox ">
                   <div class="row m-0">
-                    <div class="col-md-4">
-                    <div class="form-check">
-                      <input class="form-check-input mt-2" type="checkbox" value="employee" id="defaultCheck1">
-                      <label class="form-check-label" for="defaultCheck1">
-                        employee(full/part time)
-                      </label>
-                    </div>
-                    </div>
-                    <div class="col-md-4">
-
-                    <div class="form-check">
-                      <input class="form-check-input mt-2" type="checkbox" value="contractor" id="defaultCheck2">
-                      <label class="form-check-label" for="defaultCheck2">
-                        contractor/freelancer
-                      </label>
-                    </div>
-                    </div>
-                    <div class="col-md-4">
-
-                    <div class="form-check">
-                      <input class="form-check-input mt-2" type="checkbox" value="volunteer" id="defaultCheck2">
-                      <label class="form-check-label" for="defaultCheck2">
-                        temporary volunteer
+                    <div class="col-md-4" *ngFor="let workType of work_type">
+                    <div class="form-check" >
+                      <input class="form-check-input mt-2" type="checkbox" value="{{workType.value}}"  [checked]="workType.checked" (change)="workTypeChange($event)">
+                      <label class="form-check-label">
+                        {{workType.name}}
                       </label>
                     </div>
                     </div>
@@ -141,19 +123,135 @@
 
           </div>
 
-          <div class="row mt-2" >
+          <div class="row mt-2" *ngIf="employeeCheck" >
             <div class="col-md-12">
               <h4>Employee</h4>
             </div>
 
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <div class="form-group">
                 <label>Position type:</label>
-                <select title="(select multiple)" class="selectpicker form-control" multiple>
+                <select title="(select multiple)" class="selectpicker form-control" multiple name="employment_type" [(ngModel)]="employee.employment_type" >
                   <option  *ngFor='let type of position_type' [value]="type" >{{type}}</option>
                 </select>
               </div>
             </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Locations:</label>
+                <div>
+                  <datalist id="countryList">
+                    <select class="form-control">
+                      <option *ngFor = "let country of employee.location" [attr.data-value]="country._id" value="{{country.name}}" text = "{{employee.country}}" >{{country.name}}
+                      </option>
+                    </select>
+                  </datalist>
+
+                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="employee.country" name="country" (input)="suggestedOptions(employee.country)" (ngModelChange)="selectedValueFunction($event , 'employee')">
+                  <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                    {{error}}
+                  </div>
+                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="employee.selectedLocation && employee.selectedLocation.length <= 0">
+                    {{country_input_log}}
+                  </div>
+
+                  <div *ngIf="employee.selectedLocation && employee.selectedLocation.length > 0">
+                    <div class="row">
+                      <div  *ngFor="let value of employee.selectedLocation; let i = index" class="col-md-6 p-2 mt-2">
+                        <div class="border px-1 py-3 ml-2 row">
+                          <div class = "col-8">
+                            <label >{{value.name}}</label>
+                          </div>
+                          <div class = "col-4 text-right">
+                            <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                          </div>
+                          <div class="col-12">
+                            <div class="form-check" *ngIf="value.name !== 'Remote'">
+                              <label class="form-check-label" for="check{{i}}">
+                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                              </label>
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Role:</label>
+                <div class="checkbox">
+                  <div class="row m-0">
+                    <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event, 'employee')" required="" />
+                        {{position_option.name}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Expected annual salary:</label>
+                <input type="text" #expect_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder=" 10000" [(ngModel)]="employee.expected_annual_salary">
+                <div class = "invalid-feedback d-inline"  *ngIf="!employee.expected_annual_salary; else expected_validation">
+                  {{salary_log}}
+                </div>
+                <div class = "invalid-feedback d-inline"  #expected_validation  *ngIf="expect_salary.errors && employee.expected_annual_salary">
+                  Yearly expected base salary should be a number.
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="invisible">Expected annual salary currency</label>
+                <select [(ngModel)]="employee.currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
+                  <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === base_currency ? true : null" [value]="baseCurrency">{{baseCurrency}}</option>
+                </select>
+                <div class = "invalid-feedback d-inline"  *ngIf="!employee.currency">
+                  {{currency_log}}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Availability:</label>
+
+                <select title="(select one)" [(ngModel)]="employee.employment_availability" class="selectpicker" id="month" required name="availability_day" >
+                  <option class='option' *ngFor='let month of employement_availability' [attr.selected]  [value]="month.value" selected>{{month.name}}</option>
+                </select>
+                <div class = "invalid-feedback d-inline"  *ngIf="!employee.employment_availability">
+                  {{avail_log}}
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="row mt-2" *ngIf="contractor" >
+            <div class="col-md-12">
+              <h4>Contractor</h4>
+            </div>
+
 
             <div class="col-md-12">
               <div class="form-group mt-4">
@@ -216,7 +314,7 @@
                 <label>Role:</label>
                 <div class="checkbox">
                   <div class="row m-0">
-                    <div class="form-check col-md-3 mb-3" *ngFor="let position_option of dropdown_options">
+                    <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
                       <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
                         {{position_option.name}}
@@ -233,8 +331,8 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label>Expected annual salary:</label>
-                <input type="text" #expect_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder=" 10000" [(ngModel)]="salary">
+                <label>Hourly rate:</label>
+                <input type="text" #expect_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder="" [(ngModel)]="salary">
                 <div class = "invalid-feedback d-inline"  *ngIf="!salary; else expected_validation">
                   {{salary_log}}
                 </div>
@@ -247,7 +345,7 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label class="invisible">Expected annual salary currency</label>
+                <label class="invisible">Currency</label>
                 <select [(ngModel)]="base_currency" class="selectpicker" title="Currency" id="currency1" required name="base_currency" >
                   <option *ngFor='let baseCurrency of currency' [attr.selected]="baseCurrency === base_currency ? true : null" [value]="baseCurrency">{{baseCurrency}}</option>
                 </select>
@@ -260,7 +358,7 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label>Availability:</label>
+                <label>Maximum hours per week (optional):</label>
 
                 <select title="(select one)" [(ngModel)]="availability_day" class="selectpicker" id="month" required name="availability_day" >
                   <option class='option' *ngFor='let month of availability' [attr.selected]  [value]="month.value" selected>{{month.name}}</option>
@@ -271,13 +369,152 @@
               </div>
             </div>
 
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Contractor type:</label>
+
+                <div class="checkbox">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" >
+                    <label class="form-check-label" >
+                      I work by myself as a freelancer
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" >
+                    <label class="form-check-label">
+                      I worked through a development agency with a team
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Agency website:</label>
+                <input type="text" class="form-control" required name="agency_website" placeholder="" [(ngModel)]="agency_website">
+              </div>
+
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Service description (optional):</label>
+                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required  ></textarea>
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <div class="row mt-2" *ngIf="volunteer" >
+            <div class="col-md-12">
+              <h4>Volunteer</h4>
+            </div>
+
+
+            <div class="col-md-12">
+              <div class="form-group mt-4">
+                <label>Locations:</label>
+
+                <div>
+
+                  <datalist id="countryList">
+                    <select class="form-control">
+
+                      <option *ngFor = "let country of cities" [attr.data-value]="country._id" value="{{country.name}}" text = "{{countriesModel}}" >{{country.name}}
+                      </option>
+                    </select>
+                  </datalist>
+
+                  <input type="text" list="countryList" placeholder="Remote, Canada, London..." autocomplete="off" class="form-control w-50" [(ngModel)]="countriesModel" name="country" (input)="suggestedOptions()" (ngModelChange)="selectedValueFunction($event)">
+                  <div class="invalid-feedback d-inline" *ngIf="error;else emptyInput">
+                    {{error}}
+                  </div>
+                  <div class="invalid-feedback d-inline" #emptyInput *ngIf="selectedValueArray.length <= 0">
+                    {{country_input_log}}
+                  </div>
+
+                  <div *ngIf="selectedValueArray.length > 0">
+                    <div class="row">
+                      <div  *ngFor="let value of selectedValueArray; let i = index" class="col-md-6 p-2 mt-2">
+                        <div class="border px-1 py-3 ml-2 row">
+                          <div class = "col-8">
+                            <label >{{value.name}}</label>
+                          </div>
+                          <div class = "col-4 text-right">
+                            <a (click)="deleteLocationRow(i)" class = "btn btn-secondary px-2 pb-1 text-white rounded p-0 font-weight-bold">x</a>
+                          </div>
+                          <div class="col-12">
+                            <div class="form-check" *ngIf="value.name !== 'Remote'">
+                              <label class="form-check-label" for="check{{i}}">
+                                <input class="form-check-input" placeholder="Remote, Canada, London..." type="checkbox" id="check{{i}}" value="{{value.name}}" [checked]="value.visa_needed"   name="visa_needed{{i}}" (change)="updateCitiesOptions($event)" > Work visa required
+                              </label>
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                    <input type="text" class="form-control d-none" [(ngModel)]='selectedLocations' name="selectedlocations">
+                    <div class = "invalid-feedback d-inline"  *ngIf="!selectedLocations || checkValidation(selectedLocations)">
+                      {{country_log}}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Role:</label>
+                <div class="checkbox">
+                  <div class="row m-0">
+                    <div class="form-check col-md-3 mb-3" *ngFor="let position_option of roles">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" [checked]="position_option.checked" value="{{position_option.value}}" (change)="onJobSelected($event)" required="" />
+                        {{position_option.name}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]='jobselected' name="roles" style="display: none;">
+                <div class = "invalid-feedback d-inline"  *ngIf="jobselected.length<=0">
+                  {{roles_log}}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Maximum hour per week:</label>
+                <input type="text" #expect_salary="ngModel" pattern="^[0-9]*$" class="form-control" required name="expected_salary" placeholder="" [(ngModel)]="salary">
+              </div>
+
+            </div>
+
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Learning objectives:</label>
+                <textarea class="form-control" rows="5"  maxlength="2000" placeholder="We specialize in smart contract audits and smart contract architecture and game theory analysis." required  ></textarea>
+              </div>
+
+            </div>
+
 
           </div>
 
 
           <div class = "form-group text-right">
             <a routerLink="/about" class = "btn btn-warning text-white">Back</a>
-            <button type=submit class = "btn btn-primary ml-1" [disabled]="(expect_salary.errors && salary) || (base_validation.errors && current_salary)">Next</button>
+            <button type=submit class = "btn btn-primary ml-1" >Next</button>
           </div>
           <div class = "invalid-feedback d-inline text-right float-right"  *ngIf="error_msg">
             {{error_msg}}
