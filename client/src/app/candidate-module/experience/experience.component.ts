@@ -718,25 +718,11 @@ export class ExperienceComponent implements OnInit , AfterViewInit
           data => {
             if(data)
             {
-
-              let queryInput: any = {};
-              queryInput.status = 'wizard completed';
-
-              this.authenticationService.candidate_status_history(this.currentUser._creator, queryInput, false)
-                .subscribe(
-                  data => {
-                    if(data) {
-
-                      $("#popModal").modal({
-                        backdrop: 'static',
-                        keyboard: true,
-                        show: true
-                      });
-                    }
-                  },
-                  error => {
-
-                  });
+              $("#popModal").modal({
+                backdrop: 'static',
+                keyboard: true,
+                show: true
+              });
 
               //this.router.navigate(['/candidate_profile']);
             }

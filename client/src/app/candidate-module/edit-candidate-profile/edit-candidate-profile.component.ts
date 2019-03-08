@@ -1758,19 +1758,8 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
         data => {
           if(data && this.currentUser)
           {
-            let queryInput : any = {};
-            queryInput.status = 'updated';
+            this.router.navigate(['/candidate_profile']);
 
-            this.authenticationService.candidate_status_history(this.currentUser._creator, queryInput, false)
-              .subscribe(
-                data => {
-                  if(data) {
-                    this.router.navigate(['/candidate_profile']);
-                  }
-                },
-                error => {
-
-                });
           }
 
         },

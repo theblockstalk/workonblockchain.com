@@ -7,6 +7,7 @@ const multer = require('../../../../controller/middleware/multer');
 
 const users = require('../../../../model/mongoose/users');
 const filterReturnData = require('../../../api/users/filterReturnData');
+const objects = require('../../../services/objects');
 
 module.exports.request = {
     type: 'patch',
@@ -293,6 +294,34 @@ module.exports.endpoint = async function (req, res) {
     await users.update({ _id: userId},{$set: updateCandidateUser});
 
     const updatedProfile = await users.findOneById(userId);
+    if(updatedProfile.candidate.description) {
+        const candidateHistory = updatedProfile.candidate.history;
+        let timestamp = new Date();
+        let history = {
+            timestamp : timestamp
+        }
+        let set = {};
+        let wizardStatus = candidateHistory.filter( (history) => history.status.status === 'wizard completed');
+        if (wizardStatus.length === 0 && updatedProfile.candidate.description) {
+            history.status = { status: 'wizard completed' };
+        } else {
+            history.status = { status: 'updated' };
+        }
+        let latestStatus = history.status;
+        latestStatus.timestamp = timestamp;
+        set['candidate.latest_status'] = latestStatus;
+
+        await users.update({_id: userId}, {
+            $push: {
+                'candidate.history': {
+                    $each: [history],
+                    $position: 0
+                }
+            },
+            $set : set
+        });
+    }
+
     const filterData = filterReturnData.removeSensativeData(updatedProfile);
     res.send(filterData);
 }
