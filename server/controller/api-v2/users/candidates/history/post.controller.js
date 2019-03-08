@@ -3,7 +3,7 @@ const users = require('../../../../../model/mongoose/users');
 const Schema = require('mongoose').Schema;
 const enumerations = require('../../../../../model/enumerations');
 const errors = require('../../../../services/errors');
-const sanitize = require('../../../../services/sanitize');
+const sanitizer = require('../../../../services/sanitize');
 const objects = require('../../../../services/objects');
 const candidateHistoryEmail = require('../../../../services/email/emails/candidateHistory');
 const filterReturnData = require('../../../../api/users/filterReturnData');
@@ -45,7 +45,7 @@ module.exports.auth = async function (req) {
         await auth.isAdmin(req);
     }
     else {
-        errors.throwError("Unauthorize user", 404)
+        errors.throwError("Unauthorize user", 401)
     }
 }
 
@@ -81,7 +81,7 @@ module.exports.endpoint = async function (req, res) {
             set['candidate.latest_status'] = latestStatus;
         }
 
-        if(!userDoc.first_approved_date) set.first_approved_date = timestamp;
+        if(!userDoc.first_approved_date && queryInput.status === 'approved') set.first_approved_date = timestamp;
         await users.update({_id: userId}, {
             $push: {
                 'candidate.history': {
@@ -91,9 +91,6 @@ module.exports.endpoint = async function (req, res) {
             },
             $set : set
         });
-
-        console.log("sanitize html");
-        console.log(sanitizedEmailHtml);
 
         if(queryInput.email_html && queryInput.email_subject) {
             candidateHistoryEmail.sendEmail(userDoc.email, userDoc.first_name, queryInput.email_subject, sanitizedEmailHtml, userDoc.disable_account);

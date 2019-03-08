@@ -34,7 +34,7 @@ const candidateProfilePatch = module.exports.candidateProfilePatch = async funct
 const changeCandidateStatus = module.exports.changeCandidateStatus = async function changeCandidateStatus(user_id,inputQuery,jwtToken) {
 
     const res = await chai.request(server)
-        .post('/v2/users/'+ user_id + '/candidates/status')
+        .post('/v2/users/'+ user_id + '/candidates/history?admin='+true)
         .set('Authorization', jwtToken)
         .send(inputQuery);
     res.should.have.status(200);

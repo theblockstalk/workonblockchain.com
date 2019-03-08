@@ -56,7 +56,12 @@ module.exports.down = async function() {
         let statusHistory = [];
         for(let history of userDoc.candidate.history) {
             if(history.status) {
-                statusHistory.push(history.status);
+                let status = {
+                    status : history.status.status,
+                    timestamp: history.timestamp,
+                }
+                if(history.status.reason) status.reason = history.status.reason;
+                statusHistory.push(status);
             }
         }
         set['candidate.status'] = statusHistory;

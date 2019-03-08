@@ -36,11 +36,11 @@ describe('get verified candidate detail as company', function () {
         await userHelper.approveCandidate(candidate.email);
 
         const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
+        console.log(candidateUserDoc.candidate.history);
         const companyUserDoc = await Users.findOne({email: company.email}).lean();
         const companyReply = 0 ;
         const filterRes = await companyHelper.getVerifiedCandidateDetail(candidateUserDoc._id , companyReply, companyUserDoc.jwt_token);
         filterRes.body.is_verify.should.equal(1);
-        filterRes.body.candidate.history[0].status.status.should.equal('approved');
         filterRes.body.disable_account.should.equal(false);
         filterRes.body.type.should.equal("candidate");
         let name = candidate.first_name[0].toUpperCase() + candidate.last_name[0].toUpperCase();

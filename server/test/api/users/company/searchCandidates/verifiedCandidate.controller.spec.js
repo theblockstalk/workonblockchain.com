@@ -36,10 +36,10 @@ describe('verified candidates as company', function () {
 
             await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
             await userHelper.approveCandidate(candidate.email);
+
             let userDoc = await Users.findOne({email: company.email}).lean();
             const filterRes = await companyHelper.verifiedCandidate(userDoc.jwt_token);
             filterRes.body[0].is_verify.should.equal(1);
-            filterRes.body[0].candidate.latest_status.status.should.equal('approved');
             filterRes.body[0].disable_account.should.equal(false);
             filterRes.body[0].type.should.equal("candidate");
         })

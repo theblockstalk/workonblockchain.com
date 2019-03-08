@@ -35,6 +35,7 @@ describe('admin changes status of a candidate', function () {
         const candidate = docGenerator.candidate();
         const profileData = docGenerator.candidateProfile();
         await candidateHelper.candidateProfile(candidate, profileData);
+        await userHelper.makeAdmin(candidate.email);
         const candidateDoc = await users.findOne({email: candidate.email}).lean();
 
         //approve candidate
