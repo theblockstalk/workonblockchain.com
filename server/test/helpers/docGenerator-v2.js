@@ -275,6 +275,7 @@ module.exports.changeCandidateStatus = function changeCandidateStatus(){
     return {
         note : 'Note for this profile',
         email_html : '<p>Hi, i have just approved your profile</p>',
+        email_subject : 'Welcome to workonblockchain.com!',
         status : 'approved'
     }
 }

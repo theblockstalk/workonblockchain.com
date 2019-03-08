@@ -45,6 +45,7 @@ describe('admin changes status of a candidate', function () {
         candidateUserDoc.candidate.history[0].status.status.should.equal(inputQuery.status);
         candidateUserDoc.candidate.history[0].note.should.equal(inputQuery.note);
         candidateUserDoc.candidate.history[0].email_html.should.equal(inputQuery.email_html);
+        candidateUserDoc.candidate.history[0].email_subject.should.equal(inputQuery.email_subject);
         candidateUserDoc.candidate.latest_status.status.should.equal(inputQuery.status);
 
     })

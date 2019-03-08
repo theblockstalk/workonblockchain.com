@@ -316,6 +316,7 @@ const UserSchema = new Schema({
                     },
                     note : String,
                     email_html : String,
+                    email_subject : String,
                     timestamp: {
                         type: Date,
                         required:true,

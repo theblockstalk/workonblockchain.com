@@ -30,7 +30,8 @@ const bodySchema = new Schema({
         enum: enumerations.statusReasons
     },
     note : String,
-    email_html : String
+    email_html : String,
+    email_subject: String
 });
 
 module.exports.inputValidation = {
@@ -40,23 +41,18 @@ module.exports.inputValidation = {
 };
 
 module.exports.auth = async function (req) {
-    await auth.isLoggedIn(req);
-
     if (req.query.admin) {
         await auth.isAdmin(req);
+    }
+    else {
+        errors.throwError("Unauthorize user", 404)
     }
 }
 
 module.exports.endpoint = async function (req, res) {
-    let userId;
-    if (req.query.admin) {
-        userId = req.params.user_id;
-    }
-    else {
-        userId = req.auth.user._id;
-    }
-
+    let userId = req.params.user_id;
     let userDoc = await users.findOneById(userId);
+    let sanitizedEmailHtml;
     if(userDoc) {
         let queryInput = req.body;
         let timestamp = new Date();
@@ -65,7 +61,13 @@ module.exports.endpoint = async function (req, res) {
         }
         let set = {};
         if(queryInput.note) history.note = queryInput.note;
-        if(queryInput.email_html) history.email_html = queryInput.email_html;
+
+
+        if(queryInput.email_html) {
+            sanitizedEmailHtml = sanitizer.sanitizeHtml(req.unsanitizedBody.email_html);
+            history.email_html = sanitizedEmailHtml;
+        }
+        if(queryInput.email_subject) history.email_subject = queryInput.email_subject;
         if(queryInput.status) {
             let status = {
                 status : queryInput.status
@@ -90,8 +92,11 @@ module.exports.endpoint = async function (req, res) {
             $set : set
         });
 
-        if(queryInput.email_html) {
-            candidateHistoryEmail.sendEmail(userDoc.email, userDoc.first_name, sanitize.sanitizeHtml(queryInput.email_html), userDoc.disable_account);
+        console.log("sanitize html");
+        console.log(sanitizedEmailHtml);
+
+        if(queryInput.email_html && queryInput.email_subject) {
+            candidateHistoryEmail.sendEmail(userDoc.email, userDoc.first_name, queryInput.email_subject, sanitizedEmailHtml, userDoc.disable_account);
         }
 
         userDoc = await users.findOneById(userId);
