@@ -244,6 +244,7 @@ module.exports.endpoint = async function (req, res) {
     let userId;
     let queryBody = req.body;
     let updateCandidateUser = {};
+    let userDoc = req.auth.user;
 
     if (req.query.admin) {
         userId = req.params.user_id;
@@ -293,9 +294,8 @@ module.exports.endpoint = async function (req, res) {
 
     await users.update({ _id: userId},{$set: updateCandidateUser});
 
-    const updatedProfile = await users.findOneById(userId);
-    if(updatedProfile.candidate.description) {
-        const candidateHistory = updatedProfile.candidate.history;
+    if(queryBody.description) {
+        const candidateHistory = userDoc.candidate.history;
         let timestamp = new Date();
         let history = {
             timestamp : timestamp
@@ -306,7 +306,7 @@ module.exports.endpoint = async function (req, res) {
         }
         else {
             let wizardStatus = candidateHistory.filter( (history) => history.status.status === 'wizard completed');
-            if (wizardStatus.length === 0 && updatedProfile.candidate.description) {
+            if (wizardStatus.length === 0 && queryBody.description) {
                 history.status = { status: 'wizard completed' };
             }
             else {
@@ -314,9 +314,10 @@ module.exports.endpoint = async function (req, res) {
             }
         }
 
-        let latestStatus = objects.copyObject(history.status);;
+        let latestStatus = objects.copyObject(history.status);
         latestStatus.timestamp = timestamp;
         set['candidate.latest_status'] = latestStatus;
+
 
         await users.update({_id: userId}, {
             $push: {
@@ -329,6 +330,6 @@ module.exports.endpoint = async function (req, res) {
         });
     }
 
-    const filterData = filterReturnData.removeSensativeData(updatedProfile);
+    const filterData = filterReturnData.removeSensativeData(userDoc);
     res.send(filterData);
 }
