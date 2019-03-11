@@ -287,16 +287,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                     })
                   }
                 }
-                /*if(data['candidate'].blockchain.smart_contract_platforms) {
-                  this.platforms=data['candidate'].blockchain.smart_contract_platforms;
-                  if(this.platforms && this.platforms.length>0){
-                    this.platforms.sort(function(a, b){
-                      if(a.platform_name < b.platform_name) { return -1; }
-                      if(a.platform_name > b.platform_name) { return 1; }
-                      return 0;
-                    })
-                  }
-                }*/
                 if(data['candidate'].blockchain.commercial_skills) {
                   this.commercial_skills = data['candidate'].blockchain.commercial_skills;
                   this.commercial_skills.sort(function(a, b){
@@ -305,14 +295,6 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
                     return 0;
                   })
                 }
-                /*f(data['candidate'].blockchain.formal_skills){
-                  this.formal_skills = data['candidate'].blockchain.formal_skills;
-                  this.formal_skills.sort(function(a, b){
-                    if(a.skill < b.skill) { return -1; }
-                    if(a.skill > b.skill) { return 1; }
-                    return 0;
-                  })
-                }*/
 
                 if(data['candidate'].blockchain.description_commercial_platforms) {
                   this.description_commercial_platforms = data['candidate'].blockchain.description_commercial_platforms;

@@ -28,13 +28,10 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
   countries;commercial;history;education;
   experimented;languages;current_currency;current_salary;image_src;
   imgPath;nationality;contact_number;id;
-  share_link;
   text;
   platforms;
-  cand_id;htmlContent;
+  cand_id;
   info;
-  share_url;
-  shareurl;
   url;
   user_id;
   public_data;
@@ -330,17 +327,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                     this.description_commercial_skills = data['candidate'].blockchain.description_commercial_skills;
                   }
 
-                  /*if(data['candidate'].blockchain.smart_contract_platforms) {
-                    this.platforms=data['candidate'].blockchain.smart_contract_platforms;
-                    if(this.platforms && this.platforms.length>0){
-                      this.platforms.sort(function(a, b){
-                        if(a.name < b.name) { return -1; }
-                        if(a.name > b.name) { return 1; }
-                        return 0;
-                      })
-                    }
-                  }*/
-
                   if(data['candidate'].blockchain.commercial_skills) {
                     this.commercial_skills = data['candidate'].blockchain.commercial_skills;
                     this.commercial_skills.sort(function(a, b){
@@ -349,14 +335,6 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
                       return 0;
                     })
                   }
-                  /*if(data['candidate'].blockchain.formal_skills) {
-                    this.formal_skills = data['candidate'].blockchain.formal_skills;
-                    this.formal_skills.sort(function(a, b){
-                      if(a.skill < b.skill) { return -1; }
-                      if(a.skill > b.skill) { return 1; }
-                      return 0;
-                    })
-                  }*/
                 }
 
 

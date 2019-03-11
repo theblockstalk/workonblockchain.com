@@ -453,51 +453,6 @@
               </div>
             </div>
 
-            <!--<div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Platforms commercially designed and developed smart contracts on </label>
-                  <div class="checkbox">
-                    <div class="row m-0">
-                      <div class="form-check col-md-3 mb-3" *ngFor="let option of designed">
-                        <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked" (change)="onPlatformOptions(option)" required  />
-                          <img class="mb-1 mr-1" src = "/assets/images/all_icons/{{option.name}}.png" alt="{{option.name}} Logo">
-                          {{option.value}}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control d-none" [(ngModel)]='platforms_designed' name="platforms_designed" >
-
-                </div>
-              </div>
-            </div>
-            <div class="row" *ngIf="platforms_designed?.length > 0">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Years of experience</label>
-                </div>
-              </div>
-              <div class = "col-md-12" *ngFor="let exp_value of platforms_designed;let i_index = index">
-                <p>{{exp_value.value}}</p>
-                <div class="form-group">
-                  <div class="form-check form-check-inline">
-                    <div *ngFor="let exp of exp_year; let i_ind =index">
-                      <input type="radio" class="d-none" name="designedradiogroup- {{ exp_value.value}}" id="designed{{exp_value.value}}{{i_ind}}"  value="{{exp.value}}" (change)="onPlatformYearOptions($event , exp_value.value)" [checked]=" designed_expYear_db[i_index] === exp.value && plat_db_valye[i_index] === exp_value.value" >
-                      <label  for="designed{{exp_value.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
-                        {{exp.name}}
-                      </label>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control d-none" name="smart_contract_platforms" [(ngModel)]='platforms'>
-                </div>
-              </div>
-              <div class = "invalid-feedback d-inline ml-3" *ngIf="platforms_designed.length !== platforms.length">
-                {{platform_log}}
-              </div>
-            </div>-->
-
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
@@ -588,50 +543,6 @@
                 </div>
               </div>
             </div>
-
-            <!--<div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Formal university education in these areas (optional) </label>
-                  <div class="checkbox">
-                    <div class="row m-0">
-                      <div class="form-check col-md-4 mb-3" *ngFor="let option of otherFormalSkills">
-                        <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input" value="{{option.value}}"  [checked]="option.checked"  (change)="onFormalOptions(option)"/>
-                          {{option.name}}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control d-none" [(ngModel)]='formal_skills_exp' name="formal_skills_exp">
-
-                </div>
-              </div>
-            </div>
-            <div class="row" *ngIf="formal_skills_exp?.length > 0">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Years of experience</label>
-                </div>
-              </div>
-              <div class = "col-md-12" *ngFor="let option of formal_skills_exp; let i = index ">
-                <p>{{option.value}}</p>
-                <div class = "form-group">
-                  <div class="form-check form-check-inline">
-                    <div *ngFor="let exp of exp_year; let i_ind =index">
-                      <input type="radio" class="d-none" name="formalradiogroup- {{ option.value}}" id="formal{{option.value}}{{i_ind}}" value="{{exp.value}}" (change)="onFormalExpYearOptions($event , option.value)" [checked]="formal_expYear_db[i] === exp.value && formalDbArray[i] === option.value" >
-                      <label  for="formal{{option.value}}{{i_ind}}" class="border py-2 px-lg-5 px-2">
-                        {{exp.name}}
-                      </label>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control d-none" name="formal_skills" [(ngModel)]='formal_skills' >
-                </div>
-              </div>
-              <div class = "invalid-feedback d-inline ml-3" *ngIf="formal_skills_exp.length !== formal_skills.length">
-                {{formal_skills_log}}
-              </div>
-            </div>-->
           </section>
           <!--resume job form end here-->
 
@@ -660,10 +571,8 @@
                     </div>
                   </div>
                   <input type="text" class="form-control d-none" [(ngModel)]='language' name="language" >
-
                 </div>
               </div>
-
             </div>
             <div class="row" *ngIf="language?.length > 0">
               <div class="col-md-12">
