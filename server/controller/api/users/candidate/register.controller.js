@@ -36,6 +36,7 @@ module.exports = async function (req, res) {
     let hash = crypto.createHmac('sha512', salt);
     hash.update(userParam.password);
     let hashedPasswordAndSalt = hash.digest('hex');
+    let timestamp = new Date();
     let newUserDoc = {
         email: userParam.email,
         password_hash: hashedPasswordAndSalt,
@@ -49,13 +50,19 @@ module.exports = async function (req, res) {
         first_name: userParam.first_name,
         last_name: userParam.last_name,
         candidate: {
-            status: [{
-                status: 'created',
-                status_updated: new Date(),
-                timestamp: new Date()
-            }]
+            history: [{
+               status : {
+                    status: 'created'
+               },
+                timestamp : timestamp
+            }],
+            latest_status : {
+                status : 'created',
+                timestamp : timestamp
+            }
         }
     }
+
     const candidateUserCreated = await users.insert(newUserDoc);
 
     let url_token;

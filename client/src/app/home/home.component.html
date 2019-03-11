@@ -299,5 +299,92 @@
       </a>
     </div>
   </div>
+  <div class = "row text-center py-5 m-0">
+    <div class="col-md-6">
+      <a href = "https://blockchaintrainingalliance.com/" target="_blank">
+        <img src = "/assets/images/Blockchain_Traning_Alliance.png" class = "w-50" alt = "partners-logo"/>
+      </a>
+    </div>
+    <div class="col-md-6">
+      <a href = "https://www.solidity.services/" target="_blank">
+        <img src = "/assets/images/solidity_services_logo.png" class = "w-50" alt = "partners-logo"/>
+      </a>
+    </div>
+  </div>
 </div>
 <!--/section five-->
+
+<!--section six newsletter-->
+<div class = "position-relative py-3 wob-bg-white w-100 float-left" style = "z-index:999;">
+  <h4 class = "text-dark text-center">Sign up for our newsletter!</h4>
+  <div class = "row text-center py-1 m-0">
+    <div class="col-md-12 text-center">
+      <form (submit)="subscribe_modal_show(subscribeForm)" #subscribeForm = ngForm class="form-inline justify-content-center align-items-center my-4">
+        <div class = "form-group">
+          <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Email" name="email" required [(ngModel)]="credentials.email" #emailname="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
+        </div>
+        <div class = "form-group">
+          <input type="submit" class="form-control mb-2 mr-sm-2 btn-warning text-light" id="email4" value="Subscribe" [disabled]="!subscribeForm.valid">
+        </div>
+        <div *ngIf="emailname.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
+          Enter email in correct format like myemail@gmail.com.
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--/section five-->
+
+<!--Modal for subscribe-->
+<div class="modal fade" id="subscribeModal" tabindex="-1" role="dialog" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-center" id="subscribeModalLabel">Subscribe</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Get the latest blockchain developer tools, hiring information, product
+          updates and events, with no spam!
+        </p>
+        <form (submit)="subscribe(subForm)" #subForm = ngForm>
+          <div class="form-group">
+            <label for="first_name">First name:</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" required [(ngModel)]="credentials.first_name">
+          </div>
+          <div class="form-group">
+            <label for="last_name">Last name:</label>
+            <input type="text" class="form-control" id="last_name" name="last_name" required [(ngModel)]="credentials.last_name">
+          </div>
+          <div class="form-group">
+            <label for="email">Email address:</label>
+            <input type="text" class="form-control" id="email" name="email" required [(ngModel)]="credentials.email" #emailaddress="ngModel" pattern='^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'>
+            <div *ngIf="emailaddress.errors && credentials.email !== '' && button_status" class="invalid-feedback d-inline">
+              Enter email in correct format like myemail@gmail.com.
+            </div>
+          </div>
+          <div class="form-group form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" name="notice" required [(ngModel)]="credentials.notice">
+              I have read and accepted the Privacy notice.
+            </label>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" [disabled]="!subForm.valid">Subscribe</button>
+          </div>
+          <div class="form-group">
+            <div class="alert alert-success" *ngIf="log_success">
+              {{log_success}}
+            </div>
+            <div class="alert alert-danger" *ngIf="log_error">
+              {{log_error}}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
