@@ -69,14 +69,13 @@ const bodySchema = new Schema({
         type:[new Schema({
             search_name: String,
             location: {
-                type: [{
+                type: [new Schema({
                     city: {
                         type : Schema.Types.ObjectId,
                         ref: 'Cities'
                     },
                     remote: Boolean,
-
-                }]
+                })]
             },
             visa_needed: {
                 type: Boolean,
@@ -133,6 +132,9 @@ const bodySchema = new Schema({
             },
             name: {
                 type: String
+            },
+            timestamp : {
+                type : Date
             }
         })]
     },
@@ -172,8 +174,8 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.company_website) employerUpdate.company_website = queryBody.company_website;
         if (queryBody.company_phone) employerUpdate.company_phone = queryBody.company_phone;
         if (queryBody.company_country) employerUpdate.company_country = queryBody.company_country;
-        if (queryBody.city) employerUpdate.company_city = queryBody.city;
-        if (queryBody.postal_code) employerUpdate.company_postcode = queryBody.postal_code;
+        if (queryBody.company_city) employerUpdate.company_city = queryBody.company_city;
+        if (queryBody.company_postcode) employerUpdate.company_postcode = queryBody.company_postcode;
         if (queryBody.company_founded) employerUpdate.company_founded = queryBody.company_founded;
         if (queryBody.no_of_employees) employerUpdate.no_of_employees = queryBody.no_of_employees;
         if (queryBody.company_funded) employerUpdate.company_funded = queryBody.company_funded;

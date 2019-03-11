@@ -69,7 +69,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>City name</label>
-                    <input type="text" class="form-control" placeholder="London" required name="city" [(ngModel)]="company_city">
+                    <input type="text" class="form-control" placeholder="London" required name="company_city" [(ngModel)]="company_city">
                     <div class="invalid-feedback d-inline" *ngIf="!company_city">
                       {{company_city_log}}
                     </div>
@@ -85,7 +85,7 @@
                 <div class="form-row">
                   <div class="form-group w-100">
                     <label>Postal code</label>
-                    <input type="text" class="form-control" placeholder="SW1 7XL" required name="postal_code" [(ngModel)]="company_postcode">
+                    <input type="text" class="form-control" placeholder="SW1 7XL" required name="company_postcode" [(ngModel)]="company_postcode">
                     <div class="invalid-feedback d-inline" *ngIf="!company_postcode">
                       {{company_postcode_log}}
                     </div>
