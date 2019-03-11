@@ -1781,11 +1781,11 @@ export class EditCandidateProfileComponent implements OnInit,AfterViewInit {
     if(this.availability_day) inputQuery.availability_day = this.availability_day;
     if(this.why_work) inputQuery.why_work = this.why_work;
     if(profileForm.commercial_platforms) inputQuery.commercial_platforms = profileForm.commercial_platforms;
+    if(profileForm.description_commercial_platforms) inputQuery.description_commercial_platforms = profileForm.description_commercial_platforms;
     if(this.experimented_platform) inputQuery.experimented_platforms = this.experimented_platform;
-    if(profileForm.smart_contract_platforms) inputQuery.smart_contract_platforms = profileForm.smart_contract_platforms;
+    if(profileForm.description_experimented_platforms) inputQuery.description_experimented_platforms = profileForm.description_experimented_platforms;
     if(profileForm.commercial_skills) inputQuery.commercial_skills = profileForm.commercial_skills;
-    if(profileForm.smart_contract_platforms) inputQuery.smart_contract_platforms = profileForm.smart_contract_platforms;
-    if(profileForm.formal_skills) inputQuery.formal_skills = profileForm.formal_skills;
+    if(profileForm.description_commercial_skills) inputQuery.description_commercial_skills = profileForm.description_commercial_skills;
     if(profileForm.language_experience_year) inputQuery.programming_languages = profileForm.language_experience_year;
     if(this.education_json_array) inputQuery.education_history = this.education_json_array;
     if(this.experiencearray) inputQuery.work_history = this.experiencearray;
