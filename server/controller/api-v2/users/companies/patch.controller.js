@@ -32,10 +32,10 @@ const bodySchema = new Schema({
         type:String,
         validate: regexes.url
     },
-    company_phone: { //this needs to be fixed
+    company_phone: {
         type:String
     },
-    company_country: { //this needs to be fixed
+    company_country: {
         type: String,
         enum: enumerations.countries
     },
@@ -130,8 +130,10 @@ const bodySchema = new Schema({
                     type: String,
                     enum: enumerations.blockchainPlatforms
                 }]
+            },
+            name: {
+                type: String
             }
-
         })]
     },
     when_receive_email_notitfications : {
@@ -168,8 +170,8 @@ module.exports.endpoint = async function (req, res) {
         if (queryBody.job_title) employerUpdate.job_title = queryBody.job_title;
         if (queryBody.company_name) employerUpdate.company_name = queryBody.company_name;
         if (queryBody.company_website) employerUpdate.company_website = queryBody.company_website;
-        if (queryBody.phone_number) employerUpdate.company_phone = queryBody.phone_number; //this needs to be fixed
-        if (queryBody.country) employerUpdate.company_country = queryBody.country; //this needs to be fixed
+        if (queryBody.company_phone) employerUpdate.company_phone = queryBody.company_phone;
+        if (queryBody.company_country) employerUpdate.company_country = queryBody.company_country;
         if (queryBody.city) employerUpdate.company_city = queryBody.city;
         if (queryBody.postal_code) employerUpdate.company_postcode = queryBody.postal_code;
         if (queryBody.company_founded) employerUpdate.company_founded = queryBody.company_founded;
