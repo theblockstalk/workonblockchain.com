@@ -19,8 +19,6 @@ module.exports.sendEmail = async function sendEmail(sendGridOptions) {
         email: settings.SENDGRID.FROM_ADDRESS
     }
 
-    logger.debug("default setting: ", defaultFrom);
-    
     const msg = {
         personalizations: sendGridOptions.personalizations,
         from: sendGridOptions.from ? sendGridOptions.from : defaultFrom,
