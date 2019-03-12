@@ -62,6 +62,7 @@
       <div class="modal-header bg-primary">
         <h3>Our Privacy Notice has Changed</h3>
       </div>
+      <form (submit)="update_terms_status(newTermsForm)" #newTermsForm = ngForm>
       <div class="modal-body mo_body">
         <p>
           We have recently made a change to our Privacy Notice. This document contains important
@@ -69,9 +70,19 @@
           it before continuing.
         </p>
       </div>
-      <div class="modal-footer mo_footer">
-        <button type="reset" (click)="update_terms_status()" class="btn btn-primary model-btn" data-dismiss="modal">Got it</button>
+      <div class="checkbox">
+        <label>
+          <input class="mr-1" type = "checkbox" value = "" [disabled]="agree" required name="terms" [(ngModel)]="termscondition">
+          I have read and accepted the <a  routerLink="/privacy-notice" target="_blank" >Privacy notice</a>.
+        </label>
       </div>
+      <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "alert alert-danger">
+        <span class = "error">{{terms_log}}</span>
+      </div>
+      <div class="modal-footer mo_footer">
+        <button type="submit" class="btn btn-primary model-btn" data-dismiss="modal">Continue</button>
+      </div>
+      </form>
     </div>
 
   </div>

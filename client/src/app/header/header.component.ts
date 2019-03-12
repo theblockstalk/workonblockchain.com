@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { DataService } from "../data.service";
+import {NgForm} from '@angular/forms';
 declare var $: any;
 
 @Component({
@@ -22,13 +23,14 @@ export class HeaderComponent implements OnInit {
   is_verify;
   date;
   msg;
-  increment;
   user_name = 'Admin';
-  setting;
   log;
   success;
   success_msg;
   location;
+  terms_id;
+  termscondition;
+  terms_log;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
@@ -65,6 +67,7 @@ export class HeaderComponent implements OnInit {
 
               if(data)
               {
+                console.log(data);
                 this.is_verify = data['is_verify'];
                 if(this.is_verify == 0)
                 {
@@ -96,6 +99,8 @@ export class HeaderComponent implements OnInit {
             {
               if(data)
               {
+                this.terms_id = data.terms_id;
+                console.log('Terms ID: ' + this.terms_id);
                 this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
                 {
@@ -136,7 +141,6 @@ export class HeaderComponent implements OnInit {
 
     if(this.currentUser)
     {
-      console.log(this.currentUser);
       let page_content = '';
       if(this.currentUser.type === 'company') page_content = 'Terms and Condition for company';
       else if(this.currentUser.type === 'candidate') page_content = 'Terms and Condition for candidate';
@@ -144,7 +148,13 @@ export class HeaderComponent implements OnInit {
       .subscribe(
         data => {
           if(data){
-            console.log(data);
+            console.log('New Terms ID: ' + data._id);
+            /*if(this.terms_id && this.terms_id === data._id){
+              console.log('new one');
+            }
+            else{
+              $("#popModalForTerms").modal("show");
+            }*/
             /*$("#popModalForTerms").modal("show");
             this.page_title= data['page_title'];
             this.editor_content = data['page_content'];*/
@@ -239,7 +249,7 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  update_terms_status(){
+  update_terms_status(termsForm : NgForm){
     console.log('updated');
   }
 
