@@ -23,7 +23,6 @@ const bodySchema = new Schema({
     status: {
         type: String,
         enum: enumerations.candidateStatus,
-        required:true,
     },
     reason: {
         type: String,
