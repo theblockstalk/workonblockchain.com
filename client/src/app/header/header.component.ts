@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   success_msg;
   location;
   terms_id;
-  termscondition;
+  termscondition = false;
   terms_log;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
@@ -99,7 +99,7 @@ export class HeaderComponent implements OnInit {
             {
               if(data)
               {
-                this.terms_id = data.terms_id;
+                this.terms_id = data['terms_id'];
                 console.log('Terms ID: ' + this.terms_id);
                 this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
@@ -148,13 +148,13 @@ export class HeaderComponent implements OnInit {
       .subscribe(
         data => {
           if(data){
-            console.log('New Terms ID: ' + data._id);
-            /*if(this.terms_id && this.terms_id === data._id){
+            console.log(data);
+            if(this.terms_id && this.terms_id === data['_id']){
               console.log('new one');
             }
             else{
               $("#popModalForTerms").modal("show");
-            }*/
+            }
             /*$("#popModalForTerms").modal("show");
             this.page_title= data['page_title'];
             this.editor_content = data['page_content'];*/
@@ -249,8 +249,14 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  update_terms_status(termsForm : NgForm){
-    console.log('updated');
+  update_terms_status(newTermsForm : NgForm){
+    console.log(newTermsForm.value);
+    if(newTermsForm.valid === true && newTermsForm.value.terms) {
+      $("#popModalForTerms").modal("hide");
+    }
+    else{
+      this.terms_log = 'Please accept Privacy notice';
+    }
   }
 
 }
