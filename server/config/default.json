@@ -22,6 +22,10 @@
     "unreadMessagesTick": "0-59 * * * *",
     "syncSendgrid": "0-59 * * * *",
     "autoNotification" : "0-59 * * * *"
+  },
+  "sendGrid": {
+    "accountFromAddress" : "antonio@workonblockchain.com",
+    "accountFromName" : "Antonio Sabado"
   }
 }
 
