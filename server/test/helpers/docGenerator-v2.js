@@ -193,24 +193,24 @@ module.exports.candidateProfile = function candidateProfile(){
         github_account: 'fb.com',
         linkedin_account : 'http://linkedin.com/in/sadia_abbas',
         medium_account : 'http://medium.com/sadia_abbas',
-        nationality: 'Pakistani',
-        base_country : 'Pakistan',
+        nationality: random.enum(enumerations.nationalities),
+        base_country : random.enum(enumerations.countries),
         base_city : 'Islamabad',
         expected_salary: random.integer(10, 100000),
         expected_salary_currency: random.enum(enumerations.currencies),
         current_salary: random.integer(10000, 100000),
         current_currency: random.enum(enumerations.currencies),
         availability_day: random.enum(enumerations.workAvailability),
-        why_work: 'I want to work. I want to work. I want to work. I want to work.I want to work. I want to work. I want to work.',
-        description: 'I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. ',
+        why_work: random.string(10),
+        description: random.string(10),
         locations: [
             {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
             {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
         ],
         roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
-        interest_areas: ["I don't know", 'Enterprise blockchain', 'Smart contract development' ],
+        interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
 
-        experimented_platforms:['Bitcoin' , 'Hyperledger Fabric'],
+        experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
 
         smart_contract_platforms:[
             {
