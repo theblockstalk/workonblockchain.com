@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { DataService } from "../data.service";
-
+declare var $: any;
 
 @Component({
   selector: 'app-header',
@@ -136,6 +136,21 @@ export class HeaderComponent implements OnInit {
 
     if(this.currentUser)
     {
+      console.log(this.currentUser);
+      let page_content = '';
+      if(this.currentUser.type === 'company') page_content = 'Terms and Condition for company';
+      else if(this.currentUser.type === 'candidate') page_content = 'Terms and Condition for candidate';
+      this.authenticationService.get_page_content(page_content)
+      .subscribe(
+        data => {
+          if(data){
+            console.log(data);
+            /*$("#popModalForTerms").modal("show");
+            this.page_title= data['page_title'];
+            this.editor_content = data['page_content'];*/
+          }
+        }
+      );
       this.dataservice.currentMessage.subscribe(message => this.msg = message);
       setInterval(() => {
         this.msg = "" ;
@@ -224,5 +239,8 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  update_terms_status(){
+    console.log('updated');
+  }
 
 }
