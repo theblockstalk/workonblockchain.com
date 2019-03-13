@@ -4,10 +4,10 @@ const Schema = require('mongoose').Schema;
 const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
-
 const users = require('../../../../model/mongoose/users');
 const filterReturnData = require('../../../api/users/filterReturnData');
 const objects = require('../../../services/objects');
+const Pages = require('../../../../model/pages_content');
 
 module.exports.request = {
     type: 'patch',
@@ -35,6 +35,7 @@ const bodySchema = new Schema({
     },
     candidate: {
         type: {
+            privacy_id: String,
             base_city: String,
             base_country: {
                 type: String,
@@ -310,6 +311,13 @@ module.exports.endpoint = async function (req, res) {
         else {
             history.status = { status: 'updated' };
         }
+    }
+
+    if(queryBody.privacy_id)
+    {
+        const pagesDoc =  await Pages.findOne({_id: queryBody.privacy_id}).lean();
+        if(pagesDoc) updateCandidateUser['candidate.privacy_id'] = pagesDoc._id;
+        else errors.throwError("Privacy notice document not found", 404);
     }
 
     let latestStatus = objects.copyObject(history.status);

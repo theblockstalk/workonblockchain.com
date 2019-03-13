@@ -4,6 +4,7 @@ const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
 const objects = require('../../../services/objects');
+const Pages = require('../../../../model/pages_content');
 
 const companies = require('../../../../model/mongoose/company');
 
@@ -138,6 +139,9 @@ const bodySchema = new Schema({
         type : String ,
         enum : enumerations.email_notificaiton
     },
+    privacy_id:{
+        type : String
+    }
 });
 
 module.exports.inputValidation = {
@@ -210,6 +214,13 @@ module.exports.endpoint = async function (req, res) {
 
             }
             employerUpdate.saved_searches = queryBody.saved_searches;
+        }
+
+        if(queryBody.privacy_id)
+        {
+            const pagesDoc =  await Pages.findOne({_id: queryBody.privacy_id}).lean();
+            if(pagesDoc) employerUpdate.privacy_id = pagesDoc._id;
+            else errors.throwError("Privacy notice document not found", 404);
         }
 
         await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});

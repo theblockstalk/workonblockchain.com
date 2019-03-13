@@ -33,6 +33,7 @@ export class HeaderComponent implements OnInit {
   termscondition = false;
   terms_log;
   show_popup;
+  new_privacy_id;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
@@ -66,7 +67,10 @@ export class HeaderComponent implements OnInit {
 
               if(data)
               {
-                console.log(data);
+                this.terms_id = data['candidate']['terms_id'];
+                this.privacy_id = data['candidate']['privacy_id'];
+                this.privacy_pop_show();
+
                 this.is_verify = data['is_verify'];
                 if(this.is_verify == 0)
                 {
@@ -100,17 +104,8 @@ export class HeaderComponent implements OnInit {
               {
                 this.terms_id = data['terms_id'];
                 this.privacy_id = data['privacy_id'];
-
                 this.privacy_pop_show();
-                /*if(data['terms_id'] && !data['privacy_id']){
-                  this.show_popup = true;
-                  console.log('terms_id there, but no privacy_id, show pop');
-                  this.privacy_pop_show();
-                }
-                else{
-                  this.show_popup = false;
-                  console.log('both not, not show popup');
-                }*/
+
                 this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
                 {
@@ -243,24 +238,25 @@ export class HeaderComponent implements OnInit {
     console.log(newTermsForm.value);
     if(newTermsForm.valid === true && newTermsForm.value.terms) {
       $("#popModalForTerms").modal("hide");
-      this.authenticationService.update_company_terms_and_privacy(this.currentUser._creator,newTermsForm.value)
-      .subscribe(
-        data => {
-          if (data) {
+      let inputQuery : any = {};
+      inputQuery.privacy_id = this.new_privacy_id;
+      console.log(inputQuery);
+      if(this.user_type === 'company'){
+        this.authenticationService.edit_company_profile(inputQuery)
+        .subscribe(
+          data => {
             console.log(data);
-            /*if(this.terms_id && !this.privacy_id){
-              $("#popModalForTerms").modal("show");
-            }
-            else if(this.privacy_id && this.privacy_id === data['_id']) {
-              console.log('new privacy_id');
-            }
-            else {
-              if(!this.terms_id && !this.privacy_id) console.log('new user');
-              else $("#popModalForTerms").modal("show");
-            }*/
           }
-        }
-      );
+        );
+      }
+      else if(this.user_type === 'candidate'){
+        this.authenticationService.edit_candidate_profile(this.currentUser['_creator'],inputQuery,false)
+        .subscribe(
+          data => {
+            console.log(data);
+          }
+        );
+      }
     }
     else{
       this.terms_log = 'Please accept Privacy notice';
@@ -271,23 +267,24 @@ export class HeaderComponent implements OnInit {
     console.log(this.terms_id);
     console.log(this.privacy_id);
     this.authenticationService.get_page_content('Privacy Notice')
-    .subscribe(
-      data => {
-        if (data) {
-          console.log(data);
-          if(this.terms_id && !this.privacy_id){
-            $("#popModalForTerms").modal("show");
-          }
-          else if(this.privacy_id && this.privacy_id === data['_id']) {
-            console.log('new privacy_id');
-          }
-          else {
-            if(!this.terms_id && !this.privacy_id) console.log('new user');
-            else $("#popModalForTerms").modal("show");
+      .subscribe(
+        data => {
+          if (data) {
+            console.log(data);
+            this.new_privacy_id = data['_id'];
+            if(this.terms_id && !this.privacy_id){
+              $("#popModalForTerms").modal("show");
+            }
+            else if(this.privacy_id && this.privacy_id === this.new_privacy_id) {
+              console.log('new privacy_id');
+            }
+            else {
+              if(!this.terms_id && !this.privacy_id) console.log('new user');
+              else $("#popModalForTerms").modal("show");
+            }
           }
         }
-      }
-    );
+      );
   }
 
 }
