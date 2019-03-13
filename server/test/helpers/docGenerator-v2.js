@@ -211,17 +211,14 @@ module.exports.candidateProfile = function candidateProfile(){
         interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
 
         experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
-
-        smart_contract_platforms:[
+        commercial_platforms : [
             {
-                _id: '5bbc37432997bf00408501b7',
-                name: 'Bitcoin',
-                exp_year: '0-1'
+                name : "Bitcoin",
+                exp_year : "4-6"
             },
             {
-                _id: '5bbc37432997bf00408501b6',
-                platform_name: 'Hyperledger Sawtooth',
-                exp_year: '1-2'
+                name : "Hyperledger Fabric",
+                exp_year : "1-2"
             }
         ],
         programming_languages: [
@@ -243,16 +240,9 @@ module.exports.candidateProfile = function candidateProfile(){
                 exp_year: '2-4'
             }
         ],
-        formal_skills : [
-            {
-                skill: 'P2P protocols',
-                exp_year: '1-2'
-            },
-            {
-                skill: 'Economics',
-                exp_year: '0-1'
-            }
-        ],
+        description_commercial_platforms : "Some test description of commercial of platforms by admin latest",
+        description_commercial_skills : "Some test description commercial skills by admin abi abi..",
+        description_experimented_platforms : "Some test description experimented platforms by admin abi..3",
         education_history : [{
             uniname: 'CUST',
             degreename: 'BSCS',
