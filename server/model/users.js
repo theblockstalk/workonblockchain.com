@@ -107,6 +107,10 @@ const UserSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'pages_content'
             },
+            privacy_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'pages_content'
+            },
             github_account: {
                 type:String,
                 validate: regexes.url
@@ -284,7 +288,7 @@ const UserSchema = new Schema({
                     })],
                 }
             },
-            status:{
+            status:{ //DELETE ME
                 type:[{
                     status: {
                         type: String,
@@ -300,7 +304,50 @@ const UserSchema = new Schema({
                         required:true,
                     }
                 }]
+            },
+            history : {
+                type : [{
+                    status:{
+                        type:[{
+                            status: {
+                                type: String,
+                                enum: enumerations.candidateStatus,
+                                required:true,
+                            },
+                            reason: {
+                                type: String,
+                                enum: enumerations.statusReasons
+                            }
+                        }],
+                        required: false
+                    },
+                    note : String,
+                    email_html : String,
+                    email_subject : String,
+                    timestamp: {
+                        type: Date,
+                        required:true,
+                    }
+                }]
+
+            },
+            latest_status : {
+                status: {
+                    type: String,
+                    enum: enumerations.candidateStatus,
+                    required:true,
+                },
+                reason: {
+                    type: String,
+                    enum: enumerations.statusReasons
+                },
+                timestamp: {
+                    type: Date,
+                    required:true,
+                }
+
             }
+
         }
     },
     conversations: [new Schema({

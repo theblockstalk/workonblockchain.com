@@ -153,8 +153,9 @@ export class CandidateProfileComponent implements OnInit ,  AfterViewInit {
               if(data)
               {
                 this.selectedValueArray = [];
-                this.date_created = data['candidate'].status[data['candidate'].status.length-1].timestamp;
-                this.candidate_status = data['candidate'].status[0];
+                this.date_created = data['candidate'].history[data['candidate'].history.length-1].timestamp;
+                this.candidate_status = data['candidate'].latest_status;
+
 
                 if(data['first_name'] && data['last_name'] && data['contact_number'] && data['nationality'] &&
                   data['candidate'].locations  && data['candidate'].roles && data['candidate'].interest_areas &&

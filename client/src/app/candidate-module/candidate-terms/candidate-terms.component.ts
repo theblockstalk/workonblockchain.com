@@ -32,6 +32,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
     prefill_link;
     prefill_disable;
     term_active_class;
+    privacy_id;
 
   constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router,private authenticationService: UserService)
     {
@@ -66,14 +67,25 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
                 data =>
                 {
                   this.authenticationService.get_page_content('Terms and Condition for candidate')
-                    .subscribe(
-                      data => {
-                        if(data)
-                        {
-                          this.terms_id = data['_id'];
-                        }
+                  .subscribe(
+                    data => {
+                      if(data)
+                      {
+                        this.terms_id = data['_id'];
                       }
-                    );
+                    }
+                  );
+
+                  this.authenticationService.get_page_content('Privacy Notice')
+                  .subscribe(
+                    data => {
+                      if(data)
+                      {
+                        this.privacy_id = data['_id'];
+                      }
+                    }
+                  );
+
                   if(data['candidate'].terms_id ||data['marketing_emails'])
                   {
 
@@ -161,32 +173,36 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
   terms_log;
   terms_and_condition(termsForm: NgForm)
   {
+    if(this.termscondition == false)
+    {
+        this.terms_log = "Please accept terms and conditions";
+    }
+    else
+    {
+      let inputQuery : any = {};
+      inputQuery.marketing_emails = termsForm.value.marketing;
+      inputQuery.terms_id = this.terms_id;
+      inputQuery.privacy_id = this.privacy_id;
 
-      if(this.termscondition == false)
-      {
-          this.terms_log = "Please accept terms and conditions";
-      }
-      else
-      {
-        this.authenticationService.terms(this.currentUser._creator,termsForm.value)
-        .subscribe(
-          data =>
-          {
-              if(data)
-              {
-                  this.router.navigate(['/prefill-profile']);
-              }
-
-          },
-          error=>
-          {
-            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+      this.authenticationService.edit_candidate_profile(this.currentUser['_creator'],inputQuery,false)
+      .subscribe(
+        data =>
+        {
+            if(data)
             {
-              this.router.navigate(['/not_found']);
+                this.router.navigate(['/prefill-profile']);
             }
+        },
+        error=>
+        {
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false)
+          {
+            this.router.navigate(['/not_found']);
+          }
 
-          });
-       }
+        }
+      );
+    }
   }
 
 }

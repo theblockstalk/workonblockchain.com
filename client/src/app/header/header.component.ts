@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { DataService } from "../data.service";
-
+import {NgForm} from '@angular/forms';
+declare var $: any;
 
 @Component({
   selector: 'app-header',
@@ -22,13 +23,17 @@ export class HeaderComponent implements OnInit {
   is_verify;
   date;
   msg;
-  increment;
   user_name = 'Admin';
-  setting;
   log;
   success;
   success_msg;
   location;
+  privacy_id;
+  terms_id;
+  termscondition = false;
+  terms_log;
+  show_popup;
+  new_privacy_id;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
@@ -46,9 +51,6 @@ export class HeaderComponent implements OnInit {
       }
     });
 
-
-
-
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if(this.currentUser )
@@ -65,6 +67,10 @@ export class HeaderComponent implements OnInit {
 
               if(data)
               {
+                this.terms_id = data['candidate']['terms_id'];
+                this.privacy_id = data['candidate']['privacy_id'];
+                this.privacy_pop_show();
+
                 this.is_verify = data['is_verify'];
                 if(this.is_verify == 0)
                 {
@@ -96,6 +102,10 @@ export class HeaderComponent implements OnInit {
             {
               if(data)
               {
+                this.terms_id = data['terms_id'];
+                this.privacy_id = data['privacy_id'];
+                this.privacy_pop_show();
+
                 this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
                 {
@@ -224,5 +234,54 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  update_terms_status(newTermsForm : NgForm){
+    if(newTermsForm.valid === true && newTermsForm.value.terms) {
+      $("#popModalForTerms").modal("hide");
+      let inputQuery : any = {};
+      inputQuery.privacy_id = this.new_privacy_id;
+      if(this.user_type === 'company'){
+        this.authenticationService.edit_company_profile(inputQuery)
+        .subscribe(
+          data => {
+            //console.log(data);
+          }
+        );
+      }
+      else if(this.user_type === 'candidate'){
+        this.authenticationService.edit_candidate_profile(this.currentUser['_creator'],inputQuery,false)
+        .subscribe(
+          data => {
+            //console.log(data);
+          }
+        );
+      }
+    }
+    else{
+      this.terms_log = 'Please accept Privacy notice';
+    }
+  }
+
+  privacy_pop_show(){
+    this.authenticationService.get_page_content('Privacy Notice')
+      .subscribe(
+        data => {
+          if (data) {
+            this.new_privacy_id = data['_id'];
+            if(this.terms_id && !this.privacy_id){
+              $("#popModalForTerms").modal("show");
+            }
+            else if(this.privacy_id && this.privacy_id === this.new_privacy_id) {
+              //console.log('new privacy_id');
+            }
+            else {
+              if(!this.terms_id && !this.privacy_id) {
+                //console.log('new user');
+              }
+              else $("#popModalForTerms").modal("show");
+            }
+          }
+        }
+      );
+  }
 
 }

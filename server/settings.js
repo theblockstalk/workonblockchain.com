@@ -45,7 +45,9 @@ if (isLiveApplication()) {
     settings.SENDGRID = {
         FROM_ADDRESS: config.sendGrid.fromAddress,
         FROM_NAME: config.sendGrid.fromName,
-        API_KEY: config.sendGrid.apiKey
+        API_KEY: config.sendGrid.apiKey,
+        ACCOUNT_FROM_ADDRESS: config.sendGrid.accountFromAddress ,
+        ACCOUNT_FROM_NAME: config.sendGrid.accountFromName
     };
 
     settings.throttleTime = config.sendGrid.throttleTime;
@@ -70,6 +72,10 @@ if (isLiveApplication()) {
         + config.mongo.port + "/" + config.mongo.databaseName;
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
+    settings.SENDGRID = {
+        ACCOUNT_FROM_ADDRESS: config.sendGrid.accountFromAddress ,
+        ACCOUNT_FROM_NAME: config.sendGrid.accountFromName
+    };
 }
 
 settings.CRON = {
