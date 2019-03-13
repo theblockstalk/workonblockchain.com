@@ -16,7 +16,7 @@ chai.use(chaiHttp);
 describe('update candidate profile', function () {
 
     afterEach(async () => {
-        console.log('dropping database');
+    console.log('dropping database');
     await mongo.drop();
 })
 
@@ -50,19 +50,6 @@ describe('update candidate profile', function () {
             interest_areas: ['Enterprise blockchain', 'Smart contract development'],
 
             experimented_platforms: ['Bitcoin' , 'Hyperledger Fabric'],
-
-            smart_contract_platforms: [
-                {
-                    _id: '5bbc37432997bf00408501b7',
-                    platform_name: 'Bitcoin',
-                    exp_year: '0-1'
-                },
-                {
-                    _id: '5bbc37432997bf00408501b6',
-                    platform_name: 'Hyperledger Sawtooth',
-                    exp_year: '1-2'
-                }
-            ],
             programming_languages: [
                 {
                     language: 'Java', exp_year: '1-2'
@@ -71,7 +58,16 @@ describe('update candidate profile', function () {
                     language: 'C#', exp_year: '0-1'
                 }
             ],
-
+            commercial_platforms : [
+                {
+                    name : "Bitcoin",
+                    exp_year : "4-6"
+                },
+                {
+                    name : "Hyperledger Fabric",
+                    exp_year : "1-2"
+                }
+            ],
             commercial_skills: [
                 {
                     skill: 'Formal verification',
@@ -82,16 +78,9 @@ describe('update candidate profile', function () {
                     exp_year: '2-4'
                 }
             ],
-            formal_skills: [
-                {
-                    skill: 'P2P protocols',
-                    exp_year: '1-2'
-                },
-                {
-                    skill: 'Economics',
-                    exp_year: '0-1'
-                }
-            ],
+            description_commercial_platforms : "Some test description of commercial of platforms by admin latest",
+            description_commercial_skills : "Some test description commercial skills by admin abi abi..",
+            description_experimented_platforms : "Some test description experimented platforms by admin abi..3",
             education_history: [{
                 uniname: 'CUST',
                 degreename: 'BSCS',
@@ -124,7 +113,6 @@ describe('update candidate profile', function () {
         candidateUserDoc.candidate.availability_day.should.equal(candidateEditProfileData.availability_day);
         candidateUserDoc.candidate.why_work.should.equal(candidateEditProfileData.why_work);
         blockchainSkills.experimented_platforms.should.valueOf(candidateEditProfileData.experimented_platforms);
-        blockchainSkills.smart_contract_platforms.should.valueOf(candidateEditProfileData.smart_contract_platforms);
         candidateUserDoc.candidate.current_salary.should.equal(candidateEditProfileData.current_salary);
         candidateUserDoc.candidate.current_currency.should.equal(candidateEditProfileData.current_currency);
         candidateUserDoc.candidate.programming_languages.should.valueOf(candidateEditProfileData.programming_languages);
@@ -135,9 +123,11 @@ describe('update candidate profile', function () {
         candidateUserDoc.candidate.base_country.should.equal(candidateEditProfileData.base_country);
         blockchainSkills.commercial_skills[0].skill.should.equal(candidateEditProfileData.commercial_skills[0].skill);
         blockchainSkills.commercial_skills[0].exp_year.should.equal(candidateEditProfileData.commercial_skills[0].exp_year);
-        blockchainSkills.formal_skills[0].skill.should.equal(candidateEditProfileData.formal_skills[0].skill);
-        blockchainSkills.formal_skills[0].exp_year.should.equal(candidateEditProfileData.formal_skills[0].exp_year);
-
-    })
+        blockchainSkills.commercial_platforms[0].name.should.equal(candidateEditProfileData.commercial_platforms[0].name);
+        blockchainSkills.commercial_platforms[0].exp_year.should.equal(candidateEditProfileData.commercial_platforms[0].exp_year);
+        blockchainSkills.description_commercial_platforms.should.equal(candidateEditProfileData.description_commercial_platforms);
+        blockchainSkills.description_commercial_skills.should.equal(candidateEditProfileData.description_commercial_skills);
+        blockchainSkills.description_experimented_platforms.should.equal(candidateEditProfileData.description_experimented_platforms);
+     })
 })
 });
