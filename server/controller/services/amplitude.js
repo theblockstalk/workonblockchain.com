@@ -3,25 +3,29 @@ const settings = require('../../settings');
 const logger = require('./logger');
 
 let amplitude;
-if (settings.AMPLITUDE.SECRET_API_KEY) {
-    amplitude = new Amplitude(settings.AMPLITUDE.API_KEY, { secretKey: settings.AMPLITUDE.SECRET_API_KEY });
-} else {
-    amplitude = new Amplitude(settings.AMPLITUDE.API_KEY);
+if (settings.isLiveApplication()) {
+    if (settings.AMPLITUDE.SECRET_API_KEY) {
+        amplitude = new Amplitude(settings.AMPLITUDE.API_KEY, { secretKey: settings.AMPLITUDE.SECRET_API_KEY });
+    } else {
+        amplitude = new Amplitude(settings.AMPLITUDE.API_KEY);
+    }
 }
 
 module.exports.track = async function (data) {
-    await new Promise( function(res, rej) {
-        try {
-            amplitude.track(data).then( function (result) {
-                res();
-            }).catch( function (error) {
-                logger.error("Amplitude error", {error: error});
-                res();
-            })
-        } catch (error) {
-            rej(error);
-        }
-    })
+    if (settings.isLiveApplication()) {
+        await new Promise( function(res, rej) {
+            try {
+                amplitude.track(data).then( function (result) {
+                    res(result);
+                }).catch( function (error) {
+                    logger.error("Amplitude error", {error: error});
+                    res();
+                })
+            } catch (error) {
+                rej(error);
+            }
+        })
+    }
 }
 
 module.exports.identify = async function (data) {
