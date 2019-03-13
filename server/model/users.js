@@ -240,45 +240,33 @@ const UserSchema = new Schema({
                             }
                         }]
                     },
+                    description_commercial_platforms:{
+                        type: String
+                    },
                     experimented_platforms: {
                         type: [{
                             type: String,
                             enum: enumerations.blockchainPlatforms
-                        }]
+                        }],
                     },
-                    smart_contract_platforms: {
+                    description_experimented_platforms:{
+                        type: String
+                    },
+                    commercial_skills : {
                         type: [{
-                            name: {
+                            skill: {
                                 type: String,
-                                enum: enumerations.blockchainPlatforms
+                                enum: enumerations.otherSkills
                             },
                             exp_year: {
                                 type: String,
-                                enum: enumerations.experienceYears
+                                enum: enumerations.exp_years
                             }
-                        }]
+                        }],
                     },
-                    commercial_skills : [new Schema({
-                        skill: {
-                            type: String,
-                            enum: enumerations.otherSkills
-                        },
-                        exp_year: {
-                            type: String,
-                            enum: enumerations.exp_years
-                        }
-                    })],
-
-                    formal_skills : [new Schema({
-                        skill: {
-                            type: String,
-                            enum: enumerations.otherSkills
-                        },
-                        exp_year: {
-                            type: String,
-                            enum: enumerations.exp_years
-                        }
-                    })],
+                    description_commercial_skills:{
+                        type: String
+                    },
                 }
             },
             status:{ //DELETE ME

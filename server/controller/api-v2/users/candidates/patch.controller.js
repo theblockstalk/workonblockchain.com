@@ -176,23 +176,17 @@ const bodySchema = new Schema({
                             }
                         }]
                     },
+                    description_commercial_platforms:{
+                        type: String
+                    },
                     experimented_platforms: {
                         type: [{
                             type: String,
                             enum: enumerations.blockchainPlatforms
                         }]
                     },
-                    smart_contract_platforms: {
-                        type: [{
-                            name: {
-                                type: String,
-                                enum: enumerations.blockchainPlatforms
-                            },
-                            exp_year: {
-                                type: String,
-                                enum: enumerations.experienceYears
-                            }
-                        }]
+                    description_experimented_platforms:{
+                        type: String
                     },
                     commercial_skills : [new Schema({
                         skill: {
@@ -204,17 +198,9 @@ const bodySchema = new Schema({
                             enum: enumerations.exp_years
                         }
                     })],
-
-                    formal_skills : [new Schema({
-                        skill: {
-                            type: String,
-                            enum: enumerations.otherSkills
-                        },
-                        exp_year: {
-                            type: String,
-                            enum: enumerations.exp_years
-                        }
-                    })],
+                    description_commercial_skills:{
+                        type: String
+                    },
                 }
             }
         }
@@ -289,10 +275,10 @@ module.exports.endpoint = async function (req, res) {
     if (queryBody.work_history && queryBody.work_history.length > 0) updateCandidateUser['candidate.work_history'] = queryBody.work_history;
     if (queryBody.interest_areas) updateCandidateUser['candidate.interest_areas'] = queryBody.interest_areas;
     if (queryBody.commercial_platforms && queryBody.commercial_platforms.length > 0) updateCandidateUser['candidate.blockchain.commercial_platforms'] = queryBody.commercial_platforms;
+    if(queryBody.description_commercial_platforms && queryBody.commercial_platforms.length >0) updateCandidateUser['candidate.blockchain.description_commercial_platforms'] = queryBody.description_commercial_platforms;
     if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
-    if (queryBody.smart_contract_platforms && queryBody.smart_contract_platforms.length > 0) updateCandidateUser['candidate.blockchain.smart_contract_platforms'] = queryBody.smart_contract_platforms;
+    if(queryBody.description_experimented_platforms && queryBody.experimented_platforms.length >0) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = queryBody.description_experimented_platforms;
     if(queryBody.commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
-    if(queryBody.formal_skills && queryBody.formal_skills.length > 0 ) updateCandidateUser['candidate.blockchain.formal_skills'] = queryBody.formal_skills;
 
     let timestamp = new Date();
     let history = {
