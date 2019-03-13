@@ -30,73 +30,7 @@ describe('update candidate profile', function () {
         await candidateHelper.candidateProfile(candidate, profileData);
 
         let  candidateUserDoc = await users.findOne({email: candidate.email}).lean();
-        const candidateEditProfileData = {
-            user_id : candidateUserDoc._id,
-            contact_number: '+92654654654',
-            exchange_account: 'sadia_exchange.com',
-            github_account: 'fb.com',
-            nationality: 'Pakistani',
-            base_country: 'Pakistan',
-            base_city: 'Islamabad',
-            expected_salary: 1400,
-            expected_salary_currency: '$ USD',
-            current_salary: 23000,
-            current_currency: '£ GBP',
-            availability_day: '1 month',
-            why_work: 'I want to work. I want to work. I want to work. I want to work.I want to work. I want to work. I want to work.',
-            description: 'I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. I am developer. ',
-            locations: ['remote', 'Amsterdam'],
-            roles: ['Backend Developer', 'Fullstack Developer'],
-            interest_areas: ['Enterprise blockchain', 'Smart contract development'],
-
-            experimented_platforms: ['Bitcoin' , 'Hyperledger Fabric'],
-            programming_languages: [
-                {
-                    language: 'Java', exp_year: '1-2'
-                },
-                {
-                    language: 'C#', exp_year: '0-1'
-                }
-            ],
-            commercial_platforms : [
-                {
-                    name : "Bitcoin",
-                    exp_year : "4-6"
-                },
-                {
-                    name : "Hyperledger Fabric",
-                    exp_year : "1-2"
-                }
-            ],
-            commercial_skills: [
-                {
-                    skill: 'Formal verification',
-                    exp_year: '0-1'
-                },
-                {
-                    skill: 'Distributed computing and networks',
-                    exp_year: '2-4'
-                }
-            ],
-            description_commercial_platforms : "Some test description of commercial of platforms by admin latest",
-            description_commercial_skills : "Some test description commercial skills by admin abi abi..",
-            description_experimented_platforms : "Some test description experimented platforms by admin abi..3",
-            education_history: [{
-                uniname: 'CUST',
-                degreename: 'BSCS',
-                fieldname: 'CS',
-                eduyear: 2016
-            }],
-            work_history: [{
-                companyname: 'MWAN',
-                positionname: 'Team Lead',
-                locationname: 'Tokyo Japan',
-                description: 'I am in this org. I am in this org. I am in this org. I am this org. I am in this org. I am in this org. I am in this org. I am in this orgg. ',
-                startdate: '2016-02-29T19:00:00.000Z',
-                enddate: '2018-10-09T07:32:38.732Z',
-                currentwork: true
-            }]
-        }
+        const candidateEditProfileData = docGenerator.candidateProfile();
 
         const res = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
         candidateUserDoc = await users.findOne({email: candidate.email}).lean();
