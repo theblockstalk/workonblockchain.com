@@ -235,17 +235,15 @@ export class HeaderComponent implements OnInit {
   }
 
   update_terms_status(newTermsForm : NgForm){
-    console.log(newTermsForm.value);
     if(newTermsForm.valid === true && newTermsForm.value.terms) {
       $("#popModalForTerms").modal("hide");
       let inputQuery : any = {};
       inputQuery.privacy_id = this.new_privacy_id;
-      console.log(inputQuery);
       if(this.user_type === 'company'){
         this.authenticationService.edit_company_profile(inputQuery)
         .subscribe(
           data => {
-            console.log(data);
+            //console.log(data);
           }
         );
       }
@@ -253,7 +251,7 @@ export class HeaderComponent implements OnInit {
         this.authenticationService.edit_candidate_profile(this.currentUser['_creator'],inputQuery,false)
         .subscribe(
           data => {
-            console.log(data);
+            //console.log(data);
           }
         );
       }
@@ -264,22 +262,21 @@ export class HeaderComponent implements OnInit {
   }
 
   privacy_pop_show(){
-    console.log(this.terms_id);
-    console.log(this.privacy_id);
     this.authenticationService.get_page_content('Privacy Notice')
       .subscribe(
         data => {
           if (data) {
-            console.log(data);
             this.new_privacy_id = data['_id'];
             if(this.terms_id && !this.privacy_id){
               $("#popModalForTerms").modal("show");
             }
             else if(this.privacy_id && this.privacy_id === this.new_privacy_id) {
-              console.log('new privacy_id');
+              //console.log('new privacy_id');
             }
             else {
-              if(!this.terms_id && !this.privacy_id) console.log('new user');
+              if(!this.terms_id && !this.privacy_id) {
+                //console.log('new user');
+              }
               else $("#popModalForTerms").modal("show");
             }
           }

@@ -84,7 +84,7 @@ router.post('/users/get_refrence_detail', auth.isLoggedIn, asyncMiddleware(getRe
 router.post('/users/register', asyncMiddleware(candidateRegister));
 router.get('/users/',auth.isLoggedIn, asyncMiddleware(candidateGetAll));
 router.get('/users/current/:_id', auth.isLoggedIn, asyncMiddleware(candidateGetCurrent));
-router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC));
+router.put('/users/welcome/terms', auth.isLoggedIn, asyncMiddleware(candidateWizardTnC)); //will be removed after approval from @Jack
 router.put('/users/welcome/prefilled_profile' ,  auth.isLoggedIn , asyncMiddleware(candidateWizardPrefilledProfile));
 router.put('/users/welcome/about', auth.isLoggedIn, asyncMiddleware(candidateWizardAbout));
 router.put('/users/welcome/job', auth.isLoggedIn, asyncMiddleware(candidateWizardJob));
@@ -96,7 +96,7 @@ router.post('/users/auto_suggest/:query_input', auth.isLoggedIn , asyncMiddlewar
 router.post('/users/create_employer',  asyncMiddleware(companyRegister));
 router.get('/users/company',auth.isAdmin, asyncMiddleware(companyGet));
 router.get('/users/current_company/:_id',auth.isLoggedIn, asyncMiddleware(companyGetCurrent));
-router.put('/users/company_wizard',auth.isLoggedIn, asyncMiddleware(companyWizardTnT));
+router.put('/users/company_wizard',auth.isLoggedIn, asyncMiddleware(companyWizardTnT)); //will be removed after approval from @Jack
 router.put('/users/about_company',auth.isLoggedIn, asyncMiddleware(companyWizardAbout));
 router.post('/users/employer_image',auth.isLoggedIn, multer.single('photo'), asyncMiddleware(companyImage));
 router.post('/users/filter',auth.isValidCompany, asyncMiddleware(companySearchFilter));

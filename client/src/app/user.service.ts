@@ -321,6 +321,7 @@ export class UserService {
       }));
   }
 
+  //will be removed after approval from @Jack
   terms(user_id: string, data: any)
   {
 
@@ -513,6 +514,7 @@ export class UserService {
 
   }
 
+  //will be removed after approval from @Jack
   company_terms(user_id: string, detail: any)
   {
 
@@ -907,7 +909,7 @@ export class UserService {
     }));
   }
 
-  edit_company_profile(queryBody :any   )
+  edit_company_profile(queryBody :any)
   {
     return this.http.patch(URL+'v2/users/'+ this.currentUser._creator +'/companies', queryBody , {
       headers: new HttpHeaders().set('Authorization', this.token)

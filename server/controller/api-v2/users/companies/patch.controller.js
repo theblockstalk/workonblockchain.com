@@ -139,7 +139,13 @@ const bodySchema = new Schema({
         type : String ,
         enum : enumerations.email_notificaiton
     },
-    privacy_id:{
+    marketing_emails: {
+        type: Boolean,
+    },
+    privacy_id: {
+        type : String
+    },
+    terms_id: {
         type : String
     }
 });
@@ -222,6 +228,14 @@ module.exports.endpoint = async function (req, res) {
             if(pagesDoc) employerUpdate.privacy_id = pagesDoc._id;
             else errors.throwError("Privacy notice document not found", 404);
         }
+
+        if(queryBody.terms_id)
+        {
+            const pagesDoc =  await Pages.findOne({_id: queryBody.terms_id}).lean();
+            if(pagesDoc) employerUpdate.terms_id = pagesDoc._id;
+            else errors.throwError("Privacy notice document not found", 404);
+        }
+        if(queryBody.marketing_emails) employerUpdate.marketing_emails = queryBody.marketing_emails;
 
         await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 

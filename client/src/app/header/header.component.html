@@ -69,8 +69,7 @@
               information about how we manage data for the platform. Please  take some time to review
               it before continuing.
             </p>
-            <a *ngIf="currentUser && currentUser.type === 'company'" routerLink="/terms-for-company" target="_blank" class="btn btn-primary">Review</a>
-            <a *ngIf="currentUser && currentUser.type === 'candidate'" routerLink="/terms-for-candidate" target="_blank" class="btn btn-primary">Review</a>
+            <a routerLink="/privacy-notice" target="_blank" class="btn btn-primary">Review</a>
           </div>
           <div class="checkbox ml-3">
             <label>
@@ -78,8 +77,8 @@
               I have read and accepted the <a routerLink="/privacy-notice" target="_blank">Privacy notice</a>.
             </label>
           </div>
-          <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "alert alert-danger">
-            <span class = "error">{{terms_log}}</span>
+          <div *ngIf="(termscondition === false || termscondition === true) && terms_log" class = "invalid-feedback d-inline ml-3">
+            {{terms_log}}
           </div>
           <div class="modal-footer mo_footer">
             <button type="submit" class="btn btn-primary model-btn">Continue</button>

@@ -35,7 +35,9 @@ const bodySchema = new Schema({
     },
     candidate: {
         type: {
+            marketing_emails: Boolean,
             privacy_id: String,
+            terms_id: String,
             base_city: String,
             base_country: {
                 type: String,
@@ -319,6 +321,14 @@ module.exports.endpoint = async function (req, res) {
         if(pagesDoc) updateCandidateUser['candidate.privacy_id'] = pagesDoc._id;
         else errors.throwError("Privacy notice document not found", 404);
     }
+
+    if(queryBody.terms_id)
+    {
+        const pagesDoc =  await Pages.findOne({_id: queryBody.terms_id}).lean();
+        if(pagesDoc) updateCandidateUser['candidate.terms_id'] = pagesDoc._id;
+        else errors.throwError("Privacy notice document not found", 404);
+    }
+    if(queryBody.marketing_emails) updateCandidateUser.marketing_emails = queryBody.marketing_emails;
 
     let latestStatus = objects.copyObject(history.status);
     latestStatus.timestamp = timestamp;

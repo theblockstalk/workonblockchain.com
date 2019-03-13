@@ -24,6 +24,7 @@ export class TermsWizardComponent implements OnInit {
   preference;
   pref_active_class;
   pref_disable;
+  privacy_id;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -51,6 +52,17 @@ export class TermsWizardComponent implements OnInit {
           }
         }
       );
+
+      this.authenticationService.get_page_content('Privacy Notice')
+      .subscribe(
+        data => {
+          if(data)
+          {
+            this.privacy_id = data['_id'];
+          }
+        }
+      );
+
       this.authenticationService.getCurrentCompany(this.currentUser._creator)
         .subscribe(
           data =>
@@ -119,28 +131,32 @@ export class TermsWizardComponent implements OnInit {
     }
     else
     {
-      this.authenticationService.company_terms(this.currentUser._creator,termsForm.value)
-        .subscribe(
-          data => {
-            if(data && this.currentUser)
-            {
-              this.router.navigate(['/about_comp']);
-            }
+      let inputQuery : any = {};
+      inputQuery.marketing_emails = termsForm.value.marketing;
+      inputQuery.terms_id = this.terms_id;
+      inputQuery.privacy_id = this.privacy_id;
 
+      this.authenticationService.edit_company_profile(inputQuery)
+      .subscribe(
+        data => {
+          if(data && this.currentUser)
+          {
+            this.router.navigate(['/about_comp']);
+          }
+        },
+        error => {
+          if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+          }
+          else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
+            this.log = error['error']['message'];
+          }
+          else {
+            this.log = "Something getting wrong";
+          }
 
-          },
-          error => {
-            if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              this.log = error['error']['message'];
-            }
-            else if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-              this.log = error['error']['message'];
-            }
-            else {
-              this.log = "Something getting wrong";
-            }
-
-          });
+        }
+      );
     }
   }
 
