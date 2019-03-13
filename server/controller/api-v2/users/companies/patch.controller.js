@@ -4,9 +4,8 @@ const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
 const multer = require('../../../../controller/middleware/multer');
 const objects = require('../../../services/objects');
-const Pages = require('../../../../model/pages_content');
-
 const companies = require('../../../../model/mongoose/company');
+const errors = require('../../../services/errors');
 
 module.exports.request = {
     type: 'patch',
@@ -221,21 +220,6 @@ module.exports.endpoint = async function (req, res) {
             }
             employerUpdate.saved_searches = queryBody.saved_searches;
         }
-
-        if(queryBody.privacy_id)
-        {
-            const pagesDoc =  await Pages.findOne({_id: queryBody.privacy_id}).lean();
-            if(pagesDoc) employerUpdate.privacy_id = pagesDoc._id;
-            else errors.throwError("Privacy notice document not found", 404);
-        }
-
-        if(queryBody.terms_id)
-        {
-            const pagesDoc =  await Pages.findOne({_id: queryBody.terms_id}).lean();
-            if(pagesDoc) employerUpdate.terms_id = pagesDoc._id;
-            else errors.throwError("Privacy notice document not found", 404);
-        }
-        if(queryBody.marketing_emails) employerUpdate.marketing_emails = queryBody.marketing_emails;
 
         await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
 

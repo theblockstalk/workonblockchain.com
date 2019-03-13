@@ -236,25 +236,22 @@ export class HeaderComponent implements OnInit {
 
   update_terms_status(newTermsForm : NgForm){
     if(newTermsForm.valid === true && newTermsForm.value.terms) {
-      $("#popModalForTerms").modal("hide");
       let inputQuery : any = {};
       inputQuery.privacy_id = this.new_privacy_id;
-      if(this.user_type === 'company'){
-        this.authenticationService.edit_company_profile(inputQuery)
-        .subscribe(
-          data => {
-            //console.log(data);
+      this.authenticationService.update_terms_and_privacy(inputQuery)
+      .subscribe(
+        data => {
+          $("#popModalForTerms").modal("hide");
+        },
+        error=>
+        {
+          if(error['status'] === 404 && error['error']['message'])
+          {
+            console.log(error);
+            this.terms_log = 'something getting wrong';
           }
-        );
-      }
-      else if(this.user_type === 'candidate'){
-        this.authenticationService.edit_candidate_profile(this.currentUser['_creator'],inputQuery,false)
-        .subscribe(
-          data => {
-            //console.log(data);
-          }
-        );
-      }
+        }
+      );
     }
     else{
       this.terms_log = 'Please accept Privacy notice';

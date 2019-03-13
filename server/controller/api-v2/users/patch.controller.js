@@ -1,16 +1,15 @@
-const auth = require('../../../middleware/auth-v2');
+const auth = require('../../middleware/auth-v2');
 const Schema = require('mongoose').Schema;
-const enumerations = require('../../../../model/enumerations');
-const regexes = require('../../../../model/regexes');
-const multer = require('../../../../controller/middleware/multer');
-const objects = require('../../../services/objects');
-const Pages = require('../../../../model/pages_content');
-
-const companies = require('../../../../model/mongoose/company');
+const multer = require('../../../controller/middleware/multer');
+const Pages = require('../../../model/mongoose/pages');
+const companies = require('../../../model/mongoose/company');
+const errors = require('../../services/errors');
+const filterReturnData = require('../../api/users/filterReturnData');
+const users = require('../../../model/mongoose/users');
 
 module.exports.request = {
     type: 'patch',
-    path: '/users/:user_id/'
+    path: '/users/:user_id'
 };
 const paramSchema = new Schema({
     user_id: String
@@ -43,35 +42,58 @@ module.exports.auth = async function (req) {
 
 
 module.exports.endpoint = async function (req, res) {
-    console.log(req.auth.user);
-    process.exit();
-    let userId;
-    userId = req.auth.user._id;
-    const employerDoc = await companies.findOne({ _creator: userId });
+    let userId = req.auth.user._id;
+    const queryBody = req.body;
+    if(req.auth.user.type === 'company'){
+        const employerDoc = await companies.findOne({ _creator: userId });
+        let employerUpdate = {};
 
-    if(employerDoc){
-        const queryBody = req.body;
+        if(employerDoc){
+            if(queryBody.privacy_id)
+            {
+                const pagesDoc =  await Pages.findByDescDate({page_name: 'Privacy Notice'});
+                if(pagesDoc._id.toString() === queryBody.privacy_id) employerUpdate.privacy_id = pagesDoc._id;
+                else errors.throwError("Privacy notice document not found", 404);
+            }
+
+            if(queryBody.terms_id)
+            {
+                const pagesDoc =  await Pages.findByDescDate({page_name: 'Terms and Condition for company'});
+                if(pagesDoc._id.toString() === queryBody.terms_id) employerUpdate.terms_id = pagesDoc._id;
+                else errors.throwError("Terms and Condition document for company not found", 404);
+            }
+            if(queryBody.marketing_emails) employerUpdate.marketing_emails = queryBody.marketing_emails;
+
+            await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
+
+            res.send();
+        }
+        else {
+            errors.throwError("Company account not found", 404);
+        }
+    }
+    else if(req.auth.user.type === 'candidate'){
+        let updateCandidateUser = {};
+        let userDoc = req.auth.user;
         if(queryBody.privacy_id)
         {
-            const pagesDoc =  await Pages.findOne({_id: queryBody.privacy_id}).lean();
-            if(pagesDoc) employerUpdate.privacy_id = pagesDoc._id;
+            const pagesDoc =  await Pages.findByDescDate({page_name: 'Privacy Notice'});
+            if(pagesDoc._id.toString() === queryBody.privacy_id) updateCandidateUser['candidate.privacy_id'] = pagesDoc._id;
             else errors.throwError("Privacy notice document not found", 404);
         }
 
         if(queryBody.terms_id)
         {
-            const pagesDoc =  await Pages.findOne({_id: queryBody.terms_id}).lean();
-            if(pagesDoc) employerUpdate.terms_id = pagesDoc._id;
-            else errors.throwError("Privacy notice document not found", 404);
+            const pagesDoc =  await Pages.findByDescDate({page_name: 'Terms and Condition for candidate'});
+            if(pagesDoc._id.toString() === queryBody.terms_id) updateCandidateUser['candidate.terms_id'] = pagesDoc._id;
+            else errors.throwError("Terms and Condition document for candidate not found", 404);
         }
-        if(queryBody.marketing_emails) employerUpdate.marketing_emails = queryBody.marketing_emails;
+        if(queryBody.marketing_emails) updateCandidateUser.marketing_emails = queryBody.marketing_emails;
 
-        await companies.update({ _id: employerDoc._id },{ $set: employerUpdate});
+        await users.update({_id: userId}, {
+            $set : updateCandidateUser
+        });
 
-        const updatedEmployerDoc = await companies.findOneAndPopulate(userId);
-        res.send(updatedEmployerDoc);
-    }
-    else {
-        errors.throwError("Company account not found", 404);
+        res.send();
     }
 }

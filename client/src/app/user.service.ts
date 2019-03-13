@@ -1549,7 +1549,6 @@ export class UserService {
     }));
   }
 
-
   add_to_subscribe_list(first_name:string, last_name:string, email:string){
     return this.http.post(URL+'v2/subscribers', {first_name:first_name,last_name:last_name,email:email}).pipe(map((res: Response) =>
     {
@@ -1559,11 +1558,30 @@ export class UserService {
       }
     }), catchError((error: any) =>
     {
-      if (error.status )
+      if (error.status)
       {
         return throwError(error);
       }
 
+    }));
+  }
+
+  update_terms_and_privacy(queryBody :any)
+  {
+    return this.http.patch(URL+'v2/users/'+ this.currentUser._creator, queryBody , {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    }).pipe(map((res: Response) =>
+    {
+      if (res)
+      {
+        return res;
+      }
+    }), catchError((error: any) =>
+    {
+      if (error.status)
+      {
+        return throwError(error);
+      }
     }));
   }
 

@@ -136,7 +136,7 @@ export class TermsWizardComponent implements OnInit {
       inputQuery.terms_id = this.terms_id;
       inputQuery.privacy_id = this.privacy_id;
 
-      this.authenticationService.edit_company_profile(inputQuery)
+      this.authenticationService.update_terms_and_privacy(inputQuery)
       .subscribe(
         data => {
           if(data && this.currentUser)

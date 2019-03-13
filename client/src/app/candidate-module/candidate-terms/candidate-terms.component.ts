@@ -184,7 +184,7 @@ export class CandidateTermsComponent implements OnInit,AfterViewInit {
       inputQuery.terms_id = this.terms_id;
       inputQuery.privacy_id = this.privacy_id;
 
-      this.authenticationService.edit_candidate_profile(this.currentUser['_creator'],inputQuery,false)
+      this.authenticationService.update_terms_and_privacy(inputQuery)
       .subscribe(
         data =>
         {
