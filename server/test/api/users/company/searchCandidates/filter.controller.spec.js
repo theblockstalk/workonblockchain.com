@@ -8,6 +8,8 @@ const docGenerator = require('../../../../helpers/docGenerator');
 const companyHelper = require('../companyHelpers');
 const candidateHelper = require('../../candidate/candidateHelpers');
 const currency = require('../../../../../controller/services/currency')
+const docGeneratorV2 = require('../../../../helpers/docGenerator-v2');
+const userHelper = require('../../usersHelpers');
 
 const assert = chai.assert;
 const expect = chai.expect;
@@ -29,12 +31,10 @@ describe('search candidates as company', function () {
             const companyRes = await companyHelper.signupVerifiedApprovedCompany(company);
 
             const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
+            const profileData = docGeneratorV2.candidateProfile();
 
-            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelper.approveCandidate(candidate.email);
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
             console.log(candidateUserDoc.candidate);
@@ -60,12 +60,10 @@ describe('search candidates as company', function () {
             await companyHelper.signupVerifiedApprovedCompany(company);
 
             const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
+            const profileData = docGeneratorV2.candidateProfile();
 
-            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelper.approveCandidate(candidate.email);
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
@@ -89,12 +87,10 @@ describe('search candidates as company', function () {
             await companyHelper.signupVerifiedApprovedCompany(company);
 
             const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
+            const profileData = docGeneratorV2.candidateProfile();
 
-            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelper.approveCandidate(candidate.email);
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
@@ -114,12 +110,10 @@ describe('search candidates as company', function () {
             await companyHelper.signupVerifiedApprovedCompany(company);
 
             const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
+            const profileData = docGeneratorV2.candidateProfile();
 
-            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelper.approveCandidate(candidate.email);
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
@@ -141,12 +135,10 @@ describe('search candidates as company', function () {
             await companyHelper.signupVerifiedApprovedCompany(company);
 
             const candidate = docGenerator.candidate();
-            const profileData = docGenerator.profileData();
-            const job = docGenerator.job();
-            const resume = docGenerator.resume();
-            const experience = docGenerator.experience();
+            const profileData = docGeneratorV2.candidateProfile();
 
-            const candidateRes = await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData,job,resume,experience );
+            await candidateHelper.signupCandidateAndCompleteProfile(candidate, profileData );
+            await userHelper.approveCandidate(candidate.email);
 
             const candidateUserDoc = await Users.findOne({email: candidate.email}).lean();
 
