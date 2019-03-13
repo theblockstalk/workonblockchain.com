@@ -30,7 +30,7 @@ describe('update candidate profile', function () {
         await candidateHelper.candidateProfile(candidate, profileData);
 
         let  candidateUserDoc = await users.findOne({email: candidate.email}).lean();
-        const candidateEditProfileData = docGenerator.candidateProfile();
+        const candidateEditProfileData = docGenerator.candidateProfileUpdate();
 
         const res = await candidateHelper.candidateProfilePatch(candidateUserDoc._id ,candidateUserDoc.jwt_token, candidateEditProfileData);
         candidateUserDoc = await users.findOne({email: candidate.email}).lean();

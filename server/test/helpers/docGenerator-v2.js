@@ -270,4 +270,66 @@ module.exports.changeCandidateStatus = function changeCandidateStatus(){
     }
 }
 
+module.exports.candidateProfileUpdate = function candidateProfileUpdate(){
+    return {
+        contact_number: '+926246524',
+        exchange_account: 'sadia_exchange_1234.com',
+        github_account: 'fb12.com',
+        base_city : 'Islamabad',
+        locations: [
+            {remote:true , visa_needed: false}, {country: 'Afghanistan' , visa_needed : false},
+            {city : '5c4aa17468cc293450c14c04' , visa_needed : true }
+        ],
+        roles: [ random.enum(enumerations.workRoles), random.enum(enumerations.workRoles) ],
+        interest_areas: [random.enum(enumerations.workBlockchainInterests) ,  random.enum(enumerations.workBlockchainInterests)],
 
+        experimented_platforms:[random.enum(enumerations.blockchainPlatforms) , random.enum(enumerations.blockchainPlatforms)],
+        commercial_platforms : [
+            {
+                name : "Bitcoin",
+                exp_year : "4-6"
+            },
+            {
+                name : "Hyperledger Fabric",
+                exp_year : "1-2"
+            }
+        ],
+        programming_languages: [
+            {
+                language: 'Java', exp_year: '1-2'
+            },
+            {
+                language: 'C#', exp_year: '0-1'
+            }
+        ],
+
+        commercial_skills : [
+            {
+                skill: 'Formal verification',
+                exp_year: '0-1'
+            },
+            {
+                skill: 'Distributed computing and networks',
+                exp_year: '2-4'
+            }
+        ],
+        description_commercial_platforms : "upadatd Some test description of commercial of platforms",
+        description_commercial_skills : "upadatd Some test description commercial skills",
+        description_experimented_platforms : "upadatd Some test description experimented platforms",
+        education_history : [{
+            uniname: 'CUST',
+            degreename: 'BSCS',
+            fieldname: 'CS',
+            eduyear: 2016
+        }],
+        work_history:[{
+            companyname: 'MWAN',
+            positionname: 'Team Lead',
+            locationname: 'Tokyo Japan',
+            description: 'I am in this org. I am in this org. I am in this org. I am this org. I am in this org. I am in this org. I am in this org. I am in this orgg. ',
+            startdate: '2016-02-29T19:00:00.000Z',
+            enddate: '2018-10-09T07:32:38.732Z',
+            currentwork: true
+        }]
+    }
+}
