@@ -69,8 +69,8 @@
               information about how we manage data for the platform. Please  take some time to review
               it before continuing.
             </p>
-            <a *ngIf="currentUser.type === 'company'" routerLink="/terms-for-company" target="_blank" class="btn btn-primary">Review</a>
-            <a *ngIf="currentUser.type === 'candidate'" routerLink="/terms-for-candidate" target="_blank" class="btn btn-primary">Review</a>
+            <a *ngIf="currentUser && currentUser.type === 'company'" routerLink="/terms-for-company" target="_blank" class="btn btn-primary">Review</a>
+            <a *ngIf="currentUser && currentUser.type === 'candidate'" routerLink="/terms-for-candidate" target="_blank" class="btn btn-primary">Review</a>
           </div>
           <div class="checkbox ml-3">
             <label>

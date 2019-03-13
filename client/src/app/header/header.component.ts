@@ -28,9 +28,11 @@ export class HeaderComponent implements OnInit {
   success;
   success_msg;
   location;
+  privacy_id;
   terms_id;
   termscondition = false;
   terms_log;
+  show_popup;
 
   constructor(private authenticationService: UserService,private dataservice: DataService,private router: Router,location: Location,private datePipe: DatePipe)
   {
@@ -47,9 +49,6 @@ export class HeaderComponent implements OnInit {
         //this.route = 'Home'
       }
     });
-
-
-
 
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -100,7 +99,18 @@ export class HeaderComponent implements OnInit {
               if(data)
               {
                 this.terms_id = data['terms_id'];
-                console.log('Terms ID: ' + this.terms_id);
+                this.privacy_id = data['privacy_id'];
+
+                this.privacy_pop_show();
+                /*if(data['terms_id'] && !data['privacy_id']){
+                  this.show_popup = true;
+                  console.log('terms_id there, but no privacy_id, show pop');
+                  this.privacy_pop_show();
+                }
+                else{
+                  this.show_popup = false;
+                  console.log('both not, not show popup');
+                }*/
                 this.is_verify = data['_creator'].is_verify;
                 if(this.is_verify == 0)
                 {
@@ -141,26 +151,6 @@ export class HeaderComponent implements OnInit {
 
     if(this.currentUser)
     {
-      let page_content = '';
-      if(this.currentUser.type === 'company') page_content = 'Terms and Condition for company';
-      else if(this.currentUser.type === 'candidate') page_content = 'Terms and Condition for candidate';
-      this.authenticationService.get_page_content(page_content)
-      .subscribe(
-        data => {
-          if(data){
-            console.log(data);
-            if(this.terms_id && this.terms_id === data['_id']){
-              console.log('new one');
-            }
-            else{
-              $("#popModalForTerms").modal("show");
-            }
-            /*$("#popModalForTerms").modal("show");
-            this.page_title= data['page_title'];
-            this.editor_content = data['page_content'];*/
-          }
-        }
-      );
       this.dataservice.currentMessage.subscribe(message => this.msg = message);
       setInterval(() => {
         this.msg = "" ;
@@ -253,10 +243,51 @@ export class HeaderComponent implements OnInit {
     console.log(newTermsForm.value);
     if(newTermsForm.valid === true && newTermsForm.value.terms) {
       $("#popModalForTerms").modal("hide");
+      this.authenticationService.update_company_terms_and_privacy(this.currentUser._creator,newTermsForm.value)
+      .subscribe(
+        data => {
+          if (data) {
+            console.log(data);
+            /*if(this.terms_id && !this.privacy_id){
+              $("#popModalForTerms").modal("show");
+            }
+            else if(this.privacy_id && this.privacy_id === data['_id']) {
+              console.log('new privacy_id');
+            }
+            else {
+              if(!this.terms_id && !this.privacy_id) console.log('new user');
+              else $("#popModalForTerms").modal("show");
+            }*/
+          }
+        }
+      );
     }
     else{
       this.terms_log = 'Please accept Privacy notice';
     }
+  }
+
+  privacy_pop_show(){
+    console.log(this.terms_id);
+    console.log(this.privacy_id);
+    this.authenticationService.get_page_content('Privacy Notice')
+    .subscribe(
+      data => {
+        if (data) {
+          console.log(data);
+          if(this.terms_id && !this.privacy_id){
+            $("#popModalForTerms").modal("show");
+          }
+          else if(this.privacy_id && this.privacy_id === data['_id']) {
+            console.log('new privacy_id');
+          }
+          else {
+            if(!this.terms_id && !this.privacy_id) console.log('new user');
+            else $("#popModalForTerms").modal("show");
+          }
+        }
+      }
+    );
   }
 
 }

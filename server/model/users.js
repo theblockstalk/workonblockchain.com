@@ -107,6 +107,10 @@ const UserSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'pages_content'
             },
+            privacy_id: {
+                type: Schema.Types.ObjectId,
+                ref: 'pages_content'
+            },
             github_account: {
                 type:String,
                 validate: regexes.url
