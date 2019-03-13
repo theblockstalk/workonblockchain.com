@@ -300,8 +300,9 @@
             </div>
 
             <div class="col-md-6">
-              <div class="form-group" *ngIf="history.email_text">
-                <div  [innerHTML] = "history.email_text| safeHtml "></div>
+              <div class="form-group" *ngIf="history.email_html">
+                <h4>{{history.email_subject}}</h4>
+                <div  [innerHTML] = "history.email_html| safeHtml "></div>
               </div>
             </div>
 

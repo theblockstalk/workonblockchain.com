@@ -67,6 +67,10 @@ if (isLiveApplication()) {
         + config.mongo.port + "/" + config.mongo.databaseName;
 
     settings.FILE_URL = 'http://localhost/workonblockchain.com/server/uploads/';
+    settings.SENDGRID = {
+        ACCOUNT_FROM_ADDRESS: config.sendGrid.accountFromAddress ,
+        ACCOUNT_FROM_NAME: config.sendGrid.accountFromName
+    };
 }
 
 settings.CRON = {

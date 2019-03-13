@@ -230,13 +230,15 @@ module.exports.endpoint = async function (req, res) {
     let userId;
     let queryBody = req.body;
     let updateCandidateUser = {};
-    let userDoc = req.auth.user;
+    let userDoc;
 
     if (req.query.admin) {
         userId = req.params.user_id;
+        userDoc = await users.findOneById(userId);
     }
     else {
         userId = req.auth.user._id;
+        userDoc = req.auth.user;
     }
 
     if(req.file && req.file.path) updateCandidateUser.image = req.file.path;
@@ -277,7 +279,6 @@ module.exports.endpoint = async function (req, res) {
     if (queryBody.experimented_platforms && queryBody.experimented_platforms.length > 0) updateCandidateUser['candidate.blockchain.experimented_platforms'] = queryBody.experimented_platforms;
     if(queryBody.description_experimented_platforms && queryBody.experimented_platforms.length >0) updateCandidateUser['candidate.blockchain.description_experimented_platforms'] = queryBody.description_experimented_platforms;
     if(queryBody.commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.commercial_skills'] = queryBody.commercial_skills;
-    if(queryBody.description_commercial_skills && queryBody.commercial_skills.length >0) updateCandidateUser['candidate.blockchain.description_commercial_skills'] = queryBody.description_commercial_skills;
 
     let timestamp = new Date();
     let history = {
