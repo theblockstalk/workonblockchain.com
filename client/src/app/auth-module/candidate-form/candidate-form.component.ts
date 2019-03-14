@@ -171,8 +171,13 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
     }
     if(loginForm.valid === true && this.credentials.first_name && this.credentials.last_name && this.credentials.email && this.credentials.password && this.credentials.confirm_password && this.credentials.password == this.credentials.confirm_password)
     {
+      let queryBody :any = {};
+      queryBody.email = this.credentials.email;
+      queryBody.first_name = this.credentials.first_name;
+      queryBody.last_name = this.credentials.last_name;
+      queryBody.password = this.credentials.password;
 
-      this.authenticationService.create(this.credentials)
+      this.authenticationService.createCandidate(queryBody)
         .subscribe(
           data =>
           {

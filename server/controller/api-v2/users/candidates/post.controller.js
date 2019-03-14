@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 const Schema = require('mongoose').Schema;
 const enumerations = require('../../../../model/enumerations');
 const regexes = require('../../../../model/regexes');
-
+const crypto = require('crypto');
+const jwtToken = require('../../../services/jwtToken');
+const welcomeEmail = require('../../../services/email/emails/welcomeEmail');
+const verifyEmail = require('../../../services/email/emails/verifyEmail');
 const users = require('../../../../model/mongoose/users');
 const filterReturnData = require('../../../api/users/filterReturnData');
 const objects = require('../../../services/objects');
@@ -132,7 +135,7 @@ module.exports.endpoint = async function (req, res) {
         welcomeEmail.sendEmail(data, candidateUserCreated.disable_account);
     }
     else {
-        verify_send_email(candidateUserCreated.email, verifyEmailToken);
+        verifyEmail.sendEmail(candidateUserCreated.email, candidateUserCreated.first_name, verifyEmailToken);
     }
 
     res.send

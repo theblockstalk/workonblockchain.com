@@ -34,7 +34,8 @@ export class SocialAuthComponent implements OnInit {
       .subscribe(
         user => {
           if(user) {
-            this.router.navigate(['/candidate_profile']);
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            window.location.href = '/candidate_profile';
           }
 
         },
