@@ -29,6 +29,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status_reason_deferred;
   set_candidate_status = [
     {value:'approved', name:'Approved'},
+    {value:'reviewed', name: 'Reviewed'},
     {value:'rejected', name:'Rejected'},
     {value:'deferred', name:'Deferred'},
     {value:'other', name:'Other'}
@@ -48,7 +49,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     {value:'not responded', name:'Not Responded'},
     {value:'other', name:'Other'}
   ];
-  email_subject;
+  email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
 
   constructor(private http: HttpClient,private el: ElementRef,private route: ActivatedRoute,private authenticationService: UserService,private router: Router)
   {
@@ -92,6 +93,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   noVisaArray = [];
   candidateHistory;
   _id;
+  send_email;
 
   ngAfterViewInit(): void
   {
@@ -433,7 +435,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.success = '';
     console.log(this.email_text);
     console.log(approveForm.value);
-    if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.email_text && !approveForm.value.email_subject) {
+    if(!approveForm.value.set_status && !approveForm.value.note && !approveForm.value.send_email) {
       this.error = 'Please fill at least one field';
     }
 
@@ -456,12 +458,12 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
           this.error = 'One or more fields need to be completed. Please scroll up to see which ones.';
         }
       }
-      else if(approveForm.value.email_text && !approveForm.value.email_subject) {
+      else if(approveForm.value.send_email && approveForm.value.email_text && !approveForm.value.email_subject) {
         this.error = 'Please enter email subject too.';
 
       }
 
-      else if(!approveForm.value.email_text && approveForm.value.email_subject) {
+      else if(approveForm.value.send_email && !approveForm.value.email_text && approveForm.value.email_subject) {
         this.error = 'Please enter email body too.';
 
       }
@@ -477,6 +479,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
   status;
   reason;
   saveApproveData(approveForm) {
+    console.log(approveForm);
     let queryInput : any = {};
 
     if(approveForm.note)queryInput['note'] = approveForm.note;
@@ -526,8 +529,8 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
     this.status_reason_rejected = '';
     this.status_reason_deferred = '';
     this.note = '';
-    this.email_subject = '';
     this.email_text = '';
+    this.send_email = false;
   }
 
   filter_array(arr) {
