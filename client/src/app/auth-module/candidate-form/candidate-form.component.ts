@@ -26,6 +26,8 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   google_id;
   redirect_url;
   google_url;
+  linkedin_url;
+  linkedin_id;
 
   private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'public-profile-url', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
 
@@ -96,9 +98,10 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   ngOnInit()
   {
     this.google_id = environment.google_client_id;
+    this.linkedin_id = environment.linkedin_id;
     this.redirect_url = environment.redirect_url;
     this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+this.google_id+'&redirect_uri='+this.redirect_url;
-    console.log(this.google_url);
+    this.linkedin_url = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='+this.linkedin_id+'&state=4Wx72xl6lDlS34Cs&redirect_uri='+this.redirect_url+'&scope=r_basicprofile%20r_emailaddress';
     $(function(){
       var hash = window.location.hash;
       hash && $('div.nav a[href="' + hash + '"]').tab('show');

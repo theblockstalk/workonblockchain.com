@@ -31,6 +31,11 @@
     "clientId": "135955856742-6v8g64ojni6qah7ej8osp0ugsu8buop8.apps.googleusercontent.com",
     "clientSecret": "qUEv45cH2RedzyIdC63-eB41",
     "redirectUrl": "http://localhost:4200/auth"
+  },
+  "linkedinConfig" : {
+    "clientId": "78lfupn2m88e4u",
+    "clientSecret": "itlhigfRmkepemfp",
+    "redirectUrl": "http://localhost:4200/auth"
   }
 }
 

@@ -66,22 +66,23 @@ module.exports.endpoint = async function (req, res) {
     let newUserDoc = {};
     newUserDoc.type = 'candidate';
     if(queryBody.referred_email) newUserDoc.referred_email = queryBody.referred_email;
-    if(queryBody.google_code) {
-        const userData = await candidateHelper.googleAuth(queryBody.google_code);
-        if(userData.error) {
+    /*if(queryBody.google_code) {
+        const googleData = await candidateHelper.googleAuth(queryBody.google_code);
+        if(googleData.error) {
             errors.throwError('Something went wrong. Please try again.' , 400)
         }
         else {
-            email = userData.email;
-            newUserDoc.email = userData.email;
-            newUserDoc.google_id = userData.google_id;
-            newUserDoc.first_name = userData.first_name;
-            newUserDoc.last_name = userData.last_name;
+            email = googleData.email;
+            newUserDoc.email = googleData.email;
+            newUserDoc.google_id = googleData.google_id;
+            newUserDoc.first_name = googleData.first_name;
+            newUserDoc.last_name = googleData.last_name;
             newUserDoc.is_verify = 1;
             newUserDoc.social_type = 'GOOGLE';
         }
     }
-    else if(queryBody.linkedin_code) {
+    else */if(queryBody.google_code) {
+        const linkedinData = await candidateHelper.linkedinAuth(queryBody.google_code)
 
     }
     else {

@@ -81,6 +81,8 @@ settings.CRON = {
 
 settings.googleCredentials = config.googleConfig;
 
+settings.linkedinCredentials = config.linkedinConfig;
+
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;
 
 settings.CURRENCY_RATES_USD = config.currencyRatesUSD;
