@@ -470,6 +470,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
       else {
         this.saveApproveData(approveForm.value);
         approveForm.resetForm();
+        this.email_subject= 'Welcome to workonblockchain.com - your account has been approved!';
       }
     }
 
