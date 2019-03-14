@@ -18,6 +18,6 @@ module.exports.recursivelySanitize = function recursivelySanitize(obj) {
     }
 };
 
-module.exports.sanitizeHtml = function sanitizeHtml(htmlString) {
-    return sanitizeHtmlRepo(htmlString);
+module.exports.sanitizeHtml = function sanitizeHtml(htmlString, options) {
+    return sanitizeHtmlRepo(htmlString, options);
 }
