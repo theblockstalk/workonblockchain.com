@@ -57,14 +57,14 @@ module.exports.inputValidation = {
 
 module.exports.endpoint = async function (req, res) {
     console.log(req.body);
-    let inputBody = req.body;
-    let email = inputBody.email;
+    let queryBody = req.body;
+    let email = queryBody.email;
     let timestamp = new Date();
     let newUserDoc = {};
     newUserDoc.type = 'candidate';
-    if(inputBody.referred_email) newUserDoc.referred_email = inputBody.referred_email;
-    if(inputBody.google_code) {
-        const userData = await candidateHelper.googleAuth(inputBody.google_code);
+    if(queryBody.referred_email) newUserDoc.referred_email = queryBody.referred_email;
+    if(queryBody.google_code) {
+        const userData = await candidateHelper.googleAuth(queryBody.google_code);
         if(userData.error) {
             errors.throwError('Something went wrong. Please try again.' , 400)
         }
@@ -78,14 +78,19 @@ module.exports.endpoint = async function (req, res) {
             newUserDoc.social_type = 'GOOGLE';
         }
     }
-    else if(inputBody.linkedin_code) {
+    else if(queryBody.linkedin_code) {
 
     }
     else {
         let salt = crypto.randomBytes(16).toString('base64');
         let hash = crypto.createHmac('sha512', salt);
-        hash.update(userParam.password);
+        hash.update(queryBody.password);
         let hashedPasswordAndSalt = hash.digest('hex');
+        newUserDoc.email = queryBody.email;
+        newUserDoc.first_name = queryBody.first_name;
+        newUserDoc.last_name = queryBody.last_name;
+        newUserDoc.salt = salt;
+        newUserDoc.password_hash = hashedPasswordAndSalt;
     }
 
     const userDoc = await users.findOneByEmail(email);
