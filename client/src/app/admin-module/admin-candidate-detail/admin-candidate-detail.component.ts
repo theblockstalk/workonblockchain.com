@@ -492,7 +492,7 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
               statusCount = 1;
             }
           }
-
+          this.reset();
           $('.selectpicker').val('default');
           $('.selectpicker').selectpicker('refresh');
           this.success = "Successfully updated";
@@ -512,6 +512,15 @@ export class AdminCandidateDetailComponent implements OnInit, AfterViewInit {
             this.error = "Something getting wrong";
           }
         });
+  }
+
+  reset() {
+    this.set_status = '';
+    this.status_reason_rejected = '';
+    this.status_reason_deferred = '';
+    this.note = '';
+    this.email_subject = '';
+    this.email_text = '';
   }
 
   filter_array(arr) {
