@@ -79,6 +79,7 @@ settings.CRON = {
     SYNC_SENDGRID: config.cron.syncSendgrid
 };
 
+settings.googleCredentials = config.googleConfig;
 
 settings.EXPRESS_JWT_SECRET = config.expressJwt.secret;
 

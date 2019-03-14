@@ -231,9 +231,17 @@ export class UserService {
   }
 
 
+  createCandidate(inputBody: any)
+  {
+    return this.http.post(URL+'v2/users/candidates', inputBody) .pipe(map(user => {
+      return user
+    }));
+
+  }
+
   create(user: User)
   {
-    return this.http.post(URL+'users/register', user) .pipe(map(user => {
+    return this.http.post(URL+'users/candidates', user) .pipe(map(user => {
       return user
     }));
 

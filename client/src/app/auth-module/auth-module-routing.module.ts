@@ -11,6 +11,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import {ReferRedirectResolver} from './refer-redirect-resolver';
 import {VerifyEmailMiddleware} from './verify-email-middleware';
+import { SocialAuthComponent } from './social-auth/social-auth.component';
 
 const routes: Routes = [
   { path : 'signup', component: CandidateFormComponent , resolve: {LoginResolver }},
@@ -22,7 +23,7 @@ const routes: Routes = [
   { path : 'change-password' , component: ChangePasswordComponent, canActivate: [VerifyEmailMiddleware]},
   { path : 'verify_email', component: VerifyEmailComponent },
   { path : 'not_found' , component: NotFoundComponent},
-
+  { path : 'auth' , component: SocialAuthComponent},
 
 ];
 

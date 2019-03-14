@@ -37,11 +37,9 @@ const UserSchema = new Schema({
     },
     password_hash: {
         type:String,
-        required:true
     },
     salt: {
         type: String,
-        required: true
     },
     type: {
         type:String,

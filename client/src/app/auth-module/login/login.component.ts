@@ -3,14 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
 import {User} from '../../Model/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { AuthService } from 'angular4-social-login';
-import { GoogleLoginProvider } from 'angular4-social-login';
 import { DataService } from '../../data.service';
 import {NgForm} from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
-
-import { LinkedInService } from '../../linkedin-api';
 
 const URL = environment.backend_url;
 @Component({
@@ -36,7 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   forgetMessage;
   constructor(private http: HttpClient , private route: ActivatedRoute,
               private router: Router,
-              private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private dataservice: DataService,private titleService: Title,private newMeta: Meta) {
+              private authenticationService: UserService,private dataservice: DataService,private titleService: Title,private newMeta: Meta) {
     this.titleService.setTitle('Work on Blockchain | Login');
 
   }
@@ -141,86 +137,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   dataa;
   signInWithGoogle()
   {
-    this.message='';
-    this.response = 'process';
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    this.authService.authState.subscribe((user) =>
-    {
-
-      this.user = user;
-      this.data = JSON.stringify(this.user);
-      this.result = JSON.parse(this.data);
-      localStorage.setItem('googleUser', JSON.stringify(this.result));
-
-      if(this.result)
-      {
-        this.googleUser = JSON.parse(localStorage.getItem('googleUser'));
-        this.credentials.email= this.googleUser.email;
-        this.credentials.password= '';
-        this.credentials.type="candidate";
-        this.credentials.google_id = this.googleUser.id;
-        this.credentials.social_type='GOOGLE';
-
-        this.authenticationService.candidate_login(this.credentials)
-          .subscribe(
-            user => {
-              this.response='data';
-              window.location.href = '/candidate_profile';
-              //this.router.navigate(['/login']);
-
-            },
-            error => {
-              this.response = 'error';
-              if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                this.password_message = '';
-                this.log = error['error']['message'];
-              }
-              else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                this.password_message = '';
-                this.log = error['error']['message'];
-              }
-              else {
-                this.log = 'Something getting wrong';
-              }
-
-            });
-
-      }
-      else
-      {
-        this.router.navigate(['/login']);
-      }
-
-    });
 
 
   }
 
   public subscribeToLogin()
   {
-    this.message='';
-    this.response = 'process';
-    this._linkedInService.login().subscribe({
-      next: (state) =>
-      {
 
-      },
-      complete: () => {
-        // Completed
-      }
-    });
-    this.isUserAuthenticated = this._linkedInService.isUserAuthenticated$;
-    let count = 0;
-    this._linkedInService.isUserAuthenticated$.subscribe({
-      next: (state) => {
-        if(state === true && count===0) {
-          this.rawApiCall();
-          count++;
-
-        }
-        this.isUserAuthenticatedEmittedValue = true;
-      }
-    });
   }
 
 
@@ -262,64 +185,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
   }
-
-  public rawApiCall() {
-    let url =`/people/~:(${this.basicProfileFields.join(',')})?format=json'`;
-    this._linkedInService.raw(url)
-      .asObservable()
-      .subscribe({
-        next: (data) => {
-          localStorage.setItem('linkedinUser', JSON.stringify(data));
-          if(data)
-          {
-            this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-
-            this.credentials.email = this.linkedinUser.emailAddress;
-            this.credentials.password= '';
-            this.credentials.type="candidate";
-            this.credentials.social_type='LINKEDIN';
-            this.credentials.linkedin_id = this.linkedinUser.id;
-
-
-            if(this.linkedinUser.emailAddress)
-            {
-              this.authenticationService.candidate_login(this.credentials)
-                .subscribe(
-                  user => {
-                    this.response = 'data';
-                    window.location.href = '/candidate_profile';
-
-                  },
-                  error => {
-                    this.response = 'error';
-                    if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                      this.password_message = '';
-                      this.log = error['error']['message'];
-                    }
-                    else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                      this.password_message = '';
-                      this.log = error['error']['message'];
-                    }
-                    else {
-                      this.log = 'Something getting wrong';
-                    }
-                  });
-            }
-
-            else
-            {
-              this.log = 'Something getting wrong';
-            }
-          }
-        },
-        error: (err) => {
-        },
-        complete: () => {
-          console.log('RAW API call completed');
-        }
-      });
-  }
-
 
 
 }

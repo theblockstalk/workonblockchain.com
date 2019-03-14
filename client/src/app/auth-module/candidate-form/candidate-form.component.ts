@@ -1,13 +1,11 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {UserService} from '../../user.service';
-import { AuthService } from 'angular4-social-login';
-import { GoogleLoginProvider } from 'angular4-social-login';
 import {NgForm} from '@angular/forms';
 import { DataService } from '../../data.service';
 import { Title, Meta } from '@angular/platform-browser';
 declare var $: any;
-import { LinkedInService } from '../../linkedin-api';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-candidate-form',
@@ -25,6 +23,9 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   public isUserAuthenticated;
   first_name_log;
   last_name_log;
+  google_id;
+  redirect_url;
+  google_url;
 
   private basicProfileFields = ['id' , 'first-name', 'last-name', 'maiden-name', 'public-profile-url', 'email-address', 'formatted-name', 'phonetic-first-name', 'phonetic-last-name', 'formatted-phonetic-name', 'headline', 'location', 'industry', 'picture-url', 'positions'];
 
@@ -34,7 +35,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,private dataservice: DataService,
-    private authenticationService: UserService,private authService: AuthService,private _linkedInService: LinkedInService,private titleService: Title,private newMeta: Meta
+    private authenticationService: UserService,private titleService: Title,private newMeta: Meta
   ) {
     this.titleService.setTitle('Work on Blockchain | Signup developer or company');
     this.code = localStorage.getItem('ref_code');
@@ -94,6 +95,10 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
+    this.google_id = environment.google_client_id;
+    this.redirect_url = environment.redirect_url;
+    this.google_url='https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.profile.emails.read%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fplus.login&response_type=code&client_id='+this.google_id+'&redirect_uri='+this.redirect_url;
+    console.log(this.google_url);
     $(function(){
       var hash = window.location.hash;
       hash && $('div.nav a[href="' + hash + '"]').tab('show');
@@ -122,62 +127,7 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
   button_status;
   emailname;
 
-  public rawApiCall() {
-    let url =`/people/~:(${this.basicProfileFields.join(',')})?format=json'`;
-    this._linkedInService.raw(url)
-      .asObservable()
-      .subscribe({
-        next: (data) => {
-          localStorage.setItem('linkedinUser', JSON.stringify(data));
-          if(data)
-          {
-            this.linkedinUser = JSON.parse(localStorage.getItem('linkedinUser'));
-            this.credentials.email= this.linkedinUser.emailAddress;
-            this.credentials.password= '';
-            this.credentials.type="candidate";
-            this.credentials.social_type='LINKEDIN';
-            this.credentials.linkedin_id = this.linkedinUser.id;
-            this.credentials.first_name = this.linkedinUser.firstName;
-            this.credentials.last_name = this.linkedinUser.lastName;
-            this.credentials.linkedin_account = this.linkedinUser.publicProfileUrl;
-            if(this.linkedinUser.emailAddress)
-            {
-              this.authenticationService.create(this.credentials)
-                .subscribe(
-                  data => {
-                    this.credentials.email = '';
 
-                    localStorage.setItem('currentUser', JSON.stringify(data));
-                    localStorage.removeItem('ref_code');
-                    window.location.href = '/terms-and-condition';
-
-                  },
-                  error => {
-                    this.loading = false;
-                    if(error['status'] === 400 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                      this.log = error['error']['message'];
-                    }
-                    else if(error['status'] === 404 && error['error']['message'] && error['error']['requestID'] && error['error']['success'] === false) {
-                      this.log = error['error']['message'];
-                    }
-                    else {
-                      this.log = 'Something getting wrong';
-                    }
-
-                  });
-            }
-            else
-            {
-              this.log = 'Something getting wrong';
-            }
-          }
-        },
-        error: (err) => {
-        },
-        complete: () => {
-        }
-      });
-  }
 
   signup_candidate(loginForm: NgForm)
   {
@@ -251,9 +201,10 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
 
   }
 
+
   signInWithGoogle()
   {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    /*this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
     this.authService.authState.subscribe((user) =>
     {
       this.user = user;
@@ -298,32 +249,12 @@ export class CandidateFormComponent implements OnInit, AfterViewInit {
       }
 
     });
-
+    */
   }
 
   public subscribeToLogin()
   {
-    this._linkedInService.login().subscribe({
-      next: (state) =>
-      {
-      },
-      complete: () => {
-        // Completed
-      }
-    });
 
-    this.isUserAuthenticated = this._linkedInService.isUserAuthenticated$;
-    let count = 0;
-    this._linkedInService.isUserAuthenticated$.subscribe({
-      next: (state) => {
-        if(state === true && count===0) {
-          this.rawApiCall();
-          count++;
-
-        }
-        this.isUserAuthenticatedEmittedValue = true;
-      }
-    });
   }
 
   company_log;
